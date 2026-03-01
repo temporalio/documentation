@@ -264,8 +264,8 @@ Namespace configuration requires some consideration. Following are some general 
 - Environments such as production and development usually have requirements for isolation. We recommend that each
   environment has its own Namespace.
 - Namespaces should be used to reduce the "blast radius" for mission-critical applications.
-- Workflows that need to communicate with each other should (for now) be in the same Namespace.
-- If you need to share Namespaces across team or domain boundaries, be sure to ensure the uniqueness of Workflow Ids.
+- Use [Nexus](/nexus) to communicate across team, domain, and Namespace boundaries with a clean service contract instead of sharing Temporal primitives directly.
+  Nexus enables each team to have their own Namespace for improved security, troubleshooting, and fault isolation while sharing capabilities through Nexus Endpoints.
 
 ### Examples
 

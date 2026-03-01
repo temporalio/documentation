@@ -40,120 +40,74 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-## Connect Temporal Applications
+Nexus connects Temporal Applications across (and within) isolated Namespaces with built-in durability, observability, and security.
+Each team gets their own Namespace for improved security and fault isolation, while sharing capabilities through clean service contracts.
+Watch the [Nexus overview](https://www.youtube.com/watch?v=tJ1OwSFokOg&t=117s) for a walkthrough.
 
-Nexus allows you to connect Temporal Applications across (and within) isolated Namespaces.
-This provides all the benefits of Durable Execution across team and application boundaries with improved modularity, security, debugging, and fault isolation.
-Nexus supports cross-team, cross-domain, cross-namespace, multi-region, and multi-cloud use cases.
+## Who's using Nexus?
 
-## Why use Nexus?
+Companies using Nexus include:
 
-Unlike other forms of inter-service communication, Nexus combines a familiar programming model with the resiliency of the Temporal Platform and its queue-based Worker architecture.
+- **Duolingo** - Self-service infrastructure ([Case study](https://temporal.io/resources/case-studies/duolingo-temporal-nexus) | [Webinar](https://www.youtube.com/watch?v=tJ1OwSFokOg&t=524s))
+- **Netflix** - Infrastructure orchestration ([Replay talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=470s) | [Webinar](https://www.youtube.com/watch?v=At1FfqGQiu0&t=1295s))
+- **Miro** - Cross-region data migration ([Replay talk](https://youtu.be/YLmFR-IAC3M?feature=shared&t=1488))
+
+## Benefits
+
+Connect Temporal Applications across teams, domains, regions, and clouds with:
+
+- **Stronger security posture** - Built-in access controls for a specific service contract instead of broad Namespace access. Easier audits and safer cross-team collaboration.
+- **Higher reliability** - Durable, atomic handoffs remove lost requests and hand-rolled retry and deduplication logic.
+- **Reduced engineering overhead** - Less code, custom retry, deduplication, and refactoring work. Teams ship features faster.
+- **Scalable platform patterns** - Enables platform-level orchestration (cross-region, cross-team) without centralizing ownership.
+- **New workflows and integrations** - Frees teams to add more Workflows once Nexus is adopted, especially shared services or cross-team use cases.
+
+## Why separate Namespaces?
+
+As teams and workloads grow, separate Namespaces provide:
+
+- **Security** - Sensitive data (PCI, PII) stays in a restricted Namespace with its own encryption key and access controls.
+- **Fault isolation** - Misbehaving Workers in one Namespace don't trigger rate limits or affect other teams.
+- **Compliance** - Data residency requirements may mandate isolated regions or Namespaces.
+- **Ownership** - Each team controls their own Namespace, Workers, and deployment lifecycle.
+
+Before Nexus, connecting Namespaces required workarounds:
+
+- **Child Workflows** - Leaky abstraction. Caller must know target Namespace, Task Queue, and Workflow policy options. Same-Namespace only in Temporal Cloud.
+- **Activity wrappers** - Require an mTLS client per target, grant full Namespace write access, no integrated observability, error-prone boilerplate for async results.
+- **Bespoke gateways** - Not durable, poor cross-service debugging, another service to manage and patch.
+
+Nexus replaces all of these with a clean service contract between caller and handler, less code, and first-class observability.
+
+
+## Should I use Nexus?
 
 Use the following decision tree to help determine if Nexus is right for your use case:
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <a href="/diagrams/nexusadoptionlight.png" target="_blank" rel="noopener noreferrer">
+  <a href="/diagrams/nexusadoptionlight.svg" target="_blank" rel="noopener noreferrer">
     <ThemedImage
       alt="Should I use Nexus? Decision tree"
       sources={{
-        light: '/diagrams/nexusadoptionlight.png',
-        dark: '/diagrams/nexusadoptiondark.png',
+        light: '/diagrams/nexusadoptionlight.svg',
+        dark: '/diagrams/nexusadoptiondark.svg',
       }}
       style={{maxWidth: '100%', cursor: 'pointer'}}
     />
   </a>
 </div>
 
-### Benefits
+## Get started {#learn-more}
 
-- **Integrated Temporal experience** \- with improved security, observability, and reliability.
-- **Microservice contracts** \- suitable for sharing across teams or domains.
-- **Abstract and share underlying Temporal primitives** \- like Workflows, Signals, or Updates.
-- **At-least-once execution guarantees** \- with support for exactly-once execution using Workflow policy.
-- **Improved security and blast-radius isolation** \- with separate Namespaces for each team or domain.
-- **Modular design** \- for streamlined multi-team development.
-- **Custom handlers** \- that execute arbitrary code.
-- **No error-prone boilerplate code** \- with Temporal SDK support to build and use Nexus Services.
-- **Same queue-based Worker architecture** \- so no bespoke service deployments are needed.
-
-### Use cases
-
-- **Cross-team, cross-domain, and cross-namespace** \-
-  Nexus is purpose-built to connect Temporal Applications within and across Namespaces.
-  It addresses the limitations of Child Workflows, Activity Wrappers, and bespoke APIs that target a remote Namespace; such as leaking implementation details, second-class observability, overly-permissive security, and error-prone boilerplate code.
-  Nexus has a streamlined Temporal developer experience, reliable execution, and integrated observability.
-
-- **Share a subset of a Temporal Application** \-
-  Abstract and share a subset of an Application as a Nexus Service.
-  Nexus Operations can span any length of execution, be synchronous or asynchronous, and be implemented with Temporal primitives, like Workflows, Signals, or Updates.
-  Expose Services on a Nexus Endpoint for others to use and secure them with access control policies.
-  Nexus Endpoints decouple callers from handlers, so teams can operate more autonomously.
-
-- **Modular design for growth** \-
-  Temporal Nexus enables a modular application design that can evolve as you grow.
-  Start with Nexus Services in a monolithic Namespace and move Services to separate Namespaces with small configuration changes.
-
-- **Smaller failure domains** \- When teams operate in the same monolithic Namespace, everything is available to everyone, and mis-behaving Workers can trigger rate limits that affect all teams operating in that monolithic Namespace.
-  Nexus enables each team to have their own Namespace for improved security, troubleshooting, and fault isolation.
-
-- **Multi-region** \-
-  Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh within and across AWS and GCP.
-  Built-in Nexus Machinery provides reliable at-least-once execution and Workflow policy can deduplicate requests for exactly-once execution, even across multi-region boundaries.
-
-### Key features
-
-- **Familiar developer experience** \-
-  Temporal SDKs provide an integrated way to build and use Nexus Services.
-  - Use Nexus Services from a caller Workflow.
-  - Run Nexus Service handlers in a Worker, often the same Worker as underlying Temporal primitives.
-  - Implement long-running asynchronous Nexus Operations as Workflows.
-  - Handle low-latency synchronous Nexus Operations with Temporal primitives or arbitrary code.
-  - Execute Operations with at-least-once semantics by default, and exactly-once semantics using Workflow ID reuse policies.
-
-- **Nexus Endpoints with a queue-based Worker architecture** \- Nexus Endpoints are a reverse proxy for Nexus Services.
-  - Connect callers and handlers through Nexus Endpoints, for looser coupling.
-  - Manage Endpoints in the Nexus Registry using the UI, CLI, or Cloud Ops API.
-  - Use a Nexus Endpoint by name, which routes requests to an upstream target Namespace and Task Queue.
-  - Handle Nexus requests in a Nexus Worker by polling an Endpoint's target Task Queue, with automatic load balancing.
-  - Streamline operations by running Nexus Services in existing queue-based Workers.
-
-- **Built-in Nexus Machinery** \-
-  Execution guarantees are provided with built-in Nexus Machinery.
-  - Execute Nexus Operations with reliable state-machine-based invocation and completion callbacks.
-  - Guarantee atomic handoff from Workflow Event History to Nexus Operation state machines.
-  - Ensure reliable execution with automatic retries, rate limiting, concurrency limiting, and circuit breaking.
-
-- **Integrated observability** \-
-  Execution debugging and observability is integrated into the Temporal Platform.
-  - View Nexus Operation lifecycle and error info in Workflow Event History.
-  - Debug across Namespaces with bi-directional linking.
-  - Generate metrics, traces, and logs.
-
-- **Improved blast radius isolation** \-
-  Separate Namespaces isolate underlying Workers and sensitive Workflow state.
-  - Limit direct access to a Namespace, while exposing Nexus Endpoints for others to use.
-  - Isolate misbehaving Workers that affect rate limits for all Workers in a Namespace.
-  - Avoid leaking Workflow implementation details to external callers.
-
-- **Enhanced security and connectivity** \-
-  Temporal Cloud provides integrated Nexus access controls and multi-region routing.
-  - Connect Applications across Namespaces in an Account with Temporal's private mTLS-secured Envoy mesh.
-  - Multi-region connectivity within and across AWS and GCP.
-  - Restrict which callers can use a Nexus Endpoint, with built-in Endpoint access controls.
-  - Stream audit logs including Nexus Registry actions to create, update, or delete Endpoints.
-
-## Learn more
-
-To connect with the Nexus community, join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack).
+Join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack) to connect with the Nexus community.
 
 <RelatedReadContainer>
-  <RelatedReadItem path="https://temporal.io/blog/temporal-nexus-now-available" text="Nexus is now generally available - blog post" archetype="blog" />
-  <RelatedReadItem path="https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082" text="Nexus keynote & demo - Replay video" archetype="replay-talk" />
-  <RelatedReadItem path="https://www.youtube.com/watch?v=izR9dQ_eIe4" text="Nexus deep dive - Replay video" archetype="replay-talk" />
-  <RelatedReadItem path="/nexus" text="Nexus concepts and getting started" archetype="encyclopedia" />
-  <RelatedReadItem path="/develop/go/nexus" text="Go SDK - Nexus quick start and code sample" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/nexus" text="Java SDK - Nexus quick start and code sample" archetype="feature-guide" />
-  <RelatedReadItem path="/cloud/nexus" text="Production deployment in Temporal Cloud" archetype="feature-guide" />
+  <RelatedReadItem path="/nexus" text="Nexus concepts and architecture" archetype="encyclopedia" />
+  <RelatedReadItem path="/develop/go/nexus" text="Go SDK - Nexus quick start" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/nexus" text="Java SDK - Nexus quick start" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/nexus" text="Python SDK - Nexus quick start (Public Preview)" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/nexus" text="TypeScript SDK - Nexus quick start (Pre-release)" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/dotnet/nexus" text=".NET SDK - Nexus quick start (Pre-release)" archetype="feature-guide" />
+  <RelatedReadItem path="/cloud/nexus" text="Temporal Cloud" archetype="feature-guide" />
   <RelatedReadItem path="/production-deployment/self-hosted-guide/nexus" text="Self-hosted deployment" archetype="feature-guide" />
 </RelatedReadContainer>

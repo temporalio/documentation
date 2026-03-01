@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 730" width="1200" height="730">
+  <defs>
+    <marker id="arrow-light" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6b7280"/>
+    </marker>
+    <style>
+      text { font-family: Inter, 'Helvetica Neue', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- ============================================================ -->
+  <!-- ROW 0: Q1 + Leaf A -->
+  <!-- ============================================================ -->
+
+  <!-- Q1 -->
+  <rect x="250" y="15" width="400" height="75" rx="12" ry="12" fill="#2563eb"/>
+  <text x="450" y="43" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">
+    <tspan x="450" dy="0">Does your use case span team, domain,</tspan>
+    <tspan x="450" dy="1.4em">namespace, region, or cloud boundaries?</tspan>
+  </text>
+
+  <!-- Q1 → Yes → Q2 (straight down) -->
+  <line x1="450" y1="90" x2="450" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="462" y="120" fill="#333" font-size="14" font-weight="bold">Yes</text>
+
+  <!-- Q1 → No → Leaf A (horizontal right) -->
+  <line x1="650" y1="52" x2="775" y2="52" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="700" y="44" fill="#333" font-size="14" font-weight="bold">No</text>
+
+  <!-- Leaf A -->
+  <rect x="785" y="22" width="305" height="60" rx="0" ry="0" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="937" y="44" text-anchor="middle" fill="#333" font-size="14">
+    <tspan x="937" dy="0">Use a single namespace with</tspan>
+    <tspan x="937" dy="1.4em">Workflows and Activities.</tspan>
+  </text>
+
+  <!-- ============================================================ -->
+  <!-- ROW 1: Q2 (aligned with Q1) -->
+  <!-- ============================================================ -->
+
+  <!-- Q2 -->
+  <rect x="250" y="140" width="400" height="75" rx="12" ry="12" fill="#2563eb"/>
+  <text x="450" y="168" text-anchor="middle" fill="#fff" font-size="15" font-weight="600">
+    <tspan x="450" dy="0">Do you need separate namespaces for</tspan>
+    <tspan x="450" dy="1.4em">security, fault isolation, or modularity?</tspan>
+  </text>
+
+  <!-- Q2 → Yes → Q3 (diagonal down-left) -->
+  <line x1="350" y1="215" x2="175" y2="275" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="280" y="226" fill="#333" font-size="14" font-weight="bold">Yes</text>
+
+  <!-- Q2 → No → Q4 (diagonal down-right) -->
+  <line x1="550" y1="215" x2="720" y2="275" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="615" y="225" fill="#333" font-size="14" font-weight="bold">No</text>
+
+  <!-- ============================================================ -->
+  <!-- ROW 2: Q3 + Q4 -->
+  <!-- ============================================================ -->
+
+  <!-- Q3 -->
+  <rect x="30" y="275" width="290" height="75" rx="12" ry="12" fill="#2563eb"/>
+  <text x="175" y="303" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="600">
+    <tspan x="175" dy="0">Is Nexus SDK support available</tspan>
+    <tspan x="175" dy="1.4em">for your language?</tspan>
+  </text>
+
+  <!-- Q3 → Yes → Leaf B (near-vertical) -->
+  <line x1="100" y1="350" x2="90" y2="410" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="112" y="385" fill="#333" font-size="14" font-weight="bold">Yes</text>
+
+  <!-- Q3 → No → Q5 (diagonal down-right) -->
+  <line x1="250" y1="350" x2="335" y2="410" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="305" y="368" fill="#333" font-size="14" font-weight="bold">No</text>
+
+  <!-- Q4 -->
+  <rect x="560" y="275" width="320" height="75" rx="12" ry="12" fill="#2563eb"/>
+  <text x="720" y="303" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="600">
+    <tspan x="720" dy="0">Do you plan to split into separate</tspan>
+    <tspan x="720" dy="1.4em">namespaces later?</tspan>
+  </text>
+
+  <!-- Q4 → Yes → Leaf C (straight down) -->
+  <line x1="680" y1="350" x2="680" y2="410" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="692" y="385" fill="#333" font-size="14" font-weight="bold">Yes</text>
+
+  <!-- Q4 → No → Q6 (diagonal down-right) -->
+  <line x1="810" y1="350" x2="1025" y2="410" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="895" y="360" fill="#333" font-size="14" font-weight="bold">No</text>
+
+  <!-- ============================================================ -->
+  <!-- ROW 3: Leaf B + Q5 + Leaf C + Q6 -->
+  <!-- ============================================================ -->
+
+  <!-- Leaf B (green) -->
+  <rect x="15" y="415" width="150" height="45" rx="12" ry="12" fill="#16a34a"/>
+  <text x="90" y="443" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">&#x2713; Use Nexus</text>
+
+  <!-- Q5 -->
+  <rect x="200" y="410" width="270" height="70" rx="12" ry="12" fill="#2563eb"/>
+  <text x="335" y="437" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="600">
+    <tspan x="335" dy="0">Is cross-namespace a future</tspan>
+    <tspan x="335" dy="1.4em">goal, not urgent now?</tspan>
+  </text>
+
+  <!-- Q5 → Yes → Leaf D (diagonal down-left) -->
+  <line x1="270" y1="480" x2="200" y2="550" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="248" y="490" fill="#333" font-size="14" font-weight="bold">Yes</text>
+
+  <!-- Q5 → No → Leaf E (diagonal down-right) -->
+  <line x1="400" y1="480" x2="560" y2="550" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="465" y="496" fill="#333" font-size="14" font-weight="bold">No</text>
+
+  <!-- Leaf C (green) -->
+  <rect x="540" y="410" width="280" height="80" rx="12" ry="12" fill="#16a34a"/>
+  <text x="680" y="434" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">
+    <tspan x="680" dy="0">&#x2713; Use Nexus in a single namespace</tspan>
+    <tspan x="680" dy="1.4em">for separation of concerns and</tspan>
+    <tspan x="680" dy="1.4em">easier future migration.</tspan>
+  </text>
+
+  <!-- Q6 -->
+  <rect x="875" y="410" width="300" height="70" rx="12" ry="12" fill="#2563eb"/>
+  <text x="1025" y="437" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="600">
+    <tspan x="1025" dy="0">Need cleaner contracts than</tspan>
+    <tspan x="1025" dy="1.4em">Child Workflows provide?</tspan>
+  </text>
+
+  <!-- Q6 → Yes → Leaf C (horizontal left) -->
+  <line x1="875" y1="445" x2="820" y2="445" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="843" y="437" fill="#333" font-size="14" font-weight="bold">Yes</text>
+
+  <!-- Q6 → No → Leaf E (diagonal down-left) -->
+  <line x1="1025" y1="480" x2="810" y2="550" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow-light)"/>
+  <text x="935" y="496" fill="#333" font-size="14" font-weight="bold">No</text>
+
+  <!-- ============================================================ -->
+  <!-- ROW 4: Leaf D + Leaf E -->
+  <!-- ============================================================ -->
+
+  <!-- Leaf D (green) -->
+  <rect x="30" y="550" width="340" height="60" rx="12" ry="12" fill="#16a34a"/>
+  <text x="200" y="572" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">
+    <tspan x="200" dy="0">&#x2713; Build in isolated namespaces now.</tspan>
+    <tspan x="200" dy="1.4em">Use Nexus to connect them later.</tspan>
+  </text>
+
+  <!-- Leaf E -->
+  <rect x="440" y="550" width="480" height="60" rx="0" ry="0" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="680" y="572" text-anchor="middle" fill="#333" font-size="14">
+    <tspan x="680" dy="0">Use Child Workflows in a single namespace.</tspan>
+    <tspan x="680" dy="1.4em">Migration to Nexus is straightforward later.</tspan>
+  </text>
+
+  <!-- ============================================================ -->
+  <!-- Legend -->
+  <!-- ============================================================ -->
+  <rect x="15" y="685" width="18" height="18" rx="8" ry="8" fill="#2563eb"/>
+  <text x="40" y="699" fill="#333" font-size="13">Question</text>
+  <rect x="130" y="685" width="18" height="18" rx="8" ry="8" fill="#16a34a"/>
+  <text x="155" y="699" fill="#333" font-size="13">Use Nexus</text>
+  <rect x="255" y="685" width="18" height="18" rx="0" ry="0" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="280" y="699" fill="#333" font-size="13">Alternative path</text>
+
+</svg>
