@@ -20,8 +20,6 @@ keywords:
   - service level agreement
 ---
 
-import { CaptionedImage } from '@site/src/components';
-
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
@@ -29,36 +27,8 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
-Nexus requests (commands, polling) have the same latency SLOs and error rate SLAs as other Worker requests in both the caller and handler Namespaces.
+Nexus latency and availability in Temporal Cloud:
 
-## Latency metrics
-
-Nexus supports various [latency metrics](/nexus/metrics).
-
-## Worker to Temporal Cloud interactions
-
-Nexus interactions between a Worker and Temporal Cloud use the Worker's Namespace gRPC endpoint.
-Nexus-related Worker interactions with Temporal Cloud have the same [latency SLOs](/cloud/service-availability#latency) and [availability SLAs](/cloud/sla) as other calls to a Namespaces's gRPC endpoint.
-
-<CaptionedImage
-    src="/img/cloud/nexus/nexus-workers-short.png"
-    title="Interaction between Workers and Temporal Cloud"
-/>
-
-This applies to the following Nexus-related interactions between a Worker and Temporal Cloud:
-
-- Caller Namespace
-  - RespondWorkflowTaskCompleted \- schedule a Nexus Operation.
-- Handler Namespace
-  - PollNexusTaskQueue \- get a [Nexus Task](/tasks#nexus-task) to process, for example to start a Nexus Operation.
-  - RespondNexusTaskCompleted \- report the Nexus Task was successful.
-  - RespondNexusTaskFailed \- report the Nexus Task failed.
-
-## Nexus connectivity across Namespaces
-
-Nexus connectivity in Temporal Cloud is provided by a global mTLS secured Envoy mesh.
-The cross-namespace latency between the caller's Nexus Machinery and the handler's Nexus Machinery varies based on the locality of the caller and handler Namespaces, which may be placed in different regions.
-
-Communication between Namespaces in the same region will have lower latency.
-Communication across different regions will have higher latency.
-Consult the cross-region latency tables for your cloud provider(s) to estimate the latency for Nexus communication across Namespaces in Temporal Cloud.
+- **SLOs and SLAs** - Nexus requests have the same [latency SLOs](/cloud/service-availability#latency) and [availability SLAs](/cloud/sla) as other Worker requests in both caller and handler Namespaces.
+- **[Nexus metrics](/nexus/metrics)** - SDK and Cloud latency metrics for monitoring Nexus performance.
+- **Cross-Namespace connectivity** - Traffic routes through a global mTLS-secured Envoy mesh. Same-region Namespaces have low latency; cross-region latency varies by provider. See [secure connectivity](/nexus/security#secure-connectivity).

@@ -129,7 +129,8 @@ class MyNexusService:
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
-They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
+Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
 
 The `nexusrpc.handler` and `temporalio.nexus` modules have utilities to help create Nexus Operations:
 
@@ -156,12 +157,18 @@ class MyNexusServiceHandler:
 
 
 A synchronous operation handler must return quickly (less than `10s`).
-In addition to performing simple CPU-bound computations such as the one above, implementations are free to make arbitrary calls to other services or databases.
-The handler function can access an SDK client that can be used to execute Signals, Updates, or Queries against a Workflow, or to do other client operations such as listing Workflows.
-The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) sample shows how to create a Nexus Service uses synchronous operations to send Updates and Queries:
+Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
+
+### Use the Temporal Client for Signals, Queries, and Updates
+
+A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
+You can also use Signal-With-Start or Update-With-Start to atomically start a Workflow and send it a Signal or Update.
+All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
+
+Use `nexus.client()` to get the Client that the Worker was initialized with.
+The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
 [nexus_sync_operations/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations/handler/service_handler.py)
-
 
 ```python
 from temporalio import nexus
@@ -295,7 +302,7 @@ class CallerWorkflow:
         )
         # Alternatively, you can use start_operation to obtain the operation handle and
         # then `await` the handle to obtain the result.
-        sync_operation_handle = await self.nexus_client.start_operation(
+        sync_operation_handle = await nexus_client.start_operation(
             MyNexusService.my_sync_operation,
             MyInput(name),
         )

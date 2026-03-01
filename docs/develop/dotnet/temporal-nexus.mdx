@@ -65,11 +65,11 @@ The Temporal Web UI should now be accessible at [http://localhost:8233](http://l
 Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
 
 ```
-temporal operator namespace create --namespace my-target-namespace
-temporal operator namespace create --namespace my-caller-namespace
+temporal operator namespace create --namespace nexus-simple-handler-namespace
+temporal operator namespace create --namespace nexus-simple-caller-namespace
 ```
 
-`my-target-namespace` will contain the Nexus Operation handler, and we will use a Workflow in `my-caller-namespace` to call that Operation handler.
+`nexus-simple-handler-namespace` will contain the Nexus Operation handler, and we will use a Workflow in `nexus-simple-caller-namespace` to call that Operation handler.
 We use different namespaces to demonstrate cross-Namespace Nexus calls.
 
 ## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
@@ -78,9 +78,9 @@ After establishing caller and handler Namespaces, the next step is to create a N
 
 ```
 temporal operator nexus endpoint create \
-  --name my-nexus-endpoint-name \
-  --target-namespace my-target-namespace \
-  --target-task-queue my-handler-task-queue
+  --name nexus-simple-endpoint \
+  --target-namespace nexus-simple-handler-namespace \
+  --target-task-queue nexus-simple-handler-sample
 ```
 
 You can also use the Web UI to create the Namespaces and Nexus endpoint.
@@ -134,7 +134,8 @@ public interface IHelloService
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
-They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
+Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
 
 The `Temporalio.Nexus` namespace has utilities to help create Nexus Operations:
 
@@ -147,8 +148,8 @@ This example starts with a sync Operation handler example using the `OperationHa
 ### Develop a Synchronous Nexus Operation handler
 
 The `OperationHandler.Sync` method is for exposing simple RPC handlers.
-Its handler function can access an SDK client that can be used for signaling, querying, and listing Workflows.
-However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+Use `NexusOperationExecutionContext.Current.TemporalClient` to get the Temporal Client for signaling, querying, and listing Workflows.
+Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
 
 [NexusSimple/Handler/HelloService.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusSimple/Handler/HelloService.cs)
 ```csharp
@@ -165,6 +166,30 @@ public class HelloService
 
     // ...
 }
+```
+
+### Use the Temporal Client for Signals, Queries, and Updates
+
+A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
+You can also use Signal-With-Start or Update-With-Start to atomically start a Workflow and send it a Signal or Update.
+All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
+
+Use `NexusOperationExecutionContext.Current.TemporalClient` to get the Client that the Worker was initialized with:
+
+```csharp
+[NexusOperationHandler]
+public IOperationHandler<SignalInput, SignalOutput> SignalWorkflow() =>
+    OperationHandler.Sync<SignalInput, SignalOutput>(
+        async (ctx, input) =>
+        {
+            var client = NexusOperationExecutionContext.Current.TemporalClient;
+            var handle = client.GetWorkflowHandle(input.WorkflowId);
+            // Signal a Workflow
+            await handle.SignalAsync("MySignal", new[] { input.Value });
+            // Query a Workflow
+            var result = await handle.QueryAsync<string>("MyQuery");
+            return new(result);
+        });
 ```
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
@@ -444,10 +469,10 @@ To create a Nexus Endpoint you must have a Developer account role or higher, and
 
 ```
 tcld nexus endpoint create \
-  --name <my-nexus-endpoint-name> \
-  --target-task-queue my-handler-task-queue \
-  --target-namespace <my-target-namespace.account> \
-  --allow-namespace <my-caller-namespace.account> \
+  --name nexus-simple-endpoint \
+  --target-task-queue nexus-simple-handler-sample \
+  --target-namespace <your-handler-namespace.account> \
+  --allow-namespace <your-caller-namespace.account> \
   --description-file endpoint_description.md
 ```
 

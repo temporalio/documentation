@@ -1,0 +1,73 @@
+---
+id: nexus-patterns
+title: Nexus Patterns
+sidebar_label: Nexus patterns
+description: Common patterns for building Nexus Services including the collocated pattern and the router-queue pattern for flexible deployment topologies.
+slug: /nexus/patterns
+keywords:
+  - nexus patterns
+  - collocated pattern
+  - router queue pattern
+  - nexus task queue routing
+  - nexus deployment topology
+  - nexus worker architecture
+  - temporal nexus
+tags:
+  - Nexus
+  - Concepts
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+Common patterns for building and deploying [Nexus Services](/nexus/services).
+
+## Collocated pattern (default) {#collocated-pattern}
+
+The **collocated pattern** runs Nexus Operation handlers in the same Worker and on the same Task Queue as the Workflows they abstract.
+This is the default and simplest deployment topology.
+
+The Nexus Endpoint's target Task Queue points to the same Task Queue used by the underlying Workflows.
+The same Worker process registers both Nexus Services and Workflow types, so everything runs together.
+
+### Why start here
+
+- **Simplest setup:** One Worker, one Task Queue, one deployment. No extra infrastructure.
+- **Eager Workflow Start:** When the handler starts a Workflow in the same Worker process, [Eager Workflow Start](/develop/worker-performance#eager-workflow-start) can reserve a slot and execute the first Workflow Task locally without an extra round trip to the Temporal Service - while still recording durable state. If the process crashes, the Workflow resumes on another Worker.
+- **Clean facade:** Operations act as a stable contract. You can change the underlying implementation (Signal today, Workflow tomorrow) without impacting callers.
+
+### When to use this pattern
+
+- Getting started with Nexus.
+- The handler team owns both the Nexus Service and the underlying Workflows.
+- No need to scale Nexus routing separately from Workflow execution.
+
+### When to move on
+
+When you need separate scaling, different IAM permissions per Worker fleet, or want to add Nexus to existing Workers without modifying them, see the [router-queue pattern](#router-queue-pattern).
+
+## Router-queue pattern
+
+The **router-queue pattern** separates Nexus routing from Workflow execution: a dedicated Nexus Worker on a "router" Task Queue routes Operations to Workflows on different Task Queues in the same Namespace.
+
+### When to use this pattern
+
+- **Separate scaling:** Scale Nexus routing independently from Workflow execution.
+- **Dedicated routing layer:** A single Nexus Worker routes requests to multiple Workflow types on different Task Queues.
+- **Different IAM permissions:** Worker fleets behind different Task Queues may have different IAM permissions to different underlying resources.
+- **Avoid modifying existing Workers:** Add a router Worker to a Namespace without changing any existing Workers or Workflows.
+
+### How it works
+
+1. Register a Nexus Worker that polls a dedicated "router" Task Queue.
+2. Configure the Nexus Endpoint's target Task Queue to point to this router Task Queue.
+3. In each Nexus Operation handler, specify a different target Task Queue in the Workflow start options.
+4. Existing Workers continue to poll their own Task Queues and execute the Workflows started by the router.
+
+### Production usage
+
+Used in production by organizations running self-service platforms where a central gateway routes requests to domain-specific Namespaces and Task Queues.
+The router Worker is lightweight - it only handles routing logic.

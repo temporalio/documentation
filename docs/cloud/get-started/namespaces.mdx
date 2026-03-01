@@ -264,9 +264,10 @@ Namespace configuration requires some consideration. Following are some general 
 - Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
 - Namespaces should be used to reduce the "blast radius" for mission-critical applications.
 - Environments such as production and development usually have requirements for isolation. We recommend that each
-  environment has its own Namespace. This helps keep production Namespaces secure. It also protects production Namespaces from being throttled due to throughput spikes in development.
-- Workflows should use Nexus to communicate across Namespaces with a clean service contract instead of sharing Temporal primitives directly.
-- Workflows in the same Namespace can communicate with each other directly.
+  environment has its own Namespace.
+- Namespaces should be used to reduce the "blast radius" for mission-critical applications.
+- Use [Nexus](/nexus) to communicate across team, domain, and Namespace boundaries with a clean service contract instead of sharing Temporal primitives directly.
+  Nexus enables each team to have their own Namespace for improved security, troubleshooting, and fault isolation while sharing capabilities through Nexus Endpoints.
 
 ### Examples
 
