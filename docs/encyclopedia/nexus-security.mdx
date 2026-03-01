@@ -25,28 +25,23 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-Nexus supports restricting access to Nexus Endpoints.
-Temporal Cloud has built-in Endpoint access controls and provides secure Nexus connectivity across Namespaces.
-For self-hosted deployments you can implement custom Authorizers.
+Temporal Cloud provides built-in Endpoint access controls and secure connectivity across Namespaces.
+Self-hosted deployments can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin).
 
 ## Runtime access controls {#runtime-access-controls}
 
-In Temporal Cloud, access to a Nexus Endpoint at runtime is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
+In Temporal Cloud, each Endpoint has an access control policy: an allowlist of caller Namespaces.
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-workers-short.png"
     title="Nexus Security"
 />
 
-Workers in each Namespace may authenticate with Temporal Cloud as they do now with mTLS certificates or API key as allowed by the caller Namespace.
-Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.
-For example, in the Temporal Go SDK a caller Workflow would use `nexusClient.ExecuteOperation` to issue a command to start a Nexus Operation.
+Workers authenticate with their Namespace using mTLS or API key.
+When a caller Workflow executes a Nexus Operation, Temporal Cloud verifies the caller's Namespace is in the Endpoint's allowlist before routing the request to the handler.
+Temporal Cloud acts as a trusted broker across Namespace boundaries.
 
-To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal Cloud obtains the handler Namespace and Task Queue for the handler endpoint, and restricts access by verifying that the caller's Namespace is in the endpoint's allowlist.
-
-In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries, and relies on authenticated workers in each Namespace.
-
-See [Configure Runtime Access Controls](/nexus/registry#configure-runtime-access-controls) for additional information.
+See [Configure runtime access controls](/nexus/registry#configure-runtime-access-controls).
 
 ## Secure connectivity {#secure-connectivity}
 
@@ -58,32 +53,50 @@ Self-hosted deployments rely on the Temporal Cluster being secure.
 
 :::
 
-In Temporal Cloud multiple security provisions are in place to ensure it can act as a trusted broker across Namespace boundaries:
+Temporal Cloud secures all Nexus communication:
 
-- Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
-- mTLS is used for all Nexus communication, including across cloud cells and regions, to:
-  - Start or Cancel a Nexus Operation.
-  - Callback on completion of an asynchronous Nexus Operation.
-- Nexus Endpoints are only privately accessible from within a Temporal Cloud account.
-  - Accessible from within a caller Workflow using the Temporal SDK.
-  - Not externally accessible for arbitrary clients yet.
+- Workers authenticate to their Namespace using mTLS or API key.
+- mTLS encrypts all cross-Namespace Nexus traffic (start, cancel, and completion callbacks) across cells and regions.
+- Endpoints are only accessible from within a Temporal Cloud Account through the Temporal SDK - not externally accessible.
 
 ## Payload encryption and Data Converter {#payload-encryption-data-converter}
 
-The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
-The caller and handler Workers must have compatible Data Converters as operation inputs and results are passed between the two.
+Nexus uses the same Data Converter as Workflows and Activities - JSON, Proto, and binary payloads are all supported.
+If you use a Codec for encryption, it also encrypts Nexus payloads.
 
-If encryption keys are used to encrypt payloads, they must be available in both the caller and handler. For example,
-the caller and handler can use a shared symmetric key stored in your KMS.
+Caller and handler Workers must have compatible Data Converters.
+Payloads are encrypted by the sender (caller encrypts input, handler encrypts result).
 
-Please let us know if you need per-Service payload encryption or better handling for asymmetric encryption keys.
+Three common approaches for cross-Namespace payload encryption:
+
+### Option 1: Same encryption key {#same-encryption-key}
+
+Both Namespaces share the same encryption key.
+Simplest approach - no additional configuration needed.
+
+### Option 2: Pass KMS key ID in payload metadata {#kms-key-id-metadata}
+
+Each Namespace uses its own encryption key, with the KMS key ID passed in Temporal payload metadata.
+The receiver reads the key ID from metadata and decrypts using KMS IAM permissions.
+
+Works bi-directionally: caller encrypts input with the caller's key, handler decrypts using the key ID from metadata, then encrypts the result with the handler's key.
+The Codec Server needs KMS decrypt permissions for all relevant keys.
+
+See the [encryption sample](https://github.com/temporalio/samples-go/blob/main/encryption/data_converter.go) and the [reference-app-orders-go data converter](https://github.com/temporalio/reference-app-orders-go/blob/main/app/temporalutil/data_converter.go).
+
+### Option 3: Wrapper types for endpoint-specific encryption keys {#endpoint-specific-keys}
+
+Use wrapper types (for example, `EndpointValue`) so the Data Converter selects an Endpoint-specific encryption key.
+This encrypts only Nexus traffic with a dedicated key, without sharing Namespace keys across teams.
+
+See the [draft endpoint-based encryption sample](https://github.com/temporalio/samples-go/compare/main...bergundy:samples-go:nexus-encryption-by-endpoint).
+
+### Choosing an approach
+
+Options 1 and 2, where both sides share the same key or flow the KMS key ID in payload metadata, work with the standard Data Converter.
+Option 3 is more advanced and is intended for teams that don't want to share their Namespace encryption keys with other teams.
 
 ## Nexus Registry security {#managing-nexus-endpoints}
 
 See [Nexus Registry Roles and Permissions](/nexus/registry#roles-and-permissions).
 
-## Learn more
-
-- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
-- Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=934s).
-- Explore [additional resources](/evaluate/nexus#learn-more) to learn more about Nexus.

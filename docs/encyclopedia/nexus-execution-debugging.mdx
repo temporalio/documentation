@@ -21,21 +21,13 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-Nexus supports end-to-end execution debugging that may span:
 
-- Caller Workflows
-- One or more Nexus Operations executed within and across Namespaces
-- Underlying Temporal primitives, like a Workflow, created by a Nexus Operation handler
-
-This includes [multi-level Nexus calls](/nexus#multi-level-calls), for example:
-
-- Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
+Nexus supports end-to-end execution debugging across caller Workflows, Nexus Operations, and handler Workflows - even across [multi-level calls](/nexus#multi-level-calls) spanning multiple Namespaces.
 
 ## Bi-directional linking
 
-Bi-directional links enable navigation of an end-to-end execution across Namespace boundaries in the Temporal UI.
-They are automatically added by the Temporal SDK for builder functions like New-Workflow-Run-Operation.
-Links are auto-wired from a specific Nexus Operation event in the caller's Workflow history to a specific event in the handler's Workflow history.
+Bidirectional links connect Nexus Operation events in the caller's Workflow History to corresponding events in the handler's Workflow History.
+They are automatically wired by SDK builder functions like New-Workflow-Run-Operation, enabling click-through navigation across Namespaces, regions, and clouds in the Temporal UI.
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-bi-directional-linking.png"
@@ -43,20 +35,14 @@ Links are auto-wired from a specific Nexus Operation event in the caller's Workf
     zoom="true"
 />
 
-Bi-directional links enable navigating across Namespace boundaries:
-
-- Forward through the Nexus Operation execution:
-  - From a Nexus Operation event in the caller's Workflow history.
-  - To the underlying event in the handler's Workflow.
-- Backwards through the Nexus Operation execution:
-  - From the underlying event in the handler's Workflow.
-  - To a Nexus Operation event in the caller's Workflow history.
+- **Forward**: From a caller's Nexus Operation event to the handler's Workflow.
+- **Backward**: From the handler's Workflow back to the caller's Nexus Operation event.
 
 ## Pending Operations
 
-Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
+Pending Nexus Operations are displayed in the Workflow details page and with `temporal workflow describe`, similar to pending Activities.
 
-For example, from the Temporal UI:
+From the UI:
 
 <CaptionedImage
     src="/img/cloud/nexus/pending-nexus-operations.png"
@@ -64,7 +50,7 @@ For example, from the Temporal UI:
     zoom="true"
 />
 
-For example, from the `temporal` CLI:
+From the CLI:
 
 ```
 temporal workflow describe
@@ -83,15 +69,15 @@ Pending Nexus Operations: 1
   LastAttemptFailure       {"message":"handler error (INTERNAL): internal error","applicationFailureInfo":{}}
 ```
 
-Retryable Nexus errors [returned from a Nexus handler](/nexus/error-handling#errors-in-nexus-handlers) will surface as part of the Pending Operation in a caller Workflow.
-Non-retryable errors will result in the Nexus Operation reaching a final state in the caller Workflow, with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout) or [Canceled](/references/events#nexusoperationcanceled) event.
+[Retryable errors](/nexus/error-handling#errors-in-nexus-handlers) surface in the Pending Operation.
+Non-retryable errors resolve the Operation with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout), or [Canceled](/references/events#nexusoperationcanceled) event.
 
 ## Pending Callbacks
 
-Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
-These show up in the UI and using: `temporal workflow describe`.
+Nexus completion callbacks are sent from the handler's Namespace to the caller's Namespace for asynchronous Operations.
+These appear in the UI and with `temporal workflow describe`.
 
-For example, from the Temporal UI:
+From the UI:
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-callback.png"
@@ -99,7 +85,7 @@ For example, from the Temporal UI:
     zoom="true"
 />
 
-For example, from the `temporal` CLI:
+From the CLI:
 
 ```
 temporal workflow describe
@@ -115,10 +101,8 @@ Callbacks: 1
 
 ## Tracing
 
-Temporal integrates with tracing libraries like [OpenTelemetry](https://opentelemetry.io/) and [OpenTracing](https://opentracing.io/).
-Tracing allows you to visualize the call graph of a Workflow, including its Activities, Nexus Operations, and Child Workflows.
-You can enable tracing by installing an interceptor on the Temporal Client or Worker in the supported SDKs.
-See the samples linked below to enable tracing for the SDKs:
+Temporal integrates with [OpenTelemetry](https://opentelemetry.io/) and [OpenTracing](https://opentracing.io/) to visualize call graphs across Activities, Nexus Operations, and Child Workflows.
+Enable tracing by installing an interceptor on the Client or Worker:
 
 - [Go SDK](https://github.com/temporalio/samples-go/tree/main/opentelemetry)
 - [Java SDK](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/tracing)

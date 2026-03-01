@@ -2,7 +2,7 @@
 id: nexus
 title: Temporal Nexus
 sidebar_label: Temporal Nexus
-description: Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, namespace, region, and cloud boundaries. It promotes a more modular architecture for sharing a subset of your team's capabilities via well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
+description: Temporal Nexus connects Temporal Applications across isolated Namespaces with clean service contracts, built-in durability, observability, and security.
 toc_max_heading_level: 4
 slug: /nexus
 keywords:
@@ -22,79 +22,101 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-[Temporal Nexus](/evaluate/nexus) allows you to reliably connect Temporal Applications.
-It promotes a more modular architecture for sharing a subset of your team's capabilities with well-defined microservice contracts for other teams to use.
-Nexus was designed with Durable Execution in mind and enables each team to have their own Namespace for improved modularity, security, debugging, and fault isolation.
+:::info NEW TO NEXUS?
 
-## Connect Temporal Applications
+This page explains what Nexus is and how it works. To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus).
 
-[Nexus Services](/nexus/services) are exposed from a [Nexus Endpoint](/nexus/endpoints) created in the [Nexus Registry](/nexus/registry).
-Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
-The Nexus Registry is scoped to an Account in Temporal Cloud and scoped to a Cluster for self-hosted deployments.
+:::
+
+## What is Nexus?
+
+Nexus connects Temporal Applications across (and within) isolated Namespaces.
+Each team gets their own Namespace for security and fault isolation, while exposing a clean service contract for others to use through a [Nexus Endpoint](/nexus/endpoints).
+
+Designed for Durable Execution, Nexus combines a familiar SDK programming model with reliable execution, built-in observability, and multi-region connectivity in Temporal Cloud.
+
+Nexus is peer-to-peer, not hierarchical.
+Caller and handler Workflows are siblings that communicate across Namespace boundaries.
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-overview-short.png"
-    title="Nexus Overview"
+    title="Nexus connects caller and handler Namespaces through a Nexus Endpoint"
     width="100%"
     zoom="true"
 />
 
-A Nexus Endpoint is a reverse proxy that decouples the caller from the handler and routes requests to upstream targets. It currently supports routing to a single target Namespace and Task Queue.
-Nexus Services and [Nexus Operations](/nexus/operations) are often registered in the same Worker as the underlying Temporal primitives they abstract.
+## How Nexus works
 
-Nexus connectivity across Namespaces is provided by the Temporal Service.
-Temporal Cloud supports Nexus connectivity [within and across regions](/cloud/nexus#multi-region-connectivity) and has [built-in access controls](/cloud/nexus#built-in-access-controls).
-Self-hosted Nexus connectivity is supported within a single Cluster and [custom Authorizers](/self-hosted-guide/security#authorizer-plugin) may be used for access control.
+### Services and Operations
 
-## Build and use Nexus Services
+A [Nexus Service](/nexus/services) is a named collection of [Nexus Operations](/nexus/operations) that a team exposes.
+Operations abstract the underlying implementation - callers don't need to know whether an Operation starts a Workflow, sends a Signal, runs a Query, or executes other reliable code.
 
-Nexus has a familiar programming model to build and use Nexus Services using the Temporal SDK.
-The [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) supports both [synchronous](/nexus/operations#synchronous-operation-lifecycle) and [asynchronous](/nexus/operations#asynchronous-operation-lifecycle) Operations.
-It is suitable for low-latency and long-running use cases.
-Nexus Operations can be implemented with Temporal primitives, like Workflows, or [execute arbitrary code](/nexus/operations#executing-arbitrary-code-from-a-sync-handler).
+The [Operation lifecycle](/nexus/operations#operation-lifecycle) supports two modes:
 
-:::tip RESOURCES
+- **Asynchronous** - Starts a Workflow (same or different Task Queue, with optional [Eager Start](/develop/worker-performance#eager-workflow-start)). Can run up to [60 days](/cloud/limits#nexus-operation-duration-limits).
+- **Synchronous** - Completes within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout). Use for Signals, Queries, Updates, or other reliable low-latency calls using the [Temporal SDK Client](/nexus/operations#executing-arbitrary-code-from-a-sync-handler).
 
-- [Go SDK - Nexus quick start and code sample](/develop/go/nexus)
-- [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
-- [Python SDK - Nexus quick start and code sample](/develop/python/nexus)
-- [TypeScript SDK - Nexus quick start and code sample](/develop/typescript/nexus)
-- [.NET SDK - Nexus quick start and code sample](/develop/dotnet/nexus)
+Services and Operations are built with the Temporal SDK and typically [collocated](/nexus/patterns#collocated-pattern) in the same Worker as the Temporal primitives they abstract, or in a dedicated router Worker using the [router-queue pattern](/nexus/patterns#router-queue-pattern).
 
-  :::
+:::tip SDK GUIDES
 
-## Queue-based Worker architecture
+- [Go](/develop/go/nexus) |
+  [Java](/develop/java/nexus) |
+  [Python](/develop/python/nexus) |
+  [TypeScript](/develop/typescript/nexus) |
+  [.NET](/develop/dotnet/nexus)
 
-Nexus uses the Temporal queue-based Worker architecture and built-in Nexus Machinery to ensure reliable execution of Nexus Operations.
-If a Nexus Service is down, a caller Workflow can continue to schedule Nexus Operations and they will be processed when the service is up.
+:::
 
-Nexus handler Workers poll the Endpoint's target Namespace and Task Queue for [Nexus Tasks](/tasks#nexus-task) to process.
-Workers authenticate to their Namespace's gRPC endpoint with supported methods including mTLS client certificates or API Keys in Temporal Cloud.
+### Endpoints and Registry
+
+A [Nexus Endpoint](/nexus/endpoints) is a reverse proxy that decouples callers from handlers.
+Callers reference an Endpoint by name. The Endpoint routes requests to a target Namespace and Task Queue.
+Callers never need to know the handler's Namespace, Task Queue, or internal implementation.
+
+Endpoints are managed in the [Nexus Registry](/nexus/registry) using the UI, CLI, or Cloud Ops API.
+
+### Queue-based Worker architecture
+
+Nexus uses the same queue-based Worker architecture as the rest of Temporal.
+Handler Workers poll the Endpoint's target Task Queue for [Nexus Tasks](/tasks#nexus-task).
+If a Nexus Service is down, caller Workflows continue to schedule Operations - they process when the service is back up.
+No bespoke service deployments needed. Load balancing is automatic.
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-workers-short.png"
-    title="Queue-based Worker architecture"
+    title="Nexus Workers poll the Endpoint's target Task Queue"
     width="100%"
     zoom="true"
 />
 
-See [system interactions](/nexus/operations/#system-interactions) for additional detail.
+See [system interactions](/nexus/operations#system-interactions) for the full request flow.
 
-## Built-in Nexus Machinery
+### Built-in Nexus Machinery
 
-The built-in [Nexus Machinery](/glossary#nexus-machinery) uses state-machine-based invocation and completion callbacks.
-It guarantees [at-least-once](/nexus/operations#execution-semantics) execution, with automatic retries, circuit breaking, rate limiting, and load balancing.
+When a caller Workflow executes a Nexus Operation, the [Nexus Machinery](/glossary#nexus-machinery) handles delivery with [at-least-once](/nexus/operations#execution-semantics) execution:
 
-The Nexus Machinery uses [Nexus RPC](/glossary#nexus-rpc) on the wire, a protocol designed with Durable Execution in mind, to support arbitrary-duration Operations that extend beyond a traditional RPC.
+- Automatic retries with exponential backoff
+- Rate limiting and concurrency limiting
+- [Circuit breaking](/nexus/operations#circuit-breaking) (trips after 5 consecutive retryable errors)
+- Automatic load balancing
 
-For example, when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and the Nexus Machinery is responsible for making the Nexus RPC calls on your behalf.
-This means you don't have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
+The Machinery uses [Nexus RPC](/glossary#nexus-rpc) on the wire - a protocol supporting arbitrary-duration Operations.
+You interact only with the Temporal SDK, not Nexus RPC directly.
 
-## Multi-level calls
+### Multi-level calls
 
-Nexus supports multi-level Nexus calls, for example:
+Nexus calls chain across teams and Namespaces:
 
-- Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
+- Workflow A -> Nexus Op 1 -> Workflow B -> Nexus Op 2 -> Workflow C
+
+## Operational reference
+
+- [Nexus security](/nexus/security) - Access controls, secure connectivity, and payload encryption.
+- [Nexus execution debugging](/nexus/execution-debugging) - Bi-directional linking, pending Operations, and tracing.
+- [Nexus error handling](/nexus/error-handling) - Error types and how they surface in caller Workflows.
+- [Nexus metrics](/nexus/metrics) - SDK, Cloud, and OSS cluster metrics.
 
 ## Public Preview features
 

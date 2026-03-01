@@ -386,8 +386,7 @@ A Nexus Async Completion Callback is the completion callback for an asynchronous
 A Nexus Endpoint is a reverse proxy that can serve one or more Nexus Services. It routes Nexus requests to a target
 Namespace and Task Queue, that a Nexus Worker is polling. This allows service providers to present a clean service
 contract and hide the underlying implementation, which may consist of many internal Workflows. Multiple Nexus Endpoints
-can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service
-routing rules.
+can target the same Namespace.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

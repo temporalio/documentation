@@ -20,8 +20,7 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
-[Temporal Nexus](/nexus) allows you to reliably connect Temporal Applications.
-It was designed with Durable Execution in mind and enables each team to have their own Namespace for improved modularity, security, debugging, and fault isolation.
+[Temporal Nexus](/nexus) connects Temporal Applications across Namespaces with built-in durability, security, and fault isolation.
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-overview-short.png"
@@ -30,9 +29,9 @@ It was designed with Durable Execution in mind and enables each team to have the
 
 ## Enable Nexus
 
-Enable Nexus in your self-hosted Temporal Service by updating the server's static configuration file and enabling Nexus through dynamic config, then setting the public callback URL and allowed callback addresses.
-Nexus is only supported in single cluster setups at this time.
-For additional information on operating Nexus workloads in your self-hosted cluster, see [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md).
+Enable Nexus by updating your static configuration and dynamic config.
+Nexus is supported in single-cluster setups only.
+See [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md) for operational details.
 
 :::note
 Replace `$PUBLIC_URL` with a URL value that's accessible to external callers or internally within the cluster.
@@ -41,7 +40,7 @@ Currently, external Nexus calls are considered experimental so it should be safe
 
 To enable Nexus in your deployment:
 
-1. Ensure that the server's static configuration file enables the HTTP API.
+1. Enable the HTTP API in the server's static configuration.
 
    ```yaml
    services:
@@ -58,8 +57,8 @@ To enable Nexus in your deployment:
          httpAddress: $PUBLIC_URL:7243
    ```
 
-2. Set the required dynamic configuration
-    1. **Prior to version 1.30.X**, you must enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
+2. Set the required dynamic configuration.
+    1. **Prior to version 1.30.X**: Enable Nexus, set the callback URL, and configure allowed callback addresses.
 
        **NOTE**: the callback endpoint template and allowed addresses should be set when using the experimental
        "external" endpoint targets.
@@ -82,7 +81,7 @@ To enable Nexus in your deployment:
                AllowInsecure: true # In production, set to false and ensure traffic is HTTPS/TLS encrypted
        ```
 
-    2. Since version 1.30.X, Nexus is enabled by default, the only configuration needed is to use the system callback URL.
+    2. **Version 1.30.X+**: Nexus is enabled by default. Only the system callback URL is needed.
        ```yaml
        component.nexusoperations.useSystemCallbackURL:
          - value: true
@@ -90,19 +89,14 @@ To enable Nexus in your deployment:
 
 ## Build and use Nexus Services
 
-Nexus has a familiar programming model to build and use Nexus Services using the Temporal SDK.
-The [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) supports both synchronous and asynchronous Operations.
-Nexus Operations can be implemented with Temporal primitives, like a Workflow, or execute arbitrary code.
+See [how Nexus works](/nexus) for an architectural overview, then follow an SDK guide to build your first Nexus Service.
 
-:::tip RESOURCES
+:::tip SDK GUIDES
 
-- [Go SDK - Nexus quick start and code sample](/develop/go/nexus)
-- [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
+- [Go](/develop/go/nexus) |
+  [Java](/develop/java/nexus) |
+  [Python](/develop/python/nexus) |
+  [TypeScript](/develop/typescript/nexus) |
+  [.NET](/develop/dotnet/nexus)
 
 :::
-
-## Learn more
-
-- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
-- [Learn key Nexus concepts](/nexus) and how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=934s)
-- Explore [additional resources](/evaluate/nexus#learn-more) to learn more about Nexus.
