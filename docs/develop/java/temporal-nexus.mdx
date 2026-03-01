@@ -229,7 +229,7 @@ public class NexusServiceImpl {
 ### Use the Temporal Client for Signals, Queries, and Updates
 
 A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
-You can also use Signal-With-Start or Update-With-Start to atomically start a Workflow and send it a Signal or Update.
+You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
 
 Use `Nexus.getOperationContext().getWorkflowClient(ctx)` to get the Client that the Worker was initialized with:
