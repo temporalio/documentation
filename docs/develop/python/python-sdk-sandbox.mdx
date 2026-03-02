@@ -71,7 +71,7 @@ A default set of restrictions that prevents most dangerous standard library call
 
 The following techniques aren't recommended, but they allow you to avoid, skip, or break through the sandbox environment.
 
-Skipping Workflow Sandboxing results in a lack of determinism checks. Using the Workflow Sandboxing environment helps to preventing non-determinism errors but doesn't completely negate the risk.
+Skipping Workflow Sandboxing results in a lack of determinism checks. Using the Workflow Sandboxing environment helps prevent non-determinism errors but doesn't completely negate the risk.
 
 ### Skip Sandboxing for a block of code
 
@@ -202,9 +202,9 @@ The sandbox's import notification policy specifies how the sandbox behaves when 
 A dynamic import occurs when a module is imported after the Workflow is loaded into the sandbox. These imports are often invisible and, if they don't do anything restricted by the sandbox, cause memory overhead. By default the [`WARN_ON_DYNAMIC_IMPORT`](https://python.temporal.io/temporalio.workflow.SandboxImportNotificationPolicy.html#WARN_ON_DYNAMIC_IMPORT) policy setting is enabled and a warning will be emitted when a module that is not in the [passthrough modules](#passthrough-modules) list is dynamically imported.
 
 The other notable policy settings apply when a module is imported into the sandbox that was not passed through. These settings are disabled by default and must be explicitly turned on.
-The [`WARN_ON_UNINTENTIONAL_PASSTHROUGH`](https://python.temporal.io/temporalio.workflow.SandboxImportNotificationPolicy.html#WARN_ON_UNINTENTIONAL_PASSTHROUGH) setting emits a warning when a module not included in the [passthrough modules](#passthrough-modules) list. 
+The [`WARN_ON_UNINTENTIONAL_PASSTHROUGH`](https://python.temporal.io/temporalio.workflow.SandboxImportNotificationPolicy.html#WARN_ON_UNINTENTIONAL_PASSTHROUGH) setting emits a warning when a module not included in the [passthrough modules](#passthrough-modules) list is imported.
 
-Similarly, the [`RAISE_ON_UNINTENTIONAL_PASSTHROUGH`](https://python.temporal.io/temporalio.workflow.SandboxImportNotificationPolicy.html#RAISE_ON_UNINTENTIONAL_PASSTHROUGH) setting will raise an error when an non-passed-through module is imported.
+Similarly, the [`RAISE_ON_UNINTENTIONAL_PASSTHROUGH`](https://python.temporal.io/temporalio.workflow.SandboxImportNotificationPolicy.html#RAISE_ON_UNINTENTIONAL_PASSTHROUGH) setting will raise an error when a non-passed-through module is imported.
 
 The import notification policy can be set for specific imports by using [`sandbox_import_notification_policy`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_import_notification_policy) context manager.
 
