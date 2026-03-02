@@ -149,7 +149,7 @@ A Service handler must provide Operation handlers for each Operation declared by
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
 They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
-The `@temporalio/nexus` package provides utilities to help create Nexus Operations that interracts with a Temporal namespace: {/* Extended */}
+The `@temporalio/nexus` package provides utilities to help create Nexus Operations that interact with a Temporal namespace: {/* Extended */}
 
 - `WorkflowRunOperationHandler` - Create an asynchronous operation handler that starts a Workflow.
 - `getClient()` - Get a Temporal Client connected using the same `NativeConnection` as the present Temporal Worker.
