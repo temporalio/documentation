@@ -38,8 +38,8 @@ Standalone Activity directly from your Temporal Client.
 
 This page covers the following:
 
-- [Run the Temporal Development Server with Standalone Activities enabled](#run-the-temporal-standalone-activity-development-server)
-- [Run a worker with the activity registered](#run-worker)
+- [Get Started with Standalone Activities](#get-started)
+- [Run a Worker with the Activity registered](#run-worker)
 - [Execute a Standalone Activity](#execute-activity)
 - [Start a Standalone Activity without waiting for the result](#start-activity)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
@@ -55,7 +55,9 @@ This documentation uses source code derived from the [Python sample](https://git
 
 :::
 
-## Run the Temporal Development Server with Standalone Activities enabled {#run-the-temporal-standalone-activity-development-server}
+## Get Started with Standalone Activities {#get-started}
+
+To get started, run the Temporal Development Server with Standalone Activities enabled.
 
 Prerequisites:
 
@@ -78,6 +80,13 @@ Temporal Web UI will now be accessible at [http://localhost:8233](http://localho
 Activities are available from the nav bar item located towards the top left of the page:
 
 <img src="/img/standalone-activities-ui-nav.png" alt="Standalone Activities Web UI nav bar item" height="336" />
+
+Clone the [samples-python](https://github.com/temporalio/samples-python) repository to follow along:
+
+```
+git clone https://github.com/temporalio/samples-python.git
+cd samples-python
+```
 
 ## Write an Activity Function {#write-activity}
 
@@ -280,3 +289,7 @@ async def my_application():
 if __name__ == "__main__":
     asyncio.run(my_application())
 ```
+
+## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
+
+<!-- TODO: Add Temporal Cloud section for Python SDK -->
