@@ -189,7 +189,7 @@ If you aren't yet able to upgrade from Pydantic v1, see https://github.com/tempo
 ### Custom Type Data Conversion
 
 When converting from JSON, Workflow and Activity type hints are taken into account to convert to the proper types.
-All common Python typings including `Optional`, `Union`, all forms of iterables and mappings, and `NewType` are supported in addition the regular JSON values mentioned before.
+All common Python typings including `Optional`, `Union`, all forms of iterables and mappings, and `NewType` are supported in addition to the regular JSON values mentioned before.
 
 In Python, Data Converters contain a reference to a Payload Converter class that is used to convert input and output payloads.
 By default, the Payload Converter is a `CompositePayloadConverter` which contains multiple `EncodingPayloadConverter`s to try to serialize/deserialize payloads.
