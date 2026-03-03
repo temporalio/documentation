@@ -183,7 +183,7 @@ For example, when you execute a Nexus Operation in a caller Workflow the followi
 ## Automatic retries {#automatic-retries}
 
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation.
-If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's [Schedule-to-Close timeout](#schedule-to-close-timeout) is exceeded.
+If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's [Schedule-to-Close timeout](#schedule-to-close-timeout) or [Schedule-to-close timeout](#schedule-to-close-timeout) is exceeded.
 
 For example, if a Nexus handler returns a [retryable error](/references/failures#nexus-errors), or an [upstream timeout](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) is encountered by the caller, the Nexus request will be retried up to the [default Retry Policy's](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
@@ -208,10 +208,9 @@ The Schedule-to-Close timeout limits the total duration from when the Operation 
 This is the overall timeout for the entire Operation.
 The Nexus Machinery [automatically retries](#automatic-retries) failed requests internally until this timeout is exceeded, at which point the Operation fails with a [NexusOperationTimedOut](/references/events#nexusoperationtimedout) event.
 
-For asynchronous Operations, this timeout covers the full lifecycle: scheduling, starting, and completing.
-For synchronous Operations, this timeout covers the time from scheduling to receiving the result.
+This timeout covers the full [Nexus Operation lifecycle](https://docs.temporal.io/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
 
-In Temporal Cloud, the maximum Schedule-to-Close timeout is 60 days.
+In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](https://docs.temporal.io/cloud/limits#nexus-operation-duration-limits).
 
 ### Schedule-to-Start timeout {#schedule-to-start-timeout}
 
