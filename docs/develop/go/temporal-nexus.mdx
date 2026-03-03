@@ -338,12 +338,12 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 
 ### Set Nexus Operation timeouts
 
-Nexus Operations support [three types of timeouts](/encyclopedia/nexus-operations#timeouts) that control how long the caller is willing to wait at different stages of the Operation lifecycle.
+Nexus Operations support [three types of timeouts](/nexus/operations#timeouts) that control how long the caller is willing to wait at different stages of the Operation lifecycle.
 Set these timeouts in `NexusOperationOptions` when calling `ExecuteOperation`.
 
 #### Schedule-to-Close timeout
 
-The [Schedule-to-Close timeout](/encyclopedia/nexus-operations#schedule-to-close-timeout) limits the total duration of the Operation from when it is scheduled to when it completes.
+The [Schedule-to-Close timeout](/nexus/operations#schedule-to-close-timeout) limits the total duration of the Operation from when it is scheduled to when it completes.
 The Nexus Machinery automatically retries failed requests until this timeout is exceeded.
 
 ```go
@@ -354,7 +354,7 @@ fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Na
 
 #### Schedule-to-Start timeout
 
-The [Schedule-to-Start timeout](/encyclopedia/nexus-operations#schedule-to-start-timeout) limits how long the caller will wait for the Operation to be started by the handler.
+The [Schedule-to-Start timeout](/nexus/operations#schedule-to-start-timeout) limits how long the caller will wait for the Operation to be started by the handler.
 If not set, no Schedule-to-Start timeout is enforced.
 
 ```go
@@ -365,7 +365,7 @@ fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Na
 
 #### Start-to-Close timeout
 
-The [Start-to-Close timeout](/encyclopedia/nexus-operations#start-to-close-timeout) limits how long the caller will wait for an asynchronous Operation to complete after it has been started.
+The [Start-to-Close timeout](/nexus/operations#start-to-close-timeout) limits how long the caller will wait for an asynchronous Operation to complete after it has been started.
 This timeout only applies to asynchronous Operations.
 If not set, no Start-to-Close timeout is enforced.
 
