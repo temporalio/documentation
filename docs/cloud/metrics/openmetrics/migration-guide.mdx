@@ -261,7 +261,15 @@ Below is a template for mapping metrics from the old query endpoint to the new O
 | `temporal_cloud_v0_frontend_service_error_count`   | `temporal_cloud_v1_service_error_count`            | `region`   |
 | `temporal_cloud_v0_frontend_service_request_count` | `temporal_cloud_v1_service_request_count`          | `region`   |
 | `temporal_cloud_v0_resource_exhausted_error_count` | `temporal_cloud_v1_resource_exhausted_error_count` | `region`   |
+| `temporal_cloud_v0_state_transition_count`         | No direct equivalent                               | -          |
 | `temporal_cloud_v0_total_action_count`             | `temporal_cloud_v1_total_action_count`             | `region`   |
+
+:::note State transition count removed
+
+`temporal_cloud_v0_state_transition_count` does not have an equivalent metric in the OpenMetrics endpoint.
+To size workloads for Temporal Cloud (for example, when migrating from self-hosted), use action-based metrics (`temporal_cloud_v1_total_action_count`) and request-based metrics (`temporal_cloud_v1_service_request_count`) together instead.
+
+:::
 
 #### Workflow Metrics
 
