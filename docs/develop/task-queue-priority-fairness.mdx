@@ -26,9 +26,10 @@ scenarios.
 
 :::tip Support, stability, and dependency info
 
-Priority and Fairness is currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Priority is a free feature in Temporal Cloud and for self-hosted Temporal Services. Fairness will be a paid
-feature in Temporal Cloud and billing will be enabled in the near future. All actions performed while Fairness is enabled will incur a 10% upcharge in that Namespace.
+Priority and Fairness are currently in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Priority is a free feature in Temporal Cloud and for self-hosted Temporal Services.
+
+Fairness will be a paid feature in Temporal Cloud and billing will be enabled in the near future. All actions performed while Fairness is enabled will incur a 10% upcharge in that Namespace.
 
 :::
 
@@ -49,8 +50,13 @@ You can also use this as a way to run urgent Tasks immediately and override othe
 
 ### How to use Priority
 
-Priority is avaliable for both self-hosted Temporal instances and Temporal Cloud and it will be automatically enabled.
-If you apply priority keys, the feature will be in use.
+Priority is avaliable for both self-hosted Temporal instances and Temporal Cloud and it will be automatically enabled. If you apply priority keys, the feature will be in use.
+
+:::info
+
+You can toggle Priority enablement on a Task Queue, Namespace, or globally by setting the dynamic config `matching.useNewMatcher` to `true` or `false`.
+
+:::
 
 You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value
 implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
@@ -620,6 +626,14 @@ The per-fairness-key rate limit works in conjunction with Task Queue Fairness. I
 - The per-fairness-key limit for a key is scaled by the fairness weight assigned to that key. So if the per-fairness-key limit for a queue is set to 10, then all keys with the default weight (1.0) will have a limit of 10 tasks/second. But if a particular key is given a weight of 2.5, then the per-key rate limit for that key will be 25 tasks/second.
 - Since the dispatch rate for each key should be proportional to its weight, if any key is hitting the per-key limit, then nearly all of them are. The way it works is if the next Task to be dispatched hits the per-key limit, then dispatch will wait until it can go.
 - Usually there isn't actually any blocking, but there can be when the fairness weight for a key is changed between when a Task is scheduled and when it's dispatched. If the fairness weight for a key is lowered, for example, the new lower per-key rate limit will be respected. Since those Tasks were originally scheduled with the higher rate, they will block other Tasks as they're dispatched. This limitation will be improved in the future.
+
+### Fairness weight overrides
+
+In many cases, supplying the weight of a fairness key along with the key itself is straightforward. In some situations, it's convenient to leave the weights out of client code and instead control the weights of a small number of keys through a config API.
+
+You can override the weights of up to 1000 keys through the config API. When an override is set for a key, the weight attached to the Task, through Workflow or Activity priority metadata, will be ignored, and the overridden weight will be used instead.
+
+Weight overrides are stored per Task Queue, including type, so they must be set for both Workflow and Activity Task Queues to take effect for both.
 
 ### Limitations of Fairness
 
