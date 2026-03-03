@@ -315,9 +315,9 @@ worker = Temporalio::Worker.new(
   workflows: [MyWorkflow],
   activities: [MyActivity],
   
-  workflow_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
-  activity_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
-  nexus_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
+  workflow_task_poller_behavior: Temporalio::Worker::PollerBehavior::Autoscaling.new,
+  activity_task_poller_behavior: Temporalio::Worker::PollerBehavior::Autoscaling.new,
+  nexus_task_poller_behavior: Temporalio::Worker::PollerBehavior::Autoscaling.new,
 )
 
 ```
@@ -857,5 +857,6 @@ If, after adjusting the poller and executors count as specified earlier, you sti
 
 ## Related reading
 
+- [Worker tuning quick reference](/develop/worker-tuning-reference) - SDK defaults and metrics by resource type
 - [Workers in production operation guide](https://temporal.io/blog/workers-in-production)
 - [Full set of SDK Metrics reference](/references/sdk-metrics)
