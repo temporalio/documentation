@@ -166,22 +166,81 @@ module.exports = {
           },
           items: [
             'develop/php/set-up-your-local-php',
-            'develop/php/core-application',
-            'develop/php/temporal-client',
-            'develop/php/testing-suite',
-            'develop/php/failure-detection',
-            'develop/php/message-passing',
-            'develop/php/cancellation',
-            'develop/php/asynchronous-activity-completion',
-            'develop/php/versioning',
-            'develop/php/observability',
-            'develop/php/enriching-ui',
-            'develop/php/debugging',
-            'develop/php/schedules',
-            'develop/php/timers',
-            'develop/php/side-effects',
-            'develop/php/child-workflows',
-            'develop/php/continue-as-new',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/php/workflows/index',
+              },
+              items: [
+                'develop/php/workflows/basics',
+                'develop/php/workflows/child-workflows',
+                'develop/php/workflows/continue-as-new',
+                'develop/php/workflows/cancellation',
+                'develop/php/workflows/timeouts',
+                'develop/php/workflows/message-passing',
+                'develop/php/workflows/enriching-ui',
+                'develop/php/workflows/schedules',
+                'develop/php/workflows/timers',
+                'develop/php/workflows/side-effects',
+                'develop/php/workflows/versioning',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/php/activities/index',
+              },
+              items: [
+                'develop/php/activities/basics',
+                'develop/php/activities/execution',
+                'develop/php/activities/timeouts',
+                'develop/php/activities/asynchronous-activity',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/php/workers/index',
+              },
+              items: [
+                'develop/php/workers/run-worker-process',
+                'develop/php/workers/observability',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/php/client/index',
+              },
+              items: [                
+                'develop/php/client/temporal-client',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Best practices',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/php/best-practices/index',
+              },
+              items: [
+                'develop/php/best-practices/testing-suite',
+                'develop/php/best-practices/debugging'
+              ]
+            },
           ],
         },
         {

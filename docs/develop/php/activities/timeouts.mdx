@@ -1,11 +1,13 @@
 ---
-id: failure-detection
-title: Failure detection - PHP SDK
-sidebar_label: Failure detection
-slug: /develop/php/failure-detection
-toc_max_heading_level: 2
+id: timeouts
+title: Activity Timeouts - PHP SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with Temporal PHP SDK - Set Activity Timeouts and Retry Policies efficiently.
+toc_max_heading_level: 4
 keywords:
+  - PHP
   - failure detection
+  - timeouts
 tags:
   - Activities
   - Workflows
@@ -13,63 +15,7 @@ tags:
   - Failures
   - PHP SDK
   - Temporal SDKs
-description: Learn about setting Workflow and Activity Timeouts, Retry Policies, and using Heartbeats in Temporal for optimal Workflow Execution management. Enhance your Workflow reliability.
 ---
-
-## Workflow timeouts {#workflow-timeouts}
-
-Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
-
-Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient.
-Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes.
-If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
-
-Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
-
-- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
-- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
-
-Create an instance of `WorkflowOptions` in the Client code and set your timeout.
-
-Available timeouts are:
-
-- `withWorkflowExecutionTimeout()`
-- `withWorkflowRunTimeout()`
-- `withWorkflowTaskTimeout()`
-
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-    DynamicSleepWorkflowInterface::class,
-    WorkflowOptions::new()
-        ->withWorkflowId(DynamicSleepWorkflow::WORKFLOW_ID)
-        ->withWorkflowIdReusePolicy(WorkflowIdReusePolicy::WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE)
-        // Set Workflow Timeout duration
-        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(2))
-        // ->withWorkflowRunTimeout(CarbonInterval::minute(2))
-        // ->withWorkflowTaskTimeout(CarbonInterval::minute(2))
-);
-```
-
-### Workflow retries {#workflow-retries}
-
-A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
-
-Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
-
-Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
-
-A Retry Policy can be configured with an instance of the `RetryOptions` object.
-To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
-
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-      CronWorkflowInterface::class,
-      WorkflowOptions::new()->withRetryOptions(
-        RetryOptions::new()->withInitialInterval(120)
-      )
-);
-```
 
 ## How to set Activity timeouts {#activity-timeouts}
 
