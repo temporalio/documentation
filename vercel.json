@@ -569,7 +569,7 @@
     },
     {
       "source": "/dev-guide/php/foundations:path*",
-      "destination": "/develop/php/core-application",
+      "destination": "/develop/php",
       "permanent": true
     },
     {
@@ -579,7 +579,7 @@
     },
     {
       "source": "dev-guide/php/testing:path*",
-      "destination": "/develop/php/testing-suite",
+      "destination": "/develop/php/best-practices/testing-suite",
       "permanent": true
     },
     {
