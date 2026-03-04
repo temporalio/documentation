@@ -1,0 +1,100 @@
+---
+id: timeouts
+title: Activity Timeouts - Ruby SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with Temporal Ruby SDK - Set Activity Timeouts and Retry Policies efficiently.
+toc_max_heading_level: 4
+keywords:
+  - Ruby
+  - failure detection
+  - timeouts
+tags:
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - Ruby SDK
+  - Temporal SDKs
+---
+
+## Activity timeouts {#activity-timeouts}
+
+Each Activity Timeout controls a different aspect of how long an Activity Execution can take:
+
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**
+
+At least one of `start_to_close_timeout` or `schedule_to_close_timeout` is required.
+
+```ruby
+Temporalio::Workflow.execute_activity(
+  MyActivity,
+  { greeting: 'Hello', name: },
+  start_to_close_timeout: 5 * 60
+)
+```
+
+### Activity Retry Policy {#activity-retries}
+
+By default, Activities use a system Retry Policy.
+You can override it by specifying a custom Retry Policy.
+
+To create an Activity Retry Policy in Ruby, set the `retry_policy` parameter when executing an activity.
+
+```ruby
+Temporalio::Workflow.execute_activity(
+  MyActivity,
+  { greeting: 'Hello', name: },
+  start_to_close_timeout: 5 * 60,
+  retry_policy: Temporalio::RetryPolicy.new(max_interval: 10)
+)
+```
+
+### Override the retry interval with `next_retry_delay` {#next-retry-delay}
+
+If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
+
+```ruby
+raise Temporalio::Error::ApplicationError.new(
+  'Some error',
+  type: 'SomeErrorType',
+  next_retry_delay: 3 * Temporalio::Activity::Context.current.info.attempt
+)
+```
+
+## Heartbeat an Activity {#activity-heartbeats}
+
+A Heartbeat is a periodic signal from the Worker to the Temporal Service indicating the Activity is still alive and making progress.
+
+- Heartbeats are used to detect Worker failure.
+- Cancellations are delivered via Heartbeats.
+- Heartbeats may contain custom progress details.
+
+```ruby
+class MyActivity < Temporalio::Activity::Definition
+  def execute
+    # This is a naive loop simulating work, but similar heartbeat logic
+    # applies to other scenarios as well
+    loop do
+      # Send heartbeat
+      Temporalio::Activity::Context.current.heartbeat
+      # Sleep before heartbeating again
+      sleep(3)
+    end
+  end
+end
+```
+
+### Heartbeat Timeout {#heartbeat-timeout}
+
+The Heartbeat Timeout sets the maximum duration between Heartbeats before the Temporal Service considers the Activity failed.
+
+```ruby
+Temporalio::Workflow.execute_activity(
+  MyActivity,
+  { greeting: 'Hello', name: },
+  start_to_close_timeout: 5 * 60,
+  heartbeat_timeout: 5
+)
+```
