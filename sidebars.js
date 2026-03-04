@@ -310,24 +310,98 @@ module.exports = {
           },
           items: [
             'develop/ruby/set-up-local-ruby',
-            'develop/ruby/core-application',
-            'develop/ruby/temporal-client',
-            'develop/ruby/testing-suite',
-            'develop/ruby/failure-detection',
-            'develop/ruby/message-passing',
-            'develop/ruby/interrupt-workflow',
-            'develop/ruby/asynchronous-activity',
-            'develop/ruby/versioning',
-            'develop/ruby/observability',
-            'develop/ruby/benign-exceptions',
-            'develop/ruby/enriching-ui',
-            'develop/ruby/debugging',
-            'develop/ruby/schedules',
-            'develop/ruby/converters-and-encryption',
-            'develop/ruby/rails-integration',
-            'develop/ruby/durable-timers',
-            'develop/ruby/child-workflows',
-            'develop/ruby/continue-as-new',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/workflows/index',
+              },
+              items: [
+                'develop/ruby/workflows/basics',
+                'develop/ruby/workflows/child-workflows',
+                'develop/ruby/workflows/continue-as-new',
+                'develop/ruby/workflows/cancellation',
+                'develop/ruby/workflows/timeouts',
+                'develop/ruby/workflows/message-passing',
+                'develop/ruby/workflows/enriching-ui',
+                'develop/ruby/workflows/schedules',
+                'develop/ruby/workflows/timers',
+                'develop/ruby/workflows/dynamic-workflow',
+                'develop/ruby/workflows/versioning',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/activities/index',
+              },
+              items: [
+                'develop/ruby/activities/basics',
+                'develop/ruby/activities/execution',
+                'develop/ruby/activities/timeouts',
+                'develop/ruby/activities/asynchronous-activity',
+                'develop/ruby/activities/dynamic-activity',
+                'develop/ruby/activities/benign-exceptions',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/workers/index',
+              },
+              items: [
+                'develop/ruby/workers/run-worker-process',
+                'develop/ruby/workers/observability',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/client/index',
+              },
+              items: [
+                'develop/ruby/client/temporal-client',
+                'develop/ruby/client/namespaces',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/integrations/index',
+              },
+              items: [
+                'develop/ruby/integrations/rails-integration',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Best practices',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/best-practices/index',
+              },
+              items: [
+                'develop/ruby/best-practices/error-handling',
+                'develop/ruby/best-practices/testing-suite',
+                'develop/ruby/best-practices/debugging',
+                'develop/ruby/best-practices/converters-and-encryption',
+              ]
+            },
           ],
         },
         'develop/environment-configuration',
