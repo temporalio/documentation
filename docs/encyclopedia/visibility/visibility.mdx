@@ -50,3 +50,17 @@ Visibility, within the Temporal Platform, is the subsystem and APIs that enable 
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Service with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 - On Temporal Cloud, advanced Visibility is enabled by default for [all users](/cloud/users#invite-users).
+
+### Count Workflow by ExecutionStatus
+
+The Count API feature lets you count the number of Workflows that match a given query. For example, the command `temporal workflow count -q "WorkflowType='foo'"` returns the number of Workflows that match `WorkflowType='foo'`.
+
+You can send queries to the Count API to group by a given search attribute. For example, `-q "WorkflowType='foo' GROUP BY ExecutionStatus` returns the number of Workflows that match `WorkflowType='foo'` grouped by `ExecutionStatus`.
+
+The `GROUP BY` clause is only supported in the Count API. We only support grouping by `ExecutionStatus`. We plan to support group by any search attribute in a future release.
+
+:::note
+
+The Count API returns approximate counts.
+
+:::
