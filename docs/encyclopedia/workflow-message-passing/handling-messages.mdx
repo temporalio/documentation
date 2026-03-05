@@ -111,7 +111,9 @@ See the links below for how to ensure handlers are finished in your SDK.
 
 #### Message IDs and handling Continue-As-New {#exactly-once-message-processing}
 
-Usually, you'll want your message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice. For Updates, Temporal handles this for you on the server, by deduplicating according to the Update ID. For Signals, you should use a custom idempotency key that you send as part of your own signal inputs, implementing the deduplication in your Workflow code. The Update ID is set automatically to a UUID, but you can set it yourself.
+Usually, you'll want your message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice. For Updates, Temporal handles this for you on the server, by deduplicating according to the Update ID. The Update ID is set automatically to a UUID, but you can set it yourself.
+
+For Signals, you should use a custom idempotency key that you send as part of your own signal inputs, implementing the deduplication in your Workflow code.
 
 However, if you are using Updates with [Continue-As-New](/workflow-execution/continue-as-new) you should implement the deduplication in your Workflow code, since Update ID deduplication by the server is per Workflow run.
 
