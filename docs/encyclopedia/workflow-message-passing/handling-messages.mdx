@@ -117,7 +117,11 @@ For Signals, you should use a custom idempotency key that you send as part of yo
 
 However, if you are using Updates with [Continue-As-New](/workflow-execution/continue-as-new) you should implement the deduplication in your Workflow code, since Update ID deduplication by the server is per Workflow run.
 
-(In addition to these application-level identifiers, both Signals and Updates automatically use request IDs to deduplicate retried client calls. You do not need to do anything to enable this.)
+:::info
+
+In addition to these application-level identifiers, both Signals and Updates automatically use request IDs to deduplicate retried client calls. You do not need to do anything to enable this.
+
+:::
 
 See the links below for examples of handling idempotency and Continue-As-New in your SDK.
 
