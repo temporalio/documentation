@@ -208,10 +208,8 @@ const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   taskQueue,
   workerDeploymentOptions: {
-    useWorkerVersioning: true,
+    useWorkerVersioning: false,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
-
-    defaultVersioningBehavior: 'UNSPECIFIED',
   },
   connection: nativeConnection,
 });
