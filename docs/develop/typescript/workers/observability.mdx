@@ -2,7 +2,7 @@
 id: observability
 title: Observability - TypeScript SDK
 sidebar_label: Observability
-slug: /develop/typescript/observability
+slug: /develop/typescript/workers/observability
 description: Enhance the observability of your Temporal Application with metrics, tracing, logging, and visibility features. View Workflow state, set up OpenTelemetry, and customize logging for seamless monitoring and insights.
 toc_max_heading_level: 3
 keywords:
@@ -121,7 +121,7 @@ The Temporal SDK core normally uses `WARN` as its default logging level.
 
 Activities run in the standard Node.js environment and may therefore use any Node.js logger directly.
 
-The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entries emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/workers/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entries emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -153,7 +153,7 @@ Workflows may not use regular Node.js loggers because:
 1. Workflows run in a sandboxed environment and cannot do any I/O.
 1. Workflow code might get replayed at any time, which would result in duplicated log messages.
 
-The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entries emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/workers/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entries emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>

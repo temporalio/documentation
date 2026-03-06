@@ -2,7 +2,7 @@
 id: debugging
 title: Debugging - TypeScript SDK
 sidebar_label: Debugging
-slug: /develop/typescript/debugging
+slug: /develop/typescript/best-practices/debugging
 description: The Temporal TypeScript SDK Debugging guide provides tools and tips for debugging Workflows and Workers in development and production environments. Troubleshoot common issues using the Web UI, Temporal CLI, and more.
 toc_max_heading_level: 4
 keywords:
@@ -27,12 +27,12 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [Temporal CLI](/cli)
-- [Replay](/develop/typescript/testing-suite#replay)
-- [Tracing](/develop/typescript/observability#tracing)
-- [Logging](/develop/typescript/observability#logging)
+- [Replay](/develop/typescript/best-practices/testing-suite#replay)
+- [Tracing](/develop/typescript/workers/observability#tracing)
+- [Logging](/develop/typescript/workers/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/develop/worker-performance).
-For information on setting up SDK metrics, see [Metrics](/develop/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
+For information on setting up SDK metrics, see [Metrics](/develop/typescript/workers/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
 Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
 
@@ -93,13 +93,13 @@ When you pass a `workflowsPath`, our Webpack config expects to find `node_module
 
 Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
 We do offer a `bundleWorkflowCode` method to assist you with this, though it uses our Webpack settings.
-For more information, see the [Register types](/develop/typescript/core-application#register-types) section.
+For more information, see the [Register types](/develop/typescript/workers/run-worker-process#register-types) section.
 
 ### Webpack errors
 
 The TypeScript SDK's Worker bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/develop/typescript/observability#logging).
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/develop/typescript/workers/observability#logging).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 
