@@ -55,14 +55,14 @@ in and the value that comes back. This history is what allows Temporal to recove
 the entire history must be stored and replayed, avoid passing large objects as Activity inputs or return values. Keeping
 payloads small will help your Workflows replay and recover efficiently. :::
 
-### How to set the required Activity Timeouts {#required-timeout}
+## How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters. The only required value that needs to be set is either a
 [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a
 [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). These values are set in the
 Activity Options.
 
-### How to get the results of an Activity Execution {#get-activity-results}
+## How to get the results of an Activity Execution {#get-activity-results}
 
 The call to spawn an [Activity Execution](/activity-execution) generates the
 [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
