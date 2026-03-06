@@ -33,7 +33,7 @@ export async function example(args: ExampleArgs): Promise<{ greeting: string }> 
 }
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+## How to define Workflow parameters {#workflow-parameters}
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
 parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
@@ -74,7 +74,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 }
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+## How to define Workflow return parameters {#workflow-return-values}
 
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly
 idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow
@@ -95,7 +95,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 }
 ```
 
-### How to customize your Workflow Type {#workflow-type}
+## How to customize your Workflow Type {#workflow-type}
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -118,7 +118,7 @@ export async function helloWorld(): Promise<string> {
 
 <!--SNIPEND-->
 
-### How to develop Workflow logic {#workflow-logic-requirements}
+## How to develop Workflow logic {#workflow-logic-requirements}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a
