@@ -17,15 +17,11 @@ tags:
 ---
 
 Access to Temporal Cloud is governed by role-based access control (RBAC). Within an account, each access principal, such
-as user, user group or service account, is assigned one or more account-level roles, and each role has a set of
-permissions. Each principal can only perform an action if they have a role that grants them the necessary permissions.
-
-Within a Namespace, each principal is assigned one or more Namespace-level permissions, and each permission permits a
-set of actions. Each principal can only perform an action if they have a permission that grants them the necessary
-actions within the Namespace.
+as user, user group or service account, has one account-level role and optionally, one or more Namespace-level
+permissions. Each principal can only perform actions that are allowed by their assigned roles and permissions.
 
 Temporal Cloud supports Security Assertion Markup Language (SAML) and System for Cross-domain Identity Management (SCIM)
-for integration with your organization's identity provider (IDP). SAML enables single sign-on (SSO) by allowing your
+for integration with your organization's identity provider (IdP). SAML enables single sign-on (SSO) by allowing your
 identity provider to authenticate users into Temporal Cloud. SCIM automatically creates, updates, and removes users and
 groups in Temporal Cloud based on changes in your identity provider.
 
@@ -36,7 +32,8 @@ role, which has full administrative permissions across the account, including us
 **not** an access principal itself.
 
 When you sign up for Temporal Cloud without joining an existing account, you are automatically assigned the Account
-Owner role for a new account. You can then invite other users to join the account and assign them roles.
+Owner role for a new account. You can then invite other users to join the account and assign them roles. If your
+organization has an IdP, we recommend using [a SAML integration](/cloud/saml) for enterprise identity management.
 
 :::info
 
