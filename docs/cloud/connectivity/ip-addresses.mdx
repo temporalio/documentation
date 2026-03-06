@@ -20,20 +20,183 @@ keywords:
   - privatelink
   - psc
   - whitelist
+  - stable ips
+  - static ips
 ---
 
-The specific IP addresses for Temporal Cloud resources are subject to change at any time. Temporal Cloud resources may use any IPs within the IP ranges published by the relevant cloud provider.
+By default, Temporal Cloud resources use dynamic IP addresses that may change at any time. These IP addresses may be any IPs within the IP ranges published by the relevant cloud provider.
 
-If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink or GCP Private Services Connect](/cloud/connectivity#private-network-connectivity-for-namespaces) instead of IP allowlisting.
+If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink or GCP Private Services Connect](/cloud/connectivity#private-network-connectivity-for-namespaces). Alternatively, you can enable Stable IPs for your Namespace.
 
-:::warning Do not allowlist specific IP addresses
+:::warning Do not allowlist default dynamic IP addresses
 
-**Temporal Cloud IPs are not static and may change without notice.** 
+**By default, Temporal Cloud IPs are not static and may change without notice.**
 
 Do not allowlist specific IP addresses you see Temporal Cloud services using at a point in time, as this **will cause an outage** when those IPs change. Your clients will not be able to connect to Temporal Cloud.
 
-If you have to allowlist IP ranges, you must allowlist the entire cloud provider IP range:
+If you have to allowlist IP ranges without using Stable IPs, you must allowlist the entire cloud provider IP range:
 - [AWS IP address ranges](https://ip-ranges.amazonaws.com/ip-ranges.json)
 - [GCP IP address ranges](https://www.gstatic.com/ipranges/cloud.json)
 
 :::
+
+## Stable IP addresses
+
+Stable IPs is an optional Namespace setting that provides a fixed, published set of IP addresses for your Namespace endpoint. When enabled, Workers and Temporal Clients connecting to your Namespace through its Namespace endpoint will resolve to a predictable set of IP addresses that you can allowlist in your firewall.
+
+### When to use Stable IPs
+
+Use Stable IPs when your security requirements mandate IP-based allowlisting for egress traffic, and you cannot use AWS PrivateLink or GCP Private Services Connect.
+
+**Recommended options for secure connectivity** (in order):
+
+1. **AWS PrivateLink or GCP Private Services Connect** - Keep traffic within your cloud provider's private network
+2. **Stable IPs** - Use published, stable IP ranges for firewall allowlisting
+3. **Cloud provider IP ranges** - Allowlist all AWS or GCP IP ranges (overly permissive)
+
+Stable IPs provide enterprise-grade compliance for organizations that require IP-based security controls but cannot use private network connectivity options.
+
+### How Stable IPs work
+
+When Stable IPs are enabled on a Namespace:
+
+- The Namespace endpoint (`<namespace>.<account>.tmprl.cloud`) resolves to IP addresses from a published list of Stable IPs 
+  - The list is grouped by cloud region. The Namespace endpoint will resolve to an IP from the group for the Namespace's active region.
+- Workers and Temporal Clients connecting via the Namespace endpoint will connect to these stable IP addresses
+- Regional endpoints continue to work but resolve to dynamic IP addresses
+- For replicated Namespaces, the Stable IP corresponds to the Namespace's active region. During failover to a different region, DNS updates to point to a Stable IP in the new active region.
+
+**Important**: Stable IPs apply only to Namespace traffic, sometimes called the "data plane." The Temporal Cloud management plane, observability endpoints, and Web UI do not have stable public IP addresses.
+
+### How to enable Stable IPs
+
+You can enable Stable IPs on a Namespace using the Cloud Ops API, Terraform provider, or CLI. There is no UI option at this time.
+
+To enable Stable IPs:
+
+1. Use the Cloud Ops API, Terraform, or the `temporal cloud` CLI to toggle the Stable IPs setting for your Namespace
+2. Retrieve the list of Stable IPs from the public API (see below)
+3. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region
+4. Ensure your Workers and Temporal Clients connect using the Namespace endpoint, not regional endpoints
+
+You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces.
+
+**DNS propagation**: When enabling Stable IPs on an existing Namespace, Temporal updates DNS records to point the Namespace endpoint to Stable IPs. DNS propagation typically takes 5 to 15 minutes for AWS, but can take up to 60 minutes or longer if you have custom TTLs configured.
+
+### How to view Stable IP ranges
+
+Retrieve the list of Stable IP ranges from the public API:
+
+```
+GET https://saas-api.tmprl.cloud/stable-ip-ranges
+```
+
+This API is publicly accessible without authentication and returns a JSON response grouped by cloud provider and region:
+
+```json
+{
+  "all_stable_ip_ranges": [
+    "34.195.80.228/32",
+    "34.195.80.10/30",
+    "44.235.214.171/32"
+  ],
+  "clouds": {
+    "aws": {
+      "regions": {
+        "us-east-1": {
+          "stable_ip_ranges": [
+            "34.195.80.228/32",
+            "34.195.80.10/30"
+          ]
+        },
+        "us-west-2": {
+          "stable_ip_ranges": [
+            "44.235.214.171/32"
+          ]
+        }
+      }
+    },
+    "gcp": {
+      "regions": {
+        ...
+      }
+    }
+  }
+}
+```
+
+You can also load this URL in a browser to view the list.
+
+**IP format**: IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, Temporal uses predominantly `/32` ranges (single IP addresses). Each region typically contains approximately 6 IP addresses.
+
+### How to connect using Stable IPs
+
+To connect to a Namespace with Stable IPs enabled:
+
+1. **Use the Namespace endpoint**: Configure Workers and Temporal Clients to use the Namespace endpoint format: `<namespace>.<account>.tmprl.cloud:7233`
+2. **Do not use Regional endpoints**: Regional endpoints (`<region>.<cloud>.api.temporal.io`) will route to the Namespace but resolve to dynamic IP addresses
+3. **Do not use PrivateLink**: PrivateLink endpoints do not resolve to Stable IPs. To use Stable IPs, connect over public endpoints.
+
+**Authentication**: Stable IPs work with both mTLS certificate-based authentication and API key authentication.
+
+**Network routing**: If your Workers run on the same cloud provider as your Namespace (for example, both on AWS), traffic stays on the cloud provider's backbone network and does not traverse the public internet, even when using public Stable IPs. AWS, GCP, and Azure all guarantee that traffic between locations on their networks never leaves their backbone.
+
+### How to migrate to Stable IPs
+
+When you enable Stable IPs on an existing Namespace:
+
+**Workers using Namespace endpoints**:
+- Existing connections continue uninterrupted
+- DNS updates to point the Namespace endpoint to Stable IPs
+- Existing connections remain connected to their current dynamic IP
+- New connections automatically use Stable IPs after DNS propagates
+- No Worker restart required
+
+**Workers using Regional endpoints**:
+- Existing connections continue uninterrupted
+- To use Stable IPs, update Worker configuration to use the Namespace endpoint and restart Workers
+
+**Workers using PrivateLink**:
+- Existing connections continue uninterrupted through PrivateLink
+- To use Stable IPs, update Worker configuration to use the Namespace endpoint and restart Workers
+- Note: You cannot use both PrivateLink and Stable IPs simultaneously
+
+**Connectivity Rules**: If your Namespace uses Connectivity Rules, ensure it has a "public" connectivity rule attached to allow connections through Stable IPs.
+
+### Changes to Stable IP ranges
+
+Temporal aims to keep Stable IP ranges consistent. Each Stable IP address is expected to remain active for at least 12 months.
+
+**When Stable IPs are added**:
+1. New IP ranges appear in the API response before traffic is routed to them
+2. Update your firewall to include the new ranges
+3. Temporal announces the activation date in the [Temporal Cloud changelog](https://temporal.io/change-log)
+4. Traffic begins routing to new IP ranges on the announced date
+
+**If a Stable IP must be removed** (rare):
+1. The IP range is marked as deprecated and removed from the API response
+2. Traffic continues to route through the deprecated IP for a 3-month deprecation period
+3. Temporal announces the deprecation and removal date in the changelog and documentation
+4. After the deprecation period, traffic stops routing to the deprecated IP
+
+Temporal will never route traffic to IP addresses that are not listed in the API response.
+
+### Regional availability
+
+Stable IPs are rolling out by cloud provider and region:
+
+- **AWS**: Starting with us-west-2, expanding to all regions
+- **GCP**: Rolling out to regions following AWS
+- **New regions**: All new Temporal Cloud regions include Stable IPs at launch
+
+Contact [Temporal support](https://docs.temporal.io/cloud/support) if you need Stable IPs in a region that does not yet have them. Temporal may be able to prioritize enabling Stable IPs in your region.
+
+### Pricing
+
+Temporal Cloud does not charge additional fees for using Stable IPs.
+
+### How to disable Stable IPs
+
+You can disable Stable IPs on a Namespace using the Cloud Ops API, Terraform, or CLI. Temporal performs a DNS update to point the Namespace endpoint back to dynamic IP addresses.
+
+Existing Worker connections are not interrupted. New Worker connections will no longer resolve to Stable IPs after DNS propagates.
