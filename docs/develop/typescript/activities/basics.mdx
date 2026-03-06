@@ -37,7 +37,7 @@ export async function greet(name: string): Promise<string> {
 
 <!--SNIPEND-->
 
-### How to develop Activity Parameters {#activity-parameters}
+## How to develop Activity Parameters {#activity-parameters}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -71,7 +71,7 @@ export async function greet(name: string): Promise<string> {
 
 <!--SNIPEND-->
 
-### How to define Activity return values {#activity-return-values}
+## How to define Activity return values {#activity-return-values}
 
 All data returned from an Activity must be serializable.
 
@@ -90,7 +90,7 @@ export async function greet(name: string): Promise<string> {
 }
 ```
 
-### How to customize your Activity Type {#activity-type}
+## How to customize your Activity Type {#activity-type}
 
 Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom
 name for your Activity Type.
@@ -121,12 +121,12 @@ async function run() {
 
 <!--SNIPEND-->
 
-### Important design patterns for Activities {#activity-design-patterns}
+## Important design patterns for Activities {#activity-design-patterns}
 
 The following are some important (and frequently requested) patterns for using our Activities APIs. These patterns
 address common needs and use cases.
 
-#### Share dependencies in Activity functions (dependency injection)
+### Share dependencies in Activity functions (dependency injection)
 
 Because Activities are "just functions," you can also create functions that create Activities. This is a helpful pattern
 for using closures to do the following:
@@ -212,7 +212,7 @@ const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>
 
 </details>
 
-#### Import multiple Activities simultaneously
+### Import multiple Activities simultaneously
 
 You can proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts,
 retries, and options:
@@ -227,7 +227,7 @@ export async function Workflow(name: string): Promise<string> {
 }
 ```
 
-#### Dynamically reference Activities
+### Dynamically reference Activities
 
 Because Activities are referenced only by their string names, you can reference them dynamically if needed:
 
