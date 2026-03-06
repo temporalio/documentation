@@ -549,14 +549,13 @@ By default, Pinned Workflows stay on their original Worker Deployment Version ev
 upgrade option enabled:
 
 1. Each Workflow run remains pinned to its version (no patching needed during a run)
-2. The Temporal Server suggests Continue-as-New when a new version becomes available
-3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the Current or Ramping
-   version
+2. The Temporal Server tells the workflow when a new [Target Version](/worker-versioning#versioning-definitions) becomes available
+3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the [Target Version](/worker-versioning#versioning-definitions)
 
 ### Checking for new versions {#checking-for-new-versions}
 
 When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
-`continue_as_new_suggested`. Check for the `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` reason:
+`target_worker_deployment_version_changed`:
 
 ```go
 func (w *Workflows) ContinueAsNewWithVersionUpgradeV1(
@@ -567,28 +566,32 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV1(
     return "v1.0", nil
   }
 
-  // Check continue-as-new-suggested periodically.
-  // Continue-as-new-suggested is refreshed after each WFT completes.
+	// Check GetTargetWorkerDeploymentVersionChanged periodically.
+	// GetTargetWorkerDeploymentVersionChanged is refreshed after each WFT completes.
   for {
-    // Trigger a WFT when timer expires to refresh the continue-as-new-suggested flag.
-    // Since this is just a test workflow, we aren't doing any real work. In a real workflow regularly
-    // doing non-sleep workflow tasks, you would not need to artificially trigger a WFT to refresh the
-    // continue-as-new-suggested flag. You could choose to check for the suggestion periodically, or you
-    // might want to check before accepting updates, starting activities, or starting child workflows.
-    err := workflow.Sleep(ctx, 10*time.Millisecond)
-    if err != nil {
-      return "", err
-    }
-    // Check if we should continue as new and upgrade to the next Target Version
-    if workflow.TargetWorkerDeploymentVersionChanged(ctx) {
-      // Continue-as-New with upgrade to the new version
-      return workflow.NewContinueAsNewError(
-        ctx,
-        MyEntityWorkflow,
-        state,
-        workflow.WithContinueAsNewVersioningBehavior(workflow.VersioningBehaviorAutoUpgrade),
-      )
-    }
+	// Trigger a WFT when timer expires, thereby refreshing the GetTargetWorkerDeploymentVersionChanged flag.
+	// Since this is just a test workflow, we aren't doing any real work. In a real workflow regularly
+	// doing non-sleep workflow tasks, you would not need to artificially trigger a WFT to refresh the
+	// GetTargetWorkerDeploymentVersionChanged flag. You could choose to check the field periodically, or you
+	// might want to check before accepting updates, starting activities, or starting child workflows.
+	err := workflow.Sleep(ctx, 10*time.Millisecond)
+	if err != nil {
+	  return "", err
+	}
+	info := workflow.GetInfo(ctx)
+	if info.GetTargetWorkerDeploymentVersionChanged() {
+	  return "", workflow.NewContinueAsNewErrorWithOptions(
+		ctx,
+		workflow.ContinueAsNewErrorOptions{
+		  // Pass InitialVersioningBehavior=workflow.ContinueAsNewVersioningBehaviorAutoUpgrade
+		  // to make the new run start with AutoUpgrade behavior and use the Target Version of
+		  // its Worker Deployment.
+		  InitialVersioningBehavior: workflow.ContinueAsNewVersioningBehaviorAutoUpgrade,
+		},
+		"ContinueAsNewWithVersionUpgrade",
+		attempt+1,
+	  )
+	}
   }
 }
 
@@ -600,24 +603,16 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
 }
 ```
 
-### Continue-as-New suggested reasons {#can-suggested-reasons}
-
-The `continue_as_new_suggested` mechanism can return multiple reasons:
-
-| Reason                                     | Description                                  | Action                             |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------- |
-| `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` | A new Worker Deployment Version is available | Use upgrade option when continuing |
-| `EVENTS_HISTORY_SIZE`                      | History size approaching limit               | Continue-as-New to reset history   |
-| `EVENTS_HISTORY_LENGTH`                    | History event count approaching limit        | Continue-as-New to reset history   |
-
 ### Limitations {#upgrade-on-can-limitations}
 
 :::caution Current Limitations
 
-- **Lazy moving only:** Workflows must be invoked by executing a step to receive the Continue-as-New suggestion. Sleeping Workflows
-  won't be proactively get the Continue-as-New suggested information (planned for a future release).
-- **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input format is
-  compatible. If incompatible, the new run may fail on its first Workflow Task.
+- **Lazy moving only:** Workflows must be invoked by executing a step to receive the Target-Version-Changed information.
+  Sleeping Workflows won't be proactively get the Target-Version-Changed information. If you have idle workflows that you
+  want to wake up so that they can check `GetTargetWorkerDeploymentVersionChanged`, you can send them a Signal.
+- **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input provided by the
+  previous version's workflow definition is compatible with the new version's workflow definition. If incompatible, the
+  new run may fail on its first Workflow Task.
 
 :::
 
