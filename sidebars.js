@@ -240,22 +240,6 @@ module.exports = {
             'develop/typescript/set-up-your-local-typescript',
             {
               type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/activities/index',
-              },
-              items: [
-                'develop/typescript/activities/basic-activity',
-                'develop/typescript/activities/execution',
-                'develop/typescript/activities/timeouts',
-                'develop/typescript/activities/asynchronous-activity-completion',
-                'develop/typescript/activities/benign-exceptions',
-              ],
-            },
-            {
-              type: 'category',
               label: 'Workflows',
               collapsed: true,
               link: {
@@ -263,8 +247,7 @@ module.exports = {
                 id: 'develop/typescript/workflows/index',
               },
               items: [
-                'develop/typescript/workflows/basic-workflow',
-                'develop/typescript/workflows/workflow-execution',
+                'develop/typescript/workflows/basics',
                 'develop/typescript/workflows/continue-as-new',
                 'develop/typescript/workflows/timeouts',
                 'develop/typescript/workflows/cancellation',
@@ -275,6 +258,22 @@ module.exports = {
                 'develop/typescript/workflows/timers',
                 'develop/typescript/workflows/enriching-ui',
                 'develop/typescript/workflows/versioning',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/typescript/activities/index',
+              },
+              items: [
+                'develop/typescript/activities/basics',
+                'develop/typescript/activities/execution',
+                'develop/typescript/activities/timeouts',
+                'develop/typescript/activities/asynchronous-activity',
+                'develop/typescript/activities/benign-exceptions',
               ],
             },
             {
