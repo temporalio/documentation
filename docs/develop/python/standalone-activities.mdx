@@ -46,6 +46,7 @@ This page covers the following:
 - [Wait for the result of a Standalone Activity](#get-activity-result)
 - [List Standalone Activities](#list-activities)
 - [Count Standalone Activities](#count-activities)
+- [Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud)
 
 :::note
 
@@ -63,6 +64,18 @@ Prerequisites:
 
   🚧 Please build from development branch: https://github.com/temporalio/cli/tree/release/v1.6.x-standalone-activity
 - [Install the latest Temporal Python SDK](https://docs.temporal.io/develop/python/set-up-your-local-python#install-the-temporal-python-sdk)
+
+:::info Temporal Cloud
+
+All code samples on this page use
+[`ClientConfig.load_client_connect_config()`](https://python.temporal.io/temporalio.envconfig.ClientConfig.html)
+to configure the Temporal Client connection. By default this connects to `localhost:7233`, but it
+responds to [environment variables](/references/client-environment-configuration) and
+[TOML configuration files](/references/client-environment-configuration), so the same code works
+against a local dev server and Temporal Cloud without changes. See
+[Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud) below.
+
+:::
 
 The first step in running a Standalone Activity involves starting a Temporal server:
 
@@ -130,13 +143,16 @@ sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_stand
 ```python
 import asyncio
 
-from my_activity import compose_greeting
 from temporalio.client import Client
+from temporalio.envconfig import ClientConfig
 from temporalio.worker import Worker
+
+from my_activity import compose_greeting
 
 
 async def main():
-    client = await Client.connect("localhost:7233")
+    connect_config = ClientConfig.load_client_connect_config()
+    client = await Client.connect(**connect_config)
     worker = Worker(
         client,
         task_queue="hello-standalone-activity-task-queue",
@@ -162,12 +178,14 @@ import asyncio
 from datetime import timedelta
 
 from temporalio.client import Client
+from temporalio.envconfig import ClientConfig
 
 from my_activity import ComposeGreetingInput, compose_greeting
 
 
 async def my_application():
-    client = await Client.connect("localhost:7233")
+    connect_config = ClientConfig.load_client_connect_config()
+    client = await Client.connect(**connect_config)
 
     result = await client.execute_activity(
         compose_greeting,
@@ -237,10 +255,12 @@ an async iterator that yields ActivityExecution entries:
 import asyncio
 
 from temporalio.client import Client
+from temporalio.envconfig import ClientConfig
 
 
 async def my_application():
-    client = await Client.connect("localhost:7233")
+    connect_config = ClientConfig.load_client_connect_config()
+    client = await Client.connect(**connect_config)
 
     activities = client.list_activities(
         query="TaskQueue = 'my-task-queue'",
@@ -269,10 +289,12 @@ Standalone Activity Executions that match a [List Filter](/list-filter) query.
 import asyncio
 
 from temporalio.client import Client
+from temporalio.envconfig import ClientConfig
 
 
 async def my_application():
-    client = await Client.connect("localhost:7233")
+    connect_config = ClientConfig.load_client_connect_config()
+    client = await Client.connect(**connect_config)
 
     resp = await client.count_activities(
         query="TaskQueue = 'my-task-queue'",
@@ -288,6 +310,31 @@ if __name__ == "__main__":
     asyncio.run(my_application())
 ```
 
-{/* ## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud} */}
+## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
 
-{/* TODO: Add Temporal Cloud section for Python SDK */}
+The code samples on this page use `ClientConfig.load_client_connect_config()`, so the same code
+works against Temporal Cloud — just configure the connection via environment variables or a TOML
+profile. No code changes are needed.
+
+For full details on connecting to Temporal Cloud, including Namespace creation, certificate
+generation, and authentication options, see
+[Connect to Temporal Cloud](/develop/python/temporal-client#connect-to-temporal-cloud).
+
+### Connect with mTLS
+
+```
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
+export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/client.pem'
+export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
+```
+
+### Connect with an API key
+
+```
+export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
+export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
+export TEMPORAL_API_KEY=<your-api-key>
+```
+
+Then run the Worker and starter code as shown in the earlier sections.

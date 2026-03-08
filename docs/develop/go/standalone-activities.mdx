@@ -66,6 +66,18 @@ Prerequisites:
   (v1.40.0 or higher recommended)
 
 
+:::info Temporal Cloud
+
+All code samples on this page use
+[`envconfig.MustLoadDefaultClientOptions()`](https://pkg.go.dev/go.temporal.io/sdk/contrib/envconfig)
+to configure the Temporal Client connection. By default this connects to `localhost:7233`, but it
+responds to [environment variables](/references/client-environment-configuration) and
+[TOML configuration files](/references/client-environment-configuration), so the same code works
+against a local dev server and Temporal Cloud without changes. See
+[Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud) below.
+
+:::
+
 The first step in running a Standalone Activity involves starting a Temporal server:
 
 ```
@@ -352,94 +364,29 @@ log.Println("Total activities:", resp.Count)
 
 ## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
 
-This section assumes you are already familiar with
-[how to connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/go/core-application#run-a-temporal-cloud-worker).
-The same [source code](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld) is used in
-this section. The `tcld` CLI will be used to create a Namespace, and mTLS client certificates will be used to securely
-connect the Worker to Temporal Cloud.
+The code samples on this page use `envconfig.MustLoadDefaultClientOptions()`, so the same code
+works against Temporal Cloud — just configure the connection via environment variables or a TOML
+profile. No code changes are needed.
 
-### Install the latest `tcld` CLI and generate certificates
+For full details on connecting to Temporal Cloud, including Namespace creation, certificate
+generation, and authentication options, see
+[Connect to Temporal Cloud](/develop/go/temporal-client#connect-to-temporal-cloud).
 
-To install the latest version of the `tcld` CLI, run the following command (on MacOS):
-
-```
-brew install temporalio/brew/tcld
-```
-
-If you don't already have certificates, you can generate them for mTLS Worker authentication using the command below:
+### Connect with mTLS
 
 ```
-tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
+export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/client.pem'
+export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
 ```
 
-These certificates will be valid for one year.
-
-### Create your Namespace
-
-If you don't already have a Namespace, create one for your Standalone Activities:
-
-```
-tcld login
-
-tcld namespace create \
-  --namespace <your-namespace> \
-  --cloud-provider aws \
-  --region us-west-2 \
-  --ca-certificate-file 'path/to/your/ca.pem' \
-  --retention-days 1
-```
-
-Alternatively, you can create a Namespace through the UI:
-[https://cloud.temporal.io/namespaces](https://cloud.temporal.io/namespaces).
-
-### Run a Worker connected to Temporal Cloud with TLS certificates
-
-The sample uses [`envconfig.MustLoadDefaultClientOptions()`](https://pkg.go.dev/go.temporal.io/sdk/contrib/envconfig) to
-read connection options from [environment variables](/references/client-environment-configuration). Set the following
-environment variables before running the Worker:
-
-```
-export TEMPORAL_ADDRESS=<your-namespace>.tmprl.cloud:7233
-export TEMPORAL_NAMESPACE=<your-namespace>
-export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/ca.pem'
-export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/ca.key'
-```
-
-Then run the Worker:
-
-```
-go run standalone-activity/helloworld/worker/main.go
-```
-
-### Execute a Standalone Activity on Temporal Cloud
-
-In a separate terminal, set the same environment variables and run the starter:
-
-```
-export TEMPORAL_ADDRESS=<your-namespace>.tmprl.cloud:7233
-export TEMPORAL_NAMESPACE=<your-namespace>
-export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/ca.pem'
-export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/ca.key'
-
-go run standalone-activity/helloworld/starter/main.go
-```
-
-### Run a Worker connected to Temporal Cloud with API keys
-
-Alternatively, you can use an API key instead of TLS certificates:
+### Connect with an API key
 
 ```
 export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
-export TEMPORAL_NAMESPACE=<your-namespace>
+export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter the same way:
-
-```
-go run standalone-activity/helloworld/worker/main.go
-```
-
-```
-go run standalone-activity/helloworld/starter/main.go
-```
+Then run the Worker and starter code as shown in the earlier sections.
