@@ -28,11 +28,11 @@ All APIs are experimental and may be subject to backwards-incompatible changes.
 
 :::
 
-Standalone Activities are Activity Executions that run independently, without being orchestrated by a Workflow. Instead
-of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal
-Client.
+Standalone Activities are Activities that run independently, without being orchestrated by a
+Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
+Activity directly from a Temporal Client.
 
-The way you write the Activity Definition and register it with a Worker is identical to [Workflow
+The way you write the Activity and register it with a Worker is identical to [Workflow
 Activities](./core-application.mdx#develop-activities). The only difference is that you execute a
 Standalone Activity directly from your Temporal Client.
 
@@ -101,10 +101,10 @@ cd samples-python
 
 ## Write an Activity Function {#write-activity}
 
-An Activity Definition in the Temporal Python SDK is just a normal function with the
-`@activity.defn` decorator. It can optionally be an `async def`. The way you write a Standalone
-Activity is identical to how you write an Activity to be orchestrated by a Workflow. In fact, an
-Activity can be executed both as a Standalone Activity and as a Workflow Activity.
+An Activity in the Temporal Python SDK is just a normal function with the `@activity.defn`
+decorator. It can optionally be an `async def`. The way you write a Standalone Activity is identical
+to how you write an Activity to be orchestrated by a Workflow. In fact, an Activity can be executed
+both as a Standalone Activity and as a Workflow Activity.
 
 To see this code in a working example, see the [Standalone Activity
 sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
