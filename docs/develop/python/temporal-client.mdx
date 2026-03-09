@@ -268,6 +268,9 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 ![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
 
+For more information about managing and generating client certificates for Temporal Cloud, see
+[How to manage certificates in Temporal Cloud](/cloud/certificates).
+
 You can provide these connection options using environment variables, a configuration file, or directly in code.
 
 <Tabs groupId="connect-api-key-options" defaultValue="config-file" >
@@ -473,9 +476,6 @@ async def main():
         ),
     )
 ```
-
-For more information about managing and generating client certificates for Temporal Cloud, see
-[How to manage certificates in Temporal Cloud](/cloud/certificates).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
