@@ -114,7 +114,7 @@ activity timeout, as well as, optionally, the
 
 If the activity may be executing (i.e. it has not yet timed out), the
 reset will take effect the next time it fails, heartbeats, or times out.
-If is waiting for a retry (i.e. has failed or timed out), the reset
+If it is waiting for a retry (i.e. has failed or timed out), the reset
 will apply immediately.
 
 If the activity is already paused, it will be unpaused by default.
@@ -136,7 +136,7 @@ reset, handle this error and then re-throw it when you've cleaned up.
 
 If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
 
-Specify the Activity Type of ID and Workflow IDs:
+Specify the Activity Type or ID and Workflow IDs:
 
 ```
 temporal activity reset \

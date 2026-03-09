@@ -37,6 +37,9 @@ origins:
       owner: 'temporalio'
       repo: 'documentation'
       ref: 'main'
+  - owner: temporalio
+    repo: samples-server
+    ref: 'main'
 
 targets:
   - docs
