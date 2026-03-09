@@ -136,24 +136,28 @@ The following example shows how to set up your MySQL as both your persistence an
 with different databases.
 
 {/* SNIPSTART compose-mysql-setup */}
-[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-mysql.sh)
+[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql.sh)
 ```sh
 set -eu
 
+# Validate required environment variables
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
 echo 'Starting MySQL schema setup...'
 echo 'Waiting for MySQL port to be available...'
-nc -z -w 10 mysql 3306
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
 echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Create and setup visibility database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
 
 echo 'MySQL schema setup complete'
 ```
@@ -227,24 +231,28 @@ The following example shows how to set up your PostgreSQL as both persistence an
 with different databases.
 
 {/* SNIPSTART compose-postgres-setup */}
-[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-postgres.sh)
+[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-postgres.sh)
 ```sh
 set -eu
 
+# Validate required environment variables
+: "${POSTGRES_SEEDS:?ERROR: POSTGRES_SEEDS environment variable is required}"
+: "${POSTGRES_USER:?ERROR: POSTGRES_USER environment variable is required}"
+
 echo 'Starting PostgreSQL schema setup...'
 echo 'Waiting for PostgreSQL port to be available...'
-nc -z -w 10 postgresql 5432
+nc -z -w 10 ${POSTGRES_SEEDS} ${DB_PORT:-5432}
 echo 'PostgreSQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
 
 # Create and setup visibility database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
 
 echo 'PostgreSQL schema setup complete'
 ```
@@ -455,7 +463,7 @@ The following example shows how to set up an Elasticsearch Visibility store with
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
 
 {/* SNIPSTART compose-mysql-es-setup */}
-[compose/scripts/setup-mysql-es.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-mysql-es.sh)
+[compose/scripts/setup-mysql-es.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql-es.sh)
 ```sh
 set -eu
 
@@ -466,15 +474,18 @@ set -eu
 : "${ES_VISIBILITY_INDEX:?ERROR: ES_VISIBILITY_INDEX environment variable is required}"
 : "${ES_VERSION:?ERROR: ES_VERSION environment variable is required}"
 
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
 echo 'Starting MySQL and Elasticsearch schema setup...'
 echo 'Waiting for MySQL port to be available...'
-nc -z -w 10 mysql 3306
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
 echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Setup Elasticsearch index
 # temporal-elasticsearch-tool is available in v1.30+ server releases

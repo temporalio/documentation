@@ -72,7 +72,7 @@ async def some_activity() -> None:
     return None
 
 
-plugin = SimplePlugin("PluginName", activities=[some_activity])
+plugin = SimplePlugin("organization.PluginName", activities=[some_activity])
 ```
     {/* SNIPEND */}
   </SdkTabs.Python>
@@ -87,7 +87,7 @@ func SomeActivity(ctx context.Context) error {
 
 func createActivityPlugin() (*temporal.SimplePlugin, error) {
 	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name: "PluginName",
+		Name: "organization.PluginName",
 		RunContextBefore: func(ctx context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
 			options.Registry.RegisterActivityWithOptions(
 				SomeActivity,
@@ -119,7 +119,7 @@ public class SomeActivityImpl implements SomeActivity {
 }
 
 SimplePlugin activityPlugin =
-    SimplePlugin.newBuilder("PluginName")
+    SimplePlugin.newBuilder("organization.PluginName")
         .registerActivitiesImplementations(new SomeActivityImpl())
         .build();
 ```
@@ -131,7 +131,7 @@ SimplePlugin activityPlugin =
 ```ts
 const activity = async () => 'activity';
 const plugin = new SimplePlugin({
-  name: 'plugin-name',
+  name: 'organization.PluginName',
   activities: {
     pluginActivity: activity,
   },
@@ -147,7 +147,7 @@ const plugin = new SimplePlugin({
 static void SomeActivity() => throw new NotImplementedException();
 
 SimplePlugin activityPlugin = new SimplePlugin(
-    "PluginName",
+    "organization.PluginName",
     new SimplePluginOptions() { }.AddActivity(SomeActivity));
 ```
     {/* SNIPEND */}
@@ -226,7 +226,7 @@ class HelloWorkflow:
         return f"Hello, {name}!"
 
 
-plugin = SimplePlugin("PluginName", workflows=[HelloWorkflow])
+plugin = SimplePlugin("organization.PluginName", workflows=[HelloWorkflow])
 ```
     {/* SNIPEND */}
   </SdkTabs.Python>
@@ -240,7 +240,7 @@ func HelloWorkflow(ctx workflow.Context, name string) (string, error) {
 
 func createWorkflowPlugin() (*temporal.SimplePlugin, error) {
 	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name: "PluginName",
+		Name: "organization.PluginName",
 		RunContextBefore: func(ctx context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
 			options.Registry.RegisterWorkflowWithOptions(
 				HelloWorkflow,
@@ -272,7 +272,7 @@ public static class HelloWorkflowImpl implements HelloWorkflow {
 }
 
 SimplePlugin workflowPlugin =
-    SimplePlugin.newBuilder("PluginName")
+    SimplePlugin.newBuilder("organization.PluginName")
         .registerWorkflowImplementationTypes(HelloWorkflowImpl.class)
         .build();
 ```
@@ -290,7 +290,7 @@ class SimpleWorkflow
 }
 
 SimplePlugin workflowPlugin = new SimplePlugin(
-    "PluginName",
+    "organization.PluginName",
     new SimplePluginOptions() { }.AddWorkflow<SimpleWorkflow>());
 ```
     {/* SNIPEND */}
@@ -341,7 +341,9 @@ class WeatherServiceHandler:
         )
 
 
-plugin = SimplePlugin("PluginName", nexus_service_handlers=[WeatherServiceHandler()])
+plugin = SimplePlugin(
+    "organization.PluginName", nexus_service_handlers=[WeatherServiceHandler()]
+)
 ```
     {/* SNIPEND */}
   </SdkTabs.Python>
@@ -374,7 +376,7 @@ var GetWeatherOperation = nexus.NewSyncOperation(
 
 func createNexusPlugin() (*temporal.SimplePlugin, error) {
 	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name: "PluginName",
+		Name: "organization.PluginName",
 		RunContextBefore: func(ctx context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
 			options.Registry.RegisterNexusService(WeatherService)
 			return nil
@@ -423,7 +425,7 @@ public static class WeatherInput {
 }
 
 SimplePlugin nexusPlugin =
-    SimplePlugin.newBuilder("PluginName")
+    SimplePlugin.newBuilder("organization.PluginName")
         .registerNexusServiceImplementation(new WeatherService())
         .build();
 ```
@@ -441,10 +443,10 @@ const testServiceHandler = nexus.serviceHandler(
     async testSyncOp(_, input) {
       return input;
     },
-  },
+  }
 );
 const plugin = new SimplePlugin({
-  name: 'plugin-name',
+  name: 'organization.PluginName',
   nexusServices: [testServiceHandler],
 });
 ```
@@ -474,7 +476,7 @@ public class HandlerFactoryStringService
 }
 
 SimplePlugin nexusPlugin = new SimplePlugin(
-    "PluginName",
+    "organization.PluginName",
     new SimplePluginOptions() { }.AddNexusService(new HandlerFactoryStringService(() =>
         OperationHandler.Sync<string, string>((ctx, name) => $"Hello, {name}")))
 );
@@ -503,7 +505,7 @@ def set_converter(converter: DataConverter | None) -> DataConverter:
     return converter
 
 
-plugin = SimplePlugin("PluginName", data_converter=set_converter)
+plugin = SimplePlugin("organization.PluginName", data_converter=set_converter)
 ```
     {/* SNIPEND */}
   </SdkTabs.Python>
@@ -513,9 +515,9 @@ plugin = SimplePlugin("PluginName", data_converter=set_converter)
 ```go
 func createConverterPlugin() (*temporal.SimplePlugin, error) {
 	customConverter := converter.GetDefaultDataConverter() // Or your custom converter
-	
+
 	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name:          "PluginName",
+		Name:          "organization.PluginName",
 		DataConverter: customConverter,
 	})
 }
@@ -528,7 +530,7 @@ func createConverterPlugin() (*temporal.SimplePlugin, error) {
 [features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.java)
 ```java
 SimplePlugin converterPlugin =
-    SimplePlugin.newBuilder("PluginName")
+    SimplePlugin.newBuilder("organization.PluginName")
         .customizeDataConverter(
             existingConverter -> {
               // Customize the data converter
@@ -553,7 +555,7 @@ const codec: PayloadCodec = {
   },
 };
 const plugin = new SimplePlugin({
-  name: 'plugin-name',
+  name: 'organization.PluginName',
   dataConverter: (converter: DataConverter | undefined) => ({
     ...converter,
     payloadCodecs: [...(converter?.payloadCodecs ?? []), codec],
@@ -573,7 +575,7 @@ private class Codec : IPayloadCodec
 }
 
 SimplePlugin converterPlugin = new SimplePlugin(
-    "PluginName",
+    "organization.PluginName",
     new SimplePluginOptions()
     {
         DataConverterOption = new SimplePluginOptions.SimplePluginOption<DataConverter>(
@@ -621,7 +623,8 @@ class SomeClientInterceptor(temporalio.client.Interceptor):
 
 
 plugin = SimplePlugin(
-    "PluginName", interceptors=[SomeWorkerInterceptor(), SomeClientInterceptor()]
+    "organization.PluginName",
+    interceptors=[SomeWorkerInterceptor(), SomeClientInterceptor()],
 )
 ```
     {/* SNIPEND */}
@@ -640,7 +643,7 @@ type SomeClientInterceptor struct {
 
 func createInterceptorPlugin() (*temporal.SimplePlugin, error) {
 	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name:               "PluginName",
+		Name:               "organization.PluginName",
 		WorkerInterceptors: []interceptor.WorkerInterceptor{&SomeWorkerInterceptor{}},
 		ClientInterceptors: []interceptor.ClientInterceptor{&SomeClientInterceptor{}},
 	})
@@ -662,7 +665,7 @@ public class SomeClientInterceptor extends WorkflowClientInterceptorBase {
 }
 
 SimplePlugin interceptorPlugin =
-    SimplePlugin.newBuilder("PluginName")
+    SimplePlugin.newBuilder("organization.PluginName")
         .addWorkerInterceptors(new SomeWorkerInterceptor())
         .addClientInterceptors(new SomeClientInterceptor())
         .build();
@@ -682,7 +685,7 @@ class MyActivityOutboundInterceptor implements ActivityOutboundCallsInterceptor 
 const workflowInterceptorsPath = '';
 
 const plugin = new SimplePlugin({
-  name: 'plugin-name',
+  name: 'organization.PluginName',
   clientInterceptors: {
     workflow: [new MyWorkflowClientInterceptor()],
   },
@@ -725,7 +728,7 @@ private class SomeWorkerInterceptor : IWorkerInterceptor
 }
 
 SimplePlugin interceptorPlugin = new SimplePlugin(
-    "PluginName",
+    "organization.PluginName",
     new SimplePluginOptions()
     {
         ClientInterceptors = new List<IClientInterceptor>() { new SomeClientInterceptor() },
@@ -789,7 +792,7 @@ def workflow_runner(runner: WorkflowRunner | None) -> WorkflowRunner:
     return runner
 
 
-plugin = SimplePlugin("PluginName", workflow_runner=workflow_runner)
+plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner)
 ```
 {/* SNIPEND */}
 

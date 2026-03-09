@@ -52,7 +52,7 @@ func YourWorkflow(ctx workflow.Context) error {
 		WaitForCancellation: true,
 	}
 	defer func() {
-		// This logic ensures cleanup only happens if there is a Cancellation error
+		// This logic ensures cleanup only happens if there is a Cancelation error
 		if !errors.Is(ctx.Err(), workflow.ErrCanceled) {
 			return
 		}
