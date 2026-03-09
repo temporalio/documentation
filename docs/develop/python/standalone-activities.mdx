@@ -140,6 +140,11 @@ configuration options.
 To see this code in a working example, see the [Standalone Activity
 sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
 
+```bash
+export TEMPORAL_ADDRESS=localhost:7233
+```
+
+
 ```python
 import asyncio
 
@@ -172,6 +177,10 @@ Use
 to execute a Standalone Activity. Call this from your application code, not from inside a Workflow
 Definition. This durably enqueues your Standalone Activity in the Temporal Server, waits for it to
 be executed on your Worker, and then fetches the result:
+
+```bash
+export TEMPORAL_ADDRESS=localhost:7233
+```
 
 ```python
 import asyncio
@@ -251,6 +260,10 @@ Use
 to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
 an async iterator that yields ActivityExecution entries:
 
+```bash
+export TEMPORAL_ADDRESS=localhost:7233
+```
+
 ```python
 import asyncio
 
@@ -284,6 +297,10 @@ Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status =
 
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query.
+
+```bash
+export TEMPORAL_ADDRESS=localhost:7233
+```
 
 ```python
 import asyncio
