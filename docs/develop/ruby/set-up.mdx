@@ -1,7 +1,7 @@
 ---
 id: set-up-local-ruby
 title: Set up your local with the Ruby SDK
-sidebar_label: Quickstart - Setup
+sidebar_label: Quickstart
 description: Configure your local development environment to get started developing with Temporal
 keywords:
   - set up
@@ -15,14 +15,14 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
-import { CallToAction } from "@site/src/components/elements/CallToAction";
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+import { CallToAction } from '@site/src/components/elements/CallToAction';
 
-# Quickstart - Setup
+# Quickstart
 
-This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow.
-In just a few steps, you'll install the SDK and start a local development server.
-To validate that your local environment is correctly installed, we will execute a Workflow that will output "Hello, Temporal".
+This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow. In just a few steps,
+you'll install the SDK and start a local development server. To validate that your local environment is correctly
+installed, we will execute a Workflow that will output "Hello, Temporal".
 
 <SetupSteps>
 <SetupStep code={
@@ -69,7 +69,8 @@ To validate that your local environment is correctly installed, we will execute 
 
 This step sets up a new Ruby project using Bundler and installs the Temporal Ruby SDK.
 
-We recommend using [Bundler](https://bundler.io/) to manage your Ruby project dependencies, including the Temporal SDK. These tutorials assume Ruby 3.4.3 or higher.
+We recommend using [Bundler](https://bundler.io/) to manage your Ruby project dependencies, including the Temporal SDK.
+These tutorials assume Ruby 3.4.3 or higher.
 
 Follow the steps to create a directory, initialize the project with a `Gemfile`, and add the Temporal SDK.
 
@@ -121,7 +122,8 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 
 ## Install Temporal CLI
 
-The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
+The fastest way to get a development version of the Temporal Service running on your local machine is to use
+[Temporal CLI](https://docs.temporal.io/cli).
 
 Choose your operating system to install Temporal CLI.
 
@@ -132,9 +134,7 @@ Choose your operating system to install Temporal CLI.
 
 <p>After installing, open a new Terminal window and start the development server:</p>
 
-<CodeSnippet language="bash">
-temporal server start-dev
-</CodeSnippet>
+<CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
 
 <div className="port-info">
 <h4>Change the Web UI port</h4>
@@ -144,9 +144,6 @@ temporal server start-dev --ui-port 8080
 </CodeSnippet>
 <p>The Temporal Web UI will now be available at http://localhost:8080.</p>
 </div>
-<style>
-{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
-</style>
 </>
 }>
 
@@ -154,12 +151,14 @@ temporal server start-dev --ui-port 8080
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
-This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory
+database.
 
-The Temporal Service will be available on localhost:7233.
-The Temporal Web UI will be available at http://localhost:8233.
+The Temporal Service will be available on localhost:7233. The Temporal Web UI will be available at
+http://localhost:8233.
 
-Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal
+Service at any time by pressing CTRL+C.
 
 Once you have everything installed, you're ready to build apps with Temporal on your local machine.
 
@@ -168,7 +167,8 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 
 ## Run Hello World: Test Your Installation
 
-Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
+Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
+Activity.
 
 This test will confirm that:
 
@@ -213,9 +213,10 @@ end
 
 ### 3. Create and Run the Worker
 
-With your Activity and Workflow defined, you need a Worker to execute them.
-Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
-For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+With your Activity and Workflow defined, you need a Worker to execute them. Workers are a crucial part of your Temporal
+application as they're what actually execute the tasks defined in your Workflows and Activities. For more information on
+Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a
+[deep dive into Workers](/workers).
 
 Create a Worker file (worker.rb):
 

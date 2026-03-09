@@ -48,7 +48,7 @@ module.exports = {
               items: [
                 {
                   type: 'link',
-                  label: 'Change-log',
+                  label: 'Changelog',
                   href: 'https://temporal.io/change-log',
                 },
               ],
@@ -165,6 +165,7 @@ module.exports = {
             id: 'develop/php/index',
           },
           items: [
+            'develop/php/set-up-your-local-php',
             'develop/php/core-application',
             'develop/php/temporal-client',
             'develop/php/testing-suite',
@@ -332,6 +333,7 @@ module.exports = {
         'develop/environment-configuration',
         'develop/activity-retry-simulator',
         'develop/worker-performance',
+        'develop/worker-tuning-reference',
         'develop/safe-deployments',
         'develop/plugins-guide',
       ],
@@ -411,7 +413,6 @@ module.exports = {
               items: [
                 'cloud/metrics/general-setup',
                 'cloud/metrics/reference',
-                'cloud/metrics/datadog',
                 'cloud/metrics/prometheus-grafana',
               ],
             },
@@ -546,6 +547,7 @@ module.exports = {
           },
           items: [
             'production-deployment/self-hosted-guide/deployment',
+            'production-deployment/self-hosted-guide/embedded-server',
             'production-deployment/self-hosted-guide/checklist',
             'production-deployment/self-hosted-guide/defaults',
             'production-deployment/self-hosted-guide/namespaces',
@@ -639,18 +641,22 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Best Practices',
+      label: 'Best practices',
       collapsed: true,
       link: {
         type: 'doc',
         id: 'best-practices/index',
       },
       items: [
+        'best-practices/worker',
+        'best-practices/pre-production-testing',
+        'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
-        'best-practices/worker',
+        'best-practices/cost-optimization',
+        'best-practices/knowledge-hub',
       ],
     },
     {

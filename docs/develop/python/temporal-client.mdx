@@ -291,9 +291,6 @@ overrides the option set in the configuration file.
 
 :::
 
-For example, the following TOML configuration file defines a `staing` profile with the necessary connection options to
-connect to Temporal Cloud via an API key:
-
 For example, the following TOML configuration file defines a `staging` profile with the necessary connection options to
 connect to Temporal Cloud via an API key:
 
@@ -388,8 +385,8 @@ The following environment variables are required to connect to Temporal Cloud:
 
 Ensure these environment variables exist in your environment before running your Python application.
 
-Import the `EnvConfig` package to set connection options for the Temporal Client using environment variables. The
-`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+Import the `temporalio.envconfig` package to set connection options for the Temporal Client using environment variables.
+The `ClientConfig.load_client_connect_config` function will automatically load all environment variables. For a list of all available
 environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
