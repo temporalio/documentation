@@ -393,8 +393,8 @@ The following environment variables are required to connect to Temporal Cloud:
 
 Ensure these environment variables exist in your environment before running your application.
 
-Import the `EnvConfig` package to set connection options for the Temporal Client using environment variables. The
-`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+Import the `@temporalio/envconfig` package to set connection options for the Temporal Client using environment variables.
+The `loadClientConnectConfig` function will automatically load all environment variables. For a list of all available
 environment variables and their default values, refer to
 [Environment Configuration](/references/client-environment-configuration).
 
