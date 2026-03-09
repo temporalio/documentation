@@ -36,7 +36,7 @@ If you need to orchestrate multiple Activities, then you should use a Workflow. 
 to execute a single Activity, then you can use a Standalone Activity. This will result in fewer
 [Billable Actions](/cloud/actions#actions-in-workflows) in Temporal Cloud than using a Workflow to
 run a single Activity. If your Activity Execution is short-lived, then you will also notice lower
-latency, since there are fewer worker round-trips than when executing the Activity in a Workflow.
+latency, since there are fewer Worker round-trips than when executing the Activity in a Workflow.
 
 Standalone Activities support the same retry policies and timeouts as Workflow Activities, and you
 write your Activity Functions in the same way for both. In fact, an Activity Function can be
@@ -44,7 +44,9 @@ executed both as a Standalone Activity and as a Workflow Activity.
 
 ## Use cases
 
-Standalone Activities can be used for [durable job processing use cases](/evaluate/development-production-features/job-queue) such as sending an email, processing a webhook, syncing data, or executing a single function reliably with built-in retries and timeouts.
+Standalone Activities can be used for [durable job processing use
+cases](/evaluate/development-production-features/job-queue) such as sending an email, processing a
+webhook, syncing data, or executing a single function reliably with built-in retries and timeouts.
 
 ## Key features
 - Execute any Temporal Activity as a top-level primitive without the overhead of a Workflow
