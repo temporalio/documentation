@@ -373,6 +373,7 @@ module.exports = {
             'cloud/get-started/service-accounts',
             'cloud/saml',
             'cloud/scim',
+            'cloud/manage-access/permissions-reference',
           ],
         },
         {

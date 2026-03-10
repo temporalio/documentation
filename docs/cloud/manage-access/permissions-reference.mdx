@@ -1,0 +1,304 @@
+---
+id: permissions-reference
+title: Permissions reference
+description: Reference for permissions in Temporal Cloud
+toc_max_heading_level: 4
+keywords:
+  - permissions
+  - reference
+  - temporal cloud
+---
+
+Temporal Cloud access controls are organized across two scopes:
+
+- Account-level role permissions
+- Namespace-level permissions
+
+Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](https://docs.temporal.io/ops)
+endpoints and to additional non-Cloud Ops capabilities, such as Temporal Cloud UI and internal automation behaviors.
+
+## Account-level access {#account-level-access}
+
+Account-level access is granted to users and service accounts by assigning them an account-level role. Temporal Cloud
+supports the following account-level roles:
+
+- Account Owner
+- Global Admin
+- Developer
+- Finance Admin
+- Read-Only
+
+### Cloud Ops API permissions
+
+This table provides API-level details for permissions granted through account-level roles. These permissions are
+configured per user.
+
+| Permission                  | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| --------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| AddUserGroupMember          |           |           |               |      ✔       |       ✔       |
+| CreateAccountAuditLogSink   |           |           |               |      ✔       |       ✔       |
+| CreateApiKey                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| CreateConnectivityRule      |           |           |               |      ✔       |       ✔       |
+| CreateNamespace             |           |     ✔     |               |      ✔       |       ✔       |
+| CreateNexusEndpoint         |           |     ✔     |               |      ✔       |       ✔       |
+| CreateServiceAccount        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| CreateUser                  |           |           |               |      ✔       |       ✔       |
+| CreateUserGroup             |           |           |               |      ✔       |       ✔       |
+| DeleteAccountAuditLogSink   |           |           |               |      ✔       |       ✔       |
+| DeleteApiKey                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| DeleteConnectivityRule      |           |           |               |      ✔       |       ✔       |
+| DeleteNexusEndpoint         |           |     ✔     |               |      ✔       |       ✔       |
+| DeleteServiceAccount        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| DeleteUser                  |           |           |               |      ✔       |       ✔       |
+| DeleteUserGroup             |           |           |               |      ✔       |       ✔       |
+| GetAccount                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetAccountAuditLogSink      |           |           |               |      ✔       |       ✔       |
+| GetAccountAuditLogSinks     |           |           |               |      ✔       |       ✔       |
+| GetApiKey                   |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| GetApiKeys                  |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| GetAsyncOperation           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetAuditLogs                |           |           |               |      ✔       |       ✔       |
+| GetConnectivityRule         |           |     ✔     |               |      ✔       |       ✔       |
+| GetConnectivityRules        |           |     ✔     |               |      ✔       |       ✔       |
+| GetCurrentIdentity          |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetNamespaces               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetNexusEndpoint            |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetNexusEndpoints           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetRegion                   |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetRegions                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetServiceAccount           |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| GetServiceAccounts          |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| GetUsage                    |           |           |       ✔       |      ✔       |       ✔       |
+| GetUser                     |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetUserGroup                |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetUserGroupMembers         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetUserGroups               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| GetUsers                    |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| RemoveUserGroupMember       |           |           |               |      ✔       |       ✔       |
+| UpdateAccount               |           |           |               |      ✔       |       ✔       |
+| UpdateAccountAuditLogSink   |           |           |               |      ✔       |       ✔       |
+| UpdateApiKey                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| UpdateNamespaceTags         |           |           |               |      ✔       |       ✔       |
+| UpdateNexusEndpoint         |           |     ✔     |               |      ✔       |       ✔       |
+| UpdateServiceAccount        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| UpdateUser                  |           |           |               |      ✔       |       ✔       |
+| UpdateUserGroup             |           |           |               |      ✔       |       ✔       |
+| ValidateAccountAuditLogSink |           |           |               |      ✔       |       ✔       |
+
+- \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
+- † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+
+### Additional account-level capabilities
+
+| Capability                                                       | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| ---------------------------------------------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| View billing plan information                                    |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| Manage MFA enrollments, password resets, and decode certificates |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| Manage own API keys and service account API keys                 |   ✔\*†    |   ✔\*†    |     ✔\*†      |     ✔\*†     |     ✔\*†      |
+| Manage self-hosted to cloud migrations                           |           |     ✔     |               |      ✔       |       ✔       |
+| View extended Namespace metadata                                 |           |     ✔     |               |      ✔       |       ✔       |
+| Complete user onboarding and quickstart Workflows                |           |     ✔     |               |      ✔       |       ✔       |
+| View monthly costs                                               |           |           |       ✔       |              |       ✔       |
+| View invoices, credit ledger entries, grants, and promotions     |           |           |       ✔       |      ✔‡      |       ✔       |
+| Manage Stripe payment portal                                     |           |           |       ✔       |      ✔‡      |       ✔       |
+| View usage metrics                                               |           |           |       ✔       |      ✔       |       ✔       |
+| Invite and re-invite users                                       |           |           |               |      ✔       |       ✔       |
+| Manage tag keys                                                  |           |           |               |      ✔       |       ✔       |
+| Configure account settings                                       |           |           |               |      ✔       |       ✔       |
+| Self-service account offboarding                                 |           |           |               |              |       ✔       |
+| SCIM administration                                              |           |           |               |              |       ✔       |
+| Change account plan type                                         |           |           |               |              |       ✔       |
+
+- \* See [API Key Authorization Behavior](#api-key-authorization-behavior) — legacy API key endpoints have the same
+  scoped behavior as their Cloud Ops API counterparts.
+- † See [Service Account Authorization Behavior](#service-account-authorization-behavior) — creating service account API
+  keys follows the same scoped authorization as other service account operations. ‡ Temporary — Global Admin access to
+  billing and invoicing data will be removed once the Account Owner role is fully rolled out.
+
+> **Note:** Access to external observability endpoints (metrics and metric descriptors) is controlled separately and is
+> not tied to the standard account-level role hierarchy.
+
+## Namespace-level permissions
+
+Namespace-level permissions are granted to users and service accounts by assigning them a Namespace-level permission.
+Temporal Cloud supports the following Namespace-level permissions:
+
+- Namespace Admin
+- Write
+- Read
+
+Users with the Global Admin and Account Owner roles automatically have Namespace Admin permissions on all Namespaces in
+the account.
+
+### Cloud Ops API permissions
+
+This table provides API-level details for permissions granted through Namespace-level permissions. These permissions are
+configured per Namespace per user.
+
+| Permission                       | Read | Write | Namespace Admin |
+| -------------------------------- | :--: | :---: | :-------------: |
+| AddNamespaceRegion               |      |       |        ✔        |
+| CreateNamespaceExportSink        |      |       |        ✔        |
+| DeleteNamespace                  |      |       |        ✔        |
+| DeleteNamespaceExportSink        |      |       |        ✔        |
+| DeleteNamespaceRegion            |      |       |        ✔        |
+| FailoverNamespaceRegion          |      |       |        ✔        |
+| GetNamespace                     |  ✔   |   ✔   |        ✔        |
+| GetNamespaceCapacityInfo         |  ✔   |   ✔   |        ✔        |
+| GetNamespaceExportSink           |  ✔   |   ✔   |        ✔        |
+| GetNamespaceExportSinks          |  ✔   |   ✔   |        ✔        |
+| RenameCustomSearchAttribute      |      |       |        ✔        |
+| SetServiceAccountNamespaceAccess |      |       |        ✔        |
+| SetUserGroupNamespaceAccess      |      |       |        ✔        |
+| SetUserNamespaceAccess           |      |       |        ✔        |
+| UpdateNamespace                  |      |       |        ✔        |
+| UpdateNamespaceExportSink        |      |       |        ✔        |
+| ValidateNamespaceExportSink      |      |       |        ✔        |
+
+### Workflow-level permissions
+
+This table provides API-level details for Workflow-level Data Plane permissions granted through Namespace-level
+permissions. These permissions are configured per Namespace per user.
+
+| Permission                            | Read | Write | Namespace Admin |
+| ------------------------------------- | :--: | :---: | :-------------: |
+| CountActivityExecutions               |  ✔   |   ✔   |        ✔        |
+| CountSchedules                        |  ✔   |   ✔   |        ✔        |
+| CountWorkflowExecutions               |  ✔   |   ✔   |        ✔        |
+| CreateSchedule                        |      |   ✔   |        ✔        |
+| CreateWorkflowRule                    |      |   ✔   |        ✔        |
+| DeleteActivityExecution               |      |   ✔   |        ✔        |
+| DeleteSchedule                        |      |   ✔   |        ✔        |
+| DeleteWorkerDeployment                |      |   ✔   |        ✔        |
+| DeleteWorkerDeploymentVersion         |      |   ✔   |        ✔        |
+| DeleteWorkflowExecution               |      |   ✔   |        ✔        |
+| DeleteWorkflowRule                    |      |   ✔   |        ✔        |
+| DescribeActivityExecution             |  ✔   |   ✔   |        ✔        |
+| DescribeBatchOperation                |  ✔   |   ✔   |        ✔        |
+| DescribeNamespace                     |  ✔   |   ✔   |        ✔        |
+| DescribeSchedule                      |  ✔   |   ✔   |        ✔        |
+| DescribeTaskQueue                     |  ✔   |   ✔   |        ✔        |
+| DescribeWorker                        |  ✔   |   ✔   |        ✔        |
+| DescribeWorkerDeployment              |  ✔   |   ✔   |        ✔        |
+| DescribeWorkerDeploymentVersion       |  ✔   |   ✔   |        ✔        |
+| DescribeWorkflowExecution             |  ✔   |   ✔   |        ✔        |
+| DescribeWorkflowRule                  |  ✔   |   ✔   |        ✔        |
+| ExecuteMultiOperation                 |      |   ✔   |        ✔        |
+| FetchWorkerConfig                     |  ✔   |   ✔   |        ✔        |
+| GetSearchAttributes                   |  ✔   |   ✔   |        ✔        |
+| GetWorkerBuildIdCompatibility         |  ✔   |   ✔   |        ✔        |
+| GetWorkerTaskReachability             |  ✔   |   ✔   |        ✔        |
+| GetWorkerVersioningRules              |  ✔   |   ✔   |        ✔        |
+| GetWorkflowExecutionHistory           |  ✔   |   ✔   |        ✔        |
+| GetWorkflowExecutionHistoryReverse    |  ✔   |   ✔   |        ✔        |
+| ListActivityExecutions                |  ✔   |   ✔   |        ✔        |
+| ListBatchOperations                   |  ✔   |   ✔   |        ✔        |
+| ListClosedWorkflowExecutions          |  ✔   |   ✔   |        ✔        |
+| ListOpenWorkflowExecutions            |  ✔   |   ✔   |        ✔        |
+| ListScheduleMatchingTimes             |  ✔   |   ✔   |        ✔        |
+| ListSchedules                         |  ✔   |   ✔   |        ✔        |
+| ListTaskQueuePartitions               |  ✔   |   ✔   |        ✔        |
+| ListWorkerDeployments                 |  ✔   |   ✔   |        ✔        |
+| ListWorkers                           |  ✔   |   ✔   |        ✔        |
+| ListWorkflowExecutions                |  ✔   |   ✔   |        ✔        |
+| ListWorkflowRules                     |  ✔   |   ✔   |        ✔        |
+| PatchSchedule                         |      |   ✔   |        ✔        |
+| PauseActivity                         |      |   ✔   |        ✔        |
+| PauseWorkflowExecution                |      |   ✔   |        ✔        |
+| PollActivityExecution                 |      |   ✔   |        ✔        |
+| PollActivityTaskQueue                 |      |   ✔   |        ✔        |
+| PollNexusTaskQueue                    |      |   ✔   |        ✔        |
+| PollWorkflowExecutionUpdate           |      |   ✔   |        ✔        |
+| PollWorkflowTaskQueue                 |      |   ✔   |        ✔        |
+| QueryWorkflow                         |  ✔   |   ✔   |        ✔        |
+| RecordActivityTaskHeartbeat           |      |   ✔   |        ✔        |
+| RecordActivityTaskHeartbeatById       |      |   ✔   |        ✔        |
+| RecordWorkerHeartbeat                 |      |   ✔   |        ✔        |
+| RequestCancelActivityExecution        |      |   ✔   |        ✔        |
+| RequestCancelWorkflowExecution        |      |   ✔   |        ✔        |
+| ResetActivity                         |      |   ✔   |        ✔        |
+| ResetStickyTaskQueue                  |      |   ✔   |        ✔        |
+| ResetWorkflowExecution                |      |   ✔   |        ✔        |
+| RespondActivityTaskCanceled           |      |   ✔   |        ✔        |
+| RespondActivityTaskCanceledById       |      |   ✔   |        ✔        |
+| RespondActivityTaskCompleted          |      |   ✔   |        ✔        |
+| RespondActivityTaskCompletedById      |      |   ✔   |        ✔        |
+| RespondActivityTaskFailed             |      |   ✔   |        ✔        |
+| RespondActivityTaskFailedById         |      |   ✔   |        ✔        |
+| RespondNexusTaskCompleted             |      |   ✔   |        ✔        |
+| RespondNexusTaskFailed                |      |   ✔   |        ✔        |
+| RespondQueryTaskCompleted             |      |   ✔   |        ✔        |
+| RespondWorkflowTaskCompleted          |      |   ✔   |        ✔        |
+| RespondWorkflowTaskFailed             |      |   ✔   |        ✔        |
+| SetWorkerDeploymentCurrentVersion     |      |   ✔   |        ✔        |
+| SetWorkerDeploymentManager            |      |   ✔   |        ✔        |
+| SetWorkerDeploymentRampingVersion     |      |   ✔   |        ✔        |
+| ShutdownWorker                        |      |   ✔   |        ✔        |
+| SignalWithStartWorkflowExecution      |      |   ✔   |        ✔        |
+| SignalWorkflowExecution               |      |   ✔   |        ✔        |
+| StartActivityExecution                |      |   ✔   |        ✔        |
+| StartBatchOperation                   |      |   ✔   |        ✔        |
+| StartWorkflowExecution                |      |   ✔   |        ✔        |
+| StopBatchOperation                    |      |   ✔   |        ✔        |
+| TerminateActivityExecution            |      |   ✔   |        ✔        |
+| TerminateWorkflowExecution            |      |   ✔   |        ✔        |
+| TriggerWorkflowRule                   |      |   ✔   |        ✔        |
+| UnpauseActivity                       |      |   ✔   |        ✔        |
+| UnpauseWorkflowExecution              |      |   ✔   |        ✔        |
+| UpdateActivityOptions                 |      |   ✔   |        ✔        |
+| UpdateSchedule                        |      |   ✔   |        ✔        |
+| UpdateTaskQueueConfig                 |      |   ✔   |        ✔        |
+| UpdateWorkerBuildIdCompatibility      |      |   ✔   |        ✔        |
+| UpdateWorkerConfig                    |      |   ✔   |        ✔        |
+| UpdateWorkerDeploymentVersionMetadata |      |   ✔   |        ✔        |
+| UpdateWorkerVersioningRules           |      |   ✔   |        ✔        |
+| UpdateWorkflowExecution               |      |   ✔   |        ✔        |
+| UpdateWorkflowExecutionOptions        |      |   ✔   |        ✔        |
+
+### Additional Namespace-level capabilities
+
+| Capability                                                    | Read | Write | Namespace Admin |
+| ------------------------------------------------------------- | :--: | :---: | :-------------: |
+| View extended Namespace details and usage metrics             |  ✔   |   ✔   |        ✔        |
+| View export sink configurations                               |  ✔   |   ✔   |        ✔        |
+| View Namespace user access assignments                        |  ✔   |   ✔   |        ✔        |
+| View replication status, replica health, and failover history |  ✔   |   ✔   |        ✔        |
+| Manage export sinks — create, update, validate, and delete    |      |       |        ✔        |
+| Bulk update custom Search Attributes                          |      |       |        ✔        |
+| Manage user and identity Namespace access                     |      |       |        ✔        |
+| Initiate Namespace failover                                   |      |       |        ✔        |
+| Convert single-region Namespace to multi-region               |      |       |        ✔        |
+
+## Additional authorization behaviors
+
+Some APIs are granted to all account-level roles but enforce additional authorization rules at runtime. The action group
+grants access to call the API, but the scope of what the caller can interact with depends on their role.
+
+### API key authorization behavior
+
+All roles can create and manage their **own** API keys. An API key inherits the permissions of its owner — it cannot
+grant access beyond what the owning user or service account already has.
+
+| Behavior                                            | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| --------------------------------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| Create, view, update, and delete own API keys       |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| View, update, and delete any API key in the account |           |           |               |      ✔       |       ✔       |
+
+**Affected APIs:** CreateApiKey, GetApiKey, GetApiKeys, UpdateApiKey, DeleteApiKey
+
+### Service account authorization behavior
+
+All roles can list service accounts within their account. However, the ability to create, update, and delete service
+accounts depends on the scope of the service account and the caller's role.
+
+| Behavior                                         | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| ------------------------------------------------ | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| List all service accounts in the account         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| Manage unscoped (account-level) service accounts |           |           |               |      ✔       |       ✔       |
+| Manage Namespace-scoped service accounts         |     §     |     §     |       §       |      ✔       |       ✔       |
+
+§ Requires Namespace Admin permission on the target Namespace. Any role can manage Namespace-scoped service accounts if
+they hold Namespace Admin on that Namespace.
+
+**Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
+DeleteServiceAccount
