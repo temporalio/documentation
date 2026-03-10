@@ -119,7 +119,7 @@ class ComposeGreetingInput:
 
 
 @activity.defn
-async def compose_greeting(input: ComposeGreetingInput) -> str:
+def compose_greeting(input: ComposeGreetingInput) -> str:
     activity.logger.info("Running activity with parameter %s" % input)
     return f"{input.greeting}, {input.name}!"
 ```
@@ -138,6 +138,7 @@ sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_stand
 
 ```python
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 from temporalio.client import Client
 from temporalio.envconfig import ClientConfig
@@ -154,6 +155,7 @@ async def main():
         client,
         task_queue="my-standalone-activity-task-queue",
         activities=[compose_greeting],
+        activity_executor=ThreadPoolExecutor(5),
     )
     print("worker running...", end="", flush=True)
     await worker.run()
