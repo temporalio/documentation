@@ -17,7 +17,7 @@ description: Connect a Temporal Client to a Temporal Service and start Workflow 
 This guide introduces Temporal Clients.
 It explains the role and use of Clients and shows you how to configure your PHP Client code to connect to the Temporal Service.
 
-The pages shows how to do the following:
+This page shows how to do the following:
 
 - [Connect to a local development Temporal Service](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
@@ -45,7 +45,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 :::
 
 When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+Many SDKs default to `127.0.0.1:7233`.
 
 In the PHP SDK, different client classes are responsible for different functional areas.
 The [`ServiceClient`](https://php.temporal.io/classes/Temporal-Client-GRPC-ServiceClient.html) is responsible for the low-level API and connection to the Temporal Service.
