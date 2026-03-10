@@ -917,6 +917,13 @@ Lastly, call either the `Start()` or the `Run()` method on the instance of the W
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
 
+:::note
+
+The Worker process is a long-running process that blocks while polling for tasks. Run it in a separate terminal from your
+starter code or other application logic.
+
+:::
+
 :::tip
 
 If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
