@@ -155,6 +155,7 @@ async def main():
         task_queue="hello-standalone-activity-task-queue",
         activities=[compose_greeting],
     )
+    print("worker running...", end="", flush=True)
     await worker.run()
 
 
