@@ -152,7 +152,7 @@ async def main():
     client = await Client.connect(**connect_config)
     worker = Worker(
         client,
-        task_queue="hello-standalone-activity-task-queue",
+        task_queue="my-standalone-activity-task-queue",
         activities=[compose_greeting],
     )
     print("worker running...", end="", flush=True)
@@ -186,14 +186,14 @@ async def my_application():
     connect_config.setdefault("target_host", "localhost:7233")
     client = await Client.connect(**connect_config)
 
-    result = await client.execute_activity(
+    activity_result = await client.execute_activity(
         compose_greeting,
         args=[ComposeGreetingInput("Hello", "World")],
         id="my-standalone-activity-id",
-        task_queue="hello-standalone-activity-task-queue",
+        task_queue="my-standalone-activity-task-queue",
         start_to_close_timeout=timedelta(seconds=10),
     )
-    print(f"Activity result: {result}")
+    print(f"Activity result: {activity_result}")
 
 
 if __name__ == "__main__":
@@ -215,7 +215,7 @@ activity_handle = await client.start_activity(
     compose_greeting,
     args=[ComposeGreetingInput("Hello", "World")],
     id="my-standalone-activity-id",
-    task_queue="hello-standalone-activity-task-queue",
+    task_queue="my-standalone-activity-task-queue",
     start_to_close_timeout=timedelta(seconds=10),
 )
 ```
@@ -263,7 +263,7 @@ async def my_application():
     client = await Client.connect(**connect_config)
 
     activities = client.list_activities(
-        query="TaskQueue = 'my-task-queue'",
+        query="TaskQueue = 'my-standalone-activity-task-queue'",
     )
 
     async for info in activities:
@@ -298,7 +298,7 @@ async def my_application():
     client = await Client.connect(**connect_config)
 
     resp = await client.count_activities(
-        query="TaskQueue = 'my-task-queue'",
+        query="TaskQueue = 'my-standalone-activity-task-queue'",
     )
 
     print("Total activities:", resp.count)
