@@ -369,9 +369,9 @@ module.exports = {
             id: 'cloud/manage-access/index',
           },
           items: [
-            'cloud/get-started/users',
-            'cloud/manage-access/roles-and-permissions',
-            'cloud/get-started/user-groups',
+'cloud/manage-access/roles-and-permissions',
+'cloud/get-started/users',
+'cloud/get-started/user-groups',
             'cloud/get-started/service-accounts',
             'cloud/saml',
             'cloud/scim',
