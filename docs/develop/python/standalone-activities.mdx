@@ -142,9 +142,6 @@ To see this code in a working example, see the [Standalone Activity
 sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
 
 
-Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
-
-
 ```python
 import asyncio
 
@@ -157,6 +154,7 @@ from my_activity import compose_greeting
 
 async def main():
     connect_config = ClientConfig.load_client_connect_config()
+    connect_config.setdefault("target_host", "localhost:7233")
     client = await Client.connect(**connect_config)
     worker = Worker(
         client,
@@ -178,8 +176,6 @@ to execute a Standalone Activity. Call this from your application code, not from
 Definition. This durably enqueues your Standalone Activity in the Temporal Server, waits for it to
 be executed on your Worker, and then fetches the result:
 
-Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
-
 ```python
 import asyncio
 from datetime import timedelta
@@ -192,6 +188,7 @@ from my_activity import ComposeGreetingInput, compose_greeting
 
 async def my_application():
     connect_config = ClientConfig.load_client_connect_config()
+    connect_config.setdefault("target_host", "localhost:7233")
     client = await Client.connect(**connect_config)
 
     result = await client.execute_activity(
@@ -258,8 +255,6 @@ Use
 to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
 an async iterator that yields ActivityExecution entries:
 
-Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
-
 ```python
 import asyncio
 
@@ -269,6 +264,7 @@ from temporalio.envconfig import ClientConfig
 
 async def my_application():
     connect_config = ClientConfig.load_client_connect_config()
+    connect_config.setdefault("target_host", "localhost:7233")
     client = await Client.connect(**connect_config)
 
     activities = client.list_activities(
@@ -294,8 +290,6 @@ Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status =
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query.
 
-Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
-
 ```python
 import asyncio
 
@@ -305,6 +299,7 @@ from temporalio.envconfig import ClientConfig
 
 async def my_application():
     connect_config = ClientConfig.load_client_connect_config()
+    connect_config.setdefault("target_host", "localhost:7233")
     client = await Client.connect(**connect_config)
 
     resp = await client.count_activities(
