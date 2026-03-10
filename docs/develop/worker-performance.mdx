@@ -73,6 +73,8 @@ Available slot suppliers include:
 - You cannot guarantee that the targets for resource-based suppliers won't ever be exceeded.
   Resources consumed during a task can't be known ahead of time.
 
+- Read about [choosing an appropriate slot supplier type](#choosing-slot-supplier-types) before picking one.
+
 - Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
   Using both styles will cause an error at Worker initialization time.
 
@@ -313,9 +315,9 @@ worker = Temporalio::Worker.new(
   workflows: [MyWorkflow],
   activities: [MyActivity],
   
-  workflow_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
-  activity_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
-  nexus_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
+  workflow_task_poller_behavior: Temporalio::Worker::PollerBehavior::Autoscaling.new,
+  activity_task_poller_behavior: Temporalio::Worker::PollerBehavior::Autoscaling.new,
+  nexus_task_poller_behavior: Temporalio::Worker::PollerBehavior::Autoscaling.new,
 )
 
 ```
@@ -323,20 +325,21 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Cache options
+### Cache options (Java SDK) {#cache-options}
 
 A Workflow Cache is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
-These options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
+These options are defined on `WorkerFactoryOptions`:
 
-- `worker.setStickyWorkflowCacheSize` (JavaSDK: `WorkerFactoryOptions#workflowCacheSize`) defines the maximum number of cached Workflows Executions.
-  Each cached Workflow contains at least one Workflow thread and its resources.
-  Resources include memory, etc.
+- `WorkerFactoryOptions#workflowCacheSize` defines the maximum number of cached Workflow Executions.
+  Each cached Workflow contains at least one Workflow thread and its resources (memory, etc.).
 - `maxWorkflowThreadCount` defines the maximum number of Workflow threads that may exist concurrently at any time.
 
 These cache options limit the resource consumption of the in-memory Workflow cache.
 Workflow cache options are shared between all Workers because the Workflow cache is tightly integrated with the resource consumption of the entire host.
 This includes memory and the total thread count, which should be limited per host/JVM.
+
+For Go, use [`SetStickyWorkflowCacheSize`](https://pkg.go.dev/go.temporal.io/sdk/worker#SetStickyWorkflowCacheSize). For Python, use the `max_cached_workflows` Worker option.
 
 ### "Large value" drawbacks
 
@@ -361,7 +364,7 @@ A **Worker Tuner** instance exists per-Worker, providing slot suppliers for diff
 A tuner assigns different suppliers to each slot type.
 For example, it might provide a fixed assignment slot supplier for Workflows and use a resource-based supplier for Activities.
 
-### Choosing slot supplier types
+### Choosing slot supplier types {#choosing-slot-supplier-types}
 
 Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
 Here’s how to choose the best approach based on your system requirements and workload characteristics.
@@ -374,7 +377,13 @@ When choosing whether to opt for fixed assignment or resource-based suppliers, c
 - Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
   They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
 
-The following use cases are particularly well suited to resource-based auto-tuning slot suppliers:
+
+Scenarios with tasks that have variable, or very high, resource needs should rely on fixed-size
+suppliers and manual tuning. The resource-based tuner can never perform as well as a fixed-size
+tuner with appropriately chosen configuration, but can offer reasonable performance without the 
+need for profiling.
+
+The following use cases are well suited to resource-based auto-tuning slot suppliers: 
 
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
@@ -848,5 +857,6 @@ If, after adjusting the poller and executors count as specified earlier, you sti
 
 ## Related reading
 
+- [Worker tuning quick reference](/develop/worker-tuning-reference) - SDK defaults and metrics by resource type
 - [Workers in production operation guide](https://temporal.io/blog/workers-in-production)
 - [Full set of SDK Metrics reference](/references/sdk-metrics)
