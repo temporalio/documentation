@@ -70,11 +70,11 @@ Prerequisites:
 
 All code samples on this page use
 [`ClientConfig.load_client_connect_config()`](https://python.temporal.io/temporalio.envconfig.ClientConfig.html)
-to configure the Temporal Client connection. By default this connects to `localhost:7233`, but it
-responds to [environment variables](/references/client-environment-configuration) and
-[TOML configuration files](/references/client-environment-configuration), so the same code works
-against a local dev server and Temporal Cloud without changes. See
-[Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud) below.
+to configure the Temporal Client connection. It responds to [environment
+variables](/references/client-environment-configuration) and [TOML configuration
+files](/references/client-environment-configuration), so the same code works against a local dev
+server and Temporal Cloud without changes. See [Run Standalone Activities with Temporal
+Cloud](#run-standalone-activities-temporal-cloud) below.
 
 :::
 
@@ -141,9 +141,8 @@ configuration options.
 To see this code in a working example, see the [Standalone Activity
 sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
 
-```bash
-export TEMPORAL_ADDRESS=localhost:7233
-```
+
+Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
 
 
 ```python
@@ -179,9 +178,7 @@ to execute a Standalone Activity. Call this from your application code, not from
 Definition. This durably enqueues your Standalone Activity in the Temporal Server, waits for it to
 be executed on your Worker, and then fetches the result:
 
-```bash
-export TEMPORAL_ADDRESS=localhost:7233
-```
+Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
 
 ```python
 import asyncio
@@ -261,9 +258,7 @@ Use
 to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
 an async iterator that yields ActivityExecution entries:
 
-```bash
-export TEMPORAL_ADDRESS=localhost:7233
-```
+Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
 
 ```python
 import asyncio
@@ -299,9 +294,7 @@ Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status =
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query.
 
-```bash
-export TEMPORAL_ADDRESS=localhost:7233
-```
+Set `export TEMPORAL_ADDRESS=localhost:7233` for local development or see [cloud instructions](#run-standalone-activities-temporal-cloud) below.
 
 ```python
 import asyncio
