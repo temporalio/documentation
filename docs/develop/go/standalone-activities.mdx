@@ -64,6 +64,15 @@ Prerequisites:
 - Install the [Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk) (v1.41.0 or higher)
 
 
+The first step in running a Standalone Activity involves starting a Temporal server:
+
+```
+temporal server start-dev
+```
+
+This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
+It uses an in-memory database, so do not use it for real use cases.
+
 :::info Temporal Cloud
 
 All code samples on this page use
@@ -76,14 +85,6 @@ Cloud](#run-standalone-activities-temporal-cloud) below.
 
 :::
 
-The first step in running a Standalone Activity involves starting a Temporal server:
-
-```
-temporal server start-dev
-```
-
-This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
-It uses an in-memory database, so do not use it for real use cases.
 
 The Temporal Server should now be available for client connections on `localhost:7233`, and the
 Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233). Standalone

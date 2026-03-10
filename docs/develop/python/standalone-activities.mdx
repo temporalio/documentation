@@ -66,6 +66,15 @@ Prerequisites:
 
   `uv add temporalio` or see the [Python Quickstart](https://docs.temporal.io/develop/python/set-up-your-local-python#install-the-temporal-python-sdk) for full instructions.
 
+The first step in running a Standalone Activity involves starting a Temporal server:
+
+```bash
+temporal server start-dev
+```
+
+This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
+It uses an in-memory database, so do not use it for real use cases.
+
 :::info Temporal Cloud
 
 All code samples on this page use
@@ -77,15 +86,6 @@ server and Temporal Cloud without changes. See [Run Standalone Activities with T
 Cloud](#run-standalone-activities-temporal-cloud) below.
 
 :::
-
-The first step in running a Standalone Activity involves starting a Temporal server:
-
-```bash
-temporal server start-dev
-```
-
-This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
-It uses an in-memory database, so do not use it for real use cases.
 
 The Temporal Server will now be available for client connections on `localhost:7233`, and the
 Temporal Web UI will now be accessible at [http://localhost:8233](http://localhost:8233). Standalone
