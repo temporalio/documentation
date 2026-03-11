@@ -20,6 +20,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
 - [Using CaptionedImage](#using-captionedimage)
 - [Using DiscoverableDisclosure](#using-discoverabledisclosure)
+- [Using ReleaseStage](#using-releasestage)
 - [Using DocsTable](#using-docstable)
 - [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
@@ -169,6 +170,59 @@ Usage:
 
 An additional `prompt` prop enables you to specify the leading text.
 Normally it defaults to `prompt = "Dive deeper — "`.
+
+## Using ReleaseStage
+
+Role: Standardized callout for features in Pre-release or Public Preview.
+
+General Availability features do not need a callout - GA is the default/assumed state.
+
+Usage:
+
+```
+<ReleaseStage stage="public-preview" feature="Provisioned Capacity" />
+```
+
+This renders a `:::tip Support, stability, and dependency info` callout with the text:
+"Provisioned Capacity is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview)."
+
+### Props
+
+- **`stage`** (optional): `"pre-release"` | `"public-preview"`. Determines the release stage link and label.
+- **`feature`** (optional): The feature name. Used to generate the callout text (e.g. "Feature X is in Public Preview.").
+- **`verb`** (optional): Defaults to `"is"`. Set to `"are"` for plural feature names.
+- **`children`** (optional): Additional content shown below the auto-generated text, or the entire callout body for custom callouts.
+
+If you use the auto-generated text, pass a `feature`. There is no generic no-feature mode.
+
+### With additional context
+
+```
+<ReleaseStage stage="pre-release" feature="Temporal .NET SDK support for Nexus">
+All APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseStage>
+```
+
+### Plural feature names
+
+```
+<ReleaseStage
+  stage="public-preview"
+  feature="Connectivity rules"
+  verb="are"
+/>
+```
+
+### Children-only mode
+
+For complex cases where the auto-generated text doesn't fit:
+
+```
+<ReleaseStage>
+Same-region Replication and Multi-cloud Replication are in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+</ReleaseStage>
+```
 
 ## Using DocsTable
 

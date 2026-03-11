@@ -18,7 +18,7 @@ keywords:
   - term
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage, SdkTabs } from '@site/src/components';
+import { CaptionedImage, DiscoverableDisclosure, ReleaseStage, SdkTabs, ToolTipTerm } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 
 ## Private network connectivity for namespaces
@@ -57,11 +57,7 @@ For step 3, keep reading for details on [connectivity rules](/cloud/connectivity
 
 ## Connectivity rules
 
-:::tip Support, stability, and dependency info
-
-Connectivity rules are currently in [public preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseStage stage="public-preview" feature="Connectivity rules" verb="are" />
 
 :::info Web UI Connectivity
 
@@ -176,7 +172,6 @@ tcld namespace set-connectivity-rules --namespace "my-namespace.abc123" --remove
 ### Terraform
 
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources/temporalcloud_namespace/resource.tf#L113-L128)
-
 
 ## View the connectivity rules for a namespace
 

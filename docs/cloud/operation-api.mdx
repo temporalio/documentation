@@ -12,11 +12,9 @@ tags:
   - Temporal Cloud
 ---
 
-:::tip Support, stability, and dependency info
+import { ReleaseStage } from '@site/src/components';
 
-The Temporal Cloud Operations API is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseStage stage="public-preview" feature="The Temporal Cloud Operations API" />
 
 The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, public [HTTP API](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction) and [gRPC API](https://github.com/temporalio/cloud-api/tree/main) for programmatically managing Temporal Cloud control plane resources, including [Namespaces](/cloud/namespaces), [Users](/cloud/users), [Service Accounts](/cloud/service-accounts), [API keys](/cloud/api-keys), and others. The Temporal Cloud [Terraform Provider](/cloud/terraform-provider), [tcld CLI](/cloud/tcld), and Web UI all use the Cloud Ops API.
 

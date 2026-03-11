@@ -9,7 +9,7 @@ tags:
   - Performance
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseStage } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 
@@ -124,12 +124,12 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 
 #### Eager Workflow Start
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+<ReleaseStage stage="public-preview" feature="Eager Workflow Start">
 
 Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
 Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+. No additional configuration or access request is needed. However, you must set Request-Eager-Start to true when starting each Workflow for Eager Workflow Start to be used.
 
-:::
+</ReleaseStage>
 
 Eager Workflow Start reduces the latency required to initiate a Workflow execution.
 It is recommended for short-lived Workflows that use Local Activities to interact with external services, especially when these interactions are initiated in the first Workflow Task and the Workflow is deployed near the Temporal Server to minimize network delay.
