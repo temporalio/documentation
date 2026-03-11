@@ -81,10 +81,10 @@ Alias: `--re`
 ```bash
 tcld namespace add-region \
     --namespace <namespace_id> \
-    --region <replica_region>
+    --region <replica_region_name>
 ```
 
-Specify the region code of the region where you want to create the replica as an argument to the `--region` flag.
+Specify the region name (for example, `us-east-1`) of the region where you want to create the replica as an argument to the `--region` flag.
 See [High Availability](/cloud/high-availability) for details on same-region, multi-region, and multi-cloud replication options.
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
@@ -349,7 +349,7 @@ Alias: `-n`
 
 #### --region
 
-**Required.** The region to remove from the Namespace. Upon removal, Temporal stops replication and the Namespace becomes a Standard Namespace. You cannot re-add a region or add a new region for seven days after removing a Namespace region.
+**Required.** The region to remove from the Namespace. Specify the region name, for example `us-east-1`. Upon removal, Temporal stops replication and the Namespace becomes a Standard Namespace. You cannot re-add a region or add a new region for seven days after removing a Namespace region.
 
 Alias: `--re`
 
@@ -357,8 +357,8 @@ Alias: `--re`
 
 ```bash
 tcld namespace delete-region \
-    --namespace <namespace_id>\
-    --region <replica_region>
+    --namespace <namespace_id> \
+    --region <region_name>
 ```
 
 When using API key authentication, add your API credentials before pressing Enter:
@@ -367,7 +367,7 @@ When using API key authentication, add your API credentials before pressing Ente
 tcld --api-key <your_api_key> \
     delete-region \
     --namespace <namespace_id> \
-    --region <replica_region>
+    --region <region_name>
 ```
 
 #### --cloud-provider
@@ -413,11 +413,19 @@ Alias: `-n`
 
 #### --region
 
-**Required.** The region to failover _to_.
+**Required.** The region to failover _to_. Specify the region name, for example `us-east-1`.
 
 See [Regions](/cloud/regions) for a list of supported regions.
 
 Alias: `--re`
+
+**Example**
+
+```bash
+tcld namespace failover \
+    --namespace <namespace_id> \
+    --region <region_name>
+```
 
 #### --ca-certificate
 
