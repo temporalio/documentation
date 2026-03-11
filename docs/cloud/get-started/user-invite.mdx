@@ -83,7 +83,7 @@ To join Temporal Cloud, the user must select **Accept Invite** in the message.
 
 <TabItem value="invite-ops-api" label="Cloud Ops API">
 
-You can invite users pragmatically using the Cloud Ops API.
+You can invite users programmatically using the Cloud Ops API.
 
 1. Create a connection to your Temporal Service using the Cloud Operations API.
 2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
@@ -93,6 +93,14 @@ You can invite users pragmatically using the Cloud Ops API.
 </Tabs>
 
 ### Frequently Asked Questions
+
+#### Can multiple Temporal Cloud accounts share the same email domain?
+
+Yes. Multiple Temporal Cloud accounts can coexist with users from the same email domain.
+Each account has its own independent SAML configuration, tied to its unique Account ID.
+We recommend configuring [SAML](/cloud/saml) for each account independently.
+
+For a smoother login experience, you can configure SAML for each account separately and use IdP-initiated login: you click the relevant app tile in your identity provider's portal to access the Temporal Cloud account associated with your email address directly.
 
 #### Can the same email be used across different Temporal Cloud accounts?
 

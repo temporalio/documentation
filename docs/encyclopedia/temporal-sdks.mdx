@@ -74,7 +74,7 @@ The following third-party SDKs exist but are not officially supported by Tempora
 
 ## Why use a Temporal SDK? {#why-use-an-sdk}
 
-Temporal SDKs empowers developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
+Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
 
 ### Development pattern
 
@@ -419,7 +419,7 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Temporal Service arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
 A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
-In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
+In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into the Workflow Execution's Event History.
 
 Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
@@ -458,7 +458,7 @@ func (a *Activities) NotifyApplicantActivity(ctx context.Context, input *NotifyA
 
 The Activity above is performing a single call to an external API. Since the call can fail due to transient issues, we define it outside of the Workflow and provide it with retry options.
 
-When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that related to the code it is capable of executing.
+When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that are related to the code it is capable of executing.
 
 <CaptionedImage
     src="/diagrams/how-sdk-works-1.svg"
@@ -490,7 +490,7 @@ When the call to invoke the Activity is evaluated, the Worker suspends executing
 
 When the Worker process can perform more work, it picks up the Activity Task and begins executing the Activity code, which includes the call to the external API.
 
-If the Activity fails, say the API goes down, Temporal will automatically retry the Activity with one second between intervals, as the configurations have defined, an infinite amount of times until the Activity succeeds or is canceled.
+If the Activity fails, say the API goes down, Temporal will automatically retry the Activity with one second between intervals, as the configurations have defined, an infinite number of times until the Activity succeeds or is canceled.
 
 In the case where the calls succeeds, and the code completes, the Worker tells the Temporal Service the Activity Task completed.
 
@@ -506,7 +506,7 @@ The Temporal Service creates a new Workflow Task which the Worker picks up.
     src="/diagrams/how-sdk-works-1.svg"
     title="The Worker picks up the new Task" />
 
-This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 

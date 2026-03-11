@@ -330,8 +330,10 @@ module.exports = {
         'develop/environment-configuration',
         'develop/activity-retry-simulator',
         'develop/worker-performance',
+        'develop/worker-tuning-reference',
         'develop/safe-deployments',
         'develop/plugins-guide',
+        'develop/task-queue-priority-fairness',
       ],
     },
     {
