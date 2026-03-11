@@ -1,0 +1,280 @@
+---
+title: Workflow cost optimization
+sidebar_label: Cost Optimization
+description: Strategies for optimizing costs associated with workloads running on Temporal Cloud while maintaining workflow reliability and observability.
+toc_max_heading_level: 4
+keywords:
+  - cost optimization
+  - actions
+  - storage
+  - pricing
+  - best practices
+tags:
+  - Best Practices
+  - Temporal Cloud
+---
+
+This guide provides strategies for optimizing costs associated with workloads running on Temporal Cloud while maintaining Workflow reliability and observability.
+
+## Overview
+
+Temporal Cloud uses consumption-based pricing with two primary cost components: [Actions and Storage](/cloud/pricing#action).
+Optimization opportunities vary significantly based on your workload characteristics - Workflows with high signal volume face different cost drivers than long-running Workflows with large payloads.
+
+:::important
+Build Workflows following best practices first, then optimize based on observed costs.
+Premature optimization can compromise observability and create operational challenges.
+:::
+
+Every optimization involves tradeoffs.
+This guide helps you make informed decisions about where and how to optimize based on your specific requirements.
+
+Should you need additional guidance on Workflow design considerations, please reach out to a Temporal Solutions Architect.
+
+## Common anti-patterns
+
+Avoid these patterns that either inflate costs unnecessarily or create problems through aggressive optimization:
+
+### Premature Activity consolidation
+
+Combining Activities before understanding failure modes reduces observability and retry control.
+Activities should be split based on failure boundaries and retry requirements, not cost optimization alone.
+See [How many Activities should I use in my Temporal Workflow](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow) for a decision framework.
+
+### Inappropriate use of Local Activities
+
+Using Local Activities for all operations without understanding their failure semantics and limitations.
+Local Activities don't provide Worker-level isolation and have different retry behavior.
+See [Local Activities](/local-activity) for guidance.
+
+### Missing Continue-As-New
+
+Long-running Workflows that don't implement Continue-As-New accumulate large Event Histories, increasing storage costs and impacting performance.
+Workflows running days or weeks or processing thousands of events require [Continue-As-New](/workflow-execution/continue-as-new).
+
+### High volume of Activity retries
+
+Generally, the default values for [Activity retries](/encyclopedia/retry-policies) are quite good.
+However, excessive Activity retries often indicate underlying issues like timeouts that are too short or Activities that frequently fail.
+Detect Activity retry frequency and if high, consider increasing retry intervals or Activity timeouts before failures occur.
+See [Spooky Stories: Chilling Temporal Anti-Patterns](https://temporal.io/blog/spooky-stories-chilling-temporal-anti-patterns-part-2#2-hiding-behind-the-chainsaws) for guidance on retry defaults and patterns.
+
+### Large payloads in Workflow History
+
+Passing multi-megabyte payloads through Workflows when external storage (S3, blob storage) is more appropriate.
+Use [compression](/troubleshooting/blob-size-limit-error#why-does-this-error-occur) or the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) for large data.
+
+### Over-optimization at the expense of observability
+
+Aggressively optimizing costs without maintaining sufficient visibility for debugging and operational needs.
+Balance cost reduction with your team's observability requirements.
+
+For example, merging five separate Activities (validate input, call payment API, update database, send notification, generate receipt) into a single "processOrder" Activity reduces from 5 Actions to 1, but you lose per-step visibility in the Temporal UI.
+When the notification step fails, you can't see which of the five steps failed, you lose independent retry control (a notification failure retries the entire flow including the payment call), and you can't filter Workflows by failure stage.
+
+Similarly, removing [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) from a long-running data processing Activity saves Actions, but means you can't detect a stuck Worker until the full Activity timeout expires and you lose progress tracking (for example, "processed 500 of 1,000 records").
+
+### Excessive Activity Heartbeats
+
+Each Heartbeat counts as one Action.
+Only use Heartbeats for long-running Activities (10+ minutes) where you need to detect Worker failures and track progress.
+Short-running Activities that complete in seconds or minutes don't need Heartbeats.
+See [Activity Heartbeat documentation](/encyclopedia/detecting-activity-failures#which-activities-should-heartbeat) for guidance.
+
+## Understanding cost drivers
+
+Temporal Cloud pricing consists of Actions, Storage, and Support.
+If you are new to Temporal Cloud, see the [pricing documentation](/cloud/pricing#action) to learn more and familiarize yourself with [what results in a billable Action](/cloud/actions) in Temporal Cloud.
+
+### Cost distribution
+
+For most workloads, Actions represent the majority of total costs, with storage typically accounting for 10% or less of a monthly bill.
+Focus optimization efforts on what's driving costs with a specific workload:
+
+**High Actions costs generally indicate**:
+
+- [Many Activities per Workflow](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow)
+- Frequent [Signals, Queries, or Updates](/encyclopedia/workflow-message-passing#choosing-messages)
+- Long-running Activities with [Heartbeats](/cloud/worker-health#manage-worker-heartbeating)
+- High [Activity retry rates](/develop/activity-retry-simulator)
+- Extensive Query usage
+
+**High Storage costs generally indicate**:
+
+- Large payloads in Workflow inputs, outputs, or Activity results
+- Long retention periods with high Workflow volume
+- Long-running Workflows without Continue-As-New
+- Workflows accumulating large Event Histories
+
+### Optimization priority
+
+1. **Actions optimization**: Usually provides the largest cost reduction opportunity
+2. **Active Storage optimization**: Relevant for long-running Workflows or large payloads
+3. **Retained Storage optimization**: Relevant for high volume combined with long retention periods
+
+## Measuring
+
+Establish [baseline metrics](https://docs.temporal.io/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
+Specifically:
+
+- Actions consumption (per Workflow, per day/month, by Namespace)
+- Storage consumption (Active and Retained)
+- Monthly costs (total, per Namespace, per Workflow Type)
+- Observability metrics (time to debug, incident detection)
+
+## Actions optimization
+
+[Actions](https://docs.temporal.io/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
+Each represents a unit of consumption.
+
+### Activity granularity
+
+Activity granularity is a fundamental architectural decision that impacts both costs and observability.
+More Activities provide better visibility and retry control but increase the Action count.
+Fewer Activities reduce costs but limit observability.
+
+For detailed discussion of this tradeoff, see [How many Activities should I use in my Temporal Workflow?](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow)
+
+### Child Workflows vs Activities
+
+[Child Workflows cost 2 Actions](/cloud/actions#child-workflows) compared to an Activity's 1 Action.
+See [Child Workflows documentation](/child-workflows) for detailed comparison of capabilities and use cases.
+
+### Retry Policies
+
+Each Activity retry counts as one Action.
+Default [Retry Policies](/encyclopedia/retry-policies) can be aggressive, which is appropriate for most operations but costly for expensive external operations.
+
+For example, consider an Activity that calls a third-party payment API.
+With Temporal's default Retry Policy (1s initial interval, 2.0 backoff coefficient, unlimited maximum attempts), if that API goes down for 30 minutes, the Activity retries approximately 20 times before reaching the 100s maximum interval cap, then continues retrying every 100 seconds.
+Each retry counts as 1 Action.
+Across 1,000 concurrent Workflows hitting the same outage, that produces 20,000+ extra Actions from retries alone.
+
+For expensive external operations like this, consider:
+
+- Setting `MaximumAttempts` to cap total retries
+- Increasing `InitialInterval` (for example, to 10s) to reduce retry frequency
+- Adding error types to `NonRetryableErrorTypes` for errors that won't resolve on retry (such as 4xx HTTP status codes)
+- Using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types (for example, respecting rate-limit headers)
+- Implementing an [Activity pause pattern](/cli/activity#pause) to wait for manual intervention rather than automatic retries
+
+Use the [Activity Retry Simulator](/develop/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
+
+Refer to this blog post on [Mastering Workflow retry logic for resilient applications](https://temporal.io/blog/failure-handling-in-practice) for additional guidance.
+
+### Local Activities
+
+A [Local Activity](/local-activity#local-activity) is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
+Therefore, multiple Local Activities that run back-to-back only [count as a single billable action](/cloud/actions#activities), whereas each regular Activity counts as a billable action.
+However, there are tradeoffs to converting regular Activities to Local Activities.
+For example, if a specific Local Activity fails, *all* of them will be retried together.
+Review [the docs](/local-activity) or reach out to your account team to learn more.
+
+#### When to stick with Regular Activities
+
+Use Regular Activities instead of Local Activities if you require any of the following:
+
+- Activities may take more than 10 seconds to complete
+- Independent retry control for each Activity
+- Need to avoid re-running expensive Activities when unrelated Activities fail
+- Immediate Signal/Update handling during execution
+- Separate resource management (like rate limits) for each Activity
+
+### Batching operations
+
+#### Search Attributes
+
+1. [Search Attributes](/search-attribute#custom-search-attribute) provided at Workflow start do not count as billable Actions.
+   If Search Attribute values are known before starting the Workflow, provide them at Workflow start to eliminate these costs entirely.
+2. For Search Attributes that must be updated during Workflow Execution, each `UpsertSearchAttributes` call counts as 1 Action regardless of how many attributes are updated.
+   Batch multiple related attribute updates into single operations to reduce Actions consumed.
+
+See the [Temporal Cloud Action Documentation](/cloud/actions#workflows) for details.
+
+#### Signal handling
+
+Where feasible, implement deduplication logic client-side or aggregate data into fewer Signals.
+Use `SignalWithStart` instead of separate `StartWorkflow` and `SignalWorkflow` calls when initiating Workflows with Signals.
+
+## Storage optimization
+
+[Storage costs](/cloud/pricing#storage) are divided into Active Storage (open Workflows) and Retained Storage (closed Workflow History during retention period).
+Active Storage is significantly more expensive than Retained Storage.
+
+### Active Storage
+
+Active Storage applies to open Workflows and their Event Histories.
+The following sections detail optimization opportunities for Active Storage.
+
+#### Continue-As-New
+
+For long-running Workflows with extended sleep/wait periods, calling Continue-As-New before sleeping closes the current execution (moving to cheaper Retained Storage) and starts fresh when work resumes, reducing Active Storage costs.
+See [Continue-As-New documentation](/workflow-execution/continue-as-new) to learn more.
+
+#### Compression
+
+Large payloads increase Active Storage costs.
+Implement a custom Data Converter with compression for moderately large payloads (100KB-1MB).
+See the [Data Converter documentation](/default-custom-data-converters#custom-data-converter) to learn more.
+
+#### Claim check pattern
+
+For very large payloads or binary data, store data externally (S3 or GCS) and pass references through Workflows.
+
+### Retained Storage
+
+Retained Storage applies to closed Workflow History during the retention period.
+The following sections detail optimization opportunities for Retained Storage.
+
+#### Retention periods
+
+The default Namespace retention is 30 days (configurable between 1 and 90 days).
+Adjust based on operational and compliance requirements.
+
+**Considerations**:
+
+- Shorter retention reduces costs but limits historical analysis
+- Audit investigation patterns before shortening retention
+- Ensure compliance requirements are met
+
+See [Namespace retention documentation](/temporal-service/temporal-server#retention-period) for configuration details.
+
+#### Workflow export
+
+Temporal Cloud supports exporting Workflow Histories to external storage for compliance while maintaining shorter retention periods.
+Note that Workflow export costs one Action per export.
+
+See the [Workflow History export documentation](/cloud/export) for more details.
+Alternatively, if you are looking to do analysis on closed Workflow Executions, [review this blog post to learn how to gain insights from exported Workflow Histories](https://temporal.io/blog/get-insights-from-workflow-histories-export-on-temporal-cloud).
+
+## Validation
+
+### Validation approach
+
+1. **Test in non-production**: Validate functional correctness before production deployment
+2. **Monitor comprehensively**: Leverage the [Usage dashboard](/cloud/actions#usage) in the Cloud UI to track the impact on Actions and Storage after optimizations are made
+3. **Progressive rollout**: Deploy to a small percentage, validate, then expand. Review the [Worker Versioning documentation](/production-deployment/worker-deployments/worker-versioning) to learn about rolling out changes to Workflows
+4. **Continuous review**: Re-evaluate optimization effectiveness quarterly as system evolves
+
+### Success criteria
+
+- Cost reduced without increasing mean time to repair (MTTR)
+- Workflow success rates maintained or improved
+- Reduced observability does not increase mean time to detect (MTTD) incidents
+
+### Tools
+
+- Temporal Cloud Usage dashboard for Actions and Storage metrics
+- Workflow History for per-Workflow billable Actions estimates
+- Export metrics to observability platforms (Datadog, Grafana, etc.) for custom monitoring
+
+## When to get help
+
+Engage the Temporal team for Workflow audits when experiencing:
+
+- Complex Workflow patterns with unclear optimization paths
+- Compliance requirements limiting optimization options
+- Need for custom DataConverters or advanced patterns
+- Desire for expert validation of optimization strategies
+
+Contact your Temporal Account Representative or [Temporal support](http://support.temporal.io) to discuss optimization services.

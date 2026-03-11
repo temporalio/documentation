@@ -47,11 +47,23 @@ html[data-theme='dark']:root {
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
-  --feedback-primary-color: #fff; /* title on button AND submit button color*/
-  --feedback-light-color: #fff; /* text entry field color */
-  --feedback-dark-color: #ccc; /* overall backsplash color */
-  --feedback-text-color: #444; /* helpful and powered-by */
-  --feedback-white-color: #000; /* other text colors AND main-page button background color */
+  --feedback-primary-color: #fff; /* submit button, accents */
+  --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
+  --feedback-dark-color: #1a1a1a; /* modal background */
+  --feedback-text-color: #9ca3af; /* body text, footer, labels */
+  --feedback-white-color: #e8e8e8; /* header text, button text */
+  --feedback-modal-button-text-color: #d1d5db; /* screenshot/action button text */
+  --feedback-modal-button-icon-color: #d1d5db; /* button icons */
+  --feedback-modal-input-text-color: #d1d5db; /* input text */
+  --feedback-modal-input-border-color: rgba(255, 255, 255, 0.2); /* input borders */
+  --feedback-modal-input-border-color-hover: rgba(255, 255, 255, 0.35); /* input borders hover */
+  --feedback-modal-content-text-color: #d1d5db; /* placeholder and content text */
+  --feedback-modal-rating-button-color: #d1d5db; /* thumbs up/down */
+  --feedback-color-gray-400: #b0b5bd; /* placeholder text base color */
+  --feedback-modal-button-submit-text-color: #1a1a1a; /* dark text on white send button */
+  --feedback-button-light-bg-color: #0d0d0d; /* floating button background */
+  --feedback-button-light-text-color: #e8e8e8; /* floating button text */
+  --feedback-button-light-icon-color: #e8e8e8; /* floating button icon */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -69,6 +81,7 @@ html[data-theme='dark']:root {
   --tag-background-color: var(--tag-background-color-dark);
   --tag-text-color: var(--tag-text-color-dark);
 }
+
 
 html[data-theme='light']:root {
   --ifm-color-primary: #1d4ed8;

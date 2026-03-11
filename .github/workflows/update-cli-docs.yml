@@ -60,8 +60,7 @@ jobs:
 
       - name: Generate CLI docs
         working-directory: cli
-        run: |
-          make gen-docs
+        run: go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
 
       - name: Publish generated docs to documentation repo
         env:

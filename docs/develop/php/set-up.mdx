@@ -15,8 +15,8 @@ hide_table_of_contents: true
 description: Configure your local development environment to get started developing with Temporal
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
-import { CallToAction } from "@site/src/components/elements/CallToAction";
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+import { CallToAction } from '@site/src/components/elements/CallToAction';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -43,11 +43,13 @@ Make sure you have PHP installed.
 
 GRPC extension is required to work with RoadRunner application server.
 
-**If you don't have `ext-grpc` installed:** Visit the official website to [download and install](https://docs.cloud.google.com/php/docs/reference/help/grpc) it.
+**If you don't have `ext-grpc` installed:** Visit the official website to
+[download and install](https://docs.cloud.google.com/php/docs/reference/help/grpc) it.
 
 :::tip GRPC Installation Tip
 
-On macOS with Apple Silicon (M1/M2/M3/M4) and PHP 8.3, `pecl install grpc` may appear to hang or install indefinitely. If this happens, try installing a specific version:
+On macOS with Apple Silicon (M1/M2/M3/M4) and PHP 8.3, `pecl install grpc` may appear to hang or install indefinitely.
+If this happens, try installing a specific version:
 
 ```bash
 pecl install channel://pecl.php.net/grpc-1.78.0RC2
@@ -105,9 +107,12 @@ composer dump-autoload
 
 ## Add Temporal PHP SDK and Configure Autoloading
 
-Install the Temporal SDK, then add PSR-4 autoloading to your `composer.json` so PHP can find your Workflow and Activity classes.
+Install the Temporal SDK, then add PSR-4 autoloading to your `composer.json` so PHP can find your Workflow and Activity
+classes.
 
-Your final `composer.json` should look like this. After updating, run `composer dump-autoload` to regenerate the autoloader.
+Your final `composer.json` should look like this. After updating, run `composer dump-autoload` to regenerate the
+autoloader.
+
 </SetupStep>
 
 <SetupStep code={
@@ -149,10 +154,11 @@ Your final `composer.json` should look like this. After updating, run `composer 
 
 ## Install RoadRunner application server
 
-Install [RoadRunner application server](https://github.com/roadrunner-server/roadrunner). 
-It starts and manages your PHP processes that run Temporal Workers, and connects them to the Temporal Service over gRPC.
+Install [RoadRunner application server](https://github.com/roadrunner-server/roadrunner). It starts and manages your PHP
+processes that run Temporal Workers, and connects them to the Temporal Service over gRPC.
 
-See [RoadRunner installation instructions](https://docs.roadrunner.dev/docs/general/install) to learn about other installation methods.
+See [RoadRunner installation instructions](https://docs.roadrunner.dev/docs/general/install) to learn about other
+installation methods.
 
 </SetupStep>
 
@@ -161,18 +167,14 @@ See [RoadRunner installation instructions](https://docs.roadrunner.dev/docs/gene
 <CodeSnippet language="yml">
   {`version: "3"
 
-rpc:
-  listen: tcp://127.0.0.1:6001
+rpc: listen: tcp://127.0.0.1:6001
 
-server:
-  command: "php worker.php"
+server: command: "php worker.php"
 
-temporal:
-  address: "127.0.0.1:7233"
+temporal: address: "127.0.0.1:7233"
 
-logs:
-  level: info
-`}
+logs: level: info `}
+
 </CodeSnippet>
 </>
 }>
@@ -219,7 +221,8 @@ Create a simple configuration file named `.rr.yaml` with the following content:
 
 ## Install Temporal CLI and start the development server
 
-The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
+The fastest way to get a development version of the Temporal Service running on your local machine is to use
+[Temporal CLI](https://docs.temporal.io/cli).
 
 Choose your operating system to install Temporal CLI:
 
@@ -249,6 +252,7 @@ Choose your operating system to install Temporal CLI:
 }>
 
 ### DLoad package manager
+
 Consider using DLoad to delegate all installation and updating processes to the package manager.
 
 </SetupStep>
@@ -257,9 +261,7 @@ Consider using DLoad to delegate all installation and updating processes to the 
 <>
 
 <p>After installing, open a new Terminal. Keep this running in the background:</p>
-<CodeSnippet language="bash">
-temporal server start-dev
-</CodeSnippet>
+<CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
 
 <div className="port-info">
 <h4>Change the Web UI port</h4>
@@ -269,9 +271,6 @@ temporal server start-dev --ui-port 8080
 </CodeSnippet>
 <p>The Temporal Web UI will now be available at http://localhost:8080.</p>
 </div>
-<style>
-{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
-</style>
 </>
 }>
 
@@ -279,12 +278,14 @@ temporal server start-dev --ui-port 8080
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
-This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory
+database.
 
-The Temporal Service will be available on localhost:7233.
-The Temporal Web UI will be available at http://localhost:8233.
+The Temporal Service will be available on localhost:7233. The Temporal Web UI will be available at
+http://localhost:8233.
 
-Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal
+Service at any time by pressing CTRL+C.
 
 Once you have everything installed, you're ready to build apps with Temporal on your local machine.
 
@@ -292,7 +293,8 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 </SetupSteps>
 ## Run Hello World: Test Your Installation
 
-Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
+Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
+Activity.
 
 This test will confirm that:
 
@@ -325,8 +327,9 @@ class GreetingActivity
 }
 ```
 
-An Activity is a method that executes a single, well-defined action (either short or long-running), which often involves interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which is prone to failure.
-If an Activity fails, Temporal automatically retries it based on your configuration.
+An Activity is a method that executes a single, well-defined action (either short or long-running), which often involves
+interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling
+an API, which is prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
 
 You define Activities in PHP as classes annotated with the `Temporal\Activity\ActivityInterface` attribute.
 
@@ -393,17 +396,19 @@ $factory->run();
 
 Previously, we created a Worker that executes Workflow and Activity tasks.
 
-Now, start the RoadRunner application server to run the Worker by opening up a new terminal window and running this command:
+Now, start the RoadRunner application server to run the Worker by opening up a new terminal window and running this
+command:
 
 ```bash
 ./rr serve
 ```
 
-A Worker polls a Task Queue, that you configure it to poll, looking for work to do.
-Once the Worker dequeues a Workflow or Activity task from the Task Queue, it then executes the task.
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues a Workflow
+or Activity task from the Task Queue, it then executes the task.
 
-Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
-For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your
+Workflows and Activities. For more information on Workers, see
+[Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
 ### 5. Execute the Workflow
 

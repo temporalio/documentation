@@ -1,55 +1,104 @@
 .setupSteps {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin: 2rem 0;
-  }
- 
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.setupStep {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.content {
+  padding-right: 1rem;
+}
+
+.content h2 {
+  margin-top: 0;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.content p {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.code {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  overflow-x: auto;
+}
+
+.code pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+@media (max-width: 768px) {
   .setupStep {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
- 
+
   .content {
-    padding-right: 1rem;
+    padding-right: 0;
   }
- 
-  .content h2 {
+}
+
+/* Port Info */
+:global(.port-info) {
+  background: rgba(68, 76, 231, 0.1);
+  border: 1px solid rgba(68, 76, 231, 0.2);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+  }
+
+  h4 {
     margin-top: 0;
-    color: var(--ifm-color-emphasis-800);
+    margin-bottom: 1rem;
+    color: var(--ifm-color-emphasis-900);
+    font-weight: 600;
   }
- 
-  .content p {
-    color: var(--ifm-color-emphasis-700);
+
+  p {
+    margin-bottom: 1rem;
     font-size: 0.95rem;
     line-height: 1.5;
-  }
- 
-  .code {
-    background: var(--ifm-color-emphasis-100);
-    border-radius: 8px;
-    padding: 1rem;
-    font-family: var(--ifm-font-family-monospace);
-    font-size: 0.9rem;
-    line-height: 1.4;
-    overflow-x: auto;
-  }
- 
-  .code pre {
-    margin: 0;
-    padding: 0;
-    background: transparent;
-  }
- 
-  @media (max-width: 768px) {
-    .setupStep {
-      grid-template-columns: 1fr;
-      gap: 1rem;
+    color: var(--ifm-color-emphasis-800);
+
+    &:last-child {
+      margin-bottom: 0;
     }
- 
-    .content {
-      padding-right: 0;
-    }
-  } 
+  }
+
+  code {
+    background: rgb(41, 45, 62, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+}
+
+[data-theme='dark'] :global(.port-info) {
+  background: rgba(68, 76, 231, 0.15);
+  border-color: rgba(68, 76, 231, 0.3);
+
+  code {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
