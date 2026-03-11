@@ -796,6 +796,30 @@ plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner
 ```
 {/* SNIPEND */}
 
+#### TypeScript
+
+For a Plugin to offer Workflow interceptors, the Workflow bundle must include the module containing the interceptors.
+
+The `SimplePlugin` handles this automatically by appending any `workflowModules` paths from `workerInterceptors` to the
+bundle's `workflowInterceptorModules` list.
+
+Passing plugins to `Worker.create()` or `bundleWorkflowCode()` will include the Workflow interceptor module alongside
+your Workflow code in the bundle:
+
+```ts
+const bundle = await bundleWorkflowCode({
+  workflowsPath: require.resolve('./workflows'),
+  plugins: [myPlugin],
+});
+
+const worker = await Worker.create({
+  connection,
+  taskQueue: 'my-task-queue',
+  workflowBundle: bundle,
+  plugins: [myPlugin],
+});
+```
+
 ## Testing your Plugin {#testing-your-plugin}
 
 To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client. 
