@@ -1,0 +1,60 @@
+---
+id: job-queue
+title: Job Queue
+sidebar_label: Job Queue
+description: Standalone Activities adds the ability to execute any Temporal Activity as a top-level primitive without the full overhead of a Workflow.
+keywords:
+  - job queue
+  - job system
+  - standalone activities
+  - background jobs
+  - durable execution
+tags:
+  - Features
+  - Standalone Activities
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+
+## What is a Job Queue?
+
+A job is a single, discrete unit of work that runs asynchronously in the background such as sending an email, processing a webhook, syncing data, or executing a single function reliably.
+
+A job queue is the system that manages these jobs: accepting work, dispatching it to workers, retrying on failure, and providing visibility into what's running and what failed.
+
+**Standalone Activities are Temporal's job queue.**
+
+They let you use Temporal Activities as background jobs, in addition to using the same Activities as steps inside a Workflow. You write an Activity once and can run it either as a background job or as part of a multi-step Workflow.
+
+Temporal provides stronger guarantees, better visibility, and more control than traditional job queues - while remaining cost-effective for high-volume use cases and offering a clean upgrade path to multi-step workflow orchestration.
+
+### Overview
+
+Standalone Activities add the ability to execute any Temporal Activity as a top-level Activity Execution for durable job processing.
+
+#### Unified programming model & worker deployment
+
+- Write an Activity once and use it anywhere - with a unified Activity programming model
+- Optional heartbeats support checkpointing for long-running jobs
+- Deploy to an Activity Worker once, and invoke standalone or from within a Workflow
+
+#### Execution lifecycle
+
+- Jobs are submitted as Standalone Activity Executions
+- Each job is durably persisted with Temporal reliability, so jobs are not lost
+- Jobs are scheduled with priority, fairness, deduplication and no head-of-line blocking
+- Workers poll task queues and execute Activities (you run your own Workers)
+- Temporal ensures retries, timeouts, and exponential backoff policy is enforced
+
+#### Observability & lifecycle controls
+
+- Full job visibility (list, search) with detailed execution state, retry count, errors & results
+- OpenMetrics support
+- Lifecycle controls: cancel, pause, unpause, reset, terminate
+- Manual completion for external integrations & on-call management
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/standalone-activity" text="Standalone Activity concepts and getting started" archetype="encyclopedia" />
+  <RelatedReadItem path="/develop/go/standalone-activities" text="Go SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/standalone-activities" text="Python SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
+</RelatedReadContainer>
