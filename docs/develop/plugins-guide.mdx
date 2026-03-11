@@ -444,7 +444,7 @@ const testServiceHandler = nexus.serviceHandler(
     async testSyncOp(_, input) {
       return input;
     },
-  }
+  },
 );
 const plugin = new SimplePlugin({
   name: 'organization.PluginName',
@@ -807,19 +807,22 @@ Workflow interceptors are also bundled, but they aren't limited to a single modu
 `workflowModules` paths from `workerInterceptors` to the bundle's `workflowInterceptorModules` list, so Plugins can
 offer Workflow interceptors directly. Pass plugins to `Worker.create()` or `bundleWorkflowCode()` to include them:
 
+{/* SNIPSTART typescript-plugins-bundler */}
+[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
 ```ts
 const bundle = await bundleWorkflowCode({
   workflowsPath: require.resolve('./workflows'),
-  plugins: [myPlugin],
+  plugins: [plugin],
 });
 
 const worker = await Worker.create({
   connection,
   taskQueue: 'my-task-queue',
   workflowBundle: bundle,
-  plugins: [myPlugin],
+  plugins: [plugin],
 });
 ```
+{/* SNIPEND */}
 
 ## Testing your Plugin {#testing-your-plugin}
 
