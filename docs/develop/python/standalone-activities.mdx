@@ -98,7 +98,17 @@ git clone https://github.com/temporalio/samples-python.git
 cd samples-python
 ```
 
+The sample project is structured as follows:
 
+```
+hello_standalone_activity/
+├── my_activity.py
+├── worker.py
+├── execute_activity.py
+├── start_activity.py
+├── list_activities.py
+└── count_activities.py
+```
 
 ## Write an Activity Function {#write-activity}
 
@@ -107,9 +117,7 @@ decorator. It can optionally be an `async def`. The way you write a Standalone A
 to how you write an Activity to be orchestrated by a Workflow. In fact, an Activity can be executed
 both as a Standalone Activity and as a Workflow Activity.
 
-To see this code in a working example, see
-[`my_activity.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/my_activity.py).
-
+[hello_standalone_activity/my_activity.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/my_activity.py)
 
 ```python
 # my_activity.py
@@ -138,8 +146,7 @@ whether the Activity will be invoked from a Workflow or as a Standalone Activity
 Worker](/develop/python/core-application#run-a-dev-worker) for more details on Worker setup and
 configuration options.
 
-To see this code in a working example, see
-[`worker.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/worker.py).
+[hello_standalone_activity/worker.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/worker.py)
 
 ```python
 import asyncio
@@ -184,8 +191,7 @@ to execute a Standalone Activity. Call this from your application code, not from
 Definition. This durably enqueues your Standalone Activity in the Temporal Server, waits for it to
 be executed on your Worker, and then fetches the result.
 
-To see this code in a working example, see
-[`execute_activity.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/execute_activity.py).
+[hello_standalone_activity/execute_activity.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/execute_activity.py)
 
 ```python
 import asyncio
@@ -302,8 +308,7 @@ Use
 to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
 an async iterator that yields ActivityExecution entries.
 
-To see this code in a working example, see
-[`list_activities.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/list_activities.py).
+[hello_standalone_activity/list_activities.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/list_activities.py)
 
 ```python
 import asyncio
@@ -352,8 +357,7 @@ Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status =
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query.
 
-To see this code in a working example, see
-[`count_activities.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/count_activities.py).
+[hello_standalone_activity/count_activities.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/count_activities.py)
 
 ```python
 import asyncio
