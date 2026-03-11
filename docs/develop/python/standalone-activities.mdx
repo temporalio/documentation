@@ -50,9 +50,7 @@ This page covers the following:
 
 :::note
 
-This documentation uses source code derived from the [Python sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
-
-<!-- TODO: Update with actual sample path when available -->
+This documentation uses source code from the [hello_standalone_activity](https://github.com/temporalio/samples-python/tree/main/hello_standalone_activity) sample.
 
 :::
 
@@ -101,8 +99,8 @@ decorator. It can optionally be an `async def`. The way you write a Standalone A
 to how you write an Activity to be orchestrated by a Workflow. In fact, an Activity can be executed
 both as a Standalone Activity and as a Workflow Activity.
 
-To see this code in a working example, see the [Standalone Activity
-sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
+To see this code in a working example, see
+[`my_activity.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/my_activity.py).
 
 
 ```python
@@ -132,9 +130,8 @@ whether the Activity will be invoked from a Workflow or as a Standalone Activity
 Worker](/develop/python/core-application#run-a-dev-worker) for more details on Worker setup and
 configuration options.
 
-To see this code in a working example, see the [Standalone Activity
-sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_standalone_activity.py).
-
+To see this code in a working example, see
+[`worker.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/worker.py).
 
 ```python
 import asyncio
@@ -144,7 +141,7 @@ from temporalio.client import Client
 from temporalio.envconfig import ClientConfig
 from temporalio.worker import Worker
 
-from my_activity import compose_greeting
+from hello_standalone_activity.my_activity import compose_greeting
 
 
 async def main():
@@ -165,13 +162,22 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+Run the Worker in its own terminal:
+
+```bash
+uv run hello_standalone_activity/worker.py
+```
+
 ## Execute a Standalone Activity {#execute-activity}
 
 Use
 [`client.execute_activity()`](https://python.temporal.io/temporalio.client.Client.html#execute_activity)
 to execute a Standalone Activity. Call this from your application code, not from inside a Workflow
 Definition. This durably enqueues your Standalone Activity in the Temporal Server, waits for it to
-be executed on your Worker, and then fetches the result:
+be executed on your Worker, and then fetches the result.
+
+To see this code in a working example, see
+[`execute_activity.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/execute_activity.py).
 
 ```python
 import asyncio
@@ -180,7 +186,7 @@ from datetime import timedelta
 from temporalio.client import Client
 from temporalio.envconfig import ClientConfig
 
-from my_activity import ComposeGreetingInput, compose_greeting
+from hello_standalone_activity.my_activity import ComposeGreetingInput, compose_greeting
 
 
 async def my_application():
@@ -202,6 +208,23 @@ if __name__ == "__main__":
     asyncio.run(my_application())
 ```
 
+Run it (with the Worker running in another terminal):
+
+```bash
+uv run hello_standalone_activity/execute_activity.py
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity execute \
+  --type compose_greeting \
+  --activity-id my-standalone-activity-id \
+  --task-queue my-standalone-activity-task-queue \
+  --start-to-close-timeout 10s \
+  --input '{"greeting": "Hello", "name": "World"}'
+```
+
 
 ## Start a Standalone Activity without waiting for the result {#start-activity}
 
@@ -221,6 +244,25 @@ activity_handle = await client.start_activity(
     start_to_close_timeout=timedelta(seconds=10),
 )
 ```
+
+Run the full example (with the Worker running in another terminal):
+
+```bash
+uv run hello_standalone_activity/start_activity.py
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity start \
+  --type compose_greeting \
+  --activity-id my-standalone-activity-id \
+  --task-queue my-standalone-activity-task-queue \
+  --start-to-close-timeout 10s \
+  --input '{"greeting": "Hello", "name": "World"}'
+```
+
+## Get a handle to an existing Standalone Activity {#get-activity-handle}
 
 You can also use `client.get_activity_handle()` to create a handle to a previously started Standalone Activity:
 
@@ -250,7 +292,10 @@ activity_result = await activity_handle.result()
 Use
 [`client.list_activities()`](https://python.temporal.io/temporalio.client.Client.html#list_activities)
 to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
-an async iterator that yields ActivityExecution entries:
+an async iterator that yields ActivityExecution entries.
+
+To see this code in a working example, see
+[`list_activities.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/list_activities.py).
 
 ```python
 import asyncio
@@ -278,6 +323,18 @@ if __name__ == "__main__":
     asyncio.run(my_application())
 ```
 
+Run it:
+
+```bash
+uv run hello_standalone_activity/list_activities.py
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity list
+```
+
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
 Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status = 'Running'".
 
@@ -286,6 +343,9 @@ Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status =
 
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query.
+
+To see this code in a working example, see
+[`count_activities.py`](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/count_activities.py).
 
 ```python
 import asyncio
@@ -313,10 +373,22 @@ if __name__ == "__main__":
     asyncio.run(my_application())
 ```
 
+Run it:
+
+```bash
+uv run hello_standalone_activity/count_activities.py
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity count
+```
+
 ## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
 
 The code samples on this page use `ClientConfig.load_client_connect_config()`, so the same code
-works against Temporal Cloud — just configure the connection via environment variables or a TOML
+works against Temporal Cloud - just configure the connection via environment variables or a TOML
 profile. No code changes are needed.
 
 For full details on connecting to Temporal Cloud, including Namespace creation, certificate
