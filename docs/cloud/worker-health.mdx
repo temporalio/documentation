@@ -26,6 +26,9 @@ keywords:
   - workflow task execution size
   - temporal worker resources
 ---
+
+import { ReleaseStage } from '@site/src/components';
+
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 import Tabs from '@theme/Tabs';
@@ -401,11 +404,7 @@ rate(temporal_sticky_cache_total_forced_eviction_total{namespace="$namespace"}[5
 
 ## Manage Worker Heartbeating {#manage-worker-heartbeating}
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseStage stage="public-preview" feature="Worker heartbeating" />
 
 Workers send a heartbeat to Temporal Server every 60 seconds by default. This heartbeat serves to provide liveness and configuration data from the Worker to the Server.
 Specific data sent can be found in the [API](https://github.com/temporalio/api/blob/master/temporal/api/worker/v1/message.proto). By providing a consistent heartbeat from
@@ -425,4 +424,3 @@ Use `TelemetryConfig()` to adjust heartbeat settings. See the [Python SDK docume
 Add configurations to `Runtime()` to adjust heartbeat settings. See the [Ruby SDK documentation](https://ruby.temporal.io/Temporalio/Runtime.html) for more details.
 </SdkTabs.Ruby>
 </SdkTabs>
-

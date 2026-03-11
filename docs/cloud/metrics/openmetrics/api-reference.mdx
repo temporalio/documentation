@@ -21,15 +21,11 @@ tags:
   - Temporal Cloud
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseStage } from '@site/src/components';
 
 The Temporal Cloud OpenMetrics API provides actionable operational metrics about your Temporal Cloud deployment. This is a scrapable HTTP API that returns metrics in OpenMetrics format, suitable for ingestion by Prometheus-compatible monitoring systems.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseStage stage="public-preview" feature="Temporal Cloud OpenMetrics support" />
 
 ## Available Metrics Reference
 
@@ -313,7 +309,6 @@ scrape_configs:
 ```
 
 :::
-
 
 ### Label Management
 

@@ -9,7 +9,7 @@ tags:
   - Performance
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseStage } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 
@@ -118,12 +118,11 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 
 #### Eager Workflow Start
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+<ReleaseStage stage="public-preview" feature="Eager Workflow Start">
 
-Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
 Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly Request-Eager-Start when starting a Workflow.
 
-:::
+</ReleaseStage>
 
 Eager Workflow Start reduces the latency required to initiate a Workflow execution.
 It is recommended for short-lived Workflows that use Local Activities to interact with external services, especially when these interactions are initiated in the first Workflow Task and the Workflow is deployed near the Temporal Server to minimize network delay.
@@ -376,7 +375,6 @@ When choosing whether to opt for fixed assignment or resource-based suppliers, c
 - When very low Task completion latency is a concern, avoid resourced-based auto-tuning slot suppliers.
 - Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
   They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
-
 
 Scenarios with tasks that have variable, or very high, resource needs should rely on fixed-size
 suppliers and manual tuning. The resource-based tuner can never perform as well as a fixed-size

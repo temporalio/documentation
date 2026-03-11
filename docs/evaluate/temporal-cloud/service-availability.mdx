@@ -14,6 +14,8 @@ tags:
   - Temporal Cloud
 ---
 
+import { ReleaseStage } from '@site/src/components';
+
 The operating envelope of Temporal Cloud includes throughput, latency, and limits.
 Service regions are listed on [this page](/cloud/regions).
 If you need more details, [contact us](https://pages.temporal.io/contact-us).
@@ -27,11 +29,7 @@ Temporal offers two different modes for adjusting capacity: On-Demand Capacity o
 With On-Demand Capacity, Namespace capacity is increased automatically along with usage.
 With Provisioned Capacity, you can control your capacity limits by requesting Temporal Resource Units (TRUs).
 
-:::tip Support, stability, and dependency info
-
-Provisioned Capacity is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseStage stage="public-preview" feature="Provisioned Capacity" />
 
 ## Latency Service Level Objective (SLO) {#latency}
 

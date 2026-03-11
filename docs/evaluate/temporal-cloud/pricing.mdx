@@ -21,7 +21,7 @@ tags:
   - Support
 ---
 
-import { DiscoverableDisclosure } from '@site/src/components';
+import { DiscoverableDisclosure, ReleaseStage } from '@site/src/components';
 
 Temporal Cloud is a consumption-based service.
 You pay only for what you use.
@@ -43,7 +43,6 @@ Your total invoice each calendar month is the combination of Temporal Cloud cons
 ### Temporal Cloud Plans {#base_plans}
 
 **How plans work**
-
 
 Each Temporal Cloud account includes a plan with Support, Actions, Active Storage, Retained Storage and platform features.
 Base allocations help you get started with the Temporal platform, so you can better estimate costs.
@@ -269,11 +268,7 @@ On-Demand capacity is automatically adjusted based on past usage.
 Provisioned Capacity modes lets you define the capacity that is needed by your Workflow and is useful to handle traffic outside of the standard on-demand limits.
 See details on how capacity is set and the associated limits at [Capacity Modes](/cloud/capacity-modes).
 
-:::tip Support, stability, and dependency info
-
-Provisioned Capacity is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseStage stage="public-preview" feature="Provisioned Capacity" />
 
 **How does pricing for Capacity Modes work?**
 
@@ -308,8 +303,6 @@ If TRUs are changed multiple times within an hour, the highest value within that
 Temporal’s approach to pricing Provisioned Capacity aligns with our goal to only charge for what you use. 
 The minimum hourly allocation will have no impact on your price if you utilize the requested capacity above your default by 20% or more, and will only incur an additional charge if the requested capacity is not used. 
 To avoid being charged for provisioned capacity it is advised to "return" capacity to the pool and switch back to the On-demand mode when usage is stable. 
-
-
 
 ### High Availability feature pricing {#high-availability-features}
 
