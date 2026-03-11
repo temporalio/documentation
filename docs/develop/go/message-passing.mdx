@@ -110,7 +110,7 @@ func GreetingWorkflow(ctx workflow.Context) error {
 }
 ```
 
-- Pass the Signal's name to [`GetSignalChannel`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetSignalChannel) to get the Signal Channel that listen for Signals of that type.
+- Pass the Signal's name to [`GetSignalChannel`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetSignalChannel) to get the Signal Channel that listens for Signals of that type.
 
 Alternatively, you might want the Workflow to proceed and still be capable of handling external Signals.
 
@@ -137,7 +137,7 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
   Otherwise, the Signals will be lost.
   The [batch sliding window](https://github.com/temporalio/samples-go/tree/main/batch-sliding-window) sample contains an example:
 - Delay calling `workflow.GetSignalChannel` until the Workflow initialization needed to process the Signal channel has finished.
-  This is safe because the SDK buffers signals when there are no channel created for them.
+  This is safe because the SDK buffers signals when there are no channels created for them.
 
 ```go
 reportCompletionChannel := workflow.GetSignalChannel(ctx, "ReportCompletion")

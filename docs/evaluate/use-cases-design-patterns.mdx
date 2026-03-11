@@ -71,7 +71,7 @@ Temporal ensures Durable Execution of tools, LLMs, and conversations, letting yo
 ### Human in the Loop
 
 "Human in the Loop" systems require human interaction for certain steps, such as customer onboarding, forms, or invoice approval.
-These are event driven system with humans generating events, and may be challenging to implement due to timing or unreliable connections between the human to the rest of the system.
+These are event-driven systems with humans generating events, and may be challenging to implement due to timing or unreliable connections between the human to the rest of the system.
 They can use schedules and timers to prompt for user input.
 
 **Example**: [Background checks example using the Go SDK](https://learn.temporal.io/examples/go/background-checks/).
@@ -88,7 +88,7 @@ The example below showcases how Workflow Executions, written in different langua
 
 ### Long Running Tasks
 
-This use case is particularly relevant for scenarios like shopping cart Workflows in an eCommerce app, where you can handling long-running tasks efficiently without managing state in a separate database.
+This use case is particularly relevant for scenarios like shopping cart Workflows in an eCommerce app, where you can handle long-running tasks efficiently without managing state in a separate database.
 It processes one message at a time, ensuring each message is processed only once.
 
 This approach addresses issues that can arise with long message processing times, which in other systems might cause consumer failover (typically with a default 5-minute message poll timeout) and potentially result in duplicate message processing by multiple consumers.
@@ -124,6 +124,6 @@ Temporal simplifies the complexity of state machines by providing a structured a
 
 :::tip
 
-If you're interested in code to help get you started, check out our [Temporal Example Applications](https://learn.temporal.io/examples/), [Getting Starting Tutorials](https://learn.temporal.io/getting_started/), or [Project-based Tutorials](https://learn.temporal.io/tutorials/).
+If you're interested in code to help get you started, check out our [Temporal Example Applications](https://learn.temporal.io/examples/), [Getting Started Tutorials](https://learn.temporal.io/getting_started/), or [Project-based Tutorials](https://learn.temporal.io/tutorials/).
 
 :::

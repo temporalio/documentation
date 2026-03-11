@@ -207,7 +207,6 @@ variables or a configuration file, and then override specific options in code.
 
 {/* SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} */}
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
-
 ```go
 package main
 
@@ -235,7 +234,6 @@ func main() {
 // ...
 }
 ```
-
 {/* SNIPEND */}
 
 </TabItem>
@@ -703,7 +701,7 @@ The following fields are available:
 #### ID
 
 Although it is not required, we recommend providing your own
-[Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity
+[Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
 identifier, such as an order identifier or customer identifier.
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions)

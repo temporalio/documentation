@@ -35,7 +35,7 @@ Temporal uses several different error classes internally — for example, [`Canc
 You should not raise or otherwise implement these manually, as they are tied to Temporal platform logic.
 
 The one Temporal error class that you will typically raise deliberately is [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure).
-In fact, *any* other exceptions that are raised from your Typescript code in a Temporal Activity will be converted to an `ApplicationError` internally.
+In fact, *any* other exceptions that are raised from your Typescript code in a Temporal Activity will be converted to an `ApplicationFailure` internally.
 This way, an error's type, severity, and any additional details can be sent to the Temporal Service, indexed by the Web UI, and even serialized across language boundaries.
 
 In other words, these two code samples do the same thing:

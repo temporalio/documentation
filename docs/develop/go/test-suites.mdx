@@ -171,7 +171,7 @@ Consider a test that simulates a Nexus operation call. In this example, the Nexu
 called `sample-operation`, the input type is `SampleInput`, the output type is `SampleOutput`, and
 it belongs to the Nexus service `sample-service`.
 
-The example bellow mocks a call to a Nexus synchronous operation, indicated by the returned value
+The example below mocks a call to a Nexus synchronous operation, indicated by the returned value
 type `*nexus.HandlerStartOperationResultSync[T]`. Since `OnNexusOperation` needs to know the
 operation's name, input type and output type, and you might not have access to the Nexus operation
 on the handler side, you can use `nexus.NewOperationReference` to create a Nexus operation reference
