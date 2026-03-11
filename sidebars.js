@@ -333,6 +333,7 @@ module.exports = {
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
         'develop/plugins-guide',
+        'develop/task-queue-priority-fairness',
       ],
     },
     {
