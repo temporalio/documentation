@@ -275,6 +275,17 @@ To run the starter (in a separate terminal from the Worker):
 go run standalone-activity/helloworld/starter/main.go
 ```
 
+Or use the Temporal CLI to execute a Standalone Activity:
+
+```bash
+temporal activity execute \
+  --type Activity \
+  --activity-id standalone_activity_helloworld_ActivityID \
+  --task-queue standalone-activity-helloworld \
+  --schedule-to-close-timeout 10s \
+  --input '"Temporal"'
+```
+
 ## Get the result of a Standalone Activity {#get-activity-result}
 
 Use `ActivityHandle.Get()` to block until the Activity completes and retrieve its result. This is analogous to calling
@@ -336,6 +347,12 @@ for info, err := range resp.Results {
 }
 ```
 
+Or use the Temporal CLI:
+
+```bash
+temporal activity list
+```
+
 The `Query` field accepts the same [List Filter](/list-filter) syntax used for Workflow Visibility. For example,
 `"ActivityType = 'Activity' AND Status = 'Running'"`.
 
@@ -354,6 +371,12 @@ if err != nil {
 }
 
 log.Println("Total activities:", resp.Count)
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity count
 ```
 
 ## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
