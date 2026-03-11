@@ -797,6 +797,30 @@ plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner
 ```
 {/* SNIPEND */}
 
+#### TypeScript
+
+The TypeScript SDK bundles all Workflow code from a single module. This prevents TypeScript Plugins from providing
+built-in Workflows the way other SDKs can. Plugin users must import and re-export any Plugin-provided Workflows from
+their own Workflow module so the bundle includes them.
+
+Workflow interceptors are also bundled, but they aren't limited to a single module. `SimplePlugin` appends any
+`workflowModules` paths from `workerInterceptors` to the bundle's `workflowInterceptorModules` list, so Plugins can
+offer Workflow interceptors directly. Pass plugins to `Worker.create()` or `bundleWorkflowCode()` to include them:
+
+```ts
+const bundle = await bundleWorkflowCode({
+  workflowsPath: require.resolve('./workflows'),
+  plugins: [myPlugin],
+});
+
+const worker = await Worker.create({
+  connection,
+  taskQueue: 'my-task-queue',
+  workflowBundle: bundle,
+  plugins: [myPlugin],
+});
+```
+
 ## Testing your Plugin {#testing-your-plugin}
 
 To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client. 
