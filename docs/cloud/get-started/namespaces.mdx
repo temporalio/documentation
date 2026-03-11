@@ -326,32 +326,14 @@ Using both API key and mTLS authentication on the same Namespace is in
 Connecting to your Namespace requires a specific endpoint that works for the given Namespace.
 There are two types of gRPC endpoints for accessing a Namespace in Temporal Cloud: a Namespace endpoint and a regional endpoint.
 
-- Namespace endpoint (`<namespace>.<account>.tmprl.cloud:7233`)
-    - Benefits:
-        - This endpoint is unique to each Namespace. It will always connect to the Namespace, no matter which region(s) the Namespace is using. (Recommended for Namespaces with High Availability)
-        - A Temporal Client that uses a Namespace endpoint doesn't have to be aware of which region the Namespace is in.
-    - Restrictions:
-        - If [High Availability](/cloud/high-availability) is not enabled, then accessing a Namespace via API key + Namespace endpoint is not supported. To use the Namespace endpoint with API keys, a Namespace must have [High Availability](/cloud/high-availability) enabled.
+- **Namespace endpoint** (`<namespace>.<account>.tmprl.cloud:7233`) — **Recommended**
+    - This endpoint is unique to each Namespace. It always connects to the Namespace, no matter which region(s) the Namespace is using.
+    - A Temporal Client that uses a Namespace endpoint doesn't have to be aware of which region the Namespace is in.
+    - For Namespaces with [High Availability](/cloud/high-availability), the Namespace endpoint automatically directs traffic to the active region, so Workers and Clients don't need to change endpoints during a failover.
 - Regional endpoint (`<region>.<cloud_provider>.api.temporal.io:7233`)
-    - Benefits:
-        - Temporal Cloud has only one regional endpoint for each cloud region. The same regional endpoint can access any Namespace that is active in that region (or that has a [replica](/cloud/high-availability) in that region).
-        - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region.
-    - Restrictions:
-        - When using mTLS to authenticate, the Temporal Client must set the `server_name` property in its request to the value of the Namespace endpoint.
-
-This table summarizes which endpoints are available for a Namespace based on which features the Namespace has enabled:
-
-|                            | Not High Availability                                                 | High Availability                                                                   |
-|----------------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| **mTLS Authentication**    | Namespace endpoint or regional endpoint (must override `server_name`) | Namespace endpoint (recommended) or regional endpoint (must override `server_name`) |
-| **API Key Authentication** | Regional endpoint only                                                | Namespace endpoint (recommended) or regional endpoint                               |
-
-:::info
-
-When switching on or off High Availability features for a Namespace, you may need to update the gRPC endpoint used by
-Temporal Clients and Workers. See [Disable High Availability](/cloud/high-availability/enable#disable) for more information.
-
-:::
+    - Temporal Cloud has only one regional endpoint for each cloud region. The same regional endpoint can access any Namespace that is active in that region (or that has a [replica](/cloud/high-availability) in that region).
+    - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region. This can be useful in advanced [High Availability](/cloud/high-availability) setups where you want explicit control over which region handles requests.
+    - When using mTLS to authenticate, the Temporal Client must set the `server_name` property to `<namespace endpoint value>` in its request to the value of the Namespace endpoint. This tells the client to expect a different SNI header during the TLS handshake, since the request to the regional endpoint is redirected to the specific Namespace.
 
 ### Configuring a Temporal Client with API keys or mTLS
 
