@@ -799,13 +799,10 @@ plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner
 
 #### TypeScript
 
-The TypeScript SDK bundles all Workflow code from a single module. This prevents TypeScript Plugins from providing
-built-in Workflows the way other SDKs can. Plugin users must import and re-export any Plugin-provided Workflows from
+Typescript bundles cannot provide built-in Workflows because the TypeScript SDK bundles all Workflow code from a single module. Plugin users must import and re-export any Plugin-provided Workflows from
 their own Workflow module so the bundle includes them.
 
-Workflow interceptors are also bundled, but they aren't limited to a single module. `SimplePlugin` appends any
-`workflowModules` paths from `workerInterceptors` to the bundle's `workflowInterceptorModules` list, so Plugins can
-offer Workflow interceptors directly. Pass plugins to `Worker.create()` or `bundleWorkflowCode()` to include them:
+Users of a plugin which provides workflow interceptors should always provide the plugin to the bundler if bundling. If you aren't aware of the exact function of the plugin, you can always provide it, as it won't have any adverse effects.
 
 {/* SNIPSTART typescript-plugins-bundler */}
 [features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
