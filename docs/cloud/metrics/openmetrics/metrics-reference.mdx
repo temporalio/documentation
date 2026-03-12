@@ -249,6 +249,54 @@ Workflows continued as new per second.
 
 **Type**: Rate
 
+#### temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile workflow schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile workflow schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile workflow schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Latency
+
 ### Activity Metrics
 
 :::caution High Cardinality
@@ -639,6 +687,42 @@ The current configured frontend service RPS limit for a namespace. Track utiliza
 #### temporal\_cloud\_v1\_poller\_limit
 
 The current configured poller limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_service_pending_requests``.
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_action\_on\_demand\_envelope\_limit
+
+The on-demand envelope limit for actions per second. For Namespaces in provisioned capacity mode, this shows what the action limit would be if operating in on-demand mode. For Namespaces already in on-demand mode, this tracks the same value as `temporal_cloud_v1_action_limit`.
+
+:::note
+
+Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_operations\_on\_demand\_envelope\_limit
+
+The on-demand envelope limit for operations per second. For Namespaces in provisioned capacity mode, this shows what the operations limit would be if operating in on-demand mode. For Namespaces already in on-demand mode, this tracks the same value as `temporal_cloud_v1_operations_limit`.
+
+:::note
+
+Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_service\_request\_on\_demand\_envelope\_limit
+
+The on-demand envelope limit for service requests per second. For Namespaces in provisioned capacity mode, this shows what the service request limit would be if operating in on-demand mode. For Namespaces already in on-demand mode, this tracks the same value as `temporal_cloud_v1_service_request_limit`.
+
+:::note
+
+Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
 
 **Type**: Value
 

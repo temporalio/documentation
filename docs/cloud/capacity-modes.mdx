@@ -87,6 +87,16 @@ Your rate limits can be adjusted automatically over time or provisioned manually
 We recommend tracking your Actions Rate and Limits using Temporal metrics to assess your use cases specific needs.
 See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) to track usage trends.
 
+For Namespaces using Provisioned Capacity, the on-demand envelope metrics show what your limits would be if operating in on-demand mode:
+
+| Metric | Description |
+| ------ | ----------- |
+| `temporal_cloud_v1_action_on_demand_envelope_limit` | Projected on-demand APS limit |
+| `temporal_cloud_v1_operations_on_demand_envelope_limit` | Projected on-demand OPS limit |
+| `temporal_cloud_v1_service_request_on_demand_envelope_limit` | Projected on-demand RPS limit |
+
+Use these to evaluate whether on-demand capacity would meet your needs before switching modes.
+
 :::note Actions that don't count against APS
 Actions that are external to the core Temporal service do not contribute to your APS. These Calls include:
 * [Export](/cloud/export)

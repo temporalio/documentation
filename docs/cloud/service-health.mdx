@@ -29,6 +29,16 @@ This metric measures latency for `SignalWithStartWorkflowExecution`, `SignalWork
 These operations are mission critical and never [throttled](/cloud/service-availability#throughput).
 This metric is a good indicator of your lowest possible latency for the 99th percentile of requests.
 
+### Workflow execution latency
+
+To monitor end-to-end Workflow execution time (not just the service API latency above), use the workflow schedule-to-close latency metrics:
+
+- [temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p50](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_workflow_schedule_to_close_latency_p50)
+- [temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p95](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_workflow_schedule_to_close_latency_p95)
+- [temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p99](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_workflow_schedule_to_close_latency_p99)
+
+These measure the time from when a Workflow is scheduled until it closes, including all Activity execution time. A sudden increase may indicate Worker capacity issues, downstream service degradation, or retry storms.
+
 ## Monitor Temporal Service errors
 
 Check for Temporal Service gRPC API errors.
@@ -152,6 +162,19 @@ to determine the severity of any active rate limiting.
 | `temporal_cloud_v1_action_limit` | `temporal_cloud_v1_total_action_count` | `temporal_cloud_v1_total_action_throttled_count` |
 | `temporal_cloud_v1_service_request_limit` | `temporal_cloud_v1_service_request_count` | `temporal_cloud_v1_service_request_throttled_count` |
 | `temporal_cloud_v1_operations_limit` | `temporal_cloud_v1_operations_count` | `temporal_cloud_v1_operations_throttled_count` |
+
+### On-demand envelope limits
+
+For Namespaces using provisioned capacity, the following metrics show what your limits would be under on-demand mode.
+Compare these against your current provisioned limits to evaluate capacity mode choices:
+
+| On-Demand Envelope Metric | Equivalent Limit Metric |
+| ------------------------- | ----------------------- |
+| `temporal_cloud_v1_action_on_demand_envelope_limit` | `temporal_cloud_v1_action_limit` |
+| `temporal_cloud_v1_operations_on_demand_envelope_limit` | `temporal_cloud_v1_operations_limit` |
+| `temporal_cloud_v1_service_request_on_demand_envelope_limit` | `temporal_cloud_v1_service_request_limit` |
+
+For Namespaces already in on-demand mode, these metrics track the same values as their equivalent limit metrics.
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes a Usage & Quotas section
 that creates demo charts for these limits and count metrics respectively.
