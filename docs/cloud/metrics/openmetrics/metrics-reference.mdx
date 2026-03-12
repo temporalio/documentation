@@ -586,6 +586,12 @@ The total number of actions performed per second. Actions with `is_background=fa
 | `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
+:::note
+
+Does not include the `region` label. Actions are scoped to the Namespace level.
+
+:::
+
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_total\_action\_throttled\_count
