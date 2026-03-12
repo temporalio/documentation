@@ -30,7 +30,7 @@ To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](
 [activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/activities/async-completion.ts)
 ```ts
 import { CompleteAsyncError, activityInfo } from '@temporalio/activity';
-import { Client } from '@temporalio/client';
+import { AsyncCompletionClient } from '@temporalio/client';
 
 export async function doSomethingAsync(): Promise<string> {
   const taskToken = activityInfo().taskToken;
@@ -40,9 +40,9 @@ export async function doSomethingAsync(): Promise<string> {
 
 // this work could be done in a different process or on a different machine
 async function doSomeWork(taskToken: Uint8Array): Promise<void> {
-  const client = new Client();
+  const client = new AsyncCompletionClient();
   // does some work...
-  await client.activity.complete(taskToken, "Job's done!");
+  await client.complete(taskToken, "Job's done!");
 }
 ```
 <!--SNIPEND-->
