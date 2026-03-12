@@ -25,13 +25,7 @@ tags:
 
 ---
 
-import { CaptionedImage } from '@site/src/components';
-
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
+import { CaptionedImage, ReleaseStage } from '@site/src/components';
 
 [Nexus Operations](/glossary#nexus-operation) are arbitrary-duration operations that may be synchronous or asynchronous, short-lived or long-lived, and are used to connect Temporal Applications within and across Namespaces, clusters, regions, and clouds.
 
@@ -330,11 +324,9 @@ Callers can then migrate to the new version in their normal deployment schedule.
 
 ## Attaching multiple Nexus callers to a handler Workflow {#attaching-multiple-nexus-callers}
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) with the [New-Workflow-Run-Operation](/nexus/operations#sdk-support) SDK helper is currently a [Public Preview](/evaluate/development-production-features/release-stages#public-preview) feature.
-
-:::
+<ReleaseStage>
+Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) with the [New-Workflow-Run-Operation](/nexus/operations#sdk-support) SDK helper is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+</ReleaseStage>
 
 :::tip CLOUD LIMITS
 
