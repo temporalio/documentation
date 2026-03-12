@@ -4,22 +4,25 @@ title: Plugins guide
 sidebar_label: Plugins guide
 description: Best practices for creating plugins for AI Agents
 toc_max_heading_level: 4
-hide_table_of_contents: true
+hide_table_of_contents: false
 keywords:
- - ai agents
- - best practices
+  - ai agents
+  - best practices
 tags:
- - Best Practices
- - AI Agents
+  - Best Practices
+  - AI Agents
 ---
 
 import SdkTabs from '@site/src/components';
 
 # Plugins
 
-A **Plugin** is an abstraction that allows you to customize any aspect of your Temporal Worker setup, including registering Workflow and Activity definitions, modifying worker and client options, and more. Using plugins, you can build reusable open-source libraries or build add-ons for engineers at your company.
+A **Plugin** is an abstraction that allows you to customize any aspect of your Temporal Worker setup, including
+registering Workflow and Activity definitions, modifying worker and client options, and more. Using plugins, you can
+build reusable open-source libraries or build add-ons for engineers at your company.
 
-This guide will teach you how to create plugins and give platform engineers general guidance on using and managing Temporal's primitives.
+This guide will teach you how to create plugins and give platform engineers general guidance on using and managing
+Temporal's primitives.
 
 Here are some common use cases for plugins:
 
@@ -30,21 +33,26 @@ Here are some common use cases for plugins:
 
 ## How to build a Plugin
 
-The recommended way to start building plugins is with a `SimplePlugin`. This abstraction will tackle the vast majority of plugins people want to write.  
+The recommended way to start building plugins is with a `SimplePlugin`. This abstraction will tackle the vast majority
+of plugins people want to write.
 
-For advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without re-implementing what you’ve done. See the [Advanced Topics section](#advanced-topics-for-plugins) for more information.
+For advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without
+re-implementing what you’ve done. See the [Advanced Topics section](#advanced-topics-for-plugins) for more information.
 
 ### Example Plugins
 
 If you prefer to learn by getting hands-on with code, check out some existing plugins.
 
-- Temporal's Python SDK ships with an [OpenAI Agents SDK](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents) plugin
+- Temporal's Python SDK ships with an
+  [OpenAI Agents SDK](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents) plugin
 - [Temporal client and Worker plugin for Pydantic AI](https://github.com/pydantic/pydantic-ai/blob/757d40932ebb8ef00f25cc469ff44e9b267b1aa3/pydantic_ai_slim/pydantic_ai/durable_exec/temporal/__init__.py#L83)
-- Temporal's TypeScript SDK ships with an [OpenTelemetry Plugin](https://github.com/temporalio/sdk-typescript/blob/main/packages/interceptors-opentelemetry/src/plugin.ts)
+- Temporal's TypeScript SDK ships with an
+  [OpenTelemetry Plugin](https://github.com/temporalio/sdk-typescript/blob/main/packages/interceptors-opentelemetry/src/plugin.ts)
 
 ## What you can provide to users in a plugin
 
-There are a number of features you can give your users with a plugin. Here's a short list of some of the things you can do.
+There are a number of features you can give your users with a plugin. Here's a short list of some of the things you can
+do.
 
 - [Built-in Activities](#built-in-activity)
 - [Workflow-friendly libraries](#workflow-friendly-libraries)
@@ -55,13 +63,17 @@ There are a number of features you can give your users with a plugin. Here's a s
 
 ### Built-in Activity
 
-You can provide built-in Activities in a Plugin for users to call from their Workflows. Check out the [Activities doc](/activities) for more detail on how these work.
+You can provide built-in Activities in a Plugin for users to call from their Workflows. Check out the
+[Activities doc](/activities) for more detail on how these work.
 
-You should refer to the [best practices for creating Activities](/activity-definition#best-practices-for-defining-activities) when you are making Activity plugins.
+You should refer to the
+[best practices for creating Activities](/activity-definition#best-practices-for-defining-activities) when you are
+making Activity plugins.
 
 #### Timeouts and retry policies
 
-Temporal's Activity retry mechanism gives applications the benefits of durable execution. See the [Activity retry policy explanation](/activity-definition#activity-retry-policy) for more details.
+Temporal's Activity retry mechanism gives applications the benefits of durable execution. See the
+[Activity retry policy explanation](/activity-definition#activity-retry-policy) for more details.
 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
@@ -72,9 +84,9 @@ Temporal's Activity retry mechanism gives applications the benefits of durable e
 async def some_activity() -> None:
     return None
 
-
 plugin = SimplePlugin("organization.PluginName", activities=[some_activity])
-```
+
+````
     {/* SNIPEND */}
   </SdkTabs.Python>
   <SdkTabs.Go>
@@ -99,8 +111,10 @@ func createActivityPlugin() (*temporal.SimplePlugin, error) {
 	})
 }
 
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-activity */}
@@ -112,18 +126,13 @@ public interface SomeActivity {
   void someActivity();
 }
 
-public class SomeActivityImpl implements SomeActivity {
-  @Override
-  public void someActivity() {
-    // Activity implementation
-  }
-}
+public class SomeActivityImpl implements SomeActivity { @Override public void someActivity() { // Activity
+implementation } }
 
-SimplePlugin activityPlugin =
-    SimplePlugin.newBuilder("organization.PluginName")
-        .registerActivitiesImplementations(new SomeActivityImpl())
-        .build();
-```
+SimplePlugin activityPlugin = SimplePlugin.newBuilder("organization.PluginName") .registerActivitiesImplementations(new
+SomeActivityImpl()) .build();
+
+````
     {/* SNIPEND */}
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
@@ -137,8 +146,10 @@ const plugin = new SimplePlugin({
     pluginActivity: activity,
   },
 });
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-activity */}
@@ -147,10 +158,10 @@ const plugin = new SimplePlugin({
 [Activity]
 static void SomeActivity() => throw new NotImplementedException();
 
-SimplePlugin activityPlugin = new SimplePlugin(
-    "organization.PluginName",
-    new SimplePluginOptions() { }.AddActivity(SomeActivity));
-```
+SimplePlugin activityPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
+}.AddActivity(SomeActivity));
+
+````
     {/* SNIPEND */}
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
@@ -165,23 +176,35 @@ plugin = Temporalio::SimplePlugin.new(
   name: 'organization.PluginName',
   activities: [method(:some_activity)]
 )
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Ruby>
 </SdkTabs>
 
-
 ### Workflow-friendly libraries
 
-You can provide a library with functionality for use within a Workflow if you'd like to abstract away some Temporal-specific details for your users. Your library will call elements you include in your Plugin such as Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
+You can provide a library with functionality for use within a Workflow if you'd like to abstract away some
+Temporal-specific details for your users. Your library will call elements you include in your Plugin such as Activities,
+Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long
+as it follows these requirements:
 
-- It should be [deterministic](/workflow-definition#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
-- See [observability](/evaluate/development-production-features/observability) to avoid duplicating observation side effects when Workflows replay.
-- Put other side effects inside of Activities or [Local Activities](/local-activity). This helps your Workflow handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
+- It should be [deterministic](/workflow-definition#deterministic-constraints), running the same way every time it’s
+  executed. Non-deterministic code should go in Activities or Nexus Operations.
+- See [observability](/evaluate/development-production-features/observability) to avoid duplicating observation side
+  effects when Workflows replay.
+- Put other side effects inside of Activities or [Local Activities](/local-activity). This helps your Workflow handle
+  being restarted, resumed, or executed in a different process from where it originally began without losing correctness
+  or state consistency.
 - See [testing your Plugin](#testing-your-plugin) to write tests that check for issues with side effects.
-- It should run quickly since it may be replayed many times during a long Workflow execution. More expensive code should go in Activities or Nexus Operations.
+- It should run quickly since it may be replayed many times during a long Workflow execution. More expensive code should
+  go in Activities or Nexus Operations.
 
-A Plugin should allow a user to decompose their Workflows into Activities, as well as Child Workflows and Nexus Calls when needed. This gives users granular control through retries and timeouts, debuggability through the Temporal UI, operability with resets, pauses, and cancels, memoization for efficiency and resumability, and scalability using task queues and Workers.
+A Plugin should allow a user to decompose their Workflows into Activities, as well as Child Workflows and Nexus Calls
+when needed. This gives users granular control through retries and timeouts, debuggability through the Temporal UI,
+operability with resets, pauses, and cancels, memoization for efficiency and resumability, and scalability using task
+queues and Workers.
 
 Users use Workflows for:
 
@@ -191,9 +214,13 @@ Users use Workflows for:
 
 #### Making changes to your library
 
-Your users may want to keep their Workflows running across deployments of their Worker code. If their deployment includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new version was deployed. This can be due to [non-deterministic behavior from code changes](/workflow-definition#non-deterministic-change) in your Plugin.
+Your users may want to keep their Workflows running across deployments of their Worker code. If their deployment
+includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new
+version was deployed. This can be due to
+[non-deterministic behavior from code changes](/workflow-definition#non-deterministic-change) in your Plugin.
 
-See [testing](#testing-your-plugin) to see how to test for this. And, if you make substantive changes, you need to use [patching](/patching).
+See [testing](#testing-your-plugin) to see how to test for this. And, if you make substantive changes, you need to use
+[patching](/patching).
 
 #### Example of a Workflow library that uses a Plugin in Python
 
@@ -202,7 +229,8 @@ See [testing](#testing-your-plugin) to see how to test for this. And, if you mak
 
 ### Built-in Workflows
 
-You can provide a built-in Workflow in a `SimplePlugin`. It’s callable as a Child Workflow or standalone. When you want to provide a piece of functionality that's more complex than an Activity, you can:
+You can provide a built-in Workflow in a `SimplePlugin`. It’s callable as a Child Workflow or standalone. When you want
+to provide a piece of functionality that's more complex than an Activity, you can:
 
 - Use a [Workflow Library](#workflow-friendly-libraries) that runs directly in the end user’s Workflow
 - Add a Child Workflow
@@ -210,10 +238,13 @@ You can provide a built-in Workflow in a `SimplePlugin`. It’s callable as a Ch
 Consider adding a Child Workflow when one or more of these conditions applies:
 
 - That child should outlive the parent.
-- The Workflow Event History would otherwise [not scale](/workflow-execution/event#event-history-limits) in parent Workflows.
-- When you want a separate Workflow ID for the child so that it can be operated independently of the parent's state (canceled, terminated, paused).
+- The Workflow Event History would otherwise [not scale](/workflow-execution/event#event-history-limits) in parent
+  Workflows.
+- When you want a separate Workflow ID for the child so that it can be operated independently of the parent's state
+  (canceled, terminated, paused).
 
-Any Workflow can be run as a standalone Workflow or as a Child Workflow, so registering a Child Workflow in a `SimplePlugin` is the same as registering any Workflow.
+Any Workflow can be run as a standalone Workflow or as a Child Workflow, so registering a Child Workflow in a
+`SimplePlugin` is the same as registering any Workflow.
 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
@@ -226,9 +257,9 @@ class HelloWorkflow:
     async def run(self, name: str) -> str:
         return f"Hello, {name}!"
 
-
 plugin = SimplePlugin("organization.PluginName", workflows=[HelloWorkflow])
-```
+
+````
     {/* SNIPEND */}
   </SdkTabs.Python>
   <SdkTabs.Go>
@@ -252,8 +283,10 @@ func createWorkflowPlugin() (*temporal.SimplePlugin, error) {
 	})
 }
 
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-workflow */}
@@ -265,18 +298,13 @@ public interface HelloWorkflow {
   String run(String name);
 }
 
-public static class HelloWorkflowImpl implements HelloWorkflow {
-  @Override
-  public String run(String name) {
-    return "Hello, " + name + "!";
-  }
-}
+public static class HelloWorkflowImpl implements HelloWorkflow { @Override public String run(String name) { return
+"Hello, " + name + "!"; } }
 
-SimplePlugin workflowPlugin =
-    SimplePlugin.newBuilder("organization.PluginName")
-        .registerWorkflowImplementationTypes(HelloWorkflowImpl.class)
-        .build();
-```
+SimplePlugin workflowPlugin = SimplePlugin.newBuilder("organization.PluginName")
+.registerWorkflowImplementationTypes(HelloWorkflowImpl.class) .build();
+
+````
     {/* SNIPEND */}
   </SdkTabs.Java>
   <SdkTabs.DotNet>
@@ -293,8 +321,10 @@ class SimpleWorkflow
 SimplePlugin workflowPlugin = new SimplePlugin(
     "organization.PluginName",
     new SimplePluginOptions() { }.AddWorkflow<SimpleWorkflow>());
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
     {/* SNIPSTART ruby-plugin-workflow */}
@@ -306,11 +336,9 @@ class HelloWorkflow < Temporalio::Workflow::Definition
   end
 end
 
-plugin = Temporalio::SimplePlugin.new(
-  name: 'organization.PluginName',
-  workflows: [HelloWorkflow]
-)
-```
+plugin = Temporalio::SimplePlugin.new( name: 'organization.PluginName', workflows: [HelloWorkflow] )
+
+````
     {/* SNIPEND */}
   </SdkTabs.Ruby>
 </SdkTabs>
@@ -345,8 +373,10 @@ class WeatherServiceHandler:
 plugin = SimplePlugin(
     "organization.PluginName", nexus_service_handlers=[WeatherServiceHandler()]
 )
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-nexus */}
@@ -356,36 +386,21 @@ type WeatherInput struct {
 	City string `json:"city"`
 }
 
-type Weather struct {
-	City             string `json:"city"`
-	TemperatureRange string `json:"temperatureRange"`
-	Conditions       string `json:"conditions"`
-}
+type Weather struct { City string `json:"city"` TemperatureRange string `json:"temperatureRange"` Conditions string
+`json:"conditions"` }
 
 var WeatherService = nexus.NewService("weather-service")
 
-var GetWeatherOperation = nexus.NewSyncOperation(
-	"get-weather",
-	func(ctx context.Context, input WeatherInput, options nexus.StartOperationOptions) (Weather, error) {
-		return Weather{
-			City:             input.City,
-			TemperatureRange: "14-20C",
-			Conditions:       "Sunny with wind.",
-		}, nil
-	},
-)
+var GetWeatherOperation = nexus.NewSyncOperation( "get-weather", func(ctx context.Context, input WeatherInput, options
+nexus.StartOperationOptions) (Weather, error) { return Weather{ City: input.City, TemperatureRange: "14-20C",
+Conditions: "Sunny with wind.", }, nil }, )
 
-func createNexusPlugin() (*temporal.SimplePlugin, error) {
-	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name: "organization.PluginName",
-		RunContextBefore: func(ctx context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
-			options.Registry.RegisterNexusService(WeatherService)
-			return nil
-		},
-	})
-}
+func createNexusPlugin() (\*temporal.SimplePlugin, error) { return
+temporal.NewSimplePlugin(temporal.SimplePluginOptions{ Name: "organization.PluginName", RunContextBefore: func(ctx
+context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
+options.Registry.RegisterNexusService(WeatherService) return nil }, }) }
 
-```
+````
     {/* SNIPEND */}
   </SdkTabs.Go>
   <SdkTabs.Java>
@@ -429,8 +444,10 @@ SimplePlugin nexusPlugin =
     SimplePlugin.newBuilder("organization.PluginName")
         .registerNexusServiceImplementation(new WeatherService())
         .build();
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-plugins-nexus */}
@@ -464,24 +481,22 @@ public interface IStringService
     string DoSomething(string name);
 }
 
-[NexusServiceHandler(typeof(IStringService))]
-public class HandlerFactoryStringService
-{
-    private readonly Func<IOperationHandler<string, string>> handlerFactory;
+[NexusServiceHandler(typeof(IStringService))] public class HandlerFactoryStringService { private readonly
+Func<IOperationHandler<string, string>> handlerFactory;
 
     public HandlerFactoryStringService(Func<IOperationHandler<string, string>> handlerFactory) =>
         this.handlerFactory = handlerFactory;
 
     [NexusOperationHandler]
     public IOperationHandler<string, string> DoSomething() => handlerFactory();
+
 }
 
-SimplePlugin nexusPlugin = new SimplePlugin(
-    "organization.PluginName",
-    new SimplePluginOptions() { }.AddNexusService(new HandlerFactoryStringService(() =>
-        OperationHandler.Sync<string, string>((ctx, name) => $"Hello, {name}")))
-);
-```
+SimplePlugin nexusPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
+}.AddNexusService(new HandlerFactoryStringService(() => OperationHandler.Sync<string, string>((ctx, name) => $"Hello,
+{name}"))) );
+
+````
     {/* SNIPEND */}
   </SdkTabs.DotNet>
 </SdkTabs>
@@ -507,8 +522,10 @@ def set_converter(converter: DataConverter | None) -> DataConverter:
 
 
 plugin = SimplePlugin("organization.PluginName", data_converter=set_converter)
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-converter */}
@@ -517,13 +534,14 @@ plugin = SimplePlugin("organization.PluginName", data_converter=set_converter)
 func createConverterPlugin() (*temporal.SimplePlugin, error) {
 	customConverter := converter.GetDefaultDataConverter() // Or your custom converter
 
-	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-		Name:          "organization.PluginName",
-		DataConverter: customConverter,
-	})
+    return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
+    	Name:          "organization.PluginName",
+    	DataConverter: customConverter,
+    })
+
 }
 
-```
+````
     {/* SNIPEND */}
   </SdkTabs.Go>
   <SdkTabs.Java>
@@ -540,8 +558,10 @@ SimplePlugin converterPlugin =
               return existingConverter;
             })
         .build();
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-plugins-converter */}
@@ -575,15 +595,11 @@ private class Codec : IPayloadCodec
     public Task<IReadOnlyCollection<Payload>> DecodeAsync(IReadOnlyCollection<Payload> payloads) => throw new NotImplementedException();
 }
 
-SimplePlugin converterPlugin = new SimplePlugin(
-    "organization.PluginName",
-    new SimplePluginOptions()
-    {
-        DataConverterOption = new SimplePluginOptions.SimplePluginOption<DataConverter>(
-            (converter) => converter with { PayloadCodec = new Codec() }
-        ),
-    });
-```
+SimplePlugin converterPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
+DataConverterOption = new SimplePluginOptions.SimplePluginOption<DataConverter>( (converter) => converter with {
+PayloadCodec = new Codec() } ), });
+
+````
     {/* SNIPEND */}
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
@@ -598,14 +614,17 @@ plugin = Temporalio::SimplePlugin.new(
   name: 'organization.PluginName',
   data_converter: custom_converter
 )
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Ruby>
 </SdkTabs>
 
 ### Interceptors
 
-Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/interceptors) for the details of implementing them. They're used to:
+Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You
+can [learn more about interceptors](/develop/python/interceptors) for the details of implementing them. They're used to:
 
 - Create side effects such as logging and tracing.
 - Modify arguments, such as adding headers for authorization or tracing propagation.
@@ -618,16 +637,11 @@ Interceptors are middleware that can run before and after various calls such as 
 class SomeWorkerInterceptor(temporalio.worker.Interceptor):
     pass  # Your implementation
 
+class SomeClientInterceptor(temporalio.client.Interceptor): pass # Your implementation
 
-class SomeClientInterceptor(temporalio.client.Interceptor):
-    pass  # Your implementation
+plugin = SimplePlugin( "organization.PluginName", interceptors=[SomeWorkerInterceptor(), SomeClientInterceptor()], )
 
-
-plugin = SimplePlugin(
-    "organization.PluginName",
-    interceptors=[SomeWorkerInterceptor(), SomeClientInterceptor()],
-)
-```
+````
     {/* SNIPEND */}
   </SdkTabs.Python>
   <SdkTabs.Go>
@@ -650,8 +664,10 @@ func createInterceptorPlugin() (*temporal.SimplePlugin, error) {
 	})
 }
 
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-interceptors */}
@@ -661,16 +677,12 @@ public class SomeWorkerInterceptor extends WorkerInterceptorBase {
   // Your worker interceptor implementation
 }
 
-public class SomeClientInterceptor extends WorkflowClientInterceptorBase {
-  // Your client interceptor implementation
-}
+public class SomeClientInterceptor extends WorkflowClientInterceptorBase { // Your client interceptor implementation }
 
-SimplePlugin interceptorPlugin =
-    SimplePlugin.newBuilder("organization.PluginName")
-        .addWorkerInterceptors(new SomeWorkerInterceptor())
-        .addClientInterceptors(new SomeClientInterceptor())
-        .build();
-```
+SimplePlugin interceptorPlugin = SimplePlugin.newBuilder("organization.PluginName") .addWorkerInterceptors(new
+SomeWorkerInterceptor()) .addClientInterceptors(new SomeClientInterceptor()) .build();
+
+````
     {/* SNIPEND */}
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
@@ -703,8 +715,10 @@ const plugin = new SimplePlugin({
     ],
   },
 });
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-interceptors */}
@@ -717,25 +731,20 @@ private class SomeClientInterceptor : IClientInterceptor
         throw new NotImplementedException();
 }
 
-private class SomeWorkerInterceptor : IWorkerInterceptor
-{
-    public WorkflowInboundInterceptor InterceptWorkflow(
-        WorkflowInboundInterceptor nextInterceptor) =>
-        throw new NotImplementedException();
+private class SomeWorkerInterceptor : IWorkerInterceptor { public WorkflowInboundInterceptor InterceptWorkflow(
+WorkflowInboundInterceptor nextInterceptor) => throw new NotImplementedException();
 
     public ActivityInboundInterceptor InterceptActivity(
         ActivityInboundInterceptor nextInterceptor) =>
         throw new NotImplementedException();
+
 }
 
-SimplePlugin interceptorPlugin = new SimplePlugin(
-    "organization.PluginName",
-    new SimplePluginOptions()
-    {
-        ClientInterceptors = new List<IClientInterceptor>() { new SomeClientInterceptor() },
-        WorkerInterceptors = new List<IWorkerInterceptor>() { new SomeWorkerInterceptor() },
-    });
-```
+SimplePlugin interceptorPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
+ClientInterceptors = new List<IClientInterceptor>() { new SomeClientInterceptor() }, WorkerInterceptors = new
+List<IWorkerInterceptor>() { new SomeWorkerInterceptor() }, });
+
+````
     {/* SNIPEND */}
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
@@ -765,8 +774,10 @@ plugin = Temporalio::SimplePlugin.new(
   client_interceptors: [SomeClientInterceptor.new],
   worker_interceptors: [SomeWorkerInterceptor.new]
 )
-```
+````
+
     {/* SNIPEND */}
+
   </SdkTabs.Ruby>
 </SdkTabs>
 
@@ -775,10 +786,14 @@ plugin = Temporalio::SimplePlugin.new(
 Each of the SDKs has nuances you should be aware of so you can account for it in your code.
 
 #### Python
-You can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who use sandboxing, your Plugin should specify the Workflow runner that it uses.
+
+You can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run
+Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who
+use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
 {/* SNIPSTART python-plugin-sandbox */}
 [features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
+
 ```py
 def workflow_runner(runner: WorkflowRunner | None) -> WorkflowRunner:
     if not runner:
@@ -795,17 +810,21 @@ def workflow_runner(runner: WorkflowRunner | None) -> WorkflowRunner:
 
 plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner)
 ```
+
 {/* SNIPEND */}
 
 #### TypeScript
 
-Typescript bundles cannot provide built-in Workflows because the TypeScript SDK bundles all Workflow code from a single module. Plugin users must import and re-export any Plugin-provided Workflows from
-their own Workflow module so the bundle includes them.
+Typescript bundles cannot provide built-in Workflows because the TypeScript SDK bundles all Workflow code from a single
+module. Plugin users must import and re-export any Plugin-provided Workflows from their own Workflow module so the
+bundle includes them.
 
-Users of a plugin which provides workflow interceptors should always provide the plugin to the bundler if bundling. If you aren't aware of the exact function of the plugin, you can always provide it, as it won't have any adverse effects.
+Users of a plugin which provides workflow interceptors should always provide the plugin to the bundler if bundling. If
+you aren't aware of the exact function of the plugin, you can always provide it, as it won't have any adverse effects.
 
 {/* SNIPSTART typescript-plugins-bundler */}
 [features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
+
 ```ts
 const bundle = await bundleWorkflowCode({
   workflowsPath: require.resolve('./workflows'),
@@ -819,23 +838,29 @@ const worker = await Worker.create({
   plugins: [plugin],
 });
 ```
+
 {/* SNIPEND */}
 
 ## Testing your Plugin {#testing-your-plugin}
 
-To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client. 
+To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client.
 
-Two special concerns are versioning tests, for when you're making changes to your plugin, and testing unwanted side effects.
+Two special concerns are versioning tests, for when you're making changes to your plugin, and testing unwanted side
+effects.
 
-### Versioning tests 
+### Versioning tests
 
-When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
+When you make changes to your plugin after it has already shipped to users, it's recommended that you set up
+[replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing
+non-determinism errors for your users.
 
 ### Side effects tests
 
-Your Plugin should cater to Workflows resuming in different processes than the ones they started on and then replaying from the beginning, which can happen, for example, after an intermittent failure.
+Your Plugin should cater to Workflows resuming in different processes than the ones they started on and then replaying
+from the beginning, which can happen, for example, after an intermittent failure.
 
-You can ensure you're not depending on local side effects by turning Workflow caching off, which will mean that the Workflow replays from the top each time it progresses:
+You can ensure you're not depending on local side effects by turning Workflow caching off, which will mean that the
+Workflow replays from the top each time it progresses:
 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
