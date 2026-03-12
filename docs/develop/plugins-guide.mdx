@@ -66,7 +66,7 @@ Temporal's Activity retry mechanism gives applications the benefits of durable e
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
     {/* SNIPSTART python-plugin-activity */}
-[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.py)
+[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
 ```py
 @activity.defn
 async def some_activity() -> None:
@@ -79,7 +79,7 @@ plugin = SimplePlugin("organization.PluginName", activities=[some_activity])
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-activity */}
-[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.go)
+[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.go)
 ```go
 func SomeActivity(ctx context.Context) error {
 	// Activity implementation
@@ -104,7 +104,7 @@ func createActivityPlugin() (*temporal.SimplePlugin, error) {
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-activity */}
-[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.java)
+[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.java)
 ```java
 @ActivityInterface
 public interface SomeActivity {
@@ -128,7 +128,7 @@ SimplePlugin activityPlugin =
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-plugins-activity */}
-[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
+[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
 ```ts
 const activity = async () => 'activity';
 const plugin = new SimplePlugin({
@@ -142,7 +142,7 @@ const plugin = new SimplePlugin({
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-activity */}
-[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.cs)
+[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.cs)
 ```cs
 [Activity]
 static void SomeActivity() => throw new NotImplementedException();
@@ -155,7 +155,7 @@ SimplePlugin activityPlugin = new SimplePlugin(
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
     {/* SNIPSTART ruby-plugin-activity */}
-[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.rb)
+[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.rb)
 ```rb
 def some_activity
   # Activity implementation
@@ -218,7 +218,7 @@ Any Workflow can be run as a standalone Workflow or as a Child Workflow, so regi
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
     {/* SNIPSTART python-plugin-workflow */}
-[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.py)
+[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
 ```py
 @workflow.defn
 class HelloWorkflow:
@@ -233,7 +233,7 @@ plugin = SimplePlugin("organization.PluginName", workflows=[HelloWorkflow])
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-workflow */}
-[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.go)
+[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.go)
 ```go
 func HelloWorkflow(ctx workflow.Context, name string) (string, error) {
 	return "Hello, " + name + "!", nil
@@ -257,7 +257,7 @@ func createWorkflowPlugin() (*temporal.SimplePlugin, error) {
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-workflow */}
-[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.java)
+[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.java)
 ```java
 @WorkflowInterface
 public interface HelloWorkflow {
@@ -281,7 +281,7 @@ SimplePlugin workflowPlugin =
   </SdkTabs.Java>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-workflow */}
-[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.cs)
+[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.cs)
 ```cs
 [Workflow]
 class SimpleWorkflow
@@ -298,7 +298,7 @@ SimplePlugin workflowPlugin = new SimplePlugin(
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
     {/* SNIPSTART ruby-plugin-workflow */}
-[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.rb)
+[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.rb)
 ```rb
 class HelloWorkflow < Temporalio::Workflow::Definition
   def execute(name)
@@ -322,7 +322,7 @@ Nexus calls are used from Workflows similar to Activities and you can check out 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
     {/* SNIPSTART python-plugin-nexus */}
-[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.py)
+[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
 ```py
 @nexusrpc.service
 class WeatherService:
@@ -350,7 +350,7 @@ plugin = SimplePlugin(
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-nexus */}
-[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.go)
+[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.go)
 ```go
 type WeatherInput struct {
 	City string `json:"city"`
@@ -390,7 +390,7 @@ func createNexusPlugin() (*temporal.SimplePlugin, error) {
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-nexus */}
-[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.java)
+[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.java)
 ```java
 // Example Nexus service implementation
 public class WeatherService {
@@ -434,7 +434,7 @@ SimplePlugin nexusPlugin =
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-plugins-nexus */}
-[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
+[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
 ```ts
 const testServiceHandler = nexus.serviceHandler(
   nexus.service('testService', {
@@ -455,7 +455,7 @@ const plugin = new SimplePlugin({
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-nexus */}
-[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.cs)
+[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.cs)
 ```cs
 [NexusService]
 public interface IStringService
@@ -495,7 +495,7 @@ Note that you can use an existing Data Converter such as, in Python, `PydanticPa
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
     {/* SNIPSTART python-plugin-converter */}
-[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.py)
+[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
 ```py
 def set_converter(converter: DataConverter | None) -> DataConverter:
     if converter is None or converter == DataConverter.default:
@@ -512,7 +512,7 @@ plugin = SimplePlugin("organization.PluginName", data_converter=set_converter)
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-converter */}
-[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.go)
+[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.go)
 ```go
 func createConverterPlugin() (*temporal.SimplePlugin, error) {
 	customConverter := converter.GetDefaultDataConverter() // Or your custom converter
@@ -528,7 +528,7 @@ func createConverterPlugin() (*temporal.SimplePlugin, error) {
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-converter */}
-[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.java)
+[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.java)
 ```java
 SimplePlugin converterPlugin =
     SimplePlugin.newBuilder("organization.PluginName")
@@ -545,7 +545,7 @@ SimplePlugin converterPlugin =
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-plugins-converter */}
-[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
+[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
 ```ts
 const codec: PayloadCodec = {
   encode(_payloads: Payload[]): Promise<Payload[]> {
@@ -567,7 +567,7 @@ const plugin = new SimplePlugin({
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-converter */}
-[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.cs)
+[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.cs)
 ```cs
 private class Codec : IPayloadCodec
 {
@@ -588,7 +588,7 @@ SimplePlugin converterPlugin = new SimplePlugin(
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
     {/* SNIPSTART ruby-plugin-converter */}
-[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.rb)
+[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.rb)
 ```rb
 custom_converter = Temporalio::Converters::DataConverter.new(
   payload_converter: Temporalio::Converters::PayloadConverter.default
@@ -613,7 +613,7 @@ Interceptors are middleware that can run before and after various calls such as 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
     {/* SNIPSTART python-plugin-interceptors */}
-[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.py)
+[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
 ```py
 class SomeWorkerInterceptor(temporalio.worker.Interceptor):
     pass  # Your implementation
@@ -632,7 +632,7 @@ plugin = SimplePlugin(
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-plugin-interceptors */}
-[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.go)
+[features/snippets/plugins/plugins.go](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.go)
 ```go
 type SomeWorkerInterceptor struct {
 	interceptor.WorkerInterceptorBase
@@ -655,7 +655,7 @@ func createInterceptorPlugin() (*temporal.SimplePlugin, error) {
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-plugin-interceptors */}
-[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.java)
+[features/snippets/plugins/plugins.java](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.java)
 ```java
 public class SomeWorkerInterceptor extends WorkerInterceptorBase {
   // Your worker interceptor implementation
@@ -675,7 +675,7 @@ SimplePlugin interceptorPlugin =
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-plugins-interceptors */}
-[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
+[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
 ```ts
 class MyWorkflowClientInterceptor implements WorkflowClientInterceptor {}
 
@@ -708,7 +708,7 @@ const plugin = new SimplePlugin({
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-plugins-interceptors */}
-[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.cs)
+[features/snippets/plugins/plugins.cs](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.cs)
 ```cs
 private class SomeClientInterceptor : IClientInterceptor
 {
@@ -740,7 +740,7 @@ SimplePlugin interceptorPlugin = new SimplePlugin(
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
     {/* SNIPSTART ruby-plugin-interceptors */}
-[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.rb)
+[features/snippets/plugins/plugins.rb](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.rb)
 ```rb
 class SomeWorkerInterceptor
   include Temporalio::Worker::Interceptor::Workflow
@@ -778,7 +778,7 @@ Each of the SDKs has nuances you should be aware of so you can account for it in
 You can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
 {/* SNIPSTART python-plugin-sandbox */}
-[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.py)
+[features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
 ```py
 def workflow_runner(runner: WorkflowRunner | None) -> WorkflowRunner:
     if not runner:
@@ -805,7 +805,7 @@ their own Workflow module so the bundle includes them.
 Users of a plugin which provides workflow interceptors should always provide the plugin to the bundler if bundling. If you aren't aware of the exact function of the plugin, you can always provide it, as it won't have any adverse effects.
 
 {/* SNIPSTART typescript-plugins-bundler */}
-[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/plugins/plugins.ts)
+[features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
 ```ts
 const bundle = await bundleWorkflowCode({
   workflowsPath: require.resolve('./workflows'),
@@ -840,7 +840,7 @@ You can ensure you're not depending on local side effects by turning Workflow ca
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
     {/* SNIPSTART python-worker-max-cached-workflows */}
-[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/worker/worker.py)
+[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
 ```py
 worker = Worker(client, task_queue="task-queue", max_cached_workflows=0)
 ```
@@ -848,7 +848,7 @@ worker = Worker(client, task_queue="task-queue", max_cached_workflows=0)
   </SdkTabs.Python>
   <SdkTabs.Go>
     {/* SNIPSTART go-worker-max-cached-workflows */}
-[features/snippets/worker/worker.go](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/worker/worker.go)
+[features/snippets/worker/worker.go](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.go)
 ```go
 worker.SetStickyWorkflowCacheSize(0)
 w := worker.New(c, "task-queue", worker.Options{})
@@ -857,7 +857,7 @@ w := worker.New(c, "task-queue", worker.Options{})
   </SdkTabs.Go>
   <SdkTabs.Java>
     {/* SNIPSTART java-worker-max-cached-workflows */}
-[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/worker/worker.java)
+[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
 ```java
 WorkerFactory factory =
     WorkerFactory.newInstance(
@@ -868,7 +868,7 @@ Worker worker = factory.newWorker("task-queue");
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
     {/* SNIPSTART typescript-worker-max-cached-workflows */}
-[features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/worker/worker.ts)
+[features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.ts)
 ```ts
 const worker = await Worker.create({
   connection,
@@ -880,7 +880,7 @@ const worker = await Worker.create({
   </SdkTabs.TypeScript>
   <SdkTabs.DotNet>
     {/* SNIPSTART dotnet-worker-max-cached-workflows */}
-[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/worker/worker.cs)
+[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
 ```cs
 using var worker = new TemporalWorker(
     client,
@@ -893,7 +893,7 @@ using var worker = new TemporalWorker(
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
     {/* SNIPSTART ruby-worker-max-cached-workflows */}
-[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/plugin_snippets/features/snippets/worker/worker.rb)
+[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
 ```rb
 worker = Temporalio::Worker.new(
   client: client,
