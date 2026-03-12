@@ -58,6 +58,45 @@ This is not an exhaustive list; refer to the [Python SDK methods](https://python
 
 The first of these categories is a Client call, and the remaining 4 are Worker calls.
 
+## Register an Interceptor
+
+### Register on the Client
+
+Pass interceptors in the `interceptors` argument of `Client.connect()`.
+Client interceptors modify outbound calls such as starting and signaling Workflows.
+
+```python
+client = await Client.connect(
+    "localhost:7233",
+    interceptors=[TracingInterceptor()],
+)
+```
+
+### Register on the Worker
+
+Pass interceptors in the `interceptors` argument of `Worker()`.
+Worker interceptors modify inbound and outbound Workflow and Activity calls.
+
+```python
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    interceptors=[SomeWorkerInterceptor()],
+    # ...
+)
+```
+
+:::note
+
+If your interceptor class inherits from both `client.Interceptor` and `worker.Interceptor`, pass it to `Client.connect()` rather than the `Worker()` constructor.
+The Worker will use interceptors from its underlying Client automatically.
+
+:::
+
+### Register via a Plugin
+
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
+
 ## Client call Interceptors
 
 To modify outbound Client calls, define a class inheriting from [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method `intercept_client()` to return an instance of [`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the subset of outbound Client calls that you wish to modify.
@@ -181,13 +220,5 @@ worker = Worker(
     # ...
 )
 ```
-
-:::note
-
-If you are inheriting methods from both `client.Interceptor` and `worker.Interceptor`, you should not pass your Interceptors directly to the `Worker()` constructor — instead, pass it to `Client.connect()`.
-This will allow a Worker to use them from the underlying Client.
-In other words, only pass the Interceptors to the `Worker()` if you are not using Client methods.
-
-:::
 
 The `workflow_interceptor_class` returns a `WorkflowInboundInterceptor` that works similarly to `ActivityInboundInterceptor`.
