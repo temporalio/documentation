@@ -83,6 +83,59 @@ automatically.
 
 :::
 
+## Register an Interceptor {#register}
+
+Registering an interceptor means supplying an interceptor instance to the SDK so Temporal can invoke it when matching
+Client or Worker calls occur. Once registered, the interceptor runs as part of the call path and can observe or modify
+request and response data.
+
+### Register on the Client
+
+Pass interceptors in the `interceptors` argument of `Client.connect()`. Client interceptors modify outbound calls such
+as starting and signaling Workflows.
+
+```python
+client = await Client.connect(
+    "localhost:7233",
+    interceptors=[TracingInterceptor()],
+)
+```
+
+The `interceptors` list can contain multiple interceptors. In this case they form a chain: a method implemented on an
+interceptor instance in the list can perform side effects, and modify the data, before passing it on to the
+corresponding method on the next interceptor in the list.
+
+### Register via a Plugin
+
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them
+through a [Plugin](/develop/plugins-guide#interceptors).
+
+### Register on the Worker only
+
+If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
+Worker interceptors modify inbound and outbound Workflow and Activity calls.
+
+```python
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    interceptors=[SomeWorkerInterceptor()],
+    # ...
+)
+```
+
+:::note
+
+If your interceptor class inherits from both `client.Interceptor` and `worker.Interceptor`, pass it to
+`Client.connect()` rather than the `Worker()` constructor. The Worker will use interceptors from its underlying Client
+automatically.
+
+:::
+
+### Register via a Plugin
+
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
+
 ## Client call Interceptors
 
 To modify outbound Client calls, define a class inheriting from
