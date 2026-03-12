@@ -2,7 +2,7 @@
 id: visibility
 title: Temporal Visibility
 sidebar_label: Visibility
-description: This comprehensive guide on Temporal Visibility explains how to set up, configure, and use Visibility features in Temporal Server versions. Learn about standard and advanced Visibility, Dual Visibility, supported databases, and custom Search Attributes.
+description: Temporal Visibility enables operators to view, filter, and search Workflow Executions using List Filters and Search Attributes. Learn about supported databases, Dual Visibility, and custom Search Attributes.
 slug: /visibility
 toc_max_heading_level: 4
 keywords:
@@ -26,30 +26,17 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service s
 
 With Temporal Server v1.21, you can set up [Dual Visibility](/dual-visibility) to migrate your Visibility store from one database to another.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates.
+## Visibility features {#advanced-visibility}
 
-## What is standard Visibility? {#standard-visibility}
+Visibility enables the listing, filtering, and sorting of [Workflow Executions](/workflow-execution) through a custom SQL-like [List Filter](/list-filter).
 
-Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
+Visibility supports [custom Search Attributes](/search-attribute#custom-search-attribute) for user-defined filtering beyond the default system attributes.
 
-Open Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, or Run Id.
+- On SQL databases (MySQL v8.0.17+, PostgreSQL v12+), Visibility is available with Temporal Server v1.20 and later.
+- On Elasticsearch (v7+ with Server v1.7+, v8 with Server v1.18+) and OpenSearch (2+ with Server v1.30.1+).
+- On Temporal Cloud, Visibility is enabled by default for [all users](/cloud/users#invite-users).
 
-Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
-
-[Custom Search Attributes](https://docs.temporal.io/search-attribute#custom-search-attribute) are not supported with Standard Visibility.
-
-Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
-For updates, check [Supported databases](/self-hosted-guide/visibility).
-
-## What is advanced Visibility? {#advanced-visibility}
-
-Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflow-execution) through a custom SQL-like [List Filter](/list-filter).
-
-- In Temporal Service version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
-- For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/self-hosted-guide/visibility#elasticsearch) to use advanced Visibility.
-  Elasticsearch takes on the Visibility request load, relieving potential performance issues.
-  We highly recommend operating a Temporal Service with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
-- On Temporal Cloud, advanced Visibility is enabled by default for [all users](/cloud/users#invite-users).
+For self-hosted setup and version compatibility details, see [Visibility store setup](/self-hosted-guide/visibility).
 
 ### Count Workflow by ExecutionStatus
 
@@ -62,5 +49,17 @@ The `GROUP BY` clause is only supported in the Count API and currently only grou
 :::note
 
 The Count API returns approximate counts.
+
+:::
+
+## Legacy: standard Visibility {#standard-visibility}
+
+:::info Historical context
+
+Prior to Temporal Server v1.20, Temporal had two Visibility modes: "standard" and "advanced." Standard Visibility supported only predefined filters (Workflow Type, Workflow Id, Run Id, Execution Status) without custom Search Attributes. Advanced Visibility required Elasticsearch.
+
+Starting with Temporal Server v1.20, advanced Visibility became available on SQL databases. Standard Visibility was deprecated in v1.21 and removed in v1.24. All current deployments use what was formerly called "advanced Visibility," now simply called Visibility.
+
+If you are running a Temporal Server version older than v1.24, see the [legacy standard Visibility section](/self-hosted-guide/visibility#legacy-standard-visibility) in the self-hosted guide.
 
 :::
