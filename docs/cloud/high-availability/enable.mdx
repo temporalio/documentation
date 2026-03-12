@@ -25,8 +25,7 @@ You can enable High Availability features
 replica. When you add a replica, Temporal Cloud begins asynchronously replicating ongoing and existing Workflow
 Executions.
 
-Not all replication options are available in all regions. See the [region documentation](/cloud/regions) for the
-replication options available in each region.
+Not all replication options are available in all regions. For Multi-region and Multi-cloud Replication, the replica region must be on the same continent as the active region. See the [region documentation](/cloud/regions) for the supported replica regions for each active region.
 
 Using private network connectivity with a HA namespace requires extra setup. See
 [Connectivity for HA](/cloud/high-availability/ha-connectivity).
@@ -108,8 +107,8 @@ tcld namespace add-region \
    --region <replica_region>
 ```
 
-Specify the [region code](/cloud/regions) of the region where you want to create the replica as an argument to the
-`--region` flag.
+Specify the region name (for example, `us-east-1`) of the region where you want to create the replica as an argument to the
+`--region` flag. See [Regions](/cloud/regions) for available region names.
 
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before
 `namespace add-region`.
@@ -190,8 +189,10 @@ Then, run the following command to remove the replica:
 tcld namespace delete-region \
     --api-key <api_key> \
     --namespace <namespace_id>.<account_id> \
-    --region <replica_region>
+    --region <replica_region_name>
 ```
+
+See [Regions](/cloud/regions) for available region names.
 
 </TabItem>
 
