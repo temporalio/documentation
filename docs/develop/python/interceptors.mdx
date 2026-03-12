@@ -58,9 +58,9 @@ This is not an exhaustive list; refer to the [Python SDK methods](https://python
 
 The first of these categories is a Client call, and the remaining 4 are Worker calls.
 
-## Register an Interceptor
+## Register an Interceptor {#register}
 
-### Register on the Client
+### Register on the Client 
 
 Pass interceptors in the `interceptors` argument of `Client.connect()`.
 Client interceptors modify outbound calls such as starting and signaling Workflows.
@@ -72,9 +72,17 @@ client = await Client.connect(
 )
 ```
 
-### Register on the Worker
+The `interceptors` list can contain multiple interceptors.
+In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
 
-Pass interceptors in the `interceptors` argument of `Worker()`.
+
+### Register via a Plugin
+
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
+
+### Register on the Worker only 
+
+If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
 
 ```python
@@ -93,9 +101,6 @@ The Worker will use interceptors from its underlying Client automatically.
 
 :::
 
-### Register via a Plugin
-
-If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
 
 ## Client call Interceptors
 
@@ -152,17 +157,7 @@ class _ContextPropagationClientOutboundInterceptor(
 It often happens that your Worker and Client interceptors will share code because they implement closely related logic.
 In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor` and `worker.Interceptor` as above, since their method sets do not overlap.
 
-You can then pass this in the `interceptors` argument of `Client.connect()` in your client/starter code:
-
-```python
-client = await Client.connect(
-    "localhost:7233",
-    interceptors=[interceptor.ContextPropagationInterceptor()],
-)
-```
-
-The `interceptors` list can contain multiple interceptors.
-In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
+You can then [register](#register) this interceptor in your client/starter code.
 
 Your interceptor classes need not implement every method; the default implementation is always to pass the data on to the next method in the interceptor chain.
 During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
