@@ -40,7 +40,7 @@ Registering an interceptor means supplying an interceptor instance to the SDK so
 Client or Worker calls occur. Once registered, the interceptor runs as part of the call path and can observe or modify
 request and response data.
 
-### Register on the Client
+### Register on the Client 
 
 Pass interceptors in the `interceptors` argument of `Client.connect()`. Client interceptors modify outbound calls such
 as starting and signaling Workflows.
@@ -52,16 +52,14 @@ client = await Client.connect(
 )
 ```
 
-The `interceptors` list can contain multiple interceptors. In this case they form a chain: a method implemented on an
-interceptor instance in the list can perform side effects, and modify the data, before passing it on to the
-corresponding method on the next interceptor in the list.
+The `interceptors` list can contain multiple interceptors.
+In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
 
 ### Register via a Plugin
 
-If you're building a reusable library or want to bundle interceptors with other primitives, you can register them
-through a [Plugin](/develop/plugins-guide#interceptors).
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
 
-### Register on the Worker only
+### Register on the Worker only 
 
 If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
@@ -132,9 +130,6 @@ automatically.
 
 :::
 
-### Register via a Plugin
-
-If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
 
 ## Client call Interceptors
 
@@ -198,11 +193,10 @@ and `worker.Interceptor` as above, since their method sets do not overlap.
 
 You can then [register](#register) this interceptor in your client/starter code.
 
-Your interceptor classes need not implement every method; the default implementation is always to pass the data on to
-the next method in the interceptor chain. During execution, when the SDK encounters an Inbound Activity call, it will
-look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it. The intercepted
-method will perform its function then call the same method on the next Interceptor in the chain. At the end of the chain
-the SDK will call the "real" SDK method.
+Your interceptor classes need not implement every method; the default implementation is always to pass the data on to the next method in the interceptor chain.
+During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
+The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
+At the end of the chain the SDK will call the "real" SDK method.
 
 ## Worker call Interceptors
 
