@@ -64,15 +64,14 @@ do.
 ### Built-in Activity
 
 You can provide built-in Activities in a Plugin for users to call from their Workflows. Check out the
-[Activities doc](/activities) for more detail on how these work.
+[Activities](/activities) page for more details on how they work.
 
-You should refer to the
-[best practices for creating Activities](/activity-definition#best-practices-for-defining-activities) when you are
-making Activity plugins.
+Refer to the [best practices for creating Activities](/activity-definition#best-practices-for-defining-activities) when
+you are making Activity plugins.
 
 #### Timeouts and retry policies
 
-Temporal's Activity retry mechanism gives applications the benefits of durable execution. See the
+Temporal's Activity retry mechanism gives applications the benefits of Durable Execution. See the
 [Activity retry policy explanation](/activity-definition#activity-retry-policy) for more details.
 
 <SdkTabs hideUnsupportedLanguages>
@@ -185,13 +184,15 @@ plugin = Temporalio::SimplePlugin.new(
 
 ### Workflow-friendly libraries
 
-You can provide a library with functionality for use within a Workflow if you'd like to abstract away some
-Temporal-specific details for your users. Your library will call elements you include in your Plugin such as Activities,
-Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long
-as it follows these requirements:
+You can provide a library for use within a Workflow if you'd like to abstract away some Temporal-specific details for
+your users. Your library will call elements you include in your Plugin such as Activities, Child Workflows, Signals,
+Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these
+requirements:
 
-- It should be [deterministic](/workflow-definition#deterministic-constraints), running the same way every time it’s
-  executed. Non-deterministic code should go in Activities or Nexus Operations.
+- Any code that runs in the Workflow context must be [deterministic](/workflow-definition#deterministic-constraints),
+  meaning it produces the same commands and results when replayed. For example, don't call system time APIs, generate
+  random values, or perform direct network and file I/O from Workflow-context code; move that work to Activities or
+  Nexus Operations.
 - See [observability](/evaluate/development-production-features/observability) to avoid duplicating observation side
   effects when Workflows replay.
 - Put other side effects inside of Activities or [Local Activities](/local-activity). This helps your Workflow handle
@@ -815,11 +816,11 @@ plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner
 
 #### TypeScript
 
-Typescript bundles cannot provide built-in Workflows because the TypeScript SDK bundles all Workflow code from a single
+TypeScript bundles cannot provide built-in Workflows because the TypeScript SDK bundles all Workflow code from a single
 module. Plugin users must import and re-export any Plugin-provided Workflows from their own Workflow module so the
 bundle includes them.
 
-Users of a plugin which provides workflow interceptors should always provide the plugin to the bundler if bundling. If
+Users of a plugin which provides Workflow interceptors should always provide the plugin to the bundler if bundling. If
 you aren't aware of the exact function of the plugin, you can always provide it, as it won't have any adverse effects.
 
 {/* SNIPSTART typescript-plugins-bundler */}
@@ -850,7 +851,7 @@ effects.
 
 ### Versioning tests
 
-When you make changes to your plugin after it has already shipped to users, it's recommended that you set up
+When you make changes to your plugin after it has already shipped to users, we recommend that you set up
 [replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing
 non-determinism errors for your users.
 
