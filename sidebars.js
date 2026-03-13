@@ -371,6 +371,7 @@ module.exports = {
             'cloud/get-started/users',
             'cloud/get-started/user-groups',
             'cloud/get-started/service-accounts',
+            'cloud/manage-access/custom-roles',
             'cloud/saml',
             'cloud/scim',
           ],
