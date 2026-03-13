@@ -373,11 +373,13 @@ module.exports = {
             id: 'cloud/manage-access/index',
           },
           items: [
-            'cloud/get-started/users',
-            'cloud/get-started/user-groups',
+'cloud/manage-access/roles-and-permissions',
+'cloud/get-started/users',
+'cloud/get-started/user-groups',
             'cloud/get-started/service-accounts',
             'cloud/saml',
             'cloud/scim',
+            'cloud/manage-access/permissions-reference',
           ],
         },
         {
@@ -412,11 +414,7 @@ module.exports = {
                 type: 'doc',
                 id: 'cloud/metrics/promql',
               },
-              items: [
-                'cloud/metrics/general-setup',
-                'cloud/metrics/reference',
-                'cloud/metrics/prometheus-grafana',
-              ],
+              items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
             },
           ],
         },
