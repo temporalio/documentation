@@ -35,55 +35,55 @@ configured per user.
 
 | Permission                  | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
 | --------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
-| AddUserGroupMember          |           |           |               |      ✔       |       ✔       |
-| CreateAccountAuditLogSink   |           |           |               |      ✔       |       ✔       |
-| CreateApiKey                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
-| CreateConnectivityRule      |           |           |               |      ✔       |       ✔       |
-| CreateNamespace             |           |     ✔     |               |      ✔       |       ✔       |
-| CreateNexusEndpoint         |           |     ✔     |               |      ✔       |       ✔       |
-| CreateServiceAccount        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
-| CreateUser                  |           |           |               |      ✔       |       ✔       |
-| CreateUserGroup             |           |           |               |      ✔       |       ✔       |
-| DeleteAccountAuditLogSink   |           |           |               |      ✔       |       ✔       |
-| DeleteApiKey                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
-| DeleteConnectivityRule      |           |           |               |      ✔       |       ✔       |
-| DeleteNexusEndpoint         |           |     ✔     |               |      ✔       |       ✔       |
-| DeleteServiceAccount        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
-| DeleteUser                  |           |           |               |      ✔       |       ✔       |
-| DeleteUserGroup             |           |           |               |      ✔       |       ✔       |
-| GetAccount                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetAccountAuditLogSink      |           |           |               |      ✔       |       ✔       |
-| GetAccountAuditLogSinks     |           |           |               |      ✔       |       ✔       |
-| GetApiKey                   |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
-| GetApiKeys                  |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
-| GetAsyncOperation           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetAuditLogs                |           |           |               |      ✔       |       ✔       |
-| GetConnectivityRule         |           |     ✔     |               |      ✔       |       ✔       |
-| GetConnectivityRules        |           |     ✔     |               |      ✔       |       ✔       |
-| GetCurrentIdentity          |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetNamespaces               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetNexusEndpoint            |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetNexusEndpoints           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetRegion                   |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetRegions                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetServiceAccount           |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
-| GetServiceAccounts          |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
-| GetUsage                    |           |           |       ✔       |      ✔       |       ✔       |
-| GetUser                     |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetUserGroup                |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetUserGroupMembers         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetUserGroups               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| GetUsers                    |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| RemoveUserGroupMember       |           |           |               |      ✔       |       ✔       |
-| UpdateAccount               |           |           |               |      ✔       |       ✔       |
-| UpdateAccountAuditLogSink   |           |           |               |      ✔       |       ✔       |
-| UpdateApiKey                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
-| UpdateNamespaceTags         |           |           |               |      ✔       |       ✔       |
-| UpdateNexusEndpoint         |           |     ✔     |               |      ✔       |       ✔       |
-| UpdateServiceAccount        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
-| UpdateUser                  |           |           |               |      ✔       |       ✔       |
-| UpdateUserGroup             |           |           |               |      ✔       |       ✔       |
-| ValidateAccountAuditLogSink |           |           |               |      ✔       |       ✔       |
+| [AddUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/members)          |           |           |               |      ✔       |       ✔       |
+| [CreateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks)   |           |           |               |      ✔       |       ✔       |
+| [CreateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)      |           |           |               |      ✔       |       ✔       |
+| [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)             |           |     ✔     |               |      ✔       |       ✔       |
+| [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)         |           |     ✔     |               |      ✔       |       ✔       |
+| [CreateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [CreateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users)                  |           |           |               |      ✔       |       ✔       |
+| [CreateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups)             |           |           |               |      ✔       |       ✔       |
+| [DeleteAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/DELETE/cloud/audit-log-sinks/%7Bname%7D)   |           |           |               |      ✔       |       ✔       |
+| [DeleteApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/DELETE/cloud/api-keys/%7BkeyId%7D)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [DeleteConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/DELETE/cloud/connectivity-rules/%7BconnectivityRuleId%7D)      |           |           |               |      ✔       |       ✔       |
+| [DeleteNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/DELETE/cloud/nexus/endpoints/%7BendpointId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
+| [DeleteServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/DELETE/cloud/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [DeleteUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/DELETE/cloud/users/%7BuserId%7D)                  |           |           |               |      ✔       |       ✔       |
+| [DeleteUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/DELETE/cloud/user-groups/%7BgroupId%7D)             |           |           |               |      ✔       |       ✔       |
+| [GetAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/account)                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-log-sinks/%7Bname%7D)      |           |           |               |      ✔       |       ✔       |
+| [GetAccountAuditLogSinks](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-log-sinks)     |           |           |               |      ✔       |       ✔       |
+| [GetApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/GET/cloud/api-keys/%7BkeyId%7D)                   |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [GetApiKeys](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/GET/cloud/api-keys)                  |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [GetAsyncOperation](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/operations/GET/cloud/operations/%7BasyncOperationId%7D)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetAuditLogs](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-logs)                |           |           |               |      ✔       |       ✔       |
+| [GetConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
+| [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules)        |           |     ✔     |               |      ✔       |       ✔       |
+| [GetCurrentIdentity](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/current-identity)          |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces)               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints/%7BendpointId%7D)            |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetNexusEndpoints](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions/%7Bregion%7D)                   |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetRegions](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions)                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts/%7BserviceAccountId%7D)           |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts)          |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [GetUsage](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/usage)                    |           |           |       ✔       |      ✔       |       ✔       |
+| [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D)                |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUserGroupMembers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D/members)         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUserGroups](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups)               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [RemoveUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/remove-member)       |           |           |               |      ✔       |       ✔       |
+| [UpdateAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/account)               |           |           |               |      ✔       |       ✔       |
+| [UpdateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks/%7Bspec.name%7D)   |           |           |               |      ✔       |       ✔       |
+| [UpdateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys/%7BkeyId%7D)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [UpdateNamespaceTags](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/update-tags)         |           |           |               |      ✔       |       ✔       |
+| [UpdateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints/%7BendpointId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
+| [UpdateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [UpdateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/%7BuserId%7D)                  |           |           |               |      ✔       |       ✔       |
+| [UpdateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D)             |           |           |               |      ✔       |       ✔       |
+| [ValidateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sink-validate) |           |           |               |      ✔       |       ✔       |
 
 - \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
@@ -136,23 +136,23 @@ configured per Namespace per user.
 
 | Permission                       | Read | Write | Namespace Admin |
 | -------------------------------- | :--: | :---: | :-------------: |
-| AddNamespaceRegion               |      |       |        ✔        |
-| CreateNamespaceExportSink        |      |       |        ✔        |
-| DeleteNamespace                  |      |       |        ✔        |
-| DeleteNamespaceExportSink        |      |       |        ✔        |
-| DeleteNamespaceRegion            |      |       |        ✔        |
-| FailoverNamespaceRegion          |      |       |        ✔        |
-| GetNamespace                     |  ✔   |   ✔   |        ✔        |
-| GetNamespaceCapacityInfo         |  ✔   |   ✔   |        ✔        |
-| GetNamespaceExportSink           |  ✔   |   ✔   |        ✔        |
-| GetNamespaceExportSinks          |  ✔   |   ✔   |        ✔        |
-| RenameCustomSearchAttribute      |      |       |        ✔        |
-| SetServiceAccountNamespaceAccess |      |       |        ✔        |
-| SetUserGroupNamespaceAccess      |      |       |        ✔        |
-| SetUserNamespaceAccess           |      |       |        ✔        |
-| UpdateNamespace                  |      |       |        ✔        |
-| UpdateNamespaceExportSink        |      |       |        ✔        |
-| ValidateNamespaceExportSink      |      |       |        ✔        |
+| [AddNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/add-region)               |      |       |        ✔        |
+| [CreateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks)        |      |       |        ✔        |
+| [DeleteNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/DELETE/cloud/namespaces/%7Bnamespace%7D)                  |      |       |        ✔        |
+| [DeleteNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/DELETE/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D)        |      |       |        ✔        |
+| [DeleteNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/DELETE/cloud/namespaces/%7Bnamespace%7D/regions/%7Bregion%7D)            |      |       |        ✔        |
+| [FailoverNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/failover-region)          |      |       |        ✔        |
+| [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D)                     |  ✔   |   ✔   |        ✔        |
+| [GetNamespaceCapacityInfo](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D/capacity-info)         |  ✔   |   ✔   |        ✔        |
+| [GetNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D)           |  ✔   |   ✔   |        ✔        |
+| [GetNamespaceExportSinks](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks)          |  ✔   |   ✔   |        ✔        |
+| [RenameCustomSearchAttribute](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/rename-custom-search-attribute)      |      |       |        ✔        |
+| [SetServiceAccountNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/namespaces/%7Bnamespace%7D/service-accounts/%7BserviceAccountId%7D/access) |      |       |        ✔        |
+| [SetUserGroupNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/namespaces/%7Bnamespace%7D/user-groups/%7BgroupId%7D/access)      |      |       |        ✔        |
+| [SetUserNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/namespaces/%7Bnamespace%7D/users/%7BuserId%7D/access)           |      |       |        ✔        |
+| [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D)                  |      |       |        ✔        |
+| [UpdateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bspec.name%7D)        |      |       |        ✔        |
+| [ValidateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sink-validate)      |      |       |        ✔        |
 
 ### Workflow-level permissions
 
