@@ -282,6 +282,7 @@ module.exports = {
             'develop/dotnet/set-up-your-local-dotnet',
             'develop/dotnet/core-application',
             'develop/dotnet/temporal-client',
+            'develop/dotnet/standalone-activities',
             'develop/dotnet/testing-suite',
             'develop/dotnet/failure-detection',
             'develop/dotnet/message-passing',
