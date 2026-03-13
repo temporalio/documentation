@@ -2,7 +2,9 @@
 id: interceptors
 title: Interceptors - Python SDK
 sidebar_label: Interceptors
-description: Implement Interceptors in the Temporal Python SDK to manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
+description:
+  Implement Interceptors in the Temporal Python SDK to manage inbound and outbound SDK calls, enhance tracing, and add
+  authorization to your Workflows and Activities.
 toc_max_heading_level: 2
 keywords:
   - interceptors
@@ -12,58 +14,36 @@ tags:
   - Temporal SDKs
 ---
 
-The behavior of the Python SDK can be customized in many useful ways by modifying inbound and outbound calls using Interceptors.
-This is similar to the use of "middleware" in web frameworks such as [Django](https://docs.djangoproject.com/en/5.2/topics/http/middleware/), [Starlette](https://www.starlette.io/middleware/), and [Flask](https://flask.palletsprojects.com/en/stable/lifecycle/#middleware).
+Interceptors are SDK hooks that let you intercept inbound and outbound Temporal calls. You use them to add common
+behavior across many calls, such as tracing and context propagation, before calls reach the SDK's underlying
+implementation. This is similar to using middleware in web frameworks such as
+[Django](https://docs.djangoproject.com/en/5.2/topics/http/middleware/),
+[Starlette](https://www.starlette.io/middleware/), and
+[Flask](https://flask.palletsprojects.com/en/stable/lifecycle/#middleware).
 
-The methods you implement on your Interceptor classes can perform arbitrary side effects.
-Interceptors can also perform arbitrary modifications to incoming and outgoing data before it is received by the SDK's "real" implementation.
+The methods you implement on your Interceptor classes can perform side effects and modify incoming or outgoing data.
 
 There are five categories of inbound and outbound calls that you can modify in this way:
 
-#### [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html)
+| [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)                                                       | [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)                           | [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| Start workflow, signal workflow, list workflows, update schedule                               | Execute workflow (handles a Workflow Task that starts a new Workflow Execution), handle query, handle signal, handle update handler, handle update validator | Start activity, start child workflow, signal child workflow, signal external workflow, start Nexus operation, start local activity | Execute activity (this is the only inbound Activity call)                                              | Info, heartbeat                                                                                          |
 
-- `start_workflow()`
-- `signal_workflow()`
-- `list_workflows()`
-- `update_schedule()`
-
-This is not an exhaustive list; refer to the [Python SDK methods](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) for more.
-
-#### [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)
-
-- `execute_workflow()` (i.e. handle a Workflow Task that is starting a new Workflow Execution)
-- `handle_query()`
-- `handle_signal()`
-- `handle_update_handler()`
-- `handle_update_validator()`
-
-#### [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)
-
-- `start_activity()`
-- `start_child_workflow()`
-- `signal_child_workflow()`
-- `signal_external_workflow()`
-- `start_nexus_operation()`
-- `start_local_activity()`
-
-#### [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html)
-
-- `execute_activity()`
-  - i.e. handle a task to execute an Activity (this is the only Inbound Activity call)
-
-#### [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html)
-
-- `info()`
-- `heartbeat()`
+This is not an exhaustive list; refer to the
+[Python SDK methods](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) for details.
 
 The first of these categories is a Client call, and the remaining 4 are Worker calls.
 
 ## Register an Interceptor {#register}
 
-### Register on the Client 
+Registering an interceptor means supplying an interceptor instance to the SDK so Temporal can invoke it when matching
+Client or Worker calls occur. Once registered, the interceptor runs as part of the call path and can observe or modify
+request and response data.
 
-Pass interceptors in the `interceptors` argument of `Client.connect()`.
-Client interceptors modify outbound calls such as starting and signaling Workflows.
+### Register on the Client
+
+Pass interceptors in the `interceptors` argument of `Client.connect()`. Client interceptors modify outbound calls such
+as starting and signaling Workflows.
 
 ```python
 client = await Client.connect(
@@ -72,15 +52,16 @@ client = await Client.connect(
 )
 ```
 
-The `interceptors` list can contain multiple interceptors.
-In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
-
+The `interceptors` list can contain multiple interceptors. In this case they form a chain: a method implemented on an
+interceptor instance in the list can perform side effects, and modify the data, before passing it on to the
+corresponding method on the next interceptor in the list.
 
 ### Register via a Plugin
 
-If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them
+through a [Plugin](/develop/plugins-guide#interceptors).
 
-### Register on the Worker only 
+### Register on the Worker only
 
 If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
@@ -96,15 +77,19 @@ worker = Worker(
 
 :::note
 
-If your interceptor class inherits from both `client.Interceptor` and `worker.Interceptor`, pass it to `Client.connect()` rather than the `Worker()` constructor.
-The Worker will use interceptors from its underlying Client automatically.
+If your interceptor class inherits from both `client.Interceptor` and `worker.Interceptor`, pass it to
+`Client.connect()` rather than the `Worker()` constructor. The Worker will use interceptors from its underlying Client
+automatically.
 
 :::
 
-
 ## Client call Interceptors
 
-To modify outbound Client calls, define a class inheriting from [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method `intercept_client()` to return an instance of [`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the subset of outbound Client calls that you wish to modify.
+To modify outbound Client calls, define a class inheriting from
+[`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method
+`intercept_client()` to return an instance of
+[`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the
+subset of outbound Client calls that you wish to modify.
 
 This example implements an Interceptor on outbound Client calls that sets a certain key in the outbound `headers` field.
 A User ID is context-propagated by being sent in a header field with outbound requests:
@@ -155,22 +140,26 @@ class _ContextPropagationClientOutboundInterceptor(
 ```
 
 It often happens that your Worker and Client interceptors will share code because they implement closely related logic.
-In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor` and `worker.Interceptor` as above, since their method sets do not overlap.
+In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor`
+and `worker.Interceptor` as above, since their method sets do not overlap.
 
 You can then [register](#register) this interceptor in your client/starter code.
 
-Your interceptor classes need not implement every method; the default implementation is always to pass the data on to the next method in the interceptor chain.
-During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
-The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
-At the end of the chain the SDK will call the "real" SDK method.
+Your interceptor classes need not implement every method; the default implementation is always to pass the data on to
+the next method in the interceptor chain. During execution, when the SDK encounters an Inbound Activity call, it will
+look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it. The intercepted
+method will perform its function then call the same method on the next Interceptor in the chain. At the end of the chain
+the SDK will call the "real" SDK method.
 
 ## Worker call Interceptors
 
-To modify inbound and outbound Workflow and Activity calls, define a class inheriting from `worker.Interceptor`.
-This is an interface with two methods named `intercept_activity` and `workflow_interceptor_class`, which you can use to configure interceptions of Activity and Workflow calls, respectively.
-`intercept_activity` returns an `ActivityInboundInterceptor`.
+To modify inbound and outbound Workflow and Activity calls, define a class inheriting from `worker.Interceptor`. This is
+an interface with two methods named `intercept_activity` and `workflow_interceptor_class`, which you can use to
+configure interceptions of Activity and Workflow calls, respectively. `intercept_activity` returns an
+`ActivityInboundInterceptor`.
 
-This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) latency:
+This example demonstrates using an interceptor to measure
+[Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) latency:
 
 ```python
 from temporalio.worker import (
@@ -216,4 +205,5 @@ worker = Worker(
 )
 ```
 
-The `workflow_interceptor_class` returns a `WorkflowInboundInterceptor` that works similarly to `ActivityInboundInterceptor`.
+The `workflow_interceptor_class` returns a `WorkflowInboundInterceptor` that works similarly to
+`ActivityInboundInterceptor`.
