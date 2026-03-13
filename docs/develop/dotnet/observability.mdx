@@ -101,7 +101,7 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 To configure OpenTelemetry tracing in .NET, use the [Temporalio.Extensions.OpenTelemetry](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.OpenTelemetry) extension.
 
-The [`Temporalio.Extensions.OpenTelemetry.TracingInterceptor`](https://dotnet.temporal.io/api/Temporalio.Extensions.OpenTelemetry.TracingInterceptor.html) class can be set as an interceptor in the client options.
+The [`Temporalio.Extensions.OpenTelemetry.TracingInterceptor`](https://dotnet.temporal.io/api/Temporalio.Extensions.OpenTelemetry.TracingInterceptor.html) class can be set as an interceptor in the client options, or provided through a [Plugin](/develop/plugins-guide#interceptors) if you're building a reusable library.
 
 When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
 Spans are created and serialized through the server to give one trace for a Workflow Execution.
