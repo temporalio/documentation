@@ -88,7 +88,7 @@ configured per user.
 - \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
 
-### Additional account-level capabilities
+{/* ### Additional account-level capabilities
 
 | Capability                                                       | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
 | ---------------------------------------------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
@@ -96,7 +96,6 @@ configured per user.
 | Manage MFA enrollments, password resets, and decode certificates |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | Manage own API keys and service account API keys                 |   ✔\*†    |   ✔\*†    |     ✔\*†      |     ✔\*†     |     ✔\*†      |
 | Manage self-hosted to cloud migrations                           |           |     ✔     |               |      ✔       |       ✔       |
-| View extended Namespace metadata                                 |           |     ✔     |               |      ✔       |       ✔       |
 | Complete user onboarding and quickstart Workflows                |           |     ✔     |               |      ✔       |       ✔       |
 | View monthly costs                                               |           |           |       ✔       |              |       ✔       |
 | View invoices, credit ledger entries, grants, and promotions     |           |           |       ✔       |      ✔‡      |       ✔       |
@@ -116,7 +115,7 @@ configured per user.
   billing and invoicing data will be removed once the Account Owner role is fully rolled out.
 
 > **Note:** Access to external observability endpoints (metrics and metric descriptors) is controlled separately and is
-> not tied to the standard account-level role hierarchy.
+> not tied to the standard account-level role hierarchy. */}
 
 ## Namespace-level permissions
 
@@ -255,7 +254,7 @@ permissions. These permissions are configured per Namespace per user.
 | UpdateWorkflowExecution               |      |   ✔   |        ✔        |
 | UpdateWorkflowExecutionOptions        |      |   ✔   |        ✔        |
 
-### Additional Namespace-level capabilities
+{/* ### Additional Namespace-level capabilities
 
 | Capability                                                    | Read | Write | Namespace Admin |
 | ------------------------------------------------------------- | :--: | :---: | :-------------: |
@@ -267,7 +266,7 @@ permissions. These permissions are configured per Namespace per user.
 | Bulk update custom Search Attributes                          |      |       |        ✔        |
 | Manage user and identity Namespace access                     |      |       |        ✔        |
 | Initiate Namespace failover                                   |      |       |        ✔        |
-| Convert single-region Namespace to multi-region               |      |       |        ✔        |
+| Convert single-region Namespace to multi-region               |      |       |        ✔        | */}
 
 ## Additional authorization behaviors
 
