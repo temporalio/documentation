@@ -442,7 +442,7 @@ There is a fundamental tradeoff between how quickly a slot supplier is willing t
 
 Slot throttling is a mechanism to control the rate at which new slots for concurrent tasks are made available for processing.
 This concept is part of the resource-based auto-tuning feature for Workers.
-By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing
+By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing.
 
 This throttle is called `rampThrottle` in the SDK options for resource-based slot suppliers.
 It defines the minimum time the Worker will wait between handing out new slots after passing the minimum slots number.
