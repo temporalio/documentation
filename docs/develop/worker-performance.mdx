@@ -373,18 +373,22 @@ When choosing whether to opt for fixed assignment or resource-based suppliers, c
 
 - Workflow Tasks make minimal demands on the CPU and, normally, do not consume much memory.
   They are well-served by fixed-sized slot suppliers.
-- When very low Task completion latency is a concern, avoid resourced-based auto-tuning slot suppliers.
-- Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
-  They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
+- When very low Task completion latency & maximum throughput is important, avoid resourced-based auto-tuning slot suppliers.
+- Reserve auto-tuned resource-based slot suppliers for deployments with workloads that have resource
+  usage patterns you don't fully understand, and don't care to. It can offer **good-enough** performance
+  for workloads you don't want to spend time profiling.
 
-
-Scenarios with tasks that have variable, or very high, resource needs should rely on fixed-size
-suppliers and manual tuning. The resource-based tuner can never perform as well as a fixed-size
-tuner with appropriately chosen configuration, but can offer reasonable performance without the 
-need for profiling.
+Scenarios with tasks that have variable, or very high, per-task resource needs should rely on
+fixed-size suppliers and manual tuning. The resource-based tuner can never perform as well as a
+fixed-size tuner with appropriately chosen configuration, but can offer reasonable performance
+without the need for profiling.
 
 The following use cases are well suited to resource-based auto-tuning slot suppliers: 
 
+- **You want acceptable performance with minimum effort**:
+  Resource-based suppliers can provide reasonable performance without the need for profiling your
+  workfload. They can be a great way to get started with new workloads. If a workload becomes very
+  performance-sensitive, we suggest you profile it and choose appropriate fixed-size numbers.
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
   For example: HTTP calls or other blocking I/Os that spend most of their time waiting on external events.
@@ -438,10 +442,14 @@ There is a fundamental tradeoff between how quickly a slot supplier is willing t
 
 Slot throttling is a mechanism to control the rate at which new slots for concurrent tasks are made available for processing.
 This concept is part of the resource-based auto-tuning feature for Workers.
-By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing
+By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing.
 
 This throttle is called `rampThrottle` in the SDK options for resource-based slot suppliers.
 It defines the minimum time the Worker will wait between handing out new slots after passing the minimum slots number.
+
+**A higher `rampThrottle` trades off performance for safety.**
+
+For example:
 
 If a just-started worker were to have no throttle, and there was a backlog of Tasks, it might immediately accept 100 Tasks at once.
 If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.

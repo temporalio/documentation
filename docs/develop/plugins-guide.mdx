@@ -678,7 +678,9 @@ public class SomeWorkerInterceptor extends WorkerInterceptorBase {
   // Your worker interceptor implementation
 }
 
-public class SomeClientInterceptor extends WorkflowClientInterceptorBase { // Your client interceptor implementation }
+public class SomeClientInterceptor extends WorkflowClientInterceptorBase { 
+  // Your client interceptor implementation 
+}
 
 SimplePlugin interceptorPlugin = SimplePlugin.newBuilder("organization.PluginName") .addWorkerInterceptors(new
 SomeWorkerInterceptor()) .addClientInterceptors(new SomeClientInterceptor()) .build();
