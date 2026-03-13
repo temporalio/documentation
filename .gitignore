@@ -12,6 +12,7 @@ test-results
 .docusaurus
 .cache-loader
 temp/
+.claude/*
 
 # Misc
 .DS_Store
