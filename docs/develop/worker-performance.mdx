@@ -447,6 +447,10 @@ By waiting a brief period between making slots available, the Worker can assess 
 This throttle is called `rampThrottle` in the SDK options for resource-based slot suppliers.
 It defines the minimum time the Worker will wait between handing out new slots after passing the minimum slots number.
 
+**A higher `rampThrottle` trades off performance for safety.**
+
+For example:
+
 If a just-started worker were to have no throttle, and there was a backlog of Tasks, it might immediately accept 100 Tasks at once.
 If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.
 The throttle enforces a wait before handing out new slots (after a minimum number of slots have been occupied) so you can measure newly consumed resources.
