@@ -1,0 +1,117 @@
+---
+id: custom-roles
+title: Manage custom roles
+sidebar_label: Manage custom roles
+description: Custom roles enable users to create fine-grained authorization in Temporal Cloud. This will give you precise control over who can do what within your account.
+slug: /cloud/manage-access/custom-roles
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - feature
+  - manage access
+  - custom roles
+  - how to
+tags:
+  - Temporal Cloud
+  - custom roles
+  - user management
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Temporal Cloud currently offers a fixed set of predefined [account-level roles and Namespace-level permissions](https://docs.temporal.io/cloud/users#account-level-roles). 
+These roles are sufficient for many Temporal use cases, but not for supporting enterprise-grade access models
+that require least privilege, delegation, and automation-safe permissions. 
+
+## What are Custom Roles?
+
+Custom Roles enable you to define your own roles as bundles of permission primitives (operations/actions) 
+scoped to applicable resources (namespaces, projects, account objects) and assign them to any 
+principal (user, group, service account). 
+
+## Why use Custom Roles?
+
+Use Custom Roles if you want more fine-grained authentication than Temporal Cloud's predefined roles and permissions provide.
+
+Use Custom Roles if your access model requires the Principle of Least Privilege or delegation.
+
+Using Custom Roles with [Service Accounts](/cloud/service-accounts) can make them more secure for automation purposes. 
+
+## Defining Custom Roles
+
+Custom Roles are made up of bundles of permission operations that map to Temporal Control Plane operations.
+You can scope a permission to all resources of a type, or to specific resources.
+
+For example, the following JSON code defines a global, read-only Namespace role called `NamespaceGlobalReadOnly`,
+to use for auditing and monitoring. 
+Users with this role will be able to retrieve information about any Namespace, but will not be able to modify them.
+The `grants` field is an array of the available permission operations, in this case `cloud.namespace.list` and `cloud.namespace.get`.
+The operations are limited to a `resourceType` of `Namespace`, and the scope is `all`.
+
+You can scope roles to:
+* All resources of a given type
+* Specific resources by explicit ID list
+* Resource subsets
+
+```
+{
+  "name": "NamespaceGlobalReadOnly",
+  "description": "Read-only access to all namespaces for monitoring and compliance",
+  "grants": [
+    {
+      "operation": "cloud.namespace.list",
+      "resourceType": "Namespace",
+      "scope": { "all": true }
+    },
+    {
+      "operation": "cloud.namespace.get",
+      "resourceType": "Namespace",
+      "scope": { "all": true }
+    }
+  ]
+}
+```
+
+### Create Custom Roles from the Web UI
+
+<!-- TBD: The UI is subject to change -->
+
+To create a Custom Role from the Web UI, select Org Settings in the left sidebar, and then click the Custom Roles tab on the Settings page.
+
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu to view details about an existing Custom Role, or to edit or delete that role.
+
+Click the Create Custom Role button to create a new role.
+On the Create Custom Role page, give the Custom Role a name, and optionally a description.
+In the Permissions section, you'll assign the appropriate resources and its permissions.
+Select the Resource Type from the drop-down; your choices are Namespace and Account.
+
+If you select Namespace, search for the Namespace for which you want to add permissions, then click Add Resource.
+The Namespace you selected appears in the Permissions By Resource list.
+
+If you select Account, the permissions apply to the current account, so only the Add Resource button appears. 
+Click Add Resource, and the Account will be added to the Permissions By Resource list.
+
+Once the Namespace or Account appears in the Permissions By Resource list, you can toggle individual permissions
+on or off for that resource. 
+If you want to start with the permission set of one of the pre-defined Temporal roles, choose the role from 
+the Select Preset drop-down, and the appropriate permissions will be toggled for you.
+
+<!-- TBD: If we choose to add info about available permissions, we should add a link or list here. -->
+
+When you're done assiging permissions to resources, click Create Custom Role at the bottom of the page.
+
+### Create Custom Roles with the API
+
+<!-- Need more information here. -->
+
+### Create Custom Roles with Terraform
+
+<!-- Need more information here. -->
+
+## Assigning Custom Roles to users
+
+Once you have created a Custom Role, it is available on the Identities page to assign to a user
+or group, the same as the pre-defined Temporal permissions. See [How to update an account-level role in Temporal Cloud](/cloud/users#update-roles)
+for more inforamtion.
