@@ -55,7 +55,8 @@ The following compatibility matrix summarizes which generation of Visibility eac
 | [MySQL](#mysql) | v8.0.17+ on Temporal Server v1.20+ | v5.7+ on older deployments before Temporal Server v1.24 |
 | [PostgreSQL](#postgresql) | v12+ on Temporal Server v1.20+ | v9.6+ on older deployments before Temporal Server v1.24 |
 | [SQLite](#sqlite) | v3.31.0+ on Temporal Server v1.20+ | Not supported |
-| [Cassandra](#cassandra) | Not supported.<br/><br/>To migrate from Cassandra to a supported advanced Visibility store, see [Migrating Visibility database](#migrating-visibility-database). | Deprecated in Temporal Server v1.21, removed in Temporal Server 1.24 |
+<<<<<<< HEAD
+| [Cassandra](#cassandra) | Not supported.<br/><br/>To migrate from Cassandra to a supported advanced Visibility store, see [Migrating Visibility database](#migrating-visibility-database). | Deprecated in Temporal Server v1.21, removed in Temporal Server v1.24 |
 
 You can use any combination of the supported databases for your Persistence and Visibility stores. For updates, check
 [Server release notes](https://github.com/temporalio/temporal/releases).
@@ -337,13 +338,11 @@ deployments, use one of the advanced Visibility backends described earlier on th
 
 :::
 
+Advanced Visibility is not supported with Cassandra.
 
-
-
-To enable advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or
-Elasticsearch, as your Visibility store. We recommend using Elasticsearch for any Temporal Service setup that handles
-more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize
-performance.
+To enable current Visibility features, use MySQL, PostgreSQL, SQLite, Elasticsearch, or OpenSearch as your Visibility
+store. We recommend Elasticsearch or OpenSearch for any Temporal Service setup that handles more than a few Workflow
+Executions because these backends support the Visibility request load and help optimize performance.
 
 To migrate from Cassandra to a supported SQL database, see
 [Migrating Visibility database](#migrating-visibility-database).
