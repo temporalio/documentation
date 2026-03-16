@@ -54,7 +54,7 @@ Temporal Client inside an Activity to communicate with a Temporal Service.
 ## Connect to a development Temporal Service {#connect-to-development-service}
 
 Use the `newLocalServiceStubs` method to create a stub that points to the Temporal development service, and then use the
-[`WorkflowClient.newInstance` method](<https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newInstance(io.temporal.serviceclient.WorkflowServiceStubs)>)
+[`WorkflowClient.newInstance` method](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newInstance(io.temporal.serviceclient.WorkflowServiceStubs))
 to create a Temporal Client.
 
 <!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"], "highlightedLines": ["3","7"]}-->
@@ -440,21 +440,9 @@ The following environment variables are required to connect to Temporal Cloud:
 
 Ensure these environment variables exist in your environment before running your Java application.
 
-<<<<<<< HEAD
-Import the `io.temporal.envconfig` package to set connection options for the Temporal Client using environment variables.
-The `ClientConfigProfile.load` method will automatically load all environment variables. For a list of all available
-environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
-=======
-Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
-`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
-environment variables and their default values, refer to [Environment Configuration](/references/client-environment-configuration).
->>>>>>> 654357d83 (chore(java): cleaned up broken links)
+Import the `io.temporal.envconfig` package to set connection options for the Temporal Client using environment variables. The `ClientConfigProfile.load` method will automatically load all environment variables. For a list of all available environment variables and their default values, refer to [Environment Configuration](/references/client-environment-configuration).
 
-For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
-specified in those variables. If you have defined a configuration file at either the default location
-(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
-variable, this will also load the default profile in the configuration file. However, any options set via environment
-variables will take precedence.
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options specified in those variables. If you have defined a configuration file at either the default location (`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment variable, this will also load the default profile in the configuration file. However, any options set via environment variables will take precedence.
 
 ```java {17-18,25-27}
 import io.temporal.client.WorkflowClientOptions;
@@ -614,8 +602,6 @@ the new Client:
 </Tabs>
 
 ## Start a Workflow Execution {#start-workflow-execution}
-
-**How to start a Workflow Execution using the Java SDK**
 
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
 you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,

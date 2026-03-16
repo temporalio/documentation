@@ -1,7 +1,7 @@
 ---
-id: basic-activity
-title: Basic Activity - Java SDK
-sidebar_label: Basic Activity
+id: basics
+title: Activity basics - Java SDK
+sidebar_label: Activity basics
 description: This section explains how to implement Activities with the Java SDK
 toc_max_heading_level: 4
 keywords:
@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Develop a basic Activity
+## Develop an Activity
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
@@ -75,7 +75,7 @@ An Activity interface can have any number of parameters.
 All inputs should be serializable by the default Jackson JSON Payload Converter.
 
 When implementing Activities, be mindful of the amount of data that you transfer using the Activity invocation parameters or return values as these are recorded in the Workflow Execution Events History.
-Large Events Histories can adversely impact performance.
+Large Event Histories can adversely impact performance.
 
 You can create a custom object, and pass it to the Activity interface, as shown in the following example.
 
