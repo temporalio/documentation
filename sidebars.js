@@ -479,6 +479,7 @@ module.exports = {
         'cloud/service-health',
         'cloud/notifications',
         'cloud/operation-api',
+        'cloud/billing-api',
         'cloud/terraform-provider',
         {
           type: 'category',
