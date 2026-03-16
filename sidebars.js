@@ -264,15 +264,15 @@ module.exports = {
               },
               items: [
                 'develop/typescript/workflows/basics',
+                'develop/typescript/workflows/child-workflows',
                 'develop/typescript/workflows/continue-as-new',
-                'develop/typescript/workflows/timeouts',
+                'develop/typescript/workflows/message-passing',
                 'develop/typescript/workflows/cancellation',
                 'develop/typescript/workflows/cancellation-scopes',
-                'develop/typescript/workflows/message-passing',
-                'develop/typescript/workflows/child-workflows',
+                'develop/typescript/workflows/timeouts',
+                'develop/typescript/workflows/enriching-ui',
                 'develop/typescript/workflows/schedules',
                 'develop/typescript/workflows/timers',
-                'develop/typescript/workflows/enriching-ui',
                 'develop/typescript/workflows/versioning',
               ],
             },
@@ -304,7 +304,6 @@ module.exports = {
                 'develop/typescript/workers/run-worker-process',
                 'develop/typescript/workers/interceptors',
                 'develop/typescript/workers/observability',
-                'develop/typescript/workers/run-worker-process',
               ],
             },
             {
@@ -315,7 +314,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/client/index',
               },
-              items: ['develop/typescript/client/temporal-client', 'develop/typescript/client/namespaces'],
+              items: [
+                'develop/typescript/client/temporal-client',
+                'develop/typescript/client/namespaces'
+              ],
             },
             {
               type: 'category',
