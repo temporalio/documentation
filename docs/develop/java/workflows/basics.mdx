@@ -1,8 +1,8 @@
 ---
-id: basic-workflow
-title: Basic Workflow - Java SDK
-sidebar_label: Basic Workflow
-description: This section explains how to implement Activities with the Java SDK
+id: basics
+title: Workflow basics - Java SDK
+sidebar_label: Workflow basics
+description: This section explains how to implement Workflows with the Java SDK
 toc_max_heading_level: 4
 keywords:
   - Java SDK
@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a basic Workflow {#develop-workflows}
+## How to develop a Workflow {#develop-workflows}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -107,7 +107,7 @@ r2.retryNow();
 The same technique can be used to query Workflows using a base Workflow interface.
 
 Note that this approach does not apply to `@WorkflowMethod` annotations, meaning that when using a base interface, it should not include any `@WorkflowMethod` methods.
-To illustrate this, lets' say that we define the following **invalid** code:
+To illustrate this, let's say that we define the following **invalid** code:
 
 ```java
 // INVALID CODE!
@@ -179,7 +179,7 @@ Related references:
 
 ## Customize your Workflow Type {#workflow-type}
 
-Workflows have a Type that are referred to as the Workflow name.
+Workflows have a Type that is referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
 
