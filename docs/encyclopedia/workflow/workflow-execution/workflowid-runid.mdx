@@ -76,12 +76,11 @@ A Workflow Id is meant to be a business-process identifier, such as customer ide
 
 :::caution Do not use sensitive data or PII in Workflow Ids
 
-Workflow Ids are stored in plain text and are **not** processed by a custom [Payload Codec](/dataconversion#payload-codec).
-They are visible in the Temporal Web UI, CLI output, Event History, and system logs.
+Do not include sensitive data, secrets, or personally identifiable information (PII) as a Workflow Id.
+Workflow Ids are stored in plain text, are **not** processed by a custom [Payload Codec](/dataconversion#payload-codec), and are visible in the Temporal Web UI, CLI output, Event History, and system logs.
 The same applies to other user-defined identifiers such as Workflow Type names, Task Queue names, Activity names, and Signal/Query/Update names.
 
-Do not use values such as social security numbers, email addresses, credit card numbers, or other personally identifiable information (PII) directly as a Workflow Id.
-Doing so risks exposing sensitive data to anyone with Namespace access and may result in violations of data protection regulations such as GDPR, HIPAA, or SOC 2.
+Using sensitive data in these identifiers risks exposure to anyone with Namespace access and may violate data protection regulations such as GDPR, HIPAA, or SOC 2.
 
 :::
 
