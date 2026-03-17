@@ -256,7 +256,6 @@ module.exports = {
               },
               items: [
                 'develop/python/client/temporal-client',
-                'develop/python/client/namespaces',
               ],
             },
             {
