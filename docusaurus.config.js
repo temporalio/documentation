@@ -49,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker','hcl'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
         sidebar: {
@@ -221,7 +221,19 @@ module.exports = async function createConfigAsync() {
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
         appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
+        searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
+        searchParameters: {
+          attributesToRetrieve: [
+            'hierarchy',
+            'content',
+            'anchor',
+            'url',
+            'url_without_anchor',
+            'type',
+            'sdk_language',
+          ],
+        },
       },
     },
     presets: [

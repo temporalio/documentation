@@ -30,17 +30,16 @@ Many of these defaults are configurable, so if you need them changed please open
 
 ## Rate Limiting
 
-Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces.
-Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
+Nexus requests (commands, polling) are counted as part of the overall [Namespace rate limit](/cloud/limits#requests-per-second) in both the caller and handler Namespaces.
 
 ## Operational Limits
 
-Nexus has operational limits for thing like the maximum number of Nexus Endpoints and the maximum request handler timeout.
+Nexus has operational limits for things like the maximum number of Nexus Endpoints and the maximum request handler timeout.
 
 ### Max Nexus Endpoints
 
-By default, each account is provisioned with a max of 10 Nexus Endpoints.
-You can request further increases beyond the initial 10 Endpoint limit by opening a support ticket.
+By default, each account is provisioned with a max of 100 Nexus Endpoints.
+You can request further increases beyond the initial 100 Endpoint limit by opening a support ticket.
 
 ### Workflow Max Nexus Operations
 

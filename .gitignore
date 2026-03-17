@@ -12,6 +12,7 @@ test-results
 .docusaurus
 .cache-loader
 temp/
+.claude/*
 
 # Misc
 .DS_Store
@@ -21,6 +22,9 @@ temp/
 .env.test.local
 .env.production.local
 .vs
+AGENTS.md
+CLAUDE.md
+.claude/*
 
 npm-debug.log*
 yarn-debug.log*

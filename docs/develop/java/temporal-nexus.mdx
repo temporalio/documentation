@@ -1,6 +1,6 @@
 ---
 id: nexus
-title: Temporal Nexus - Java SDK Feature Guide
+title: Temporal Nexus - Java SDK feature guide
 sidebar_label: Temporal Nexus
 description: Use Temporal Nexus within the Java SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
@@ -575,7 +575,7 @@ When a Nexus operation is started the caller can specify different cancellation 
 
 - `ABANDON` - Do not request cancellation of the operation.
 - `TRY_CANCEL` - Initiate a cancellation request and immediately report cancellation to the caller. Note that this type doesn't guarantee that cancellation is delivered to the operation handler if the caller exits before the delivery is done.
-- `WAIT_REQUESTED` ` Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
+- `WAIT_REQUESTED` - Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
 - `WAIT_COMPLETED` - Wait for operation completion. Operation may or may not complete as cancelled.
 
 The default is `WAIT_COMPLETED`. Users can set a different option on the `NexusServiceOptions` by calling `.setCancellationType()` on `NexusServiceOptions.Builder`.
