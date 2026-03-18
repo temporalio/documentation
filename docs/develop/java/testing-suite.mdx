@@ -280,6 +280,7 @@ Activity cancellation lets Activities know they don't need to continue work and 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
+For more details on mocking activities, see [Sample unit tests](#sample-unit-tests).
 
 ### How to mock Nexus Operations {#mock-nexus-operations}
 
@@ -287,9 +288,91 @@ Mock the Nexus Operation invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Nexus Operations by providing mock Nexus Service implementations to the Worker.
 
+You can find example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
+These samples show how to both call Nexus services in tests using the Temporal testing package as well as how to mock them, for both JUnit 4 and 5.
+Detailed explanatory comments are included in the code in the repository.
+
+When creating the Rule (for JUnit4) or Extension (for JUnit5) add a call to `setNexusServiceImplementation`.
+That creates and sets up the Nexus endpoints needed for testing as well as the Nexus handler workflows
+defined by the Nexus Service implementation.
+`setWorkflowTypes` (for JUnit4) or `registerWorkflowImplementationTypes` (for JUnit5) will create workers for each class given,
+which sets up caller workflows just as normal.
+With that in place, you can then mock a Nexus endpoint exactly like any other workflow -
+see [Sample unit tests](#sample-unit-tests) above.
+
+#### Mocking Nexus with JUnit4
+
+```java
+public class CallerWorkflowMockTest {
+  @Rule
+  public TestWorkflowRule testWorkflowRule =
+      TestWorkflowRule.newBuilder()
+          .setNexusServiceImplementation(new NexusServiceImpl())
+          .setWorkflowTypes(HelloCallerWorkflowImpl.class)
+          .build();
+
+  @Test
+  public void testHelloWorkflow() {
+    testWorkflowRule
+        .getWorker()
+        // Workflows started by a Nexus service can be mocked just like any other workflow
+        .registerWorkflowImplementationFactory(
+            HelloHandlerWorkflow.class,
+            () -> {
+              HelloHandlerWorkflow wf = mock(HelloHandlerWorkflow.class);
+              when(wf.hello(any())).thenReturn(new NexusService.HelloOutput("Hello Mock World"));
+              return wf;
+            });
+
+    // Now create the caller workflow
+    HelloCallerWorkflow workflow =
+        testWorkflowRule
+            .getWorkflowClient()
+            .newWorkflowStub(
+                HelloCallerWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
+    String greeting = workflow.hello("World", NexusService.Language.EN);
+    assertEquals("Hello Mock World", greeting);
+
+  }
+}
+```
+
+#### Mocking Nexus with JUnit5
+
+```java
+public class CallerWorkflowJunit5MockTest {
+
+  @RegisterExtension
+  public static final TestWorkflowExtension testWorkflowExtension =
+      TestWorkflowExtension.newBuilder()
+          .setNexusServiceImplementation(new NexusServiceImpl())
+          .registerWorkflowImplementationTypes(HelloCallerWorkflowImpl.class)
+          .build();
+
+  @Test
+  public void testHelloWorkflow(
+          TestWorkflowEnvironment testEnv, Worker worker, HelloCallerWorkflow workflow) {
+    // Workflows started by a Nexus service can be mocked just like any other workflow
+    worker.registerWorkflowImplementationFactory(
+        HelloHandlerWorkflow.class,
+        () -> {
+          HelloHandlerWorkflow mockHandler = mock(HelloHandlerWorkflow.class);
+          when(mockHandler.hello(any()))
+              .thenReturn(new NexusService.HelloOutput("Hello Mock World"));
+          return mockHandler;
+        });
+
+    // Execute a workflow waiting for it to complete.
+    String greeting = workflow.hello("World", NexusService.Language.EN);
+    assertEquals("Hello Mock World", greeting);
+  }
+}
+```
+
 ### How to skip time {#skip-time}
 
-Some long-running Workflows can persist for months or even years.
+Some long-running Workflows can persist for months or eveChangesn years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
 
 For example, if you have a Workflow sleep for a day, or have an Activity failure with a long retry interval, you don't need to wait the entire length of the sleep period to test whether the sleep function works.
