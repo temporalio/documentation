@@ -400,12 +400,23 @@ The SDK includes a [gopsutil](https://github.com/shirou/gopsutil)-based implemen
 
 ```go
 import (
+    "go.temporal.io/sdk/client"
     "go.temporal.io/sdk/contrib/sysinfo"
     "go.temporal.io/sdk/worker"
 )
 
+c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+if err != nil {
+	log.Fatalln("Unable to create client", err)
+}
+defer c.Close()
+tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
+	TargetMem:    0.8,
+	TargetCpu:    0.9,
+	InfoSupplier: sysinfo.SysInfoProvider(),
+})
 w := worker.New(c, "my-task-queue", worker.Options{
-    SysInfoProvider: sysinfo.SysInfoProvider(),
+	Tuner:                      tuner,
 })
 ```
 
