@@ -682,7 +682,6 @@ module.exports = {
                 id: 'develop/dotnet/workers/index',
               },
               items: [
-                'develop/dotnet/workers/basics',
                 'develop/dotnet/workers/run-worker-process',
                 'develop/dotnet/workers/observability',
               ]
@@ -697,7 +696,6 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/client/temporal-client',
-                'develop/dotnet/client/namespaces',
               ],
             },
             {
