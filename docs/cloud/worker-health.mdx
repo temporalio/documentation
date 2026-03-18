@@ -400,7 +400,10 @@ The SDK includes a [gopsutil](https://github.com/shirou/gopsutil)-based implemen
 
 ```go
 import (
+    "log"
+    
     "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/contrib/envconfig"
     "go.temporal.io/sdk/contrib/sysinfo"
     "go.temporal.io/sdk/worker"
 )
