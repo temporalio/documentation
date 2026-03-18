@@ -1,6 +1,6 @@
 ---
 id: basics
-title: Worker Basics - Go SDK
+title: Worker basics - Go SDK
 sidebar_label: Worker basics
 description: This section explains Worker Basics with the Go SDK
 toc_max_heading_level: 4
@@ -71,7 +71,7 @@ func main() {
     // Use the RegisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
     yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
 // ...
-    // Register your Activity Definitons with the Worker.
+    // Register your Activity Definitions with the Worker.
     // Use this technique for registering all Activities that are part of a struct and set the shared variable values.
     message := "This could be a connection string or endpoint details"
     number := 100
@@ -150,7 +150,7 @@ Intended use case is to limit resources used by the Worker.
 
 Notice that the value type is a float so that the value can be less than 1 if needed.
 For example, if set to 0.1, Activity Task Executions will happen once every ten seconds.
-This can be used to protect down stream services from flooding with requests.
+This can be used to protect downstream services from flooding with requests.
 
 ```go
 // ...
@@ -194,7 +194,7 @@ Intended use case is to limit resources used by the Worker.
 
 Notice that the value type is a float so that the value can be less than 1 if needed.
 For example, if set to 0.1, Local Activity Task Executions will happen once every ten seconds.
-This can be used to protect down stream services from flooding with requests.
+This can be used to protect downstream services from flooding with requests.
 
 ```go
 // ...
@@ -298,7 +298,7 @@ Set to enable logging in Workflow Execution replays.
 In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
 By default, the logger will skip logging during replays, so you do not see duplicate logs.
 
-This is only really useful for debugging purpose.
+This is only really useful for debugging purposes.
 
 ```go
 // ...
