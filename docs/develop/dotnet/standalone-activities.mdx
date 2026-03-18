@@ -61,7 +61,7 @@ Prerequisites:
 
 - Install the [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.6.2-standalone-activity) (Standalone Activity Prerelease version)
 
-- Temporal .NET SDK (<!-- TODO: confirm version, likely 1.12.0 --> version X.Y.Z or higher). See the [.NET Quickstart](https://docs.temporal.io/develop/dotnet/set-up-your-local-dotnet) for install instructions.
+- Temporal .NET SDK (v1.12.0 or higher). See the [.NET Quickstart](https://docs.temporal.io/develop/dotnet/set-up-your-local-dotnet) for install instructions.
 
 The first step in running a Standalone Activity involves starting a Temporal server:
 
@@ -138,7 +138,7 @@ whether the Activity will be invoked from a Workflow or as a Standalone Activity
 a Worker](/develop/dotnet/core-application#run-a-dev-worker) for more details on Worker setup and
 configuration options.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs) (worker command)
+[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
 ```csharp
 using Microsoft.Extensions.Logging;
@@ -186,7 +186,7 @@ to execute a Standalone Activity and wait for the result. Call this from your ap
 from inside a Workflow Definition. This durably enqueues your Standalone Activity in the Temporal
 Server, waits for it to be executed on your Worker, and then returns the result.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs) (execute-activity command)
+[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
 ```csharp
 using Temporalio.Client;
@@ -255,7 +255,7 @@ Use
 [`client.StartActivityAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html)
 to start a Standalone Activity and get a handle without waiting for the result:
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs) (start-activity command)
+[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
 ```csharp
 using Temporalio.Client;
@@ -327,7 +327,7 @@ Use
 to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
 an `IAsyncEnumerable` that yields `ActivityExecution` entries.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs) (list-activities command)
+[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
 ```csharp
 using Temporalio.Client;
@@ -366,7 +366,7 @@ Use
 [`client.CountActivitiesAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html)
 to count Standalone Activity Executions that match a [List Filter](/list-filter) query.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs) (count-activities command)
+[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs) 
 
 ```csharp
 using Temporalio.Client;
