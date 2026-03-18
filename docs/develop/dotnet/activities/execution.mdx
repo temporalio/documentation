@@ -2,7 +2,7 @@
 id: execution
 title: Activity execution - .NET SDK
 description: Shows how to perform Activity execution with the .NET SDK
-sidebar_label: Activity Execution
+sidebar_label: Activity execution
 slug: /develop/dotnet/activities/execution
 toc_max_heading_level: 3
 tags:
@@ -15,7 +15,7 @@ tags:
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed]) in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -51,4 +51,4 @@ These values are set in the Activity Options.
 
 ### Get Activity Execution results {#get-activity-results}
 
-The Activity result is the returned in the task from the `ExecuteActivityAsync` call.
+The Activity result is returned in the Task from the `ExecuteActivityAsync` call.
