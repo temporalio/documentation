@@ -70,6 +70,49 @@ To prevent illegal workflow calls, a call tracer is put on the workflow thread t
 calls are made.
 Which calls are illegal is configurable in the worker options.
 
+The following sections describe the most common replay-safe patterns.
+
+#### Logging
+
+Use [`Temporalio::Workflow.logger`](https://ruby-doc.temporal.io/) instead of a standard Ruby `Logger`. The SDK logger automatically suppresses log messages during replay and appends Workflow details to every log entry:
+
+```ruby
+Temporalio::Workflow.logger.info("Starting workflow for #{name}")
+```
+
+For logger configuration, see [Observability: Logging](/develop/ruby/observability#logging).
+
+#### Random numbers
+
+Use [`Temporalio::Workflow.random`](https://ruby-doc.temporal.io/) to get a deterministic `Random` instance seeded per Workflow Execution. Never use `rand` or `Random.new` directly:
+
+```ruby
+# Good - deterministic across replays
+value = Temporalio::Workflow.random.rand(1..100)
+
+# Bad - different result on every replay
+value = rand(1..100)
+```
+
+#### Current time
+
+Use [`Temporalio::Workflow.now`](https://ruby-doc.temporal.io/) instead of `Time.now`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
+
+```ruby
+current_time = Temporalio::Workflow.now
+```
+
+#### Detecting replay (advanced)
+
+Use [`Temporalio::Workflow::Unsafe.replaying?`](https://ruby-doc.temporal.io/) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications.
+Never use this to affect Workflow business logic - branching on replay status breaks determinism:
+
+```ruby
+unless Temporalio::Workflow::Unsafe.replaying?
+  emit_metric('workflow_started', 1)
+end
+```
+
 ### Customize Workflow Type {#workflow-type}
 
 Workflows have a Type that are referred to as the Workflow name.

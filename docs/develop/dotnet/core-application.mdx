@@ -84,6 +84,54 @@ This means there are several things Workflows cannot do such as:
 Some calls in .NET do unsuspecting non-deterministic things and are easy to accidentally use.
 This is especially true with `Task`s.
 Temporal requires that the deterministic `TaskScheduler.Current` is used, but many .NET async calls will use `TaskScheduler.Default` implicitly (and some analyzers even encourage this).
+
+The following sections cover replay-safe APIs, followed by .NET-specific `Task` gotchas.
+
+#### Logging
+
+Use [`Workflow.Logger`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Logger), which is an instance of .NET's `ILogger`. The SDK logger automatically suppresses log messages during replay to avoid duplicates:
+
+```csharp
+Workflow.Logger.LogInformation("Starting workflow for {Name}", name);
+```
+
+For logger configuration, see [Observability: Logging](/develop/dotnet/observability#logging).
+
+#### Random numbers and UUIDs
+
+Use [`Workflow.Random`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html) to get a deterministic `Random` instance. For UUIDs, use [`Workflow.NewGuid()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html). Never use `System.Random` or `Guid.NewGuid()` directly:
+
+```csharp
+// Good - deterministic across replays
+var value = Workflow.Random.Next(1, 100);
+var uniqueId = Workflow.NewGuid();
+
+// Bad - different result on every replay
+var value = new Random().Next(1, 100);
+```
+
+#### Current time
+
+Use [`Workflow.UtcNow`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html) instead of `DateTime.UtcNow`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
+
+```csharp
+var currentTime = Workflow.UtcNow;
+```
+
+#### Detecting replay (advanced)
+
+Use [`Workflow.Unsafe.IsReplaying`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.Unsafe.html) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications.
+Never use this to affect Workflow business logic - branching on replay status breaks determinism:
+
+```csharp
+if (!Workflow.Unsafe.IsReplaying)
+{
+    EmitMetric("workflow_started", 1);
+}
+```
+
+#### .NET Task gotchas
+
 Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 
 - Do not use `Task.Run` - this uses the default scheduler and puts work on the thread pool.

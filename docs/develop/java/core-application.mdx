@@ -269,6 +269,55 @@ The following constraints apply when writing Workflow Definitions:
   A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
   All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
 
+The following sections describe the most common replay-safe patterns.
+
+#### Logging
+
+Use [`Workflow.getLogger()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) instead of SLF4J loggers directly. The SDK logger automatically omits log messages during replay:
+
+```java
+private static final Logger logger = Workflow.getLogger(MyWorkflow.class);
+
+// Inside workflow method:
+logger.info("Starting workflow for {}", name);
+```
+
+For logger configuration, see [Observability: Logging](/develop/java/observability#logging).
+
+#### Random numbers and UUIDs
+
+Use [`Workflow.newRandom()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom) for deterministic random numbers, and [`Workflow.randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#randomUUID()) for deterministic UUIDs. Never use `java.util.Random` or `UUID.randomUUID()` directly:
+
+```java
+// Good - deterministic across replays
+int randomInt = Workflow.newRandom().nextInt(100);
+String uniqueId = Workflow.randomUUID().toString();
+
+// Bad - different result on every replay
+int randomInt = new Random().nextInt(100);
+```
+
+For other non-deterministic values, use [`Workflow.sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)). See [Side Effects](/develop/java/side-effects) for details.
+
+#### Current time
+
+Use [`Workflow.currentTimeMillis()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) instead of `System.currentTimeMillis()` or `Instant.now()`:
+
+```java
+long currentTime = Workflow.currentTimeMillis();
+```
+
+#### Detecting replay (advanced)
+
+Use [`Workflow.getInfo().isReplaying()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications.
+Never use this to affect Workflow business logic - branching on replay status breaks determinism:
+
+```java
+if (!Workflow.getInfo().isReplaying()) {
+    emitMetric("workflow_started", 1);
+}
+```
+
 Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
 
 ## Develop a basic Activity {#develop-activities}

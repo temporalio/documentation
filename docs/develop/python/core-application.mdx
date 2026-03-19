@@ -216,15 +216,6 @@ _deterministic_.
 
 The SDK provides replay-safe alternatives for common needs:
 
-#### Detecting replay
-
-Use [`workflow.unsafe.is_replaying`](https://python.temporal.io/temporalio.workflow.html#is_replaying) to skip side effects that should only run on the first execution:
-
-```python
-if not workflow.unsafe.is_replaying():
-    emit_metric("workflow_started", 1)
-```
-
 #### Logging
 
 Use [`workflow.logger`](https://python.temporal.io/temporalio.workflow.html#logger) instead of `print()` or the standard `logging` module.
@@ -264,6 +255,15 @@ Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) 
 current_time = workflow.now()
 ```
 
+#### Detecting replay (advanced)
+
+Use [`workflow.unsafe.is_replaying`](https://python.temporal.io/temporalio.workflow.html#is_replaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications.
+Never use this to affect Workflow business logic - branching on replay status breaks determinism:
+
+```python
+if not workflow.unsafe.is_replaying():
+    emit_metric("workflow_started", 1)
+```
 
 ## Develop a basic Activity {#develop-activities}
 
