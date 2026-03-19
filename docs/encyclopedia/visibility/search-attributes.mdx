@@ -30,9 +30,14 @@ A Search Attribute is an indexed field used in a [List Filter](/list-filter) to 
 Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
 
-:::note
+:::caution Do not use sensitive data or PII in Search Attributes
 
-Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/dataconversion#payload-codec).
+The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
+
+Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.
+Using sensitive data in either names or values risks exposure to anyone with Namespace access and may violate data protection regulations such as GDPR, HIPAA, or SOC 2.
 
 :::
 
@@ -86,8 +91,8 @@ These Search Attributes are created when the initial index is created.
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.
 
-- Search attributes are not encrypted in the system.
-  Do not use PII as either the search attribute name or the value.
+- Search Attributes are not encrypted in the system.
+  Do not use sensitive data or PII as either the Search Attribute name or value.
 
 - To use default Search Attributes with the `Temporal` prefix in a List Filter, you can use their non-prefixed alias.
   Refer to [Search Attribute aliasing](./list-filter.mdx#search-attribute-aliasing) for details.
@@ -214,7 +219,7 @@ With Workflows you can do the following:
 :::info Manage Search Attributes by SDK
 
 - [How to manage Search Attributes using the Go SDK](/develop/go/observability#visibility)
-- [How to manage Search Attributes using the Java SDK](/develop/java/observability#visibility)
+- [How to manage Search Attributes using the Java SDK](/develop/java/workers/observability#visibility)
 - [How to manage Search Attributes using the PHP SDK](/develop/php/observability#visibility)
 - [How to manage Search Attributes using the Python SDK](/develop/python/observability#visibility)
 - [How to manage Search Attributes using the TypeScript SDK](/develop/typescript/observability#visibility)

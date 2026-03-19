@@ -459,7 +459,7 @@
     },
     {
       "source": "/dev-guide/java/foundations:path*",
-      "destination": "/develop/java/core-application",
+      "destination": "/develop/java",
       "permanent": true
     },
     {
@@ -469,7 +469,7 @@
     },
     {
       "source": "/dev-guide/java/testing:path*",
-      "destination": "/develop/java/testing-suite",
+      "destination": "/develop/java/best-practices/testing-suite",
       "permanent": true
     },
     {
