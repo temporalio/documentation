@@ -45,9 +45,13 @@ These methods run on the Worker in the Workflow definition and intercept inbound
 :::warning Workflow interceptors and replay
 
 These methods execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
-See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for details.
+See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for important details.
+
+Also, if you want to write a generic code shared by all inbound Workflow call handlers, but want to avoid doing something during the read-only operations, check `workflow.unsafe.is_read_only()`.
 
 :::
+
+Examples:
 
 - `execute_workflow()` (i.e. handle a Workflow Task that is starting a new Workflow Execution)
 - `handle_query()`
@@ -65,6 +69,8 @@ These methods execute during [replay](/develop/python/testing-suite#replay). Use
 See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for details.
 
 :::
+
+Examples:
 
 - `start_activity()`
 - `start_child_workflow()`

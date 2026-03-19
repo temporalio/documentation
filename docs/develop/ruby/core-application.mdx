@@ -104,7 +104,7 @@ current_time = Temporalio::Workflow.now
 
 #### Detecting replay (advanced)
 
-Use [`Temporalio::Workflow::Unsafe.replaying?`](https://ruby-doc.temporal.io/) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications.
+Use [`Temporalio::Workflow::Unsafe.replaying?`](https://ruby-doc.temporal.io/) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
 (Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
 
 ```ruby
@@ -112,6 +112,8 @@ unless Temporalio::Workflow::Unsafe.replaying?
   emit_metric('workflow_started', 1)
 end
 ```
+
+If your goal is to always take action when something new is happening, exclude `Temporalio::Workflow::Unsafe.replaying_history_events?` instead. Your code will run during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors use internally.
 
 ### Customize Workflow Type {#workflow-type}
 
