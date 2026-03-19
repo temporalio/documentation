@@ -170,6 +170,8 @@ ctx = context.WithValue(ctx, PropagateKey, &Values{Key: "test", Value: "tested"}
 we, err := c.ExecuteWorkflow(ctx, workflowOptions, MyWorkflow)
 ```
 
+You can also register context propagators through a [Plugin](/develop/plugins-guide#context-propagators) if you are building a reusable library.
+
 ### Access propagated values
 
 In your Workflow, the propagated values are available on the `workflow.Context`. When the Workflow starts an Activity, the SDK automatically propagates the same values:

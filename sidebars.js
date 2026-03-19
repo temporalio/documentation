@@ -867,6 +867,7 @@ module.exports = {
             'encyclopedia/data-conversion/key-management',
           ],
         },
+        'encyclopedia/context-propagation',
         'web-ui',
       ],
     },
