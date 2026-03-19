@@ -293,7 +293,7 @@ These samples show how to both call Nexus services in tests using the Temporal t
 Detailed explanatory comments are included in the code in the repository.
 
 When creating the Rule (for JUnit4) or Extension (for JUnit5) add a call to `setNexusServiceImplementation`.
-That creates and sets up the Nexus endpoints needed for testing as well as the Nexus handler workflows
+That sets up the Nexus endpoints needed for testing as well as the Nexus handler workflows
 defined by the Nexus Service implementation.
 `setWorkflowTypes` (for JUnit4) or `registerWorkflowImplementationTypes` (for JUnit5) will create workers for each class given,
 which sets up caller workflows just as normal.
@@ -346,6 +346,7 @@ public class CallerWorkflowJunit5MockTest {
   @RegisterExtension
   public static final TestWorkflowExtension testWorkflowExtension =
       TestWorkflowExtension.newBuilder()
+          // Register the Nexus service as usual and mock things in the unit tests as needed
           .setNexusServiceImplementation(new NexusServiceImpl())
           .registerWorkflowImplementationTypes(HelloCallerWorkflowImpl.class)
           .build();
@@ -372,7 +373,7 @@ public class CallerWorkflowJunit5MockTest {
 
 ### How to skip time {#skip-time}
 
-Some long-running Workflows can persist for months or eveChangesn years.
+Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
 
 For example, if you have a Workflow sleep for a day, or have an Activity failure with a long retry interval, you don't need to wait the entire length of the sleep period to test whether the sleep function works.
