@@ -306,7 +306,7 @@
     },
     {
       "source": "/go-error-handling",
-      "destination": "/develop/go/error-handling",
+      "destination": "/develop/go/failure-detection#error-handling",
       "permanent": true
     },
     {
