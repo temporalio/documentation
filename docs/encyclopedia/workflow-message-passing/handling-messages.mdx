@@ -109,19 +109,21 @@ If you don’t need to ensure that your handlers complete, you may specify your 
 
 See the links below for how to ensure handlers are finished in your SDK.
 
-#### Ensuring your messages are processed exactly once {#exactly-once-message-processing}
+#### Message IDs and handling Continue-As-New {#exactly-once-message-processing}
 
-Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. Temporal deduplicates messages for you on the server, but there is one important case when you need to think about this yourself when authoring a Workflow, and one when sending Signals and Updates.
+Usually, you'll want your message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice. For Updates, Temporal handles this for you on the server, by deduplicating according to the Update ID. The Update ID is set automatically to a UUID, but you can set it yourself.
 
-When your workflow Continues-As-New, you should handle deduplication yourself in your message handler. This is because Temporal's built-in deduplication doesn't work across [Continue-As-New](/workflow-execution/continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't check for duplicate messages yourself.
+For Signals, you should use a custom idempotency key that you send as part of your own signal inputs, implementing the deduplication in your Workflow code.
 
-To deduplicate in your message handler, you can use an idempotency key.
+However, if you are using Updates with [Continue-As-New](/workflow-execution/continue-as-new) you should implement the deduplication in your Workflow code, since Update ID deduplication by the server is per Workflow run.
 
-Clients can provide an idempotency key. This can be important because Temporal's SDKs provide a randomized key by default, which means Temporal only deduplicates retries from the same call. For Updates, if you craft an Update ID, Temporal will deduplicate any calls that use that key. This is useful when you have two different callsites that may send the same Update, or when your client itself may get retried. For Signals, you can provide a key as part of your Signal arguments.
+:::info
 
-Inside your message handler, you can check your idempotency key--the Update ID or the one you provided to the Signal--to check whether the Workflow has already handled the update.
+In addition to these application-level identifiers, both Signals and Updates automatically use request IDs to deduplicate retried client calls. You do not need to do anything to enable this.
 
-See the links below for examples of solving this in your SDK.
+:::
+
+See the links below for examples of handling idempotency and Continue-As-New in your SDK.
 
 #### Authoring message handler patterns
 
@@ -132,7 +134,7 @@ See examples of the above patterns.
     <RelatedReadItem path="/develop/go/message-passing#message-handler-patterns" text="Author message handler patterns in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing" text="Author message handler patterns in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing" text="Author message handler patterns in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#message-handler-patterns" text="Author message handler patterns in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/workflows/message-passing#message-handler-patterns" text="Author message handler patterns in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#message-handler-patterns" text="Author message handler patterns in TypeScript" archetype="feature-guide" />
 </RelatedReadContainer>
 
@@ -155,7 +157,7 @@ Once the Update handler is finished and has returned a value, the operation is c
     <RelatedReadItem path="/develop/go/message-passing#updates" text="Validate updates in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#updates" text="Validate updates in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Validate updates in .NET" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#updates" text="Validate updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/workflows/message-passing#updates" text="Validate updates in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Validate updates in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Validate updates in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
@@ -198,7 +200,7 @@ Use these links to see a simple Signal handler.
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#signals" text="Handle Signals in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#signals" text="Handle Signals in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#signals" text="Handle Signals in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/workflows/message-passing#signals" text="Handle Signals in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#signals" text="Handle Signals in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#signals" text="Handle Signals in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-signal" text="Handle Signals in PHP" archetype="feature-guide" />
@@ -211,7 +213,7 @@ Use these links to see a simple update handler.
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#updates" text="Handle Updates in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#updates" text="Handle Updates in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#updates" text="Handle Updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/workflows/message-passing#updates" text="Handle Updates in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Handle Updates in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Handle Updates in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Handle Updates in PHP" archetype="feature-guide" />
@@ -224,7 +226,7 @@ Author queries using these per-language guides.
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#queries" text="Handle Queries in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#queries" text="Handle Queries in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#queries" text="Handle Queries in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/workflows/message-passing#queries" text="Handle Queries in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#queries" text="Handle Queries in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#queries" text="Handle Queries in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-query" text="Handle Queries in PHP" archetype="feature-guide" />
