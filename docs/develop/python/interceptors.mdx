@@ -25,73 +25,23 @@ The methods you implement on your Interceptor classes can perform side effects a
 
 There are five categories of inbound and outbound calls that you can modify in this way:
 
-| [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)                                                       | [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)                           | [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| Start workflow, signal workflow, list workflows, update schedule                               | Execute workflow (handles a Workflow Task that starts a new Workflow Execution), handle query, handle signal, handle update handler, handle update validator | Start activity, start child workflow, signal child workflow, signal external workflow, start Nexus operation, start local activity | Execute activity (this is the only inbound Activity call)                                              | Info, heartbeat                                                                                          |
+| | [Outbound Client](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html) | [Outbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html) | [Inbound Activity](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
+| --- | --- | --- | --- | --- | --- |
+| **Runs on** | Client | Worker (Workflow sandbox) | Worker (Workflow sandbox) | Worker (Activity context) | Worker (Activity context) |
+| **Example methods** | `start_workflow()`, `signal_workflow()`, `list_workflows()` | `execute_workflow()`, `handle_query()`, `handle_signal()`, `handle_update_handler()` | `start_activity()`, `start_child_workflow()`, `signal_child_workflow()`, `start_nexus_operation()` | `execute_activity()` | `info()`, `heartbeat()` |
 
-These methods run on the Client interacting with the Workflow.  For example:
-
-- `start_workflow()`
-- `signal_workflow()`
-- `list_workflows()`
-- `update_schedule()`
-
-This is not an exhaustive list; refer to the [Python SDK methods](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) for more.
-
-#### [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)
-
-These methods run on the Worker in the Workflow definition and intercept inbound calls like starts/executes and messages.
+These are not exhaustive lists; refer to the linked API docs for each category.
 
 :::warning Workflow interceptors and replay
 
-These methods execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
-See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for important details.
-
-Also, if you want to write a generic code shared by all inbound Workflow call handlers, but want to avoid doing something during the read-only operations, check `workflow.unsafe.is_read_only()`.
-
-:::
-
-Examples:
-
-- `execute_workflow()` (i.e. handle a Workflow Task that is starting a new Workflow Execution)
-- `handle_query()`
-- `handle_signal()`
-- `handle_update_handler()`
-- `handle_update_validator()`
-
-#### [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)
-
-These methods run on the Worker in the Workflow definition and intercept outbound calls to Temporal APIs like starting Activities and Timers.
-
-:::warning Workflow interceptors and replay
-
-These methods execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+Workflow inbound and outbound interceptor methods execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
 See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for details.
 
+If you want to write generic code shared by all inbound Workflow call handlers but want to skip read-only operations, check `workflow.unsafe.is_read_only()`.
+
+Activity and Client interceptors are not affected by replay.
+
 :::
-
-Examples:
-
-- `start_activity()`
-- `start_child_workflow()`
-- `signal_child_workflow()`
-- `signal_external_workflow()`
-- `start_nexus_operation()`
-- `start_local_activity()`
-
-#### [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html)
-
-This interceptor runs on the Worker in the Activity context, at the beginning.
-
-- `execute_activity()`
-  - i.e. handle a task to execute an Activity (this is the only Inbound Activity call)
-
-#### [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html)
-
-These methods run on the Worker in the Activity context when it's calling built-in methods.
-
-- `info()`
-- `heartbeat()`
 
 ## Register an Interceptor {#register}
 
