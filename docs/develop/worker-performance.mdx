@@ -63,6 +63,12 @@ Available slot suppliers include:
   A resource-based supplier will account for memory limits imposed in containerized environments.
   It dynamically adjusts the number of available slots for different task types with respect to current system resources.
 
+:::info
+
+When running in a containerized environment, all SDKs use cgroups for both CPU and memory. CPU is accounted for at the container level.
+
+:::
+
 - **Custom Slot Suppliers**:
   Hands out slots based on the custom logic that you define.
   Use this approach when you need complete control over when Workers accept and execute Tasks.
