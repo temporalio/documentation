@@ -382,7 +382,7 @@ Workers, the Server can obtain an accurate count of Workers, understand Worker p
 
 Use the Temporal CLI to view information about all Workers connected to Temporal Server. Use `temporal worker describe` to see details of a specific Worker. Use `temporal worker list` to get a complete list of all connected Workers.
 
-If you wish to disable Worker heartbeating or set heartbeating to be more frequent than every 60 seconds (allowed range is 1s to 60s), set the configuration relevant to your SDK. Note that Worker heartbeating is currently needed for an accurate Server-side understanding of Worker status. Disabling the Worker heartbeat will cause features that provide the list of active Workers and information about those Workers to show missing or inaccurate information.
+If you wish to disable Worker heartbeating or set heartbeating to be more frequent than every 60 seconds (allowed range is 1s to 60s), set the configuration relevant to your SDK. The server needs Worker heartbeating to understand Worker status accurately. Disabling the Worker heartbeat will cause features that provide the list of active Workers and information about those Workers to show missing or inaccurate information.
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
 
@@ -395,7 +395,7 @@ Set it to a negative value to disable heartbeating.
 
 By default, the Go SDK reports `0` for CPU and memory usage in Worker heartbeats.
 To enable host resource reporting, provide a `SysInfoProvider` when creating your Worker.
-Note that you must use a resource based tuner to enable host resource reporting.
+You must use a resource based tuner to enable host resource reporting.
 
 The SDK includes a [gopsutil](https://github.com/shirou/gopsutil)-based implementation via the [sysinfo](https://pkg.go.dev/go.temporal.io/sdk/contrib/sysinfo) library that supports cgroup metrics in containerized Linux environments:
 
