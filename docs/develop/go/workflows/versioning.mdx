@@ -29,7 +29,7 @@ There are two primary Versioning methods that you can use:
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
 :::danger
-Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs if needed. 
+Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/go/worker-versioning-legacy) docs if needed. 
 :::
 
 ## Worker Versioning
@@ -241,4 +241,4 @@ Adding, removing, or reordering any of these methods without Versioning triggers
 The runtime check does not perform a thorough check.
 For example, it does not check on the Activity's input arguments or the Timer duration.
 Each Temporal SDK implements these sanity checks differently, and they are not a complete check for non-deterministic changes.
-Instead, you should incorporate [Replay Testing](/develop/go/testing-suite#replay) when making revisions.
+Instead, you should incorporate [Replay Testing](/develop/go/best-practices/testing-suite#replay) when making revisions.
