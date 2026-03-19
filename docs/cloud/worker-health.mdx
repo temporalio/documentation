@@ -395,6 +395,7 @@ Set it to a negative value to disable heartbeating.
 
 By default, the Go SDK reports `0` for CPU and memory usage in Worker heartbeats.
 To enable host resource reporting, provide a `SysInfoProvider` when creating your Worker.
+Note that you must use a resource based tuner to enable host resource reporting.
 
 The SDK includes a [gopsutil](https://github.com/shirou/gopsutil)-based implementation via the [sysinfo](https://pkg.go.dev/go.temporal.io/sdk/contrib/sysinfo) library that supports cgroup metrics in containerized Linux environments:
 
