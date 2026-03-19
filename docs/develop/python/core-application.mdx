@@ -265,7 +265,7 @@ if not workflow.unsafe.is_replaying():
     emit_metric("workflow_started", 1)
 ```
 
-If your goal is to always take action when something new is happening, exclude `workflow.unsafe.is_replaying_history_events()` instead. Your code will run during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors use internally. 
+If your goal is to always take action when something new is happening, check that `workflow.unsafe.is_replaying_history_events()` is false instead. This will be false during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors use internally. 
 
 ## Develop a basic Activity {#develop-activities}
 

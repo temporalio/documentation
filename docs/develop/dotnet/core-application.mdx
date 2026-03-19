@@ -130,7 +130,7 @@ if (!Workflow.Unsafe.IsReplaying)
 }
 ```
 
-If your goal is to always take action when something new is happening, exclude `Workflow.Unsafe.IsReplayingHistoryEvents` instead. Your code will run during read-only operations like queries and update validators. This is what the SDK's built-in logger and metric meter use internally.
+If your goal is to always take action when something new is happening, check that `Workflow.Unsafe.IsReplayingHistoryEvents` is false instead. This will be false during read-only operations like queries and update validators. This is what the SDK's built-in logger and metric meter use internally.
 
 #### .NET Task gotchas
 
