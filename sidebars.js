@@ -328,6 +328,7 @@ module.exports = {
                 'develop/ruby/workflows/enriching-ui',
                 'develop/ruby/workflows/schedules',
                 'develop/ruby/workflows/timers',
+                'develop/ruby/workflows/futures',
                 'develop/ruby/workflows/dynamic-workflow',
                 'develop/ruby/workflows/versioning',
               ]
@@ -372,7 +373,6 @@ module.exports = {
               },
               items: [
                 'develop/ruby/client/temporal-client',
-                'develop/ruby/client/namespaces',
               ],
             },
             {
