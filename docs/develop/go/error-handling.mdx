@@ -74,10 +74,8 @@ if err != nil {
 }
 ```
 
-:::caution Panics cannot be recovered in Workflow deferred functions
+### Panics and deferred functions
 
 Unlike standard Go, you cannot `recover()` from a panic inside a `defer` in Workflow code.
 Deferred functions that try to interact with the Temporal SDK during panic unwinding will re-panic immediately.
 Use `defer` only for local cleanup — handle Temporal API cleanup through explicit error checks instead.
-
-:::
