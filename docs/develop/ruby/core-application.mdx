@@ -113,7 +113,7 @@ unless Temporalio::Workflow::Unsafe.replaying?
 end
 ```
 
-If your goal is to always take action when something new is happening, exclude `Temporalio::Workflow::Unsafe.replaying_history_events?` instead. Your code will run during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors use internally.
+If your goal is to always take action when something new is happening, check that `Temporalio::Workflow::Unsafe.replaying_history_events?` is false instead. This will be false during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors check.
 
 ### Customize Workflow Type {#workflow-type}
 
