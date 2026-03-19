@@ -2,8 +2,8 @@
 id: schedules
 title: Schedules - TypeScript SDK
 sidebar_label: Schedules
-slug: /develop/typescript/schedules
-toc_max_heading_level: 2
+slug: /develop/typescript/workflows/schedules
+toc_max_heading_level: 3
 keywords:
   - schedules
 tags:
@@ -11,20 +11,20 @@ tags:
   - Schedules
   - TypeScript SDK
   - Temporal SDKs
-description: Schedule automated tasks effortlessly with Temporal. Create, backfill, delete, describe, list, pause, trigger, and update Scheduled Workflows. Control your Workflow execution with Temporal Cron Jobs and ensure timely, automated business processes. Automate repetitive tasks and reduce manual intervention now!
+description: Schedule automated tasks effortlessly with Temporal. Create, backfill, delete, describe, list, pause, trigger, and update Schedules. Control your Workflow execution with Temporal Cron Jobs and ensure timely, automated business processes. Automate repetitive tasks and reduce manual intervention now!
 ---
 
 This page shows how to do the following:
 
 - [Schedule a Workflow](#schedule-a-workflow)
-  - [Create a Scheduled Workflow](#create)
-  - [Backfill a Scheduled Workflow](#backfill)
-  - [Delete a Scheduled Workflow](#delete)
-  - [Describe a Scheduled Workflow](#describe)
-  - [List a Scheduled Workflow](#list)
-  - [Pause a Scheduled Workflow](#pause)
-  - [Trigger a Scheduled Workflow](#trigger)
-  - [Update a Scheduled Workflow](#update)
+  - [Create a Schedule](#create-schedule)
+  - [Backfill a Schedule](#backfill-schedule)
+  - [Delete a Schedule](#delete-schedule)
+  - [Describe a Schedule](#describe-schedule)
+  - [List a Schedule](#list-schedule)
+  - [Pause a Schedule](#pause-schedule)
+  - [Trigger a Schedule](#trigger-schedule)
+  - [Update a Schedule](#update-schedule)
 - [Temporal Cron Jobs](#temporal-cron-jobs)
 - [Start Delay](#start-delay)
 
@@ -34,7 +34,7 @@ Scheduling Workflows is a crucial aspect of any automation process, especially w
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
-### How to Create a Scheduled Workflow {#create}
+### Create a Schedule {#create-schedule}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
@@ -92,7 +92,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to Backfill a Scheduled Workflow {#backfill}
+### Backfill a Schedule {#backfill-schedule}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
 
@@ -123,7 +123,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to Delete a Scheduled Workflow {#delete}
+### Delete a Schedule {#delete-schedule}
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
@@ -143,7 +143,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to Describe a Scheduled Workflow {#describe}
+### Describe a Schedule {#describe-schedule}
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
 
@@ -164,7 +164,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to List a Scheduled Workflow {#list}
+### List a Schedule {#list-schedule}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -189,7 +189,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to Pause a Scheduled Workflow {#pause}
+### Pause a Schedule {#pause-schedule}
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
 
@@ -209,7 +209,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to Trigger a Scheduled Workflow {#trigger}
+### Trigger a Schedule {#trigger-schedule}
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
@@ -230,7 +230,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### How to Update a Scheduled Workflow {#update}
+### Update a Schedule {#update-schedule}
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
 
@@ -261,7 +261,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-## How to use Temporal Cron Jobs {#temporal-cron-jobs}
+## Temporal Cron Jobs {#temporal-cron-jobs}
 
 :::caution Cron support is not recommended
 

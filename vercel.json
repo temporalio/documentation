@@ -981,7 +981,7 @@
     },
     {
       "source": "/dev-guide/typescript/foundations:path*",
-      "destination": "/develop/typescript/core-application",
+      "destination": "/develop/typescript",
       "permanent": true
     },
     {
