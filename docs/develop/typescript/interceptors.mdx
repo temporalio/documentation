@@ -18,6 +18,14 @@ Interceptors are SDK hooks that let you intercept inbound and outbound Temporal 
 behavior across many calls, such as tracing and authorization, before calls reach the SDK's underlying implementation.
 This is similar to middleware in other frameworks.
 
+:::warning Workflow interceptors and replay
+
+Workflow inbound and outbound interceptor methods execute during [replay](/develop/typescript/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+Activity and Client interceptors are not affected by replay.
+See [Develop Workflow logic](/develop/typescript/core-application#workflow-logic-requirements) for details.
+
+:::
+
 ## How to implement interceptors in TypeScript {#interceptors}
 
 The TypeScript SDK comes with an optional interceptor package that adds tracing with

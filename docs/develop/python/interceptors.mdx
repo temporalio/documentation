@@ -23,6 +23,14 @@ implementation. This is similar to using middleware in web frameworks such as
 
 The methods you implement on your Interceptor classes can perform side effects and modify incoming or outgoing data.
 
+:::warning Workflow interceptors and replay
+
+Workflow inbound and outbound interceptor methods execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+Activity and Client interceptors are not affected by replay.
+See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for details.
+
+:::
+
 There are five categories of inbound and outbound calls that you can modify in this way:
 
 | [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)                                                       | [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)                           | [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
