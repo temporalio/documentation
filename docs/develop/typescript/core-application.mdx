@@ -475,7 +475,7 @@ for (let x = 0; x < 10; ++x) {
 #### Detecting replay (advanced)
 
 Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications.
-Never use this to affect Workflow business logic - branching on replay status breaks determinism:
+(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
 
 ```ts
 import { workflowInfo } from '@temporalio/workflow';
