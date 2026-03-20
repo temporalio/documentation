@@ -382,12 +382,79 @@ Workers, the Server can obtain an accurate count of Workers, understand Worker p
 
 Use the Temporal CLI to view information about all Workers connected to Temporal Server. Use `temporal worker describe` to see details of a specific Worker. Use `temporal worker list` to get a complete list of all connected Workers.
 
-If you wish to disable Worker heartbeating (features above will not work with this feature disabled) or set heartbeating to be more frequent than every 60 seconds (allowed range is 1s to 60s), set the configuration relevant to your SDK.
+If you wish to disable Worker heartbeating or set heartbeating to be more frequent than every 60 seconds (allowed range is 1s to 60s), set the configuration relevant to your SDK. The server needs Worker heartbeating to understand Worker status accurately. Disabling the Worker heartbeat will cause features that provide the list of active Workers and information about those Workers to show missing or inaccurate information.
 <SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
+
+_Available since Go SDK v1.41.0_
+
+Set the `WorkerHeartbeatInterval` field on [`client.Options`](https://pkg.go.dev/go.temporal.io/sdk/client#Options) to adjust the heartbeat interval.
+Set it to a negative value to disable heartbeating.
+
+#### Enable host resource reporting
+
+By default, the Go SDK reports `0` for CPU and memory usage in Worker heartbeats.
+To enable host resource reporting, provide a `SysInfoProvider` when creating your Worker.
+You must use a resource based tuner to enable host resource reporting.
+
+The SDK includes a [gopsutil](https://github.com/shirou/gopsutil)-based implementation via the [sysinfo](https://pkg.go.dev/go.temporal.io/sdk/contrib/sysinfo) library that supports cgroup metrics in containerized Linux environments:
+
+```go
+import (
+    "log"
+    
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/contrib/envconfig"
+    "go.temporal.io/sdk/contrib/sysinfo"
+    "go.temporal.io/sdk/worker"
+)
+
+c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+if err != nil {
+	log.Fatalln("Unable to create client", err)
+}
+defer c.Close()
+tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
+	TargetMem:    0.8,
+	TargetCpu:    0.9,
+	InfoSupplier: sysinfo.SysInfoProvider(),
+})
+w := worker.New(c, "my-task-queue", worker.Options{
+	Tuner:                      tuner,
+})
+```
+
+You can also implement the `worker.SysInfoProvider` interface to provide your own resource metrics.
+
+</SdkTabs.Go>
 <SdkTabs.Python>
+
+_Available since Python SDK v1.20.0_
+
 Use `TelemetryConfig()` to adjust heartbeat settings. See the [Python SDK documentation](https://python.temporal.io/temporalio.bridge.runtime.RuntimeOptions.html#worker_heartbeat_interval_millis) for more details.
+
 </SdkTabs.Python>
+<SdkTabs.TypeScript>
+
+_Available since TypeScript SDK v1.14.0_
+
+Set the `workerHeartbeatInterval` property on [`RuntimeOptions`](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions) to adjust the heartbeat interval.
+Set it to `0` to disable heartbeating.
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+_Available since .NET SDK v1.10.0_
+
+Set the `WorkerHeartbeatInterval` property on [`TemporalRuntimeOptions`](https://dotnet.temporal.io/api/Temporalio.Runtime.TemporalRuntimeOptions.html) to adjust the heartbeat interval.
+Set it to `null` to disable heartbeating.
+
+</SdkTabs.DotNet>
 <SdkTabs.Ruby>
+
+_Available since Ruby SDK v1.1.0_
+
 Add configurations to `Runtime()` to adjust heartbeat settings. See the [Ruby SDK documentation](https://ruby.temporal.io/Temporalio/Runtime.html) for more details.
+
 </SdkTabs.Ruby>
 </SdkTabs>
