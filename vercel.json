@@ -1283,5 +1283,6 @@
       "source": "/cloud/billing-reports",
       "destination": "/cloud/billing-api",
       "permanent": true
+    }
   ]
 }
