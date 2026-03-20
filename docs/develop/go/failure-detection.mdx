@@ -89,9 +89,18 @@ if err != nil {
 
 ### Panics and deferred functions
 
-Unlike standard Go, you cannot `recover()` from a panic inside a `defer` in Workflow code.
+In Go, a [panic](https://go.dev/blog/defer-panic-and-recover) is a runtime crash, usually caused by something like an out-of-bounds access or a nil pointer.
+Go provides two built-in mechanisms for dealing with panics:
+
+- **`defer`** schedules a function to run when the surrounding function returns, even if it returns due to a panic. It's commonly used for cleanup, like closing files or releasing resources.
+- **`recover()`** is a built-in function that, when called inside a deferred function, stops a panic from crashing the program and lets you handle it gracefully.
+
+In standard Go, you can combine these to catch a panic and continue running.
+This doesn't work in Temporal Workflow code — you cannot `recover()` from a panic inside a `defer`.
 Deferred functions that try to interact with the Temporal SDK during panic unwinding will re-panic immediately.
-Use `defer` only for local cleanup — handle Temporal API cleanup through explicit error checks instead.
+
+Use `defer` only for local cleanup.
+Handle Temporal API cleanup through explicit error checks instead.
 
 ## Workflow timeouts {#workflow-timeouts}
 
