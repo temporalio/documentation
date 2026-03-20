@@ -282,6 +282,7 @@ module.exports = {
             'develop/dotnet/set-up-your-local-dotnet',
             'develop/dotnet/core-application',
             'develop/dotnet/temporal-client',
+            'develop/dotnet/standalone-activities',
             'develop/dotnet/testing-suite',
             'develop/dotnet/failure-detection',
             'develop/dotnet/message-passing',
@@ -714,6 +715,7 @@ module.exports = {
           items: [
             'encyclopedia/activities/activity-definition',
             'encyclopedia/activities/activity-execution',
+            'encyclopedia/activities/activity-operations',
             'encyclopedia/activities/local-activity',
             'encyclopedia/activities/standalone-activity',
           ],
