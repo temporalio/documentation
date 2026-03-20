@@ -1,7 +1,7 @@
 ---
 id: nexus-endpoints
 title: Nexus endpoints
-sidebar_label: Nexus endpoints
+sidebar_label: Nexus Endpoints
 description: Nexus Endpoints are reverse proxies that connect Nexus callers and handlers forwarding Nexus requests to an upstream target Namespace and Task Queue that a Worker is polling.
 toc_max_heading_level: 4
 slug: /nexus/endpoints
@@ -22,30 +22,23 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-A [Temporal Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue.
-A [Nexus Service](/nexus/services) runs in a Worker that is polling the Endpoint's target Task Queue.
+A [Nexus Endpoint](/glossary#nexus-endpoint) is a fully managed reverse proxy for [Nexus Services](/nexus/services).
+It routes requests from a caller Workflow to a target Namespace and Task Queue.
+Callers only need to know the Endpoint name - the target Namespace, Task Queue, and internal implementation are encapsulated.
 
-An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name.
-The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
-A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services) and polling the Endpoint's target Task Queue.
+Workers handle Nexus requests by registering one or more Services and polling the Endpoint's target Task Queue.
+Multiple Endpoints can target different Task Queues in the same Namespace.
 
-<CaptionedImage
-    src="/img/cloud/nexus/nexus-overview-short.png"
-    title="Nexus Overview"
-/>
-
-Multiple Nexus Endpoints can target different Task Queues in the same target Namespace.
+The Endpoint description field supports markdown for documenting available Operations, contact information, or schema links.
 
 ## Reverse proxy for Nexus Services, not a general purpose L7 proxy
 
-A [Temporal Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy for [Nexus Services](/nexus/services).
-It is not a general purpose L7 reverse proxy like NGINX which can route arbitrary HTTP requests to different upstream targets.
-A Nexus Endpoint currently supports routing Nexus requests to a single upstream target.
-The Temporal Nexus [EndpointSpec](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L170) has two [Endpoint target types](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L185):
+A Nexus Endpoint is not a general-purpose L7 proxy. It routes Nexus requests to a single upstream target.
+The [EndpointSpec](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L170) supports two [target types](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L185):
 
-- Worker: route Nexus requests to a target Namespace and Task Queue.
-- External (experimental): route Nexus requests to an external target [Nexus RPC endpoint](https://github.com/nexus-rpc/api/blob/main/SPEC.md) with experimental support in `temporal operator nexus create endpoint` for `--target-url` which may be used with the Nexus Registry in a self-hosted Temporal Service.
+- **Worker**: Route to a target Namespace and Task Queue.
+- **External** (experimental): Route to an external [Nexus RPC endpoint](https://github.com/nexus-rpc/api/blob/main/SPEC.md) using `--target-url` in `temporal operator nexus create endpoint` (self-hosted only).
 
 ## Deploying a Nexus Endpoint
 
-Adding a Nexus Endpoint to the [Nexus Registry](/nexus/registry) deploys the Endpoint in the Temporal Service, so it is available at runtime to serve Nexus requests.
+Adding an Endpoint to the [Nexus Registry](/nexus/registry) deploys it immediately. The Endpoint is available at runtime as soon as it's registered.

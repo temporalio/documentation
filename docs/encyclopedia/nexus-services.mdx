@@ -1,7 +1,7 @@
 ---
 id: nexus-services
 title: Nexus services
-sidebar_label: Nexus services
+sidebar_label: Nexus Services
 description: Nexus Services are named collections of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team boundaries.
 toc_max_heading_level: 4
 slug: /nexus/services
@@ -25,49 +25,11 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-[Nexus Services](/glossary#nexus-service) are named collections of arbitrary-duration [Nexus Operations](/nexus/operations) that provide a contract suitable for sharing across team boundaries.
+[Nexus Services](/glossary#nexus-service) are named collections of [Nexus Operations](/nexus/operations) that provide a contract for sharing across team boundaries.
+A [Nexus Endpoint](/nexus/endpoints) exposes Services for callers to use.
 
-<CaptionedImage
-    src="/img/cloud/nexus/nexus-overview-short.png"
-    title="Nexus Security"
-    width="100%"
-    zoom="true"
-/>
+Services are registered in a Worker that polls the Endpoint's target Task Queue.
+Multiple Services can run in the same Worker.
+Services typically run alongside the Workflows they abstract, or in a dedicated router Worker using the [router-queue pattern](/nexus/patterns#router-queue-pattern).
 
-A [Nexus Endpoint](/nexus/endpoints) exposes Nexus Services for others to use.
-Services are handled in a Temporal Worker that is polling an Endpoint's target Namespace and Task Queue.
-Multiple Nexus Services may be run in the same Worker polling the same Endpoint target Namespace and Task Queue.
-
-For example, a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
-
-```go
-func main() {
-	c, err := client.Dial(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create client", err)
-	}
-	defer c.Close()
-
-	w := worker.New(c, taskQueue, worker.Options{})
-	service := nexus.NewService(service.HelloServiceName)
-	err = service.Register(handler.EchoOperation, handler.HelloOperation)
-	if err != nil {
-		log.Fatalln("Unable to register operations", err)
-	}
-	w.RegisterNexusService(service)
-	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
-
-	err = w.Run(worker.InterruptCh())
-	if err != nil {
-		log.Fatalln("Unable to start worker", err)
-	}
-}
-```
-
-The Nexus Service name is used when invoking a Nexus Operation from a caller workflow.
-
-:::tip RESOURCES
-
-- [Go SDK - build and use Nexus Services](/develop/go/nexus#develop-nexus-service-operation-handlers).
-- [Java SDK - build and use Nexus Services](/develop/java/nexus#develop-nexus-service-operation-handlers).
-  :::
+Callers reference a Service by name when executing a Nexus Operation.
