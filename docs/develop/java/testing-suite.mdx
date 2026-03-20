@@ -280,25 +280,24 @@ Activity cancellation lets Activities know they don't need to continue work and 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
-For more details on mocking activities, see [Sample unit tests](#sample-unit-tests).
+For more details on mocking activities, see [sample unit tests](#sample-unit-tests).
 
 ### How to mock Nexus Operations {#mock-nexus-operations}
 
-Mock the Nexus Operation invocation when unit testing your Workflows.
+When integration testing Workflows with a Worker, you can mock Nexus operations by providing mock Nexus Service implementations to the Worker.
 
-When integration testing Workflows with a Worker, you can mock Nexus Operations by providing mock Nexus Service implementations to the Worker.
-
-You can find example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
-These samples show how to both call Nexus services in tests using the Temporal testing package as well as how to mock them, for both JUnit 4 and 5.
+You can find example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [this test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
+These samples show how to call Nexus services in tests using the Temporal testing package and also how to mock them, for both JUnit 4 and 5.
 Detailed explanatory comments are included in the code in the repository.
 
-When creating the Rule (for JUnit4) or Extension (for JUnit5) add a call to `setNexusServiceImplementation`.
+First create a Rule (for JUnit4) or Extension (for JUnit5) from the Temporal testing package, just as in the [sample unit tests](#sample-unit-tests) and add a call to `setNexusServiceImplementation` to the builder.
 That sets up the Nexus endpoints needed for testing as well as the Nexus handler workflows
 defined by the Nexus Service implementation.
 `setWorkflowTypes` (for JUnit4) or `registerWorkflowImplementationTypes` (for JUnit5) will create workers for each class given,
 which sets up caller workflows just as normal.
-With that in place, you can then mock a Nexus endpoint exactly like any other workflow -
-see [Sample unit tests](#sample-unit-tests) above.
+With that in place, you can then mock a Nexus endpoint exactly like any other workflow - again, just as in [the sample unit tests](#sample-unit-tests) above.
+
+The following are samples derived from [the test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller) to demonstrate this.
 
 #### Mocking Nexus with JUnit4
 
