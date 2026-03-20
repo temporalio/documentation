@@ -30,7 +30,7 @@ See how to use it in the [interceptors-opentelemetry](https://github.com/tempora
 
 :::warning Workflow interceptors and replay
 
-Workflow inbound and outbound interceptor methods execute during [replay](/develop/typescript/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+Workflow inbound and outbound interceptor methods also execute during [replay](/develop/typescript/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
 See [Develop Workflow logic](/develop/typescript/core-application#workflow-logic-requirements) for details.
 
 Activity and Client interceptors do not run in the Workflow and therefore are not affected by replay.
