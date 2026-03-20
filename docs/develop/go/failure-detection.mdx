@@ -26,8 +26,8 @@ This page shows how to do the following:
 
 ## Error handling {#error-handling}
 
-An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different
-error cases.
+Within a Workflow, an Activity or Child Workflow execution might fail. You can
+handle errors differently based on the error type.
 
 If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is converted into `*temporal.ApplicationError`.
 
@@ -44,7 +44,7 @@ if err != nil {
 	var applicationErr *ApplicationError
 	if errors.As(err, &applicationErr) {
 		// retrieve error message
-		fmt.Println(applicationError.Error())
+		workflow.GetLogger(ctx).Info("Application error", "error", applicationErr.Error())
 
 		// handle Activity errors (created via NewApplicationError() API)
 		var detailMsg string // assuming Activity return error by NewApplicationError("message", true, "string details")
@@ -71,11 +71,11 @@ if err != nil {
 		// handle timeout, could check timeout type by timeoutErr.TimeoutType()
         switch err.TimeoutType() {
         case commonpb.ScheduleToStart:
-                // Handle ScheduleToStart timeout.
+            // Handle ScheduleToStart timeout.
         case commonpb.StartToClose:
-                // Handle StartToClose timeout.
+            // Handle StartToClose timeout.
         case commonpb.Heartbeat:
-                // Handle heartbeat timeout.
+            // Handle heartbeat timeout.
         default:
         }
 	}
