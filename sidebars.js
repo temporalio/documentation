@@ -714,6 +714,7 @@ module.exports = {
           items: [
             'encyclopedia/activities/activity-definition',
             'encyclopedia/activities/activity-execution',
+            'encyclopedia/activities/activity-operations',
             'encyclopedia/activities/local-activity',
             'encyclopedia/activities/standalone-activity',
           ],
