@@ -256,6 +256,8 @@ See the [CLI reference for `temporal activity update-options`](/cli/activity#upd
 
 ## Observability {#observability}
 
+Activity Operations have a limited audit trail because they are not recorded in a Workflow's Event History. However, you can use the CLI and the UI to check Activity state and find Paused Activities for running Workflows.
+
 ### Check Activity state
 
 `temporal workflow describe` shows the current state of each pending Activity, including whether it's Paused, its current attempt count, and last failure.
