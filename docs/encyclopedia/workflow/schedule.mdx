@@ -92,9 +92,9 @@ What you see when you "describe" or "list" a Schedule might not look exactly lik
 
 #### Phase offset
 
-By default, intervals align to the Unix epoch (January 1, 1970 at midnight UTC), so without a phase offset, a 7 day interval would only ever fire on dates that happen to fall on that epoch-aligned boundary.
+By default, intervals align to the Unix epoch (January 1, 1970 at midnight UTC), so without a phase offset, a 7-day interval would fire every Thursday at whatever time midnight UTC equates to in your local time, which may not be convenient for your use case.
 
-You would use a phase offset when you need your recurring Schedule to fire at a specific, human-meaningful time like, every 10 days at 5pm UTC on a particular date, rather than accepting the arbitrary time the epoch alignment produces.
+Use a phase offset when you need your recurring Schedule to fire at a specific, human-meaningful time like every 10 days at 5pm UTC on a particular date, rather than accepting the arbitrary time the epoch alignment produces.
 
 There is an `offset` parameter you can set so an `interval` spec fires exactly at a pre-determined date and time. Here's an example of how you can calculate the `offset` and apply it to your Schedules.
 
