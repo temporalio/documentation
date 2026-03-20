@@ -1279,5 +1279,9 @@
       "destination": "/cloud/:path*",
       "permanent": true
     }
+    {
+      "source": "/cloud/billing-reports",
+      "destination": "/cloud/billing-api",
+      "permanent": true
   ]
 }
