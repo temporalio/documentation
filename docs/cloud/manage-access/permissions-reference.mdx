@@ -1,0 +1,303 @@
+---
+id: permissions-reference
+title: Permissions reference
+description: Reference for permissions in Temporal Cloud
+toc_max_heading_level: 4
+keywords:
+  - permissions
+  - reference
+  - temporal cloud
+---
+
+Temporal Cloud access controls are organized across two scopes:
+
+- Account-level role permissions
+- Namespace-level permissions
+
+Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](https://docs.temporal.io/ops)
+endpoints and to additional non-Cloud Ops capabilities, such as Temporal Cloud UI and internal automation behaviors.
+
+## Account-level access {#account-level-access}
+
+Account-level access is granted to users and service accounts by assigning them an account-level role. Temporal Cloud
+supports the following account-level roles:
+
+- Account Owner
+- Global Admin
+- Developer
+- Finance Admin
+- Read-Only
+
+### Cloud Ops API permissions
+
+This table provides API-level details for permissions granted through account-level roles. These permissions are
+configured per user.
+
+| Permission                  | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| --------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| [AddUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/members)          |           |           |               |      ✔       |       ✔       |
+| [CreateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks)   |           |           |               |      ✔       |       ✔       |
+| [CreateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)      |           |           |               |      ✔       |       ✔       |
+| [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)             |           |     ✔     |               |      ✔       |       ✔       |
+| [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)         |           |     ✔     |               |      ✔       |       ✔       |
+| [CreateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [CreateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users)                  |           |           |               |      ✔       |       ✔       |
+| [CreateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups)             |           |           |               |      ✔       |       ✔       |
+| [DeleteAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/DELETE/cloud/audit-log-sinks/%7Bname%7D)   |           |           |               |      ✔       |       ✔       |
+| [DeleteApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/DELETE/cloud/api-keys/%7BkeyId%7D)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [DeleteConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/DELETE/cloud/connectivity-rules/%7BconnectivityRuleId%7D)      |           |           |               |      ✔       |       ✔       |
+| [DeleteNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/DELETE/cloud/nexus/endpoints/%7BendpointId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
+| [DeleteServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/DELETE/cloud/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [DeleteUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/DELETE/cloud/users/%7BuserId%7D)                  |           |           |               |      ✔       |       ✔       |
+| [DeleteUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/DELETE/cloud/user-groups/%7BgroupId%7D)             |           |           |               |      ✔       |       ✔       |
+| [GetAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/account)                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-log-sinks/%7Bname%7D)      |           |           |               |      ✔       |       ✔       |
+| [GetAccountAuditLogSinks](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-log-sinks)     |           |           |               |      ✔       |       ✔       |
+| [GetApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/GET/cloud/api-keys/%7BkeyId%7D)                   |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [GetApiKeys](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/GET/cloud/api-keys)                  |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [GetAsyncOperation](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/operations/GET/cloud/operations/%7BasyncOperationId%7D)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetAuditLogs](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-logs)                |           |           |               |      ✔       |       ✔       |
+| [GetConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
+| [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules)        |           |     ✔     |               |      ✔       |       ✔       |
+| [GetCurrentIdentity](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/current-identity)          |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces)               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints/%7BendpointId%7D)            |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetNexusEndpoints](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions/%7Bregion%7D)                   |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetRegions](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions)                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts/%7BserviceAccountId%7D)           |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts)          |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [GetUsage](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/usage)                    |           |           |       ✔       |      ✔       |       ✔       |
+| [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D)                |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUserGroupMembers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D/members)         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUserGroups](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups)               |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| [RemoveUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/remove-member)       |           |           |               |      ✔       |       ✔       |
+| [UpdateAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/account)               |           |           |               |      ✔       |       ✔       |
+| [UpdateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks/%7Bspec.name%7D)   |           |           |               |      ✔       |       ✔       |
+| [UpdateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys/%7BkeyId%7D)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [UpdateNamespaceTags](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/update-tags)         |           |           |               |      ✔       |       ✔       |
+| [UpdateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints/%7BendpointId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
+| [UpdateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [UpdateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/%7BuserId%7D)                  |           |           |               |      ✔       |       ✔       |
+| [UpdateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D)             |           |           |               |      ✔       |       ✔       |
+| [ValidateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sink-validate) |           |           |               |      ✔       |       ✔       |
+
+- \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
+- † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+
+{/* ### Additional account-level capabilities
+
+| Capability                                                       | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| ---------------------------------------------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| View billing plan information                                    |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| Manage MFA enrollments, password resets, and decode certificates |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| Manage own API keys and service account API keys                 |   ✔\*†    |   ✔\*†    |     ✔\*†      |     ✔\*†     |     ✔\*†      |
+| Manage self-hosted to cloud migrations                           |           |     ✔     |               |      ✔       |       ✔       |
+| Complete user onboarding and quickstart Workflows                |           |     ✔     |               |      ✔       |       ✔       |
+| View monthly costs                                               |           |           |       ✔       |              |       ✔       |
+| View invoices, credit ledger entries, grants, and promotions     |           |           |       ✔       |      ✔‡      |       ✔       |
+| Manage Stripe payment portal                                     |           |           |       ✔       |      ✔‡      |       ✔       |
+| View usage metrics                                               |           |           |       ✔       |      ✔       |       ✔       |
+| Invite and re-invite users                                       |           |           |               |      ✔       |       ✔       |
+| Manage tag keys                                                  |           |           |               |      ✔       |       ✔       |
+| Configure account settings                                       |           |           |               |      ✔       |       ✔       |
+| Self-service account offboarding                                 |           |           |               |              |       ✔       |
+| SCIM administration                                              |           |           |               |              |       ✔       |
+| Change account plan type                                         |           |           |               |              |       ✔       |
+
+- \* See [API Key Authorization Behavior](#api-key-authorization-behavior) — legacy API key endpoints have the same
+  scoped behavior as their Cloud Ops API counterparts.
+- † See [Service Account Authorization Behavior](#service-account-authorization-behavior) — creating service account API
+  keys follows the same scoped authorization as other service account operations. ‡ Temporary — Global Admin access to
+  billing and invoicing data will be removed once the Account Owner role is fully rolled out.
+
+> **Note:** Access to external observability endpoints (metrics and metric descriptors) is controlled separately and is
+> not tied to the standard account-level role hierarchy. */}
+
+## Namespace-level permissions
+
+Namespace-level permissions are granted to users and service accounts by assigning them a Namespace-level permission.
+Temporal Cloud supports the following Namespace-level permissions:
+
+- Namespace Admin
+- Write
+- Read
+
+Users with the Global Admin and Account Owner roles automatically have Namespace Admin permissions on all Namespaces in
+the account.
+
+### Cloud Ops API permissions
+
+This table provides API-level details for permissions granted through Namespace-level permissions. These permissions are
+configured per Namespace per user.
+
+| Permission                       | Read | Write | Namespace Admin |
+| -------------------------------- | :--: | :---: | :-------------: |
+| [AddNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/add-region)               |      |       |        ✔        |
+| [CreateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks)        |      |       |        ✔        |
+| [DeleteNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/DELETE/cloud/namespaces/%7Bnamespace%7D)                  |      |       |        ✔        |
+| [DeleteNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/DELETE/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D)        |      |       |        ✔        |
+| [DeleteNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/DELETE/cloud/namespaces/%7Bnamespace%7D/regions/%7Bregion%7D)            |      |       |        ✔        |
+| [FailoverNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/failover-region)          |      |       |        ✔        |
+| [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D)                     |  ✔   |   ✔   |        ✔        |
+| [GetNamespaceCapacityInfo](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D/capacity-info)         |  ✔   |   ✔   |        ✔        |
+| [GetNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D)           |  ✔   |   ✔   |        ✔        |
+| [GetNamespaceExportSinks](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks)          |  ✔   |   ✔   |        ✔        |
+| [RenameCustomSearchAttribute](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/rename-custom-search-attribute)      |      |       |        ✔        |
+| [SetServiceAccountNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/namespaces/%7Bnamespace%7D/service-accounts/%7BserviceAccountId%7D/access) |      |       |        ✔        |
+| [SetUserGroupNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/namespaces/%7Bnamespace%7D/user-groups/%7BgroupId%7D/access)      |      |       |        ✔        |
+| [SetUserNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/namespaces/%7Bnamespace%7D/users/%7BuserId%7D/access)           |      |       |        ✔        |
+| [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D)                  |      |       |        ✔        |
+| [UpdateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bspec.name%7D)        |      |       |        ✔        |
+| [ValidateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sink-validate)      |      |       |        ✔        |
+
+### Workflow-level permissions
+
+This table provides API-level details for Workflow-level Data Plane permissions granted through Namespace-level
+permissions. These permissions are configured per Namespace per user.
+
+| Permission                            | Read | Write | Namespace Admin |
+| ------------------------------------- | :--: | :---: | :-------------: |
+| CountActivityExecutions               |  ✔   |   ✔   |        ✔        |
+| CountSchedules                        |  ✔   |   ✔   |        ✔        |
+| CountWorkflowExecutions               |  ✔   |   ✔   |        ✔        |
+| CreateSchedule                        |      |   ✔   |        ✔        |
+| CreateWorkflowRule                    |      |   ✔   |        ✔        |
+| DeleteActivityExecution               |      |   ✔   |        ✔        |
+| DeleteSchedule                        |      |   ✔   |        ✔        |
+| DeleteWorkerDeployment                |      |   ✔   |        ✔        |
+| DeleteWorkerDeploymentVersion         |      |   ✔   |        ✔        |
+| DeleteWorkflowExecution               |      |   ✔   |        ✔        |
+| DeleteWorkflowRule                    |      |   ✔   |        ✔        |
+| DescribeActivityExecution             |  ✔   |   ✔   |        ✔        |
+| DescribeBatchOperation                |  ✔   |   ✔   |        ✔        |
+| DescribeNamespace                     |  ✔   |   ✔   |        ✔        |
+| DescribeSchedule                      |  ✔   |   ✔   |        ✔        |
+| DescribeTaskQueue                     |  ✔   |   ✔   |        ✔        |
+| DescribeWorker                        |  ✔   |   ✔   |        ✔        |
+| DescribeWorkerDeployment              |  ✔   |   ✔   |        ✔        |
+| DescribeWorkerDeploymentVersion       |  ✔   |   ✔   |        ✔        |
+| DescribeWorkflowExecution             |  ✔   |   ✔   |        ✔        |
+| DescribeWorkflowRule                  |  ✔   |   ✔   |        ✔        |
+| ExecuteMultiOperation                 |      |   ✔   |        ✔        |
+| FetchWorkerConfig                     |  ✔   |   ✔   |        ✔        |
+| GetSearchAttributes                   |  ✔   |   ✔   |        ✔        |
+| GetWorkerBuildIdCompatibility         |  ✔   |   ✔   |        ✔        |
+| GetWorkerTaskReachability             |  ✔   |   ✔   |        ✔        |
+| GetWorkerVersioningRules              |  ✔   |   ✔   |        ✔        |
+| GetWorkflowExecutionHistory           |  ✔   |   ✔   |        ✔        |
+| GetWorkflowExecutionHistoryReverse    |  ✔   |   ✔   |        ✔        |
+| ListActivityExecutions                |  ✔   |   ✔   |        ✔        |
+| ListBatchOperations                   |  ✔   |   ✔   |        ✔        |
+| ListClosedWorkflowExecutions          |  ✔   |   ✔   |        ✔        |
+| ListOpenWorkflowExecutions            |  ✔   |   ✔   |        ✔        |
+| ListScheduleMatchingTimes             |  ✔   |   ✔   |        ✔        |
+| ListSchedules                         |  ✔   |   ✔   |        ✔        |
+| ListTaskQueuePartitions               |  ✔   |   ✔   |        ✔        |
+| ListWorkerDeployments                 |  ✔   |   ✔   |        ✔        |
+| ListWorkers                           |  ✔   |   ✔   |        ✔        |
+| ListWorkflowExecutions                |  ✔   |   ✔   |        ✔        |
+| ListWorkflowRules                     |  ✔   |   ✔   |        ✔        |
+| PatchSchedule                         |      |   ✔   |        ✔        |
+| PauseActivity                         |      |   ✔   |        ✔        |
+| PauseWorkflowExecution                |      |   ✔   |        ✔        |
+| PollActivityExecution                 |      |   ✔   |        ✔        |
+| PollActivityTaskQueue                 |      |   ✔   |        ✔        |
+| PollNexusTaskQueue                    |      |   ✔   |        ✔        |
+| PollWorkflowExecutionUpdate           |      |   ✔   |        ✔        |
+| PollWorkflowTaskQueue                 |      |   ✔   |        ✔        |
+| QueryWorkflow                         |  ✔   |   ✔   |        ✔        |
+| RecordActivityTaskHeartbeat           |      |   ✔   |        ✔        |
+| RecordActivityTaskHeartbeatById       |      |   ✔   |        ✔        |
+| RecordWorkerHeartbeat                 |      |   ✔   |        ✔        |
+| RequestCancelActivityExecution        |      |   ✔   |        ✔        |
+| RequestCancelWorkflowExecution        |      |   ✔   |        ✔        |
+| ResetActivity                         |      |   ✔   |        ✔        |
+| ResetStickyTaskQueue                  |      |   ✔   |        ✔        |
+| ResetWorkflowExecution                |      |   ✔   |        ✔        |
+| RespondActivityTaskCanceled           |      |   ✔   |        ✔        |
+| RespondActivityTaskCanceledById       |      |   ✔   |        ✔        |
+| RespondActivityTaskCompleted          |      |   ✔   |        ✔        |
+| RespondActivityTaskCompletedById      |      |   ✔   |        ✔        |
+| RespondActivityTaskFailed             |      |   ✔   |        ✔        |
+| RespondActivityTaskFailedById         |      |   ✔   |        ✔        |
+| RespondNexusTaskCompleted             |      |   ✔   |        ✔        |
+| RespondNexusTaskFailed                |      |   ✔   |        ✔        |
+| RespondQueryTaskCompleted             |      |   ✔   |        ✔        |
+| RespondWorkflowTaskCompleted          |      |   ✔   |        ✔        |
+| RespondWorkflowTaskFailed             |      |   ✔   |        ✔        |
+| SetWorkerDeploymentCurrentVersion     |      |   ✔   |        ✔        |
+| SetWorkerDeploymentManager            |      |   ✔   |        ✔        |
+| SetWorkerDeploymentRampingVersion     |      |   ✔   |        ✔        |
+| ShutdownWorker                        |      |   ✔   |        ✔        |
+| SignalWithStartWorkflowExecution      |      |   ✔   |        ✔        |
+| SignalWorkflowExecution               |      |   ✔   |        ✔        |
+| StartActivityExecution                |      |   ✔   |        ✔        |
+| StartBatchOperation                   |      |   ✔   |        ✔        |
+| StartWorkflowExecution                |      |   ✔   |        ✔        |
+| StopBatchOperation                    |      |   ✔   |        ✔        |
+| TerminateActivityExecution            |      |   ✔   |        ✔        |
+| TerminateWorkflowExecution            |      |   ✔   |        ✔        |
+| TriggerWorkflowRule                   |      |   ✔   |        ✔        |
+| UnpauseActivity                       |      |   ✔   |        ✔        |
+| UnpauseWorkflowExecution              |      |   ✔   |        ✔        |
+| UpdateActivityOptions                 |      |   ✔   |        ✔        |
+| UpdateSchedule                        |      |   ✔   |        ✔        |
+| UpdateTaskQueueConfig                 |      |   ✔   |        ✔        |
+| UpdateWorkerBuildIdCompatibility      |      |   ✔   |        ✔        |
+| UpdateWorkerConfig                    |      |   ✔   |        ✔        |
+| UpdateWorkerDeploymentVersionMetadata |      |   ✔   |        ✔        |
+| UpdateWorkerVersioningRules           |      |   ✔   |        ✔        |
+| UpdateWorkflowExecution               |      |   ✔   |        ✔        |
+| UpdateWorkflowExecutionOptions        |      |   ✔   |        ✔        |
+
+{/* ### Additional Namespace-level capabilities
+
+| Capability                                                    | Read | Write | Namespace Admin |
+| ------------------------------------------------------------- | :--: | :---: | :-------------: |
+| View extended Namespace details and usage metrics             |  ✔   |   ✔   |        ✔        |
+| View export sink configurations                               |  ✔   |   ✔   |        ✔        |
+| View Namespace user access assignments                        |  ✔   |   ✔   |        ✔        |
+| View replication status, replica health, and failover history |  ✔   |   ✔   |        ✔        |
+| Manage export sinks — create, update, validate, and delete    |      |       |        ✔        |
+| Bulk update custom Search Attributes                          |      |       |        ✔        |
+| Manage user and identity Namespace access                     |      |       |        ✔        |
+| Initiate Namespace failover                                   |      |       |        ✔        |
+| Convert single-region Namespace to multi-region               |      |       |        ✔        | */}
+
+## Additional authorization behaviors
+
+Some APIs are granted to all account-level roles but enforce additional authorization rules at runtime. The action group
+grants access to call the API, but the scope of what the caller can interact with depends on their role.
+
+### API key authorization behavior
+
+All roles can create and manage their **own** API keys. An API key inherits the permissions of its owner — it cannot
+grant access beyond what the owning user or service account already has.
+
+| Behavior                                            | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| --------------------------------------------------- | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| Create, view, update, and delete own API keys       |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| View, update, and delete any API key in the account |           |           |               |      ✔       |       ✔       |
+
+**Affected APIs:** CreateApiKey, GetApiKey, GetApiKeys, UpdateApiKey, DeleteApiKey
+
+### Service account authorization behavior
+
+All roles can list service accounts within their account. However, the ability to create, update, and delete service
+accounts depends on the scope of the service account and the caller's role.
+
+| Behavior                                         | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| ------------------------------------------------ | :-------: | :-------: | :-----------: | :----------: | :-----------: |
+| List all service accounts in the account         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
+| Manage unscoped (account-level) service accounts |           |           |               |      ✔       |       ✔       |
+| Manage Namespace-scoped service accounts         |     §     |     §     |       §       |      ✔       |       ✔       |
+
+§ Requires Namespace Admin permission on the target Namespace. Any role can manage Namespace-scoped service accounts if
+they hold Namespace Admin on that Namespace.
+
+**Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
+DeleteServiceAccount
