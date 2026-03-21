@@ -415,7 +415,7 @@ If you **must** use a library that references a Node.js or DOM API and you are c
 
 :::
 
-The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
+The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can be read deterministically by the Workflow.
 
 This limitation also means that Workflow code cannot directly import the [Activity Definition](/activity-definition).
 [Activity Types](/activity-definition#activity-type) can be imported, so they can be invoked in a type-safe manner.
@@ -424,28 +424,68 @@ To make the Workflow runtime deterministic, functions like `Math.random()`, `Dat
 
 [FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic.
 
-<details>
+The following sections describe the replay-safe APIs available in the sandbox.
 
-    <summary>
-      Expand to see the implications of the deterministic Date API
-    </summary>
+#### Logging
 
-```typescript
+Use [`log`](https://typescript.temporal.io/api/namespaces/workflow#log) from `@temporalio/workflow` instead of `console.log`. The SDK logger automatically suppresses messages during replay to avoid duplicates:
+
+```ts
+import { log } from '@temporalio/workflow';
+
+export async function myWorkflow(name: string): Promise<string> {
+  log.info('Starting workflow', { name });
+  // ...
+}
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/observability#logging).
+
+#### Random numbers and UUIDs
+
+`Math.random()` is replaced by a deterministic version in the sandbox, so you can use it directly. It produces the same sequence of values on replay. UUID libraries that rely on `Math.random()` (such as the `uuid` package) are also safe to use. Avoid `crypto.randomUUID()`, which is not available in the sandbox:
+
+```ts
+import { v4 as uuid4 } from 'uuid';
+
+// Safe - Math.random() is deterministic in the Workflow sandbox
+const value = Math.random();
+const id = uuid4();
+```
+
+#### Current time
+
+`Date.now()` and `new Date()` are replaced by deterministic versions that return the time of the last Workflow Task completion. The value only advances when you `await` something (like `sleep()`):
+
+```ts
 import { sleep } from '@temporalio/workflow';
 
-// this prints the *exact* same timestamp repeatedly
+// Prints the *exact* same timestamp on every iteration
 for (let x = 0; x < 10; ++x) {
   console.log(Date.now());
 }
 
-// this prints timestamps increasing roughly 1s each iteration
+// Prints timestamps increasing roughly 1s each iteration
 for (let x = 0; x < 10; ++x) {
   await sleep('1 second');
   console.log(Date.now());
 }
 ```
 
-</details>
+#### Detecting replay (advanced)
+
+Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/typescript/interceptors).
+(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+
+```ts
+import { workflowInfo } from '@temporalio/workflow';
+
+if (!workflowInfo().unsafe.isReplaying) {
+  metrics.emit('workflow_started', 1);
+}
+```
+
+If your goal is to always take action when something new is happening, check that `workflowInfo().unsafe.isReplayingHistoryEvents` is false instead. This will be false during read-only operations like queries and update validators. This is what the SDK's built-in logger uses internally.
 
 ## How to develop a basic Activity {#develop-activities}
 

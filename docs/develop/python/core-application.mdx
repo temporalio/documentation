@@ -201,7 +201,7 @@ Workflow logic is constrained by [deterministic execution requirements](/workflo
 Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a
 set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
-Workflow code must be deterministic. This means:
+Workflow code must be deterministic because the Temporal Server may [replay](/develop/python/testing-suite#replay) your Workflow to reconstruct its state. This means:
 
 - no threading
 - no randomness
@@ -213,6 +213,59 @@ Workflow code must be deterministic. This means:
 All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must
 run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be
 _deterministic_.
+
+The SDK provides replay-safe alternatives for common needs:
+
+#### Logging
+
+Use [`workflow.logger`](https://python.temporal.io/temporalio.workflow.html#logger) instead of `print()` or the standard `logging` module.
+The SDK logger automatically suppresses log messages during replay to avoid duplicates:
+
+```python
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        workflow.logger.info("Starting workflow", name)
+        # ...
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/python/observability#logging).
+
+#### Random numbers and UUIDs
+
+Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#random) to get a deterministic `random.Random` instance seeded per Workflow Execution. Never use `random.random()` or other `random` module functions directly.
+For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
+
+```python
+# Good - deterministic across replays
+value = workflow.random().randint(1, 100)
+unique_id = workflow.uuid4()
+
+# Bad - different result on every replay
+import random
+value = random.randint(1, 100)
+```
+
+#### Current time
+
+Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) instead of `datetime.now()` or `time.time()`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
+
+```python
+current_time = workflow.now()
+```
+
+#### Detecting replay (advanced)
+
+Use [`workflow.unsafe.is_replaying`](https://python.temporal.io/temporalio.workflow.html#is_replaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/python/interceptors).
+(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+
+```python
+if not workflow.unsafe.is_replaying():
+    emit_metric("workflow_started", 1)
+```
+
+If your goal is to always take action when something new is happening, check that `workflow.unsafe.is_replaying_history_events()` is false instead. This will be false during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors use internally. 
 
 ## Develop a basic Activity {#develop-activities}
 

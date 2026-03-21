@@ -403,6 +403,52 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/develop/go/observability#tracing-and-context-propagation) for more information about context propagation.
 
+The following sections describe the most common replay-safe patterns.
+
+#### Logging
+
+Use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) instead of the standard `log` package. The SDK logger automatically suppresses log messages during replay to avoid duplicates:
+
+```go
+logger := workflow.GetLogger(ctx)
+logger.Info("Starting workflow", "name", name)
+```
+
+For logger configuration, see [Observability: Logging](/develop/go/observability#logging).
+
+#### Random numbers and UUIDs
+
+Use [`workflow.SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) to capture non-deterministic values like random numbers. The result is stored in the Event History and reused on replay instead of re-executing:
+
+```go
+encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
+    return rand.Intn(100)
+})
+var random int
+encodedRandom.Get(&random)
+```
+
+For more details, see [Side Effects](/develop/go/side-effects).
+
+#### Current time
+
+Use [`workflow.Now(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Now) instead of `time.Now()`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
+
+```go
+currentTime := workflow.Now(ctx)
+```
+
+#### Detecting replay (advanced)
+
+Use [`workflow.IsReplaying(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#IsReplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
+(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+
+```go
+if !workflow.IsReplaying(ctx) {
+    emitMetric("workflow_started", 1)
+}
+```
+
 ## How to develop an Activity Definition in Go {#activity-definition}
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.

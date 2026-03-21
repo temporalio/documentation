@@ -25,14 +25,71 @@ The methods you implement on your Interceptor classes can perform side effects a
 
 There are five categories of inbound and outbound calls that you can modify in this way:
 
-| [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)                                                       | [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)                           | [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| Start workflow, signal workflow, list workflows, update schedule                               | Execute workflow (handles a Workflow Task that starts a new Workflow Execution), handle query, handle signal, handle update handler, handle update validator | Start activity, start child workflow, signal child workflow, signal external workflow, start Nexus operation, start local activity | Execute activity (this is the only inbound Activity call)                                              | Info, heartbeat                                                                                          |
+| | [Outbound Client](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html) | [Outbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html) | [Inbound Activity](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
+| --- | --- | --- | --- | --- | --- |
+| **Description** | Wraps calls from your application to the Temporal Client to start a Workflow or send [Messages](/encyclopedia/workflow-message-passing/) to it | Wraps calls arriving into a [Workflow Execution](/workflow-execution), such as executing the Workflow, handling [Messages](/encyclopedia/workflow-message-passing/) | Wraps calls a [Workflow](/workflow-definition) makes to the SDK, such as scheduling [Activities](/activities), starting [Child Workflows](/child-workflows), and invoking [Nexus Operations](/nexus) | Wraps calls arriving into an [Activity Execution](/activity-execution) | Wraps calls an [Activity](/activities) makes to the SDK, such as sending [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) and reading Activity info |
+| **Runs on** | Client | Worker (Workflow sandbox) | Worker (Workflow sandbox) | Worker (Activity context) | Worker (Activity context) |
+| **Example methods** | `start_workflow()`, `signal_workflow()`, `list_workflows()` | `execute_workflow()`, `handle_query()`, `handle_signal()`, `handle_update_handler()` | `start_activity()`, `start_child_workflow()`, `signal_child_workflow()`, `start_nexus_operation()` | `execute_activity()` | `info()`, `heartbeat()` |
 
-This is not an exhaustive list; refer to the
-[Python SDK methods](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) for details.
+These are not exhaustive lists; refer to the linked API docs for each category.
 
-The first of these categories is a Client call, and the remaining 4 are Worker calls.
+:::warning Workflow interceptors and replay
+
+Workflow inbound and outbound interceptor methods also execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for details.
+
+If you want to write generic code shared by all inbound Workflow call handlers but want to skip read-only operations, check `workflow.unsafe.is_read_only()`.
+
+Activity and Client interceptors are not affected by replay.
+
+:::
+
+## Register an Interceptor {#register}
+
+Registering an interceptor means supplying an interceptor instance to the SDK so Temporal can invoke it when matching
+Client or Worker calls occur. Once registered, the interceptor runs as part of the call path and can observe or modify
+request and response data.
+
+### Register on the Client 
+
+Pass interceptors in the `interceptors` argument of `Client.connect()`. Client interceptors modify outbound calls such
+as starting and signaling Workflows.
+
+```python
+client = await Client.connect(
+    "localhost:7233",
+    interceptors=[TracingInterceptor()],
+)
+```
+
+The `interceptors` list can contain multiple interceptors.
+In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
+
+### Register via a Plugin
+
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
+
+### Register on the Worker only 
+
+If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
+Worker interceptors modify inbound and outbound Workflow and Activity calls.
+
+```python
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    interceptors=[SomeWorkerInterceptor()],
+    # ...
+)
+```
+
+:::note
+
+If your interceptor class inherits from both `client.Interceptor` and `worker.Interceptor`, pass it to
+`Client.connect()` rather than the `Worker()` constructor. The Worker will use interceptors from its underlying Client
+automatically.
+
+:::
 
 ## Register an Interceptor {#register}
 
@@ -82,6 +139,7 @@ If your interceptor class inherits from both `client.Interceptor` and `worker.In
 automatically.
 
 :::
+
 
 ## Client call Interceptors
 
@@ -145,11 +203,10 @@ and `worker.Interceptor` as above, since their method sets do not overlap.
 
 You can then [register](#register) this interceptor in your client/starter code.
 
-Your interceptor classes need not implement every method; the default implementation is always to pass the data on to
-the next method in the interceptor chain. During execution, when the SDK encounters an Inbound Activity call, it will
-look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it. The intercepted
-method will perform its function then call the same method on the next Interceptor in the chain. At the end of the chain
-the SDK will call the "real" SDK method.
+Your interceptor classes need not implement every method; the default implementation is always to pass the data on to the next method in the interceptor chain.
+During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
+The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
+At the end of the chain the SDK will call the "real" SDK method.
 
 ## Worker call Interceptors
 
