@@ -99,7 +99,7 @@ For logger configuration, see [Observability: Logging](/develop/dotnet/observabi
 
 #### Random numbers and UUIDs
 
-Use [`Workflow.Random`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html) to get a deterministic `Random` instance. For UUIDs, use [`Workflow.NewGuid()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html). Never use `System.Random` or `Guid.NewGuid()` directly:
+Use [`Workflow.Random`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Random) to get a deterministic `Random` instance. For UUIDs, use [`Workflow.NewGuid()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_NewGuid). Never use `System.Random` or `Guid.NewGuid()` directly:
 
 ```csharp
 // Good - deterministic across replays
