@@ -112,7 +112,7 @@ var value = new Random().Next(1, 100);
 
 #### Current time
 
-Use [`Workflow.UtcNow`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html) instead of `DateTime.UtcNow`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
+Use [`Workflow.UtcNow`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_UtcNow) instead of `DateTime.UtcNow`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
 
 ```csharp
 var currentTime = Workflow.UtcNow;
