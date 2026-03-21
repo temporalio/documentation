@@ -40,19 +40,15 @@ For complete request and response schemas, refer to the Schema below.
 
 Billing report generation is **asynchronous**. You initiate report creation, then poll for completion.
 
-## Report data granularity
+## Report data limitations
 
-Reports can be generated with hourly granularity only, for the current billing month, and the previous billing month.
+For pre-release, reports can be generated with hourly granularity only, for the current billing month, and the previous billing month.
 
 ## Allowed date ranges
 
 Date ranges must use billing-month boundaries (MM/YYYY). 
 Requests may include the current billing month. 
 The data in finalized reports includes usage up to `current_time` \- 24 hours (rounded up to nearest hour).
-
-:::tip
-Reports for previously requested billing periods may generate faster
-:::
 
 ## Rate limits and concurrency
 
@@ -67,7 +63,7 @@ Within a single account:
 
 ### Report Generation Latency
 
-Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.   
+Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
 
 ## Best practices
 
