@@ -34,6 +34,7 @@ This section covers features related to viewing the state of the application, in
 
 - [Metrics](#metrics)
 - [Tracing](#tracing-and-context-propagation)
+- [Context Propagation](#context-propagation)
 - [Logging](#logging)
 - [Visibility](#visibility)
 
@@ -62,143 +63,149 @@ The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
-## Tracing and Context Propagation {#tracing-and-context-propagation}
+## Tracing {#tracing-and-context-propagation}
 
-The Temporal Go SDK supports three tracing implementations: [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog), [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), and [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing).
+Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and Child Workflows.
 
-Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
-
-Tracing can be configured by providing a tracer implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
-
-For details on how to configure and leverage tracing, see the respective documentation:
-
-- [Datadog](https://www.datadoghq.com/)
-- [OpenTelemetry](https://opentelemetry.io)
-- [OpenTracing](https://opentracing.io/)
-
-The OpenTracing support has been validated using Jaeger, but other implementations should also work.
-Tracing functionality uses generic context propagation provided by the client.
-
-### Context Propagation
-
-Temporal provides a standard way to propagate a custom context across a Workflow.
-You can configure a context propagator via the [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions).
-The context propagator extracts and passes on information present in `context.Context` and `workflow.Context` objects across the Workflow.
-Once a context propagator is configured, you should be able to access the required values in the context objects as you would normally do in Go.
-You can see how the Go SDK implements a [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation).
-
-#### Server-Side Headers
-
-On the server side, Temporal provides a mechanism for propagating context across Workflow transitions called headers.
-
-```proto
-message Header {
-    map<string, Payload> fields = 1;
-}
-```
-
-`Client` leverages headers to pass around additional context information.
-[HeaderReader](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderReader) and [HeaderWriter](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderWriter) are interfaces that allow reading and writing to the Temporal Server headers.
-The SDK includes [implementations](https://github.com/temporalio/sdk-go/blob/master/internal/headers.go) for these interfaces.
-`HeaderWriter` sets a value for a header.
-Headers are held as a map, so setting a value for the same key will overwrite its previous value.
-`HeaderReader` gets a value of a header.
-It also can iterate through all headers and execute the provided handler function on each header, so that your code can operate on select headers you need.
+The Go SDK provides tracing interceptors for [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing), and [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing). Create a tracing interceptor and pass it to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions):
 
 ```go
-type HeaderWriter interface {
-	Set(string, *commonpb.Payload)
-}
-
-type HeaderReader interface {
-	Get(string) (*commonpb.Payload, bool)
-	ForEachKey(handler func(string, *commonpb.Payload) error) error
-}
-```
-
-#### Context Propagators
-
-You can propagate additional context through Workflow Execution by using a context propagator.
-A context propagator needs to implement the `ContextPropagator` interface that includes the following four methods:
-
-```go
-type ContextPropagator interface {
-  Inject(context.Context, HeaderWriter) error
-
-  Extract(context.Context, HeaderReader) (context.Context, error)
-
-  InjectFromWorkflow(Context, HeaderWriter) error
-
-  ExtractToWorkflow(Context, HeaderReader) (Context, error)
-}
-```
-
-- `Inject` reads select context keys from a Go [context.Context](https://golang.org/pkg/context/#Context) object and writes them into the headers using the [HeaderWriter](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderWriter) interface.
-- `InjectFromWorkflow` operates similarly to `Inject` but reads from a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
-- `Extract` picks select headers and puts their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
-- `ExtractToWorkflow` operates similarly to `Extract` but writes to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
-
-The [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation) shows a sample implementation of a context propagator.
-
-#### Is there a complete example?
-
-The [context propagation sample](https://github.com/temporalio/samples-go/blob/master/ctxpropagation/) configures a custom context propagator and shows context propagation of custom keys across a Workflow and an Activity.
-It also uses Jaeger for tracing.
-
-#### Can I configure multiple context propagators?
-
-Yes. Multiple context propagators help to structure code with each propagator having its own scope of responsibility.
-
-### Context Propagation Over Nexus Operation Calls
-
-Nexus does not use the standard context propagator header structure.
-Instead, it relies on a Temporal-agnostic protocol designed to connect arbitrary systems.
-To propagate context over Nexus Operation calls, the context is serialized into a `nexus.Header`.
-This is essentially a wrapper around `map[string]string` with helper methods to `Set` and `Get` values.
-The header normalizes all keys to lowercase.
-
-Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
-Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-go/tree/main/nexus-context-propagation).
-
-### Useful Resources
-
-- [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by SpiralScout
-
-The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.
-Interceptors use Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/child-workflows).
-
-There are several tracing implementations supported by the Temporal Go SDK.
-For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `TracingInterceptor`.
-
-```go
-// create Interceptor
-tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{})
-```
-
-For an [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry) Interceptor, use `opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})`.
-
-```go
-// create Interceptor
+// OpenTelemetry
 tracingInterceptor, err := opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})
-```
 
-For a [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing) Interceptor, use `tracing.NewTracingInterceptor(tracing.TracerOptions{})`.
+// OpenTracing
+tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{})
 
-```go
-// create Interceptor
+// Datadog
 tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
 ```
 
-Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing, or provide interceptors through a [Plugin](/develop/plugins-guide#interceptors) if you're building a reusable library.
-
 ```go
 c, err := client.Dial(client.Options{
-  Interceptors:       []interceptor.ClientInterceptor{tracingInterceptor},
+    Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
 })
 ```
 
-OpenTracing and OpenTelemetry are natively supported by [Jaeger](https://www.jaegertracing.io/docs/1.46/features/#native-support-for-opentracing-and-opentelemetry).
-For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io), [OpenTelemetry](https://opentelemetry.io/), and [Datadog](https://docs.datadoghq.com/tracing/).
+The interceptor automatically propagates trace context across Workflow, Activity, and Child Workflow boundaries using Temporal headers. You can also register interceptors through a [Plugin](/develop/plugins-guide#interceptors) if you’re building a reusable library.
+
+For more information, see the documentation for [OpenTelemetry](https://opentelemetry.io/), [OpenTracing](https://opentracing.io), and [Datadog](https://docs.datadoghq.com/tracing/).
+
+## Context Propagation {#context-propagation}
+
+Context propagation lets you pass custom key-value data from a Client to Workflows, and from Workflows to Activities and Child Workflows, without threading it through every function signature. Common use cases include propagating tracing IDs, tenant IDs, auth tokens, or other request-scoped metadata.
+
+The mechanism works through Temporal headers: when a call crosses a boundary (Client to Workflow, Workflow to Activity, etc.), the SDK serializes values from the caller’s context into headers, carries them through the Temporal Server, and deserializes them into the callee’s context.
+
+### How it works
+
+1. **Register** a context propagator on the Client via `ContextPropagators` in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions)
+2. **Inject** - On outbound calls, the SDK calls `Inject` (from `context.Context`) or `InjectFromWorkflow` (from `workflow.Context`) to serialize values into Temporal headers
+3. **Extract** - On inbound calls, the SDK calls `Extract` (into `context.Context`) or `ExtractToWorkflow` (into `workflow.Context`) to deserialize headers back into the context
+4. **Access** - Your Workflow and Activity code reads values from the context as usual
+
+### Implement a context propagator
+
+A context propagator implements the [`ContextPropagator`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ContextPropagator) interface:
+
+```go
+type ContextPropagator interface {
+    // Inject writes values from a Go context.Context into headers (Client/Activity side)
+    Inject(context.Context, HeaderWriter) error
+    // Extract reads headers into a Go context.Context (Client/Activity side)
+    Extract(context.Context, HeaderReader) (context.Context, error)
+    // InjectFromWorkflow writes values from a workflow.Context into headers
+    InjectFromWorkflow(Context, HeaderWriter) error
+    // ExtractToWorkflow reads headers into a workflow.Context
+    ExtractToWorkflow(Context, HeaderReader) (Context, error)
+}
+```
+
+There are two pairs of methods because Go uses `context.Context` in non-Workflow code (Client, Activities) and `workflow.Context` inside Workflows. You must implement all four methods for values to propagate across every boundary (Client → Workflow → Activity/Child Workflow).
+
+Here is a propagator that carries a custom key-value pair from the Client to Workflows and Activities (from the [context propagation sample](https://github.com/temporalio/samples-go/tree/main/ctxpropagation)):
+
+```go
+const HeaderKey = "custom-header"
+
+type propagator struct{}
+
+func (s *propagator) Inject(ctx context.Context, writer workflow.HeaderWriter) error {
+    value := ctx.Value(PropagateKey)
+    payload, err := converter.GetDefaultDataConverter().ToPayload(value)
+    if err != nil {
+        return err
+    }
+    writer.Set(HeaderKey, payload)
+    return nil
+}
+
+func (s *propagator) Extract(ctx context.Context, reader workflow.HeaderReader) (context.Context, error) {
+    if value, ok := reader.Get(HeaderKey); ok {
+        var values Values
+        if err := converter.GetDefaultDataConverter().FromPayload(value, &values); err != nil {
+            return ctx, nil
+        }
+        ctx = context.WithValue(ctx, PropagateKey, values)
+    }
+    return ctx, nil
+}
+
+// InjectFromWorkflow and ExtractToWorkflow are similar but operate on workflow.Context.
+// See the full sample for details.
+```
+
+### Register the propagator and set context values
+
+Register the propagator on the Client. Then set context values before starting a Workflow:
+
+```go
+c, err := client.Dial(client.Options{
+    ContextPropagators: []workflow.ContextPropagator{NewContextPropagator()},
+})
+
+// Set a value in context before starting the Workflow
+ctx := context.Background()
+ctx = context.WithValue(ctx, PropagateKey, &Values{Key: "test", Value: "tested"})
+
+we, err := c.ExecuteWorkflow(ctx, workflowOptions, MyWorkflow)
+```
+
+You can also register context propagators through a [Plugin](/develop/plugins-guide#context-propagators) if you are building a reusable library.
+
+### Access propagated values
+
+In your Workflow, the propagated values are available on the `workflow.Context`. When the Workflow starts an Activity, the SDK automatically propagates the same values:
+
+```go
+func MyWorkflow(ctx workflow.Context) error {
+    // Read propagated value in the Workflow
+    if val := ctx.Value(PropagateKey); val != nil {
+        vals := val.(Values)
+        workflow.GetLogger(ctx).Info("propagated to workflow", vals.Key, vals.Value)
+    }
+
+    // The value is automatically propagated to Activities
+    var result Values
+    err := workflow.ExecuteActivity(ctx, SampleActivity).Get(ctx, &result)
+    return err
+}
+
+func SampleActivity(ctx context.Context) (*Values, error) {
+    // Read propagated value in the Activity
+    if val := ctx.Value(PropagateKey); val != nil {
+        return val.(*Values), nil
+    }
+    return nil, nil
+}
+```
+
+You can configure multiple context propagators on a single Client, each responsible for its own set of keys.
+
+### Context propagation over Nexus
+
+Nexus does not use the `ContextPropagator` interface. It relies on a Temporal-agnostic protocol with its own header format (`nexus.Header`, a wrapper around `map[string]string`).
+
+To propagate context over Nexus Operation calls, use interceptors to explicitly serialize and deserialize context into the Nexus header. See the [Nexus Context Propagation sample](https://github.com/temporalio/samples-go/tree/main/nexus-context-propagation).
 
 ## Log from a Workflow {#logging}
 
