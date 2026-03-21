@@ -5,6 +5,7 @@ sidebar_label: Failure detection
 toc_max_heading_level: 4
 keywords:
   - failure detection
+  - error-handling
 tags:
   - Activities
   - Workflows
@@ -12,15 +13,88 @@ tags:
   - Errors
   - Go SDK
   - Temporal SDKs
-description: Configure Workflow timeouts, set Retry Policies, and manage Activity timeouts and Heartbeats using Temporal's Go SDK for optimized execution control.
+description: Handle errors, configure Workflow timeouts, set Retry Policies, and manage Activity timeouts and Heartbeats using Temporal's Go SDK.
 ---
 
 This page shows how to do the following:
 
+- [Handle errors](#error-handling)
 - [Set Workflow timeouts](#workflow-timeouts)
 - [Set a Workflow Retry Policy](#workflow-retries)
 - [Set Activity timeouts](#activity-timeouts)
 - [Set a custom Activity Retry Policy](#activity-retries)
+
+## Error handling {#error-handling}
+
+Within a Workflow, an Activity or Child Workflow execution might fail. You can
+handle errors differently based on the error type.
+
+If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is converted into `*temporal.ApplicationError`.
+
+If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error is returned as `*temporal.ApplicationError`.
+
+There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
+`*temporal.PanicError`.
+
+Here's an example of handling Activity errors within Workflow code that differentiates between different error types.
+
+```go
+err := workflow.ExecuteActivity(ctx, YourActivity, ...).Get(ctx, nil)
+if err != nil {
+	var applicationErr *ApplicationError
+	if errors.As(err, &applicationErr) {
+		// retrieve error message
+		workflow.GetLogger(ctx).Info("Application error", "error", applicationErr.Error())
+
+		// handle Activity errors (created via NewApplicationError() API)
+		var detailMsg string // assuming Activity return error by NewApplicationError("message", true, "string details")
+		applicationErr.Details(&detailMsg) // extract strong typed details
+
+		// handle Activity errors (errors created other than using NewApplicationError() API)
+		switch applicationErr.Type() {
+		case "CustomErrTypeA":
+			// handle CustomErrTypeA
+		case CustomErrTypeB:
+			// handle CustomErrTypeB
+		default:
+			// newer version of Activity could return new errors that Workflow was not aware of.
+		}
+	}
+
+	var canceledErr *CanceledError
+	if errors.As(err, &canceledErr) {
+		// handle cancellation
+	}
+
+	var timeoutErr *TimeoutError
+	if errors.As(err, &timeoutErr) {
+		// handle timeout, could check timeout type by timeoutErr.TimeoutType()
+        switch err.TimeoutType() {
+        case commonpb.ScheduleToStart:
+            // Handle ScheduleToStart timeout.
+        case commonpb.StartToClose:
+            // Handle StartToClose timeout.
+        case commonpb.Heartbeat:
+            // Handle heartbeat timeout.
+        default:
+        }
+	}
+
+	var panicErr *PanicError
+	if errors.As(err, &panicErr) {
+		// handle panic, message and call stack are available by panicErr.Error() and panicErr.StackTrace()
+	}
+}
+```
+
+### Panics and deferred functions
+
+In Go, [`defer` schedules cleanup functions and `recover()` catches panics](https://go.dev/blog/defer-panic-and-recover) to prevent them from crashing the program.
+This doesn't work the same way in Temporal Workflow code — you cannot `recover()` from a panic inside a `defer`.
+Deferred functions that try to interact with the Temporal SDK during panic unwinding will re-panic immediately.
+
+Use `defer` only for local cleanup.
+Handle Temporal API cleanup through explicit error checks instead.
 
 ## Workflow timeouts {#workflow-timeouts}
 
