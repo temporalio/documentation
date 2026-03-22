@@ -55,71 +55,15 @@ There are two pairs of methods because Go uses `context.Context` in non-Workflow
 Here is a propagator that carries a custom key-value pair from the Client to Workflows and Activities (from the [context propagation sample](https://github.com/temporalio/samples-go/tree/main/ctxpropagation)):
 
 
-[ctxpropagation/propagator.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/propagator.go)
-```go
-type (
-    // contextKey is an unexported type used as key for items stored in the
-    // Context object
-    contextKey struct{}
-
-    // propagator implements the custom context propagator
-    propagator struct{}
-
-    // Values is a struct holding values
-    Values struct {
-        Key   string `json:"key"`
-        Value string `json:"value"`
-    }
-)
-
-// PropagateKey is the key used to store the value in the Context object
-var PropagateKey = contextKey{}
-
-// HeaderKey is the key used by the propagator to pass values through the
-// Temporal server headers
-const HeaderKey = "custom-header"
-
-func (s *propagator) Inject(ctx context.Context, writer workflow.HeaderWriter) error {
-    value := ctx.Value(PropagateKey)
-    payload, err := converter.GetDefaultDataConverter().ToPayload(value)
-    if err != nil {
-        return err
-    }
-    writer.Set(HeaderKey, payload)
-    return nil
-}
-
-func (s *propagator) Extract(ctx context.Context, reader workflow.HeaderReader) (context.Context, error) {
-    if value, ok := reader.Get(HeaderKey); ok {
-        var values Values
-        if err := converter.GetDefaultDataConverter().FromPayload(value, &values); err != nil {
-            return ctx, nil
-        }
-        ctx = context.WithValue(ctx, PropagateKey, values)
-    }
-    return ctx, nil
-}
-
-// InjectFromWorkflow and ExtractToWorkflow are similar but operate on workflow.Context.
-// See the full sample for details.
-```
+<!--SNIPSTART samples-go-ctx-propagation-propagator-->
+<!--SNIPEND-->
 
 ## Register the propagator and set context values
 
 Register the propagator on the Client. Then set context values before starting a Workflow:
 
-[ctxpropagation/starter/main.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/starter/main.go)
-```go
-c, err := client.Dial(client.Options{
-    ContextPropagators: []workflow.ContextPropagator{ctxpropagation.NewContextPropagator()},
-})
-
-// Set a value in context before starting the Workflow
-ctx := context.Background()
-ctx = context.WithValue(ctx, ctxpropagation.PropagateKey, &ctxpropagation.Values{Key: "test", Value: "tested"})
-
-we, err := c.ExecuteWorkflow(ctx, workflowOptions, ctxpropagation.CtxPropWorkflow)
-```
+<!--SNIPSTART samples-go-ctx-propagation-starter-->
+<!--SNIPEND-->
 
 You can also register context propagators through a [Plugin](/develop/plugins-guide) if you are building a reusable library.
 
@@ -127,40 +71,11 @@ You can also register context propagators through a [Plugin](/develop/plugins-gu
 
 In your Workflow, the propagated values are available on the `workflow.Context`. When the Workflow starts an Activity, the SDK automatically propagates the same values:
 
-[ctxpropagation/workflow.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/workflow.go)
-```go
-func CtxPropWorkflow(ctx workflow.Context) (err error) {
-    ao := workflow.ActivityOptions{
-        StartToCloseTimeout: 2 * time.Second,
-    }
-    ctx = workflow.WithActivityOptions(ctx, ao)
+<!--SNIPSTART samples-go-ctx-propagation-workflow-->
+<!--SNIPEND-->
 
-    if val := ctx.Value(PropagateKey); val != nil {
-        vals := val.(Values)
-        workflow.GetLogger(ctx).Info("custom context propagated to workflow", vals.Key, vals.Value)
-    }
-
-    var values Values
-    if err = workflow.ExecuteActivity(ctx, SampleActivity).Get(ctx, &values); err != nil {
-        workflow.GetLogger(ctx).Error("Workflow failed.", "Error", err)
-        return err
-    }
-    workflow.GetLogger(ctx).Info("context propagated to activity", values.Key, values.Value)
-    workflow.GetLogger(ctx).Info("Workflow completed.")
-    return nil
-}
-```
-
-[ctxpropagation/activities.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/activities.go)
-```go
-func SampleActivity(ctx context.Context) (*Values, error) {
-    if val := ctx.Value(PropagateKey); val != nil {
-        vals := val.(Values)
-        return &vals, nil
-    }
-    return nil, nil
-}
-```
+<!--SNIPSTART samples-go-ctx-propagation-activity-->
+<!--SNIPEND-->
 
 You can configure multiple context propagators on a single Client, each responsible for its own set of keys.
 
