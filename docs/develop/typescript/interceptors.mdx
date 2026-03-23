@@ -15,10 +15,19 @@ description:
 ---
 
 Interceptors are SDK hooks that let you intercept inbound and outbound Temporal calls. You use them to apply shared
-behavior across many calls, such as tracing and authorization, before calls reach the SDK's underlying implementation.
+behavior across many calls, such as tracing and authorization, before calls reach the application code and after they return.
 This is similar to middleware in other frameworks.
 
+There are two main types of interceptors--inbound and outbound.
+
+* Outbound interceptors wrap network calls, running before they reach the network and after they return.
+* Inbound interceptors run after the network hop, wrapping application code and running before it starts and after it returns.
+
+Those further break down into concrete Interceptor types--see below.
+
 ## How to implement interceptors in TypeScript {#interceptors}
+
+Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
 
 The TypeScript SDK comes with an optional interceptor package that adds tracing with
 [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in the
@@ -36,9 +45,7 @@ sample.
   [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a
   Workflow.
 
-Interceptors are run in a chain, and all interceptors work similarly. They accept two arguments: `input` and `next`,
-where `next` calls the next interceptor in the chain. All interceptor methods are optional—it's up to the implementor to
-choose which methods to intercept.
+All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
 
 ## Interceptor examples
 
