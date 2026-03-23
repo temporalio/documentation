@@ -441,7 +441,11 @@ currentTime := workflow.Now(ctx)
 #### Detecting replay (advanced)
 
 Use [`workflow.IsReplaying(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#IsReplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
-(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+:::caution
+
+Never use this to affect Workflow business logic — branching on replay status breaks determinism.
+
+:::
 
 ```go
 if !workflow.IsReplaying(ctx) {

@@ -258,7 +258,11 @@ current_time = workflow.now()
 #### Detecting replay (advanced)
 
 Use [`workflow.unsafe.is_replaying`](https://python.temporal.io/temporalio.workflow.html#is_replaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/python/interceptors).
-(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+:::caution
+
+Never use this to affect Workflow business logic — branching on replay status breaks determinism.
+
+:::
 
 ```python
 if not workflow.unsafe.is_replaying():

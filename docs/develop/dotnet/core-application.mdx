@@ -121,7 +121,11 @@ var currentTime = Workflow.UtcNow;
 #### Detecting replay (advanced)
 
 Use [`Workflow.Unsafe.IsReplaying`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.Unsafe.html#Temporalio_Workflows_Workflow_Unsafe_IsReplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
-(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+:::caution
+
+Never use this to affect Workflow business logic — branching on replay status breaks determinism.
+
+:::
 
 ```csharp
 if (!Workflow.Unsafe.IsReplaying)

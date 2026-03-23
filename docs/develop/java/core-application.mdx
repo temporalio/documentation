@@ -310,7 +310,11 @@ long currentTime = Workflow.currentTimeMillis();
 #### Detecting replay (advanced)
 
 Use [`WorkflowUnsafe.isReplaying()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/WorkflowUnsafe.html) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
-(Never use this to affect Workflow business logic - branching on replay status breaks determinism.)
+:::caution
+
+Never use this to affect Workflow business logic — branching on replay status breaks determinism.
+
+:::
 
 ```java
 if (!WorkflowUnsafe.isReplaying()) {
