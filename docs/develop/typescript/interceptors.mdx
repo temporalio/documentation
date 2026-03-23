@@ -76,9 +76,7 @@ export class ActivityLogInterceptor implements WorkflowOutboundCallsInterceptor 
 
 ## Register an Interceptor {#register-interceptor}
 
-Registering an interceptor means providing it to the SDK so Temporal can invoke it when matching Client, Worker, or
-Workflow-isolate calls occur. Once registered, it runs in the call path and can observe or modify request and response
-data.
+Registering an interceptor means providing it to the SDK so Temporal can invoke it when matching Client or Worker calls occur. Once registered, it runs in the call path and can observe or modify request and response data.
 
 ### Register via a Plugin
 
