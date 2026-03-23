@@ -210,6 +210,16 @@
       "permanent": true
     },
     {
+      "source": "/tutorials",
+      "destination": "https://learn.temporal.io/tutorials/",
+      "permanent": true
+    },
+    {
+      "source": "/tutorials/:path*",
+      "destination": "https://learn.temporal.io/tutorials/:path*",
+      "permanent": true
+    },
+    {
       "source": "/php/booking-saga-tutorial",
       "destination": "https://learn.temporal.io/tutorials/php/booking_saga/",
       "permanent": true
