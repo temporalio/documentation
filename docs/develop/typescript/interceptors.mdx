@@ -15,32 +15,37 @@ description:
 ---
 
 Interceptors are SDK hooks that let you intercept inbound and outbound Temporal calls. You use them to apply shared
-behavior across many calls, such as tracing and authorization, before calls reach the SDK's underlying implementation.
+behavior across many calls, such as tracing and authorization, before calls reach the application code and after they return.
 This is similar to middleware in other frameworks.
+
+There are two main types of interceptors--inbound and outbound.
+
+* Outbound interceptors wrap network calls, running before they reach the network and after they return.
+* Inbound interceptors run after the network hop, wrapping application code and running before it starts and after it returns.
+
+Those further break down into concrete Interceptor types--see below.
 
 ## How to implement interceptors in TypeScript {#interceptors}
 
-The TypeScript SDK comes with an optional interceptor package that adds tracing with [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry).
-See how to use it in the [interceptors-opentelemetry](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) code sample.
+Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
 
-- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/): Runs on the Worker in the Workflow definition and intercepts inbound calls like starts/executes, Signals, and Queries.
-- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/): Runs on the Worker in the Workflow definition and intercepts outbound calls to Temporal APIs like starting Activities and Timers.
-- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor): Runs on the Worker in the Activity at the beginning.
-- [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor/): Runs on the client and intercepts workflow-related methods of [`Client`](https://typescript.temporal.io/api/classes/client.Client/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
+The TypeScript SDK comes with an optional interceptor package that adds tracing with
+[OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in the
+[interceptors-opentelemetry](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) code
+sample.
 
-:::warning Workflow interceptors and replay
+- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/):
+  Intercept Workflow inbound calls like execution, Signals, and Queries.
+- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/):
+  Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
+- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor):
+  Intercept inbound calls to an Activity (such as `execute`).
+- [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor/):
+  Intercept workflow-related methods of [`Client`](https://typescript.temporal.io/api/classes/client.Client/) and
+  [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a
+  Workflow.
 
-Workflow inbound and outbound interceptor methods also execute during [replay](/develop/typescript/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
-See [Develop Workflow logic](/develop/typescript/core-application#workflow-logic-requirements) for details.
-
-Activity and Client interceptors do not run in the Workflow and therefore are not affected by replay.
-
-:::
-
-
-Interceptors are run in a chain, and all interceptors work similarly. They accept two arguments: `input` and `next`,
-where `next` calls the next interceptor in the chain. All interceptor methods are optional—it's up to the implementor to
-choose which methods to intercept.
+All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
 
 ## Interceptor examples
 

@@ -15,15 +15,18 @@ tags:
 ---
 
 Interceptors are SDK hooks that let you intercept inbound and outbound Temporal calls. You use them to add common
-behavior across many calls, such as tracing and context propagation, before calls reach the SDK's underlying
-implementation. This is similar to using middleware in web frameworks such as
+behavior across many calls, such as tracing and context propagation. 
+This is similar to using middleware in web frameworks such as
 [Django](https://docs.djangoproject.com/en/5.2/topics/http/middleware/),
 [Starlette](https://www.starlette.io/middleware/), and
 [Flask](https://flask.palletsprojects.com/en/stable/lifecycle/#middleware).
 
-The methods you implement on your Interceptor classes can perform side effects and modify incoming or outgoing data.
+There are two types of interceptors--inbound and outbound.
 
-There are five categories of inbound and outbound calls that you can modify in this way:
+* Outbound interceptors wrap network calls, running before they reach the network and after they return.
+* Inbound interceptors run after the network hop, wrapping application code and running before it starts and after it returns.
+
+Concretely, there are five categories of inbound and outbound calls that you can modify in this way:
 
 | | [Outbound Client](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html) | [Outbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html) | [Inbound Activity](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
 | --- | --- | --- | --- | --- | --- |
@@ -140,8 +143,12 @@ automatically.
 
 :::
 
+## How to implement Interceptors in Python
 
-## Client call Interceptors
+Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
+
+
+### Implementing Client call Interceptors
 
 To modify outbound Client calls, define a class inheriting from
 [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method
@@ -208,17 +215,19 @@ During execution, when the SDK encounters an Inbound Activity call, it will look
 The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
 At the end of the chain the SDK will call the "real" SDK method.
 
-## Worker call Interceptors
+### Implementing Worker call Interceptors
 
 To modify inbound and outbound Workflow and Activity calls, define a class inheriting from `worker.Interceptor`. This is
 an interface with two methods named `intercept_activity` and `workflow_interceptor_class`, which you can use to
 configure interceptions of Activity and Workflow calls, respectively. `intercept_activity` returns an
 `ActivityInboundInterceptor`.
 
-This example demonstrates using an interceptor to measure
-[Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) latency:
+This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) and Schedule-To-Close latency.
+Notice how the interceptor wraps the call: it records Schedule-To-Start before `execute_activity`, then records Schedule-To-Close after it completes:
 
 ```python
+from datetime import datetime, timezone
+from temporalio import activity
 from temporalio.worker import (
     ActivityInboundInterceptor,
     ExecuteActivityInput,
@@ -230,27 +239,35 @@ class SimpleWorkerInterceptor(Interceptor):
     def intercept_activity(
         self, next: ActivityInboundInterceptor
     ) -> ActivityInboundInterceptor:
-        return CustomScheduleToStartInterceptor(next)
+        return ActivityMetricsInterceptor(next)
 
 
-class CustomScheduleToStartInterceptor(ActivityInboundInterceptor):
+class ActivityMetricsInterceptor(ActivityInboundInterceptor):
     async def execute_activity(self, input: ExecuteActivityInput):
-
-        schedule_to_start = (
-            activity.info().started_time
-            - activity.info().current_attempt_scheduled_time
-        )
-
+        info = activity.info()
         meter = activity.metric_meter()
-        histogram = meter.create_histogram_timedelta(
+        attrs = {"workflow_type": info.workflow_type}
+
+        # Before the activity executes: record Schedule-To-Start
+        schedule_to_start = info.started_time - info.current_attempt_scheduled_time
+        meter.create_histogram_timedelta(
             "custom_activity_schedule_to_start_latency",
             description="Time between activity scheduling and start",
             unit="duration",
-        )
-        histogram.record(
-            schedule_to_start, {"workflow_type": activity.info().workflow_type}
-        )
-        return await self.next.execute_activity(input)
+        ).record(schedule_to_start, attrs)
+
+        # Execute the activity
+        result = await self.next.execute_activity(input)
+
+        # After the activity completes: record Schedule-To-Close
+        elapsed = datetime.now(timezone.utc) - info.current_attempt_scheduled_time
+        meter.create_histogram_timedelta(
+            "custom_activity_schedule_to_close_latency",
+            description="Time between activity scheduling and completion",
+            unit="duration",
+        ).record(elapsed, attrs)
+
+        return result
 
 client = await Client.connect(
     "localhost:7233",
