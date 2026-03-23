@@ -268,7 +268,7 @@ Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#w
 Operations started with [New-Workflow-Run-Operation](/nexus/operations#sdk-support) automatically attach a completion Callback to the handler Workflow.
 Additional callers can attach to the same handler Workflow using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).
 
-Each handler Workflow has a [Callback limit](/workflow-execution/limits#workflow-execution-callback-limits) ([32 in Cloud](https://docs.temporal.io/cloud/limits#per-workflow-callback-limits), configurable in self-hosted).
+Each handler Workflow has a [Callback limit](/workflow-execution/limits#workflow-execution-callback-limits) (configurable for self-hosted, see [Cloud limits](/cloud/limits#per-workflow-callback-limits) for Temporal Cloud).
 Callers that exceed the limit receive an error.
 
 When a handler Workflow uses [Continue-As-New](/workflow-execution/continue-as-new), existing completion Callbacks are copied to the new Execution.
