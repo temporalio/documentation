@@ -150,6 +150,11 @@
       "permanent": true
     },
     {
+      "source": "/workflows#deterministic-constraints",
+      "destination": "/workflow-definition#deterministic-constraints",
+      "permanent": true
+    },
+    {
       "source": "/temporal-explained/introduction",
       "destination": "/temporal",
       "permanent": true
@@ -301,7 +306,7 @@
     },
     {
       "source": "/go-error-handling",
-      "destination": "/develop/go/error-handling",
+      "destination": "/develop/go/failure-detection#error-handling",
       "permanent": true
     },
     {
@@ -1272,6 +1277,11 @@
     {
       "source": "/production-deployment/cloud/:path*",
       "destination": "/cloud/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/billing-reports",
+      "destination": "/cloud/billing-api",
       "permanent": true
     }
   ]

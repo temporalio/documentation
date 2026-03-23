@@ -58,9 +58,7 @@ Use the `newLocalServiceStubs` method to create a stub that points to the Tempor
 to create a Temporal Client.
 
 <!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"], "highlightedLines": ["3","7"]}-->
-
 [sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
-
 ```java {3,7}
 // ...
         // Create an instance that connects to a Temporal Service running on the local
@@ -71,7 +69,6 @@ to create a Temporal Client.
         // This application uses the Client to communicate with the local Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
 ```
-
 <!--SNIPEND-->
 
 When you create a new Client with an instance of `newLocalServiceStubs`, the Client connects to the default local port
@@ -273,9 +270,7 @@ code. This is convenient for local development and testing. You can also load a 
 variables or a configuration file, and then override specific options in code.
 
 <!--SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace {"selectedLines": ["23-31"]}-->
-
 [sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java)
-
 ```java
 // ...
         // Add the Namespace as a Client Option
@@ -288,7 +283,6 @@ variables or a configuration file, and then override specific options in code.
         // This application uses the Client to communicate with the Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
-
 <!--SNIPEND-->
 
 </TabItem>
@@ -304,10 +298,9 @@ connecting to an unsecured local development instance:
   - If you are using an API key, provide the API key value.
   - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
 - Your _Namespace and Account ID_ combination, which follows the format `<namespace_id>.<account_id>`.
-- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:
-  `<region>.<cloud_provider>.api.temporal.io:7233`.
-- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint:
-  `<namespace>.<account>.tmprl.cloud:7233`. This allows automated failover without needing to switch endpoints.
+- The recommended _endpoint_ is the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
+  This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
+  See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
 You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
 
@@ -447,8 +440,8 @@ The following environment variables are required to connect to Temporal Cloud:
 
 Ensure these environment variables exist in your environment before running your Java application.
 
-Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
-`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+Import the `io.temporal.envconfig` package to set connection options for the Temporal Client using environment variables.
+The `ClientConfigProfile.load` method will automatically load all environment variables. For a list of all available
 environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
@@ -548,13 +541,11 @@ To connect to Temporal Cloud using mTLS, you need to provide the mTLS CA certifi
 use the `SimpleSslContextBuilder` to build an SSL context. Then use the
 `WorkflowServiceStubsOptions.Builder.setSslContext` method to set the SSL context.
 
-When you use a remote service, you don't use the `newLocalServicesStubs` convenience method. Instead, set your
+When you use a remote service, you don't use the `newLocalServiceStubs` convenience method. Instead, set your
 connection details as stub configuration options:
 
 <!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}-->
-
 [sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
-
 ```java
 // ...
             // Set the Service Stub options (SSL context and gRPC endpoint)
@@ -567,7 +558,6 @@ connection details as stub configuration options:
              // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
-
 <!--SNIPEND-->
 
 Each Temporal Cloud service Client has four prerequisites.
@@ -584,9 +574,7 @@ information configures a service stub for Temporal Cloud. Add the Namespace to y
 the new Client:
 
 <!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["41-64"]}-->
-
 [sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
-
 ```java
 // ...
             // Generate an SSL context
@@ -614,7 +602,6 @@ the new Client:
             // This application uses the Client to communicate with the Temporal Service
             WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 ```
-
 <!--SNIPEND-->
 
 </TabItem>

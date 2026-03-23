@@ -261,7 +261,7 @@ the Workflow Execution, ultimately resulting in a completed execution that's ide
 ## Example of a Non-Deterministic Workflow {#Example-of-Non-Deterministic-Workflow}
 
 Now that Replay has been covered, this section will explain why Workflows need to be
-[deterministic](https://docs.temporal.io/workflows#deterministic-constraints) in order for Replay to work.
+[deterministic](https://docs.temporal.io/workflow-definition#deterministic-constraints) in order for Replay to work.
 
 A Workflow is deterministic if every execution of its Workflow Definition produces the same Commands in the same
 sequence given the same input.
@@ -334,4 +334,4 @@ Remember that pretty much anything that interacts with the external world is inh
 **Good news**: Your Temporal application can absolutely handle all of these operations. While your Workflow must be
 deterministic, your application absolutely can handle any type of non-deterministic operation, including those listed
 above. This gives you the best of both worlds—the crash-proof reliability of a Workflow and the resiliency of Activities
-with have built-in support for retries.
+which have built-in support for retries.

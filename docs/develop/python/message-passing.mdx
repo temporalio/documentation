@@ -42,8 +42,7 @@ Follow these guidelines when writing your message handlers:
 
 - Message handlers are defined as methods on the Workflow class, using one of the three decorators: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query), [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal), and [`@workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
-- Prefer [data classes](https://docs.python.org/3/library/dataclasses.html) to multiple input parameters.
-  Data class parameters allow you to add fields without changing the calling signature.
+- Prefer [data classes](https://docs.python.org/3/library/dataclasses.html) to multiple input parameters. Data class parameters allow you to add fields without changing the calling signature. Keep in mind that serialization and deserialization can fail with the default data converter if the new field does not have a default value.
 
 ### Query handlers {#queries}
 
@@ -797,7 +796,7 @@ A dynamic Activity is a stand-in implementation.
 It's used when an Activity Task with an unknown Activity type is received by the Worker.
 
 To participate, your Activity must opt into dynamic access.
-Adding `dynamic=True` to the `@activity.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
+Adding `dynamic=True` to the `@activity.defn` decorator makes the Activity Definition eligible to participate in dynamic invocation.
 You must register the Activity with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
 The Activity Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.

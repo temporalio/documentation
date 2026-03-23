@@ -61,9 +61,9 @@ interface PayloadCodec {
 
 Temporal SDKs provide a [Payload Converter](/payload-converter) that can be customized to convert a custom data type to a [Payload](/dataconversion#payload) and back.
 
-The order in which your encoding Payload Converters are applied depending on the order given to the Data Converter.
+The order in which your encoding Payload Converters are applied depends on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
-When the Data Converter receives a value for conversion, the value gets passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+When the Data Converter receives a value for conversion, the value gets passed through each Payload Converter in sequence until the converter that handles the data type does the conversion.
 
 ## Composite Data Converters
 
@@ -99,7 +99,7 @@ export const payloadConverter = new CompositePayloadConverter(
 );
 ```
 
-You can do this in its own `payload-conterter.ts` file for example.
+You can do this in its own `payload-converter.ts` file for example.
 
 In the code snippet above, a converter is created that first attempts to handle `null` and `undefined` values. If the value isn't `null` or `undefined`, the EJSON serialization logic written in the `EjsonPayloadConverter` is then used. The Payload Converter is then provided to the Worker and Client.
 

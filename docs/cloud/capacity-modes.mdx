@@ -27,7 +27,7 @@ tags:
   - TRUs
 ---
 
-Each Namespace in Temporal has a rate limit, which is measure in [Actions](/cloud/pricing#action) per second. 
+Each Namespace in Temporal has a rate limit, which is measured in [Actions](/cloud/pricing#action) per second. 
 Temporal offers two different modes for adjusting capacity: On-Demand Capacity or Provisioned Capacity.
 With On-Demand Capacity, Namespace capacity is increased automatically along with usage.
 With Provisioned Capacity, you can control your capacity limits by requesting Temporal Resource Units (TRUs).
@@ -87,6 +87,10 @@ Your rate limits can be adjusted automatically over time or provisioned manually
 We recommend tracking your Actions Rate and Limits using Temporal metrics to assess your use cases specific needs.
 See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) to track usage trends.
 
+For Namespaces using Provisioned Capacity, on-demand envelope metrics show what your limits would be if operating in on-demand mode.
+Use these to evaluate whether on-demand capacity would meet your needs before switching modes.
+See [On-demand envelope limits](/cloud/service-health#on-demand-envelope-limits) for details.
+
 :::note Actions that don't count against APS
 Actions that are external to the core Temporal service do not contribute to your APS. These Calls include:
 * [Export](/cloud/export)
@@ -131,8 +135,7 @@ This means that your default limit would be 800 APS.
 
 :::tip Support, stability, and dependency info
 
-Provisioned Capacity is currently in [pre-release](/evaluate/development-production-features/release-stages#pre-release). 
-Please contact your AE or Support to enable this feature.
+Provisioned Capacity is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
