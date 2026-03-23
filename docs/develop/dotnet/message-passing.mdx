@@ -37,8 +37,7 @@ Follow these guidelines when writing your message handlers:
 
 - Message handlers are defined as methods on the Workflow class, using one of the three attributes: [`WorkflowQueryAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html), [`WorkflowSignalAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html), and [`WorkflowUpdateAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateAttribute.html).
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
-- Prefer data classes to multiple input parameters.
-  Data class parameters allow you to add fields without changing the calling signature.
+- Prefer data classes to multiple input parameters. Data class parameters allow you to add fields without changing the calling signature. Keep in mind that serialization and deserialization can fail with the default data converter if the new field does not have a default value.
 
 ### Query handlers {#queries}
 
@@ -320,7 +319,7 @@ To send an Update to a Workflow Execution, you can:
     wf => wf.SetCurrentLanguageAsync(GreetingWorkflow.Language.Chinese));
   ```
 
-- 2. Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted.
+2. Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted.
      It returns an `UpdateHandle`
 
   - Use this `UpdateHandle` later to fetch your results.
@@ -714,7 +713,7 @@ When working with Updates, you may encounter these errors:
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
   Use a `CancellationToken` in your [RPC options](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowUpdateOptions.html#Temporalio_Client_WorkflowUpdateOptions_Rpc) to cancel the Update.
-  This raises a [Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException.html) exception .
+  This raises a [Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException.html) exception.
 
 - **Update failed**: You'll receive a [`Temporalio.Exceptions.WorkflowUpdateFailedException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateFailedException.html) exception.
   There are two ways this can happen:

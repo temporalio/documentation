@@ -59,9 +59,8 @@ jobs:
           go-version: '1.22'
 
       - name: Generate CLI docs
-        working-directory: cli/internal/cmd/gen-docs
-        run: |
-          go run .
+        working-directory: cli
+        run: go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
 
       - name: Publish generated docs to documentation repo
         env:

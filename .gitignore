@@ -4,11 +4,15 @@ secure
 
 # Production
 build
+playwright-report
+blob-report
+test-results
 
 # Generated files
 .docusaurus
 .cache-loader
 temp/
+.claude/*
 
 # Misc
 .DS_Store
@@ -18,6 +22,10 @@ temp/
 .env.test.local
 .env.production.local
 .vs
+AGENTS.md
+CLAUDE.md
+.claude/*
+.omc
 
 npm-debug.log*
 yarn-debug.log*
@@ -43,5 +51,7 @@ package-lock.json
 # Tests
 test-results/*
 
+# screenshots
+screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
 ai-cookbook

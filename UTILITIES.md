@@ -1,15 +1,15 @@
 # Temporal Documentation Site Utilities
 
-This file documents utilities meant to support repository health.
-These utilities are not meant for use by contributors.
+This file documents utilities meant to support repository health. These utilities are not meant for use by contributors.
 
 ## audit-stray-pages
 
 [**Docusaurus**](https://docusaurus.io) serves all files, whether they are mentioned in sidebars.js or not.
 [**Algolia**](https://algolia.com) will index these files so they show up in search, even though we intend to hide them.
 
-The `audit-stray-pages` utility audits unreferenced docs files so they can be evaluated and, if needed, hidden in Docusaurus.
-This script scans your Docusaurus project for `.md` and `.mdx` files in the top level `docs/` folder and reports the ones that are **not actively referenced** in your `sidebars.js` file. "Not actively referenced" includes:
+The `audit-stray-pages` utility audits unreferenced docs files so they can be evaluated and, if needed, hidden in
+Docusaurus. This script scans your Docusaurus project for `.md` and `.mdx` files in the top level `docs/` folder and
+reports the ones that are **not actively referenced** in your `sidebars.js` file. "Not actively referenced" includes:
 
 - Files that were commented out in sidebars.js
 - Files that are not included at all
@@ -28,18 +28,17 @@ draft: true
 
 Docusaurus will render drafts in preview mode but not production.
 
-**Please note**: 
+**Please note**:
 
-- Some "deprecated" files are left intentionally visible outside the normal navigation system and are linked from other pages.
-  They should not be set to draft as that breaks `yarn build` and will fail CI and Vercel deployment.
-- The sidebars.js file does not use `/path/to/file.mdx`.
-  It uses `/path/to/folder/your-file-id`, which uses the `id: your-file-id` declared in your mdx YAML frontmatter.
-- Slugs are not equivalent to ids.
-  Ids are used to stitch together the site.
+- Some "deprecated" files are left intentionally visible outside the normal navigation system and are linked from other
+  pages. They should not be set to draft as that breaks `yarn build` and will fail CI and Vercel deployment.
+- The sidebars.js file does not use `/path/to/file.mdx`. It uses `/path/to/folder/your-file-id`, which uses the
+  `id: your-file-id` declared in your mdx YAML frontmatter.
+- Slugs are not equivalent to ids. Ids are used to stitch together the site.
 
 ### What It Does
 
-1. **Parses `sidebars.js`** to extract all actively referenced doc IDs  
+1. **Parses `sidebars.js`** to extract all actively referenced doc IDs
    - Ignores lines that are commented out (`//` or `/* ... */`)
 2. **Extracts doc IDs** from sidebar references, including:
    - Simple string references: `"foo/bar"`
@@ -64,9 +63,8 @@ After running the script, review each unreferenced file carefully.
 
 - Some files may be intentionally excluded from the sidebar, such as deprecated pages or internal drafts.
 - Others may be unintentional omissions that should be added to sidebars.js.
-- Others are intentionally excluded but not referenced from anywhere on the site.
-  This is deliberate in the case of `tctl` pages.
-  This is accidental for other pages.
+- Others are intentionally excluded but not referenced from anywhere on the site. This is deliberate in the case of
+  `tctl` pages. This is accidental for other pages.
 
 For each flagged file, check whether it:
 
@@ -76,3 +74,15 @@ For each flagged file, check whether it:
 - Belongs in `sidebars.js` but was accidentally left out or commented out
 
 This utility highlights potential issues—it’s up to you to decide what belongs in our published documentation.
+
+## visual-comparison
+
+The `visual-comparison` label triggers the visual comparison workflow on the PR. The workflow will do the following:
+
+1. Stands up an instance of the docs site and using Chromium to simulate a browser
+2. Takes screenshots of every page of the docs. This is done in parallel with four shards.
+3. Compares the screenshots against a baseline, which is taken by the `screenshot-capture` workflow weekly on Sunday.
+4. Flags any significant deviation from the expected visual result using `playwright` snapshot testing.
+
+This is useful when you make a change to the docs site that touches the `yarn.lock` file, since changes in the
+dependencies may alter the CSS load order and cause unexpected changes even if you didn't make any specific CSS changes.

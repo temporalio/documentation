@@ -426,7 +426,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) demonstrating safe `async` message handling.
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/README.md) demonstrating safe `async` message handling.
 
 :::
 
@@ -436,7 +436,7 @@ Signal and Update handlers can be `async` functions.
 Using `async` allows you to use `await` with Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at `await` calls.
 It's essential to understand the things that could go wrong in order to use `async` handlers safely.
-See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/README.md) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code executes an Activity that makes a network call to a remote service.
 It modifies the Update handler from earlier on this page, turning it into an `async` function:

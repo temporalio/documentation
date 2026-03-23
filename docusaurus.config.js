@@ -10,8 +10,8 @@ module.exports = async function createConfigAsync() {
     url: 'https://docs.temporal.io',
     baseUrl: '/',
     onBrokenLinks: 'throw',
-    onBrokenAnchors: 'throw',
-    favicon: 'img/favicon.svg',
+    onBrokenAnchors: 'warn',
+    favicon: 'img/favicon.ico',
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     headTags: [
@@ -24,7 +24,7 @@ module.exports = async function createConfigAsync() {
         },
       },
     ],
-    clientModules: ['./src/client/remote-amplitude-analytics.js'],
+    clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',
@@ -49,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
         sidebar: {
@@ -221,7 +221,19 @@ module.exports = async function createConfigAsync() {
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
         appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
+        searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
+        searchParameters: {
+          attributesToRetrieve: [
+            'hierarchy',
+            'content',
+            'anchor',
+            'url',
+            'url_without_anchor',
+            'type',
+            'sdk_language',
+          ],
+        },
       },
     },
     presets: [

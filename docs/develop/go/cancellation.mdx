@@ -16,7 +16,7 @@ tags:
   - Temporal SDKs
 ---
 
-This pages shows the following:
+This page shows the following:
 
 - How to handle a Cancellation request within a Workflow.
 - How to set an Activity Heartbeat Timeout.
@@ -52,7 +52,7 @@ func YourWorkflow(ctx workflow.Context) error {
 		WaitForCancellation: true,
 	}
 	defer func() {
-		// This logic ensures cleanup only happens if there is a Cancelation error
+		// This logic ensures cleanup only happens if there is a Cancellation error
 		if !errors.Is(ctx.Err(), workflow.ErrCanceled) {
 			return
 		}
@@ -96,7 +96,7 @@ Ensure that the Activity is Heartbeating to receive the Cancellation request and
 // ActivityToBeCanceled is the Activity that will respond to the Cancellation Request
 func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 // ...
-	// A for select statement is a common approach to listening for a Cancellation is an Activity
+	// A for select statement is a common approach to listening for a Cancellation in an Activity
 	for {
 		select {
 		case <-time.After(1 * time.Second):

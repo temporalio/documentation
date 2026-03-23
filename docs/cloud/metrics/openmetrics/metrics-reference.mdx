@@ -1,0 +1,734 @@
+---
+id: metrics-reference
+title: OpenMetrics metrics reference
+sidebar_label: Metrics reference
+description: Detailed API documentation for the Temporal Cloud OpenMetrics endpoint.
+keywords:
+  - temporal cloud metrics configuration
+  - configure metrics endpoint
+  - temporal cloud observability
+  - tcld CLI guide
+  - temporal cloud UI setup
+  - grafana temporal integration
+  - prometheus metrics endpoint
+  - openmetrics endpoint
+  - observability tools integration
+  - openmetrics api
+tags:
+  - Metrics
+  - OpenMetrics
+  - Observability
+  - Temporal Cloud
+---
+
+This document describes all metrics available from the Temporal Cloud OpenMetrics endpoint.
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+## Metric Conventions
+
+### Metric Types
+
+All metrics are exposed as OpenMetrics gauges, but represent different measurement types:
+
+* *Rate Metrics*: per-second rate of the aggregated values  
+* *Value Metrics*: The most recent aggregate value within a look-back window (e.g. backlogs, limits)  
+* *Percentile Metrics*: Pre-calculated aggregated latency percentiles in seconds
+
+:::note
+
+All metrics are stored as 1 minute aggregates.
+
+:::
+
+### Common Labels
+
+All metrics include these base labels:
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_namespace` | The Temporal namespace |
+| `temporal_account` | The Temporal account identifier |
+| `region` | Cloud region where the metric originated |
+
+### Opt-in Labels
+
+Some labels are **opt-in** due to their high cardinality.
+These labels are not included by default when you scrape the OpenMetrics endpoint.
+To enable an opt-in label, add it to the `labels` query parameter on your scrape URL.
+When an opt-in label is enabled, it is populated on **all metrics** that support it.
+
+| Label | Available on | Description |
+| ----- | ----- | ----- |
+| `temporal_activity_type` | Activity metrics | The activity type name |
+| `worker_version` | `temporal_cloud_v1_approximate_backlog_count` | The Worker version |
+
+For example, to include `temporal_activity_type` in your scrape results:
+
+```
+/v1/metrics?labels=temporal_activity_type
+```
+
+## Metrics Catalog
+
+### Frontend Service Metrics
+
+#### temporal\_cloud\_v1\_service\_request\_count
+
+gRPC requests received per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the RPC operation |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_service\_request\_throttled\_count
+
+gRPC requests throttled per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the RPC operation |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_service\_error\_count
+
+gRPC errors per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the RPC operation |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_service\_pending\_requests
+
+The number of pollers that are waiting for a task. Use this to track against ``temporal_cloud_v1_poller_limit``
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_resource\_exhausted\_error\_count
+
+Resource exhaustion errors per second. This metric does not include throttling due to Namespace limits.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_service\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile latency of service requests in seconds
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+
+**Type**: Latency  
+
+#### temporal\_cloud\_v1\_service\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile latency of service requests in seconds
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+
+**Type**: Latency  
+
+#### temporal\_cloud\_v1\_service\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions as the percentile won't be accurate.
+
+:::
+
+The 99th percentile latency of service requests in seconds
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+
+**Type**: Latency  
+
+### Workflow Completion Metrics
+
+:::caution High Cardinality
+
+These metrics could have high cardinality depending on number of workflow types and task queues.
+
+:::
+
+#### temporal\_cloud\_v1\_workflow\_success\_count
+
+Successful workflow completions per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Rate  
+
+#### temporal\_cloud\_v1\_workflow\_failed\_count
+
+Workflow failures per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_workflow\_timeout\_count
+
+Workflow timeouts per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_workflow\_cancel\_count
+
+Workflow cancellations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_workflow\_terminate\_count
+
+Workflow terminations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_workflow\_continued\_as\_new\_count
+
+Workflows continued as new per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile workflow schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile workflow schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_workflow\_schedule\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile workflow schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_workflow_type` | The workflow type |
+
+**Type**: Latency
+
+### Activity Metrics
+
+:::caution High Cardinality
+
+These metrics could have high cardinality depending on number of activity types, workflow types, and task queues. The `temporal_activity_type` label is [opt-in](#opt-in-labels) to help manage cardinality.
+
+:::
+
+:::note Standalone Activities
+
+Standalone Activities are Activity Executions that are started independently, without an associated Workflow. For Activity metrics that include the `temporal_workflow_type` label, Standalone Activities use the placeholder value `"__standalone_activity"`.
+
+:::
+
+
+#### temporal\_cloud\_v1\_activity\_success\_count
+
+Successful activity completions per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_fail\_count
+
+Activity failures per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_timeout\_count
+
+Activity timeouts per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+| `timeout_type` | The timeout type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_task\_fail\_count
+
+Activity task failures per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_task\_timeout\_count
+
+Activity task timeouts per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+| `timeout_type` | The timeout type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_cancel\_count
+
+Activity cancellations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_terminate\_count
+
+Activity terminations per second.  This metric only applies to Standalone Activities. Regular Activities that run within a Workflow cannot be terminated independently.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+:::info Activity latency labels
+
+Activity latency metrics include only the `temporal_activity_type` label.
+Labels such as `temporal_task_queue` and `temporal_workflow_type` are intentionally excluded because pre-calculated percentile values cannot be accurately aggregated across additional dimensions.
+
+:::
+
+#### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile activity start-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile activity start-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile activity start-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_schedule\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile activity schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_schedule\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile activity schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_schedule\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile activity schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+### Task Queue Metrics
+
+:::caution High Cardinality
+
+These metrics could have high cardinality depending on number of task queues present.
+
+:::
+
+#### temporal\_cloud\_v1\_approximate\_backlog\_count
+
+The approximate number of tasks pending in a task queue. Started Activities are not included in the count as they have been dequeued from the task queue.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `task_type` | Type of task: `workflow` or `activity` |
+| `task_priority` | The task priority |
+| `worker_version` | The Worker version (opt-in) |
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_poll\_success\_count
+
+Successfully matched tasks per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The poll operation name |
+| `task_type` | Type of task: `workflow` or `activity` |
+| `temporal_task_queue` | The task queue name |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_poll\_success\_sync\_count
+
+Tasks matched synchronously per second (no polling wait).
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The poll operation name |
+| `task_type` | Type of task: `workflow` or `activity` |
+| `temporal_task_queue` | The task queue name |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_poll\_timeout\_count
+
+The rate of poll requests that timed out without receiving a task.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The poll operation name |
+| `task_type` | Type of task: `workflow` or `activity` |
+| `temporal_task_queue` | The task queue name |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_no\_poller\_tasks\_count
+
+The rate of tasks added to queues with no active pollers.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `task_type` | Type of task: `workflow` or `activity` |
+
+**Type**: Rate
+
+### Namespace Metrics
+
+#### temporal\_cloud\_v1\_namespace\_open\_workflows
+
+The current number of open workflows in a namespace.
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_total\_action\_count
+
+The total number of actions performed per second. Actions with `is_background=false` are counted toward the ``temporal_cloud_v1_action_limit``.
+
+| Label | Description |
+| ----- | ----- |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
+| `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
+
+:::note
+
+Does not include the `region` label. Actions are scoped to the Namespace level.
+
+:::
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_total\_action\_throttled\_count
+
+The total number of actions throttled per second.
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_operations\_count
+
+Operations performed per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+| `is_background` | Whether the operation was background: `true` or `false`. Background operations do not count toward the operation rate limit |
+| `namespace_mode` | Indicates if operations are produced by an `active` or a `standby` Namespace |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_operations\_throttled\_count
+
+Operations throttled due to rate limits per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the operation |
+| `is_background` | Whether the operation was background: `true` or `false`. Background operations do not count toward the operation rate limit |
+| `namespace_mode` | Indicates if actions are throttled in an `active` or a `standby` Namespace |
+
+**Type**: Rate
+
+### Schedule Metrics
+
+#### temporal\_cloud\_v1\_schedule\_action\_success\_count
+
+Successfully executed scheduled workflows per second.
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_schedule\_buffer\_overruns\_count
+
+The rate of schedule buffer overruns when using `BUFFER_ALL` overlap policy.
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_schedule\_missed\_catchup\_window\_count
+
+The rate of missed schedule executions outside the catchup window.
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_schedule\_rate\_limited\_count
+
+The rate of scheduled workflows delayed due to rate limiting.
+
+**Type**: Rate
+
+### Replication Metrics
+
+#### temporal\_cloud\_v1\_replication\_lag\_p50
+
+The 50th percentile cross-region replication lag in seconds.
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_replication\_lag\_p95
+
+The 95th percentile cross-region replication lag in seconds.
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_replication\_lag\_p99
+
+The 99th percentile cross-region replication lag in seconds.
+
+**Type**: Latency
+
+### Limit Metrics
+
+#### temporal\_cloud\_v1\_operations\_limit
+
+The current configured operations per second limit for a namespace.
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_action\_limit
+
+The current configured actions per second limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_total_action_count`` and `is_background=false`.
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_service\_request\_limit
+
+The current configured frontend service RPS limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_service_request_count``
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_poller\_limit
+
+The current configured poller limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_service_pending_requests``.
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_action\_on\_demand\_envelope\_limit
+
+The on-demand envelope limit for actions per second. For Namespaces in provisioned capacity mode, this shows what the action limit would be if operating in on-demand mode. For Namespaces already in on-demand mode, this tracks the same value as `temporal_cloud_v1_action_limit`.
+
+:::note
+
+Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_operations\_on\_demand\_envelope\_limit
+
+The on-demand envelope limit for operations per second. For Namespaces in provisioned capacity mode, this shows what the operations limit would be if operating in on-demand mode. For Namespaces already in on-demand mode, this tracks the same value as `temporal_cloud_v1_operations_limit`.
+
+:::note
+
+Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_service\_request\_on\_demand\_envelope\_limit
+
+The on-demand envelope limit for service requests per second. For Namespaces in provisioned capacity mode, this shows what the service request limit would be if operating in on-demand mode. For Namespaces already in on-demand mode, this tracks the same value as `temporal_cloud_v1_service_request_limit`.
+
+:::note
+
+Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+

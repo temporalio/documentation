@@ -216,10 +216,10 @@ Usage:
   <RelatedReadItem path="/cloud/metrics/prometheus-grafana"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide" />
-  <RelatedReadItem path="/production-deployment/cloud/worker-health"
+  <RelatedReadItem path="/cloud/worker-health"
     text="How to monitor Worker Health with Temporal Cloud Metrics"
     archetype="feature-guide" />
-  <RelatedReadItem path="/production-deployment/cloud/service-health"
+  <RelatedReadItem path="/cloud/service-health"
     text="How to monitor Service Health with Temporal Cloud Metrics"
     archetype="feature-guide" />
 </RelatedReadContainer>

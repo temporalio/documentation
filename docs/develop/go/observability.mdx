@@ -82,7 +82,7 @@ Tracing functionality uses generic context propagation provided by the client.
 ### Context Propagation
 
 Temporal provides a standard way to propagate a custom context across a Workflow.
-You can configure a context propagator in via the [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions).
+You can configure a context propagator via the [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions).
 The context propagator extracts and passes on information present in `context.Context` and `workflow.Context` objects across the Workflow.
 Once a context propagator is configured, you should be able to access the required values in the context objects as you would normally do in Go.
 You can see how the Go SDK implements a [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation).
@@ -134,9 +134,9 @@ type ContextPropagator interface {
 ```
 
 - `Inject` reads select context keys from a Go [context.Context](https://golang.org/pkg/context/#Context) object and writes them into the headers using the [HeaderWriter](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderWriter) interface.
-- `InjectFromWorkflow` operates similar to `Inject` but reads from a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
-- `Extract` picks select headers and put their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
-- `ExtractToWorkflow` operates similar to `Extract` but write to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
+- `InjectFromWorkflow` operates similarly to `Inject` but reads from a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
+- `Extract` picks select headers and puts their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
+- `ExtractToWorkflow` operates similarly to `Extract` but writes to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
 
 The [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation) shows a sample implementation of a context propagator.
 
@@ -165,7 +165,7 @@ Context must be explicitly propagated through interceptors, as shown in the [Nex
 - [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by SpiralScout
 
 The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.
-Interceptors uses Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/child-workflows).
+Interceptors use Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/child-workflows).
 
 There are several tracing implementations supported by the Temporal Go SDK.
 For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `TracingInterceptor`.
@@ -189,7 +189,7 @@ For a [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing) I
 tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
 ```
 
-Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing.
+Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing, or provide interceptors through a [Plugin](/develop/plugins-guide#interceptors) if you're building a reusable library.
 
 ```go
 c, err := client.Dial(client.Options{
@@ -304,8 +304,7 @@ However, sometimes you'll want to retrieve one or more Workflow Executions based
 You can do this with [Search Attributes](/search-attribute).
 
 - [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
-- _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/search-attribute#custom-search-attribute) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+- [Custom Search Attributes](/search-attribute#custom-search-attribute) can contain their own domain-specific data (like `customerId` or `numItems`).
 
 The steps to using custom Search Attributes are:
 

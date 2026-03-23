@@ -69,6 +69,14 @@ Connect to a Temporal Service and start a Workflow Execution.
 - [Get Workflow results](/develop/dotnet/temporal-client#get-workflow-results): Retrieve and process the results of your
   Workflows efficiently.
 
+## [Standalone Activities](/develop/dotnet/standalone-activities)
+
+Execute Activities independently without a Workflow using the Temporal Client.
+
+- [How to execute a Standalone Activity](/develop/dotnet/standalone-activities#execute-activity)
+- [How to start a Standalone Activity without waiting](/develop/dotnet/standalone-activities#start-activity)
+- [How to get a handle to an existing Standalone Activity](/develop/dotnet/standalone-activities#get-activity-handle)
+
 ## [Testing](/develop/dotnet/testing-suite)
 
 Set up the testing suite and test Workflows and Activities.
@@ -159,13 +167,13 @@ Configure and use the Temporal Observability APIs.
 
 - [Emit Metrics](/develop/dotnet/observability#metrics): Each Temporal SDK is capable of emitting an optional set of
   metrics from either the Client or the Worker process.
-- [Set up Tracing](/develop/dotnet/observability#tracing): Explains how the Go SDK supports tracing and custom context
+- [Set up Tracing](/develop/dotnet/observability#tracing): Explains how the .NET SDK supports tracing and custom context
   propagation.
 - [Log from a Workflow](/develop/dotnet/observability#logging): Send logs and errors to a logging service, so that when
   things go wrong, you can see what happened.
 - [Use Visibility APIs](/develop/dotnet/observability#visibility): The term Visibility, within the Temporal Platform,
   refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a
-  Terminal Service.
+  Temporal Service.
 
 ## [Debugging](/develop/dotnet/debugging)
 
