@@ -25,6 +25,7 @@ temp/
 AGENTS.md
 CLAUDE.md
 .claude/*
+.omc
 
 npm-debug.log*
 yarn-debug.log*
