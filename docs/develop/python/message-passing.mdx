@@ -42,8 +42,7 @@ Follow these guidelines when writing your message handlers:
 
 - Message handlers are defined as methods on the Workflow class, using one of the three decorators: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query), [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal), and [`@workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
-- Prefer [data classes](https://docs.python.org/3/library/dataclasses.html) to multiple input parameters.
-  Data class parameters allow you to add fields without changing the calling signature.
+- Prefer [data classes](https://docs.python.org/3/library/dataclasses.html) to multiple input parameters. Data class parameters allow you to add fields without changing the calling signature. Keep in mind that serialization and deserialization can fail with the default data converter if the new field does not have a default value.
 
 ### Query handlers {#queries}
 
