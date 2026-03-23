@@ -27,7 +27,7 @@ Those further break down into concrete Interceptor types--see below.
 
 ## How to implement interceptors in TypeScript {#interceptors}
 
-Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain (and ultimately the application code), and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
+Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
 
 The TypeScript SDK comes with an optional interceptor package that adds tracing with
 [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry). See how to use it in the
