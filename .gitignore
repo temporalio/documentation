@@ -12,6 +12,7 @@ test-results
 .docusaurus
 .cache-loader
 temp/
+.claude/*
 
 # Misc
 .DS_Store
@@ -23,6 +24,8 @@ temp/
 .vs
 AGENTS.md
 CLAUDE.md
+.claude/*
+.omc
 
 npm-debug.log*
 yarn-debug.log*

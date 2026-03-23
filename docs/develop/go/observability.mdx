@@ -189,7 +189,7 @@ For a [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing) I
 tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
 ```
 
-Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing.
+Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing, or provide interceptors through a [Plugin](/develop/plugins-guide#interceptors) if you're building a reusable library.
 
 ```go
 c, err := client.Dial(client.Options{
