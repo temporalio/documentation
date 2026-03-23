@@ -50,21 +50,6 @@ Nexus supports cross-team, cross-domain, cross-namespace, multi-region, and mult
 
 Unlike other forms of inter-service communication, Nexus combines a familiar programming model with the resiliency of the Temporal Platform and its queue-based Worker architecture.
 
-Use the following decision tree to help determine if Nexus is right for your use case:
-
-<div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <a href="/diagrams/nexusadoptionlight.png" target="_blank" rel="noopener noreferrer">
-    <ThemedImage
-      alt="Should I use Nexus? Decision tree"
-      sources={{
-        light: '/diagrams/nexusadoptionlight.png',
-        dark: '/diagrams/nexusadoptiondark.png',
-      }}
-      style={{maxWidth: '100%', cursor: 'pointer'}}
-    />
-  </a>
-</div>
-
 ### Benefits
 
 - **Integrated Temporal experience** \- with improved security, observability, and reliability.
@@ -143,6 +128,23 @@ Use the following decision tree to help determine if Nexus is right for your use
   - Restrict which callers can use a Nexus Endpoint, with built-in Endpoint access controls.
   - Stream audit logs including Nexus Registry actions to create, update, or delete Endpoints.
 
+## Should I use Nexus?
+
+Use the following decision tree to help determine if Nexus is right for your use case:
+
+<div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <a href="/diagrams/nexusadoptionlight.png" target="_blank" rel="noopener noreferrer">
+    <ThemedImage
+      alt="Should I use Nexus? Decision tree"
+      sources={{
+        light: '/diagrams/nexusadoptionlight.png',
+        dark: '/diagrams/nexusadoptiondark.png',
+      }}
+      style={{maxWidth: '100%', cursor: 'pointer'}}
+    />
+  </a>
+</div>
+
 ## Learn more
 
 To connect with the Nexus community, join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack).
@@ -154,6 +156,9 @@ To connect with the Nexus community, join the [#nexus](https://temporalio.slack.
   <RelatedReadItem path="/nexus" text="Nexus concepts and getting started" archetype="encyclopedia" />
   <RelatedReadItem path="/develop/go/nexus" text="Go SDK - Nexus quick start and code sample" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/nexus" text="Java SDK - Nexus quick start and code sample" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/nexus" text="Python SDK - Nexus quick start and code sample" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/nexus" text="TypeScript SDK - Nexus quick start and code sample" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/dotnet/nexus" text=".NET SDK - Nexus quick start and code sample" archetype="feature-guide" />
   <RelatedReadItem path="/cloud/nexus" text="Production deployment in Temporal Cloud" archetype="feature-guide" />
   <RelatedReadItem path="/production-deployment/self-hosted-guide/nexus" text="Self-hosted deployment" archetype="feature-guide" />
 </RelatedReadContainer>
