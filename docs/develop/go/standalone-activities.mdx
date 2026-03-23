@@ -50,7 +50,7 @@ This page covers the following:
 :::note
 
 This documentation uses source code from the
-[Go sample](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld).
+[standalone-activity/helloworld](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld).
 
 :::
 
@@ -99,10 +99,6 @@ git clone https://github.com/temporalio/samples-go.git
 cd samples-go
 ```
 
-## Define your Activity {#define-activity}
-
-Define your Activity in a shared file so that both the Worker and starter can reference it.
-
 The sample project is structured as follows:
 
 ```
@@ -113,6 +109,10 @@ standalone-activity/helloworld/
 └── starter/
     └── main.go
 ```
+
+## Define your Activity {#define-activity}
+
+Define your Activity in a shared file so that both the Worker and starter can reference it.
 
 [standalone-activity/helloworld/activity.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/activity.go)
 
