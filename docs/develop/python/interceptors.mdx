@@ -15,14 +15,18 @@ tags:
 ---
 
 Interceptors are SDK hooks that let you intercept inbound and outbound Temporal calls. You use them to add common
-behavior across many calls, such as tracing and context propagation, before calls reach the application code and after they return. 
+behavior across many calls, such as tracing and context propagation. 
 This is similar to using middleware in web frameworks such as
 [Django](https://docs.djangoproject.com/en/5.2/topics/http/middleware/),
 [Starlette](https://www.starlette.io/middleware/), and
 [Flask](https://flask.palletsprojects.com/en/stable/lifecycle/#middleware).
 
+There are two types of interceptors--inbound and outbound.
 
-There are five categories of inbound and outbound calls that you can modify in this way:
+* Outbound interceptors wrap network calls, running before they reach the network and after they return.
+* Inbound interceptors run after the network hop, wrapping application code and running before it starts and after it returns.
+
+Concretely, there are five categories of inbound and outbound calls that you can modify in this way:
 
 | [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)                                                       | [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)                           | [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
