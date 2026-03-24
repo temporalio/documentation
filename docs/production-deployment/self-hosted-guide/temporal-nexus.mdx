@@ -59,14 +59,12 @@ To enable Nexus in your deployment:
    ```
 
 2. Set the required dynamic configuration
-    1. **Prior to version 1.30.X**, you must enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
+    1. **Prior to version 1.30.X**, you must set the public callback URL and the allowed callback addresses.
 
        **NOTE**: the callback endpoint template and allowed addresses should be set when using the experimental
        "external" endpoint targets.
 
        ```yaml
-       system.enableNexus:
-         - value: true
        component.nexusoperations.callback.endpoint.template:
          # The URL must be publicly accessible if the callback is meant to be called by external services.
          # When using Nexus for cross namespace calls, the URL's host is irrelevant as the address is resolved using

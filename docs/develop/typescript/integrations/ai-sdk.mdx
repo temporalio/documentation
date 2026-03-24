@@ -63,14 +63,14 @@ Follow the steps below to configure your Worker.
 
    ```ts {9-11}
    import { openai } from '@ai-sdk/openai';
-   import { AiSDKPlugin } from '@temporalio/ai-sdk';
+   import { AiSdkPlugin } from '@temporalio/ai-sdk';
 
    //... other import statements, initializing a connection
    //  to the Temporal Service to be used by the Worker
 
    const worker = await Worker.create({
      plugins: [
-       new AiSDKPlugin({
+       new AiSdkPlugin({
          modelProvider: openai,
        }),
      ],
@@ -243,7 +243,7 @@ Follow the steps below to integrate your agent with an MCP server.
    ```ts {5}
    const worker = await Worker.create({
      plugins: [
-       new AiSDKPlugin({
+       new AiSdkPlugin({
          modelProvider: openai,
          mcpClientFactories
        }),
