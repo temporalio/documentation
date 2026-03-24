@@ -418,6 +418,7 @@ module.exports = {
               },
               items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
             },
+            'cloud/metrics/sdk-metrics-setup',
           ],
         },
         {
