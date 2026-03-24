@@ -145,11 +145,11 @@ spring.temporal:
 
 - Workflow implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
 - Activity beans present Spring context whose implementations are annotated with `io.temporal.spring.boot.ActivityImpl`
-- Nexus Service beans present in Spring context whose implementations are annotated with `io.temporal.spring.boot.NexusServiceImpl`
+- Nexus Service beans present in Spring context whose implementations are annotated with `io.temporal.spring.boot.SampleNexusServiceImpl`
 - Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
 
 :::note
-`io.temporal.spring.boot.ActivityImpl` and `io.temporal.spring.boot.NexusServiceImpl` should be applied to beans, one way to do this is to annotate your Activity implementation class with `@Component`
+`io.temporal.spring.boot.ActivityImpl` and `io.temporal.spring.boot.SampleNexusServiceImpl` should be applied to beans, one way to do this is to annotate your Activity implementation class with `@Component`
 :::
 
 ```
