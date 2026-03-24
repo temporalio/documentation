@@ -345,6 +345,45 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 ```
 <!--SNIPEND-->
 
+### Set Nexus Operation timeouts
+
+Nexus Operations support [three types of timeouts](/nexus/operations#timeouts) that control how long the caller is willing to wait at different stages of the Operation lifecycle.
+Set these timeouts in `NexusOperationOptions` when calling `ExecuteOperation`.
+
+#### Schedule-to-Close timeout
+
+The [Schedule-to-Close timeout](/nexus/operations#schedule-to-close-timeout) limits the total duration of the Operation from when it is scheduled to when it completes.
+The Nexus Machinery automatically retries failed requests until this timeout is exceeded.
+
+```go
+fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{
+	ScheduleToCloseTimeout: 10 * time.Minute,
+})
+```
+
+#### Schedule-to-Start timeout
+
+The [Schedule-to-Start timeout](/nexus/operations#schedule-to-start-timeout) limits how long the caller will wait for the Operation to be started by the handler.
+If not set, no Schedule-to-Start timeout is enforced.
+
+```go
+fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{
+	ScheduleToStartTimeout: 2 * time.Minute,
+})
+```
+
+#### Start-to-Close timeout
+
+The [Start-to-Close timeout](/nexus/operations#start-to-close-timeout) limits how long the caller will wait for an asynchronous Operation to complete after it has been started.
+This timeout only applies to asynchronous Operations.
+If not set, no Start-to-Close timeout is enforced.
+
+```go
+fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{
+	StartToCloseTimeout: 5 * time.Minute,
+})
+```
+
 ### Register the caller Workflow in a Worker
 
 After developing the caller Workflow, the next step is to register it with a Worker.
