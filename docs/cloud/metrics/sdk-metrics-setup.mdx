@@ -68,6 +68,9 @@ For working examples of how to configure metrics in each SDK, see the metrics sa
 - [Python SDK Samples](https://github.com/temporalio/samples-python/tree/main/custom_metric)
 - [.NET SDK Samples](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry/DotNetMetrics)
 
+Some examples use OpenTelemtry to instrument metrics. It is useful to use a
+[Prometheus exporter with OpenTelemetry](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/prometheusexporter) to expose metrics for scraping.
+
 ## Prometheus configuration {#prometheus-configuration}
 
 **How to configure Prometheus to ingest Temporal SDK metrics.**
@@ -98,9 +101,6 @@ scrape_configs:
 ```
 
 See the [Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/) for more details on how you can run Prometheus locally or using Docker.
-
-Note that Temporal Cloud exposes metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/) (not a scrape endpoint) that can be configured as a data source in Grafana.
-The Prometheus configuration described here is for scraping metrics data on endpoints for SDK metrics only.
 
 To check whether Prometheus is receiving metrics from your SDK target, go to [http://localhost:9090](http://localhost:9090) and navigate to **Status&nbsp;> Targets**.
 The status of your target endpoint defined in your configuration appears here.
