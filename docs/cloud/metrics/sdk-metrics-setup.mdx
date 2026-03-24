@@ -36,18 +36,14 @@ The process for setting up SDK metrics includes the following steps:
 3. [Add SDK metrics as a data source](#grafana-data-source-configuration) in Grafana.
 4. [Create dashboards](#grafana-dashboards-setup) to visualize SDK metrics.
 
-If you're following through with the examples provided here, ensure that you have the following:
+Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud.
+Ensure Prometheus and Grafana are installed.
 
-- Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Temporal Service for details.
-
-  - [Go](/develop/go/temporal-client#connect-to-temporal-cloud)
-  - [Java](/develop/java/temporal-client#connect-to-temporal-cloud)
-  - [PHP](/develop/php/temporal-client#connect-to-a-dev-cluster)
-  - [Python](/develop/python/temporal-client#connect-to-temporal-cloud)
-  - [TypeScript](/develop/typescript/core-application#connect-to-temporal-cloud)
-  - [.NET](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
-
-- Prometheus and Grafana installed.
+- [Go](/develop/go/temporal-client#connect-to-temporal-cloud)
+- [Java](/develop/java/temporal-client#connect-to-temporal-cloud)
+- [Python](/develop/python/temporal-client#connect-to-temporal-cloud)
+- [TypeScript](/develop/typescript/core-application#connect-to-temporal-cloud)
+- [.NET](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
 
 ## SDK metrics setup
 
@@ -79,9 +75,7 @@ For Temporal SDKs, you must have Prometheus running and configured to listen on 
 
 For this example, you can run Prometheus locally or as a Docker container.
 In either case, ensure that you set the listen targets to the ports where you expose your scrape endpoints.
-When you run Prometheus locally, set your target address to port 8077 in your Prometheus configuration YAML file. (We set the scrape endpoint to port 8077 in the [SDK metrics setup](#sdk-metrics-setup) example.)
-
-Example:
+This configuration assumes the scrape endpoint is set to port 8077 as in the [SDK metrics setup](#sdk-metrics-setup) example.
 
 ```yaml
 global:
@@ -143,7 +137,7 @@ Temporal provides community-driven [example dashboards for Temporal SDKs](https:
 
 To import a dashboard in Grafana:
 
-1. In the left-hand navigation bar, select **Dashboards** > **Import dashboard**.
+1. In the navigation bar, select **Dashboards** > **Import dashboard**.
 2. You can either copy and paste the JSON from the [Temporal SDK sample dashboards](https://github.com/temporalio/dashboards/tree/master/sdk), or import the JSON files into Grafana.
 3. Save the dashboard and review the metrics data in the graphs.
 
