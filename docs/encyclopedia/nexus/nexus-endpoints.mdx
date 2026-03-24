@@ -35,7 +35,7 @@ The Endpoint description field supports markdown for documenting available Opera
 A Nexus Endpoint acts as a reverse proxy for a single Nexus Service, routing requests to one target Namespace and Task Queue.
 
 Unlike general-purpose proxies, it does not route to multiple backends. Instead, it provides a secure, managed connection to a specific upstream target, which can be in any region or cloud.
-The [EndpointSpec](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L170) supports two [target types](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L185):
+The [EndpointSpec](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L170) support the following [target type](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L185):
 
 - **Worker**: Route to a target Namespace and Task Queue.
 
