@@ -150,10 +150,6 @@ disables all High Availability features:
 
 - Discontinues replication of the Workflows in the Namespace.
 - Disables the Namespace's ability to trigger a failover to a different region or cloud.
-- For Workers and Clients that use API keys, removing a replica requires connecting to the Namespace using the published
-  [regional endpoint](/cloud/regions) for the Namespace's region.
-  - Disables connecting to the Namespace with API keys and the Namespace's endpoint or the replica region's regional
-    endpoint.
 - Ends High Availability charges.
 
 :::caution
@@ -169,9 +165,6 @@ Follow these steps to remove a replica from a Namespace:
 
 <TabItem value="webui" label="Web UI">
 
-1. If you are using API keys for authentication on this Namespace, configure your Workers and Clients that use API keys
-   to [connect with the regional Temporal Cloud endpoint](/cloud/api-keys#namespace-authentication) for the Namespace's
-   primary region.
 1. Navigate to the Namespace details page in Temporal Cloud
 1. Select the option to "Remove Replica" on the "Region" card.
 
@@ -179,11 +172,7 @@ Follow these steps to remove a replica from a Namespace:
 
 <TabItem value="tcldcli" label="tcld">
 
-First, if you are using API keys for authentication on this Namespace, configure your Workers and Clients that use API
-keys to [connect with the regional Temporal Cloud endpoint](/cloud/api-keys#namespace-authentication) for the
-Namespace's primary region.
-
-Then, run the following command to remove the replica:
+Run the following command to remove the replica:
 
 ```
 tcld namespace delete-region \
@@ -198,15 +187,3 @@ See [Regions](/cloud/regions) for available region names.
 
 </Tabs>
 
-:::important
-
-To remove a replica from a Namespace with API keys enabled, you need assistance from Temporal Support. Please
-[contact support](/cloud/support#support-ticket) with the Namespace ID of the Namespace where you want to remove the
-replica. You must confirm that Workers and Clients with API keys have been configured to connect to the Namespace using
-the published [regional endpoint](/cloud/regions).
-
-This safeguard ensures that Workers and Clients continue running uninterrupted once Temporal Support removes the
-replica. After the replica is removed, if Workers and Clients with API keys attempt to use the Namespace endpoint or the
-former replica's regional endpoint, their requests will fail.
-
-:::

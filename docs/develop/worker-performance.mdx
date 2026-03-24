@@ -63,6 +63,12 @@ Available slot suppliers include:
   A resource-based supplier will account for memory limits imposed in containerized environments.
   It dynamically adjusts the number of available slots for different task types with respect to current system resources.
 
+:::info
+
+When running in a containerized environment, all SDKs use cgroups for both CPU and memory. CPU is accounted for at the container level.
+
+:::
+
 - **Custom Slot Suppliers**:
   Hands out slots based on the custom logic that you define.
   Use this approach when you need complete control over when Workers accept and execute Tasks.
@@ -217,7 +223,13 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 #### Recommended Approach
 
-The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs. 
+The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
+
+:::tip
+
+`PollerBehaviorAutoscaling` is only enabled in Temporal Server v1.28.0 and later.
+
+:::
 
 #### Manual Configuration
 

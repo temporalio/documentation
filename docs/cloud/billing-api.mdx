@@ -1,0 +1,130 @@
+---
+id: billing-api
+title: Cloud Billing API
+sidebar_label: Cloud Billing API
+description: The Temporal Cloud Billing API provides namespace-level cost attribution through on-demand billing reports.
+slug: /cloud/billing-api
+toc_max_heading_level: 4
+keywords:
+  - explanation
+tags:
+  - API
+  - Billing
+  - Temporal Cloud
+---
+
+The Temporal Cloud Billing API provides Namespace-level cost attribution through on-demand billing reports. 
+Reports are delivered in CSV format and can be accessed via API or downloaded directly for use in FinOps tooling and cost management platforms.  
+
+This API is part of the [Cloud Operations API](/ops).
+
+:::tip Support, stability, and dependency info
+
+The Temporal Cloud Billing API is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
+The Billing API allows you to:
+
+- Generate billing reports for specified invoice months  
+- Retrieve report status and metadata  
+- Download CSV reports that can be fed into internal analytics tooling or cloud cost management platforms
+
+The Billing Report contains:
+
+- Accurate Namespace-level cost attribution  
+- Hourly granularity  
+- A [FOCUS](https://focus.finops.org/)-friendly data format
+
+For complete request and response schemas, refer to the Schema below.
+
+Billing report generation is **asynchronous**. You initiate report creation, then poll for completion.
+
+## Report data limitations
+
+For pre-release, reports can be generated with hourly granularity only, for the current billing month, and the previous billing month.
+
+## Allowed date ranges
+
+Date ranges must use billing-month boundaries (MM/YYYY). 
+Requests may include the current billing month. 
+The data in finalized reports includes usage up to `current_time` \- 24 hours (rounded up to nearest hour).
+
+## Rate limits and concurrency
+
+Rate limits apply to API usage. 
+
+### Per-account concurrency
+
+Within a single account:
+
+- Only one billing report per account is generated at a time  
+- Additional requests are accepted but queued  
+
+### Report Generation Latency
+
+Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
+
+## Best practices
+
+Provide an idempotency key (`async_operation_id`) when retrying requests.  
+
+Poll `GetBillingReport` using exponential backoff.
+
+Download reports immediately after generation (URLs expire).
+
+Avoid frequent generation of large overlapping ranges in the current billing period.
+
+## Billing report schema
+
+Billing reports are delivered in CSV format.
+
+Each row represents a charge record.
+
+| Column Name | Description | Example |
+| ----- | ----- | ----- |
+| BillingAccountID | Temporal Cloud account ID | a2dd6 |
+| BillingAccountName | Temporal Cloud account name | temporal |
+| BillingCurrency | The currency an account is billed in | USD (cents) |
+| BillingPeriodEnd | The exclusive end bound of a billing period | 2024-02-01T00:00:00Z |
+| BillingPeriodStart | The inclusive start bound of a billing period | 2024-01-01T00:00:00Z |
+| ChargeCategory | The highest level classification of a charge based on how it is billed | Usage |
+| ChargeDescription | A self contained summary of the charge’s purpose | Actions \- Tier 1 |
+| ChargeFrequency | Indicates how often a charge will occur | Usage-Based |
+| ChargePeriodEnd | Time period end from when this charge took place, correlates to data granularity | 2025-10-01T01:00:00.000Z |
+| ChargePeriodStart | Time period start from when this charge took place, correlates to data granularity | 2025-10-01T00:00:00.000Z |
+| ContractedCost | Cost calculated by multiplying ContractedUnitPrice and PricingQuantity | 100.00 |
+| ContractedUnitPrice | The agreed-upon unit price for a single pricing unit of the associated SKU. Inclusive of negotiated discounts | 10.00 |
+| InvoiceID | The ID of the invoice for this billing period | in\_XXXXXXXXXXXXXXXXXXXX |
+| InvoiceIssuer | The entity responsible for issuing payable invoices | stripe |
+| PricingQuantity | The volume of a given SKU used or purchased | 10.00 |
+| PricingUnit | The measurement unit used for PricingQuantity | 1 Million Actions |
+| Provider | The provider of purchased resources or services | Temporal Technologies |
+| Publisher | The publisher of purchased resources or services | Temporal Technologies |
+| ResourceID | Namespace name \+ Temporal Cloud account ID | production.a2dd6 |
+| ResourceName | Namespace name \+ Temporal Cloud account ID | production.a2dd6 |
+| ResourceType | The type of resource the charge applies to | Namespace |
+| ServiceCategory | The highest level classification of a service based on the core function of the service | Temporal Cloud |
+| ServiceName | An offering that can be purchased from a provider | Temporal Cloud |
+| ServiceSubcategory | A secondary classification of the service category for a service based on its core function | Actions |
+| SKUID | A unique identifier that represents a specific SKU | essentials-actions |
+| SKUMeter | The functionality being metered or measured by a particular SKU in a charge | Actions |
+| Tags | Provider and customer defined tags associated with resources | `{"$tmprl_project":["project-id"],"namespace-tag-key":["namespace-tag-value"]}` |
+
+## Generate a report
+
+To generate a report, follow these steps:
+
+1. Create a billing report using `CreateBillingReport`. The response includes a `billing_report_id` and `async_operation_id`.
+1. Poll `GetBillingReport` using the `billing_report_id`  
+1. When the report state becomes `BILLING_REPORT_STATE_GENERATED`, retrieve the download URL  
+1. Download the report before the URL expires
+
+### Key identifiers
+
+| Identifier | Purpose |
+| ----- | ----- |
+| `billing_report_id` | Identifies the billing report and is used to retrieve metadata and download URLs |
+| `async_operation_id` | Identifies the background operation responsible for generating the report |
+
+The async operation follows the standard Cloud Operations async model (see [Async Operations](/ops#per-identity-rate-limits)).
