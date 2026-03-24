@@ -284,6 +284,31 @@ Pending Nexus Operations: 1
 
 Cancellation requests surface the same pattern with `CancelationState: Blocked` and `CancelationBlockedReason`.
 
+```sh
+Execution Info:
+  WorkflowId            my-workflow-id
+  ...
+
+Pending Activities: 0
+Pending Child Workflows: 0
+Pending Nexus Operations: 1
+
+  Endpoint                            my-nexus-endpoint
+  Service                             nexus-playground
+  Operation                           async-op-workflow-wait-for-cancel
+  OperationToken                      eyJ2IjowLCJ0IjoxLCJucyI6Im5zIiwid2lkIjoidyJ
+  State                               Started
+  Attempt                             1
+  ScheduleToCloseTimeout              1d 0h 0m 0s
+  LastAttemptCompleteTime             51 seconds ago
+  CancelationState                    Blocked
+  CancelationAttempt                  5
+  CancelationRequestedTime            37 seconds ago
+  CancelationLastAttemptCompleteTime  27 seconds ago
+  CancelationLastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
+  CancelationBlockedReason            The circuit breaker is open.
+```
+
 ## Execution semantics {#execution-semantics}
 
 ### At-least-once execution semantics and idempotency
