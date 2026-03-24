@@ -1,6 +1,6 @@
 ---
 id: prometheus-grafana
-title: Temporal Cloud Prometheus Grafana setup
+title: Prometheus Grafana setup
 sidebar_label: Prometheus Grafana
 description: Set up Grafana with Temporal Cloud observability to monitor performance and troubleshoot errors using the Prometheus HTTP API endpoint.
 slug: /cloud/metrics/prometheus-grafana
@@ -25,11 +25,9 @@ tags:
 
 import { ZoomingImage } from '@site/src/components';
 
-**How to set up Grafana with Temporal Cloud observability to view Cloud metrics.**
+**How to set up Grafana with Temporal Cloud PromQL endpoint to view Cloud metrics.**
 
 Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/), which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
-
-This page describes how to set up Temporal Cloud metrics as a data source in Grafana and create dashboards to visualize them.
 
 :::note
 
@@ -37,7 +35,7 @@ For setting up SDK metrics (emitted by your Workers and Clients), see [SDK metri
 
 :::
 
-The process for setting up Temporal Cloud metrics in Grafana includes the following steps:
+The process for setting up Temporal Cloud PromQL to work with Grafana includes the following steps:
 
 1. [Generate a Prometheus HTTP API endpoint](/cloud/metrics/general-setup) on Temporal Cloud using valid certificates.
 2. Run Grafana and [set up a data source for Temporal Cloud metrics](#grafana-data-source-configuration) in Grafana.
@@ -108,7 +106,7 @@ If you see issues in setting this data source, verify your CA certificate chain 
 
 ### Grafana dashboards setup
 
-To set up Temporal Cloud metrics dashboards in Grafana, you can use the UI or configure them directly in your Grafana deployment.
+To set up dashboards in Grafana, you can use the UI or configure them directly in your Grafana deployment.
 
 :::tip
 
@@ -128,5 +126,5 @@ To configure dashboards with the UI:
 2. On the **Panel configuration** page, in the **Query** tab, select the "Temporal Cloud metrics" data source that you configured earlier.
 3. Expand the **Metrics browser** and select the metrics you want.
    You can also select associated labels and values to sort the query data.
-   The [Cloud metrics documentation](/cloud/metrics/reference) lists all metrics emitted from Temporal Cloud.
+   The [PromQL documentation](/cloud/metrics/reference) lists all metrics emitted from PromQL in Temporal Cloud.
 4. The graph should now display data based on your selected queries.
