@@ -1,9 +1,6 @@
 name: Snipsync
 
 on:
-  push: # TEMPORARY: remove after testing
-    branches:
-      - add-snipsync-workflow
   schedule:
     - cron: '0 6 * * *' # Daily at 6:00 UTC
   workflow_dispatch:
