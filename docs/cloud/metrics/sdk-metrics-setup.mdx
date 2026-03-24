@@ -1,0 +1,159 @@
+---
+id: sdk-metrics-setup
+title: SDK metrics setup
+sidebar_label: SDK Metrics
+description: Set up Temporal SDK metrics with Prometheus and Grafana for monitoring Workers and Client performance.
+slug: /cloud/metrics/sdk-metrics-setup
+toc_max_heading_level: 4
+keywords:
+  - temporal sdk metrics
+  - prometheus scrape endpoint
+  - sdk metrics setup
+  - temporal sdk monitoring
+  - grafana sdk metrics
+  - worker metrics
+  - temporal sdk prometheus
+  - sdk metrics dashboard
+tags:
+  - Metrics
+  - Observability
+  - Temporal Cloud
+---
+
+import { ZoomingImage } from '@site/src/components';
+
+**How to set up Temporal SDK metrics with Prometheus and Grafana.**
+
+SDK metrics are emitted by SDK Clients used to start your Workers and to start, signal, or query your Workflow Executions.
+Unlike [Temporal Cloud metrics](/cloud/metrics/), which are exposed through a Prometheus HTTP API endpoint, SDK metrics require you to set up a Prometheus scrape endpoint in your application code for Prometheus to collect and aggregate.
+
+For a full list of available SDK metrics and their descriptions, see the [SDK metrics reference](/references/sdk-metrics).
+
+The process for setting up SDK metrics includes the following steps:
+
+1. [Expose a metrics endpoint](#sdk-metrics-setup) in your application code where Prometheus can scrape SDK metrics.
+2. [Run Prometheus](#prometheus-configuration) and configure it to scrape your SDK metrics endpoints.
+3. [Add SDK metrics as a data source](#grafana-data-source-configuration) in Grafana.
+4. [Create dashboards](#grafana-dashboards-setup) to visualize SDK metrics.
+
+If you're following through with the examples provided here, ensure that you have the following:
+
+- Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Temporal Service for details.
+
+  - [Go](/develop/go/temporal-client#connect-to-temporal-cloud)
+  - [Java](/develop/java/temporal-client#connect-to-temporal-cloud)
+  - [PHP](/develop/php/temporal-client#connect-to-a-dev-cluster)
+  - [Python](/develop/python/temporal-client#connect-to-temporal-cloud)
+  - [TypeScript](/develop/typescript/core-application#connect-to-temporal-cloud)
+  - [.NET](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
+
+- Prometheus and Grafana installed.
+
+## SDK metrics setup
+
+You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
+Each language development guide has details on how to set this up.
+
+- [Go SDK](/develop/go/observability#metrics)
+- [Java SDK](/develop/java/observability#metrics)
+- [TypeScript SDK](/develop/typescript/observability#metrics)
+- [Python](/develop/python/observability#metrics)
+- [.NET](/develop/dotnet/observability#metrics)
+
+For working examples of how to configure metrics in each SDK, see the metrics samples:
+
+- [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
+- [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics)
+- [TypeScript SDK Samples](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry)
+- [Python SDK Samples](https://github.com/temporalio/samples-python/tree/main/custom_metric)
+- [.NET SDK Samples](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry/DotNetMetrics)
+
+## Prometheus configuration {#prometheus-configuration}
+
+**How to configure Prometheus to ingest Temporal SDK metrics.**
+
+For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in your application code.
+
+For this example, you can run Prometheus locally or as a Docker container.
+In either case, ensure that you set the listen targets to the ports where you expose your scrape endpoints.
+When you run Prometheus locally, set your target address to port 8077 in your Prometheus configuration YAML file. (We set the scrape endpoint to port 8077 in the [SDK metrics setup](#sdk-metrics-setup) example.)
+
+Example:
+
+```yaml
+global:
+  scrape_interval: 30s # Set the scrape interval to every 30 seconds. Default is every 1 minute.
+#...
+
+# Set your scrape configuration targets to the ports exposed on your endpoints in the SDK.
+scrape_configs:
+  - job_name: 'temporalsdkmetrics'
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          # This is the scrape endpoint where Prometheus listens for SDK metrics.
+          - localhost:8077
+        # You can have multiple targets here, provided they are set up in your application code.
+```
+
+See the [Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/) for more details on how you can run Prometheus locally or using Docker.
+
+Note that Temporal Cloud exposes metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/) (not a scrape endpoint) that can be configured as a data source in Grafana.
+The Prometheus configuration described here is for scraping metrics data on endpoints for SDK metrics only.
+
+To check whether Prometheus is receiving metrics from your SDK target, go to [http://localhost:9090](http://localhost:9090) and navigate to **Status&nbsp;> Targets**.
+The status of your target endpoint defined in your configuration appears here.
+
+## Grafana data source configuration {#grafana-data-source-configuration}
+
+**How to configure the SDK metrics data source in Grafana.**
+
+Depending on how you use Grafana, you can either install and run it locally, run it as a Docker container, or log in to Grafana Cloud to set up your data sources.
+
+If you have installed and are running Grafana locally, go to [http://localhost:3000](http://localhost:3000) and sign in.
+
+To add the SDK metrics Prometheus endpoint as a data source, do the following:
+
+1. Go to **Configuration&nbsp;> Data sources**.
+2. Select **Add data source&nbsp;> Prometheus**.
+3. Enter a name for your SDK metrics data source, such as _Temporal SDK metrics_.
+4. In the **HTTP** section, enter your Prometheus endpoint in the URL field.
+   If running Prometheus locally as described in the examples in this article, enter `http://localhost:9090`.
+5. For this example, enable **Skip TLS Verify** in the **Auth** section.
+6. Click **Save and test** to verify that the data source is working.
+
+If you see issues in setting this data source, check whether the endpoints set in your SDKs are showing metrics.
+If you don't see your SDK metrics at the scrape endpoints defined, check whether your Workers and Workflow Executions are running.
+If you see metrics on the scrape endpoints, but Prometheus shows your targets are down, then there is an issue with connecting to the targets set in your SDKs.
+Verify your Prometheus configuration and restart Prometheus.
+
+If you're running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
+See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Service](/self-hosted-guide/monitoring#grafana) article.
+
+## Grafana dashboards setup
+
+To set up SDK metrics dashboards in Grafana, you can use the UI or configure them directly in your Grafana deployment.
+
+:::tip
+
+Temporal provides community-driven [example dashboards for Temporal SDKs](https://github.com/temporalio/dashboards/tree/master/sdk) that you can customize to meet your needs.
+
+:::
+
+To import a dashboard in Grafana:
+
+1. In the left-hand navigation bar, select **Dashboards** > **Import dashboard**.
+2. You can either copy and paste the JSON from the [Temporal SDK sample dashboards](https://github.com/temporalio/dashboards/tree/master/sdk), or import the JSON files into Grafana.
+3. Save the dashboard and review the metrics data in the graphs.
+
+To configure dashboards with the UI:
+
+1. Go to **Create > Dashboard** and add an empty panel.
+2. On the **Panel configuration** page, in the **Query** tab, select the "Temporal SDK metrics" data source that you configured earlier.
+3. Expand the **Metrics browser** and select the metrics you want.
+   A list of Worker performance metrics is described in the [Developer's Guide - Worker performance](/develop/worker-performance).
+   All SDK-related metrics are listed in the [SDK metrics](/references/sdk-metrics) reference.
+4. The graph should now display data based on your selected queries.
+   Note that SDK metrics will only show if you have Workflow Execution data and running Workers.
+   If you don't see SDK metrics, run your Worker and Workflow Executions, then monitor the dashboard.
