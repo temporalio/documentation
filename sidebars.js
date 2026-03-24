@@ -109,6 +109,7 @@ module.exports = {
             'develop/go/asynchronous-activity-completion',
             'develop/go/versioning',
             'develop/go/observability',
+            'develop/go/context-propagation',
             'develop/go/benign-exceptions',
             'develop/go/enriching-ui',
             'develop/go/debugging',
