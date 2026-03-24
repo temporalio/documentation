@@ -1,6 +1,6 @@
 ---
 id: sdk-metrics-setup
-title: SDK metrics setup
+title: Monitor SDK metrics with Prometheus and Grafana
 sidebar_label: SDK Metrics
 description: Set up Temporal SDK metrics with Prometheus and Grafana for monitoring Workers and Client performance.
 slug: /cloud/metrics/sdk-metrics-setup
@@ -21,8 +21,6 @@ tags:
 ---
 
 import { ZoomingImage } from '@site/src/components';
-
-**How to set up Temporal SDK metrics with Prometheus and Grafana.**
 
 SDK metrics are emitted by SDK Clients used to start your Workers and to start, signal, or query your Workflow Executions.
 Unlike [Temporal Cloud metrics](/cloud/metrics/), which are exposed through a Prometheus HTTP API endpoint, SDK metrics require you to set up a Prometheus scrape endpoint in your application code for Prometheus to collect and aggregate.
