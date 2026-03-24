@@ -36,9 +36,6 @@ Here are some common use cases for plugins:
 The recommended way to start building plugins is with a `SimplePlugin`. This abstraction will tackle the vast majority
 of plugins people want to write.
 
-For advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without
-re-implementing what you’ve done. See the [Advanced Topics section](#advanced-topics-for-plugins) for more information.
-
 ### Example Plugins
 
 If you prefer to learn by getting hands-on with code, check out some existing plugins.
@@ -60,6 +57,7 @@ do.
 - [Built-in Nexus Operations](#built-in-nexus-operations)
 - [Custom Data Converters](#custom-data-converters)
 - [Interceptors](#interceptors)
+- [Context Propagators](#context-propagators)
 
 ### Built-in Activity
 
@@ -782,6 +780,27 @@ plugin = Temporalio::SimplePlugin.new(
     {/* SNIPEND */}
 
   </SdkTabs.Ruby>
+</SdkTabs>
+
+### Context Propagators {#context-propagators}
+
+Context propagators pass custom key-value data (such as tracing IDs, tenant IDs, or auth tokens) across Workflow, Activity, and Child Workflow boundaries via Temporal headers. See [Context Propagation](/encyclopedia/context-propagation) for details on how they work.
+
+Propagators registered via a Plugin are appended to any propagators already set by the user or by previous plugins.
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+```go
+func createContextPropagatorPlugin() (*temporal.SimplePlugin, error) {
+    return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
+        Name:               "organization.PluginName",
+        ContextPropagators: []workflow.ContextPropagator{NewMyPropagator()},
+    })
+}
+```
+
+  </SdkTabs.Go>
 </SdkTabs>
 
 ### Special considerations for different languages
