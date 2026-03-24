@@ -1,6 +1,6 @@
 ---
 id: nexus-operations
-title: Nexus operations
+title: Nexus Operations
 sidebar_label: Nexus Operations
 description: Learn about the Nexus Operation lifecycle, execution semantics, and automatic retries for reliable execution.
 toc_max_heading_level: 4
@@ -75,7 +75,7 @@ Synchronous Operations must complete within the [10-second handler deadline](/cl
     title="Nexus Sync Operation Lifecycle"
 />
 
-Lifecycle for a synchronous Operation (for example, to Signal, Query, or Update a Workflow, or run other reliable code):
+Lifecycle for a synchronous Operation (for example, to Signal, Query, or Update a Workflow, or to run other reliable code):
 
 1. Caller Workflow executes a Nexus Operation.
 1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command.
@@ -188,6 +188,14 @@ After 60 seconds, it transitions to _half-open_, allowing a single probe request
 If the probe succeeds, the circuit breaker returns to _closed_ (normal operation).
 If it fails, the circuit breaker returns to _open_ for another 60 seconds.
 
+:::note
+Note that worker availability affects the circuit breaker as well. 
+If no workers are polling the handler task queue — due to a deployment issue, crash, or scale-down — Nexus requests will time out.
+Consecutive timeouts count as retryable errors and will trip the circuit breaker just as application-level errors do. 
+Ensure handler workers maintain sufficient availability to avoid unintended circuit breaker trips.
+
+:::
+
 <CaptionedImage
     src="/img/cloud/nexus/circuit-breaker.png"
     title="Flow chart showing the states of the Temporal Nexus Circuit Breaker"
@@ -248,7 +256,11 @@ A canceled handler Workflow reports a [Canceled Failure](/references/failures#ca
 
 ## Termination
 
-Terminating a caller Workflow abandons all pending Nexus Operations.
+Terminating a caller Workflow abandons all pending Nexus Operations. Unlike cancellation, no cancel request is sent to the 
+handler Namespace, so handler Workflows continue running indefinitely, consuming resources until they time out or are manually 
+stopped. Because the handler runs in a separate Namespace, it has no signal that the caller is gone, making orphaned Operations 
+difficult to detect and correlate. If the Nexus Operation was part of a multi-step process, termination also leaves no opportunity 
+to run compensation logic, potentially leaving the system in a partially completed state.
 Prefer [cancellation](#cancelation) when possible.
 
 ## Versioning {#versioning}
@@ -267,6 +279,7 @@ Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#w
 
 Operations started with [New-Workflow-Run-Operation](/nexus/operations#sdk-support) automatically attach a completion Callback to the handler Workflow.
 Additional callers can attach to the same handler Workflow using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).
+
 
 Each handler Workflow has a [Callback limit](/workflow-execution/limits#workflow-execution-callback-limits) (configurable for self-hosted, see [Cloud limits](/cloud/limits#per-workflow-callback-limits) for Temporal Cloud).
 Callers that exceed the limit receive an error.

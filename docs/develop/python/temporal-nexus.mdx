@@ -130,7 +130,7 @@ class MyNexusService:
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
 They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
-Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
+Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors (for example: worker timeouts), blocking all Operations from the caller to that Endpoint.
 
 The `nexusrpc.handler` and `temporalio.nexus` modules have utilities to help create Nexus Operations:
 

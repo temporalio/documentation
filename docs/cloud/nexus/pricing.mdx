@@ -23,7 +23,7 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 Nexus pricing:
 
 - **One Action to start or cancel a Nexus Operation** in the caller Namespace.
-  Underlying primitives (Workflows, Activities, Signals) created by the handler result in normal Actions, including retries.
+  Underlying primitives (Workflows, Activities, Signals) and their retries created by the handler result in normal Actions.
 - **No Action for handling or retrying the Nexus Operation itself**.
   However, billable actions initiated by the handler (such as Activities) are charged if they fail and retry.
 

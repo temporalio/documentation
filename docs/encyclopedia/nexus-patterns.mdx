@@ -1,7 +1,7 @@
 ---
 id: nexus-patterns
 title: Nexus Patterns
-sidebar_label: Nexus patterns
+sidebar_label: Nexus Patterns
 description: Common patterns for building Nexus Services including the collocated pattern and the router-queue pattern for flexible deployment topologies.
 slug: /nexus/patterns
 keywords:
@@ -23,35 +23,37 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-Common patterns for building and deploying [Nexus Services](/nexus/services).
+There are two common patterns for building and deploying [Nexus Services](/nexus/services): 
+- **[Collocated pattern](#collocated-pattern)**: Runs on the same Workers as your existing Workflows and Activities. Use by default.
+- **[Router pattern](#router-queue-pattern)**: Separates Nexus routing from Workflow execution. A dedicated Nexus Worker on a “router” Task Queue routes Operations to Workflows on other Task Queues. 
+Use when you need independent scaling, different IAM permissions per Worker fleet, or want to add Nexus to without modifying existing Workers.
 
 ## Collocated pattern (default) {#collocated-pattern}
 
-The **collocated pattern** runs Nexus Operation handlers in the same Worker and on the same Task Queue as the Workflows they abstract.
-This is the default and simplest deployment topology.
+The **collocated pattern** runs Nexus Operation handlers in the same Worker and on the same Task Queue as the underlying Workflows.
+This is the default and simplest deployment.
 
-The Nexus Endpoint's target Task Queue points to the same Task Queue used by the underlying Workflows.
-The same Worker process registers both Nexus Services and Workflow types, so everything runs together.
+The Nexus Endpoint targets the same Task Queue used by the underlying Workflows.
+A single Worker registers both Nexus Services and Workflow types, so everything runs together.
 
 ### Why start here
 
 - **Simplest setup:** One Worker, one Task Queue, one deployment. No extra infrastructure.
-- **Eager Workflow Start:** When the handler starts a Workflow in the same Worker process, [Eager Workflow Start](/develop/worker-performance#eager-workflow-start) can reserve a slot and execute the first Workflow Task locally without an extra round trip to the Temporal Service - while still recording durable state. If the process crashes, the Workflow resumes on another Worker.
+- **Eager Workflow Start:** When the handler starts a Workflow in the same Worker, you can use [Eager Workflow Start](/develop/worker-performance#eager-workflow-start) to execute the first Workflow Task locally without an extra call to the Temporal Server - while still recording durable state. If the process crashes, the Workflow resumes on another Worker.
 - **Clean facade:** Operations act as a stable contract. You can change the underlying implementation (Signal today, Workflow tomorrow) without impacting callers.
 
 ### When to use this pattern
 
 - Getting started with Nexus.
-- The handler team owns both the Nexus Service and the underlying Workflows.
-- No need to scale Nexus routing separately from Workflow execution.
+- The same team owns both the Nexus Service and underlying Workflows.
+- You don't need to scale Nexus routing separately from Workflow execution.
+- You are setting up a simple test environment
 
-### When to move on
-
-When you need separate scaling, different IAM permissions per Worker fleet, or want to add Nexus to existing Workers without modifying them, see the [router-queue pattern](#router-queue-pattern).
+Use this pattern by default unless you have a good reason to use the Router-queue pattern below
 
 ## Router-queue pattern
 
-The **router-queue pattern** separates Nexus routing from Workflow execution: a dedicated Nexus Worker on a "router" Task Queue routes Operations to Workflows on different Task Queues in the same Namespace.
+The **router-queue pattern** separates Nexus routing from Workflow execution. A dedicated Nexus Worker on a "router" Task Queue routes Operations to Workflows on other Task Queues in the same Namespace.
 
 ### When to use this pattern
 

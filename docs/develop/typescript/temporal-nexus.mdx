@@ -191,25 +191,10 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 
 A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
-All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
-
-Use `getClient()` from `@temporalio/nexus` to get the Client connected to the same Namespace as the Worker:
-
-```ts
-import { getClient } from '@temporalio/nexus';
-
-export const myServiceHandler = nexus.serviceHandler(myService, {
-  signalWorkflow: async (ctx, input: SignalInput): Promise<SignalOutput> => {
-    const client = getClient();
-    const handle = client.workflow.getHandle(input.workflowId);
-    // Signal a Workflow
-    await handle.signal('mySignal', input.value);
-    // Query a Workflow
-    const result = await handle.query<string>('myQuery');
-    return { result };
-  },
-});
-```
+All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout).
+The handler receives an AbortSignal via options.signal that is triggered when the deadline is exceeded 
+— pass it to Temporal Client calls to ensure they are canceled if the timeout is reached.
+Updates should be short-lived to stay within this deadline.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -297,7 +282,7 @@ You will need to provide the Nexus Endpoint name, which you registered previousl
 import * as wf from "@temporalio/workflow";
 import { helloService, LanguageCode } from "../service/api";
 
-const HELLO_SERVICE_ENDPOINT = "my-nexus-endpoint-name";
+const HELLO_SERVICE_ENDPOINT = "hello-service-endpoint-name";
 
 export async function helloCallerWorkflow(name: string, language: LanguageCode): Promise<string> {
   const nexusClient = wf.createNexusClient({

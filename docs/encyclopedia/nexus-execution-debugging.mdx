@@ -1,9 +1,9 @@
 ---
 id: nexus-execution-debugging
 slug: /nexus/execution-debugging
-title: Execution debugging - Temporal Nexus
+title: Execution Debugging - Temporal Nexus
 description: Learn about execution debugging in Temporal Nexus.
-sidebar_label: Nexus execution debugging
+sidebar_label: Nexus Execution Debugging
 keywords:
   - nexus
   - temporal nexus
@@ -40,7 +40,7 @@ They are automatically wired by SDK builder functions like New-Workflow-Run-Oper
 
 ## Pending Operations
 
-Pending Nexus Operations are displayed in the Workflow details page and with `temporal workflow describe`, similar to pending Activities.
+Pending Nexus Operations are displayed in the UI on the Workflow details page and can be listed from the CLI using the `temporal workflow describe` command.
 
 From the UI:
 
@@ -75,7 +75,7 @@ Non-retryable errors resolve the Operation with a [Failed](/references/events#ne
 ## Pending Callbacks
 
 Nexus completion callbacks are sent from the handler's Namespace to the caller's Namespace for asynchronous Operations.
-These appear in the UI and with `temporal workflow describe`.
+These can be viewed in the UI or from the CLI using the `temporal workflow describe` command.
 
 From the UI:
 
@@ -106,3 +106,5 @@ Enable tracing by installing an interceptor on the Client or Worker:
 
 - [Go SDK](https://github.com/temporalio/samples-go/tree/main/opentelemetry)
 - [Java SDK](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/tracing)
+- [Python SDK](https://github.com/temporalio/samples-python/tree/main/open_telemetry)
+- [.NET SDK](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry)

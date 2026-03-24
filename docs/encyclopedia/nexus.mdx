@@ -107,9 +107,11 @@ You interact only with the Temporal SDK, not Nexus RPC directly.
 
 ### Multi-level calls
 
-Nexus calls chain across teams and Namespaces:
+Nexus Operations can be composed across multiple services and teams. A handler Workflow can call another Nexus Operation, forming a chain:
 
 - Workflow A -> Nexus Op 1 -> Workflow B -> Nexus Op 2 -> Workflow C
+
+Each step is a separate, durable Operation with its own retries and failure handling. This enables service composition across Namespaces without requiring direct connectivity or shared configuration between teams.
 
 ## Operational reference
 

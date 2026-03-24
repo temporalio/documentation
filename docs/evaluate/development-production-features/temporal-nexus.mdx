@@ -40,44 +40,36 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 :::
 
-Nexus connects Temporal Applications across (and within) isolated Namespaces with built-in durability, observability, and security.
-Each team gets their own Namespace for improved security and fault isolation, while sharing capabilities through clean service contracts.
+As Temporal adoption grows across teams, organizations partition their applications into isolated Namespaces for security and fault isolation. 
+Nexus bridges these boundaries, connecting Temporal applications across Namespaces, regions, and clouds with built-in durable execution, observability, and access control. 
+Each team retains ownership of their own Namespace while sharing capabilities through clean service contracts. 
 Watch the [Nexus overview](https://www.youtube.com/watch?v=tJ1OwSFokOg&t=117s) for a walkthrough.
 
-## Who's using Nexus?
+## Before Nexus
+Connecting Namespaces was possible, but painful. It required extensive configuration, added operational overhead, and often depended on additional infrastructure
 
-Companies using Nexus include:
+- **Child Workflows** - Limited to the same Namespace. Cross-Namespace use leaks underlying implementation details, requiring callers to manage the target Namespace, Task Queue, and Workflow options.
+- **Activity wrappers** - Require per-target mTLS clients, adding configuration and certificate management overhead. Often over-permissioned, lack built-in observability, and require error-prone boilerplate for async results.
+- **Extra gateway infrastructure** - Not durable, difficult to debug across services, and adds another service to manage and patch.
 
-- **Duolingo** - Self-service infrastructure ([Case study](https://temporal.io/resources/case-studies/duolingo-temporal-nexus) | [Webinar](https://www.youtube.com/watch?v=tJ1OwSFokOg&t=524s))
-- **Netflix** - Infrastructure orchestration ([Replay talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=470s) | [Webinar](https://www.youtube.com/watch?v=At1FfqGQiu0&t=1295s))
-- **Miro** - Cross-region data migration ([Replay talk](https://youtu.be/YLmFR-IAC3M?feature=shared&t=1488))
+Nexus replaces all of these with a clean service contract between caller and handler, reducing code, and providing first-class observability.
 
 ## Benefits
 
 Connect Temporal Applications across teams, domains, regions, and clouds with:
 
-- **Stronger security posture** - Built-in access controls for a specific service contract instead of broad Namespace access. Easier audits and safer cross-team collaboration.
-- **Higher reliability** - Durable, atomic handoffs remove lost requests and hand-rolled retry and deduplication logic.
-- **Reduced engineering overhead** - Less code, custom retry, deduplication, and refactoring work. Teams ship features faster.
-- **Scalable platform patterns** - Enables platform-level orchestration (cross-region, cross-team) without centralizing ownership.
-- **New workflows and integrations** - Frees teams to add more Workflows once Nexus is adopted, especially shared services or cross-team use cases.
+- **Stronger security posture** - Built-in access controls for service contracts instead of broad Namespace access. Each team controls their own Namespace, Workers, and deployment lifecycle.
+- **Higher reliability** - Durable, atomic handoffs eliminate lost requests. Faults are isolated so misbehaving Workers don't impact other teams.
+- **Easier to build and maintain** - Less boilerplate code, custom retry and deduplication logic, and ongoing maintenance. Teams focus on business logic instead of infrastructure.
+- **Scalable platform patterns** - Enables cross-team and cross-region orchestration without centralizing ownership.
+- **Lower barriers to cross-team use cases** - Makes it easy to incrementally build and adopt shared services, with built-in discoverability.
+- **Compliance and data isolation** - Isolated Namespaces support auditability, data residency requirements, and dedicated encryption and access controls for sensitive data (PCI, PII).
 
-## Why separate Namespaces?
+## What customers are using Nexus for
 
-As teams and workloads grow, separate Namespaces provide:
-
-- **Security** - Sensitive data (PCI, PII) stays in a restricted Namespace with its own encryption key and access controls.
-- **Fault isolation** - Misbehaving Workers in one Namespace don't trigger rate limits or affect other teams.
-- **Compliance** - Data residency requirements may mandate isolated regions or Namespaces.
-- **Ownership** - Each team controls their own Namespace, Workers, and deployment lifecycle.
-
-Before Nexus, connecting Namespaces required workarounds:
-
-- **Child Workflows** - Leaky abstraction. Caller must know target Namespace, Task Queue, and Workflow policy options. Same-Namespace only in Temporal Cloud.
-- **Activity wrappers** - Require an mTLS client per target, grant full Namespace write access, no integrated observability, error-prone boilerplate for async results.
-- **Bespoke gateways** - Not durable, poor cross-service debugging, another service to manage and patch.
-
-Nexus replaces all of these with a clean service contract between caller and handler, less code, and first-class observability.
+- **Duolingo** - Self-service infrastructure ([Case study](https://temporal.io/resources/case-studies/duolingo-temporal-nexus) | [Webinar](https://www.youtube.com/watch?v=tJ1OwSFokOg&t=524s))
+- **Netflix** - Infrastructure orchestration ([Replay talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=470s) | [Webinar](https://www.youtube.com/watch?v=At1FfqGQiu0&t=1295s))
+- **Miro** - Cross-region data migration ([Replay talk](https://youtu.be/YLmFR-IAC3M?feature=shared&t=1488))
 
 
 ## Should I use Nexus?

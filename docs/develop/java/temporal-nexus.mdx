@@ -232,25 +232,6 @@ A common pattern is to use the Temporal Client from within a sync handler to Sig
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
 
-Use `Nexus.getOperationContext().getWorkflowClient(ctx)` to get the Client that the Worker was initialized with:
-
-```java
-@OperationImpl
-public OperationHandler<SignalInput, SignalOutput> signalWorkflow() {
-  return OperationHandler.sync(
-      (ctx, details, input) -> {
-        WorkflowClient client = Nexus.getOperationContext().getWorkflowClient(ctx);
-        // Signal a Workflow
-        client.newWorkflowStub(MyWorkflow.class, input.getWorkflowId())
-            .mySignal(input.getValue());
-        // Query a Workflow
-        String result = client.newWorkflowStub(MyWorkflow.class, input.getWorkflowId())
-            .myQuery();
-        return new SignalOutput(result);
-      });
-}
-```
-
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use the `WorkflowRunOperation.fromWorkflowMethod` method, which is the easiest way to expose a Workflow as an operation.

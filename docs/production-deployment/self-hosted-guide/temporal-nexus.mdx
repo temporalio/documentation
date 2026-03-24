@@ -11,27 +11,26 @@ tags:
   - enable-nexus
 ---
 
-import { CaptionedImage } from '@site/src/components';
-
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
-Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
-[Temporal Nexus](/nexus) connects Temporal Applications across Namespaces with built-in durability, security, and fault isolation.
+:::info NEW TO NEXUS?
 
-<CaptionedImage
-    src="/img/cloud/nexus/nexus-overview-short.png"
-    title="Nexus Overview"
-/>
+This page explains how to self-host Nexus. To learn about Nexus, see the [how Nexus works page](/nexus). To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus).
+
+:::
 
 ## Enable Nexus
 
-Enable Nexus by updating your static configuration and dynamic config.
-Nexus is supported in single-cluster setups only.
-See [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md) for operational details.
+Nexus can be configured by setting static configuration and dynamic configuration entries.
+
+
+:::note
+Nexus is supported in single-cluster setups only. See [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md) for operational details.
+:::
 
 :::note
 Replace `$PUBLIC_URL` with a URL value that's accessible to external callers or internally within the cluster.

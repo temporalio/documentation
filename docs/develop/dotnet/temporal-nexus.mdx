@@ -174,24 +174,6 @@ A common pattern is to use the Temporal Client from within a sync handler to Sig
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
 
-Use `NexusOperationExecutionContext.Current.TemporalClient` to get the Client that the Worker was initialized with:
-
-```csharp
-[NexusOperationHandler]
-public IOperationHandler<SignalInput, SignalOutput> SignalWorkflow() =>
-    OperationHandler.Sync<SignalInput, SignalOutput>(
-        async (ctx, input) =>
-        {
-            var client = NexusOperationExecutionContext.Current.TemporalClient;
-            var handle = client.GetWorkflowHandle(input.WorkflowId);
-            // Signal a Workflow
-            await handle.SignalAsync("MySignal", new[] { input.Value });
-            // Query a Workflow
-            var result = await handle.QueryAsync<string>("MyQuery");
-            return new(result);
-        });
-```
-
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use the `WorkflowRunOperationHandler.FromHandleFactory` method, which is the easiest way to expose a Workflow as an operation.
