@@ -90,3 +90,24 @@ helm install temporal-worker-controller ./helm/temporal-worker-controller \
 ```
 
 Refer to [GitHub](https://github.com/temporalio/temporal-worker-controller/tree/main/helm/temporal-worker-controller/templates) for other Worker Controller deployment templates.
+
+## Roll back to previous versions
+
+You may be using the Worker Controller for rainbow deployments on k8s and need to understand the rollback behavior. For example, you might use the `AllAtOnce` rollout strategy on your Workflows and they're pinned. Then you deploy v2 as the Current Version and the v2 Workers receive all the new Tasks. Then you find a bug and want to roll back to v1.
+
+You have Workflows that already started on v2 and are pinned to it. So after you roll back to v1, the v2 Workflow executions stay pinned to v2. The Worker Controller will keep the v2 pods alive as long as v2 has any running Workflows to prevent them from getting stuck. When you roll back from v2 to v1, your v2 Workers wil go from the `Current` to `Draining` state. The Controller will only delete pods of a version when it's in the `Drained` state and has cleared its [sunset policy](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/concepts.md#sunset-configuration).
+
+So only after all the pinned Workflows on v2 complete does the Worker transition to the `Drained` state. Then after the `scaledownDelay` (default 1h), pods are scaled to 0. Finally, after the `deleteDelay` (default 24h) the Deployment is deleted.
+
+Tasks that are already in v2's Task Queue stay there. v2 pods will still be running in the `Draining` state, so v2 pollers continue picking up and processing those Tasks normally. If you have any Tasks that failed on v2 before you rolled back to v1, those retries stay on v2. Since pinned Workflows are bound to the version they started on, you would have to use a versioning override and move them to v1 manually.
+
+If you have your Workflow behavior set to `Auto-Upgrade`, when you roll back from v2 to v1, v1 will be the Current Version and all new Tasks would run on it. It's important to remember to use patching when you auto-upgrade Workflows to prevent non-determinism errors (NDEs).
+
+Replay compatibility matters if you use `UpdateWorkflowExecutionOptions` to set a `versioningOverride` to move a running Workflow from v2 to v1. The Workflow doesn't restart. It continues from where it left off. The v1 Worker picks up the next Workflow Task and replays the existing history to rebuild the state before proceeding.
+
+If v2 introduced any non-deterministic changes, like different activity calls, changed signal handling, or different timer durations, the v1 Worker will hit an NDE during replay and the Workflow will get stuck. So `UpdateWorkflowExecutionOptions` only works if v1 and v2 are replay-compatible up to the point in history where the Workflow is currently at.
+
+If you have introduced a non-deterministic change between v1 and v2 in your Worker code, then you need to call the Reset API with `versioningOverride` as a `postResetOperation` which will:
+
+- Reset the Workflow to a point before the v2 error, like the last successful Workflow Task on v1.
+- Pin it to v1 via the post-reset operations's versioning override.
