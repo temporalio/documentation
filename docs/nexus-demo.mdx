@@ -12,23 +12,6 @@ keywords:
 hide_table_of_contents: true
 ---
 
-<style>{`
-  .main-wrapper, article, .theme-doc-markdown { padding: 0 !important; margin: 0 !important; }
-`}</style>
+import NexusDemo from '@site/src/components/NexusDemo';
 
-<iframe
-  id="nexus-demo-frame"
-  src="/nexus-demo.html"
-  style={{display: 'block', width: '100%', height: '100vh', border: 'none'}}
-  title="Temporal Nexus Interactive Demo"
-  onLoad={() => {
-    const frame = document.getElementById('nexus-demo-frame');
-    const resize = () => {
-      try {
-        frame.style.height = frame.contentDocument.body.scrollHeight + 'px';
-      } catch(e) {}
-    };
-    resize();
-    frame.contentWindow.addEventListener('click', () => setTimeout(resize, 400));
-  }}
-/>
+<NexusDemo />

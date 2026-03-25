@@ -1,0 +1,888 @@
+/*
+ * NexusDemo.module.css
+ * Uses Docusaurus IFM variables for automatic light/dark mode support.
+ * Demo-specific accent colors are declared per-theme below.
+ */
+
+/* ── Per-theme accent vars ─────────────────────────────── */
+:global([data-theme='dark']) {
+  --nd-surface: #1e1e1e;
+  --nd-surface2: #252525;
+  --nd-border: rgba(255, 255, 255, 0.1);
+  --nd-muted: #94a3b8;
+  --nd-purple: #a78bfa;
+  --nd-purple-bg: rgba(167, 139, 250, 0.12);
+  --nd-green: #34d399;
+  --nd-green-bg: rgba(52, 211, 153, 0.1);
+  --nd-red: #f87171;
+  --nd-red-bg: rgba(248, 113, 113, 0.1);
+  --nd-amber: #fbbf24;
+  --nd-amber-bg: rgba(251, 191, 36, 0.1);
+  --nd-primary-bg: rgba(191, 219, 254, 0.1);
+}
+
+:global([data-theme='light']) {
+  --nd-surface: #ffffff;
+  --nd-surface2: #f1f5f9;
+  --nd-border: rgba(0, 0, 0, 0.08);
+  --nd-muted: #64748b;
+  --nd-purple: #7c3aed;
+  --nd-purple-bg: rgba(124, 58, 237, 0.08);
+  --nd-green: #059669;
+  --nd-green-bg: rgba(5, 150, 105, 0.08);
+  --nd-red: #dc2626;
+  --nd-red-bg: rgba(220, 38, 38, 0.08);
+  --nd-amber: #d97706;
+  --nd-amber-bg: rgba(217, 119, 6, 0.08);
+  --nd-primary-bg: rgba(29, 78, 216, 0.06);
+}
+
+/* ── Shell ─────────────────────────────────────────────── */
+.shell {
+  font-family: var(--ifm-font-family-base);
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  min-height: 100vh;
+}
+
+/* ── Nav ───────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  z-index: 50;
+  background: var(--ifm-background-color);
+  border-bottom: 1px solid var(--nd-border);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.navLogo {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ifm-color-primary);
+  margin-right: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--nd-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--ifm-font-family-base);
+  padding: 12px 14px;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  margin-bottom: -1px;
+}
+
+.navBtn:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.navBtnActive {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* ── Sections ──────────────────────────────────────────── */
+.section {
+  padding: 40px 24px 64px;
+  max-width: 960px;
+  margin: 0 auto;
+  animation: fadeUp 0.25s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Progress bar ──────────────────────────────────────── */
+.progressBar {
+  height: 3px;
+  background: var(--nd-border);
+  border-radius: 2px;
+  margin-bottom: 36px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--ifm-color-primary);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── Typography ────────────────────────────────────────── */
+.lead {
+  font-size: 16px;
+  color: var(--ifm-font-color-base);
+  max-width: 680px;
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.sectionHeading {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  margin: 32px 0 16px;
+}
+
+/* ── Cards ─────────────────────────────────────────────── */
+.card {
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.cardGrid .card {
+  margin-bottom: 0;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tagBlue {
+  background: var(--nd-primary-bg);
+  color: var(--ifm-color-primary);
+}
+
+.tagPurple {
+  background: var(--nd-purple-bg);
+  color: var(--nd-purple);
+}
+
+.tagGreen {
+  background: var(--nd-green-bg);
+  color: var(--nd-green);
+}
+
+.tagRed {
+  background: var(--nd-red-bg);
+  color: var(--nd-red);
+}
+
+/* ── Namespace layout ──────────────────────────────────── */
+.nsContainer {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+
+.nsBox {
+  flex: 1;
+  min-width: 200px;
+  background: var(--nd-surface);
+  border: 2px solid var(--nd-border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+
+.nsBoxCaller {
+  border-color: var(--ifm-color-primary);
+}
+
+.nsBoxHandler {
+  border-color: var(--nd-purple);
+}
+
+.nsLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.nsLabelCaller {
+  background: var(--nd-primary-bg);
+  color: var(--ifm-color-primary);
+}
+
+.nsLabelHandler {
+  background: var(--nd-purple-bg);
+  color: var(--nd-purple);
+}
+
+.nsArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nd-muted);
+  font-size: 24px;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.endpointBridge {
+  background: var(--nd-primary-bg);
+  border: 2px dashed var(--ifm-color-primary);
+  border-radius: 12px;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.endpointLabel {
+  font-size: 12px;
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+}
+
+.endpointSub {
+  font-size: 11px;
+  color: var(--nd-muted);
+  margin-top: 4px;
+}
+
+/* ── Workflow blocks ────────────────────────────────────── */
+.wfBlock {
+  background: var(--nd-surface2);
+  border: 1px solid var(--nd-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wfIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.wfIconBlue {
+  background: var(--nd-primary-bg);
+  color: var(--ifm-color-primary);
+}
+
+.wfIconPurple {
+  background: var(--nd-purple-bg);
+  color: var(--nd-purple);
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--ifm-font-family-base);
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btnSecondary {
+  background: var(--nd-surface2);
+  color: var(--ifm-font-color-base);
+  border: 1px solid var(--nd-border);
+}
+
+.btnSecondary:hover {
+  opacity: 1;
+  background: var(--nd-surface);
+}
+
+.nextRow {
+  text-align: right;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--nd-border);
+}
+
+/* ── How It Works — flow diagram ───────────────────────── */
+.flowOuter {
+  margin: 24px 0;
+}
+
+.flowModeTabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.flowModeTab {
+  padding: 8px 18px;
+  background: none;
+  border: 1px solid var(--nd-border);
+  border-radius: 8px;
+  color: var(--nd-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--ifm-font-family-base);
+  transition: all 0.15s;
+}
+
+.flowModeTabActive {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+}
+
+.flowDiagram {
+  position: relative;
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 12px;
+  padding: 28px 20px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.flowNode {
+  background: var(--nd-surface2);
+  border: 2px solid var(--nd-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+  flex: 0 0 auto;
+  width: 130px;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative;
+  z-index: 2;
+}
+
+.flowNodeActive {
+  border-color: var(--ifm-color-primary);
+  background: var(--nd-primary-bg);
+}
+
+.flowNodeTitle {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.flowNodeSub {
+  font-size: 10px;
+  color: var(--nd-muted);
+  margin-top: 3px;
+}
+
+.flowTrackWrap {
+  flex: 1;
+  position: relative;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.flowTrack {
+  width: 100%;
+  height: 2px;
+  background: var(--nd-border);
+  position: relative;
+}
+
+.flowTrackFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--ifm-color-primary);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.packet {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ifm-color-primary);
+  box-shadow: 0 0 10px var(--ifm-color-primary);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+/* ── Flow step detail ───────────────────────────────────── */
+.flowDetail {
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  min-height: 72px;
+}
+
+.flowDetailLabel {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ifm-color-primary);
+}
+
+.flowDetailText {
+  font-size: 13px;
+  color: var(--nd-muted);
+  line-height: 1.6;
+}
+
+.flowControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.stepCounter {
+  font-size: 12px;
+  color: var(--nd-muted);
+  margin-left: auto;
+}
+
+/* ── Status log ─────────────────────────────────────────── */
+.statusLog {
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.logLine {
+  padding: 2px 0;
+  display: flex;
+  gap: 8px;
+}
+
+.logTs {
+  color: var(--nd-muted);
+  flex-shrink: 0;
+}
+
+.logEvent {
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.logEventInfo { color: var(--ifm-color-primary); }
+.logEventSuccess { color: var(--nd-green); }
+.logEventWarn { color: var(--nd-amber); }
+
+.logMsg {
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Build It ───────────────────────────────────────────── */
+.buildLayout {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 680px) {
+  .buildLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.buildStepList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 50px);
+}
+
+.buildStepBtn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--ifm-font-family-base);
+  transition: all 0.15s;
+  width: 100%;
+}
+
+.buildStepBtn:hover {
+  background: var(--nd-surface2);
+  border-color: var(--nd-border);
+}
+
+.buildStepBtnActive {
+  background: var(--nd-primary-bg);
+  border-color: var(--ifm-color-primary);
+}
+
+.buildStepNum {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nd-muted);
+  margin-bottom: 2px;
+}
+
+.buildStepBtnActive .buildStepNum {
+  color: var(--ifm-color-primary);
+}
+
+.buildStepTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ifm-font-color-base);
+  line-height: 1.4;
+}
+
+.buildPanel {
+  min-width: 0;
+}
+
+.buildFileHeader {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  color: var(--nd-muted);
+  background: var(--nd-surface2);
+  border: 1px solid var(--nd-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 8px 16px;
+}
+
+.buildNote {
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--nd-muted);
+  line-height: 1.6;
+}
+
+.buildNote strong {
+  color: var(--ifm-font-color-base);
+}
+
+.buildNav {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ── CodeBlock override — connect to file header ──────── */
+.buildPanel :global(.theme-code-block) {
+  border-radius: 0;
+  margin-bottom: 0;
+  border-top: none;
+}
+
+/* ── Run It ─────────────────────────────────────────────── */
+.runTabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--nd-border);
+  margin-bottom: 24px;
+}
+
+.runTab {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--nd-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--ifm-font-family-base);
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.runTab:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.runTabActive {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+.runSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 24px;
+}
+
+.runStep {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.runStep:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 30px;
+  bottom: 0;
+  width: 1px;
+  background: var(--nd-border);
+}
+
+.runStepNum {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.runStepBody {
+  flex: 1;
+  padding-top: 4px;
+}
+
+.runStepTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.runStepDesc {
+  font-size: 13px;
+  color: var(--nd-muted);
+  margin-bottom: 10px;
+}
+
+.repoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+
+.repoLink:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+/* ── Quiz ───────────────────────────────────────────────── */
+.quizCard {
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.quizQ {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--ifm-font-color-base);
+}
+
+.quizOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quizOpt {
+  background: var(--nd-surface2);
+  border: 2px solid var(--nd-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--ifm-font-family-base);
+  color: var(--ifm-font-color-base);
+  text-align: left;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.quizOpt:hover:not(:disabled) {
+  border-color: var(--ifm-color-primary);
+}
+
+.quizOptCorrect {
+  border-color: var(--nd-green) !important;
+  background: var(--nd-green-bg) !important;
+  color: var(--nd-green) !important;
+}
+
+.quizOptWrong {
+  border-color: var(--nd-red) !important;
+  background: var(--nd-red-bg) !important;
+  color: var(--nd-red) !important;
+}
+
+.quizFeedback {
+  margin-top: 12px;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.quizFeedbackCorrect {
+  background: var(--nd-green-bg);
+  color: var(--nd-green);
+}
+
+.quizFeedbackWrong {
+  background: var(--nd-red-bg);
+  color: var(--nd-red);
+}
+
+.scoreCard {
+  background: var(--nd-surface);
+  border: 2px solid var(--ifm-color-primary);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.scoreTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.scoreText {
+  font-size: 16px;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.scoreSub {
+  font-size: 14px;
+  color: var(--nd-muted);
+  margin-bottom: 24px;
+}
+
+/* ── Comparison table ───────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.table th {
+  background: var(--nd-surface2);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--nd-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--nd-border);
+  color: var(--ifm-font-color-base);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: var(--nd-surface2);
+}
+
+.check {
+  color: var(--nd-green);
+  font-weight: 700;
+}
+
+.cross {
+  color: var(--nd-muted);
+}
