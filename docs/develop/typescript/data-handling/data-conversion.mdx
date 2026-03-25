@@ -1,0 +1,290 @@
+---
+id: data-conversion
+title: Data conversion - TypeScript SDK
+sidebar_label: Data conversion
+slug: /develop/typescript/data-handling/data-conversion
+toc_max_heading_level: 2
+tags:
+  - Data Converters
+  - TypeScript SDK
+  - Temporal SDKs
+description: Customize how Temporal serializes application objects using Payload Converters in the TypeScript SDK, including EJSON and protobuf examples.
+---
+
+Payload Converters serialize your application objects into a `Payload` and deserialize them back.
+A `Payload` is a binary form with metadata that Temporal uses to transport data.
+
+By default, Temporal uses a `DefaultPayloadConverter` that handles `undefined`, binary data, and JSON.
+You only need a custom Payload Converter when your application uses types that aren't natively JSON-serializable, such as `BigInt`, `Date`, or protobufs.
+
+## How the default converter works
+
+The default converter is a `CompositePayloadConverter` that tries each converter in order until one handles the value:
+
+```typescript
+export class DefaultPayloadConverter extends CompositePayloadConverter {
+  constructor() {
+    super(
+      new UndefinedPayloadConverter(),
+      new BinaryPayloadConverter(),
+      new JsonPayloadConverter(),
+    );
+  }
+}
+```
+
+During serialization, the Data Converter tries each Payload Converter in sequence until one returns a non-null `Payload`.
+
+## Custom Payload Converters
+
+To handle custom data types, implement the [`PayloadConverter`](https://typescript.temporal.io/api/interfaces/common.PayloadConverter) interface:
+
+```typescript
+interface PayloadConverter {
+  toPayload<T>(value: T): Payload;
+  fromPayload<T>(payload: Payload): T;
+}
+```
+
+Then provide it to the Worker and Client through a `CompositePayloadConverter`:
+
+```typescript
+export const payloadConverter = new CompositePayloadConverter(
+  new UndefinedPayloadConverter(),
+  new EjsonPayloadConverter(),
+);
+```
+
+```typescript
+// Worker
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue: 'ejson',
+  dataConverter: {
+    payloadConverterPath: require.resolve('./payload-converter'),
+  },
+});
+```
+
+```typescript
+// Client
+const client = new Client({
+  dataConverter: {
+    payloadConverterPath: require.resolve('./payload-converter'),
+  },
+});
+```
+
+### EJSON example
+
+The [samples-typescript/ejson](https://github.com/temporalio/samples-typescript/tree/main/ejson) sample creates a custom `PayloadConverter` using EJSON, which supports types like `Date`, `RegExp`, `Infinity`, and `Uint8Array`.
+
+<!--SNIPSTART typescript-ejson-converter-impl -->
+[ejson/src/ejson-payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/ejson-payload-converter.ts)
+```ts
+import {
+  EncodingType,
+  METADATA_ENCODING_KEY,
+  Payload,
+  PayloadConverterWithEncoding,
+  PayloadConverterError,
+} from '@temporalio/common';
+import EJSON from 'ejson';
+import { decode, encode } from '@temporalio/common/lib/encoding';
+
+/**
+ * Converts between values and [EJSON](https://docs.meteor.com/api/ejson.html) Payloads.
+ */
+export class EjsonPayloadConverter implements PayloadConverterWithEncoding {
+  // Use 'json/plain' so that Payloads are displayed in the UI
+  public encodingType = 'json/plain' as EncodingType;
+
+  public toPayload(value: unknown): Payload | undefined {
+    if (value === undefined) return undefined;
+    let ejson;
+    try {
+      ejson = EJSON.stringify(value);
+    } catch (e) {
+      throw new UnsupportedEjsonTypeError(
+        `Can't run EJSON.stringify on this value: ${value}. Either convert it (or its properties) to EJSON-serializable values (see https://docs.meteor.com/api/ejson.html ), or create a custom data converter. EJSON.stringify error message: ${errorMessage(
+          e,
+        )}`,
+        e as Error,
+      );
+    }
+
+    return {
+      metadata: {
+        [METADATA_ENCODING_KEY]: encode('json/plain'),
+        // Include an additional metadata field to indicate that this is an EJSON payload
+        format: encode('extended'),
+      },
+      data: encode(ejson),
+    };
+  }
+
+  public fromPayload<T>(content: Payload): T {
+    return content.data ? EJSON.parse(decode(content.data)) : content.data;
+  }
+}
+
+export class UnsupportedEjsonTypeError extends PayloadConverterError {
+  public readonly name: string = 'UnsupportedJsonTypeError';
+
+  constructor(
+    message: string | undefined,
+    public readonly cause?: Error,
+  ) {
+    super(message ?? undefined);
+  }
+}
+```
+<!--SNIPEND-->
+
+### Protobufs
+
+To serialize values as [Protocol Buffers](https://protobuf.dev/):
+
+- Use [protobufjs](https://protobufjs.github.io/protobuf.js/).
+- Use runtime-loaded messages (not generated classes) and `MessageClass.create` (not `new MessageClass()`).
+- Generate `json-module.js`:
+
+  ```sh
+  pbjs -t json-module --workflow-id commonjs -o protos/json-module.js protos/*.proto
+  ```
+
+- Patch `json-module.js`:
+
+<!--SNIPSTART typescript-protobuf-root -->
+[protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/main/protobufs/protos/root.js)
+```js
+const { patchProtobufRoot } = require('@temporalio/common/lib/protobufs');
+const unpatchedRoot = require('./json-module');
+module.exports = patchProtobufRoot(unpatchedRoot);
+```
+<!--SNIPEND-->
+
+- Generate `root.d.ts`:
+
+  ```sh
+  pbjs -t static-module protos/*.proto | pbts -o protos/root.d.ts -
+  ```
+
+- Create a [`DefaultPayloadConverterWithProtobufs`](https://typescript.temporal.io/api/classes/protobufs.DefaultPayloadConverterWithProtobufs/):
+
+<!--SNIPSTART typescript-protobuf-converter -->
+[protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/payload-converter.ts)
+```ts
+import { DefaultPayloadConverterWithProtobufs } from '@temporalio/common/lib/protobufs';
+import root from '../protos/root';
+
+export const payloadConverter = new DefaultPayloadConverterWithProtobufs({ protobufRoot: root });
+```
+<!--SNIPEND-->
+
+For binary-encoded protobufs (saves space but can't be viewed in the Web UI):
+
+```ts
+import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
+import root from '../protos/root';
+
+export const payloadConverter = new ProtobufBinaryPayloadConverter(root);
+```
+
+For binary-encoded protobufs alongside other default types:
+
+```ts
+import {
+  BinaryPayloadConverter,
+  CompositePayloadConverter,
+  JsonPayloadConverter,
+  UndefinedPayloadConverter,
+} from '@temporalio/common';
+import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
+import root from '../protos/root';
+
+export const payloadConverter = new CompositePayloadConverter(
+  new UndefinedPayloadConverter(),
+  new BinaryPayloadConverter(),
+  new ProtobufBinaryPayloadConverter(root),
+  new JsonPayloadConverter(),
+);
+```
+
+Provide the converter to the Worker and Client:
+
+<!--SNIPSTART typescript-protobuf-worker -->
+[protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/worker.ts)
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+  taskQueue: 'protobufs',
+  dataConverter: { payloadConverterPath: require.resolve('./payload-converter') },
+});
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-protobuf-client -->
+[protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/client.ts)
+```ts
+import { Client, Connection } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { v4 as uuid } from 'uuid';
+import { foo, ProtoResult } from '../protos/root';
+import { example } from './workflows';
+
+async function run() {
+  const config = loadClientConnectConfig();
+  const connection = await Connection.connect(config.connectionOptions);
+  const client = new Client({
+    connection,
+    dataConverter: { payloadConverterPath: require.resolve('./payload-converter') },
+  });
+
+  const handle = await client.workflow.start(example, {
+    args: [foo.bar.ProtoInput.create({ name: 'Proto', age: 2 })],
+    // can't do:
+    // args: [new foo.bar.ProtoInput({ name: 'Proto', age: 2 })],
+    taskQueue: 'protobufs',
+    workflowId: 'my-business-id-' + uuid(),
+  });
+
+  console.log(`Started workflow ${handle.workflowId}`);
+
+  const result: ProtoResult = await handle.result();
+  console.log(result.toJSON());
+}
+```
+<!--SNIPEND-->
+
+Use protobufs in your Workflows and Activities:
+
+<!--SNIPSTART typescript-protobuf-workflow -->
+[protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/workflows.ts)
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+import { foo, ProtoResult } from '../protos/root';
+import type * as activities from './activities';
+
+const { protoActivity } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+export async function example(input: foo.bar.ProtoInput): Promise<ProtoResult> {
+  const result = await protoActivity(input);
+  return result;
+}
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-protobuf-activity -->
+[protobufs/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/activities.ts)
+```ts
+import { foo, ProtoResult } from '../protos/root';
+
+export async function protoActivity(input: foo.bar.ProtoInput): Promise<ProtoResult> {
+  return ProtoResult.create({ sentence: `${input.name} is ${input.age} years old.` });
+}
+```
+<!--SNIPEND-->

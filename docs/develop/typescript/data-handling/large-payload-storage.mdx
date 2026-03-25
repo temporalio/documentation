@@ -1,0 +1,55 @@
+---
+id: large-payload-storage
+title: Large payload storage - TypeScript SDK
+sidebar_label: Large payload storage
+slug: /develop/typescript/data-handling/large-payload-storage
+toc_max_heading_level: 2
+tags:
+  - TypeScript SDK
+  - Temporal SDKs
+  - Data Converters
+description: Offload large payloads to external storage using the claim check pattern in the TypeScript SDK.
+---
+
+:::info This feature is in development
+
+Large payload storage support is not yet available in the TypeScript SDK.
+This page will be updated when the feature is released.
+See the [Python SDK](/develop/python/data-handling/large-payload-storage) for a working implementation.
+
+:::
+
+The Temporal Service enforces a ~2 MB per payload limit.
+When your Workflows or Activities handle data larger than this, you can offload payloads to external storage (such as S3) and pass a small reference token through the event history instead.
+This is sometimes called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+
+External storage sits at the end of the data pipeline, after both the Payload Converter and the Payload Codec:
+
+```
+User code → PayloadConverter → PayloadCodec → External Storage → Wire → Temporal Service
+```
+
+When a payload exceeds a configurable size threshold (default 256 KiB), the storage driver uploads it to your external store and replaces it with a lightweight reference.
+Payloads below the threshold stay inline in the event history.
+On the way back, reference payloads are retrieved from external storage before the codec decodes them.
+
+Because external storage runs after the codec, payloads are already encrypted (if you use an encryption codec) before they're uploaded to your store.
+
+## Store large payloads in external storage
+
+_This section will document how to configure external storage on the TypeScript `DataConverter` once the feature ships._
+
+## Organize stored payloads by Workflow
+
+_This section will document how to use serialization context to key stored objects by Workflow identity instead of random identifiers._
+
+## View externally stored payloads in the UI
+
+_This section will document Codec Server considerations for reference payloads._
+
+## Use a gRPC proxy instead of a codec
+
+Instead of implementing storage in each SDK client, you can run a centralized gRPC proxy between your workers and the Temporal Service that intercepts and offloads large payloads transparently.
+The [`go.temporal.io/api/proxy`](https://pkg.go.dev/go.temporal.io/api/proxy) package provides the building blocks for this approach.
+
+If you use a gRPC proxy that alters payload sizes, you may need to disable the worker's eager payload size validation so it doesn't reject payloads that the proxy will shrink before they reach the server.

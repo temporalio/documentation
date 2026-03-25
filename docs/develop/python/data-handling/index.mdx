@@ -1,0 +1,30 @@
+---
+id: data-handling
+title: Data handling - Python SDK
+sidebar_label: Data handling
+slug: /develop/python/data-handling
+description: Learn how Temporal handles data through the Data Converter pipeline, including payload conversion, encryption, and large payload storage.
+toc_max_heading_level: 2
+tags:
+  - Python SDK
+  - Temporal SDKs
+  - Data Converters
+---
+
+All data sent to and from the Temporal Service passes through the **Data Converter** pipeline.
+The pipeline has three layers that handle different concerns:
+
+```
+User code → PayloadConverter → PayloadCodec → ExternalStorage → Temporal Service
+```
+
+|  | [PayloadConverter](/develop/python/data-handling/data-conversion) | [PayloadCodec](/develop/python/data-handling/data-encryption) | [ExternalStorage](/develop/python/data-handling/large-payload-storage) |
+| --- | --- | --- | --- |
+| **Purpose** | Serialize types to bytes | Transform encoded payloads (encrypt, compress) | Offload large payloads to external store |
+| **Must be deterministic** | Yes | No | No |
+| **Default** | JSON serialization | None (passthrough) | None (passthrough) |
+
+By default, Temporal uses JSON serialization with no codec and no external storage.
+You only need to customize these layers when your application requires non-JSON types, encryption, or payload offloading.
+
+For a deeper conceptual explanation, see the [Data Conversion encyclopedia](/dataconversion).

@@ -212,6 +212,20 @@ module.exports = {
             'develop/python/debugging',
             'develop/python/schedules',
             'develop/python/converters-and-encryption',
+            {
+              type: 'category',
+              label: 'Data handling',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/python/data-handling/data-handling',
+              },
+              items: [
+                'develop/python/data-handling/data-conversion',
+                'develop/python/data-handling/data-encryption',
+                'develop/python/data-handling/large-payload-storage',
+              ],
+            },
             'develop/python/timers',
             'develop/python/nexus',
             'develop/python/child-workflows',
@@ -254,6 +268,20 @@ module.exports = {
             'develop/typescript/debugging',
             'develop/typescript/schedules',
             'develop/typescript/converters-and-encryption',
+            {
+              type: 'category',
+              label: 'Data handling',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/typescript/data-handling/data-handling',
+              },
+              items: [
+                'develop/typescript/data-handling/data-conversion',
+                'develop/typescript/data-handling/data-encryption',
+                'develop/typescript/data-handling/large-payload-storage',
+              ],
+            },
             'develop/typescript/timers',
             'develop/typescript/nexus',
             'develop/typescript/child-workflows',

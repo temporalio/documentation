@@ -1,0 +1,176 @@
+---
+id: data-encryption
+title: Data encryption - TypeScript SDK
+sidebar_label: Data encryption
+slug: /develop/typescript/data-handling/data-encryption
+toc_max_heading_level: 2
+tags:
+  - Security
+  - Encryption
+  - Codec Server
+  - TypeScript SDK
+  - Temporal SDKs
+description: Encrypt data sent to and from the Temporal Service using a custom Payload Codec in the TypeScript SDK.
+---
+
+Payload Codecs transform `Payload` bytes after serialization (by the Payload Converter) and before the data is sent to the Temporal Service.
+Unlike Payload Converters, codecs run outside the Workflow sandbox, so they can call external services and use non-deterministic modules.
+
+The most common use case is encryption: encrypting payloads before they reach the Temporal Service so that sensitive data is never stored in plaintext.
+
+## PayloadCodec interface
+
+Implement the [`PayloadCodec`](https://typescript.temporal.io/api/interfaces/common.PayloadCodec) interface:
+
+```ts
+interface PayloadCodec {
+  encode(payloads: Payload[]): Promise<Payload[]>;
+  decode(payloads: Payload[]): Promise<Payload[]>;
+}
+```
+
+`encode` is called before data is sent to the Temporal Service.
+`decode` is called when data is received from the Temporal Service.
+
+## Encryption example
+
+The following example implements AES-GCM encryption as a `PayloadCodec`:
+
+<!--SNIPSTART typescript-encryption-codec -->
+[encryption/src/encryption-codec.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/encryption-codec.ts)
+```ts
+import { webcrypto as crypto } from 'node:crypto';
+import { METADATA_ENCODING_KEY, Payload, PayloadCodec, ValueError } from '@temporalio/common';
+import { temporal } from '@temporalio/proto';
+import { decode, encode } from '@temporalio/common/lib/encoding';
+import { decrypt, encrypt } from './crypto';
+
+const ENCODING = 'binary/encrypted';
+const METADATA_ENCRYPTION_KEY_ID = 'encryption-key-id';
+
+export class EncryptionCodec implements PayloadCodec {
+  constructor(
+    protected readonly keys: Map<string, crypto.CryptoKey>,
+    protected readonly defaultKeyId: string,
+  ) {}
+
+  static async create(keyId: string): Promise<EncryptionCodec> {
+    const keys = new Map<string, crypto.CryptoKey>();
+    keys.set(keyId, await fetchKey(keyId));
+    return new this(keys, keyId);
+  }
+
+  async encode(payloads: Payload[]): Promise<Payload[]> {
+    return Promise.all(
+      payloads.map(async (payload) => ({
+        metadata: {
+          [METADATA_ENCODING_KEY]: encode(ENCODING),
+          [METADATA_ENCRYPTION_KEY_ID]: encode(this.defaultKeyId),
+        },
+        // Encrypt entire payload, preserving metadata
+        data: await encrypt(
+          temporal.api.common.v1.Payload.encode(payload).finish(),
+          this.keys.get(this.defaultKeyId)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        ),
+      })),
+    );
+  }
+
+  async decode(payloads: Payload[]): Promise<Payload[]> {
+    return Promise.all(
+      payloads.map(async (payload) => {
+        if (!payload.metadata || decode(payload.metadata[METADATA_ENCODING_KEY]) !== ENCODING) {
+          return payload;
+        }
+        if (!payload.data) {
+          throw new ValueError('Payload data is missing');
+        }
+
+        const keyIdBytes = payload.metadata[METADATA_ENCRYPTION_KEY_ID];
+        if (!keyIdBytes) {
+          throw new ValueError('Unable to decrypt Payload without encryption key id');
+        }
+
+        const keyId = decode(keyIdBytes);
+        let key = this.keys.get(keyId);
+        if (!key) {
+          key = await fetchKey(keyId);
+          this.keys.set(keyId, key);
+        }
+        const decryptedPayloadBytes = await decrypt(payload.data, key);
+        console.log('Decrypting payload.data:', payload.data);
+        return temporal.api.common.v1.Payload.decode(decryptedPayloadBytes);
+      }),
+    );
+  }
+}
+
+async function fetchKey(_keyId: string): Promise<crypto.CryptoKey> {
+  // In production, fetch key from a key management system (KMS). You may want to memoize requests if you'll be decoding
+  // Payloads that were encrypted using keys other than defaultKeyId.
+  const key = Buffer.from('test-key-test-key-test-key-test!');
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    key,
+    {
+      name: 'AES-GCM',
+    },
+    true,
+    ['encrypt', 'decrypt'],
+  );
+
+  return cryptoKey;
+}
+```
+<!--SNIPEND-->
+
+Provide the codec to the Client and Worker through the Data Converter:
+
+<!--SNIPSTART typescript-encryption-client -->
+[encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/client.ts)
+```ts
+const client = new Client({
+  connection,
+  dataConverter: await getDataConverter(),
+});
+
+const handle = await client.workflow.start(example, {
+  args: ['Alice: Private message for Bob.'],
+  taskQueue: 'encryption',
+  workflowId: `my-business-id-${uuid()}`,
+});
+
+console.log(`Started workflow ${handle.workflowId}`);
+console.log(await handle.result());
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-encryption-worker -->
+[encryption/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/worker.ts)
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue: 'encryption',
+  dataConverter: await getDataConverter(),
+});
+```
+<!--SNIPEND-->
+
+When the Client sends `'Alice: Private message for Bob.'` to the Workflow, it gets encrypted on the Client and decrypted in the Worker.
+The Workflow receives the decrypted message and appends another message.
+When it returns that longer string, the string gets encrypted by the Worker and decrypted by the Client.
+
+<!--SNIPSTART typescript-encryption-workflow -->
+[encryption/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/workflows.ts)
+```ts
+export async function example(message: string): Promise<string> {
+  return `${message}\nBob: Hi Alice, I'm Workflow Bob.`;
+}
+```
+<!--SNIPEND-->
+
+## Codec Server
+
+A Codec Server is an HTTP server that runs your `PayloadCodec` remotely, so that the Temporal Web UI and CLI can decode encrypted payloads for display.
+
+For more information, see [Codec Server](/codec-server).
