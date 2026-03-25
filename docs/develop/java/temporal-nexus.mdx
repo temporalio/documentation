@@ -529,6 +529,13 @@ public class CallerStarter {
 ```
 <!--SNIPEND-->
 
+## Unit Testing Nexus Code
+
+Please refer to [How to mock Nexus Operations](/develop/java/testing-suite#mock-nexus-operations) for information and examples of how to mock and test Nexus services.
+You can also find example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [this test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
+These samples show how to call Nexus services in tests using the Temporal testing package and also how to mock them, for both JUnit 4 and 5.
+Detailed explanatory comments are included in the code in the repository.
+
 ## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
 
 Follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter app.
