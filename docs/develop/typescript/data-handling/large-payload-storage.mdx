@@ -26,7 +26,7 @@ This is sometimes called the [claim check pattern](https://en.wikipedia.org/wiki
 External storage sits at the end of the data pipeline, after both the Payload Converter and the Payload Codec:
 
 ```
-User code → PayloadConverter → PayloadCodec → External Storage → Wire → Temporal Service
+User code → PayloadConverter → PayloadCodec → External Storage → Temporal Service
 ```
 
 When a payload exceeds a configurable size threshold (default 256 KiB), the storage driver uploads it to your external store and replaces it with a lightweight reference.
@@ -35,21 +35,30 @@ On the way back, reference payloads are retrieved from external storage before t
 
 Because external storage runs after the codec, payloads are already encrypted (if you use an encryption codec) before they're uploaded to your store.
 
-## Store large payloads in external storage
+## Store and retrieve large payloads using external storage
 
-_This section will document how to configure external storage on the TypeScript `DataConverter` once the feature ships._
+_This section will document how to implement a storage driver and configure external storage on the TypeScript `DataConverter` once the feature ships._
 
-## Organize stored payloads by Workflow
+### Implement a storage driver
 
-_This section will document how to use serialization context to key stored objects by Workflow identity instead of random identifiers._
+_Stub: storage driver interface and example._
 
-## View externally stored payloads in the UI
+### Store payloads
 
-_This section will document Codec Server considerations for reference payloads._
+_Stub: store method implementation._
 
-## Use a gRPC proxy instead of a codec
+### Retrieve payloads
 
-Instead of implementing storage in each SDK client, you can run a centralized gRPC proxy between your workers and the Temporal Service that intercepts and offloads large payloads transparently.
-The [`go.temporal.io/api/proxy`](https://pkg.go.dev/go.temporal.io/api/proxy) package provides the building blocks for this approach.
+_Stub: retrieve method implementation._
 
-If you use a gRPC proxy that alters payload sizes, you may need to disable the worker's eager payload size validation so it doesn't reject payloads that the proxy will shrink before they reach the server.
+### Configure external storage on the Data Converter
+
+_Stub: DataConverter configuration._
+
+### Adjust the size threshold
+
+_Stub: payload_size_threshold configuration._
+
+### Use multiple storage drivers
+
+_Stub: driver_selector configuration._
