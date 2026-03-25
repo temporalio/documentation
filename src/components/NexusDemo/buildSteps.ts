@@ -30,7 +30,7 @@ public interface IHelloService
     public record HelloOutput(string Message);
     public enum HelloLanguage { En, Fr, De, Es, Tr }
 }`,
-    note: 'This is the only file shared between Team A (caller) and Team B (handler). It defines what operations exist and their input/output shapes — nothing more. Team B\'s internal implementation stays private.',
+    note: 'This is the only file shared between Team A (caller) and Team B (handler). It defines what operations exist and their input/output shapes, nothing more. Team B\'s internal implementation stays private.',
   },
   {
     num: 'Step 2 of 6',
@@ -44,7 +44,7 @@ public class HelloService
     public IOperationHandler<IHelloService.EchoInput, IHelloService.EchoOutput>
         Echo() =>
         OperationHandler.Sync<IHelloService.EchoInput, IHelloService.EchoOutput>(
-            // Runs inline — must complete in under 10 seconds
+            // Runs inline; must complete in under 10 seconds
             (ctx, input) => new(input.Message));
 }`,
     note: 'A synchronous handler runs inline in the handler worker and returns a result directly. Use this for fast operations (lookups, validations, transformations). The 10-second limit is enforced by the Nexus runtime.',
@@ -54,7 +54,7 @@ public class HelloService
     title: 'Implement the async handler',
     file: 'HelloService.cs + HelloHandlerWorkflow.workflow.cs',
     language: 'csharp',
-    code: `// HelloService.cs — add the async operation
+    code: `// HelloService.cs: add the async operation
 [NexusOperationHandler]
 public IOperationHandler<IHelloService.HelloInput, IHelloService.HelloOutput>
     SayHello() =>
@@ -62,7 +62,7 @@ public IOperationHandler<IHelloService.HelloInput, IHelloService.HelloOutput>
         (WorkflowRunOperationContext ctx, IHelloService.HelloInput input) =>
             ctx.StartWorkflowAsync(
                 (HelloHandlerWorkflow wf) => wf.RunAsync(input),
-                // RequestId is stable across retries — prevents duplicate workflows
+                // RequestId is stable across retries; prevents duplicate workflows
                 new() { Id = ctx.HandlerContext.RequestId }));
 
 // HelloHandlerWorkflow.workflow.cs
@@ -81,7 +81,7 @@ public class HelloHandlerWorkflow
                 "Unsupported: " + input.Language)
         };
 }`,
-    note: 'Async operations start a Temporal Workflow and return an operation token to the caller. The caller is suspended until the workflow completes — which can take seconds, hours, or days. Using RequestId as the workflow ID ensures retries never create duplicates.',
+    note: 'Async operations start a Temporal Workflow and return an operation token to the caller. The caller is suspended until the workflow completes, which can take seconds, hours, or days. Using RequestId as the workflow ID ensures retries never create duplicates.',
   },
   {
     num: 'Step 4 of 6',
@@ -123,7 +123,7 @@ public class HelloCallerWorkflow
         return output.Message;
     }
 }`,
-    note: "The caller workflow only knows the shared interface — no knowledge of HelloHandlerWorkflow, Team B's namespace, or how the operation is implemented. The Nexus Endpoint name is the only required configuration.",
+    note: "The caller workflow only knows the shared interface, with no knowledge of HelloHandlerWorkflow, Team B's namespace, or how the operation is implemented. The Nexus Endpoint name is the only required configuration.",
   },
   {
     num: 'Step 6 of 6',
@@ -146,6 +146,6 @@ var result = await client.ExecuteWorkflowAsync(
         taskQueue: "nexus-simple-caller-sample"));
 
 // result == "¡Hola! Temporal 👋"`,
-    note: 'Two separate namespaces. Two separate workers. Zero shared internal code — connected only by a single Nexus Endpoint and a shared interface file.',
+    note: 'Two separate namespaces. Two separate workers. Zero shared internal code, connected only by a single Nexus Endpoint and a shared interface file.',
   },
 ];

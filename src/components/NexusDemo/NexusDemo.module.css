@@ -359,7 +359,7 @@
   border-top: 1px solid var(--nd-border);
 }
 
-/* ── How It Works — flow diagram ───────────────────────── */
+/* ── How It Works: flow diagram ───────────────────────── */
 .flowOuter {
   margin: 24px 0;
 }
@@ -639,7 +639,7 @@
   margin-top: 16px;
 }
 
-/* ── CodeBlock override — connect to file header ──────── */
+/* ── CodeBlock override: connect to file header ──────── */
 .buildPanel :global(.theme-code-block) {
   border-radius: 0;
   margin-bottom: 0;
@@ -762,19 +762,16 @@
   gap: 14px;
   align-items: flex-start;
   padding-bottom: 14px;
-  opacity: 0.3;
-  transform: translateX(-6px);
-  transition: opacity 0.35s, transform 0.35s;
+  opacity: 0.25;
+  transition: opacity 0.5s ease, color 0.3s ease;
 }
 
 .tlStepActive {
   opacity: 1;
-  transform: none;
 }
 
 .tlStepDone {
-  opacity: 0.6;
-  transform: none;
+  opacity: 0.55;
 }
 
 .tlNum {

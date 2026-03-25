@@ -82,7 +82,7 @@ export const asyncSteps: FlowStep[] = [
   {
     label: 'Workflow runs (seconds → days)',
     detail:
-      'HelloHandlerWorkflow runs to completion. It could call external APIs, wait for signals, or run sub-workflows — for as long as needed.',
+      'HelloHandlerWorkflow runs to completion. It could call external APIs, wait for signals, or run sub-workflows, for as long as needed.',
     activeNode: 2,
     packetPct: 100,
     log: { level: 'warn', event: 'RUNNING', msg: 'HelloHandlerWorkflow executing...' },

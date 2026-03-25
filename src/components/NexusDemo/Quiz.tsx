@@ -28,14 +28,6 @@ export default function Quiz() {
     setKey((k) => k + 1);
   }
 
-  const scoreLabel =
-    pct >= 85 ? 'You got it' : pct >= 57 ? 'Getting there' : 'Keep exploring';
-  const scoreSub =
-    pct >= 85
-      ? "You have a solid grasp of Temporal Nexus. You're ready to build."
-      : pct >= 57
-        ? 'Good foundation. Review the sections on the topics you missed.'
-        : 'Go back through the demo — the concepts will click. Try again when ready.';
 
   return (
     <div className={styles.section}>
@@ -44,9 +36,6 @@ export default function Quiz() {
       </div>
 
       <h1>Test Your Understanding</h1>
-      <p className={styles.lead}>
-        {quizQuestions.length} questions. No time limit. See the explanation after each answer.
-      </p>
 
       <div key={key}>
         {quizQuestions.map((q, qi) => {
@@ -88,7 +77,7 @@ export default function Quiz() {
                     given === q.correct ? styles.quizFeedbackCorrect : styles.quizFeedbackWrong
                   }`}
                 >
-                  {given === q.correct ? '✓ Correct — ' : '✗ Not quite — '}
+                  {given === q.correct ? '✓ Correct: ' : '✗ Not quite: '}
                   {q.explanation}
                 </div>
               )}
@@ -99,11 +88,9 @@ export default function Quiz() {
 
       {allAnswered && (
         <div className={styles.scoreCard}>
-          <div className={styles.scoreTitle}>{scoreLabel}</div>
           <div className={styles.scoreText}>
             {correctCount} / {quizQuestions.length} correct ({pct}%)
           </div>
-          <div className={styles.scoreSub}>{scoreSub}</div>
           <button className={styles.btn} onClick={reset}>
             Try again
           </button>

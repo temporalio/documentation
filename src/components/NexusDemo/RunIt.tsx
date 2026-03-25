@@ -30,7 +30,7 @@ export default function RunIt({ onNext }: Props) {
 
       <h1>Run It Yourself</h1>
       <p className={styles.lead}>
-        Three official Nexus samples — pick your language and run locally in minutes.
+        Three official Nexus samples. Pick a language and run locally in minutes.
       </p>
 
       <div className={styles.runTabs}>

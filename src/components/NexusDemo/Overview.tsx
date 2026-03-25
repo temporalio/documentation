@@ -13,7 +13,7 @@ export default function Overview({ onNext }: Props) {
       <h1>What is Temporal Nexus?</h1>
       <p className={styles.lead}>
         Nexus lets different teams share Temporal workflows across team, namespace, region,
-        and cloud boundaries — without exposing internal implementation details.
+        and cloud boundaries, without exposing internal implementation details.
       </p>
 
       <div
@@ -28,8 +28,8 @@ export default function Overview({ onNext }: Props) {
           The core idea in one sentence
         </h3>
         <p style={{ fontSize: 15, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.7 }}>
-          Team A can call Team B's workflows like a typed API — with full durability, retries,
-          and fault-tolerance built in — without needing access to Team B's namespace or knowing
+          Team A can call Team B's workflows like a typed API, with full durability, retries,
+          and fault-tolerance built in, without needing access to Team B's namespace or knowing
           how their code works.
         </p>
       </div>
@@ -52,7 +52,7 @@ export default function Overview({ onNext }: Props) {
           <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
             The Fraud Detection team publishes a Nexus Service with a clear contract. The Payments
             team calls it from their workflow like any other operation. Nexus handles routing,
-            retries, security, and observability — across any boundary.
+            retries, security, and observability, across any boundary.
           </p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default function Overview({ onNext }: Props) {
       <h2 className={styles.sectionHeading}>What It Looks Like</h2>
       <div className={styles.nsContainer}>
         <div className={`${styles.nsBox} ${styles.nsBoxCaller}`}>
-          <div className={`${styles.nsLabel} ${styles.nsLabelCaller}`}>Team A — Payments</div>
+          <div className={`${styles.nsLabel} ${styles.nsLabelCaller}`}>Team A: Payments</div>
           <div className={styles.wfBlock}>
             <div className={`${styles.wfIcon} ${styles.wfIconBlue}`}>W</div>
             <div>
@@ -98,7 +98,7 @@ export default function Overview({ onNext }: Props) {
 
         <div className={`${styles.nsBox} ${styles.nsBoxHandler}`}>
           <div className={`${styles.nsLabel} ${styles.nsLabelHandler}`}>
-            Team B — Fraud Detection
+            Team B: Fraud Detection
           </div>
           <div className={styles.wfBlock}>
             <div className={`${styles.wfIcon} ${styles.wfIconPurple}`}>S</div>
@@ -123,7 +123,7 @@ export default function Overview({ onNext }: Props) {
       </div>
 
       <h2 className={styles.sectionHeading}>Key Facts</h2>
-      <div className={styles.cardGrid}>
+      <div className={styles.cardGrid} style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
         <div className={styles.card}>
           <div className={`${styles.tag} ${styles.tagBlue}`}>Durability</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Up to 60 Days</h3>
@@ -152,7 +152,7 @@ export default function Overview({ onNext }: Props) {
           <div className={`${styles.tag} ${styles.tagAmber}`}>Boundaries</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Cross-Everything</h3>
           <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
-            Works across teams, namespaces, regions (AWS &amp; GCP), and clouds — with the same
+            Works across teams, namespaces, regions (AWS &amp; GCP), and clouds, with the same
             developer experience everywhere.
           </p>
         </div>

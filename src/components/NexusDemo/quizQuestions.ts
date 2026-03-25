@@ -16,7 +16,7 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      'Nexus is specifically designed to connect durable executions across team, namespace, region, and cloud boundaries — enabling modular architecture without tight coupling.',
+      'Nexus is specifically designed to connect durable executions across team, namespace, region, and cloud boundaries, enabling modular architecture without tight coupling.',
   },
   {
     q: 'What is the maximum duration of an asynchronous Nexus Operation in Temporal Cloud?',
@@ -42,7 +42,7 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "A Nexus Endpoint is not a general HTTP proxy — it's a specifically-designed router with auth, retries, and observability, pointing to a handler namespace and task queue.",
+      "A Nexus Endpoint is not a general HTTP proxy. It's a specifically-designed router with auth, retries, and observability, pointing to a handler namespace and task queue.",
   },
   {
     q: 'If a caller workflow is canceled, what happens to pending Nexus Operations?',
@@ -50,7 +50,7 @@ export const quizQuestions: QuizQuestion[] = [
       'They continue running independently',
       'They are terminated immediately',
       'Cancel is propagated to them',
-      'Nothing — they timeout naturally',
+      'Nothing, they timeout naturally',
     ],
     correct: 2,
     explanation:
@@ -66,6 +66,6 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Team A only needs the shared service contract. Team B's internal implementation — which workflows they use, how they work — is completely hidden.",
+      "Team A only needs the shared service contract. Team B's internal implementation (which workflows they use, how they work) is completely hidden.",
   },
 ];
