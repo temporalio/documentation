@@ -15,8 +15,10 @@ All data sent to and from the Temporal Service passes through the **Data Convert
 The Data Converter has three layers that handle different concerns:
 
 ```
-User code → PayloadConverter → PayloadCodec → ExternalStorage → Temporal Service
+Application data → PayloadConverter → PayloadCodec → ExternalStorage → Temporal Service
 ```
+
+Of these three layers, only the PayloadConverter is required. Temporal uses a default PayloadConverter that handles JSON serialization. The PayloadCodec and ExternalStorage layers are optional.
 
 |  | [PayloadConverter](/develop/python/data-handling/data-conversion) | [PayloadCodec](/develop/python/data-handling/data-encryption) | [ExternalStorage](/develop/python/data-handling/large-payload-storage) |
 | --- | --- | --- | --- |
