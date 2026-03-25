@@ -199,6 +199,11 @@
   color: var(--nd-red);
 }
 
+.tagAmber {
+  background: var(--nd-amber-bg);
+  color: var(--nd-amber);
+}
+
 /* ── Namespace layout ──────────────────────────────────── */
 .nsContainer {
   display: flex;
@@ -641,6 +646,182 @@
   border-top: none;
 }
 
+/* ── Components section ─────────────────────────────────── */
+.componentLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.componentRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.componentNum {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.componentContent {
+  flex: 1;
+}
+
+.componentTitle {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--ifm-font-color-base);
+}
+
+.componentRole {
+  font-size: 12px;
+  color: var(--nd-muted);
+  margin-bottom: 10px;
+}
+
+.componentCode {
+  background: var(--nd-surface2);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-family: var(--ifm-font-family-monospace);
+  color: var(--nd-muted);
+  margin-top: 10px;
+  line-height: 1.8;
+}
+
+.componentPills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.componentPill {
+  background: var(--nd-surface2);
+  border: 1px solid var(--nd-border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--ifm-font-color-base);
+}
+
+.componentPillNew {
+  color: var(--nd-muted);
+  border-style: dashed;
+}
+
+.opTabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--nd-border);
+  margin-bottom: 14px;
+}
+
+.opTab {
+  padding: 6px 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--nd-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--ifm-font-family-base);
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.opTab:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.opTabActive {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* ── Timeline ────────────────────────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 20px;
+}
+
+.tlStep {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  opacity: 0.3;
+  transform: translateX(-6px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+
+.tlStepActive {
+  opacity: 1;
+  transform: none;
+}
+
+.tlStepDone {
+  opacity: 0.6;
+  transform: none;
+}
+
+.tlNum {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--nd-surface2);
+  border: 2px solid var(--nd-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: background 0.3s, border-color 0.3s;
+  color: var(--ifm-font-color-base);
+}
+
+.tlStepActive .tlNum {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+}
+
+.tlStepDone .tlNum {
+  background: var(--nd-green);
+  border-color: var(--nd-green);
+  color: var(--ifm-background-color);
+}
+
+.tlContent {
+  flex: 1;
+  padding-top: 2px;
+}
+
+.tlTitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: var(--ifm-font-color-base);
+}
+
+.tlDesc {
+  font-size: 12px;
+  color: var(--nd-muted);
+}
+
 /* ── Run It ─────────────────────────────────────────────── */
 .runTabs {
   display: flex;
@@ -745,6 +926,85 @@
   border-color: var(--ifm-color-primary);
   color: var(--ifm-color-primary);
   text-decoration: none;
+}
+
+/* Run It command blocks */
+.runitLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--nd-border);
+  color: var(--ifm-font-color-base);
+  background: var(--nd-surface2);
+  transition: all 0.15s;
+}
+
+.runitLink:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.runitLinkPrimary {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: #fff;
+}
+
+.runitLinkPrimary:hover {
+  opacity: 0.88;
+  color: #fff;
+  border-color: var(--ifm-color-primary);
+}
+
+.runitSectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nd-muted);
+  margin: 0 0 10px;
+}
+
+.runitCmd {
+  background: var(--nd-surface);
+  border: 1px solid var(--nd-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 13px;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.runitPrompt {
+  color: var(--nd-muted);
+  user-select: none;
+  flex-shrink: 0;
+  min-width: 30px;
+}
+
+.runitCmdText {
+  color: var(--ifm-font-color-base);
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.runitOutput {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  color: var(--nd-green);
+  padding: 6px 16px;
+  margin-top: 2px;
+  margin-bottom: 8px;
 }
 
 /* ── Quiz ───────────────────────────────────────────────── */

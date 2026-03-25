@@ -110,20 +110,51 @@ export default function Overview({ onNext }: Props) {
               <div style={{ fontSize: 11, color: 'var(--nd-muted)' }}>Handler Namespace</div>
             </div>
           </div>
-          <div
-            style={{
-              padding: '8px 12px',
-              background: 'var(--nd-purple-bg)',
-              borderRadius: 6,
-              fontSize: 12,
-              color: 'var(--nd-muted)',
-            }}
-          >
-            Exposes{' '}
-            <code style={{ color: 'var(--nd-purple)', fontSize: 11 }}>checkTransaction</code>
-            <br />
-            Internal workflows stay private
+          <div className={styles.wfBlock} style={{ marginBottom: 0 }}>
+            <div className={`${styles.wfIcon} ${styles.wfIconPurple}`}>W</div>
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 13 }}>FraudCheckWorkflow</div>
+              <div style={{ fontSize: 11, color: 'var(--nd-muted)' }}>
+                Runs internally, result returned
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <h2 className={styles.sectionHeading}>Key Facts</h2>
+      <div className={styles.cardGrid}>
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagBlue}`}>Durability</div>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}>Up to 60 Days</h3>
+          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
+            Async Nexus Operations can run for up to 60 days in Temporal Cloud. The caller workflow
+            is suspended until the result arrives.
+          </p>
+        </div>
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagGreen}`}>Reliability</div>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}>At-Least-Once</h3>
+          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
+            Nexus Machinery retries failed operations automatically. Pair with workflow ID policies
+            to get exactly-once semantics.
+          </p>
+        </div>
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagPurple}`}>Security</div>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}>Built-in Auth</h3>
+          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
+            mTLS encryption and namespace allowlists control who can call what. No API keys in
+            code.
+          </p>
+        </div>
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagAmber}`}>Boundaries</div>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}>Cross-Everything</h3>
+          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
+            Works across teams, namespaces, regions (AWS &amp; GCP), and clouds — with the same
+            developer experience everywhere.
+          </p>
         </div>
       </div>
 

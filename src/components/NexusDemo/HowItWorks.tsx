@@ -188,15 +188,21 @@ export default function HowItWorks({ onNext }: Props) {
 
         {/* Controls */}
         <div className={styles.flowControls}>
+          <button className={styles.btn} onClick={handlePlay}>
+            {playing
+              ? '⏸ Pause'
+              : log.length === 0
+                ? 'Run Demo'
+                : stepIdx >= steps.length - 1
+                  ? '↺ Replay'
+                  : '▶ Resume'}
+          </button>
           <button
             className={`${styles.btn} ${styles.btnSecondary}`}
             onClick={() => handleStep(-1)}
             disabled={stepIdx === 0}
           >
             ← Prev
-          </button>
-          <button className={styles.btn} onClick={handlePlay}>
-            {playing ? '⏸ Pause' : stepIdx >= steps.length - 1 ? '↺ Replay' : '▶ Play'}
           </button>
           <button
             className={`${styles.btn} ${styles.btnSecondary}`}
@@ -235,6 +241,28 @@ export default function HowItWorks({ onNext }: Props) {
             ))}
           </div>
         )}
+
+        {/* Timeline */}
+        <div className={styles.timeline}>
+          {steps.map((step, i) => (
+            <div
+              key={i}
+              className={`${styles.tlStep} ${
+                i < stepIdx
+                  ? styles.tlStepDone
+                  : i === stepIdx && log.length > 0
+                    ? styles.tlStepActive
+                    : ''
+              }`}
+            >
+              <div className={styles.tlNum}>{i + 1}</div>
+              <div className={styles.tlContent}>
+                <div className={styles.tlTitle}>{step.label}</div>
+                <div className={styles.tlDesc}>{step.log.msg}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.nextRow}>
