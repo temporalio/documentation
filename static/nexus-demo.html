@@ -1026,6 +1026,131 @@ function initBuildIt() {
 }
 
 // ──────────────────────────────────────────────
+// QUIZ
+// ──────────────────────────────────────────────
+const quizData = [
+  {
+    q: "What problem does Temporal Nexus primarily solve?",
+    options: [
+      "Making workflows run faster",
+      "Connecting workflows across team and namespace boundaries safely",
+      "Replacing HTTP APIs entirely",
+      "Scheduling recurring jobs"
+    ],
+    correct: 1,
+    explanation: "Nexus is specifically designed to connect durable executions across team, namespace, region, and cloud boundaries — enabling modular architecture without tight coupling."
+  },
+  {
+    q: "What is the maximum duration of an asynchronous Nexus Operation in Temporal Cloud?",
+    options: ["10 seconds", "24 hours", "60 days", "1 year"],
+    correct: 2,
+    explanation: "Async Nexus Operations can run for up to 60 days in Temporal Cloud (Schedule-to-Close timeout). This is what makes Nexus suitable for long-running cross-team operations."
+  },
+  {
+    q: "A synchronous Nexus Operation must complete within:",
+    options: ["1 second", "10 seconds", "1 minute", "1 hour"],
+    correct: 1,
+    explanation: "Synchronous operations must complete within 10 seconds. For longer work, use asynchronous operations backed by a Workflow."
+  },
+  {
+    q: "What is a Nexus Endpoint?",
+    options: [
+      "A general-purpose HTTP reverse proxy",
+      "A named router that maps to a target namespace and task queue",
+      "A workflow definition",
+      "The Temporal Cloud UI"
+    ],
+    correct: 1,
+    explanation: "A Nexus Endpoint is NOT a general HTTP proxy — it's a specifically-designed router with auth, retries, and observability, pointing to a handler namespace and task queue."
+  },
+  {
+    q: "If a caller workflow is canceled, what happens to pending Nexus Operations?",
+    options: [
+      "They continue running independently",
+      "They are terminated immediately",
+      "Cancel is propagated to them",
+      "Nothing — they timeout naturally"
+    ],
+    correct: 2,
+    explanation: "Cancellation propagates automatically through Nexus. Canceling the caller workflow sends a cancel signal to all pending Nexus Operations, which then cancel their handler workflows."
+  },
+  {
+    q: "What does Team A need from Team B to call a Nexus Service?",
+    options: [
+      "Access to Team B's namespace and credentials",
+      "A copy of Team B's workflow code",
+      "Only the shared service contract definition",
+      "Team B's database connection string"
+    ],
+    correct: 2,
+    explanation: "Team A only needs the shared service contract. Team B's internal implementation — which workflows they use, how they work — is completely hidden."
+  }
+];
+
+let quizAnswers = [];
+
+function renderQuiz() {
+  quizAnswers = new Array(quizData.length).fill(null);
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = quizData.map((q, qi) => `
+    <div class="quiz-card animate-in" style="animation-delay:${qi*0.05}s">
+      <div class="quiz-q">Q${qi+1}. ${q.q}</div>
+      <div class="quiz-options">
+        ${q.options.map((opt, oi) => `
+          <button class="quiz-opt" onclick="answerQuiz(${qi}, ${oi}, this)">${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="feedback-${qi}"></div>
+    </div>
+  `).join('');
+  document.getElementById('quizScore').style.display = 'none';
+}
+
+function answerQuiz(qi, oi, btn) {
+  if (quizAnswers[qi] !== null) return;
+  quizAnswers[qi] = oi;
+  const q = quizData[qi];
+  const opts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  if (oi === q.correct) {
+    btn.classList.add('correct');
+    showFeedback(qi, true, 'Correct! ' + q.explanation);
+  } else {
+    btn.classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    showFeedback(qi, false, 'Not quite. ' + q.explanation);
+  }
+  if (quizAnswers.every(a => a !== null)) setTimeout(showScore, 500);
+}
+
+function showFeedback(qi, correct, msg) {
+  const el = document.getElementById(`feedback-${qi}`);
+  el.textContent = msg;
+  el.className = `quiz-feedback show ${correct ? 'correct' : 'wrong'}`;
+}
+
+function showScore() {
+  const correct = quizAnswers.filter((a, i) => a === quizData[i].correct).length;
+  const pct = Math.round((correct / quizData.length) * 100);
+  const scoreEl = document.getElementById('quizScore');
+  scoreEl.style.display = 'block';
+  scoreEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('scoreText').textContent = `${correct} / ${quizData.length} correct (${pct}%)`;
+  if (pct >= 83) {
+    document.getElementById('scoreEmoji').textContent = 'You got it';
+    document.getElementById('scoreSub').textContent = "You have a solid grasp of Temporal Nexus. You're ready to build.";
+  } else if (pct >= 50) {
+    document.getElementById('scoreEmoji').textContent = 'Getting there';
+    document.getElementById('scoreSub').textContent = "Good foundation. Review the sections on the topics you missed.";
+  } else {
+    document.getElementById('scoreEmoji').textContent = 'Keep exploring';
+    document.getElementById('scoreSub').textContent = "Go back through the demo — the concepts will click. Try again when ready.";
+  }
+}
+
+function resetQuiz() { renderQuiz(); }
+
+// ──────────────────────────────────────────────
 // INIT
 // ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
