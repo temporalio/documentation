@@ -26,10 +26,19 @@ keywords:
   - gRPC error count
 ---
 
+:::danger PromQL endpoint deprecated
+
+The PromQL endpoint and its `temporal_cloud_v0_*` metrics were deprecated on April 2, 2026 and are no longer accepting new users.
+The PromQL endpoint will be disabled for all users on **October 5, 2026**.
+
+Migrate to the [OpenMetrics endpoint](/cloud/metrics/openmetrics) which provides `temporal_cloud_v1_*` metrics with higher cardinality, accurate percentiles, and simplified authentication.
+See the [migration guide](/cloud/metrics/openmetrics/migration-guide) for a complete v0-to-v1 metric mapping.
+
+:::
+
 A metric is a measurement or data point that provides insights into the performance and health of a system.
-This document describes the metrics available on the Temporal Cloud platform.
-Temporal Cloud metrics help you monitor performance and troubleshoot errors.
-They provide insights into different aspects of the Service.
+This document describes the `temporal_cloud_v0_*` metrics available from the deprecated Temporal Cloud PromQL endpoint.
+For the current metrics reference, see the [OpenMetrics metrics reference](/cloud/metrics/openmetrics/metrics-reference).
 
 This document describes:
 
