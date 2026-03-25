@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temporal Nexus — Interactive Demo</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d47;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --accent3: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --faint: #1e293b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,26,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
+  }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 16px; }
+  nav button {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 13px; padding: 6px 12px; border-radius: 6px; transition: all .2s;
+  }
+  nav button:hover { color: var(--text); background: var(--surface2); }
+  nav button.active { color: var(--accent); background: rgba(59,130,246,0.12); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 40px 24px; max-width: 1000px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: var(--accent); }
+  h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  p { color: #94a3b8; margin-bottom: 12px; font-size: 14px; }
+  .lead { font-size: 16px; color: var(--text); max-width: 680px; margin-bottom: 32px; }
+
+  /* CARDS */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .card-grid .card { margin-bottom: 0; }
+  .card .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+  .tag-blue { background: rgba(59,130,246,.15); color: #60a5fa; }
+  .tag-purple { background: rgba(139,92,246,.15); color: #a78bfa; }
+  .tag-green { background: rgba(16,185,129,.15); color: #34d399; }
+  .tag-amber { background: rgba(245,158,11,.15); color: #fbbf24; }
+
+  /* NAMESPACE BOXES */
+  .ns-container { display: flex; gap: 16px; align-items: stretch; flex-wrap: wrap; margin: 24px 0; }
+  .ns-box {
+    flex: 1; min-width: 200px;
+    background: var(--surface); border: 2px solid var(--border);
+    border-radius: 12px; padding: 16px;
+    position: relative; transition: border-color .3s;
+  }
+  .ns-box.caller { border-color: var(--accent); }
+  .ns-box.handler { border-color: var(--accent2); }
+  .ns-box .ns-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px;
+  }
+  .caller .ns-label { background: rgba(59,130,246,.15); color: #60a5fa; }
+  .handler .ns-label { background: rgba(139,92,246,.15); color: #a78bfa; }
+  .ns-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 24px; flex-shrink: 0;
+    flex-direction: column; gap: 4px;
+  }
+  .ns-arrow span { font-size: 10px; color: var(--muted); text-align: center; max-width: 80px; }
+
+  /* NEXUS ENDPOINT BRIDGE */
+  .endpoint-bridge {
+    background: linear-gradient(135deg, rgba(59,130,246,.08), rgba(139,92,246,.08));
+    border: 2px dashed rgba(59,130,246,.4);
+    border-radius: 12px; padding: 16px 24px;
+    text-align: center; flex: 0 0 auto; align-self: center;
+    min-width: 140px;
+  }
+  .endpoint-bridge .eb-label { font-size: 12px; color: var(--accent); font-weight: 700; }
+  .endpoint-bridge .eb-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* WORKFLOW BLOCKS */
+  .wf-block {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;
+    font-size: 13px; display: flex; align-items: center; gap: 8px;
+  }
+  .wf-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .wf-icon.blue { background: rgba(59,130,246,.2); }
+  .wf-icon.purple { background: rgba(139,92,246,.2); }
+  .wf-icon.green { background: rgba(16,185,129,.2); }
+
+  /* INTERACTIVE FLOW */
+  .flow-container { margin: 24px 0; }
+  .flow-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .btn {
+    background: var(--accent); color: white; border: none; padding: 10px 20px;
+    border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
+    transition: all .2s;
+  }
+  .btn:hover { background: #2563eb; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn.secondary:hover { background: var(--faint); }
+  .btn.danger { background: var(--danger); }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-step {
+    display: flex; gap: 16px; align-items: flex-start;
+    opacity: 0.25; transition: opacity .4s, transform .4s;
+    transform: translateX(-8px);
+    padding-bottom: 16px;
+  }
+  .tl-step.active { opacity: 1; transform: translateX(0); }
+  .tl-step.done { opacity: 0.6; }
+  .tl-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface2); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+    transition: all .3s;
+  }
+  .tl-step.active .tl-num { background: var(--accent); border-color: var(--accent); color: white; }
+  .tl-step.done .tl-num { background: var(--accent3); border-color: var(--accent3); color: white; }
+  .tl-content { flex: 1; }
+  .tl-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .tl-desc { font-size: 12px; color: var(--muted); }
+  .tl-badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+
+  /* ANIMATED PACKET */
+  .flow-diagram {
+    position: relative; height: 180px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px; margin-bottom: 20px; overflow: hidden;
+  }
+  .flow-node {
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; text-align: center;
+    min-width: 120px; position: relative; z-index: 2;
+  }
+  .flow-node .fn-title { font-size: 12px; font-weight: 700; }
+  .flow-node .fn-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .flow-node.active-node { border-color: var(--accent); background: rgba(59,130,246,.08); }
+  .flow-track {
+    flex: 1; height: 2px; background: var(--border); position: relative; margin: 0 8px;
+  }
+  .flow-track.double { display: flex; flex-direction: column; gap: 16px; height: auto; background: none; }
+  .flow-track .track-line { height: 2px; background: var(--border); position: relative; flex: 1; }
+  .packet {
+    position: absolute; width: 12px; height: 12px; border-radius: 50%;
+    top: 50%; transform: translateY(-50%);
+    transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .packet.blue { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+  .packet.purple { background: var(--accent2); box-shadow: 0 0 12px var(--accent2); }
+  .packet.green { background: var(--accent3); box-shadow: 0 0 12px var(--accent3); }
+  .packet.hidden { display: none; }
+
+  /* STATUS LOG */
+  .status-log {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; font-family: 'Fira Code', monospace; font-size: 12px;
+    max-height: 200px; overflow-y: auto; margin-bottom: 20px;
+  }
+  .log-line { padding: 2px 0; }
+  .log-line .ts { color: var(--muted); }
+  .log-line .ev { color: var(--accent); }
+  .log-line .ev.success { color: var(--accent3); }
+  .log-line .ev.warn { color: var(--warn); }
+  .log-line .ev.error { color: var(--danger); }
+  .log-line .msg { color: var(--text); }
+
+  /* CIRCUIT BREAKER */
+  .cb-visual {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; margin: 16px 0;
+  }
+  .cb-states { display: flex; gap: 12px; margin-bottom: 20px; justify-content: center; }
+  .cb-state {
+    padding: 10px 20px; border-radius: 8px; text-align: center;
+    border: 2px solid var(--border); transition: all .3s; flex: 1; max-width: 160px;
+  }
+  .cb-state .cs-label { font-size: 13px; font-weight: 700; }
+  .cb-state .cs-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .cb-state.closed { border-color: var(--accent3); background: rgba(16,185,129,.08); }
+  .cb-state.open { border-color: var(--danger); background: rgba(239,68,68,.08); }
+  .cb-state.half-open { border-color: var(--warn); background: rgba(245,158,11,.08); }
+  .cb-state.inactive { border-color: var(--border); background: none; opacity: 0.4; }
+  .cb-meter {
+    background: var(--surface2); border-radius: 8px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+  }
+  .cb-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .cb-bar { height: 100%; border-radius: 4px; transition: width .5s, background .5s; }
+  .cb-count { font-size: 14px; font-weight: 700; min-width: 30px; text-align: right; }
+
+  /* COMPARISON TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
+  th { background: var(--surface2); padding: 10px 14px; text-align: left; font-weight: 600; color: var(--muted); font-size: 11px; text-transform: uppercase; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .check { color: var(--accent3); font-weight: 700; }
+  .cross { color: var(--muted); }
+
+  /* QUIZ */
+  .quiz-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .quiz-q { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 8px; padding: 10px 16px; cursor: pointer;
+    font-size: 13px; transition: all .2s; text-align: left;
+  }
+  .quiz-opt:hover { border-color: var(--accent); }
+  .quiz-opt.correct { border-color: var(--accent3); background: rgba(16,185,129,.1); color: var(--accent3); }
+  .quiz-opt.wrong { border-color: var(--danger); background: rgba(239,68,68,.1); color: var(--danger); }
+  .quiz-feedback { margin-top: 12px; font-size: 13px; padding: 10px 14px; border-radius: 8px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(16,185,129,.1); color: #34d399; }
+  .quiz-feedback.wrong { background: rgba(239,68,68,.1); color: #f87171; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab {
+    padding: 8px 16px; background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 13px; border-bottom: 2px solid transparent;
+    transition: all .2s; margin-bottom: -1px;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* CODE */
+  pre {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; font-family: 'Fira Code', monospace; font-size: 12px;
+    overflow-x: auto; margin-bottom: 16px; line-height: 1.7;
+  }
+  .kw { color: #c084fc; }
+  .fn { color: #60a5fa; }
+  .str { color: #34d399; }
+  .cm { color: #475569; }
+  .ty { color: #fbbf24; }
+
+  /* PROGRESS */
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 32px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .4s; }
+
+  /* TOOLTIP */
+  .tooltip-wrap { position: relative; display: inline-block; }
+  .tooltip-wrap .tt {
+    position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+    background: #1e293b; border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; font-size: 11px; white-space: nowrap; color: var(--text);
+    pointer-events: none; opacity: 0; transition: opacity .2s; z-index: 50;
+  }
+  .tooltip-wrap:hover .tt { opacity: 1; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+  @keyframes slideIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+  .animate-in { animation: slideIn .4s ease forwards; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Temporal Nexus</div>
+  <button class="active" onclick="showSection('overview', this)">What is Nexus?</button>
+  <button onclick="showSection('components', this)">Components</button>
+  <button onclick="showSection('flow', this)">How It Works</button>
+  <button onclick="showSection('circuit', this)">Reliability</button>
+  <button onclick="showSection('code', this)">Code</button>
+  <button onclick="showSection('quiz', this)">Test Yourself</button>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="section active">
+  <div class="progress-bar"><div class="progress-fill" style="width:16%"></div></div>
+  <h1>What is Temporal Nexus?</h1>
+  <p class="lead">Nexus lets different teams share Temporal workflows across team, namespace, region, and cloud boundaries — without exposing internal implementation details.</p>
+
+  <div class="card" style="border-color: var(--accent); background: rgba(59,130,246,.04);">
+    <h3 style="color:var(--accent); margin-bottom:8px;">The core idea in one sentence:</h3>
+    <p style="font-size:15px; color:var(--text); margin:0;">Team A can call Team B's workflows like a typed API — with full durability, retries, and fault-tolerance built in — without needing access to Team B's namespace or knowing how their code works.</p>
+  </div>
+
+  <!-- PROBLEM / SOLUTION -->
+  <h2 style="margin-top:32px;">The Problem Nexus Solves</h2>
+  <div class="card-grid">
+    <div class="card" style="border-color: var(--danger);">
+      <div class="tag" style="background:rgba(239,68,68,.15);color:#f87171;">Without Nexus</div>
+      <h3>Siloed Teams</h3>
+      <p>Each team works in their own Temporal namespace. There's no clean way for the Payments team to trigger an action in the Fraud Detection team's workflow without tight coupling or shared credentials.</p>
+      <p>Teams either share namespaces (messy) or build fragile HTTP bridges (unreliable).</p>
+    </div>
+    <div class="card" style="border-color: var(--accent3);">
+      <div class="tag tag-green">With Nexus</div>
+      <h3>Modular &amp; Safe</h3>
+      <p>The Fraud Detection team publishes a <strong>Nexus Service</strong> with a clear contract. The Payments team calls it from their workflow like any other operation.</p>
+      <p>Nexus handles routing, retries, security, and observability automatically — across any boundary.</p>
+    </div>
+  </div>
+
+  <!-- VISUAL: WHAT IT LOOKS LIKE -->
+  <h2>What It Looks Like</h2>
+  <div class="ns-container">
+    <div class="ns-box caller">
+      <div class="ns-label">Team A — Payments</div>
+      <div class="wf-block">
+        <div class="wf-icon blue">W</div>
+        <div>
+          <div style="font-weight:600">PaymentWorkflow</div>
+          <div style="font-size:11px;color:var(--muted)">Caller Namespace</div>
+        </div>
+      </div>
+      <div style="padding: 8px 14px; background: rgba(59,130,246,.07); border-radius:6px; font-size:12px; color:#94a3b8;">
+        Calls <code style="color:#60a5fa">fraud.v1/checkTransaction</code><br>
+        Waits for result (sync or async)
+      </div>
+    </div>
+
+    <div class="ns-arrow">
+      <div style="font-size:28px;">→</div>
+      <div class="endpoint-bridge">
+        <div class="eb-label">Nexus Endpoint</div>
+        <div class="eb-sub">Routes securely</div>
+        <div class="eb-sub" style="margin-top:4px">Retries + Auth</div>
+      </div>
+      <div style="font-size:28px;">→</div>
+    </div>
+
+    <div class="ns-box handler">
+      <div class="ns-label">Team B — Fraud Detection</div>
+      <div class="wf-block">
+        <div class="wf-icon purple">S</div>
+        <div>
+          <div style="font-weight:600">Nexus Service: <code style="color:#a78bfa">fraud.v1</code></div>
+          <div style="font-size:11px;color:var(--muted)">Handler Namespace</div>
+        </div>
+      </div>
+      <div class="wf-block" style="margin-bottom:0">
+        <div class="wf-icon purple">W</div>
+        <div>
+          <div style="font-weight:600">FraudCheckWorkflow</div>
+          <div style="font-size:11px;color:var(--muted)">Runs internally, result returned</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY FACTS -->
+  <h2>Key Facts</h2>
+  <div class="card-grid">
+    <div class="card">
+      <div class="tag tag-blue">Durability</div>
+      <h3>Up to 60 Days</h3>
+      <p>Async Nexus Operations can run for up to 60 days in Temporal Cloud. The caller workflow is suspended until the result arrives.</p>
+    </div>
+    <div class="card">
+      <div class="tag tag-green">Reliability</div>
+      <h3>At-Least-Once</h3>
+      <p>Nexus Machinery retries failed operations automatically. Pair with workflow ID policies to get exactly-once semantics.</p>
+    </div>
+    <div class="card">
+      <div class="tag tag-purple">Security</div>
+      <h3>Built-in Auth</h3>
+      <p>mTLS encryption and namespace allowlists control who can call what. No API keys flying around in code.</p>
+    </div>
+    <div class="card">
+      <div class="tag tag-amber">Boundaries</div>
+      <h3>Cross-Everything</h3>
+      <p>Works across teams, namespaces, regions (AWS &amp; GCP), and clouds — with the same developer experience everywhere.</p>
+    </div>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('components', document.querySelectorAll('nav button')[1])">Next: Components →</button>
+  </div>
+</div>
+
+<!-- COMPONENTS -->
+<div id="components" class="section">
+  <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+  <h1>The Four Building Blocks</h1>
+  <p class="lead">Nexus has four key concepts. Understanding these unlocks everything else.</p>
+
+  <div style="display:flex;flex-direction:column;gap:20px;">
+
+    <div class="card" style="border-left: 4px solid var(--accent);">
+      <div style="display:flex;align-items:flex-start;gap:16px;">
+        <div style="width:48px;height:48px;border-radius:10px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">1</div>
+        <div style="flex:1">
+          <h2 style="margin-bottom:4px;font-size:17px;">Nexus Endpoint</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:8px;">The address you publish and route through</p>
+          <p>Think of an Endpoint like a <strong>URL for your team's services</strong>. It's a named entry point registered in the Nexus Registry that routes requests to a specific namespace and task queue.</p>
+          <p>It's <em>not</em> a general HTTP proxy — it's specifically designed for Nexus, with built-in auth, retries, and observability.</p>
+          <div style="background:var(--surface2);border-radius:6px;padding:10px 14px;font-size:12px;font-family:monospace;margin-top:8px;">
+            Endpoint: <span style="color:#60a5fa">fraud-detection-prod</span><br>
+            Routes to: <span style="color:#a78bfa">fraud-ns / fraud-task-queue</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid var(--accent2);">
+      <div style="display:flex;align-items:flex-start;gap:16px;">
+        <div style="width:48px;height:48px;border-radius:10px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">2</div>
+        <div style="flex:1">
+          <h2 style="margin-bottom:4px;font-size:17px;">Nexus Service</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:8px;">The contract you publish for others to consume</p>
+          <p>A Service is a <strong>named collection of Nexus Operations</strong> — like an API interface. Multiple services can run in the same worker. Callers import the service definition to get type safety.</p>
+          <p>Example: <code style="color:#a78bfa">fraud.v1</code> service exposes <code>checkTransaction</code>, <code>flagUser</code>, and <code>getScore</code> operations.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid var(--accent3);">
+      <div style="display:flex;align-items:flex-start;gap:16px;">
+        <div style="width:48px;height:48px;border-radius:10px;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">3</div>
+        <div style="flex:1">
+          <h2 style="margin-bottom:4px;font-size:17px;">Nexus Operation</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:8px;">The individual action — sync or async</p>
+
+          <div class="tabs" style="margin-bottom:16px">
+            <button class="tab active" onclick="switchTab('sync-tab', this, 'op-tabs')">Synchronous</button>
+            <button class="tab" onclick="switchTab('async-tab', this, 'op-tabs')">Asynchronous</button>
+          </div>
+          <div id="sync-tab" class="tab-content active" data-group="op-tabs">
+            <p><strong>Synchronous</strong> operations complete in under 10 seconds. The result comes back in the same HTTP round-trip. Great for quick lookups, scoring, or validations.</p>
+            <div style="background:var(--surface2);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--muted);">
+              Caller → [Nexus RPC] → Handler → result → Caller<br>
+              Duration: milliseconds to &lt;10 seconds
+            </div>
+          </div>
+          <div id="async-tab" class="tab-content" data-group="op-tabs">
+            <p><strong>Asynchronous</strong> operations start a Workflow and return an operation token. The caller workflow is suspended. When the handler workflow completes, a callback delivers the result.</p>
+            <div style="background:var(--surface2);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--muted);">
+              Caller → [start] → Handler starts Workflow → [operation token]<br>
+              ...time passes (up to 60 days)...<br>
+              Handler Workflow completes → [callback] → Caller resumes
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid var(--warn);">
+      <div style="display:flex;align-items:flex-start;gap:16px;">
+        <div style="width:48px;height:48px;border-radius:10px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">4</div>
+        <div style="flex:1">
+          <h2 style="margin-bottom:4px;font-size:17px;">Nexus Registry</h2>
+          <p style="color:var(--muted);font-size:12px;margin-bottom:8px;">The directory of all Endpoints in your account</p>
+          <p>Scoped to your Temporal Cloud account or self-hosted cluster. Teams register Endpoints here. The Registry is the source of truth for endpoint discovery, access control, and audit logging.</p>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <div style="background:var(--surface2);border-radius:6px;padding:6px 12px;font-size:12px;">fraud-detection-prod</div>
+            <div style="background:var(--surface2);border-radius:6px;padding:6px 12px;font-size:12px;">kyc-verification-v2</div>
+            <div style="background:var(--surface2);border-radius:6px;padding:6px 12px;font-size:12px;">notifications-global</div>
+            <div style="background:var(--surface2);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--muted);border:1px dashed var(--border);">+ register new</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:right;margin-top:24px">
+    <button class="btn" onclick="showSection('flow', document.querySelectorAll('nav button')[2])">Next: How It Works →</button>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div id="flow" class="section">
+  <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+  <h1>How a Nexus Call Works</h1>
+  <p class="lead">Walk through the step-by-step lifecycle of a Nexus Operation. Choose sync or async.</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchFlowMode('sync')">Synchronous Operation</button>
+    <button class="tab" onclick="switchFlowMode('async')">Asynchronous Operation</button>
+  </div>
+
+  <div class="flow-container">
+    <!-- Diagram -->
+    <div class="flow-diagram" id="flowDiagram">
+      <div class="flow-node" id="fn-caller">
+        <div class="fn-title">Caller Workflow</div>
+        <div class="fn-sub">payments-ns</div>
+      </div>
+
+      <div class="flow-track" id="track1" style="position:relative;">
+        <div class="packet blue hidden" id="pkt-fwd" style="left:-6px;"></div>
+      </div>
+
+      <div class="flow-node" id="fn-endpoint">
+        <div class="fn-title">Nexus Endpoint</div>
+        <div class="fn-sub">Routing + Auth</div>
+      </div>
+
+      <div class="flow-track" id="track2" style="position:relative;">
+        <div class="packet purple hidden" id="pkt-handler" style="left:-6px;"></div>
+        <div class="packet green hidden" id="pkt-return" style="left:calc(100% - 6px);"></div>
+      </div>
+
+      <div class="flow-node" id="fn-handler">
+        <div class="fn-title">Handler Worker</div>
+        <div class="fn-sub" id="fn-handler-sub">fraud-ns</div>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div class="status-log" id="statusLog">
+      <div class="log-line"><span class="ts">[ready] </span><span class="msg">Press "Run Demo" to start the animation</span></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="flow-controls">
+      <button class="btn" onclick="runFlowDemo()">Run Demo</button>
+      <button class="btn secondary" onclick="resetFlow()">Reset</button>
+    </div>
+
+    <!-- Steps -->
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <div style="text-align:right;margin-top:24px">
+    <button class="btn" onclick="showSection('circuit', document.querySelectorAll('nav button')[3])">Next: Reliability →</button>
+  </div>
+</div>
+
+<!-- CIRCUIT BREAKER / RELIABILITY -->
+<div id="circuit" class="section">
+  <div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div>
+  <h1>Built-in Reliability</h1>
+  <p class="lead">Nexus protects callers from handler failures through automatic retries, circuit breaking, and cancellation propagation.</p>
+
+  <h2>Circuit Breaker</h2>
+  <p>If a handler returns 5 consecutive retryable errors, Nexus trips the circuit breaker for that caller↔endpoint pair. This prevents overloading a struggling handler with a flood of retries.</p>
+
+  <div class="cb-visual">
+    <div class="cb-states">
+      <div class="cb-state closed" id="cb-closed">
+        <div class="cs-label" style="color:var(--accent3)">Closed</div>
+        <div class="cs-sub">Normal operation</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--muted);font-size:18px;">→</div>
+      <div class="cb-state inactive" id="cb-open">
+        <div class="cs-label" style="color:var(--danger)">Open</div>
+        <div class="cs-sub">Failing fast</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--muted);font-size:18px;">→</div>
+      <div class="cb-state inactive" id="cb-half">
+        <div class="cs-label" style="color:var(--warn)">Half-Open</div>
+        <div class="cs-sub">Testing recovery</div>
+      </div>
+    </div>
+
+    <div class="cb-meter">
+      <div style="font-size:12px;color:var(--muted);min-width:100px">Consecutive Errors</div>
+      <div class="cb-bar-wrap">
+        <div class="cb-bar" id="cbBar" style="width:0%;background:var(--accent3)"></div>
+      </div>
+      <div class="cb-count" id="cbCount" style="color:var(--accent3)">0/5</div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn danger" onclick="cbFail()" id="cbFailBtn">Simulate Error</button>
+      <button class="btn" style="background:var(--accent3)" onclick="cbSuccess()" id="cbSuccessBtn">Simulate Success</button>
+      <button class="btn secondary" onclick="cbReset()">Reset</button>
+      <div id="cbTimer" style="display:none;align-items:center;padding:8px 14px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--warn);">
+        Auto-reset in <span id="cbTimerVal">60</span>s
+      </div>
+    </div>
+
+    <div id="cbMessage" style="margin-top:16px;padding:12px;border-radius:8px;display:none;font-size:13px;"></div>
+  </div>
+
+  <h2 style="margin-top:32px">Reliability Comparison</h2>
+  <table>
+    <tr>
+      <th>Feature</th>
+      <th>Raw HTTP Call</th>
+      <th>Nexus Operation</th>
+    </tr>
+    <tr>
+      <td>Automatic retries on transient failure</td>
+      <td class="cross">Manual</td>
+      <td class="check">Built-in</td>
+    </tr>
+    <tr>
+      <td>Caller workflow survives worker restart</td>
+      <td class="cross">No</td>
+      <td class="check">Yes (durable)</td>
+    </tr>
+    <tr>
+      <td>Circuit breaking</td>
+      <td class="cross">Manual</td>
+      <td class="check">Automatic</td>
+    </tr>
+    <tr>
+      <td>Cancel propagates to handler</td>
+      <td class="cross">No</td>
+      <td class="check">Yes</td>
+    </tr>
+    <tr>
+      <td>Cross-namespace auth</td>
+      <td class="cross">DIY</td>
+      <td class="check">mTLS + Allowlists</td>
+    </tr>
+    <tr>
+      <td>Bi-directional observability links</td>
+      <td class="cross">No</td>
+      <td class="check">Yes</td>
+    </tr>
+    <tr>
+      <td>Max operation duration</td>
+      <td class="cross">Request timeout</td>
+      <td class="check">Up to 60 days</td>
+    </tr>
+  </table>
+
+  <h2>Cancellation Propagation</h2>
+  <div class="card">
+    <p>When the caller workflow is canceled, Nexus automatically propagates the cancel signal to any pending Nexus Operations. The handler workflow receives the cancel request and the caller gets a <code>CanceledFailure</code> result.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center;font-size:13px;">
+      <div style="background:var(--danger);color:white;padding:4px 12px;border-radius:6px;">Cancel caller</div>
+      <div style="color:var(--muted)">→ Nexus Machinery →</div>
+      <div style="background:rgba(239,68,68,.15);border:1px solid var(--danger);color:#f87171;padding:4px 12px;border-radius:6px;">Cancel pending ops</div>
+      <div style="color:var(--muted)">→</div>
+      <div style="background:rgba(239,68,68,.15);border:1px solid var(--danger);color:#f87171;padding:4px 12px;border-radius:6px;">Cancel handler workflows</div>
+    </div>
+    <p style="margin-top:12px;font-size:12px;">Note: Terminating a caller workflow <em>abandons</em> (does not cancel) pending operations.</p>
+  </div>
+
+  <div style="text-align:right;margin-top:24px">
+    <button class="btn" onclick="showSection('code', document.querySelectorAll('nav button')[4])">Next: Code →</button>
+  </div>
+</div>
+
+<!-- CODE -->
+<div id="code" class="section">
+  <div class="progress-bar"><div class="progress-fill" style="width:83%"></div></div>
+  <h1>Code Walkthrough</h1>
+  <p class="lead">Here's what using Nexus actually looks like in TypeScript. Three steps: define, implement, call.</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('code-define', this, 'code-tabs')">1. Define Service</button>
+    <button class="tab" onclick="switchTab('code-handler', this, 'code-tabs')">2. Implement Handler</button>
+    <button class="tab" onclick="switchTab('code-caller', this, 'code-tabs')">3. Call from Workflow</button>
+  </div>
+
+  <div id="code-define" class="tab-content active" data-group="code-tabs">
+    <p>The service definition is the contract. Both teams share this — usually as a package.</p>
+<pre><span class="cm">// shared/fraud-service.ts (Team B publishes this)</span>
+<span class="kw">import</span> { <span class="ty">defineNexusServiceContract</span>, <span class="ty">WorkflowHandle</span> } <span class="kw">from</span> <span class="str">'@temporalio/nexus'</span>;
+
+<span class="kw">export interface</span> <span class="ty">CheckTransactionInput</span> {
+  transactionId: <span class="ty">string</span>;
+  amount: <span class="ty">number</span>;
+  userId: <span class="ty">string</span>;
+}
+
+<span class="kw">export interface</span> <span class="ty">FraudCheckResult</span> {
+  approved: <span class="ty">boolean</span>;
+  riskScore: <span class="ty">number</span>;
+  reason?: <span class="ty">string</span>;
+}
+
+<span class="cm">// This defines the "contract" both teams agree on</span>
+<span class="kw">export const</span> <span class="fn">fraudService</span> = <span class="fn">defineNexusServiceContract</span>({
+  name: <span class="str">'fraud.v1'</span>,
+  operations: {
+    <span class="cm">// async: runs a full Workflow, can take hours</span>
+    checkTransaction: {
+      input: <span class="ty">WorkflowInput</span>&lt;<span class="ty">CheckTransactionInput</span>&gt;,
+      output: <span class="ty">WorkflowHandle</span>&lt;<span class="ty">FraudCheckResult</span>&gt;,
+    },
+    <span class="cm">// sync: quick score lookup, &lt;10 seconds</span>
+    getQuickScore: {
+      input: <span class="ty">SyncInput</span>&lt;{ userId: <span class="ty">string</span> }&gt;,
+      output: <span class="ty">SyncOutput</span>&lt;{ score: <span class="ty">number</span> }&gt;,
+    }
+  }
+});</pre>
+  </div>
+
+  <div id="code-handler" class="tab-content" data-group="code-tabs">
+    <p>Team B implements the handler in their own worker — using their own workflows internally.</p>
+<pre><span class="cm">// fraud-team/worker.ts (Team B's implementation)</span>
+<span class="kw">import</span> { <span class="ty">NexusWorker</span>, <span class="ty">NewWorkflowRunOperation</span>, <span class="ty">NewSyncOperation</span> } <span class="kw">from</span> <span class="str">'@temporalio/nexus'</span>;
+<span class="kw">import</span> { <span class="fn">fraudService</span> } <span class="kw">from</span> <span class="str">'../shared/fraud-service'</span>;
+
+<span class="kw">const</span> <span class="fn">fraudHandler</span> = <span class="fn">fraudService</span>.implement({
+  <span class="cm">// Async: delegate to internal Workflow</span>
+  checkTransaction: <span class="fn">NewWorkflowRunOperation</span>({
+    <span class="kw">async</span> <span class="fn">start</span>(input, ctx) {
+      <span class="kw">const</span> client = ctx.getClient();
+      <span class="cm">// Team B starts their OWN workflow internally</span>
+      <span class="kw">return</span> <span class="kw">await</span> client.workflow.<span class="fn">start</span>(FraudCheckWorkflow, {
+        args: [input],
+        taskQueue: <span class="str">'fraud-task-queue'</span>,
+        workflowId: <span class="str">`fraud-</span>${input.transactionId}<span class="str">`</span>,
+      });
+    }
+  }),
+
+  <span class="cm">// Sync: fast lookup, no Workflow needed</span>
+  getQuickScore: <span class="fn">NewSyncOperation</span>({
+    <span class="kw">async</span> <span class="fn">handler</span>(input) {
+      <span class="kw">const</span> score = <span class="kw">await</span> <span class="fn">scoreCache</span>.<span class="fn">get</span>(input.userId);
+      <span class="kw">return</span> { score };
+    }
+  }),
+});
+
+<span class="cm">// Run a Worker that polls the Endpoint's task queue</span>
+<span class="kw">const</span> worker = <span class="kw">await</span> <span class="ty">NexusWorker</span>.<span class="fn">create</span>({
+  taskQueue: <span class="str">'fraud-task-queue'</span>,
+  nexusServices: [fraudHandler],
+});</pre>
+  </div>
+
+  <div id="code-caller" class="tab-content" data-group="code-tabs">
+    <p>Team A calls the Nexus Service from their Workflow — it looks just like calling any other activity.</p>
+<pre><span class="cm">// payments-team/workflow.ts (Team A's caller)</span>
+<span class="kw">import</span> { <span class="ty">proxyActivities</span>, <span class="ty">executeNexusOperation</span> } <span class="kw">from</span> <span class="str">'@temporalio/workflow'</span>;
+<span class="kw">import</span> { <span class="fn">fraudService</span> } <span class="kw">from</span> <span class="str">'../shared/fraud-service'</span>; <span class="cm">// shared package</span>
+
+<span class="kw">export async function</span> <span class="fn">PaymentWorkflow</span>(payment: <span class="ty">Payment</span>): <span class="ty">Promise</span>&lt;<span class="ty">Result</span>&gt; {
+  <span class="cm">// 1. Call the Nexus Operation — fully durable, typed</span>
+  <span class="kw">const</span> fraudResult = <span class="kw">await</span> <span class="fn">executeNexusOperation</span>({
+    endpoint: <span class="str">'fraud-detection-prod'</span>, <span class="cm">// Nexus Endpoint name</span>
+    service: fraudService,
+    operation: fraudService.operations.checkTransaction,
+    input: {
+      transactionId: payment.id,
+      amount: payment.amount,
+      userId: payment.userId,
+    },
+    <span class="cm">// Total duration caller will wait (up to 60 days)</span>
+    scheduleToCloseTimeout: <span class="str">'24h'</span>,
+  });
+
+  <span class="cm">// 2. Caller workflow was suspended during the check</span>
+  <span class="cm">// Now it has the result — fully typed!</span>
+  <span class="kw">if</span> (!fraudResult.approved) {
+    <span class="kw">throw</span> <span class="kw">new</span> <span class="ty">Error</span>(<span class="str">`Fraud detected: </span>${fraudResult.reason}<span class="str">`</span>);
+  }
+
+  <span class="kw">return</span> <span class="fn">processApprovedPayment</span>(payment);
+}</pre>
+    <div class="card" style="border-color:var(--accent3);background:rgba(16,185,129,.04);margin-top:0">
+      <p style="margin:0;font-size:13px;color:#34d399;">The caller never imports Team B's internal code. If Team B changes their implementation — swapping FraudCheckWorkflow for a new ML model — Team A's code doesn't change at all.</p>
+    </div>
+  </div>
+
+  <div style="text-align:right;margin-top:24px">
+    <button class="btn" onclick="showSection('quiz', document.querySelectorAll('nav button')[5])">Next: Test Yourself →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="section">
+  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  <h1>Test Your Understanding</h1>
+  <p class="lead">Check what you've learned. Click an answer to see if you're right.</p>
+
+  <div id="quizContainer"></div>
+  <div id="quizScore" style="display:none;text-align:center;padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-top:24px;">
+    <div style="font-size:48px;margin-bottom:12px;" id="scoreEmoji">🎯</div>
+    <div style="font-size:24px;font-weight:700;margin-bottom:8px;" id="scoreText"></div>
+    <div style="color:var(--muted);margin-bottom:20px;" id="scoreSub"></div>
+    <button class="btn secondary" onclick="resetQuiz()">Try Again</button>
+  </div>
+</div>
+
+<script>
+// ──────────────────────────────────────────────
+// NAV
+// ──────────────────────────────────────────────
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+  if (id === 'flow') initFlow();
+}
+
+// ──────────────────────────────────────────────
+// TABS
+// ──────────────────────────────────────────────
+function switchTab(id, btn, group) {
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`[data-group="${group}"] ~ button, button`).forEach(() => {});
+  btn.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// ──────────────────────────────────────────────
+// FLOW DEMO
+// ──────────────────────────────────────────────
+let flowMode = 'sync';
+let flowRunning = false;
+
+const syncSteps = [
+  { title: 'Caller Workflow executes operation', desc: 'ExecuteNexusOperation called in the Workflow code', badge: 'Caller', bcolor: 'var(--accent)' },
+  { title: 'ScheduleNexusOperation command issued', desc: 'Worker sends command to Temporal Server', badge: 'Server', bcolor: 'var(--muted)' },
+  { title: 'NexusOperationScheduled event recorded', desc: 'Event written to workflow history', badge: 'History', bcolor: 'var(--muted)' },
+  { title: 'Nexus Machinery makes RPC to Endpoint', desc: 'Server calls the Nexus Endpoint with auth', badge: 'Nexus', bcolor: 'var(--accent2)' },
+  { title: 'Handler Worker picks up Nexus Task', desc: 'Worker polling fraud-task-queue gets the task', badge: 'Handler', bcolor: 'var(--accent2)' },
+  { title: 'Handler runs sync operation (&lt;10s)', desc: 'Executes code synchronously — query, lookup, etc.', badge: 'Sync', bcolor: 'var(--accent3)' },
+  { title: 'Result returned via HTTP response', desc: 'Handler responds with operation result', badge: 'Result', bcolor: 'var(--accent3)' },
+  { title: 'NexusOperationCompleted recorded', desc: 'Result written to caller workflow history', badge: 'Done', bcolor: 'var(--accent3)' },
+  { title: 'Caller Workflow resumes with result', desc: 'Workflow code continues from executeNexusOperation()', badge: 'Done', bcolor: 'var(--accent3)' },
+];
+
+const asyncSteps = [
+  { title: 'Caller Workflow executes operation', desc: 'ExecuteNexusOperation called — workflow will suspend', badge: 'Caller', bcolor: 'var(--accent)' },
+  { title: 'ScheduleNexusOperation command issued', desc: 'Worker sends command to Temporal Server', badge: 'Server', bcolor: 'var(--muted)' },
+  { title: 'Nexus Machinery starts operation', desc: 'Server sends start request to the Endpoint', badge: 'Nexus', bcolor: 'var(--accent2)' },
+  { title: 'Handler starts a Workflow', desc: 'NewWorkflowRunOperation starts FraudCheckWorkflow internally', badge: 'Handler', bcolor: 'var(--accent2)' },
+  { title: 'Operation token returned to caller', desc: 'NexusOperationStarted event recorded; caller is now suspended', badge: 'Async', bcolor: 'var(--warn)' },
+  { title: '...Handler Workflow runs (minutes/hours/days)...', desc: 'Caller workflow is paused. Time passes. Server waits.', badge: 'Wait', bcolor: 'var(--warn)' },
+  { title: 'Handler Workflow completes', desc: 'Result produced by FraudCheckWorkflow', badge: 'Handler', bcolor: 'var(--accent2)' },
+  { title: 'Completion Callback delivered', desc: 'Nexus Machinery delivers result back to caller namespace', badge: 'Callback', bcolor: 'var(--accent3)' },
+  { title: 'Caller Workflow resumes', desc: 'NexusOperationCompleted recorded; workflow continues', badge: 'Done', bcolor: 'var(--accent3)' },
+];
+
+function switchFlowMode(mode) {
+  flowMode = mode;
+  document.querySelectorAll('#flow .tab').forEach((t,i) => t.classList.toggle('active', i===(mode==='sync'?0:1)));
+  document.getElementById('fn-handler-sub').textContent = mode === 'async' ? 'fraud-ns (starts workflow)' : 'fraud-ns';
+  resetFlow();
+  initFlow();
+}
+
+function initFlow() {
+  const steps = flowMode === 'sync' ? syncSteps : asyncSteps;
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = steps.map((s,i) => `
+    <div class="tl-step" id="step-${i}">
+      <div class="tl-num">${i+1}</div>
+      <div class="tl-content">
+        <div class="tl-title">${s.title}
+          <span class="tl-badge" style="background:rgba(0,0,0,.3);border:1px solid ${s.bcolor};color:${s.bcolor}">${s.badge}</span>
+        </div>
+        <div class="tl-desc">${s.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function log(msg, type='') {
+  const log = document.getElementById('statusLog');
+  const now = new Date().toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="ts">[${now}] </span><span class="ev ${type}">${msg}</span>`;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+function setActiveNode(nodeId) {
+  document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active-node'));
+  if (nodeId) document.getElementById(nodeId).classList.add('active-node');
+}
+
+async function animatePacket(pktId, from, to, color) {
+  const pkt = document.getElementById(pktId);
+  if (!pkt) return;
+  pkt.classList.remove('hidden');
+  pkt.style.left = from;
+  await sleep(50);
+  pkt.style.left = to;
+  await sleep(700);
+  pkt.classList.add('hidden');
+}
+
+async function runFlowDemo() {
+  if (flowRunning) return;
+  flowRunning = true;
+  resetFlow(false);
+  initFlow();
+
+  const steps = flowMode === 'sync' ? syncSteps : asyncSteps;
+  const nodeSequence = flowMode === 'sync'
+    ? ['fn-caller','fn-caller','fn-caller','fn-endpoint','fn-handler','fn-handler','fn-handler','fn-caller','fn-caller']
+    : ['fn-caller','fn-caller','fn-endpoint','fn-handler','fn-caller','fn-caller','fn-handler','fn-endpoint','fn-caller'];
+
+  for (let i = 0; i < steps.length; i++) {
+    const stepEl = document.getElementById(`step-${i}`);
+    stepEl.classList.add('active');
+    setActiveNode(nodeSequence[i]);
+
+    // animate packets at key moments
+    if (i === 3) await animatePacket('pkt-fwd', '-6px', 'calc(50% - 6px)', 'blue');
+    if (i === 4) await animatePacket('pkt-handler', '-6px', 'calc(100% - 6px)', 'purple');
+    if (i === 6 && flowMode === 'sync') await animatePacket('pkt-return', 'calc(100% - 6px)', '-6px', 'green');
+    if (i === 7 && flowMode === 'async') await animatePacket('pkt-return', 'calc(100% - 6px)', '-6px', 'green');
+
+    log(steps[i].title.replace(/<[^>]+>/g,''), i >= steps.length - 2 ? 'success' : (i === 5 && flowMode === 'async' ? 'warn' : ''));
+    await sleep(i === 5 && flowMode === 'async' ? 1500 : 800);
+    stepEl.classList.remove('active');
+    stepEl.classList.add('done');
+  }
+
+  setActiveNode(null);
+  log('Operation complete!', 'success');
+  flowRunning = false;
+}
+
+function resetFlow(reinit=true) {
+  flowRunning = false;
+  document.getElementById('statusLog').innerHTML = '<div class="log-line"><span class="ts">[ready] </span><span class="msg">Press "Run Demo" to start</span></div>';
+  document.querySelectorAll('.tl-step').forEach(s => { s.classList.remove('active','done'); });
+  document.querySelectorAll('.packet').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active-node'));
+  if (reinit) initFlow();
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ──────────────────────────────────────────────
+// CIRCUIT BREAKER
+// ──────────────────────────────────────────────
+let cbErrors = 0;
+let cbState = 'closed'; // closed, open, half-open
+let cbTimerInterval = null;
+
+function cbUpdateUI() {
+  const states = ['cb-closed','cb-open','cb-half'];
+  const activeMap = { closed: 'cb-closed', open: 'cb-open', 'half-open': 'cb-half' };
+  states.forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.toggle('inactive', el.id !== activeMap[cbState]);
+  });
+
+  const pct = Math.min((cbErrors / 5) * 100, 100);
+  const bar = document.getElementById('cbBar');
+  const count = document.getElementById('cbCount');
+  bar.style.width = pct + '%';
+
+  if (cbErrors < 3) { bar.style.background = 'var(--accent3)'; count.style.color = 'var(--accent3)'; }
+  else if (cbErrors < 5) { bar.style.background = 'var(--warn)'; count.style.color = 'var(--warn)'; }
+  else { bar.style.background = 'var(--danger)'; count.style.color = 'var(--danger)'; }
+
+  count.textContent = `${Math.min(cbErrors,5)}/5`;
+}
+
+function cbShowMessage(msg, color) {
+  const el = document.getElementById('cbMessage');
+  el.style.display = 'block';
+  el.style.background = `rgba(${color},.1)`;
+  el.style.color = `rgb(${color})`;
+  el.style.border = `1px solid rgba(${color},.3)`;
+  el.textContent = msg;
+}
+
+function cbFail() {
+  if (cbState === 'open') {
+    cbShowMessage('Circuit is OPEN — request fails immediately without calling handler. This protects the handler from more load.', '239,68,68');
+    return;
+  }
+  cbErrors++;
+  cbUpdateUI();
+
+  if (cbErrors >= 5 && cbState !== 'open') {
+    cbState = 'open';
+    cbUpdateUI();
+    cbShowMessage('Circuit TRIPPED! 5 consecutive errors. Requests will fail fast for 60 seconds to let the handler recover.', '239,68,68');
+    document.getElementById('cbTimer').style.display = 'flex';
+    let t = 60;
+    document.getElementById('cbTimerVal').textContent = t;
+    cbTimerInterval = setInterval(() => {
+      t--;
+      document.getElementById('cbTimerVal').textContent = t;
+      if (t <= 0) {
+        clearInterval(cbTimerInterval);
+        document.getElementById('cbTimer').style.display = 'none';
+        cbState = 'half-open';
+        cbErrors = 4;
+        cbUpdateUI();
+        cbShowMessage('Circuit is HALF-OPEN. Next request will test if the handler has recovered.', '245,158,11');
+      }
+    }, 1000);
+  } else if (cbState === 'closed') {
+    cbShowMessage(`Error ${cbErrors}/5. Nexus will retry automatically. ${5 - cbErrors} more consecutive errors will trip the circuit.`, '239,68,68');
+  } else if (cbState === 'half-open') {
+    cbState = 'open';
+    cbErrors = 5;
+    cbUpdateUI();
+    cbShowMessage('Test request failed — circuit re-opens. Waiting another 60 seconds.', '239,68,68');
+  }
+}
+
+function cbSuccess() {
+  if (cbState === 'open') {
+    cbShowMessage('Circuit is OPEN — success not possible right now. Wait for half-open state.', '245,158,11');
+    return;
+  }
+  if (cbState === 'half-open') {
+    cbState = 'closed';
+    cbErrors = 0;
+    clearInterval(cbTimerInterval);
+    document.getElementById('cbTimer').style.display = 'none';
+    cbUpdateUI();
+    cbShowMessage('Success! Circuit is CLOSED again. Handler has recovered.', '16,185,129');
+    return;
+  }
+  if (cbErrors > 0) {
+    cbErrors = Math.max(0, cbErrors - 1);
+    cbUpdateUI();
+  }
+  cbShowMessage('Success! Error count reset to 0. Circuit remains closed.', '16,185,129');
+  cbErrors = 0;
+  cbUpdateUI();
+}
+
+function cbReset() {
+  clearInterval(cbTimerInterval);
+  cbErrors = 0;
+  cbState = 'closed';
+  document.getElementById('cbTimer').style.display = 'none';
+  document.getElementById('cbMessage').style.display = 'none';
+  cbUpdateUI();
+}
+
+// ──────────────────────────────────────────────
+// QUIZ
+// ──────────────────────────────────────────────
+const quizData = [
+  {
+    q: "What problem does Temporal Nexus primarily solve?",
+    options: [
+      "Making workflows run faster",
+      "Connecting workflows across team and namespace boundaries safely",
+      "Replacing HTTP APIs entirely",
+      "Scheduling recurring jobs"
+    ],
+    correct: 1,
+    explanation: "Nexus is specifically designed to connect durable executions across team, namespace, region, and cloud boundaries — enabling modular architecture without tight coupling."
+  },
+  {
+    q: "What is the maximum duration of an asynchronous Nexus Operation in Temporal Cloud?",
+    options: ["10 seconds", "24 hours", "60 days", "1 year"],
+    correct: 2,
+    explanation: "Async Nexus Operations can run for up to 60 days in Temporal Cloud (Schedule-to-Close timeout). This is what makes Nexus suitable for long-running cross-team operations."
+  },
+  {
+    q: "A synchronous Nexus Operation must complete within:",
+    options: ["1 second", "10 seconds", "1 minute", "1 hour"],
+    correct: 1,
+    explanation: "Synchronous operations must complete within 10 seconds. For longer work, use asynchronous operations backed by a Workflow."
+  },
+  {
+    q: "What is a Nexus Endpoint?",
+    options: [
+      "A general-purpose HTTP reverse proxy",
+      "A named router that maps to a target namespace and task queue",
+      "A workflow definition",
+      "The Temporal Cloud UI"
+    ],
+    correct: 1,
+    explanation: "A Nexus Endpoint is NOT a general HTTP proxy — it's a specifically-designed router with auth, retries, and observability, pointing to a handler namespace and task queue."
+  },
+  {
+    q: "How many consecutive retryable errors trip the Nexus circuit breaker?",
+    options: ["1", "3", "5", "10"],
+    correct: 2,
+    explanation: "The circuit breaker trips after 5 consecutive retryable errors. It then enters an 'open' state for 60 seconds before transitioning to 'half-open' to test recovery."
+  },
+  {
+    q: "If a caller workflow is CANCELED, what happens to pending Nexus Operations?",
+    options: [
+      "They continue running independently",
+      "They are terminated immediately",
+      "Cancel is propagated to them",
+      "Nothing — they timeout naturally"
+    ],
+    correct: 2,
+    explanation: "Cancellation propagates automatically through Nexus. Canceling the caller workflow sends a cancel signal to all pending Nexus Operations, which then cancel their handler workflows."
+  },
+  {
+    q: "What does Team A need from Team B to call a Nexus Service?",
+    options: [
+      "Access to Team B's namespace and credentials",
+      "A copy of Team B's workflow code",
+      "Only the shared service contract definition",
+      "Team B's database connection string"
+    ],
+    correct: 2,
+    explanation: "Team A only needs the shared service contract (the defineNexusServiceContract definition). Team B's internal implementation details — which workflows they use, how they work — are completely hidden."
+  }
+];
+
+let quizAnswers = [];
+let quizRendered = false;
+
+function renderQuiz() {
+  quizAnswers = new Array(quizData.length).fill(null);
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = quizData.map((q, qi) => `
+    <div class="quiz-card animate-in" style="animation-delay:${qi*0.05}s">
+      <div class="quiz-q">Q${qi+1}. ${q.q}</div>
+      <div class="quiz-options">
+        ${q.options.map((opt, oi) => `
+          <button class="quiz-opt" onclick="answerQuiz(${qi}, ${oi}, this)">${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="feedback-${qi}"></div>
+    </div>
+  `).join('');
+  document.getElementById('quizScore').style.display = 'none';
+}
+
+function answerQuiz(qi, oi, btn) {
+  if (quizAnswers[qi] !== null) return;
+  quizAnswers[qi] = oi;
+
+  const q = quizData[qi];
+  const opts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+
+  if (oi === q.correct) {
+    btn.classList.add('correct');
+    showFeedback(qi, true, 'Correct! ' + q.explanation);
+  } else {
+    btn.classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    showFeedback(qi, false, 'Not quite. ' + q.explanation);
+  }
+
+  if (quizAnswers.every(a => a !== null)) {
+    setTimeout(showScore, 500);
+  }
+}
+
+function showFeedback(qi, correct, msg) {
+  const el = document.getElementById(`feedback-${qi}`);
+  el.textContent = msg;
+  el.className = `quiz-feedback show ${correct ? 'correct' : 'wrong'}`;
+}
+
+function showScore() {
+  const correct = quizAnswers.filter((a, i) => a === quizData[i].correct).length;
+  const pct = Math.round((correct / quizData.length) * 100);
+  const scoreEl = document.getElementById('quizScore');
+  scoreEl.style.display = 'block';
+  scoreEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  document.getElementById('scoreText').textContent = `${correct} / ${quizData.length} correct (${pct}%)`;
+  if (pct >= 85) {
+    document.getElementById('scoreEmoji').textContent = 'You got it';
+    document.getElementById('scoreSub').textContent = "You have a solid grasp of Temporal Nexus. You're ready to build.";
+  } else if (pct >= 57) {
+    document.getElementById('scoreEmoji').textContent = 'Getting there';
+    document.getElementById('scoreSub').textContent = "Good foundation. Review the sections on the topics you missed.";
+  } else {
+    document.getElementById('scoreEmoji').textContent = 'Keep exploring';
+    document.getElementById('scoreSub').textContent = "Go back through the demo — the concepts will click. Try again when ready.";
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+}
+
+// ──────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initFlow();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
