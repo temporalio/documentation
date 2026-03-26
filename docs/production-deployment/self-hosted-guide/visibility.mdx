@@ -3,9 +3,9 @@ id: visibility
 title: Self-hosted Visibility feature setup
 sidebar_label: Visibility
 description:
-  A Visibility store is essential for your Temporal Service, supporting features like batch operations and custom Search
-  Attributes for filtering Workflow Executions. Upgrade to PostgreSQL 12, MySQL 8.0.17, or SQLite 3.31.0 with Temporal
-  Server 1.20+ for advanced Visibility
+  A Visibility store is essential for your Temporal Service, supporting features like batch operations and Search
+  Attribute-based filtering for Workflow Executions. For current self-hosted deployments, use advanced Visibility on
+  PostgreSQL 12+, MySQL 8.0.17+, SQLite 3.31.0+, Elasticsearch, or OpenSearch.
 slug: /self-hosted-guide/visibility
 toc_max_heading_level: 4
 keywords:
@@ -23,57 +23,56 @@ A [Visibility](/temporal-service/visibility) store is set up as a part of your
 [Persistence store](/temporal-service/persistence) to enable listing and filtering details about Workflow Executions
 that exist on your Temporal Service.
 
-A Visibility store is required in a Temporal Service setup because it is used by Temporal Web UI and CLI to pull
-Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
+A Visibility store is required in a Temporal Service setup because it is used by [Temporal Web UI](/web-ui) and
+[Temporal CLI](/cli) to pull [Workflow Execution](/workflow-execution) data and enables features like batch operations
+on a group of Workflow Executions.
 
 With the Visibility store, you can use [List Filters](/list-filter) with [Search Attributes](/search-attribute) to list
-and filter Workflow Executions that you want to review.
+and filter Workflow Executions that you want to review or act upon.
 
-Setting up [advanced Visibility](/visibility#advanced-visibility) enables access to creating and using multiple custom
-Search Attributes with your List Filters.
+Supported Visibility stores include:
 
-For details, see [Search Attributes](/search-attribute).
+- Elasticsearch v7 with Temporal Server v1.7 and later
+- Elasticsearch v8 with Temporal Server v1.18 and later
+- OpenSearch 2+ with Temporal Server v1.30.1 and later
+- MySQL v8.0.17 and later with Temporal Server v1.20 and later
+- PostgreSQL v12 and later with Temporal Server v1.20 and later
+- SQLite v3.31.0 and later with Temporal Server v1.20 and later
 
-Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later
-supports advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite
-(v3.31.0 and later), in addition to Elasticsearch.
+## Current and legacy Visibility support {#supported-databases}
 
-To enable advanced Visibility on your SQL databases, ensure that you do the following:
+[Advanced Visibility](/visibility#advanced-visibility) is the current generation of Temporal Visibility. It supports the
+modern query model, including [custom Search Attributes](/search-attribute#custom-search-attribute).
 
-- [Upgrade your Temporal Server](/self-hosted-guide/upgrade-server#upgrade-server) to version 1.20 or later.
-- [Update your database schemas](/self-hosted-guide/upgrade-server#upgrade-server) for MySQL to version 8.0.17 (or
-  later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
+This page also includes guidance for the legacy (deprecated in Temporal Server v1.21 and removed in v1.24)
+[standard Visibility](#legacy-standard-visibility) model for older deployments and migration work. In this context,
+"advanced" and "standard (legacy)" refer to the current and legacy generations of Temporal Visibility, respectively.
 
-Beginning with Temporal Server v1.21, you can set up a secondary Visibility store in your Temporal Service to enable
-[Dual Visibility](/dual-visibility). This is useful for migrating your Visibility store database.
+The following compatibility matrix summarizes which generation of Visibility each store supports and the Temporal Server
+versions required:
 
-#### Supported databases
-
-The following databases are supported as Visibility stores:
-
-- [MySQL](#mysql) v5.7 and later. Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility
-  capabilities. Because standard Visibility is deprecated beginning with Temporal Server v1.21, support for older
-  versions of MySQL will be dropped.
-- [PostgreSQL](#postgresql) v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later for advanced
-  Visibility capabilities. Because standard Visibility is deprecated beginning with Temporal Server v1.21, support for
-  older versions of PostgreSQL will be dropped.
-- [SQLite](#sqlite) v3.31.0 and later for advanced Visibility capabilities.
-- [Cassandra](#cassandra). Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server
-  v1.21. For information on migrating from Cassandra to any of the supported databases, see
-  [Migrating Visibility database](#migrating-visibility-database).
-- [Elasticsearch](#elasticsearch) supported versions. We recommend operating a Temporal Service with Elasticsearch as
-  your Visibility store for any use case that spawns more than a few Workflow Executions.
+| Store                                                                                                               | Advanced Visibility (current)                                                                                                                                    | Standard Visibility (legacy)                                          |
+| :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| [Elasticsearch](#elasticsearch) <br/><br/>Recommended for any setup that spawns more than a few Workflow Executions | v7 on Temporal Server v1.7+, v8 on Temporal Server v1.18+                                                                                                        | Not supported                                                         |
+| [OpenSearch](#elasticsearch)                                                                                        | 2+ on Temporal Server v1.30.1+                                                                                                                                   | Not supported                                                         |
+| [MySQL](#mysql)                                                                                                     | v8.0.17+ on Temporal Server v1.20+                                                                                                                               | v5.7+ on older deployments before Temporal Server v1.24               |
+| [PostgreSQL](#postgresql)                                                                                           | v12+ on Temporal Server v1.20+                                                                                                                                   | v9.6+ on older deployments before Temporal Server v1.24               |
+| [SQLite](#sqlite)                                                                                                   | v3.31.0+ on Temporal Server v1.20+                                                                                                                               | Not supported                                                         |
+| [Cassandra](#cassandra)                                                                                             | Not supported.<br/><br/>To migrate from Cassandra to a supported advanced Visibility store, see [Migrating Visibility database](#migrating-visibility-database). | Deprecated in Temporal Server v1.21, removed in Temporal Server v1.24 |
 
 You can use any combination of the supported databases for your Persistence and Visibility stores. For updates, check
 [Server release notes](https://github.com/temporalio/temporal/releases).
+
+Temporal Server v1.21 introduced support for a secondary Visibility store in your Temporal Service to enable
+[Dual Visibility](/dual-visibility). This is useful for migrating your Visibility store database.
 
 ## How to set up MySQL Visibility store {#mysql}
 
 :::tip Support, stability, and dependency info
 
 - MySQL v5.7 and later.
-- Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20.
-- With Temporal Server version 1.20 and later, advanced Visibility is available on MySQL v8.0.17 and later.
+- Advanced Visibility is available on MySQL v8.0.17 and later with Temporal Server v1.20 and later.
+- MySQL v5.7 support applied to older standard Visibility deployments before Temporal Server v1.24.
 
 :::
 
@@ -136,24 +135,28 @@ The following example shows how to set up your MySQL as both your persistence an
 with different databases.
 
 {/* SNIPSTART compose-mysql-setup */}
-[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-mysql.sh)
+[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql.sh)
 ```sh
 set -eu
 
+# Validate required environment variables
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
 echo 'Starting MySQL schema setup...'
 echo 'Waiting for MySQL port to be available...'
-nc -z -w 10 mysql 3306
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
 echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Create and setup visibility database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
 
 echo 'MySQL schema setup complete'
 ```
@@ -168,9 +171,9 @@ to run the setup.
 :::tip Support, stability, and dependency info
 
 - PostgreSQL v9.6 and later.
-- With Temporal Service version 1.20 and later, advanced Visibility is available on PostgreSQL v12 and later.
-- Support for PostgreSQL v9.6 through v11 will be deprecated for all Temporal Server versions after v1.20; we recommend
-  upgrading to PostgreSQL 12 or later.
+- Advanced Visibility is available on PostgreSQL v12 and later with Temporal Server v1.20 and later.
+- PostgreSQL v9.6 through v11 support applied to older standard Visibility deployments before Temporal Server v1.24. We
+  recommend upgrading to PostgreSQL 12 or later.
 
 :::
 
@@ -227,24 +230,28 @@ The following example shows how to set up your PostgreSQL as both persistence an
 with different databases.
 
 {/* SNIPSTART compose-postgres-setup */}
-[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-postgres.sh)
+[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-postgres.sh)
 ```sh
 set -eu
 
+# Validate required environment variables
+: "${POSTGRES_SEEDS:?ERROR: POSTGRES_SEEDS environment variable is required}"
+: "${POSTGRES_USER:?ERROR: POSTGRES_USER environment variable is required}"
+
 echo 'Starting PostgreSQL schema setup...'
 echo 'Waiting for PostgreSQL port to be available...'
-nc -z -w 10 postgresql 5432
+nc -z -w 10 ${POSTGRES_SEEDS} ${DB_PORT:-5432}
 echo 'PostgreSQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
 
 # Create and setup visibility database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
 
 echo 'PostgreSQL schema setup complete'
 ```
@@ -325,25 +332,26 @@ https://github.com/temporalio/temporal/blob/main/schema/sqlite/v3/visibility/sch
 For an example of setting up the SQLite schema, see
 [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
 
-## How to set up Cassandra Visibility store {#cassandra}
+## Legacy standard Visibility configuration {#legacy-standard-visibility}
+
+The following section applies to older self-hosted deployments that still use standard Visibility. For new deployments,
+use one of the advanced Visibility backends described earlier on this page.
+
+### How to set up Cassandra Visibility store {#cassandra}
 
 :::tip Support, stability, and dependency info
 
-- Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21. For updates, check
-  the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
+- Cassandra supported only standard Visibility. Standard Visibility was deprecated in Temporal Server v1.21 and removed
+  in v1.24. For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
 - We recommend migrating from Cassandra to any of the other supported databases for Visibility.
 
 :::
 
-You can set Cassandra as your [Visibility store](/temporal-service/visibility). Verify
-[supported versions](/self-hosted-guide/visibility) before you proceed.
-
 Advanced Visibility is not supported with Cassandra.
 
-To enable advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or
-Elasticsearch, as your Visibility store. We recommend using Elasticsearch for any Temporal Service setup that handles
-more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize
-performance.
+To enable current Visibility features, use MySQL, PostgreSQL, SQLite, Elasticsearch, or OpenSearch as your Visibility
+store. We recommend Elasticsearch or OpenSearch for any Temporal Service setup that handles more than a few Workflow
+Executions because these backends support the Visibility request load and help optimize performance.
 
 To migrate from Cassandra to a supported SQL database, see
 [Migrating Visibility database](#migrating-visibility-database).
@@ -413,21 +421,31 @@ setup_cassandra_schema() {
 }
 ```
 
-## How to integrate Elasticsearch into a Temporal Service {#elasticsearch}
+## How to integrate Elasticsearch or OpenSearch into a Temporal Service {#elasticsearch}
 
-You can integrate Elasticsearch with your Temporal Service as your Visibility store. We recommend using Elasticsearch
-for large-scale operations on the Temporal Service.
+You can integrate Elasticsearch or OpenSearch with your Temporal Service as your Visibility store. We recommend using
+one of these backends for large-scale operations on the Temporal Service.
 
-To integrate Elasticsearch with your Temporal Service, edit the `persistence` section of your `development.yaml`
-configuration file to add Elasticsearch as the `visibilityStore`, and run the index schema setup commands.
+To integrate Elasticsearch or OpenSearch with your Temporal Service, edit the `persistence` section of your
+`development.yaml` configuration file to add the search backend as the `visibilityStore`, and run the index schema setup
+commands.
+
+Use the following version guidance:
+
+- Elasticsearch v7 is supported with Temporal Server v1.7 and later.
+- Elasticsearch v8 is supported with Temporal Server v1.18 and later.
+- OpenSearch 2+ is supported with Temporal Server v1.30.1 and later.
+
+The examples in this section use Elasticsearch. For OpenSearch, use the same datastore configuration shape and
+operational flow unless a release note for your target Temporal Server version says otherwise.
 
 ### Persistence configuration
 
-Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and
-then define the Visibility store configuration under `datastores`.
+Set your Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the
+search backend configuration under `datastores`.
 
-The following example shows how to set a Visibility store named `es-visibility` and define the datastore configuration
-in your Temporal Service configuration YAML.
+The following example shows how to set a Visibility store named `es-visibility` and define the Elasticsearch datastore
+configuration in your Temporal Service configuration YAML.
 
 ```yaml
 persistence:
@@ -455,7 +473,7 @@ The following example shows how to set up an Elasticsearch Visibility store with
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
 
 {/* SNIPSTART compose-mysql-es-setup */}
-[compose/scripts/setup-mysql-es.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-mysql-es.sh)
+[compose/scripts/setup-mysql-es.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql-es.sh)
 ```sh
 set -eu
 
@@ -466,15 +484,18 @@ set -eu
 : "${ES_VISIBILITY_INDEX:?ERROR: ES_VISIBILITY_INDEX environment variable is required}"
 : "${ES_VERSION:?ERROR: ES_VERSION environment variable is required}"
 
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
 echo 'Starting MySQL and Elasticsearch schema setup...'
 echo 'Waiting for MySQL port to be available...'
-nc -z -w 10 mysql 3306
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
 echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Setup Elasticsearch index
 # temporal-elasticsearch-tool is available in v1.30+ server releases
@@ -847,22 +868,25 @@ When you are ready to deprecate your primary store, follow these steps.
 
 ## Managing custom Search Attributes {#custom-search-attributes}
 
-To manage your custom Search Attributes on Temporal Cloud, use `tcld`. With Temporal Cloud, you can create and rename
-custom Search Attributes.
+To manage custom Search Attributes on Temporal Cloud, use the [`tcld`](/cloud/tcld/namespace#search-attributes) CLI tool.
+With Temporal Cloud, you can create and rename custom Search Attributes. If you need to delete a custom Search Attribute, contact Support at [support.temporal.io](https://support.temporal.io).
+To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/operator#search-attribute).
+With a self-hosted Temporal Service, you can create and remove custom Search Attributes.
 
-To manage your custom Search Attributes on self-hosted Temporal Clusters, use Temporal CLI. With self-hosted Temporal
-Service, you can create and remove custom Search Attributes. Note that if you use
-[SQL databases](/self-hosted-guide/visibility) with Temporal Server v1.20 and later, creating a custom Search Attribute
-creates a mapping with a database field name in the Visibility store `custom_search_attributes` table. Removing a custom
-Search Attribute removes this mapping with the database field name but does not remove the data. If you remove a custom
-Search Attribute and add a new one, the new custom Search Attribute might be mapped to the database field of the one
-that was recently removed. This might cause unexpected results when you use the List API to retrieve results using the
-new custom Search Attribute. These constraints do not apply if you use Elasticsearch.
+If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#current-and-legacy-visibility-support) version supports custom Search Attributes before proceeding. 
+
+:::caution Do not use sensitive data or PII in Search Attributes
+
+Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/dataconversion#payload-codec).
+The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
+
+Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.
+Using sensitive data in either names or values risks exposure to anyone with Namespace access and may violate data protection regulations such as GDPR, HIPAA, or SOC 2.
+
+:::
 
 ### How to create custom Search Attributes {#create-custom-search-attributes}
-
-Add custom Search Attributes to your Visibility store using the Temporal CLI for a self-hosted Temporal Service and
-`tcld` for Temporal Cloud.
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and
 [List Filters](/list-filter).
@@ -875,9 +899,6 @@ Attributes "CustomSA" to your Temporal Cloud Namespace "YourNamespace", run the 
 `tcld namespace search-attributes add --namespace YourNamespace --search-attribute "CustomSA"`
 
 **On self-hosted Temporal Service**
-
-If you're self-hosting your Temporal Service, verify whether your [Visibility database](/self-hosted-guide/visibility)
-version supports advanced Visibility features.
 
 To create custom Search Attributes in your self-hosted Temporal Service Visibility store, use
 `temporal operator search-attribute create` with `--name` and `--type` command options.
@@ -956,8 +977,8 @@ temporal operator search-attribute remove \
     --name="your_custom_attribute"
 ```
 
-With Temporal Server v1.20, if using a SQL database for advanced Visibility, you need to specify the Namespace in your
-command, as shown in the following command:
+If you use a SQL database for advanced Visibility on Temporal Server v1.20 and later, you need to specify the Namespace
+in your command, as shown in the following command:
 
 ```
 temporal operator search-attribute remove \

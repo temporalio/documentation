@@ -18,11 +18,7 @@ import { CaptionedImage } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Python SDK support for Nexus is at [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-Features in public preview may undergo further development and testing before they are made Generally Available.
-These features are being refined and are recommended for production usage.
-The APIs may undergo changes; however, Temporal's goal is to maintain backward compatibility.
+Temporal Python SDK support for Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
 
 :::
 
@@ -129,7 +125,8 @@ class MyNexusService:
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
-They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
+Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors (for example: worker timeouts), blocking all Operations from the caller to that Endpoint.
 
 The `nexusrpc.handler` and `temporalio.nexus` modules have utilities to help create Nexus Operations:
 
@@ -156,12 +153,18 @@ class MyNexusServiceHandler:
 
 
 A synchronous operation handler must return quickly (less than `10s`).
-In addition to performing simple CPU-bound computations such as the one above, implementations are free to make arbitrary calls to other services or databases.
-The handler function can access an SDK client that can be used to execute Signals, Updates, or Queries against a Workflow, or to do other client operations such as listing Workflows.
-The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) sample shows how to create a Nexus Service uses synchronous operations to send Updates and Queries:
+Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
+
+### Use the Temporal Client for Signals, Queries, and Updates
+
+A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
+You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
+All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
+
+Use `nexus.client()` to get the Client that the Worker was initialized with.
+The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
 [nexus_sync_operations/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations/handler/service_handler.py)
-
 
 ```python
 from temporalio import nexus
@@ -295,7 +298,7 @@ class CallerWorkflow:
         )
         # Alternatively, you can use start_operation to obtain the operation handle and
         # then `await` the handle to obtain the result.
-        sync_operation_handle = await self.nexus_client.start_operation(
+        sync_operation_handle = await nexus_client.start_operation(
             MyNexusService.my_sync_operation,
             MyInput(name),
         )
@@ -324,15 +327,24 @@ In Python, there are three Nexus-specific exception classes:
 
 ## Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
-<!--TODO: Add Python cancellation example once available-->
-
 To cancel a Nexus Operation from within a Workflow, call `handle.cancel()` on the operation handle. Only asynchronous operations can be canceled in Nexus, since cancellation is sent using an operation token.
 The Workflow or other resources backing the operation may choose to ignore the cancellation request.
 If ignored, the operation may enter a terminal state.
 
+When a Nexus operation is started, the caller can specify different cancellation types that control how the caller reacts to cancellation:
+
+- `ABANDON` - Do not request cancellation of the operation.
+- `TRY_CANCEL` - Initiate a cancellation request and immediately report cancellation to the caller. Note that this type doesn't guarantee that cancellation is delivered to the operation handler if the caller exits before the delivery is done.
+- `WAIT_REQUESTED` Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
+- `WAIT_COMPLETED` - Wait for operation completion. Operation may or may not complete as cancelled.
+
+The default is `WAIT_COMPLETED`. Users can set a different option for `cancellation_type` when starting or executing an operation.
+
 Once the caller Workflow completes, the caller's Nexus Machinery will not make any further attempts to cancel operations that are still running.
 It's okay to leave operations running in some use cases.
 To ensure cancellations are delivered, wait for all pending operations to finish before exiting the Workflow.
+
+See the [Nexus cancellation sample](https://github.com/temporalio/samples-python/tree/main/nexus_cancel) for reference.
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 

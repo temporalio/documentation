@@ -14,8 +14,6 @@ keywords:
   - access control
 ---
 
-import { CaptionedImage } from '@site/src/components';
-
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
@@ -23,48 +21,9 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
-Temporal Cloud has built-in Nexus security.
-It provides secure Nexus connectivity across Namespaces with an mTLS secured Envoy mesh.
-Workers authenticate to their Namespace with mTLS client certificates or API keys, as allowed by their Namespace.
-Encryption for Nexus payloads is also supported, for example using shared symmetric keys and compatible Data Converters.
+Nexus security in Temporal Cloud:
 
-## Registry roles and permissions
-
-Nexus Endpoints are Account-scoped resources, similar to a Namespace.
-The following roles and permissions are required to manage and view Nexus Endpoints in the Nexus Registry:
-
-- Viewing and browsing the full list of Nexus Endpoints in an Account:
-  - Read-only role (or higher)
-- Managing a Nexus Endpoint (create, update, delete):
-  - Developer role (or higher) and Namespace Admin permission on the Endpoint’s target Namespace
-
-## Runtime access controls
-
-The Nexus Registry allows setting Endpoint access policy on each Endpoint.
-This currently includes an allow list of caller Namespaces that can use the Endpoint at runtime.
-Endpoint access control policies are enforced at runtime:
-
-1. Caller's Worker authenticates with their Namespace as they do today with mTLS certificates or API keys.
-   This establishes the caller's identity and caller Namespace.
-2. Caller Workflow executes a Nexus Operation on a Nexus Endpoint.
-3. Endpoint access control policy is enforced, checking if the caller Namespace is in the Endpoint allow list.
-
-See [Runtime Access Controls](/nexus/security#runtime-access-controls) and [Configuring Runtime Access Controls](/nexus/registry#configure-runtime-access-controls) for additional details.
-
-## Secure connectivity
-
-Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions.
-Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
-
-<CaptionedImage
-    src="/img/cloud/nexus/nexus-workers-short.png"
-    title="Nexus Security"
-/>
-
-See [Nexus Secure Connectivity](/nexus/security#secure-connectivity) for additional details.
-
-## Payload encryption
-
-For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
-
-See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for additional details.
+- **[Runtime access controls](/nexus/security#runtime-access-controls)** - Endpoint allowlists restrict which caller Namespaces can use an Endpoint. See [configuring access controls](/nexus/registry#configure-runtime-access-controls).
+- **[Secure connectivity](/nexus/security#secure-connectivity)** - mTLS for all Nexus communication across cells and regions. Endpoints are only accessible within a Temporal Cloud Account.
+- **[Payload encryption](/nexus/security#payload-encryption-data-converter)** - Same Data Converter as Workflows and Activities, with three approaches for cross-Namespace encryption.
+- **[Registry roles and permissions](/nexus/registry#roles-and-permissions)** - Controls who can view, create, edit, and delete Endpoints.
