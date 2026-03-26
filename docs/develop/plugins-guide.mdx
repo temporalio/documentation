@@ -81,9 +81,9 @@ Temporal's Activity retry mechanism gives applications the benefits of Durable E
 async def some_activity() -> None:
     return None
 
-plugin = SimplePlugin("organization.PluginName", activities=[some_activity])
 
-````
+plugin = SimplePlugin("organization.PluginName", activities=[some_activity])
+```
     {/* SNIPEND */}
   </SdkTabs.Python>
   <SdkTabs.Go>
@@ -108,8 +108,7 @@ func createActivityPlugin() (*temporal.SimplePlugin, error) {
 	})
 }
 
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Go>
@@ -123,13 +122,18 @@ public interface SomeActivity {
   void someActivity();
 }
 
-public class SomeActivityImpl implements SomeActivity { @Override public void someActivity() { // Activity
-implementation } }
+public class SomeActivityImpl implements SomeActivity {
+  @Override
+  public void someActivity() {
+    // Activity implementation
+  }
+}
 
-SimplePlugin activityPlugin = SimplePlugin.newBuilder("organization.PluginName") .registerActivitiesImplementations(new
-SomeActivityImpl()) .build();
-
-````
+SimplePlugin activityPlugin =
+    SimplePlugin.newBuilder("organization.PluginName")
+        .registerActivitiesImplementations(new SomeActivityImpl())
+        .build();
+```
     {/* SNIPEND */}
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
@@ -143,8 +147,7 @@ const plugin = new SimplePlugin({
     pluginActivity: activity,
   },
 });
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.TypeScript>
@@ -155,10 +158,10 @@ const plugin = new SimplePlugin({
 [Activity]
 static void SomeActivity() => throw new NotImplementedException();
 
-SimplePlugin activityPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
-}.AddActivity(SomeActivity));
-
-````
+SimplePlugin activityPlugin = new SimplePlugin(
+    "organization.PluginName",
+    new SimplePluginOptions() { }.AddActivity(SomeActivity));
+```
     {/* SNIPEND */}
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
@@ -173,8 +176,7 @@ plugin = Temporalio::SimplePlugin.new(
   name: 'organization.PluginName',
   activities: [method(:some_activity)]
 )
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Ruby>
@@ -256,9 +258,9 @@ class HelloWorkflow:
     async def run(self, name: str) -> str:
         return f"Hello, {name}!"
 
-plugin = SimplePlugin("organization.PluginName", workflows=[HelloWorkflow])
 
-````
+plugin = SimplePlugin("organization.PluginName", workflows=[HelloWorkflow])
+```
     {/* SNIPEND */}
   </SdkTabs.Python>
   <SdkTabs.Go>
@@ -282,8 +284,7 @@ func createWorkflowPlugin() (*temporal.SimplePlugin, error) {
 	})
 }
 
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Go>
@@ -297,13 +298,18 @@ public interface HelloWorkflow {
   String run(String name);
 }
 
-public static class HelloWorkflowImpl implements HelloWorkflow { @Override public String run(String name) { return
-"Hello, " + name + "!"; } }
+public static class HelloWorkflowImpl implements HelloWorkflow {
+  @Override
+  public String run(String name) {
+    return "Hello, " + name + "!";
+  }
+}
 
-SimplePlugin workflowPlugin = SimplePlugin.newBuilder("organization.PluginName")
-.registerWorkflowImplementationTypes(HelloWorkflowImpl.class) .build();
-
-````
+SimplePlugin workflowPlugin =
+    SimplePlugin.newBuilder("organization.PluginName")
+        .registerWorkflowImplementationTypes(HelloWorkflowImpl.class)
+        .build();
+```
     {/* SNIPEND */}
   </SdkTabs.Java>
   <SdkTabs.DotNet>
@@ -320,8 +326,7 @@ class SimpleWorkflow
 SimplePlugin workflowPlugin = new SimplePlugin(
     "organization.PluginName",
     new SimplePluginOptions() { }.AddWorkflow<SimpleWorkflow>());
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.DotNet>
@@ -335,16 +340,18 @@ class HelloWorkflow < Temporalio::Workflow::Definition
   end
 end
 
-plugin = Temporalio::SimplePlugin.new( name: 'organization.PluginName', workflows: [HelloWorkflow] )
-
-````
+plugin = Temporalio::SimplePlugin.new(
+  name: 'organization.PluginName',
+  workflows: [HelloWorkflow]
+)
+```
     {/* SNIPEND */}
   </SdkTabs.Ruby>
 </SdkTabs>
 
 ### Built-in Nexus Operations
 
-Nexus calls are used from Workflows similar to Activities and you can check out some common [Nexus Use Cases](/nexus/use-cases). Like Activities, Nexus Call arguments and return values must be serializable.
+Nexus calls are used from Workflows similar to Activities and you can learn more about [Temporal Nexus](/nexus). Like Activities, Nexus operation inputs and return values must be serializable.
 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Python>
@@ -372,8 +379,7 @@ class WeatherServiceHandler:
 plugin = SimplePlugin(
     "organization.PluginName", nexus_service_handlers=[WeatherServiceHandler()]
 )
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Python>
@@ -385,21 +391,36 @@ type WeatherInput struct {
 	City string `json:"city"`
 }
 
-type Weather struct { City string `json:"city"` TemperatureRange string `json:"temperatureRange"` Conditions string
-`json:"conditions"` }
+type Weather struct {
+	City             string `json:"city"`
+	TemperatureRange string `json:"temperatureRange"`
+	Conditions       string `json:"conditions"`
+}
 
 var WeatherService = nexus.NewService("weather-service")
 
-var GetWeatherOperation = nexus.NewSyncOperation( "get-weather", func(ctx context.Context, input WeatherInput, options
-nexus.StartOperationOptions) (Weather, error) { return Weather{ City: input.City, TemperatureRange: "14-20C",
-Conditions: "Sunny with wind.", }, nil }, )
+var GetWeatherOperation = nexus.NewSyncOperation(
+	"get-weather",
+	func(ctx context.Context, input WeatherInput, options nexus.StartOperationOptions) (Weather, error) {
+		return Weather{
+			City:             input.City,
+			TemperatureRange: "14-20C",
+			Conditions:       "Sunny with wind.",
+		}, nil
+	},
+)
 
-func createNexusPlugin() (\*temporal.SimplePlugin, error) { return
-temporal.NewSimplePlugin(temporal.SimplePluginOptions{ Name: "organization.PluginName", RunContextBefore: func(ctx
-context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
-options.Registry.RegisterNexusService(WeatherService) return nil }, }) }
+func createNexusPlugin() (*temporal.SimplePlugin, error) {
+	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
+		Name: "organization.PluginName",
+		RunContextBefore: func(ctx context.Context, options temporal.SimplePluginRunContextBeforeOptions) error {
+			options.Registry.RegisterNexusService(WeatherService)
+			return nil
+		},
+	})
+}
 
-````
+```
     {/* SNIPEND */}
   </SdkTabs.Go>
   <SdkTabs.Java>
@@ -443,8 +464,7 @@ SimplePlugin nexusPlugin =
     SimplePlugin.newBuilder("organization.PluginName")
         .registerNexusServiceImplementation(new WeatherService())
         .build();
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Java>
@@ -480,22 +500,24 @@ public interface IStringService
     string DoSomething(string name);
 }
 
-[NexusServiceHandler(typeof(IStringService))] public class HandlerFactoryStringService { private readonly
-Func<IOperationHandler<string, string>> handlerFactory;
+[NexusServiceHandler(typeof(IStringService))]
+public class HandlerFactoryStringService
+{
+    private readonly Func<IOperationHandler<string, string>> handlerFactory;
 
     public HandlerFactoryStringService(Func<IOperationHandler<string, string>> handlerFactory) =>
         this.handlerFactory = handlerFactory;
 
     [NexusOperationHandler]
     public IOperationHandler<string, string> DoSomething() => handlerFactory();
-
 }
 
-SimplePlugin nexusPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
-}.AddNexusService(new HandlerFactoryStringService(() => OperationHandler.Sync<string, string>((ctx, name) => $"Hello,
-{name}"))) );
-
-````
+SimplePlugin nexusPlugin = new SimplePlugin(
+    "organization.PluginName",
+    new SimplePluginOptions() { }.AddNexusService(new HandlerFactoryStringService(() =>
+        OperationHandler.Sync<string, string>((ctx, name) => $"Hello, {name}")))
+);
+```
     {/* SNIPEND */}
   </SdkTabs.DotNet>
 </SdkTabs>
@@ -521,8 +543,7 @@ def set_converter(converter: DataConverter | None) -> DataConverter:
 
 
 plugin = SimplePlugin("organization.PluginName", data_converter=set_converter)
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Python>
@@ -533,14 +554,13 @@ plugin = SimplePlugin("organization.PluginName", data_converter=set_converter)
 func createConverterPlugin() (*temporal.SimplePlugin, error) {
 	customConverter := converter.GetDefaultDataConverter() // Or your custom converter
 
-    return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
-    	Name:          "organization.PluginName",
-    	DataConverter: customConverter,
-    })
-
+	return temporal.NewSimplePlugin(temporal.SimplePluginOptions{
+		Name:          "organization.PluginName",
+		DataConverter: customConverter,
+	})
 }
 
-````
+```
     {/* SNIPEND */}
   </SdkTabs.Go>
   <SdkTabs.Java>
@@ -557,8 +577,7 @@ SimplePlugin converterPlugin =
               return existingConverter;
             })
         .build();
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Java>
@@ -594,11 +613,15 @@ private class Codec : IPayloadCodec
     public Task<IReadOnlyCollection<Payload>> DecodeAsync(IReadOnlyCollection<Payload> payloads) => throw new NotImplementedException();
 }
 
-SimplePlugin converterPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
-DataConverterOption = new SimplePluginOptions.SimplePluginOption<DataConverter>( (converter) => converter with {
-PayloadCodec = new Codec() } ), });
-
-````
+SimplePlugin converterPlugin = new SimplePlugin(
+    "organization.PluginName",
+    new SimplePluginOptions()
+    {
+        DataConverterOption = new SimplePluginOptions.SimplePluginOption<DataConverter>(
+            (converter) => converter with { PayloadCodec = new Codec() }
+        ),
+    });
+```
     {/* SNIPEND */}
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
@@ -613,8 +636,7 @@ plugin = Temporalio::SimplePlugin.new(
   name: 'organization.PluginName',
   data_converter: custom_converter
 )
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Ruby>
@@ -636,11 +658,16 @@ can [learn more about interceptors](/develop/python/interceptors) for the detail
 class SomeWorkerInterceptor(temporalio.worker.Interceptor):
     pass  # Your implementation
 
-class SomeClientInterceptor(temporalio.client.Interceptor): pass # Your implementation
 
-plugin = SimplePlugin( "organization.PluginName", interceptors=[SomeWorkerInterceptor(), SomeClientInterceptor()], )
+class SomeClientInterceptor(temporalio.client.Interceptor):
+    pass  # Your implementation
 
-````
+
+plugin = SimplePlugin(
+    "organization.PluginName",
+    interceptors=[SomeWorkerInterceptor(), SomeClientInterceptor()],
+)
+```
     {/* SNIPEND */}
   </SdkTabs.Python>
   <SdkTabs.Go>
@@ -663,8 +690,7 @@ func createInterceptorPlugin() (*temporal.SimplePlugin, error) {
 	})
 }
 
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Go>
@@ -676,14 +702,16 @@ public class SomeWorkerInterceptor extends WorkerInterceptorBase {
   // Your worker interceptor implementation
 }
 
-public class SomeClientInterceptor extends WorkflowClientInterceptorBase { 
-  // Your client interceptor implementation 
+public class SomeClientInterceptor extends WorkflowClientInterceptorBase {
+  // Your client interceptor implementation
 }
 
-SimplePlugin interceptorPlugin = SimplePlugin.newBuilder("organization.PluginName") .addWorkerInterceptors(new
-SomeWorkerInterceptor()) .addClientInterceptors(new SomeClientInterceptor()) .build();
-
-````
+SimplePlugin interceptorPlugin =
+    SimplePlugin.newBuilder("organization.PluginName")
+        .addWorkerInterceptors(new SomeWorkerInterceptor())
+        .addClientInterceptors(new SomeClientInterceptor())
+        .build();
+```
     {/* SNIPEND */}
   </SdkTabs.Java>
   <SdkTabs.TypeScript>
@@ -716,8 +744,7 @@ const plugin = new SimplePlugin({
     ],
   },
 });
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.TypeScript>
@@ -732,20 +759,25 @@ private class SomeClientInterceptor : IClientInterceptor
         throw new NotImplementedException();
 }
 
-private class SomeWorkerInterceptor : IWorkerInterceptor { public WorkflowInboundInterceptor InterceptWorkflow(
-WorkflowInboundInterceptor nextInterceptor) => throw new NotImplementedException();
+private class SomeWorkerInterceptor : IWorkerInterceptor
+{
+    public WorkflowInboundInterceptor InterceptWorkflow(
+        WorkflowInboundInterceptor nextInterceptor) =>
+        throw new NotImplementedException();
 
     public ActivityInboundInterceptor InterceptActivity(
         ActivityInboundInterceptor nextInterceptor) =>
         throw new NotImplementedException();
-
 }
 
-SimplePlugin interceptorPlugin = new SimplePlugin( "organization.PluginName", new SimplePluginOptions() {
-ClientInterceptors = new List<IClientInterceptor>() { new SomeClientInterceptor() }, WorkerInterceptors = new
-List<IWorkerInterceptor>() { new SomeWorkerInterceptor() }, });
-
-````
+SimplePlugin interceptorPlugin = new SimplePlugin(
+    "organization.PluginName",
+    new SimplePluginOptions()
+    {
+        ClientInterceptors = new List<IClientInterceptor>() { new SomeClientInterceptor() },
+        WorkerInterceptors = new List<IWorkerInterceptor>() { new SomeWorkerInterceptor() },
+    });
+```
     {/* SNIPEND */}
   </SdkTabs.DotNet>
   <SdkTabs.Ruby>
@@ -775,8 +807,7 @@ plugin = Temporalio::SimplePlugin.new(
   client_interceptors: [SomeClientInterceptor.new],
   worker_interceptors: [SomeWorkerInterceptor.new]
 )
-````
-
+```
     {/* SNIPEND */}
 
   </SdkTabs.Ruby>
@@ -815,7 +846,6 @@ use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
 {/* SNIPSTART python-plugin-sandbox */}
 [features/snippets/plugins/plugins.py](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.py)
-
 ```py
 def workflow_runner(runner: WorkflowRunner | None) -> WorkflowRunner:
     if not runner:
@@ -832,7 +862,6 @@ def workflow_runner(runner: WorkflowRunner | None) -> WorkflowRunner:
 
 plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner)
 ```
-
 {/* SNIPEND */}
 
 #### TypeScript
@@ -846,7 +875,6 @@ you aren't aware of the exact function of the plugin, you can always provide it,
 
 {/* SNIPSTART typescript-plugins-bundler */}
 [features/snippets/plugins/plugins.ts](https://github.com/temporalio/features/blob/main/features/snippets/plugins/plugins.ts)
-
 ```ts
 const bundle = await bundleWorkflowCode({
   workflowsPath: require.resolve('./workflows'),
@@ -860,7 +888,6 @@ const worker = await Worker.create({
   plugins: [plugin],
 });
 ```
-
 {/* SNIPEND */}
 
 ## Testing your Plugin {#testing-your-plugin}
