@@ -70,9 +70,9 @@ If your organization requires mutual authentication and stronger cryptographic g
 For most organizations, use the following defaults:
 
 - Create one Service Account per service or worker deployment, not one shared Service Account for an entire team
-- Scope credentials to the smallest practical set of Namespaces
 - Use account-level Service Accounts only when a service genuinely needs cross-Namespace or account-wide access
 - Prefer Namespace-scoped Service Accounts when a service should only access one Namespace
+- Grant Service Accounts namespace-level access only to the specific Namespaces they need
 
 This approach gives you cleaner ownership, easier rotation, and better auditability than sharing a single machine
 identity across multiple services.
@@ -93,11 +93,11 @@ For more on topology tradeoffs, see [Namespace best practices](/best-practices/m
 
 ### Rotate credentials without downtime
 
-Use the following sequence for both API keys and client certificates:
+Use the following sequence when rotating credentials:
 
 1. Create the replacement credential before the existing one expires.
-2. Configure your secret store or deployment system so both old and new credentials can be used during the transition.
-3. Roll your Workers and clients to load the new credential.
+2. For API keys, create the new valid key while the old key still works, then roll your Workers and clients to use the new key.
+3. For client certificates, stage the new certificate before removing the old one when your deployment process supports that transition.
 4. Validate connectivity and normal Workflow execution using the new credential.
 5. Remove the old credential only after all clients and Workers have switched.
 
