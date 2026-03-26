@@ -21,17 +21,23 @@ tags:
 
 The Temporal Service enforces a ~2 MB per-payload limit. When your Workflows or Activities handle data larger than this
 limit, you can use External Storage to offload payloads to an external store (such as S3) and pass a small reference
-token through the Event History instead. This is sometimes called the
+token through the Event History instead. This is called the
 [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+
+For SDK-specific implementation details, see:
+
+- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
+- [TypeScript SDK: Large payload storage](/develop/typescript/data-handling/large-payload-storage)
 
 ## How External Storage fits in the data pipeline {#data-pipeline}
 
 External Storage sits at the end of the data pipeline, after both the [Payload Converter](/payload-converter) and the
 [Payload Codec](/payload-codec):
 
-```
-User code → Payload Converter → Payload Codec → External Storage → Temporal Service
-```
+<CaptionedImage
+  src="/diagrams/data-converter-flow-with-external-storage.svg"
+  title="The Flow of Data through a Data Converter"
+/>
 
 When a payload exceeds a configurable size threshold, the storage driver uploads it to your external store and replaces
 it with a lightweight reference. Payloads below the threshold stay inline in the Event History. On the way back, the
@@ -60,8 +66,3 @@ Configure External Storage on the Data Converter. The key settings are:
 - **Size threshold**. The driver offloads payloads larger than this value, which typically defaults to 256 KiB. Turn off
   the threshold to externalize all payloads regardless of size.
 - **Driver selector**. When using multiple drivers, a function that chooses which driver handles each payload.
-
-For SDK-specific implementation details, see:
-
-- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
-- [TypeScript SDK: Large payload storage](/develop/typescript/data-handling/large-payload-storage)

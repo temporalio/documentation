@@ -11,37 +11,121 @@ tags:
 description: Offload large payloads to external storage using the claim check pattern in the Python SDK.
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 The Temporal Service enforces a ~2 MB per payload limit. When your Workflows or Activities handle data larger than the
-limit, you can offload payloads to external storage, such as S3, and pass a small reference token through the event
-history instead. This is sometimes called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+limit, you can offload payloads to external storage, such as S3, and pass a small reference token through the Event
+History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
 
-External storage sits at the end of the data pipeline, after both the Payload Converter and the Payload Codec:
+[External Storage](/external-storage) sits at the end of the data pipeline, after both the Payload Converter and the
+Payload Codec:
 
-```
-User code → PayloadConverter → PayloadCodec → External Storage → Temporal Service
-```
+<CaptionedImage
+  src="/diagrams/data-converter-flow-with-external-storage.svg"
+  title="The Flow of Data through a Data Converter"
+/>
 
-When a payload exceeds a configurable size threshold (default 256 KiB), the storage driver uploads it to your external
-store and replaces it with a lightweight reference. Payloads below the threshold stay inline in the event history. On
-the way back, reference payloads are retrieved from external storage before the codec decodes them.
+When a payload exceeds a configurable size threshold, the storage driver uploads it to your external store and replaces
+it with a lightweight reference. Payloads below the threshold stay inline in the Event History. On the way back,
+reference payloads are retrieved from external storage before the Payload Codec decodes them.
 
-Because external storage runs after the codec. If you use an encryption codec, payloads are already encrypted before
-they're uploaded to your store.
+Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
+before they're uploaded to your store.
 
-## Store and retrieve large payloads using external storage
+## Store and retrieve large payloads with S3
 
-To offload large payloads, implement a `StorageDriver` and configure it on your `DataConverter`. The driver needs a
-`store()` method to upload payloads and a `retrieve()` method to fetch them back.
+The Python SDK includes a contrib S3 storage driver. Follow these steps to set it up:
 
-Once you implement a storage driver, configure it on your `DataConverter` and use it when creating your Client and
-Worker. All Workflows and Activities running on the Worker will use the storage drive automatically without changes to
-your business logic. You can also configure the size threshold and use multiple storage drivers.
+1. Install the S3 driver dependency:
 
-### Implement a storage driver
+   ```shell
+   pip install temporalio[s3driver]
+   ```
 
-Extend the `StorageDriver` abstract class:
+2. Create an `S3StorageDriverClient` and an `S3StorageDriver`:
+
+   ```python
+   from temporalio.contrib.aws.s3driver import S3StorageDriver, S3StorageDriverClient
+
+   driver_client = S3StorageDriverClient()
+   driver = S3StorageDriver(client=driver_client, bucket="my-temporal-payloads")
+   ```
+
+   The driver generates S3 keys using a SHA-256 hash of the payload content. Identical payloads produce the same key, so
+   the driver skips the upload if the object already exists. The driver includes the namespace and Workflow ID in the S3
+   key to group related payloads in your bucket. For example: `v0/ns/my-namespace/wfi/my-workflow/d/sha256/{hash}`.
+
+   To reject payloads above a hard limit before uploading, set `max_payload_size`:
+
+   ```python
+   driver = S3StorageDriver(
+       client=driver_client,
+       bucket="my-temporal-payloads",
+       max_payload_size=50 * 1024 * 1024,  # 50 MiB
+   )
+   ```
+
+3. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
+
+   <!--SNIPSTART python-s3-external-storage-setup-->
+
+   ```python
+   from temporalio.converter import DataConverter, ExternalStorage
+
+   converter = DataConverter(
+       external_storage=ExternalStorage(
+           drivers=[driver],
+           payload_size_threshold=256 * 1024,  # 256 KiB (default)
+       ),
+   )
+
+   client = await Client.connect("localhost:7233", data_converter=converter)
+
+   worker = Worker(
+       client,
+       task_queue="my-task-queue",
+       workflows=[MyWorkflow],
+       activities=[my_activity],
+   )
+   ```
+
+   <!--SNIPEND-->
+
+All Workflows and Activities running on the Worker use the storage driver automatically without changes to your business
+logic. The driver uploads and downloads payloads concurrently, and on retrieve it validates the SHA-256 hash of each
+downloaded payload against the hash stored in the claim.
+
+### Route payloads to different buckets
+
+The `bucket` parameter accepts a callable that receives the store context and the payload. Use this to route payloads to
+different buckets based on context, such as the Activity Task Queue:
 
 ```python
+from temporalio.converter import StorageDriverStoreContext, ActivitySerializationContext
+from temporalio.api.common.v1 import Payload
+
+QUEUE_BUCKETS = {
+    "queue-a": "bucket-queue-a",
+    "queue-b": "bucket-queue-b",
+}
+
+def bucket_selector(ctx: StorageDriverStoreContext, payload: Payload) -> str:
+    if isinstance(ctx.serialization_context, ActivitySerializationContext):
+        queue = ctx.serialization_context.activity_task_queue
+        if queue and queue in QUEUE_BUCKETS:
+            return QUEUE_BUCKETS[queue]
+    return "default-bucket"
+
+driver = S3StorageDriver(client=driver_client, bucket=bucket_selector)
+```
+
+## Implement a custom storage driver
+
+If you need a backend other than S3, implement your own storage driver by extending the `StorageDriver` abstract class.
+The driver needs a `name()` method, a `store()` method to upload payloads, and a `retrieve()` method to fetch them back.
+
+```python
+import hashlib
 from temporalio.converter import (
     StorageDriver,
     StorageDriverClaim,
@@ -49,42 +133,47 @@ from temporalio.converter import (
     StorageDriverRetrieveContext,
 )
 from temporalio.api.common.v1 import Payload
-from typing import Sequence
 
 
-class S3StorageDriver(StorageDriver):
-    def __init__(self, bucket: str) -> None:
-        self._bucket = bucket
-        self._s3 = boto3.client("s3")
-
+class MyStorageDriver(StorageDriver):
     def name(self) -> str:
-        return "s3"
+        return "my-storage"
 
-    async def store(self, context, payloads):
-        # Upload payloads, return claims (see below)
+    async def store(
+        self,
+        context: StorageDriverStoreContext,
+        payloads: list[Payload],
+    ) -> list[StorageDriverClaim]:
+        claims = []
+        for payload in payloads:
+            data = payload.SerializeToString()
+            key = hashlib.sha256(data).hexdigest()
+            await self._upload(key, data)
+            claims.append(
+                StorageDriverClaim(claim_data={"key": key})
+            )
+        return claims
+
+    async def retrieve(
+        self,
+        context: StorageDriverRetrieveContext,
+        claims: list[StorageDriverClaim],
+    ) -> list[Payload]:
+        payloads = []
+        for claim in claims:
+            data = await self._download(claim.claim_data["key"])
+            payload = Payload()
+            payload.ParseFromString(data)
+            payloads.append(payload)
+        return payloads
+
+    async def _upload(self, key: str, data: bytes) -> None:
+        # Upload data to your storage backend
         ...
 
-    async def retrieve(self, context, claims):
-        # Download payloads using claims (see below)
+    async def _download(self, key: str) -> bytes:
+        # Download data from your storage backend
         ...
-```
-
-### Store payloads
-
-The `store()` method receives a sequence of payloads and must return exactly one `StorageDriverClaim` per payload. A
-claim is a set of string key-value pairs that the driver uses to locate the payload later — typically a storage key or
-URL.
-
-```python
-Sample implementation:
-```
-
-### Retrieve payloads
-
-The `retrieve()` method receives the claims that `store()` produced and must return the original payloads:
-
-```python
-Sample implementation:
 ```
 
 ### Configure external storage on the Data Converter
@@ -96,19 +185,8 @@ from temporalio.converter import DataConverter, ExternalStorage
 
 converter = DataConverter(
     external_storage=ExternalStorage(
-        drivers=[S3StorageDriver("my-bucket")],
+        drivers=[MyStorageDriver()],
         payload_size_threshold=256 * 1024,  # 256 KiB (default)
-    ),
-)
-```
-
-Use this converter when creating your Client and Worker:
-
-```python
-converter = DataConverter(
-    external_storage=ExternalStorage(
-        drivers=[LocalDiskStorageDriver()],
-        payload_size_threshold=1_000,  # 1KB — low threshold for testing
     ),
 )
 ```
@@ -116,7 +194,7 @@ converter = DataConverter(
 ### Adjust the size threshold
 
 The `payload_size_threshold` controls which payloads get offloaded. Payloads smaller than this value stay inline in the
-event history.
+Event History.
 
 ```python
 ExternalStorage(
@@ -133,8 +211,8 @@ When you have multiple drivers (for example, hot and cold storage tiers), provid
 chooses which driver handles each payload:
 
 ```python
-hot_driver = S3StorageDriver("hot-bucket")
-cold_driver = S3StorageDriver("cold-bucket")
+hot_driver = MyStorageDriver("hot-bucket")
+cold_driver = MyStorageDriver("cold-bucket")
 
 ExternalStorage(
     drivers=[hot_driver, cold_driver],
