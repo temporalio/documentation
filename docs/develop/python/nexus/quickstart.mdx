@@ -1,0 +1,327 @@
+---
+id: quickstart
+title: Nexus Python Quickstart
+sidebar_label: Quickstart
+description: Build a Nexus Service that wraps an existing Temporal Workflow using the Python SDK
+keywords:
+  - nexus
+  - python
+  - quickstart
+  - getting started
+tags:
+  - Nexus
+  - Python SDK
+  - quickstart
+hide_table_of_contents: true
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+
+# Nexus Python Quickstart
+
+Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
+
+:::tip WHAT IS NEXUS?
+
+[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+Learn more in the [Nexus encyclopedia](/nexus).
+
+:::
+
+**Prerequisites:** Complete the [Python SDK Quickstart](/develop/python/set-up-your-local-python) first.
+You should have `activities.py`, `workflows.py`, `worker.py`, and `starter.py` from that guide.
+Ensure you have Temporal Python SDK `v1.14.1` or higher installed (`pip install -U temporalio`).
+
+<SetupSteps>
+<SetupStep code={
+<>
+
+<CodeSnippet language="yml">
+{`nexusrpc: 1.0.0
+
+services:
+    SayHelloNexusService:
+      description: A Nexus service that wraps the SayHello workflow.
+      operations:
+        say_hello:
+          description: Say hello via a Temporal Workflow.
+          input:
+            $ref: '#/types/MyInput'
+          output:
+            type: string
+
+types:
+    MyInput:
+      type: object
+      properties:
+        name: { type: string }
+      required: [name]`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+nexus-rpc-gen --lang py --out-file service.py service.nexusrpc.yaml
+</CodeSnippet>
+
+</>
+}>
+
+## Optional: Translate Workflows into Nexus IDL and Generate Models
+
+You can use [nexus-rpc-gen](https://github.com/nexus-rpc/nexus-rpc-gen) to generate Nexus service contracts from a YAML definition.
+
+Create a file called `service.nexusrpc.yaml` with the definition shown, then run the codegen command to produce `service.py`.
+
+This step is optional — you can also define the service contract manually in the next step.
+
+:::note
+
+The generated service uses [Pydantic](https://docs.pydantic.dev/) models instead of dataclasses.
+If you use the generated code, configure your Workers and Client with the
+[Pydantic data converter](https://python.temporal.io/temporalio.contrib.pydantic.html) (`pydantic_data_converter`)
+to ensure proper serialization.
+
+:::
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="python">
+{`from dataclasses import dataclass
+
+import nexusrpc
+
+
+@dataclass
+class MyInput:
+    name: str
+
+
+@nexusrpc.service
+class SayHelloNexusService:
+    say_hello: nexusrpc.Operation[MyInput, str]`}
+</CodeSnippet>
+
+</>
+}>
+
+## Define Nexus Service
+
+Create a file called `service.py` that defines the Nexus Service contract.
+
+The `@nexusrpc.service` decorator declares a service with typed operations.
+`SayHelloWorkflow` returns `str`, so the operation output type is `str`.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="python">
+{`import uuid
+
+import nexusrpc.handler
+from temporalio import nexus
+
+from service import MyInput, SayHelloNexusService
+from workflows import SayHelloWorkflow
+
+
+@nexusrpc.handler.service_handler(service=SayHelloNexusService)
+class SayHelloNexusServiceHandler:
+    @nexus.workflow_run_operation
+    async def say_hello(
+        self, ctx: nexus.WorkflowRunOperationContext, input: MyInput
+    ) -> nexus.WorkflowHandle[str]:
+        return await ctx.start_workflow(
+            SayHelloWorkflow.run,
+            input.name,
+            id=str(uuid.uuid4()),
+        )`}
+</CodeSnippet>
+
+</>
+}>
+
+## Define Operation Handlers
+
+Create a file called `handler.py` that implements the Nexus Operation handler.
+
+The `@nexus.workflow_run_operation` decorator creates an asynchronous Nexus Operation that starts a Workflow.
+The handler bridges the Nexus `MyInput` dataclass to `SayHelloWorkflow`'s `str` parameter by extracting `input.name`.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="python">
+{`import asyncio
+
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from workflows import SayHelloWorkflow
+from activities import greet
+from handler import SayHelloNexusServiceHandler
+
+HANDLER_TASK_QUEUE = "my-handler-task-queue"
+NAMESPACE = "my-target-namespace"
+
+
+async def main():
+    client = await Client.connect("localhost:7233", namespace=NAMESPACE)
+    worker = Worker(
+        client,
+        task_queue=HANDLER_TASK_QUEUE,
+        workflows=[SayHelloWorkflow],
+        activities=[greet],
+        nexus_service_handlers=[SayHelloNexusServiceHandler()],
+    )
+    print("Handler worker started.")
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())`}
+</CodeSnippet>
+
+</>
+}>
+
+## Register Nexus Service Handler in a Worker
+
+Create a file called `handler_worker.py` that registers the Nexus Service handler in a Worker.
+
+The Worker hosts both the `SayHelloWorkflow` and the Nexus Service handler.
+The `nexus_service_handlers` parameter registers the handler so it can receive Nexus Operation requests.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="python">
+{`from temporalio import workflow
+
+from service import MyInput, SayHelloNexusService
+
+NEXUS_ENDPOINT = "my-nexus-endpoint-name"
+
+
+@workflow.defn
+class CallerWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        nexus_client = workflow.create_nexus_client(
+            service=SayHelloNexusService,
+            endpoint=NEXUS_ENDPOINT,
+        )
+        return await nexus_client.execute_operation(
+            SayHelloNexusService.say_hello,
+            MyInput(name=name),
+        )`}
+</CodeSnippet>
+
+</>
+}>
+
+## Caller Workflow
+
+Create a file called `caller.py` that defines a Workflow which invokes the Nexus Operation.
+
+The `workflow.create_nexus_client()` method creates a client bound to your Nexus Service and Endpoint.
+`execute_operation` starts the operation and waits for the result.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="bash">
+temporal operator namespace create --namespace my-target-namespace
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+temporal operator namespace create --namespace my-caller-namespace
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+{`temporal operator nexus endpoint create \\
+  --name my-nexus-endpoint-name \\
+  --target-namespace my-target-namespace \\
+  --target-task-queue my-handler-task-queue`}
+</CodeSnippet>
+
+</>
+}>
+
+## Create Namespaces and Nexus Endpoint
+
+Before running the application, create separate Namespaces for the caller and handler, then create a Nexus Endpoint to route requests between them.
+
+Make sure your local Temporal dev server is running (`temporal server start-dev`).
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="python">
+{`import asyncio
+import uuid
+
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from caller import CallerWorkflow
+
+CALLER_TASK_QUEUE = "my-caller-task-queue"
+NAMESPACE = "my-caller-namespace"
+
+
+async def main():
+    client = await Client.connect("localhost:7233", namespace=NAMESPACE)
+
+    async with Worker(
+        client,
+        task_queue=CALLER_TASK_QUEUE,
+        workflows=[CallerWorkflow],
+    ):
+        result = await client.execute_workflow(
+            CallerWorkflow.run,
+            "Temporal",
+            id=f"caller-workflow-{uuid.uuid4()}",
+            task_queue=CALLER_TASK_QUEUE,
+        )
+        print("Workflow result:", result)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())`}
+</CodeSnippet>
+
+</>
+}>
+
+## Run and Verify
+
+Create a file called `caller_starter.py` to start the caller Worker and execute the Workflow.
+
+**Run the application:**
+
+1. Start the handler worker in one terminal: `python handler_worker.py`
+2. Run the caller in another terminal: `python caller_starter.py`
+
+You should see:
+
+```
+Workflow result: Hello Temporal
+```
+
+Open the [Temporal Web UI](http://localhost:8233) and find the `CallerWorkflow` execution.
+You should see `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted` events in the Workflow history.
+
+</SetupStep>
+</SetupSteps>
