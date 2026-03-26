@@ -35,6 +35,17 @@ SDK metrics monitor individual workers and your code's behavior.
 Cloud metrics monitor Temporal behavior.
 When used together, Temporal Cloud and SDK metrics measure the health and performance of your full Temporal infrastructure, including the Temporal Cloud Service and user-supplied Temporal Workers.
 
+Use the following rule of thumb when deciding which signal to rely on:
+
+| Question | Primary signal |
+|---|---|
+| Is Temporal Cloud accepting and serving work normally? | Cloud metrics |
+| Are Tasks backing up in a Task Queue? | Cloud metrics plus SDK Schedule-To-Start metrics |
+| Are my Workers saturated, under-provisioned, or misconfigured? | SDK metrics |
+| Is my application logic, downstream dependency, or Activity behavior unhealthy? | SDK metrics and traces |
+
+For a Worker-focused view of how to combine these signals, see [Monitor worker health](/cloud/worker-health).
+
 Cloud Metrics for all Namespaces in your account are available from two sources:
 
 - [OpenMetrics Endpoint](/cloud/metrics/openmetrics) - A Prometheus-compatible scrapable endpoint.

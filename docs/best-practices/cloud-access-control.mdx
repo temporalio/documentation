@@ -22,6 +22,13 @@ Temporal Cloud supports two secure authentication methods for Workers:
 
 Both options help secure communication between workers and Temporal Cloud. Choosing the right method and managing it properly is key to maintaining security and minimizing downtime. 
 
+Use this page to define your operating model for machine access to Temporal Cloud. For setup steps and product-specific
+mechanics, see [Manage API keys](/cloud/api-keys) and [Manage service accounts](/cloud/service-accounts).
+
+Related guidance:
+- [Namespace best practices](/best-practices/managing-namespace)
+- [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns)
+
 The high-level end-to-end rotation process is:
 
 1. **Generate new credentials**: Create new certificates or API keys in Temporal Cloud before the current ones expire
@@ -45,17 +52,57 @@ In the case that you are using multiple certificates signed by the same CA, and 
 
 One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can leverage Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](https://docs.temporal.io/cloud/certificates#control-authorization) of the documentation. 
 
-## Best practices: 
-#### 1. Establish clear guidelines on authentication methods: Teams should standardize on either [mTLS certificates](https://docs.temporal.io/cloud/certificates) or [API keys](https://docs.temporal.io/cloud/api-keys) for the following operations:
+## Best practices
+
+### Establish clear guidelines on authentication methods
+
+Teams should standardize on either [mTLS certificates](https://docs.temporal.io/cloud/certificates) or
+[API keys](https://docs.temporal.io/cloud/api-keys) for the following operations:
 - Connect Temporal clients to Temporal Cloud (e.g. Worker processes)
 - Automation (e.g. Temporal Cloud [Operations API](https://docs.temporal.io/ops), [Terraform provider](https://docs.temporal.io/cloud/terraform-provider), [Temporal CLI](https://docs.temporal.io/cli/setup-cli))
 
-    By default, it is recommended for teams to use API keys and [service accounts](https://docs.temporal.io/cloud/service-accounts) for both operations because API keys are easier to manage and rotate for most teams. In addition, you can control account-level and namespace-level roles for service accounts. 
+By default, it is recommended for teams to use API keys and [service accounts](https://docs.temporal.io/cloud/service-accounts) for both operations because API keys are easier to manage and rotate for most teams. In addition, you can control account-level and namespace-level roles for service accounts. 
 
-    If your organization requires mutual authentication and stronger cryptographic guarantees, then it is encouraged for your teams to use mTLS certificates to authenticate Temporal clients to Temporal Cloud and use API keys for automation (because Temporal Cloud [Operations API](https://docs.temporal.io/ops) and [Terraform provider](https://docs.temporal.io/cloud/terraform-provider) only supports API key for authentication)
+If your organization requires mutual authentication and stronger cryptographic guarantees, then it is encouraged for your teams to use mTLS certificates to authenticate Temporal clients to Temporal Cloud and use API keys for automation (because Temporal Cloud [Operations API](https://docs.temporal.io/ops) and [Terraform provider](https://docs.temporal.io/cloud/terraform-provider) only supports API key for authentication).
 
-#### 2. Use Certificate Filters to restrict access when using shared CAs (e.g., `dev` vs `prod`):
+### Default operating model for service accounts and API keys
 
-  Certificate Filters are an additional way of validating using the client certificate presented during client authentication. Give certificates a common name that matches the namespace. This is not a requirement.   
+For most organizations, use the following defaults:
 
-  If you do this when using the same CA for dev and prod environments, then you can leverage Certificate Filters to prevent access to production. 
+- Create one Service Account per service or worker deployment, not one shared Service Account for an entire team
+- Scope credentials to the smallest practical set of Namespaces
+- Use account-level Service Accounts only when a service genuinely needs cross-Namespace or account-wide access
+- Prefer Namespace-scoped Service Accounts when a service should only access one Namespace
+
+This approach gives you cleaner ownership, easier rotation, and better auditability than sharing a single machine
+identity across multiple services.
+
+### Use access boundaries that match your Namespace boundaries
+
+The way you partition Namespaces should usually match the way you partition machine identities.
+
+- If multiple services share a Namespace, you may still want one Service Account per service so that each deployment can
+  rotate credentials independently.
+- If you split workloads into separate Namespaces for security, capacity, or team ownership reasons, those Namespaces
+  should usually have separate Service Accounts and API keys as well.
+- If you use Namespace-per-tenant isolation, expect your credential model and RBAC model to become correspondingly more
+  granular.
+
+For more on topology tradeoffs, see [Namespace best practices](/best-practices/managing-namespace) and
+[Multi-tenant application patterns](/production-deployment/multi-tenant-patterns).
+
+### Rotate credentials without downtime
+
+Use the following sequence for both API keys and client certificates:
+
+1. Create the replacement credential before the existing one expires.
+2. Configure your secret store or deployment system so both old and new credentials can be used during the transition.
+3. Roll your Workers and clients to load the new credential.
+4. Validate connectivity and normal Workflow execution using the new credential.
+5. Remove the old credential only after all clients and Workers have switched.
+
+### Use Certificate Filters to restrict access when using shared CAs (e.g., `dev` vs `prod`)
+
+Certificate Filters are an additional way of validating using the client certificate presented during client authentication. Give certificates a common name that matches the namespace. This is not a requirement.   
+
+If you do this when using the same CA for dev and prod environments, then you can leverage Certificate Filters to prevent access to production. 
