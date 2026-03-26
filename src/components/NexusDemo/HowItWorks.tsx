@@ -10,7 +10,7 @@ const NODES = [
   { id: 'handler',  title: 'Handler Worker',  sub: 'fraud-ns' },
 ];
 
-const AUTO_ADVANCE_MS = 1400;
+const AUTO_ADVANCE_MS = 1600;
 
 function getTimestamp(): string {
   const now = new Date();
@@ -92,6 +92,7 @@ export default function HowItWorks({ onNext }: Props) {
   }
 
   const packetPct = currentStep?.packetPct ?? 0;
+  // packetPct drives the track fills (0–50 → track 1, 50–100 → track 2)
 
   return (
     <div className={styles.section}>
@@ -101,7 +102,8 @@ export default function HowItWorks({ onNext }: Props) {
 
       <h1>How a Nexus Call Works</h1>
       <p className={styles.lead}>
-        Walk through the step-by-step lifecycle of a Nexus Operation. Choose sync or async.
+        Step through the lifecycle of a Nexus call from start to finish. Toggle between sync and
+        async to see how each mode differs.
       </p>
 
       {/* Underline tabs */}
@@ -131,45 +133,24 @@ export default function HowItWorks({ onNext }: Props) {
                 <div className={styles.flowNodeTitle}>{node.title}</div>
                 <div className={styles.flowNodeSub}>{node.sub}</div>
               </div>
-              {i < NODES.length - 1 && (
-                <div className={styles.flowTrackWrap}>
-                  <div className={styles.flowTrack}>
-                    <div
-                      className={styles.flowTrackFill}
-                      style={{
-                        width:
-                          (i === 0 && packetPct >= 50) || (i === 0 && packetPct === 100)
-                            ? '100%'
-                            : i === 1 && packetPct === 100
-                              ? '100%'
-                              : '0%',
-                      }}
-                    />
+              {i < NODES.length - 1 && (() => {
+                const fillW = i === 0
+                  ? packetPct >= 50 ? 100 : packetPct * 2
+                  : packetPct >= 100 ? 100 : packetPct > 50 ? (packetPct - 50) * 2 : 0;
+                return (
+                  <div className={styles.flowTrackWrap}>
+                    <div className={styles.flowTrack}>
+                      <div
+                        className={`${styles.flowTrackFill} ${fillW === 0 ? styles.flowTrackFillEmpty : ''}`}
+                        style={{ width: `${fillW}%` }}
+                      />
+                    </div>
                   </div>
-                  {i === 0 && (
-                    <div
-                      className={styles.packet}
-                      style={{
-                        left: `${Math.min(packetPct * 2, 100)}%`,
-                        opacity: currentStep && packetPct <= 50 ? 1 : 0,
-                        transition: 'left 0.7s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
-                      }}
-                    />
-                  )}
-                  {i === 1 && (
-                    <div
-                      className={styles.packet}
-                      style={{
-                        left: `${Math.max((packetPct - 50) * 2, 0)}%`,
-                        opacity: currentStep && packetPct >= 50 ? 1 : 0,
-                        transition: 'left 0.7s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
-                      }}
-                    />
-                  )}
-                </div>
-              )}
+                );
+              })()}
             </React.Fragment>
           ))}
+
         </div>
 
         {/* Status log */}

@@ -843,6 +843,7 @@ module.exports = {
             id: 'encyclopedia/nexus',
           },
           items: [
+            'encyclopedia/nexus-interactive-demo',
             'encyclopedia/nexus-endpoints',
             'encyclopedia/nexus-registry',
             'encyclopedia/nexus-services',
