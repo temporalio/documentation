@@ -21,6 +21,10 @@ Many SaaS providers and large enterprise platform teams use a single Temporal [N
 
 This guide covers architectural patterns, design considerations, and practical examples for building multi-tenant applications with Temporal.
 
+For related guidance on where to draw Namespace boundaries and how to scope credentials and permissions, see
+[Namespace best practices](/best-practices/managing-namespace) and
+[Managing Temporal Cloud access control](/best-practices/cloud-access-control).
+
 ## Architectural principles
 
 When designing a multi-tenant Temporal application, follow these principles:
@@ -89,6 +93,11 @@ Only practical for a small number (< 50) of high-value tenants due to operationa
 - Credential and connectivity management per [Namespace](/namespaces)
 - Requires more [Workers](/workers) (minimum 2 per Namespace for high availability)
 - Expensive at scale
+
+This pattern is usually chosen when tenant boundaries also need to be credential boundaries. For example, each tenant may
+need its own service accounts, API keys, dashboards, or rate limits. If that is your primary driver, review
+[Managing Temporal Cloud access control](/best-practices/cloud-access-control) together with
+[Namespace best practices](/best-practices/managing-namespace) before committing to Namespace-per-tenant isolation.
 
 <RelatedReadContainer>
   <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
@@ -228,6 +237,20 @@ While testing, also pay attention to your [metrics capacity and cardinality](/cl
 - More flexible, no deployment needed for new tenants
 
 ## Best practices
+
+### How tenant isolation affects Namespace and access design
+
+Your multi-tenant architecture also determines how much isolation you get from Namespaces and access controls:
+
+- **Shared Namespace with per-tenant Task Queues**: Best for scale and operational simplicity, but tenant isolation is
+  mostly enforced by your application and worker routing logic rather than by Temporal credentials.
+- **Separate Namespaces for domains or services**: Useful when teams need separate credentials, dashboards, APS
+  envelopes, or on-call boundaries.
+- **Namespace per tenant**: Strongest isolation, but highest provisioning and credential-management overhead.
+
+If tenants, teams, or regulated workloads need different credentials or RBAC boundaries, decide that together with your
+Namespace topology. See [Namespace best practices](/best-practices/managing-namespace) and
+[Managing Temporal Cloud access control](/best-practices/cloud-access-control).
 
 ### Monitoring
 
