@@ -77,7 +77,7 @@ export default function Quiz() {
                     given === q.correct ? styles.quizFeedbackCorrect : styles.quizFeedbackWrong
                   }`}
                 >
-                  {given === q.correct ? '✓ Correct: ' : '✗ Not quite: '}
+                  {given === q.correct ? 'Correct: ' : 'Not quite: '}
                   {q.explanation}
                 </div>
               )}

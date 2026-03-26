@@ -852,7 +852,6 @@ module.exports = {
             'encyclopedia/nexus-error-handling',
             'encyclopedia/nexus-metrics',
             'encyclopedia/nexus-security',
-            'encyclopedia/nexus-interactive-demo',
           ],
         },
         {

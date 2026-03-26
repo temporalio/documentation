@@ -101,6 +101,6 @@ export const asyncSteps: FlowStep[] = [
       'The Future resolves with the operation result. The caller workflow continues execution as if calling any other API.',
     activeNode: 0,
     packetPct: 0,
-    log: { level: 'success', event: 'RESUME', msg: 'Caller resumed: "¡Hola! Temporal 👋"' },
+    log: { level: 'success', event: 'RESUME', msg: 'Caller resumed: "¡Hola! Temporal"' },
   },
 ];

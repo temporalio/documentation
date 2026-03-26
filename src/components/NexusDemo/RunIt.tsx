@@ -80,7 +80,7 @@ export default function RunIt({ onNext }: Props) {
           <Cmd prompt="T1 $" cmd="dotnet run handler-worker" />
           <Cmd prompt="T2 $" cmd="dotnet run caller-worker" />
           <Cmd prompt="T3 $" cmd="dotnet run caller-workflow" />
-          <div className={styles.runitOutput}># Output: ¡Hola! Temporal 👋</div>
+          <div className={styles.runitOutput}># Output: ¡Hola! Temporal</div>
         </>
       )}
 
@@ -119,7 +119,7 @@ export default function RunIt({ onNext }: Props) {
           <Cmd prompt="T1 $" cmd="go run ./handler/worker/main.go" />
           <Cmd prompt="T2 $" cmd="go run ./caller/worker/main.go" />
           <Cmd prompt="T3 $" cmd="go run ./caller/starter/main.go" />
-          <div className={styles.runitOutput}># Output: ¡Hola! Temporal 👋</div>
+          <div className={styles.runitOutput}># Output: ¡Hola! Temporal</div>
         </>
       )}
 
@@ -165,7 +165,7 @@ export default function RunIt({ onNext }: Props) {
           <Cmd prompt="T1 $" cmd="npm run start:service-worker" />
           <Cmd prompt="T2 $" cmd="npm run start:caller-worker" />
           <Cmd prompt="T3 $" cmd="npm run start:caller-workflow" />
-          <div className={styles.runitOutput}># Output: ¡Hola! Temporal 👋</div>
+          <div className={styles.runitOutput}># Output: ¡Hola! Temporal</div>
         </>
       )}
 

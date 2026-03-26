@@ -74,9 +74,9 @@ public class HelloHandlerWorkflow
         IHelloService.HelloInput input) =>
         input.Language switch
         {
-            IHelloService.HelloLanguage.En => new("Hello " + input.Name + " 👋"),
-            IHelloService.HelloLanguage.Fr => new("Bonjour " + input.Name + " 👋"),
-            IHelloService.HelloLanguage.Es => new("¡Hola! " + input.Name + " 👋"),
+            IHelloService.HelloLanguage.En => new("Hello " + input.Name + ""),
+            IHelloService.HelloLanguage.Fr => new("Bonjour " + input.Name + ""),
+            IHelloService.HelloLanguage.Es => new("¡Hola! " + input.Name + ""),
             _ => throw new ApplicationFailureException(
                 "Unsupported: " + input.Language)
         };
@@ -145,7 +145,7 @@ var result = await client.ExecuteWorkflowAsync(
     new(id: "nexus-hello-id",
         taskQueue: "nexus-simple-caller-sample"));
 
-// result == "¡Hola! Temporal 👋"`,
+// result == "¡Hola! Temporal"`,
     note: 'Two separate namespaces. Two separate workers. Zero shared internal code, connected only by a single Nexus Endpoint and a shared interface file.',
   },
 ];

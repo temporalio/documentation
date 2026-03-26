@@ -185,12 +185,12 @@ export default function HowItWorks({ onNext }: Props) {
         <div className={styles.flowControls}>
           <button className={styles.btn} onClick={handleRunDemo}>
             {playing
-              ? '⏸ Pause'
+              ? 'Pause'
               : stepIdx === -1
                 ? 'Run Demo'
                 : stepIdx >= steps.length - 1
-                  ? '↺ Replay'
-                  : '▶ Resume'}
+                  ? 'Replay'
+                  : 'Resume'}
           </button>
           <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleReset}>
             Reset
