@@ -34,8 +34,8 @@ export default function ComponentsSection({ onNext }: Props) {
             </p>
             <p>
               Unlike a general HTTP proxy, a Nexus Endpoint is managed entirely within the
-              Temporal platform, with auth, retries, and observability built in. No ports to
-              expose, no URLs to share.
+              Temporal platform, with auth, retries, and observability built in. Routing is
+              handled by the platform so callers never need connection details for the target Namespace.
             </p>
             <div className={styles.compECode}>
               Caller uses name:{' '}
@@ -61,8 +61,8 @@ export default function ComponentsSection({ onNext }: Props) {
             <p className={styles.compERole}>The contract you publish for others to consume</p>
             <p>
               A Service is a <strong>named collection of Nexus Operations</strong>, similar to an API
-              interface. Multiple services can run in the same Worker. Callers import the service
-              definition to get type safety.
+              interface. Multiple services can run in the same Worker. In supported SDKs, callers
+              can import the service definition for type-safe calls.
             </p>
             <p>
               Example:{' '}
@@ -100,9 +100,9 @@ export default function ComponentsSection({ onNext }: Props) {
             {opTab === 'sync' ? (
               <>
                 <p>
-                  <strong>Synchronous</strong> operations complete in under 10 seconds. The
-                  result comes back in the same HTTP round-trip. Great for quick lookups, scoring,
-                  or validations.
+                  <strong>Synchronous</strong> operations complete in under 10 seconds, measured
+                  from when the caller's Nexus Machinery dispatches the request. Good for quick
+                  lookups, scoring, or validations.
                 </p>
                 <div className={styles.compECode}>
                   Caller → [Nexus RPC] → Handler → result → Caller
@@ -139,8 +139,8 @@ export default function ComponentsSection({ onNext }: Props) {
             <p className={styles.compERole}>The directory of all Endpoints in your account</p>
             <p>
               The Nexus Registry is scoped to your Temporal Cloud account or self-hosted cluster. Teams register
-              Endpoints here, and the Registry is the source of truth for Endpoint discovery, access
-              control, and audit logging.
+              Endpoints here. On Temporal Cloud, the Registry also provides access control and
+              audit logging for all registered Endpoints.
             </p>
             <div className={styles.componentPills}>
               <div className={styles.componentPill}>fraud-detection-prod</div>
