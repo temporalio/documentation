@@ -1,11 +1,82 @@
 ---
 id: with-ai
-title: Use These Docs with AI
-sidebar_label: Use with AI
-description: Connect Temporal documentation to your AI tools for real-time, accurate answers.
+title: Develop with AI
+sidebar_label: Develop with AI
+description: Give your AI coding agent Temporal expertise and real-time access to Temporal documentation.
 ---
 
-# Use These Docs with AI
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Develop with AI
+
+Give your AI coding agent Temporal expertise with Skills and real-time documentation access with the Temporal Docs MCP Server.
+
+## Skills
+
+Skills give AI agents domain-specific Temporal expertise.
+They work with Claude Code, Codex, Cursor, and any agent that supports [Skills](https://agentskills.io).
+
+### Temporal Developer Skill
+
+The [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer) gives your AI coding agent expert-level knowledge of Temporal's programming model — workflow determinism rules, activity patterns, retry policies, error handling, testing strategies, worker configuration, versioning, and common gotchas.
+
+<Tabs groupId="skill-install" queryString>
+<TabItem value="claude-code" label="Claude Code Plugin">
+
+```bash
+/plugin marketplace add temporalio/agent-skills
+```
+
+Then open the plugin manager, select the marketplace, and install `temporal-developer`.
+
+</TabItem>
+<TabItem value="npx" label="npx">
+
+Works with Cline and other agents:
+
+```bash
+npx skills add https://github.com/temporalio/skill-temporal-developer
+```
+
+</TabItem>
+<TabItem value="manual" label="Manual">
+
+```bash
+git clone https://github.com/temporalio/skill-temporal-developer.git ~/.claude/skills/temporal-developer
+```
+
+</TabItem>
+</Tabs>
+
+Restart your coding agent after installing.
+
+### Temporal Cloud Skill
+
+The [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud) helps your AI coding agent troubleshoot Temporal Cloud connectivity, authentication, and configuration issues.
+
+<Tabs groupId="skill-install" queryString>
+<TabItem value="npx" label="npx">
+
+Works with Cline and other agents:
+
+```bash
+npx skills add https://github.com/temporalio/skill-temporal-cloud
+```
+
+</TabItem>
+<TabItem value="manual" label="Manual">
+
+```bash
+git clone https://github.com/temporalio/skill-temporal-cloud.git ~/.claude/skills/temporal-cloud
+```
+
+</TabItem>
+</Tabs>
+
+Restart your coding agent after installing.
+
+## Temporal Docs MCP Server
 
 Connect Temporal documentation directly to your AI assistant for accurate, up-to-date answers about Temporal.
 The Temporal docs MCP server gives AI tools real-time access to our documentation, so responses draw from current docs rather than training data.
@@ -13,7 +84,7 @@ The Temporal docs MCP server gives AI tools real-time access to our documentatio
 The server requires anonymous authentication using any Google account to enforce rate limits and prevent abuse.
 We cannot see nor do we collect any contact information from this.
 
-## Claude Code
+### Claude Code
 
 Add the Temporal docs MCP server to Claude Code with a single command:
 
@@ -29,15 +100,15 @@ To add it to a specific project only (stored in `.mcp.json`):
 claude mcp add --transport http temporal-docs https://temporal.mcp.kapa.ai
 ```
 
-After adding, restart Claude Code for the changes to take effect.
+After adding, restart Claude Code and run `/mcp` to authenticate with your Google account.
 
-## Claude Desktop
+### Claude Desktop
 
 1. Open Claude Desktop settings
 2. Navigate to **Settings > Connectors**
 3. Add a new MCP server with the URL: `https://temporal.mcp.kapa.ai`
 
-## Other MCP-compatible tools
+### Other MCP-compatible tools
 
 For any tool that supports the Model Context Protocol, use the following server URL:
 
