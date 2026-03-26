@@ -14,7 +14,7 @@ export default function ComponentsSection({ onNext }: Props) {
 
       <h1>The Four Building Blocks</h1>
       <p className={styles.lead}>
-        Nexus has four key concepts. These four concepts are the foundation of everything in Nexus.
+        Nexus has four core concepts.
       </p>
 
       <div className={styles.compEList}>

@@ -23,6 +23,8 @@
   --nd-green-bg: rgba(52, 211, 153, 0.1);
   --nd-red: #f87171;
   --nd-red-bg: rgba(248, 113, 113, 0.1);
+  --nd-orange: #fb923c;
+  --nd-orange-bg: rgba(251, 146, 60, 0.15);
   --nd-amber: #fbbf24;
   --nd-amber-bg: rgba(251, 191, 36, 0.1);
   --nd-primary-bg: rgba(191, 219, 254, 0.1);
@@ -66,6 +68,8 @@
   --nd-green-bg: rgba(5, 150, 105, 0.08);
   --nd-red: #dc2626;
   --nd-red-bg: rgba(220, 38, 38, 0.08);
+  --nd-orange: #c2410c;
+  --nd-orange-bg: rgba(194, 65, 12, 0.1);
   --nd-amber: #d97706;
   --nd-amber-bg: rgba(217, 119, 6, 0.08);
   --nd-primary-bg: rgba(29, 78, 216, 0.06);
@@ -266,6 +270,11 @@
   color: var(--nd-amber);
 }
 
+.tagOrange {
+  background: var(--nd-orange-bg);
+  color: var(--nd-orange);
+}
+
 /* ── Namespace layout ──────────────────────────────────── */
 .nsContainer {
   display: flex;
@@ -280,7 +289,7 @@
   min-width: 200px;
   background: var(--nd-surface);
   border: 2px solid var(--nd-border);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 16px;
   transition: border-color 0.2s;
 }
@@ -299,7 +308,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 0;
   display: inline-block;
   margin-bottom: 12px;
 }
@@ -328,7 +337,7 @@
 .endpointBridge {
   background: var(--nd-primary-bg);
   border: 2px dashed var(--ifm-color-primary);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 14px 20px;
   text-align: center;
 }
@@ -349,7 +358,7 @@
 .wfBlock {
   background: var(--nd-surface2);
   border: 1px solid var(--nd-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 14px;
   margin-bottom: 8px;
   font-size: 13px;
@@ -361,7 +370,7 @@
 .wfIcon {
   width: 24px;
   height: 24px;
-  border-radius: 6px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -454,7 +463,7 @@
   position: relative; /* anchor for singlePacket */
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 28px 20px;
   display: flex;
   align-items: center;
@@ -466,7 +475,7 @@
 .flowNode {
   background: var(--nd-surface2);
   border: 2px solid var(--nd-border);
-  border-radius: 10px;
+  border-radius: 0;
   padding: 12px 16px;
   text-align: center;
   flex: 0 0 auto;

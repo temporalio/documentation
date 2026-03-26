@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import styles from './NexusDemo.module.css';
 
 type Props = { onNext: () => void };
-type Lang = 'dotnet' | 'go' | 'typescript';
+type Lang = 'dotnet' | 'go' | 'typescript' | 'java' | 'python';
 
 const TABS: { id: Lang; label: string }[] = [
   { id: 'dotnet', label: '.NET' },
   { id: 'go', label: 'Go' },
   { id: 'typescript', label: 'TypeScript' },
+  { id: 'java', label: 'Java' },
+  { id: 'python', label: 'Python' },
 ];
 
 function Cmd({ prompt, cmd }: { prompt: string; cmd: string }) {
@@ -30,7 +32,7 @@ export default function RunIt({ onNext }: Props) {
 
       <h1>Run It Yourself</h1>
       <p className={styles.lead}>
-        Three official Nexus samples. Pick a language and run locally in minutes.
+        There are five official Nexus samples across different SDKs. Pick a language and run one locally.
       </p>
 
       <div className={styles.runTabs}>
@@ -62,7 +64,7 @@ export default function RunIt({ onNext }: Props) {
                 rel="noopener noreferrer"
                 className={`${styles.runitLink} ${styles.runitLinkPrimary}`}
               >
-                View on GitHub →
+                View on GitHub
               </a>
             </div>
           </div>
@@ -101,7 +103,7 @@ export default function RunIt({ onNext }: Props) {
                 rel="noopener noreferrer"
                 className={`${styles.runitLink} ${styles.runitLinkPrimary}`}
               >
-                View on GitHub →
+                View on GitHub
               </a>
             </div>
           </div>
@@ -139,7 +141,7 @@ export default function RunIt({ onNext }: Props) {
                 rel="noopener noreferrer"
                 className={`${styles.runitLink} ${styles.runitLinkPrimary}`}
               >
-                View on GitHub →
+                View on GitHub
               </a>
             </div>
           </div>
@@ -157,6 +159,81 @@ export default function RunIt({ onNext }: Props) {
           <Cmd prompt="T1 $" cmd="npm run start:service-worker" />
           <Cmd prompt="T2 $" cmd="npm run start:caller-worker" />
           <Cmd prompt="T3 $" cmd="npm run start:caller-workflow" />
+          <div className={styles.runitOutput}># Output: ¡Hola! Temporal</div>
+        </>
+      )}
+
+      {lang === 'java' && (
+        <>
+          <div className={styles.card} style={{ marginBottom: 20 }}>
+            <div className={`${styles.tag} ${styles.tagAmber}`} style={{ marginBottom: 10 }}>
+              samples-java / nexus
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: '0 0 14px' }}>
+              Java implementation using Gradle, with sync Echo and async SayHello operations across two Namespaces.
+            </p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <a
+                href="https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexus"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.runitLink} ${styles.runitLinkPrimary}`}
+              >
+                View on GitHub
+              </a>
+            </div>
+          </div>
+
+          <h3 className={styles.runitSectionLabel}>Setup</h3>
+          <Cmd prompt="#" cmd="Create two namespaces + a Nexus endpoint first (see README)" />
+          <Cmd
+            prompt="$"
+            cmd="git clone https://github.com/temporalio/samples-java && cd samples-java"
+          />
+
+          <h3 className={styles.runitSectionLabel} style={{ marginTop: 16 }}>
+            Run (3 terminals)
+          </h3>
+          <Cmd prompt="T1 $" cmd="./gradlew -q execute -PmainClass=io.temporal.samples.nexus.handler.HandlerWorker" />
+          <Cmd prompt="T2 $" cmd="./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerWorker" />
+          <Cmd prompt="T3 $" cmd="./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerStarter" />
+          <div className={styles.runitOutput}># Output: ¡Hola! Temporal</div>
+        </>
+      )}
+
+      {lang === 'python' && (
+        <>
+          <div className={styles.card} style={{ marginBottom: 20 }}>
+            <div className={`${styles.tag} ${styles.tagRed}`} style={{ marginBottom: 10 }}>
+              samples-python / hello_nexus
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: '0 0 14px' }}>
+              Python implementation with sync and async Nexus Operations across two Namespaces.
+            </p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <a
+                href="https://github.com/temporalio/samples-python/tree/main/hello_nexus"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.runitLink} ${styles.runitLinkPrimary}`}
+              >
+                View on GitHub
+              </a>
+            </div>
+          </div>
+
+          <h3 className={styles.runitSectionLabel}>Setup</h3>
+          <Cmd prompt="#" cmd="Create two namespaces + a Nexus endpoint first (see README)" />
+          <Cmd
+            prompt="$"
+            cmd="git clone https://github.com/temporalio/samples-python && cd samples-python"
+          />
+
+          <h3 className={styles.runitSectionLabel} style={{ marginTop: 16 }}>
+            Run (2 terminals)
+          </h3>
+          <Cmd prompt="T1 $" cmd="uv run hello_nexus/handler/worker.py" />
+          <Cmd prompt="T2 $" cmd="uv run hello_nexus/caller/app.py" />
           <div className={styles.runitOutput}># Output: ¡Hola! Temporal</div>
         </>
       )}

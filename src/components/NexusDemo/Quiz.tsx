@@ -106,7 +106,7 @@ export default function Quiz() {
             In-depth coverage of how Nexus works, from core concepts to security and observability.
           </p>
           <a href="/nexus" className={`${styles.runitLink}`}>
-            Read the docs →
+            Read the docs
           </a>
         </div>
 
@@ -132,7 +132,7 @@ export default function Quiz() {
             Everything you need to know about using Nexus on Temporal Cloud.
           </p>
           <a href="/cloud/nexus" className={`${styles.runitLink}`}>
-            Cloud docs →
+            Cloud docs
           </a>
         </div>
 
@@ -143,7 +143,7 @@ export default function Quiz() {
             Customer use cases, a breakdown of benefits, and guidance on when Nexus is the right choice.
           </p>
           <a href="/evaluate/nexus" className={`${styles.runitLink}`}>
-            Explore →
+            Explore
           </a>
         </div>
       </div>

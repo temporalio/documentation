@@ -49,7 +49,7 @@ export default function Overview({ onNext }: Props) {
         </div>
         <div className={styles.card} style={{ borderColor: 'var(--nd-green)' }}>
           <div className={`${styles.tag} ${styles.tagGreen}`}>With Nexus</div>
-          <h3 style={{ fontSize: 15, marginBottom: 8 }}>Modular and Safe</h3>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}>Modular and Secure</h3>
           <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
             The Fraud Detection team publishes a Nexus Service with a clear contract. The Payments
             team calls it from their Workflow like any other operation. Nexus handles routing,
