@@ -12,8 +12,9 @@ export default function Overview({ onNext }: Props) {
 
       <h1>What is Temporal Nexus?</h1>
       <p className={styles.lead}>
-        Nexus lets different teams share Temporal Workflows across team, Namespace, region,
-        and cloud boundaries, without exposing internal implementation details.
+        Nexus lets different teams share Temporal's capabilities, including Workflows, Signals,
+        Queries, and Updates, across team, Namespace, region, and cloud boundaries, without
+        exposing internal implementation details.
       </p>
 
       <div
@@ -144,8 +145,7 @@ export default function Overview({ onNext }: Props) {
           <div className={`${styles.tag} ${styles.tagPurple}`}>Security</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Built-in Auth</h3>
           <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
-            mTLS encryption and Namespace allowlists control who can call what. No API keys in
-            code.
+            mTLS encryption and Namespace allowlists control who can call what. Teams don't need to share credentials with each other. Access is enforced at the platform level.
           </p>
         </div>
         <div className={styles.card}>
