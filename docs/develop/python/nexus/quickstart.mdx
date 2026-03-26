@@ -34,56 +34,6 @@ You should have `activities.py`, `workflows.py`, `worker.py`, and `starter.py` f
 Ensure you have Temporal Python SDK `v1.14.1` or higher installed (`pip install -U temporalio`).
 
 <SetupSteps>
-<SetupStep code={
-<>
-
-<CodeSnippet language="yml">
-{`nexusrpc: 1.0.0
-
-services:
-    SayHelloNexusService:
-      description: A Nexus service that wraps the SayHello workflow.
-      operations:
-        say_hello:
-          description: Say hello via a Temporal Workflow.
-          input:
-            $ref: '#/types/MyInput'
-          output:
-            type: string
-
-types:
-    MyInput:
-      type: object
-      properties:
-        name: { type: string }
-      required: [name]`}
-</CodeSnippet>
-
-<CodeSnippet language="bash">
-nexus-rpc-gen --lang py --out-file service.py service.nexusrpc.yaml
-</CodeSnippet>
-
-</>
-}>
-
-## Optional: Translate Workflows into Nexus IDL and Generate Models
-
-You can use [nexus-rpc-gen](https://github.com/nexus-rpc/nexus-rpc-gen) to generate Nexus service contracts from a YAML definition.
-
-Create a file called `service.nexusrpc.yaml` with the definition shown, then run the codegen command to produce `service.py`.
-
-This step is optional — you can also define the service contract manually in the next step.
-
-:::note
-
-The generated service uses [Pydantic](https://docs.pydantic.dev/) models instead of dataclasses.
-If you use the generated code, configure your Workers and Client with the
-[Pydantic data converter](https://python.temporal.io/temporalio.contrib.pydantic.html) (`pydantic_data_converter`)
-to ensure proper serialization.
-
-:::
-
-</SetupStep>
 
 <SetupStep code={
 <>
@@ -110,6 +60,9 @@ class SayHelloNexusService:
 ## Define Nexus Service
 
 Create a file called `service.py` that defines the Nexus Service contract.
+
+Creating a Nexus Service establishes the contract between your implementation and any callers.
+It provides type safety when invoking Nexus Operations and ensures that Operation Handlers fulfill the contract.
 
 The `@nexusrpc.service` decorator declares a service with typed operations.
 `SayHelloWorkflow` returns `str`, so the operation output type is `str`.
@@ -148,6 +101,8 @@ class SayHelloNexusServiceHandler:
 ## Define Operation Handlers
 
 Create a file called `handler.py` that implements the Nexus Operation handler.
+
+Operation handlers contain the logic that runs when a caller invokes a Nexus Operation.
 
 The `@nexus.workflow_run_operation` decorator creates an asynchronous Nexus Operation that starts a Workflow.
 The handler bridges the Nexus `MyInput` dataclass to `SayHelloWorkflow`'s `str` parameter by extracting `input.name`.
@@ -193,9 +148,11 @@ if __name__ == "__main__":
 
 ## Register Nexus Service Handler in a Worker
 
-Create a file called `handler_worker.py` that registers the Nexus Service handler in a Worker.
+Create a file called `handler_worker.py` that registers the Nexus Service Handler in a Worker.
 
-The Worker hosts both the `SayHelloWorkflow` and the Nexus Service handler.
+A Worker will only poll for and process incoming Nexus requests if the Nexus Service Handlers are registered.
+This is the same Worker concept used for Workflows and Activities.
+
 The `nexus_service_handlers` parameter registers the handler so it can receive Nexus Operation requests.
 
 </SetupStep>
@@ -232,6 +189,10 @@ class CallerWorkflow:
 
 Create a file called `caller.py` that defines a Workflow which invokes the Nexus Operation.
 
+The caller Workflow demonstrates the consumer side of Nexus.
+Instead of importing handler code directly, the caller only depends on the Service contract.
+This keeps the caller and handler decoupled so they can live in separate Namespaces, repositories, or even teams.
+
 The `workflow.create_nexus_client()` method creates a client bound to your Nexus Service and Endpoint.
 `execute_operation` starts the operation and waits for the result.
 
@@ -261,6 +222,9 @@ temporal operator namespace create --namespace my-caller-namespace
 ## Create Namespaces and Nexus Endpoint
 
 Before running the application, create separate Namespaces for the caller and handler, then create a Nexus Endpoint to route requests between them.
+
+Namespaces provide isolation between the caller and handler sides.
+The Nexus Endpoint acts as a routing layer that connects the caller Namespace to the handler's target Namespace and Task Queue.
 
 Make sure your local Temporal dev server is running (`temporal server start-dev`).
 
@@ -310,6 +274,9 @@ if __name__ == "__main__":
 
 Create a file called `caller_starter.py` to start the caller Worker and execute the Workflow.
 
+This step brings everything together: the caller Worker hosts `CallerWorkflow`, which uses the Nexus client to invoke `say_hello` on the handler side.
+The full request flows from the caller Workflow, through the Nexus Endpoint, to the handler Worker running `SayHelloWorkflow`, and back to the caller.
+
 **Run the application:**
 
 1. Start the handler worker in one terminal: `python handler_worker.py`
@@ -326,3 +293,16 @@ You should see `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOpe
 
 </SetupStep>
 </SetupSteps>
+
+## Next Steps
+
+Now that you have a working Nexus Service, here are some resources to deepen your understanding:
+
+- **[Python Nexus Feature Guide](/develop/python/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
+- **[Nexus Operations](/nexus/operations)**: The full Operation lifecycle, including retries, timeouts, and execution semantics.
+- **[Nexus Services](/nexus/services)**: Designing Service contracts and registering multiple Services per Worker.
+- **[Nexus Patterns](/nexus/patterns)**: Comparing the collocated and router-queue deployment patterns.
+- **[Error Handling in Nexus](/nexus/error-handling)**: Handling retryable and non-retryable errors across caller and handler boundaries.
+- **[Execution Debugging](/nexus/execution-debugging)**: Bi-directional linking and OpenTelemetry tracing for debugging Nexus calls.
+- **[Nexus Endpoints](/nexus/endpoints)**: Managing Endpoints and understanding how they route requests.
+- **[Temporal Nexus on Temporal Cloud](/cloud/nexus)**: Deploying Nexus in a production Temporal Cloud environment with built-in access controls and multi-region connectivity.
