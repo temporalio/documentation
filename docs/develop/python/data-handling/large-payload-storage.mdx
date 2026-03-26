@@ -3,7 +3,7 @@ id: large-payload-storage
 title: Large payload storage - Python SDK
 sidebar_label: Large payload storage
 slug: /develop/python/data-handling/large-payload-storage
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 tags:
   - Python SDK
   - Temporal SDKs
@@ -11,9 +11,9 @@ tags:
 description: Offload large payloads to external storage using the claim check pattern in the Python SDK.
 ---
 
-The Temporal Service enforces a ~2 MB per payload limit.
-When your Workflows or Activities handle data larger than this, you can offload payloads to external storage (such as S3) and pass a small reference token through the event history instead.
-This is sometimes called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+The Temporal Service enforces a ~2 MB per payload limit. When your Workflows or Activities handle data larger than the
+limit, you can offload payloads to external storage, such as S3, and pass a small reference token through the event
+history instead. This is sometimes called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
 
 External storage sits at the end of the data pipeline, after both the Payload Converter and the Payload Codec:
 
@@ -21,16 +21,21 @@ External storage sits at the end of the data pipeline, after both the Payload Co
 User code → PayloadConverter → PayloadCodec → External Storage → Temporal Service
 ```
 
-When a payload exceeds a configurable size threshold (default 256 KiB), the storage driver uploads it to your external store and replaces it with a lightweight reference.
-Payloads below the threshold stay inline in the event history.
-On the way back, reference payloads are retrieved from external storage before the codec decodes them.
+When a payload exceeds a configurable size threshold (default 256 KiB), the storage driver uploads it to your external
+store and replaces it with a lightweight reference. Payloads below the threshold stay inline in the event history. On
+the way back, reference payloads are retrieved from external storage before the codec decodes them.
 
-Because external storage runs after the codec, payloads are already encrypted (if you use an encryption codec) before they're uploaded to your store.
+Because external storage runs after the codec. If you use an encryption codec, payloads are already encrypted before
+they're uploaded to your store.
 
 ## Store and retrieve large payloads using external storage
 
-To offload large payloads, implement a `StorageDriver` and configure it on your `DataConverter`.
-The driver needs a `store()` method to upload payloads and a `retrieve()` method to fetch them back.
+To offload large payloads, implement a `StorageDriver` and configure it on your `DataConverter`. The driver needs a
+`store()` method to upload payloads and a `retrieve()` method to fetch them back.
+
+Once you implement a storage driver, configure it on your `DataConverter` and use it when creating your Client and
+Worker. All Workflows and Activities running on the Worker will use the storage drive automatically without changes to
+your business logic. You can also configure the size threshold and use multiple storage drivers.
 
 ### Implement a storage driver
 
@@ -66,8 +71,9 @@ class S3StorageDriver(StorageDriver):
 
 ### Store payloads
 
-The `store()` method receives a sequence of payloads and must return exactly one `StorageDriverClaim` per payload.
-A claim is a set of string key-value pairs that the driver uses to locate the payload later — typically a storage key or URL.
+The `store()` method receives a sequence of payloads and must return exactly one `StorageDriverClaim` per payload. A
+claim is a set of string key-value pairs that the driver uses to locate the payload later — typically a storage key or
+URL.
 
 ```python
 Sample implementation:
@@ -109,8 +115,8 @@ converter = DataConverter(
 
 ### Adjust the size threshold
 
-The `payload_size_threshold` controls which payloads get offloaded.
-Payloads smaller than this value stay inline in the event history.
+The `payload_size_threshold` controls which payloads get offloaded. Payloads smaller than this value stay inline in the
+event history.
 
 ```python
 ExternalStorage(
@@ -123,7 +129,8 @@ Set it to `None` to externalize all payloads regardless of size.
 
 ### Use multiple storage drivers
 
-When you have multiple drivers (for example, hot and cold storage tiers), provide a `driver_selector` function that chooses which driver handles each payload:
+When you have multiple drivers (for example, hot and cold storage tiers), provide a `driver_selector` function that
+chooses which driver handles each payload:
 
 ```python
 hot_driver = S3StorageDriver("hot-bucket")

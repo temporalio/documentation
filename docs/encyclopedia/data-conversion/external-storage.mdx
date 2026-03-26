@@ -1,0 +1,67 @@
+---
+id: external-storage
+title: External Storage
+sidebar_label: External Storage
+description:
+  External Storage offloads large payloads to an external store like S3, keeping only a small reference in the event
+  history.
+slug: /external-storage
+toc_max_heading_level: 4
+keywords:
+  - external-storage
+  - storage-driver
+  - large-payloads
+  - claim-check
+  - data-converters
+  - payloads
+tags:
+  - Concepts
+  - Data Converters
+---
+
+The Temporal Service enforces a ~2 MB per-payload limit. When your Workflows or Activities handle data larger than this
+limit, you can use External Storage to offload payloads to an external store (such as S3) and pass a small reference
+token through the Event History instead. This is sometimes called the
+[claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+
+## How External Storage fits in the data pipeline {#data-pipeline}
+
+External Storage sits at the end of the data pipeline, after both the [Payload Converter](/payload-converter) and the
+[Payload Codec](/payload-codec):
+
+```
+User code → Payload Converter → Payload Codec → External Storage → Temporal Service
+```
+
+When a payload exceeds a configurable size threshold, the storage driver uploads it to your external store and replaces
+it with a lightweight reference. Payloads below the threshold stay inline in the Event History. On the way back, the
+codec receives reference payloads from external storage before decoding them.
+
+Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
+before they're uploaded to your store.
+
+## Storage drivers
+
+A Storage Driver is the part you implement to connect External Storage to your backing store. Each driver provides two
+operations:
+
+- **Store**. Upload payloads and return a claim, which is a set of key-value pairs the driver uses to locate the payload
+  later.
+- **Retrieve**. Download payloads using the claims that `store` produced.
+
+You can configure multiple storage drivers and use a selector function to route payloads to different drivers based on
+size, type, or other criteria such as hot and cold storage tiers.
+
+## Configuration
+
+Configure External Storage on the Data Converter. The key settings are:
+
+- **Drivers**. One or more storage driver implementations.
+- **Size threshold**. The driver offloads payloads larger than this value, which typically defaults to 256 KiB. Turn off
+  the threshold to externalize all payloads regardless of size.
+- **Driver selector**. When using multiple drivers, a function that chooses which driver handles each payload.
+
+For SDK-specific implementation details, see:
+
+- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
+- [TypeScript SDK: Large payload storage](/develop/typescript/data-handling/large-payload-storage)
