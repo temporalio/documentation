@@ -12,7 +12,7 @@ export default function Overview({ onNext }: Props) {
 
       <h1>What is Temporal Nexus?</h1>
       <p className={styles.lead}>
-        Nexus lets different teams share Temporal workflows across team, namespace, region,
+        Nexus lets different teams share Temporal Workflows across team, Namespace, region,
         and cloud boundaries, without exposing internal implementation details.
       </p>
 
@@ -24,12 +24,12 @@ export default function Overview({ onNext }: Props) {
           marginBottom: 32,
         }}
       >
-        <h3 style={{ color: 'var(--ifm-color-primary)', marginBottom: 8, fontSize: 15 }}>
+        <h3 style={{ color: 'var(--ifm-font-color-base)', marginBottom: 8, fontSize: 15 }}>
           The core idea in one sentence
         </h3>
         <p style={{ fontSize: 15, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.7 }}>
-          Team A can call Team B's workflows like a typed API, with full durability, retries,
-          and fault-tolerance built in, without needing access to Team B's namespace or knowing
+          Team A can call Team B's Workflows like a typed API, with full durability, retries,
+          and fault-tolerance built in, without needing access to Team B's Namespace or knowing
           how their code works.
         </p>
       </div>
@@ -39,9 +39,9 @@ export default function Overview({ onNext }: Props) {
         <div className={styles.card} style={{ borderColor: 'var(--nd-red)' }}>
           <div className={`${styles.tag} ${styles.tagRed}`}>Without Nexus</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Siloed Teams</h3>
-          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
-            Each team works in their own Temporal namespace. There's no clean way for the Payments
-            team to trigger an action in the Fraud Detection team's workflow without tight coupling
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
+            Each team works in their own Temporal Namespace. There's no clean way for the Payments
+            team to trigger an action in the Fraud Detection team's Workflow without tight coupling
             or shared credentials. Teams either share namespaces (messy) or build fragile HTTP
             bridges (unreliable).
           </p>
@@ -49,9 +49,9 @@ export default function Overview({ onNext }: Props) {
         <div className={styles.card} style={{ borderColor: 'var(--nd-green)' }}>
           <div className={`${styles.tag} ${styles.tagGreen}`}>With Nexus</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Modular and Safe</h3>
-          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
             The Fraud Detection team publishes a Nexus Service with a clear contract. The Payments
-            team calls it from their workflow like any other operation. Nexus handles routing,
+            team calls it from their Workflow like any other operation. Nexus handles routing,
             retries, security, and observability, across any boundary.
           </p>
         </div>
@@ -127,31 +127,31 @@ export default function Overview({ onNext }: Props) {
         <div className={styles.card}>
           <div className={`${styles.tag} ${styles.tagBlue}`}>Durability</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Up to 60 Days</h3>
-          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
-            Async Nexus Operations can run for up to 60 days in Temporal Cloud. The caller workflow
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
+            Async Nexus Operations can run for up to 60 days in Temporal Cloud. The caller Workflow
             is suspended until the result arrives.
           </p>
         </div>
         <div className={styles.card}>
           <div className={`${styles.tag} ${styles.tagGreen}`}>Reliability</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>At-Least-Once</h3>
-          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
-            Nexus Machinery retries failed operations automatically. Pair with workflow ID policies
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
+            Nexus Machinery retries failed Operations automatically. Pair with Workflow ID policies
             to get exactly-once semantics.
           </p>
         </div>
         <div className={styles.card}>
           <div className={`${styles.tag} ${styles.tagPurple}`}>Security</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Built-in Auth</h3>
-          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
-            mTLS encryption and namespace allowlists control who can call what. No API keys in
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
+            mTLS encryption and Namespace allowlists control who can call what. No API keys in
             code.
           </p>
         </div>
         <div className={styles.card}>
           <div className={`${styles.tag} ${styles.tagAmber}`}>Boundaries</div>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>Cross-Everything</h3>
-          <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.6 }}>
             Works across teams, namespaces, regions (AWS &amp; GCP), and clouds, with the same
             developer experience everywhere.
           </p>

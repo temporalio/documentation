@@ -141,14 +141,6 @@ export default function RunIt({ onNext }: Props) {
               >
                 View on GitHub →
               </a>
-              <a
-                href="https://stackblitz.com/github/temporalio/samples-typescript/tree/main/nexus-hello"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.runitLink}
-              >
-                Open in StackBlitz ↗
-              </a>
             </div>
           </div>
 

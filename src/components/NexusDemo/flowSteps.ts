@@ -15,31 +15,31 @@ export const syncSteps: FlowStep[] = [
   {
     label: 'Operation scheduled',
     detail:
-      'The caller workflow calls ExecuteNexusOperationAsync(). Temporal records a ScheduleNexusOperation command and suspends the workflow execution.',
+      'The caller Workflow calls ExecuteNexusOperationAsync(). Temporal records a ScheduleNexusOperation command and suspends the Workflow execution.',
     activeNode: 0,
     packetPct: 0,
     log: { level: 'info', event: 'SCHEDULE', msg: 'ScheduleNexusOperation command recorded' },
   },
   {
-    label: 'Request forwarded to endpoint',
+    label: 'Request forwarded to Endpoint',
     detail:
-      "Temporal's server dispatches an HTTP POST request to the Nexus Endpoint URL for the Echo operation.",
+      "Temporal's server dispatches an HTTP POST request to the Nexus Endpoint URL for the Echo Operation.",
     activeNode: 1,
     packetPct: 50,
     log: { level: 'info', event: 'DISPATCH', msg: 'POST /operations/Echo → nexus-simple-endpoint' },
   },
   {
-    label: 'Handler worker receives task',
+    label: 'Handler Worker receives Task',
     detail:
-      'The handler worker polls its task queue and picks up the Nexus Task. The handler service is invoked.',
+      'The handler Worker polls its Task Queue and picks up the Nexus Task. The handler Service is invoked.',
     activeNode: 2,
     packetPct: 100,
-    log: { level: 'info', event: 'POLL', msg: 'Handler worker dequeued Nexus Task' },
+    log: { level: 'info', event: 'POLL', msg: 'Handler Worker dequeued Nexus Task' },
   },
   {
     label: 'Executes inline (< 10s)',
     detail:
-      'The Echo handler runs directly in the worker process and returns the result immediately. No workflow is started.',
+      'The Echo handler runs directly in the Worker process and returns the result immediately. No Workflow is started.',
     activeNode: 2,
     packetPct: 100,
     log: { level: 'success', event: 'COMPLETE', msg: 'Sync handler returned in < 1ms' },
@@ -47,10 +47,10 @@ export const syncSteps: FlowStep[] = [
   {
     label: 'Result delivered to caller',
     detail:
-      'The result is routed back through the Nexus Endpoint and Temporal server. The caller workflow resumes from where it left off.',
+      'The result is routed back through the Nexus Endpoint and Temporal server. The caller Workflow resumes from where it left off.',
     activeNode: 0,
     packetPct: 0,
-    log: { level: 'success', event: 'RESUME', msg: 'Caller workflow resumed with result' },
+    log: { level: 'success', event: 'RESUME', msg: 'Caller Workflow resumed with result' },
   },
 ];
 
@@ -58,23 +58,23 @@ export const asyncSteps: FlowStep[] = [
   {
     label: 'Operation scheduled',
     detail:
-      'The caller workflow calls ExecuteNexusOperationAsync(). Temporal records a ScheduleNexusOperation command and suspends the workflow.',
+      'The caller Workflow calls ExecuteNexusOperationAsync(). Temporal records a ScheduleNexusOperation command and suspends the Workflow.',
     activeNode: 0,
     packetPct: 0,
     log: { level: 'info', event: 'SCHEDULE', msg: 'ScheduleNexusOperation command recorded' },
   },
   {
-    label: 'Request forwarded to endpoint',
+    label: 'Request forwarded to Endpoint',
     detail:
-      "Temporal's server dispatches an HTTP POST request to the Nexus Endpoint for the SayHello operation.",
+      "Temporal's server dispatches an HTTP POST request to the Nexus Endpoint for the SayHello Operation.",
     activeNode: 1,
     packetPct: 50,
     log: { level: 'info', event: 'DISPATCH', msg: 'POST /operations/SayHello → nexus-simple-endpoint' },
   },
   {
-    label: 'Handler starts a workflow',
+    label: 'Handler starts a Workflow',
     detail:
-      'The handler worker starts HelloHandlerWorkflow and immediately returns an operation token. The caller workflow stays suspended.',
+      'The handler Worker starts HelloHandlerWorkflow and immediately returns an operation token. The caller Workflow stays suspended.',
     activeNode: 2,
     packetPct: 100,
     log: { level: 'info', event: 'START_WF', msg: 'HelloHandlerWorkflow started, token returned' },
@@ -82,7 +82,7 @@ export const asyncSteps: FlowStep[] = [
   {
     label: 'Workflow runs (seconds → days)',
     detail:
-      'HelloHandlerWorkflow runs to completion. It could call external APIs, wait for signals, or run sub-workflows, for as long as needed.',
+      'HelloHandlerWorkflow runs to completion. It could call external APIs, wait for Signals, or run child Workflows, for as long as needed.',
     activeNode: 2,
     packetPct: 100,
     log: { level: 'warn', event: 'RUNNING', msg: 'HelloHandlerWorkflow executing...' },
@@ -90,15 +90,15 @@ export const asyncSteps: FlowStep[] = [
   {
     label: 'Completion callback delivered',
     detail:
-      'When the handler workflow completes, a callback is delivered back to the caller namespace via the Nexus Endpoint.',
+      'When the handler Workflow completes, a callback is delivered back to the caller Namespace via the Nexus Endpoint.',
     activeNode: 1,
     packetPct: 50,
-    log: { level: 'success', event: 'CALLBACK', msg: 'Completion callback delivered to caller namespace' },
+    log: { level: 'success', event: 'CALLBACK', msg: 'Completion callback delivered to caller Namespace' },
   },
   {
-    label: 'Caller workflow resumes',
+    label: 'Caller Workflow resumes',
     detail:
-      'The Future resolves with the operation result. The caller workflow continues execution as if calling any other API.',
+      'The Future resolves with the operation result. The caller Workflow continues execution as if calling any other API.',
     activeNode: 0,
     packetPct: 0,
     log: { level: 'success', event: 'RESUME', msg: 'Caller resumed: "¡Hola! Temporal"' },

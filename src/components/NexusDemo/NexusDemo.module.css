@@ -8,8 +8,15 @@
 :global([data-theme='dark']) {
   --nd-surface: #1e1e1e;
   --nd-surface2: #252525;
+  --nd-accent-text: #d4d7ff; /* Very light periwinkle — readable on dark, Temporal UV family */
+  --nd-num-badge-bg: #7F86F1; /* Temporal Lilac for number badges */
   --nd-border: rgba(255, 255, 255, 0.1);
   --nd-muted: #94a3b8;
+  /* Nav tab colors — active/hover purple, inactive stays muted */
+  --nd-nav-inactive: #94a3b8;
+  --nd-nav-hover: #d4d7ff;
+  --nd-nav-active: #7F86F1;
+  --nd-progress-fill: #7F86F1;
   --nd-purple: #a78bfa;
   --nd-purple-bg: rgba(167, 139, 250, 0.12);
   --nd-green: #34d399;
@@ -19,13 +26,40 @@
   --nd-amber: #fbbf24;
   --nd-amber-bg: rgba(251, 191, 36, 0.1);
   --nd-primary-bg: rgba(191, 219, 254, 0.1);
+  /* Temporal brand accent colors */
+  --nd-uv: #444CE7;
+  --nd-uv-badge-bg: rgba(68, 76, 231, 0.2);
+  --nd-uv-badge-border: rgba(68, 76, 231, 0.4);
+  --nd-uv-glow: rgba(68, 76, 231, 0.25);
+  --nd-teal: #1FF1A5;
+  --nd-teal-badge-bg: rgba(31, 241, 165, 0.15);
+  --nd-teal-badge-border: rgba(31, 241, 165, 0.3);
+  --nd-teal-glow: rgba(31, 241, 165, 0.18);
+  --nd-pink: #FF6BFF;
+  --nd-pink-badge-bg: rgba(255, 107, 255, 0.15);
+  --nd-pink-badge-border: rgba(255, 107, 255, 0.3);
+  --nd-pink-glow: rgba(255, 107, 255, 0.18);
+  --nd-grellow: #CFFF0D;
+  --nd-grellow-badge-bg: rgba(207, 255, 13, 0.12);
+  --nd-grellow-badge-border: rgba(207, 255, 13, 0.25);
+  --nd-grellow-glow: rgba(207, 255, 13, 0.14);
+  /* Card surface for Option D style */
+  --nd-comp-card-bg: rgba(31, 32, 63, 0.6);
+  --nd-comp-card-border: rgba(127, 134, 241, 0.15);
 }
 
 :global([data-theme='light']) {
   --nd-surface: #ffffff;
   --nd-surface2: #f1f5f9;
+  --nd-accent-text: #444CE7; /* Temporal UV Blue — readable on light */
+  --nd-num-badge-bg: #444CE7; /* UV Blue for number badges in light */
   --nd-border: rgba(0, 0, 0, 0.08);
   --nd-muted: #64748b;
+  /* Nav tab colors — UV blue in light mode */
+  --nd-nav-inactive: #64748b;
+  --nd-nav-hover: #444CE7;
+  --nd-nav-active: #444CE7;
+  --nd-progress-fill: #444CE7;
   --nd-purple: #7c3aed;
   --nd-purple-bg: rgba(124, 58, 237, 0.08);
   --nd-green: #059669;
@@ -35,6 +69,26 @@
   --nd-amber: #d97706;
   --nd-amber-bg: rgba(217, 119, 6, 0.08);
   --nd-primary-bg: rgba(29, 78, 216, 0.06);
+  /* Temporal brand accent colors — light mode adapted */
+  --nd-uv: #3a41cc;
+  --nd-uv-badge-bg: rgba(58, 65, 204, 0.1);
+  --nd-uv-badge-border: rgba(58, 65, 204, 0.25);
+  --nd-uv-glow: rgba(58, 65, 204, 0.07);
+  --nd-teal: #059669;
+  --nd-teal-badge-bg: rgba(5, 150, 105, 0.1);
+  --nd-teal-badge-border: rgba(5, 150, 105, 0.25);
+  --nd-teal-glow: rgba(5, 150, 105, 0.07);
+  --nd-pink: #9333ea;
+  --nd-pink-badge-bg: rgba(147, 51, 234, 0.1);
+  --nd-pink-badge-border: rgba(147, 51, 234, 0.25);
+  --nd-pink-glow: rgba(147, 51, 234, 0.07);
+  --nd-grellow: #65a30d;
+  --nd-grellow-badge-bg: rgba(101, 163, 13, 0.1);
+  --nd-grellow-badge-border: rgba(101, 163, 13, 0.25);
+  --nd-grellow-glow: rgba(101, 163, 13, 0.07);
+  /* Card surface for Option D style */
+  --nd-comp-card-bg: #ffffff;
+  --nd-comp-card-border: rgba(0, 0, 0, 0.09);
 }
 
 /* ── Shell ─────────────────────────────────────────────── */
@@ -77,7 +131,7 @@
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  color: var(--nd-muted);
+  color: var(--nd-nav-inactive);
   cursor: pointer;
   font-size: 13px;
   font-family: var(--ifm-font-family-base);
@@ -89,12 +143,12 @@
 }
 
 .navBtn:hover {
-  color: var(--ifm-font-color-base);
+  color: var(--nd-nav-hover);
 }
 
 .navBtnActive {
-  color: var(--ifm-color-primary);
-  border-bottom-color: var(--ifm-color-primary);
+  color: var(--nd-nav-active);
+  border-bottom-color: var(--nd-nav-active);
 }
 
 /* ── Sections ──────────────────────────────────────────── */
@@ -120,15 +174,15 @@
 .progressBar {
   height: 3px;
   background: var(--nd-border);
-  border-radius: 2px;
+  border-radius: 0;
   margin-bottom: 36px;
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
-  background: var(--ifm-color-primary);
-  border-radius: 2px;
+  background: var(--nd-progress-fill);
+  border-radius: 0;
   transition: width 0.4s ease;
 }
 
@@ -144,7 +198,7 @@
 .sectionHeading {
   font-size: 20px;
   font-weight: 600;
-  color: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base);
   margin: 32px 0 16px;
 }
 
@@ -152,7 +206,7 @@
 .card {
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 20px;
   margin-bottom: 16px;
 }
@@ -173,7 +227,7 @@
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -324,7 +378,7 @@
   color: var(--ifm-background-color);
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
@@ -374,7 +428,7 @@
   padding: 8px 18px;
   background: none;
   border: 1px solid var(--nd-border);
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--nd-muted);
   cursor: pointer;
   font-size: 13px;
@@ -461,25 +515,9 @@
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Glowing dot rides the leading edge of the fill — no calc() needed */
-.flowTrackFill::after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--ifm-color-primary);
-  box-shadow: 0 0 10px 2px var(--ifm-color-primary);
-  opacity: 1;
-  transition: opacity 0.3s;
-}
-
 /* Hide the dot when the track fill is empty (no signal traveling yet) */
 .flowTrackFillEmpty::after {
-  opacity: 0;
+  display: none;
 }
 
 .packet {
@@ -513,7 +551,7 @@
 .flowDetail {
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 10px;
+  border-radius: 0;
   padding: 16px 20px;
   margin-bottom: 16px;
   min-height: 72px;
@@ -550,7 +588,7 @@
 .statusLog {
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 14px 16px;
   font-family: var(--ifm-font-family-monospace);
   font-size: 12px;
@@ -607,7 +645,7 @@
 .buildStepBtn {
   background: none;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 12px;
   cursor: pointer;
   text-align: left;
@@ -657,7 +695,7 @@
   background: var(--nd-surface2);
   border: 1px solid var(--nd-border);
   border-bottom: none;
-  border-radius: 8px 8px 0 0;
+  border-radius: 0;
   padding: 8px 16px;
 }
 
@@ -665,7 +703,7 @@
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
   border-top: none;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0;
   padding: 14px 16px;
   font-size: 13px;
   color: var(--nd-muted);
@@ -705,7 +743,7 @@
 .componentNum {
   width: 48px;
   height: 48px;
-  border-radius: 10px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -733,7 +771,7 @@
 
 .componentCode {
   background: var(--nd-surface2);
-  border-radius: 6px;
+  border-radius: 0;
   padding: 10px 14px;
   font-size: 12px;
   font-family: var(--ifm-font-family-monospace);
@@ -752,7 +790,7 @@
 .componentPill {
   background: var(--nd-surface2);
   border: 1px solid var(--nd-border);
-  border-radius: 6px;
+  border-radius: 0;
   padding: 5px 12px;
   font-size: 12px;
   color: var(--ifm-font-color-base);
@@ -954,7 +992,7 @@
   padding: 8px 14px;
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 13px;
   font-weight: 500;
   color: var(--ifm-font-color-base);
@@ -974,7 +1012,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
@@ -993,12 +1031,12 @@
 .runitLinkPrimary {
   background: var(--ifm-color-primary);
   border-color: var(--ifm-color-primary);
-  color: #fff;
+  color: #141414;
 }
 
 .runitLinkPrimary:hover {
   opacity: 0.88;
-  color: #fff;
+  color: #141414;
   border-color: var(--ifm-color-primary);
 }
 
@@ -1014,7 +1052,7 @@
 .runitCmd {
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 16px;
   font-family: var(--ifm-font-family-monospace);
   font-size: 13px;
@@ -1051,7 +1089,7 @@
 .quizCard {
   background: var(--nd-surface);
   border: 1px solid var(--nd-border);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 24px;
   margin-bottom: 16px;
 }
@@ -1072,7 +1110,7 @@
 .quizOpt {
   background: var(--nd-surface2);
   border: 2px solid var(--nd-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 16px;
   cursor: pointer;
   font-size: 13px;
@@ -1103,7 +1141,7 @@
   margin-top: 12px;
   font-size: 13px;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   line-height: 1.5;
 }
 
@@ -1120,7 +1158,7 @@
 .scoreCard {
   background: var(--nd-surface);
   border: 2px solid var(--ifm-color-primary);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 32px;
   text-align: center;
   margin-top: 24px;
@@ -1185,4 +1223,128 @@
 
 .cross {
   color: var(--nd-muted);
+}
+
+/* ── Option E: UV blue minimal list ─────────────────────── */
+.compEList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.compECard {
+  display: flex;
+  border: 1px solid var(--nd-border);
+}
+
+.compENumCol {
+  width: 60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 24px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--nd-border);
+  background: var(--nd-surface2);
+}
+
+.compENum {
+  width: 30px;
+  height: 30px;
+  background: var(--nd-num-badge-bg);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.compEContent {
+  padding: 24px;
+  flex: 1;
+  min-width: 0;
+}
+
+.compERole {
+  font-size: 11px;
+  color: var(--nd-accent-text);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.compECode {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  background: var(--nd-surface2);
+  border-left: 2px solid var(--nd-accent-text);
+  padding: 10px 14px;
+  margin-top: 12px;
+  color: var(--ifm-font-color-base);
+  line-height: 1.8;
+}
+
+/* ── Option D: glass cards with gradient glow ───────────── */
+.compCard {
+  background: var(--nd-comp-card-bg);
+  border: 1px solid var(--nd-comp-card-border);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.compCard::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  pointer-events: none;
+}
+
+.compCard1::after { background: linear-gradient(to top, var(--nd-uv-glow), transparent); }
+.compCard2::after { background: linear-gradient(to top, var(--nd-teal-glow), transparent); }
+.compCard3::after { background: linear-gradient(to top, var(--nd-pink-glow), transparent); }
+.compCard4::after { background: linear-gradient(to top, var(--nd-grellow-glow), transparent); }
+
+.compBadge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.compBadge1 { background: var(--nd-uv-badge-bg); color: var(--nd-uv); border: 1px solid var(--nd-uv-badge-border); }
+.compBadge2 { background: var(--nd-teal-badge-bg); color: var(--nd-teal); border: 1px solid var(--nd-teal-badge-border); }
+.compBadge3 { background: var(--nd-pink-badge-bg); color: var(--nd-pink); border: 1px solid var(--nd-pink-badge-border); }
+.compBadge4 { background: var(--nd-grellow-badge-bg); color: var(--nd-grellow); border: 1px solid var(--nd-grellow-badge-border); }
+
+.compAccent1 { color: var(--nd-uv); }
+.compAccent2 { color: var(--nd-teal); }
+.compAccent3 { color: var(--nd-pink); }
+.compAccent4 { color: var(--nd-grellow); }
+
+.compPill {
+  display: inline-block;
+  border: 1px solid var(--nd-comp-card-border);
+  color: var(--nd-muted);
+  font-size: 11px;
+  padding: 4px 10px;
+  margin: 3px 3px 0 0;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.compPillAccent {
+  border-color: var(--nd-uv-badge-border);
+  color: var(--nd-uv);
 }
