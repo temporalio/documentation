@@ -51,6 +51,23 @@ asymmetric:
 Each piece of data (like a single argument or return value) is encoded as a [Payload](/dataconversion#payload), which
 consists of binary data and key-value metadata.
 
+## Components of a Data Converter {#data-converter-components}
+
+A Data Converter has the following layers:
+
+|                           | [PayloadConverter](/payload-converter) | [PayloadCodec](/payload-codec)                 | [ExternalStorage](/external-storage)     |
+| ------------------------- | -------------------------------------- | ---------------------------------------------- | ---------------------------------------- |
+| **Purpose**               | Serialize application data to bytes    | Transform encoded payloads (encrypt, compress) | Offload large payloads to external store |
+| **Must be deterministic** | Yes                                    | No                                             | No                                       |
+| **Default**               | JSON serialization                     | None (passthrough)                             | None (passthrough)                       |
+
+The following diagram shows how data flows through a Data Converter:
+
+<CaptionedImage
+  src="/diagrams/data-converter-flow-with-external-storage.svg"
+  title="The Flow of Data through a Data Converter"
+/>
+
 For details, see the API references:
 
 - [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter)
@@ -58,7 +75,7 @@ For details, see the API references:
 - [Python](https://python.temporal.io/temporalio.converter.DataConverter.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.DataConverter)
 
-### What is a Payload? {#payload}
+## What is a Payload? {#payload}
 
 A [Payload](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) represents binary data such as input and
 output from Activities and Workflows. Payloads also contain metadata that describe their data type or other parameters
@@ -73,3 +90,7 @@ You can additionally apply [custom codecs](/payload-codec), such as for encrypti
 
 When Payloads are too large for the Temporal Service's ~2 MB limit, you can use [External Storage](/external-storage) to
 offload them to an external store like S3 and keep only a reference in the Event History.
+
+## What are the components of a Data Converter? {#data-converter-components}
+
+A Data Converter has the following layers:
