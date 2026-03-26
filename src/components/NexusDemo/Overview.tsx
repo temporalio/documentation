@@ -12,8 +12,8 @@ export default function Overview({ onNext }: Props) {
 
       <h1>What is Temporal Nexus?</h1>
       <p className={styles.lead}>
-        Nexus lets different teams share Temporal's capabilities, including Workflows, Signals,
-        Queries, and Updates, across team, Namespace, region, and cloud boundaries, without
+        Nexus lets different teams share Temporal's capabilities such as Workflows, Signals,
+        Queries, and Updates - across team, Namespace, region, and cloud boundaries, without
         exposing internal implementation details.
       </p>
 

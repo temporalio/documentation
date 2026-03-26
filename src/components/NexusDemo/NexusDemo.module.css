@@ -99,6 +99,14 @@
   min-height: 100vh;
 }
 
+:global([data-theme='light']) .shell {
+  background: #f4f6f9;
+}
+
+:global([data-theme='light']) .card {
+  background: #ffffff;
+}
+
 /* ── Nav ───────────────────────────────────────────────── */
 .nav {
   position: sticky;

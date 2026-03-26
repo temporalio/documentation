@@ -96,6 +96,57 @@ export default function Quiz() {
           </button>
         </div>
       )}
+
+      <h2 className={styles.sectionHeading} style={{ marginTop: 48 }}>Resources</h2>
+      <div className={styles.cardGrid} style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagBlue}`}>Encyclopedia</div>
+          <h3 style={{ fontSize: 15, marginBottom: 6 }}>Temporal Nexus</h3>
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: '0 0 14px', lineHeight: 1.6 }}>
+            In-depth coverage of how Nexus works, from core concepts to security and observability.
+          </p>
+          <a href="/nexus" className={`${styles.runitLink}`}>
+            Read the docs →
+          </a>
+        </div>
+
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagPurple}`}>SDK Guides</div>
+          <h3 style={{ fontSize: 15, marginBottom: 6 }}>Build with Nexus</h3>
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: '0 0 14px', lineHeight: 1.6 }}>
+            SDK-specific guidance for Go, TypeScript, .NET, Java, and Python.
+          </p>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <a href="/develop/go/nexus" className={`${styles.runitLink}`}>Go</a>
+            <a href="/develop/typescript/nexus" className={`${styles.runitLink}`}>TypeScript</a>
+            <a href="/develop/dotnet/nexus" className={`${styles.runitLink}`}>.NET</a>
+            <a href="/develop/java/nexus" className={`${styles.runitLink}`}>Java</a>
+            <a href="/develop/python/nexus" className={`${styles.runitLink}`}>Python</a>
+          </div>
+        </div>
+
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagGreen}`}>Temporal Cloud</div>
+          <h3 style={{ fontSize: 15, marginBottom: 6 }}>Nexus on Temporal Cloud</h3>
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: '0 0 14px', lineHeight: 1.6 }}>
+            Everything you need to know about using Nexus on Temporal Cloud.
+          </p>
+          <a href="/cloud/nexus" className={`${styles.runitLink}`}>
+            Cloud docs →
+          </a>
+        </div>
+
+        <div className={styles.card}>
+          <div className={`${styles.tag} ${styles.tagAmber}`}>Evaluate</div>
+          <h3 style={{ fontSize: 15, marginBottom: 6 }}>Learn More About Nexus</h3>
+          <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: '0 0 14px', lineHeight: 1.6 }}>
+            Customer use cases, a breakdown of benefits, and guidance on when Nexus is the right choice.
+          </p>
+          <a href="/evaluate/nexus" className={`${styles.runitLink}`}>
+            Explore →
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
