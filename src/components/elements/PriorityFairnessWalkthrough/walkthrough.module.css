@@ -1,0 +1,331 @@
+/*
+ * PriorityFairnessWalkthrough.module.css
+ * Adapted from NexusDemo CSS vars for light/dark mode support.
+ */
+
+/* ── Per-theme accent vars ─────────────────────────────── */
+:global([data-theme='dark']) {
+  --pfw-surface: #1a1a2e;
+  --pfw-surface2: #252540;
+  --pfw-border: rgba(255, 255, 255, 0.08);
+  --pfw-muted: #94a3b8;
+  --pfw-nav-inactive: #94a3b8;
+  --pfw-nav-hover: #d4d7ff;
+  --pfw-nav-active: #7f86f1;
+  --pfw-uv: #444ce7;
+  --pfw-teal: #1ff1a5;
+  --pfw-lime: #c3ff62;
+  --pfw-badge-bg: rgba(68, 76, 231, 0.2);
+  --pfw-step-num-bg: #7f86f1;
+  --pfw-step-num-text: #fff;
+  --pfw-card-bg: rgba(255, 255, 255, 0.03);
+  --pfw-card-border: rgba(127, 134, 241, 0.2);
+  --pfw-priority-card-border: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
+}
+
+:global([data-theme='light']) {
+  --pfw-surface: #f4f6f9;
+  --pfw-surface2: #ffffff;
+  --pfw-border: rgba(0, 0, 0, 0.08);
+  --pfw-muted: #64748b;
+  --pfw-nav-inactive: #64748b;
+  --pfw-nav-hover: #3a41cc;
+  --pfw-nav-active: #444ce7;
+  --pfw-uv: #3a41cc;
+  --pfw-teal: #059669;
+  --pfw-lime: #65a30d;
+  --pfw-badge-bg: rgba(58, 65, 204, 0.1);
+  --pfw-step-num-bg: #444ce7;
+  --pfw-step-num-text: #fff;
+  --pfw-card-bg: #ffffff;
+  --pfw-card-border: rgba(0, 0, 0, 0.09);
+  --pfw-priority-card-border: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
+}
+
+/* ── Shell ─────────────────────────────────────────────── */
+.shell {
+  font-family: var(--ifm-font-family-base);
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  min-height: 60vh;
+}
+
+/* ── Nav ───────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  z-index: 50;
+  background: var(--ifm-background-color);
+  border-bottom: 1px solid var(--pfw-border);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.navLogo {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ifm-color-primary);
+  margin-right: 16px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--pfw-nav-inactive);
+  padding: 14px 12px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+  font-family: var(--ifm-font-family-base);
+}
+
+.navBtn:hover {
+  color: var(--pfw-nav-hover);
+}
+
+.navBtnActive {
+  color: var(--pfw-nav-active);
+  border-bottom-color: var(--pfw-nav-active);
+}
+
+/* ── Section container ─────────────────────────────────── */
+.section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.sectionHeading {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+  color: var(--ifm-font-color-base);
+}
+
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ifm-font-color-base);
+  margin-bottom: 1.5rem;
+}
+
+/* ── Feature cards (gradient border, no rounded corners) ── */
+.featureGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.75rem 0 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.featureCard {
+  border: 1px solid transparent;
+  background-image:
+    linear-gradient(var(--ifm-background-color, #13111b), var(--ifm-background-color, #13111b)),
+    linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 0;
+  padding: 1.25rem 1.25rem 1.25rem 1rem;
+}
+
+.featureCardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.featureCardTitle {
+  font-size: 1.05rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.featureCardBody {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin: 0;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Priority pills ────────────────────────────────────── */
+.pillStrip {
+  display: flex;
+  gap: 6px;
+  margin: 1.25rem 0 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  border-radius: 0;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--ifm-font-family-monospace);
+  white-space: nowrap;
+}
+
+/* ── Use-both callout ──────────────────────────────────── */
+.useBoth {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--pfw-muted);
+  margin: 1.25rem 0 0;
+}
+
+/* ── How It Works steps ────────────────────────────────── */
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: var(--pfw-card-bg);
+  border: 1px solid var(--pfw-card-border);
+  border-radius: 0;
+  padding: 1.25rem;
+}
+
+.stepNum {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--pfw-step-num-bg);
+  color: var(--pfw-step-num-text);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepTitle {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+}
+
+.stepBody {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin: 0;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── When-to-use table ─────────────────────────────────── */
+.whenTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin: 1rem 0 2rem;
+}
+
+.whenTable th,
+.whenTable td {
+  border: 1px solid var(--pfw-border);
+  padding: 0.65rem 1rem;
+  text-align: left;
+}
+
+.whenTable th {
+  background: var(--pfw-card-bg);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--pfw-muted);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 0;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.badgePriority {
+  background: var(--pfw-badge-bg);
+  color: var(--pfw-nav-active);
+}
+
+.badgeFairness {
+  background: rgba(31, 241, 165, 0.12);
+  color: var(--pfw-teal);
+}
+
+.badgeBoth {
+  background: rgba(182, 100, 255, 0.12);
+  color: #b664ff;
+}
+
+/* ── SDK section ───────────────────────────────────────── */
+.sdkGroup {
+  margin-bottom: 2.5rem;
+}
+
+.sdkGroupTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pfw-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--pfw-border);
+}
+
+/* ── Next button ───────────────────────────────────────── */
+.nextBtn {
+  margin-top: 2rem;
+  display: inline-block;
+  background: var(--pfw-uv);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0;
+  font-family: var(--ifm-font-family-base);
+  transition: opacity 0.15s;
+}
+
+.nextBtn:hover {
+  opacity: 0.85;
+}
