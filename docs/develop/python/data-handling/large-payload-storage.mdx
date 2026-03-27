@@ -92,93 +92,122 @@ The Python SDK includes a contrib S3 storage driver. Follow these steps to set i
    <!--SNIPEND-->
 
 All Workflows and Activities running on the Worker use the storage driver automatically without changes to your business
-logic. The driver uploads and downloads payloads concurrently, and on retrieve it validates the SHA-256 hash of each
-downloaded payload against the hash stored in the claim.
+logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
 
-### Route payloads to different buckets
+4. (Optional) To route payloads to different buckets, pass a function as the `bucket` parameter instead of a string. The
+   function takes the store context and the payload as arguments, and returns a bucket name, so you can route based on
+   the Activity Task Queue or other context:
 
-The `bucket` parameter accepts a callable that receives the store context and the payload. Use this to route payloads to
-different buckets based on context, such as the Activity Task Queue:
+   ```python
+   from temporalio.converter import StorageDriverStoreContext, ActivitySerializationContext
+   from temporalio.api.common.v1 import Payload
 
-```python
-from temporalio.converter import StorageDriverStoreContext, ActivitySerializationContext
-from temporalio.api.common.v1 import Payload
+   QUEUE_BUCKETS = {
+       "queue-a": "bucket-queue-a",
+       "queue-b": "bucket-queue-b",
+   }
 
-QUEUE_BUCKETS = {
-    "queue-a": "bucket-queue-a",
-    "queue-b": "bucket-queue-b",
-}
+   def bucket_selector(ctx: StorageDriverStoreContext, payload: Payload) -> str:
+       if isinstance(ctx.serialization_context, ActivitySerializationContext):
+           queue = ctx.serialization_context.activity_task_queue
+           if queue and queue in QUEUE_BUCKETS:
+               return QUEUE_BUCKETS[queue]
+       return "default-bucket"
 
-def bucket_selector(ctx: StorageDriverStoreContext, payload: Payload) -> str:
-    if isinstance(ctx.serialization_context, ActivitySerializationContext):
-        queue = ctx.serialization_context.activity_task_queue
-        if queue and queue in QUEUE_BUCKETS:
-            return QUEUE_BUCKETS[queue]
-    return "default-bucket"
-
-driver = S3StorageDriver(client=driver_client, bucket=bucket_selector)
-```
+   driver = S3StorageDriver(client=driver_client, bucket=bucket_selector)
+   ```
 
 ## Implement a custom storage driver
 
-If you need a backend other than S3, implement your own storage driver by extending the `StorageDriver` abstract class.
-The driver needs a `name()` method, a `store()` method to upload payloads, and a `retrieve()` method to fetch them back.
+If you need a storage system other than S3, you can implement your own storage driver. The following example shows a
+complete custom driver implementation that uses local disk as the backing store:
+
+<!--SNIPSTART python-custom-storage-driver-->
 
 ```python
-import hashlib
+import os
+import uuid
+from typing import Sequence
+
+from temporalio.api.common.v1 import Payload
 from temporalio.converter import (
     StorageDriver,
     StorageDriverClaim,
     StorageDriverStoreContext,
     StorageDriverRetrieveContext,
 )
-from temporalio.api.common.v1 import Payload
 
 
-class MyStorageDriver(StorageDriver):
+class LocalDiskStorageDriver(StorageDriver):
+    def __init__(self, store_dir: str = "/tmp/temporal-payload-store") -> None:
+        self._store_dir = store_dir
+
     def name(self) -> str:
-        return "my-storage"
+        return "local-disk"
 
     async def store(
         self,
         context: StorageDriverStoreContext,
-        payloads: list[Payload],
+        payloads: Sequence[Payload],
     ) -> list[StorageDriverClaim]:
+        os.makedirs(self._store_dir, exist_ok=True)
+
+        prefix = self._store_dir
+        sc = context.serialization_context
+        if sc is not None and hasattr(sc, "workflow_id"):
+            prefix = os.path.join(self._store_dir, sc.namespace, sc.workflow_id)
+            os.makedirs(prefix, exist_ok=True)
+
         claims = []
         for payload in payloads:
-            data = payload.SerializeToString()
-            key = hashlib.sha256(data).hexdigest()
-            await self._upload(key, data)
-            claims.append(
-                StorageDriverClaim(claim_data={"key": key})
-            )
+            key = f"{uuid.uuid4()}.bin"
+            file_path = os.path.join(prefix, key)
+            with open(file_path, "wb") as f:
+                f.write(payload.SerializeToString())
+            claims.append(StorageDriverClaim(claim_data={"path": file_path}))
         return claims
 
     async def retrieve(
         self,
         context: StorageDriverRetrieveContext,
-        claims: list[StorageDriverClaim],
+        claims: Sequence[StorageDriverClaim],
     ) -> list[Payload]:
         payloads = []
         for claim in claims:
-            data = await self._download(claim.claim_data["key"])
+            file_path = claim.claim_data["path"]
+            with open(file_path, "rb") as f:
+                data = f.read()
             payload = Payload()
             payload.ParseFromString(data)
             payloads.append(payload)
         return payloads
-
-    async def _upload(self, key: str, data: bytes) -> None:
-        # Upload data to your storage backend
-        ...
-
-    async def _download(self, key: str) -> bytes:
-        # Download data from your storage backend
-        ...
 ```
 
-### Configure external storage on the Data Converter
+<!--SNIPEND-->
 
-Pass an `ExternalStorage` instance to your `DataConverter`:
+### Extend the StorageDriver class
+
+A custom driver extends the `StorageDriver` abstract class and implements three methods:
+
+- `name()` returns a unique string that identifies the driver.
+- `store()` receives a list of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
+  key-value pairs that the driver uses to locate the payload later.
+- `retrieve()` receives the claims that `store()` produced and returns the original payloads.
+
+### Store payloads
+
+In `store()`, serialize each payload to bytes with `payload.SerializeToString()`, upload the bytes to your storage
+system, and return a `StorageDriverClaim` with enough information to find the payload later. Using a content-addressable
+key like a SHA-256 hash gives you deduplication for free.
+
+### Retrieve payloads
+
+In `retrieve()`, download the bytes using the claim data, then reconstruct the payload with
+`payload.ParseFromString(data)`.
+
+### Configure the Data Converter
+
+Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker:
 
 ```python
 from temporalio.converter import DataConverter, ExternalStorage
@@ -205,10 +234,10 @@ ExternalStorage(
 
 Set it to `None` to externalize all payloads regardless of size.
 
-### Use multiple storage drivers
+## Use multiple storage drivers
 
-When you have multiple drivers (for example, hot and cold storage tiers), provide a `driver_selector` function that
-chooses which driver handles each payload:
+When you have multiple drivers, for example hot and cold storage tiers, pass a `driver_selector` function that chooses
+which driver handles each payload:
 
 ```python
 hot_driver = MyStorageDriver("hot-bucket")
