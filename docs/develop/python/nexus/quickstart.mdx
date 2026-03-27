@@ -105,7 +105,7 @@ class SayHelloNexusServiceHandler:
         return await ctx.start_workflow(
             SayHelloWorkflow.run,
             input.name,
-            id="say-hello-nexus-"+str(uuid.uuid4()),
+            id=f"say-hello-nexus-{uuid.uuid4()}",
 
             # Task queue defaults to the task queue this Operation is handled on.
         )`}
@@ -133,7 +133,6 @@ The handler bridges the Nexus `MyInput` dataclass to `SayHelloWorkflow`'s `str` 
 
 from temporalio.client import Client
 from temporalio.worker import Worker
-from temporalio import workflow
 
 from workflows import SayHelloWorkflow
 from activities import greet
@@ -237,6 +236,7 @@ The handler uses the `default` Namespace that was created when you started the d
 
 Namespaces provide isolation between the caller and handler sides.
 The Nexus Endpoint acts as a routing layer that connects the caller Namespace to the handler's target Namespace and Task Queue.
+The endpoint name must match the variable defined in `caller.py` from step 4.
 
 Make sure your local Temporal dev server is running (`temporal server start-dev`).
 
