@@ -79,7 +79,9 @@ export const sayHelloHandler = nexus.serviceHandler(sayHelloService, {
       async (ctx, input: MyInput) => {
         return await temporalNexus.startWorkflow(ctx, example, {
           args: [input.name],
-          workflowId: ctx.requestId ?? randomUUID(),
+          workflowId: "say-hello-nexus-" + randomUUID(),
+
+          // Task queue defaults to the task queue this Operation is handled on.
         });
       },
     ),
@@ -163,7 +165,7 @@ export async function callerWorkflow(name: string): Promise<string> {
     });
     return await nexusClient.executeOperation(
       'sayHello',
-      { name } as MyInput,
+      { name },
       { scheduleToCloseTimeout: '10s' },
     );
 }`}

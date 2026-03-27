@@ -90,7 +90,9 @@ class SayHelloNexusServiceHandler:
         return await ctx.start_workflow(
             SayHelloWorkflow.run,
             input.name,
-            id=str(uuid.uuid4()),
+            id="say-hello-nexus-"+str(uuid.uuid4()),
+
+            # Task queue defaults to the task queue this Operation is handled on.
         )`}
 </CodeSnippet>
 
@@ -118,10 +120,9 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 from temporalio import workflow
 
-with workflow.unsafe.imports_passed_through():
-    from workflows import SayHelloWorkflow
-    from activities import greet
-    from handler import SayHelloNexusServiceHandler
+from workflows import SayHelloWorkflow
+from activities import greet
+from handler import SayHelloNexusServiceHandler
 
 
 async def main():
