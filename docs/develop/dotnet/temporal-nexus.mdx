@@ -277,7 +277,7 @@ public class EchoCallerWorkflow
     [WorkflowRun]
     public async Task<string> RunAsync(string message)
     {
-        var output = await Workflow.CreateNexusClient<IHelloService>(IHelloService.EndpointName).
+        var output = await Workflow.CreateNexusWorkflowClient<IHelloService>(IHelloService.EndpointName).
             ExecuteNexusOperationAsync(svc => svc.Echo(new(message)));
         return output.Message;
     }
@@ -294,11 +294,56 @@ public class HelloCallerWorkflow
     [WorkflowRun]
     public async Task<string> RunAsync(string name, IHelloService.HelloLanguage language)
     {
-        var output = await Workflow.CreateNexusClient<IHelloService>(IHelloService.EndpointName).
+        var output = await Workflow.CreateNexusWorkflowClient<IHelloService>(IHelloService.EndpointName).
             ExecuteNexusOperationAsync(svc => svc.SayHello(new(name, language)));
         return output.Message;
     }
 }
+```
+
+### Set Nexus Operation timeouts
+
+Nexus Operations support [three types of timeouts](/nexus/operations#timeouts) that control how long the caller is willing to wait at different stages of the Operation lifecycle.
+Set these timeouts in `NexusOperationOptions` when calling `ExecuteNexusOperationAsync`.
+
+#### Schedule-to-Close timeout
+
+The [Schedule-to-Close timeout](/nexus/operations#schedule-to-close-timeout) limits the total duration of the Operation from when it is scheduled to when it completes.
+The Nexus Machinery automatically retries failed requests until this timeout is exceeded.
+
+```csharp
+var output = await Workflow.CreateNexusWorkflowClient<IHelloService>(IHelloService.EndpointName).
+    ExecuteNexusOperationAsync(svc => svc.SayHello(new(name, language)), new NexusWorkflowOperationOptions
+    {
+        ScheduleToCloseTimeout = TimeSpan.FromMinutes(10),
+    });
+```
+
+#### Schedule-to-Start timeout
+
+The [Schedule-to-Start timeout](/nexus/operations#schedule-to-start-timeout) limits how long the caller will wait for the Operation to be started by the handler.
+If not set, no Schedule-to-Start timeout is enforced.
+
+```csharp
+var output = await Workflow.CreateNexusWorkflowClient<IHelloService>(IHelloService.EndpointName).
+    ExecuteNexusOperationAsync(svc => svc.SayHello(new(name, language)), new NexusWorkflowOperationOptions
+    {
+        ScheduleToStartTimeout = TimeSpan.FromMinutes(2),
+    });
+```
+
+#### Start-to-Close timeout
+
+The [Start-to-Close timeout](/nexus/operations#start-to-close-timeout) limits how long the caller will wait for an asynchronous Operation to complete after it has been started.
+This timeout only applies to asynchronous Operations.
+If not set, no Start-to-Close timeout is enforced.
+
+```csharp
+var output = await Workflow.CreateNexusWorkflowClient<IHelloService>(IHelloService.EndpointName).
+    ExecuteNexusOperationAsync(svc => svc.SayHello(new(name, language)), new NexusWorkflowOperationOptions
+    {
+        StartToCloseTimeout = TimeSpan.FromMinutes(5),
+    });
 ```
 
 ### Register the caller Workflow in a Worker
@@ -393,7 +438,7 @@ When a Nexus operation is started, the caller can specify different cancellation
 - `WaitCancellationRequested` ` Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
 - `WaitCancellationCompleted` - Wait for operation completion. Operation may or may not complete as cancelled.
 
-The default is `WaitCancellationCompleted`. Users can set a different option for `CancellationType` in `NexusOperationOptions` when starting an operation.
+The default is `WaitCancellationCompleted`. Users can set a different option for `CancellationType` in `NexusWorkflowOperationOptions` when starting an operation.
 
 Once the caller Workflow completes, the caller's Nexus Machinery will not make any further attempts to cancel operations that are still running.
 It's okay to leave operations running in some use cases.
