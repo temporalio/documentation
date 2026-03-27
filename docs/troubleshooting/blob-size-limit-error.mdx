@@ -34,16 +34,14 @@ To resolve this error, reduce the size of the blob so that it is within the limi
 There are multiple strategies you can use to avoid this error:
 
 1. (Recommended) Use [External Storage](/external-storage) to offload large payloads to an object store like S3. The
-   Temporal SDKs support this natively through [External Storage](/external-storage)(available in the
-   [Python](/develop/python/data-handling/large-payload-storage) and
-   [TypeScript](/develop/typescript/data-handling/large-payload-storage) SDKs): when a payload exceeds a size threshold,
+   Temporal SDKs support this natively through [External Storage](/external-storage) (available in the
+   [Python SDK](/develop/python/data-handling/large-payload-storage)): when a payload exceeds a size threshold,
    a storage driver uploads it to your external store and replaces it with a small reference token in the Event History.
    Your Workflow and Activity code doesn't need to change. Even if your payloads are within the limit today, consider
    implementing External Storage if their size could grow over time.
 
    For SDK-specific guides, see:
    - [Python: Large payload storage](/develop/python/data-handling/large-payload-storage)
-   - [TypeScript: Large payload storage](/develop/typescript/data-handling/large-payload-storage)
 
 2. Use compression with a [custom Payload Codec](/payload-codec) for large payloads. This addresses the immediate issue,
    but if payload sizes continue to grow, the problem can arise again.
