@@ -152,11 +152,14 @@ module.exports = {
             'develop/java/timers',
             {
               type: 'category',
-              label: 'Nexus',
+              label: 'Temporal Nexus',
               collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/java/nexus',
+              },
               items: [
                 'develop/java/nexus/nexus-quickstart-java',
-                'develop/java/nexus/nexus',
               ],
             },
             'develop/java/child-workflows',
