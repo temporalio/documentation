@@ -1,0 +1,427 @@
+---
+id: nexus-quickstart-java
+title: Nexus Quickstart - Java SDK
+sidebar_label: Quickstart
+description: Make a Temporal Workflow available to other Namespaces using Nexus
+keywords:
+  - temporal
+  - nexus
+  - java
+  - sdk
+  - quickstart
+tags:
+  - Nexus
+  - Java SDK
+  - setup
+  - getting started
+hide_table_of_contents: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Nexus Quickstart
+
+In this guide, you'll take the `SayHelloWorkflow` from the [Java Quickstart](/develop/java/set-up-your-local-java) and make it available to other Namespaces through [Nexus](/cloud/nexus).
+You will then create a new workflow in a second Namespace that calls it.
+
+## Prerequisites
+
+Complete the [Java Quickstart](/develop/java/set-up-your-local-java) first.
+You should have a running Temporal development server and a working `SayHelloWorkflow` in the `temporal-hello-world` project.
+
+## What you'll build
+
+You have `SayHelloWorkflow` running in the `default` Namespace.
+By the end of this guide:
+
+1. A Nexus Service will expose `SayHelloWorkflow` as an Operation.
+2. A second Namespace will contain a Workflow that calls that Operation.
+3. The caller Workflow will get back `"Hello Temporal"` — the same result, but across Namespaces.
+
+This Quick Start refers to "Callers" and "Handlers". The handler is the existing workflow, `SayHelloWorkflow`, that will be exposed through Nexus and will handle the task.
+The Caller is a workflow that we will create in a new namespace to call the Handler.
+
+The Nexus Service is what is exposed to callers so that they can call Handlers.
+
+## Create the Nexus Service
+
+A Nexus Service is an interface that declares which Operations are available.
+This one has a single Operation — `sayHello` — that takes a name and returns a greeting.
+
+This step simply takes an existing workflow and makes it available through a Nexus Service to callers in other namespaces.
+
+### Define the Nexus Service
+
+Define an interface defining the operations being made available.
+Create `SayHelloNexusService.java`:
+
+```java
+package helloworkflow;
+
+import io.nexusrpc.Operation;
+import io.nexusrpc.Service;
+
+@Service
+public interface SayHelloNexusService {
+
+    @Operation
+    String sayHello(String name);
+
+}
+```
+
+The `@Service` annotation marks this as a Nexus Service.
+The `@Operation` annotation marks `sayHello` as an Operation that callers can invoke.
+The input and output types match `SayHelloWorkflow.sayHello` — because that's the Workflow it will call.
+
+### Implement the Nexus Service
+
+The implementation for the interface above connects the Nexus Operation to your existing `SayHelloWorkflow`.
+
+Create `SayHelloNexusServiceImpl.java`:
+
+```java
+package helloworkflow;
+
+import io.temporal.client.WorkflowOptions;
+import io.temporal.nexus.Nexus;
+import io.nexusrpc.handler.OperationHandler;
+import io.nexusrpc.handler.OperationImpl;
+import io.nexusrpc.handler.ServiceImpl;
+import io.temporal.nexus.WorkflowRunOperation;
+
+@ServiceImpl(service = SayHelloNexusService.class)
+public class SayHelloNexusServiceImpl {
+
+    @OperationImpl
+    public OperationHandler<String, String> sayHello() {
+        return WorkflowRunOperation.fromWorkflowMethod(
+            (ctx, details, name) ->
+                Nexus.getOperationContext()
+                    .getWorkflowClient()
+                    .newWorkflowStub(
+                        SayHelloWorkflow.class,
+                        WorkflowOptions.newBuilder()
+                            .setWorkflowId("say-hello-nexus-" + details.getRequestId())
+                            .build())
+                    ::sayHello
+        );
+    }
+
+}
+```
+
+Note the `@ServiceImpl` and `@OperationImpl` annotations matching the interface's `@Service` and `@Operation` annotations.
+
+`WorkflowRunOperation.fromWorkflowMethod` starts `SayHelloWorkflow` as an asynchronous Nexus Operation.
+
+
+### Register the Nexus Service on the handler Worker
+
+Update `SayHelloWorker.java` to register the Nexus Service.
+Simply add one line:
+
+```java
+package helloworkflow;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class SayHelloWorker {
+
+    public static void main(String[] args) {
+
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+
+        Worker worker = factory.newWorker("my-task-queue");
+        worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+        worker.registerActivitiesImplementations(new GreetActivitiesImpl());
+        // highlight-next-line
+        worker.registerNexusServiceImplementation(new SayHelloNexusServiceImpl());
+
+        System.out.println("Starting SayHelloWorker for task queue 'my-task-queue'...");
+
+        factory.start();
+
+    }
+
+}
+```
+
+That single line — `worker.registerNexusServiceImplementation(...)` — makes `SayHelloWorkflow` available through Nexus, and connects `SayHelloNexusServiceImpl` to `SayHelloWorker`.
+
+## Create a caller Namespace
+
+
+### Create the Namespace
+
+Your `SayHelloWorkflow` already runs in the `default` Namespace.
+Create a second Namespace for the caller:
+
+```bash
+temporal operator namespace create --namespace my-caller-namespace
+```
+
+After running that command, go to the [Temporal UI](http://localhost:8233/) and click `Namespaces` in the sidebar on the left. You will see the default namespace, and a new namespace called "my-caller-namespace".
+
+### Create a Nexus Endpoint
+
+A Nexus Endpoint routes requests from the caller Namespace to the handler.
+This tells Temporal: requests to `my-nexus-endpoint-name` should go to `my-task-queue` in the `default` Namespace.
+
+```bash
+temporal operator nexus endpoint create \
+  --name my-nexus-endpoint-name \
+  --target-namespace default \
+  --target-task-queue my-task-queue
+```
+
+You should now be able to see this in the Temporal UI as well - click `Nexus` in the sidebar and you should see `my-nexus-endpoint-name`.
+If you click that, you can see that it has a target Namespace of `default`, and a task queue named `my-task-queue`.
+
+### Create the caller Workflow
+
+We now have a Handler workflow which has been made available through Nexus.
+We also have a Nexus endpoint defined which allows us to call that endpoint from another namespace.
+
+All that remains is showing how to call it! So in the caller namespace, we will create a Workflow to invoke `sayHello` through Nexus.
+
+We need a workflow definition for the caller. Create `NexusCallerWorkflow.java`:
+
+```java
+package helloworkflow;
+
+import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+
+@WorkflowInterface
+public interface NexusCallerWorkflow {
+
+    @WorkflowMethod
+    String greetThroughNexus(String name);
+
+}
+```
+
+Create the matching `NexusCallerWorkflowImpl.java`:
+
+```java
+package helloworkflow;
+
+import io.temporal.workflow.NexusOperationOptions;
+import io.temporal.workflow.NexusServiceOptions;
+import io.temporal.workflow.Workflow;
+
+import java.time.Duration;
+
+public class NexusCallerWorkflowImpl implements NexusCallerWorkflow {
+
+    private final SayHelloNexusService nexusService = Workflow.newNexusServiceStub(
+        SayHelloNexusService.class,
+        NexusServiceOptions.newBuilder()
+            .setOperationOptions(
+                NexusOperationOptions.newBuilder()
+                    .setScheduleToCloseTimeout(Duration.ofSeconds(10))
+                    .build())
+            .build()
+    );
+
+    @Override
+    public String greetThroughNexus(String name) {
+        return nexusService.sayHello(name);
+    }
+
+}
+```
+
+This works very similarly to a normal Workflow calling a method.
+`Workflow.newNexusServiceStub` creates a stub for the Nexus Service, similar to how `Workflow.newActivityStub` creates a stub for an Activity.
+When `greetThroughNexus` calls `nexusService.sayHello(name)`, Temporal routes the request through the Nexus Endpoint we just created to `SayHelloWorkflow` in the Namespace defined by the Nexus Endpoint.
+
+### Create the caller Worker
+
+We need a worker for that Workflow, of course. Create `NexusCallerWorker.java`:
+
+```java
+package helloworkflow;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+import io.temporal.worker.WorkflowImplementationOptions;
+import io.temporal.workflow.NexusServiceOptions;
+
+import java.util.Collections;
+
+public class NexusCallerWorker {
+
+    public static void main(String[] args) {
+
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service,
+            io.temporal.client.WorkflowClientOptions.newBuilder()
+                .setNamespace("my-caller-namespace")
+                .build()
+        );
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+
+        Worker worker = factory.newWorker("my-caller-task-queue");
+        worker.registerWorkflowImplementationTypes(
+            WorkflowImplementationOptions.newBuilder()
+                .setNexusServiceOptions(
+                    Collections.singletonMap(
+                        "SayHelloNexusService",
+                        NexusServiceOptions.newBuilder()
+                            .setEndpoint("my-nexus-endpoint-name")
+                            .build()))
+                .build(),
+            NexusCallerWorkflowImpl.class
+        );
+
+        System.out.println("Starting NexusCallerWorker for task queue 'my-caller-task-queue'...");
+
+        factory.start();
+
+    }
+
+}
+```
+
+If you compare this to `SayHelloWorker.java` from the [Java SDK Quickstart](/develop/java/set-up-your-local-java#5-create-and-run-the-worker), you will see it is mostly the same.
+`WorkflowClient.newInstance` now specifies a Namespace so that it doesn't go to the default one. It isn't registering an activity, and where `SayHelloWoker` in the handler side just calls
+```java
+    worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+```
+this is calling the same method but on a builder that is setting Nexus service options.
+
+### Create the Caller Starter
+
+Create `NexusCallerStarter.java`:
+
+```java
+package helloworkflow;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+
+public class NexusCallerStarter {
+
+    public static void main(String[] args) {
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service,
+            WorkflowClientOptions.newBuilder()
+                .setNamespace("my-caller-namespace")
+                .build()
+        );
+
+        NexusCallerWorkflow workflow = client.newWorkflowStub(
+            NexusCallerWorkflow.class,
+            WorkflowOptions.newBuilder()
+                .setTaskQueue("my-caller-task-queue")
+                .setWorkflowId("nexus-caller-workflow-id")
+                .build()
+        );
+
+        String result = workflow.greetThroughNexus("Temporal");
+        System.out.println("Workflow result: " + result);
+
+        System.exit(0);
+    }
+
+}
+```
+
+## Run it!
+
+You need three terminals, just like the original quickstart needed two.
+
+**Terminal 1** — Start the handler Worker (same as before, but now also serves Nexus Operations):
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
+```bash
+mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
+```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+./gradlew runWorker
+```
+
+</TabItem>
+</Tabs>
+
+**Terminal 2** — Start the caller Worker:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
+```bash
+mvn compile exec:java -Dexec.mainClass="helloworkflow.NexusCallerWorker"
+```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+./gradlew runCallerWorker
+```
+
+</TabItem>
+</Tabs>
+
+**Terminal 3** — Start the caller Workflow:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
+```bash
+mvn compile exec:java -Dexec.mainClass="helloworkflow.NexusCallerStarter"
+```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+./gradlew runCallerStarter
+```
+
+</TabItem>
+</Tabs>
+
+### Verify Success
+
+You should see:
+
+```
+Workflow result: Hello Temporal
+```
+
+The same result as the original quickstart — but this time the caller Workflow in `my-caller-namespace` invoked `SayHelloWorkflow` in the `default` Namespace through Nexus.
+
+Open the [Temporal Web UI](http://localhost:8233) and switch between Namespaces to see both Workflow Executions:
+- In `my-caller-namespace`: the `NexusCallerWorkflow` with Nexus Operation events
+- In `default`: the `SayHelloWorkflow` started by the Nexus Operation
+
+## What you just did
+
+You made an existing Workflow available to another Namespace:
+
+1. Defined a Nexus Service interface with one Operation
+2. Implemented it to call `SayHelloWorkflow`
+3. Registered it on the existing Worker
+4. Created a caller Workflow that calls the Operation
+5. Ran it across two Namespaces
+
+For the full Nexus feature guide, including synchronous Operations, cancellation, and Temporal Cloud configuration, see [Temporal Nexus - Java SDK](/develop/java/nexus/nexus).
