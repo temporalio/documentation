@@ -1,0 +1,240 @@
+---
+id: priority-fairness-walkthrough
+title: Task Queue Priority and Fairness — Interactive Demo
+sidebar_label: Priority and Fairness (Interactive)
+description: Interactively explore how Task Queue Priority and Fairness control dispatch order. Load a preset scenario, step through dispatches, and see exactly which task gets picked next — and why.
+toc_max_heading_level: 3
+keywords:
+  - task queue priority
+  - task queue fairness
+  - priority key
+  - fairness key
+  - interactive demo
+tags:
+  - Task Queues
+  - Priority and Fairness
+---
+
+import { PriorityFairnessSimulator } from '@site/src/components';
+import SdkTabs from '@site/src/components';
+
+When multiple workloads compete for Workers, Task Queue Priority determines which tasks get picked first, while Task Queue Fairness ensures no single workload can crowd out the rest.
+
+<div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', margin:'1.75rem 0 1.25rem', flexWrap:'wrap'}}>
+
+<div style={{border:'1px solid transparent', backgroundImage:'linear-gradient(var(--ifm-background-color, #13111b), var(--ifm-background-color, #13111b)), linear-gradient(255deg, #444ce7 0%, #b664ff 100%)', backgroundOrigin:'padding-box, border-box', backgroundClip:'padding-box, border-box', borderRadius:'0', padding:'1.25rem 1.25rem 1.25rem 1rem'}}>
+<div style={{display:'flex', alignItems:'flex-start', gap:'0.875rem', marginBottom:'0.75rem'}}>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0, marginTop:'1px'}}>
+  <path d="M3 3h18v3.5H3V3zm0 7.25h13v3.5H3v-3.5zm0 7.25h8v3.5H3v-3.5z" fill="url(#prio-grad)"/>
+  <defs><linearGradient id="prio-grad" x1="21" y1="3" x2="3" y2="21" gradientUnits="userSpaceOnUse"><stop stopColor="#1FF1A5"/><stop offset="1" stopColor="#C3FF62"/></linearGradient></defs>
+</svg>
+<strong style={{fontSize:'1.1rem', fontWeight:300, letterSpacing:'0.01em'}}>Priority</strong>
+</div>
+
+Every task carries a `priorityKey` from `1` (critical) to `5` (batch), with `3` as the default. When a Worker polls, it always picks the lowest-numbered task first regardless of arrival time. This lets you share a single Worker pool across very different workloads and guarantee that time-sensitive work never waits behind low-urgency jobs.
+
+</div>
+
+<div style={{border:'1px solid transparent', backgroundImage:'linear-gradient(var(--ifm-background-color, #13111b), var(--ifm-background-color, #13111b)), linear-gradient(255deg, #444ce7 0%, #b664ff 100%)', backgroundOrigin:'padding-box, border-box', backgroundClip:'padding-box, border-box', borderRadius:'0', padding:'1.25rem 1.25rem 1.25rem 1rem'}}>
+<div style={{display:'flex', alignItems:'flex-start', gap:'0.875rem', marginBottom:'0.75rem'}}>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0, marginTop:'1px'}}>
+  <path d="M11 2h2v3.5h-2V2zm0 16.5h2V22h-2v-3.5zM4 7.5h7v9H4v-9zm9 0h7v9h-7v-9zm-2 1.5H4.5V8H11v1zM13 8h6.5v1H13V8z" fill="url(#fair-grad)"/>
+  <defs><linearGradient id="fair-grad" x1="21" y1="2" x2="3" y2="22" gradientUnits="userSpaceOnUse"><stop stopColor="#1FF1A5"/><stop offset="1" stopColor="#C3FF62"/></linearGradient></defs>
+</svg>
+<strong style={{fontSize:'1.1rem', fontWeight:300, letterSpacing:'0.01em'}}>Fairness</strong>
+</div>
+
+Without Fairness, tasks at the same priority dispatch strictly FIFO, so a backlog-heavy tenant can block everyone else at that level indefinitely. Fairness groups tasks by `fairnessKey` and dispatches proportionally by `fairnessWeight`. A key with weight `5` gets roughly 5x more dispatches than a key with weight `1`, but no key is ever completely locked out.
+
+</div>
+
+</div>
+
+Use both together when you need SLA ordering across workload types and fair distribution across tenants within each tier.
+
+<div style={{display:'flex', gap:'6px', margin:'1.25rem 0 2rem', flexWrap:'wrap'}}>
+  {[['P1','Critical','#ef4444','#fff'],['P2','High','#f97316','#fff'],['P3','Normal (default)','#3b82f6','#fff'],['P4','Low','#22c55e','#000'],['P5','Batch','#94a3b8','#fff']].map(([p,l,bg,fg]) => (
+    <div key={p} style={{background:bg, color:fg, borderRadius:'0', padding:'5px 14px', fontSize:'12px', fontWeight:600, fontFamily:'var(--ifm-font-family-monospace)', whiteSpace:'nowrap'}}>
+      {p} · {l}
+    </div>
+  ))}
+</div>
+
+## Try it
+
+Load a preset or build your own queue. Use **Step ->** to dispatch one task at a time and watch which task gets picked next, or **Dispatch All** to see the full order at once.
+
+<PriorityFairnessSimulator />
+
+---
+
+## How it works
+
+When a Worker polls for the next task, Temporal applies two rules in sequence:
+
+1. **Priority first** - the task with the lowest `priorityKey` wins. If there are tasks at priority `1`, none of the `2`s will dispatch until all `1`s are gone.
+2. **Fairness within a tier** - when multiple tasks share the same priority level but carry different `fairnessKey` values, Temporal tracks how many tasks each key has received relative to its weight and dispatches from the key that is furthest behind its expected share.
+
+If no `fairnessKey` is set, tasks within a priority level dispatch in FIFO order.
+
+### When to use Priority vs Fairness
+
+| Scenario | Use |
+|---|---|
+| Payments should never wait behind inventory syncs | **Priority** |
+| Premium users shouldn't be blocked by a single large tenant | **Fairness** |
+| SLAs differ across customer tiers and tenants vary in volume | **Both** |
+
+---
+
+## Setup
+
+Priority and Fairness are enabled automatically - no configuration required. Just set `priorityKey`, `fairnessKey`, or both when starting Workflows or Activities.
+
+For self-hosted Temporal, set `matching.useNewMatcher` to `true` in dynamic config. To enable Fairness, also set `matching.enableFairness: true`.
+
+---
+
+## SDK examples
+
+### Workflow - Priority only
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+workflowOptions := client.StartWorkflowOptions{
+  ID:        "my-workflow-id",
+  TaskQueue: "my-task-queue",
+  Priority:  temporal.Priority{PriorityKey: 1},
+}
+we, err := c.ExecuteWorkflow(ctx, workflowOptions, MyWorkflow)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+WorkflowOptions options = WorkflowOptions.newBuilder()
+  .setTaskQueue("my-task-queue")
+  .setPriority(Priority.newBuilder().setPriorityKey(1).build())
+  .build();
+MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
+workflow.run();
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await client.start_workflow(
+  MyWorkflow.run,
+  id="my-workflow-id",
+  task_queue="my-task-queue",
+  priority=Priority(priority_key=1),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+```ts
+const handle = await client.workflow.start(MyWorkflow, {
+  workflowId: "my-workflow-id",
+  taskQueue: "my-task-queue",
+  priority: { priorityKey: 1 },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var handle = await Client.StartWorkflowAsync(
+  (MyWorkflow wf) => wf.RunAsync(),
+  new StartWorkflowOptions("my-workflow-id", "my-task-queue")
+  {
+    Priority = new Priority(priorityKey: 1),
+  }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+### Workflow - Priority + Fairness
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+workflowOptions := client.StartWorkflowOptions{
+  ID:        "my-workflow-id",
+  TaskQueue: "my-task-queue",
+  Priority: temporal.Priority{
+    PriorityKey:    1,
+    FairnessKey:    "tenant-acme",
+    FairnessWeight: 3.0,
+  },
+}
+we, err := c.ExecuteWorkflow(ctx, workflowOptions, MyWorkflow)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+WorkflowOptions options = WorkflowOptions.newBuilder()
+  .setTaskQueue("my-task-queue")
+  .setPriority(Priority.newBuilder()
+    .setPriorityKey(1)
+    .setFairnessKey("tenant-acme")
+    .setFairnessWeight(3.0)
+    .build())
+  .build();
+MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
+workflow.run();
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await client.start_workflow(
+  MyWorkflow.run,
+  id="my-workflow-id",
+  task_queue="my-task-queue",
+  priority=Priority(priority_key=1, fairness_key="tenant-acme", fairness_weight=3.0),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+```ts
+const handle = await client.workflow.start(MyWorkflow, {
+  workflowId: "my-workflow-id",
+  taskQueue: "my-task-queue",
+  priority: { priorityKey: 1, fairnessKey: "tenant-acme", fairnessWeight: 3.0 },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var handle = await Client.StartWorkflowAsync(
+  (MyWorkflow wf) => wf.RunAsync(),
+  new StartWorkflowOptions("my-workflow-id", "my-task-queue")
+  {
+    Priority = new Priority(
+      priorityKey: 1,
+      fairnessKey: "tenant-acme",
+      fairnessWeight: 3.0
+    ),
+  }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+### Temporal CLI
+
+```bash
+temporal workflow start \
+  --type MyWorkflow \
+  --task-queue my-task-queue \
+  --workflow-id my-workflow-id \
+  --priority-key 1 \
+  --fairness-key tenant-acme \
+  --fairness-weight 3.0
+```
+
+---
+
+## Next steps
+
+- [Task Queue Priority and Fairness - full reference](/develop/task-queue-priority-fairness)
+- [Task Queue overview](/task-queue)
+- [Worker performance tuning](/develop/worker-performance)

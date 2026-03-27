@@ -1,0 +1,495 @@
+/* ── Root ──────────────────────────────────────────────────────────────────── */
+.root {
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+/* ── Top Bar ─────────────────────────────────────────────────────────────────*/
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: var(--ifm-background-surface-color);
+}
+
+.topBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────────────*/
+.layout {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.configPanel {
+  flex: 0 0 300px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vizPanel {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+  .configPanel {
+    flex: 1 1 auto;
+  }
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────────*/
+.card {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  gap: 0.5rem;
+}
+
+.cardTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0 0 0.6rem 0;
+}
+
+.cardHeader .cardTitle {
+  margin-bottom: 0;
+}
+
+/* ── Mode Tag ────────────────────────────────────────────────────────────────*/
+.modeTag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15em 0.55em;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-700);
+  white-space: nowrap;
+}
+
+.modeTagFairness {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+[data-theme="dark"] .modeTagFairness {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+/* ── Hint text ───────────────────────────────────────────────────────────────*/
+.hint {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-500);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+}
+
+/* ── Fairness key rows ───────────────────────────────────────────────────────*/
+.fkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.fkDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fkName {
+  flex: 1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weightLabel {
+  font-size: 0.72rem;
+  color: var(--ifm-color-emphasis-500);
+  white-space: nowrap;
+}
+
+.weightInput {
+  width: 56px;
+  padding: 0.2em 0.4em;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+/* ── Add row ─────────────────────────────────────────────────────────────────*/
+.addRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.textInput {
+  flex: 1;
+  padding: 0.3em 0.5em;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.82rem;
+  min-width: 0;
+}
+
+.textInput::placeholder {
+  color: var(--ifm-color-emphasis-400);
+}
+
+/* ── Add task row ────────────────────────────────────────────────────────────*/
+.addTaskRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 100px;
+}
+
+.fieldLabel {
+  font-size: 0.72rem;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 600;
+}
+
+/* ── Legend ──────────────────────────────────────────────────────────────────*/
+.legendGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendLabel {
+  font-size: 0.82rem;
+  flex: 1;
+}
+
+.defaultTag {
+  font-size: 0.68rem;
+  color: var(--ifm-color-emphasis-500);
+  font-style: italic;
+}
+
+/* ── Queue stats ─────────────────────────────────────────────────────────────*/
+.queueStats {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.statBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15em 0.55em;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-700);
+}
+
+.statBadgeDone {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+[data-theme="dark"] .statBadgeDone {
+  background: #14532d;
+  color: #86efac;
+}
+
+/* ── Queue grid ──────────────────────────────────────────────────────────────*/
+.queueGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* ── Task chip ───────────────────────────────────────────────────────────────*/
+.taskChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25em 0.5em;
+  border-radius: 6px;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  font-size: 0.78rem;
+  transition: opacity 0.2s;
+  position: relative;
+}
+
+.taskChipDone {
+  opacity: 0.35;
+  border-color: var(--ifm-color-emphasis-200) !important;
+  filter: grayscale(1);
+}
+
+.doneCheck {
+  font-size: 0.7rem;
+  color: #16a34a;
+}
+
+.chipRemove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ifm-color-emphasis-400);
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 0 0 0 0.1rem;
+  margin: 0;
+}
+
+.chipRemove:hover {
+  color: #ef4444;
+}
+
+/* ── Priority chip ───────────────────────────────────────────────────────────*/
+.priorityChip {
+  display: inline-block;
+  padding: 0.1em 0.45em;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.4;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+  white-space: nowrap;
+}
+
+/* ── Fairness key chip ───────────────────────────────────────────────────────*/
+.fkChip {
+  display: inline-block;
+  padding: 0.1em 0.45em;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+/* ── Dispatch log ────────────────────────────────────────────────────────────*/
+.progressText {
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-500);
+  font-variant-numeric: tabular-nums;
+}
+
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.logRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25em 0.4em;
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  transition: background 0.25s;
+}
+
+.logRowLatest {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+[data-theme="dark"] .logRowLatest {
+  background: #1e3a5f;
+  border-color: #2563eb44;
+}
+
+.logNum {
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ifm-color-emphasis-500);
+  width: 2rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.logLabel {
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.taskRef {
+  font-size: 0.7rem;
+  color: var(--ifm-color-emphasis-400);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ── Chart ───────────────────────────────────────────────────────────────────*/
+.chartCaption {
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-500);
+  margin: -0.2rem 0 0.6rem 0;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────*/
+.btn,
+.btnPrimary,
+.btnOutline,
+.btnSmall,
+.removeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.btn {
+  padding: 0.35em 0.75em;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.btnPrimary {
+  padding: 0.35em 0.85em;
+  border: none;
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.btnOutline {
+  padding: 0.35em 0.75em;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: transparent;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.btnOutline:hover:not(:disabled) {
+  border-color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-font-color-base);
+}
+
+.btnSmall {
+  padding: 0.25em 0.6em;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.78rem;
+}
+
+.btnSmall:hover:not(:disabled) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.removeBtn {
+  padding: 0.1em 0.35em;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ifm-color-emphasis-400);
+  font-size: 1rem;
+}
+
+.removeBtn:hover:not(:disabled) {
+  color: #ef4444;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.btn:disabled,
+.btnPrimary:disabled,
+.btnOutline:disabled,
+.btnSmall:disabled,
+.removeBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Select ──────────────────────────────────────────────────────────────────*/
+.select {
+  padding: 0.3em 0.55em;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.82rem;
+  cursor: pointer;
+  max-width: 100%;
+}
