@@ -22,7 +22,7 @@ import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/element
 
 Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
 
-:::tip WHAT IS NEXUS?
+:::info WHAT IS NEXUS?
 
 [Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 Learn more in the [Nexus encyclopedia](/nexus).
@@ -74,6 +74,12 @@ It provides type safety when invoking Nexus Operations and ensures that Operatio
 
 The `@nexusrpc.service` decorator declares a service with typed operations.
 `SayHelloWorkflow` returns `str`, so the operation output type is `str`.
+
+:::tip USE AN IDL TO GENERATE SERVICE DEFINITIONS
+
+You can also define your Nexus Service contract using an IDL and generate the Python service definitions with [nexus-rpc-gen](https://github.com/nexus-rpc/nexus-rpc-gen).
+
+:::
 
 </SetupStep>
 
