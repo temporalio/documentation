@@ -33,7 +33,7 @@ This information is available in the Visibility store.
 :::caution Do not use sensitive data or PII in Search Attributes
 
 Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
-Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/dataconversion#payload-codec).
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/payload-codec#payload-codec).
 The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
 
 Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.
