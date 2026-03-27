@@ -5,11 +5,11 @@ type Props = { onNext: () => void };
 type Lang = 'dotnet' | 'go' | 'typescript' | 'java' | 'python';
 
 const TABS: { id: Lang; label: string }[] = [
-  { id: 'dotnet', label: '.NET' },
   { id: 'go', label: 'Go' },
-  { id: 'typescript', label: 'TypeScript' },
   { id: 'java', label: 'Java' },
   { id: 'python', label: 'Python' },
+  { id: 'typescript', label: 'TypeScript' },
+  { id: 'dotnet', label: '.NET' },
 ];
 
 function Cmd({ prompt, cmd }: { prompt: string; cmd: string }) {
@@ -204,7 +204,7 @@ export default function RunIt({ onNext }: Props) {
       {lang === 'python' && (
         <>
           <div className={styles.card} style={{ marginBottom: 20 }}>
-            <div className={`${styles.tag} ${styles.tagRed}`} style={{ marginBottom: 10 }}>
+            <div className={`${styles.tag} ${styles.tagOrange}`} style={{ marginBottom: 10 }}>
               samples-python / hello_nexus
             </div>
             <p style={{ fontSize: 13, color: 'var(--nd-muted)', margin: '0 0 14px' }}>

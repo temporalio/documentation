@@ -23,8 +23,8 @@
   --nd-green-bg: rgba(52, 211, 153, 0.1);
   --nd-red: #f87171;
   --nd-red-bg: rgba(248, 113, 113, 0.1);
-  --nd-orange: #fb923c;
-  --nd-orange-bg: rgba(251, 146, 60, 0.15);
+  --nd-orange: #f97316;
+  --nd-orange-bg: rgba(249, 115, 22, 0.15);
   --nd-amber: #fbbf24;
   --nd-amber-bg: rgba(251, 191, 36, 0.1);
   --nd-primary-bg: rgba(191, 219, 254, 0.1);
@@ -68,8 +68,8 @@
   --nd-green-bg: rgba(5, 150, 105, 0.08);
   --nd-red: #dc2626;
   --nd-red-bg: rgba(220, 38, 38, 0.08);
-  --nd-orange: #c2410c;
-  --nd-orange-bg: rgba(194, 65, 12, 0.1);
+  --nd-orange: #ea580c;
+  --nd-orange-bg: rgba(234, 88, 12, 0.1);
   --nd-amber: #d97706;
   --nd-amber-bg: rgba(217, 119, 6, 0.08);
   --nd-primary-bg: rgba(29, 78, 216, 0.06);
@@ -1048,12 +1048,12 @@
 .runitLinkPrimary {
   background: var(--ifm-color-primary);
   border-color: var(--ifm-color-primary);
-  color: #141414;
+  color: var(--ifm-background-color);
 }
 
 .runitLinkPrimary:hover {
   opacity: 0.88;
-  color: #141414;
+  color: var(--ifm-background-color);
   border-color: var(--ifm-color-primary);
 }
 

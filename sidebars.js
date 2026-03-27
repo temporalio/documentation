@@ -893,7 +893,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Interactive Demos',
-      collapsed: false,
+      collapsed: true,
       items: [
         'nexus-demo',
       ],

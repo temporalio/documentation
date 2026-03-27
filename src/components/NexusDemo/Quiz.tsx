@@ -140,7 +140,7 @@ export default function Quiz() {
           <div className={`${styles.tag} ${styles.tagAmber}`}>Evaluate</div>
           <h3 style={{ fontSize: 15, marginBottom: 6 }}>Learn More About Nexus</h3>
           <p style={{ fontSize: 13, color: 'var(--ifm-font-color-base)', margin: '0 0 14px', lineHeight: 1.6 }}>
-            Customer use cases, a breakdown of benefits, and guidance on when Nexus is the right choice.
+            Customer use cases, a breakdown of benefits, and guidance on when Nexus is right for your use case.
           </p>
           <a href="/evaluate/nexus" className={`${styles.runitLink}`}>
             Explore
