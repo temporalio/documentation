@@ -21,6 +21,7 @@ tags:
 :::tip Support, stability, and dependency info
 
 Automated migration is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+Please contact your Temporal account executive prior to planning your migration project.
 
 :::
 
@@ -112,15 +113,22 @@ cloud-side resource planning. For each Namespace, collect the following metrics:
 Use the following command to capture _CustomSearchAttributeAliases_, if needed:
 
 ```
-temporal operator namespace describe
+temporal operator namespace describe -n <namespace>
 ```
+
+### Prepare mTLS certificates
+
+TLS is used to secure the communications channel for migration. Generate new certificates following the process outlined
+[here](/cloud/certificates#issue-certificates). The certificates will be used exclusively for the S2S Proxy.
+
 
 ### Report collected data
+Provide all collected data and mTLS certificates to Temporal via a [support ticket](/cloud/support#ticketing). 
 
-Use the following template to provide all collected data to Temporal via [support ticket](/cloud/support#ticketing).
+Use the following template for the collected data.
 
 ```
-List of Accounts:
+Temporal Cloud Account:
 
 <for each cluster>
 Cluster Name:
@@ -128,7 +136,7 @@ Target Cloud/Region:
 Type of Visibility Store:
 Cluster Configuration:
 
-List of Namespaces:
+Namespaces:
    <for each Namespace>
    Namespace Name:
    Translated Name:
@@ -160,6 +168,43 @@ attributes that are required.
 
 If you are new to Temporal Cloud, consider your desired connectivity path to your Namespace. You may connect over the
 public internet or via [private connectivity](/cloud/connectivity).
+
+### S2S Proxy configuration
+
+The [S2S Proxy](https://github.com/temporalio/s2s-proxy) requires a cloud-side inbound endpoint. Proceed with deployment
+only after receiving the endpoint from Temporal.
+
+The proxy provides API forwarding over a secure 2-way tunnel to Temporal Cloud. The self-hosted proxy will initiate an
+outbound connection (TCP 8233) to its cloud-side counterpart and establish the 2-way tunnel. If there are firewalls
+in-path, ensure that they permit this outbound connection.
+
+![Temporal automated migration components](/img/cloud/migration/auto-migration-components.png)
+
+Use the following procedure to deploy the proxy:
+
+1. Obtain the latest Docker image from the
+   [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
+2. Gather the mTLS certs generated in the previous step.
+3. Deploy 1 replica of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
+   [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
+   See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
+   as a reference. Note that it is possible to deploy more than 1 replica. If more than 1 replica is deployed, you must
+   update Temporal with the number of replicas used so that an identical number may be configured on the cloud-side.
+4. Test access using the command below. It should display the information of the migration server.
+
+```
+temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
+```
+
+Once connectivity has been verified, notify Temporal so that connectivity may be validated from the cloud-side proxy.
+
+There are multiple metrics available on the S2S proxy (prometheus endpoint: _proxy-pod-ip_:9090/metrics). These are
+helpful for monitoring the overall health of the proxy. In particular, the metric
+
+`temporal_s2s_proxy_mux_connection_active`
+
+will monitor connectivity to the cloud-side proxy.
+
 
 ### Modify cluster configuration
 
@@ -216,49 +261,6 @@ The following sample output is expected:
 "initialFailoverVersion": "the number you picked"
 "isGlobalNamespaceEnabled": true
 ```
-
-### Prepare mTLS certificates
-
-TLS is used to secure the communications channel for migration. Generate new certificates following the process outlined
-[here](/cloud/certificates#issue-certificates). The certificates will be used by the S2S Proxy.
-
-Provide the certificates to Temporal via a support ticket.
-
-### S2S Proxy configuration
-
-The [S2S Proxy](https://github.com/temporalio/s2s-proxy) requires a cloud-side inbound endpoint. Proceed with deployment
-only after receiving the endpoint from Temporal.
-
-The proxy provides API forwarding over a secure 2-way tunnel to Temporal Cloud. The self-hosted proxy will initiate an
-outbound connection (TCP 8233) to its cloud-side counterpart and establish the 2-way tunnel. If there are firewalls
-in-path, ensure that they permit this outbound connection.
-
-![Temporal automated migration components](/img/cloud/migration/auto-migration-components.png)
-
-Use the following procedure to deploy the proxy:
-
-1. Obtain the latest Docker image from the
-   [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
-2. Gather the mTLS certs generated in the previous step.
-3. Deploy 1 replica of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
-   [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
-   See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
-   as a reference. Note that it is possible to deploy more than 1 replica. If more than 1 replica is deployed, you must
-   update Temporal with the number of replicas used so that an identical number may be configured on the cloud-side.
-4. Test access using the command below. It should display the information of the migration server.
-
-```
-temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
-```
-
-Once connectivity has been verified, notify Temporal so that connectivity may be validated from the cloud-side proxy.
-
-There are multiple metrics available on the S2S proxy (prometheus endpoint: _proxy-pod-ip_:9090/metrics). These are
-helpful for monitoring the overall health of the proxy. In particular, the metric
-
-`temporal_s2s_proxy_mux_connection_active`
-
-will monitor connectivity to the cloud-side proxy.
 
 ## Phase 3: Testing
 
@@ -398,9 +400,6 @@ The following are known limitations.
 - OSS server versions 1.22 or newer are required. Refer to the
   [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
 - History shard counts must be a multiple of two.
-- Enabling payload encryption as part of migration is not yet supported. If payloads are already
-  [encrypted](/payload-codec#encryption) in your self-hosted server via data converter, then they will remain encrypted
-  during and after migration.
 - If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal
   uses 'active' as cluster name), they cannot be connected to a single migration server simultaneously due to cluster
   name collision. There are 2 available options:
@@ -452,6 +451,17 @@ Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#
 is [supported](/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
 [archival](/temporal-service/archival) to store closed Workflows that cannot be migrated. In general, archival is
 recommended over large retention periods since the extra data can stress the persistence layer of the system.
+
+**I am using payload encryption in my self-hosted Temporal cluster. Is this supported in cloud?**
+
+Yes. If payloads are already [encrypted](/payload-codec#encryption) in your self-hosted server via data converter, then 
+they will remain encrypted during and after migration.
+
+
+**I would like to enable payload encryption as part of the migration. Is this supported?**
+
+Enabling payload encryption as part of the migration is not currently supported. If encryption is required, then the best
+approach is to enable it prior to migrating. 
 
 ## How to gather self-hosted metrics
 
