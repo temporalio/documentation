@@ -11,8 +11,6 @@ tags:
 description: Offload large payloads to external storage using the claim check pattern in the Python SDK.
 ---
 
-import { CaptionedImage } from '@site/src/components';
-
 The Temporal Service enforces a 2 MB per payload limit. When your Workflows or Activities handle data larger than the
 limit, you can offload payloads to external storage, such as S3, and pass a small reference token through the Event
 History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern). This page
