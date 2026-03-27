@@ -55,15 +55,6 @@ Private connectivity is not yet offered for GCP Multi-region Namespaces.
 
 :::
 
-:::warning Verify that Private Hosted Zones do not block failover routing
-
-If you use Route 53 Private Hosted Zones (PHZs) for PrivateLink, ensure that your PHZs only override DNS for regions where you have a PrivateLink endpoint configured.
-A broad PHZ (for example, one that covers `<account>.tmprl.cloud`) can intercept the Namespace Endpoint DNS resolution and prevent Workers from following the CNAME to the failover region.
-
-If your Workers cannot connect after a failover, check whether a PHZ is overriding DNS for the failover region and pointing it to a local address that doesn't exist.
-
-:::
-
 To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
 For example, you might set aws-us-west-1.region.tmprl.cloud to target 192.168.1.2.
 In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.

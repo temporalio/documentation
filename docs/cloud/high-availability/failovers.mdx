@@ -279,8 +279,8 @@ Both methods return a [`FailoverNamespaceRegionResponse`](https://buf.build/temp
 </Tabs>
 
 Once the failover async operation returns successfully, the Namespace will be failed over.
+Temporal manages retries for the failover workflow.
 In the rare event that an internal error prevents the failover from completing, the Temporal on-call team is automatically paged to intervene and force the failover to completion.
-You do not need to build additional validation logic to confirm that the failover has completed.
 
 Temporal fails over the primary to the replica.
 When you're ready to fail back, follow these failover instructions to move the primary back to the original.
