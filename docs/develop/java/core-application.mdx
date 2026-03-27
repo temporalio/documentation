@@ -129,7 +129,7 @@ r2.retryNow();
 The same technique can be used to query Workflows using a base Workflow interface.
 
 Note that this approach does not apply to `@WorkflowMethod` annotations, meaning that when using a base interface, it should not include any `@WorkflowMethod` methods.
-To illustrate this, lets' say that we define the following **invalid** code:
+To illustrate this, let's say that we define the following **invalid** code:
 
 ```java
 // INVALID CODE!
@@ -207,7 +207,7 @@ Related references:
 
 **How to customize your Workflow Type using the Java SDK.**
 
-Workflows have a Type that are referred to as the Workflow name.
+Workflows have a Type that is referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
 
@@ -268,6 +268,59 @@ The following constraints apply when writing Workflow Definitions:
 - Use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
   A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
   All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
+
+The following sections describe the most common replay-safe patterns.
+
+#### Logging
+
+Use [`Workflow.getLogger()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) instead of SLF4J loggers directly. The SDK logger automatically omits log messages during replay:
+
+```java
+private static final Logger logger = Workflow.getLogger(MyWorkflow.class);
+
+// Inside workflow method:
+logger.info("Starting workflow for {}", name);
+```
+
+For logger configuration, see [Observability: Logging](/develop/java/observability#logging).
+
+#### Random numbers and UUIDs
+
+Use [`Workflow.newRandom()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom) for deterministic random numbers, and [`Workflow.randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#randomUUID()) for deterministic UUIDs. Never use `java.util.Random` or `UUID.randomUUID()` directly:
+
+```java
+// Good - deterministic across replays
+int randomInt = Workflow.newRandom().nextInt(100);
+String uniqueId = Workflow.randomUUID().toString();
+
+// Bad - different result on every replay
+int randomInt = new Random().nextInt(100);
+```
+
+For other non-deterministic values, use [`Workflow.sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)). See [Side Effects](/develop/java/side-effects) for details.
+
+#### Current time
+
+Use [`Workflow.currentTimeMillis()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) instead of `System.currentTimeMillis()` or `Instant.now()`:
+
+```java
+long currentTime = Workflow.currentTimeMillis();
+```
+
+#### Detecting replay (advanced)
+
+Use [`WorkflowUnsafe.isReplaying()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/WorkflowUnsafe.html) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
+:::caution
+
+Never use this to affect Workflow business logic — branching on replay status breaks determinism.
+
+:::
+
+```java
+if (!WorkflowUnsafe.isReplaying()) {
+    emitMetric("workflow_started", 1);
+}
+```
 
 Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
 
@@ -339,7 +392,7 @@ An Activity interface can have any number of parameters.
 All inputs should be serializable by the default Jackson JSON Payload Converter.
 
 When implementing Activities, be mindful of the amount of data that you transfer using the Activity invocation parameters or return values as these are recorded in the Workflow Execution Events History.
-Large Events Histories can adversely impact performance.
+Large Event Histories can adversely impact performance.
 
 You can create a custom object, and pass it to the Activity interface, as shown in the following example.
 
@@ -478,7 +531,7 @@ Systems such as Prometheus may ignore metrics with tags using unsupported charac
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed]) in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.

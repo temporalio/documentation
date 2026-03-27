@@ -1,0 +1,379 @@
+---
+title: Pre-production testing
+sidebar_label: Pre-Production Testing
+description: Experience-driven testing practices for teams running Temporal applications, covering failure injection, load testing, and operational validation.
+toc_max_heading_level: 4
+keywords:
+  - testing
+  - pre-production
+  - load testing
+  - chaos engineering
+  - best practices
+tags:
+  - Best Practices
+  - Temporal Cloud
+---
+
+This guide collects practical, experience-driven testing practices for teams running Temporal applications.
+The goal is not just to verify that things fail and recover, but to build confidence that *recovery*, *correctness*, *consistency*, and *operability* hold under real-world conditions.
+
+The scenarios below assume familiarity with Temporal concepts such as [Namespaces](/namespaces), [Workers](/workers), [Task Queues](/task-queue), [History shards](/temporal-service/temporal-server#history-shard), [Timers](/workflow-execution/timers-delays), and [Workflow replay](/workflow-execution#replay).
+Start with [Understanding Temporal](/evaluate/understanding-temporal#durable-execution) if you need background.
+
+Before starting any load testing in Temporal Cloud, we recommend connecting with your Temporal Account team and our Developer Success Engineering team.
+
+## Guiding principles
+
+Before diving into specific experiments, keep these principles in mind:
+
+- **Failure is normal**: Temporal is designed to survive failure and issues, but *your application logic* must be too.
+- **Partial failure is often harder to deal with than total failure**: Systems that are "mostly working" expose the most flaws.
+- **Recovery paths deserve as much testing as steady state**: Analyze recovering application behavior as much as you analyze failing behavior.
+- **Build observability before you break things**: Ensure metrics, logs, and visibility tools are in place before injecting failures.
+- **Testing is a continual process**: Testing is never finished. Testing is a practice.
+
+## Worker testing
+
+**Relevant best practices**: [Worker deployment and performance](/best-practices/worker), appropriate timeouts, managing Worker shutdown, idempotency
+
+- [Worker shutdown](/encyclopedia/workers/worker-shutdown)
+
+### Kill all Workers, then restart them
+
+**What to test**
+
+Abruptly terminate all Workers processing a Task Queue, then restart them.
+
+**Why it matters**
+
+- Validates at-least-once execution semantics.
+- Ensures Activities are idempotent and Workflows replay cleanly.
+- Validates Task timeouts and retries and that Workers can finish business processes.
+
+**How to run this**
+
+Depending on execution environment:
+
+- **Kubernetes**: Set pod count to zero:
+  ```bash
+  kubectl scale deployment <deployment-name> --replicas=0 -n <namespace>
+  kubectl scale deployment <deployment-name> --replicas=3 -n <namespace>
+  ```
+- **Azure App Service**:
+  ```bash
+  az webapp restart --name <app-name> --resource-group <resource-group>
+  ```
+
+**Things to watch**
+
+- Duplicate/improper Activity results
+- Workflow failures
+- Workflow backlog growth and drain time
+
+### Frequent Worker restart
+
+**What to test**
+
+Periodically restart a fixed or random percentage (e.g. 20-30%) of your Worker fleet every few minutes.
+
+**Why it matters**
+
+- Mimics failure modes where Workers restart due to high CPU utilization and out-of-memory errors from compute-intensive logic in Activities.
+- Ensures Temporal invalidates specific Sticky Task Queues and reschedules the task to the associated non-Sticky Task Queue.
+
+**How to run this**
+
+- **Kubernetes**: Build a script using `kubectl` to randomly delete pods in a loop.
+- **Chaos Mesh**: [Simulate pod faults](https://chaos-mesh.org/docs/simulate-pod-chaos-on-kubernetes/).
+- **App Services**: Scale down and up again.
+
+**Things to watch**
+
+- Replay latency
+- Drop in Workflow and Activity completion
+- Duplicate/improper Activity results
+- Workflow failures
+- Workflow backlog growth and drain time
+
+## Load testing
+
+### Pre-load test setup: expectations for success
+
+1. Have SDK metrics accessible (not just the Cloud metrics)
+2. Understand and predict what you should see from these metrics:
+   - Rate limiting (`temporal_cloud_v1_resource_exhausted_error_count`)
+   - Workflow failures (`temporal_cloud_v1_workflow_failed_count`)
+   - Workflow execution time (`workflow_endtoend_latency`)
+   - High Cloud latency (`temporal_cloud_v1_service_latency_p95`)
+   - [Worker metrics](/develop/worker-performance) (`workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency`)
+3. Determine throughput requirements ahead of time. Work with your account team to match that to the Namespace capacity to avoid rate limiting. Capacity increases are done via Temporal support and can be requested for a load test (short-term).
+4. Automate how you run the load test so you can start and stop it at will. How will you clear Workflow Executions that are just temporary?
+5. What does "success" look like for this test? Be specific with metrics and numbers stated in business terms.
+
+### Validate downstream load capacity
+
+**Relevant best practices**: Idempotent Activities, bounded retries, appropriate timeouts and retry policies, understand behavior when limits are reached
+
+**What to test**
+
+- Schedule a large number of Actions and Requests by starting many Workflows
+- Increase the number until you start overloading downstream systems
+
+**Why it matters**
+
+Validates behavior of Temporal application and application dependencies under high load.
+
+**How to run this**
+
+Start Workflows at a rate to surpass throughput limits. Example: [temporal-ratelimit-tester-go](https://github.com/joshmsmith/temporal-ratelimit-tester-go)
+
+**Things to watch**
+
+- Downstream service error rates (HTTP 5xx, database errors)
+- Increased downstream service latency and saturation metrics
+- Activity failure rates, specifically classifying between retryable and non-retryable errors
+- Activity retry and backoff behavior against the overloaded system
+- Workflow backlog growth and drain time
+- Correctness and consistency of data (ensuring Activity idempotency holds under duress)
+- Worker CPU/memory utilization
+
+### Validate rate limiting behavior
+
+**Relevant best practices**: [Manage Namespace capacity limits](/best-practices/managing-aps-limits), understand behavior when limits are reached
+
+**What to test**
+
+- Schedule a large number of Actions and Requests by starting many Workflows
+- Increase the number until you get rate limited (trigger metric [`temporal_cloud_v0_resource_exhausted_error_count`](/cloud/metrics/reference#temporal_cloud_v0_resource_exhausted_error_count))
+
+**Why it matters**
+
+Validates behavior of Cloud service under high load: "In Temporal Cloud, the effect of rate limiting is increased latency, not lost work. Workers might take longer to complete Workflows."
+
+**How to run this**
+
+1. (Optional) Decrease a test Namespace's rate limits to make it easier to hit limits
+2. Calculate current APS at current throughput (in production)
+3. Calculate Workflow throughput needed to surpass limits
+4. Start Workflows at a rate to surpass throughput limits using [temporal-ratelimit-tester-go](https://github.com/joshmsmith/temporal-ratelimit-tester-go)
+
+**Things to watch**
+
+- Worker behavior when rate limited
+- Client behavior when rate limited
+- Temporal request and long_request failure rates
+- Workflow success rates
+- Workflow latency rates
+
+## Failover and availability
+
+**Relevant best practices**: Use [High Availability features](/cloud/high-availability) for critical workloads.
+
+- [High Availability monitoring](/cloud/high-availability/monitoring)
+
+### Test region failover
+
+**What to test**
+
+Trigger a [High Availability](/cloud/high-availability) failover event for a Namespace.
+
+**Why it matters**
+
+- Real outages are messy and rarely isolated.
+- Ensures your operational playbooks and automation are resilient.
+- Validates Worker and Namespace failover behavior.
+
+**How to run this**
+
+Execute a manual failover per the [manual failovers documentation](/cloud/high-availability/failovers#manual-failovers).
+
+**Things to watch**
+
+- Namespace availability
+- Client and Worker connectivity to failover region
+- Workflow Task reassignments
+- Human-in-the-loop recovery steps
+
+## Dependency and downstream testing
+
+### Break the things your Workflows call
+
+**What to test**
+
+Intentionally break or degrade downstream dependencies used by Activities:
+
+- Make databases read-only or unavailable
+- Inject high latency or error rates into external APIs
+- Throttle or pause message queues and event streams
+
+**Why it matters**
+
+- Temporal guarantees Workflow durability, not dependency availability.
+- Validates that Activities are retryable, idempotent, and correctly timeout-bounded.
+- Ensures Workflows make forward progress instead of livelocking on broken dependencies.
+
+**Things to watch**
+
+- Activity retry and backoff behavior
+- Heartbeat effectiveness for long-running Activities
+- Database connection exhaustion and retry storms
+- API timeouts vs Activity timeouts
+- Whether failures propagate as Signals, compensations, or Workflow-level errors
+
+**Anti-patterns this reveals**
+
+- Non-idempotent Activities
+- Infinite retries without circuit breaking
+- Using Workflow logic to "wait out" broken dependencies
+
+## Deployment and code-level testing
+
+### Deploy a Workflow change with versioning
+
+**Relevant best practices**: Implement a versioning strategy.
+
+- [Workflow Versioning Strategies - Developer Corner](https://community.temporal.io/t/workflow-versioning-strategies/6911)
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
+- [Replay Testing](/evaluate/development-production-features/testing-suite)
+
+**What to test**
+
+- Deploy Workflow code that would introduce non-deterministic errors (NDEs) but use a versioning strategy to deploy successfully
+- Validate Workflow success and clear the backlog of tasks
+
+**Why it matters**
+
+- Unplanned NDEs can be a painful surprise
+- Tests versioning strategy and patching discipline to build production confidence
+
+**Things to watch**
+
+- Workflow Task failure reasons
+- Effectiveness of versioning and patching patterns
+
+### Deploy a version that causes NDEs, then recover
+
+**Relevant best practices**: Implement a versioning strategy.
+
+- [Workflow Versioning Strategies - Developer Corner](https://community.temporal.io/t/workflow-versioning-strategies/6911)
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
+- [Replay Testing](/evaluate/development-production-features/testing-suite)
+
+**What to test**
+
+- Deploy Workflow code that introduces non-deterministic errors (NDEs)
+- Attempt rollback to a known-good version, or apply versioning strategies to apply the new changes successfully
+- Clear or recover the backlog of tasks
+
+**Why it matters**
+
+- Unplanned NDEs can be a painful surprise
+- Tests versioning strategy, patching discipline, and recovery tooling
+
+**Things to watch**
+
+- Workflow Task failure reasons
+- Backlog growth and drain time
+- Effectiveness of versioning and patching patterns
+
+## Network-level testing
+
+The scenarios below are most relevant if your infrastructure introduces network boundaries (such as firewalls, VPNs, or network policies) between Workers and the Temporal service, or if you need to verify application behavior during prolonged disconnections.
+
+**Relevant best practices**: Idempotent Activities, bounded retries, appropriate timeouts
+
+- [Activity timeouts](https://temporal.io/blog/activity-timeouts)
+- [Idempotency and durable execution](https://temporal.io/blog/idempotency-and-durable-execution)
+
+### Remove network connectivity to a Namespace
+
+**What to test**
+
+Temporarily block all network access between Workers and the Temporal service for a Namespace.
+
+**Why it matters**
+
+- Validates Worker retry behavior, Sticky Task Queue behavior, Worker recovery performance, backoff policies, and Workflow replay determinism under prolonged disconnection.
+- Ensures no assumptions are made about "always-on" connectivity.
+
+**Temporal failure modes exercised**
+
+- Workflow Task timeouts vs retries
+- Activity retry semantics
+- Replay correctness after long gaps
+
+**How to run this**
+
+- **Kubernetes**: Apply a NetworkPolicy that denies egress from Worker pods to the Temporal APIs.
+- **[ToxiProxy](https://github.com/Shopify/toxiproxy)**: Proves your application doesn't have single points of failure.
+- **Chaos Mesh / Litmus**: NetworkChaos with full packet drop.
+- **Local testing**: Block ports with iptables or firewall rules.
+
+**Things to watch**
+
+- Workflow failures (replay, timeout)
+- Workflow Task retries
+- Activity failures, classifications (retryable vs non-retryable)
+- Worker CPU usage during reconnect storms
+
+## Observability checklist
+
+Before (and during) testing, ensure visibility into:
+
+- Workflow Task and Activity failure rates
+- Throughput limits and usage
+- Workflow and Activity end-to-end latencies
+- Task latency and backlog depth
+- Workflow History size and event counts
+- Worker CPU, memory, and restart counts
+- gRPC error codes
+- Retry behavior
+
+## Game day runbook
+
+Use this checklist when running tests during a scheduled game day or real incident simulation.
+
+### Before you start
+
+- Make sure people know you're testing and what scenarios you're trying
+  - Let the teams that support the APIs you're calling know you're testing
+  - Reach out to the Temporal Cloud Support and Account teams to coordinate
+- Dashboards for SDK and Cloud metrics
+  - Task latency, backlog depth, Workflow failures, Activity failures
+- Alerts muted or routed appropriately
+- Known-good deployment artifact available
+- Rollback and scale controls verified
+
+### During testing
+
+- Introduce *one variable at a time*
+- Record start/stop times of each experiment
+- Capture screenshots or logs of unexpected behavior
+- Track backlog growth and drain rate
+
+### Recovery validation
+
+- Workflows resume without manual intervention
+- No permanent Workflow Task failures (unless intentional)
+- Activity retries behave as expected
+- Backlogs drain in predictable time
+
+### After action review
+
+- Identify unclear alerts or missing metrics/alerts
+- Update retry, timeout, or versioning policies
+- Document surprises and operational debt
+
+## Summary
+
+Pre-production testing with Temporal is about more than proving durability - it's about proving *operability under stress*.
+You want to go through the exercise and know what to do before you go to production and have to do it for real.
+
+If your system survives:
+
+- Connectivity issues
+- Repeated failovers
+- Greater than expected load
+- Mass Worker churn
+
+...then you can have confidence it's ready for many kinds of production chaos.

@@ -33,7 +33,7 @@ jobs:
           REPO_PREVIEW_TEMPLATE: ${{ vars.DOCS_PREVIEW_BASE_URL_TEMPLATE }}
         run: |
           BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-          BRANCH_SLUG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
+          BRANCH_SLUG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -d '_' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
 
           if [ -n "$REPO_PREVIEW_BASE_URL" ]; then
             BASE_URL="$REPO_PREVIEW_BASE_URL"

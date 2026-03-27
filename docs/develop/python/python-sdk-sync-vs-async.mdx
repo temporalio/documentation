@@ -69,7 +69,7 @@ such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
 ## Python SDK Worker Execution Architecture
 
-Python workers have following components for executing code:
+Python workers have the following components for executing code:
 
 - Your event loop, which runs Tasks from async Activities **plus the rest of the Temporal Worker, such as communicating with the server**.
 - An executor for executing Activity Tasks from synchronous Activities. A thread pool executor is recommended.
@@ -212,7 +212,7 @@ asynchronous Activity Definition.
 It makes
 a call to a microservice, accessed through HTTP, to request this
 greeting in Spanish. This Activity uses the `aiohttp` library to make an async
-safe HTTP request. Using the `requests` library here would have resulting in
+safe HTTP request. Using the `requests` library here would have resulted in
 blocking code within the async event loop, which will block the entire async
 event loop. For more in-depth information about this issue, refer to the
 [Python asyncio documentation](https://docs.python.org/3/library/asyncio-dev.html#running-blocking-code).

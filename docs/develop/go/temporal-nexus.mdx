@@ -1,6 +1,6 @@
 ---
 id: nexus
-title: Temporal Nexus - Go SDK Feature Guide
+title: Temporal Nexus - Go SDK feature guide
 sidebar_label: Temporal Nexus
 description: Use Temporal Nexus within the Go SDK to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
@@ -120,7 +120,8 @@ type EchoOutput EchoInput
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
-They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
+Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
 
 The `temporalnexus` package has builders to create Nexus Operations and other helpers for authoring Operation handlers:
 
@@ -133,8 +134,8 @@ This tutorial starts with a sync Operation handler example using the `nexus.NewS
 ### Develop a Synchronous Nexus Operation handler
 
 The `nexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
-Typically to use SDK client, which is obtained via `temporalnexus.GetClient(ctx)`, for signaling, querying, and listing Workflows.
-However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+Use `temporalnexus.GetClient(ctx)` to get the Temporal Client for signaling, querying, and listing Workflows.
+Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
 
 <!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
 [nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
@@ -164,6 +165,14 @@ var EchoOperation = nexus.NewSyncOperation(service.EchoOperationName, func(ctx c
 
 ```
 <!--SNIPEND-->
+
+### Use the Temporal Client for Signals, Queries, and Updates
+
+A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
+You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
+All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). 
+The ctx provided to the handler is automatically set with this deadline, so passing it directly to Temporal Client calls will correctly propagate the timeout. 
+Updates should be short-lived to stay within this deadline.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -335,6 +344,45 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 
 ```
 <!--SNIPEND-->
+
+### Set Nexus Operation timeouts
+
+Nexus Operations support [three types of timeouts](/nexus/operations#timeouts) that control how long the caller is willing to wait at different stages of the Operation lifecycle.
+Set these timeouts in `NexusOperationOptions` when calling `ExecuteOperation`.
+
+#### Schedule-to-Close timeout
+
+The [Schedule-to-Close timeout](/nexus/operations#schedule-to-close-timeout) limits the total duration of the Operation from when it is scheduled to when it completes.
+The Nexus Machinery automatically retries failed requests until this timeout is exceeded.
+
+```go
+fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{
+	ScheduleToCloseTimeout: 10 * time.Minute,
+})
+```
+
+#### Schedule-to-Start timeout
+
+The [Schedule-to-Start timeout](/nexus/operations#schedule-to-start-timeout) limits how long the caller will wait for the Operation to be started by the handler.
+If not set, no Schedule-to-Start timeout is enforced.
+
+```go
+fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{
+	ScheduleToStartTimeout: 2 * time.Minute,
+})
+```
+
+#### Start-to-Close timeout
+
+The [Start-to-Close timeout](/nexus/operations#start-to-close-timeout) limits how long the caller will wait for an asynchronous Operation to complete after it has been started.
+This timeout only applies to asynchronous Operations.
+If not set, no Start-to-Close timeout is enforced.
+
+```go
+fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{
+	StartToCloseTimeout: 5 * time.Minute,
+})
+```
 
 ### Register the caller Workflow in a Worker
 
