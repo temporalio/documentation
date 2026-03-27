@@ -22,13 +22,7 @@ For more information about how External Storage fits in the data pipeline, see [
 
 The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
-1. Install the S3 driver dependency:
-
-   ```shell
-   pip install temporalio[s3driver]
-   ```
-
-2. Import the classes `S3StorageDriverClient` and `S3StorageDriver` and create an instance of each. When you create the
+1. Import the classes `S3StorageDriverClient` and `S3StorageDriver` and create an instance of each. When you create the
    driver instance, pass the `client` argument to the constructor as well as the name of your S3 bucket:
 
    ```python
@@ -42,7 +36,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    the driver skips the upload if the object already exists. The driver includes the namespace and Workflow ID in the S3
    key to group related payloads in your bucket. For example: `v0/ns/my-namespace/wfi/my-workflow/d/sha256/{hash}`.
 
-3. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
+2. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
    <!--SNIPSTART python-s3-external-storage-setup-->
 
@@ -71,7 +65,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
    business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
 
-4. (Optional) To route payloads to different buckets, pass a function as the `bucket` parameter instead of a string. The
+3. (Optional) To route payloads to different buckets, pass a function as the `bucket` parameter instead of a string. The
    function takes the store context and the payload as arguments, and returns a bucket name, so you can route based on
    the Activity Task Queue or other context:
 
