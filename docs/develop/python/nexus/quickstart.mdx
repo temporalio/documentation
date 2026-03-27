@@ -32,6 +32,15 @@ Learn more in the [Nexus encyclopedia](/nexus).
 **Prerequisites:** Complete the [Python SDK Quickstart](/develop/python/set-up-your-local-python) first.
 You should have `activities.py`, `workflows.py`, `worker.py`, and `starter.py` from that guide.
 
+## What you'll build
+
+You have `SayHelloWorkflow` running in the `default` Namespace.
+By the end of this guide:
+
+1. A Nexus Service will expose `SayHelloWorkflow` as an Operation.
+2. A second Namespace will contain a Workflow that calls that Operation.
+3. The caller Workflow will get back `"Hello Temporal"` — the same result, but across Namespaces.
+
 <SetupSteps>
 
 <SetupStep code={
@@ -56,7 +65,7 @@ class SayHelloNexusService:
 </>
 }>
 
-## Define Nexus Service
+## 1. Define Nexus Service
 
 Create a file called `service.py` that defines the Nexus Service contract.
 
@@ -99,7 +108,7 @@ class SayHelloNexusServiceHandler:
 </>
 }>
 
-## Define Operation Handlers
+## 2. Define Operation Handlers
 
 Create a file called `handler.py` that implements the Nexus Operation handler.
 
@@ -145,7 +154,7 @@ if __name__ == "__main__":
 </>
 }>
 
-## Register Nexus Service Handler in a Worker
+## 3. Register Nexus Service Handler in a Worker
 
 Update your existing `worker.py` to register the Nexus Service Handler.
 
@@ -161,9 +170,7 @@ The `nexus_service_handlers` parameter registers the handler so it can receive N
 
 <CodeSnippet language="python">
 {`from datetime import timedelta
-
 from temporalio import workflow
-
 from service import MyInput, SayHelloNexusService
 
 NEXUS_ENDPOINT = "my-nexus-endpoint-name"
@@ -187,7 +194,7 @@ class CallerWorkflow:
 </>
 }>
 
-## Caller Workflow
+## 4. Caller Workflow
 
 Create a file called `caller.py` that defines a Workflow which invokes the Nexus Operation.
 
@@ -217,7 +224,7 @@ temporal operator namespace create --namespace my-caller-namespace
 </>
 }>
 
-## Create Caller Namespace and Nexus Endpoint
+## 5. Create Caller Namespace and Nexus Endpoint
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
 The handler uses the `default` Namespace that was created when you started the dev server.
@@ -269,7 +276,7 @@ if __name__ == "__main__":
 </>
 }>
 
-## Run and Verify
+## 6. Run and Verify
 
 Create a file called `caller_starter.py` to start the caller Worker and execute the Workflow.
 
