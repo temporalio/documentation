@@ -384,6 +384,9 @@ module.exports = async function createConfigAsync() {
           generateLLMsTxt: true,
           generateLLMsFullTxt: true,
 
+          // Exclude imported markdown partials that should not be published as standalone LLM docs.
+          ignoreFiles: ['docs/cloud/references/regions/private-service.md', 'docs/cloud/references/regions/gcpregions.md'],
+
           // Clean up content for better LLM consumption
           excludeImports: true,
           removeDuplicateHeadings: true,
@@ -412,13 +415,13 @@ module.exports = async function createConfigAsync() {
           customLLMFiles: [
             {
               filename: 'llms-quickstart.txt',
-              includePatterns: ['quickstarts/**', 'develop/**/set-up-*'],
+              includePatterns: ['docs/evaluate/**/*.mdx', 'docs/develop/**/*.mdx'],
               fullContent: true,
               title: 'Temporal Quickstart Guide',
             },
             {
               filename: 'llms-api-reference.txt',
-              includePatterns: ['references/**', 'cli/**'],
+              includePatterns: ['docs/references/**/*.mdx', 'docs/cli/**/*.mdx'],
               fullContent: true,
               title: 'Temporal API and CLI Reference',
             },

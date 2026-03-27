@@ -507,7 +507,7 @@ endpoints.
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/monitoring#replication-lag-metric)
+#### [Replication Lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
