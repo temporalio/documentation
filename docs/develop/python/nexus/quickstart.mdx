@@ -159,7 +159,9 @@ The `nexus_service_handlers` parameter registers the handler so it can receive N
 <>
 
 <CodeSnippet language="python">
-{`from temporalio import workflow
+{`from datetime import timedelta
+
+from temporalio import workflow
 
 from service import MyInput, SayHelloNexusService
 
@@ -177,6 +179,7 @@ class CallerWorkflow:
         return await nexus_client.execute_operation(
             SayHelloNexusService.say_hello,
             MyInput(name=name),
+            schedule_to_close_timeout=timedelta(seconds=10),
         )`}
 </CodeSnippet>
 
