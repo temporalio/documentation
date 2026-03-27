@@ -174,8 +174,14 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
 ### Store payloads
 
 In `store()`, serialize each payload to bytes with `payload.SerializeToString()`, upload the bytes to your storage
-system, and return a `StorageDriverClaim` with enough information to find the payload later. Using a content-addressable
-key like a SHA-256 hash gives you deduplication for free.
+system, and return a `StorageDriverClaim` with enough information to find the payload later.
+
+:::tip
+
+For simplicity, the code example uses a UUID for the key. In production systems, consider using a content-addressable
+key like a SHA-256 hash, which can help you deduplicate payloads and reduce storage costs.
+
+:::
 
 ### Retrieve payloads
 

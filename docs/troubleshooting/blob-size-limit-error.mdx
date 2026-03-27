@@ -33,9 +33,8 @@ To resolve this error, reduce the size of the blob so that it is within the limi
 
 There are multiple strategies you can use to avoid this error:
 
-1. (Recommended) Use [External Storage](/external-storage) to offload large payloads to an object store like S3. The
-   Temporal SDKs support this natively through [External Storage](/external-storage) (available in the
-   [Python SDK](/develop/python/data-handling/large-payload-storage)): when a payload exceeds a size threshold,
+1. (Recommended) Use [External Storage](/external-storage) to offload large payloads to an object store like S3.
+   Currently available in the [Python SDK](/develop/python/data-handling/large-payload-storage). When a payload exceeds a size threshold,
    a storage driver uploads it to your external store and replaces it with a small reference token in the Event History.
    Your Workflow and Activity code doesn't need to change. Even if your payloads are within the limit today, consider
    implementing External Storage if their size could grow over time.

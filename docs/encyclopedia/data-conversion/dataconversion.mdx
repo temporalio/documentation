@@ -57,11 +57,11 @@ The following diagram shows how data flows through a Data Converter:
 />
 
 Your application code controls the Temporal Client, which sends data through the Data Converter to the Temporal Service.
-The data is first encoded by the PayloadConverter, then transformed by the PayloadCodec, and finally offloaded to
-external storage by the ExternalStorage.
+The PayloadConverter encodes the data first, then the PayloadCodec transforms it, and finally ExternalStorage offloads
+large payloads to an external store.
 
-When the Temporal Service dispatches the Tasks to the Workers, the Worker first retrieves the payloads from external
-storage, then decodes them by the PayloadCodec, and finally deserializes them by the PayloadConverter.
+When the Temporal Service dispatches Tasks to Workers, the process reverses: ExternalStorage retrieves offloaded
+payloads, the PayloadCodec decodes them, and the PayloadConverter deserializes them back into application types.
 
 During the entire data conversion process, the Temporal Service never sees or persists the decoded data.
 
