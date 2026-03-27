@@ -208,10 +208,8 @@ const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   taskQueue,
   workerDeploymentOptions: {
-    useWorkerVersioning: true,
+    useWorkerVersioning: false,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
-
-    defaultVersioningBehavior: 'UNSPECIFIED',
   },
   connection: nativeConnection,
 });
@@ -310,7 +308,7 @@ Unspecified.
 :::
 
 You also want to make sure you understand how your Activities are going to work across different Worker Deployment
-Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#actvity-behavior-across-versions)
+Versions. Refer to the [Worker Versioning Activity behavior docs](#choosing-behavior)
 for more details.
 
 ## Rolling out changes with the CLI
