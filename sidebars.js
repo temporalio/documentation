@@ -279,7 +279,15 @@ module.exports = {
             'develop/typescript/schedules',
             'develop/typescript/converters-and-encryption',
             'develop/typescript/timers',
-            'develop/typescript/nexus',
+            {
+              type: 'category',
+              label: 'Temporal Nexus',
+              collapsed: true,
+              items: [
+                'develop/typescript/nexus/quickstart',
+                'develop/typescript/nexus/feature-guide',
+              ],
+            },
             'develop/typescript/child-workflows',
             'develop/typescript/continue-as-new',
             'develop/typescript/interceptors',

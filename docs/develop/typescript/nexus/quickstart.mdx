@@ -1,0 +1,308 @@
+---
+id: quickstart
+title: Nexus TypeScript Quickstart
+sidebar_label: Quickstart
+description: Build a Nexus Service that wraps an existing Temporal Workflow using the TypeScript SDK
+keywords:
+  - nexus
+  - typescript
+  - quickstart
+  - getting started
+tags:
+  - Nexus
+  - TypeScript SDK
+  - setup
+  - getting started
+hide_table_of_contents: true
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+
+# Nexus TypeScript Quickstart
+
+Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
+
+:::tip WHAT IS NEXUS?
+
+[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+Learn more in the [Nexus encyclopedia](/nexus).
+
+:::
+
+**Prerequisites:** Complete the [TypeScript SDK Quickstart](/develop/typescript/set-up-your-local-typescript) first.
+You should have `activities.ts`, `workflows.ts`, `worker.ts`, and `client.ts` from that guide.
+
+<SetupSteps>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="typescript">
+{`import * as nexus from 'nexus-rpc';
+
+export interface MyInput {
+    name: string;
+}
+
+export const sayHelloService = nexus.service('say-hello', {
+    sayHello: nexus.operation<MyInput, string>(),
+});`}
+</CodeSnippet>
+
+</>
+}>
+
+## Define Nexus Service
+
+Create a file called `service.ts` that defines the Nexus Service contract.
+
+Creating a Nexus Service establishes the contract between your implementation and any callers.
+It provides type safety when invoking Nexus Operations and ensures that Operation Handlers fulfill the contract.
+
+`nexus.service()` declares a named service, and `nexus.operation<I, O>()` defines a typed operation.
+The `example` Workflow returns `string`, so the operation output type is `string`.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="typescript">
+{`import { randomUUID } from 'crypto';
+import * as nexus from 'nexus-rpc';
+import * as temporalNexus from '@temporalio/nexus';
+import { sayHelloService, MyInput } from './service';
+import { example } from './workflows';
+
+export const sayHelloHandler = nexus.serviceHandler(sayHelloService, {
+    sayHello: new temporalNexus.WorkflowRunOperationHandler<MyInput, string>(
+      async (ctx, input: MyInput) => {
+        return await temporalNexus.startWorkflow(ctx, example, {
+          args: [input.name],
+          workflowId: "say-hello-nexus-" + randomUUID(),
+
+          // Task queue defaults to the task queue this Operation is handled on.
+        });
+      },
+    ),
+});`}
+</CodeSnippet>
+
+</>
+}>
+
+## Define Operation Handlers
+
+Create a file called `handler.ts` that implements the Nexus Operation handler.
+
+Operation handlers contain the logic that runs when a caller invokes a Nexus Operation.
+
+`WorkflowRunOperationHandler` creates an asynchronous Nexus Operation that starts a Workflow.
+The handler bridges the Nexus `MyInput` interface to the `example` Workflow's `string` parameter by extracting `input.name`.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="typescript">
+{`import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+import { sayHelloHandler } from './handler';
+
+async function run() {
+    const connection = await NativeConnection.connect({
+      address: 'localhost:7233',
+    });
+    try {
+      const worker = await Worker.create({
+        connection,
+        namespace: 'default',
+        taskQueue: 'hello-world',
+        workflowsPath: require.resolve('./workflows'),
+        activities,
+        nexusServices: [sayHelloHandler],
+      });
+      await worker.run();
+    } finally {
+      await connection.close();
+    }
+}
+
+run().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});`}
+</CodeSnippet>
+
+</>
+}>
+
+## Register Nexus Service Handler in a Worker
+
+Update your existing `worker.ts` to register the Nexus Service Handler.
+
+A Worker will only poll for and process incoming Nexus requests if the Nexus Service Handlers are registered.
+This is the same Worker concept used for Workflows and Activities.
+
+The `nexusServices` parameter registers the handler so it can receive Nexus Operation requests.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="typescript">
+{`import * as wf from '@temporalio/workflow';
+import { sayHelloService, MyInput } from './service';
+
+const NEXUS_ENDPOINT = 'my-nexus-endpoint-name';
+
+export async function callerWorkflow(name: string): Promise<string> {
+    const nexusClient = wf.createNexusClient({
+      service: sayHelloService,
+      endpoint: NEXUS_ENDPOINT,
+    });
+    return await nexusClient.executeOperation(
+      'sayHello',
+      { name },
+      { scheduleToCloseTimeout: '10s' },
+    );
+}`}
+</CodeSnippet>
+
+</>
+}>
+
+## Caller Workflow
+
+Add the following to your existing `workflows.ts` file to define a Workflow that invokes the Nexus Operation.
+
+The caller Workflow demonstrates the consumer side of Nexus.
+Instead of importing handler code directly, the caller only depends on the Service contract.
+This keeps the caller and handler decoupled so they can live in separate Namespaces, repositories, or even teams.
+
+`wf.createNexusClient()` creates a client bound to your Nexus Service and Endpoint.
+`executeOperation` starts the operation and waits for the result.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="bash">
+temporal operator namespace create --namespace my-caller-namespace
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+{`temporal operator nexus endpoint create \\
+  --name my-nexus-endpoint-name \\
+  --target-namespace default \\
+  --target-task-queue hello-world`}
+</CodeSnippet>
+
+</>
+}>
+
+## Create Caller Namespace and Nexus Endpoint
+
+Before running the application, create a caller Namespace and a Nexus Endpoint to route requests between them.
+The handler uses the `default` Namespace that was created when you started the dev server.
+
+Namespaces provide isolation between the caller and handler sides.
+The Nexus Endpoint acts as a routing layer that connects the caller Namespace to the handler's target Namespace and Task Queue.
+
+Make sure your local Temporal dev server is running (`temporal server start-dev`).
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="typescript">
+{`import { randomUUID } from 'crypto';
+import { Connection, Client } from '@temporalio/client';
+import { NativeConnection, Worker } from '@temporalio/worker';
+import { callerWorkflow } from './workflows';
+
+const CALLER_TASK_QUEUE = 'my-caller-task-queue';
+const NAMESPACE = 'my-caller-namespace';
+
+async function main() {
+    const clientConnection = await Connection.connect({
+      address: 'localhost:7233',
+    });
+    const client = new Client({
+      connection: clientConnection,
+      namespace: NAMESPACE,
+    });
+
+    const workerConnection = await NativeConnection.connect({
+      address: 'localhost:7233',
+    });
+    try {
+      const worker = await Worker.create({
+        connection: workerConnection,
+        namespace: NAMESPACE,
+        taskQueue: CALLER_TASK_QUEUE,
+        workflowsPath: require.resolve('./workflows'),
+      });
+
+      await worker.runUntil(async () => {
+        const result = await client.workflow.execute(callerWorkflow, {
+          args: ['Temporal'],
+          workflowId: \`caller-workflow-\${randomUUID()}\`,
+          taskQueue: CALLER_TASK_QUEUE,
+        });
+        console.log('Workflow result:', result);
+      });
+    } finally {
+      await workerConnection.close();
+    }
+}
+
+main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});`}
+</CodeSnippet>
+
+</>
+}>
+
+## Run and Verify
+
+Create a file called `caller-starter.ts` to start the caller Worker and execute the Workflow.
+
+This step brings everything together: the caller Worker hosts `callerWorkflow`, which uses the Nexus client to invoke `sayHello` on the handler side.
+The full request flows from the caller Workflow, through the Nexus Endpoint, to the handler Worker running the `example` Workflow, and back to the caller.
+
+**Run the application:**
+
+1. Start the handler worker in one terminal: `npx ts-node src/worker.ts`
+2. Run the caller in another terminal: `npx ts-node src/caller-starter.ts`
+
+You should see:
+
+```
+Workflow result: Hello, Temporal!
+```
+
+Open the [Temporal Web UI](http://localhost:8233) and find the `callerWorkflow` execution.
+You should see `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted` events in the Workflow history.
+
+</SetupStep>
+</SetupSteps>
+
+## Next Steps
+
+Now that you have a working Nexus Service, here are some resources to deepen your understanding:
+
+- **[TypeScript Nexus Feature Guide](/develop/typescript/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
+- **[Nexus Operations](/nexus/operations)**: The full Operation lifecycle, including retries, timeouts, and execution semantics.
+- **[Nexus Services](/nexus/services)**: Designing Service contracts and registering multiple Services per Worker.
+- **[Nexus Patterns](/nexus/patterns)**: Comparing the collocated and router-queue deployment patterns.
+- **[Error Handling in Nexus](/nexus/error-handling)**: Handling retryable and non-retryable errors across caller and handler boundaries.
+- **[Execution Debugging](/nexus/execution-debugging)**: Bi-directional linking and OpenTelemetry tracing for debugging Nexus calls.
+- **[Nexus Endpoints](/nexus/endpoints)**: Managing Endpoints and understanding how they route requests.
+- **[Temporal Nexus on Temporal Cloud](/cloud/nexus)**: Deploying Nexus in a production Temporal Cloud environment with built-in access controls and multi-region connectivity.
