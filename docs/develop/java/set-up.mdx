@@ -442,6 +442,9 @@ public class Starter {
 
         String result = workflow.sayHello("Temporal");
         System.out.println("Workflow result: " + result);
+
+        service.shutdown();
+        service.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS);
     }
 }
 ```
