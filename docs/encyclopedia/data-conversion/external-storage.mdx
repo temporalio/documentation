@@ -21,7 +21,7 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-The Temporal Service enforces a ~2 MB per-payload limit. When your Workflows or Activities handle data larger than this
+The Temporal Service enforces a 2 MB per-payload limit. When your Workflows or Activities handle data larger than this
 limit, you can use External Storage to offload payloads to an external store (such as S3) and pass a small reference
 token through the Event History instead. This is called the
 [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
@@ -41,9 +41,10 @@ External Storage sits at the end of the data pipeline, after both the [Payload C
   title="The Flow of Data through a Data Converter"
 />
 
-When a payload exceeds a configurable size threshold, the storage driver uploads it to your external store and replaces
-it with a lightweight reference. Payloads below the threshold stay inline in the Event History. On the way back, the
-codec receives reference payloads from external storage before decoding them.
+When a Temporal Client sends a payload that exceeds a configurable size threshold, the storage driver uploads it to your
+external store and replaces it with a lightweight reference. Payloads below the threshold stay inline in the Event
+History. When the Temporal Service dispatches Tasks to the Worker, the Worker retrieves the reference payloads from
+external storage and loads them into memory to execute the Task.
 
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before they're uploaded to your store.

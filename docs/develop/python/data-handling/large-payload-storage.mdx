@@ -13,28 +13,16 @@ description: Offload large payloads to external storage using the claim check pa
 
 import { CaptionedImage } from '@site/src/components';
 
-The Temporal Service enforces a ~2 MB per payload limit. When your Workflows or Activities handle data larger than the
+The Temporal Service enforces a 2 MB per payload limit. When your Workflows or Activities handle data larger than the
 limit, you can offload payloads to external storage, such as S3, and pass a small reference token through the Event
-History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern). This page
+shows you how to set up External Storage with AWS S3 and how to implement a custom storage driver.
 
-[External Storage](/external-storage) sits at the end of the data pipeline, after both the Payload Converter and the
-Payload Codec:
+For more information about how External Storage fits in the data pipeline, see [External Storage](/external-storage).
 
-<CaptionedImage
-  src="/diagrams/data-converter-flow-with-external-storage.svg"
-  title="The Flow of Data through a Data Converter"
-/>
+## Store and retrieve large payloads with AWS S3
 
-When a payload exceeds a configurable size threshold, the storage driver uploads it to your external store and replaces
-it with a lightweight reference. Payloads below the threshold stay inline in the Event History. On the way back,
-reference payloads are retrieved from external storage before the Payload Codec decodes them.
-
-Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
-before they're uploaded to your store.
-
-## Store and retrieve large payloads with S3
-
-The Python SDK includes a contrib S3 storage driver. Follow these steps to set it up:
+The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 1. Install the S3 driver dependency:
 
@@ -42,7 +30,8 @@ The Python SDK includes a contrib S3 storage driver. Follow these steps to set i
    pip install temporalio[s3driver]
    ```
 
-2. Create an `S3StorageDriverClient` and an `S3StorageDriver`:
+2. Import the classes `S3StorageDriverClient` and `S3StorageDriver` and create an instance of each. When you create the
+   driver instance, pass the `client` argument to the constructor as well as the name of your S3 bucket:
 
    ```python
    from temporalio.contrib.aws.s3driver import S3StorageDriver, S3StorageDriverClient
@@ -54,16 +43,6 @@ The Python SDK includes a contrib S3 storage driver. Follow these steps to set i
    The driver generates S3 keys using a SHA-256 hash of the payload content. Identical payloads produce the same key, so
    the driver skips the upload if the object already exists. The driver includes the namespace and Workflow ID in the S3
    key to group related payloads in your bucket. For example: `v0/ns/my-namespace/wfi/my-workflow/d/sha256/{hash}`.
-
-   To reject payloads above a hard limit before uploading, set `max_payload_size`:
-
-   ```python
-   driver = S3StorageDriver(
-       client=driver_client,
-       bucket="my-temporal-payloads",
-       max_payload_size=50 * 1024 * 1024,  # 50 MiB
-   )
-   ```
 
 3. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
@@ -91,8 +70,8 @@ The Python SDK includes a contrib S3 storage driver. Follow these steps to set i
 
    <!--SNIPEND-->
 
-All Workflows and Activities running on the Worker use the storage driver automatically without changes to your business
-logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
+   All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
+   business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
 
 4. (Optional) To route payloads to different buckets, pass a function as the `bucket` parameter instead of a string. The
    function takes the store context and the payload as arguments, and returns a bucket name, so you can route based on
@@ -220,23 +199,13 @@ converter = DataConverter(
 )
 ```
 
-### Adjust the size threshold
-
 The `payload_size_threshold` controls which payloads get offloaded. Payloads smaller than this value stay inline in the
-Event History.
-
-```python
-ExternalStorage(
-    drivers=[driver],
-    payload_size_threshold=100 * 1024,  # 100 KiB
-)
-```
-
-Set it to `None` to externalize all payloads regardless of size.
+Event History. If you don't provide a value, the default value is 256 KiB. Set it to `None` to externalize all payloads
+regardless of size.
 
 ## Use multiple storage drivers
 
-When you have multiple drivers, for example hot and cold storage tiers, pass a `driver_selector` function that chooses
+When you have multiple drivers, such as for hot and cold storage tiers, pass a `driver_selector` function that chooses
 which driver handles each payload:
 
 ```python
