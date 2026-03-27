@@ -31,7 +31,6 @@ Learn more in the [Nexus encyclopedia](/nexus).
 
 **Prerequisites:** Complete the [Python SDK Quickstart](/develop/python/set-up-your-local-python) first.
 You should have `activities.py`, `workflows.py`, `worker.py`, and `starter.py` from that guide.
-Ensure you have Temporal Python SDK `v1.14.1` or higher installed (`pip install -U temporalio`).
 
 <SetupSteps>
 
@@ -117,25 +116,24 @@ The handler bridges the Nexus `MyInput` dataclass to `SayHelloWorkflow`'s `str` 
 
 from temporalio.client import Client
 from temporalio.worker import Worker
+from temporalio import workflow
 
-from workflows import SayHelloWorkflow
-from activities import greet
-from handler import SayHelloNexusServiceHandler
-
-HANDLER_TASK_QUEUE = "my-handler-task-queue"
-NAMESPACE = "my-target-namespace"
+with workflow.unsafe.imports_passed_through():
+    from workflows import SayHelloWorkflow
+    from activities import greet
+    from handler import SayHelloNexusServiceHandler
 
 
 async def main():
-    client = await Client.connect("localhost:7233", namespace=NAMESPACE)
+    client = await Client.connect("localhost:7233")
     worker = Worker(
         client,
-        task_queue=HANDLER_TASK_QUEUE,
+        task_queue="my-task-queue",
         workflows=[SayHelloWorkflow],
         activities=[greet],
         nexus_service_handlers=[SayHelloNexusServiceHandler()],
     )
-    print("Handler worker started.")
+    print("Worker started.")
     await worker.run()
 
 
@@ -148,7 +146,7 @@ if __name__ == "__main__":
 
 ## Register Nexus Service Handler in a Worker
 
-Create a file called `handler_worker.py` that registers the Nexus Service Handler in a Worker.
+Update your existing `worker.py` to register the Nexus Service Handler.
 
 A Worker will only poll for and process incoming Nexus requests if the Nexus Service Handlers are registered.
 This is the same Worker concept used for Workflows and Activities.
@@ -202,26 +200,23 @@ The `workflow.create_nexus_client()` method creates a client bound to your Nexus
 <>
 
 <CodeSnippet language="bash">
-temporal operator namespace create --namespace my-target-namespace
-</CodeSnippet>
-
-<CodeSnippet language="bash">
 temporal operator namespace create --namespace my-caller-namespace
 </CodeSnippet>
 
 <CodeSnippet language="bash">
 {`temporal operator nexus endpoint create \\
   --name my-nexus-endpoint-name \\
-  --target-namespace my-target-namespace \\
-  --target-task-queue my-handler-task-queue`}
+  --target-namespace default \\
+  --target-task-queue my-task-queue`}
 </CodeSnippet>
 
 </>
 }>
 
-## Create Namespaces and Nexus Endpoint
+## Create Caller Namespace and Nexus Endpoint
 
-Before running the application, create separate Namespaces for the caller and handler, then create a Nexus Endpoint to route requests between them.
+Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
+The handler uses the `default` Namespace that was created when you started the dev server.
 
 Namespaces provide isolation between the caller and handler sides.
 The Nexus Endpoint acts as a routing layer that connects the caller Namespace to the handler's target Namespace and Task Queue.
@@ -279,8 +274,19 @@ The full request flows from the caller Workflow, through the Nexus Endpoint, to 
 
 **Run the application:**
 
-1. Start the handler worker in one terminal: `python handler_worker.py`
-2. Run the caller in another terminal: `python caller_starter.py`
+1. Start the handler worker in one terminal:
+
+```bash
+source env/bin/activate
+python3 worker.py
+```
+
+2. Run the caller in another terminal:
+
+```bash
+source env/bin/activate
+python3 caller_starter.py
+```
 
 You should see:
 
