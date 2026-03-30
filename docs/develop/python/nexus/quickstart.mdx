@@ -63,7 +63,7 @@ class SayHelloNexusService:
 </>
 }>
 
-## 1. Define Nexus Service
+## 1. Define the Nexus Service
 
 Create a file called `service.py` that defines the Nexus Service contract.
 
@@ -112,7 +112,7 @@ class SayHelloNexusServiceHandler:
 </>
 }>
 
-## 2. Define Operation Handlers
+## 2. Define the Operation handlers
 
 Create a file called `handler.py` that implements the Nexus Operation handler.
 
@@ -157,9 +157,9 @@ if __name__ == "__main__":
 </>
 }>
 
-## 3. Register Nexus Service Handler in a Worker
+## 3. Register the Nexus Service handler in a Worker
 
-Update your existing `worker.py` to register the Nexus Service Handler.
+Update your existing `worker.py` to register the Nexus Service handler.
 
 A Worker will only poll for and process incoming Nexus requests if the Nexus Service handlers are registered.
 This is the same Worker concept used for Workflows and Activities.
@@ -197,7 +197,7 @@ class CallerWorkflow:
 </>
 }>
 
-## 4. Caller Workflow
+## 4. Develop the caller Workflow
 
 Create a file called `caller.py` that defines a Workflow which invokes the Nexus Operation.
 
@@ -227,7 +227,7 @@ temporal operator namespace create --namespace my-caller-namespace
 </>
 }>
 
-## 5. Create Caller Namespace and Nexus Endpoint
+## 5. Create the caller Namespace and Nexus Endpoint
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
 The handler uses the `default` Namespace that was created when you started the dev server.
