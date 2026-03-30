@@ -70,7 +70,7 @@ class SayHelloNexusService:
 Create a file called `service.py` that defines the Nexus Service contract.
 
 Creating a Nexus Service establishes the contract between your implementation and any callers.
-It provides type safety when invoking Nexus Operations and ensures that Operation Handlers fulfill the contract.
+It provides type safety when invoking Nexus Operations and ensures that operation handlers fulfill the contract.
 
 The `@nexusrpc.service` decorator declares a service with typed operations.
 `SayHelloWorkflow` returns `str`, so the operation output type is `str`.
@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
 Update your existing `worker.py` to register the Nexus Service Handler.
 
-A Worker will only poll for and process incoming Nexus requests if the Nexus Service Handlers are registered.
+A Worker will only poll for and process incoming Nexus requests if the Nexus Service handlers are registered.
 This is the same Worker concept used for Workflows and Activities.
 
 The `nexus_service_handlers` parameter registers the handler so it can receive Nexus Operation requests.
@@ -291,7 +291,7 @@ The full request flows from the caller Workflow, through the Nexus Endpoint, to 
 
 **Run the application:**
 
-1. Start the handler worker in one terminal:
+1. Start the handler Worker in one terminal:
 
 ```bash
 source env/bin/activate
