@@ -1,0 +1,1095 @@
+/*
+ * HADemo.module.css
+ * Uses Docusaurus IFM variables for automatic light/dark mode support.
+ * Demo-specific accent colors are declared per-theme below.
+ */
+
+/* ── Per-theme accent vars ─────────────────────────────── */
+:global([data-theme='dark']) {
+  --hd-surface: #1e1e1e;
+  --hd-surface2: #252525;
+  --hd-accent-text: #d4d7ff;
+  --hd-num-badge-bg: #7F86F1;
+  --hd-border: rgba(255, 255, 255, 0.1);
+  --hd-muted: #94a3b8;
+  --hd-nav-inactive: #94a3b8;
+  --hd-nav-hover: #d4d7ff;
+  --hd-nav-active: #7F86F1;
+  --hd-progress-fill: #7F86F1;
+  --hd-purple: #a78bfa;
+  --hd-purple-bg: rgba(167, 139, 250, 0.12);
+  --hd-green: #34d399;
+  --hd-green-bg: rgba(52, 211, 153, 0.1);
+  --hd-red: #f87171;
+  --hd-red-bg: rgba(248, 113, 113, 0.1);
+  --hd-orange: #f97316;
+  --hd-orange-bg: rgba(249, 115, 22, 0.15);
+  --hd-amber: #fbbf24;
+  --hd-amber-bg: rgba(251, 191, 36, 0.1);
+  --hd-primary-bg: rgba(191, 219, 254, 0.1);
+  --hd-uv: #444CE7;
+  --hd-uv-bg: rgba(68, 76, 231, 0.18);
+  --hd-teal: #1FF1A5;
+  --hd-teal-bg: rgba(31, 241, 165, 0.15);
+  --hd-card-bg: rgba(31, 32, 63, 0.6);
+  --hd-card-border: rgba(127, 134, 241, 0.15);
+  --hd-primary-node-border: #7F86F1;
+  --hd-replica-node-border: #34d399;
+  --hd-failing-node-border: #f87171;
+}
+
+:global([data-theme='light']) {
+  --hd-surface: #ffffff;
+  --hd-surface2: #f1f5f9;
+  --hd-accent-text: #444CE7;
+  --hd-num-badge-bg: #444CE7;
+  --hd-border: rgba(0, 0, 0, 0.08);
+  --hd-muted: #64748b;
+  --hd-nav-inactive: #64748b;
+  --hd-nav-hover: #444CE7;
+  --hd-nav-active: #444CE7;
+  --hd-progress-fill: #444CE7;
+  --hd-purple: #7c3aed;
+  --hd-purple-bg: rgba(124, 58, 237, 0.08);
+  --hd-green: #059669;
+  --hd-green-bg: rgba(5, 150, 105, 0.08);
+  --hd-red: #dc2626;
+  --hd-red-bg: rgba(220, 38, 38, 0.08);
+  --hd-orange: #ea580c;
+  --hd-orange-bg: rgba(234, 88, 12, 0.1);
+  --hd-amber: #d97706;
+  --hd-amber-bg: rgba(217, 119, 6, 0.08);
+  --hd-primary-bg: rgba(29, 78, 216, 0.06);
+  --hd-uv: #3a41cc;
+  --hd-uv-bg: rgba(58, 65, 204, 0.1);
+  --hd-teal: #059669;
+  --hd-teal-bg: rgba(5, 150, 105, 0.1);
+  --hd-card-bg: #ffffff;
+  --hd-card-border: rgba(0, 0, 0, 0.09);
+  --hd-primary-node-border: #444CE7;
+  --hd-replica-node-border: #059669;
+  --hd-failing-node-border: #dc2626;
+}
+
+/* ── Shell ─────────────────────────────────────────────── */
+.shell {
+  font-family: var(--ifm-font-family-base);
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  min-height: 100vh;
+}
+
+:global([data-theme='light']) .shell {
+  background: #f4f6f9;
+}
+
+:global([data-theme='light']) .card {
+  background: #ffffff;
+}
+
+/* ── Nav ───────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  z-index: 50;
+  background: var(--ifm-background-color);
+  border-bottom: 1px solid var(--hd-border);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.navLogo {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ifm-color-primary);
+  margin-right: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--hd-nav-inactive);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--ifm-font-family-base);
+  padding: 12px 14px;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  margin-bottom: -1px;
+}
+
+.navBtn:hover {
+  color: var(--hd-nav-hover);
+}
+
+.navBtnActive {
+  color: var(--hd-nav-active);
+  border-bottom-color: var(--hd-nav-active);
+}
+
+/* ── Sections ──────────────────────────────────────────── */
+.section {
+  padding: 40px 24px 64px;
+  max-width: 960px;
+  margin: 0 auto;
+  animation: fadeUp 0.25s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Progress bar ──────────────────────────────────────── */
+.progressBar {
+  height: 3px;
+  background: var(--hd-border);
+  border-radius: 0;
+  margin-bottom: 36px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--hd-progress-fill);
+  border-radius: 0;
+  transition: width 0.4s ease;
+}
+
+/* ── Typography ────────────────────────────────────────── */
+.lead {
+  font-size: 16px;
+  color: var(--ifm-font-color-base);
+  max-width: 680px;
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.sectionHeading {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin: 32px 0 16px;
+}
+
+/* ── Status badges ─────────────────────────────────────── */
+.statusBadge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.statusBadgeGA {
+  background: var(--hd-green-bg);
+  color: var(--hd-green);
+}
+
+.statusBadgePreview {
+  background: var(--hd-amber-bg);
+  color: var(--hd-amber);
+}
+
+/* ── Cards ─────────────────────────────────────────────── */
+.card {
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+  border-radius: 0;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.cardGrid .card {
+  margin-bottom: 0;
+}
+
+/* ── Tags ──────────────────────────────────────────────── */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tagBlue {
+  background: var(--hd-primary-bg);
+  color: var(--ifm-color-primary);
+}
+
+.tagPurple {
+  background: var(--hd-purple-bg);
+  color: var(--hd-purple);
+}
+
+.tagGreen {
+  background: var(--hd-green-bg);
+  color: var(--hd-green);
+}
+
+.tagRed {
+  background: var(--hd-red-bg);
+  color: var(--hd-red);
+}
+
+.tagAmber {
+  background: var(--hd-amber-bg);
+  color: var(--hd-amber);
+}
+
+.tagOrange {
+  background: var(--hd-orange-bg);
+  color: var(--hd-orange);
+}
+
+.tagTeal {
+  background: var(--hd-teal-bg);
+  color: var(--hd-teal);
+}
+
+/* ── Buttons ───────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: var(--ifm-font-family-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn:hover {
+  opacity: 0.88;
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background: var(--hd-surface);
+  color: var(--ifm-font-color-base);
+  border: 1px solid var(--hd-border);
+}
+
+.btnSecondary:hover {
+  opacity: 1;
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.nextRow {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Overview: namespace diagram ───────────────────────── */
+.haDiagram {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  margin: 24px 0 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.haNode {
+  flex: 1;
+  min-width: 200px;
+  background: var(--hd-surface);
+  border: 2px solid var(--hd-border);
+  border-radius: 0;
+  padding: 16px;
+}
+
+.haNodePrimary {
+  border-color: var(--hd-primary-node-border);
+}
+
+.haNodeReplica {
+  border-color: var(--hd-replica-node-border);
+}
+
+.haNodeLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 0;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.haNodeLabelPrimary {
+  background: var(--hd-primary-bg);
+  color: var(--ifm-color-primary);
+}
+
+.haNodeLabelReplica {
+  background: var(--hd-green-bg);
+  color: var(--hd-green);
+}
+
+.haArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  color: var(--hd-muted);
+  min-width: 80px;
+}
+
+.haArrowLabel {
+  font-size: 11px;
+  text-align: center;
+  color: var(--hd-muted);
+  white-space: nowrap;
+}
+
+.wfBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--hd-surface2);
+  border-radius: 0;
+  margin-bottom: 8px;
+  border: 1px solid var(--hd-border);
+}
+
+.wfBlock:last-child {
+  margin-bottom: 0;
+}
+
+.wfIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.wfIconBlue {
+  background: var(--hd-primary-bg);
+  color: var(--ifm-color-primary);
+}
+
+.wfIconGreen {
+  background: var(--hd-green-bg);
+  color: var(--hd-green);
+}
+
+/* ── SLA comparison table ──────────────────────────────── */
+.slaTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.slaTable th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--hd-surface2);
+  border: 1px solid var(--hd-border);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--hd-muted);
+}
+
+.slaTable td {
+  padding: 10px 14px;
+  border: 1px solid var(--hd-border);
+  color: var(--ifm-font-color-base);
+  vertical-align: top;
+}
+
+.slaTable tr:hover td {
+  background: var(--hd-surface2);
+}
+
+.slaGreen {
+  color: var(--hd-green);
+  font-weight: 600;
+}
+
+.slaAmber {
+  color: var(--hd-amber);
+  font-weight: 600;
+}
+
+/* ── Replication type cards ────────────────────────────── */
+.rtCard {
+  display: flex;
+  gap: 0;
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+  border-radius: 0;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.rtNumCol {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20px;
+  background: var(--hd-surface2);
+  border-right: 1px solid var(--hd-border);
+}
+
+.rtNum {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--hd-num-badge-bg);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rtContent {
+  padding: 20px 24px;
+  flex: 1;
+}
+
+.rtTitle {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--ifm-font-color-base);
+}
+
+.rtRole {
+  font-size: 13px;
+  color: var(--hd-muted);
+  margin: 0 0 12px;
+}
+
+.rtCode {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  background: var(--hd-surface2);
+  border: 1px solid var(--hd-border);
+  padding: 10px 14px;
+  line-height: 1.7;
+  color: var(--ifm-font-color-base);
+  margin-top: 12px;
+}
+
+.coverageGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--hd-border);
+  margin-bottom: 32px;
+  font-size: 13px;
+}
+
+.coverageHeader {
+  padding: 10px 12px;
+  background: var(--hd-surface2);
+  border-bottom: 1px solid var(--hd-border);
+  border-right: 1px solid var(--hd-border);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--hd-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.coverageHeader:last-child {
+  border-right: none;
+}
+
+.coverageCell {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--hd-border);
+  border-right: 1px solid var(--hd-border);
+  color: var(--ifm-font-color-base);
+}
+
+.coverageCell:last-child {
+  border-right: none;
+}
+
+.coverageRow:last-child .coverageCell {
+  border-bottom: none;
+}
+
+.coverageCheck {
+  color: var(--hd-green);
+  font-weight: 700;
+}
+
+.coverageDash {
+  color: var(--hd-muted);
+}
+
+/* ── HowItWorks flow ───────────────────────────────────── */
+.runTabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--hd-border);
+  margin-bottom: 24px;
+}
+
+.runTab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--hd-nav-inactive);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--ifm-font-family-base);
+  padding: 10px 18px;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.runTab:hover {
+  color: var(--hd-nav-hover);
+}
+
+.runTabActive {
+  color: var(--hd-nav-active);
+  border-bottom-color: var(--hd-nav-active);
+  font-weight: 600;
+}
+
+.flowOuter {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.flowDiagram {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 20px;
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+}
+
+.flowNode {
+  flex: 1;
+  padding: 14px 12px;
+  border: 2px solid var(--hd-border);
+  border-radius: 0;
+  text-align: center;
+  background: var(--hd-surface2);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 120px;
+}
+
+.flowNodeActive {
+  border-color: var(--ifm-color-primary);
+  background: var(--hd-primary-bg);
+}
+
+.flowNodeTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin-bottom: 4px;
+}
+
+.flowNodeSub {
+  font-size: 11px;
+  color: var(--hd-muted);
+}
+
+.flowTrackWrap {
+  flex: 0 0 60px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+}
+
+.flowTrack {
+  height: 3px;
+  width: 100%;
+  background: var(--hd-border);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.flowTrackFill {
+  height: 100%;
+  background: var(--ifm-color-primary);
+  transition: width 0.5s ease;
+}
+
+.flowTrackFillEmpty {
+  background: transparent;
+}
+
+.statusLog {
+  height: 120px;
+  overflow-y: auto;
+  background: #0d1117;
+  border: 1px solid var(--hd-border);
+  padding: 12px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+}
+
+.logLine {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.logLine:last-child {
+  margin-bottom: 0;
+}
+
+.logTs {
+  color: #6b7280;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.logEvent {
+  flex-shrink: 0;
+  font-weight: 600;
+  padding: 0 2px;
+}
+
+.logEventInfo {
+  color: #60a5fa;
+}
+
+.logEventSuccess {
+  color: #34d399;
+}
+
+.logEventWarn {
+  color: #fbbf24;
+}
+
+.logMsg {
+  color: #d1d5db;
+}
+
+.flowControls {
+  display: flex;
+  gap: 8px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--hd-border);
+}
+
+.tlStep {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--hd-border);
+  transition: background 0.15s;
+}
+
+.tlStep:last-child {
+  border-bottom: none;
+}
+
+.tlStepDone {
+  opacity: 0.5;
+}
+
+.tlStepActive {
+  background: var(--hd-primary-bg);
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+.tlNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--hd-border);
+  color: var(--hd-muted);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tlStepDone .tlNum {
+  background: var(--hd-green);
+  color: #fff;
+}
+
+.tlStepActive .tlNum {
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+
+.tlContent {
+  flex: 1;
+}
+
+.tlTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin-bottom: 2px;
+}
+
+.tlDesc {
+  font-size: 12px;
+  color: var(--hd-muted);
+  line-height: 1.5;
+}
+
+/* ── Failover section ──────────────────────────────────── */
+.failoverCard {
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+  border-radius: 0;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.failoverGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+@media (max-width: 640px) {
+  .failoverGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.failoverMetric {
+  padding: 14px;
+  background: var(--hd-surface2);
+  border: 1px solid var(--hd-border);
+}
+
+.failoverMetricLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--hd-muted);
+  margin-bottom: 4px;
+}
+
+.failoverMetricValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+}
+
+.failoverSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 16px;
+  border: 1px solid var(--hd-border);
+}
+
+.failoverStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--hd-border);
+}
+
+.failoverStep:last-child {
+  border-bottom: none;
+}
+
+.failoverStepNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--hd-num-badge-bg);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.failoverStepText {
+  font-size: 13px;
+  color: var(--ifm-font-color-base);
+  line-height: 1.6;
+}
+
+.failoverStepNote {
+  font-size: 12px;
+  color: var(--hd-muted);
+  margin-top: 3px;
+}
+
+.triggerGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 640px) {
+  .triggerGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.triggerCard {
+  padding: 16px;
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+}
+
+.triggerCardTitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Enable It: commands ───────────────────────────────── */
+.cmdBlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #0d1117;
+  padding: 10px 14px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 13px;
+  margin-bottom: 8px;
+  line-height: 1.6;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+.cmdPrompt {
+  color: #6b7280;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.cmdText {
+  color: #d1d5db;
+  word-break: break-all;
+}
+
+.cmdOutput {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  color: var(--hd-green);
+  padding: 6px 14px 10px;
+  margin-bottom: 16px;
+}
+
+.enableSectionLabel {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--hd-muted);
+  margin: 20px 0 8px;
+}
+
+.enableNote {
+  display: flex;
+  gap: 10px;
+  background: var(--hd-amber-bg);
+  border-left: 3px solid var(--hd-amber);
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: var(--ifm-font-color-base);
+  line-height: 1.6;
+}
+
+.enableNoteIcon {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+/* ── Quiz ──────────────────────────────────────────────── */
+.quizCard {
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.quizQ {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.quizOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quizOpt {
+  text-align: left;
+  background: var(--hd-surface2);
+  border: 1px solid var(--hd-border);
+  border-radius: 0;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--ifm-font-family-base);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.quizOpt:hover:not(:disabled) {
+  border-color: var(--ifm-color-primary);
+  background: var(--hd-primary-bg);
+}
+
+.quizOpt:disabled {
+  cursor: default;
+}
+
+.quizOptCorrect {
+  border-color: var(--hd-green) !important;
+  background: var(--hd-green-bg) !important;
+  color: var(--hd-green) !important;
+  font-weight: 600;
+}
+
+.quizOptWrong {
+  border-color: var(--hd-red) !important;
+  background: var(--hd-red-bg) !important;
+  color: var(--hd-red) !important;
+}
+
+.quizFeedback {
+  margin-top: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  border-left: 3px solid transparent;
+}
+
+.quizFeedbackCorrect {
+  background: var(--hd-green-bg);
+  border-left-color: var(--hd-green);
+  color: var(--ifm-font-color-base);
+}
+
+.quizFeedbackWrong {
+  background: var(--hd-red-bg);
+  border-left-color: var(--hd-red);
+  color: var(--ifm-font-color-base);
+}
+
+.scoreCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background: var(--hd-surface);
+  border: 1px solid var(--hd-border);
+  margin-top: 24px;
+}
+
+.scoreText {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Resource links ────────────────────────────────────── */
+.resourceLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ifm-color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.resourceLink:hover {
+  border-bottom-color: var(--ifm-color-primary);
+  text-decoration: none;
+}
