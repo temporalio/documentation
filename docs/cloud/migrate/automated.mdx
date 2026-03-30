@@ -118,8 +118,8 @@ temporal operator namespace describe -n <namespace>
 
 ### Prepare mTLS certificates
 
-TLS is used to secure the communications channel for migration. Generate new certificates following the process outlined
-[here](/cloud/certificates#issue-certificates). The certificates will be used exclusively for the S2S Proxy.
+mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Generate new certificates following the process outlined
+[here](/cloud/certificates#issue-certificates). You will need to provide these certificates as part of your support request.
 
 
 ### Report collected data
@@ -185,7 +185,7 @@ Use the following procedure to deploy the proxy:
 1. Obtain the latest Docker image from the
    [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
 2. Gather the mTLS certs generated in the previous step.
-3. Deploy 1 replica of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
+3. Deploy 3 replicas of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
    [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
    See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
    as a reference. Note that it is possible to deploy more than 1 replica. If more than 1 replica is deployed, you must
