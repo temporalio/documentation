@@ -22,10 +22,10 @@ import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/element
 
 Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
 
-:::info WHAT IS NEXUS?
+:::info NEW TO NEXUS?
 
-[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
-Learn more in the [Nexus encyclopedia](/nexus).
+This page will help you get a working sample running in Java.
+To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus) and to learn more about Nexus features, click [here](/nexus).
 
 :::
 
@@ -64,7 +64,7 @@ public interface SayHelloNexusService {
 </>
 }>
 
-## Define the Nexus Service contract
+## 1. Define the Nexus Service
 
 Create a file called `SayHelloNexusService.java` that defines the Nexus Service contract.
 
@@ -121,7 +121,7 @@ public class SayHelloNexusServiceImpl {
 </>
 }>
 
-## Implement the Nexus Operation Handler
+## 2. Implement the Nexus Operation Handler
 
 Create a file called `SayHelloNexusServiceImpl.java` that implements the Nexus Operation handler.
 
@@ -168,7 +168,7 @@ public class SayHelloWorker {
 </>
 }>
 
-## Register Nexus Service Handler in a Worker
+## 3. Register Nexus Service Handler in a Worker
 
 Update your existing `SayHelloWorker.java` to register the Nexus Service Handler.
 
@@ -229,7 +229,7 @@ public class NexusCallerWorkflowImpl implements NexusCallerWorkflow {
 </>
 }>
 
-## Caller Workflow
+## 4. Develop the Caller Workflow
 
 Create two files — `NexusCallerWorkflow.java` and `NexusCallerWorkflowImpl.java` — that define a Workflow which invokes the Nexus Operation.
 
@@ -258,7 +258,7 @@ temporal operator namespace create --namespace my-caller-namespace
 </>
 }>
 
-## Create a Caller Namespace and Nexus Endpoint
+## 5. Create a Caller Namespace and Nexus Endpoint
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
 The handler uses the `default` Namespace that was created when you started the dev server.
@@ -335,7 +335,7 @@ public class NexusCallerStarter {
 </>
 }>
 
-## Run and Verify
+## 6. Run and Verify
 
 Create `NexusCallerStarter.java` to start the caller Worker and execute the Workflow.
 
