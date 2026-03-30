@@ -67,7 +67,7 @@ func SampleWorkflow(ctx workflow.Context) error {
 
 ## Use Selectors with Futures
 
-You usually add `Future`s after `Activities`:
+You usually add `Futures` after `Activities`:
 
 ```go
 // API Example: defer code execution until after an activity is done
@@ -77,20 +77,21 @@ selector.AddFuture(work, func(f workflow.Future) {
 })
 ```
 
-`selector.Select(ctx)` is the primary mechanism which blocks on and executes `Future` work.
-It is intentionally flexible; you may call it conditionally or multiple times:
+Calling `ExecuteActivity` by itself doesn't result in actual Activity execution. It results in a command that gets batched with others when there's a yield point in the Workflow definition. Your `Futures` won't run until you call `selector.Select(ctx)`. So no calls to `ExecuteActivity` should result in commands being sent to the server until `selector.Select` is called.
+
+A call to `selector.Select(ctx)` doesn't actually execute a `Future`, but it _requests_ execution for a `Future`. So this is a point where the SDK will communicate the command to execute the Activity to the server.
 
 ```go
-	// API Example: blocking conditionally
+  // API Example: blocking conditionally
   if somecondition != nil {
-		selector.Select(ctx)
+    selector.Select(ctx)
   }
 
-	// API Example: popping off all remaining Futures
+  // API Example: popping off all remaining Futures
   for i := 0; i < len(someArray); i++ {
-		selector.Select(ctx) // this will wait for one branch
-		// you can interrupt execution here
-	}
+    selector.Select(ctx) // this will wait for one branch
+    // you can interrupt execution here
+  }
 ```
 
 A Future matches only once per Selector instance even if Select is called multiple times.
