@@ -213,7 +213,15 @@ module.exports = {
             'develop/python/schedules',
             'develop/python/converters-and-encryption',
             'develop/python/timers',
-            'develop/python/nexus',
+            {
+              type: 'category',
+              label: 'Temporal Nexus',
+              collapsed: true,
+              items: [
+                'develop/python/nexus/quickstart',
+                'develop/python/nexus/feature-guide',
+              ],
+            },
             'develop/python/child-workflows',
             'develop/python/continue-as-new',
             'develop/python/interceptors',
