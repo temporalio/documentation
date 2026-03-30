@@ -27,55 +27,51 @@ When you enable High Availability features, Temporal deploys your primary and it
 
 Even without High Availability features, Temporal Cloud provides robust reliability and a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)) guarantee against service errors.
 
-Each standard Temporal Namespace uses replication across three availability zones to ensure high availability.
-An availability zone is a part of the system where tasks or operations are handled and executed.
-This design helps manage workloads and ensure tasks are completed while improving resource use and reducing delays.
+Each standard Temporal Namespace uses replication across three [Availability Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (AZs) to ensure high availability.
+An Availability Zone is akin to an isolated datacenter managed by a cloud hyperscaler, with independent power, networking, and cooling infrastructure.
 
-Replication makes sure that any changes to Workflow state or History are saved in all three zones _before_ the Temporal Service acknowledges a change back to the Client.
-As a result, your standard Temporal Namespace stays operational even if one of its three zones becomes unavailable.
-This provides the basis of our 99.9% service level.
+Replication across AZs makes sure that any changes to Workflow state or History are saved in all three AZs _before_ the Temporal Service acknowledges a change back to the Client.
+As a result, your standard Temporal Namespace stays operational even if one of its three AZs becomes unavailable.
+This provides the basis of the 99.9% service level agreement for Temporal Cloud Namespaces.
+
+However some critical use cases--such as customer-facing applications--require even better availability. That is where Temporal Cloud's High Availabilty features come in.
 
 ## High Availability features {#high-availability-features}
 
-:::tip Support, stability, and dependency info
-
-Multi-region Replication and Multi-cloud Replication are in [General Availability](/evaluate/development-production-features/release-stages#general-availability).
-
-Same-region Replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
-
-High Availability features provide three types of replication:
+High Availability features extend Temporal Cloud's replication offering across even more disparate isolation domains:
 
 | **Deployment**                          | **Description**                                            |
 | --------------------------------------- | ---------------------------------------------------------- |
-| **Same&#8209;region&nbsp;Replication**  | Isolation domains are located within the same region.   |
-| **Multi&#8209;region&nbsp;Replication** | Isolation domains are located in separate regions.         |
-| **Multi&#8209;cloud&nbsp;Replication**  | Isolation domains are located in separate cloud providers. |
+| **Multi&#8209;region&nbsp;Replication** | Namespace is replicated across two cloud regions           |
+| **Multi&#8209;cloud&nbsp;Replication**  | Namespace is replicated across different cloud providers   |
 
-For Multi-region and Multi-cloud Replication, the replica region must be on the same continent as the active region.
-Not every region supports every replication type.
-See [Regions](/cloud/regions) for the supported replica regions for each active region.
+### Key features
 
-### Same-region Replication
+- **Real-time replication** — Temporal replicates your Namespace across distant isolation domains with no performance impact to your Workers or Workflows.
+- **Automatic failover with 20-minute RTO** — Temporal manages failover with a 20-minute [RTO](/cloud/rpo-rto). You can also [trigger failover](/cloud/high-availability/failovers) manually at any time, for example for testing.
+- **Transparent DNS routing** — On failover, DNS reroutes your [Namespace Endpoint](/cloud/namespaces#access-namespaces) to the active region. Requests that reach the replica are forwarded to the active region automatically.
+- **Sub-1-minute RPO** — In a failover during an outage, the [Recovery Point Objective](/cloud/rpo-rto) is under one minute.
+- **Real-time lag monitoring** — Monitor your Namespace's replication lag in real time to understand your current RPO.
+- **Conflict resolution** — If the two regions are not fully in sync at the time of failover, Temporal's conflict resolution process reconciles discrepancies and ensures data integrity.
 
-Temporal replicates Namespaces across isolation domains within one region.
-This option is a good fit when your application is built for one region and you prefer to failover within that region.
-This provides a reliable failover mechanism while maintaining deployment simplicity.
+:::info Region availability
 
-### Multi-region Replication
+You can usually choose your replica region, but the replica must be on the same continent as the primary region.
+This means that a few Temporal Cloud regions do not yet support Multi-region Replication and/or Multi-cloud Replication.
+See [Regions](/cloud/regions) for a full list of supported replica regions.
 
-Temporal replicates Namespaces across regions, making sure Workflows and data are available even if a region fails.
-Asynchronous replication means changes aren’t immediately reflected in other regions but will sync over time, ensuring data integrity.
-This setup allows failovers between replicas without needing immediate consistency across regions.
-Replication across different regions enhances resilience and reliability.
+You can't enable both Multi-region Replication and Multi-cloud Replciation on the same Namepsace at the same time.
+
+:::
 
 ### Multi-cloud Replication
 
-Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in an entirely different cloud provider.
-If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
-Replicated data is securely encrypted and transmitted across the public internet between cloud providers.
-Internet connectivity allows workers in one cloud to fail over to a replica in a different cloud.
+Multi-cloud Replication spreads a Namespace across entirely different cloud providers, keeping your Namespace running even during a cloud-wide outage.
+If a provider outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
+
+Replicated data is encrypted and transmitted across the public internet between cloud providers.
+This internet connectivity also allows Workers in one cloud to reach the replica in a different cloud during failover.
+If you use [private connectivity](/cloud/high-availability/ha-connectivity), additional architecture work may be required to ensure your Workers can reach the replica region.
 
 :::info
 
@@ -107,3 +103,9 @@ High Availability Namespaces are a great solution for Workloads where an outage 
 - Problems stemming from policy/legal requirements that demand high availability
 
 These are often major concerns for financial services, e-commerce, gaming, global SaaS platforms, bookings & reservations, delivery & shipping, and order management.
+
+### Same-region Replication (Pre-release)
+
+In selected regions, you can add a replica to a Namespace in the same region.
+Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
+This is currently in [Pre-release](/evaluate/development-production-features/release-stages) in selected regions.
