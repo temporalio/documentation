@@ -38,8 +38,8 @@ These are not exhaustive lists; refer to the linked API docs for each category.
 
 :::warning Workflow interceptors and replay
 
-Workflow inbound and outbound interceptor methods also execute during [replay](/develop/python/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
-See [Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements) for details.
+Workflow inbound and outbound interceptor methods also execute during [replay](/develop/python/best-practices/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+See [Develop Workflow logic](/develop/python/workflows/basics#workflow-logic-requirements) for details.
 
 If you want to write generic code shared by all inbound Workflow call handlers but want to skip read-only operations, check `workflow.unsafe.is_read_only()`.
 

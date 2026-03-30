@@ -160,7 +160,7 @@ export async function myWorkflow(name: string): Promise<string> {
 }
 ```
 
-For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/observability#logging).
+For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/workers/observability#logging).
 
 #### Random numbers and UUIDs
 
@@ -195,7 +195,7 @@ for (let x = 0; x < 10; ++x) {
 
 #### Detecting replay (advanced)
 
-Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/typescript/interceptors).
+Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/typescript/workers/interceptors).
 :::caution
 
 Never use this to affect Workflow business logic — branching on replay status breaks determinism.

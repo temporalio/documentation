@@ -1,0 +1,91 @@
+---
+id: timeouts
+title: Workflow Timeouts - Python SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with Temporal Python SDK - Set Workflow Timeouts and Retry Policies efficiently.
+toc_max_heading_level: 4
+keywords:
+  - Python
+  - failure detection
+  - timeouts
+tags:
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - Python SDK
+  - Temporal SDKs
+---
+
+## Workflow timeouts {#workflow-timeouts}
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient.
+Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes.
+If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
+
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
+Set the timeout to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+
+Available timeouts are:
+
+- `execution_timeout`
+- `run_timeout`
+- `task_timeout`
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your timeout argument",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        # Set Workflow Timeout duration
+        execution_timeout=timedelta(seconds=2),
+        # run_timeout=timedelta(seconds=2),
+        # task_timeout=timedelta(seconds=2),
+    )
+```
+
+## Workflow retries {#workflow-retries}
+
+**How to set a Workflow Retry Policy using the Temporal Python SDK**
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+    handle = await client.execute_workflow(
+        YourWorkflow.run,
+        "your retry policy argument",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+    )
+```
