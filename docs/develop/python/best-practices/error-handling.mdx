@@ -3,7 +3,7 @@ id: error-handling
 title: Error handling - Python SDK
 sidebar_label: Error handling
 description: Learn how to handle errors in Temporal Python applications with retry policies, idempotent Activities, and recovery patterns.
-slug: /develop/python/error-handling
+slug: /develop/python/best-practices/error-handling
 toc_max_heading_level: 2
 keywords:
   - error handling
@@ -99,8 +99,13 @@ You might split this into three separate Activities so only the failed step retr
 
 **How to raise exceptions from Activities using the Temporal Python SDK**
 
-Use `ApplicationError` to communicate application-specific failures from Activities.
-Temporal converts any Python exception raised in an Activity to an `ApplicationError`, but raising it explicitly gives you more control.
+Use `ApplicationError` to communicate application-specific failures from Activities. Raising it explicitly gives you more control.
+
+:::note
+
+*Any* other exceptions that are raised from your Python code in a Temporal Activity will be converted to an `ApplicationError` internally. This way, an error's type, severity, and any additional details can be sent to the Temporal Service, indexed by the Web UI, and even serialized across language boundaries.
+
+:::
 
 ```python
 from temporalio import activity
@@ -132,7 +137,7 @@ When an Activity fails, Temporal wraps the exception in an `ActivityError` befor
 The `ActivityError` provides context including:
 - Activity type that failed
 - Number of retry attempts
-- Original cause (the `ApplicationError` you raised, or `TimeoutError`, `CancelledError`, etc.)
+- Original cause (the [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html) you raised, or `TimeoutError`, [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html), etc.)
 
 ## Raise exceptions from Workflows {#raise-exceptions-from-workflows}
 
@@ -167,6 +172,10 @@ class PizzaDeliveryWorkflow:
 
         # Continue with order...
 ```
+
+One reason to use the Temporal `ApplicationError` class is because it allows you to set an additional `non_retryable` parameter.
+This way, you can decide whether an error should not be retried automatically by Temporal.
+This can be useful for deliberately failing a Workflow due to bad input data, rather than waiting for a timeout to elapse. You can alternately specify a list of errors that are non-retryable in your Activity [Retry Policy](/develop/python/activities/timeouts#activity-retries).
 
 This puts the Workflow Execution in "Failed" state with no automatic retries.
 Use this for permanent failures where retrying won't help—like the customer being too far away.

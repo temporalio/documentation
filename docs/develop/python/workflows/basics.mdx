@@ -1,0 +1,180 @@
+---
+id: basics
+title: Workflow Basics - Python SDK
+sidebar_label: Workflow basics
+description: This section explains Workflow Basics with the Python SDK
+toc_max_heading_level: 4
+keywords:
+  - Python SDK
+tags:
+  - Python SDK
+  - Temporal SDKs
+---
+
+## Develop a basic Workflow {#develop-workflows}
+
+**How to develop a basic Workflow using the Temporal Python SDK.**
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a
+[Workflow Definition](/workflow-definition).
+
+In the Temporal Python SDK programming model, Workflows are defined as classes.
+
+Specify the `@workflow.defn` decorator on the Workflow class to identify a Workflow.
+
+Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method
+defined on the same class as `@workflow.defn`. Run methods have positional parameters.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+from temporalio import workflow
+# ...
+# ...
+@workflow.defn(name="YourWorkflow")
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
+```
+
+### Define Workflow parameters {#workflow-parameters}
+
+**How to define Workflow parameters using the Temporal Python SDK.**
+
+Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
+parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
+Workflow Definition parameters must be serializable.
+
+Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`. These can be any
+data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when
+properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single
+`dataclass` parameter containing all input fields.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+from dataclasses import dataclass
+# ...
+# ...
+@dataclass
+class YourParams:
+    greeting: str
+    name: str
+```
+
+### Define Workflow return parameters {#workflow-return-values}
+
+**How to define Workflow return parameters using the Temporal Python SDK.**
+
+Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly
+idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow
+Execution will only ever receive one of either the result or the error.
+
+To return a value of the Workflow, use `return` to return an object.
+
+To return the results of a Workflow Execution, use either `start_workflow()` or `execute_workflow()` asynchronous
+methods.
+
+For performance and behavior reasons, users should pass through all modules, including Activities, Nexus services, and
+third-party plugins, whose calls will be deterministic using
+[`imports_passed_through`](https://python.temporal.io/temporalio.workflow.unsafe.html#imports_passed_through) or at
+Worker creation time by customizing the runner's restrictions with
+[`with_passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#with_passthrough_modules).
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+from temporalio import workflow
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
+# ...
+@workflow.defn(name="YourWorkflow")
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
+```
+
+### Customize your Workflow Type {#workflow-type}
+
+**How to customize your Workflow Type using the Temporal Python SDK.**
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+You can customize the Workflow name with a custom name in the decorator argument. For example,
+`@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the
+unqualified class name.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+from temporalio import workflow
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
+# ...
+@workflow.defn(name="YourWorkflow")
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
+```
+
+### Develop Workflow logic {#workflow-logic-requirements}
+
+**How to develop Workflow logic using the Temporal Python SDK.**
+
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a
+set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+Workflow code must be deterministic. This means:
+
+- no threading
+- no randomness
+- no external calls to processes
+- no network I/O
+- no global state mutation
+- no system date or time
+
+All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must
+run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be
+_deterministic_.

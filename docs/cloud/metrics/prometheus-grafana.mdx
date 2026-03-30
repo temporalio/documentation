@@ -43,7 +43,7 @@ For setting up SDK metrics (emitted by your Workers and Clients), see
 The process for setting up Temporal Cloud PromQL to work with Grafana includes the following steps:
 
 1. [Generate a Prometheus HTTP API endpoint](/cloud/metrics/general-setup) on Temporal Cloud using valid certificates.
-2. Run Grafana and [set up a data source for Temporal Cloud metrics](#grafana-data-source-configuration) in Grafana.
+2. Run Grafana and [set up a data source for Temporal Cloud metrics](#prometheus-configuration) in Grafana.
 3. [Create dashboards](#grafana-dashboards-setup) in Grafana to view Temporal Cloud metrics. Temporal provides
    [sample community-driven Grafana dashboards](https://github.com/temporalio/dashboards) for Cloud metrics that you can
    use and customize according to your requirements.
@@ -57,7 +57,7 @@ If you're following through with the examples provided here, ensure that you hav
   - [Go](/develop/go/temporal-client#connect-to-temporal-cloud)
   - [Java](/develop/java/temporal-client#connect-to-temporal-cloud)
   - [PHP](/develop/php/temporal-client#connect-to-a-dev-cluster)
-  - [Python](/develop/python/temporal-client#connect-to-temporal-cloud)
+  - [Python](/develop/python/client/temporal-client#connect-to-temporal-cloud)
   - [TypeScript](/develop/typescript/client/temporal-client#connect-to-temporal-cloud)
   - [.NET](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
 
@@ -90,7 +90,7 @@ The following steps describe how to set up Observability on Temporal Cloud to ge
 6. Copy the HTTP API endpoint that is generated (it is shown in the UI).
 
 This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana. See
-[Grafana data source configuration](#grafana-data-source-configuration) for details.
+[Grafana data source configuration](#prometheus-configuration) for details.
 
 ## SDK metrics setup
 
@@ -101,7 +101,7 @@ Each language development guide has details on how to set this up.
 - [Go SDK](/develop/go/observability#metrics)
 - [Java SDK](/develop/java/observability#metrics)
 - [TypeScript SDK](/develop/typescript/workers/observability#metrics)
-- [Python](/develop/python/observability#metrics)
+- [Python](/develop/python/workers/observability#metrics)
 - [.NET](/develop/dotnet/observability#metrics)
 
 The following example uses the Java SDK to set the Prometheus registry and Micrometer stats reporter, set the scope, and
