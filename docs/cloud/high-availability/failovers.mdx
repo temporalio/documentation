@@ -278,6 +278,10 @@ Both methods return a [`FailoverNamespaceRegionResponse`](https://buf.build/temp
 
 </Tabs>
 
+Once the failover async operation returns successfully, the Namespace will be failed over.
+Temporal manages retries for the failover workflow.
+In the rare event that an internal error prevents the failover from completing, the Temporal on-call team is automatically paged to intervene and force the failover to completion.
+
 Temporal fails over the primary to the replica.
 When you're ready to fail back, follow these failover instructions to move the primary back to the original.
 
@@ -381,7 +385,7 @@ Failover testing (also known as "<ToolTipTerm term="trigger testing" />)" can:
   Manual testing confirms the failover mechanism works as expected, so your system handles incidents effectively.
 
 - **Assess replication lag**:
-  In multi-region deployment, monitoring [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) between regions is crucial.
+  In multi-region deployment, monitoring [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) between regions is crucial.
   Check the lag before initiating a failover to avoid rolling back Workflow progress.
   This is less important when using isolation domains as failover is usually instantaneous.
   Manual testing helps you practice this critical step and understand its impact.
