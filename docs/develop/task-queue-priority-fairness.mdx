@@ -307,6 +307,11 @@ haven't dispatched yet.
   alt="High-level of how fairness works"
 />
 
+Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key.
+All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0.
+This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others.
+Unkeyed Tasks do not bypass Fairness—they compete as one group alongside all explicitly keyed Tasks.
+
 ### Using Fairness and Priority together
 
 When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
