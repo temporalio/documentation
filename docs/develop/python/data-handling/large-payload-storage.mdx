@@ -11,46 +11,72 @@ tags:
 description: Offload large payloads to external storage using the claim check pattern in the Python SDK.
 ---
 
-The Temporal Service enforces a 2 MB per payload limit. When your Workflows or Activities handle data larger than the
-limit, you can offload payloads to external storage, such as S3, and pass a small reference token through the Event
-History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern). This page
-shows you how to set up External Storage with AWS S3 and how to implement a custom storage driver.
+:::info Release, stability, and dependency info
 
-For more information about how External Storage fits in the data pipeline, see [External Storage](/external-storage).
+External Storage is in [Pre-Release](/evaluate/development-production-features/release-stages#pre-release). APIs and
+configuration may change before the stable release.
 
-## Store and retrieve large payloads with AWS S3
+:::
+
+The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted
+deployments. When your Workflows or Activities handle data larger than the limit, you can offload payloads to external
+storage, such as Amazon S3, and pass a small reference token through the Event History instead. This page shows you how
+to set up External Storage with Amazon S3 and how to implement a custom storage driver.
+
+Your external storage system's lifecycle policy must ensure that payloads remain available for the entire lifetime of
+the Workflow plus its retention window. Refer to [lifecycle management](/external-storage#lifecycle) for more
+information.
+
+For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
+
+## Store and retrieve large payloads with Amazon S3
 
 The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
-1. Import the classes `S3StorageDriverClient` and `S3StorageDriver` and create an instance of each. When you create the
-   driver instance, pass the `client` argument to the constructor as well as the name of your S3 bucket:
+### Prerequisites
+
+- An Amazon S3 bucket that you have write access to. Refer to [lifecycle management](/external-storage#lifecycle) for
+  the required lifecycle policy.
+- The `aioboto3` library is installed and available.
+
+### Procedure
+
+1. Create an S3 client using `aioboto3` and pass it to the `S3StorageDriver`. The driver uses your standard AWS
+   credentials from the environment (environment variables, IAM role, or AWS config file):
 
    ```python
-   from temporalio.contrib.aws.s3driver import S3StorageDriver, S3StorageDriverClient
+   import aioboto3
+   from temporalio.contrib.aws.s3driver import S3StorageDriver
+   from temporalio.contrib.aws.s3driver.aioboto3 import new_aioboto3_client
 
-   driver_client = S3StorageDriverClient()
-   driver = S3StorageDriver(client=driver_client, bucket="my-temporal-payloads")
+   session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
+   async with session.client("s3") as s3_client:
+       driver = S3StorageDriver(
+           client=new_aioboto3_client(s3_client),
+           bucket="my-temporal-payloads",
+       )
    ```
-
-   The driver generates S3 keys using a SHA-256 hash of the payload content. Identical payloads produce the same key, so
-   the driver skips the upload if the object already exists. The driver includes the namespace and Workflow ID in the S3
-   key to group related payloads in your bucket. For example: `v0/ns/my-namespace/wfi/my-workflow/d/sha256/{hash}`.
 
 2. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
    <!--SNIPSTART python-s3-external-storage-setup-->
 
    ```python
-   from temporalio.converter import DataConverter, ExternalStorage
+   import dataclasses
+   import temporalio.converter
+   from temporalio.converter import ExternalStorage
 
-   converter = DataConverter(
+   data_converter = dataclasses.replace(
+       temporalio.converter.default(),
        external_storage=ExternalStorage(
            drivers=[driver],
-           payload_size_threshold=256 * 1024,  # 256 KiB (default)
+           payload_size_threshold=0,
        ),
    )
 
-   client = await Client.connect("localhost:7233", data_converter=converter)
+   connect_config = ClientConfig.load_client_connect_config()
+
+   client = await Client.connect(**connect_config, data_converter=data_converter)
 
    worker = Worker(
        client,
@@ -61,6 +87,9 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    ```
 
    <!--SNIPEND-->
+
+   By default, payloads larger than approximately 200 KiB are offloaded to external storage. You can adjust this with
+   the `payload_size_threshold` parameter, or set it to `None` to externalize all payloads regardless of size.
 
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
    business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
@@ -90,8 +119,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 ## Implement a custom storage driver
 
-If you need a storage system other than S3, you can implement your own storage driver. The following example shows a
-complete custom driver implementation that uses local disk as the backing store:
+If you need a storage backend other than the built-in drivers, you can implement your own storage driver. The following
+example shows a complete custom driver implementation that uses local disk as the backing store:
 
 <!--SNIPSTART python-custom-storage-driver-->
 
@@ -170,13 +199,6 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
 In `store()`, serialize each payload to bytes with `payload.SerializeToString()`, upload the bytes to your storage
 system, and return a `StorageDriverClaim` with enough information to find the payload later.
 
-:::tip
-
-For simplicity, the code example uses a UUID for the key. In production systems, consider using a content-addressable
-key like a SHA-256 hash, which can help you deduplicate payloads and reduce storage costs.
-
-:::
-
 ### Retrieve payloads
 
 In `retrieve()`, download the bytes using the claim data, then reconstruct the payload with
@@ -192,14 +214,9 @@ from temporalio.converter import DataConverter, ExternalStorage
 converter = DataConverter(
     external_storage=ExternalStorage(
         drivers=[MyStorageDriver()],
-        payload_size_threshold=256 * 1024,  # 256 KiB (default)
     ),
 )
 ```
-
-The `payload_size_threshold` controls which payloads get offloaded. Payloads smaller than this value stay inline in the
-Event History. If you don't provide a value, the default value is 256 KiB. Set it to `None` to externalize all payloads
-regardless of size.
 
 ## Use multiple storage drivers
 
@@ -215,7 +232,6 @@ ExternalStorage(
     driver_selector=lambda context, payload: (
         cold_driver if payload.ByteSize() > 1_000_000 else hot_driver
     ),
-    payload_size_threshold=100 * 1024,
 )
 ```
 

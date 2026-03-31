@@ -21,32 +21,69 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-The Temporal Service enforces a 2 MB per-payload limit. When your Workflows or Activities handle data larger than this
-limit, you can use External Storage to offload payloads to an external store (such as S3) and pass a small reference
-token through the Event History instead. This is called the
-[claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+:::info Release, stability, and dependency info
 
-For SDK-specific implementation details, see:
+External Storage is in [Pre-Release](/evaluate/development-production-features/release-stages#pre-release). APIs and
+configuration may change before the stable release.
+
+:::
+
+External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
+the Event History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+
+For SDK-specific setup instructions, see:
 
 - [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
 
-## How External Storage fits in the data pipeline {#data-pipeline}
+## Why use External Storage
 
-External Storage sits at the end of the data pipeline, after both the [Payload Converter](/payload-converter) and the
-[Payload Codec](/payload-codec):
+The Temporal Service enforces a maximum per-payload size. This limit is 2 MB on Temporal Cloud and is
+[configurable on self-hosted deployments](/self-hosted-guide/defaults). Payloads that exceed this limit fail the
+operation. Without External Storage, you must restructure your code to work around the limit, for example by splitting
+data across multiple Workflows.
+
+Even when individual payloads stay under the hard limit, payload data accumulates in Event History. Every Activity input
+and output is persisted, so Workflows that pass data through many Activities can see history size grow quickly. Large
+histories degrade Workflow Task latency and may force you to use Continue-as-New earlier than expected.
+
+External Storage addresses several common scenarios:
+
+- **Data processing pipelines.** Workflows that process documents, images, or other large blobs can exceed the
+  per-payload limit.
+- **AI agent conversations.** Long conversation histories grow with each turn, and the cumulative size can degrade
+  Workflow performance.
+- **Spiky data sizes.** Some Workflows handle data that is usually small but occasionally large. External Storage
+  handles these spikes transparently, offloading only the payloads that exceed the size threshold.
+- **Migration to Temporal Cloud.** Self-hosted deployments may have higher configured payload limits. External Storage
+  lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
+- **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
+  payload data in infrastructure they control. Set the offload threshold to zero to externalize all payloads regardless
+  of size.
+
+## How External Storage fits in the data conversion pipeline {#data-pipeline}
+
+During [Data Conversion](/dataconversion), External Storage sits at the end of the pipeline, after both the
+[Payload Converter](/payload-converter) and the [Payload Codec](/payload-codec):
 
 <CaptionedImage
   src="/diagrams/data-converter-flow-with-external-storage.svg"
   title="The Flow of Data through a Data Converter"
 />
 
-When a Temporal Client sends a payload that exceeds a configurable size threshold, the storage driver uploads it to your
-external store and replaces it with a lightweight reference. Payloads below the threshold stay inline in the Event
-History. When the Temporal Service dispatches Tasks to the Worker, the Worker retrieves the reference payloads from
-external storage and loads them into memory to execute the Task.
+When a Temporal Client sends a payload that exceeds the configured size threshold, the storage driver uploads the
+payload to your external store and replaces it with a lightweight reference. Payloads below the threshold stay inline in
+the Event History.
+
+When the Temporal Service dispatches Tasks to the Worker, the process reverses. The Worker downloads the referenced
+payloads from external storage in parallel, then passes them back through the Payload Codec and Payload Converter to
+reconstruct the original data.
+
+The SDK parallelizes uploads and downloads to minimize latency. When a single Workflow Task involves multiple payloads
+that exceed the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
+external storage operations to scale well even when a Task carries many large payloads.
 
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
-before they're uploaded to your store.
+before upload to your store.
 
 ## Storage drivers
 
@@ -56,6 +93,11 @@ operations:
 - **Store**. Upload payloads and return a claim, which is a set of key-value pairs the driver uses to locate the payload
   later.
 - **Retrieve**. Download payloads using the claims that `store` produced.
+
+Temporal SDKs include built-in drivers for common storage systems like Amazon S3. If you need a different storage
+backend, you can implement your own driver. For an example, see
+[Implement a custom storage driver](/develop/python/data-handling/large-payload-storage#implement-a-custom-storage-driver)
+in the Python SDK guide.
 
 You can configure multiple storage drivers and use a selector function to route payloads to different drivers based on
 size, type, or other criteria such as hot and cold storage tiers.
@@ -67,4 +109,26 @@ Configure External Storage on the Data Converter. The key settings are:
 - **Drivers**. One or more storage driver implementations.
 - **Size threshold**. The driver offloads payloads larger than this value, which typically defaults to 256 KiB. Turn off
   the threshold to externalize all payloads regardless of size.
-- **Driver selector**. When using multiple drivers, a function that chooses which driver handles each payload.
+- **Driver selector**. When using multiple drivers, you must provide a function that chooses which driver handles each
+  payload.
+
+## Lifecycle management for external storage {#lifecycle}
+
+Temporal does not automatically delete payloads from your external store. Payloads can also be orphaned if a request
+fails after the upload completes. We recommend you configure a lifecycle policy that both ensures these payloads are
+eventually cleaned up and provides a grace period for debugging and recovery.
+
+Your TTL must be long enough that payloads remain available for the entire lifetime of the Workflow plus its retention
+window:
+
+```
+TTL > Maximum Workflow Run Timeout + Namespace Retention Period
+```
+
+For example, if your longest-running Workflow has a Run Timeout of 14 days and your Namespace retention period is 30
+days, configure your lifecycle rule to expire objects after at least 44 days.
+
+If your Workflows run indefinitely (no Run Timeout), there is no finite TTL that guarantees safety. Set a generous TTL
+based on your operational needs. Use [Continue-as-New](/workflow-execution/continue-as-new) for Workflows that need to
+run longer. The new run uploads fresh payloads, and the old run's payloads only need to survive through its retention
+period.
