@@ -14,7 +14,8 @@ description: Offload large payloads to external storage using the claim check pa
 :::info Release, stability, and dependency info
 
 External Storage is in [Pre-Release](/evaluate/development-production-features/release-stages#pre-release). APIs and
-configuration may change before the stable release.
+configuration may change before the stable release. Join the
+[#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 
 :::
 
@@ -119,8 +120,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 ## Implement a custom storage driver
 
-If you need a storage backend other than the built-in drivers, you can implement your own storage driver. The following
-example shows a complete custom driver implementation that uses local disk as the backing store:
+If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver. The
+following example shows a complete custom driver implementation that uses local disk as the backing store:
 
 <!--SNIPSTART python-custom-storage-driver-->
 
