@@ -305,7 +305,15 @@ module.exports = {
             'develop/dotnet/schedules',
             'develop/dotnet/converters-and-encryption',
             'develop/dotnet/durable-timers',
-            'develop/dotnet/nexus',
+            {
+              type: 'category',
+              label: 'Temporal Nexus',
+              collapsed: true,
+              items: [
+                'develop/dotnet/nexus/quickstart',
+                'develop/dotnet/nexus/feature-guide',
+              ],
+            },
             'develop/dotnet/child-workflows',
             'develop/dotnet/continue-as-new',
           ],

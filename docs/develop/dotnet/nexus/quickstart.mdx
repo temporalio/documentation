@@ -1,0 +1,299 @@
+---
+id: quickstart
+title: Nexus .NET Quickstart
+sidebar_label: Quickstart
+description: Build a Nexus Service that wraps an existing Temporal Workflow using the .NET SDK
+keywords:
+  - nexus
+  - dotnet
+  - quickstart
+  - getting started
+tags:
+  - Nexus
+  - .NET SDK
+  - setup
+  - getting started
+hide_table_of_contents: true
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+
+# Nexus .NET Quickstart
+
+[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
+
+:::info NEW TO NEXUS?
+
+This page will help you get a working sample running in .NET.
+
+To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus) and to learn more about Nexus features, click [here](/nexus).
+
+:::
+
+**Prerequisites:** Complete the [.NET SDK Quickstart](/develop/dotnet/set-up-your-local-dotnet) first.
+You should have `SayHelloWorkflow`, `MyActivities`, and a `Worker` project from that guide.
+
+## What you'll build
+
+You have `SayHelloWorkflow` running in the `default` Namespace.
+
+By the end of this guide:
+
+1. A Nexus Service will expose `SayHelloWorkflow` as an Operation.
+2. A second Namespace will contain a Workflow that calls that Operation.
+3. The caller Workflow will get back `"Hello, Temporal!"` — the same result, but across Namespaces.
+
+<SetupSteps>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="csharp">
+{`namespace MyNamespace;
+
+using NexusRpc;
+
+[NexusService]
+public interface ISayHelloNexusService
+{
+    public static readonly string EndpointName = "my-nexus-endpoint-name";
+
+    [NexusOperation]
+    string SayHello(MyInput input);
+
+    public record MyInput(string Name);
+}`}
+</CodeSnippet>
+
+</>
+}>
+
+## 1. Define the Nexus Service
+
+Create a file called `ISayHelloNexusService.cs` in the `Workflow` project.
+
+The `[NexusService]` attribute on an interface defines the Nexus Service contract. `[NexusOperation]` marks each method that callers can invoke. The `EndpointName` static field is shared between the handler and caller to keep the endpoint name in one place.
+
+`SayHelloWorkflow` returns `string`, so the operation output type is `string`. The input is a `record` carrying the workflow argument.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="csharp">
+{`namespace MyNamespace;
+
+using NexusRpc.Handlers;
+using Temporalio.Nexus;
+
+[NexusServiceHandler(typeof(ISayHelloNexusService))]
+public class SayHelloNexusServiceHandler
+{
+    [NexusOperationHandler]
+    public IOperationHandler<ISayHelloNexusService.MyInput, string> SayHello() =>
+        WorkflowRunOperationHandler.FromHandleFactory(
+            (WorkflowRunOperationContext context, ISayHelloNexusService.MyInput input) =>
+                context.StartWorkflowAsync(
+                    (SayHelloWorkflow wf) => wf.RunAsync(input.Name),
+                    new() { Id = context.HandlerContext.RequestId }));
+}`}
+</CodeSnippet>
+
+</>
+}>
+
+## 2. Define the Nexus Operation handler
+
+Create a file called `SayHelloNexusServiceHandler.cs` in the `Workflow` project.
+
+`[NexusServiceHandler]` links this class to the `ISayHelloNexusService` contract. Each `[NexusOperationHandler]` method returns an `IOperationHandler` that describes how the operation runs.
+
+`WorkflowRunOperationHandler.FromHandleFactory` creates an asynchronous operation backed by a Workflow run. The `input.Name` bridges the Nexus `MyInput` record to `SayHelloWorkflow`'s `string` parameter.
+
+Using `context.HandlerContext.RequestId` as the Workflow ID ensures that retried Nexus operation requests are deduplicated.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="csharp">
+{`// Worker/Program.cs
+var activities = new MyActivities();
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+        .AddActivity(activities.SayHello)
+        .AddWorkflow<SayHelloWorkflow>()
+        .AddNexusService(new SayHelloNexusServiceHandler()));`}
+</CodeSnippet>
+
+</>
+}>
+
+## 3. Register the Nexus Service handler in a Worker
+
+Update `Worker/Program.cs` to register the Nexus Service handler alongside the existing Workflow and Activity registrations.
+
+A Worker will only handle incoming Nexus requests if the Nexus Service handlers are registered. Like `.AddActivity()`, `.AddNexusService()` takes an instance — both register concrete objects that the Worker dispatches work to.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="csharp">
+{`namespace MyNamespace;
+
+using Temporalio.Workflows;
+
+[Workflow]
+public class CallerWorkflow
+{
+    public static readonly string CallerTaskQueue = "my-caller-task-queue";
+
+    [WorkflowRun]
+    public async Task<string> RunAsync(string name)
+    {
+        return await Workflow
+            .CreateNexusWorkflowClient<ISayHelloNexusService>(
+                ISayHelloNexusService.EndpointName)
+            .ExecuteNexusOperationAsync(svc => svc.SayHello(new(name)));
+    }
+}`}
+</CodeSnippet>
+
+</>
+}>
+
+## 4. Develop the caller Workflow
+
+Create a file called `CallerWorkflow.cs` in the `Workflow` project.
+
+The caller Workflow uses `Workflow.CreateNexusWorkflowClient<T>()` to get a typed client bound to the Nexus Endpoint. `ExecuteNexusOperationAsync` starts the operation and waits for the result.
+
+The caller only depends on the Service contract (`ISayHelloNexusService`), not the handler implementation. This decoupling is what allows the caller and handler to live in separate Namespaces or even separate codebases.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="bash">
+{`temporal operator namespace create --namespace my-caller-namespace`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+{`temporal operator nexus endpoint create \\
+  --name my-nexus-endpoint-name \\
+  --target-namespace default \\
+  --target-task-queue my-task-queue`}
+</CodeSnippet>
+
+</>
+}>
+
+## 5. Create the caller Namespace and Nexus Endpoint
+
+Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler. The handler uses the `default` Namespace that was created when you started the dev server.
+
+Namespaces provide isolation between the caller and handler sides. The Nexus Endpoint acts as a routing layer that connects the caller Namespace to the handler's target Namespace and Task Queue. The endpoint name must match the `EndpointName` constant defined in Step 1.
+
+Make sure your local Temporal dev server is running (`temporal server start-dev`).
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="csharp">
+{`// CallerStarter/Program.cs
+using MyNamespace;
+using Temporalio.Client;
+using Temporalio.Worker;
+
+var client = await TemporalClient.ConnectAsync(
+    new("localhost:7233") { Namespace = "my-caller-namespace" });
+
+using var tokenSource = new CancellationTokenSource();
+Console.CancelKeyPress += (_, eventArgs) =>
+{
+    tokenSource.Cancel();
+    eventArgs.Cancel = true;
+};
+
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions(CallerWorkflow.CallerTaskQueue)
+        .AddWorkflow<CallerWorkflow>());
+
+Console.WriteLine("Running caller worker");
+var workerTask = worker.ExecuteAsync(tokenSource.Token);
+
+var result = await client.ExecuteWorkflowAsync(
+    (CallerWorkflow wf) => wf.RunAsync("Temporal"),
+    new(id: $"caller-workflow-{Guid.NewGuid()}",
+        taskQueue: CallerWorkflow.CallerTaskQueue));
+Console.WriteLine("Workflow result: {0}", result);
+
+tokenSource.Cancel();
+try { await workerTask; } catch (OperationCanceledException) { }`}
+</CodeSnippet>
+
+</>
+}>
+
+## 6. Run and verify
+
+Create a `CallerStarter` console project that starts a caller Worker and executes the Workflow.
+
+**Add the CallerStarter project:**
+
+```bash
+dotnet new console -o CallerStarter
+dotnet sln TemporalioHelloWorld.sln add CallerStarter/CallerStarter.csproj
+dotnet add CallerStarter/CallerStarter.csproj reference Workflow/Workflow.csproj
+dotnet add CallerStarter/CallerStarter.csproj package Temporalio
+```
+
+This step brings everything together: the caller Worker hosts `CallerWorkflow`, which uses the Nexus client to invoke `SayHello` on the handler side. The full request flows from the caller Workflow, through the Nexus Endpoint, to the handler Worker running `SayHelloWorkflow`, and back to the caller.
+
+**Run the application:**
+
+1. Start the handler Worker in one terminal:
+
+```bash
+dotnet run --project Worker/Worker.csproj
+```
+
+2. Run the caller in another terminal:
+
+```bash
+dotnet run --project CallerStarter/CallerStarter.csproj
+```
+
+You should see:
+
+```
+Workflow result: Hello, Temporal!
+```
+
+Open the [Temporal Web UI](http://localhost:8233) and find the `CallerWorkflow` execution in the `my-caller-namespace` Namespace. You should see `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted` events in the Workflow history.
+
+</SetupStep>
+
+</SetupSteps>
+
+## Next Steps
+
+Now that you have a working Nexus Service, here are some resources to deepen your understanding:
+
+- **[.NET Nexus Feature Guide](/develop/dotnet/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
+- **[Nexus Operations](/nexus/operations)**: The full Operation lifecycle, including retries, timeouts, and execution semantics.
+- **[Nexus Services](/nexus/services)**: Designing Service contracts and registering multiple Services per Worker.
+- **[Nexus Patterns](/nexus/patterns)**: Comparing the collocated and router-queue deployment patterns.
+- **[Error Handling in Nexus](/nexus/error-handling)**: Handling retryable and non-retryable errors across caller and handler boundaries.
+- **[Execution Debugging](/nexus/execution-debugging)**: Bi-directional linking and OpenTelemetry tracing for debugging Nexus calls.
+- **[Nexus Endpoints](/nexus/endpoints)**: Managing Endpoints and understanding how they route requests.
+- **[Temporal Nexus on Temporal Cloud](/cloud/nexus)**: Deploying Nexus in a production Temporal Cloud environment with built-in access controls and multi-region connectivity.
