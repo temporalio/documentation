@@ -8,24 +8,11 @@ description: Get started with HA features
 
 import { ToolTipTerm } from '@site/src/components';
 
-:::tip Support, stability, and dependency info
-
-Same-region Replication and Multi-cloud Replication are in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-Multi-region Replication is in
-[General Availability](/evaluate/development-production-features/release-stages#general-availability)
-
-:::
-
-You can enable High Availability features
-([Single-region Replication](/cloud/high-availability#same-region-replication),
-[Multi-region Replication](/cloud/high-availability#multi-region-replication), or
-[Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication)) for a new or existing Namespace by adding a
+You can enable [High Availability](/cloud/high-availability) features for a new or existing Namespace by adding a
 replica. When you add a replica, Temporal Cloud begins asynchronously replicating ongoing and existing Workflow
 Executions.
 
-Not all replication options are available in all regions. For Multi-region and Multi-cloud Replication, the replica region must be on the same continent as the active region. See the [region documentation](/cloud/regions) for the supported replica regions for each active region.
+ The replica region must be on the same continent as the primary region. Because of that, not all replication options are available in all Temporal Cloud regions. See the [Service regions](/cloud/regions) page for the supported replica regions for each active region.
 
 Using private network connectivity with a HA namespace requires extra setup. See
 [Connectivity for HA](/cloud/high-availability/ha-connectivity).
@@ -64,9 +51,6 @@ tcld namespace create \
 ```
 
 Specify the [region codes](/cloud/regions) as arguments to the two `--region` flags.
-
-- Using the same region replicates to an isolation domain within that region.
-- Using a different region replicates across regions.
 
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before
 `namespace create`.
@@ -131,7 +115,7 @@ If you remove your replica, you lose the availability guarantees of the Namespac
 replica.
 
 If you remove a replica from a region, you must wait seven days before you can re-enable High Availability (HA) in that
-same location. During this period, you may add a replica to a different region, provided you have not had one active
+same location. During this period, you may add a replica to a different region, provided you have not had one
 there within the last seven days.
 
 :::
@@ -154,8 +138,8 @@ disables all High Availability features:
 
 :::caution
 
-After removing a Namespace's replica, you cannot re-enable replication on that same Temporal Cloud Namespace in the same
-location for seven days.
+After removing a Namespace's replica, you cannot add a new replica to that same region for seven days.
+During that time, you can still add a replica to any other region.
 
 :::
 
