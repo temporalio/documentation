@@ -25,6 +25,11 @@ import { CaptionedImage } from '@site/src/components';
 
 The Temporal Cloud OpenMetrics API provides actionable operational metrics about your Temporal Cloud deployment. This is a scrapable HTTP API that returns metrics in OpenMetrics format, suitable for ingestion by Prometheus-compatible monitoring systems.
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
 
 ## Available Metrics Reference
 
@@ -129,7 +134,7 @@ Implement retry logic in your client to gracefully handle transient API failures
 
 ### Data Latency
 
-Metric data points are available for query within 3 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
+Metric data points are available for query within 2 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
 
 ## Endpoints
 
@@ -147,7 +152,7 @@ Returns metrics in OpenMetrics format suitable for scraping by Prometheus-compat
 
 #### Timestamp Offset
 
-To account for metric data latency, this endpoint returns metrics from the current timestamp minus a fixed offset.  The current offset is 3 minutes rounded down to the start of the minute. To accommodate this offset, the timestamps in the response should be honored when importing the metrics. For example, in Prometheus this can be controlled using the `honor\_timestamps` flag.
+To account for metric data latency, this endpoint returns metrics from the current timestamp minus a fixed offset.  The current offset is 2 minutes rounded down to the start of the minute. To accommodate this offset, the timestamps in the response should be honored when importing the metrics. For example, in Prometheus this can be controlled using the `honor\_timestamps` flag.
 
 #### Query Parameters
 
