@@ -29,11 +29,11 @@ Temporal Cloud is transitioning from our Prometheus query endpoint to an industr
 can monitor your Temporal Cloud workloads, bringing enhanced capabilities, better integration with observability tools,
 and access to high-cardinality metrics that were previously unavailable.
 
-:::danger PromQL endpoint deprecated
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-The PromQL endpoint was deprecated on April 2, 2026 and is no longer accepting new users.
-The PromQL endpoint will be disabled for all users on **October 5, 2026**.
-Complete your migration to the OpenMetrics endpoint before this date.
+The OpenMetrics endpoint is available in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview) for testing and validation.
+The existing Prometheus query endpoint remains fully operational and supported.
 
 :::
 
@@ -52,7 +52,7 @@ Complete your migration to the OpenMetrics endpoint before this date.
 4. **Simplified Integration**: Direct scraping from your observability tools without intermediate translation layers.
 
 5. **Enhanced Performance**: Optimized for high-cardinality data with built-in safeguards for system stability. Data is
-   available to scrape three minutes from the time it was emitted, in line with the freshest metrics
+   available to scrape two minutes from the time it was emitted, in line with the freshest metrics
    [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/).
 
 ## What's Changing
@@ -68,19 +68,30 @@ Complete your migration to the OpenMetrics endpoint before this date.
 
 ## Migration Timeline
 
-**April 2, 2026 - PromQL endpoint deprecated**
+Here is the current estimated timeline for migrating from the Prometheus query endpoint to the OpenMetrics endpoint.
 
-- The PromQL endpoint is no longer accepting new users.
-- Existing users should begin migrating to the OpenMetrics endpoint.
+:::caution
 
-**October 5, 2026 - PromQL endpoint disabled**
+Timelines can shift so be sure to stay up to date on upcoming releases.
 
-- The PromQL endpoint will be disabled for all users.
-- All metrics consumption must use the OpenMetrics endpoint by this date.
+:::
+
+**Public Preview (Current)**
+
+- OpenMetrics endpoint available for onboarding.
+- Both endpoints run in parallel with no changes required.
+
+**General Availability [TBA]**:
+
+- OpenMetrics endpoint becomes production-ready and the standard for metrics collection.
+
+**Query Endpoint Deprecation (6 months after GA)**:
+
+- Prometheus query endpoint deprecated and eventually removed.
 
 :::important Action Required
 
-Complete migration before October 5, 2026.
+Complete migration before the 6 month deprecation window ends.
 
 :::
 
