@@ -97,7 +97,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](#activity-definition) best practices, you might have an Activity struct that has multiple methods and fields.
+Per [Activity Definition](/develop/go/activities/basics#activity-definition) best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
@@ -126,7 +126,7 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 #### Name
 
-See [How to customize a Workflow Type in Go](#customize-workflow-type)
+See [How to customize a Workflow Type in Go](/develop/go/workflows/basics#customize-workflow-type)
 
 #### DisableAlreadyRegisteredCheck
 
@@ -160,7 +160,7 @@ Options for registering an Activity
 
 #### Name
 
-See [How to customize Activity Type in Go](#customize-activity-type).
+See [How to customize Activity Type in Go](/develop/go/activities/basics#customize-activity-type).
 
 #### DisableAlreadyRegisteredCheck
 
