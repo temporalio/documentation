@@ -2,7 +2,7 @@
 id: temporal-client
 title: Temporal Client - PHP SDK
 sidebar_label: Temporal Client
-slug: /develop/php/temporal-client
+slug: /develop/php/client/temporal-client
 toc_max_heading_level: 3
 keywords:
   - temporal-client
@@ -109,7 +109,7 @@ $workflowClient = WorkflowClient::create(
 );
 ```
 
-To [run Worker processes](/develop/php/core-application#run-a-dev-worker) managed by Temporal Cloud, configure RoadRunner in the same way.
+To [run Worker processes](/develop/php/workers/run-worker-process#run-a-dev-worker) managed by Temporal Cloud, configure RoadRunner in the same way.
 
 ```yml
 temporal:
@@ -134,9 +134,9 @@ $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples following all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/php/child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/php/workflows/child-workflows) or External Workflow APIs.
 
-See the [Customize Workflow Type](/develop/php/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
+See the [Customize Workflow Type](/develop/php/workflows/basics#workflow-type) section to see how to customize the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
@@ -253,7 +253,7 @@ var_dump($run->getResult(timeout: 10));
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/schedules#temporal-cron-jobs).
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/workflows/schedules#temporal-cron-jobs).
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
@@ -267,7 +267,7 @@ PHP's default is different from most SDKs, which do require an explicit Task Que
 
 :::
 
-For your code to execute, a Worker Process must be running ([how to run Worker Processes](/develop/php/core-application#run-a-dev-worker)).
+For your code to execute, a Worker Process must be running ([how to run Worker Processes](/develop/php/workers/run-worker-process#run-a-dev-worker)).
 This process needs a Worker Entity that is polling the same Task Queue name.
 
 Set the Workflow Task Queue with the Workflow stub in the Client code using [`WorkflowOptions::withTaskQueue()`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#method_withTaskQueue).
