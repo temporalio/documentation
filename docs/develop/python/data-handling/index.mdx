@@ -13,12 +13,12 @@ tags:
   - Data Converters
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 All data sent to and from the Temporal Service passes through the **Data Converter**. The Data Converter has three
 layers that handle different concerns:
 
-```
-Application data → PayloadConverter → PayloadCodec → ExternalStorage → Temporal Service
-```
+<CaptionedImage src="/diagrams/data-converter-flow.svg" title="The Flow of Data through a Data Converter" />
 
 Of these three layers, only the PayloadConverter is required. Temporal uses a default PayloadConverter that handles JSON
 serialization. The PayloadCodec and ExternalStorage layers are optional. You only need to customize these layers when
