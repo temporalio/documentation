@@ -79,6 +79,14 @@ Individual Namespaces do not use separate services.
 
 7. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
 
+:::tip Connectivity Rule required
+
+If your Private Service Connect connection status is not becoming "Active", verify that you have [created a Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule).
+Connectivity Rules are mandatory for GCP Private Service Connect connections.
+The connection will not become active without one.
+
+:::
+
 - Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 
 :::caution
