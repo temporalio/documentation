@@ -2,7 +2,9 @@
 id: index
 title: Self-hosted Temporal Service guide
 sidebar_label: Self-hosted guide
-description: Discover how to self-host the open-source Temporal Service to orchestrate durable applications, or consider using Temporal Cloud for ease of use. Start with our tutorials and dev guide.
+description:
+  Discover how to self-host the open-source Temporal Service to orchestrate durable applications, or consider using
+  Temporal Cloud for ease of use. Start with our tutorials and dev guide.
 slug: /self-hosted-guide
 toc_max_heading_level: 4
 keywords:
@@ -12,38 +14,53 @@ tags:
   - Self-hosting
 ---
 
-Welcome to the self-hosted Temporal Service guide.
-This guide shows you how to self-host open source infrastructure software that orchestrates your durable applications.
+Welcome to the self-hosted Temporal Service guide. This guide shows you how to self-host open source infrastructure
+software that orchestrates your durable applications.
 
-:::info Sign up for Temporal Cloud!
+:::tip Do you need a production Temporal Service?
 
-Instead of self-hosting, you can use [Temporal Cloud](/cloud).
+If you're still developing and testing your application locally, you may not need a production Temporal Service. Use the
+[Temporal CLI development server](/cli/server#start-dev) — a single binary with no external dependencies:
 
-:::
+`temporal server start-dev`
 
-:::info Getting started with Temporal?
-
-If you are just getting started with Temporal, we recommend our [introductory tutorials and courses](https://learn.temporal.io)
-
-:::
-
-:::info Building an app?
-
-If you are building a new Temporal Application, you might only need a [development server](/cli#start-dev-server) available through the [Temporal CLI](/cli).
-Check out the [dev guide](/develop) for application development best practices.
+This starts a complete Temporal Service with Web UI on your local machine. We recommend this for local development
+regardless of whether you plan to use Temporal Cloud or self-host in production. See the
+[Temporal CLI server](/cli/server) page for configuration options.
 
 :::
 
-- [Deployment](/self-hosted-guide/deployment)
-- [Embedded server](/self-hosted-guide/embedded-server)
-- [Defaults](/self-hosted-guide/defaults)
-- [Production checklist](/self-hosted-guide/production-checklist)
-- [Namespaces](/self-hosted-guide/namespaces)
-- [Security](/self-hosted-guide/security)
-- [Monitoring](/self-hosted-guide/monitoring)
-- [Visibility](/self-hosted-guide/visibility)
-- [Data encryption](/production-deployment/data-encryption)
-- [Upgrading server](/self-hosted-guide/upgrade-server#upgrade-server)
-- [Archival](/self-hosted-guide/archival)
-- [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
-- [Temporal Nexus](/production-deployment/self-hosted-guide/nexus)
+## Plan and deploy your service
+
+- [Deployment](/self-hosted-guide/deployment): Choose a deployment approach (Docker, Kubernetes, or manual) and set up a
+  production-ready Temporal Service.
+- [Embedded server](/self-hosted-guide/embedded-server): Run Temporal in-process as a Go library for local development
+  and testing scenarios.
+- [Defaults](/self-hosted-guide/defaults): Review platform limits and default settings that can affect Workflow and
+  Activity behavior.
+- [Production checklist](/self-hosted-guide/production-checklist): Validate readiness for scale, reliability,
+  operations, and long-term maintainability.
+
+## Operate your self-hosted service
+
+- [Namespaces](/self-hosted-guide/namespaces): Create and manage Namespace isolation, retention, and related
+  configuration.
+- [Security](/self-hosted-guide/security): Configure TLS/mTLS, authentication, authorization, and related hardening
+  controls.
+- [Monitoring](/self-hosted-guide/monitoring): Collect and visualize service and SDK metrics to troubleshoot and track
+  health.
+- [Visibility](/self-hosted-guide/visibility): Configure Visibility storage so you can list, filter, and search Workflow
+  Executions.
+- [Upgrading server](/self-hosted-guide/upgrade-server#upgrade-server): Perform safe, sequential server and schema
+  upgrades.
+
+## Protect data and enable advanced features
+
+- [Data encryption](/production-deployment/data-encryption): Use Payload Codecs and Codec Server patterns to protect
+  sensitive Workflow data.
+- [Archival](/self-hosted-guide/archival): Move closed Event Histories and Visibility records to blob storage for longer
+  retention.
+- [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication): Replicate Workflow state across clusters
+  for failover and disaster recovery.
+- [Temporal Nexus](/production-deployment/self-hosted-guide/nexus): Enable Nexus in self-hosted environments to connect
+  Temporal Applications across boundaries.

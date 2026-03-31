@@ -145,7 +145,7 @@ event histories. Some billable concepts are not included in these calculations s
 - Export
 - Schedule
 - Replicated Actions that occur in a
-  [Namespace replication](../../cloud/high-availability/index.mdx#high-availability-features-high-availability-features)
+  [Namespace replication](../../cloud/high-availability/index.mdx#high-availability-features)
 
 Additionally, Workflows with the `TemporalNamespaceDivision` Search Attribute set may not have accurate Billable Action
 Estimates. The estimated Billable Actions should only be treated as an estimate. If billable events exist outside of
@@ -155,3 +155,7 @@ event history, the Actions count could be higher.
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of
 Actions.
+
+## Fairness
+
+For each hour a Namespace has the _Fairness_ feature enabled, an additional `0.1` Action will be charged per Action in the Namespace.

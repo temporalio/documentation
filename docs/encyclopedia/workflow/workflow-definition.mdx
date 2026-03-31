@@ -258,6 +258,15 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
+For SDK-specific replay-safe APIs and examples (logging, random numbers, time, replay detection), see:
+
+- [Go: Develop Workflow logic](/develop/go/core-application#workflow-logic-requirements)
+- [Java: Workflow logic requirements](/develop/java/core-application#workflow-logic-requirements)
+- [Python: Develop Workflow logic](/develop/python/core-application#workflow-logic-requirements)
+- [TypeScript: Develop Workflow logic](/develop/typescript/core-application#workflow-logic-requirements)
+- [.NET: Workflow logic requirements](/develop/dotnet/core-application#workflow-logic-requirements)
+- [Ruby: Workflow Logic Requirements](/develop/ruby/core-application#workflow-logic-requirements)
+
 ### Versioning Workflows {#workflow-versioning}
 
 The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
