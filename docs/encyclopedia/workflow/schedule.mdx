@@ -90,7 +90,59 @@ The `comment` field is optional and can be used to include a free-form descripti
 No matter which form you supply, calendar and interval specs are converted to canonical representations.
 What you see when you "describe" or "list" a Schedule might not look exactly like what you entered, but it has the same meaning.
 
-Other Spec features:
+#### Phase offset
+
+By default, intervals align to the Unix epoch (January 1, 1970 at midnight UTC), so without a phase offset, a 7-day interval would fire every Thursday at whatever time midnight UTC equates to in your local time, which may not be convenient for your use case.
+
+Use a phase offset when you need your recurring Schedule to fire at a specific, human-meaningful time like every 10 days at 5pm UTC on a particular date, rather than accepting the arbitrary time the epoch alignment produces.
+
+There is an `offset` parameter you can set so an `interval` spec fires exactly at a pre-determined date and time. Here's an example of how you can calculate the `offset` and apply it to your Schedules.
+
+Timestamps are measured with UNIX time. That means 7 days is 604,800 seconds (7 * 24 * 60 * 60), 5 days is 432,000 (5 * 24 * 60 * 60), etc. The Schedule fires when the following condition is true:
+
+```
+((currentTimestampUTC - phase offset) % interval) == 0
+```
+
+So using an interval of 7 days and a phase offset of 0, that means the Schedule fires on `December 28th 2023, at midnight UTC`:
+
+```
+((1703721600 - 0) % 604800) = 0
+```
+
+For an interval of 5 days and a phase offset of 0, the Schedule fires on `December 29th 2023`
+
+```
+((1703808000 - 0) % 432000) = 0
+```
+
+You can calculate the phase offset you need for any interval. Take the UNIX timestamp of any date and time you want your Schedule to execute, then calculate the following:
+
+```
+phase offset = referenceTimestampUTC % interval
+```
+
+For example, if you want a Schedule that will fire every 10 days, including Jun 19th 2024 at 5pm UTC, you need to calculate the UNIX timestamp:
+
+```
+UNIX Timestamp of 2024-06-19T17:00:00 UTC = 1718816400
+```
+
+Then you need to calculate the number of seconds for your interval:
+
+```
+Interval of 10 days = (10 * 24 * 60 * 60) = 864000
+```
+
+Finally, you can calculate the phase offset you need:
+
+```
+phase offset = 1718816400 % 864000 = 320400
+```
+
+So you will set your Schedule interval to `864000s` (10 days) and phase to `320400s` and you get exactly every 10 days at 5pm UTC.
+
+#### Other Spec features
 
 **Multiple intervals/calendar expressions:** A Spec can have combinations of multiple intervals and/or calendar expressions to define a specific Schedule.
 
