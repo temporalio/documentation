@@ -149,7 +149,6 @@ module.exports = {
                 id: 'develop/go/workers/index',
               },
               items: [
-                'develop/go/workers/basics',
                 'develop/go/workers/run-worker-process',
                 'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
