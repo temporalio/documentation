@@ -58,7 +58,7 @@ External Storage addresses several common scenarios:
 - **Migration to Temporal Cloud.** Self-hosted deployments may have higher configured payload limits. External Storage
   lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
-  payload data in infrastructure they control. Set the offload threshold to zero to externalize all payloads regardless
+  payload data in infrastructure they control. Set the offload threshold to one to externalize all payloads regardless
   of size.
 
 ## How External Storage fits in the data conversion pipeline {#data-pipeline}
