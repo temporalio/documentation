@@ -327,7 +327,6 @@ module.exports = {
                 id: 'develop/python/nexus/index',
               },
               items: [
-                'develop/python/nexus/service-handler',
                 'develop/python/nexus/quickstart',
                 'develop/python/nexus/feature-guide',
               ],
