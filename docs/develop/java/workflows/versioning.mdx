@@ -2,7 +2,7 @@
 id: versioning
 title: Versioning - Java SDK
 sidebar_label: Versioning
-slug: /develop/java/versioning
+slug: /develop/java/workflows/versioning
 toc_max_heading_level: 2
 description: The Temporal Platform ensures deterministic Workflow code, offering versioning features in the Java SDK with Workflow Patching APIs and Worker Build Ids for efficient updates.
 keywords:
@@ -30,7 +30,7 @@ There are two primary Versioning methods that you can use:
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
 :::danger
-Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs if needed. 
+Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/java/worker-versioning-legacy) docs if needed. 
 :::
 
 ## Worker Versioning
@@ -245,4 +245,4 @@ This method also does not provide a way to version any still-running Workflows -
 
 ### Testing a Workflow for replay safety
 
-To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/java/testing-suite#replay).
+To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/java/best-practices/testing-suite#replay).

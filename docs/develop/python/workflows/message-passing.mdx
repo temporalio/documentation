@@ -450,7 +450,7 @@ class GreetingWorkflow:
         return previous_language
 ```
 
-After updating the code to use an `async def`, your Update handler can schedule an Activity and await the result.
+After updating the code to use a `async def`, your Update handler can schedule an Activity and await the result.
 Although an `async def` Signal handler can also execute an Activity, using an Update handler allows the Client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
