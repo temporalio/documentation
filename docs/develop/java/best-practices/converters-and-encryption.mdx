@@ -34,8 +34,6 @@ When working with sensitive data, you should always implement Payload encryption
 
 ## Custom Payload Codec in Java {#custom-payload-codec}
 
-**How to create a custom Payload Codec using the Java SDK.**
-
 Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html) to set a custom Data Converter.
 
 The Payload Codec does byte-to-byte conversion and must be set with a Data Converter.
@@ -176,8 +174,6 @@ Refer to the [Codec Server](/production-deployment/data-encryption) documentatio
 For reference, see the [Codec server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder) sample.
 
 ## Using custom Payload conversion {#custom-payload-conversion}
-
-**How to do custom Payload conversion using the Java SDK.**
 
 Temporal SDKs provide a [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 

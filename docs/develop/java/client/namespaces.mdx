@@ -34,8 +34,6 @@ You must register a Namespace with the Temporal Service before setting it in the
 
 ## Register a Namespace {#register-namespace}
 
-**How to register a Namespace using the Java SDK.**
-
 Registering a Namespace creates a Namespace on the Temporal Service or Temporal Cloud.
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
@@ -67,7 +65,7 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [Connect to a Development Temporal Service](/develop/java/temporal-client#connect-to-development-service) for details.
+See [Connect to a Development Temporal Service](/develop/java/client/temporal-client#connect-to-development-service) for details.
 
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
@@ -75,8 +73,6 @@ Ensure that you wait for this registration to complete before starting the Workf
 To update your Namespace use the [UpdateNamespace API](#manage-namespaces) with the NamespaceClient.
 
 ## Manage Namespaces {#manage-namespaces}
-
-**How to manage Namespaces using the Java SDK.**
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 
