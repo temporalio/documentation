@@ -133,7 +133,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
 
-- Before completing the Workflow or using [Continue-As-New](/develop/go/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+- Before completing the Workflow or using [Continue-As-New](/develop/go/workflows/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
   Otherwise, the Signals will be lost.
   The [batch sliding window](https://github.com/temporalio/samples-go/tree/main/batch-sliding-window) sample contains an example:
 - Delay calling `workflow.GetSignalChannel` until the Workflow initialization needed to process the Signal channel has finished.
@@ -384,7 +384,7 @@ For open source server users, Temporal Server version [Temporal Server version 1
 :::
 
 [Update-with-Start](/sending-messages#update-with-start) lets you
-[send an Update](/develop/go/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+[send an Update](/develop/go/workflows/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
 - If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
@@ -403,7 +403,7 @@ You will need to provide:
   Refer to the [API documentation](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) for further details.
 
 - [`UpdateWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#UpdateWorkflowOptions).
-  Same as for [Update Workflow](/develop/go/message-passing#send-update-from-client), the update name and an update wait stage must be specified.
+  Same as for [Update Workflow](/develop/go/workflows/message-passing#send-update-from-client), the update name and an update wait stage must be specified.
   For Update-with-Start, the Workflow Id is optional.
   When specified, the Id must match the one used in `StartWorkflowOptions`.
   Since a running Workflow Execution may not already exist, you can't set a Run Id.

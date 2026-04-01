@@ -93,7 +93,7 @@ You can also register interceptors through a [Plugin](/develop/plugins-guide#int
 Each tracing interceptor uses its library's native propagation mechanism to serialize trace spans into Temporal headers. For example, OpenTelemetry uses its `TextMapPropagator` with the W3C TraceContext format. The SDK carries these headers across Workflow, Activity, and Child Workflow boundaries, so the tracing library can reconstruct the call graph.
 For more information, see the documentation for [OpenTelemetry](https://opentelemetry.io/), [OpenTracing](https://opentracing.io), and [Datadog](https://docs.datadoghq.com/tracing/).
 
-To build custom context propagation (e.g., tenant IDs, auth tokens), see [Context Propagation](/develop/go/context-propagation).
+To build custom context propagation (e.g., tenant IDs, auth tokens), see [Context Propagation](/develop/go/best-practices/context-propagation).
 
 ## Log from a Workflow {#logging}
 

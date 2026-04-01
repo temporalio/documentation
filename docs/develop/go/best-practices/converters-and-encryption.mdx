@@ -34,8 +34,6 @@ When working with sensitive data, you should always implement Payload encryption
 
 ## Use a custom Payload Codec in Go {#custom-payload-codec}
 
-**How to use a custom Payload Codec using the Go SDK.**
-
 **Step 1: Create a custom Payload Codec**
 
 Create a custom [PayloadCodec](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `Encode` and `Decode` functions.
@@ -143,8 +141,6 @@ For reference, see the [Codec server](https://github.com/temporalio/samples-go/t
 
 ## Use custom Payload conversion {#custom-payload-conversion}
 
-**How to customize the conversion of a payload using the Go SDK.**
-
 Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
@@ -160,8 +156,6 @@ Temporal's Converter architecture looks like this:
 />
 
 ## How to use a custom Payload Converter in Go {#custom-payload-converter}
-
-**How to use a custom Payload Converter using the Go SDK.**
 
 Use a [Composite Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
 Defining a new Composite Data Converter is not always necessary to implement custom data handling.
