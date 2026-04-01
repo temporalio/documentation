@@ -89,7 +89,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
    <!--SNIPEND-->
 
-   By default, payloads larger than approximately 200 KiB are offloaded to external storage. You can adjust this with
+   By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with
    the `payload_size_threshold` parameter, or set it to `None` to externalize all payloads regardless of size.
 
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
