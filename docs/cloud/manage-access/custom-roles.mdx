@@ -27,16 +27,20 @@ that require least privilege, delegation, and automation-safe permissions.
 ## What are Custom Roles?
 
 Custom Roles enable you to define your own roles as bundles of permission primitives (operations/actions) 
-scoped to applicable resources (namespaces, projects, account objects) and assign them to any 
+scoped to applicable resources (namespaces or account objects) and assign them to any 
 principal (user, group, service account). 
 
 ## Why use Custom Roles?
 
 Use Custom Roles if you want more fine-grained authentication than Temporal Cloud's predefined roles and permissions provide.
 
-Use Custom Roles if your access model requires the Principle of Least Privilege or delegation.
+Use Custom Roles if your access model enforces least-privilege access to grant users and service accounts only the operations they explicitly need, and no more.
 
 Using Custom Roles with [Service Accounts](/cloud/service-accounts) can make them more secure for automation purposes. 
+
+## Custom Roles limits
+
+For more information about the limits of Custom Roles, see [Custom Roles limits](/cloud/limits#custom-role-limits).
 
 ## Defining Custom Roles
 
@@ -52,7 +56,6 @@ The operations are limited to a `resourceType` of `Namespace`, and the scope is 
 You can scope roles to:
 * All resources of a given type
 * Specific resources by explicit ID list
-* Resource subsets
 
 ```
 {
@@ -115,3 +118,23 @@ When you're done assiging permissions to resources, click Create Custom Role at 
 Once you have created a Custom Role, it is available on the Identities page to assign to a user
 or group, the same as the pre-defined Temporal permissions. See [How to update an account-level role in Temporal Cloud](/cloud/users#update-roles)
 for more inforamtion.
+
+## Available permissions
+
+Most of the Control Plane operations listed in the API references ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction),
+[GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/)) can be assigned to a Custom Role. 
+For the operations that are supported by Custom Roles, you will see the naming specification available next to each API call description.
+
+The following operations are not available to Custom Roles:
+
+- Creating an API key or a service account. These operations are part of the pre-defined roles (admin or above) and cannot be assigned to other less-privileged roles.
+- Operations that require additional role and permission validation, such as Create a Nexus Endpoint.
+- Separating or splitting operations that are part of UpdateNamespace.
+
+## Modifying a Custom Role
+
+<!-- Need more information here. -->
+
+## Deleting a Custom Role
+
+<!-- Need more information here. -->
