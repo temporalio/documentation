@@ -1,7 +1,7 @@
 ---
-id: interrupt-workflow
-title: Interrupt a Workflow - Ruby SDK
-sidebar_label: Interrupt a Workflow
+id: cancellation
+title: Cancellation - Ruby SDK
+sidebar_label: Cancellation
 description:
   Interrupt Workflow Execution in Ruby using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops.
   Handle Cancellation in Workflow and Activities efficiently.
@@ -85,9 +85,9 @@ end
 
 ## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 
-Ensure that the Activity is [Heartbeating](/develop/ruby/failure-detection#activity-heartbeats) to receive the
+Ensure that the Activity is [Heartbeating](/develop/ruby/activities/timeouts#activity-heartbeats) to receive the
 Cancellation request and stop execution. Also make sure that the
-[Heartbeat Timeout](/develop/ruby/failure-detection#heartbeat-timeout) is set on the Activity Options when calling from
+[Heartbeat Timeout](/develop/ruby/activities/timeouts#heartbeat-timeout) is set on the Activity Options when calling from
 the Workflow. An Activity Cancellation Request raises a `Temporalio::Error::CanceledError` in the Activity.
 
 ```ruby
