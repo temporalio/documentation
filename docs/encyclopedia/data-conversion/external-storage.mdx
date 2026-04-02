@@ -38,14 +38,14 @@ For SDK-specific usage guides, see:
 
 ## Why use External Storage
 
-The Temporal Service enforces a maximum per-payload size. This limit is 2 MB on Temporal Cloud and is
-[configurable on self-hosted deployments](/self-hosted-guide/defaults). Payloads that exceed this limit fail the
+The Temporal Service enforces a maximum per-payload size. The default and recommended limit is 2 MB. Self-hosted users can
+[configure this limit](/self-hosted-guide/defaults), but it is fixed at 2 MB on Temporal Cloud. Payloads that exceed this limit fail the
 operation. Without External Storage, you must restructure your code to work around the limit, for example by splitting
 data across multiple Workflows.
 
 Even when individual payloads stay under the hard limit, payload data accumulates in Event History. Every Activity input
 and output is persisted, so Workflows that pass data through many Activities can see history size grow quickly. Large
-histories degrade Workflow Task latency and may force you to use Continue-as-New earlier than expected.
+histories degrade Workflow Task latency. You may use [Continue-as-New](/workflow-execution/continue-as-new) to work around this problem, but that comes with other tradeoffs.
 
 External Storage addresses several common scenarios:
 
@@ -60,6 +60,10 @@ External Storage addresses several common scenarios:
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
   payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads regardless
   of size.
+
+For SDK-specific usage guides, see:
+
+- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
 
 ## How External Storage fits in the data conversion pipeline {#data-pipeline}
 
@@ -82,9 +86,6 @@ reconstruct the original data.
 The SDK parallelizes uploads and downloads to minimize latency. When a single Workflow Task involves multiple payloads
 that exceed the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
 external storage operations to scale well even when a Task carries many large payloads.
-
-If the external store is temporarily unreachable during an upload or download, the operation fails the Workflow Task.
-Temporal automatically retries failed Workflow Tasks, so the operation resumes when the store becomes available again.
 
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
