@@ -12,7 +12,7 @@ tags:
   - Failures
 ---
 
-Temporal enforces size limits on the data that passes between the Temporal Client, Workers, and the Temporal Service. There are two distinct limits, each producing different error messages and behaviors.
+Temporal enforces size limits on the data that passes between the Temporal Client, Workers, and the Temporal Service. There are two distinct limits: a 2 MB limit on individual Payloads enforced by the Temporal Service, and a 4 MB limit on entire gRPC messages enforced by the transport layer. Each produces different error messages and behaviors.
 
 ## Payload size limit
 
