@@ -1,7 +1,7 @@
 ---
 id: message-passing
-title: Workflow message passing - Ruby SDK
-sidebar_label: Messages
+title: Message passing - Ruby SDK
+sidebar_label: Message passing
 description: Develop with Queries, Signals, and Updates using the Temporal Ruby SDK.
 toc_max_heading_level: 3
 keywords:
@@ -322,7 +322,7 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 :::
 
-[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](/develop/ruby/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](/develop/ruby/workflows/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
 - If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
@@ -507,7 +507,7 @@ See [Finishing handlers before the Workflow completes](/handling-messages#finish
 
 The `workflow_init` class method above `initialize` gives it access to [Workflow input](/handling-messages#workflow-initializers).
 When you use the `workflow_init` on your constructor, you give the constructor the same Workflow parameters as your `execute` method.
-The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/ruby/temporal-client#start-workflow).
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/ruby/client/temporal-client#start-workflow).
 The Workflow input arguments are also passed to your `execute` method -- that always happens, whether or not you use the `workflow_init` class method above `initialize`.
 
 Here's an example.
