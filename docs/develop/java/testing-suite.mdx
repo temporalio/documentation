@@ -301,7 +301,8 @@ With that in place, you can then mock a Nexus endpoint exactly like any other wo
 The following are samples derived from [the test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller) to demonstrate this.
 
 #### Mocking Nexus handlers with JUnit4
-
+{/* SNIPSTART java-nexus-sample-junit4-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java)
 ```java
 public class CallerWorkflowMockTest {
   @Rule
@@ -337,9 +338,11 @@ public class CallerWorkflowMockTest {
   }
 }
 ```
+<!--SNIPEND-->
 
 #### Mocking Nexus handlers with JUnit5
-
+{/* SNIPSTART java-nexus-sample-junit5-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java)
 ```java
 public class CallerWorkflowJunit5MockTest {
 
@@ -370,6 +373,7 @@ public class CallerWorkflowJunit5MockTest {
   }
 }
 ```
+<!--SNIPEND-->
 
 An alternative approach is to simply mock the Nexus service itself, instead of mocking the handlers.
 This is useful if you just want to test the calling logic but can't easily mock the Nexus handlers.
@@ -378,7 +382,8 @@ The code will just mock the implementation of the SampleNexusService class with 
 Those methods can be directly mocked with static return values, or else they can return an instance variable which each unit test can modify to return a desired value.
 
 #### Mocking the Nexus Service with JUnit4
-
+{/* SNIPSTART java-nexus-service-sample-junit4-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java)
 ```java
 public class NexusServiceMockTest {
 
@@ -437,8 +442,11 @@ public class NexusServiceMockTest {
   }
 }
 ```
-#### Mocking the Nexus Service with JUnit5
+<!--SNIPEND-->
 
+#### Mocking the Nexus Service with JUnit5
+{/* SNIPSTART java-nexus-service-sample-junit5-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java)
 ```java
 public class NexusServiceJunit5Test {
 
@@ -503,6 +511,8 @@ public class NexusServiceJunit5Test {
   }
 }
 ```
+<!--SNIPEND-->
+
 ### How to skip time {#skip-time}
 
 Some long-running Workflows can persist for months or even years.
