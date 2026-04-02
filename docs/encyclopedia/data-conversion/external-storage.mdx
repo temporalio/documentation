@@ -91,28 +91,29 @@ before upload to your store.
 
 ## Storage drivers
 
-A Storage Driver is the part you implement to connect External Storage to your backing store. Each driver provides two
-operations:
+A storage driver connects External Storage to a backing store. Each driver provides two operations:
 
 - **Store**. Upload payloads and return a claim, which is a set of key-value pairs the driver uses to locate the payload
   later.
 - **Retrieve**. Download payloads using the claims that `store` produced.
 
-Temporal SDKs include built-in drivers for common storage systems like Amazon S3. If you need a different storage
-backend, you can implement your own driver. For an example, see
+Temporal SDKs include built-in drivers for common storage systems like Amazon S3. You can configure multiple storage
+drivers and use a selector function to route payloads to different drivers based on size, type, or other criteria such
+as hot and cold storage tiers.
+
+### Custom storage drivers
+
+If the built-in drivers don't support your storage backend, you can implement a custom driver by extending the
+`StorageDriver` abstract class. For an example, see
 [Implement a custom storage driver](/develop/python/data-handling/large-payload-storage#implement-a-custom-storage-driver)
 in the Python SDK guide.
 
-You can configure multiple storage drivers and use a selector function to route payloads to different drivers based on
-size, type, or other criteria such as hot and cold storage tiers.
-
-## Configuration
+## Key configuration settings
 
 Configure External Storage on the Data Converter. The key settings are:
 
+- **Size threshold**. The driver offloads payloads larger than this value, which defaults to 256 KiB.
 - **Drivers**. One or more storage driver implementations.
-- **Size threshold**. The driver offloads payloads larger than this value, which typically defaults to 256 KiB. Turn off
-  the threshold to externalize all payloads regardless of size.
 - **Driver selector**. When using multiple drivers, you must provide a function that chooses which driver handles each
   payload.
 
