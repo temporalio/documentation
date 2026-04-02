@@ -46,7 +46,7 @@ By the end of this guide:
 <SetupStep code={
 <>
 
-<CodeSnippet language="java" title="SayHelloNexusService.java">
+<CodeSnippet language="java">
 {`package helloworkflow;
 
 import io.nexusrpc.Operation;
@@ -87,7 +87,7 @@ You can also define your Nexus Service contract using an IDL and generate the Py
 <SetupStep code={
 <>
 
-<CodeSnippet language="java" title="SayHelloNexusServiceImpl.java">
+<CodeSnippet language="java">
 {`package helloworkflow;
 
 import io.nexusrpc.handler.OperationHandler;
@@ -135,7 +135,7 @@ The handler bridges the Nexus `String` input to `SayHelloWorkflow`'s `sayHello` 
 <SetupStep code={
 <>
 
-<CodeSnippet language="java" title="SayHelloWorker.java">
+<CodeSnippet language="java">
 {`package helloworkflow;
 
 import io.temporal.client.WorkflowClient;
@@ -182,7 +182,7 @@ The registerNexusServiceImplementation parameter registers the handler so it can
 <SetupStep code={
 <>
 
-<CodeSnippet language="java" title="NexusCallerWorkflow.java">
+<CodeSnippet language="java">
 {`package helloworkflow;
 
 import io.temporal.workflow.WorkflowInterface;
@@ -197,7 +197,7 @@ public interface NexusCallerWorkflow {
 }`}
 </CodeSnippet>
 
-<CodeSnippet language="java" title="NexusCallerWorkflowImpl.java">
+<CodeSnippet language="java">
 {`package helloworkflow;
 
 import io.temporal.workflow.NexusOperationOptions;
@@ -270,10 +270,10 @@ Make sure your local Temporal dev server is running (`temporal server start-dev`
 
 </SetupStep>
 
-<SetupStep code={
+<SetupStep wide code={
 <>
 
-<CodeSnippet language="java" title="NexusCallerStarter.java">
+<CodeSnippet language="java">
 {`package helloworkflow;
 
 import io.temporal.client.WorkflowClient;
@@ -347,13 +347,15 @@ The full request flows from the caller Workflow, through the Nexus Endpoint, to 
 1. Start the handler Worker in one terminal:
 
 ```bash
-mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
+mvn compile exec:java \
+  -Dexec.mainClass="helloworkflow.SayHelloWorker"
 ```
 
 2. Run the caller in another terminal:
 
 ```bash
-mvn compile exec:java -Dexec.mainClass="helloworkflow.NexusCallerStarter"
+mvn compile exec:java \
+  -Dexec.mainClass="helloworkflow.NexusCallerStarter"
 ```
 
 You should see:
