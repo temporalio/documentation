@@ -177,13 +177,20 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
 
 ### 2. Store payloads
 
-In `store()`, serialize each payload to bytes with `payload.SerializeToString()`, upload the bytes to your storage
-system, and return a `StorageDriverClaim` with enough information to find the payload later.
+In `store()`, convert each Payload protobuf message to bytes with `payload.SerializeToString()` and write the bytes to
+your storage system. The application data has already been serialized by the Payload Converter before it reaches the
+driver.
+
+Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. Structure your storage keys
+to include the namespace and Workflow ID from the serialization context so that you can identify which Workflow owns each
+payload. Within that scope, consider using content-addressable keys (such as a SHA-256 hash of the payload bytes) to
+deduplicate identical payloads.
 
 ### 3. Retrieve payloads
 
-In `retrieve()`, download the bytes using the claim data, then reconstruct the payload with
-`payload.ParseFromString(data)`.
+In `retrieve()`, download the bytes using the claim data, then reconstruct the Payload protobuf message with
+`payload.ParseFromString(data)`. The Payload Converter handles deserializing the application data after the driver
+returns the payload.
 
 ### 4. Configure the Data Converter
 
