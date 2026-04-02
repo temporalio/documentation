@@ -16,7 +16,7 @@ Temporal enforces size limits on the data that passes between the Temporal Clien
 
 ## Payload size limit
 
-The Temporal Service enforces a 2 MB size limit on individual Payloads. A Payload represents the serialized binary data for each input and output of Workflows and Activities. When a single Payload exceeds this limit, the Temporal Service rejects the request and terminates the Workflow.
+The Temporal Service enforces a size limit on individual Payloads. This limit defaults to 2 MB and is fixed at 2 MB on Temporal Cloud, but is configurable on self-hosted deployments. A Payload represents the serialized binary data for each input and output of Workflows and Activities. When a single Payload exceeds this limit, the Temporal Service rejects the request and terminates the Workflow.
 
 The error message depends on which operation carried the oversized Payload. Examples include:
 - `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
