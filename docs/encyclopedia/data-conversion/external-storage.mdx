@@ -32,7 +32,7 @@ configuration may change before the stable release. Join the
 External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
 the Event History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
 
-For SDK-specific setup instructions, see:
+For SDK-specific usage guides, see:
 
 - [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
 
@@ -53,12 +53,12 @@ External Storage addresses several common scenarios:
   per-payload limit.
 - **AI agent conversations.** Long conversation histories grow with each turn, and the cumulative size can degrade
   Workflow performance.
-- **Spiky data sizes.** Some Workflows handle data that is usually small but occasionally large. External Storage
+- **Spiky data sizes.** Some Workflows handle data that is usually small but occasionally large. The Claim check pattern
   handles these spikes transparently, offloading only the payloads that exceed the size threshold.
 - **Migration to Temporal Cloud.** Self-hosted deployments may have higher configured payload limits. External Storage
   lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
-  payload data in infrastructure they control. Set the offload threshold to one to externalize all payloads regardless
+  payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads regardless
   of size.
 
 ## How External Storage fits in the data conversion pipeline {#data-pipeline}
