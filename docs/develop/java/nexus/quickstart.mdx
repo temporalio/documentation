@@ -121,7 +121,7 @@ public class SayHelloNexusServiceImpl {
 </>
 }>
 
-## 2. Implement the Nexus Operation Handler
+## 2. Define the Nexus Operation Handlers
 
 Create a file called `SayHelloNexusServiceImpl.java` that implements the Nexus Operation handler.
 
@@ -168,7 +168,7 @@ public class SayHelloWorker {
 </>
 }>
 
-## 3. Register Nexus Service Handler in a Worker
+## 3. Register the Nexus Service Handler in a Worker
 
 Update your existing `SayHelloWorker.java` to register the Nexus Service Handler.
 
@@ -229,7 +229,7 @@ public class NexusCallerWorkflowImpl implements NexusCallerWorkflow {
 </>
 }>
 
-## 4. Develop the Caller Workflow
+## 4. Develop the caller Workflow
 
 Create two files — `NexusCallerWorkflow.java` and `NexusCallerWorkflowImpl.java` — that define a Workflow which invokes the Nexus Operation.
 
@@ -258,7 +258,7 @@ temporal operator namespace create --namespace my-caller-namespace
 </>
 }>
 
-## 5. Create a Caller Namespace and Nexus Endpoint
+## 5. Create the caller Namespace and Nexus Endpoint
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
 The handler uses the `default` Namespace that was created when you started the dev server.
