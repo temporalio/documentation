@@ -83,6 +83,9 @@ The SDK parallelizes uploads and downloads to minimize latency. When a single Wo
 that exceed the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
 external storage operations to scale well even when a Task carries many large payloads.
 
+If the external store is temporarily unreachable during an upload or download, the operation fails the Workflow Task.
+Temporal automatically retries failed Workflow Tasks, so the operation resumes when the store becomes available again.
+
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
 

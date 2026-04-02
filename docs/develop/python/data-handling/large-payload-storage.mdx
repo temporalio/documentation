@@ -70,8 +70,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    data_converter = dataclasses.replace(
        temporalio.converter.default(),
        external_storage=ExternalStorage(
-           drivers=[driver],
-           payload_size_threshold=0,
+           drivers=[driver]
        ),
    )
 
@@ -89,39 +88,20 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
    <!--SNIPEND-->
 
-   By default, payloads larger than approximately 200 KiB are offloaded to external storage. You can adjust this with
-   the `payload_size_threshold` parameter, or set it to `None` to externalize all payloads regardless of size.
+   By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
+   `payload_size_threshold` parameter, or set it to 1 to externalize all payloads regardless of size. Refer to
+   [Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
    business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
 
-3. (Optional) To route payloads to different buckets, pass a function as the `bucket` parameter instead of a string. The
-   function takes the store context and the payload as arguments, and returns a bucket name, so you can route based on
-   the Activity Task Queue or other context:
-
-   ```python
-   from temporalio.converter import StorageDriverStoreContext, ActivitySerializationContext
-   from temporalio.api.common.v1 import Payload
-
-   QUEUE_BUCKETS = {
-       "queue-a": "bucket-queue-a",
-       "queue-b": "bucket-queue-b",
-   }
-
-   def bucket_selector(ctx: StorageDriverStoreContext, payload: Payload) -> str:
-       if isinstance(ctx.serialization_context, ActivitySerializationContext):
-           queue = ctx.serialization_context.activity_task_queue
-           if queue and queue in QUEUE_BUCKETS:
-               return QUEUE_BUCKETS[queue]
-       return "default-bucket"
-
-   driver = S3StorageDriver(client=driver_client, bucket=bucket_selector)
-   ```
-
 ## Implement a custom storage driver
 
-If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver. The
-following example shows a complete custom driver implementation that uses local disk as the backing store:
+If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
+Ensure the payloads stored in your external storage system are available for the entire lifetime of the Workflow plus
+its retention window. Refer to [lifecycle management](/external-storage#lifecycle) for more information.
+
+The following example shows a complete custom driver implementation that uses local disk as the backing store:
 
 <!--SNIPSTART python-custom-storage-driver-->
 
@@ -186,7 +166,7 @@ class LocalDiskStorageDriver(StorageDriver):
 
 <!--SNIPEND-->
 
-### Extend the StorageDriver class
+### 1. Extend the StorageDriver class
 
 A custom driver extends the `StorageDriver` abstract class and implements three methods:
 
@@ -195,26 +175,49 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
   key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
 
-### Store payloads
+### 2. Store payloads
 
 In `store()`, serialize each payload to bytes with `payload.SerializeToString()`, upload the bytes to your storage
 system, and return a `StorageDriverClaim` with enough information to find the payload later.
 
-### Retrieve payloads
+### 3. Retrieve payloads
 
 In `retrieve()`, download the bytes using the claim data, then reconstruct the payload with
 `payload.ParseFromString(data)`.
 
-### Configure the Data Converter
+### 4. Configure the Data Converter
 
 Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker:
 
 ```python
-from temporalio.converter import DataConverter, ExternalStorage
+import dataclasses
+import temporalio.converter
+from temporalio.converter import ExternalStorage
 
-converter = DataConverter(
+data_converter = dataclasses.replace(
+    temporalio.converter.default(),
     external_storage=ExternalStorage(
         drivers=[MyStorageDriver()],
+    ),
+)
+```
+
+## Configure payload size threshold
+
+You can configure the payload size threshold that triggers external storage. By default, payloads larger than 256 KiB
+are offloaded to external storage. You can adjust this with the `payload_size_threshold` parameter, or set it to 1 to
+externalize all payloads regardless of size.
+
+```python {9}
+import dataclasses
+import temporalio.converter
+from temporalio.converter import ExternalStorage
+
+data_converter = dataclasses.replace(
+    temporalio.converter.default(),
+    external_storage=ExternalStorage(
+        drivers=[driver],
+        payload_size_threshold=1,
     ),
 )
 ```
@@ -224,7 +227,9 @@ converter = DataConverter(
 When you have multiple drivers, such as for hot and cold storage tiers, pass a `driver_selector` function that chooses
 which driver handles each payload:
 
-```python
+```python {8-10}
+from temporalio.converter import ExternalStorage
+
 hot_driver = MyStorageDriver("hot-bucket")
 cold_driver = MyStorageDriver("cold-bucket")
 
