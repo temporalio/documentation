@@ -42,7 +42,7 @@ Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
 
-### Workflow logic requirements {#workflow-logic-requirements}
+## Workflow logic requirements {#workflow-logic-requirements}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -58,7 +58,7 @@ This means there are several things Workflows cannot do such as:
 - Make any random calls
 - Make any not-guaranteed-deterministic calls (e.g. iterating over a dictionary)
 
-#### .NET Task Determinism
+### .NET Task Determinism
 
 Some calls in .NET do unsuspecting non-deterministic things and are easy to accidentally use.
 This is especially true with `Task`s.
@@ -100,7 +100,7 @@ In the near future for modern .NET versions we hope to use the
 [new `TimeProvider` API](https://github.com/dotnet/runtime/issues/36617) which will allow us to control current time and
 timers.
 
-#### Workflow .editorconfig
+### Workflow .editorconfig
 
 Since Workflow code follows some different logic rules than regular C# code, there are some common analyzer rules that developers may want to disable.
 To ensure these are only disabled for Workflows, current recommendation is to use the `.workflow.cs` extension for files containing Workflows.
