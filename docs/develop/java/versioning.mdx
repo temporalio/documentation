@@ -131,8 +131,7 @@ public void processFile(Arguments args) {
 
 In other Temporal SDKs, when you invoke `getVersion` or the patching API, the SDK records an
 `UpsertWorkflowSearchAttribute` Event in the history.
-This adds support for a custom query parameter in the web UI named `TemporalChangeVersion` that allows you to filter Workflows based on their version.
-The Java SDK does not automatically add this attribute, so you'll likely want to do it manually.
+This adds support for a custom query parameter in the web UI named `TemporalChangeVersion` that allows you to filter Workflows based on their version. The Java SDK automatically adds this attribute, so you don't need to do it manually.
 
 Within your Workflow Implementation code you'll need to perform the following steps:
 

@@ -106,6 +106,10 @@ choice.
   includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself
   or a retry of the Nexus Operation itself.
 
+## Fairness
+
+For each hour a Namespace has the _Fairness_ feature enabled, an additional `0.1` Action will be charged per Action in the Namespace.
+
 ## Capacity
 
 - For Namespace Capacity Temporal Resource Units (TRUs), Actions are generated up to the included hourly allocation for
@@ -155,7 +159,3 @@ event history, the Actions count could be higher.
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of
 Actions.
-
-## Fairness
-
-For each hour a Namespace has the _Fairness_ feature enabled, an additional `0.1` Action will be charged per Action in the Namespace.

@@ -24,6 +24,9 @@ Worker Versioning is a Temporal feature that allows you to confidently deploy ne
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
 called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 
+For most teams, Worker Versioning should be the default recommendation for deploying Workflow code changes in
+production. If you can run versioned worker deployments, prefer Worker Versioning over patching.
+
 Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
 
 - Ramping traffic gradually to a new Worker Deployment Version.
@@ -133,6 +136,9 @@ rainbow deployments of your Workers if you're using Kubernetes.
 
 :::
 
+If you cannot yet support blue-green or rainbow style deployments, use [patching](/patching) as a fallback while you
+work toward a versioned deployment model.
+
 ## Configuring a Worker for Versioning
 
 You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning. There are
@@ -208,10 +214,8 @@ const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   taskQueue,
   workerDeploymentOptions: {
-    useWorkerVersioning: true,
+    useWorkerVersioning: false,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
-
-    defaultVersioningBehavior: 'UNSPECIFIED',
   },
   connection: nativeConnection,
 });
