@@ -33,7 +33,7 @@ Workflow. Instead of starting an Activity from within a Workflow Definition, you
 Activity directly from a Temporal Client.
 
 The way you write the Activity and register it with a Worker is identical to [Workflow
-Activities](/develop/dotnet/core-application#develop-activity). The only difference is that you execute a
+Activities](/develop/dotnet/activities/basics#develop-activity). The only difference is that you execute a
 Standalone Activity directly from your Temporal Client.
 
 This page covers the following:
@@ -135,7 +135,7 @@ public record ComposeGreetingInput(string Greeting, string Name);
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
 whether the Activity will be invoked from a Workflow or as a Standalone Activity. See [How to develop
-a Worker](/develop/dotnet/core-application#run-worker-process) for more details on Worker setup and
+a Worker](/develop/dotnet/workers/run-worker-process) for more details on Worker setup and
 configuration options.
 
 [src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
@@ -401,7 +401,7 @@ profile. No code changes are needed.
 
 For full details on connecting to Temporal Cloud, including Namespace creation, certificate
 generation, and authentication options, see
-[Connect to Temporal Cloud](/develop/dotnet/temporal-client#connect-to-temporal-cloud).
+[Connect to Temporal Cloud](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud).
 
 ### Connect with mTLS
 
