@@ -1,7 +1,7 @@
 ---
 id: blob-size-limit-error
-title: Troubleshoot the blob size limit error
-sidebar_label: Blob size limit error
+title: Troubleshoot payload and gRPC message size limit errors
+sidebar_label: Payload and gRPC message size limit errors
 description: Temporal enforces size limits on data passed between Workers and the Temporal Service. Learn about the 2 MB payload limit and 4 MB gRPC message limit, their error messages, and how to resolve them.
 toc_max_heading_level: 4
 keywords:
@@ -28,7 +28,7 @@ When a single payload exceeds this limit, the Temporal Service rejects the reque
 ### Error messages
 
 The error message depends on which operation carried the oversized payload. Examples include:
-- `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes. Input exceeds size limit`
+- `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
 - `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
 ### How to resolve
@@ -59,11 +59,11 @@ The error message depends on which operation carried the oversized payload. Exam
 
 All communication between the Temporal Client, Workers, and the Temporal Service uses gRPC, which enforces a 4 MB limit on each request. This limit applies to the full request, including all payload data and command metadata. For example, when a Workflow schedules multiple Activities in a single Workflow Task, the Worker sends one request containing all those commands to schedule the Activities and their inputs. If the combined size exceeds 4 MB, the gRPC layer rejects the request.
 
-A Workflow can hit this limit even when every individual payload is under 2 MB. Scheduling several Activities with moderate-sized inputs, or hundreds of Activities with tiny inputs in the same Workflow Task can push the combined request past 4 MB. Activity results and other response data are also subject to this limit.
+A Workflow can hit this limit even when every individual payload is under 2 MB. Scheduling several Activities with moderate-sized inputs, or hundreds of Activities with tiny inputs in the same Workflow Task can push the combined request past 4 MB. Activity results are also subject to this limit.
 
 ### Error messages
 
-- `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`: When a Workflow Worker completes a Workflow Task, it sends all the commands the Workflow produced (such as Activity schedules and their inputs) back to the Temporal Service. If that response exceeds 4 MB, the SDK reports this cause. Because replay produces the same oversized response, the Workflow gets stuck in a retry loop that isn't visible in the Event History.
+- `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`: When a Workflow Worker completes a Workflow Task, it sends all the commands the Workflow produced (such as Activity schedules and their inputs) back to the Temporal Service. If that response exceeds 4 MB, the SDK catches the gRPC error and sends a failed Workflow Task response with this cause. Because replay produces the same oversized response, the Workflow gets stuck in a retry loop that isn't visible in the Event History.
 
 - `StartToCloseTimeout`: This error message can be misleading. When an Activity Worker completes an Activity Task, it sends the Activity result back to the Temporal Service. If that result exceeds 4 MB, the gRPC call fails and the Worker can't deliver it. The server never receives the completion and eventually times out the Activity. The actual `ResourceExhausted` gRPC error only appears in Worker logs.
 
@@ -77,4 +77,4 @@ A Workflow can hit this limit even when every individual payload is under 2 MB. 
     1. Execute Activities in smaller batches within a single Workflow Task.
     2. Introduce brief pauses or sleeps between batches.
 
-2. If the size of the request is large because of payload sizes, not the number of commands, you can resolve the issue by shrinking the size of the payloads. Refer to the [Payload size limit](#payload-size-limit) section for more details. However, this won't help if the payloads are already small and the issue is caused by the number of commands. You'll need to break the request into smaller batches.
+2. If the request is large because of payload sizes rather than the number of commands, refer to the [Payload size limit](#payload-size-limit) section for solutions.
