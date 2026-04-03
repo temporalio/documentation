@@ -12,38 +12,69 @@ tags:
   - Failures
 ---
 
-Temporal enforces size limits on the data that passes between the Temporal Client, Workers, and the Temporal Service. There are two distinct limits: a 2 MB limit on individual Payloads enforced by the Temporal Service (configurable on self-hosted deployments, fixed at 2 MB on Temporal Cloud), and a 4 MB limit on entire gRPC messages enforced by the transport layer. Each produces different error messages and behaviors.
+Temporal enforces size limits on the data that passes between the Temporal Client, Workers, and the Temporal Service. 
+There are two distinct limits, each producing different error messages and behaviors, and they require different solutions: 
+
+- [Payload size limit](#payload-size-limit)
+- [gRPC message size limit](#grpc-message-size-limit)
 
 ## Payload size limit
 
-The Temporal Service enforces a size limit on individual Payloads. This limit defaults to 2 MB and is fixed at 2 MB on Temporal Cloud, but is configurable on self-hosted deployments. A Payload represents the serialized binary data for each input and output of Workflows and Activities. When a single Payload exceeds this limit, the Temporal Service rejects the request and terminates the Workflow.
+The Temporal Service enforces a size limit on individual payloads. This limit is 2 MB on Temporal Cloud, 
+but is configurable on self-hosted deployments with a default of 2 MB. 
+A [payload](/dataconversion#payload) represents the serialized binary data for the input and output of Workflows and Activities. 
+When a single payload exceeds this limit, the Temporal Service rejects the request and terminates the Workflow.
 
-The error message depends on which operation carried the oversized Payload. Examples include:
-- `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
+### Error messages
+
+The error message depends on which operation carried the oversized payload. Examples include:
+- `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes. Input exceeds size limit`
 - `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
 ### How to resolve
 
-1. Use compression with a [custom Payload Codec](/payload-codec) for large payloads. This addresses the immediate issue, but if payload sizes continue to grow, the problem can arise again.
+1. Offload large payloads to an object store to reduce the risk of exceeding payload size limits:
 
-2. Offload large payloads to an external object store:
-   1. Pass references to the stored payloads within the Workflow instead of the actual data.
-   2. Retrieve the payloads from the object store when needed during execution.
+  1. Pass references to the stored payloads within the Workflow instead of the actual data.
+  1. Retrieve the payloads from the object store when needed during execution.
+
+  This is called the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern). 
+  You can implement your own claim check pattern by using a custom [Payload Codec](/payload-codec), 
+  or use [External Storage](/external-storage).
+
+  This is the most reliable way to avoid hitting payload size limits. Consider implementing the claim check pattern 
+  for Workflows and Activities that have the potential to receive or return large payloads, even if they are currently within the limit.
+
+  :::tip Support, stability, and dependency info
+
+  External Storage is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release). All APIs
+  are experimental and may be subject to backwards-incompatible changes. Join the
+  [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
+
+  :::
+
+1. Use compression with a [custom Payload Codec](/payload-codec) for large payloads. This addresses the immediate issue, but if payload sizes continue to grow, the problem can arise again.
 
 ## gRPC message size limit
 
-The gRPC transport layer enforces a 4 MB limit on the entire message between a Worker and the Temporal Service. This limit applies to the full message, not individual Payloads. A Workflow can exceed this limit even when every individual Payload is under 2 MB, if the Workflow schedules enough commands in a single Workflow Task that their combined size exceeds 4 MB.
+All communication between the Temporal Client, Workers, and the Temporal Service uses gRPC, which enforces a 4 MB limit on each request. This limit applies to the full request, including all payload data and command metadata. For example, when a Workflow schedules multiple Activities in a single Workflow Task, the Worker sends one request containing all those commands to schedule the Activities and their inputs. If the combined size exceeds 4 MB, the gRPC layer rejects the request.
 
-When a message exceeds the 4 MB gRPC limit, the Worker can't deliver the response to the Temporal Service. The Workflow Task fails with cause `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. Because replay produces the same oversized response, the Workflow gets stuck in a retry loop that isn't visible in the Event History.
+A Workflow can hit this limit even when every individual payload is under 2 MB. Scheduling several Activities with moderate-sized inputs, or hundreds of Activities with tiny inputs in the same Workflow Task can push the combined request past 4 MB. Activity results and other response data are also subject to this limit.
 
-For Activity results that exceed the gRPC limit, the symptom is different. The Activity completes successfully on the Worker, but the Worker can't deliver the result to the Temporal Service. The server never receives the completion, so the Activity eventually times out with a `StartToCloseTimeout`. The actual `ResourceExhausted` gRPC error only appears in Worker logs.
+### Error messages
+
+- `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`: When a Workflow Worker completes a Workflow Task, it sends all the commands the Workflow produced (such as Activity schedules and their inputs) back to the Temporal Service. If that response exceeds 4 MB, the SDK reports this cause. Because replay produces the same oversized response, the Workflow gets stuck in a retry loop that isn't visible in the Event History.
+
+- `StartToCloseTimeout`: This error message can be misleading. When an Activity Worker completes an Activity Task, it sends the Activity result back to the Temporal Service. If that result exceeds 4 MB, the gRPC call fails and the Worker can't deliver it. The server never receives the completion and eventually times out the Activity. The actual `ResourceExhausted` gRPC error only appears in Worker logs.
 
 ### How to resolve
 
-Break larger batches of commands into smaller batch sizes:
-- Workflow-level batching:
-  1. Modify the Workflow to process Activities or Child Workflows in smaller batches.
-  2. Iterate through each batch, waiting for completion before moving to the next.
-- Workflow Task-level batching:
-  1. Execute Activities in smaller batches within a single Workflow Task.
-  2. Introduce brief pauses or sleeps between batches.
+1. Break larger batches of commands into smaller batch sizes:
+  - Workflow-level batching:
+    1. Modify the Workflow to process Activities or Child Workflows in smaller batches.
+    2. Iterate through each batch, waiting for completion before moving to the next.
+  - Workflow Task-level batching:
+    1. Execute Activities in smaller batches within a single Workflow Task.
+    2. Introduce brief pauses or sleeps between batches.
+
+2. If the size of the request is large because of payload sizes, not the number of commands, you can resolve the issue by shrinking the size of the payloads. Refer to the [Payload size limit](#payload-size-limit) section for more details. However, this won't help if the payloads are already small and the issue is caused by the number of commands. You'll need to break the request into smaller batches.
