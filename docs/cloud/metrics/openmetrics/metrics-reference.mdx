@@ -587,6 +587,21 @@ Does not include the `region` label. Actions are scoped to the Namespace level.
 
 :::
 
+#### temporal\_cloud\_v1\_billable\_action\_count
+
+The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/cloud/actions) for details on exceptions.
+
+| Label | Description |
+| ----- | ----- |
+| `action_type` | The [action](/cloud/actions) type |
+| `temporal_workflow_type` | The workflow type |
+
+:::caution High Cardinality
+
+This metric could have high cardinality depending on number of action types and workflow types.
+
+:::
+
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_total\_action\_throttled\_count
