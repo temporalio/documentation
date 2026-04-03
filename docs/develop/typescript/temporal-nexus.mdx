@@ -147,7 +147,8 @@ A Nexus Service handler is defined using the `nexus-rpc`'s [`serviceHandler`](ht
 Nexus Service handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 A Service handler must provide Operation handlers for each Operation declared by the Service. {/* Added */}
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
-They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
+Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
 
 The `@temporalio/nexus` package provides utilities to help create Nexus Operations that interact with a Temporal namespace: {/* Extended */}
 
@@ -158,8 +159,8 @@ The `@temporalio/nexus` package provides utilities to help create Nexus Operatio
 ### Develop a Synchronous Nexus Operation handler
 
 Simple RPC handlers can be implemented as synchronous Nexus Operation handlers, which is defined in TypeScript as a simple async function. {/* sync operation vs async func is very confusing in this context */}
-The handler function can obtain a Temporal Client, using `getClient()`, which can be used for signaling, querying, and listing Workflows.
-However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+Use `getClient()` from `@temporalio/nexus` to get the Temporal Client for signaling, querying, and listing Workflows.
+Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
 
 <!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["2","4","6-17","37"]}-->
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
@@ -185,6 +186,15 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 });
 ```
 <!--SNIPEND-->
+
+### Use the Temporal Client for Signals, Queries, and Updates
+
+A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
+You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
+All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout).
+The handler receives an AbortSignal via options.signal that is triggered when the deadline is exceeded 
+— pass it to Temporal Client calls to ensure they are canceled if the timeout is reached.
+Updates should be short-lived to stay within this deadline.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -316,15 +326,25 @@ Requesting cancellation of a Cancellation Scope results in requesting cancellati
 The Workflow itself defines the root Cancellation Scope.
 Requesting cancellation of the Workflow therefore propagates the cancellation request to all cancellable operations started by that workflow, including Nexus Operations.
 
-To provide more granular control over cancellation of a specific Nexus Operation, you may explicitly create a new Cancellation Scope, and start the Nexus Operation from within that scope.
-An example demonstrating this can be found at our [nexus cancellation sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-cancellation).
-
 Only asynchronous operations can be canceled in Nexus, since cancellation is sent using an operation token.
 The Workflow or other resources backing the operation may choose to ignore the cancellation request.
 
-Once the caller Workflow completes, the caller's Nexus Machinery will not make any further attempts to cancel operations that are still running.
+When a Nexus operation is started the caller can specify different cancellation types that will control how the caller reacts to cancellation:
+
+- `ABANDON` - Do not request cancellation of the operation.
+- `TRY_CANCEL` - Initiate a cancellation request and immediately report cancellation to the caller. Note that this type doesn't guarantee that cancellation is delivered to the operation handler if the caller exits before the delivery is done.
+- `WAIT_CANCELLATION_REQUESTED` ` Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
+- `WAIT_CANCELLATION_COMPLETED` - Wait for operation completion. Operation may or may not complete as cancelled.
+
+The default is `WAIT_CANCELLATION_COMPLETED`. Users can set a different option on the `StartNexusOperationOptions`.
+
+Once the caller Workflow completes, the caller's Nexus Machinery stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
+
 It's okay to leave operations running in some use cases.
-To ensure cancellations are delivered, wait for all pending operations to finish before exiting the Workflow.
+To ensure cancelations are delivered, wait for all pending operations to deliver their cancellation requests before exiting the Workflow.
+
+To provide more granular control over cancellation of a specific Nexus Operation, you may explicitly create a new Cancellation Scope, and start the Nexus Operation from within that scope.
+An example demonstrating this can be found at our [nexus cancellation sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-cancellation).
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
