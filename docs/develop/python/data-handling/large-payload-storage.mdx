@@ -24,10 +24,6 @@ deployments. When your Workflows or Activities handle data larger than the limit
 storage, such as Amazon S3, and pass a small reference token through the Event History instead. This page shows you how
 to set up External Storage with Amazon S3 and how to implement a custom storage driver.
 
-Your external storage system's lifecycle policy must ensure that payloads remain available for the entire lifetime of
-the Workflow plus its retention window. Refer to [lifecycle management](/external-storage#lifecycle) for more
-information.
-
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
 ## Store and retrieve large payloads with Amazon S3
@@ -36,8 +32,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 ### Prerequisites
 
-- An Amazon S3 bucket that you have write access to. Refer to [lifecycle management](/external-storage#lifecycle) for
-  the required lifecycle policy.
+- An Amazon S3 bucket that you have write access to. Refer to [lifecycle management](/external-storage#lifecycle) to
+  ensure that your payloads remain available for the entire lifetime of the Workflow.
 - The `aioboto3` library is installed and available.
 
 ### Procedure
@@ -89,7 +85,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    <!--SNIPEND-->
 
    By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
-   `payload_size_threshold` parameter, or set it to 1 to externalize all payloads regardless of size. Refer to
+   `payload_size_threshold` parameter, even setting it to 0 to externalize all payloads regardless of size. Refer to
    [Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
@@ -98,8 +94,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 ## Implement a custom storage driver
 
 If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
-Ensure the payloads stored in your external storage system are available for the entire lifetime of the Workflow plus
-its retention window. Refer to [lifecycle management](/external-storage#lifecycle) for more information.
+Store payloads durably so that they survive process crashes and remain available for debugging and auditing after the
+Workflow completes. Refer to [lifecycle management](/external-storage#lifecycle) for retention requirements.
 
 The following example shows a complete custom driver implementation that uses local disk as the backing store:
 
@@ -166,11 +162,14 @@ class LocalDiskStorageDriver(StorageDriver):
 
 <!--SNIPEND-->
 
+The following sections walk through the key parts of the driver implementation.
+
 ### 1. Extend the StorageDriver class
 
 A custom driver extends the `StorageDriver` abstract class and implements three methods:
 
-- `name()` returns a unique string that identifies the driver.
+- `name()` returns a unique string that identifies the driver. This name is used to map a claim back to the correctly
+  configured driver and its configuration parameters.
 - `store()` receives a list of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
@@ -178,8 +177,9 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
 ### 2. Store payloads
 
 In `store()`, convert each Payload protobuf message to bytes with `payload.SerializeToString()` and write the bytes to
-your storage system. The application data has already been serialized by the Payload Converter before it reaches the
-driver.
+your storage system. The application data has already been serialized by the [Payload Converter](/develop/python/data-handling/data-conversion) 
+and [Payload Codec](/develop/python/data-handling/data-encryption) before it reaches the driver. 
+See the [Components of a Data Converter](/dataconversion#data-converter-components) for more details.
 
 Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. Structure your storage keys
 to include the namespace and Workflow ID from the serialization context so that you can identify which Workflow owns each
@@ -194,7 +194,8 @@ returns the payload.
 
 ### 4. Configure the Data Converter
 
-Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker:
+Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker. 
+You can also package your driver as a [plugin](/develop/python/plugins-guide) for easier reuse across services:
 
 ```python
 import dataclasses
@@ -204,7 +205,7 @@ from temporalio.converter import ExternalStorage
 data_converter = dataclasses.replace(
     temporalio.converter.default(),
     external_storage=ExternalStorage(
-        drivers=[MyStorageDriver()],
+        drivers=[LocalDiskStorageDriver()],
     ),
 )
 ```
@@ -224,7 +225,7 @@ data_converter = dataclasses.replace(
     temporalio.converter.default(),
     external_storage=ExternalStorage(
         drivers=[driver],
-        payload_size_threshold=1,
+        payload_size_threshold=0,
     ),
 )
 ```
