@@ -116,7 +116,15 @@ module.exports = {
             'develop/go/schedules',
             'develop/go/converters-and-encryption',
             'develop/go/timers',
-            'develop/go/nexus',
+            {
+              type: 'category',
+              label: 'Temporal Nexus',
+              collapsed: true,
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+              ],
+            },
             'develop/go/child-workflows',
             'develop/go/continue-as-new',
             'develop/go/side-effects',
