@@ -902,6 +902,7 @@ module.exports = {
                 'encyclopedia/data-conversion/failure-converter',
                 'encyclopedia/data-conversion/remote-data-encoding',
                 'encyclopedia/data-conversion/codec-server',
+                'encyclopedia/data-conversion/external-storage',
                 'encyclopedia/data-conversion/key-management',
               ],
             },
