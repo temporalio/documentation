@@ -30,7 +30,6 @@ your application requires non-JSON types, encryption, or payload offloading.
 |                           | [PayloadConverter](/develop/python/data-handling/data-conversion) | [PayloadCodec](/develop/python/data-handling/data-encryption) | [ExternalStorage](/develop/python/data-handling/large-payload-storage) |
 | ------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | **Purpose**               | Serialize application data to bytes                               | Transform encoded payloads (encrypt, compress)                | Offload large payloads to external store                               |
-| **Must be deterministic** | Yes                                                               | No                                                            | No                                                                     |
-| **Default**               | JSON serialization                                                | None (passthrough)                                            | None (passthrough)                                                     |
+| **Default**               | JSON serialization                                                | None (passthrough)                                            | None (all payloads are stored in Workflow History)                      |
 
 For a deeper conceptual explanation, see the [Data Conversion encyclopedia](/dataconversion) and [External Storage](/external-storage).
