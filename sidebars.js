@@ -97,7 +97,6 @@ module.exports = {
           },
           items: [
             'develop/go/set-up-your-local-go',
-            'develop/go/run-a-development-server',
             {
               type: 'category',
               label: 'Workflows',
@@ -915,6 +914,7 @@ module.exports = {
             },
           ],
         },
+        'develop/run-a-development-server',
         'develop/environment-configuration',
         'develop/activity-retry-simulator',
         'develop/worker-performance',
