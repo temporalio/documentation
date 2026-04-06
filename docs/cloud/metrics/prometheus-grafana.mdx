@@ -25,6 +25,15 @@ tags:
 
 import { ZoomingImage } from '@site/src/components';
 
+:::danger PromQL endpoint deprecated
+
+The PromQL endpoint and its `temporal_cloud_v0_*` metrics were deprecated on April 2, 2026 and are no longer accepting new users.
+The PromQL endpoint will be disabled for all users on **October 5, 2026**.
+
+For Grafana setup with the OpenMetrics endpoint, see the [OpenMetrics integrations page](/cloud/metrics/openmetrics/metrics-integrations).
+
+:::
+
 **How to set up Grafana with Temporal Cloud PromQL endpoint to view Cloud metrics.**
 
 Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/), which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
