@@ -720,9 +720,18 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-Please note: [Sticky queues](https://docs.temporal.io/sticky-execution) will affect these values, but only for a few seconds.
-That's because Tasks sent to Sticky queues are not included in the returned values for `ApproximateBacklogCount` and `ApproximateBacklogAge`.
-Inaccuracies diminish as the backlog grows.
+#### Known accuracy limitations {#backlog-accuracy-limitations}
+
+These values are approximate and may be temporarily inaccurate in the following scenarios:
+
+- **Overcount from cancelled Workflows**: When a Workflow is cancelled, its pending Tasks may still be counted in the backlog until they expire.
+  Workers process Tasks in order within a partition, so valid Tasks _can_ be blocked behind invalid (expired) Tasks, but invalid Tasks cannot block other invalid Tasks.
+  The count eventually converges to the correct value as expired Tasks are cleared.
+- **Reset to zero on partition unload**: If no Workers are polling a Task Queue and no new Tasks are added for approximately 5 minutes, the Temporal Service unloads the Task Queue partition from memory.
+  When this happens, `ApproximateBacklogCount` resets to zero until the partition is reloaded (by a Worker polling or a new Task being added).
+  This means that an idle Task Queue with a backlog but no active Workers may temporarily report zero.
+- **Sticky queue exclusion**: [Sticky queues](/sticky-execution) are not included in these values.
+  Because Sticky queue Tasks only remain valid for a few seconds, this inaccuracy diminishes as the backlog grows.
 
 ### `TasksAddRate` and `TasksDispatchRate` {#TasksAddRate-and-TasksDispatchRate}
 
