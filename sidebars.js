@@ -76,6 +76,7 @@ module.exports = {
         },
         'security',
         'evaluate/use-cases-design-patterns',
+        'evaluate/serverless-workers-demo',
       ],
     },
     {
@@ -122,6 +123,7 @@ module.exports = {
             'develop/go/side-effects',
             'develop/go/selectors',
             'develop/go/sessions',
+            'develop/go/serverless-workers',
           ],
         },
         {
@@ -585,6 +587,7 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            'production-deployment/worker-deployments/serverless-workers',
           ],
         },
         'production-deployment/data-encryption',
