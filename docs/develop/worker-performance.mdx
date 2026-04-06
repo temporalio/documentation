@@ -476,48 +476,76 @@ These examples focus on Activities and Local Activities, since Workflow Tasks no
 
 ### Go SDK
 
+**Resource-based tuner:**
+
+<!--SNIPSTART go-resource-based-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
 ```go
-// Using the ResourceBasedTuner in worker options
-tuner, err := resourcetuner.NewResourceBasedTuner(resourcetuner.ResourceBasedTunerOptions{
-    TargetMem: 0.8,
-    TargetCpu: 0.9,
-})
-if err != nil {
-  return err
+func resourceBasedTuner() (worker.Options, error) {
+	tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
+		TargetMem:    0.8,
+		TargetCpu:    0.9,
+		InfoSupplier: sysinfo.SysInfoProvider(),
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: tuner,
+	}, nil
 }
-workerOptions := worker.Options{
-    Tuner: tuner
-}
-// Combining different types
-options := DefaultResourceControllerOptions()
-options.MemTargetPercent = 0.8
-options.CpuTargetPercent = 0.9
-controller := NewResourceController(options)
-wfSS, err := worker.NewFixedSizeSlotSupplier(10)
-if err != nil {
-  return err
-}
-actSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-laSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
-if err != nil {
-  return err
-}
-compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
-    WorkflowSlotSupplier:      wfSS,
-    ActivitySlotSupplier:      actSS,
-    LocalActivitySlotSupplier: laSS,
-    NexusSlotSupplier:         nexusSS,
-})
-if err != nil {
-  return err
-}
-workerOptions := worker.Options{
-    Tuner: compositeTuner
-}
+
 ```
+<!--SNIPEND-->
+
+**Composite tuner:**
+
+A composite tuner lets you mix different slot supplier strategies for each Task type.
+For example, you can use fixed-size slot suppliers for Workflow and Nexus Tasks while using resource-based slot suppliers for Activity and Local Activity Tasks.
+
+<!--SNIPSTART go-composite-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
+```go
+func compositeTuner() (worker.Options, error) {
+	options := worker.DefaultResourceControllerOptions()
+	options.MemTargetPercent = 0.8
+	options.CpuTargetPercent = 0.9
+	options.InfoSupplier = sysinfo.SysInfoProvider()
+	controller := worker.NewResourceController(options)
+	wfSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	actSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	laSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
+		WorkflowSlotSupplier:      wfSS,
+		ActivitySlotSupplier:      actSS,
+		LocalActivitySlotSupplier: laSS,
+		NexusSlotSupplier:         nexusSS,
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: compositeTuner,
+	}, nil
+}
+
+```
+<!--SNIPEND-->
 
 ### Java SDK
 
