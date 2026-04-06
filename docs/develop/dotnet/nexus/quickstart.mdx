@@ -207,9 +207,31 @@ Make sure your local Temporal dev server is running (`temporal server start-dev`
 <SetupStep code={
 <>
 
-<CodeSnippet language="csharp">
-{`// CallerStarter/Program.cs
-using MyNamespace;
+<CodeSnippet language="bash">
+{`dotnet new console -o CallerStarter
+dotnet sln TemporalioHelloWorld.sln \\
+  add CallerStarter/CallerStarter.csproj
+dotnet add CallerStarter/CallerStarter.csproj \\
+  reference Workflow/Workflow.csproj
+dotnet add CallerStarter/CallerStarter.csproj package Temporalio`}
+</CodeSnippet>
+
+</>
+}>
+
+## 6. Add the caller project
+
+Create a `CallerStarter` console project that starts a caller Worker and executes the Workflow.
+
+The commands on the right create a new console project, add it to the solution, reference the Workflow project, and add the Temporalio package.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<CodeSnippet language="csharp" title="CallerStarter/Program.cs">
+{`using MyNamespace;
 using Temporalio.Client;
 using Temporalio.Worker;
 
@@ -244,34 +266,31 @@ try { await workerTask; } catch (OperationCanceledException) { }`}
 </>
 }>
 
-## 6. Run and verify
+## 7. Create the caller starter
 
-Create a `CallerStarter` console project that starts a caller Worker and executes the Workflow.
+Create the `CallerStarter/Program.cs` file with the code on the right.
 
-**Add the CallerStarter project:**
+This brings everything together: the caller Worker hosts `CallerWorkflow`, which uses the Nexus client to invoke `SayHello` on the handler side. The full request flows from the caller Workflow, through the Nexus Endpoint, to the handler Worker running `SayHelloWorkflow`, and back to the caller.
 
-```bash
-dotnet new console -o CallerStarter
-dotnet sln TemporalioHelloWorld.sln add CallerStarter/CallerStarter.csproj
-dotnet add CallerStarter/CallerStarter.csproj reference Workflow/Workflow.csproj
-dotnet add CallerStarter/CallerStarter.csproj package Temporalio
-```
+</SetupStep>
 
-This step brings everything together: the caller Worker hosts `CallerWorkflow`, which uses the Nexus client to invoke `SayHello` on the handler side. The full request flows from the caller Workflow, through the Nexus Endpoint, to the handler Worker running `SayHelloWorkflow`, and back to the caller.
+<SetupStep code={
+<>
 
-**Run the application:**
+<CodeSnippet language="bash" title="Start the handler Worker">
+{`dotnet run --project Worker/Worker.csproj`}
+</CodeSnippet>
 
-1. Start the handler Worker in one terminal:
+<CodeSnippet language="bash" title="Run the caller">
+{`dotnet run --project CallerStarter/CallerStarter.csproj`}
+</CodeSnippet>
 
-```bash
-dotnet run --project Worker/Worker.csproj
-```
+</>
+}>
 
-2. Run the caller in another terminal:
+## 8. Run and verify
 
-```bash
-dotnet run --project CallerStarter/CallerStarter.csproj
-```
+Run the application using the commands on the right.
 
 You should see:
 
