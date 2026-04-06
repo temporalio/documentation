@@ -33,7 +33,6 @@ module.exports = {
             'evaluate/development-production-features/observability',
             'evaluate/development-production-features/data-encryption',
             'evaluate/development-production-features/schedules',
-            'evaluate/development-production-features/worker-versioning',
             'evaluate/development-production-features/cloud-automation',
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
@@ -644,7 +643,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/nexus/index',
               },
-              items: ['develop/typescript/nexus/service-handler'],
+              items: ['develop/typescript/nexus/feature-guide'],
             },
             {
               type: 'category',
@@ -768,7 +767,7 @@ module.exports = {
                 id: 'develop/dotnet/nexus/index',
               },
               items: [
-                'develop/java/nexus/feature-guide',
+                'develop/dotnet/nexus/feature-guide',
               ],
             },
             {
