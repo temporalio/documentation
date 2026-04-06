@@ -158,31 +158,59 @@ workflow.WithActivityOptions(ctx, ao)
 
 This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
 
-Although the Go SDK does not support most third-party logging solutions natively, [our friends at Banzai Cloud](https://github.com/sagikazarmark) built the adapter package [logur](https://github.com/logur/logur) which makes it possible to use third party loggers with minimal overhead.
-Most of the popular logging solutions have existing adapters in Logur, but you can find a full list [in the Logur GitHub project](https://github.com/logur?q=adapter-).
+The Go SDK supports custom loggers via `log.NewStructuredLogger()`, which wraps Go's standard [`slog.Logger`](https://pkg.go.dev/log/slog) (Go 1.21+).
+Because most modern logging libraries (zap, zerolog, logrus, etc.) can back a `slog.Handler`, `slog` serves as the universal bridge to third-party loggers.
 
-Here is an example of using Logur to support [Logrus](https://github.com/sirupsen/logrus):
+**Using slog directly:**
 
 ```go
-package main
 import (
-  "go.temporal.io/sdk/client"
+	"log/slog"
+	"os"
 
-	"github.com/sirupsen/logrus"
-	logrusadapter "logur.dev/adapter/logrus"
-	"logur.dev/logur"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/log"
 )
 
 func main() {
-  // ...
-  logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
-  clientOptions := client.Options{
-    Logger: logger,
-  }
-  temporalClient, err := client.Dial(clientOptions)
-  // ...
+	// ...
+	slogHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
+	logger := log.NewStructuredLogger(slog.New(slogHandler))
+	clientOptions := client.Options{
+		Logger: logger,
+	}
+	temporalClient, err := client.Dial(clientOptions)
+	// ...
 }
 ```
+
+**Bridging a third-party logger through slog (example with zap):**
+
+```go
+import (
+	"log/slog"
+
+	"go.uber.org/zap"
+	"go.uber.org/zap/exp/zapslog"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/log"
+)
+
+func main() {
+	// ...
+	zapLogger, _ := zap.NewProduction()
+	handler := zapslog.NewHandler(zapLogger.Core())
+	logger := log.NewStructuredLogger(slog.New(handler))
+	clientOptions := client.Options{
+		Logger: logger,
+	}
+	temporalClient, err := client.Dial(clientOptions)
+	// ...
+}
+```
+
+As an alternative, you can implement the `log.Logger` interface directly.
+The Temporal samples repo has a [zap adapter](https://github.com/temporalio/samples-go/blob/main/zapadapter/zap_adapter.go) that can be used as a reference.
 
 ## Visibility APIs {#visibility}
 
