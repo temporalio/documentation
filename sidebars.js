@@ -33,6 +33,7 @@ module.exports = {
             'evaluate/development-production-features/observability',
             'evaluate/development-production-features/data-encryption',
             'evaluate/development-production-features/schedules',
+            'evaluate/development-production-features/worker-versioning',
             'evaluate/development-production-features/cloud-automation',
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
@@ -113,7 +114,6 @@ module.exports = {
                 'develop/go/workflows/cancellation',
                 'develop/go/workflows/timeouts',
                 'develop/go/workflows/message-passing',
-                'develop/go/workflows/enriching-ui',
                 'develop/go/workflows/schedules',
                 'develop/go/workflows/timers',
                 'develop/go/workflows/selectors',
@@ -152,7 +152,6 @@ module.exports = {
                 'develop/go/workers/run-worker-process',
                 'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
-                'develop/go/workers/observability',
               ],
             },
             {
@@ -163,13 +162,36 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/client/index',
               },
-              items: ['develop/go/client/temporal-client', 'develop/go/client/namespaces'],
+              items: [
+                'develop/go/client/temporal-client',
+                'develop/go/client/namespaces'
+              ],
             },
             {
               type: 'category',
               label: 'Temporal Nexus',
               collapsed: true,
-              items: ['develop/go/nexus/quickstart', 'develop/go/nexus/feature-guide'],
+              link: {
+                type: 'doc',
+                id: 'develop/go/nexus/index',
+              },
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/platform/index',
+              },
+              items: [
+                'develop/go/platform/observability',
+                'develop/go/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -215,7 +237,6 @@ module.exports = {
                 'develop/java/workflows/message-passing',
                 'develop/java/workflows/cancellation',
                 'develop/java/workflows/timeouts',
-                'develop/java/workflows/enriching-ui',
                 'develop/java/workflows/schedules',
                 'develop/java/workflows/timers',
                 'develop/java/workflows/side-effects',
@@ -248,7 +269,6 @@ module.exports = {
               },
               items: [
                 'develop/java/workers/run-worker-process',
-                'develop/java/workers/observability',
               ],
             },
             {
@@ -274,7 +294,20 @@ module.exports = {
               },
               items: [
                 'develop/java/nexus/quickstart',
-                'develop/java/nexus/feature-guide'
+                'develop/java/nexus/feature-guide',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/java/platform/index',
+              },
+              items: [
+                'develop/java/platform/observability',
+                'develop/java/platform/enriching-ui',
               ],
             },
             {
@@ -330,7 +363,6 @@ module.exports = {
                 'develop/php/workflows/cancellation',
                 'develop/php/workflows/timeouts',
                 'develop/php/workflows/message-passing',
-                'develop/php/workflows/enriching-ui',
                 'develop/php/workflows/schedules',
                 'develop/php/workflows/timers',
                 'develop/php/workflows/side-effects',
@@ -362,7 +394,6 @@ module.exports = {
               },
               items: [
                 'develop/php/workers/run-worker-process',
-                'develop/php/workers/observability',
               ]
             },
             {
@@ -375,6 +406,19 @@ module.exports = {
               },
               items: [                
                 'develop/php/client/temporal-client',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/php/platform/index',
+              },
+              items: [
+                'develop/php/platform/observability',
+                'develop/php/platform/enriching-ui',
               ],
             },
             {
@@ -417,7 +461,6 @@ module.exports = {
                 'develop/python/workflows/cancellation',
                 'develop/python/workflows/timeouts',
                 'develop/python/workflows/message-passing',
-                'develop/python/workflows/enriching-ui',
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
@@ -451,7 +494,6 @@ module.exports = {
               items: [
                 'develop/python/workers/run-worker-process',
                 'develop/python/workers/interceptors',
-                'develop/python/workers/observability',
               ],
             },
             {
@@ -477,6 +519,19 @@ module.exports = {
               items: [
                 'develop/python/nexus/quickstart',
                 'develop/python/nexus/feature-guide',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/python/platform/index',
+              },
+              items: [
+                'develop/python/platform/observability',
+                'develop/python/platform/enriching-ui',
               ],
             },
             {
@@ -534,7 +589,6 @@ module.exports = {
                 'develop/typescript/workflows/cancellation',
                 'develop/typescript/workflows/cancellation-scopes',
                 'develop/typescript/workflows/timeouts',
-                'develop/typescript/workflows/enriching-ui',
                 'develop/typescript/workflows/schedules',
                 'develop/typescript/workflows/timers',
                 'develop/typescript/workflows/versioning',
@@ -567,7 +621,6 @@ module.exports = {
               items: [
                 'develop/typescript/workers/run-worker-process',
                 'develop/typescript/workers/interceptors',
-                'develop/typescript/workers/observability',
               ],
             },
             {
@@ -591,7 +644,20 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/nexus/index',
               },
-              items: ['develop/typescript/nexus/quickstart', 'develop/typescript/nexus/feature-guide'],
+              items: ['develop/typescript/nexus/service-handler'],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/typescript/platform/index',
+              },
+              items: [
+                'develop/typescript/platform/observability',
+                'develop/typescript/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -645,7 +711,6 @@ module.exports = {
                 'develop/dotnet/workflows/cancellation',
                 'develop/dotnet/workflows/timeouts',
                 'develop/dotnet/workflows/message-passing',
-                'develop/dotnet/workflows/enriching-ui',
                 'develop/dotnet/workflows/schedules',
                 'develop/dotnet/workflows/timers',
                 'develop/dotnet/workflows/dynamic-workflow',
@@ -680,7 +745,6 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/workers/run-worker-process',
-                'develop/dotnet/workers/observability',
               ]
             },
             {
@@ -704,8 +768,20 @@ module.exports = {
                 id: 'develop/dotnet/nexus/index',
               },
               items: [
-                'develop/dotnet/nexus/quickstart',
-                'develop/dotnet/nexus/feature-guide'
+                'develop/java/nexus/feature-guide',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/platform/index',
+              },
+              items: [
+                'develop/dotnet/platform/observability',
+                'develop/dotnet/platform/enriching-ui',
               ],
             },
             {
@@ -750,7 +826,6 @@ module.exports = {
                 'develop/ruby/workflows/cancellation',
                 'develop/ruby/workflows/timeouts',
                 'develop/ruby/workflows/message-passing',
-                'develop/ruby/workflows/enriching-ui',
                 'develop/ruby/workflows/schedules',
                 'develop/ruby/workflows/timers',
                 'develop/ruby/workflows/futures',
@@ -785,7 +860,6 @@ module.exports = {
               },
               items: [
                 'develop/ruby/workers/run-worker-process',
-                'develop/ruby/workers/observability',
               ]
             },
             {
@@ -798,6 +872,19 @@ module.exports = {
               },
               items: [
                 'develop/ruby/client/temporal-client',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Platform',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/ruby/platform/index',
+              },
+              items: [
+                'develop/ruby/platform/observability',
+                'develop/ruby/platform/enriching-ui',
               ],
             },
             {
