@@ -116,7 +116,15 @@ module.exports = {
             'develop/go/schedules',
             'develop/go/converters-and-encryption',
             'develop/go/timers',
-            'develop/go/nexus',
+            {
+              type: 'category',
+              label: 'Temporal Nexus',
+              collapsed: true,
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+              ],
+            },
             'develop/go/child-workflows',
             'develop/go/continue-as-new',
             'develop/go/side-effects',
@@ -150,7 +158,15 @@ module.exports = {
             'develop/java/schedules',
             'develop/java/converters-and-encryption',
             'develop/java/timers',
-            'develop/java/nexus',
+            {
+              type: 'category',
+              label: 'Temporal Nexus',
+              collapsed: true,
+              items: [
+                'develop/java/nexus/quickstart',
+                'develop/java/nexus/feature-guide',
+              ],
+            },
             'develop/java/child-workflows',
             'develop/java/continue-as-new',
             'develop/java/side-effects',
