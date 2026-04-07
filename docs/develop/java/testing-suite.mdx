@@ -280,12 +280,238 @@ Activity cancellation lets Activities know they don't need to continue work and 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
+For more details on mocking activities, see [sample unit tests](#sample-unit-tests).
 
 ### How to mock Nexus Operations {#mock-nexus-operations}
 
-Mock the Nexus Operation invocation when unit testing your Workflows.
+When integration testing Workflows with a Worker, you can mock Nexus operations by providing mock Nexus Service handlers to the Worker.
+Alternatively, you could just mock the Nexus service itself.
 
-When integration testing Workflows with a Worker, you can mock Nexus Operations by providing mock Nexus Service implementations to the Worker.
+You can find example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [this test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
+These samples show how to call Nexus services in tests using the Temporal testing package and also how to mock them, for both JUnit 4 and 5.
+Detailed explanatory comments are included in the code in the repository.
+
+To mock Nexus handlers, create a Rule (for JUnit4) or Extension (for JUnit5) from the Temporal testing package, just as in the [sample unit tests](#sample-unit-tests) and add a call to `setNexusServiceImplementation` to the builder.
+That sets up the Nexus endpoints needed for testing as well as the Nexus handler workflows defined by the Nexus Service implementation.
+Everything is created and set up by the Temporal Testing package, so no more work is needed than that!
+
+You will need to create workers for each handler just as normal, using either `setWorkflowTypes` (for JUnit4) or `registerWorkflowImplementationTypes` (for JUnit5).
+With that in place, you can then mock a Nexus endpoint exactly like any other workflow - again, just as in [the sample unit tests](#sample-unit-tests) above.
+
+The following are samples derived from [the test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller) to demonstrate this.
+
+#### Mocking Nexus handlers with JUnit4
+{/* SNIPSTART java-nexus-sample-junit4-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java)
+```java
+public class CallerWorkflowMockTest {
+  @Rule
+  public TestWorkflowRule testWorkflowRule =
+      TestWorkflowRule.newBuilder()
+          .setNexusServiceImplementation(new SampleNexusServiceImpl())
+          .setWorkflowTypes(HelloCallerWorkflowImpl.class)
+          .build();
+
+  @Test
+  public void testHelloWorkflow() {
+    testWorkflowRule
+        .getWorker()
+        // Workflows started by a Nexus service can be mocked just like any other workflow
+        .registerWorkflowImplementationFactory(
+            HelloHandlerWorkflow.class,
+            () -> {
+              HelloHandlerWorkflow wf = mock(HelloHandlerWorkflow.class);
+              when(wf.hello(any())).thenReturn(new SampleNexusService.HelloOutput("Hello Mock World"));
+              return wf;
+            });
+
+    // Now create the caller workflow
+    HelloCallerWorkflow workflow =
+        testWorkflowRule
+            .getWorkflowClient()
+            .newWorkflowStub(
+                HelloCallerWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
+    String greeting = workflow.hello("World", SampleNexusService.Language.EN);
+    assertEquals("Hello Mock World", greeting);
+
+  }
+}
+```
+<!--SNIPEND-->
+
+#### Mocking Nexus handlers with JUnit5
+{/* SNIPSTART java-nexus-sample-junit5-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java)
+```java
+public class CallerWorkflowJunit5MockTest {
+
+  @RegisterExtension
+  public static final TestWorkflowExtension testWorkflowExtension =
+      TestWorkflowExtension.newBuilder()
+          // Register the Nexus service as usual and mock things in the unit tests as needed
+          .setNexusServiceImplementation(new SampleNexusServiceImpl())
+          .registerWorkflowImplementationTypes(HelloCallerWorkflowImpl.class)
+          .build();
+
+  @Test
+  public void testHelloWorkflow(
+          TestWorkflowEnvironment testEnv, Worker worker, HelloCallerWorkflow workflow) {
+    // Workflows started by a Nexus service can be mocked just like any other workflow
+    worker.registerWorkflowImplementationFactory(
+        HelloHandlerWorkflow.class,
+        () -> {
+          HelloHandlerWorkflow mockHandler = mock(HelloHandlerWorkflow.class);
+          when(mockHandler.hello(any()))
+              .thenReturn(new SampleNexusService.HelloOutput("Hello Mock World"));
+          return mockHandler;
+        });
+
+    // Execute a workflow waiting for it to complete.
+    String greeting = workflow.hello("World", SampleNexusService.Language.EN);
+    assertEquals("Hello Mock World", greeting);
+  }
+}
+```
+<!--SNIPEND-->
+
+An alternative approach is to simply mock the Nexus service itself, instead of mocking the handlers.
+This is useful if you just want to test the calling logic but can't easily mock the Nexus handlers.
+
+The code will just mock the implementation of the SampleNexusService class with the handler methods, but will need those methods stubbed in for the testing framework.
+Those methods can be directly mocked with static return values, or else they can return an instance variable which each unit test can modify to return a desired value.
+
+#### Mocking the Nexus Service with JUnit4
+{/* SNIPSTART java-nexus-service-sample-junit4-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java)
+```java
+public class NexusServiceMockTest {
+
+  private final SampleNexusService mockNexusService = mock(SampleNexusService.class);
+
+  /**
+   * A test-only Nexus service implementation that delegates to the Mockito mock defined above. The
+   * operation is implemented as a synchronous handler that forward calls to the mock, allowing
+   * full control over return values and verification of inputs.
+   */
+  @ServiceImpl(service = SampleNexusService.class)
+  public class TestNexusServiceImpl {
+
+    @OperationImpl
+    @SuppressWarnings("DirectInvocationOnMock")
+    public OperationHandler<SampleNexusService.HelloInput, SampleNexusService.HelloOutput> hello() {
+      return OperationHandler.sync((ctx, details, input) -> mockNexusService.hello(input));
+    }
+  }
+
+  // Using OperationHandler.sync for the operation bypasses the need for a backing workflow,
+  // returning results inline just like a synchronous call.
+
+  @Rule
+  public TestWorkflowRule testWorkflowRule =
+      TestWorkflowRule.newBuilder()
+          .setNexusServiceImplementation(new TestNexusServiceImpl())
+          .setWorkflowTypes(HelloCallerWorkflowImpl.class)
+          .build();
+
+  @Test
+  public void testHelloCallerWithMockedService() {
+    when(mockNexusService.hello(any()))
+        .thenReturn(new SampleNexusService.HelloOutput("Bonjour World"));
+
+    HelloCallerWorkflow workflow =
+        testWorkflowRule
+            .getWorkflowClient()
+            .newWorkflowStub(
+                HelloCallerWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
+
+    String result = workflow.hello("World", SampleNexusService.Language.FR);
+    assertEquals("Bonjour World", result);
+
+    // Verify the Nexus service was called with the correct name and language
+    verify(mockNexusService)
+        .hello(
+            argThat(
+                input ->
+                    "World".equals(input.getName())
+                        && SampleNexusService.Language.FR == input.getLanguage()));
+
+    // Verify the operation was called exactly once and no other operations were invoked
+    verify(mockNexusService, times(1)).hello(any());
+  }
+}
+```
+<!--SNIPEND-->
+
+#### Mocking the Nexus Service with JUnit5
+{/* SNIPSTART java-nexus-service-sample-junit5-mock */}
+[core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java)
+```java
+public class NexusServiceJunit5Test {
+
+  private final SampleNexusService mockNexusService = mock(SampleNexusService.class);
+
+  /**
+   * A test-only Nexus service implementation that delegates to the Mockito mock defined above. The
+   * operation is implemented as a synchronous handler that forward calls to the mock, allowing
+   * full control over return values and verification of inputs.
+   */
+  @ServiceImpl(service = SampleNexusService.class)
+  public class TestNexusServiceImpl {
+
+    @OperationImpl
+    @SuppressWarnings("DirectInvocationOnMock")
+    public OperationHandler<SampleNexusService.HelloInput, SampleNexusService.HelloOutput> hello() {
+      return OperationHandler.sync((ctx, details, input) -> mockNexusService.hello(input));
+    }
+  }
+
+  // Using OperationHandler.sync for both operations bypasses the need for a backing workflow,
+  // returning results inline just like a synchronous call.
+
+
+  @RegisterExtension
+  public final TestWorkflowExtension testWorkflowExtension =
+      TestWorkflowExtension.newBuilder()
+          // If a Nexus service is registered as part of the test as in the following line of code,
+          // the TestWorkflowExtension will, by default, automatically create a Nexus service
+          // endpoint and workflows registered as part of the TestWorkflowExtension will
+          // automatically inherit the endpoint if none is set.
+          .setNexusServiceImplementation(new TestNexusServiceImpl())
+          // registerWorkflowImplementationTypes will take the classes given and create workers for
+          // them, enabling workflows to run.
+          // Since both operations are mocked with OperationHandler.sync, no backing workflow is
+          // needed for hello — only the caller workflow types need to be registered.
+          .registerWorkflowImplementationTypes(HelloCallerWorkflowImpl.class)
+          // The workflow will start before each test, and will shut down after each test.
+          // See CallerWorkflowTest for an example of how to control this differently if needed.
+          .build();
+
+  // The TestWorkflowExtension extension in the Temporal testing library creates the
+  // arguments to the test cases and initializes them from the extension setup call above.
+  @Test
+  public void testHelloWorkflow(
+      TestWorkflowEnvironment testEnv, Worker worker, HelloCallerWorkflow workflow) {
+
+    // Set the mock value to return
+    when(mockNexusService.hello(any()))
+        .thenReturn(new SampleNexusService.HelloOutput("Hello Mock World"));
+
+    // Execute a workflow waiting for it to complete.
+    String greeting = workflow.hello("World", SampleNexusService.Language.EN);
+    assertEquals("Hello Mock World", greeting);
+
+    // Verify the operation was called exactly once and no other operations were invoked
+    verify(mockNexusService, times(1)).hello(any());
+    // Verify the Nexus service was called with the correct input
+    verify(mockNexusService).hello(argThat(input -> "World".equals(input.getName())));
+
+    verifyNoMoreInteractions(mockNexusService);
+  }
+}
+```
+<!--SNIPEND-->
 
 ### How to skip time {#skip-time}
 
