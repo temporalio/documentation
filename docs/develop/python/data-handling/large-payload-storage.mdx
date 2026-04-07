@@ -60,19 +60,18 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
    ```python
    import dataclasses
-   import temporalio.converter
-   from temporalio.converter import ExternalStorage
+   from temporalio.client import Client, ClientConfig
+   from temporalio.converter import DataConverter, ExternalStorage
+   from temporalio.worker import Worker
 
    data_converter = dataclasses.replace(
-       temporalio.converter.default(),
-       external_storage=ExternalStorage(
-           drivers=[driver]
-       ),
+       DataConverter.default,
+       external_storage=ExternalStorage(drivers=[driver]),
    )
 
-   connect_config = ClientConfig.load_client_connect_config()
+   client_config = ClientConfig.load_client_connect_config()
 
-   client = await Client.connect(**connect_config, data_converter=data_converter)
+   client = await Client.connect(**client_config, data_converter=data_converter)
 
    worker = Worker(
        client,
@@ -105,7 +104,7 @@ development and testing only. In production, use a durable storage system that i
 ```python
 import os
 import uuid
-from typing import Sequence
+from collections.abc import Sequence
 
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import (
@@ -113,6 +112,7 @@ from temporalio.converter import (
     StorageDriverClaim,
     StorageDriverStoreContext,
     StorageDriverRetrieveContext,
+    StorageDriverWorkflowInfo,
 )
 
 
@@ -131,9 +131,9 @@ class LocalDiskStorageDriver(StorageDriver):
         os.makedirs(self._store_dir, exist_ok=True)
 
         prefix = self._store_dir
-        sc = context.serialization_context
-        if sc is not None and hasattr(sc, "workflow_id"):
-            prefix = os.path.join(self._store_dir, sc.namespace, sc.workflow_id)
+        target = context.target
+        if isinstance(target, StorageDriverWorkflowInfo) and target.id:
+            prefix = os.path.join(self._store_dir, target.namespace, target.id)
             os.makedirs(prefix, exist_ok=True)
 
         claims = []
@@ -142,7 +142,7 @@ class LocalDiskStorageDriver(StorageDriver):
             file_path = os.path.join(prefix, key)
             with open(file_path, "wb") as f:
                 f.write(payload.SerializeToString())
-            claims.append(StorageDriverClaim(claim_data={"path": file_path}))
+            claims.append(StorageDriverClaim(data={"path": file_path}))
         return claims
 
     async def retrieve(
@@ -152,11 +152,11 @@ class LocalDiskStorageDriver(StorageDriver):
     ) -> list[Payload]:
         payloads = []
         for claim in claims:
-            file_path = claim.claim_data["path"]
+            file_path = claim.data["path"]
             with open(file_path, "rb") as f:
-                data = f.read()
+                raw = f.read()
             payload = Payload()
-            payload.ParseFromString(data)
+            payload.ParseFromString(raw)
             payloads.append(payload)
         return payloads
 ```
@@ -169,8 +169,9 @@ The following sections walk through the key parts of the driver implementation.
 
 A custom driver extends the `StorageDriver` abstract class and implements three methods:
 
-- `name()` returns a unique string that identifies the driver. This name is used to map a claim back to the correctly
-  configured driver and its configuration parameters.
+- `name()` returns a unique string that identifies the driver. This name is embedded in the reference payload stored in
+  Event History and is used to map a claim back to the correctly configured driver and its configuration parameters.
+  Changing the name after payloads have been stored breaks retrieval.
 - `store()` receives a list of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
@@ -182,10 +183,10 @@ your storage system. The application data has already been serialized by the [Pa
 and [Payload Codec](/develop/python/data-handling/data-encryption) before it reaches the driver.
 See the [data conversion pipeline](/external-storage#data-pipeline) for more details.
 
-Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. Consider structuring your
-storage keys to include the namespace and Workflow ID from the serialization context so that you can identify which
-Workflow owns each payload. Within that scope, content-addressable keys (such as a SHA-256 hash of the payload bytes)
-can help deduplicate identical payloads.
+Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `context.target`
+provides identity information (namespace, Workflow ID, or Activity ID) depending on the operation. Consider structuring
+your storage keys to include this information so that you can identify which Workflow owns each payload. Within that
+scope, content-addressable keys (such as a SHA-256 hash of the payload bytes) can help deduplicate identical payloads.
 
 ### 3. Retrieve payloads
 
@@ -200,11 +201,10 @@ You can also package your driver as a [plugin](/develop/python/plugins-guide) fo
 
 ```python
 import dataclasses
-import temporalio.converter
-from temporalio.converter import ExternalStorage
+from temporalio.converter import DataConverter, ExternalStorage
 
 data_converter = dataclasses.replace(
-    temporalio.converter.default(),
+    DataConverter.default,
     external_storage=ExternalStorage(
         drivers=[LocalDiskStorageDriver()],
     ),
@@ -217,13 +217,12 @@ You can configure the payload size threshold that triggers external storage. By 
 are offloaded to external storage. You can adjust this with the `payload_size_threshold` parameter, or set it to 0 to
 externalize all payloads regardless of size.
 
-```python {9}
+```python
 import dataclasses
-import temporalio.converter
-from temporalio.converter import ExternalStorage
+from temporalio.converter import DataConverter, ExternalStorage
 
 data_converter = dataclasses.replace(
-    temporalio.converter.default(),
+    DataConverter.default,
     external_storage=ExternalStorage(
         drivers=[driver],
         payload_size_threshold=0,
@@ -233,8 +232,9 @@ data_converter = dataclasses.replace(
 
 ## Use multiple storage drivers
 
-When you register multiple drivers, pass a `driver_selector` function that chooses which driver handles each payload.
-Return `None` from the selector to keep a specific payload inline.
+When you register multiple drivers, you must provide a `driver_selector` function that chooses which driver stores each
+payload. Any driver in the list that is not selected for storing is still available for retrieval, which is useful when
+migrating between storage backends. Return `None` from the selector to keep a specific payload inline in Event History.
 
 Multiple drivers are useful in scenarios such as:
 
@@ -245,7 +245,7 @@ Multiple drivers are useful in scenarios such as:
   at the cost of durability, while others require a durable backend like S3. Use the selector to route based on
   Workflow context.
 
-```python {8-10}
+```python
 from temporalio.converter import ExternalStorage
 
 preferred_driver = S3StorageDriver(client=s3_client, bucket="my-bucket")
@@ -254,5 +254,30 @@ legacy_driver = LegacyStorageDriver()
 ExternalStorage(
     drivers=[preferred_driver, legacy_driver],
     driver_selector=lambda context, payload: preferred_driver,
+)
+```
+
+For more complex selection logic, use a callable that reads from the `StorageDriverStoreContext`. The following example
+uses a feature flag to gradually roll out external storage to a subset of Workflows:
+
+```python
+import temporalio.converter
+from temporalio.api.common.v1 import Payload
+
+def feature_flag_selector(
+    context: temporalio.converter.StorageDriverStoreContext, _payload: Payload
+) -> temporalio.converter.StorageDriver | None:
+    workflow_id = (
+        context.target.id
+        if isinstance(context.target, temporalio.converter.StorageDriverWorkflowInfo)
+        else None
+    )
+    if is_external_storage_enabled(workflow_id):
+        return my_driver
+    return None
+
+ExternalStorage(
+    drivers=[my_driver],
+    driver_selector=feature_flag_selector,
 )
 ```
