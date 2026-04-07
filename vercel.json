@@ -1293,6 +1293,41 @@
       "source": "/cloud/billing-reports",
       "destination": "/cloud/billing-api",
       "permanent": true
+    },
+    {
+      "source": "/develop/go/core-application",
+      "destination": "/develop/go",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/core-application",
+      "destination": "/develop/java",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/core-application",
+      "destination": "/develop/python",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/core-application",
+      "destination": "/develop/php",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/core-application",
+      "destination": "/develop/typescript",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/core-application",
+      "destination": "/develop/dotnet",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/core-application",
+      "destination": "/develop/ruby",
+      "permanent": true
     }
   ]
 }
