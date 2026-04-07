@@ -769,6 +769,7 @@ module.exports = {
                 id: 'develop/dotnet/nexus/index',
               },
               items: [
+                'develop/dotnet/nexus/quickstart',
                 'develop/dotnet/nexus/feature-guide',
               ],
             },
