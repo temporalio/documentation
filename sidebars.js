@@ -545,7 +545,20 @@ module.exports = {
                 'develop/python/best-practices/testing-suite',
                 'develop/python/best-practices/python-sdk-sandbox',
                 'develop/python/best-practices/debugging',
-                'develop/python/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/python/best-practices/data-handling',
+                  },
+                  items: [
+                    'develop/python/best-practices/data-conversion',
+                    'develop/python/best-practices/data-encryption',
+                    'develop/python/best-practices/large-payload-storage',
+                  ],
+                },
                 'develop/python/best-practices/python-sdk-sync-vs-async',
               ],
             },
