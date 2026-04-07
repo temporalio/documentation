@@ -250,12 +250,15 @@ migrating between storage backends. Return `None` from the selector to keep a sp
 
 Multiple drivers are useful in scenarios such as:
 
-- **Driver migration.** Your Worker needs to retrieve payloads created by clients that use a different driver than the
+- Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the
   one you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads.
   The old driver remains available for retrieving existing claims.
-- **Latency vs. durability tradeoffs.** Some Workflow types may benefit from a faster storage backend (such as Redis)
+- Latency vs. durability tradeoffs. Some Workflow types may benefit from a faster storage backend 
   at the cost of durability, while others require a durable backend like S3. Use the selector to route based on
   Workflow context.
+
+The following example registers two drivers but always selects `preferred_driver` for new payloads. The `legacy_driver`
+is only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART python-external-storage-multiple-drivers-->
 
@@ -268,35 +271,6 @@ legacy_driver = LegacyStorageDriver()
 ExternalStorage(
     drivers=[preferred_driver, legacy_driver],
     driver_selector=lambda context, payload: preferred_driver,
-)
-```
-
-<!--SNIPEND-->
-
-For more complex selection logic, use a callable that reads from the `StorageDriverStoreContext`. The following example
-uses a feature flag to gradually roll out external storage to a subset of Workflows:
-
-<!--SNIPSTART python-external-storage-feature-flag-selector-->
-
-```python
-import temporalio.converter
-from temporalio.api.common.v1 import Payload
-
-def feature_flag_selector(
-    context: temporalio.converter.StorageDriverStoreContext, _payload: Payload
-) -> temporalio.converter.StorageDriver | None:
-    workflow_id = (
-        context.target.id
-        if isinstance(context.target, temporalio.converter.StorageDriverWorkflowInfo)
-        else None
-    )
-    if is_external_storage_enabled(workflow_id):
-        return my_driver
-    return None
-
-ExternalStorage(
-    drivers=[my_driver],
-    driver_selector=feature_flag_selector,
 )
 ```
 
