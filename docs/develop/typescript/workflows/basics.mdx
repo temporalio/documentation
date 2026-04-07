@@ -1,0 +1,213 @@
+---
+id: basics
+title: Workflow basics - TypeScript SDK
+description: Shows how to create a Workflow with the TypeScript SDK
+sidebar_label: Workflow basics
+slug: /develop/typescript/workflows/basics
+toc_max_heading_level: 3
+tags:
+  - TypeScript SDK
+  - Temporal SDKs
+  - Workflow
+---
+
+## How to develop a Workflow {#develop-workflows}
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a
+[Workflow Definition](/workflow-definition).
+
+In the Temporal TypeScript SDK programming model, Workflow Definitions are _just functions_, which can store state and
+orchestrate Activity Functions. The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the
+system to say hello.
+
+A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
+
+```typescript
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(args: ExampleArgs): Promise<{ greeting: string }> {
+  const greeting = await greet(args.name);
+  return { greeting };
+}
+```
+
+## How to define Workflow parameters {#workflow-parameters}
+
+Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
+parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
+Workflow Definition parameters must be serializable.
+
+You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file
+and pass those parameters to `workflow.ts` through your Workflow function.
+
+Start a Workflow with the parameters that are in the `client.ts` file. In this example we set the `name` parameter to
+`Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
+
+`client.ts`
+
+```typescript
+import { example } from './workflows';
+
+...
+await client.workflow.start(example, {
+  args: [{ name: 'Temporal', born: 2019 }],
+  taskQueue: 'your-queue',
+  workflowId: 'business-meaningful-id',
+});
+```
+
+In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is
+a name we can now use to describe the requirement in the previous example. It still represents having the two properties
+called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type
+`ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of
+`await client.workflow.start()` and its resulting value.
+
+```ts
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({ name, born }: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
+}
+```
+
+## How to define Workflow return parameters {#workflow-return-values}
+
+Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly
+idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow
+Execution will only ever receive one of either the result or the error.
+
+To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls
+and comes with guarantees.
+
+The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
+
+```typescript
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({ name, born }: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
+}
+```
+
+## How to customize your Workflow Type {#workflow-type}
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow
+Type.
+
+In the following example, the Workflow Type is the name of the function, `helloWorld`.
+
+<!--SNIPSTART typescript-workflow-type -->
+
+[snippets/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/workflows.ts)
+
+```ts
+export async function helloWorld(): Promise<string> {
+  return '👋 Hello World!';
+}
+```
+
+<!--SNIPEND-->
+
+## How to develop Workflow logic {#workflow-logic-requirements}
+
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a
+set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment. The code is bundled on Worker
+creation using Webpack, and can import any package as long as it does not reference Node.js or DOM APIs.
+
+:::note
+
+If you **must** use a library that references a Node.js or DOM API and you are certain that those APIs are not used at
+runtime, add that module to the
+[ignoreModules](https://typescript.temporal.io/api/interfaces/worker.BundleOptions#ignoremodules) list.
+
+:::
+
+The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read be deterministically by the Workflow.
+
+This limitation also means that Workflow code cannot directly import the [Activity Definition](/activity-definition).
+[Activity Types](/activity-definition#activity-type) can be imported, so they can be invoked in a type-safe manner.
+
+To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
+
+[FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
+and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic.
+
+The following sections describe the replay-safe APIs available in the sandbox.
+
+#### Logging
+
+Use [`log`](https://typescript.temporal.io/api/namespaces/workflow#log) from `@temporalio/workflow` instead of `console.log`. The SDK logger automatically suppresses messages during replay to avoid duplicates:
+
+```ts
+import { log } from '@temporalio/workflow';
+
+export async function myWorkflow(name: string): Promise<string> {
+  log.info('Starting workflow', { name });
+  // ...
+}
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/platform/observability#logging).
+
+#### Random numbers and UUIDs
+
+`Math.random()` is replaced by a deterministic version in the sandbox, so you can use it directly. It produces the same sequence of values on replay. UUID libraries that rely on `Math.random()` (such as the `uuid` package) are also safe to use. Avoid `crypto.randomUUID()`, which is not available in the sandbox:
+
+```ts
+import { v4 as uuid4 } from 'uuid';
+
+// Safe - Math.random() is deterministic in the Workflow sandbox
+const value = Math.random();
+const id = uuid4();
+```
+
+#### Current time
+
+`Date.now()` and `new Date()` are replaced by deterministic versions that return the time of the last Workflow Task completion. The value only advances when you `await` something (like `sleep()`):
+
+```ts
+import { sleep } from '@temporalio/workflow';
+
+// Prints the *exact* same timestamp on every iteration
+for (let x = 0; x < 10; ++x) {
+  console.log(Date.now());
+}
+
+// Prints timestamps increasing roughly 1s each iteration
+for (let x = 0; x < 10; ++x) {
+  await sleep('1 second');
+  console.log(Date.now());
+}
+```
+
+#### Detecting replay (advanced)
+
+Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/typescript/workers/interceptors).
+:::caution
+
+Never use this to affect Workflow business logic — branching on replay status breaks determinism.
+
+:::
+
+```ts
+import { workflowInfo } from '@temporalio/workflow';
+
+if (!workflowInfo().unsafe.isReplaying) {
+  metrics.emit('workflow_started', 1);
+}
+```
+
+If your goal is to always take action when something new is happening, check that `workflowInfo().unsafe.isReplayingHistoryEvents` is false instead. This will be false during read-only operations like queries and update validators. This is what the SDK's built-in logger uses internally.
