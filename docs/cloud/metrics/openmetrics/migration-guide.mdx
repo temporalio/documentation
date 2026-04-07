@@ -29,11 +29,11 @@ Temporal Cloud is transitioning from our Prometheus query endpoint to an industr
 can monitor your Temporal Cloud workloads, bringing enhanced capabilities, better integration with observability tools,
 and access to high-cardinality metrics that were previously unavailable.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+:::danger PromQL endpoint deprecated
 
-The OpenMetrics endpoint is available in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview) for testing and validation.
-The existing Prometheus query endpoint remains fully operational and supported.
+The PromQL endpoint was deprecated on April 2, 2026 and is no longer accepting new users.
+The PromQL endpoint will be disabled for all users on **October 5, 2026**.
+Complete your migration to the OpenMetrics endpoint before this date.
 
 :::
 
@@ -52,7 +52,7 @@ The existing Prometheus query endpoint remains fully operational and supported.
 4. **Simplified Integration**: Direct scraping from your observability tools without intermediate translation layers.
 
 5. **Enhanced Performance**: Optimized for high-cardinality data with built-in safeguards for system stability. Data is
-   available to scrape two minutes from the time it was emitted, in line with the freshest metrics
+   available to scrape three minutes from the time it was emitted, in line with the freshest metrics
    [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/).
 
 ## What's Changing
@@ -68,30 +68,19 @@ The existing Prometheus query endpoint remains fully operational and supported.
 
 ## Migration Timeline
 
-Here is the current estimated timeline for migrating from the Prometheus query endpoint to the OpenMetrics endpoint.
+**April 2, 2026 - PromQL endpoint deprecated**
 
-:::caution
+- The PromQL endpoint is no longer accepting new users.
+- Existing users should begin migrating to the OpenMetrics endpoint.
 
-Timelines can shift so be sure to stay up to date on upcoming releases.
+**October 5, 2026 - PromQL endpoint disabled**
 
-:::
-
-**Public Preview (Current)**
-
-- OpenMetrics endpoint available for onboarding.
-- Both endpoints run in parallel with no changes required.
-
-**General Availability [TBA]**:
-
-- OpenMetrics endpoint becomes production-ready and the standard for metrics collection.
-
-**Query Endpoint Deprecation (6 months after GA)**:
-
-- Prometheus query endpoint deprecated and eventually removed.
+- The PromQL endpoint will be disabled for all users.
+- All metrics consumption must use the OpenMetrics endpoint by this date.
 
 :::important Action Required
 
-Complete migration before the 6 month deprecation window ends.
+Complete migration before October 5, 2026.
 
 :::
 
@@ -294,14 +283,14 @@ To size workloads for Temporal Cloud (for example, when migrating from self-host
 
 | Old Metric (v0)                                                                                                          | New Metric (v1)                                                                                                     | New Labels |
 | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `temporal_cloud_v0_service_latency_bucket temporal_cloud_v0_service_latency_count temporal_cloud_v0_service_latency_sum` | `temporal_cloud_v1_service_latency_p99 temporal_cloud_v1_service_latency_p95 temporal_cloud_v1_service_latency_p50` | `region`   |
+| `temporal_cloud_v0_service_latency_bucket temporal_cloud_v0_service_latency_count temporal_cloud_v0_service_latency_sum` | `temporal_cloud_v1_service_latency_p99 temporal_cloud_v1_service_latency_p95 temporal_cloud_v1_service_latency_p50` | `region`   |
 | `temporal_cloud_v0_replication_lag_bucket temporal_cloud_v0_replication_lag_count temporal_cloud_v0_replication_lag_sum` | `temporal_cloud_v1_replication_lag_p99 temporal_cloud_v1_replication_lag_p95 temporal_cloud_v1_replication_lag_p50` | `region`   |
 
 #### Schedule Metrics
 
 | Old Metric (v0)                                          | New Metric (v1)                                          | New Labels |
 | -------------------------------------------------------- | -------------------------------------------------------- | ---------- |
-| `temporal_cloud_v0_schedule_action_success_count`        | `temporal_cloud_v1_schedule_action_success_count`        | `region`   |
+| `temporal_cloud_v0_schedule_action_success_count`        | `temporal_cloud_v1_schedule_action_success_count`        | `region`   |
 | `temporal_cloud_v0_schedule_buffer_overruns_count`       | `temporal_cloud_v1_schedule_buffer_overruns_count`       | `region`   |
 | `temporal_cloud_v0_schedule_missed_catchup_window_count` | `temporal_cloud_v1_schedule_missed_catchup_window_count` | `region`   |
 | `temporal_cloud_v0_schedule_rate_limited_count`          | `temporal_cloud_v1_schedule_rate_limited_count`          | `region`   |

@@ -1,0 +1,135 @@
+---
+id: basics
+title: Workflow Basics - PHP SDK
+sidebar_label: Workflow Basics
+description: This section explains Workflow Basics with the PHP SDK
+toc_max_heading_level: 4
+keywords:
+  - PHP SDK
+tags:
+  - PHP SDK
+  - Temporal SDKs
+---
+
+## How to develop a basic Workflow {#develop-workflows}
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
+
+In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+
+```php
+use Temporal\Workflow\YourWorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+}
+```
+
+### How to define Workflow parameters {#workflow-parameters}
+
+Temporal Workflows may have any number of custom parameters.
+However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable.
+
+A method annotated with `#[WorkflowMethod]` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+You can create a custom object and pass it to the Workflow method, as shown in the following example:
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
+
+### How to define Workflow return parameters {#workflow-return-values}
+
+Workflow return values must also be serializable.
+Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
+However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
+
+A Workflow method returns a Generator.
+To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` attribute.
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+
+    #[WorkflowMethod]
+    #[ReturnType("string")]
+    public function processFile(Argument $args);
+}
+```
+
+### How to customize your Workflow Type {#workflow-type}
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+To customize a Workflow Type, use the `WorkflowMethod` attribute to specify the name of Workflow.
+
+```php
+#[WorkflowMethod(name)]
+```
+
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
+
+```php
+#[WorkflowInterface]
+interface YourWorkflowDefinitionInterface
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
+
+### How to develop Workflow logic {#workflow-logic-requirements}
+
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+\*\*Temporal uses the [Microsoft Azure Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover the state of a Workflow object including its local variable values.
+
+In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning.
+When replaying, side effects (such as Activity invocations) are ignored because they are already recorded in the Workflow event history.
+When writing Workflow logic, the replay is not visible, so the code should be written since it executes only once.
+This design puts the following constraints on the Workflow implementation:
+
+- Do not use any mutable global variables because multiple instances of Workflows are executed in parallel.
+- Do not call any non-deterministic functions like non seeded random or `UUID` directly from the Workflow code.
+
+Always do the following in the Workflow implementation code:
+
+- Don't perform any IO or service calls as they are not usually deterministic. Use Activities for this.
+- Only use `Workflow::now()` to get the current time inside a Workflow.
+- Call `yield Workflow::timer()` instead of `sleep()`.
+- Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
+- Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
+  might break already open Workflows.
+- Don't access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
+  Pass it as an argument to a Workflow function or use an Activity to load it.
+
+Workflow method arguments and return values are serializable to a byte array using the provided [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html) interface.
+The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
+
+Make sure to annotate your `WorkflowMethod` using `ReturnType` to specify concrete return type.
+
+> You can not use the default return type declaration as Workflow methods are generators.
+
+The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
+The entire execution history is transferred from the Temporal service to Workflow workers with every event that the Workflow logic needs to process.
+A large execution history can thus adversely impact the performance of your Workflow.
+Therefore, be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
+Otherwise, no additional limitations exist on Activity implementations.\*\*

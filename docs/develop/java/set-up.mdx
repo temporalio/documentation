@@ -103,7 +103,7 @@ Gradle directory structure.
 <dependency>
   <groupId>io.temporal</groupId>
   <artifactId>temporal-sdk</artifactId>
-  <version>1.24.1</version>
+  <version>1.33.0</version>
 </dependency>
 
   <dependency>
@@ -112,7 +112,7 @@ Gradle directory structure.
     -->
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.24.1</version>
+    <version>1.33.0</version>
     <scope>test</scope>
   </dependency>
 </dependencies>`}
@@ -128,7 +128,7 @@ Gradle directory structure.
 
 repositories { mavenCentral() }
 
-dependencies { implementation 'io.temporal:temporal-sdk:1.24.1' testImplementation 'io.temporal:temporal-testing:1.24.1'
+dependencies { implementation 'io.temporal:temporal-sdk:1.33.0' testImplementation 'io.temporal:temporal-testing:1.33.0'
 }
 
 application { // Define the main class for the application mainClass = 'helloworkflow.Starter' }
@@ -442,6 +442,9 @@ public class Starter {
 
         String result = workflow.sayHello("Temporal");
         System.out.println("Workflow result: " + result);
+
+        service.shutdown();
+        service.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS);
     }
 }
 ```
