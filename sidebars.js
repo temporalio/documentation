@@ -228,6 +228,20 @@ module.exports = {
             'develop/python/debugging',
             'develop/python/schedules',
             'develop/python/converters-and-encryption',
+            {
+              type: 'category',
+              label: 'Data handling',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/python/data-handling/data-handling',
+              },
+              items: [
+                'develop/python/data-handling/data-conversion',
+                'develop/python/data-handling/data-encryption',
+                'develop/python/data-handling/large-payload-storage',
+              ],
+            },
             'develop/python/timers',
             {
               type: 'category',
