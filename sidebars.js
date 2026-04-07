@@ -642,7 +642,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/nexus/index',
               },
-              items: ['develop/typescript/nexus/feature-guide'],
+              items: [
+                'develop/typescript/nexus/quickstart',
+                'develop/typescript/nexus/feature-guide'
+              ],
             },
             {
               type: 'category',
