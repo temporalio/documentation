@@ -76,6 +76,7 @@ module.exports = {
         },
         'security',
         'evaluate/use-cases-design-patterns',
+        'evaluate/serverless-workers-demo',
       ],
     },
     {
@@ -150,6 +151,7 @@ module.exports = {
                 'develop/go/workers/run-worker-process',
                 'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
+                'develop/go/workers/serverless-workers',
               ],
             },
             {
@@ -1177,6 +1179,7 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            'production-deployment/worker-deployments/serverless-workers',
           ],
         },
         'production-deployment/data-encryption',
