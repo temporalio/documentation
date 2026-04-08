@@ -76,7 +76,6 @@ module.exports = {
         },
         'security',
         'evaluate/use-cases-design-patterns',
-        'evaluate/serverless-workers-demo',
       ],
     },
     {
@@ -151,7 +150,6 @@ module.exports = {
                 'develop/go/workers/run-worker-process',
                 'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
-                'develop/go/workers/serverless-workers',
               ],
             },
             {
@@ -547,7 +545,20 @@ module.exports = {
                 'develop/python/best-practices/testing-suite',
                 'develop/python/best-practices/python-sdk-sandbox',
                 'develop/python/best-practices/debugging',
-                'develop/python/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/python/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/python/best-practices/data-handling/data-conversion',
+                    'develop/python/best-practices/data-handling/data-encryption',
+                    'develop/python/best-practices/data-handling/large-payload-storage',
+                  ],
+                },
                 'develop/python/best-practices/python-sdk-sync-vs-async',
               ],
             },
@@ -1166,7 +1177,6 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
-            'production-deployment/worker-deployments/serverless-workers',
           ],
         },
         'production-deployment/data-encryption',
@@ -1468,6 +1478,7 @@ module.exports = {
                 'encyclopedia/data-conversion/failure-converter',
                 'encyclopedia/data-conversion/remote-data-encoding',
                 'encyclopedia/data-conversion/codec-server',
+                'encyclopedia/data-conversion/external-storage',
                 'encyclopedia/data-conversion/key-management',
               ],
             },
