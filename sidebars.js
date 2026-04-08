@@ -39,6 +39,14 @@ module.exports = {
             'evaluate/development-production-features/job-queue',
             {
               type: 'category',
+              label: 'Serverless Workers',
+              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
+              items: [
+                'evaluate/development-production-features/serverless-workers/demo',
+              ],
+            },
+            {
+              type: 'category',
               label: 'Product release stages',
               collapsed: true,
               link: {

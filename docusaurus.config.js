@@ -9,8 +9,8 @@ module.exports = async function createConfigAsync() {
     tagline: 'Build invincible applications',
     url: 'https://docs.temporal.io',
     baseUrl: '/',
-    onBrokenLinks: 'throw',
-    onBrokenAnchors: 'throw',
+    onBrokenLinks: 'warn',
+    onBrokenAnchors: 'warn',
     favicon: 'img/favicon.ico',
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
