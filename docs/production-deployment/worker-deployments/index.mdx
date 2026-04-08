@@ -24,7 +24,12 @@ Once you have an understanding of the core concepts, the content in this section
 
 Our Worker Deployments guide provides documentation of Temporal product features that make it easier to scale and revise your Workflows.
 
-[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is the recommended default for safely
+deploying new Workflow code. It allows you to pin Workflows to individual versions of your workers, which are called
+Worker Deployment Versions.
+
+If your environment cannot yet support versioned worker deployments, you can fall back to patching Workflow code.
+However, new production deployments should prefer Worker Versioning whenever possible.
 
 You can optionally use the Temporal [Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to programmatically manage and scale your Worker deployments in Kubernetes pods.
 
