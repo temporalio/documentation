@@ -76,7 +76,14 @@ module.exports = {
         },
         'security',
         'evaluate/use-cases-design-patterns',
-        'evaluate/serverless-workers-demo',
+        {
+          type: 'category',
+          label: 'Serverless Workers',
+          link: { type: 'doc', id: 'evaluate/serverless-workers/index' },
+          items: [
+            'evaluate/serverless-workers/demo',
+          ],
+        },
       ],
     },
     {

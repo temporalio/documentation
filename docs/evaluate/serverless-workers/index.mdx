@@ -1,0 +1,101 @@
+---
+id: index
+title: Serverless Workers
+sidebar_label: Serverless Workers
+slug: /evaluate/serverless-workers
+description: Understand the benefits of Serverless Workers and when to use them. Run Temporal Workers on serverless compute with no infrastructure to manage.
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - lambda
+  - aws
+  - worker
+  - serverless worker
+  - evaluate
+tags:
+  - Workers
+  - Serverless
+---
+
+Serverless Workers let you run Temporal Workers on serverless compute platforms like AWS Lambda.
+There are no servers to provision, no clusters to scale, and no idle compute to pay for.
+Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
+
+Serverless Workers use the same Temporal SDKs as traditional Workers.
+You register Workflows and Activities the same way.
+The difference is in the lifecycle: instead of a long-lived process that polls continuously, Temporal triggers the compute environment on demand, the Worker processes available Tasks, and then exits.
+
+For a deeper look at how Serverless invocation works under the hood, see [Serverless Workers](/serverless-workers) in the encyclopedia.
+
+## Benefits
+
+### Reduce operational overhead
+
+Traditional Workers require you to provision infrastructure, configure scaling policies, manage deployments, and monitor host-level health.
+Serverless Workers remove this burden.
+The compute provider handles provisioning, scaling, and infrastructure management.
+
+Worker management is one of the most common sources of support questions for Temporal users.
+Serverless Workers offer a prescriptive deployment path that reduces the operational surface area and lets you focus on writing Workflows instead of managing infrastructure.
+
+### Get started faster
+
+Running a traditional Worker requires choosing a hosting strategy, configuring compute resources, and setting up deployment pipelines before you can execute your first Workflow.
+
+With Serverless Workers, deploying a Worker is as simple as deploying a function.
+Package your Worker code, deploy it to your serverless provider, and configure the connection to Temporal. There is no need to set up Kubernetes, manage container orchestration, or design a scaling strategy.
+
+### Scale automatically
+
+Serverless compute providers handle scaling natively.
+When Task volume increases, the provider spins up additional function instances.
+When traffic drops, instances scale down. When there is no work, there is no compute running.
+
+This automatic scaling is especially useful for bursty, event-driven workloads where traffic patterns are unpredictable or highly variable.
+
+### Pay only for what you use
+
+Traditional Workers run continuously, whether or not there is work to process.
+Serverless Workers run only when Tasks are available.
+For workloads with low or intermittent volume, this pay-per-invocation model can significantly reduce compute costs.
+
+## When to use Serverless Workers
+
+Serverless Workers are a good fit when:
+
+- **Workloads are bursty or event-driven.** Order processing, notifications, webhook handlers, and similar workloads that experience spiky traffic benefit from automatic scaling without over-provisioning.
+- **Traffic is low or intermittent.** If Workers spend most of their time idle, Serverless Workers eliminate the cost of always-on compute.
+- **You want a simpler getting-started path.** Deploying a function is simpler than setting up a container orchestration platform. Serverless Workers reduce the steps between writing Worker code and running your first Workflow.
+- **Your organization has standardized on serverless.** Teams that already run services on Lambda, Cloud Run, or similar platforms can run Temporal Workers using the same deployment patterns and tooling.
+- **You serve multiple tenants with infrequent workloads.** Platforms that run Workflows on behalf of many users or customers can avoid running dedicated Workers per tenant.
+
+Serverless Workers may not be ideal when:
+
+- **Workloads are long-running.** Serverless platforms enforce execution time limits (for example, AWS Lambda has a 15-minute maximum). Activities that run longer than the provider's timeout need a different hosting strategy.
+- **Workloads require sustained high throughput.** For consistently high-volume Task Queues, long-lived Workers on dedicated compute may be more cost-effective and performant.
+- **You need persistent connections.** Features like Eager Activities require a persistent connection between the Worker and Temporal, which serverless invocations do not maintain.
+
+## How Serverless Workers compare to traditional Workers
+
+| | Traditional Worker | Serverless Worker |
+|---|---|---|
+| **Lifecycle** | Long-lived process that runs continuously. | Invoked on demand. Starts and stops per invocation. |
+| **Scaling** | You manage scaling (Kubernetes HPA, instance count, etc.). | Temporal invokes additional instances as needed, within the compute provider's concurrency limits. |
+| **Connection** | Persistent connection to Temporal. | Fresh connection on each invocation. |
+| **Eager Activities** | Supported. Activities can be dispatched directly to the Worker without going through the Task Queue. | Not supported. Each invocation is independent with no persistent connection. |
+| **Compute provider** | Not required. The Worker manages its own infrastructure. | Required. Temporal needs to know how to invoke the Worker. |
+| **Worker Versioning** | Optional but recommended. | Required. |
+| **Cost model** | Pay for always-on compute. | Pay per invocation. No cost when idle. |
+
+## Supported providers
+
+| Provider | Status |
+|---|---|
+| AWS Lambda | Available |
+
+## Next steps
+
+- [Interactive demo](/evaluate/serverless-workers/demo) to explore the configuration and invocation flow.
+- [How Serverless Workers work](/serverless-workers) for a deeper look at the invocation lifecycle, compute providers, and architecture.
+- [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers) for the end-to-end deployment guide.
+- [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers/aws-lambda) for SDK-specific configuration and defaults.

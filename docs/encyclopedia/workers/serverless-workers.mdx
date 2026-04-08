@@ -21,7 +21,7 @@ This page covers the following:
 - [What is a Serverless Worker?](#serverless-worker)
 - [How Serverless invocation works](#how-invocation-works)
 - [Compute providers](#compute-providers)
-- [How Serverless Workers differ from traditional Workers](#differences)
+- [How Serverless Workers compare to traditional Workers](/evaluate/serverless-workers#how-serverless-workers-compare-to-traditional-workers)
 
 ## What is a Serverless Worker? {#serverless-worker}
 
@@ -76,14 +76,6 @@ Traditional long-lived Workers do not require a compute provider because the Wor
 |---|---|
 | AWS Lambda | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
 
-## How Serverless Workers differ from traditional Workers {#differences}
+## How Serverless Workers compare to traditional Workers {#differences}
 
-| | Traditional Worker | Serverless Worker |
-|---|---|---|
-| **Lifecycle** | Long-lived process that runs continuously. | Invoked on demand. Starts and stops per invocation. |
-| **Scaling** | You manage scaling (Kubernetes HPA, instance count, etc.). | Temporal invokes additional instances as needed, within the compute provider's concurrency limits. |
-| **Connection** | Persistent connection to Temporal. | Fresh connection on each invocation. |
-| **Eager Activities** | Supported. Activities can be dispatched directly to the Worker without going through the Task Queue. | Not supported. Each invocation is independent with no persistent connection. |
-| **Compute provider** | Not required. The Worker manages its own infrastructure. | Required. Temporal needs to know how to invoke the Worker. |
-| **Worker Versioning** | Optional but recommended. | Required. |
-| **Cost model** | Pay for always-on compute. | Pay per invocation. No cost when idle. |
+For a comparison of lifecycle, scaling, cost model, and feature differences, see [How Serverless Workers compare to traditional Workers](/evaluate/serverless-workers#how-serverless-workers-compare-to-traditional-workers).

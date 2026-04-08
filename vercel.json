@@ -6,6 +6,11 @@
   },
   "redirects": [
     {
+      "source": "/evaluate/serverless-workers-demo",
+      "destination": "/evaluate/serverless-workers/demo",
+      "permanent": true
+    },
+    {
       "source": "/cloud/introduction",
       "destination": "/cloud/overview",
       "permanent": true
