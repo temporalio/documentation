@@ -1353,6 +1353,7 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
+            'encyclopedia/workers/serverless-workers',
           ],
         },
         {

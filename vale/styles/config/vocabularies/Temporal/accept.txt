@@ -7,7 +7,7 @@ sample
 samples
 attempt
 multiple
-serverless
+[Ss]erverless
 Namespace
 gRPC
 tctl

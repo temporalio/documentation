@@ -25,9 +25,10 @@ This guide walks through deploying a Temporal Worker on AWS Lambda.
 ## Prerequisites {#prerequisites}
 
 - A Temporal Service vx.xx.x or later.
+  - Your Temporal Service frontend must be reachable from the Lambda execution environment. For Temporal Cloud, no additional configuration is needed. For self-hosted deployments on a private network, configure the Lambda function with [VPC access](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) to reach the Temporal frontend.
 - An AWS account with permissions to create and invoke Lambda functions and create IAM roles.
-- The [`aws` CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials.
-- Your Temporal Service frontend must be reachable from the Lambda execution environment. For Temporal Cloud, no additional configuration is needed. For self-hosted deployments on a private network, configure the Lambda function with [VPC access](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) to reach the Temporal frontend.
+- The steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
+
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -118,42 +119,32 @@ Cross-compile for Lambda's Linux runtime:
 GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o bootstrap ./worker
 ```
 
-Create a `temporal.toml` file with your Temporal Service connection details.
-The `lambdaworker` package reads this file at startup to connect to the Temporal Service.
-
-```toml
-[profile.default]
-address = "<your-temporal-address>:7233"
-namespace = "<your-namespace>"
-```
-
-If your Temporal Service requires mTLS authentication, add the TLS configuration:
-
-```toml
-[profile.default]
-address = "<your-namespace>.<account>.tmprl.cloud:7233"
-namespace = "<your-namespace>.<account>"
-[profile.default.tls]
-client_cert_path = "client.pem"
-client_key_path = "client.key"
-```
-
-Package the binary, config file, and any credentials into a zip file:
+Package the binary into a zip file:
 
 ```bash
-zip function.zip bootstrap temporal.toml
-```
-
-If using mTLS, include the certificate files:
-
-```bash
-zip function.zip bootstrap client.pem client.key temporal.toml
+zip function.zip bootstrap
 ```
 
 </SdkTabs.Go>
 </SdkTabs>
 
 ### Create the Lambda function
+
+Configure the Temporal connection using Lambda environment variables.
+The `lambdaworker` package reads these automatically at startup.
+
+| Variable | Description | Required |
+|---|---|---|
+| `TEMPORAL_ADDRESS` | Temporal frontend address (e.g., `<namespace>.<account>.tmprl.cloud:7233`). | Yes |
+| `TEMPORAL_NAMESPACE` | Temporal Namespace. | Yes |
+| `TEMPORAL_TASK_QUEUE` | Task Queue name. Overrides the value set in code. | No |
+| `TEMPORAL_TLS_CERT` | TLS client certificate content for mTLS authentication. | For mTLS |
+| `TEMPORAL_TLS_KEY` | TLS client key content for mTLS authentication. | For mTLS |
+| `TEMPORAL_API_KEY` | API key for API key authentication. | For API key auth |
+
+For the full list of supported environment variables, see [Client environment configuration](/references/client-environment-configuration).
+
+Sensitive values like TLS keys and API keys should be encrypted at rest. See [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
 
 ```bash
 aws lambda create-function \
@@ -164,7 +155,8 @@ aws lambda create-function \
   --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
   --zip-file fileb://function.zip \
   --timeout 60 \
-  --memory-size 256
+  --memory-size 256 \
+  --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>}"
 ```
 
 To update an existing function with new code:
@@ -174,13 +166,6 @@ aws lambda update-function-code \
   --function-name my-temporal-worker \
   --zip-file fileb://function.zip
 ```
-
-:::note
-
-In production, store credentials in a secret store rather than bundling them with the deployment package.
-Encrypt sensitive values using [AWS KMS](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-encryption).
-
-:::
 
 ## Configure IAM for Temporal invocation {#configure-iam}
 
