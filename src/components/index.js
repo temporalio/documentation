@@ -5,7 +5,6 @@ export { SdkLogos } from './elements/SdkLogos';
 export { SdkLogosAsBlocks } from './elements/SdkLogosAsBlocks';
 export { default as PhotoCarousel } from './elements/PhotoCarousel';
 export { default as SdkTabs } from './elements/SdkTabs';
-export { default as ServerlessWorkerDemo } from './elements/ServerlessWorkerDemo';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell, DocsTableRow } from './formatting/DocsTable';
