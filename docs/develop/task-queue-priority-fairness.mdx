@@ -50,7 +50,7 @@ You can also use this as a way to run urgent Tasks immediately and override othe
 
 ### How to use Priority
 
-Priority is avaliable for both self-hosted Temporal instances and Temporal Cloud and it will be automatically enabled. If you apply priority keys, the feature will be in use.
+Priority is available for both self-hosted Temporal instances and Temporal Cloud and it will be automatically enabled. If you apply priority keys, the feature will be in use.
 
 :::info
 
@@ -320,7 +320,7 @@ each priority level.
 
 ### How to use Fairness
 
-Fairness is avaliable for both self-hosted Temporal instances and Temporal Cloud.
+Fairness is available for both self-hosted Temporal instances and Temporal Cloud.
 
 If you start using _fairness keys_ in your API calls, it will automatically be enabled in Temporal Cloud.
 
@@ -638,7 +638,7 @@ Weight overrides are stored per Task Queue, including type, so they must be set 
 ### Limitations of Fairness
 
 - There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
-- Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfer with fairnesss. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
+- Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfere with fairness. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
 - The fairness weight applies at schedule time, not at dispatch time. So it only affects newly-scheduled Tasks, not currently backlogged ones. This means if you need to throttle a single fairness key in the existing backlog of Tasks, you won't be able to.
 - When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
-- Fairness stats are not persisted, so server deployments can cause temporary lack of Fairness and misordered tasks.
+- Backlogged tasks are durable and unaffected by server restarts. Fairness ordering is preserved across restarts for the most active keys; less active keys may briefly dispatch new tasks ahead of their existing backlog until ordering normalizes.
