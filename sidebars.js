@@ -149,7 +149,6 @@ module.exports = {
               },
               items: [
                 'develop/go/workers/run-worker-process',
-                'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
                 'develop/go/workers/serverless-workers',
               ],

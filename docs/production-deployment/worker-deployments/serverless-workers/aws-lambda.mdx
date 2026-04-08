@@ -24,10 +24,10 @@ This guide walks through deploying a Temporal Worker on AWS Lambda.
 
 ## Prerequisites {#prerequisites}
 
-- A Temporal Service vx.xx.x or later.
+- A Temporal Cloud account or a self-hosted Temporal Service vx.xx.x or later.
   - Your Temporal Service frontend must be reachable from the Lambda execution environment. For Temporal Cloud, no additional configuration is needed. For self-hosted deployments on a private network, configure the Lambda function with [VPC access](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) to reach the Temporal frontend.
 - An AWS account with permissions to create and invoke Lambda functions and create IAM roles.
-- The steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
+- The AWS-specific steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
 
 
 <SdkTabs hideUnsupportedLanguages>
@@ -38,7 +38,7 @@ This guide walks through deploying a Temporal Worker on AWS Lambda.
 </SdkTabs.Go>
 </SdkTabs>
 
-## Write the Worker code {#write-the-worker-code}
+## 1. Write the Worker code {#write-the-worker-code}
 
 Write a Worker that runs inside a Lambda function.
 The Worker handles the per-invocation lifecycle: connecting to Temporal, polling for tasks, and gracefully shutting down before the Lambda deadline.
@@ -81,7 +81,7 @@ For details on configuration options, Lambda-tuned defaults, and the invocation 
 </SdkTabs.Go>
 </SdkTabs>
 
-## Deploy the Lambda function {#deploy-the-lambda-function}
+## 2. Deploy the Lambda function {#deploy-the-lambda-function}
 
 ### Create the Lambda execution role
 
@@ -108,7 +108,7 @@ aws iam attach-role-policy \
 Grant the execution role whatever additional permissions your Workflow and Activity code needs (S3, DynamoDB, etc.).
 This role is separate from the IAM role that Temporal uses to invoke the function.
 
-### Build and package {#build-and-package}
+### i. Build and package {#build-and-package}
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -128,7 +128,7 @@ zip function.zip bootstrap
 </SdkTabs.Go>
 </SdkTabs>
 
-### Create the Lambda function
+### ii. Deploy the Lambda function {#deploy-lambda-function}
 
 Configure the Temporal connection using Lambda environment variables.
 The `lambdaworker` package reads these automatically at startup.
@@ -167,7 +167,7 @@ aws lambda update-function-code \
   --zip-file fileb://function.zip
 ```
 
-## Configure IAM for Temporal invocation {#configure-iam}
+## 3. Configure IAM for Temporal invocation {#configure-iam}
 
 Temporal needs permission to invoke your Lambda function.
 The Temporal server assumes an IAM role in your AWS account to call `lambda:InvokeFunction`.
@@ -192,7 +192,7 @@ The template should create:
 # CloudFormation template coming soon
 ```
 
-## Create a Worker Deployment Version {#create-worker-deployment-version}
+## 4. Create a Worker Deployment Version {#create-worker-deployment-version}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute provider that points to your Lambda function.
 The compute configuration tells Temporal how to invoke your Worker: the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume.
@@ -264,7 +264,7 @@ client.CreateWorkerDeploymentVersion(ctx, &workflowservice.CreateWorkerDeploymen
 </SdkTabs.Go>
 </SdkTabs>
 
-## Set the version as current {#set-current-version}
+## 5. Set the version as current {#set-current-version}
 
 If you created the version through the Temporal UI, the version is already current and you can skip this step.
 
@@ -281,7 +281,7 @@ temporal worker deployment set-current-version \
 The `--ignore-missing-task-queues` flag is needed because no Worker has polled the Task Queue yet.
 With serverless Workers, the Worker only connects when Temporal invokes the Lambda function.
 
-## Verify the deployment {#verify-the-deployment}
+## 6. Verify the deployment {#verify-the-deployment}
 
 Start a Workflow on the same Task Queue to confirm that Temporal invokes your Lambda Worker.
 

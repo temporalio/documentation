@@ -1491,7 +1491,12 @@
     },
     {
       "source": "/develop/go/core-application#run-a-temporal-cloud-worker",
-      "destination": "/develop/go/workers/cloud-worker",
+      "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/workers/cloud-worker",
+      "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
       "permanent": true
     },
     {
