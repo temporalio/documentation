@@ -1,0 +1,413 @@
+/* ── Root ───────────────────────────────────────────────────────────────── */
+
+.demo {
+  font-family: var(--ifm-font-family-base);
+}
+
+/* ── Steps + Code side-by-side ─────────────────────────────────────────── */
+
+.stepsAndCode {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.stepsCol {
+  flex: 0 0 280px;
+  min-width: 0;
+}
+
+.codeCol {
+  flex: 1;
+  min-width: 0;
+  position: sticky;
+  top: 80px;
+}
+
+@media (max-width: 900px) {
+  .stepsAndCode {
+    flex-direction: column;
+  }
+  .stepsCol {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* ── Two-column layout (simulation + config) ──────────────────────────── */
+
+.columns {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.leftCol,
+.rightCol {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .columns {
+    flex-direction: column;
+  }
+}
+
+/* ── Section ────────────────────────────────────────────────────────────── */
+
+.section {
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Config form ────────────────────────────────────────────────────────── */
+
+.configGrid {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.configRow {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+}
+
+.configRow:last-child {
+  border-bottom: none;
+}
+
+.configLabel {
+  flex: 1;
+  font-size: 0.83rem;
+  color: var(--ifm-font-color-secondary);
+  user-select: none;
+}
+
+.configInput {
+  width: 200px;
+  padding: 4px 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.83rem;
+}
+
+/* ── Code tabs ──────────────────────────────────────────────────────────── */
+
+.codeTabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.codeTab {
+  padding: 4px 12px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.codeTab:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.codeTabActive {
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border-color: var(--ifm-color-primary);
+}
+
+/* ── Execute button ─────────────────────────────────────────────────────── */
+
+.executeBtn {
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.executeBtn:hover:not(.executeBtnDisabled) {
+  background: var(--ifm-color-primary-dark);
+}
+
+.executeBtnDisabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ────────────────────────────────────────────────────────────── */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Flow diagram ───────────────────────────────────────────────────────── */
+
+.flowDiagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  padding: 12px 4px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.flowNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  flex: 1;
+  padding: 6px 3px;
+  border-radius: 6px;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+.flowNodeLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.flowNodeSub {
+  font-size: 0.58rem;
+  color: var(--ifm-font-color-secondary);
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* Node states */
+.flowNode_pending {
+  border-color: var(--ifm-color-emphasis-300);
+  opacity: 0.5;
+}
+
+.flowNode_active {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest, rgba(55, 125, 255, 0.08));
+  box-shadow: 0 0 8px rgba(55, 125, 255, 0.25);
+  opacity: 1;
+}
+
+.flowNode_completed {
+  border-color: var(--ifm-color-success);
+  opacity: 1;
+}
+
+.flowNode_failed {
+  border-color: var(--ifm-color-danger);
+  opacity: 1;
+}
+
+.flowArrow {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-300);
+  flex-shrink: 0;
+  transition: color 0.3s;
+  user-select: none;
+}
+
+.flowArrowLit {
+  color: var(--ifm-color-success);
+}
+
+/* ── Log ────────────────────────────────────────────────────────────────── */
+
+.log {
+  background: var(--ifm-pre-background);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  padding: 12px;
+  max-height: 260px;
+  overflow-y: auto;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.logPlaceholder {
+  color: var(--ifm-font-color-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.logLine {
+  display: flex;
+  gap: 8px;
+}
+
+.logTime {
+  color: var(--ifm-font-color-secondary);
+  flex-shrink: 0;
+  min-width: 52px;
+}
+
+.logMsg {
+  word-break: break-word;
+}
+
+.logLine_info .logMsg {
+  color: var(--ifm-font-color-base);
+}
+
+.logLine_success .logMsg {
+  color: var(--ifm-color-success-darkest, #2e7d32);
+}
+
+.logLine_error .logMsg {
+  color: var(--ifm-color-danger);
+}
+
+.logLine_warn .logMsg {
+  color: var(--ifm-color-warning-darkest, #e65100);
+}
+
+/* ── Result banner ──────────────────────────────────────────────────────── */
+
+.resultSuccess {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--ifm-color-success-contrast-background, rgba(46, 125, 50, 0.08));
+  border: 1px solid var(--ifm-color-success);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ifm-color-success-darkest, #2e7d32);
+}
+
+/* ── Steps (clickable) ──────────────────────────────────────────────────── */
+
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  background: var(--ifm-background-surface-color);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
+}
+
+.step:hover {
+  border-color: var(--ifm-color-emphasis-400);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.stepActive {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest, rgba(55, 125, 255, 0.06));
+  box-shadow: 0 0 0 1px var(--ifm-color-primary);
+}
+
+.stepActive:hover {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest, rgba(55, 125, 255, 0.06));
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ifm-color-emphasis-300);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: background 0.2s;
+}
+
+.stepNumberActive {
+  background: var(--ifm-color-primary);
+}
+
+.stepContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepTitle {
+  font-size: 0.83rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.stepDesc {
+  font-size: 0.78rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+/* ── Code step label ────────────────────────────────────────────────────── */
+
+.codeStepLabel {
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+}
