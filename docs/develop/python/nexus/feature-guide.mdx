@@ -17,12 +17,6 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Python SDK support for Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
-
-:::
-
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 This page shows how to do the following:
@@ -105,16 +99,13 @@ from dataclasses import dataclass
 
 import nexusrpc
 
-
 @dataclass
 class MyInput:
     name: str
 
-
 @dataclass
 class MyOutput:
     message: str
-
 
 @nexusrpc.service
 class MyNexusService:
@@ -152,7 +143,6 @@ class MyNexusServiceHandler:
         return MyOutput(message=f"Hello {input.name} from sync operation!")
 ```
 
-
 A synchronous operation handler must return quickly (less than `10s`).
 Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
 
@@ -183,7 +173,6 @@ class GreetingServiceHandler:
 ```
 
 In addition to `nexus.client()`, you can use `nexus.info()` to access information about the currently-executing Nexus Operation including its Task Queue.
-
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -248,10 +237,8 @@ class MyNexusServiceHandler:
             id=str(uuid.uuid4()),
         )
 
-
 ```
 <!--SNIPEND-->
-
 
 ### Register your Nexus Service handler in a Worker
 
