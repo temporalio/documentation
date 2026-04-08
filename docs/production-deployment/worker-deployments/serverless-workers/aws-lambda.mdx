@@ -1,9 +1,9 @@
 ---
-id: serverless-workers
-title: Deploy a serverless Worker
-sidebar_label: Serverless Workers
+id: aws-lambda
+title: Deploy a serverless Worker on AWS Lambda
+sidebar_label: AWS Lambda
 description: Deploy a Temporal Worker on AWS Lambda using serverless compute.
-slug: /production-deployment/worker-deployments/serverless-workers
+slug: /production-deployment/worker-deployments/serverless-workers/aws-lambda
 toc_max_heading_level: 4
 keywords:
   - serverless
@@ -18,27 +18,34 @@ tags:
   - AWS Lambda
 ---
 
-Serverless Workers let you run Temporal Workers on serverless compute like AWS Lambda.
-Deploy your Worker code to a serverless provider, configure a compute provider for the Worker Deployment Version, and Temporal invokes the Worker when tasks arrive.
-There are no long-lived processes to provision or scale.
+import SdkTabs from '@site/src/components/elements/SdkTabs';
 
-Temporal monitors Task Queues that have a compute provider configured.
-When a task arrives and no Worker is polling, Temporal invokes the configured compute target.
-The Worker starts, processes available tasks, and shuts down when the invocation window ends.
-
-This guide walks through deploying a serverless Worker on AWS Lambda using the Go SDK.
+This guide walks through deploying a Temporal Worker on AWS Lambda.
 
 ## Prerequisites {#prerequisites}
 
-- A Temporal Service with the worker controller enabled (Temporal Cloud or self-hosted)
-- An AWS account with permissions to create and invoke Lambda functions and create IAM roles
+- A Temporal Service vx.xx.x or later.
+- An AWS account with permissions to create and invoke Lambda functions and create IAM roles.
+- The [`aws` CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials.
+- Your Temporal Service frontend must be reachable from the Lambda execution environment. For Temporal Cloud, no additional configuration is needed. For self-hosted deployments on a private network, configure the Lambda function with [VPC access](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) to reach the Temporal frontend.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
+
 - The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
-- The [`aws` CLI](https://aws.amazon.com/cli/)
+
+</SdkTabs.Go>
+</SdkTabs>
 
 ## Write the Worker code {#write-the-worker-code}
 
-Use the Go SDK's `lambdaworker` package to write a Worker that runs inside a Lambda function.
-The package handles the per-invocation lifecycle: connecting to Temporal, polling for tasks, and gracefully shutting down before the Lambda deadline.
+Write a Worker that runs inside a Lambda function.
+The Worker handles the per-invocation lifecycle: connecting to Temporal, polling for tasks, and gracefully shutting down before the Lambda deadline.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
+
+Use the Go SDK's `lambdaworker` package.
 
 ```go
 package main
@@ -70,9 +77,10 @@ Each Workflow must declare a [versioning behavior](/worker-versioning#versioning
 
 For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers).
 
-## Deploy the Lambda function {#deploy-the-lambda-function}
+</SdkTabs.Go>
+</SdkTabs>
 
-Build and deploy the Go binary to AWS Lambda.
+## Deploy the Lambda function {#deploy-the-lambda-function}
 
 ### Create the Lambda execution role
 
@@ -99,15 +107,16 @@ aws iam attach-role-policy \
 Grant the execution role whatever additional permissions your Workflow and Activity code needs (S3, DynamoDB, etc.).
 This role is separate from the IAM role that Temporal uses to invoke the function.
 
-### Build the binary
+### Build and package {#build-and-package}
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
 
 Cross-compile for Lambda's Linux runtime:
 
 ```bash
 GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o bootstrap ./worker
 ```
-
-### Configure the Temporal connection
 
 Create a `temporal.toml` file with your Temporal Service connection details.
 The `lambdaworker` package reads this file at startup to connect to the Temporal Service.
@@ -129,8 +138,6 @@ client_cert_path = "client.pem"
 client_key_path = "client.key"
 ```
 
-### Bundle and deploy
-
 Package the binary, config file, and any credentials into a zip file:
 
 ```bash
@@ -143,7 +150,10 @@ If using mTLS, include the certificate files:
 zip function.zip bootstrap client.pem client.key temporal.toml
 ```
 
-Create the Lambda function:
+</SdkTabs.Go>
+</SdkTabs>
+
+### Create the Lambda function
 
 ```bash
 aws lambda create-function \
@@ -176,86 +186,68 @@ Encrypt sensitive values using [AWS KMS](https://docs.aws.amazon.com/lambda/late
 
 Temporal needs permission to invoke your Lambda function.
 The Temporal server assumes an IAM role in your AWS account to call `lambda:InvokeFunction`.
-This requires two things: an IAM role for Temporal to assume, and AWS credentials available to the Temporal server process.
+The trust policy on the role includes an External ID condition to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
-### Create the invocation role
+Deploy the following CloudFormation template to create the invocation role and its permissions.
 
-Create a role that allows Temporal to invoke your Lambda function.
-The trust policy must include an External ID condition to prevent confused deputy attacks.
-
-```bash
-aws iam create-role \
-  --role-name temporal-lambda-invoke \
-  --assume-role-policy-document '{
-    "Version": "2012-10-17",
-    "Statement": [{
-      "Effect": "Allow",
-      "Principal": {"AWS": "<TEMPORAL_PRINCIPAL_ARN>"},
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "StringEquals": {
-          "sts:ExternalId": "<YOUR_EXTERNAL_ID>"
-        }
-      }
-    }]
-  }'
-```
-
-Attach a policy that grants permission to invoke and describe the Lambda function:
-
-```bash
-aws iam put-role-policy \
-  --role-name temporal-lambda-invoke \
-  --policy-name invoke-lambda \
-  --policy-document '{
-    "Version": "2012-10-17",
-    "Statement": [{
-      "Effect": "Allow",
-      "Action": ["lambda:InvokeFunction", "lambda:GetFunction"],
-      "Resource": "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker"
-    }]
-  }'
-```
-
-| Value | Description |
+| Parameter | Description |
 |---|---|
-| `TEMPORAL_PRINCIPAL_ARN` | The IAM principal that the Temporal server runs as. For Temporal Cloud, this is provided in your Namespace configuration. For self-hosted, this is the IAM identity of the server process (IAM user, EC2 instance role, EKS service account, etc.). |
-| `YOUR_EXTERNAL_ID` | A unique identifier that Temporal presents when assuming the role. For Temporal Cloud, this is provided in your Namespace configuration. For self-hosted, this is the value you configure in the compute provider settings. |
+| `TemporalPrincipalArn` | The IAM principal that the Temporal server runs as. For Temporal Cloud, this is provided in your Namespace configuration. For self-hosted, this is the IAM identity of the server process (IAM user, EC2 instance role, EKS service account, etc.). |
+| `ExternalId` | A unique identifier that Temporal presents when assuming the role. For Temporal Cloud, this is provided in your Namespace configuration. For self-hosted, this is the value you configure in the compute provider settings. |
+| `LambdaFunctionArn` | The ARN of the Lambda function that Temporal will invoke. |
 
-### What the External ID prevents
+<!--
+TODO: Add the CloudFormation template once it's finalized.
+The template should create:
+- An IAM role with a trust policy scoped to TemporalPrincipalArn + ExternalId
+- A policy granting lambda:InvokeFunction and lambda:GetFunction on LambdaFunctionArn
+-->
 
-The External ID is a confused deputy protection.
-When Temporal assumes your role, it presents your External ID.
-A different party cannot use Temporal to access your role because the External IDs would not match.
+```yaml
+# CloudFormation template coming soon
+```
 
-### Provide AWS credentials to the Temporal server
+## Create a Worker Deployment Version {#create-worker-deployment-version}
 
-The Temporal server process needs AWS credentials to assume the invocation role and call Lambda.
-The server uses the standard AWS SDK credential chain, so any of these methods work:
-
-- **Temporal Cloud:** No action needed. Temporal Cloud manages credentials internally.
-- **EKS:** Use [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) to associate an IAM role with the Kubernetes service account running the Temporal server.
-- **EC2/ECS:** Use an instance role or task role. Credentials are provided automatically through the metadata service.
-- **Local development:** Export credentials in the shell before starting the server:
-  ```bash
-  eval $(aws configure export-credentials --format env)
-  ```
-
-The IAM principal used by the server must have permission to call `sts:AssumeRole` on the invocation role you created.
-
-## Register the compute configuration {#register-compute-config}
-
-Create a Worker Deployment Version that links your Lambda function as the compute provider.
+Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute provider that points to your Lambda function.
+The compute configuration tells Temporal how to invoke your Worker: the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume.
 The deployment name and build ID must match the values in your Worker code.
+
+You can create the version using the Temporal UI, the Temporal CLI, or programmatically with an SDK.
+
+### Temporal UI
+
+Use the UI for one-off setup and exploration.
+
+When you create a version through the UI, the version is automatically set as current.
+
+<!-- TODO: Add UI instructions or screenshots -->
+
+### Temporal CLI
+
+Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must [set the version as current](#set-current-version) as a separate step.
 
 <!--
 TODO: Update this section once the CLI ships the `create-version` command with
-`--aws-lambda-invoke` and `--scaler-*` flags. Until then, use the gRPC API
-programmatically or the Temporal UI.
+`--aws-lambda-invoke` and `--scaler-*` flags.
 -->
 
-The `CreateWorkerDeploymentVersion` API registers a version with a compute configuration.
-The compute configuration specifies the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role that Temporal assumes to invoke the function.
+```bash
+temporal worker deployment create-version \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --aws-lambda-invoke arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker \
+  --scaler-min-instances 0 \
+  --scaler-max-instances 5
+```
+
+### SDK
+
+Use the SDK when the deployment registration is part of your application, for example a setup program that provisions infrastructure and registers the version together, or when you need to compute values dynamically. When you create a version through the SDK, you must [set the version as current](#set-current-version) as a separate step.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
 
 ```go
 // Create the worker deployment
@@ -284,22 +276,15 @@ client.CreateWorkerDeploymentVersion(ctx, &workflowservice.CreateWorkerDeploymen
 })
 ```
 
-Once the CLI supports the serverless flags, registration will be a single command:
-
-```bash
-temporal worker deployment create-version \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1 \
-  --aws-lambda-invoke arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker \
-  --scaler-min-instances 0 \
-  --scaler-max-instances 5
-```
+</SdkTabs.Go>
+</SdkTabs>
 
 ## Set the version as current {#set-current-version}
 
-After creating the Worker Deployment Version, set it as the current version.
-This step is required. Without it, tasks on the Task Queue will not route to the version, and Temporal will not invoke the Lambda function.
+If you created the version through the Temporal UI, the version is already current and you can skip this step.
+
+If you used the CLI or SDK, set the version as current.
+Without this step, tasks on the Task Queue will not route to the version, and Temporal will not invoke the Lambda function.
 
 ```bash
 temporal worker deployment set-current-version \

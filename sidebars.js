@@ -1166,7 +1166,18 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
-            'production-deployment/worker-deployments/serverless-workers',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/serverless-workers/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
+              ],
+            },
           ],
         },
         'production-deployment/data-encryption',
