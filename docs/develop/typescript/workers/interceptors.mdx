@@ -44,6 +44,17 @@ sample.
   Intercept workflow-related methods of [`Client`](https://typescript.temporal.io/api/classes/client.Client/) and
   [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a
   Workflow.
+- [NexusInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.NexusInboundCallsInterceptor):
+  Intercept inbound Nexus Operation calls like `startOperation` and `cancelOperation`.
+- [NexusOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.NexusOutboundCallsInterceptor):
+  Intercept outbound calls from Nexus Operations, such as enriching log attributes and metric tags.
+
+:::info Nexus is experimental
+
+Nexus support in the Temporal SDK is experimental.
+The Nexus interceptor interfaces may change in future releases.
+
+:::
 
 All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
 
@@ -70,6 +81,36 @@ export class ActivityLogInterceptor implements WorkflowOutboundCallsInterceptor 
         activityType: input.activityType,
       });
     }
+  }
+}
+```
+
+**Log Nexus Operations**
+
+```ts
+import type {
+  NexusInboundCallsInterceptor,
+  NexusStartOperationInput,
+  NexusStartOperationOutput,
+  Next,
+} from '@temporalio/worker';
+
+export class NexusOperationLogInterceptor implements NexusInboundCallsInterceptor {
+  async startOperation(
+    input: NexusStartOperationInput,
+    next: Next<NexusInboundCallsInterceptor, 'startOperation'>
+  ): Promise<NexusStartOperationOutput> {
+    console.log('Starting Nexus operation', {
+      service: input.ctx.service,
+      operation: input.ctx.operation,
+    });
+    const output = await next(input);
+    console.log('Nexus operation started', {
+      service: input.ctx.service,
+      operation: input.ctx.operation,
+      async: output.result.isAsync,
+    });
+    return output;
   }
 }
 ```
@@ -125,3 +166,29 @@ const worker = await Worker.create({
   },
 });
 ```
+
+### Nexus interceptor registration
+
+Nexus interceptors are registered on Worker creation via
+[WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+Pass an array of factory functions to `interceptors.nexus`.
+Each factory receives an [`OperationContext`](https://typescript.temporal.io/api/classes/nexus.OperationContext) and returns an object with optional `inbound` and `outbound` interceptors.
+
+`src/worker/index.ts`
+
+```ts
+import { NexusOperationLogInterceptor } from './nexus-interceptors';
+
+const worker = await Worker.create({
+  // ...
+  nexusServices: [/* your Nexus services */],
+  interceptors: {
+    nexus: [
+      (_ctx) => ({
+        inbound: new NexusOperationLogInterceptor(),
+      }),
+    ],
+  },
+});
+```
+

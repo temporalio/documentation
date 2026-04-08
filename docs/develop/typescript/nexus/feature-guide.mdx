@@ -190,9 +190,13 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout).
-The handler receives an AbortSignal via options.signal that is triggered when the deadline is exceeded 
+The handler receives an AbortSignal via `ctx.abortSignal` that is triggered when the deadline is exceeded 
 — pass it to Temporal Client calls to ensure they are canceled if the timeout is reached.
 Updates should be short-lived to stay within this deadline.
+
+The handler context also exposes `ctx.requestDeadline` as an optional `Date`, representing the time by which the current request must complete.
+Note that this is the deadline for the current _request_, not the overall operation.
+Use it to make decisions about whether to start work that may not finish in time, or to set timeouts on downstream calls.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -439,6 +443,36 @@ For **synchronous Nexus Operations** the following are reported in the caller's 
 `NexusOperationStarted` isn't reported in the caller's history for synchronous operations.
 
 :::
+
+### OpenTelemetry
+
+The `@temporalio/interceptors-opentelemetry` package supports Nexus Operations, providing automatic trace context propagation across Nexus boundaries from the caller Workflow to the handler.
+
+The easiest way to enable it is with the `OpenTelemetryPlugin`, which auto-registers Nexus interceptors alongside Activity and Workflow interceptors:
+
+```ts
+import { OpenTelemetryPlugin } from '@temporalio/interceptors-opentelemetry';
+
+const plugin = new OpenTelemetryPlugin({
+  resource: myResource,
+  spanProcessor: mySpanProcessor,
+});
+
+const worker = await Worker.create({
+  // ...
+  plugins: [plugin],
+  nexusServices: [myServiceHandler],
+});
+```
+
+The plugin creates the following spans:
+
+- **Caller side:** `StartNexusOperation:service/operation` — created when the caller Workflow starts a Nexus Operation.
+- **Handler side:** `RunStartNexusOperation:service/operation` and `RunCancelNexusOperation:service/operation` — created when the handler processes the operation. These spans are children of the caller span, linked via trace context propagated in Nexus request headers.
+
+See the [interceptors-opentelemetry sample](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) for a complete example.
+
+For custom interceptor logic beyond tracing (e.g., logging, authorization), see [Nexus interceptor registration](/develop/typescript/interceptors#nexus-interceptor-registration).
 
 ## Learn more
 
