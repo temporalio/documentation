@@ -38,7 +38,7 @@ Use any of the following actions to help Schedule a Workflow Execution and take 
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
-To create a Scheduled Workflow Execution in Java, use the `createSchedule()` method on the `ScheduleClient`. Schedules must be initialized with a Schedule ID,
+To create a Scheduled Workflow Execution in Java, use the `createSchedule()` method on the `ScheduleClient`. When you create the `ScheduleClient`, you can also use any custom Namespace instead of the default by setting the [`ScheduleClientOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/ScheduleClientOptions.Builder.html). Schedules must be initialized with a Schedule ID.
 
 ```java
 Schedule schedule =
@@ -61,6 +61,12 @@ Schedule schedule =
         .build();
 
 // Create a schedule on the server
+ScheduleClient scheduleClient = ScheduleClient
+    .newInstance(service, ScheduleClientOptions.newBuilder()
+        .setNamespace("custom_namespace")
+        .build()
+    );
+
 ScheduleHandle handle =
     scheduleClient.createSchedule("ScheduleId", schedule, ScheduleOptions.newBuilder().build());
 ```
