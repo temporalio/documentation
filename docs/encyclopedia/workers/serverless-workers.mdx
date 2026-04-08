@@ -2,7 +2,7 @@
 id: serverless-workers
 title: Serverless Workers
 sidebar_label: Serverless Workers
-description: Learn how serverless Workers work, how Temporal invokes them, and how they differ from traditional long-lived Workers.
+description: Learn how Serverless Workers work, how Temporal invokes them, and how they differ from traditional long-lived Workers.
 slug: /serverless-workers
 toc_max_heading_level: 4
 keywords:
@@ -21,9 +21,9 @@ This page covers the following:
 - [What is a Serverless Worker?](#serverless-worker)
 - [How Serverless invocation works](#how-invocation-works)
 - [Compute providers](#compute-providers)
-- [How serverless Workers differ from traditional Workers](#differences)
+- [How Serverless Workers differ from traditional Workers](#differences)
 
-## What is a serverless Worker? {#serverless-worker}
+## What is a Serverless Worker? {#serverless-worker}
 
 A Serverless Worker is a Temporal Worker that runs on serverless compute instead of a long-lived process.
 There is no always-on infrastructure to provision or scale.
@@ -31,19 +31,19 @@ Temporal invokes the Worker when Tasks arrive on a Task Queue, and the Worker sh
 
 A Serverless Worker uses the same Temporal SDKs as a traditional Worker.
 It registers Workflows and Activities the same way.
-The difference is in the lifecycle: instead of the Worker starting and polling continuously, Temporal triggers the compute environment, the Worker starts, processes available tasks, and then exits.
+The difference is in the lifecycle: instead of the Worker starting and polling continuously, Temporal triggers the compute environment, the Worker starts, processes available Tasks, and then exits.
 
 Serverless Workers require [Worker Versioning](/worker-versioning).
-Each serverless Worker must be associated with a [Worker Deployment Version](/worker-versioning#deployment-versions) that has a compute provider configured.
+Each Serverless Worker must be associated with a [Worker Deployment Version](/worker-versioning#deployment-versions) that has a compute provider configured.
 
-To deploy a serverless Worker, see [Deploy a serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+To deploy a Serverless Worker, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
 
-## How serverless invocation works {#how-invocation-works}
+## How Serverless invocation works {#how-invocation-works}
 
 With traditional Workers, the Worker process starts on its own, connects to Temporal, and polls a Task Queue for work.
 Temporal does not need to know anything about the Worker's infrastructure.
 
-With serverless Workers, Temporal is responsible for starting the Worker.
+With Serverless Workers, Temporal is responsible for starting the Worker.
 
 ![Serverless invocation flow](/diagrams/serverless-worker-flow.svg)
 
@@ -51,8 +51,8 @@ The invocation flow works as follows:
 
 1. A Task arrives on a Task Queue that has a compute provider configured.
 2. Temporal's internal Worker Controller Instance (WCI) service detects that no Worker is polling the Task Queue.
-3. Temporal uses the compute provider configuration to invoke the serverless function. For example, this could be calling AWS Lambda's `InvokeFunction` API.
-4. The serverless function starts, creates a Temporal client, and begins polling the Task Queue.
+3. Temporal uses the compute provider configuration to invoke the serverless function. For example, calling AWS Lambda's `InvokeFunction` API.
+4. The serverless function starts, creates a Temporal Client, and begins polling the Task Queue.
 5. The Worker processes available Tasks until the compute environment's deadline approaches.
 6. The Worker gracefully drains in-progress work and shuts down.
 
@@ -62,12 +62,12 @@ There is no connection reuse or shared state across invocations.
 
 ## Compute providers {#compute-providers}
 
-A compute provider is the configuration that tells Temporal how to invoke a serverless Worker.
+A compute provider is the configuration that tells Temporal how to invoke a Serverless Worker.
 The compute provider is set on a [Worker Deployment Version](/worker-versioning#deployment-versions) and specifies the provider type, the invocation target, and the credentials Temporal needs to trigger the invocation.
 
 For example, an AWS Lambda compute provider includes the Lambda function ARN and the IAM role that Temporal assumes to invoke the function.
 
-Compute providers are only needed for serverless Workers.
+Compute providers are only needed for Serverless Workers.
 Traditional long-lived Workers do not require a compute provider because the Worker process manages its own lifecycle.
 
 ### Supported providers
@@ -76,7 +76,7 @@ Traditional long-lived Workers do not require a compute provider because the Wor
 |---|---|
 | AWS Lambda | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
 
-## How serverless Workers differ from traditional Workers {#differences}
+## How Serverless Workers differ from traditional Workers {#differences}
 
 | | Traditional Worker | Serverless Worker |
 |---|---|---|

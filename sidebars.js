@@ -150,7 +150,18 @@ module.exports = {
               items: [
                 'develop/go/workers/run-worker-process',
                 'develop/go/workers/sessions',
-                'develop/go/workers/serverless-workers',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/go/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/go/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {

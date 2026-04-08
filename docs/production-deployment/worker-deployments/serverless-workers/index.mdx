@@ -2,7 +2,7 @@
 id: index
 title: Serverless Workers
 sidebar_label: Serverless Workers
-description: Deploy Temporal Workers on serverless compute providers. Temporal invokes your Worker when tasks arrive, with no long-lived processes to manage.
+description: Deploy Temporal Workers on serverless compute providers. Temporal invokes your Worker when Tasks arrive, with no long-lived processes to manage.
 slug: /production-deployment/worker-deployments/serverless-workers
 toc_max_heading_level: 4
 keywords:
@@ -17,7 +17,7 @@ tags:
 ---
 
 Serverless Workers let you run Temporal Workers on serverless compute like AWS Lambda.
-Deploy your Worker code to a serverless provider, configure a compute provider for the Worker Deployment Version, and Temporal invokes the Worker when tasks arrive.
+Deploy your Worker code to a serverless provider, configure a compute provider for the Worker Deployment Version, and Temporal invokes the Worker when Tasks arrive.
 There are no long-lived processes to provision or scale.
 
 Temporal monitors Task Queues that have a compute provider configured.
@@ -26,4 +26,4 @@ The Worker starts, processes available tasks, and shuts down when the invocation
 
 ## Supported providers
 
-- [**AWS Lambda**](/production-deployment/worker-deployments/serverless-workers/aws-lambda) - Deploy a Go SDK Worker as a Lambda function. Temporal assumes an IAM role in your AWS account to invoke the function when tasks arrive.
+- [**AWS Lambda**](/production-deployment/worker-deployments/serverless-workers/aws-lambda) - Deploy a Go SDK Worker as a Lambda function. Temporal assumes an IAM role in your AWS account to invoke the function when Tasks arrive.

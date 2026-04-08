@@ -1,8 +1,8 @@
 ---
 id: aws-lambda
-title: Deploy a serverless Worker on AWS Lambda
+title: Deploy a Serverless Worker on AWS Lambda
 sidebar_label: AWS Lambda
-description: Deploy a Temporal Worker on AWS Lambda using serverless compute.
+description: Deploy a Temporal Serverless Worker on AWS Lambda.
 slug: /production-deployment/worker-deployments/serverless-workers/aws-lambda
 toc_max_heading_level: 4
 keywords:
@@ -76,7 +76,7 @@ func main() {
 
 Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) at registration time, either `AutoUpgrade` or `Pinned`.
 
-For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers).
+For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.Go>
 </SdkTabs>
@@ -279,7 +279,7 @@ temporal worker deployment set-current-version \
 ```
 
 The `--ignore-missing-task-queues` flag is needed because no Worker has polled the Task Queue yet.
-With serverless Workers, the Worker only connects when Temporal invokes the Lambda function.
+With Serverless Workers, the Worker only connects when Temporal invokes the Lambda function.
 
 ## 6. Verify the deployment {#verify-the-deployment}
 
