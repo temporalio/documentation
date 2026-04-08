@@ -32,7 +32,7 @@ This guide walks through deploying a serverless Worker on AWS Lambda using the G
 
 - A Temporal Service with the worker controller enabled (Temporal Cloud or self-hosted)
 - An AWS account with permissions to create and invoke Lambda functions and create IAM roles
-- The [Go SDK](/develop/go/core-application) (`go.temporal.io/sdk`)
+- The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
 - The [`aws` CLI](https://aws.amazon.com/cli/)
 
 ## Write the Worker code {#write-the-worker-code}
@@ -68,7 +68,7 @@ func main() {
 
 Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) at registration time, either `AutoUpgrade` or `Pinned`.
 
-For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see [Serverless Workers - Go SDK](/develop/go/serverless-workers).
+For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers).
 
 ## Deploy the Lambda function {#deploy-the-lambda-function}
 
