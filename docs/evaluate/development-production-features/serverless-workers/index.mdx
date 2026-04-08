@@ -73,7 +73,7 @@ Serverless Workers may not be ideal when:
 
 - **Workloads are long-running.** Serverless platforms enforce execution time limits (for example, AWS Lambda has a 15-minute maximum). Activities that run longer than the provider's timeout need a different hosting strategy.
 - **Workloads require sustained high throughput.** For consistently high-volume Task Queues, long-lived Workers on dedicated compute may be more cost-effective and performant.
-- **You need persistent connections.** Features like Eager Activities require a persistent connection between the Worker and Temporal, which serverless invocations do not maintain.
+- **You need persistent connections.** Some features require a persistent connection between the Worker and Temporal, which serverless invocations do not maintain.
 
 ## How Serverless Workers compare to traditional Workers
 
@@ -82,10 +82,7 @@ Serverless Workers may not be ideal when:
 | **Lifecycle** | Long-lived process that runs continuously. | Invoked on demand. Starts and stops per invocation. |
 | **Scaling** | You manage scaling (Kubernetes HPA, instance count, etc.). | Temporal invokes additional instances as needed, within the compute provider's concurrency limits. |
 | **Connection** | Persistent connection to Temporal. | Fresh connection on each invocation. |
-| **Eager Activities** | Supported. Activities can be dispatched directly to the Worker without going through the Task Queue. | Not supported. Each invocation is independent with no persistent connection. |
-| **Compute provider** | Not required. The Worker manages its own infrastructure. | Required. Temporal needs to know how to invoke the Worker. |
 | **Worker Versioning** | Optional but recommended. | Required. |
-| **Cost model** | Pay for always-on compute. | Pay per invocation. No cost when idle. |
 
 ## Supported providers
 

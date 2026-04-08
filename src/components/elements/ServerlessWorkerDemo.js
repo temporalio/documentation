@@ -1,3 +1,4 @@
+import Admonition from '@theme/Admonition';
 import CodeBlock from '@theme/CodeBlock';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './serverless-worker-demo.module.css';
@@ -33,46 +34,41 @@ func main() {
 }`;
 }
 
-function generateTomlCode(config) {
-  const { namespace } = config;
-  return `[profile.default]
-address = "${namespace}.tmprl.cloud:7233"
-namespace = "${namespace}"
-[profile.default.tls]
-client_cert_path = "client.pem"
-client_key_path = "client.key"`;
-}
-
 function generateDeployScript(config) {
   const { namespace, lambdaFunctionName } = config;
-  return `# Create temporal.toml for connection config
-cat > temporal.toml <<'EOF'
-[profile.default]
-address = "${namespace}.tmprl.cloud:7233"
-namespace = "${namespace}"
-[profile.default.tls]
-client_cert_path = "client.pem"
-client_key_path = "client.key"
-EOF
-
-# Build for Lambda
+  return `# Build for Lambda
 GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o bootstrap ./worker
 
-# Bundle binary with config and credentials
-zip function.zip bootstrap client.pem client.key temporal.toml
+# Package the binary
+zip function.zip bootstrap
 
-# Deploy to Lambda
-aws lambda update-function-code \\
+# Create the Lambda function with Temporal connection env vars
+aws lambda create-function \\
   --function-name ${lambdaFunctionName} \\
-  --zip-file fileb://function.zip`;
+  --runtime provided.al2023 \\
+  --handler bootstrap \\
+  --architectures x86_64 \\
+  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \\
+  --zip-file fileb://function.zip \\
+  --timeout 60 \\
+  --memory-size 256 \\
+  --environment "Variables={TEMPORAL_ADDRESS=${namespace}.tmprl.cloud:7233,TEMPORAL_NAMESPACE=${namespace}}"`;
 }
 
-function generateIamScript() {
-  return `# Create the IAM role using the CloudFormation template
-./mk-iam-role.sh <stack-name> <external-id> <lambda-arn>
+function generateIamScript(config) {
+  const { lambdaArn } = config;
+  return `# Deploy the CloudFormation template to create the invocation role
+aws cloudformation create-stack \\
+  --stack-name my-temporal-invoke-role \\
+  --template-body file://temporal-invoke-role.yaml \\
+  --parameters \\
+    ParameterKey=TemporalPrincipalArn,ParameterValue=<TEMPORAL_PRINCIPAL_ARN> \\
+    ParameterKey=ExternalId,ParameterValue=<EXTERNAL_ID> \\
+    ParameterKey=LambdaFunctionArn,ParameterValue=${lambdaArn} \\
+  --capabilities CAPABILITY_IAM
 
-# The External ID is provided by Temporal
-# in your namespace's serverless worker configuration.`;
+# TemporalPrincipalArn and ExternalId are provided by Temporal
+# in your Namespace configuration.`;
 }
 
 function generateCliCode(config) {
@@ -84,6 +80,15 @@ function generateCliCode(config) {
   --aws-lambda-invoke ${lambdaArn} \\
   --scaler-min-instances ${scalerMin} \\
   --scaler-max-instances ${scalerMax}`;
+}
+
+function generateSetCurrentVersion(config) {
+  const { namespace, deploymentName, buildId } = config;
+  return `temporal worker deployment set-current-version \\
+  --namespace ${namespace} \\
+  --deployment-name ${deploymentName} \\
+  --build-id ${buildId} \\
+  --ignore-missing-task-queues`;
 }
 
 function generateStartWorkflow(config) {
@@ -115,7 +120,7 @@ const STEPS = [
     number: '2',
     title: 'Deploy to Lambda',
     description:
-      'Create a temporal.toml connection config, cross-compile for Linux, bundle everything together, and deploy to AWS Lambda.',
+      'Cross-compile for Linux, package the binary, and create the Lambda function. Configure the Temporal connection using environment variables.',
     codeLabel: 'Deploy Script',
     language: 'bash',
     generate: generateDeployScript,
@@ -123,9 +128,9 @@ const STEPS = [
   {
     id: 'iam',
     number: '3',
-    title: 'Configure IAM',
+    title: 'Configure IAM for Temporal invocation',
     description:
-      'Create an IAM role that allows Temporal to invoke your Lambda function. Temporal provides a CloudFormation template. The External ID prevents unauthorized access.',
+      'Deploy a CloudFormation template that creates an IAM role allowing Temporal to invoke your Lambda function. The principal ARN and External ID are provided in your Temporal Namespace configuration.',
     codeLabel: 'IAM Setup',
     language: 'bash',
     generate: generateIamScript,
@@ -133,19 +138,29 @@ const STEPS = [
   {
     id: 'cli',
     number: '4',
-    title: 'Register compute config',
+    title: 'Create a Worker Deployment Version',
     description:
-      'Use the CLI to create a Worker Deployment Version with your Lambda ARN as the compute provider. The deployment name and build ID must match your worker code.',
+      'Use the CLI to create a Worker Deployment Version with your Lambda ARN as the compute provider. The deployment name and build ID must match your Worker code.',
     codeLabel: 'CLI Command',
     language: 'bash',
     generate: generateCliCode,
   },
   {
-    id: 'start',
+    id: 'set-current',
     number: '5',
+    title: 'Set the current version',
+    description:
+      'Promote the version to current so Temporal routes Tasks to it. New Workflow Executions and auto-upgrade Workflows will use this version.',
+    codeLabel: 'CLI Command',
+    language: 'bash',
+    generate: generateSetCurrentVersion,
+  },
+  {
+    id: 'start',
+    number: '6',
     title: 'Start a Workflow',
     description:
-      'Start a Workflow on the same Task Queue. When the task arrives with no active pollers, Temporal invokes your Lambda function. The Worker starts, processes the task, and shuts down.',
+      'Start a Workflow on the same Task Queue. When the Task arrives with no active pollers, Temporal invokes your Lambda function. The Worker starts, processes the Task, and shuts down.',
     codeLabel: 'Start Workflow',
     language: 'bash',
     generate: generateStartWorkflow,
@@ -348,23 +363,6 @@ export default function ServerlessWorkerDemo() {
       <div className={styles.columns}>
         <div className={styles.leftCol}>
           <section className={styles.section}>
-            <button
-              className={`${styles.executeBtn} ${sim.running ? styles.executeBtnDisabled : ''}`}
-              onClick={handleSimulate}
-              disabled={sim.running}
-            >
-              {sim.running ? (
-                <>
-                  <span className={styles.spinner} />
-                  Running...
-                </>
-              ) : (
-                'Simulate Workflow'
-              )}
-            </button>
-          </section>
-
-          <section className={styles.section}>
             <h3 className={styles.sectionTitle}>Serverless Worker Flow</h3>
             <div className={styles.flowDiagram}>
               {FLOW_NODES.map((node, i) => (
@@ -421,6 +419,23 @@ export default function ServerlessWorkerDemo() {
 
         <div className={styles.rightCol}>
           <section className={styles.section}>
+            <button
+              className={`${styles.executeBtn} ${sim.running ? styles.executeBtnDisabled : ''}`}
+              onClick={handleSimulate}
+              disabled={sim.running}
+            >
+              {sim.running ? (
+                <>
+                  <span className={styles.spinner} />
+                  Running...
+                </>
+              ) : (
+                'Simulate Workflow'
+              )}
+            </button>
+          </section>
+
+          <section className={styles.section}>
             <h3 className={styles.sectionTitle}>Configuration</h3>
             <div className={styles.configGrid}>
               <ConfigField
@@ -468,6 +483,12 @@ export default function ServerlessWorkerDemo() {
           </section>
         </div>
       </div>
+
+      <Admonition type="note" title="Simulated logs">
+        The execution log above is a simplified, combined view for educational purposes.
+        In a real Serverless Worker execution, logs are distributed across different services
+        (Temporal, AWS Lambda, your application) with varying visibility.
+      </Admonition>
 
       {/* ── Step-by-step walkthrough: steps left, code right ── */}
       <div className={styles.stepsAndCode}>

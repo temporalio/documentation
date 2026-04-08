@@ -83,29 +83,8 @@ For details on configuration options, Lambda-tuned defaults, and the invocation 
 
 ## 2. Deploy the Lambda function {#deploy-the-lambda-function}
 
-### Create the Lambda execution role
-
-Every Lambda function needs an execution role that grants it permission to run.
-This is the standard IAM role with `lambda.amazonaws.com` as the trusted principal.
-
-```bash
-aws iam create-role \
-  --role-name my-temporal-worker-execution \
-  --assume-role-policy-document '{
-    "Version": "2012-10-17",
-    "Statement": [{
-      "Effect": "Allow",
-      "Principal": {"Service": "lambda.amazonaws.com"},
-      "Action": "sts:AssumeRole"
-    }]
-  }'
-
-aws iam attach-role-policy \
-  --role-name my-temporal-worker-execution \
-  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-```
-
-Grant the execution role whatever additional permissions your Workflow and Activity code needs (S3, DynamoDB, etc.).
+Your Lambda function needs an [execution role](https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html) that grants it permission to run.
+If you don't already have one, create a role with `lambda.amazonaws.com` as the trusted principal before proceeding.
 This role is separate from the IAM role that Temporal uses to invoke the function.
 
 ### i. Build and package {#build-and-package}
