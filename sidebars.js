@@ -205,7 +205,20 @@ module.exports = {
                 'develop/go/best-practices/error-handling',
                 'develop/go/best-practices/debugging',
                 'develop/go/best-practices/testing-suite',
-                'develop/go/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/go/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/go/best-practices/data-handling/data-conversion',
+                    'develop/go/best-practices/data-handling/data-encryption',
+                    'develop/go/best-practices/data-handling/large-payload-storage',
+                  ],
+                },
               ],
             },
           ],
