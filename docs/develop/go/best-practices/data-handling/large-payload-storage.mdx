@@ -267,9 +267,10 @@ c, err := client.Dial(client.Options{
 ## Use multiple storage drivers
 
 When you register multiple drivers, you must provide a `DriverSelector` that implements the `StorageDriverSelector`
-interface. The selector chooses which driver stores each payload. Any driver in the list that is not selected for
-storing is still available for retrieval, which is useful when migrating between storage backends. Return `nil` from
-the selector to keep a specific payload inline in Event History.
+interface. The SDK returns an error at client creation if multiple drivers are registered without a selector. The
+selector chooses which driver stores each payload. Any driver in the list that is not selected for storing is still
+available for retrieval, which is useful when migrating between storage backends. Return `nil` from the selector to
+keep a specific payload inline in Event History.
 
 Multiple drivers are useful in scenarios such as:
 
