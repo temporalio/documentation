@@ -39,10 +39,10 @@ To deploy a Serverless Worker, see [Deploy a Serverless Worker](/production-depl
 
 ## How Serverless invocation works {#how-invocation-works}
 
-With traditional Workers, the Worker process starts on its own, connects to Temporal, and polls a Task Queue for work.
+With traditional Workers, you start the Worker process, which connects to Temporal and polls a Task Queue for work.
 Temporal does not need to know anything about the Worker's infrastructure.
 
-With Serverless Workers, Temporal is responsible for starting the Worker.
+With Serverless Workers, Temporal starts the Worker.
 
 ![Serverless invocation flow](/diagrams/serverless-worker-flow.svg)
 
