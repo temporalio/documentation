@@ -109,40 +109,136 @@ If you need a storage backend other than what the built-in drivers allow, you ca
 Store payloads durably so that they survive process crashes and remain available for debugging and auditing after the
 Workflow completes. Refer to [lifecycle management](/external-storage#lifecycle) for retention requirements.
 
-A custom driver implements the `converter.StorageDriver` interface, which has four methods:
+The following example shows a custom driver that uses local disk as the backing store. This example is for local
+development and testing only. In production, use a durable storage system that is accessible to all Workers:
+
+<!--SNIPSTART go-custom-storage-driver-->
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+
+	"github.com/google/uuid"
+	commonpb "go.temporal.io/api/common/v1"
+	"go.temporal.io/sdk/converter"
+	"google.golang.org/protobuf/proto"
+)
+
+type LocalDiskStorageDriver struct {
+	storeDir string
+}
+
+func NewLocalDiskStorageDriver(storeDir string) *LocalDiskStorageDriver {
+	return &LocalDiskStorageDriver{storeDir: storeDir}
+}
+
+func (d *LocalDiskStorageDriver) Name() string {
+	return "local-disk"
+}
+
+func (d *LocalDiskStorageDriver) Type() string {
+	return "local-disk"
+}
+
+func (d *LocalDiskStorageDriver) Store(
+	ctx converter.StorageDriverStoreContext,
+	payloads []*commonpb.Payload,
+) ([]converter.StorageDriverClaim, error) {
+	dir := d.storeDir
+	if info, ok := ctx.Target.(converter.StorageDriverWorkflowInfo); ok && info.WorkflowID != "" {
+		dir = filepath.Join(d.storeDir, info.Namespace, info.WorkflowID)
+	}
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return nil, fmt.Errorf("create store directory: %w", err)
+	}
+
+	claims := make([]converter.StorageDriverClaim, len(payloads))
+	for i, payload := range payloads {
+		key := uuid.NewString() + ".bin"
+		filePath := filepath.Join(dir, key)
+
+		data, err := proto.Marshal(payload)
+		if err != nil {
+			return nil, fmt.Errorf("marshal payload: %w", err)
+		}
+		if err := os.WriteFile(filePath, data, 0o644); err != nil {
+			return nil, fmt.Errorf("write payload: %w", err)
+		}
+
+		claims[i] = converter.StorageDriverClaim{
+			ClaimData: map[string]string{"path": filePath},
+		}
+	}
+	return claims, nil
+}
+
+func (d *LocalDiskStorageDriver) Retrieve(
+	ctx converter.StorageDriverRetrieveContext,
+	claims []converter.StorageDriverClaim,
+) ([]*commonpb.Payload, error) {
+	payloads := make([]*commonpb.Payload, len(claims))
+	for i, claim := range claims {
+		filePath := claim.ClaimData["path"]
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			return nil, fmt.Errorf("read payload: %w", err)
+		}
+		payload := &commonpb.Payload{}
+		if err := proto.Unmarshal(data, payload); err != nil {
+			return nil, fmt.Errorf("unmarshal payload: %w", err)
+		}
+		payloads[i] = payload
+	}
+	return payloads, nil
+}
+```
+
+<!--SNIPEND-->
+
+The following sections walk through the key parts of the driver implementation.
+
+### 1. Implement the StorageDriver interface
+
+A custom driver implements the `converter.StorageDriver` interface with four methods:
 
 - `Name()` returns a unique string that identifies the driver. The SDK stores this name in the claim check reference so
   it can route retrieval requests to the correct driver. Changing the name after payloads have been stored breaks retrieval.
+- `Type()` returns a string that identifies the driver implementation. Unlike `Name()`, this must be the same across all
+  instances of the same driver type regardless of configuration.
 - `Store()` receives a slice of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `Retrieve()` receives the claims that `Store()` produced and returns the original payloads.
-- `Options()` returns the driver's configuration options.
 
-### Store payloads
+### 2. Store payloads
 
 In `Store()`, marshal each Payload protobuf message to bytes with `proto.Marshal(payload)` and write the bytes to
 your storage system. The application data has already been serialized by the [Payload Converter](/develop/go/data-handling/data-conversion)
 and [Payload Codec](/develop/go/data-handling/data-encryption) before it reaches the driver.
 See the [data conversion pipeline](/external-storage#data-pipeline) for more details.
 
-Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `context` parameter
-provides identity information (namespace, Workflow ID) depending on the operation. Consider structuring
+Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `ctx.Target`
+provides identity information (namespace, Workflow ID) depending on the operation. Use a type switch on
+`StorageDriverWorkflowInfo` and `StorageDriverActivityInfo` to access the concrete values. Consider structuring
 your storage keys to include this information so that you can identify which Workflow owns each payload.
 
-### Retrieve payloads
+### 3. Retrieve payloads
 
 In `Retrieve()`, download the bytes using the claim data, then reconstruct the Payload protobuf message with
 `proto.Unmarshal(data, payload)`. The Payload Converter handles deserializing the application data after the driver
 returns the payload.
 
-### Configure the Client
+### 4. Configure the Client
 
 Pass an `ExternalStorage` struct with your driver in the Client options:
 
 ```go
 c, err := client.Dial(client.Options{
     ExternalStorage: converter.ExternalStorage{
-        Drivers: []converter.StorageDriver{myCustomDriver},
+        Drivers: []converter.StorageDriver{NewLocalDiskStorageDriver("/tmp/temporal-payload-store")},
     },
 })
 ```
@@ -170,9 +266,10 @@ c, err := client.Dial(client.Options{
 
 ## Use multiple storage drivers
 
-When you register multiple drivers, you must provide a `DriverSelector` function that chooses which driver stores each
-payload. Any driver in the list that is not selected for storing is still available for retrieval, which is useful when
-migrating between storage backends. Return `nil` from the selector to keep a specific payload inline in Event History.
+When you register multiple drivers, you must provide a `DriverSelector` that implements the `StorageDriverSelector`
+interface. The selector chooses which driver stores each payload. Any driver in the list that is not selected for
+storing is still available for retrieval, which is useful when migrating between storage backends. Return `nil` from
+the selector to keep a specific payload inline in Event History.
 
 Multiple drivers are useful in scenarios such as:
 
@@ -189,13 +286,26 @@ is only registered so the Worker can retrieve payloads that were previously stor
 <!--SNIPSTART go-external-storage-multiple-drivers-->
 
 ```go
-import "go.temporal.io/sdk/converter"
+import (
+    commonpb "go.temporal.io/api/common/v1"
+    "go.temporal.io/sdk/converter"
+)
 
+type PreferredSelector struct {
+    preferred converter.StorageDriver
+}
+
+func (s *PreferredSelector) SelectDriver(
+    ctx converter.StorageDriverStoreContext,
+    payload *commonpb.Payload,
+) (converter.StorageDriver, error) {
+    return s.preferred, nil
+}
+
+// Usage:
 converter.ExternalStorage{
-    Drivers: []converter.StorageDriver{preferredDriver, legacyDriver},
-    DriverSelector: func(ctx converter.StorageDriverStoreContext, payload *commonpb.Payload) converter.StorageDriver {
-        return preferredDriver
-    },
+    Drivers:        []converter.StorageDriver{preferredDriver, legacyDriver},
+    DriverSelector: &PreferredSelector{preferred: preferredDriver},
 }
 ```
 
