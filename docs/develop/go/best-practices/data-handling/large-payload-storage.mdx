@@ -137,7 +137,7 @@ func NewLocalDiskStorageDriver(storeDir string) *LocalDiskStorageDriver {
 }
 
 func (d *LocalDiskStorageDriver) Name() string {
-	return "local-disk"
+	return "my-local-disk"
 }
 
 func (d *LocalDiskStorageDriver) Type() string {
@@ -205,10 +205,12 @@ The following sections walk through the key parts of the driver implementation.
 
 A custom driver implements the `converter.StorageDriver` interface with four methods:
 
-- `Name()` returns a unique string that identifies the driver. The SDK stores this name in the claim check reference so
-  it can route retrieval requests to the correct driver. Changing the name after payloads have been stored breaks retrieval.
+- `Name()` returns a unique string that identifies the driver instance. The SDK stores this name in the claim check
+  reference so it can route retrieval requests to the correct driver. Changing the name after payloads have been stored
+  breaks retrieval. For example, two S3 drivers could be named `"s3-us-east"` and `"s3-eu-west"`.
 - `Type()` returns a string that identifies the driver implementation. Unlike `Name()`, this must be the same across all
-  instances of the same driver type regardless of configuration.
+  instances of the same driver type regardless of configuration. Both S3 drivers in the example above would return
+  `"aws.s3driver"` as their type.
 - `Store()` receives a slice of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `Retrieve()` receives the claims that `Store()` produced and returns the original payloads.
