@@ -1746,7 +1746,12 @@
     },
     {
       "source": "/develop/python/converters-and-encryption",
-      "destination": "/develop/python/best-practices/converters-and-encryption",
+      "destination": "/develop/python/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/best-practices/converters-and-encryption",
+      "destination": "/develop/python/data-handling",
       "permanent": true
     },
     {
