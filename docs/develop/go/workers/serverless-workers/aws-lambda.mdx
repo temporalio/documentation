@@ -96,7 +96,12 @@ The default is `WorkerStopTimeout` + 2 seconds.
 
 ## Add observability with OpenTelemetry {#add-observability}
 
-The `lambdaworker/otel` sub-package provides OpenTelemetry integration with defaults configured for the AWS Distro for OpenTelemetry (ADOT) Lambda layer.
+The `lambdaworker/otel` sub-package provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
+With this enabled, the Worker emits SDK metrics and distributed traces for Workflow and Activity executions.
+The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ray and metrics to Amazon CloudWatch.
+
+The underlying metrics and traces are the same ones the Go SDK emits in any environment.
+For general observability concepts and the full list of available metrics, see [Observability - Go SDK](/develop/go/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
 ```go
 import (
@@ -128,8 +133,6 @@ func main() {
 ```
 
 `ApplyDefaults` configures both metrics and tracing.
-By default, it sends telemetry to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
+By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 
 If you only need metrics or tracing, use `otel.ApplyMetrics` or `otel.ApplyTracing` individually.
-
-For details on how each invocation connects, polls, drains, and shuts down, see [How Serverless invocation works](/serverless-workers#how-invocation-works).
