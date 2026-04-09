@@ -1,0 +1,77 @@
+---
+id: basics
+title: Workflow basics - Ruby SDK
+sidebar_label: Workflow basics
+description: This section explains Workflow basics with the Ruby SDK
+toc_max_heading_level: 4
+keywords:
+  - Ruby SDK
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+---
+
+## Develop a Workflow {#develop-workflow}
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
+
+In the Temporal Ruby SDK programming model, Workflows are defined as classes.
+
+Have the Workflow class extend `Temporalio::Workflow::Definition` to define a Workflow.
+
+The entrypoint is the `execute` method.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute(name)
+    Temporalio::Workflow.execute_activity(
+      MyActivity,
+      { greeting: 'Hello', name: },
+      start_to_close_timeout: 100
+    )
+  end
+end
+```
+
+Temporal Workflows may have any number of custom parameters.
+However, we strongly recommend that hashes or objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+
+### Workflow Logic Requirements {#workflow-logic-requirements}
+
+Temporal Workflows [must be deterministic](https://docs.temporal.io/workflows#deterministic-constraints), which includes
+Ruby workflows. This means there are several things workflows cannot do such as:
+
+- Perform IO (network, disk, stdio, etc)
+- Access/alter external mutable state
+- Do any threading
+- Do anything using the system clock (e.g. `Time.Now`)
+- Make any random calls
+- Make any not-guaranteed-deterministic calls
+
+To prevent illegal workflow calls, a call tracer is put on the workflow thread that raises an exception if any illegal
+calls are made.
+Which calls are illegal is configurable in the worker options.
+
+### Customize Workflow Type {#workflow-type}
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+You can customize the Workflow name with a custom name in a `workflow_name` class method call on the class.
+The Workflow name defaults to the unqualified class name.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  # Customize the name
+  workflow_name :MyDifferentWorkflowName
+
+  def execute(name)
+    Temporalio::Workflow.execute_activity(
+      MyActivity,
+      { greeting: 'Hello', name: },
+      start_to_close_timeout: 100
+    )
+  end
+end
+```
