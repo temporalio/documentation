@@ -873,12 +873,12 @@ With Temporal Cloud, you can create and rename custom Search Attributes. If you 
 To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/operator#search-attribute).
 With a self-hosted Temporal Service, you can create and remove custom Search Attributes.
 
-If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#current-and-legacy-visibility-support) version supports custom Search Attributes before proceeding. 
+If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#supported-databases) version supports custom Search Attributes before proceeding.
 
 :::caution Do not use sensitive data or PII in Search Attributes
 
 Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
-Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/dataconversion#payload-codec).
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/payload-codec#payload-codec).
 The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
 
 Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.
