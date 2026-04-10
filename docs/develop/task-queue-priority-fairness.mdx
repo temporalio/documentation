@@ -307,6 +307,12 @@ haven't dispatched yet.
   alt="High-level of how fairness works"
 />
 
+Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key.
+All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0.
+
+This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others.
+Unkeyed Tasks do not bypass Fairness; they compete as one group alongside all explicitly keyed Tasks.
+
 ### Using Fairness and Priority together
 
 When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
@@ -641,4 +647,4 @@ Weight overrides are stored per Task Queue, including type, so they must be set 
 - Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfere with fairness. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
 - The fairness weight applies at schedule time, not at dispatch time. So it only affects newly-scheduled Tasks, not currently backlogged ones. This means if you need to throttle a single fairness key in the existing backlog of Tasks, you won't be able to.
 - When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
-- Fairness stats are not persisted, so server deployments can cause temporary lack of Fairness and misordered tasks.
+- Backlogged tasks are durable and unaffected by server restarts. Fairness ordering is preserved across restarts for the most active keys; less active keys may briefly dispatch new tasks ahead of their existing backlog until ordering normalizes.
