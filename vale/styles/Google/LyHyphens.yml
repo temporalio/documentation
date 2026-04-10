@@ -1,7 +1,7 @@
 extends: existence
 message: "'%s' doesn't need a hyphen."
 link: "https://developers.google.com/style/hyphens"
-level: error
+level: suggestion
 ignorecase: false
 nonword: true
 action:

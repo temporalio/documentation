@@ -1,5 +1,7 @@
 # Client Sample Project: Configuring a Client for Temporal Cloud
-This project demonstrates how to access a Temporal Service running on Temporal Cloud using the Temporal Client provided by the Java SDK.
+
+This project demonstrates how to access a Temporal Service running on Temporal Cloud using the Temporal Client provided
+by the Java SDK.
 
 ## Configuring Clients
 
@@ -9,22 +11,21 @@ The WorkflowServiceStubs instance represents a connection to the Temporal Servic
 WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
 
-
 The two source files that configure instances of Workflow Clients are located at:
 
-* **Worker**: src/main/java/clientsample/YourWorker.java.
-  The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.
-* **Caller**: src/main/java/clientsample/YourCallerApp.java.
-  The Caller uses its client to establish a "stub" (unique to the JavaSDK) and invoke a new Workflow Execution. 
+- **Worker**: src/main/java/clientsample/YourWorker.java. The Worker uses its client to poll the Task Queue for tasks,
+  and to initiate their execution.
+- **Caller**: src/main/java/clientsample/YourCallerApp.java. The Caller uses its client to establish a "stub" (unique to
+  the JavaSDK) and invoke a new Workflow Execution.
 
-## Setting up Environmental Variables
+## Setting up Environment Variables
 
-You will need to set up the following Environmental Variables to use this sample.
+You will need to set up the following environment variables to use this sample.
 
-* **TEMPORAL\_CLOUD\_NAMESPACE**: Copy the full Namespace Id from the Cloud Namespace details page.
-* **TEMPORAL\_CLOUD\_GRPC\_ENDPOINT**: Copy the gRPC endpoint from the Cloud Namespace details page.
-* **TEMPORAL\_MTLS\_PRIVATE\_KEY\_PATH**: The path to the file with your mTLS private key.
-* **TEMPORAL\_MTLS\_CERT\_PATH**: The path to the .pem file with your mTLS x509 Certificate.
+- **TEMPORAL_CLOUD_NAMESPACE**: Copy the full Namespace Id from the Cloud Namespace details page.
+- **TEMPORAL_CLOUD_GRPC_ENDPOINT**: Copy the gRPC endpoint from the Cloud Namespace details page.
+- **TEMPORAL_MTLS_PRIVATE_KEY_PATH**: The path to the file with your mTLS private key.
+- **TEMPORAL_MTLS_CERT_PATH**: The path to the .pem file with your mTLS x509 Certificate.
 
 ## Building and Executing
 

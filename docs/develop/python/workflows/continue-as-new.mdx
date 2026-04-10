@@ -1,0 +1,115 @@
+---
+id: continue-as-new
+title: Continue-As-New - Python SDK
+sidebar_label: Continue-As-New
+description: Use Temporal's Continue-As-New in Python to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
+toc_max_heading_level: 2
+keywords:
+  - continue-as-new workflow
+  - restart workflow
+  - fresh event history
+  - avoid large event histories
+  - temporal python continue-as-new
+tags:
+  - Workflows
+  - continue-as-new
+  - Python SDK
+  - Temporal SDKs
+---
+
+This page answers the following questions for Python developers:
+
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+- [How to test Continue-as-New?](#how-to-test)
+
+## What is Continue-As-New? {#what}
+
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and creates a new Workflow Execution.
+You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+
+The new Workflow Execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+
+## How to Continue-As-New using the Python SDK {#how}
+
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically set to `None` for the original caller of the Workflow.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```python
+@dataclass
+class ClusterManagerInput:
+    state: Optional[ClusterManagerState] = None
+    test_continue_as_new: bool = False
+
+@workflow.run
+async def run(self, input: ClusterManagerInput) -> ClusterManagerResult:
+
+````
+The test hook in the above snippet is covered [below](#how-to-test).
+
+Inside your Workflow, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function with the same type.
+This stops the Workflow right away and starts a new one.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```python
+workflow.continue_as_new(
+  ClusterManagerInput(
+      state=self.state,
+      test_continue_as_new=input.test_continue_as_new,
+  )
+)
+````
+
+### Considerations for Workflows with Message Handlers {#with-message-handlers}
+
+If you use Updates or Signals, don't call Continue-as-New from the handlers.
+Instead, wait for your handlers to finish in your main Workflow before you run `continue_as_new`.
+See the [`all_handlers_finished`](message-passing#wait-for-message-handlers) example for guidance.
+
+## When is it right to Continue-as-New using the Python SDK? {#when}
+
+Use Continue-as-New when your Workflow might encounter degraded performance or [Event History Limits](/workflow-execution/event#event-history).
+
+Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New.
+Call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
+
+## How to test Continue-as-New using the Python SDK {#how-to-test}
+
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive.
+Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+
+For example, when `test_continue_as_new == True`, this sample creates a test-only variable called `self.max_history_length` and sets it to a small value.
+A helper method in the Workflow checks it each time it considers using Continue-as-New:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+def should_continue_as_new(self) -> bool:
+    if workflow.info().is_continue_as_new_suggested():
+        return True
+    # For testing
+    if (
+        self.max_history_length
+        and workflow.info().get_current_history_length() > self.max_history_length
+    ):
+        return True
+    return False
+```

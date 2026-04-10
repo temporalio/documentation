@@ -1,0 +1,62 @@
+---
+id: index
+title: Temporal Cloud Metrics
+sidebar_label: Metrics
+description: Monitor Temporal Cloud workloads with Cloud metrics and SDK metrics.
+slug: /cloud/metrics/
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - how-to
+  - introduction
+  - metrics
+  - observability
+  - prometheus
+  - reference
+  - tcld cli
+  - temporal cloud
+tags:
+  - Metrics
+  - Observability
+  - Temporal Cloud
+---
+
+Temporal offers two distinct sources of metrics: [Cloud Metrics](/cloud/metrics/openmetrics/metrics-reference) and [SDK Metrics](/references/sdk-metrics).
+Each source provides different levels of granularity, filtering options, monitoring-tool integrations, and configuration.
+
+- **SDK metrics** monitor individual Workers and your code's behavior from the perspective of your application.
+- **Cloud metrics** monitor Temporal Cloud's behavior from the perspective of the Temporal Service.
+
+When used together, Cloud and SDK metrics measure the health and performance of your full Temporal infrastructure, including the Temporal Cloud Service and user-supplied Temporal Workers.
+
+## Cloud Metrics
+
+Cloud metrics for all Namespaces in your account are available from the [OpenMetrics endpoint](/cloud/metrics/openmetrics), a Prometheus-compatible scrapable endpoint at `metrics.temporal.io`.
+
+- [OpenMetrics overview](/cloud/metrics/openmetrics) - Getting started and key concepts
+- [Metrics integrations](/cloud/metrics/openmetrics/metrics-integrations) - Datadog, Grafana Cloud, New Relic, ClickStack, and more
+- [API reference](/cloud/metrics/openmetrics/api-reference) - Endpoint specification and advanced configuration
+- [Metrics reference](/cloud/metrics/openmetrics/metrics-reference) - Complete catalog of all `temporal_cloud_v1_*` metrics
+
+## SDK Metrics
+
+SDK metrics are emitted by your Workers and Clients.
+For setup instructions, see [SDK metrics setup](/cloud/metrics/sdk-metrics-setup).
+
+## PromQL Endpoint (Deprecated) {#promql-deprecated}
+
+:::danger PromQL endpoint deprecated
+
+The PromQL endpoint and its `temporal_cloud_v0_*` metrics were deprecated on April 2, 2026 and are no longer accepting new users.
+The PromQL endpoint will be disabled for all users on **October 5, 2026**.
+
+Migrate to the [OpenMetrics endpoint](/cloud/metrics/openmetrics).
+See the [migration guide](/cloud/metrics/openmetrics/migration-guide) for a complete v0-to-v1 metric mapping.
+
+:::
+
+The legacy PromQL endpoint uses mTLS certificate authentication and exposes `temporal_cloud_v0_*` metrics via a Prometheus query API.
+
+- [PromQL endpoint](/cloud/metrics/promql)
+- [PromQL metrics reference](/cloud/metrics/reference)
+- [PromQL setup with Grafana](/cloud/metrics/prometheus-grafana)

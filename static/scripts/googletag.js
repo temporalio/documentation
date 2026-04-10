@@ -1,3 +1,8 @@
+// --- SHIM: define gtag early so GTM tags won't throw ---
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+window.gtag('js', new Date());
+
 (function (w, d, s, l, i) {
   w[l] = w[l] || [];
   w[l].push({"gtm.start": new Date().getTime(), event: "gtm.js"});

@@ -20,11 +20,11 @@ tags:
   - Durable Execution
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
 
-They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/clusters), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
+They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/temporal-service), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
 
 SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
@@ -32,7 +32,7 @@ The SDK's internal implementation, working in collaboration with the Temporal Se
 
 ## Temporal Applications {#temporal-application}
 
-A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflows#workflow-definition), [Activity Definitions](/workflows#workflow-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
+A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/workflow-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
 Developers create Temporal Applications using an [official Temporal SDK](#official-sdks).
 
 Consider that the Workflow Definition code can be executed repeatedly.
@@ -54,24 +54,26 @@ Each Temporal SDK targets a specific programming language.
 
 - [Go SDK feature guides](/develop/go)
 - [Java SDK feature guides](/develop/java)
-- [PHP SDK feature guides](/develop/php)
 - [Python SDK feature guides](/develop/python/)
 - [TypeScript SDK feature guides](/develop/typescript/)
 - [.NET SDK feature guides](/develop/dotnet)
+- [Ruby SDK feature guides](/develop/ruby/)
+- [PHP SDK feature guides](/develop/php)
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
 ### Third-party SDKs
 
-The following third-party SDKs exist but are not supported in Temporal's documentation:
+The following third-party SDKs exist but are not officially supported by Temporal:
 
-- [Clojure](https://github.com/manetu/temporal-clojure-sdk) - from [@Manetu](https://github.com/manetu)
+- [Swift](https://github.com/apple/swift-temporal-sdk) from [@Swift Community](https://github.com/apple)
+- [Haskell](https://github.com/MercuryTechnologies/hs-temporal-sdk) from [@MercuryTechnologies](https://github.com/MercuryTechnologies) 
+- [Clojure](https://github.com/manetu/temporal-clojure-sdk) from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
-- [Ruby](https://github.com/coinbase/temporal-ruby) from [@coinbase](https://github.com/coinbase)
 
 ## Why use a Temporal SDK? {#why-use-an-sdk}
 
-Temporal SDKs empowers developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
+Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
 
 ### Development pattern
 
@@ -132,7 +134,9 @@ func LoanApplicationWorkflow {
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
 
-<PrettyImage src="/diagrams/replay-basic.svg" title="The SDKs Replay code execution to continue from the last step" />
+<CaptionedImage
+    src="/diagrams/replay-basic.svg"
+    title="The SDKs Replay code execution to continue from the last step" />
 
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
@@ -149,7 +153,9 @@ Temporal SDKs offer developers the following:
 - APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
 
-<PrettyImage src="/diagrams/temporal-sdk-components.svg" title="Temporal SDK components create a runtime across your environment and a Temporal Service" />
+<CaptionedImage
+    src="/diagrams/temporal-sdk-components.svg"
+    title="Temporal SDK components create a runtime across your environment and a Temporal Service" />
 
 Let's break down each one.
 
@@ -174,11 +180,11 @@ It showcases how to initialize a Temporal Client, create a connection to a local
 The following code is for example purposes only.
 For tested code samples and best practices, use your preferred language SDK's developer's guide.
 
-- [Go SDK Temporal Client feature guide](/develop/go/temporal-clients)
-- [Java SDK Temporal Client feature guide](/develop/java/temporal-clients)
-- [PHP SDK Temporal Client feature guide](/develop/php/temporal-clients#connect-to-a-dev-cluster)
-- [Python SDK Temporal Client feature guide](/develop/python/temporal-clients#connect-to-a-dev-cluster)
-- [TypeScript SDK Temporal Client feature guide](/develop/typescript/core-application#connect-to-a-dev-cluster)
+- [Go SDK Temporal Client feature guide](/develop/go/client/temporal-client)
+- [Java SDK Temporal Client feature guide](/develop/java/client/temporal-client)
+- [PHP SDK Temporal Client feature guide](/develop/php/client/temporal-client)
+- [Python SDK Temporal Client feature guide](/develop/python/client)
+- [TypeScript SDK Temporal Client feature guide](/develop/typescript/client)
 
 :::
 
@@ -412,7 +418,7 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Temporal Service arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
 A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
-In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
+In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into the Workflow Execution's Event History.
 
 Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
@@ -451,14 +457,18 @@ func (a *Activities) NotifyApplicantActivity(ctx context.Context, input *NotifyA
 
 The Activity above is performing a single call to an external API. Since the call can fail due to transient issues, we define it outside of the Workflow and provide it with retry options.
 
-When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that related to the code it is capable of executing.
+When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that are related to the code it is capable of executing.
 
-<PrettyImage src="/diagrams/how-sdk-works-1.svg" title="A Worker long polls for Tasks" />
+<CaptionedImage
+    src="/diagrams/how-sdk-works-1.svg"
+    title="A Worker long polls for Tasks" />
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
 We can use a Temporal Client (available in Temporal SDKs and the Temporal CLI) to start a new Workflow.
 
-<PrettyImage src="/diagrams/how-sdk-works-2.svg" title="Start a Workflow using a Temporal Client" />
+<CaptionedImage
+    src="/diagrams/how-sdk-works-2.svg"
+    title="Start a Workflow using a Temporal Client" />
 
 Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and adds it to the Workflow Execution's Event History.
 
@@ -473,23 +483,29 @@ Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded in
 
 When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Service to schedule an Activity Task.
 
-<PrettyImage src="/diagrams/how-sdk-works-3.svg" title="Worker suspends code execution and sends a Command to the Temporal Service" />
+<CaptionedImage
+    src="/diagrams/how-sdk-works-3.svg"
+    title="Worker suspends code execution and sends a Command to the Temporal Service" />
 
 When the Worker process can perform more work, it picks up the Activity Task and begins executing the Activity code, which includes the call to the external API.
 
-If the Activity fails, say the API goes down, Temporal will automatically retry the Activity with one second between intervals, as the configurations have defined, an infinite amount of times until the Activity succeeds or is canceled.
+If the Activity fails, say the API goes down, Temporal will automatically retry the Activity with one second between intervals, as the configurations have defined, an infinite number of times until the Activity succeeds or is canceled.
 
 In the case where the calls succeeds, and the code completes, the Worker tells the Temporal Service the Activity Task completed.
 
-<PrettyImage src="/diagrams/how-sdk-works-activity.svg" title="The Worker reports that the Activity Execution completed" />
+<CaptionedImage
+    src="/diagrams/how-sdk-works-activity.svg"
+    title="The Worker reports that the Activity Execution completed" />
 
 Included is any data that was returned from the Activity (results of the API call), which is then persisted in the Workflow Execution Event History, and is now accessible to the Workflow code.
 
 The Temporal Service creates a new Workflow Task which the Worker picks up.
 
-<PrettyImage src="/diagrams/how-sdk-works-1.svg" title="The Worker picks up the new Task" />
+<CaptionedImage
+    src="/diagrams/how-sdk-works-1.svg"
+    title="The Worker picks up the new Task" />
 
-This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 
@@ -497,6 +513,8 @@ Assuming the Activity Execution is successful, the Workflow now has the result o
 
 The result of the Workflow can now be retrieved using a Temporal Client.
 
-<PrettyImage src="/diagrams/how-sdk-works-4.svg" title="The Temporal Client can now access the result of the Workflow" />
+<CaptionedImage
+    src="/diagrams/how-sdk-works-4.svg"
+    title="The Temporal Client can now access the result of the Workflow" />
 
 And that’s how a Temporal Worker and Temporal Service work together.

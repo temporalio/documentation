@@ -9,24 +9,33 @@
 
 :root {
   /* --ifm-color-primary: #f2633f;
-  --ifm-color-primary-dark: #111827; */
+   --ifm-color-primary-dark: #111827; */
   /* --ifm-color-primary-darker: #093d71;
-  --ifm-color-primary-darkest: #041a31; */
+   --ifm-color-primary-darkest: #041a31; */
   /* --ifm-color-primary-light: #1D4ED8;
-  --ifm-color-primary-lighter: #BFDBFE; */
+   --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
   /* --doc-sidebar-width: 275px !important;
-  --ifm-link-hover-decoration: none;
-  --ifm-link-hover-color: inherit; */
+   --ifm-link-hover-decoration: none;
+   --ifm-link-hover-color: inherit; */
   --ifm-link-decoration: underline;
   --tag-background-color-light: #eee;
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
+  --feedback-primary-color: #000000;
+  --feedback-white-color: #fff;
+  --space-black: #141414;
+  --indigo-100: #cacbf9;
+  --off-white: #f8fafc;
+  --text-secondary: #374761;
+  --gray-600: #576e8f;
+  --slate-200: #aebed9;
+  --gray-900: #243349;
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark']:root {
   --ifm-color-primary: #bfdbfe;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000000;
@@ -38,6 +47,23 @@ html[data-theme="dark"] {
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
+  --feedback-primary-color: #fff; /* submit button, accents */
+  --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
+  --feedback-dark-color: #1a1a1a; /* modal background */
+  --feedback-text-color: #9ca3af; /* body text, footer, labels */
+  --feedback-white-color: #e8e8e8; /* header text, button text */
+  --feedback-modal-button-text-color: #d1d5db; /* screenshot/action button text */
+  --feedback-modal-button-icon-color: #d1d5db; /* button icons */
+  --feedback-modal-input-text-color: #d1d5db; /* input text */
+  --feedback-modal-input-border-color: rgba(255, 255, 255, 0.2); /* input borders */
+  --feedback-modal-input-border-color-hover: rgba(255, 255, 255, 0.35); /* input borders hover */
+  --feedback-modal-content-text-color: #d1d5db; /* placeholder and content text */
+  --feedback-modal-rating-button-color: #d1d5db; /* thumbs up/down */
+  --feedback-color-gray-400: #b0b5bd; /* placeholder text base color */
+  --feedback-modal-button-submit-text-color: #1a1a1a; /* dark text on white send button */
+  --feedback-button-light-bg-color: #0d0d0d; /* floating button background */
+  --feedback-button-light-text-color: #e8e8e8; /* floating button text */
+  --feedback-button-light-icon-color: #e8e8e8; /* floating button icon */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -56,7 +82,8 @@ html[data-theme="dark"] {
   --tag-text-color: var(--tag-text-color-dark);
 }
 
-html[data-theme="light"] {
+
+html[data-theme='light']:root {
   --ifm-color-primary: #1d4ed8;
   --ifm-background-color: #f9fafb;
   --ifm-footer-background-color: #ffffff;
@@ -379,97 +406,93 @@ main.max-w-screen-lg {
 /* End Crazy Tailwind hax */
 
 @font-face {
-  font-family: "Aeonik";
-  src: url("../fonts/Aeonik/Aeonik-Regular.woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Aeonik-Bold";
-  src: url("../fonts/Aeonik/Aeonik-Bold.woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Aeonik-Light";
-  src: url("../fonts/Aeonik/Aeonik-Light.woff");
+  font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Light.woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Regular.ttf");
+  font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Regular.woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Medium.ttf");
+  font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Bold.woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-Medium.ttf');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-SemiBold.ttf");
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-SemiBold.ttf');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Bold.ttf");
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-Bold.ttf');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Noto Sans Mono";
-  src: url("../fonts/Noto\ Sans\ Mono/NotoSansMono-VariableFont_wdth,wght.ttf");
+  font-family: 'Noto Sans Mono';
+  src: url('../fonts/Noto\ Sans\ Mono/NotoSansMono-VariableFont_wdth,wght.ttf');
   font-style: normal;
   font-display: swap;
-}
-
-h2,
-h3 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
 }
 
 h1 {
   font-size: 1.6rem;
   font-weight: 300;
   letter-spacing: -1px;
-}
 
-@media only screen and (min-width: 1280px) {
-  h1 {
+  @media only screen and (min-width: 1280px) {
     font-size: 3rem;
   }
-}
 
-@media only screen and (max-width: 1279px) and (min-width: 640px) {
-  h1 {
+  @media only screen and (max-width: 1279px) and (min-width: 640px) {
     font-size: 2rem;
   }
+}
+
+h2,
+h3 {
+  font-weight: 500;
+  letter-spacing: -0.5px;
 }
 
 .h2-landing {
@@ -480,14 +503,14 @@ h1 {
 }
 
 .p-landing {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 1px;
 }
 
 .a-landing {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 0.875rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
@@ -510,7 +533,7 @@ h1 {
   display: grid;
   grid-template-columns: 50% 50%;
   column-gap: 1rem;
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 1rem;
   font-weight: 400;
   vertical-align: top;
@@ -519,7 +542,7 @@ h1 {
 
 .single-column-list {
   margin-right: 2.5em;
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 1rem;
   font-weight: 400;
   vertical-align: top;
@@ -610,7 +633,7 @@ h1 {
 }
 
 .landing-card-p {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 1.5rem;
@@ -630,11 +653,11 @@ h1 {
 }
 
 .menu__link {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
 }
 
 .badge-purple {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-weight: 500;
   font-size: 0.75rem;
   color: #6d28d9;
@@ -645,7 +668,7 @@ h1 {
 }
 
 .badge-blue {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-weight: 500;
   font-size: 0.75rem;
   color: #1d4ed8;
@@ -689,7 +712,7 @@ h1 {
   border-color: #2563eb;
   border-style: solid;
   padding: 1.2rem 1.25rem 0.25rem 1.25rem;
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 1px;
@@ -798,7 +821,9 @@ h1 {
 }
 
 .cloud-button {
-  font-feature-settings: "clig" off, "liga" off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
   font-family: Noto Sans Mono;
   font-style: normal;
   font-size: 16px;
@@ -828,7 +853,7 @@ h1 {
 }
 
 .core-concepts {
-  background-image: url("/img/stars_bg.png");
+  background-image: url('/img/assets/stars_bg.png');
   color: white;
   position: absolute;
   right: 0;
@@ -1042,15 +1067,23 @@ h1 {
   margin-right: 40px;
 }
 
+.navbar__items--right {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 1241px) {
+  .navbar__link {
+    display: none;
+  }
+}
+
 @media only screen and (min-width: 1400px) {
   .navbar__items--right {
-    width: 35vw;
-    flex-direction: row-reverse;
     justify-content: space-between;
   }
 
   .DocSearch {
-    width: 30vw;
+    width: fit-content;
   }
 }
 
@@ -1182,6 +1215,161 @@ code {
     transform: translateY(-15px);
   }
 }
-#kapa-widget-container button {
-  z-index: 10;
+
+/* Pattern Grid and Cards*/
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pattern-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-card-background-color);
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  text-decoration: none;
+  color: var(--ifm-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.pattern-card:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+  color: var(--ifm-color);
+}
+
+.pattern-card:hover .pattern-content h3 {
+  color: var(--ifm-color-primary);
+}
+
+.pattern-content h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  color: var(--ifm-color);
+  transition: color 0.3s ease;
+}
+
+.pattern-content p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .pattern-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pattern-card {
+    padding: 1.25rem;
+  }
+
+  .pattern-content h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Ask AI Navbar Button */
+.ask-ai-navbar-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  font-family: var(--ifm-font-family-base);
+  white-space: nowrap;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.ask-ai-navbar-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  color: white;
+}
+
+.ask-ai-navbar-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ask-ai-navbar-button:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.clean-btn {
+  margin-left: 6px;
+}
+
+@media (max-width: 1400px) {
+  .clean-btn {
+    margin-left: unset;
+  }
+}
+
+@media (max-width: 996px) {
+  .ask-ai-text {
+    display: none;
+  }
+
+  .ask-ai-navbar-button {
+    padding: 8px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .navbarSearchContainer_Bca1 {
+    position: unset;
+  }
+}
+
+@media (max-width: 768px) {
+  .ask-ai-navbar-button {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .ask-ai-navbar-button svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.sdk-logos-list {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.sdk-logo {
+  height: 40px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 40px;
 }

@@ -1,0 +1,18 @@
+/* src/components/captioned-image/CaptionedImage.module.css */
+.imageContainer {
+  margin: 4px 4px;
+}
+
+.image {
+  max-width: 100%;
+  height: auto;
+}
+
+.title {
+  margin-top: 0px;
+  font-size: 0.8em;
+  text-align: start;
+  font-weight: bold;
+  padding-left: 8px;
+  padding-right: 8px;
+}

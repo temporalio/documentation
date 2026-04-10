@@ -1,0 +1,111 @@
+---
+id: continue-as-new
+title: Continue-As-New - .NET SDK
+sidebar_label: Continue-As-New
+description: Use Temporal's Continue-As-New in .NET to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
+toc_max_heading_level: 2
+keywords:
+  - continue-as-new workflow
+  - restart workflow
+  - fresh event history
+  - avoid large event histories
+  - temporal dotnet continue-as-new
+tags:
+  - Workflows
+  - continue-as-new
+  - .Net SDK
+  - Temporal SDKs
+---
+
+This page answers the following questions for .NET developers:
+
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+- [How to test Continue-as-New?](#how-to-test)
+
+## What is Continue-As-New? {#what}
+
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and creates a new Workflow Execution.
+You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+
+The new Workflow Execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+
+## How to Continue-As-New using the .NET SDK {#how}
+
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically set to `None` for the original caller of the Workflow.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```csharp
+public record Input
+    {
+        public State State { get; init; } = new();
+
+        public bool TestContinueAsNew { get; init; }
+    }
+
+[WorkflowInit]
+public ClusterManagerWorkflow(Input input)
+
+````
+The test hook in the above snippet is covered [below](#how-to-test).
+
+Inside your Workflow, throw a [`CreateContinueAsNewException`](https://dotnet.temporal.io/api/Temporalio.Workflows.ContinueAsNewException.html) exception.
+This stops the Workflow right away and starts a new one.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```csharp
+throw Workflow.CreateContinueAsNewException((ClusterManagerWorkflow wf) => wf.RunAsync(new()
+{
+    State = CurrentState,
+    TestContinueAsNew = input.TestContinueAsNew,
+}));
+````
+
+### Considerations for Workflows with Message Handlers {#with-message-handlers}
+
+If you use Updates or Signals, don't call Continue-as-New from the handlers.
+Instead, wait for your handlers to finish in your main Workflow before you throw `CreateContinueAsNewException`.
+See the [`AllHandlersFinished`](message-passing#wait-for-message-handlers) example for guidance.
+
+## When is it right to Continue-as-New using the .NET SDK? {#when}
+
+Use Continue-as-New when your Workflow might hit [Event History Limits](/workflow-execution/event#event-history).
+
+Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New.
+Call `Workflow.ContinueAsNewSuggested` to check if it's time.
+
+## How to test Continue-as-New using the .NET SDK {#how-to-test}
+
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive.
+Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+
+For example, when `TestContinueAsNew == true`, this sample creates a test-only variable called `maxHistoryLength` and sets it to a small value.
+A helper variable in the Workflow checks it each time it considers using Continue-as-New:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```csharp
+private bool ShouldContinueAsNew =>
+    // Don't continue as new while update running
+    Workflow.AllHandlersFinished &&
+    // Continue if suggested or, for ease of testing, max history reached
+    (Workflow.ContinueAsNewSuggested || Workflow.CurrentHistoryLength > maxHistoryLength);
+```

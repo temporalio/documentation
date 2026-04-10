@@ -2,7 +2,7 @@ extends: existence
 message: "Use first person (such as '%s') sparingly."
 link: https://docs.microsoft.com/en-us/style-guide/grammar/person
 ignorecase: true
-level: warning
+level: suggestion
 nonword: true
 tokens:
   - (?:^|\s)I(?=\s)

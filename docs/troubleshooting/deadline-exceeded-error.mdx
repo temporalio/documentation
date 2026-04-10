@@ -12,7 +12,7 @@ tags:
   - Errors
 ---
 
-All requests made to the [Temporal Service](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All requests made to the [Temporal Service](/temporal-service) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these frontend requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 
@@ -36,7 +36,7 @@ If you're using Temporal Cloud, create a [support ticket](/cloud/support#support
 
 :::
 
-[Frontend Service](/clusters#frontend-service) logs can show which parts of the Temporal Service aren't working.
+[Frontend Service](/temporal-service/temporal-server#frontend-service) logs can show which parts of the Temporal Service aren't working.
 For the error to appear, a service pod or container must be up and running.
 
 OSS users can verify that the Frontend Service is connected and running by using the Temporal CLI.
@@ -45,7 +45,7 @@ OSS users can verify that the Frontend Service is connected and running by using
 temporal operator cluster health --address 127.0.0.1:7233
 ```
 
-Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
+Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/temporal-service/temporal-server#matching-service), and [History Service](/temporal-service/temporal-server#history-service).
 
 ```
 ./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService
@@ -55,7 +55,7 @@ Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) t
 ./grpc-health-probe -addr=historyAddress:historyPort -service=temporal.api.workflowservice.v1.HistoryService
 ```
 
-Logs can also be used to find failed Client [Query](/encyclopedia/workflow-message-passing#sending-queries) requests.
+Logs can also be used to find failed Client [Query](/sending-messages#sending-queries) requests.
 
 ### Check your Temporal Service metrics
 
@@ -106,7 +106,7 @@ If the error persists, review your Workflow Execution History and server logs fo
 
 ### When executing or scheduling Workflows
 
-One or more services might be unable to connect to the [Frontend Service](/clusters#frontend-service).
+One or more services might be unable to connect to the [Frontend Service](/temporal-service/temporal-server#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
 
 Increase the value of `frontend.keepAliveMaxConnectionAge` so that requests can be finished before the connection terminates.

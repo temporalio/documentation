@@ -13,18 +13,18 @@ keywords:
   - temporal server
 ---
 
-:::info Temporal CLI is now available
+:::info tctl is deprecated
 
-The public preview of [Temporal CLI](/cli) is now available.
-We encourage you to begin using it and to provide feedback.
+The tctl command line utility has been deprecated and is no longer actively supported.
+We recommend transitioning to [Temporal CLI](/cli) for continued use and access to new features.
 
-After the release of Temporal CLI v1.0, tctl will deprecate.
+Thank you for being a valued part of the Temporal community.
 
 :::
 
 **How to run a tctl batch command.**
 
-A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/workflows#workflow-execution) with a single command.
+A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
 Use [tctl batch start](#start) to start a batch job.
@@ -35,7 +35,7 @@ Use [tctl batch start](#start) to start a batch job.
 
 :::
 
-When starting a batch job, you must provide a [List Filter](/visibility#list-filter) and the type of batch job that should occur.
+When starting a batch job, you must provide a [List Filter](/list-filter) and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
 
 The List Filter identifies the set of Workflow Executions to be affected by the batch job.
@@ -73,9 +73,9 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify the [Workflow Executions](/workflows#workflow-execution) that this batch job should operate.
+Specify the [Workflow Executions](/workflow-execution) that this batch job should operate.
 
-The SQL-like query of [Search Attributes](/visibility#search-attribute) is the same as used by the `tctl workflow list --query` command.
+The SQL-like query of [Search Attributes](/search-attribute) is the same as used by the `tctl workflow list --query` command.
 
 Alias: `-q`
 
@@ -107,7 +107,7 @@ tctl batch start --query <value> --batch_type <operation>
 
 ### `--signal_name`
 
-Specify the name of a [Signal](/encyclopedia/workflow-message-passing#sending-signals). This modifier is required when `--batch_type` is `signal`.
+Specify the name of a [Signal](/sending-messages#sending-signals). This modifier is required when `--batch_type` is `signal`.
 
 **Example**
 
@@ -117,7 +117,7 @@ tctl batch start --query <value> --batch_type signal --signal_name <name>
 
 ### `--input`
 
-Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals). Input must be in JSON format.
+Pass input for the [Signal](/sending-messages#sending-signals). Input must be in JSON format.
 
 Alias: `-i`
 

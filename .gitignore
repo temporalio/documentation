@@ -4,10 +4,15 @@ secure
 
 # Production
 build
+playwright-report
+blob-report
+test-results
 
 # Generated files
 .docusaurus
 .cache-loader
+temp/
+.claude/*
 
 # Misc
 .DS_Store
@@ -17,10 +22,17 @@ build
 .env.test.local
 .env.production.local
 .vs
+AGENTS.md
+CLAUDE.md
+.claude/*
+.omc
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+vale-md-output.json
+vale-mdx-output.json
+vale-output.json
 
 # Local Netlify folder
 .netlify
@@ -35,3 +47,11 @@ package-lock.json
 # Env
 .env
 /assembly/.env
+
+# Tests
+test-results/*
+
+# screenshots
+screenshots
+# Ignore cookbook recipes since they are synced from the remote repo
+ai-cookbook

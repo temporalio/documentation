@@ -2,7 +2,9 @@
 id: web-ui-environment-variables
 title: Temporal Web UI environment variables reference
 sidebar_label: Web UI env vars
-description: Dynamically configure Temporal Web UI with environment variables in Docker for settings like TEMPORAL_ADDRESS, authentication, TLS, OpenAPI, and more.
+description:
+  Dynamically configure Temporal Web UI with environment variables in Docker for settings like TEMPORAL_ADDRESS,
+  authentication, TLS, OpenAPI, and more.
 toc_max_heading_level: 4
 keywords:
   - docker
@@ -16,8 +18,7 @@ tags:
 
 You can use environment variables to dynamically alter the configuration of your Temporal Web UI.
 
-These can be used in many environments, such as with Docker.
-For example:
+These can be used in many environments, such as with Docker. For example:
 
 ```
 docker run\
@@ -25,11 +26,9 @@ docker run\
 -e TEMPORAL_UI_PORT=8080\
 -e TEMPORAL_UI_PUBLIC_PATH=path/to/webui\
 -e TEMPORAL_UI_ENABLED=true\
--e TEMPORAL_BANNER_TEXT="Some banner text"\
 -e TEMPORAL_CLOUD_UI=false\
 -e TEMPORAL_DEFAULT_NAMESPACE=default\
 -e TEMPORAL_FEEDBACK_URL=https://feedback.here\
--e TEMPORAL_NOTIFY_ON_NEW_VERSION=true\
 -e TEMPORAL_CONFIG_REFRESH_INTERVAL=0s\
 -e TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE=false\
 -e TEMPORAL_DISABLE_WRITE_ACTIONS=false\
@@ -53,14 +52,17 @@ docker run\
 temporalio/ui:<tag>
 ```
 
-The environment variables are defined in the [UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config-template.yaml) and described in more detail below.
+The environment variables are defined in the
+[UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/config/docker.yaml) and
+described in more detail below.
 
 ## `TEMPORAL_ADDRESS`
 
-The [Frontend Service](/clusters#frontend-service) address for the Temporal Cluster.
-This environmental variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
+The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Cluster. This
+variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using
+`temporalGrpcAddress`.
 
-This variable is required for setting other environmental variables.
+This variable is required for setting other environment variables.
 
 ## `TEMPORAL_UI_PORT`
 
@@ -76,12 +78,8 @@ Stores a value such as "" or "/custom-path" that allows the UI to be served from
 
 Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
 
-Enabling the browser UI allows the Server to be accessed from your web browser.
-If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
-
-## `TEMPORAL_BANNER_TEXT`
-
-Provides banner text to display on the Web UI.
+Enabling the browser UI allows the Server to be accessed from your web browser. If disabled, the server cannot be viewed
+on the web, but the UI server APIs remain available for use.
 
 ## `TEMPORAL_CLOUD_UI`
 
@@ -97,17 +95,13 @@ The URL that users are directed to when they click the Feedback button in the UI
 
 If not specified, this variable defaults to the UI's GitHub Issue page.
 
-## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
-
-Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
-
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
 
 Determines how often the UI Server reads the configuration file for new values.
 
 ## `TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE`
 
-If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI. 
+If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI.
 
 ## `TEMPORAL_DISABLE_WRITE_ACTIONS`
 
@@ -117,10 +111,11 @@ Disables any button in the UI that allows the user to modify Workflows or Activi
 
 Enables or disables Web UI authentication and authorization methods.
 
-When enabled, the Web UI will use the provider information in the [UI configuration file](/references/web-ui-configuration#auth) to verify the identity of users.
+When enabled, the Web UI will use the provider information in the
+[UI configuration file](/references/web-ui-configuration#auth) to verify the identity of users.
 
-All auth-related variables can be defined when `TEMPORAL_AUTH_ENABLED` is set to "true".
-Disabling the variable will retain given values.
+All auth-related variables can be defined when `TEMPORAL_AUTH_ENABLED` is set to "true". Disabling the variable will
+retain given values.
 
 ## `TEMPORAL_AUTH_TYPE`
 
@@ -136,7 +131,7 @@ This can be set as in the UI server configuration with [auth](/references/web-ui
 
 The URL for the authentication or authorization issuer.
 
-This value is only needed when the issuer differes from the auth provider URL.
+This value is only needed when the issuer differs from the auth provider URL.
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
@@ -164,22 +159,22 @@ Specifies a set of scopes for auth. Typically, this is `openid`, `profile`, `ema
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
-In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued by a trusted Certificate Authority.
-Set this variable to properly locate and use the file.
+In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued
+by a trusted Certificate Authority. Set this variable to properly locate and use the file.
 
 ## `TEMPORAL_TLS_CERT`
 
 The path for the Transport Layer Security (TLS) Certificate.
 
-In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed certificate.
-Set the path to allow the environment to locate and use the certificate.
+In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed
+certificate. Set the path to allow the environment to locate and use the certificate.
 
 ## `TEMPORAL_TLS_KEY`
 
 The path for the Transport Layer Security (TLS) [key file](/references/web-ui-configuration#tls).
 
-A key file is used to create private and public keys for encryption and signing.
-Together, these keys are used to create certificates.
+A key file is used to create private and public keys for encryption and signing. Together, these keys are used to create
+certificates.
 
 ## `TEMPORAL_TLS_CA_DATA`
 
@@ -209,12 +204,12 @@ When enabled, TLS checks the Host Server to ensure that files are being sent to 
 
 The server on which to operate [Transport Layer Security (TLS) protocols](/references/web-ui-configuration#tls).
 
-TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself.
-Because of this, TLS operates a go-between server.
+TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself. Because of
+this, TLS operates a go-between server.
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the [Codec Server](/dataconversion#codec-server), if configured.
+The endpoint for the [Codec Server](/codec-server), if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
@@ -226,7 +221,8 @@ Specifies whether to include credentials along with requests to the Codec Server
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
-Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend.
+Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend. This is a comma-delimited
+list of the HTTP headers to be forwarded.
 
 ## `TEMPORAL_HIDE_LOGS`
 

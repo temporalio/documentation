@@ -2,7 +2,7 @@
 id: workflow
 title: Temporal CLI workflow command reference
 sidebar_label: workflow
-description: Temporal Workflow commands enable operations on Workflow Executions, such as cancel, count, delete, describe, execute, list, query, reset, reset-batch, show, signal, stack, start, terminate, trace, and update, enhancing efficiency and control.
+description: Temporal Workflow commands enable operations on Workflow Executions, such as cancel, count, delete, describe, execute, list, update-options, query, reset, reset-batch, show, signal, stack, start, terminate, trace, and update, enhancing efficiency and control.
 toc_max_heading_level: 4
 keywords:
   - call stack
@@ -26,6 +26,7 @@ keywords:
   - workflow execute
   - workflow execution
   - workflow list
+  - workflow metadata
   - workflow query
   - workflow reset
   - workflow reset-batch
@@ -35,876 +36,874 @@ keywords:
   - workflow start
   - workflow terminate
   - workflow trace
+  - workflow update-options
 tags:
   - Temporal CLI
   - Workflows
 ---
 
-[Workflow](/workflows) commands allow operations to be performed on [Workflow Executions](/workflows#workflow-execution).
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
 
-Workflow commands use this syntax:
-`temporal workflow COMMAND [ARGS]`.
+This page provides a reference for the `temporal` CLI `workflow` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
 ## cancel
 
-The `temporal workflow cancel` command cancels a [Workflow Execution](/workflows#workflow-execution).
+Canceling a running Workflow Execution records a
+`WorkflowExecutionCancelRequested` event in the Event History. The Service
+schedules a new Command Task, and the Workflow Execution performs any cleanup
+work supported by its implementation.
 
-Canceling a running Workflow Execution records a [`WorkflowExecutionCancelRequested` event](/references/events#workflowexecutioncancelrequested) in the [Event History](/workflows#event-history).
-A new [Workflow Task](/tasks#workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
+Use the Workflow ID to cancel an Execution:
 
-`temporal workflow cancel --workflow-id=meaningful-business-id`
+```
+temporal workflow cancel \
+    --workflow-id YourWorkflowId
+```
 
-In addition to Workflow IDs, Workflows can also be cancelled by a [List Filter](/visibility#list-filter).
-`temporal workflow cancel --query=MyListFilter`
+A visibility Query lets you send bulk cancellations to Workflow Executions
+matching the results:
 
-Use the following options to change the behavior of this command.
+```
+temporal workflow cancel \
+    --query YourQuery
+```
 
-- [--fields](/cli/cmd-options#fields)
+Visit https://docs.temporal.io/visibility to read more about Search Attributes
+and Query creation. See `temporal batch --help` for a quick reference.
 
-- [--address](/cli/cmd-options#address)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--query](/cli/cmd-options#query)
-
-- [--reason](/cli/cmd-options#reason)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
-
-- [--yes](/cli/cmd-options#yes)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## count
 
-The `temporal workflow count` command returns a count of [Workflow Executions](/workflows#workflow-execution).
-This command requires Elasticsearch to be enabled.
+Show a count of Workflow Executions, regardless of execution state (running,
+terminated, etc). Use `--query` to select a subset of Workflow Executions:
 
-Use the following options to change the command's behavior.
+```
+temporal workflow count \
+    --query YourQuery
+```
 
-- [--address](/cli/cmd-options#address)
+Visit https://docs.temporal.io/visibility to read more about Search Attributes
+and Query creation. See `temporal batch --help` for a quick reference.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--query](/cli/cmd-options#query)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
 ## delete
 
-The `temporal workflow delete` command deletes the specified [Workflow Execution](/workflows#workflow-execution).
+Delete a Workflow Executions and its Event History:
 
-Use the following options to change the command's behavior.
+```
+temporal workflow delete \
+    --workflow-id YourWorkflowId
+```
 
-- [--address](/cli/cmd-options#address)
+The removal executes asynchronously. If the Execution is Running, the Service
+terminates it before deletion.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Visit https://docs.temporal.io/visibility to read more about Search Attributes
+and Query creation. See `temporal batch --help` for a quick reference.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--query](/cli/cmd-options#query)
-
-- [--reason](/cli/cmd-options#reason)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
-
-- [--yes](/cli/cmd-options#yes)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## describe
 
-The `temporal workflow describe` command shows information about a given [Workflow Execution](/workflows#workflow-execution).
-This information can be used to locate Workflow Executions that weren't able to run successfully.
+Display information about a specific Workflow Execution:
 
-`temporal workflow describe --workflow-id=meaningful-business-id`
+```
+temporal workflow describe \
+    --workflow-id YourWorkflowId
+```
 
-The output of this command can be changed to show as printed ('raw') or to only show the Workflow Execution's auto-reset points.
+Show the Workflow Execution's auto-reset points:
 
-`temporal workflow describe --workflow-id=meaningful-business-id --raw=true --reset-points=true`
+```
+temporal workflow describe \
+    --workflow-id YourWorkflowId \
+    --reset-points true
+```
 
-Use the following command options to change the information returned by this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--address](/cli/cmd-options#address)
-
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--raw](/cli/cmd-options#raw)
-
-- [--reset-points](/cli/cmd-options#reset-points)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--raw` | No | **bool** Print properties without changing their format. |
+| `--reset-points` | No | **bool** Show auto-reset points only. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## execute
 
-The `temporal workflow execute` command starts a new [Workflow Execution](/workflows#workflow-execution) and prints its progress.
-The command doesn't finish until the Workflow Execution completes.
+Establish a new Workflow Execution and direct its progress to stdout. The
+command blocks and returns when the Workflow Execution completes. If your
+Workflow requires input, pass valid JSON:
 
-To execute a [Workflow](/workflows) from the Temporal CLI:
-`temporal workflow execute --workflow-id=meaningful-business-id --type=MyWorkflow --task-queue=MyTaskQueue`
+```
+temporal workflow execute
+    --workflow-id YourWorkflowId \
+    --type YourWorkflow \
+    --task-queue YourTaskQueue \
+    --input '{"some-key": "some-value"}'
+```
 
-Single quotes('') are used to wrap input as JSON.
+Use `--event-details` to relay updates to the command-line output in JSON
+format. When using JSON output (`--output json`), this includes the entire
+"history" JSON key for the run.
 
-`temporal workflow execute --workflow-id=meaningful-business-id --type-MyWorkflow --task-queue-MyTaskQueue --input='{"JSON": "Input"}'`
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-Use the following command options to change how the Workflow Execution behaves during its run.
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--detailed` | No | **bool** Display events as sections instead of table. Does not apply to JSON output. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-- [--address](/cli/cmd-options#address)
+## execute-update-with-start
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Send a message to a Workflow Execution to invoke an Update handler, and wait for
+the update to complete. If the Workflow Execution is not running, then a new workflow
+execution is started and the update is sent.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Experimental.
 
-- [--color](/cli/cmd-options#color)
+```
+temporal workflow execute-update-with-start \
+  --update-name YourUpdate \
+  --update-input '{"update-key": "update-value"}' \
+  --workflow-id YourWorkflowId \
+  --type YourWorkflowType \
+  --task-queue YourTaskQueue \
+  --id-conflict-policy Fail \
+  --input '{"wf-key": "wf-value"}'
+```
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--cron](/cli/cmd-options#cron)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--update-first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--update-input` | No | **string[]** Update input value. Use JSON content or set --update-input-meta to override. Can't be combined with --update-input-file. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-base64` | No | **bool** Assume update inputs are base64-encoded and attempt to decode them. |
+| `--update-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --update-input-meta to override. Can't be combined with --update-input. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-meta` | No | **string[]** Input update payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |
+| `--update-name` | Yes | **string** Update name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-- [--env](/cli/cmd-options#env)
+## fix-history-json
 
-- [--execution-timeout](/cli/cmd-options#execution-timeout)
+Reserialize an Event History JSON file:
 
-- [--fields](/cli/cmd-options#fields)
+```
+temporal workflow fix-history-json \
+    --source /path/to/original.json \
+    --target /path/to/reserialized.json
+```
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--id-reuse-policy](/cli/cmd-options#id-reuse-policy)
-
-- [--input](/cli/cmd-options#input)
-
-- [--input-file](/cli/cmd-options#input-file)
-
-- [--limit](/cli/cmd-options#limit)
-
-- [--max-field-length](/cli/cmd-options#max-field-length)
-
-- [--memo](/cli/cmd-options#memo)
-
-- [--memo-file](/cli/cmd-options#memo-file)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
-
-- [--run-timeout](/cli/cmd-options#run-timeout)
-
-- [--search-attribute](/cli/cmd-options#search-attribute)
-
-- [--start-delay](/cli/cmd-options#start-delay)
-
-- [--task-queue](/cli/cmd-options#task-queue)
-
-- [--task-timeout](/cli/cmd-options#task-timeout)
-
-- [--time-format](/cli/cmd-options#time-format)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--type](/cli/cmd-options#type)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--source`, `-s` | Yes | **string** Path to the original file. |
+| `--target`, `-t` | No | **string** Path to the results file. When omitted, output is sent to stdout. |
 
 ## list
 
-The `temporal workflow list` command provides a list of [Workflow Executions](/workflows#workflow-execution) that meet the criteria of a given [List Filter](/visibility#list-filter).
-By default, this command returns a list of up to 10 closed Workflow Executions.
+List Workflow Executions. The optional `--query` limits the output to
+Workflows matching a Query:
 
-`temporal workflow list --query=MyListFilter`
+```
+temporal workflow list \
+    --query YourQuery
+```
 
-The command can also return a list of archived Workflow Executions.
+Visit https://docs.temporal.io/visibility to read more about Search Attributes
+and Query creation. See `temporal batch --help` for a quick reference.
 
-`temporal workflow list --archived=true`
+View a list of archived Workflow Executions:
 
-Use the following command options to change the information returned by this command.
+```
+temporal workflow list \
+    --archived
+```
 
-- [--address](/cli/cmd-options#address)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--archived](/cli/cmd-options#archived)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--archived` | No | **bool** Limit output to archived Workflow Executions. _(Experimental)_ |
+| `--limit` | No | **int** Maximum number of Workflow Executions to display. |
+| `--page-size` | No | **int** Maximum number of Workflow Executions to fetch at a time from the server. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+## metadata
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Issue a Query for and display user-set metadata like summary and
+details for a specific Workflow Execution:
 
-- [--color](/cli/cmd-options#color)
+```
+temporal workflow metadata \
+    --workflow-id YourWorkflowId
+```
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--env](/cli/cmd-options#env)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--reject-condition` | No | **string-enum** Optional flag for rejecting Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-- [--fields](/cli/cmd-options#fields)
+## pause
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Pause a Workflow Execution.
+Note: This is an experimental feature and may change in the future.
 
-- [--limit](/cli/cmd-options#limit)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
-
-- [--query](/cli/cmd-options#query)
-
-- [--time-format](/cli/cmd-options#time-format)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--reason` | No | **string** Reason for pausing the Workflow Execution. Defaults to message with the current user's name. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## query
 
-The `temporal workflow query` command sends a [Query](/encyclopedia/workflow-message-passing#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
+Send a Query to a Workflow Execution by Workflow ID to retrieve its state.
+This synchronous operation exposes the internal state of a running Workflow
+Execution, which constantly changes. You can query both running and completed
+Workflow Executions:
 
-Queries can retrieve all or part of the Workflow state within given parameters.
-Queries can also be used on completed [Workflows](/workflows#workflow-execution).
+```
+temporal workflow query \
+    --workflow-id YourWorkflowId
+    --type YourQueryType
+    --input '{"YourInputKey": "YourInputValue"}'
+```
 
-`temporal workflow query --workflow-id=meaningful-business-id --type=MyQueryType`
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-Use the following command options to change the information returned by this command.
-
-- [--address](/cli/cmd-options#address)
-
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--input](/cli/cmd-options#input)
-
-- [--input-file](/cli/cmd-options#input-file)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--reject-condition](/cli/cmd-options#reject-condition)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--type](/cli/cmd-options#type)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Query Type/Name. |
+| `--reject-condition` | No | **string-enum** Optional flag for rejecting Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## reset
 
-The `temporal workflow reset` command resets a [Workflow Execution](/workflows#workflow-execution).
-A reset resumes the Workflow from a certain point without losing your parameters or [Event History](/workflows#event-history).
+Reset a Workflow Execution so it can resume from a point in its Event History
+without losing its progress up to that point:
 
-The Workflow Execution can be set to a given [Event Type](/workflows#event).
-For example, `temporal workflow reset --workflow-id=meaningful-business-id --type=LastContinuedAsNew`.
+```
+temporal workflow reset \
+    --workflow-id YourWorkflowId \
+    --event-id YourLastEvent
+```
 
-The Workflow Execution can also be reset to any Event after WorkflowTaskStarted.
-For example, `temporal workflow reset --workflow-id=meaningful-business-id --event-id=MyLastEvent`.
+Start from where the Workflow Execution last continued as new:
 
-Use the following options to change reset behavior.
+```
+temporal workflow reset \
+    --workflow-id YourWorkflowId \
+    --type LastContinuedAsNew
+```
 
-- [--address](/cli/cmd-options#address)
+For batch resets, limit your resets to FirstWorkflowTask, LastWorkflowTask, or
+BuildId. Do not use Workflow IDs, run IDs, or event IDs with this command.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Visit https://docs.temporal.io/visibility to read more about Search
+Attributes and Query creation.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+### with-workflow-update-options
 
-- [--color](/cli/cmd-options#color)
+Run Workflow Update Options atomically after the Workflow is reset.
+Workflows selected by the reset command are forwarded onto the subcommand.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--env](/cli/cmd-options#env)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
 
-- [--event-id](/cli/cmd-options#event-id)
+## result
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Wait for and print the result of a Workflow Execution:
 
-- [--namespace](/cli/cmd-options#namespace)
+```
+temporal workflow result \
+    --workflow-id YourWorkflowId
+```
 
-- [--reapply-type](/cli/cmd-options#reapply-type)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--reason](/cli/cmd-options#reason)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--type](/cli/cmd-options#type)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
-
-## reset-batch
-
-The `temporal workflow reset-batch` command resets multiple [Workflow Executions](/workflows#workflow-execution) by `resetType`.
-Resetting a [Workflow](/workflows) resumes it from a certain point without losing your parameters or [Event History](/workflows#event-history).
-
-The set of Workflow Executions to reset can be specified in an input file.
-The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
-
-`temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
-
-Workflow Executions can also be queried by a [List Filter](/visibility#list-filter).
-`temporal workflow reset-batch --query=MyListFilter`
-
-Use the following options to change reset behavior.
-
-- [--address](/cli/cmd-options#address)
-
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--dry-run](/cli/cmd-options#dry-run)
-
-- [--env](/cli/cmd-options#env)
-
-- [--exclude-file](/cli/cmd-options#exclude-file)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--input-file](/cli/cmd-options#input-file)
-
-- [--input-parallelism](/cli/cmd-options#input-parallelism)
-
-- [--input-separator](/cli/cmd-options#input-separator)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--non-deterministic](/cli/cmd-options#non-deterministic)
-
-- [--query](/cli/cmd-options#query)
-
-- [--reason](/cli/cmd-options#reason)
-
-- [--skip-base-is-not-current](/cli/cmd-options#skip-base-is-not-current)
-
-- [--skip-current-open](/cli/cmd-options#skip-current-open)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--type](/cli/cmd-options#type)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## show
 
-The `temporal workflow show` command provides the [Event History](/workflows#event-history) for a [Workflow Execution](/workflows#workflow-execution).
+Show a Workflow Execution's Event History.
+When using JSON output (`--output json`), you may pass the results to an SDK
+to perform a replay:
 
-Use the following options to change the behavior of this command.
+```
+temporal workflow show \
+    --workflow-id YourWorkflowId
+    --output json
+```
 
-- [--address](/cli/cmd-options#address)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--fields](/cli/cmd-options#fields)
-
-- [--follow](/cli/cmd-options#follow)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--limit](/cli/cmd-options#limit)
-
-- [--max-field-length](/cli/cmd-options#max-field-length)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
-
-- [--reset-points](/cli/cmd-options#reset-points)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--time-format](/cli/cmd-options#time-format)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--detailed` | No | **bool** Display events as detailed sections instead of table. Does not apply to JSON output. |
+| `--follow`, `-f` | No | **bool** Follow the Workflow Execution progress in real time. Does not apply to JSON output. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## signal
 
-The `temporal workflow signal` command is used to send a [Signal](/encyclopedia/workflow-message-passing#sending-signals) to a [Workflow Execution](/workflows#workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/visibility#list-filter).
+Send an asynchronous notification (Signal) to a running Workflow Execution by
+its Workflow ID. The Signal is written to the History. When you include
+`--input`, that data is available for the Workflow Execution to consume:
 
-Use the following options to change the command's behavior.
+```
+temporal workflow signal \
+    --workflow-id YourWorkflowId \
+    --name YourSignal \
+    --input '{"YourInputKey": "YourInputValue"}'
+```
 
-- [--address](/cli/cmd-options#address)
+Visit https://docs.temporal.io/visibility to read more about Search Attributes
+and Query creation. See `temporal batch --help` for a quick reference.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Signal name. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-- [--color](/cli/cmd-options#color)
+## signal-with-start
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+Send an asynchronous notification (Signal) to a Workflow Execution.
+If the Workflow Execution is not running or is not found, it starts the
+workflow then sends the signal.
 
-- [--env](/cli/cmd-options#env)
+```
+temporal workflow signal-with-start \
+  --signal-name YourSignal \
+  --signal-input '{"some-key": "some-value"}' \
+  --workflow-id YourWorkflowId \
+  --type YourWorkflowType \
+  --task-queue YourTaskQueue \
+  --input '{"some-key": "some-value"}'
+```
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--input](/cli/cmd-options#input)
-
-- [--input-file](/cli/cmd-options#input-file)
-
-- [--name](/cli/cmd-options#name)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--query](/cli/cmd-options#query)
-
-- [--reason](/cli/cmd-options#reason)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
-
-- [--yes](/cli/cmd-options#yes)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--signal-input` | No | **string[]** Signal input value. Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input-file. Can be passed multiple times to pass multiple arguments. |
+| `--signal-input-base64` | No | **bool** Assume signal inputs are base64-encoded and attempt to decode them. |
+| `--signal-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input. Can be passed multiple times to pass multiple arguments. |
+| `--signal-input-meta` | No | **string[]** Input signal payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |
+| `--signal-name` | Yes | **string** Signal name. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## stack
 
-The `temporal workflow stack` command queries a [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the [Query](/encyclopedia/workflow-message-passing#stack-trace-query) type.
-Returning the call stack of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
+Perform a Query on a Workflow Execution using a `__stack_trace`-type Query.
+Display a stack trace of the threads and routines currently in use by the
+Workflow for troubleshooting:
 
-Use the following options to change the command's behavior.
+```
+temporal workflow stack \
+    --workflow-id YourWorkflowId
+```
 
-- [--address](/cli/cmd-options#address)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--input](/cli/cmd-options#input)
-
-- [--input-file](/cli/cmd-options#input-file)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--reject-condition](/cli/cmd-options#reject-condition)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--reject-condition` | No | **string-enum** Optional flag to reject Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## start
 
-The `temporal workflow start` command starts a new [Workflow Execution](/workflows#workflow-execution).
-When invoked successfully, the Workflow and Run ID are returned immediately after starting the [Workflow](/workflows).
+Start a new Workflow Execution. Returns the Workflow- and Run-IDs:
 
-`temporal workflow start --task-queue=MyTaskQueue --type=MyWorkflow`
+```
+temporal workflow start \
+    --workflow-id YourWorkflowId \
+    --type YourWorkflow \
+    --task-queue YourTaskQueue \
+    --input '{"some-key": "some-value"}'
+```
 
-Use the following command options to change how the Workflow Execution behaves upon starting.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--address](/cli/cmd-options#address)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+## start-update-with-start
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Send a message to a Workflow Execution to invoke an Update handler, and wait for
+the update to be accepted or rejected. If the Workflow Execution is not running,
+then a new workflow execution is started and the update is sent.
 
-- [--color](/cli/cmd-options#color)
+Experimental.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+```
+temporal workflow start-update-with-start \
+  --update-name YourUpdate \
+  --update-input '{"update-key": "update-value"}' \
+  --update-wait-for-stage accepted \
+  --workflow-id YourWorkflowId \
+  --type YourWorkflowType \
+  --task-queue YourTaskQueue \
+  --id-conflict-policy Fail \
+  --input '{"wf-key": "wf-value"}'
+```
 
-- [--cron](/cli/cmd-options#cron)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--env](/cli/cmd-options#env)
-
-- [--execution-timeout](/cli/cmd-options#execution-timeout)
-
-- [--fields](/cli/cmd-options#fields)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--id-reuse-policy](/cli/cmd-options#id-reuse-policy)
-
-- [--input](/cli/cmd-options#input)
-
-- [--input-file](/cli/cmd-options#input-file)
-
-- [--limit](/cli/cmd-options#limit)
-
-- [--max-field-length](/cli/cmd-options#max-field-length)
-
-- [--memo](/cli/cmd-options#memo)
-
-- [--memo-file](/cli/cmd-options#memo-file)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
-
-- [--run-timeout](/cli/cmd-options#run-timeout)
-
-- [--search-attribute](/cli/cmd-options#search-attribute)
-
-- [--start-delay](/cli/cmd-options#start-delay)
-
-- [--task-queue](/cli/cmd-options#task-queue)
-
-- [--task-timeout](/cli/cmd-options#task-timeout)
-
-- [--time-format](/cli/cmd-options#time-format)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--type](/cli/cmd-options#type)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--update-first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--update-input` | No | **string[]** Update input value. Use JSON content or set --update-input-meta to override. Can't be combined with --update-input-file. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-base64` | No | **bool** Assume update inputs are base64-encoded and attempt to decode them. |
+| `--update-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --update-input-meta to override. Can't be combined with --update-input. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-meta` | No | **string[]** Input update payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |
+| `--update-name` | Yes | **string** Update name. |
+| `--update-wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## terminate
 
-The `temporal workflow terminate` command terminates a [Workflow Execution](/workflows#workflow-execution)
+Terminate a Workflow Execution:
 
-Terminating a running Workflow Execution records a [`WorkflowExecutionTerminated` event](/references/events#workflowexecutionterminated) as the closing Event in the [Event History](/workflows#event-history).
-Any further [Command](/workflows#command) Tasks cannot be scheduled after running this command.
+```
+temporal workflow terminate \
+    --reason YourReasonForTermination \
+    --workflow-id YourWorkflowId
+```
 
-Workflow terminations require a valid [Workflow ID](/workflows#workflow-id) to function.
-`temporal workflow terminate --workflow-id=meaningful-business-id`
+The reason is optional and defaults to the current user's name. The reason
+is stored in the Event History as part of the `WorkflowExecutionTerminated`
+event. This becomes the closing Event in the Workflow Execution's history.
 
-Use the following options to change termination behavior.
+Executions may be terminated in bulk via a visibility Query list filter:
 
-- [--address](/cli/cmd-options#address)
+```
+temporal workflow terminate \
+    --query YourQuery \
+    --reason YourReasonForTermination
+```
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Workflow code cannot see or respond to terminations. To perform clean-up work
+in your Workflow code, use `temporal workflow cancel` instead.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Visit https://docs.temporal.io/visibility to read more about Search Attributes
+and Query creation. See `temporal batch --help` for a quick reference.
 
-- [--color](/cli/cmd-options#color)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--query](/cli/cmd-options#query)
-
-- [--reason](/cli/cmd-options#reason)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
-
-- [--yes](/cli/cmd-options#yes)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for termination. Defaults to message with the current user's name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Can only be set with --workflow-id. Do not use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm termination. Can only be used with --query. |
 
 ## trace
 
-The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/workflows#workflow-execution) and any [Child Workflows](/encyclopedia/child-workflows) it generates.
+Display the progress of a Workflow Execution and its child workflows with a
+real-time trace. This view helps you understand how Workflows are proceeding:
 
-Use the following options to change the command's behavior.
+```
+temporal workflow trace \
+    --workflow-id YourWorkflowId
+```
 
-- [--address](/cli/cmd-options#address)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--concurrency` | No | **int** Number of Workflow Histories to fetch at a time. |
+| `--depth` | No | **int** Set depth for your Child Workflow fetches. Pass -1 to fetch child workflows at any depth. |
+| `--fold` | No | **string[]** Fold away Child Workflows with the specified statuses. Case-insensitive. Ignored if --no-fold supplied. Available values: running, completed, failed, canceled, terminated, timedout, continueasnew. Can be passed multiple times. |
+| `--no-fold` | No | **bool** Disable folding. Fetch and display Child Workflows within the set depth. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+## unpause
 
-- [--color](/cli/cmd-options#color)
+Unpause a previously paused Workflow Execution.
+Note: This is an experimental feature and may change in the future.
 
-- [--concurrency](/cli/cmd-options#concurrency)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--depth](/cli/cmd-options#depth)
-
-- [--env](/cli/cmd-options#env)
-
-- [--fold](/cli/cmd-options#fold)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--no-fold](/cli/cmd-options#no-fold)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--reason` | No | **string** Reason for unpausing the Workflow Execution. Defaults to message with the current user's name. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## update
 
-The `temporal workflow update` command synchronously updates a running [Workflow Execution](/workflows#workflow-execution).
+An Update is a synchronous call to a Workflow Execution that can change its
+state, control its flow, and return a result.
 
-Use the options listed below to change the command's behavior.
+### describe
 
-- [--address](/cli/cmd-options#address)
+Given a Workflow Execution and an Update ID, return information about its current status, including
+a result if it has finished.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+```
+temporal workflow update describe \
+    --workflow-id YourWorkflowId \
+    --update-id YourUpdateId
+```
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--color](/cli/cmd-options#color)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--run-id`, `-r` | No | **string** Run ID. If unset, updates the currently-running Workflow Execution. |
+| `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+### execute
 
-- [--env](/cli/cmd-options#env)
+Send a message to a Workflow Execution to invoke an Update handler, and wait for
+the update to complete or fail. You can also use this to wait for an existing
+update to complete, by submitting an existing update ID.
 
-- [--first-execution-run-id](/cli/cmd-options#first-execution-run-id)
+```
+temporal workflow update execute \
+    --workflow-id YourWorkflowId \
+    --name YourUpdate \
+    --input '{"some-key": "some-value"}'
+```
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--input](/cli/cmd-options#input)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Handler method name. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-- [--name](/cli/cmd-options#name)
+### result
 
-- [--namespace](/cli/cmd-options#namespace)
+Given a Workflow Execution and an Update ID, wait for the Update to complete or fail and
+print the result.
 
-- [--run-id](/cli/cmd-options#run-id)
+```
+temporal workflow update result \
+    --workflow-id YourWorkflowId \
+    --update-id YourUpdateId
+```
 
-- [--tls](/cli/cmd-options#tls)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--run-id`, `-r` | No | **string** Run ID. If unset, updates the currently-running Workflow Execution. |
+| `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+### start
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+Send a message to a Workflow Execution to invoke an Update handler, and wait for
+the update to be accepted or rejected. You can subsequently wait for the update
+to complete by using `temporal workflow update execute`.
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+```
+temporal workflow update start \
+    --workflow-id YourWorkflowId \
+    --name YourUpdate \
+    --input '{"some-key": "some-value"}'
+    --wait-for-stage accepted
+```
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
-- [--workflow-id](/cli/cmd-options#workflow-id)
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Handler method name. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is  required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
+
+## update-options
+
+Modify properties of Workflow Executions:
+
+```
+temporal workflow update-options [options]
+```
+
+It can override the Worker Deployment configuration of a
+Workflow Execution, which controls Worker Versioning.
+
+For example, to force Workers in the current Deployment execute the
+next Workflow Task change behavior to `auto_upgrade`:
+
+```
+temporal workflow update-options \
+    --workflow-id YourWorkflowId \
+    --versioning-override-behavior auto_upgrade
+```
+
+or to pin the workflow execution to a Worker Deployment, set behavior
+to `pinned`:
+
+```
+temporal workflow update-options \
+    --workflow-id YourWorkflowId \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name YourDeploymentName \
+    --versioning-override-build-id YourDeploymentBuildId
+```
+
+To remove any previous overrides, set the behavior to
+`unspecified`:
+
+```
+temporal workflow update-options \
+    --workflow-id YourWorkflowId \
+    --versioning-override-behavior unspecified
+```
+
+To see the current override use `temporal workflow describe`
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--address` | No | **string** Temporal Service gRPC endpoint. | `localhost:7233` |
+| `--api-key` | No | **string** API key for request. |  |
+| `--client-authority` | No | **string** Temporal gRPC client :authority pseudoheader. |  |
+| `--client-connect-timeout` | No | **duration** The client connection timeout. 0s means no timeout. |  |
+| `--codec-auth` | No | **string** Authorization header for Codec Server requests. |  |
+| `--codec-endpoint` | No | **string** Remote Codec Server endpoint. |  |
+| `--codec-header` | No | **string[]** HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. |  |
+| `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
+| `--command-timeout` | No | **duration** The command execution timeout. 0s means no timeout. |  |
+| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. _(Experimental)_ |  |
+| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. _(Experimental)_ |  |
+| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. _(Experimental)_ |  |
+| `--env` | No | **string** Active environment name (`ENV`). | `default` |
+| `--env-file` | No | **string** Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`. |  |
+| `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
+| `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
+| `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
+| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `info` |
+| `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
+| `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
+| `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
+| `--profile` | No | **string** Profile to use for config file. _(Experimental)_ |  |
+| `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
+| `--tls` | No | **bool** Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable. |  |
+| `--tls-ca-data` | No | **string** Data for server CA certificate. Can't be used with --tls-ca-path. |  |
+| `--tls-ca-path` | No | **string** Path to server CA certificate. Can't be used with --tls-ca-data. |  |
+| `--tls-cert-data` | No | **string** Data for x509 certificate. Can't be used with --tls-cert-path. |  |
+| `--tls-cert-path` | No | **string** Path to x509 certificate. Can't be used with --tls-cert-data. |  |
+| `--tls-disable-host-verification` | No | **bool** Disable TLS host-name verification. |  |
+| `--tls-key-data` | No | **string** Private certificate key data. Can't be used with --tls-key-path. |  |
+| `--tls-key-path` | No | **string** Path to x509 private key. Can't be used with --tls-key-data. |  |
+| `--tls-server-name` | No | **string** Override target TLS server name. |  |
+
