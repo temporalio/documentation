@@ -1380,11 +1380,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/dotnet/nexus",
-      "destination": "/develop/dotnet/nexus/feature-guide",
-      "permanent": true
-    },
-    {
       "source": "/develop/dotnet/observability",
       "destination": "/develop/dotnet/platform/observability",
       "permanent": true
