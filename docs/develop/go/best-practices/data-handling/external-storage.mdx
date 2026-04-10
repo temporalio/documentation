@@ -155,6 +155,8 @@ func (d *LocalDiskStorageDriver) Store(
 			dir = filepath.Join(d.storeDir, info.Namespace, info.WorkflowID)
 		}
 	case converter.StorageDriverActivityInfo:
+		// StorageDriverActivityInfo is only used for standalone (non-workflow-bound)
+		// activities. Activities started by a workflow use StorageDriverWorkflowInfo.
 		if info.ActivityID != "" {
 			dir = filepath.Join(d.storeDir, info.Namespace, info.ActivityID)
 		}
