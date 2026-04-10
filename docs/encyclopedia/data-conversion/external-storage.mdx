@@ -19,7 +19,7 @@ tags:
   - Data Converters
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import ThemedImage from '@theme/ThemedImage';
 
 :::info Release, stability, and dependency info
 
@@ -72,10 +72,16 @@ For SDK-specific usage guides, see:
 During [Data Conversion](/dataconversion), External Storage sits at the end of the pipeline, after both the
 [Payload Converter](/payload-converter) and the [Payload Codec](/payload-codec):
 
-<CaptionedImage
-  src="/diagrams/data-converter-flow-with-external-storage.svg"
-  title="The Flow of Data through a Data Converter"
-/>
+<figure>
+  <ThemedImage
+    alt="The Flow of Data through a Data Converter"
+    sources={{
+      light: '/diagrams/data-converter-flow-with-external-storage.svg',
+      dark: '/diagrams/data-converter-flow-dark.svg',
+    }}
+  />
+  <figcaption>The Flow of Data through a Data Converter</figcaption>
+</figure>
 
 When a Temporal Client sends a payload that exceeds the configured size threshold, the storage driver uploads the
 payload to your external store and replaces it with a lightweight reference. Payloads below the threshold stay inline in
