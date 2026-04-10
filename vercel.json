@@ -11,6 +11,11 @@
       "permanent": true
     },
     {
+      "source": "/develop/python/data-handling/large-payload-storage",
+      "destination": "/develop/python/data-handling/external-storage",
+      "permanent": true
+    },
+    {
       "source": "/cloud/introduction",
       "destination": "/cloud/overview",
       "permanent": true
