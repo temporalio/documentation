@@ -209,8 +209,8 @@ A custom driver implements the `converter.StorageDriver` interface with four met
   reference so it can route retrieval requests to the correct driver. Changing the name after payloads have been stored
   breaks retrieval. For example, two S3 drivers could be named `"s3-primary"` and `"s3-archive"`.
 - `Type()` returns a string that identifies the driver implementation. Unlike `Name()`, this must be the same across all
-  instances of the same driver type regardless of configuration. Both S3 drivers in the example above would return
-  `"aws.s3driver"` as their type, while the local disk driver in the custom example returns `"local-disk"`.
+  instances of the same driver type regardless of configuration. Two S3 drivers named `"s3-primary"` and `"s3-archive"` would both return
+  `"aws.s3driver"` as their type, while the local disk driver in the custom driver code sample returns `"local-disk"`.
 - `Store()` receives a slice of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `Retrieve()` receives the claims that `Store()` produced and returns the original payloads.
