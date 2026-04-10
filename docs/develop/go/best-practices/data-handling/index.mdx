@@ -27,7 +27,7 @@ Of these three layers, only the PayloadConverter is required. Temporal uses a de
 serialization. The PayloadCodec and ExternalStorage layers are optional. You only need to customize these layers when
 your application requires non-JSON types, encryption, or payload offloading.
 
-|                           | [PayloadConverter](/develop/go/data-handling/data-conversion) | [PayloadCodec](/develop/go/data-handling/data-encryption) | [ExternalStorage](/develop/go/data-handling/large-payload-storage) |
+|                           | [PayloadConverter](/develop/go/data-handling/data-conversion) | [PayloadCodec](/develop/go/data-handling/data-encryption) | [ExternalStorage](/develop/go/data-handling/external-storage) |
 | ------------------------- | ------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
 | **Purpose**               | Serialize application data to bytes                           | Transform encoded payloads (encrypt, compress)            | Offload large payloads to external store                           |
 | **Default**               | JSON serialization                                            | None (passthrough)                                        | None (all payloads are stored in Workflow History)                  |

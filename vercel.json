@@ -6,6 +6,11 @@
   },
   "redirects": [
     {
+      "source": "/develop/go/data-handling/large-payload-storage",
+      "destination": "/develop/go/data-handling/external-storage",
+      "permanent": true
+    },
+    {
       "source": "/cloud/introduction",
       "destination": "/cloud/overview",
       "permanent": true
