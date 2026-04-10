@@ -240,7 +240,7 @@ export default function RunIt({ onNext }: Props) {
 
       <div className={styles.nextRow}>
         <button className={styles.btn} onClick={onNext}>
-          Next: Build It →
+          Next: Quickstart →
         </button>
       </div>
     </div>

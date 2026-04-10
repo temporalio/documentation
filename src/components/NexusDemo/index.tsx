@@ -14,7 +14,7 @@ const NAV: { id: SectionId; label: string }[] = [
   { id: 'components', label: 'Components' },
   { id: 'howitworks', label: 'How It Works' },
   { id: 'runit', label: 'Run It' },
-  { id: 'buildit', label: 'Build It' },
+  { id: 'buildit', label: 'Quickstart' },
   { id: 'quiz', label: 'Test Yourself' },
 ];
 

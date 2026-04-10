@@ -1045,6 +1045,36 @@
   text-decoration: none;
 }
 
+.quickstartCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--nd-border);
+  text-decoration: none;
+  background: var(--nd-surface);
+  transition: border-color 0.15s;
+}
+
+.quickstartCard:hover {
+  border-color: var(--qs-accent);
+  text-decoration: none;
+}
+
+.quickstartLang {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+}
+
+.quickstartCta {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--qs-accent);
+}
+
 .runitLinkPrimary {
   background: var(--ifm-color-primary);
   border-color: var(--ifm-color-primary);
