@@ -33,7 +33,7 @@
     "e2e": "playwright test"
   },
   "resolutions": {
-    "caniuse-lite": "1.0.30001731",
+    "caniuse-lite": "1.0.30001781",
     "qs": "6.14.1"
   },
   "browserslist": {

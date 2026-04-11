@@ -254,6 +254,16 @@ temporal schedule update \
     --workflow-type "NewWorkflowType"
 ```
 
+This command performs a full replacement of the Schedule
+configuration. Any options not provided will be reset to their default
+values. You must re-specify all options, not just the ones you want to
+change. To view the current configuration of a Schedule, use
+`temporal schedule describe` before updating.
+
+Schedule memo and search attributes cannot be updated with this
+command. They are set only during Schedule creation and are not affected
+by updates.
+
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
@@ -281,8 +291,6 @@ Use the following options to change the behavior of this command. You can also u
 | `--remaining-actions` | No | **int** Total allowed actions. Default is zero (unlimited). |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
 | `--schedule-id`, `-s` | Yes | **string** Schedule ID. |
-| `--schedule-memo` | No | **string[]** Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
-| `--schedule-search-attribute` | No | **string[]** Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
 | `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
 | `--start-time` | No | **timestamp** Schedule start time. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
@@ -316,7 +324,7 @@ The following options can be used with any command.
 | `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
 | `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
 | `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
-| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. | `info` |
+| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `info` |
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
