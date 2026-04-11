@@ -169,15 +169,19 @@ Use Worker Versioning to deploy new Workflow code without breaking running Execu
 each Workflow Execution to a specific Worker Deployment Version identified by a build ID, which guarantees that pinned
 Workflows always run on the same Worker version where they started.
 
+For most teams, Worker Versioning should be the default approach for evolving Workflow code in production. It gives you
+safer rollouts, clearer rollback behavior, and a cleaner operational model than maintaining multiple code paths inside a
+Workflow definition.
+
 To learn more about versioning Workflows, see the
 [Workflow Versioning](/production-deployment/worker-deployments/worker-versioning.mdx) guide or take our
 [Worker Versioning course](https://learn.temporal.io/courses/worker_versioning/).
 
 :::tip
 
-In addition to Worker Versioning, you can also use [Patching](/patching) to introduce changes to your Workflow code
-without breaking running Executions. Patching reduces complexity on the infrastructure side compared to Worker
-Versioning, but it introduces some complexity on the Workflow code side. Choose the approach that best fits your needs.
+If your deployment environment cannot yet support Worker Versioning, you can use [Patching](/patching) to introduce
+changes to your Workflow code without breaking running Executions. Treat patching as a fallback for environments that
+cannot adopt versioned worker deployments yet, not as the default recommendation.
 
 :::
 

@@ -1,0 +1,41 @@
+---
+id: data-handling
+title: Data handling - Go SDK
+sidebar_label: Data handling
+slug: /develop/go/data-handling
+description:
+  Learn how Temporal handles data through the Data Converter, including payload conversion, encryption, and large
+  payload storage.
+toc_max_heading_level: 3
+tags:
+  - Go SDK
+  - Temporal SDKs
+  - Data Converters
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+All data sent to and from the Temporal Service passes through the **Data Converter**. The Data Converter has three
+layers that handle different concerns:
+
+<figure>
+  <ThemedImage
+    alt="The Flow of Data through a Data Converter"
+    sources={{
+      light: '/diagrams/data-converter-flow-with-external-storage.svg',
+      dark: '/diagrams/data-converter-flow-dark.svg',
+    }}
+  />
+  <figcaption>The Flow of Data through a Data Converter</figcaption>
+</figure>
+
+Of these three layers, only the PayloadConverter is required. Temporal uses a default PayloadConverter that handles JSON
+serialization. The PayloadCodec and ExternalStorage layers are optional. You only need to customize these layers when
+your application requires non-JSON types, encryption, or payload offloading.
+
+|                           | [PayloadConverter](/develop/go/data-handling/data-conversion) | [PayloadCodec](/develop/go/data-handling/data-encryption) | [ExternalStorage](/develop/go/data-handling/external-storage) |
+| ------------------------- | ------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Purpose**               | Serialize application data to bytes                           | Transform encoded payloads (encrypt, compress)            | Offload large payloads to external store                           |
+| **Default**               | JSON serialization                                            | None (passthrough)                                        | None (all payloads are stored in Workflow History)                  |
+
+For a deeper conceptual explanation, see the [Data Conversion encyclopedia](/dataconversion) and [External Storage](/external-storage).
