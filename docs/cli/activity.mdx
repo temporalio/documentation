@@ -27,7 +27,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `activity` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-To use the CLI with Standalone Activities, see the CLI commands in the [Go](/docs/develop/go/standalone-activities.mdx), [Python](/docs/develop/python/standalone-activities.mdx), and [.NET](/docs/develop/dotnet/standalone-activities.mdx) Standalone Activity guides.
+To use the CLI with Standalone Activities, see the CLI commands in the [Go](/docs/develop/go/activities/standalone-activities.mdx) and [Python](/docs/develop/python/activities/standalone-activities.mdx) Standalone Activity guides.
 
 ## complete
 
@@ -116,7 +116,7 @@ activity timeout, as well as, optionally, the
 
 If the activity may be executing (i.e. it has not yet timed out), the
 reset will take effect the next time it fails, heartbeats, or times out.
-If it is waiting for a retry (i.e. has failed or timed out), the reset
+If is waiting for a retry (i.e. has failed or timed out), the reset
 will apply immediately.
 
 If the activity is already paused, it will be unpaused by default.
@@ -138,7 +138,7 @@ reset, handle this error and then re-throw it when you've cleaned up.
 
 If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
 
-Specify the Activity Type or ID and Workflow IDs:
+Specify the Activity Type of ID and Workflow IDs:
 
 ```
 temporal activity reset \
@@ -163,12 +163,12 @@ Use the following options to change the behavior of this command. You can also u
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--activity-id`, `-a` | No | **string** The Activity ID to reset.  Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |
-| `--activity-type` | No | **string** Activities of this Type will be reset. Mutually exclusive with `--match-all` and `activity-id`. |
+| `--activity-type` | No | **string** Activities of this Type will be reset. Mutually exclusive with `--match-all` and `activity-id`. Note: Resetting Activity by Type is an experimental feature and may change in the future. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--jitter` | No | **duration** The activity will reset at random a time within the specified duration. Can only be used with --query. |
 | `--keep-paused` | No | **bool** If the activity was paused, it will stay paused. |
-| `--match-all` | No | **bool** Every activity should be reset. Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--match-all` | No | **bool** Every activity should be reset. Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. Note: This is an experimental feature and may change in the future. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
 | `--reset-attempts` | No | **bool** Reset the activity attempts. |
 | `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. Only works with --reset-attempts. |
@@ -220,11 +220,11 @@ Use the following options to change the behavior of this command. You can also u
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--activity-id`, `-a` | No | **string** The Activity ID to unpause.  Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |
-| `--activity-type` | No | **string** Activities of this Type will unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both. |
+| `--activity-type` | No | **string** Activities of this Type will unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both. Note: Unpausing Activity by Type is an experimental feature and may change in the future. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--jitter` | No | **duration** The activity will start at random a time within the specified duration. Can only be used with --query. |
-| `--match-all` | No | **bool** Every paused activity should be unpaused. This flag is ignored if activity-type is provided. |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--match-all` | No | **bool** Every paused activity should be unpaused. This flag is ignored if activity-type is provided. Note: This is an experimental feature and may change in the future. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
 | `--reset-attempts` | No | **bool** Reset the activity attempts. |
 | `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. Only works with --reset-attempts. |
@@ -273,11 +273,11 @@ Use the following options to change the behavior of this command. You can also u
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--activity-id`, `-a` | No | **string** The Activity ID to update options. Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |
-| `--activity-type` | No | **string** Activities of this Type will be updated. Mutually exclusive with `--match-all` and `activity-id`. |
+| `--activity-type` | No | **string** Activities of this Type will be updated. Mutually exclusive with `--match-all` and `activity-id`. Note: Updating Activity options by Type is an experimental feature and may change in the future. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--heartbeat-timeout` | No | **duration** Maximum permitted time between successful worker heartbeats. |
-| `--match-all` | No | **bool** Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--match-all` | No | **bool** Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. Note: This is an experimental feature and may change in the future. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
 | `--restore-original-options` | No | **bool** Restore the original options of the activity. |
 | `--retry-backoff-coefficient` | No | **float** Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the backoff coefficient. Must be 1 or larger. |
@@ -316,7 +316,7 @@ The following options can be used with any command.
 | `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
 | `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
 | `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
-| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. | `info` |
+| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `info` |
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
