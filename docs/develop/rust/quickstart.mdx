@@ -1,10 +1,10 @@
 ---
 id: quickstart
-title: Set up your local development environment with the Rust SDK
+title: Quickstart - Rust SDK
 sidebar_label: Quickstart
-description: Configure your local development environment to get started developing with Temporal
+description: Configure your local development environment to get started developing with Temporal and the Rust SDK
 keywords:
-  - set up
+  - quickstart
   - getting started
   - rust sdk
 tags:
@@ -15,54 +15,75 @@ hide_table_of_contents: true
 ---
 
 import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
-import { CallToAction } from '@site/src/components/elements/CallToAction';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Quickstart
 
-Configure your local development environment to get started developing with Temporal.
+Configure your local development environment to get started developing with Temporal using the Rust SDK.
 
 <SetupSteps>
 <SetupStep code={
   <>
     <CodeSnippet language="bash">
-    python3 -V
-    </CodeSnippet>
-    <CodeSnippet language="bash">
-    python 3.13.3
+    rustc --version
     </CodeSnippet>
   </>
 }>
-## Install Python
 
-Make sure you have Python installed. Check your version of Python with the following command.
+## Install Rust
+
+Make sure you have Rust installed on your system. You can download and install Rust from [rustup.rs](https://rustup.rs/).
+
+After installation, verify it's working by checking the version. You'll also need Cargo, which is Rust's package manager and comes bundled with Rust.
 
 </SetupStep>
 
 <SetupStep code={
 <>
-<CodeSnippet language="bash">
-mkdir temporal-project
-</CodeSnippet>
-<CodeSnippet language="bash">
-cd temporal-project
-</CodeSnippet>
-<CodeSnippet language="bash">
-python3 -m venv env
-</CodeSnippet>
-<CodeSnippet language="bash">
-source env/bin/activate
-</CodeSnippet>
-<CodeSnippet language="bash">
-pip install temporalio
+<CodeSnippet language="bash">mkdir temporal-rust-project</CodeSnippet>
+<CodeSnippet language="bash">cd temporal-rust-project</CodeSnippet>
+<CodeSnippet language="bash">cargo init --name temporal-hello-world</CodeSnippet>
+</>
+}>
+
+## Create a Project
+
+Now that you have Rust and Cargo installed, create a new Rust project to manage your dependencies.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="toml">
+{`[package]
+name = "temporal-hello-world"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+temporalio = "0.2"
+temporalio-client = "0.2"
+temporalio-macros = "0.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+`}
 </CodeSnippet>
 </>
 }>
 
-## Install the Temporal Python SDK
+## Add Temporal Rust SDK Dependencies
 
-You should install the Temporal Python SDK in your project using a virtual environment. Create a directory for your
-Temporal project, switch to the new directory, create a Python virtual environment, activate it, and then install the
-Temporal SDK.
+Now add the Temporal SDK dependencies to your project's `Cargo.toml` file.
+
+The core dependencies you'll need are:
+
+- `temporalio` - The Rust SDK for Temporal
+- `temporalio-client` - Client library to start workflows and interact with the Temporal service
+- `temporalio-macros` - Macros for defining workflows and activities
+- `tokio` - Async runtime required by the SDK
+- `serde` - For serialization/deserialization
 
 Next, you'll configure a local Temporal Service for development.
 
@@ -70,54 +91,51 @@ Next, you'll configure a local Temporal Service for development.
 
 <SetupStep code={
 <>
+
 <Tabs>
 <TabItem value="macos" label="macOS" default>
+<CodeSnippet language="bash">
+brew install temporal
+</CodeSnippet>
+</TabItem>
 
-        <p>Install the Temporal CLI using Homebrew:</p>
-        <CodeSnippet language="bash">
-        brew install temporal
-        </CodeSnippet>
-      </TabItem>
+<TabItem value="windows" label="Windows">
+<p>Download the Temporal CLI archive for your architecture:</p>
+<ul>
+<li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Windows amd64</a></li>
+<li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Windows arm64</a></li>
+</ul>
+<p>Extract it and add <code>temporal.exe</code> to your PATH.</p>
+</TabItem>
 
-      <TabItem value="windows" label="Windows">
-        <p>Download the Temporal CLI archive for your architecture:</p>
-        <ul>
-          <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Windows amd64</a></li>
-          <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Windows arm64</a></li>
-        </ul>
-        <p>Extract it and add <code>temporal.exe</code> to your PATH.</p>
-      </TabItem>
-
-      <TabItem value="linux" label="Linux">
-        <p>Download the Temporal CLI for your architecture:</p>
-        <ul>
-          <li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Linux amd64</a></li>
-          <li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Linux arm64</a></li>
-        </ul>
-        <p>Extract the archive and move the <code>temporal</code> binary into your PATH, for example:</p>
-        <CodeSnippet language="bash">
-        sudo mv temporal /usr/local/bin
-        </CodeSnippet>
-      </TabItem>
-    </Tabs>
+<TabItem value="linux" label="Linux">
+<p>Download the Temporal CLI for your architecture:</p>
+<ul>
+<li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Linux amd64</a></li>
+<li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Linux arm64</a></li>
+</ul>
+<p>Extract the archive and move the <code>temporal</code> binary into your PATH:</p>
+<CodeSnippet language="bash">
+sudo mv temporal /usr/local/bin
+</CodeSnippet>
+</TabItem>
+</Tabs>
 
 </>
 }>
 
-## Install Temporal CLI
+## Install Temporal CLI and start the development server
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
 
-Choose your operating system to install Temporal CLI.
+Choose your operating system to install Temporal CLI:
 
 </SetupStep>
 
 <SetupStep code={
 <>
-
-<p>After installing, open a new Terminal window and start the development server:</p>
-
+<p>After installing, open a new Terminal. Keep this running in the background:</p>
 <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
 
 <div className="port-info">
@@ -128,6 +146,7 @@ temporal server start-dev --ui-port 8080
 </CodeSnippet>
 <p>The Temporal Web UI will now be available at http://localhost:8080.</p>
 </div>
+
 </>
 }>
 
@@ -135,164 +154,130 @@ temporal server start-dev --ui-port 8080
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
-This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory
-database.
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
 
-The Temporal Service will be available on localhost:7233. The Temporal Web UI will be available at
-http://localhost:8233.
+The Temporal Service will be available on localhost:7233. The Temporal Web UI will be available at http://localhost:8233.
 
-Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal
-Service at any time by pressing CTRL+C.
-
-Once you have everything installed, you're ready to build apps with Temporal on your local machine.
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
 
 </SetupStep>
 </SetupSteps>
 
 ## Run Hello World: Test Your Installation
 
-Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
-Activity.
+Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
 This test will confirm that:
 
-- The Temporal Python SDK is properly installed
+- The Temporal Rust SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity
+### 1. Define Your Activity
 
-Create an Activity file (activities.py):
+Create an `activities.rs` file with the Activity definition:
 
-```python
-from temporalio import activity
+```rust
+use temporalio_sdk::activities::{ActivityContext, ActivityError};
+use temporalio_macros::activities;
 
-@activity.defn
-async def greet(name: str) -> str:
-    return f"Hello {name}"
+#[activities]
+impl GreetingActivities {
+    #[activity]
+    pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
+        Ok(format!("Hello, {}!", name))
+    }
+}
+
+pub struct GreetingActivities;
 ```
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running),
-which often involve interacting with the outside world, such as sending emails, making network requests, writing to a
-database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based
-on your configuration.
+### 2. Define Your Workflow
 
-### 2. Create the Workflow
+Create a `workflows.rs` file with the Workflow definition:
 
-Create a Workflow file (workflows.py):
+```rust
+use std::time::Duration;
+use temporalio_sdk::{
+    activities::ActivityOptions, workflow::*, ActivityResult, WorkflowResult,
+};
+use temporalio_macros::{workflow, workflow_methods};
 
-```python
-from datetime import timedelta
-from temporalio import workflow
+#[workflow]
+pub struct GreetingWorkflow {
+    name: String,
+}
 
-with workflow.unsafe.imports_passed_through():
-    from activities import greet
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
 
-@workflow.defn
-class SayHelloWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            greet,
+    #[run]
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+
+        let greeting = ctx.activity(
+            GreetingActivities::greet,
             name,
-            schedule_to_close_timeout=timedelta(seconds=10),
-        )
+            ActivityOptions {
+                start_to_close_timeout: Some(Duration::from_secs(10)),
+                ..Default::default()
+            }
+        ).await?;
+
+        Ok(greeting)
+    }
+}
 ```
 
-Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run and
-keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will
-automatically recreate its pre-failure state so it can continue right where it left off.
+### 3. Set Up and Run a Worker
 
-### 3. Create the Worker
+Create your main `main.rs` file:
 
-Create a Worker file (worker.py):
+```rust
+use temporalio_client::{Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions};
+use temporalio_sdk::{Worker, WorkerOptions};
+use temporalio_sdk_core::{CoreRuntime, RuntimeOptions};
 
-```python
-import asyncio
-from temporalio.client import Client
-from temporalio.worker import Worker
-from temporalio import workflow
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Create the core runtime
+    let runtime = CoreRuntime::new_assume_tokio(RuntimeOptions::builder().build()?)?;
 
-with workflow.unsafe.imports_passed_through():
-    from workflows import SayHelloWorkflow
-    from activities import greet
+    // Load client configuration from environment or config file
+    let (conn_options, client_options) = ClientOptions::load_from_config(
+        LoadClientConfigProfileOptions::default()
+    )?;
 
-async def main():
-    client = await Client.connect("localhost:7233")
-    worker = Worker(
-        client,
-        task_queue="my-task-queue",
-        workflows=[SayHelloWorkflow],
-        activities=[greet],
-    )
-    print("Worker started.")
-    await worker.run()
+    let connection = Connection::connect(conn_options).await?;
+    let client = Client::new(connection, client_options);
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    // Create worker options
+    let worker_options = WorkerOptions::new("my-task-queue")
+        .register_activities(GreetingActivities)
+        .register_workflow::<GreetingWorkflow>()
+        .build();
+
+    // Run the worker
+    Worker::new(&runtime, client, worker_options)?.run().await?;
+
+    Ok(())
+}
 ```
 
-Run the Worker by opening up a new terminal:
+### 4. Start a Workflow
 
-```bash
-source env/bin/activate
-python3 worker.py
-```
+You can now start a workflow execution using the client. Create a starter script or use the Temporal CLI to begin your first workflow execution.
 
-Keep this terminal running - you should see "Worker started" displayed.
+## Next Steps
 
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you
-configure it to poll, looking for work to do. Once the Worker dequeues the Workflow or Activity task from the Task
-Queue, it then executes that task.
+Now that you have the basics working, explore the following resources to build more sophisticated applications:
 
-Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your
-Workflows and Activities. For more information on Workers, see
-[Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
-
-### 4. Execute the Workflow
-
-Now that your Worker is running, it's time to start a Workflow Execution.
-
-This final step will validate that everything is working correctly with your file labeled `starter.py`.
-
-Create a separate file called `starter.py`:
-
-```python
-import asyncio
-import uuid
-from temporalio.client import Client
-
-async def main():
-    client = await Client.connect("localhost:7233")
-    result = await client.execute_workflow(
-        "SayHelloWorkflow",
-        "Temporal",
-        id=f"say-hello-workflow-{uuid.uuid4()}",
-        task_queue="my-task-queue",
-    )
-    print("Workflow result:", result)
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-While the Worker is still running, run the following command in a new terminal:
-
-```bash
-source env/bin/activate
-python3 starter.py
-```
-
-### Verify Success
-
-If everything is working correctly, you should see:
-
-- Worker processing the Workflow and Activity
-- Output: `Workflow result: Hello Temporal`
-- Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
-
-<CallToAction href="https://learn.temporal.io/getting_started/python/first_program_in_python/">
-  <h3>Next: Run your first Temporal Application</h3>
-  <p>Create a basic Workflow and run it with the Temporal Python SDK</p>
-</CallToAction>
+- [Develop a Workflow](/develop/rust/workflows/basics) - Learn how to write complex workflow logic
+- [Develop an Activity](/develop/rust/activities/basics) - Understand activity patterns and best practices
+- [Worker Processes](/develop/rust/workers/worker-process) - Configure and scale workers
+- [Using the Temporal Client](/develop/rust/client/temporal-client) - Start workflows and interact with the Temporal Service

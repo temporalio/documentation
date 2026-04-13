@@ -1,0 +1,248 @@
+---
+id: child-workflows
+title: Child Workflows - Rust SDK
+sidebar_label: Child Workflows
+toc_max_heading_level: 4
+keywords:
+  - child-workflows
+tags:
+  - Workflows
+  - Child Workflows
+  - Rust SDK
+  - Temporal SDKs
+description: Start a Child Workflow Execution and set a Parent Close Policy using the Rust SDK. Manage Child Workflow Events.
+---
+
+This page shows how to do the following:
+
+- [Start a Child Workflow Execution](#start-child-workflow)
+- [Set a Parent Close Policy](#parent-close-policy)
+
+## Start a Child Workflow Execution {#start-child-workflow}
+
+A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+
+When using a Child Workflow API, Child Workflow related Events are logged in the Workflow Execution Event History.
+
+Always wait until the Child Workflow Execution has started before moving on. Using `PendingChildWorkflow` ensures this.
+
+To start a Child Workflow in Rust, use `ctx.child_workflow()`:
+
+```rust
+use std::time::Duration;
+use temporalio_sdk::workflow::ChildWorkflowOptions;
+
+#[workflow]
+pub struct ParentWorkflow {
+    name: String,
+}
+
+#[workflow_methods]
+impl ParentWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
+    #[run]
+    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+
+        // Start a child workflow
+        let started = ctx.child_workflow(
+            ChildWorkflow::run,
+            name,
+            ChildWorkflowOptions {
+                workflow_id: "child-1".to_string(),
+                ..Default::default()
+            },
+        ).await?;
+
+        // Get the result from the child workflow
+        let result = started.result().await?;
+
+        Ok(format!("Child result: {}", result))
+    }
+}
+
+#[workflow]
+pub struct ChildWorkflow {
+    name: String,
+}
+
+#[workflow_methods]
+impl ChildWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
+    #[run]
+    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+        Ok(format!("Hello from child: {}", name))
+    }
+}
+```
+
+### Specify Child Workflow Options
+
+Use `ChildWorkflowOptions` to customize child workflow behavior:
+
+```rust
+use std::time::Duration;
+use temporalio_sdk::workflow::{ChildWorkflowOptions, ParentClosePolicy};
+
+let started = ctx.child_workflow(
+    ChildWorkflow::run,
+    input,
+    ChildWorkflowOptions {
+        // Required: unique ID for the child workflow
+        workflow_id: "child-123".to_string(),
+        // Optional: how long the child has to start before timing out
+        start_to_close_timeout: Some(Duration::from_secs(3600)),
+        // Optional: how to handle the child when the parent closes
+        parent_close_policy: Some(ParentClosePolicy::Abandon),
+        // Optional: task queue to execute on
+        task_queue: Some("my-queue".to_string()),
+        // Optional: retry policy
+        retry_policy: Some(RetryPolicy {
+            initial_interval: Duration::from_secs(1),
+            backoff_coefficient: 2.0,
+            maximum_interval: Duration::from_secs(60),
+            maximum_attempts: 5,
+            ..Default::default()
+        }),
+        ..Default::default()
+    },
+).await?;
+```
+
+### Execute Multiple Child Workflows in Parallel
+
+You can start multiple child workflows and wait for all of them:
+
+```rust
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<Vec<String>> {
+    let options = ChildWorkflowOptions {
+        workflow_id: "child-1".to_string(),
+        ..Default::default()
+    };
+
+    // Start multiple child workflows
+    let child1 = ctx.child_workflow(
+        ChildWorkflow::run,
+        "input1".to_string(),
+        options.clone(),
+    ).await?;
+
+    let child2 = ctx.child_workflow(
+        ChildWorkflow::run,
+        "input2".to_string(),
+        ChildWorkflowOptions {
+            workflow_id: "child-2".to_string(),
+            ..options
+        },
+    ).await?;
+
+    // Wait for results
+    let result1 = child1.result().await?;
+    let result2 = child2.result().await?;
+
+    Ok(vec![result1, result2])
+}
+```
+
+Both child workflows run in parallel, and the parent waits for both to complete.
+
+## Parent Close Policy {#parent-close-policy}
+
+A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+
+The default Parent Close Policy is set to terminate the Child Workflow Execution.
+
+Set Parent Close Policy using the `parent_close_policy` field in `ChildWorkflowOptions`:
+
+```rust
+use temporalio_sdk::workflow::{ChildWorkflowOptions, ParentClosePolicy};
+
+let started = ctx.child_workflow(
+    ChildWorkflow::run,
+    input,
+    ChildWorkflowOptions {
+        workflow_id: "child-1".to_string(),
+        parent_close_policy: Some(ParentClosePolicy::Abandon),
+        ..Default::default()
+    },
+).await?;
+```
+
+### Parent Close Policy Options
+
+- **`Terminate`** (default) - The Child Workflow will be terminated immediately when the parent closes
+- **`Abandon`** - The Child Workflow will continue running even if the parent closes
+- **`RequestCancel`** - The Child Workflow will receive a cancellation request when the parent closes
+
+### Use Abandon Policy
+
+When using `Abandon` policy, the child workflow continues running even after the parent completes:
+
+```rust
+use temporalio_sdk::workflow::{ChildWorkflowOptions, ParentClosePolicy};
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    // Start a child workflow that will continue even if parent closes
+    let started = ctx.child_workflow(
+        LongRunningChild::run,
+        input,
+        ChildWorkflowOptions {
+            workflow_id: "long-running-child".to_string(),
+            parent_close_policy: Some(ParentClosePolicy::Abandon),
+            ..Default::default()
+        },
+    ).await?;
+
+    // Don't wait for child to complete - parent can finish
+    Ok("Parent completed".to_string())
+}
+```
+
+### Use RequestCancel Policy
+
+When using `RequestCancel` policy, the child workflow receives a cancellation request when the parent closes:
+
+```rust
+use temporalio_sdk::workflow::{ChildWorkflowOptions, ParentClosePolicy};
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    let started = ctx.child_workflow(
+        ChildWorkflow::run,
+        input,
+        ChildWorkflowOptions {
+            workflow_id: "child-1".to_string(),
+            parent_close_policy: Some(ParentClosePolicy::RequestCancel),
+            ..Default::default()
+        },
+    ).await?;
+
+    // If parent closes, child receives cancellation request
+    let result = started.result().await?;
+    Ok(result)
+}
+```
+
+## Best Practices {#best-practices}
+
+1. **Always specify workflow_id**: This ensures idempotency if the parent workflow retries
+2. **Choose appropriate Parent Close Policy**: Think about what should happen to children when the parent completes
+3. **Set appropriate timeouts**: Use `start_to_close_timeout` to prevent indefinite waiting
+4. **Monitor child status**: Check child workflow results to handle failures appropriately
+5. **Use separate task queues if needed**: For different scaling requirements or resource constraints
+
+## Related Links
+
+- [Workflow Concepts](/workflow-definition) - Learn about Workflow fundamentals
+- [Workflows Documentation](/develop/rust/workflows) - Full Workflows reference

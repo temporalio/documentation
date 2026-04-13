@@ -1,0 +1,374 @@
+---
+id: temporal-client
+title: Temporal Client - Rust SDK
+sidebar_label: Temporal Client
+toc_max_heading_level: 4
+description:
+  This guide introduces Temporal Clients, explaining their role and configuration in Rust to connect to various Temporal Services, including starting Workflow Executions and customizing Workflow options.
+keywords:
+  - temporal rust sdk
+  - temporal client
+  - connect to temporal service
+  - start workflow execution
+  - rust sdk workflow execution
+  - temporal cloud connection
+tags:
+  - Temporal Client
+  - Rust SDK
+  - Temporal SDKs
+---
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results of a Workflow Execution, and terminating Workflow Executions.
+
+This page shows you how to do the following using the Rust SDK:
+
+- [Connect to a development Temporal Service](#connect-to-development-service)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow Execution](#start-workflow-execution)
+- [Get Workflow results](#get-workflow-results)
+- [Send Signals to Workflows](#send-signals)
+- [Query Workflows](#query-workflows)
+- [Execute Updates](#execute-updates)
+- [Cancel Workflows](#cancel-workflows)
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+
+:::
+
+## Connect to a development Temporal Service {#connect-to-development-service}
+
+To connect to a Temporal Service running locally on the default port (7233):
+
+```rust
+use temporalio_client::{Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Load configuration from environment variables or config file
+    let (conn_options, client_options) = ClientOptions::load_from_config(
+        LoadClientConfigProfileOptions::default()
+    )?;
+
+    // Create connection
+    let connection = Connection::connect(conn_options).await?;
+
+    // Create client
+    let client = Client::new(connection, client_options);
+
+    Ok(())
+}
+```
+
+The SDK automatically loads configuration from:
+
+1. Environment variables (highest priority)
+2. Configuration file at path specified by `TEMPORAL_CONFIG_FILE`
+3. Default configuration file at `~/.config/temporalio/temporal.toml`
+
+For a list of all available environment variables and their defaults, refer to [Environment Configuration](/references/client-environment-configuration).
+
+## Configure Client with Code {#configure-with-code}
+
+If you prefer to configure the client directly in code:
+
+```rust
+use temporalio_client::{Client, ClientOptions, WorkflowServiceStubsOptions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Configure connection options
+    let conn_options = WorkflowServiceStubsOptions::new()
+        .target_url("localhost:7233".parse()?)
+        .build();
+
+    // Configure client options
+    let client_options = ClientOptions::new()
+        .namespace("default");
+
+    // Create connection and client
+    let connection = Connection::connect(conn_options).await?;
+    let client = Client::new(connection, client_options);
+
+    Ok(())
+}
+```
+
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+To connect to Temporal Cloud, you need:
+
+- Your Namespace and Account ID (in format `namespace.account-id`)
+- Either an API Key or mTLS certificates
+
+### Connect with API Key {#connect-api-key}
+
+```rust
+use temporalio_client::{Client, ClientOptions, WorkflowServiceStubsOptions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let namespace = "your-namespace.abc123"; // Your namespace.account-id
+    let api_key = "your-api-key"; // Your Temporal Cloud API key
+
+    let conn_options = WorkflowServiceStubsOptions::new()
+        .target_url("your-namespace.abc123.tmprl.cloud:7233".parse()?)
+        .api_key(api_key.into())
+        .build();
+
+    let client_options = ClientOptions::new()
+        .namespace(namespace);
+
+    let connection = Connection::connect(conn_options).await?;
+    let client = Client::new(connection, client_options);
+
+    Ok(())
+}
+```
+
+### Connect with mTLS Certificates {#connect-mtls}
+
+```rust
+use temporalio_client::{Client, ClientOptions, WorkflowServiceStubsOptions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let namespace = "your-namespace.abc123";
+
+    let conn_options = WorkflowServiceStubsOptions::new()
+        .target_url("your-namespace.abc123.tmprl.cloud:7233".parse()?)
+        .client_cert_path("/path/to/client.pem".into())
+        .client_key_path("/path/to/client.key".into())
+        .build();
+
+    let client_options = ClientOptions::new()
+        .namespace(namespace);
+
+    let connection = Connection::connect(conn_options).await?;
+    let client = Client::new(connection, client_options);
+
+    Ok(())
+}
+```
+
+## Start a Workflow Execution {#start-workflow-execution}
+
+Use `client.start_workflow()` to start a Workflow Execution:
+
+```rust
+use temporalio_client::{Client, WorkflowOptions};
+use std::time::Duration;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = /* ... setup ... */;
+
+    // Start a workflow
+    let handle = client.start_workflow(
+        GreetingWorkflow::run,
+        "World".to_string(),
+        WorkflowOptions::new("my-task-queue", "greeting-1")
+            .workflow_execution_timeout(Some(Duration::from_secs(3600)))
+            .build()
+    ).await?;
+
+    println!("Started workflow: {}", handle.workflow_id());
+
+    Ok(())
+}
+```
+
+### Workflow Execution Options
+
+Common Workflow Options:
+
+```rust
+use temporalio_client::WorkflowOptions;
+use std::time::Duration;
+
+let options = WorkflowOptions::new("my-task-queue", "workflow-id-123")
+    // Maximum time the Workflow can execute
+    .workflow_execution_timeout(Some(Duration::from_secs(3600)))
+    // Maximum time between Workflow Task starts
+    .workflow_run_timeout(Some(Duration::from_secs(1800)))
+    // Maximum time for a single Workflow Task
+    .workflow_task_timeout(Some(Duration::from_secs(10)))
+    // ID to retry with for idempotency
+    .workflow_id_reuse_policy(WorkflowIdReusePolicy::AllowDuplicate)
+    // Retry policy for Workflow retries
+    .retry_policy(Some(RetryPolicy { /* ... */ }))
+    // Memo data (not searchable)
+    .memo(/* ... */)
+    // Search attributes (searchable, queryable)
+    .search_attributes(/* ... */)
+    .build();
+```
+
+## Get Workflow Results {#get-workflow-results}
+
+Use the workflow handle to get results:
+
+```rust
+// Get handle from start_workflow or by workflow ID
+let handle = client.get_workflow_handle::<GreetingWorkflow>("workflow-id");
+
+// Wait for result (blocking until complete)
+let result = handle.get_result::<String>(GetWorkflowResultOptions::default()).await?;
+println!("Workflow result: {}", result);
+
+// OR get result immediately if available
+match handle.get_result::<String>(GetWorkflowResultOptions::default()).wait_timeout(Duration::from_secs(0)).await {
+    Ok(result) => println!("Result: {}", result),
+    Err(_) => println!("Workflow still running"),
+}
+```
+
+## Send Signals to Workflows {#send-signals}
+
+Send a Signal to a running Workflow:
+
+```rust
+use temporalio_client::SignalOptions;
+
+let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
+
+// Send a signal
+handle.signal(
+    MyWorkflow::my_signal,
+    "signal-value".to_string(),
+    SignalOptions::default(),
+).await?;
+```
+
+## Query Workflows {#query-workflows}
+
+Query a running Workflow for its state:
+
+```rust
+use temporalio_client::QueryOptions;
+
+let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
+
+// Execute a query
+let status = handle.query(
+    MyWorkflow::get_status,
+    (),
+    QueryOptions::default(),
+).await?;
+
+println!("Workflow status: {}", status);
+```
+
+## Execute Updates {#execute-updates}
+
+Execute an Update on a running Workflow:
+
+```rust
+use temporalio_client::UpdateOptions;
+
+let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
+
+// Execute an update synchronously
+let result = handle.execute_update(
+    MyWorkflow::my_update,
+    42,
+    UpdateOptions::default(),
+).await?;
+
+println!("Update result: {:?}", result);
+```
+
+### Asynchronous Updates
+
+Start an update and get the result later:
+
+```rust
+use temporalio_client::{StartUpdateOptions, WorkflowUpdateWaitStage};
+
+let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
+
+// Start update and wait only until accepted
+let update_handle = handle.start_update(
+    MyWorkflow::my_update,
+    42,
+    StartUpdateOptions::builder()
+        .wait_for_stage(WorkflowUpdateWaitStage::Accepted)
+        .build()
+).await?;
+
+// Do other work...
+
+// Get result when ready
+let result = update_handle.get_result().await?;
+```
+
+## Cancel Workflows {#cancel-workflows}
+
+Request cancellation of a running Workflow:
+
+```rust
+use temporalio_client::CancelWorkflowOptions;
+
+let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
+
+// Request cancellation (allows graceful shutdown)
+handle.cancel(
+    CancelWorkflowOptions::builder()
+        .reason("User requested cancellation")
+        .build()
+).await?;
+```
+
+The Workflow will receive the cancellation request via `ctx.cancelled()` and can clean up gracefully.
+
+## Terminate Workflows {#terminate-workflows}
+
+Immediately terminate a Workflow (without allowing cleanup):
+
+```rust
+use temporalio_client::TerminateWorkflowOptions;
+
+let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
+
+// Terminate immediately
+handle.terminate(
+    TerminateWorkflowOptions::builder()
+        .reason("Emergency: forcing shutdown")
+        .build()
+).await?;
+```
+
+Unlike cancellation, termination is immediate and the Workflow cannot handle it.
+
+## List Workflows {#list-workflows}
+
+Query and list running Workflows:
+
+```rust
+use temporalio_client::ListWorkflowsOptions;
+use futures_util::StreamExt;
+
+let mut stream = client.list_workflows(
+    "WorkflowType = 'MyWorkflow'",
+    ListWorkflowsOptions::builder()
+        .limit(10)
+        .build()
+);
+
+while let Some(result) = stream.next().await {
+    let execution = result?;
+    println!("Workflow: {} ({})", execution.id(), execution.workflow_type());
+}
+```
+
+## Best Practices {#best-practices}
+
+1. **Reuse Client instances**: Create one Client and share it across your application
+2. **Load configuration from environment**: Use environment variables or config files for deployment flexibility
+3. **Handle errors gracefully**: Always check for connection errors and handle them appropriately
+4. **Use meaningful Workflow IDs**: Make it easy to track and query Workflows
+5. **Set appropriate timeouts**: Prevent Workflows from running indefinitely
+6. **Use Search Attributes**: Make your Workflows discoverable with searchable metadata
+
+For more information, see [Environment Configuration](/references/client-environment-configuration) and [Visibility](/visibility).

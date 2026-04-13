@@ -1,0 +1,210 @@
+---
+id: basics
+title: Activity basics - Rust SDK
+sidebar_label: Activity basics
+description: This section explains how to implement Activities with the Rust SDK
+toc_max_heading_level: 4
+keywords:
+  - Rust SDK
+tags:
+  - Rust SDK
+  - Temporal SDKs
+---
+
+## Develop a basic Activity {#develop-activities}
+
+**How to develop a basic Activity using the Temporal Rust SDK.**
+
+One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with the world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service. For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
+
+In the Temporal Rust SDK, Activities are defined using the `#[activities]` macro on an impl block, with individual Activity methods marked by the `#[activity]` macro.
+
+```rust
+use temporalio_sdk::activities::{ActivityContext, ActivityError};
+use temporalio_macros::activities;
+
+#[activities]
+impl GreetingActivities {
+    #[activity]
+    pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
+        Ok(format!("Hello, {}!", name))
+    }
+
+    #[activity]
+    pub async fn send_notification(_ctx: ActivityContext, message: String) -> Result<(), ActivityError> {
+        println!("Sending notification: {}", message);
+        Ok(())
+    }
+}
+
+pub struct GreetingActivities;
+```
+
+The `#[activities]` macro marks the impl block as containing Activity definitions. Each method decorated with `#[activity]` becomes an Activity that can be invoked from a Workflow.
+
+### Activity method signature requirements
+
+Each Activity method must:
+
+- Be `async` (return a future)
+- Take `ActivityContext` as the first parameter
+- Return `Result<T, ActivityError>` where `T` is the return type
+- Be `pub` (public)
+
+The `ActivityContext` parameter provides access to Activity execution information and capabilities like heartbeating. If you don't need it, you can use `_ctx` as a parameter name.
+
+### Define Activity parameters {#activity-parameters}
+
+**How to define Activity parameters using the Temporal Rust SDK.**
+
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+
+A single argument is limited to a maximum size of 2 MB. And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution/event#event-history) and large Event Histories can affect Worker performance.
+
+We recommend that you use a single struct as an argument that wraps all the application data passed to Activities. This way you can change what data is passed to the Activity without breaking the function signature.
+
+Activity parameters must be serializable and deserializable using serde. Use `#[derive(Serialize, Deserialize)]` on your data types:
+
+```rust
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct GreetingInput {
+    pub greeting: String,
+    pub name: String,
+}
+
+#[activities]
+impl GreetingActivities {
+    #[activity]
+    pub async fn compose_greeting(
+        _ctx: ActivityContext,
+        input: GreetingInput,
+    ) -> Result<String, ActivityError> {
+        Ok(format!("{} {}!", input.greeting, input.name))
+    }
+}
+```
+
+### Define Activity return values {#activity-return-values}
+
+**How to define Activity return values using the Temporal Rust SDK.**
+
+All data returned from an Activity must be serializable.
+
+Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction. Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
+
+The return type of an Activity is `Result<T, ActivityError>`. The `T` type must implement `Serialize`. Use `ActivityError::Retryable` for errors that should be retried, and `ActivityError::NonRetryable` for permanent failures:
+
+```rust
+#[activities]
+impl MyActivities {
+    #[activity]
+    pub async fn process_data(
+        _ctx: ActivityContext,
+        input: String,
+    ) -> Result<ProcessedData, ActivityError> {
+        // If an error should be retried
+        if !validate_input(&input) {
+            return Err(ActivityError::Retryable(
+                "Invalid input format".into()
+            ));
+        }
+
+        // If an error should not be retried
+        if input.len() > 1000000 {
+            return Err(ActivityError::NonRetryable(
+                "Input too large".into()
+            ));
+        }
+
+        let result = ProcessedData {
+            processed: input.to_uppercase(),
+        };
+
+        Ok(result)
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ProcessedData {
+    pub processed: String,
+}
+```
+
+### Customize your Activity Type {#activity-type}
+
+**How to customize your Activity Type using the Temporal Rust SDK.**
+
+Activities have a Type that refers to the Activity name. The Activity name is used to identify Activity Types in the Workflow Execution Event History, Visibility Queries, and Metrics.
+
+By default, the Activity name is the method name. You can customize it by providing a `name` parameter to the `#[activity]` macro:
+
+```rust
+#[activities]
+impl GreetingActivities {
+    #[activity(name = "compose_greeting")]
+    pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
+        Ok(format!("Hello, {}!", name))
+    }
+
+    #[activity(name = "send_email")]
+    pub async fn send_notification(_ctx: ActivityContext, email: String) -> Result<(), ActivityError> {
+        println!("Email to: {}", email);
+        Ok(())
+    }
+}
+```
+
+## Activity Error Handling {#error-handling}
+
+Activities return `Result<T, ActivityError>` with different error types for different failure scenarios:
+
+- **`ActivityError::Retryable`** - Transient failure that should be retried according to the Activity's retry policy
+- **`ActivityError::NonRetryable`** - Permanent failure that will not be retried
+- **`ActivityError::Cancelled`** - Activity was cancelled by the Workflow
+
+```rust
+#[activities]
+impl ActivitiesImpl {
+    #[activity]
+    pub async fn call_external_service(
+        _ctx: ActivityContext,
+        url: String,
+    ) -> Result<String, ActivityError> {
+        match make_http_request(&url).await {
+            Ok(response) => Ok(response),
+            Err(e) if is_network_error(&e) => {
+                // Network errors are transient and should be retried
+                Err(ActivityError::Retryable(format!("Network error: {}", e)))
+            }
+            Err(e) if is_auth_error(&e) => {
+                // Authentication errors are permanent and should not be retried
+                Err(ActivityError::NonRetryable(format!("Auth error: {}", e)))
+            }
+            Err(e) => Err(ActivityError::Retryable(format!("Unknown error: {}", e))),
+        }
+    }
+}
+```
+
+## External Activity References
+
+**How to reference externally defined Activities**
+
+When referencing Activities that are defined in external codebase or in a different language, you can create unimplemented Activity stubs:
+
+```rust
+// Reference to activities defined in another service
+#[activities]
+impl ExternalActivities {
+    #[activity(name = "external-process")]
+    async fn process_data(_ctx: ActivityContext, _data: String) -> Result<String, ActivityError> {
+        unimplemented!()
+    }
+}
+```
+
+This allows you to call these Activities from your Workflow code without implementing them locally. The actual implementation will be provided by the external service that has these Activities registered with a Worker.
