@@ -484,23 +484,31 @@ For Datadog, the following widget will calculate actions per second:
 This is a complex question. The answer depends on your specific situation. The most common considerations are:
 
 1. Risk of change - No matter what, clients must be updated to use the new cloud-side Namespace. The big difference is that
-   automated migration enables replication between self-hosted and cloud during the migration process. This allows some flexibility
-   in transferring clients. If you are unsure of the impact to clients as a result of manual migration, then you may opt for the automated approach.  
+   automated migration enables replication between self-hosted and cloud during the migration process. This replication allows some flexibility
+   in transferring clients (if you miss a few clients, replication will provide some cover).If you are unsure of the impact of switching clients
+   during a manual migration, then you may opt for the automated approach.  
 2. Effort - There are certain time-related costs involved with the setup of the components required for automated migration. Mostly, these costs 
    involve deployment of dedicated cloud-based components (Temporal), s2s proxy setup (customer/Temporal), and
    general project management. If your self-hosted clusters do not meet the [minimum requirements](#limitations) requirements, then there may
    be additional work required as a prerequisite to starting the project.
+3. Short-lived vs long-running Workflows - In many cases, short-lived Workflows can be easily migrated using the manual approach. Long-running
+   Workflows may benefit from automated migration due to its minimal impact on those Workflows.
+4. Closed Workflows - Automated migration will migrated closed Workflows where manual migration will not.
+
+Keeping the above points in mind will help guide your decision on which is the most appropriate path for your migration project.
+
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 
 Not directly. The migration tooling migrates all Workflows from a Namespace. If your goal is to split Workflows, then you should
-manually migrate any workflows into their new cloud-side targets prior to starting an auto-migration.
+[manually migrate](/cloud/migrate/manual) any workflows into their new cloud-side target Namespaces prior to starting an auto-migration.
 
 ### Can I combine manual and auto migration?
 
 It depends. Auto migration requires a "fresh" target cloud-side Namespace (e.g. one that has never had a running Workflow). 
 If Workflows were manually migrated to a cloud-side Namespace, then this Namespace would not be suitable as an auto-migration target.
 However, nothing prevents you from manually migrating Workflows into a Namespace from a previously completed auto-migration.
+
 
 ### Why does it matter if custom search attributes are used?
 
@@ -509,9 +517,13 @@ of data store used for visibility.
 
 ### What Workflows are migrated by default?
 
-All Workflows are migrated by default. For closed Workflows, you may specify a date range to be migrated. Limiting the time range for
-closed Workflows will greatly reduce the amount of time it takes to migrate a Namespace. Your cloud-side Namespace must
+All Workflows are migrated by default. For closed Workflows, you may specify a date range to be migrated. Your cloud-side Namespace must
 be configured with your desired retention period prior to starting the migration.
+
+### What can I do to speed up an automated migration?
+
+The #1 speed optimization is to limit the time range for closed Workflows. This will reduce the amount of data required to be 
+migrated and in many cases will dramatically reduce overall migration time. 
 
 ### Is the migration of Schedules supported?
 
@@ -532,6 +544,6 @@ they will remain encrypted during and after migration.
 
 ### I would like to enable payload encryption as part of the migration. Is this supported?
 
-Enabling payload encryption as part of the migration is not currently supported. If encryption is required, then the best
-approach is to enable it prior to migrating. 
+The automated migration tooling cannot add payload encryption. To encrypt payloads sent to Temporal Cloud, you must encrypt
+payloads in your cluster before starting the automated migration process.
 
