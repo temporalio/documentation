@@ -1,29 +1,22 @@
 ---
-id: converters-and-encryption
-title: Converters and encryption - Go SDK
-sidebar_label: Converters and encryption
-description: Use a custom Payload Codec and Payload Converter in Go. Create custom PayloadCodec implementations, set Data Converters, and apply transformations effectively using the Temporal SDK.
-toc_max_heading_level: 4
-keywords:
-  - go sdk
-  - data converter
-  - payload conversion
-  - payload converter
+id: data-encryption
+title: Payload encryption - Go SDK
+sidebar_label: Payload encryption
+slug: /develop/go/data-handling/data-encryption
+toc_max_heading_level: 2
 tags:
   - Security
-  - Codec Server
-  - Data Converters
   - Encryption
+  - Codec Server
   - Go SDK
   - Temporal SDKs
+description: Encrypt data sent to and from the Temporal Service using a custom Payload Codec in the Go SDK.
 ---
-
-import { CaptionedImage } from '@site/src/components';
 
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
 This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
-It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access with keys, algorithms, or other security measures.
+It also gives implementers more power and more freedom regarding which client is able to read which data. Implementers can control access with keys, algorithms, or other security measures.
 
 A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client.
 Depending on business needs, a complete implementation of Payload Encryption may involve selecting appropriate encryption algorithms, managing encryption keys, restricting a subset of their users from viewing payload output, or a combination of these.
@@ -32,7 +25,7 @@ The server itself never adds encryption over Payloads.
 Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
 When working with sensitive data, you should always implement Payload encryption.
 
-## Use a custom Payload Codec in Go {#custom-payload-codec}
+## Use a custom Payload Codec {#custom-payload-codec}
 
 **Step 1: Create a custom Payload Codec**
 
@@ -138,57 +131,3 @@ The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec
 Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
 
 For reference, see the [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server) sample.
-
-## Use custom Payload conversion {#custom-payload-conversion}
-
-Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
-
-The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
-You can set multiple encoding Payload Converters to run your conversions.
-When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
-
-Payload Converters can be customized independently of a Payload Codec.
-Temporal's Converter architecture looks like this:
-
-<CaptionedImage
-    src="/img/info/converter-architecture.png"
-    title="Temporal converter architecture"
-/>
-
-## How to use a custom Payload Converter in Go {#custom-payload-converter}
-
-Use a [Composite Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
-Defining a new Composite Data Converter is not always necessary to implement custom data handling.
-You can override the default Converter with a custom Codec, but a Composite Data Converter may be necessary for complex Workflow logic.
-
-`NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
-The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:
-
-- [NewNilPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
-- [NewByteSlicePayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
-- [NewProtoJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
-- [NewProtoPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
-- [NewJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
-
-The order in which the Payload Converters are applied is important because during serialization the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil Payload.
-
-To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the Data Converter in the Client options.
-
-- To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
-
-  ```go
-  dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
-  ```
-
-- To add your custom type conversion to the default Data Converter, use the following to keep the defaults but set yours just before the default JSON fall through.
-
-  ```go
-  dataConverter := converter.NewCompositeDataConverter(
-    converter.NewNilPayloadConverter(),
-    converter.NewByteSlicePayloadConverter(),
-    converter.NewProtoJSONPayloadConverter(),
-    converter.NewProtoPayloadConverter(),
-    YourCustomPayloadConverter(),
-    converter.NewJSONPayloadConverter(),
-  )
-  ```

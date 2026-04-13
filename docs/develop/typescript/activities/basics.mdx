@@ -26,15 +26,12 @@ execute the Activity, we must define the [Activity Definition](/activity-definit
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
 <!--SNIPSTART typescript-activity-fn -->
-
 [snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts)
-
 ```ts
 export async function greet(name: string): Promise<string> {
   return `👋 Hello, ${name}!`;
 }
 ```
-
 <!--SNIPEND-->
 
 ## How to develop Activity Parameters {#activity-parameters}
@@ -60,15 +57,12 @@ breaking a function or method signature.
 This Activity takes a single `name` parameter of type `string`.
 
 <!--SNIPSTART typescript-activity-fn -->
-
 [snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts)
-
 ```ts
 export async function greet(name: string): Promise<string> {
   return `👋 Hello, ${name}!`;
 }
 ```
-
 <!--SNIPEND-->
 
 ## How to define Activity return values {#activity-return-values}
@@ -99,9 +93,7 @@ You can customize the name of the Activity when you register it with the Worker.
 Name is `activityFoo`.
 
 <!--SNIPSTART typescript-custom-activity-type -->
-
 [snippets/src/worker-activity-type-custom.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker-activity-type-custom.ts)
-
 ```ts
 import { Worker } from '@temporalio/worker';
 import { greet } from './activities';
@@ -118,7 +110,6 @@ async function run() {
   await worker.run();
 }
 ```
-
 <!--SNIPEND-->
 
 ## Important design patterns for Activities {#activity-design-patterns}
@@ -135,9 +126,7 @@ for using closures to do the following:
 - Inject secret keys (such as environment variables) from the Worker to the Activity.
 
 <!--SNIPSTART typescript-activity-with-deps-->
-
 [activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/activities.ts)
-
 ```ts
 export interface DB {
   get(key: string): Promise<string>;
@@ -154,7 +143,6 @@ export const createActivities = (db: DB) => ({
   },
 });
 ```
-
 <!--SNIPEND-->
 
 <details>
@@ -163,7 +151,6 @@ export const createActivities = (db: DB) => ({
 When you register these in the Worker, pass your shared dependencies accordingly:
 
 <!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
-
 ```ts
 import { createActivities } from './activities';
 
@@ -189,16 +176,13 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 Because Activities are always referenced by name, inside the Workflow they can be proxied as normal, although the types
 need some adjustment:
 
 <!--SNIPSTART typescript-activity-deps-workflow-->
-
 [activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/workflows.ts)
-
 ```ts
 import type { createActivities } from './activities';
 
@@ -207,7 +191,6 @@ const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>
   startToCloseTimeout: '30 seconds',
 });
 ```
-
 <!--SNIPEND-->
 
 </details>
