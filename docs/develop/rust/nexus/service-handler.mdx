@@ -1,0 +1,105 @@
+---
+id: service-handler
+title: Nexus service handler - Rust SDK
+sidebar_label: Service handler
+description: Use Nexus service handlers in Workflows to handle inbound service requests with the Rust SDK
+toc_max_heading_level: 3
+keywords:
+  - nexus
+  - service handlers
+tags:
+  - Nexus
+  - Rust SDK
+  - Temporal SDKs
+---
+
+[Nexus](/nexus) is a tool for coordinating asynchronous operations between Temporal and external systems. Service handlers allow Workflows to receive inbound requests through Nexus.
+
+## Call a Nexus Operation from a Workflow {#call-nexus-operation}
+
+You can start a Nexus operation from a Workflow using `ctx.start_nexus_operation()`:
+
+```rust
+use std::time::Duration;
+use temporalio_sdk::NexusOperationOptions;
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    // Start a Nexus operation
+    let started = ctx.start_nexus_operation(
+        NexusOperationOptions {
+            endpoint: "my-service".to_string(),
+            service: "MyService".to_string(),
+            operation: "ProcessData".to_string(),
+            input: Some(payload),
+            start_to_close_timeout: Some(Duration::from_secs(60)),
+            ..Default::default()
+        }
+    ).await?;
+
+    // Wait for result
+    let result = started.result().await?;
+
+    Ok(format!("Nexus operation completed: {:?}", result))
+}
+```
+
+### Nexus Operation Arguments
+
+- **`endpoint`** - The Nexus endpoint name
+- **`service`** - The service name
+- **`operation`** - The operation name
+- **`input`** - The input payload (optional)
+- **`start_to_close_timeout`** - How long the operation can run
+
+## Handle Nexus Callbacks {#nexus-callbacks}
+
+Workflows can receive callbacks from Nexus operations using signals or other message handlers.
+
+When a Nexus operation completes, it can signal the Workflow:
+
+```rust
+#[workflow]
+pub struct ProcessingWorkflow {
+    operation_complete: bool,
+    result: Option<String>,
+}
+
+#[workflow_methods]
+impl ProcessingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView) -> Self {
+        Self {
+            operation_complete: false,
+            result: None,
+        }
+    }
+
+    #[signal]
+    fn operation_completed(&mut self, result: String) {
+        self.operation_complete = true;
+        self.result = Some(result);
+    }
+
+    #[run]
+    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+        // Wait for operation to complete
+        ctx.wait_condition(|s| s.operation_complete).await;
+
+        Ok(ctx.state(|s| s.result.clone().unwrap_or_default()))
+    }
+}
+```
+
+## Best Practices {#best-practices}
+
+1. **Set appropriate timeouts**: Always specify realistic timeouts for Nexus operations
+2. **Handle failures gracefully**: Be prepared for Nexus operations to fail or timeout
+3. **Use signals for callbacks**: Signal handlers are the recommended way to receive Nexus callbacks
+4. **Avoid blocking indefinitely**: Use timeouts and cancellation detection to prevent Workflows from hanging
+
+## Related Links
+
+- [Nexus Documentation](/nexus) - Learn more about Nexus
+- [Workflow Concepts](/workflow-definition) - Understand Workflow fundamentals
+- [Message Passing](/develop/rust/workflows/message-passing) - Learn about Signals, Queries, and Updates

@@ -1,0 +1,157 @@
+---
+id: timers
+title: Timers - Rust SDK
+sidebar_label: Timers
+keywords:
+  - timers
+tags:
+  - Workflows
+  - Durable Timers
+  - Rust SDK
+  - Temporal SDKs
+description: Set durable Timers in a Workflow using the Rust SDK. Timers persist through Worker and Temporal Service downtime.
+---
+
+A Workflow can set a durable Timer for a fixed time period.
+
+A Workflow can sleep for days, months, or even years. Timers are persisted, so even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service are back up, the timer will resolve and your code will continue executing.
+
+Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+## Set a Timer {#set-timer}
+
+To set a Timer in a Rust Workflow, use the `ctx.timer()` method and pass the duration you want to wait before continuing:
+
+```rust
+use std::time::Duration;
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    // Wait for 10 seconds
+    ctx.timer(Duration::from_secs(10)).await;
+
+    // Continue with workflow logic
+    Ok("Timer completed".to_string())
+}
+```
+
+## Timer Options {#timer-options}
+
+You can use `TimerOptions` to customize timer behavior:
+
+```rust
+use std::time::Duration;
+use temporalio_sdk::TimerOptions;
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    let options = TimerOptions {
+        // Custom timeout for the timer itself
+        ..Default::default()
+    };
+
+    ctx.timer(Duration::from_secs(60)).await;
+
+    Ok("Timer completed".to_string())
+}
+```
+
+## Race a Timer Against Other Operations {#race-timer}
+
+You can race a Timer against other Workflow operations using `workflow::select!`:
+
+```rust
+use std::time::Duration;
+use temporalio_sdk::workflows::select;
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    select! {
+        _ = ctx.timer(Duration::from_secs(60)) => {
+            Ok("Timer completed".to_string())
+        }
+        reason = ctx.cancelled() => {
+            Ok(format!("Workflow cancelled: {}", reason))
+        }
+    }
+}
+```
+
+This pattern is useful for implementing timeouts or race conditions between different Workflow operations.
+
+## Implement Retry Logic with Timers {#retry-with-timers}
+
+Timers can be used with Activities to implement custom retry logic:
+
+```rust
+use std::time::Duration;
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    let mut attempts = 0;
+    let max_attempts = 3;
+
+    loop {
+        attempts += 1;
+
+        match ctx.activity(
+            MyActivities::unreliable_operation,
+            input.clone(),
+            ActivityOptions {
+                start_to_close_timeout: Some(Duration::from_secs(5)),
+                ..Default::default()
+            },
+        ).await {
+            Ok(result) => return Ok(result),
+            Err(_) if attempts < max_attempts => {
+                // Wait before retrying
+                ctx.timer(Duration::from_secs(u64::pow(2, attempts as u32))).await;
+            }
+            Err(e) => return Err(e),
+        }
+    }
+}
+```
+
+This implements exponential backoff: 2 seconds, 4 seconds, 8 seconds between retries.
+
+## Schedule Periodic Operations {#periodic-operations}
+
+Use Timers in a loop to schedule periodic operations:
+
+```rust
+use std::time::Duration;
+
+#[run]
+async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    let interval = Duration::from_secs(3600); // 1 hour
+
+    for i in 0..10 {
+        // Perform periodic operation
+        ctx.activity(
+            MyActivities::periodic_task,
+            i,
+            ActivityOptions {
+                start_to_close_timeout: Some(Duration::from_secs(60)),
+                ..Default::default()
+            },
+        ).await?;
+
+        // Wait until next interval
+        if i < 9 {
+            ctx.timer(interval).await;
+        }
+    }
+
+    Ok("Periodic operations completed".to_string())
+}
+```
+
+## Important Notes {#important-notes}
+
+- **Timers are deterministic**: They will always resolve at the same Workflow Logical time across replays
+- **Precision**: Timers are scheduled at the Temporal Service level, so actual resolution may vary by a few seconds depending on server load
+- **No system time**: Never use `std::time::SystemTime` or `tokio::time::sleep()` in Workflows - these are nondeterministic and will break workflow replay
+- **Workflow time**: Use `ctx.workflow_time()` to get the current Workflow time, which is consistent across replays
+
+For more information, see the [Workflow Concepts](/workflow-definition) documentation.
