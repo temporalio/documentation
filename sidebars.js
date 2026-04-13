@@ -176,6 +176,7 @@ module.exports = {
               items: [
                 'develop/go/nexus/quickstart',
                 'develop/go/nexus/feature-guide',
+                'develop/go/nexus/standalone-operations',
               ],
             },
             {
