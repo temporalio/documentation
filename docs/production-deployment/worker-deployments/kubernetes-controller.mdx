@@ -20,6 +20,8 @@ tags:
 The [Temporal Worker Controller](https://github.com/temporalio/temporal-worker-controller) provides automation to enable rainbow deployments of your Workers by simplifying the tracking of which versions still have active Workflows, managing the lifecycle of versioned Worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
 The Temporal Worker Controller makes it simple and safe to deploy Temporal Workers on Kubernetes.
 
+If you run versioned Workers on Kubernetes, the Worker Controller is the recommended way to manage rollouts and autoscaling together.
+
 ### Why adopt the Worker Controller?
 
 The traditional approach to revising Temporal Workflows is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
@@ -45,9 +47,51 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 - Deletion of resources associated with drained Worker Deployment Versions
 - `Manual`, `AllAtOnce`, and `Progressive` rollouts of new versions
 - Ability to specify a "gate" Workflow that must succeed on the new version before routing real traffic to that version
-- [Autoscaling](/develop/worker-performance#recommended-approach) of versioned Deployments
+- Autoscaling of versioned Deployments using Kubernetes Horizontal Pod Autoscaler (HPA)
 
 Refer to the [Temporal Worker Controller repo](https://github.com/temporalio/temporal-worker-controller/) for usage details.
+
+## Autoscaling versioned Workers
+
+The Worker Controller can manage autoscaling for versioned Worker Deployments without forcing you to choose between
+safe rollout behavior and elastic capacity.
+
+Use the Worker Controller when you need all of the following:
+
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) for safe Workflow code changes
+- Kubernetes-native rollout automation
+- autoscaling that follows each active Worker Deployment Version separately
+
+Because the Worker Controller uses Kubernetes HPA, you can scale on any metric available to your HPA pipeline,
+including:
+
+- CPU and memory utilization
+- Task Queue backlog metrics exposed through your metrics pipeline
+- slot utilization and other Worker-specific metrics
+- custom metrics surfaced through Prometheus or another Kubernetes metrics adapter
+
+### TemporalWorkerOwnedResource
+
+To attach autoscaling or other Kubernetes resources to each Worker Deployment Version, use a
+`TemporalWorkerOwnedResource` (TWOR).
+
+A TWOR lets you define a resource template once and have the Worker Controller create a version-specific copy for each
+active Worker Deployment Version. This is useful for resources such as:
+
+- `HorizontalPodAutoscaler`
+- `PodDisruptionBudget`
+- other Kubernetes resources that should track the lifecycle of a versioned Deployment
+
+The Worker Controller manages these resources alongside the versioned Deployments it creates, so they are updated and
+cleaned up as versions roll forward and drain.
+
+### Why use this instead of KEDA?
+
+If you are already using the Worker Controller for Worker Versioning, use the Worker Controller for autoscaling as
+well. This keeps rollout management and scaling attached to the same versioned Kubernetes Deployments.
+
+KEDA can still be a valid option for non-versioned or legacy worker deployments. However, for versioned Workers, the
+Worker Controller is the preferred path because it keeps autoscaling aligned with Worker Deployment Versions.
 
 ## Configuring Worker Lifecycles
 
@@ -69,6 +113,9 @@ rollout:
 
 As you ship new deployment versions, the Worker Controller automatically detects them and gradually makes that version the new **Current Version** of the Worker deployment it is a part of.
 As older pinned Workflows finish executing and deprecated deployment versions become drained, the Worker Controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
+
+When you use autoscaling with the Worker Controller, each active Worker Deployment Version can scale independently while
+it is serving traffic. This allows older versions to drain safely while newer versions scale based on live demand.
 
 ## Running the Temporal Worker Controller
 
