@@ -339,6 +339,34 @@ When upgrading an existing Namespace, some points to consider:
 - Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a replica.
 - Temporal charges for Replicated Storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new replica.
 
+### Fairness pricing {#fairness-pricing}
+
+**How does pricing for Fairness work?**
+
+When [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) is enabled on a Namespace, an additional `0.1` Action is charged per Action in that Namespace for each hour the feature is on, regardless of whether individual Workflows or Activities use fairness keys.
+
+The examples below use a Namespace, `your-namespace`, that normally generates 10,000 Actions per hour.
+
+**Fairness enabled, but no fairness keys in use**
+
+If Fairness is enabled but no Workflows or Activities send `fairness_key` metadata, all Tasks continue to route as before. Fairness Actions are still applied: billing is determined by whether Fairness is enabled on the Namespace.
+
+| Hour          | Actions in Namespace | Fairness enabled? | Fairness Actions | Total billed Actions |
+|---------------|----------------------|-------------------|--------------------|----------------------|
+| 2:00–3:00 PM  | 10,000               | Yes               | +1,000             | 11,000               |
+
+**Mix of Workflows with and without fairness keys**
+
+Suppose `your-namespace` has two Task Queues:
+- `payment-queue`, where Workflows pass `fairness_key = "customer-id"`
+- `notification-queue`, where Workflows have no fairness keys and behave exactly as before
+
+If each queue generates 5,000 Actions in a given hour (10,000 total), Fairness Actions apply to the full 10,000, not only to the 5,000 from `payment-queue`.
+
+| Hour          | Actions from payment-queue | Actions from notification-queue | Total Namespace Actions | Fairness | Total billed Actions |
+|---------------|----------------------------|---------------------------------|-------------------------|-----------------|----------------------|
+| 2:00–3:00 PM  | 5,000                      | 5,000                           | 10,000                  | +1,000          | 11,000               |
+
 ### SCIM and SSO via SAML pricing {#sso-and-saml}
 
 **What costs are associated with SSO/SAML use?**
