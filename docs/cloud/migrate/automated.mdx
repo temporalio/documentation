@@ -286,7 +286,7 @@ The sections below outline the process for initiating the migration.
 ### Migration start
 
 Temporal will generate the endpoint-id and initiate the migration. During this process, the self-hosted Namespace remains active 
-while the cloud Namespace becomes passive. Workflows are replicated from the self-hosted Namespace to the cloud Namespace. Once 
+while the cloud Namespace becomes passive. Workflows are replicated from the self-hosted Namespace to the cloud Namespace. Once the
 cloud Namespace has fully synced with self-hosted Namespace, migration is ready for handover.
 
 The following [command](https://pkg.go.dev/github.com/temporalio/tcld#readme-start-a-migration) is used to start the
