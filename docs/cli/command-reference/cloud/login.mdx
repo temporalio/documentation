@@ -15,5 +15,26 @@ tags:
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
 
-This page provides a reference for the `temporal cloud login` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+This page provides a reference for the `temporal cloud login` command.
+
+Authenticate with Temporal Cloud using browser-based OAuth login.
+
+This command opens your default browser to complete authentication. Once
+logged in, your credentials are stored locally for subsequent commands.
+
+Example:
+
+```
+cloud login
+```
+
+For headless environments, use --disable-pop-up and follow the printed URL.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--audience` | No | **string** OAuth audience parameter for token generation. |
+| `--client-id` | No | **string** OAuth client identifier for authentication. |
+| `--domain` | No | **string** Authentication domain for the OAuth provider. |
+| `--redirect-url` | No | **string** Redirect URL for OAuth authentication flow. |
+| `--reset` | No | **bool** Clear stored login credentials and configuration, then re-authenticate. Use this if you need to switch accounts or fix authentication issues. |
 

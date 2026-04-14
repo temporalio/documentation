@@ -15,5 +15,21 @@ tags:
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
 
-This page provides a reference for the `temporal cloud whoami` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+This page provides a reference for the `temporal cloud whoami` command.
+
+Display information about the currently authenticated identity.
+
+Shows whether you are authenticated as a user or service account, along
+with the associated API key if one is in use.
+
+Example:
+
+```
+cloud whoami
+```
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
