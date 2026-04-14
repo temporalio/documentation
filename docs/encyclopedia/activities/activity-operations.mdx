@@ -26,7 +26,7 @@ This page discusses the following:
 
 Activity Operations are deliberate actions you perform on a specific [Activity Execution](/activity-execution), as opposed to lifecycle behaviors like [retries](/encyclopedia/retry-policies) and [timeouts](/encyclopedia/detecting-activity-failures) which happen automatically.
 
-You can perform Activity Operations through the [CLI](/cli/activity), the UI, or directly via the gRPC API.
+You can perform Activity Operations through the [CLI](/cli/command-reference/activity), the UI, or directly via the gRPC API.
 Not all operations are available in all interfaces yet - see the [summary table](#operations-summary) for current support.
 Activity Operations don't apply to [Local Activities](/local-activity) or [Standalone Activities](/standalone-activity).
 
@@ -43,10 +43,10 @@ Activity Operations aren't available as SDK client methods. They're operational 
 
 | Operation | What it does | CLI |
 |-----------|-------------|-----|
-| [Pause](#pause) | Stops retries. In-flight execution continues unless the Activity uses Heartbeat. | [`temporal activity pause`](/cli/activity#pause) |
-| [Unpause](#unpause) | Resumes a Paused Activity. The next execution starts immediately. | [`temporal activity unpause`](/cli/activity#unpause) |
-| [Reset](#reset) | Clears retry state (attempts, backoff) and schedules a new execution. | [`temporal activity reset`](/cli/activity#reset) |
-| [Update Options](#update-options) | Changes timeouts, Retry Policy, or Task Queue without restarting the Activity. | [`temporal activity update-options`](/cli/activity#update-options) |
+| [Pause](#pause) | Stops retries. In-flight execution continues unless the Activity uses Heartbeat. | [`temporal activity pause`](/cli/command-reference/activity#pause) |
+| [Unpause](#unpause) | Resumes a Paused Activity. The next execution starts immediately. | [`temporal activity unpause`](/cli/command-reference/activity#unpause) |
+| [Reset](#reset) | Clears retry state (attempts, backoff) and schedules a new execution. | [`temporal activity reset`](/cli/command-reference/activity#reset) |
+| [Update Options](#update-options) | Changes timeouts, Retry Policy, or Task Queue without restarting the Activity. | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
 
 ## Pause {#pause}
 
@@ -77,7 +77,7 @@ temporal activity pause \
   --reason "Downstream API is down, pausing until recovery"
 ```
 
-See the [CLI reference for `temporal activity pause`](/cli/activity#pause) for all options.
+See the [CLI reference for `temporal activity pause`](/cli/command-reference/activity#pause) for all options.
 
 ### Detect Pause in Activity code
 
@@ -95,7 +95,7 @@ Your Activity code may need to handle these cases differently, for example relea
 
 ### Interaction with Workflow Pause
 
-[Workflow Pause](/cli/workflow#pause) and Activity Pause are independent. Both stop Activity retries, but they must be Unpaused separately.
+[Workflow Pause](/cli/command-reference/workflow#pause) and Activity Pause are independent. Both stop Activity retries, but they must be Unpaused separately.
 
 - Workflow Pause blocks retries but doesn't interrupt in-flight executions via Heartbeat. Activity Pause does.
 - If both are active, both must be Unpaused before the Activity resumes.
@@ -135,7 +135,7 @@ temporal activity unpause \
   --activity-id my-activity
 ```
 
-See the [CLI reference for `temporal activity unpause`](/cli/activity#unpause) for all options, including `--reset-attempts` and `--reset-heartbeats` to clear state on resume.
+See the [CLI reference for `temporal activity unpause`](/cli/command-reference/activity#unpause) for all options, including `--reset-attempts` and `--reset-heartbeats` to clear state on resume.
 
 ### Important considerations
 
@@ -182,7 +182,7 @@ temporal activity reset \
   --keep-paused
 ```
 
-See the [CLI reference for `temporal activity reset`](/cli/activity#reset) for all options, including `--reset-heartbeats` and bulk mode via `--query`.
+See the [CLI reference for `temporal activity reset`](/cli/command-reference/activity#reset) for all options, including `--reset-heartbeats` and bulk mode via `--query`.
 
 ### Detect Reset in Activity code
 
@@ -239,7 +239,7 @@ temporal activity update-options \
   --schedule-to-close-timeout 24h
 ```
 
-See the [CLI reference for `temporal activity update-options`](/cli/activity#update-options) for all options, including Retry Policy, Task Queue, and bulk mode via `--query`.
+See the [CLI reference for `temporal activity update-options`](/cli/command-reference/activity#update-options) for all options, including Retry Policy, Task Queue, and bulk mode via `--query`.
 
 ### Important considerations
 

@@ -1,0 +1,144 @@
+---
+id: connectivity
+title: Temporal CLI cloud connectivity command reference
+sidebar_label: connectivity
+description: Connectivity Management Commands
+toc_max_heading_level: 4
+keywords:
+  - connectivity
+  - connectivity-rule
+tags:
+  - connectivity
+---
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
+
+This page provides a reference for the `temporal cloud connectivity` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
+## delete
+
+Delete a connectivity rule by its ID.
+
+Example:
+
+```
+cloud connectivity delete --id <connectivity-rule-id>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--id` | Yes | **string** The ID of the connectivity rule. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## get
+
+Get details of a specific connectivity rule by its ID.
+
+Example:
+
+```
+cloud connectivity get --id <connectivity-rule-id>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--id` | Yes | **string** The ID of the connectivity rule. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## list
+
+List connectivity rules, optionally filtered by namespace.
+
+Example:
+
+```
+cloud connectivity list --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | No | **string** Filter connectivity rules by namespace (e.g., 'my-namespace.my-account'). |
+| `--page-size` | No | **int** Number of connectivity rules to return per page. |
+| `--page-token` | No | **string** Page token for pagination. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## private
+
+Commands for managing private connectivity rules.
+
+### privatecreate
+
+Create a new private VPC connectivity rule. Requires --connection-id and --region.
+
+Example:
+
+```
+cloud connectivity private create --connection-id vpce-12345 --region aws-us-west-2
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--connection-id` | Yes | **string** The connection ID for private connectivity. |
+| `--gcp-project-id` | No | **string** The GCP project ID (only for GCP private connectivity). |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--region` | Yes | **string** The region for private connectivity. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## public
+
+Commands for managing public connectivity rules.
+
+### publiccreate
+
+Create a new public internet connectivity rule.
+
+Example:
+
+```
+cloud connectivity public create
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |  |
+| `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
+| `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
+| `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl-test.cloud:443` |
+
