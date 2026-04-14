@@ -1,0 +1,63 @@
+---
+id: futures
+title: Workflow futures - Ruby SDK
+sidebar_label: Workflow futures
+description: This section explains Workflow futures with the Ruby SDK
+toc_max_heading_level: 4
+keywords:
+  - Ruby SDK
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+---
+
+## Workflow Futures {#workflow-futures}
+
+`Temporalio::Workflow::Future` can be used for running things in the background or concurrently.
+Temporal provides Workflow-safe wrappers around some core language features in cases like these.
+`Temporalio::Workflow::Future` is a safe wrapper around `Fiber.schedule` for running multiple Activities at once.
+The Ruby SDK also provides `Workflow.wait_condition` for awaiting a result.
+
+Futures are never used implicitly, but they work with all Workflow code and constructs.
+For instance, to run 3 activities and wait for them all to complete, something like this can be written:
+
+```ruby
+# Start 3 activities in background
+fut1 = Temporalio::Workflow::Future.new do
+  Temporalio::Workflow.execute_activity(MyActivity1, schedule_to_close_timeout: 300)
+end
+fut2 = Temporalio::Workflow::Future.new do
+  Temporalio::Workflow.execute_activity(MyActivity2, schedule_to_close_timeout: 300)
+end
+fut3 = Temporalio::Workflow::Future.new do
+  Temporalio::Workflow.execute_activity(MyActivity3, schedule_to_close_timeout: 300)
+end
+
+# Wait for them all to complete
+Temporalio::Workflow::Future.all_of(fut1, fut2, fut3).wait
+
+Temporalio::Workflow.logger.info("Got: #{fut1.result}, #{fut2.result}, #{fut3.result}")
+```
+
+Or, say, to wait on the first of 5 activities or a timeout to complete:
+
+```ruby
+# Start 5 activities
+act_futs = 5.times.map do |i|
+  Temporalio::Workflow::Future.new do
+    Temporalio::Workflow.execute_activity(MyActivity, "my-arg-#{i}", schedule_to_close_timeout: 300)
+  end
+end
+# Start a timer
+sleep_fut = Temporalio::Workflow::Future.new { Temporalio::Workflow.sleep(30) }
+
+# Wait for first act result or sleep fut
+act_result = Temporalio::Workflow::Future.any_of(sleep_fut, *act_futs).wait
+# Fail if timer done first
+raise Temporalio::Error::ApplicationError, 'Timer expired' if sleep_fut.done?
+# Print act result otherwise
+Temporalio::Workflow.logger.info("Act result: #{act_result}")
+```
+
+There are several other details not covered here about futures, such as how exceptions are handled, how to use a setter
+proc instead of a block, etc. See the [API documentation](https://ruby.temporal.io/Temporalio/Workflow/Future.html) for details.

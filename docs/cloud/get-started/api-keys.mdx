@@ -341,28 +341,13 @@ Workflow access secure.
 ## API keys for Namespace authentication {#namespace-authentication}
 
 Create a Namespace with API key authentication as an alternative to mTLS-based authentication by selecting "Allow API
-key authentication" during setup. The gRPC endpoint format for the Namespace depends on the authentication method and
-whether or not High Availability features are enabled.
+key authentication" during setup.
 
-See the following documentation for [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information.
+Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This is the recommended endpoint for all
+Namespaces. For Namespaces with [High Availability](/cloud/high-availability), the Namespace endpoint automatically
+directs traffic to the active region, so Workers and Clients don't need to change endpoints during a failover.
 
-:::info
-
-When switching on or off High Availability features for a Namespace, you may need to update the gRPC endpoint used by
-your Workers and Clients, because the Namespace endpoint changes based on whether High Availability features are
-enabled. See [Disable High Availability](/cloud/high-availability/enable#disable) for more information.
-
-:::
-
-### Without High Availability features
-
-Use the gRPC regional endpoint `<region>.<cloud_provider>.api.temporal.io:7233`.
-
-### With High Availability features
-
-Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This allows Workers and Clients to always
-connect to the active region of the Namespace. In a failover event, Temporal Cloud changes the Namespace's active region
-and points this Namespace endpoint to the new active region.
+See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
 ## Use API keys to authenticate {#using-apikeys}
 
@@ -407,15 +392,15 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 To use your API key with a Temporal SDK, see the instructions in each SDK section.
 
-[How to connect to Temporal Cloud using an API Key with the Go SDK](/develop/go/temporal-client#connect-to-temporal-cloud)
+[How to connect to Temporal Cloud using an API Key with the Go SDK](/develop/go/client/temporal-client#connect-to-temporal-cloud)
 
-[How to connect to Temporal Cloud using an API Key with the Java SDK](/develop/java/temporal-client#connect-to-temporal-cloud)
+[How to connect to Temporal Cloud using an API Key with the Java SDK](/develop/java/client/temporal-client#connect-to-temporal-cloud)
 
-[How to connect to Temporal Cloud using an API Key with the Python SDK](/develop/python/temporal-client#connect-to-temporal-cloud)
+[How to connect to Temporal Cloud using an API Key with the Python SDK](/develop/python/client/temporal-client#connect-to-temporal-cloud)
 
-[How to connect to Temporal Cloud using an API Key with the TypeScript SDK](/develop/typescript/temporal-client#connect-to-temporal-cloud)
+[How to connect to Temporal Cloud using an API Key with the TypeScript SDK](/develop/typescript/client/temporal-client#connect-to-temporal-cloud)
 
-[How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
+[How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud)
 
 ### tcld
 

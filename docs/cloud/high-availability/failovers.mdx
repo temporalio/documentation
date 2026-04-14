@@ -26,8 +26,8 @@ This lets Workflow Executions continue with minimal interruptions or data loss.
 You can also [manually initiate failovers](/cloud/high-availability/failovers) based on your situational monitoring or for testing.
 
 Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />.
-The replica is active for a brief duration during an incident.
-After the incident, Temporal fails back to the primary.
+After a Temporal-managed failover, Temporal automatically fails back to the original region once it is healthy.
+See [Returning to the primary with failbacks](#failbacks) for details on automatic and manual failback options.
 
 ## Failovers
 
@@ -45,9 +45,9 @@ This process is known as failover.
 
 Failovers prevent data loss and application interruptions.
 Existing Workflows continue, and new Workflows start as the incident is addressed.
-Once the incident is resolved, Temporal Cloud performs a "failback," shifting Workflow Execution processing back to the original Namespace.
 
 Temporal Cloud handles failovers automatically, ensuring continuity without manual intervention.
+Once the incident is resolved, Temporal Cloud automatically performs a [failback](#failbacks), shifting Workflow Execution processing back to the original region.
 
 <CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
 
@@ -55,7 +55,8 @@ For more control over the failover process, you can [disable automated failovers
 
 :::tip
 
-You can test the failover of Namespace with High Availability features by manually triggering a failover using the UI or the 'tcld' CLI utility.
+You can test the failover of a Namespace with High Availability features by manually triggering a failover using the Web UI, the tcld CLI, or the Cloud Ops API.
+The Terraform provider does not support triggering failovers.
 In most scenarios, we recommend you let Temporal handle failovers for you.
 
 After failover, be aware of the following points:
@@ -193,6 +194,14 @@ A forced failover when there is a significant replication lag has a higher likel
 ### Trigger the failover {#manual-failovers}
 
 You can trigger a failover manually using the Temporal&nbsp;Cloud Web&nbsp;UI, the tcld CLI, or the Cloud Ops API, depending on your preference and setup.
+
+:::info Terraform not supported
+
+The [Temporal Cloud Terraform provider](https://registry.terraform.io/providers/temporalio/temporalcloud/latest) does not support triggering failovers.
+You must use the Web UI, tcld CLI, or Cloud Ops API.
+
+:::
+
 The following instructions outline the steps for each method:
 
 <Tabs>
@@ -269,8 +278,12 @@ Both methods return a [`FailoverNamespaceRegionResponse`](https://buf.build/temp
 
 </Tabs>
 
+Once the failover async operation returns successfully, the Namespace will be failed over.
+Temporal manages retries for the failover workflow.
+In the rare event that an internal error prevents the failover from completing, the Temporal on-call team is automatically paged to intervene and force the failover to completion.
+
 Temporal fails over the primary to the replica.
-When you're ready to fail back, follow these failover instructions to move the primary back to the original.
+See [Returning to the primary with failbacks](#failbacks) for details on how and when failback occurs.
 
 ### Post-failover event information {#info}
 
@@ -281,16 +294,41 @@ After failover, the replica becomes active, taking over in the isolation domain 
 You don't need to monitor Temporal Cloud's failover response in real time.
 Whenever there is a failover event, Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications)
 
-### Returning to the primary with failbacks
+### Returning to the primary with failbacks {#failbacks}
 
-After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region or isolation domain that was active before the incident once the incident is resolved.
-This is called a "failback".
+After a Temporal-managed (automatic) failover, Temporal Cloud automatically fails back to the original region once it is healthy.
+Follow [Temporal's status page](https://status.temporal.io) for updates on the original region's health.
 
-:::note
+#### After a Temporal-managed failover
 
-To failback a manually-initiated failover, follow the [Manual Failover](#manual-failovers) directions to failover back to the original primary.
+When Temporal triggers an automatic failover due to an outage, Temporal will also trigger an automatic failback to the original region once the region recovers.
+No action is required from you.
 
-:::
+If you prefer to manage failback yourself, you have two options:
+
+- **Opt out of automatic failback (manage failback manually):**
+  [Disable Temporal-managed failovers](#disabling-temporal-initiated) on the Namespace.
+  When you're ready to fail back to the original region, [trigger a failover](#manual-failovers) to that region and then re-enable Temporal-managed failovers.
+
+- **Stay on the new region permanently ("fail forward"):**
+  [Trigger a failover](#manual-failovers) to the region that is already active.
+  This tells Temporal that you want to treat the new region as your primary for as long as it's healthy.
+  Temporal-managed automatic failovers remain enabled, so Temporal will still protect you if the new region has an outage.
+
+#### After a user-triggered failover
+
+If you triggered a failover yourself during an outage (instead of relying on a Temporal-managed failover), Temporal will _not_ automatically fail back for you.
+You must [trigger a failover](#manual-failovers) back to the original region when it is healthy.
+Monitor [Temporal's status page](https://status.temporal.io) for updates on region health.
+
+Automatic failback is only available after Temporal-managed (automatic) failovers.
+
+#### How to check whether your Namespace will be automatically failed back
+
+If you're not sure whether your Namespace will be automatically failed back, check the list of failovers in the Temporal Cloud Web UI on your Namespace's detail page:
+
+- If the most recent failover was **Temporal-triggered**, then Temporal will automatically fail back the Namespace when the original region is healthy.
+- If the most recent failover was **user-triggered**, then the Namespace will _not_ be automatically failed back. You must trigger the failback yourself.
 
 ## Disabling Temporal-initiated failovers {#disabling-temporal-initiated}
 
@@ -372,7 +410,7 @@ Failover testing (also known as "<ToolTipTerm term="trigger testing" />)" can:
   Manual testing confirms the failover mechanism works as expected, so your system handles incidents effectively.
 
 - **Assess replication lag**:
-  In multi-region deployment, monitoring [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) between regions is crucial.
+  In multi-region deployment, monitoring [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) between regions is crucial.
   Check the lag before initiating a failover to avoid rolling back Workflow progress.
   This is less important when using isolation domains as failover is usually instantaneous.
   Manual testing helps you practice this critical step and understand its impact.

@@ -27,13 +27,13 @@ eases the toil of managing individual user permissions and can simplify access m
 a new role is needed, it can be added to the group once and all users' access will reflect the
 new role.
 
-User groups can be assigned both [account-level roles](/cloud/users#account-level-roles) and [namespace-level permissions](/cloud/users#namespace-level-permissions).
+User groups can be assigned both [account-level roles](/cloud/manage-access/roles-and-permissions#account-level-roles) and [namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions).
 
 One user can be assigned to many groups. In the event that a user's group memberships have multiple roles for the same resource, the user will have an effective role of the most permissive of the permissions. For example if `Group A` grants a read-only role to a namespace, but `Group B` grants a write role to a namespace then a user that belongs to both `Group A` and `Group B` would have the write role to the namespace.
 
 [Service accounts](/cloud/service-accounts) cannot be assigned to user groups.
 
-Only users with the Account Owner or Global Admin account-level [role](/cloud/users#account-level-roles) can manage user groups.
+Only users with the Account Owner or Global Admin account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles) can manage user groups.
 
 ## How SCIM groups work with user groups {#scim-groups}
 
@@ -49,7 +49,7 @@ Using user group and SCIM groups together can be useful when the groups defined 
 
 :::info
 
-All user group administration requires an Account Owner or Global Admin account-level [role](/cloud/users#account-level-roles).
+All user group administration requires an Account Owner or Global Admin account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles).
 
 :::
 

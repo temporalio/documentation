@@ -37,10 +37,14 @@ export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, paren
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const fullUrl = hit.url || hit.objectID;
-    // Extract pathname from full URL to avoid appending the whole URL
     try {
       const url = new URL(fullUrl, window.location.origin);
-      history.push(url.pathname + url.hash);
+      if (url.origin !== window.location.origin) {
+        // External URL (e.g. learn.temporal.io) — navigate directly
+        window.location.href = fullUrl;
+      } else {
+        history.push(url.pathname + url.hash);
+      }
     } catch {
       history.push(fullUrl);
     }

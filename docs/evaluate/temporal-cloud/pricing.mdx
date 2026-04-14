@@ -321,13 +321,14 @@ This allows for a near-seamless failover when incidents or outages occur.
 
 The pricing for High Availability features aligns with the volume of your workloads.
 Actions and Storage in your Namespace contribute to your Actions and Storage consumption.
-To estimate costs for this deployment model, apply a 2x multiplier to the Actions and Storage in the Namespace you are replicating and include this scaling in your account’s consumption.
+To estimate costs for this deployment model, apply a 2x multiplier to the Actions and Storage in the Namespace you are replicating and include this scaling in your account's consumption.
+For pre-existing Namespaces that add a replica, the 2x multiplier only applies to Actions and Storage after the replica is active.
+Storage used and Actions completed before the replica's creation, or while it was being created but not yet in the 'active' status, do not incur the additional charges.
 
 :::tip Future Pricing Update
 
-To align with cloud provider network traffic pricing, we are introducing adjustments for multi-region and multi-cloud replication.
-Your plan will include a generous base allocation, with additional pay-per-use charges for any network usage beyond that threshold.
-Most multi-region and multi-cloud customers will not be impacted by this change.
+In the future, for Namespaces that incur high volumes of cross-cloud data transfer, Temporal will charge extra to cover the cost of egress charged by the cloud providers.
+All Namespaces will receive a generous amount of network transfer for free, so the vast majority of Namespaces will have no charge.
 
 :::
 
@@ -338,6 +339,34 @@ When upgrading an existing Namespace, some points to consider:
 - Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a replica.
 - Temporal charges for Replicated Storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new replica.
 
+### Fairness pricing {#fairness-pricing}
+
+**How does pricing for Fairness work?**
+
+When [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) is enabled on a Namespace, an additional `0.1` Action is charged per Action in that Namespace for each hour the feature is on, regardless of whether individual Workflows or Activities use fairness keys.
+
+The examples below use a Namespace, `your-namespace`, that normally generates 10,000 Actions per hour.
+
+**Fairness enabled, but no fairness keys in use**
+
+If Fairness is enabled but no Workflows or Activities send `fairness_key` metadata, all Tasks continue to route as before. Fairness Actions are still applied: billing is determined by whether Fairness is enabled on the Namespace.
+
+| Hour          | Actions in Namespace | Fairness enabled? | Fairness Actions | Total billed Actions |
+|---------------|----------------------|-------------------|--------------------|----------------------|
+| 2:00–3:00 PM  | 10,000               | Yes               | +1,000             | 11,000               |
+
+**Mix of Workflows with and without fairness keys**
+
+Suppose `your-namespace` has two Task Queues:
+- `payment-queue`, where Workflows pass `fairness_key = "customer-id"`
+- `notification-queue`, where Workflows have no fairness keys and behave exactly as before
+
+If each queue generates 5,000 Actions in a given hour (10,000 total), Fairness Actions apply to the full 10,000, not only to the 5,000 from `payment-queue`.
+
+| Hour          | Actions from payment-queue | Actions from notification-queue | Total Namespace Actions | Fairness | Total billed Actions |
+|---------------|----------------------------|---------------------------------|-------------------------|-----------------|----------------------|
+| 2:00–3:00 PM  | 5,000                      | 5,000                           | 10,000                  | +1,000          | 11,000               |
+
 ### SCIM and SSO via SAML pricing {#sso-and-saml}
 
 **What costs are associated with SSO/SAML use?**
@@ -346,7 +375,7 @@ Single sign-on (SSO) integration using SAML is included for all customers on the
 
 **What costs are associated with SCIM?**
 
-To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan or an add-on for the Business plan ($500/month).
+To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan or an add-on for the Business plan (+$500/month in addition to the Business plan).
 Please note that you must configure SSO via SAML to use SCIM.
 
 ### Use case cost estimates {#pricing-estimates}

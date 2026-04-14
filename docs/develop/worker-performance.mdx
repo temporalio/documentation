@@ -63,6 +63,12 @@ Available slot suppliers include:
   A resource-based supplier will account for memory limits imposed in containerized environments.
   It dynamically adjusts the number of available slots for different task types with respect to current system resources.
 
+:::info
+
+When running in a containerized environment, all SDKs use cgroups for both CPU and memory. CPU is accounted for at the container level.
+
+:::
+
 - **Custom Slot Suppliers**:
   Hands out slots based on the custom logic that you define.
   Use this approach when you need complete control over when Workers accept and execute Tasks.
@@ -121,7 +127,7 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
-Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly Request-Eager-Start when starting a Workflow.
+Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+. No additional configuration or access request is needed. However, you must set Request-Eager-Start to true when starting each Workflow for Eager Workflow Start to be used.
 
 :::
 
@@ -217,7 +223,13 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 #### Recommended Approach
 
-The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs. 
+The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
+
+:::tip
+
+`PollerBehaviorAutoscaling` is only enabled in Temporal Server v1.28.0 and later.
+
+:::
 
 #### Manual Configuration
 
@@ -373,18 +385,22 @@ When choosing whether to opt for fixed assignment or resource-based suppliers, c
 
 - Workflow Tasks make minimal demands on the CPU and, normally, do not consume much memory.
   They are well-served by fixed-sized slot suppliers.
-- When very low Task completion latency is a concern, avoid resourced-based auto-tuning slot suppliers.
-- Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
-  They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
+- When very low Task completion latency & maximum throughput is important, avoid resourced-based auto-tuning slot suppliers.
+- Reserve auto-tuned resource-based slot suppliers for deployments with workloads that have resource
+  usage patterns you don't fully understand, and don't care to. It can offer **good-enough** performance
+  for workloads you don't want to spend time profiling.
 
-
-Scenarios with tasks that have variable, or very high, resource needs should rely on fixed-size
-suppliers and manual tuning. The resource-based tuner can never perform as well as a fixed-size
-tuner with appropriately chosen configuration, but can offer reasonable performance without the 
-need for profiling.
+Scenarios with tasks that have variable, or very high, per-task resource needs should rely on
+fixed-size suppliers and manual tuning. The resource-based tuner can never perform as well as a
+fixed-size tuner with appropriately chosen configuration, but can offer reasonable performance
+without the need for profiling.
 
 The following use cases are well suited to resource-based auto-tuning slot suppliers: 
 
+- **You want acceptable performance with minimum effort**:
+  Resource-based suppliers can provide reasonable performance without the need for profiling your
+  workfload. They can be a great way to get started with new workloads. If a workload becomes very
+  performance-sensitive, we suggest you profile it and choose appropriate fixed-size numbers.
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
   For example: HTTP calls or other blocking I/Os that spend most of their time waiting on external events.
@@ -438,10 +454,14 @@ There is a fundamental tradeoff between how quickly a slot supplier is willing t
 
 Slot throttling is a mechanism to control the rate at which new slots for concurrent tasks are made available for processing.
 This concept is part of the resource-based auto-tuning feature for Workers.
-By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing
+By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing.
 
 This throttle is called `rampThrottle` in the SDK options for resource-based slot suppliers.
 It defines the minimum time the Worker will wait between handing out new slots after passing the minimum slots number.
+
+**A higher `rampThrottle` trades off performance for safety.**
+
+For example:
 
 If a just-started worker were to have no throttle, and there was a backlog of Tasks, it might immediately accept 100 Tasks at once.
 If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.
@@ -456,48 +476,76 @@ These examples focus on Activities and Local Activities, since Workflow Tasks no
 
 ### Go SDK
 
+**Resource-based tuner:**
+
+<!--SNIPSTART go-resource-based-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
 ```go
-// Using the ResourceBasedTuner in worker options
-tuner, err := resourcetuner.NewResourceBasedTuner(resourcetuner.ResourceBasedTunerOptions{
-    TargetMem: 0.8,
-    TargetCpu: 0.9,
-})
-if err != nil {
-  return err
+func resourceBasedTuner() (worker.Options, error) {
+	tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
+		TargetMem:    0.8,
+		TargetCpu:    0.9,
+		InfoSupplier: sysinfo.SysInfoProvider(),
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: tuner,
+	}, nil
 }
-workerOptions := worker.Options{
-    Tuner: tuner
-}
-// Combining different types
-options := DefaultResourceControllerOptions()
-options.MemTargetPercent = 0.8
-options.CpuTargetPercent = 0.9
-controller := NewResourceController(options)
-wfSS, err := worker.NewFixedSizeSlotSupplier(10)
-if err != nil {
-  return err
-}
-actSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-laSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
-if err != nil {
-  return err
-}
-compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
-    WorkflowSlotSupplier:      wfSS,
-    ActivitySlotSupplier:      actSS,
-    LocalActivitySlotSupplier: laSS,
-    NexusSlotSupplier:         nexusSS,
-})
-if err != nil {
-  return err
-}
-workerOptions := worker.Options{
-    Tuner: compositeTuner
-}
+
 ```
+<!--SNIPEND-->
+
+**Composite tuner:**
+
+A composite tuner lets you mix different slot supplier strategies for each Task type.
+For example, you can use fixed-size slot suppliers for Workflow and Nexus Tasks while using resource-based slot suppliers for Activity and Local Activity Tasks.
+
+<!--SNIPSTART go-composite-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
+```go
+func compositeTuner() (worker.Options, error) {
+	options := worker.DefaultResourceControllerOptions()
+	options.MemTargetPercent = 0.8
+	options.CpuTargetPercent = 0.9
+	options.InfoSupplier = sysinfo.SysInfoProvider()
+	controller := worker.NewResourceController(options)
+	wfSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	actSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	laSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
+		WorkflowSlotSupplier:      wfSS,
+		ActivitySlotSupplier:      actSS,
+		LocalActivitySlotSupplier: laSS,
+		NexusSlotSupplier:         nexusSS,
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: compositeTuner,
+	}, nil
+}
+
+```
+<!--SNIPEND-->
 
 ### Java SDK
 
@@ -852,8 +900,8 @@ Then consider increasing the number of pollers by adjusting `maxConcurrentWorkfl
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
-- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/develop/go/core-application#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
-- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/develop/go/core-application#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/develop/go/workers/run-worker-process#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/develop/go/workers/run-worker-process#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 
 ## Related reading
 

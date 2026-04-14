@@ -33,9 +33,9 @@ execution history is kept.
 You can create Namespaces using:
 
 - **Temporal CLI** (recommended): [`temporal operator namespace create`](/cli/operator#create)
-- **Go SDK**: [`RegisterNamespace`](/develop/go/namespaces#register-namespace)
-- **Java SDK**: [`RegisterNamespace`](/develop/java/namespaces#register-namespace)
-- **TypeScript SDK**: [Namespace management](/develop/typescript/namespaces#register-namespace)
+- **Go SDK**: [`RegisterNamespace`](/develop/go/client/namespaces#register-namespace)
+- **Java SDK**: [`RegisterNamespace`](/develop/java/client/namespaces#register-namespace)
+- **TypeScript SDK**: [Namespace management](/develop/typescript/client/namespaces#register-namespace)
 
 ### The default Namespace
 
@@ -67,9 +67,9 @@ Common namespace management operations:
 
 For SDK-based namespace management:
 
-- [Go SDK namespace management](/develop/go/namespaces#manage-namespaces)
-- [Java SDK namespace management](/develop/java/namespaces#manage-namespaces)
-- [TypeScript SDK namespace management](/develop/typescript/namespaces#manage-namespaces)
+- [Go SDK namespace management](/develop/go/client/namespaces#manage-namespaces)
+- [Java SDK namespace management](/develop/java/client/namespaces#manage-namespaces)
+- [TypeScript SDK namespace management](/develop/typescript/client/namespaces#manage-namespaces)
 
 ### Deprecate vs Delete
 
@@ -83,8 +83,7 @@ create, update, or deprecate Namespaces.
 
 Without an Authorizer configured, Temporal uses the `nopAuthority` authorizer that allows all API calls unconditionally.
 
-For Temporal Cloud, [role-based access controls](/cloud/users#namespace-level-permissions) provide namespace-level
-authorization without custom configuration.
+For Temporal Cloud, [role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) provide namespace-level authorization without custom configuration.
 
 ## Best practices
 

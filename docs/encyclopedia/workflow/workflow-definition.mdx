@@ -43,7 +43,7 @@ Below are different ways to develop a basic Workflow Definition.
 <Tabs groupId="basic-workflow-definition" queryString>
 <TabItem value="go" label="Go">
 
-**[Workflow Definition in Go](/develop/go/core-application#develop-workflows)**
+**[Workflow Definition in Go](/develop/go/workflows/basics)**
 
 ```go
 func YourBasicWorkflow(ctx workflow.Context) error {
@@ -55,7 +55,7 @@ func YourBasicWorkflow(ctx workflow.Context) error {
 </TabItem>
 <TabItem value="java" label="Java">
 
-**[Workflow Definition in Java (Interface)](/develop/java/core-application#develop-workflows)**
+**[Workflow Definition in Java (Interface)](/develop/java/workflows/basics)**
 
 ```java
 // Workflow interface
@@ -67,7 +67,7 @@ public interface YourBasicWorkflow {
 }
 ```
 
-**[Workflow Definition in Java (Implementation)](/develop/java/core-application#develop-workflows)**
+**[Workflow Definition in Java (Implementation)](/develop/java/workflows/basics)**
 
 ```java
 // Workflow implementation
@@ -79,7 +79,7 @@ public class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="php" label="PHP">
 
-**[Workflow Definition in PHP (Interface)](/develop/php/core-application#develop-workflows)**
+**[Workflow Definition in PHP (Interface)](/develop/php/workflows/basics)**
 
 ```php
 #[WorkflowInterface]
@@ -89,7 +89,7 @@ interface YourBasicWorkflow {
 }
 ```
 
-**[Workflow Definition in PHP (Implementation)](/develop/php/core-application#develop-workflows)**
+**[Workflow Definition in PHP (Implementation)](/develop/php/workflows/basics)**
 
 ```php
 class YourBasicWorkflowImpl implements YourBasicWorkflow {
@@ -100,7 +100,7 @@ class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="python" label="Python">
 
-**[Workflow Definition in Python](/develop/python/core-application#develop-workflows)**
+**[Workflow Definition in Python](/develop/python/workflows/basics)**
 
 ```Python
 @workflow.defn
@@ -113,7 +113,7 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript" label="Typescript">
 
-**[Workflow Definition in Typescript](/develop/typescript/core-application#develop-workflows)**
+**[Workflow Definition in Typescript](/develop/typescript/workflows/basics)**
 
 ```Typescript
 type BasicWorkflowArgs = {
@@ -130,7 +130,7 @@ export async function WorkflowExample(
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-**[Workflow Definition in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**[Workflow Definition in C# and .NET](/develop/dotnet/workflows/basics)**
 
 ```csharp
 [Workflow]
@@ -258,6 +258,15 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
+For SDK-specific replay-safe APIs and examples (logging, random numbers, time, replay detection), see:
+
+- [Go: Develop Workflow logic](/develop/go/workflows/basics#workflow-logic-requirements)
+- [Java: Workflow logic requirements](/develop/java/workflows/basics#workflow-logic-requirements)
+- [Python: Develop Workflow logic](/develop/python/workflows/basics#workflow-logic-requirements)
+- [TypeScript: Develop Workflow logic](/develop/typescript/workflows/basics#workflow-logic-requirements)
+- [.NET: Workflow logic requirements](/develop/dotnet/workflows/basics#workflow-logic-requirements)
+- [Ruby: Workflow Logic Requirements](/develop/ruby/workflows/basics#workflow-logic-requirements)
+
 ### Versioning Workflows {#workflow-versioning}
 
 The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
@@ -287,12 +296,12 @@ When keeping Workflows compatible, you should patch and ideally how to test your
 
 To patch:
 
-- [How to patch Workflow code in Go](/develop/go/versioning#patching)
-- [How to patch Workflow code in Java](/develop/java/versioning#patching)
-- [How to patch Workflow code in Python](/develop/python/versioning#patching)
-- [How to patch Workflow code in PHP](/develop/php/versioning#php-sdk-patching-api)
-- [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
-- [How to patch Workflow code in .NET](/develop/dotnet/versioning#patching)
+- [How to patch Workflow code in Go](/develop/go/workflows/versioning#patching)
+- [How to patch Workflow code in Java](/develop/java/workflows/versioning#patching)
+- [How to patch Workflow code in Python](/develop/python/workflows/versioning#patching)
+- [How to patch Workflow code in PHP](/develop/php/workflows/versioning#php-sdk-patching-api)
+- [How to patch Workflow code in TypeScript](/develop/typescript/workflows/versioning#patching)
+- [How to patch Workflow code in .NET](/develop/dotnet/workflows/versioning#patching)
 
 To test, see [Safe Deployments](/develop/safe-deployments.mdx).
 

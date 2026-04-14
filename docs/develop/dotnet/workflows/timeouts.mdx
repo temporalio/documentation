@@ -1,0 +1,64 @@
+---
+id: timeouts
+title: Workflow Timeouts - .NET SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with Temporal .NET SDK - Set Workflow Timeouts and Retry Policies efficiently.
+toc_max_heading_level: 4
+keywords:
+  - .NET
+  - failure detection
+  - timeouts
+tags:
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - .NET SDK
+  - Temporal SDKs
+---
+
+## Workflow timeouts {#workflow-timeouts}
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
+These values can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+
+Available timeouts are:
+
+- ExecutionTimeout
+- RunTimeout
+- TaskTimeout
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        WorkflowExecutionTimeout = TimeSpan.FromMinutes(5),
+    });
+```
+
+### Set Workflow retries {#workflow-retries}
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+The `RetryPolicy` can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
+    });
+```

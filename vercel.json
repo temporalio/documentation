@@ -6,6 +6,16 @@
   },
   "redirects": [
     {
+      "source": "/develop/go/data-handling/large-payload-storage",
+      "destination": "/develop/go/data-handling/external-storage",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/data-handling/large-payload-storage",
+      "destination": "/develop/python/data-handling/external-storage",
+      "permanent": true
+    },
+    {
       "source": "/cloud/introduction",
       "destination": "/cloud/overview",
       "permanent": true
@@ -121,7 +131,7 @@
     },
     {
       "source": "/dev-guide/golang/versioning:path*",
-      "destination": "/develop/go/versioning:path*",
+      "destination": "/develop/go/workflows/versioning:path*",
       "permanent": true
     },
     {
@@ -210,6 +220,16 @@
       "permanent": true
     },
     {
+      "source": "/tutorials",
+      "destination": "https://learn.temporal.io/tutorials/",
+      "permanent": true
+    },
+    {
+      "source": "/tutorials/:path*",
+      "destination": "https://learn.temporal.io/tutorials/:path*",
+      "permanent": true
+    },
+    {
       "source": "/php/booking-saga-tutorial",
       "destination": "https://learn.temporal.io/tutorials/php/booking_saga/",
       "permanent": true
@@ -291,22 +311,22 @@
     },
     {
       "source": "/go-activities",
-      "destination": "/develop/go/core-application#develop-activities",
+      "destination": "/develop/go",
       "permanent": true
     },
     {
       "source": "/go-continue-as-new",
-      "destination": "/develop/go/continue-as-new",
+      "destination": "/develop/go/workflows/continue-as-new",
       "permanent": true
     },
     {
       "source": "/go-create-workflows",
-      "destination": "/develop/go/core-application#develop-workflows",
+      "destination": "/develop/go/workflows",
       "permanent": true
     },
     {
       "source": "/go-error-handling",
-      "destination": "/develop/go/error-handling",
+      "destination": "/develop/go/best-practices/error-handling",
       "permanent": true
     },
     {
@@ -331,7 +351,7 @@
     },
     {
       "source": "/go-selectors",
-      "destination": "/develop/go/selectors",
+      "destination": "/develop/go/workflows/selectors",
       "permanent": true
     },
     {
@@ -364,7 +384,7 @@
     },
     {
       "source": "/go-sessions/#use-cases",
-      "destination": "/develop/go/sessions"
+      "destination": "/develop/go/workers/sessions"
     },
     {
       "source": "/go/:path*",
@@ -372,7 +392,7 @@
     },
     {
       "source": "/dev-guide/go/foundations:path*",
-      "destination": "/develop/go/core-application",
+      "destination": "/develop/go",
       "permanent": true
     },
     {
@@ -382,7 +402,7 @@
     },
     {
       "source": "/dev-guide/go/testing:path*",
-      "destination": "/develop/go/testing-suite",
+      "destination": "/develop/go/best-practices/testing-suite",
       "permanent": true
     },
     {
@@ -459,7 +479,7 @@
     },
     {
       "source": "/dev-guide/java/foundations:path*",
-      "destination": "/develop/java/core-application",
+      "destination": "/develop/java",
       "permanent": true
     },
     {
@@ -469,7 +489,7 @@
     },
     {
       "source": "/dev-guide/java/testing:path*",
-      "destination": "/develop/java/testing-suite",
+      "destination": "/develop/java/best-practices/testing-suite",
       "permanent": true
     },
     {
@@ -574,7 +594,7 @@
     },
     {
       "source": "/dev-guide/php/foundations:path*",
-      "destination": "/develop/php/core-application",
+      "destination": "/develop/php",
       "permanent": true
     },
     {
@@ -584,7 +604,7 @@
     },
     {
       "source": "dev-guide/php/testing:path*",
-      "destination": "/develop/php/testing-suite",
+      "destination": "/develop/php/best-practices/testing-suite",
       "permanent": true
     },
     {
@@ -981,7 +1001,7 @@
     },
     {
       "source": "/dev-guide/typescript/foundations:path*",
-      "destination": "/develop/typescript/core-application",
+      "destination": "/develop/typescript",
       "permanent": true
     },
     {
@@ -1010,7 +1030,7 @@
     },
     {
       "source": "/dev-guide/python/foundations:path*",
-      "destination": "/develop/python/core-application",
+      "destination": "/develop/python",
       "permanent": true
     },
     {
@@ -1020,7 +1040,7 @@
     },
     {
       "source": "/dev-guide/python/testing:path*",
-      "destination": "/develop/python/testing-suite",
+      "destination": "/develop/python/best-practices/testing-suite",
       "permanent": true
     },
     {
@@ -1277,6 +1297,741 @@
     {
       "source": "/production-deployment/cloud/:path*",
       "destination": "/cloud/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/billing-reports",
+      "destination": "/cloud/billing-api",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/core-application",
+      "destination": "/develop/go",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/core-application",
+      "destination": "/develop/java",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/core-application",
+      "destination": "/develop/python",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/core-application",
+      "destination": "/develop/php",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/core-application",
+      "destination": "/develop/typescript",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/core-application",
+      "destination": "/develop/dotnet",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/core-application",
+      "destination": "/develop/ruby",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/asynchronous-activity",
+      "destination": "/develop/dotnet/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/benign-exceptions",
+      "destination": "/develop/dotnet/activities/benign-exceptions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/standalone-activities",
+      "destination": "/develop/dotnet/activities/standalone-activities",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/converters-and-encryption",
+      "destination": "/develop/dotnet/best-practices/converters-and-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/debugging",
+      "destination": "/develop/dotnet/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/failure-detection",
+      "destination": "/develop/dotnet/best-practices/error-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/testing-suite",
+      "destination": "/develop/dotnet/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/temporal-client",
+      "destination": "/develop/dotnet/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/observability",
+      "destination": "/develop/dotnet/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/enriching-ui",
+      "destination": "/develop/dotnet/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/core-application#run-worker-process",
+      "destination": "/develop/dotnet/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/cancellation",
+      "destination": "/develop/dotnet/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/child-workflows",
+      "destination": "/develop/dotnet/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/continue-as-new",
+      "destination": "/develop/dotnet/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/message-passing",
+      "destination": "/develop/dotnet/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/schedules",
+      "destination": "/develop/dotnet/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/durable-timers",
+      "destination": "/develop/dotnet/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/versioning",
+      "destination": "/develop/dotnet/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/asynchronous-activity-completion",
+      "destination": "/develop/go/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/benign-exceptions",
+      "destination": "/develop/go/activities/benign-exceptions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/standalone-activities",
+      "destination": "/develop/go/activities/standalone-activities",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/context-propagation",
+      "destination": "/develop/go/best-practices/context-propagation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/converters-and-encryption",
+      "destination": "/develop/go/best-practices/converters-and-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/debugging",
+      "destination": "/develop/go/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/failure-detection",
+      "destination": "/develop/go/best-practices/error-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/go-sdk-multithreading",
+      "destination": "/develop/go/best-practices/multithreading",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/testing-suite",
+      "destination": "/develop/go/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/namespaces",
+      "destination": "/develop/go/client/namespaces",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/temporal-client",
+      "destination": "/develop/go/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/observability",
+      "destination": "/develop/go/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/enriching-ui",
+      "destination": "/develop/go/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/core-application#run-a-temporal-cloud-worker",
+      "destination": "/develop/go/workers/cloud-worker",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/core-application#run-worker-process",
+      "destination": "/develop/go/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/sessions",
+      "destination": "/develop/go/workers/sessions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/cancellation",
+      "destination": "/develop/go/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/child-workflows",
+      "destination": "/develop/go/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/continue-as-new",
+      "destination": "/develop/go/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/message-passing",
+      "destination": "/develop/go/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/schedules",
+      "destination": "/develop/go/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/selectors",
+      "destination": "/develop/go/workflows/selectors",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/side-effects",
+      "destination": "/develop/go/workflows/side-effects",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/timers",
+      "destination": "/develop/go/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/versioning",
+      "destination": "/develop/go/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/asynchronous-activity-completion",
+      "destination": "/develop/java/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/benign-exceptions",
+      "destination": "/develop/java/activities/benign-exceptions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/converters-and-encryption",
+      "destination": "/develop/java/best-practices/converters-and-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/debugging",
+      "destination": "/develop/java/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/failure-detection",
+      "destination": "/develop/java/workflows/timeouts",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/testing-suite",
+      "destination": "/develop/java/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/namespaces",
+      "destination": "/develop/java/client/namespaces",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/temporal-client",
+      "destination": "/develop/java/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/spring-boot-integration",
+      "destination": "/develop/java/integrations/spring-boot-integration",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/observability",
+      "destination": "/develop/java/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/enriching-ui",
+      "destination": "/develop/java/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/core-application#run-worker-process",
+      "destination": "/develop/java/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/cancellation",
+      "destination": "/develop/java/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/child-workflows",
+      "destination": "/develop/java/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/continue-as-new",
+      "destination": "/develop/java/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/message-passing",
+      "destination": "/develop/java/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/schedules",
+      "destination": "/develop/java/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/side-effects",
+      "destination": "/develop/java/workflows/side-effects",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/timers",
+      "destination": "/develop/java/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/versioning",
+      "destination": "/develop/java/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/asynchronous-activity-completion",
+      "destination": "/develop/php/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/debugging",
+      "destination": "/develop/php/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/testing-suite",
+      "destination": "/develop/php/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/failure-detection",
+      "destination": "/develop/php/workflows/timeouts",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/temporal-client",
+      "destination": "/develop/php/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/observability",
+      "destination": "/develop/php/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/enriching-ui",
+      "destination": "/develop/php/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/core-application#run-a-dev-worker",
+      "destination": "/develop/php/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/cancellation",
+      "destination": "/develop/php/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/child-workflows",
+      "destination": "/develop/php/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/continue-as-new",
+      "destination": "/develop/php/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/message-passing",
+      "destination": "/develop/php/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/schedules",
+      "destination": "/develop/php/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/side-effects",
+      "destination": "/develop/php/workflows/side-effects",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/timers",
+      "destination": "/develop/php/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/php/versioning",
+      "destination": "/develop/php/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/asynchronous-activity-completion",
+      "destination": "/develop/python/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/benign-exceptions",
+      "destination": "/develop/python/activities/benign-exceptions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/standalone-activities",
+      "destination": "/develop/python/activities/standalone-activities",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/converters-and-encryption",
+      "destination": "/develop/python/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/best-practices/converters-and-encryption",
+      "destination": "/develop/python/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/debugging",
+      "destination": "/develop/python/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/failure-detection",
+      "destination": "/develop/python/best-practices/error-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/python-sdk-sandbox",
+      "destination": "/develop/python/best-practices/python-sdk-sandbox",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/python-sdk-sync-vs-async",
+      "destination": "/develop/python/best-practices/python-sdk-sync-vs-async",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/testing-suite",
+      "destination": "/develop/python/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/temporal-client",
+      "destination": "/develop/python/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/observability",
+      "destination": "/develop/python/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/enriching-ui",
+      "destination": "/develop/python/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/core-application#run-worker-process",
+      "destination": "/develop/python/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/interceptors",
+      "destination": "/develop/python/workers/interceptors",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/cancellation",
+      "destination": "/develop/python/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/child-workflows",
+      "destination": "/develop/python/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/continue-as-new",
+      "destination": "/develop/python/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/message-passing",
+      "destination": "/develop/python/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/schedules",
+      "destination": "/develop/python/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/timers",
+      "destination": "/develop/python/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/versioning",
+      "destination": "/develop/python/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/asynchronous-activity",
+      "destination": "/develop/ruby/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/benign-exceptions",
+      "destination": "/develop/ruby/activities/benign-exceptions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/converters-and-encryption",
+      "destination": "/develop/ruby/best-practices/converters-and-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/debugging",
+      "destination": "/develop/ruby/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/failure-detection",
+      "destination": "/develop/ruby/best-practices/error-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/testing-suite",
+      "destination": "/develop/ruby/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/temporal-client",
+      "destination": "/develop/ruby/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/rails-integration",
+      "destination": "/develop/ruby/integrations/rails-integration",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/observability",
+      "destination": "/develop/ruby/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/enriching-ui",
+      "destination": "/develop/ruby/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/core-application#run-worker-process",
+      "destination": "/develop/ruby/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/cancellation",
+      "destination": "/develop/ruby/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/child-workflows",
+      "destination": "/develop/ruby/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/continue-as-new",
+      "destination": "/develop/ruby/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/message-passing",
+      "destination": "/develop/ruby/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/schedules",
+      "destination": "/develop/ruby/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/durable-timers",
+      "destination": "/develop/ruby/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/versioning",
+      "destination": "/develop/ruby/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/asynchronous-activity-completion",
+      "destination": "/develop/typescript/activities/asynchronous-activity",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/benign-exceptions",
+      "destination": "/develop/typescript/activities/benign-exceptions",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/converters-and-encryption",
+      "destination": "/develop/typescript/best-practices/converters-and-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/debugging",
+      "destination": "/develop/typescript/best-practices/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/entity-pattern",
+      "destination": "/develop/typescript/best-practices/entity-pattern",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/testing-suite",
+      "destination": "/develop/typescript/best-practices/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/failure-detection",
+      "destination": "/develop/typescript/workflows/timeouts",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/namespaces",
+      "destination": "/develop/typescript/client/namespaces",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/temporal-client",
+      "destination": "/develop/typescript/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/observability",
+      "destination": "/develop/typescript/platform/observability",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/enriching-ui",
+      "destination": "/develop/typescript/platform/enriching-ui",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/interceptors",
+      "destination": "/develop/typescript/workers/interceptors",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/core-application#run-a-dev-worker",
+      "destination": "/develop/typescript/workers/run-worker-process",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/cancellation",
+      "destination": "/develop/typescript/workflows/cancellation",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/child-workflows",
+      "destination": "/develop/typescript/workflows/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/continue-as-new",
+      "destination": "/develop/typescript/workflows/continue-as-new",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/message-passing",
+      "destination": "/develop/typescript/workflows/message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/schedules",
+      "destination": "/develop/typescript/workflows/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/timers",
+      "destination": "/develop/typescript/workflows/timers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/versioning",
+      "destination": "/develop/typescript/workflows/versioning",
       "permanent": true
     }
   ]
