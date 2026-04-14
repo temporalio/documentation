@@ -49,7 +49,7 @@ impl GreetingWorkflow {
 ```
 
 The `#[workflow]` macro marks the struct as a Workflow.
-The `#[workflow_methods]` macro is applied to the impl block containing the Workflow methods.
+The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
 
 ### Workflow struct {#workflow-struct}
 
@@ -136,7 +136,7 @@ impl ProcessingWorkflow {
 }
 ```
 
-All Workflow input should be serializable by serde.
+All Workflow input should be serializable by `serde`.
 
 ## Define Workflow return parameters {#workflow-return-values}
 
