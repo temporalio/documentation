@@ -20,6 +20,12 @@ import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/element
 
 # Nexus TypeScript Quickstart
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal TypeScript SDK support for Nexus is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
 [Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
 
 :::info NEW TO NEXUS?
@@ -68,12 +74,6 @@ It provides type safety when invoking Nexus Operations and ensures that Operatio
 
 `nexus.service()` declares a named service, and `nexus.operation<I, O>()` defines a typed operation.
 The `example` Workflow returns `string`, so the operation output type is `string`.
-
-:::tip USE AN IDL TO GENERATE SERVICE DEFINITIONS
-
-You can also define your Nexus Service contract using an IDL and generate the TypeScript service definitions with [nexus-rpc-gen](https://github.com/nexus-rpc/nexus-rpc-gen).
-
-:::
 
 </SetupStep>
 

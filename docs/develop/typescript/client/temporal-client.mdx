@@ -136,7 +136,6 @@ You can create a Temporal Client using a profile from the configuration file as 
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
-
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -179,7 +178,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 {/* SNIPEND */}
 
 </TabItem>
@@ -211,18 +209,17 @@ variables take precedence, they will override any values set in the configuratio
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "7,17-18", "selectedLines": ["1-5","17","19","22-40"]} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
-
 ```ts {7,17-18}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-  // ...
+// ...
   const config = loadClientConnectConfig({
-    // ...
+// ...
   });
-  // ...
+// ...
   console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
   console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
@@ -243,7 +240,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 {/* SNIPEND */}
 
 </TabItem>
@@ -289,6 +285,9 @@ local development instance:
 You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
 
 ![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+
+For more information about managing and generating client certificates for Temporal Cloud, see
+[How to manage certificates in Temporal Cloud](/cloud/certificates).
 
 You can provide these connection options using environment variables, a configuration file, or directly in code.
 
@@ -344,7 +343,6 @@ you can also programmatically override specific connection options before creati
 
 {/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
 [env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
-
 ```ts {15-18,30-31}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -389,7 +387,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 {/* SNIPEND */}
 
 </TabItem>
@@ -421,18 +418,17 @@ variables will take precedence.
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29", "selectedLines": ["1-5","17","19","22-40"]} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
-
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-  // ...
+// ...
   const config = loadClientConnectConfig({
-    // ...
+// ...
   });
-  // ...
+// ...
   console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
   console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
@@ -453,7 +449,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 {/* SNIPEND */}
 
 </TabItem>

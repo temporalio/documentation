@@ -6,6 +6,16 @@
   },
   "redirects": [
     {
+      "source": "/develop/go/data-handling/large-payload-storage",
+      "destination": "/develop/go/data-handling/external-storage",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/data-handling/large-payload-storage",
+      "destination": "/develop/python/data-handling/external-storage",
+      "permanent": true
+    },
+    {
       "source": "/cloud/introduction",
       "destination": "/cloud/overview",
       "permanent": true
@@ -1370,11 +1380,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/dotnet/nexus",
-      "destination": "/develop/dotnet/nexus/feature-guide",
-      "permanent": true
-    },
-    {
       "source": "/develop/dotnet/observability",
       "destination": "/develop/dotnet/platform/observability",
       "permanent": true
@@ -1746,7 +1751,12 @@
     },
     {
       "source": "/develop/python/converters-and-encryption",
-      "destination": "/develop/python/best-practices/converters-and-encryption",
+      "destination": "/develop/python/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/best-practices/converters-and-encryption",
+      "destination": "/develop/python/data-handling",
       "permanent": true
     },
     {
