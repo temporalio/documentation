@@ -20,7 +20,7 @@ import { CaptionedImage } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Go SDK support for Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
+Temporal Go SDK support for Nexus is [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
 
 :::
 
@@ -47,8 +47,8 @@ This documentation uses source code derived from the [Go Nexus sample](https://g
 
 Prerequisites:
 
-- [Install the latest Temporal CLI](https://docs.temporal.io/develop/go/core-application#run-a-development-server) (v1.3.0 or higher recommended)
-- [Install the latest Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk)
+- [Install the latest Temporal CLI](/develop/run-a-development-server) (v1.3.0 or higher recommended)
+- [Install the latest Temporal Go SDK](/develop/go/set-up-your-local-go)
   (v1.33.0 or higher recommended)
 
 The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
@@ -552,7 +552,7 @@ See the [Nexus cancelation sample](https://github.com/temporalio/samples-go/tree
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
-This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/go/core-application#run-a-temporal-cloud-worker).
+This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](/develop/go/workers/cloud-worker).
 The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
 
 ### Install the latest `tcld` CLI and generate certificates

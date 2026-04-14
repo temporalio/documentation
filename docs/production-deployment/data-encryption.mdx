@@ -269,6 +269,14 @@ On Temporal Cloud and self-hosted Temporal Service, you can configure a Codec Se
     title="Codec Server endpoint Namespace setting"
 />
 
+:::caution
+
+If your Codec Server is on a private network, your browser may block Temporal Web UI from accessing it. On Chrome, your browser may prompt you to allow access to the Codec Server endpoint. Make sure to allow access to the Codec Server endpoint. Refer to the [Chrome for Developers blog: New permission prompt for Local Network Access](https://developer.chrome.com/blog/local-network-access/) for details on this permission prompt.
+
+If your browser has blocked Temporal's access to your Codec Server, refer to [Chrome documentation](https://support.google.com/chrome/answer/114662) for details on how to change the site settings. In **Site settings**, look for the **Local network** setting and change it to **Allow** to only change this setting for Temporal without affecting other sites.
+
+:::
+
 To set a Codec Server endpoint on a Namespace, do the following.
 
 1. In the Web UI, go to Namespaces, select the Namespace where you want to configure the Codec Server endpoint, and click **Edit**.
