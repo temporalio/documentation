@@ -482,21 +482,15 @@ For Datadog, the following widget will calculate actions per second:
 
 ### When should I opt for auto migration?
 
-This is a complex question. The answer depends on your specific situation. The most common considerations are:
+The answer depends on your specific situation. However, automated migration is most likely to help if any of the following apply to you:
 
-1. Risk of change - Automated migration offers a safer worker migration strategy. Workers can be deployed to both self-hosted and cloud
-   environments simultaneously, allowing a gradual and lower-risk transition.
-2. Effort - There are certain time-related costs involved with the setup of the components required for automated migration. Mostly, these costs 
-   involve deployment of dedicated cloud-based components (Temporal), s2s proxy setup (customer/Temporal), and general project management. If
-   your self-hosted clusters do not meet the [minimum requirements](#limitations) requirements, then there may be additional work required as
-   a prerequisite to starting the project.
-3. Short-lived vs long-running Workflows - In many cases, short-lived Workflows can be easily migrated using the manual approach. Long-running
-   Workflows may benefit from automated migration due to its minimal impact on those Workflows.
-4. Closed Workflows - Automated migration will migrate closed Workflows where manual migration will not.
-5. Schedules - Automated migration supports the migration of schedules, where this is not easily achievable with manual migration.
-6. Limitations - Automated migration comes with its own set of [limitations](#limitations).
+* When safe transfer of workers is a concern - automated migration allows workers to run against both self-hosted and cloud
+  environments simultaneously, allowing a gradual and lower-risk transition.
+* When there are a high number of long-running Workflows.
+* When there is a need to migrate closed Workflows.
+* When there is a need to migrate Schedules.
 
-Keeping the above points in mind will help guide your decision on which is the most appropriate path for your migration project.
+In contrast, automated migration may not be the best solution if your self-hosted clusters do not meet the [minimum requirements](#limitations).
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 
