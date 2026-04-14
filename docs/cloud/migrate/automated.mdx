@@ -483,37 +483,33 @@ For Datadog, the following widget will calculate actions per second:
 
 This is a complex question. The answer depends on your specific situation. The most common considerations are:
 
-1. Risk of change - No matter what, clients must be updated to use the new cloud-side Namespace. The big difference is that
-   automated migration enables replication between self-hosted and cloud during the migration process. This replication allows some flexibility
-   in transferring clients (if you miss a few clients, replication will provide some cover).If you are unsure of the impact of switching clients
-   during a manual migration, then you may opt for the automated approach.  
+1. Risk of change - Automated migration offers a safer worker migration strategy. Workers can be deployed to both self-hosted and cloud
+   environments simultaneously, allowing a gradual and lower-risk transition.
 2. Effort - There are certain time-related costs involved with the setup of the components required for automated migration. Mostly, these costs 
-   involve deployment of dedicated cloud-based components (Temporal), s2s proxy setup (customer/Temporal), and
-   general project management. If your self-hosted clusters do not meet the [minimum requirements](#limitations) requirements, then there may
-   be additional work required as a prerequisite to starting the project.
+   involve deployment of dedicated cloud-based components (Temporal), s2s proxy setup (customer/Temporal), and general project management. If
+   your self-hosted clusters do not meet the [minimum requirements](#limitations) requirements, then there may be additional work required as
+   a prerequisite to starting the project.
 3. Short-lived vs long-running Workflows - In many cases, short-lived Workflows can be easily migrated using the manual approach. Long-running
    Workflows may benefit from automated migration due to its minimal impact on those Workflows.
 4. Closed Workflows - Automated migration will migrate closed Workflows where manual migration will not.
+5. Schedules - Automated migration supports the migration of schedules, where this is not easily achievable with manual migration.
 
 Keeping the above points in mind will help guide your decision on which is the most appropriate path for your migration project.
 
-
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 
-Not directly. The migration tooling migrates all Workflows from a Namespace. If your goal is to split Workflows, then you should
-[manually migrate](/cloud/migrate/manual) any workflows into their new cloud-side target Namespaces prior to starting an auto-migration.
+No. All Workflows will be migrated.
 
 ### Can I combine manual and auto migration?
 
-It depends. Auto migration requires a "fresh" target cloud-side Namespace (e.g. one that has never had a running Workflow). 
+No. Auto migration requires a "fresh" target cloud-side Namespace (i.e. one that has never had a running Workflow). 
 If Workflows were manually migrated to a cloud-side Namespace, then this Namespace would not be suitable as an auto-migration target.
-However, nothing prevents you from manually migrating Workflows into a Namespace from a previously completed auto-migration.
-
 
 ### Why does it matter if custom search attributes are used?
 
-Custom search attributes must be mapped to the Namespace in Temporal Cloud. This process differs depending on the type
-of data store used for visibility.
+Custom search attributes must be mapped to a Namespace in Temporal Cloud. They matter because configurations in a self-hosted environment 
+may not be directly compatible with Temporal Cloud, potentially requiring additional migration work. The exact process can also differ 
+depending on the type of visibility data store used.
 
 ### What Workflows are migrated by default?
 
