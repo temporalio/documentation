@@ -279,6 +279,7 @@ Testing uses the following process:
 Testing is considered successful if all data from the self-hosted deployment is migrated to cloud.
 
 ## Phase 4: Initiate
+Review the section on [transferring clients](#transfer-clients-to-cloud) before proceeding.
 
 The sections below outline the process for initiating the migration.
 
@@ -325,42 +326,8 @@ When using this command, replace `<to-replica-id>` with `cloud` when handing ove
 `<to-replica-id>` with `on-prem` when handing back to the self-hosted setup.
 
 
-### Transfer clients to cloud
-
-There are two options for switching Temporal clients to the cloud.
-
-#### Option 1 (recommended)
-
-Deploy two sets of Temporal clients: one pointing to your Temporal server and one to the Cloud Namespace endpoint. This
-is the recommended option since your Workflows will continue to make progress during the handover, even if your cloud
-Temporal client is unable to access the cloud (due to misconfiguration, for example). The process is as follows:
-
-1. Direct your cloud-based Temporal clients to the cloud Namespace endpoint. Initially, these clients will connect and
-   send Poll requests but will not receive any tasks.
-2. Start migration. Your self-hosted Namespace is active while your cloud Namespace is passive (or standby). Your cloud
-   Temporal clients can begin receiving tasks, but all requests from cloud clients to the Cloud Namespace will
-   automatically forward from the cloud to your self-hosted server.
-3. Hand over Namespace to the cloud. Your cloud Namespace becomes active and your self-hosted Namespace becomes passive.
-   All requests from your self-hosted Temporal clients will automatically forward from your server to the cloud.
-4. Complete migration. Your self-hosted Temporal clients will no longer receive any tasks from your server, allowing you
-   to stop these clients.
-
-#### Option 2
-
-Deploy one set of Temporal clients and switch the Namespace endpoint during migration. With this option, if your workers
-are misconfigured during the switch, then it is possible that Workflows can stop making progress. It is important to
-ensure that all workers maintain connectivity to cloud to avoid this scenario. The process is as follows:
-
-1. Start migration.
-2. Switch your Temporal clients to point to the cloud Namespace endpoint. Requests from your Temporal clients will
-   automatically forward from the cloud to your server. Alternatively, you may switch Temporal clients to the cloud
-   Namespace endpoint after handover.
-3. Hand over Namespace to the cloud. Requests from your Temporal clients will now be served by the cloud and will not be
-   forwarded to your server.
-4. Confirm migration completion.
-
-
 ## Phase 5: Finalize
+If you have not done so already, complete the process of [transferring clients](#transfer-clients-to-cloud) to the cloud Namespace.
 
 ### Final validation
 
@@ -393,6 +360,41 @@ impacting your Workflows, if needed:
 ```
 tcld migration abort --id <migration-id>
 ```
+
+## Transfer clients to cloud
+
+There are two options for switching Temporal clients to the cloud.
+
+### Option 1 (recommended)
+
+Deploy two sets of Temporal clients: one pointing to your Temporal server and one to the Cloud Namespace endpoint. This
+is the recommended option since your Workflows will continue to make progress during the handover, even if your cloud
+Temporal client is unable to access the cloud (due to misconfiguration, for example). The process is as follows:
+
+1. Direct your cloud-based Temporal clients to the cloud Namespace endpoint. Initially, these clients will connect and
+   send Poll requests but will not receive any tasks.
+2. Start migration. Your self-hosted Namespace is active while your cloud Namespace is passive (or standby). Your cloud
+   Temporal clients can begin receiving tasks, but all requests from cloud clients to the Cloud Namespace will
+   automatically forward from the cloud to your self-hosted server.
+3. Hand over Namespace to the cloud. Your cloud Namespace becomes active and your self-hosted Namespace becomes passive.
+   All requests from your self-hosted Temporal clients will automatically forward from your server to the cloud.
+4. Complete migration. Your self-hosted Temporal clients will no longer receive any tasks from your server, allowing you
+   to stop these clients.
+
+### Option 2
+
+Deploy one set of Temporal clients and switch the Namespace endpoint during migration. With this option, if your workers
+are misconfigured during the switch, then it is possible that Workflows can stop making progress. It is important to
+ensure that all workers maintain connectivity to cloud to avoid this scenario. The process is as follows:
+
+1. Start migration.
+2. Switch your Temporal clients to point to the cloud Namespace endpoint. Requests from your Temporal clients will
+   automatically forward from the cloud to your server. Alternatively, you may switch Temporal clients to the cloud
+   Namespace endpoint after handover.
+3. Hand over Namespace to the cloud. Requests from your Temporal clients will now be served by the cloud and will not be
+   forwarded to your server.
+4. Confirm migration completion.
+
 
 ## Additional notes
 
