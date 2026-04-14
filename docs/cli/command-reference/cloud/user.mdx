@@ -1,0 +1,262 @@
+---
+id: user
+title: Temporal CLI cloud user command reference
+sidebar_label: user
+description: User Management Commands
+toc_max_heading_level: 4
+keywords:
+  - user
+  - management
+tags:
+  - users
+---
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
+
+This page provides a reference for the `temporal cloud user` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
+## apply
+
+Apply a user configuration to Temporal Cloud. Creates a new user invitation
+if the email does not exist, or updates the existing user to match the specification.
+
+The specification can be provided as inline JSON or loaded from a file
+by prefixing the path with '@'.
+
+Example with inline JSON:
+
+```
+cloud user apply --spec '{"email": "alice@example.com", "access": {"account_access": {"role": "developer"}}}'
+```
+
+Example with file path:
+
+```
+cloud user apply --spec @user-spec.json
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--spec` | Yes | **string** User configuration in JSON format. Provide inline JSON directly, or use '@path/to/file.json' to load from a file. |
+| `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
+
+## delete
+
+Delete a Temporal Cloud user. This action is irreversible.
+
+Specify the user with either --user-id or --user-email (not both).
+
+Example:
+
+```
+cloud user delete --user-id my-user-id
+cloud user delete --user-email alice@example.com
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+
+## edit
+
+Open a user configuration in your default editor for interactive
+modification. After saving and closing the editor, the changes are
+applied to Temporal Cloud.
+
+The editor is determined by the EDITOR environment variable, falling
+back to 'vi' if not set.
+
+Specify the user with either --user-id or --user-email (not both).
+
+Example:
+
+```
+cloud user edit --user-id my-user-id
+cloud user edit --user-email alice@example.com
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+| `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
+
+## get
+
+Retrieve the configuration and status of a Temporal Cloud user.
+
+Example:
+
+```
+cloud user get --user-id my-user-id
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+
+## invite
+
+Invite a user to Temporal Cloud by email. Optionally assign an account-level
+role and namespace-level access permissions.
+
+Account roles: owner, admin, developer, finance-admin, read, metrics-read.
+Namespace access format: 'namespace=permission' where permission is one of: admin, write, read.
+
+Example:
+
+```
+cloud user invite --email alice@example.com --account-role developer \
+  --namespace-access my-namespace.my-account=write
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--account-role` | No | **string** The account-level role to assign. Valid values: owner, admin, developer, finance-admin, read, metrics-read. |
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--email` | Yes | **string** The email address of the user to invite. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace-access` | No | **string[]** Namespace access to grant, in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## list
+
+List all Temporal Cloud users accessible with the current
+authentication credentials.
+
+Example:
+
+```
+cloud user list
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--email` | No | **string** Filter users by email address. |
+| `--namespace` | No | **string** Filter users by the namespace they have access to. |
+| `--page-size` | No | **int** Number of users to return per page. Use for paginated results. |
+| `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## set-account-role
+
+Set the account-level role for a Temporal Cloud user.
+
+Account roles: owner, admin, developer, finance-admin, read, metrics-read.
+
+Specify the user with either --user-id or --user-email (not both).
+
+Example:
+
+```
+cloud user set-account-role --user-id my-user-id --account-role developer
+cloud user set-account-role --user-email alice@example.com --account-role admin
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--account-role` | Yes | **string** The account-level role to assign. Valid values: owner, admin, developer, finance-admin, read, metrics-read. |
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+
+## set-namespace-permissions
+
+Add, update, or remove namespace-level permissions for a Temporal Cloud user.
+Changes are applied additively: namespaces not listed are left unchanged.
+
+Namespace access format: 'namespace=permission' where permission is one of: admin, write, read.
+To remove access to a namespace, pass an empty permission: 'namespace='.
+
+Specify the user with either --user-id or --user-email (not both).
+
+Example:
+
+```
+# Grant write access to my-namespace and read access to other-namespace:
+cloud user set-namespace-permissions --user-id my-user-id \
+  --namespace-access my-namespace.my-account=write \
+  --namespace-access other-namespace.my-account=read
+
+# Remove access to a namespace:
+cloud user set-namespace-permissions --user-id my-user-id \
+  --namespace-access my-namespace.my-account=
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace-access` | Yes | **string[]** Namespace access change in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. Use an empty permission (e.g. 'testns=') to remove access to a namespace. Changes are additive: namespaces not listed are left unchanged. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |  |
+| `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
+| `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
+| `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl-test.cloud:443` |
+
