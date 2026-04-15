@@ -1211,6 +1211,7 @@ module.exports = {
           type: 'category',
           label: 'Command reference',
           collapsed: true,
+          link: {type: 'doc', id: 'cli/command-reference/index'},
           items: [
             'cli/command-reference/activity',
             'cli/command-reference/batch',
@@ -1218,6 +1219,7 @@ module.exports = {
               type: 'category',
               label: 'cloud',
               collapsed: true,
+              link: {type: 'doc', id: 'cli/command-reference/cloud/index'},
               items: [
                 'cli/command-reference/cloud/account',
                 'cli/command-reference/cloud/apikey',
