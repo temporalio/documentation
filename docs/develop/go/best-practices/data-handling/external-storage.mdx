@@ -254,6 +254,8 @@ c, err := client.Dial(client.Options{
 })
 ```
 
+You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services.
+
 ## Configure payload size threshold
 
 You can configure the payload size threshold that triggers external storage. By default, payloads larger than 256 KiB
@@ -278,8 +280,7 @@ c, err := client.Dial(client.Options{
 ## Use multiple storage drivers
 
 When you register multiple drivers, you must provide a `DriverSelector` that implements the `StorageDriverSelector`
-interface. The SDK returns an error at client creation if multiple drivers are registered without a selector. The
-selector chooses which driver stores each payload. Any driver in the list that is not selected for storing is still
+interface. The selector chooses which driver stores each payload. Any driver in the list that is not selected for storing is still
 available for retrieval, which is useful when migrating between storage backends. Return `nil` from the selector to
 keep a specific payload inline in Event History.
 
@@ -288,9 +289,9 @@ Multiple drivers are useful in scenarios such as:
 - Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the
   one you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads.
   The old driver remains available for retrieving existing claims.
-- Latency vs. durability tradeoffs. Some Workflow types may benefit from a faster storage backend
-  at the cost of durability, while others require a durable backend like S3. Use the selector to route based on
-  Workflow context.
+- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For
+  example, use S3 for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the
+  appropriate driver based on the runtime environment.
 
 The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
