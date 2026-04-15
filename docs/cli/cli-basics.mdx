@@ -145,6 +145,28 @@ Terminate a Workflow Execution. Termination stops the Workflow immediately with 
 <SetupStep code={
 <>
 <CodeSnippet language="bash">
+temporal cloud login
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal workflow list \\
+  --address <namespace>.<account>.tmprl.cloud:7233 \\
+  --namespace <namespace>.<account>`}
+</CodeSnippet>
+</>
+}>
+
+## Log in to Temporal Cloud
+
+Log in to Temporal Cloud with `temporal cloud login`. After login, you can run commands against Temporal Cloud by
+providing the address and Namespace.
+
+See [Use with Temporal Cloud](/cli/temporal-cloud) for all authentication options.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
 {`temporal schedule create \\
   --schedule-id my-schedule \\
   --interval 1h \\
@@ -193,6 +215,9 @@ temporal operator namespace create --namespace my-namespace
 List available [Namespaces](/namespaces).
 
 Create a new Namespace.
+
+To manage Namespaces on Temporal Cloud, use the Temporal Cloud extension and
+[`temporal cloud namespace`](/cli/command-reference/cloud/namespace) commands.
 
 </SetupStep>
 
