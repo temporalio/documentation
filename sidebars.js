@@ -1190,6 +1190,7 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            'production-deployment/worker-deployments/unversioned-to-versioned-migration'
           ],
         },
         'production-deployment/data-encryption',
