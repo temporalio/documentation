@@ -127,19 +127,6 @@ Persist state locally by specifying a database file:
 temporal server start-dev --db-filename temporal.db
 ```
 
-::::note
-
-Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI. The
-`temporal server start-dev` command is intended for development environments.
-
-::::
-
-For the full list of development server options, use the `--help` flag:
-
-```shell
-temporal server start-dev --help
-```
-
 ### Development server configuration
 
 #### Namespace registration
@@ -202,12 +189,6 @@ The following table describes the environment variables you can set for the Temp
 
 {/* This is an automatically generated file and this caution will disappear on the next push. */}
 {/* issue: https://github.com/temporalio/cli/issues/776 */}
-
-::::tip ENVIRONMENT VARIABLES
-
-Do not confuse environment variables, set with your shell, with temporal env options.
-
-::::
 
 ### Create and modify configuration files
 
