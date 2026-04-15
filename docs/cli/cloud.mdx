@@ -91,16 +91,21 @@ certificates, they will remain in the profile.
 
 ## Cloud administration
 
-The Temporal Cloud extension adds `temporal cloud` commands for managing Cloud resources. Any of the authentication
-methods above grant access to these commands.
+The Temporal Cloud extension adds `temporal cloud` commands for managing your Temporal Cloud control plane resources in
+your Temporal Cloud account, including Namespaces, Users, Service Accounts, API keys, and others. Any of the
+authentication methods above grants access to these commands.
 
-Install the extension:
+The extension enables you to do the following through the CLI:
 
-```bash
-brew install temporal-cloud
-```
+- Create, configure, and delete Namespaces.
+- Create and manage API keys for programmatic access.
+- Invite users, assign roles, and manage user groups.
+- Create and configure Nexus endpoints.
+- View account information and manage connectivity rules.
 
-For the full list of `temporal cloud` commands, see the [`cloud` command reference](/cli/command-reference/cloud).
+For installation instructions, see
+[Install the Temporal Cloud extension](/cli/setup-cli#install-the-temporal-cloud-extension). For the full list of
+commands, see the [`cloud` command reference](/cli/command-reference/cloud).
 
 ## Next steps
 
