@@ -273,7 +273,7 @@ import { helloServiceHandler } from './handler';
 
 ## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
 
-To execute a Nexus Operation from a Workflow, import the necessary service definition types, then use `@temporalio/workflow`'s `createNexusClient` to create a Nexus client for that service.
+To execute a Nexus Operation from a Workflow, import the necessary service definition types, then use `@temporalio/workflow`'s `createNexusServiceClient` to create a Nexus client for that service.
 You will need to provide the Nexus Endpoint name, which you registered previously in [Create a Nexus Endpoint to route requests from caller to handler](#create-nexus-endpoint).
 
 <!--SNIPSTART typescript-nexus-hello-service-caller-workflow {"selectedLines": ["1-5","21-34"]}-->
@@ -287,7 +287,7 @@ import { helloService, LanguageCode } from "../service/api";
 const HELLO_SERVICE_ENDPOINT = "hello-service-endpoint-name";
 
 export async function helloCallerWorkflow(name: string, language: LanguageCode): Promise<string> {
-  const nexusClient = wf.createNexusClient({
+  const nexusClient = wf.createNexusServiceClient({
     service: helloService,
     endpoint: HELLO_SERVICE_ENDPOINT,
   });
