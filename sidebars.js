@@ -1132,7 +1132,7 @@ module.exports = {
       items: [
         'cli/setup-cli',
         'cli/cloud',
-        'cli/common-operations',
+        'cli/cli-basics',
         {
           type: 'category',
           label: 'Command reference',
