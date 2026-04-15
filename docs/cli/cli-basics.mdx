@@ -3,7 +3,9 @@ id: common-operations
 title: CLI basics
 sidebar_label: CLI basics
 slug: /cli/common-operations
-description: Common Temporal CLI operations for running a development server, starting and managing Workflows, and working with Schedules and Namespaces.
+description:
+  Common Temporal CLI operations for running a development server, starting and managing Workflows, and working with
+  Schedules and Namespaces.
 keywords:
   - Temporal CLI
   - workflow start
@@ -18,8 +20,8 @@ hide_table_of_contents: true
 
 import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
 
-This page walks through the operations you're most likely to reach for when using the Temporal CLI.
-For the full set of commands, see the [command reference](/cli#command-reference).
+This page walks through the operations you're most likely to reach for when using the Temporal CLI. For the full set of
+commands, see the [command reference](/cli#command-reference).
 
 <SetupSteps>
 <SetupStep code={
@@ -35,7 +37,8 @@ temporal server start-dev --db-filename temporal.db
 
 ## Run a development server
 
-Start a local Temporal Service for development.
+The Temporal CLI ships with a complete Temporal binary. Start a local Temporal Service for development with a single
+command.
 
 The Temporal Service is available on `localhost:7233` and the Web UI at `http://localhost:8233`.
 

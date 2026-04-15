@@ -58,9 +58,20 @@ jobs:
         with:
           go-version: '1.22'
 
+      - name: Checkout cloud-cli repo
+        uses: actions/checkout@v4
+        with:
+          path: cloud-cli
+          submodules: recursive
+          persist-credentials: true
+          token: ${{ steps.generate_token.outputs.token }}
+          repository: temporalio/cloud-cli
+
       - name: Generate CLI docs
         working-directory: cli
-        run: go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
+        run: |
+          go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
+          go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -split cloud
 
       - name: Publish generated docs to documentation repo
         env:
@@ -80,7 +91,7 @@ jobs:
           git checkout -b "$branch_name"
           rm -rf docs/cli/command-reference
           mkdir -p docs/cli/command-reference
-          cp ../cli/dist/docs/*.mdx docs/cli/command-reference/
+          cp -r ../cli/dist/docs/* docs/cli/command-reference/
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push origin "$branch_name"
