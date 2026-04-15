@@ -30,7 +30,7 @@ export default function Overview({ onNext }: Props) {
         </h3>
         <p style={{ fontSize: 15, color: 'var(--ifm-font-color-base)', margin: 0, lineHeight: 1.7 }}>
           Team A can call Team B's Workflows like a typed API, with full durability, retries,
-          and fault-tolerance built in, without needing access to Team B's Namespace or knowing
+          and fault-tolerance built in, without needing direct access to Team B's Namespace or knowing
           how their code works.
         </p>
       </div>

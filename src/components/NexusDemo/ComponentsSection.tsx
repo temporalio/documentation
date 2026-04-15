@@ -19,42 +19,10 @@ export default function ComponentsSection({ onNext }: Props) {
 
       <div className={styles.compEList}>
 
-        {/* 1: Endpoint */}
+        {/* 1: Service */}
         <div className={styles.compECard}>
           <div className={styles.compENumCol}>
             <div className={styles.compENum}>1</div>
-          </div>
-          <div className={styles.compEContent}>
-            <h2 className={styles.componentTitle}>Nexus Endpoint</h2>
-            <p className={styles.compERole}>The named entry point callers use to reach a service</p>
-            <p>
-              An Endpoint is a <strong>named connection point</strong> registered in the Nexus
-              Registry. Callers reference it by name. That's all they need. Temporal handles
-              routing to the right team's Namespace and Task Queue behind the scenes.
-            </p>
-            <p>
-              Unlike a general HTTP proxy, a Nexus Endpoint is managed entirely within the
-              Temporal platform, with auth, retries, and observability built in. Routing is
-              handled by the platform so callers never need connection details for the target Namespace.
-            </p>
-            <div className={styles.compECode}>
-              Caller uses name:{' '}
-              <span style={{ color: 'var(--ifm-color-primary)' }}>"fraud-detection-prod"</span>
-              <br />
-              Temporal routes to:{' '}
-              <span style={{ color: 'var(--nd-muted)' }}>fraud-ns / fraud-task-queue</span>
-              <br />
-              <span style={{ color: 'var(--nd-muted)' }}>
-                {'// callers never see the target, only the name'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 2: Service */}
-        <div className={styles.compECard}>
-          <div className={styles.compENumCol}>
-            <div className={styles.compENum}>2</div>
           </div>
           <div className={styles.compEContent}>
             <h2 className={styles.componentTitle}>Nexus Service</h2>
@@ -73,10 +41,10 @@ export default function ComponentsSection({ onNext }: Props) {
           </div>
         </div>
 
-        {/* 3: Operation */}
+        {/* 2: Operation */}
         <div className={styles.compECard}>
           <div className={styles.compENumCol}>
-            <div className={styles.compENum}>3</div>
+            <div className={styles.compENum}>2</div>
           </div>
           <div className={styles.compEContent}>
             <h2 className={styles.componentTitle}>Nexus Operation</h2>
@@ -114,8 +82,8 @@ export default function ComponentsSection({ onNext }: Props) {
               <>
                 <p>
                   <strong>Asynchronous</strong> operations start a Workflow and return an
-                  operation token. The caller Workflow is suspended. When the handler Workflow
-                  completes, a callback delivers the result.
+                  operation token. The caller Workflow is blocked at the await point. When the
+                  handler Workflow completes, a callback delivers the result.
                 </p>
                 <div className={styles.compECode}>
                   Caller → [start] → Handler starts Workflow → [token]
@@ -126,6 +94,38 @@ export default function ComponentsSection({ onNext }: Props) {
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        {/* 3: Endpoint */}
+        <div className={styles.compECard}>
+          <div className={styles.compENumCol}>
+            <div className={styles.compENum}>3</div>
+          </div>
+          <div className={styles.compEContent}>
+            <h2 className={styles.componentTitle}>Nexus Endpoint</h2>
+            <p className={styles.compERole}>The named entry point callers use to reach a service</p>
+            <p>
+              An Endpoint is a <strong>named connection point</strong> registered in the Nexus
+              Registry. Callers reference it by name. That's all they need. Temporal handles
+              routing to the right team's Namespace and Task Queue behind the scenes.
+            </p>
+            <p>
+              Unlike a general HTTP proxy, a Nexus Endpoint is managed entirely within the
+              Temporal platform, with auth, retries, and observability built in. Routing is
+              handled by the platform so callers never need connection details for the target Namespace.
+            </p>
+            <div className={styles.compECode}>
+              Caller uses name:{' '}
+              <span style={{ color: 'var(--ifm-color-primary)' }}>"fraud-detection-prod"</span>
+              <br />
+              Temporal routes to:{' '}
+              <span style={{ color: 'var(--nd-muted)' }}>fraud-ns / fraud-task-queue</span>
+              <br />
+              <span style={{ color: 'var(--nd-muted)' }}>
+                {'// callers never see the target, only the name'}
+              </span>
+            </div>
           </div>
         </div>
 
