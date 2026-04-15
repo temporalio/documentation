@@ -19,11 +19,11 @@ This page provides a reference for the `temporal cloud nexus` commands. The flag
 
 Commands for managing Nexus Endpoints in Temporal Cloud.
 
-### endpointallowed-namespace
+### endpoint allowed-namespace
 
 Commands for managing allowed namespaces for Nexus Endpoints.
 
-#### endpointallowed-namespaceadd
+#### endpoint allowed-namespace add
 
 Add namespaces that are allowed to call this Nexus Endpoint.
 Namespaces that are already allowed are silently ignored.
@@ -42,7 +42,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### endpointallowed-namespacelist
+#### endpoint allowed-namespace list
 
 List all namespaces that are allowed to call this Nexus Endpoint.
 
@@ -54,7 +54,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--name` | Yes | **string** The name of the Nexus Endpoint. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### endpointallowed-namespaceremove
+#### endpoint allowed-namespace remove
 
 Remove namespaces from the list of allowed callers of this Nexus Endpoint.
 Namespaces that are not currently allowed are silently ignored.
@@ -73,7 +73,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### endpointallowed-namespaceset
+#### endpoint allowed-namespace set
 
 Set the full list of namespaces that are allowed to call this Nexus Endpoint,
 replacing any previously allowed namespaces.
@@ -92,7 +92,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### endpointcreate
+### endpoint create
 
 Create a new Nexus Endpoint on the Cloud Account.
 An endpoint name is used in workflow code to invoke Nexus operations.
@@ -122,7 +122,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--target-namespace` | Yes | **string** The namespace in which a handler worker will be polling for Nexus tasks. |
 | `--target-task-queue` | Yes | **string** The task queue on which a handler worker will be polling for Nexus tasks. |
 
-### endpointdelete
+### endpoint delete
 
 Delete a Nexus Endpoint on the Cloud Account.
 
@@ -139,7 +139,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### endpointget
+### endpoint get
 
 This command gets a Nexus Endpoint configuration by name from the Cloud Account.
 
@@ -151,7 +151,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--name` | Yes | **string** The name of the Nexus Endpoint to retrieve. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### endpointlist
+### endpoint list
 
 List all Nexus Endpoint configurations on the Cloud Account.
 
@@ -164,7 +164,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--page-token` | No | **string** Token for retrieving the next page of results. Initial value is empty string. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### endpointupdate
+### endpoint update
 
 Update an existing Nexus Endpoint on the Cloud Account.
 An endpoint name is used in workflow code to invoke Nexus operations.

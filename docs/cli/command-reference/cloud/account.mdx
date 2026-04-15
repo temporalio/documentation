@@ -20,7 +20,7 @@ This page provides a reference for the `temporal cloud account` commands. The fl
 
 Commands for working with account audit logs.
 
-### audit-logget
+### audit-log get
 
 Returns a paginated list of audit logs for the account, optionally filtered by time range.
 
@@ -39,11 +39,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--start-time` | No | **timestamp** Filter for logs at or after this UTC time (RFC3339 format, e.g. 2024-01-01T00:00:00Z). Defaults to 30 days ago. |
 
-### audit-logsink
+### audit-log sink
 
 Commands for working with account audit log sinks.
 
-#### audit-logsinkdelete
+#### audit-log sink delete
 
 Delete an audit log sink for the account. This action is irreversible.
 
@@ -63,7 +63,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### audit-logsinkdisable
+#### audit-log sink disable
 
 Disable an audit log sink for the account.
 
@@ -83,7 +83,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### audit-logsinkenable
+#### audit-log sink enable
 
 Enable an audit log sink for the account.
 
@@ -103,7 +103,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### audit-logsinkget
+#### audit-log sink get
 
 Returns the details of an audit log sink for the account.
 
@@ -118,11 +118,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--name` | Yes | **string** The name of the audit log sink to get. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### audit-logsinkkinesis
+#### audit-log sink kinesis
 
 Commands for managing Kinesis-based audit log sinks.
 
-##### audit-logsinkkinesiscreate
+##### audit-log sink kinesis create
 
 Create an account audit log sink that streams audit events to Amazon Kinesis.
 
@@ -151,7 +151,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--role-name` | Yes | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-##### audit-logsinkkinesisupdate
+##### audit-log sink kinesis update
 
 Update an existing Kinesis audit log sink. Only the flags you provide are changed;
 omitted string flags retain their current values. 
@@ -177,7 +177,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--role-name` | No | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. If omitted, the current value is kept. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-##### audit-logsinkkinesisvalidate
+##### audit-log sink kinesis validate
 
 Validate an audit log sink configuration against Amazon Kinesis without creating it.
 Use this to verify that the IAM role and Kinesis stream are correctly configured
@@ -200,7 +200,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--role-name` | Yes | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### audit-logsinklist
+#### audit-log sink list
 
 Returns a paginated list of audit log sinks for the account.
 
@@ -217,11 +217,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--page-token` | No | **string** Page token from a previous response to retrieve the next page. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### audit-logsinkpubsub
+#### audit-log sink pubsub
 
 Commands for managing PubSub audit log sinks.
 
-##### audit-logsinkpubsubcreate
+##### audit-log sink pubsub create
 
 Creates a new PubSub audit log sink for the account using Google Cloud Pub/Sub.
 
@@ -250,7 +250,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--service-account-id` | Yes | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
 | `--topic-name` | Yes | **string** The destination PubSub topic name where audit logs will be sent. |
 
-##### audit-logsinkpubsubupdate
+##### audit-log sink pubsub update
 
 Updates an existing PubSub audit log sink for the account.
 
@@ -280,7 +280,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--service-account-id` | No | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
 | `--topic-name` | No | **string** The destination PubSub topic name where audit logs will be sent. |
 
-##### audit-logsinkpubsubvalidate
+##### audit-log sink pubsub validate
 
 Validates a PubSub audit log sink specification without creating or modifying any resources.
 

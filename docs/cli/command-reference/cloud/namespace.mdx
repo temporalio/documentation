@@ -53,7 +53,7 @@ Use the following options to change the behavior of this command. You can also u
 
 Commands for managing the client CA certificates of Temporal Cloud namespaces.
 
-### cert-cacreate
+### cert-ca create
 
 Add client CA certificates to a Temporal Cloud namespace from a PEM file
 or base64 encoded string. These certificates are used to verify client
@@ -88,7 +88,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### cert-cadelete
+### cert-ca delete
 
 Delete client CA certificates from a Temporal Cloud namespace. This operation
 requires confirmation and will remove the specified certificates from the
@@ -123,7 +123,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### cert-calist
+### cert-ca list
 
 Retrieve the list of client CA certificates configured for a Temporal Cloud
 namespace. These certificates are used for client authentication.
@@ -148,7 +148,7 @@ Commands for managing certificate filters for Temporal Cloud namespaces.
 Certificate filters restrict mTLS connections to client certificates with
 specific distinguished name properties.
 
-### cert-filtercreate
+### cert-filter create
 
 Add new certificate filters to a Temporal Cloud namespace. Certificate
 filters restrict mTLS connections to client certificates whose distinguished
@@ -171,7 +171,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
 
-### cert-filterdelete
+### cert-filter delete
 
 Delete certificate filters from a Temporal Cloud namespace. Filters are
 matched by exact field equality.
@@ -193,7 +193,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
 
-### cert-filterlist
+### cert-filter list
 
 List all certificate filters configured for a Temporal Cloud namespace.
 
@@ -211,7 +211,7 @@ Commands for managing the codec server configuration of Temporal Cloud namespace
 
 The codec server is used to encode and decode payloads for workflows and activities.
 
-### codecdelete
+### codec delete
 
 Delete the codec server configuration from a Temporal Cloud namespace.
 
@@ -234,7 +234,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### codecget
+### codec get
 
 Retrieve the current codec server configuration for a Temporal Cloud namespace.
 
@@ -252,7 +252,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### codecset
+### codec set
 
 Set the codec server configuration for a Temporal Cloud namespace.
 
@@ -376,7 +376,7 @@ Commands for managing workflow history export sinks for Temporal Cloud namespace
 
 Export sinks define destinations (S3 or GCS) to which workflow history is exported.
 
-### exportdelete
+### export delete
 
 Delete a workflow history export sink from a Temporal Cloud namespace.
 
@@ -400,7 +400,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-### exportdisable
+### export disable
 
 Disable a workflow history export sink for a Temporal Cloud namespace.
 The sink configuration is preserved and can be re-enabled later.
@@ -425,7 +425,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-### exportenable
+### export enable
 
 Enable a previously disabled workflow history export sink for a Temporal Cloud namespace.
 
@@ -449,11 +449,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-### exportgcs
+### export gcs
 
 Commands for managing GCS workflow history export sinks for Temporal Cloud namespaces.
 
-#### exportgcscreate
+#### export gcs create
 
 Create a new GCS workflow history export sink for a Temporal Cloud namespace.
 The sink is created in the enabled state.
@@ -483,7 +483,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-#### exportgcsupdate
+#### export gcs update
 
 Update the configuration of an existing GCS workflow history export sink.
 The enabled/disabled state is preserved.
@@ -514,7 +514,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-#### exportgcsvalidate
+#### export gcs validate
 
 Validate a GCS workflow history export sink configuration without creating or updating it.
 A successful response means the configuration is valid.
@@ -540,7 +540,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-### exportget
+### export get
 
 Retrieve the configuration and status of a workflow history export sink for a
 Temporal Cloud namespace.
@@ -560,7 +560,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-### exportlist
+### export list
 
 List all workflow history export sinks configured for a Temporal Cloud namespace.
 
@@ -578,11 +578,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### exports3
+### export s3
 
 Commands for managing S3 workflow history export sinks for Temporal Cloud namespaces.
 
-#### exports3create
+#### export s3 create
 
 Create a new S3 workflow history export sink for a Temporal Cloud namespace.
 The sink is created in the enabled state.
@@ -613,7 +613,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-#### exports3update
+#### export s3 update
 
 Update the configuration of an existing S3 workflow history export sink.
 The enabled/disabled state is preserved.
@@ -645,7 +645,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
-#### exports3validate
+#### export s3 validate
 
 Validate an S3 workflow history export sink configuration without creating or updating it.
 A successful response means the configuration is valid.
@@ -700,7 +700,7 @@ Commands for managing High Availability (HA) settings of Temporal Cloud namespac
 
 HA settings control active region, managed failover, and replica regions.
 
-### hafailover
+### ha failover
 
 Trigger a failover for a Temporal Cloud namespace to a different region.
 The target region must already be a replica region of the namespace.
@@ -724,7 +724,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--region` | Yes | **string** The target region to failover to (e.g., aws-us-west-2). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### haget
+### ha get
 
 Retrieve the current High Availability configuration for a Temporal Cloud namespace.
 Shows the active region and whether managed failover is enabled.
@@ -743,11 +743,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### haregion
+### ha region
 
 Commands for managing replica regions of Temporal Cloud namespaces.
 
-#### haregionadd
+#### ha region add
 
 Add a replica region to a Temporal Cloud namespace. The region will be added
 as a passive replica and can later be used for failover.
@@ -772,7 +772,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### haregiondelete
+#### ha region delete
 
 Remove a replica region from a Temporal Cloud namespace. Note that a 7-day
 cooldown period applies before the same region can be re-added.
@@ -797,7 +797,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-#### haregionlist
+#### ha region list
 
 List all regions and their states for a Temporal Cloud namespace.
 
@@ -815,7 +815,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### haupdate
+### ha update
 
 Update the High Availability configuration for a Temporal Cloud namespace.
 Use --disable-auto-failover to toggle Temporal-managed automatic failover.
@@ -847,7 +847,7 @@ Commands for managing lifecycle settings of Temporal Cloud namespaces.
 Lifecycle settings control the behavior and protection of namespaces,
 including delete protection to prevent accidental deletion.
 
-### lifecycleget
+### lifecycle get
 
 Retrieve the current lifecycle configuration for a Temporal Cloud namespace.
 Lifecycle settings include delete protection status.
@@ -866,7 +866,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### lifecycleset
+### lifecycle set
 
 Set the lifecycle configuration for a Temporal Cloud namespace.
 Lifecycle settings include delete protection to prevent accidental deletion.
@@ -919,7 +919,7 @@ Commands for managing data retention settings of Temporal Cloud namespaces.
 Retention determines how long closed workflow history data are stored before
 being automatically deleted.
 
-### retentionget
+### retention get
 
 Retrieve the current data retention period for a Temporal Cloud namespace.
 The retention period defines how long closed workflow history data are stored.
@@ -938,7 +938,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### retentionset
+### retention set
 
 Set the data retention period for a Temporal Cloud namespace. The
 retention period defines how long closed workflow history data are stored.
@@ -968,7 +968,7 @@ Use the following options to change the behavior of this command. You can also u
 Commands for managing custom search attributes for Temporal Cloud namespaces.
 Search attributes enable filtering and searching workflows by custom fields.
 
-### search-attributecreate
+### search-attribute create
 
 Create a new custom search attribute for a Temporal Cloud namespace.
 
@@ -993,7 +993,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--type` | Yes | **string** The type of the search attribute. Valid values: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. |
 
-### search-attributelist
+### search-attribute list
 
 List all custom search attributes configured for a Temporal Cloud namespace.
 
@@ -1011,7 +1011,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### search-attributerename
+### search-attribute rename
 
 Rename an existing custom search attribute for a Temporal Cloud namespace.
 This operation preserves all existing data associated with the search attribute.
@@ -1043,7 +1043,7 @@ Commands for managing tags of Temporal Cloud namespaces.
 
 Tags are key-value pairs used for organization and categorization of namespaces.
 
-### tagcreate
+### tag create
 
 Create a new tag for a Temporal Cloud namespace. Fails if a tag with
 the specified key already exists.
@@ -1068,7 +1068,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--value` | Yes | **string** The tag value. |
 
-### tagdelete
+### tag delete
 
 Delete a tag from a Temporal Cloud namespace by its key.
 
@@ -1091,7 +1091,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### taglist
+### tag list
 
 List all tags configured for a Temporal Cloud namespace.
 
@@ -1109,7 +1109,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
-### tagupdate
+### tag update
 
 Update the value of an existing tag for a Temporal Cloud namespace.
 Fails if the specified tag key does not exist.

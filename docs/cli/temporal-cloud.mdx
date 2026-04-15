@@ -3,106 +3,119 @@ id: temporal-cloud
 title: Use with Temporal Cloud
 sidebar_label: Use with Temporal Cloud
 slug: /cli/temporal-cloud
-description: Connect the Temporal CLI to Temporal Cloud using environment profiles and authentication.
+description: Use the Temporal CLI with Temporal Cloud to run Workflows, manage Namespaces, and administer your account.
 keywords:
   - Temporal CLI
   - Temporal Cloud
   - API keys
   - mTLS
-  - env
+  - authentication
+  - cloud extension
 ---
 
-If you install the Temporal Cloud extension for the Temporal CLI, you can use the extension to interact with Temporal
-Cloud.
+The Temporal CLI works with Temporal Cloud. The same commands you use for local
+development, such as `temporal workflow start` and `temporal workflow list`, work
+with Temporal Cloud once you provide an address and credentials.
 
-## Authentication
+For administrative tasks, install the Temporal Cloud extension. The extension
+adds `temporal cloud` commands for managing your Temporal Cloud account,
+including Namespaces, users, API keys, and Nexus endpoints.
 
-You can authenticate with Temporal Cloud interactively or programmatically. Both approaches use environment
-configuration files to store the authentication credentials.
+## Connect to Temporal Cloud
 
-### Interactive authentication
+To run commands against a Temporal Cloud Namespace, provide the Namespace
+address and authentication credentials. You can pass these as flags, environment
+variables, or configuration profiles.
 
-Use the `temporal cloud login` command to authenticate with Temporal Cloud. Provide a environment configuration profile
-name to output the authentication credentials to. For more information about environment configuration profiles, see
-[Environment Configuration](../develop/environment-configuration.mdx).
+Using flags:
 
 ```bash
-temporal cloud login --profile <profile-name>
+temporal workflow list \
+  --address <namespace>.<account>.tmprl.cloud:7233 \
+  --namespace <namespace>.<account> \
+  --api-key <your-api-key>
 ```
 
-The command will open a browser window to authenticate with Temporal Cloud. Once authenticated, the command will output
-the authentication credentials to the specified profile. If you do not provide a profile name, the command will output
-the authentication credentials to the `default` profile.
+Using environment variables:
 
-A successful login will allow you to run `temporal cloud` command to perform operational and administrative tasks on
-Temporal Cloud. It will also allow you to use the base `temporal` CLI to interact with a Temporal Service on Temporal
-Cloud.
+```bash
+export TEMPORAL_ADDRESS=<namespace>.<account>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<namespace>.<account>
+export TEMPORAL_API_KEY=<your-api-key>
 
-### Programmatic authentication
+temporal workflow list
+```
 
-You can authenticate with Temporal Cloud using environment configuration files or setting environment variables. For
-more information about environment configuration files, see
-[Environment Configuration](../develop/environment-configuration.mdx).
+Using a configuration profile:
 
-## Common operations {#common-operations}
+```bash
+temporal --profile prod workflow list
+```
 
-The following cheat sheet groups common Temporal Cloud commands by object. Commands and subcommands are listed in
-alphabetical order. 
+For details on setting up configuration profiles, see
+[Environment configuration](/develop/environment-configuration#cli-integration).
 
-This isn't a comprehensive list of all commands. For the full list of commands, see the [command reference](/cli#command-reference).
+## Authentication methods
 
-### Namespace
+Temporal Cloud supports three authentication methods. The method you choose
+determines which CLI commands are available.
 
-| Operation                  | Command                                                                      |
-| -------------------------- | ---------------------------------------------------------------------------- |
-| Apply Namespace spec       | `temporal cloud namespace apply --namespace-id <id> --spec @spec-file.yaml`  |
-| Create Namespace           | `temporal cloud namespace create`                                            |
-| Create Namespace with spec | `temporal cloud namespace create --namespace-id <id> --spec @spec-file.yaml` |
-| Delete Namespace           | `temporal cloud namespace delete`                                            |
-| Describe Namespace         | `temporal cloud namespace describe`                                          |
-| Export Namespace           | `temporal cloud namespace export`                                            |
-| List Namespaces            | `temporal cloud namespace list`                                              |
+### `temporal cloud login` (interactive)
 
-### API key
+The `temporal cloud login` command opens a browser to authenticate with Temporal
+Cloud using OAuth. This grants access to both service-level commands
+(`temporal workflow`, `temporal schedule`, etc.) and administrative commands
+(`temporal cloud namespace`, `temporal cloud apikey`, etc.).
 
-| Operation        | Command                                   |
-| ---------------- | ----------------------------------------- |
-| Create API key   | `temporal cloud apikey create`            |
-| Delete API key   | `temporal cloud apikey delete <key-id>`   |
-| Describe API key | `temporal cloud apikey describe <key-id>` |
-| Turn off API key | `temporal cloud apikey disable <key-id>`  |
-| Turn on API key  | `temporal cloud apikey enable <key-id>`   |
-| List API keys    | `temporal cloud apikey list`              |
+```bash
+temporal cloud login --profile prod
+```
 
-### Nexus endpoint
+After login, credentials are stored in the specified configuration profile. If
+no profile is specified, credentials are stored in the `default` profile.
 
-| Operation       | Command                                |
-| --------------- | -------------------------------------- |
-| Create endpoint | `temporal cloud nexus endpoint create` |
-| Delete endpoint | `temporal cloud nexus endpoint delete` |
-| Get endpoint    | `temporal cloud nexus endpoint get`    |
-| List endpoints  | `temporal cloud nexus endpoint list`   |
-| Update endpoint | `temporal cloud nexus endpoint update` |
+This is the simplest way to get started and the only authentication method that
+grants access to `temporal cloud` administrative commands.
 
-### Service account
+### API keys
 
-| Operation              | Command                                 |
-| ---------------------- | --------------------------------------- |
-| Create service account | `temporal cloud service-account create` |
-| Delete service account | `temporal cloud service-account delete` |
-| Get service account    | `temporal cloud service-account get`    |
-| List service accounts  | `temporal cloud service-account list`   |
-| Update service account | `temporal cloud service-account update` |
+API keys authenticate to a specific Namespace and grant service-level access.
+API keys are a good fit for CI pipelines, scripts, and non-interactive
+environments.
 
-### User
+Pass an API key using the `--api-key` flag, the `TEMPORAL_API_KEY` environment
+variable, or the `api_key` field in a configuration profile.
 
-| Operation                          | Command                                         |
-| ---------------------------------- | ----------------------------------------------- |
-| Delete user                        | `temporal cloud user delete`                    |
-| Describe user                      | `temporal cloud user describe`                  |
-| Get user                           | `temporal cloud user get`                       |
-| Invite user                        | `temporal cloud user invite`                    |
-| List users                         | `temporal cloud user list`                      |
-| Resend invite for user             | `temporal cloud user resend-invite`             |
-| Set account role for user          | `temporal cloud user set-account-role`          |
-| Set Namespace permissions for user | `temporal cloud user set-namespace-permissions` |
+API keys do not grant access to `temporal cloud` administrative commands.
+
+### mTLS certificates
+
+mTLS certificates authenticate to a specific Namespace and grant service-level
+access. Pass certificate and key paths using the `--tls-cert-path` and
+`--tls-key-path` flags, the corresponding environment variables, or the `tls`
+section in a configuration profile.
+
+mTLS certificates do not grant access to `temporal cloud` administrative
+commands.
+
+## Cloud administration
+
+The Temporal Cloud extension requires authentication through
+`temporal cloud login`.
+
+Install the extension:
+
+```bash
+brew install temporal-cloud
+```
+
+For the full list of `temporal cloud` commands, see the
+[cloud command reference](/cli/command-reference/cloud).
+
+## Next steps
+
+- [CLI basics](/cli/common-operations) for common CLI commands.
+- [Environment configuration](/develop/environment-configuration) for managing
+  connection profiles across environments.
+- [Cloud command reference](/cli/command-reference/cloud) for all
+  `temporal cloud` commands.
