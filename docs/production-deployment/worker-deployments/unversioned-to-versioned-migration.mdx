@@ -1,0 +1,149 @@
+---
+id: unversioned-to-versioned-migration
+title: Migrating from Unversioned to Versioned Temporal Workers
+sidebar_label: Unversioned to versioned migration
+description:
+    Implement Worker Versioning without the Temporal Worker Controller by deploying backward-compatible versioned Workers alongside existing ones and gradually shifting traffic before full migration.
+toc_max_heading_level: 4
+keywords:
+  - scaling
+  - workers
+  - versioning
+  - deploys
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+This guide will help you implement Worker Versioning when the Temporal Worker Controller isn't used. If you are using the Temporal Worker Controller, follow [this guide](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/migration-to-versioned.md).
+
+## Prerequisites
+
+- Unversioned Temporal Workers currently running in production
+- Temporal CLI >= 1.5.0
+- Workers that connect to Temporal with Namespace and Task Queue configuration
+
+## Key steps
+
+- Ensure your versioned Worker code is backward-compatible with existing Workflow histories.
+- Deploy the versioned Worker. It won't receive Tasks until you activate it.
+- Use ramping to gradually shift traffic before full cutover.
+- Signal sleeping or idle Workflows to wake them up and migrate them to the versioned Worker.
+- Keep unversioned Workers running during the transition period.
+- Test thoroughly in a non-production environment before migrating production Workers.
+
+### Step 1: Update your Worker code
+
+Update your Worker initialization to include versioning configuration.
+
+**Before (Unversioned):**
+
+```go
+// Worker connects without versioning
+worker := worker.New(client, "my-task-queue", worker.Options{})
+```
+
+**After (Versioned):**
+
+```go
+buildID := os.Getenv("TEMPORAL_WORKER_BUILD_ID")
+deploymentName := os.Getenv("TEMPORAL_DEPLOYMENT_NAME")
+if buildID == "" || deploymentName == "" {
+    // exit with an error
+}
+
+workerOptions := worker.Options{
+    DeploymentOptions: worker.DeploymentOptions{
+        UseVersioning: true,
+        Version: worker.WorkerDeploymentVersion{
+            DeploymentName: deploymentName,
+            BuildID:        buildID,
+        },
+    },
+}
+worker := worker.New(client, "my-task-queue", workerOptions)
+```
+
+:::info Important
+
+Your versioned Worker code must be fully backward-compatible with existing unversioned Workflow histories to avoid non-determinism errors. Don't make breaking Workflow code changes at this stage.
+
+:::
+
+### Step 2: Deploy your versioned Worker
+
+Deploy your versioned Worker alongside your existing unversioned Workers. The versioned Worker will begin polling but **won't receive any Tasks** until you explicitly activate it via the CLI.
+
+You can verify it's polling by inspecting the Worker Deployment:
+
+```shell
+temporal worker deployment describe --name "YourDeploymentName"
+```
+
+### Step 3: Gradually ramp traffic (optional, but recommended)
+
+Instead of cutting over all at once, ramp a small percentage of new Workflow executions to the versioned Worker first:
+
+```shell
+temporal worker deployment set-ramping-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID" \
+    --percentage=5
+```
+
+Then monitor Workflows on the new version:
+
+```shell
+temporal workflow describe -w YourWorkflowID
+```
+
+This returns versioning info such as:
+
+```
+Versioning Info:
+
+  Behavior               AutoUpgrade
+  Version                YourDeploymentName.YourBuildID
+  OverrideBehavior       Unspecified
+```
+
+Increase the ramp percentage incrementally as you test and see that your Workflows are behaving as expected.
+
+### Step 4: Set the versioned Worker as Current
+
+Once validated, promote the versioned Worker to receive 100% of new Workflow executions:
+
+```shell
+temporal worker deployment set-current-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID"
+```
+
+:::note
+
+Once a Current version is set, **unversioned Workers** will no longer receive any Tasks. Ensure your versioned Workers are healthy before this step.
+
+:::
+
+### Step 5: Migrate unversioned in-flight Workflows
+
+After setting the Current version, unversioned in-flight Workflows aren't dropped. On their next Task execution, they will automatically be routed to the versioned Worker. Once they are queued up on a versioned Worker, they will become either *Pinned* or *AutoUpgrade* depending on the Workflow's versioning behavior annotation.
+
+Sleeping or idle Workflows will not automatically begin to receive the new version information. If you have Workflows that are sleeping or waiting for an event, you must send them a Signal to wake them up so they can be dispatched to the versioned Worker on their next Task execution.
+
+To Signal all running Workflows at once:
+
+```shell
+temporal workflow signal \
+    --query "ExecutionStatus='Running'" \
+    --name "wake-up" \
+    --namespace production \
+    --rps 100
+```
+
+Once signaled, those Workflows will execute a Workflow Task and be routed to the Current versioned Worker. Keep your unversioned Workers running until all in-flight Workflows have migrated over.
+
+### Step 6: Scale down and clean up unversioned Workers
+
+Once you confirm that all Workflows are handled by versioned Workers, shut down
+your old unversioned Worker deployments.
