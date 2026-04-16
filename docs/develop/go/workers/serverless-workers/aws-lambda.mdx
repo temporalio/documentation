@@ -21,7 +21,7 @@ tags:
 
 The `lambdaworker` package lets you run a Temporal Serverless Worker on AWS Lambda.
 Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
-Each invocation starts a Worker, polls for Tasks until the Lambda deadline approaches, then gracefully drains and shuts down.
+Each invocation starts a Worker, polls for Tasks, then gracefully shuts down before a configurable invocation deadline.
 You register Workflows and Activities the same way you would with a standard Worker.
 
 For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
