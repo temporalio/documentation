@@ -238,10 +238,96 @@ g = graph("my-graph").compile(
 )
 ```
 
-## Run a node in the Workflow
+## Activity vs Workflow execution
 
-By default, every node or task runs as a Temporal Activity. To skip the Activity wrapper and run a node directly in the
-Workflow, set `execute_in` to `"workflow"`:
+By default, every graph node or `@task` runs as a Temporal Activity. You can override this by setting `execute_in` to
+`"workflow"`, which runs the node directly inside the Workflow.
+
+Understanding when to use each mode is important for correctness and durability.
+
+### When to use an Activity (default)
+
+Use an Activity — the default — when a node does any of the following:
+
+- **Makes network calls** — LLM calls, HTTP requests, database queries, or any I/O. Activities can do I/O; Workflows
+  cannot.
+- **Has non-deterministic behavior** — anything that can return different results on re-execution (random numbers,
+  current time, external data). Workflows must be deterministic.
+- **Is long-running or may fail** — Activities get configurable timeouts, automatic retries, and heartbeating. If an LLM
+  call times out or a service is unavailable, Temporal retries the Activity without re-running the entire Workflow.
+- **Calls `interrupt()`** — LangGraph's `interrupt()` is supported in Activity nodes. The plugin serializes the
+  interrupt and propagates it back to the Workflow for human-in-the-loop patterns.
+
+### When to run in the Workflow
+
+Use `execute_in: "workflow"` when a node:
+
+- **Orchestrates other graphs** — a node that calls `graph("child").compile().ainvoke(state)` to dispatch to a subgraph.
+  The subgraph's own nodes still run as Activities, but the orchestration logic runs in the Workflow.
+- **Performs pure state transformations** — deterministic data reshaping, merging, or filtering with no I/O.
+- **Is a lightweight routing step** — when a node's only job is to decide what happens next and you want to avoid the
+  overhead of an Activity round-trip.
+
+:::warning
+
+Workflow code must be [deterministic](/develop/python/core-application#workflow-logic-requirements). A node running in
+the Workflow **must not** make network calls, use `random`, read the system clock, or do file I/O. Violating this causes
+non-determinism errors on replay.
+
+:::
+
+### Decision tree: should this node be an Activity?
+
+```
+Does this node make network calls (LLM, HTTP, DB)?
+├── Yes → Activity (default)
+└── No
+    Does this node have non-deterministic behavior?
+    ├── Yes → Activity (default)
+    └── No
+        Does this node call interrupt()?
+        ├── Yes → Activity (default)
+        └── No
+            Is this node orchestrating a subgraph or doing a pure state transform?
+            ├── Yes → execute_in: "workflow"
+            └── No → Activity (default, the safe choice)
+```
+
+When in doubt, use the default (Activity). The Activity overhead is small, and it gives you retries, timeouts, and
+correctness guarantees.
+
+### Where LangGraph primitives run
+
+Not all LangGraph primitives are node functions. Some run in the Workflow context regardless of the `execute_in` setting:
+
+| Primitive | Runs in | Notes |
+| --- | --- | --- |
+| Node functions | Activity (default) or Workflow | Controlled by `execute_in` |
+| `@task` functions | Activity (default) or Workflow | Controlled by `activity_options` |
+| Conditional edge functions (`add_conditional_edges`) | Workflow | Always runs in the Workflow. Must be **deterministic** and **async** (sync functions trigger `run_in_executor`, which is not allowed in the Temporal sandbox). |
+| `interrupt()` | Activity | Call `interrupt()` inside Activity nodes. The plugin serializes the interrupt and propagates it to the Workflow. |
+| `Command(resume=...)` | Workflow | Used from Workflow code to resume after an interrupt. |
+| `InMemorySaver` checkpointer | Workflow | Runs in-process. Temporal handles durability — external checkpointers are not needed. |
+| Streaming (`astream`) | Workflow | The Workflow drives the stream; each node still executes as an Activity. |
+
+:::tip
+
+Conditional edge functions like `should_continue` must be `async def`, not plain `def`. Synchronous functions cause
+LangGraph to use `run_in_executor`, which is not supported inside Temporal's Workflow sandbox.
+
+```python
+# ✅ Correct: async conditional edge function
+async def should_continue(state: AgentState) -> str:
+    if state["messages"][-1].startswith("[Agent]") and "Calling" in state["messages"][-1]:
+        return "tools"
+    return END
+
+g.add_conditional_edges("agent", should_continue)
+```
+
+:::
+
+### Syntax
 
 ```python
 # Graph API
@@ -252,6 +338,22 @@ plugin = LangGraphPlugin(
     tasks=[my_task],
     activity_options={"my_task": {"execute_in": "workflow"}},
 )
+```
+
+### Example: subgraph orchestration
+
+A common pattern is a parent node that runs in the Workflow and dispatches to a child graph whose nodes run as
+Activities:
+
+```python
+async def parent_node(state: State) -> dict[str, str]:
+    return await graph("child").compile().ainvoke(state)
+
+parent = StateGraph(State)
+parent.add_node("parent_node", parent_node, metadata={"execute_in": "workflow"})
+parent.add_edge(START, "parent_node")
+
+plugin = LangGraphPlugin(graphs={"parent": parent, "child": child})
 ```
 
 ## Human-in-the-loop
