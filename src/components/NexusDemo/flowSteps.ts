@@ -26,7 +26,7 @@ export const syncSteps: FlowStep[] = [
       "Temporal's server dispatches an HTTP POST request to the Nexus Endpoint URL for the Echo Operation.",
     activeNode: 1,
     packetPct: 50,
-    log: { level: 'info', event: 'DISPATCH', msg: 'POST /operations/Echo → nexus-simple-endpoint' },
+    log: { level: 'info', event: 'DISPATCH', msg: 'Temporal routes start request to Nexus Endpoint' },
   },
   {
     label: 'Handler Worker receives Task',
@@ -69,7 +69,7 @@ export const asyncSteps: FlowStep[] = [
       "Temporal's server dispatches an HTTP POST request to the Nexus Endpoint for the SayHello Operation.",
     activeNode: 1,
     packetPct: 50,
-    log: { level: 'info', event: 'DISPATCH', msg: 'POST /operations/SayHello → nexus-simple-endpoint' },
+    log: { level: 'info', event: 'DISPATCH', msg: 'Temporal routes start request to Nexus Endpoint' },
   },
   {
     label: 'Handler starts a Workflow',
