@@ -237,6 +237,7 @@ impl GreetingWorkflow {
             }
         ).await?;
 
+        println!("{}", greeting);
         Ok(greeting)
     }
 }
