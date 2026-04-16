@@ -72,14 +72,12 @@ aws cloudformation create-stack \\
 }
 
 function generateCliCode(config) {
-  const { namespace, deploymentName, buildId, lambdaArn, scalerMin, scalerMax } = config;
+  const { namespace, deploymentName, buildId, lambdaArn } = config;
   return `temporal worker deployment create-version \\
   --namespace ${namespace} \\
   --deployment-name ${deploymentName} \\
   --build-id ${buildId} \\
-  --aws-lambda-invoke ${lambdaArn} \\
-  --scaler-min-instances ${scalerMin} \\
-  --scaler-max-instances ${scalerMax}`;
+  --aws-lambda-invoke ${lambdaArn}`;
 }
 
 function generateSetCurrentVersion(config) {
@@ -87,8 +85,7 @@ function generateSetCurrentVersion(config) {
   return `temporal worker deployment set-current-version \\
   --namespace ${namespace} \\
   --deployment-name ${deploymentName} \\
-  --build-id ${buildId} \\
-  --ignore-missing-task-queues`;
+  --build-id ${buildId}`;
 }
 
 function generateStartWorkflow(config) {
@@ -188,8 +185,6 @@ const DEFAULT_CONFIG = {
   namespace: 'your-namespace.your-account',
   lambdaFunctionName: 'my-temporal-worker',
   lambdaArn: 'arn:aws:lambda:us-east-1:123456789012:function:my-temporal-worker',
-  scalerMin: 0,
-  scalerMax: 5,
 };
 
 // ---------------------------------------------------------------------------
@@ -462,22 +457,6 @@ export default function ServerlessWorkerDemo() {
                 label="Lambda Function Name"
                 value={config.lambdaFunctionName}
                 onChange={handleFunctionNameChange}
-              />
-              <ConfigField
-                label="Min Instances"
-                value={config.scalerMin}
-                type="number"
-                min={0}
-                max={100}
-                onChange={(v) => updateConfig('scalerMin', Number(v))}
-              />
-              <ConfigField
-                label="Max Instances"
-                value={config.scalerMax}
-                type="number"
-                min={0}
-                max={100}
-                onChange={(v) => updateConfig('scalerMax', Number(v))}
               />
             </div>
           </section>

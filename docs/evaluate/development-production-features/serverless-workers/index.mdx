@@ -21,9 +21,9 @@ Serverless Workers let you run Temporal Workers on serverless compute platforms 
 There are no servers to provision, no clusters to scale, and no idle compute to pay for.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
 
-Serverless Workers use the same Temporal SDKs as traditional Workers.
+Serverless Workers use the same Temporal SDKs as traditional long-lived Workers.
 You register Workflows and Activities the same way.
-The difference is in the lifecycle: instead of running a long-lived process, Temporal triggers the compute environment when Tasks arrive, the Worker starts and polls for available Tasks, and then exits when the work is done.
+The difference is in the lifecycle: instead of running a long-lived process, Temporal invokes the Serverless Worker on demand when Tasks arrive. The Worker starts, polls for available Tasks, processes them, and exits when the work is done.
 
 For a deeper look at how Serverless invocation works under the hood, see [Serverless Workers](/serverless-workers) in the encyclopedia.
 
@@ -31,16 +31,16 @@ For a deeper look at how Serverless invocation works under the hood, see [Server
 
 ### Reduce operational overhead
 
-Traditional Workers require you to provision infrastructure, configure scaling policies, manage deployments, and monitor host-level health.
-Serverless Workers reduce this burden.
-You still deploy the function and configure the compute provider, but Temporal handles invocation and scaling. There is no need to manage always-on infrastructure or configure autoscaling policies.
+Long-lived Workers require you to provision infrastructure, configure scaling policies, manage deployments, and monitor host-level health.
+Serverless Workers reduce this burden by offloading invocation and scaling to Temporal and the compute provider.
+You still deploy the function and configure the compute provider, but there is no always-on infrastructure to manage and no autoscaling policies to tune.
 
 Worker management is one of the most common sources of support questions for Temporal users.
 Serverless Workers offer a prescriptive deployment path that reduces the operational surface area and lets you focus on writing Workflows instead of managing infrastructure.
 
 ### Get started faster
 
-Running a traditional Worker requires choosing a hosting strategy, configuring compute resources, and setting up deployment pipelines before you can execute your first Workflow.
+Running a long-lived Worker requires choosing a hosting strategy, configuring compute resources, and setting up deployment pipelines before you can execute your first Workflow.
 
 With Serverless Workers, deploying a Worker is as simple as deploying a function.
 Package your Worker code, deploy it to your serverless provider, and configure the connection to Temporal. There is no need to set up Kubernetes, manage container orchestration, or design a scaling strategy.
@@ -55,7 +55,7 @@ This automatic scaling is especially useful for bursty, event-driven workloads w
 
 ### Pay only for what you use
 
-Traditional Workers run continuously, whether or not there is work to process.
+Long-lived Workers run continuously, whether or not there is work to process.
 Serverless Workers run only when Tasks are available.
 For workloads with low or intermittent volume, this pay-per-invocation model can significantly reduce compute costs.
 
@@ -71,18 +71,17 @@ Serverless Workers are a good fit when:
 
 Serverless Workers may not be ideal when:
 
-- **Activities are long-running and cannot be interrupted.** Serverless platforms enforce execution time limits (for example, AWS Lambda has a 15-minute maximum). Activities that run longer than the provider's timeout and cannot be broken into smaller steps need a different hosting strategy. Long-running Workflows are not affected because Workflows can span multiple invocations.
+- **Activities are long-running and cannot be interrupted.** Some serverless platforms enforce execution time limits. For example, AWS Lambda has a 15-minute execution limit. Activities that run longer than the provider's timeout and cannot be broken into smaller steps need a different hosting strategy or a provider with longer limits (such as Cloud Run). Long-running Workflows are not affected because Workflows can span multiple invocations.
 - **Workloads require sustained high throughput.** For consistently high-volume Task Queues, long-lived Workers on dedicated compute may be more cost-effective and performant.
 - **You need persistent connections.** Some features require a persistent connection between the Worker and Temporal, which serverless invocations do not maintain.
 
-## How Serverless Workers compare to traditional Workers
+## How Serverless Workers compare to long-lived Workers
 
-| | Traditional Worker | Serverless Worker |
+| | Long-lived Worker | Serverless Worker |
 |---|---|---|
 | **Lifecycle** | Long-lived process that runs continuously. | Invoked on demand. Starts and stops per invocation. |
 | **Scaling** | You manage scaling (Kubernetes HPA, instance count, etc.). | Temporal invokes additional instances as needed, within the compute provider's concurrency limits. |
 | **Connection** | Persistent connection to Temporal. | Fresh connection on each invocation. |
-| **Worker Versioning** | Optional but recommended. | Required. |
 
 ## Supported providers
 
