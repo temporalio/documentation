@@ -2028,6 +2028,11 @@
       "source": "/develop/typescript/versioning",
       "destination": "/develop/typescript/workflows/versioning",
       "permanent": true
+    },
+    {
+      "source": "/develop/go/workers/cloud-worker",
+      "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
+      "permanent": true
     }
   ]
 }
