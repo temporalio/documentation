@@ -41,7 +41,7 @@ This guide walks through deploying a Temporal Worker on AWS Lambda.
 ## 1. Write the Worker code {#write-the-worker-code}
 
 Write a Worker that runs inside a Lambda function.
-The Worker handles the per-invocation lifecycle: connecting to Temporal, polling for tasks, and gracefully shutting down before the Lambda deadline.
+The Worker handles the per-invocation lifecycle: connecting to Temporal, polling for tasks, and gracefully shutting down before the invocation deadline.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -116,9 +116,10 @@ The `lambdaworker` package reads these automatically at startup.
 |---|---|---|
 | `TEMPORAL_ADDRESS` | Temporal frontend address (e.g., `<namespace>.<account>.tmprl.cloud:7233`). | Yes |
 | `TEMPORAL_NAMESPACE` | Temporal Namespace. | Yes |
+| `HOME` | Must be set to `/tmp` so the SDK's config loader can resolve a user config directory in the Lambda environment. | Yes |
 | `TEMPORAL_TASK_QUEUE` | Task Queue name. Overrides the value set in code. | No |
-| `TEMPORAL_TLS_CERT` | TLS client certificate content for mTLS authentication. | For mTLS |
-| `TEMPORAL_TLS_KEY` | TLS client key content for mTLS authentication. | For mTLS |
+| `TEMPORAL_TLS_CLIENT_CERT_PATH` | Path to the TLS client certificate file for mTLS authentication. | For mTLS |
+| `TEMPORAL_TLS_CLIENT_KEY_PATH` | Path to the TLS client key file for mTLS authentication. | For mTLS |
 | `TEMPORAL_API_KEY` | API key for API key authentication. | For API key auth |
 
 For the full list of supported environment variables, see [Client environment configuration](/references/client-environment-configuration).
@@ -135,7 +136,7 @@ aws lambda create-function \
   --zip-file fileb://function.zip \
   --timeout 60 \
   --memory-size 256 \
-  --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>}"
+  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
 ```
 
 To update an existing function with new code:
@@ -152,24 +153,139 @@ Temporal needs permission to invoke your Lambda function.
 The Temporal server assumes an IAM role in your AWS account to call `lambda:InvokeFunction`.
 The trust policy on the role includes an External ID condition to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
-Deploy the following CloudFormation template to create the invocation role and its permissions.
+Deploy the following CloudFormation template to create the invocation role and its permissions. [Download the template](/files/temporal-cloud-serverless-worker-role.yaml).
+
+:::note
+
+This template is scoped to Temporal Cloud. Self-hosted configuration guidance is in progress.
+
+:::
 
 | Parameter | Description |
 |---|---|
-| `TemporalPrincipalArn` | The IAM principal that the Temporal server runs as. For Temporal Cloud, this is provided in your Namespace configuration. For self-hosted, this is the IAM identity of the server process (IAM user, EC2 instance role, EKS service account, etc.). |
-| `ExternalId` | A unique identifier that Temporal presents when assuming the role. For Temporal Cloud, this is provided in your Namespace configuration. For self-hosted, this is the value you configure in the compute provider settings. |
-| `LambdaFunctionArn` | The ARN of the Lambda function that Temporal will invoke. |
+| `AssumeRoleExternalId` | A unique identifier that Temporal Cloud presents when assuming the role. Provided in your Namespace configuration. |
+| `LambdaFunctionARNs` | Comma-separated list of Lambda function ARNs that Temporal may invoke. One role can authorize multiple Worker Lambdas. |
+| `RoleName` | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`. |
 
-<!--
-TODO: Add the CloudFormation template once it's finalized.
-The template should create:
-- An IAM role with a trust policy scoped to TemporalPrincipalArn + ExternalId
-- A policy granting lambda:InvokeFunction and lambda:GetFunction on LambdaFunctionArn
--->
+<details>
+<summary>CloudFormation template</summary>
 
 ```yaml
-# CloudFormation template coming soon
+# CloudFormation template for creating an IAM role that Temporal Cloud can assume to invoke Lambda functions.
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creates an IAM role that Temporal Cloud can assume to invoke multiple Lambda functions for Serverless Workers.
+
+Parameters:
+  AssumeRoleExternalId:
+    Type: String
+    Description: The External ID provided by Temporal Cloud
+    AllowedPattern: '[a-zA-Z0-9_+=,.@-]*'
+    MinLength: 5
+    MaxLength: 45
+
+  LambdaFunctionARNs:
+    Type: CommaDelimitedList
+    Description: >-
+      Comma-separated list of Lambda function ARNs to invoke
+      (e.g., arn:aws:lambda:us-west-2:123456789012:function:worker-1,arn:aws:lambda:us-west-2:123456789012:function:worker-2)
+
+  RoleName:
+    Type: String
+    Default: 'Temporal-Cloud-Serverless-Worker'
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Temporal Cloud Configuration"
+        Parameters:
+          - AssumeRoleExternalId
+      - Label:
+          default: "Lambda Configuration"
+        Parameters:
+          - LambdaFunctionARNs
+          - RoleName
+    ParameterLabels:
+      AssumeRoleExternalId:
+        default: "External ID (provided by Temporal Cloud)"
+      LambdaFunctionARNs:
+        default: "Lambda Function ARNs (comma-separated list)"
+      RoleName:
+        default: "IAM Role Name"
+
+Resources:
+  TemporalCloudServerlessWorker:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${RoleName}-${AWS::StackName}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                [
+                  arn:aws:iam::902542641901:role/wci-lambda-invoke,
+                  arn:aws:iam::160190466495:role/wci-lambda-invoke,
+                  arn:aws:iam::819232936619:role/wci-lambda-invoke,
+                  arn:aws:iam::829909441867:role/wci-lambda-invoke,
+                  arn:aws:iam::354116250941:role/wci-lambda-invoke
+                ]
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                'sts:ExternalId': [!Ref AssumeRoleExternalId]
+      Description: "The role Temporal Cloud uses to invoke Lambda functions for Serverless Workers"
+      MaxSessionDuration: 3600 # 1 hour
+
+  TemporalCloudLambdaInvokePermissions:
+    Type: AWS::IAM::Policy
+    DependsOn: TemporalCloudServerlessWorker
+    Properties:
+      PolicyName: 'Temporal-Cloud-Lambda-Invoke-Permissions'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+              - lambda:GetFunction
+            Resource: !Ref LambdaFunctionARNs
+      Roles:
+        - !Sub '${RoleName}-${AWS::StackName}'
+
+Outputs:
+  RoleARN:
+    Description: The ARN of the IAM role created for Temporal Cloud
+    Value: !GetAtt TemporalCloudServerlessWorker.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-RoleARN"
+
+  RoleName:
+    Description: The name of the IAM role
+    Value: !Ref RoleName
+
+  LambdaFunctionARNs:
+    Description: The Lambda function ARNs that can be invoked
+    Value: !Join [", ", !Ref LambdaFunctionARNs]
 ```
+
+</details>
+
+Deploy the template:
+
+```bash
+aws cloudformation create-stack \
+  --stack-name <STACK_NAME> \
+  --template-body file://temporal-cloud-serverless-worker-role.yaml \
+  --parameters \
+    ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> \
+    ParameterKey=LambdaFunctionARNs,ParameterValue='"<LAMBDA_FUNCTION_ARN>"' \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region <AWS_REGION>
+```
+
+The stack output `RoleARN` contains the IAM role ARN to use in your Worker Deployment Version's compute configuration.
 
 ## 4. Create a Worker Deployment Version {#create-worker-deployment-version}
 
@@ -193,7 +309,7 @@ Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you creat
 
 <!--
 TODO: Update this section once the CLI ships the `create-version` command with
-`--aws-lambda-invoke` and `--scaler-*` flags.
+the `--aws-lambda-invoke` flag.
 -->
 
 ```bash
@@ -201,9 +317,7 @@ temporal worker deployment create-version \
   --namespace <YOUR_NAMESPACE> \
   --deployment-name my-app \
   --build-id build-1 \
-  --aws-lambda-invoke arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker \
-  --scaler-min-instances 0 \
-  --scaler-max-instances 5
+  --aws-lambda-invoke arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker
 ```
 
 ### SDK
@@ -253,12 +367,8 @@ Without this step, tasks on the Task Queue will not route to the version, and Te
 ```bash
 temporal worker deployment set-current-version \
   --deployment-name my-app \
-  --build-id build-1 \
-  --ignore-missing-task-queues
+  --build-id build-1
 ```
-
-The `--ignore-missing-task-queues` flag is needed because no Worker has polled the Task Queue yet.
-With Serverless Workers, the Worker only connects when Temporal invokes the Lambda function.
 
 ## 6. Verify the deployment {#verify-the-deployment}
 
