@@ -56,6 +56,14 @@ You can scope roles to:
 * All resources of a given type
 * Specific resources by explicit ID list
 
+::: warning Custom Roles are additive only
+
+Custom Roles define a set of granular permissions and assign them alongside a predefined
+role. The effective access is the union of both. You cannot use custom roles
+to narrow down or remove permissions from a predefined role.
+
+:::
+
 ## Available permissions
 
 Most of the Control Plane operations listed in the API references ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction),
