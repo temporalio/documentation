@@ -299,26 +299,39 @@ You can create the version using the Temporal UI, the Temporal CLI, or programma
 
 Use the UI for one-off setup and exploration.
 
-When you create a version through the UI, the version is automatically set as current.
+1. In the Temporal UI, open your Namespace.
+2. In the left pane, select **Workers**.
+3. Click **Create Worker Deployment** in the upper right corner.
+4. Under **Configuration**, enter a **Name** and **Build ID**. These must match the `DeploymentName` and `BuildID` in your Worker code.
+5. Under **Compute**, select **AWS Lambda** and provide:
+   - **Lambda ARN**: the ARN of your Lambda function.
+   - **IAM Role ARN**: the role ARN from [Step 3](#configure-iam) (output of the CloudFormation stack).
+   - **External ID**: the same value you passed to the CloudFormation template.
+6. Click **Save**.
 
-<!-- TODO: Add UI instructions or screenshots -->
+When you create a version through the UI, the version is automatically set as current. Skip to [Verify the deployment](#verify-the-deployment).
 
 ### Temporal CLI
 
 Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must [set the version as current](#set-current-version) as a separate step.
-
-<!--
-TODO: Update this section once the CLI ships the `create-version` command with
-the `--aws-lambda-invoke` flag.
--->
 
 ```bash
 temporal worker deployment create-version \
   --namespace <YOUR_NAMESPACE> \
   --deployment-name my-app \
   --build-id build-1 \
-  --aws-lambda-invoke arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker
+  --aws-lambda-function-arn arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker \
+  --aws-lambda-assume-role-arn arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME> \
+  --aws-lambda-assume-role-external-id <EXTERNAL_ID>
 ```
+
+| Flag | Description |
+|---|---|
+| `--deployment-name` | Worker Deployment name. Must match `DeploymentName` in your Worker code. |
+| `--build-id` | Worker Deployment Version build ID. Must match `BuildID` in your Worker code. |
+| `--aws-lambda-function-arn` | ARN of the Lambda function Temporal invokes for this version. |
+| `--aws-lambda-assume-role-arn` | IAM role Temporal assumes to invoke the function. This is the `RoleARN` output from the CloudFormation stack in [Step 3](#configure-iam). |
+| `--aws-lambda-assume-role-external-id` | External ID configured in the IAM role trust policy. |
 
 ### SDK
 
