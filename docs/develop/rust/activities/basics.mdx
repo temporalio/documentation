@@ -23,6 +23,8 @@ In the Temporal Rust SDK, Activities are defined using the `#[activities]` macro
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 use temporalio_macros::activities;
 
+pub struct GreetingActivities;
+
 #[activities]
 impl GreetingActivities {
     #[activity]
@@ -36,8 +38,6 @@ impl GreetingActivities {
         Ok(())
     }
 }
-
-pub struct GreetingActivities;
 ```
 
 The `#[activities]` macro marks the impl block as containing Activity definitions. Each method decorated with `#[activity]` becomes an Activity that can be invoked from a Workflow.
