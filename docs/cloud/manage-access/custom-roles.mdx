@@ -56,68 +56,6 @@ You can scope roles to:
 * All resources of a given type
 * Specific resources by explicit ID list
 
-```
-{
-  "name": "NamespaceGlobalReadOnly",
-  "description": "Read-only access to all namespaces for monitoring and compliance",
-  "grants": [
-    {
-      "operation": "cloud.namespace.list",
-      "resourceType": "Namespace",
-      "scope": { "all": true }
-    },
-    {
-      "operation": "cloud.namespace.get",
-      "resourceType": "Namespace",
-      "scope": { "all": true }
-    }
-  ]
-}
-```
-
-### Create Custom Roles from the Web UI
-
-<!-- TBD: The UI is subject to change -->
-
-To create a Custom Role from the Web UI, select Org Settings in the left sidebar, and then click the Custom Roles tab on the Settings page.
-
-On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
-Click the three dots menu to view details about an existing Custom Role, or to edit or delete that role.
-
-Click the Create Custom Role button to create a new role.
-On the Create Custom Role page, give the Custom Role a name, and optionally a description.
-In the Permissions section, you'll assign the appropriate resources and its permissions.
-Select the Resource Type from the drop-down; your choices are Namespace and Account.
-
-If you select Namespace, search for the Namespace for which you want to add permissions, then click Add Resource.
-The Namespace you selected appears in the Permissions By Resource list.
-
-If you select Account, the permissions apply to the current account, so only the Add Resource button appears. 
-Click Add Resource, and the Account will be added to the Permissions By Resource list.
-
-Once the Namespace or Account appears in the Permissions By Resource list, you can toggle individual permissions
-on or off for that resource. 
-If you want to start with the permission set of one of the pre-defined Temporal roles, choose the role from 
-the Select Preset drop-down, and the appropriate permissions will be toggled for you.
-
-<!-- TBD: If we choose to add info about available permissions, we should add a link or list here. -->
-
-When you're done assiging permissions to resources, click Create Custom Role at the bottom of the page.
-
-### Create Custom Roles with the API
-
-<!-- Need more information here. -->
-
-### Create Custom Roles with Terraform
-
-<!-- Need more information here. -->
-
-## Assigning Custom Roles to users
-
-Once you have created a Custom Role, it is available on the Identities page to assign to a user
-or group, the same as the pre-defined Temporal permissions. See [How to update an account-level role in Temporal Cloud](/cloud/users#update-roles)
-for more inforamtion.
-
 ## Available permissions
 
 Most of the Control Plane operations listed in the API references ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction),
@@ -130,10 +68,116 @@ The following operations are not available to Custom Roles:
 - Operations that require additional role and permission validation, such as Create a Nexus Endpoint.
 - Separating or splitting operations that are part of UpdateNamespace.
 
+## Create Custom Roles
+
+<Tabs groupID="create-custom-roles">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+<!-- TBD: The UI is subject to change -->
+
+To create a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the Settings page.
+
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu to view details about an existing Custom Role, or to edit or delete that role.
+
+Click the Create Custom Role button to create a new role.
+On the Create Custom Role page, give the Custom Role a name, and optionally a description.
+
+In the Permissions section, you'll assign the appropriate resources and its permissions.
+The following resources are available for Custom Roles:
+
+- Account: Permissions scoped to the current account, listed by type.
+- Project: Permissions scoped to the selected Project, listed by type. You must have at least one Project enabled before you can assign Project permissions to a Custom Role.
+- Namespace: Permissions scoped to the selected Namespace, listed by type. You can only assign permissions to Namespaces to which you have access.
+- Nexus Endpoint: Permissions scoped to the selected Nexus Endpoint, listed by type. You much have at least one Nexus Endpoint enabled before you can assign Nexus Endpoint permissions to a Custom Role.
+- Connectivity Rules: Permissions scoped to the selected Connectivity Rules, listed by type.
+
+Account-level permissions apply to the current account. 
+For each of the other resources, you'll need to first select the resource that you want to grant permissions for.
+Once you select a resource, the list of available permissions will appear, and you can turn them on or off as desired.
+
+TODO: Resolve how we're going to talk about Projects for this release; get clarity on Connectivity Rules.
+
+At the bottom of the Account tab are permissions that relate to Custom Roles. 
+Here, you can define whether members of the Custom Role you're creating will be able to create, update, or delete Custom Roles.
+
+When you're done assiging permissions to resources, click Create Custom Role at the bottom of the page.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the [`CreateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CreateCustomRoleRequest) to create the Custom Role:
+
+```
+TODO: CLI command to come >
+```
+
+This example creates a Custom Role with the defined `roleSpec`, and returns the `RoleID`.
+
+For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
+  </TabItem>
+</Tabs>
+
+## Assigning Custom Roles to users
+
+Once you have created a Custom Role, it is available on the Identities page to assign to a user
+or group, the same as the pre-defined Temporal permissions. 
+See [How to update an account-level role in Temporal Cloud](/cloud/users#update-roles)
+for more inforamtion.
+
 ## Modifying a Custom Role
 
-<!-- Need more information here. -->
+<Tabs groupID="modify-custom-roles">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
-## Deleting a Custom Role
+To modify a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the Settings page.
 
-<!-- Need more information here. -->
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu of the Custom Role you want to modify and select Edit.
+
+The Edit Custom Role page has the same options as the Create Custom Role page. 
+You can change the Custom Role's name or description, or you can modify any of the current permissions assigned to that Role.
+
+When finished, click Update Custom Role.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.UpdateCustomRoleRequest) to modify the Custom Role:
+
+```
+TODO: CLI command needed
+```
+
+This example updates a Custom Role with the defined `roleSpec`.
+
+For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
+
+  </TabItem>
+</Tabs>
+## Delete a Custom Role
+
+<Tabs groupID="delete-custom-roles">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To delete a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the Settings page.
+
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu of the Custom Role you want to delete and select Delete.
+A pop-up notification will let you know that the Custom Role has been deleted.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.DeleteCustomRoleRequest) to delete the Custom Role:
+
+```
+TODO: CLI command needed
+```
+
+This example deletes a Custom Role with the defined `roleSpec`.
+
+For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
+
+  </TabItem>
+</Tabs>
