@@ -131,17 +131,18 @@ Use the following template for the collected data.
 Temporal Cloud Account:
 
 <for each cluster>
-Cluster Name:
-Target Cloud/Region:
-Type of Visibility Store:
+Cluster Name: <name>
+Target Cloud/Region: <region>
+Type of Visibility Store: <store>
 Cluster Configuration:
 
 Namespaces:
    <for each Namespace>
-   Namespace Name:
-   Translated Name:
+   Namespace Name: <name>
+   Translated Name: <name>
    Metrics:
-   Custom Search Attributes:
+     Peak APS: <aps>
+     Custom Search Attributes: <temporal cli output>
    <end>
 <end>
 ```
@@ -188,8 +189,8 @@ Use the following procedure to deploy the proxy:
 3. Deploy 3 replicas of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
    [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
    See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
-   as a reference. Note that it is possible to deploy more than 1 replica. If more than 1 replica is deployed, you must
-   update Temporal with the number of replicas used so that an identical number may be configured on the cloud-side.
+   as a reference. Note that the number of replicas must match on both sides of the connection. If your replica count differs
+   from 3, update Temporal with the actual number of replicas so that the same count can be configured on the cloud side.
 4. Test access using the command below. It should display the information of the migration server.
 
 ```
@@ -278,14 +279,15 @@ Testing uses the following process:
 Testing is considered successful if all data from the self-hosted deployment is migrated to cloud.
 
 ## Phase 4: Initiate
+Review the section on [transferring clients](#transfer-clients-to-cloud) before proceeding.
 
 The sections below outline the process for initiating the migration.
 
 ### Migration start
 
-Temporal will initiate the migration. During this process, the self-hosted Namespace remains active while the cloud
-Namespace becomes passive. Workflows are replicated from the self-hosted Namespace to the cloud Namespace. Once cloud
-Namespace has fully synced with self-hosted Namespace, migration is ready for handover.
+Temporal will generate the endpoint-id and initiate the migration. During this process, the self-hosted Namespace remains active 
+while the cloud Namespace becomes passive. Workflows are replicated from the self-hosted Namespace to the cloud Namespace. Once the
+cloud Namespace has fully synced with self-hosted Namespace, migration is ready for handover.
 
 The following [command](https://pkg.go.dev/github.com/temporalio/tcld#readme-start-a-migration) is used to start the
 migration:
@@ -323,7 +325,9 @@ tcld migration handover --id <migration-id> --to-replica-id <to-replica-id>
 When using this command, replace `<to-replica-id>` with `cloud` when handing over to Temporal Cloud. Replace
 `<to-replica-id>` with `on-prem` when handing back to the self-hosted setup.
 
+
 ## Phase 5: Finalize
+If you have not done so already, complete the process of [transferring clients](#transfer-clients-to-cloud) to the cloud Namespace.
 
 ### Final validation
 
@@ -357,11 +361,11 @@ impacting your Workflows, if needed:
 tcld migration abort --id <migration-id>
 ```
 
-### Transfer clients to cloud
+## Transfer clients to cloud
 
 There are two options for switching Temporal clients to the cloud.
 
-#### Option 1 (recommended)
+### Option 1 (recommended)
 
 Deploy two sets of Temporal clients: one pointing to your Temporal server and one to the Cloud Namespace endpoint. This
 is the recommended option since your Workflows will continue to make progress during the handover, even if your cloud
@@ -377,7 +381,7 @@ Temporal client is unable to access the cloud (due to misconfiguration, for exam
 4. Complete migration. Your self-hosted Temporal clients will no longer receive any tasks from your server, allowing you
    to stop these clients.
 
-#### Option 2
+### Option 2
 
 Deploy one set of Temporal clients and switch the Namespace endpoint during migration. With this option, if your workers
 are misconfigured during the switch, then it is possible that Workflows can stop making progress. It is important to
@@ -390,6 +394,7 @@ ensure that all workers maintain connectivity to cloud to avoid this scenario. T
 3. Hand over Namespace to the cloud. Requests from your Temporal clients will now be served by the cloud and will not be
    forwarded to your server.
 4. Confirm migration completion.
+
 
 ## Additional notes
 
@@ -432,37 +437,6 @@ history.enableReplicationStream:
 
 Enabling this configuration will require a restart of your history pods.
 
-## Frequently asked questions
-
-**Why does it matter if custom search attributes are used?**
-
-Custom search attributes must be mapped to the Namespace in Temporal Cloud. This process differs depending on the type
-of data store used for visibility.
-
-**What Workflows are migrated by default?**
-
-Open workflows are always migrated. You may specify a date range for closed Workflows. Limiting the time range for
-closed Workflows will greatly reduce the amount of time it takes to migrate a Namespace. Your cloud-side Namespace must
-be configured with your desired retention period prior to starting the migration.
-
-**I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?**
-
-Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
-is [supported](/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
-[archival](/temporal-service/archival) to store closed Workflows that cannot be migrated. In general, archival is
-recommended over large retention periods since the extra data can stress the persistence layer of the system.
-
-**I am using payload encryption in my self-hosted Temporal cluster. Is this supported in cloud?**
-
-Yes. If payloads are already [encrypted](/payload-codec#encryption) in your self-hosted server via data converter, then 
-they will remain encrypted during and after migration.
-
-
-**I would like to enable payload encryption as part of the migration. Is this supported?**
-
-Enabling payload encryption as part of the migration is not currently supported. If encryption is required, then the best
-approach is to enable it prior to migrating. 
-
 ## How to gather self-hosted metrics
 
 Temporal Server (version > 1.17) provides an [action](/cloud/pricing#action) metric. You may use Grafana to capture and
@@ -503,3 +477,65 @@ For Datadog, the following widget will calculate actions per second:
     "precision": 2
 }
 ```
+
+## Frequently asked questions
+
+### When should I opt for auto migration?
+
+The answer depends on your specific situation. However, automated migration is most likely to help if any of the following apply to you:
+
+* When safe transfer of workers is a concern - automated migration allows workers to run against both self-hosted and cloud
+  environments simultaneously, allowing a gradual and lower-risk transition.
+* When there are a high number of long-running Workflows.
+* When there is a need to migrate closed Workflows.
+* When there is a need to migrate Schedules.
+
+In contrast, automated migration may not be the best solution if your self-hosted clusters do not meet the [minimum requirements](#limitations).
+
+### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
+
+No. All Workflows will be migrated.
+
+### Can I combine manual and auto migration?
+
+No. Auto migration requires a "fresh" target cloud-side Namespace (one that has never had a running Workflow). 
+If Workflows were manually migrated to a cloud-side Namespace, then this Namespace would not be suitable as an auto-migration target.
+
+### Why does it matter if custom search attributes are used?
+
+Custom search attributes must be mapped to a Namespace in Temporal Cloud. They matter because configurations in a self-hosted environment 
+may not be directly compatible with Temporal Cloud, potentially requiring additional migration work. The exact process can also differ 
+depending on the type of visibility data store used.
+
+### What Workflows are migrated by default?
+
+All Workflows are migrated by default. For closed Workflows, you may specify a date range to be migrated. Your cloud-side Namespace must
+be configured with your desired retention period prior to starting the migration.
+
+### What can I do to speed up an automated migration?
+
+The #1 speed optimization is to limit the time range for closed Workflows. This will reduce the amount of data required to be 
+migrated and in many cases will dramatically reduce overall migration time. 
+
+### Is the migration of Schedules supported?
+
+Yes. Under the hood, Schedules are essentially Workflows.
+
+### I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?
+
+Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
+is [supported](/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
+[archival](/temporal-service/archival) to store closed Workflows that cannot be migrated. In general, archival is
+recommended over large retention periods since the extra data can stress the persistence layer of the system.
+
+### I am using payload encryption in my self-hosted Temporal cluster. Is this supported in cloud?
+
+Yes. If payloads are already [encrypted](/payload-codec#encryption) in your self-hosted server via data converter, then 
+they will remain encrypted during and after migration.
+
+
+### I would like to enable payload encryption as part of the migration. Is this supported?
+
+The automated migration tooling cannot add payload encryption. To encrypt payloads sent to Temporal Cloud, you must encrypt
+payloads in your cluster before starting the automated migration process.
+

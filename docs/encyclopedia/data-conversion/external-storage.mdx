@@ -19,7 +19,7 @@ tags:
   - Data Converters
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import ThemedImage from '@theme/ThemedImage';
 
 :::info Release, stability, and dependency info
 
@@ -30,11 +30,12 @@ configuration may change before the stable release. Join the
 :::
 
 External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
-the Event History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+the Event History instead. This is called the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern).
 
 For SDK-specific usage guides, see:
 
-- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
+- [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
+- [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
 
 ## Why use External Storage
 
@@ -63,17 +64,24 @@ External Storage addresses several common scenarios:
 
 For SDK-specific usage guides, see:
 
-- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
+- [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
+- [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
 
 ## How External Storage fits in the data conversion pipeline {#data-pipeline}
 
 During [Data Conversion](/dataconversion), External Storage sits at the end of the pipeline, after both the
 [Payload Converter](/payload-converter) and the [Payload Codec](/payload-codec):
 
-<CaptionedImage
-  src="/diagrams/data-converter-flow-with-external-storage.svg"
-  title="The Flow of Data through a Data Converter"
-/>
+<figure>
+  <ThemedImage
+    alt="The Flow of Data through a Data Converter"
+    sources={{
+      light: '/diagrams/data-converter-flow-with-external-storage.svg',
+      dark: '/diagrams/data-converter-flow-dark.svg',
+    }}
+  />
+  <figcaption>The Flow of Data through a Data Converter</figcaption>
+</figure>
 
 When a Temporal Client sends a payload that exceeds the configured size threshold, the storage driver uploads the
 payload to your external store and replaces it with a lightweight reference. Payloads below the threshold stay inline in
@@ -104,10 +112,10 @@ as hot and cold storage tiers.
 
 ### Custom storage drivers
 
-If the built-in drivers don't support your storage backend, you can implement a custom driver by extending the
-`StorageDriver` abstract class. For an example, see
-[Implement a custom storage driver](/develop/python/data-handling/large-payload-storage#implement-a-custom-storage-driver)
-in the Python SDK guide.
+If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific examples, see:
+
+- [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
+- [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
 
 ## Key configuration settings
 

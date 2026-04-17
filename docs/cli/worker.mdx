@@ -179,7 +179,7 @@ Manager Identity commands change the `ManagerIdentity` of a Worker Deployment:
 temporal worker deployment manager-identity [command] [options]
 ```
 
-When present, `ManagerIdentity` is the identity of the user that has the 
+When present, `ManagerIdentity` is the identity of the user that has the
 exclusive right to make changes to this Worker Deployment. Empty by default.
 When set, users whose identity does not match the `ManagerIdentity` will not
 be able to change the Worker Deployment.
@@ -199,7 +199,7 @@ The current Manager Identity is returned with `describe`:
 
 Set the `ManagerIdentity` of a Worker Deployment given its Deployment Name.
 
-When present, `ManagerIdentity` is the identity of the user that has the 
+When present, `ManagerIdentity` is the identity of the user that has the
 exclusive right to make changes to this Worker Deployment. Empty by default.
 When set, users whose identity does not match the `ManagerIdentity` will not
 be able to change the Worker Deployment.
@@ -222,8 +222,8 @@ temporal worker deployment manager-identity set \
    --identity YourUserIdentity # optional, populated by CLI if not provided
 ```
 
-Sets the Manager Identity of the Deployment to the identity of the user making 
-this request. If you don't specifically pass an identity field, the CLI will 
+Sets the Manager Identity of the Deployment to the identity of the user making
+this request. If you don't specifically pass an identity field, the CLI will
 generate your identity for you.
 
 For example:
@@ -248,7 +248,7 @@ Use the following options to change the behavior of this command. You can also u
 
 Unset the `ManagerIdentity` of a Worker Deployment given its Deployment Name.
 
-When present, `ManagerIdentity` is the identity of the user that has the 
+When present, `ManagerIdentity` is the identity of the user that has the
 exclusive right to make changes to this Worker Deployment. Empty by default.
 When set, users whose identity does not match the `ManagerIdentity` will not
 be able to change the Worker Deployment.
