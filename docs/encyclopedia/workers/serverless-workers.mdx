@@ -17,6 +17,8 @@ tags:
   - Serverless
 ---
 
+import ThemedImage from '@theme/ThemedImage';
+
 This page covers the following:
 
 - [What is a Serverless Worker?](#serverless-worker)
@@ -47,7 +49,16 @@ Temporal does not need to know anything about the Worker's infrastructure.
 
 With Serverless Workers, Temporal starts the Worker.
 
-![Serverless invocation flow](/diagrams/serverless-worker-flow.svg)
+<figure>
+  <ThemedImage
+    alt="Serverless invocation flow"
+    sources={{
+      light: '/diagrams/serverless-worker-flow.svg',
+      dark: '/diagrams/serverless-worker-flow-dark.svg',
+    }}
+  />
+  <figcaption>Temporal's Worker Controller Instance invokes a Serverless Worker when Tasks arrive on a Task Queue with a compute provider configured.</figcaption>
+</figure>
 
 The invocation flow works as follows:
 
@@ -66,7 +77,16 @@ reuse or shared state across invocations.
 
 A single Serverless Worker invocation has three phases: init, work, and shutdown.
 
-![Serverless Worker lifecycle](/diagrams/serverless-worker-lifecycle.png)
+<figure>
+  <ThemedImage
+    alt="Serverless Worker lifecycle"
+    sources={{
+      light: '/diagrams/serverless-worker-lifecycle.svg',
+      dark: '/diagrams/serverless-worker-lifecycle-dark.svg',
+    }}
+  />
+  <figcaption>The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish before shutdown hooks run.</figcaption>
+</figure>
 
 During the **init** phase, the Worker initializes and establishes a client connection to Temporal.
 
