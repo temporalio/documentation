@@ -1226,6 +1226,7 @@ module.exports = {
         id: 'references/index',
       },
       items: [
+        'references/api-reference',
         'references/cluster-metrics',
         'references/commands',
         'references/configuration',
