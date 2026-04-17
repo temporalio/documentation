@@ -19,6 +19,8 @@ tags:
 ---
 
 import SdkTabs from '@site/src/components/elements/SdkTabs';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 This guide walks through deploying a Temporal Worker on AWS Lambda.
 
@@ -295,9 +297,8 @@ The deployment name and build ID must match the values in your Worker code.
 
 You can create the version using the Temporal UI, the Temporal CLI, or programmatically with an SDK.
 
-### Temporal UI
-
-Use the UI for one-off setup and exploration.
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal UI">
 
 1. In the Temporal UI, open your Namespace.
 2. In the left pane, select **Workers**.
@@ -311,7 +312,8 @@ Use the UI for one-off setup and exploration.
 
 When you create a version through the UI, the version is automatically set as current. Skip to [Verify the deployment](#verify-the-deployment).
 
-### Temporal CLI
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
 
 Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must [set the version as current](#set-current-version) as a separate step.
 
@@ -333,7 +335,8 @@ temporal worker deployment create-version \
 | `--aws-lambda-assume-role-arn` | IAM role Temporal assumes to invoke the function. This is the `RoleARN` output from the CloudFormation stack in [Step 3](#configure-iam). |
 | `--aws-lambda-assume-role-external-id` | External ID configured in the IAM role trust policy. |
 
-### SDK
+</TabItem>
+<TabItem value="sdk" label="SDK">
 
 Use the SDK when the deployment registration is part of your application, for example a setup program that provisions infrastructure and registers the version together, or when you need to compute values dynamically. When you create a version through the SDK, you must [set the version as current](#set-current-version) as a separate step.
 
@@ -369,6 +372,9 @@ client.CreateWorkerDeploymentVersion(ctx, &workflowservice.CreateWorkerDeploymen
 
 </SdkTabs.Go>
 </SdkTabs>
+
+</TabItem>
+</Tabs>
 
 ## 5. Set the version as current {#set-current-version}
 
