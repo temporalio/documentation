@@ -96,6 +96,9 @@ Eager Activities require a persistent connection, which Lambda invocations don't
 It controls how much time before the Lambda deadline the Worker begins its graceful shutdown.
 The default is `WorkerStopTimeout` + 2 seconds.
 
+If your Worker handles long-running Activities, increase `WorkerStopTimeout`, `ShutdownDeadlineBuffer`, and the Lambda invocation deadline (`--timeout`) together.
+For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+
 ## Add observability with OpenTelemetry {#add-observability}
 
 The `lambdaworker/otel` sub-package provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
@@ -136,5 +139,8 @@ func main() {
 
 `ApplyDefaults` configures both metrics and tracing.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
+
+To collect this telemetry, attach the [AWS Distro for OpenTelemetry Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-go) to your Lambda function.
+The layer runs a collector sidecar that receives telemetry on `localhost:4317` and forwards it to your configured backend (e.g., AWS X-Ray, Amazon CloudWatch).
 
 If you only need metrics or tracing, use `otel.ApplyMetrics` or `otel.ApplyTracing` individually.
