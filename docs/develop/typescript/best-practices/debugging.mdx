@@ -51,16 +51,14 @@ If something isn't behaving the way you expect, make sure to check both location
 
 If you are developing Workflows and finding that code isn't executing as expected, the first place to look is whether old Workflows are still running.
 
-If those old Workflows have the same name and are on the same task queue, Temporal will try to continue executing them on your new code by design.
-You may get errors that make no sense to you because
+If those old Workflows have the same name and are on the same Task Queue, Temporal will try to continue executing them on your new code by design. You may get errors that make no sense to you because:
 
-- Temporal is trying to execute old Workflow code that no longer exists in your codebase, or
-- your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
+- Temporal is trying to execute old Workflow code that no longer exists in your codebase
+- Your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
 
-The biggest sign that this is happening is if you notice Temporal is acting non-deterministically: running the same Workflow twice gets different results.
+The biggest sign that this is happening is if you notice Workflow executions are producing different results on replay. If running the same Workflow twice gets different results, that points to a non-determinism error.
 
-Stale workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run.
-If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
+Stale Workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run. If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
 
 ### Workflow/Activity registration errors
 

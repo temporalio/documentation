@@ -31,8 +31,8 @@ import { CaptionedImage } from '@site/src/components';
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 
-The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
-If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints). If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows. This only applies to Workflow orchestration logic. Non-deterministic work such as API calls, LLM invocations, and database queries should be placed in Activities, which Temporal retries reliably.
+
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
 There are two primary Versioning methods that you can use:
 
