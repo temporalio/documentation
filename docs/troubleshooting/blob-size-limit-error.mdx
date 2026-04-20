@@ -32,7 +32,8 @@ serialized binary data for the input and output of Workflows and Activities.
 The error message depends on which operation carried the oversized payload and which SDK version is in use. Examples
 include:
 
-- `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE` (Python SDK 1.23.0+)
+- `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
+- `[TMPRL1103] Attempted to upload payloads with size that exceeded the error limit.`
 - `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
 - `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
@@ -43,7 +44,8 @@ The behavior when a payload exceeds the size limit depends on the SDK version.
 **Python SDK 1.23.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
 Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue.
 
-**All other SDK versions:** The Temporal Service rejects the request and terminates the Workflow.
+**All other SDK versions:** The Temporal Service rejects the request and terminates the Workflow. You'll need to resolve
+the issue and restart the Workflow.
 
 ### How to resolve
 
@@ -85,6 +87,7 @@ request past 4 MB. Activity results are also subject to this limit.
 ### Error messages
 
 - `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
+- `[TMPRL1103] Attempted to upload payloads with size that exceeded the error limit.`
 - `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`
 - `StartToCloseTimeout` (Activities only, see [error behavior](#error-behavior-1) below)
 
@@ -99,9 +102,9 @@ the Activity fails with an explicit error instead of timing out silently.
 **All other SDK versions:** The behavior depends on where the oversized message originates:
 
 - **Workflow Tasks:** When a Workflow Worker completes a Workflow Task, it sends all the commands the Workflow produced
-  (such as Activity schedules and their inputs) back to the Temporal Service. If that response exceeds 4 MB, the SDK
-  catches the gRPC error and sends a failed Workflow Task response with cause
-  `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. Because replay produces the same oversized response, the Workflow
+  (such as Activity schedules and their inputs) back to the Temporal Service. If the combined size of the commands and
+  their inputs exceeds 4 MB, the SDK catches the gRPC error and sends a failed Workflow Task response with cause
+  `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. Because replay produces the same oversized request, the Workflow
   gets stuck in a retry loop that isn't visible in the Event History.
 
 - **Activity Tasks:** When an Activity Worker completes an Activity Task, it sends the Activity result back to the
