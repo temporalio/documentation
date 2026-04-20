@@ -32,6 +32,19 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const branchName = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME;
+            const branchSlug = branchName.toLowerCase().replace(/_/g, '').replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-/, '').replace(/-$/, '');
+            const subdomain = `temporal-documentation-git-${branchSlug}`;
+
+            if (subdomain.length <= 63) {
+              const baseUrl = `https://${subdomain}.preview.thundergun.io`;
+              core.info(`Branch name is short enough (${subdomain.length} chars), using constructed URL: ${baseUrl}`);
+              core.exportVariable('DOCS_PREVIEW_BASE_URL', baseUrl);
+              core.setOutput('base_url', baseUrl);
+              return;
+            }
+
+            core.info(`Subdomain would be ${subdomain.length} chars (exceeds 63), polling for Vercel comment...`);
             const maxAttempts = 18;
             const intervalMs = 10_000;
 
@@ -68,11 +81,8 @@ jobs:
               }
             }
 
-            core.warning('Vercel comment not found, falling back to constructed URL');
-            const branchName = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME;
-            const branchSlug = branchName.toLowerCase().replace(/_/g, '').replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-/, '').replace(/-$/, '');
-            const baseUrl = `https://temporal-documentation-git-${branchSlug}.preview.thundergun.io`;
-            core.info(`Fallback URL: ${baseUrl}`);
+            core.warning('Vercel comment not found after polling, using constructed URL as fallback (links may be broken for this long branch name)');
+            const baseUrl = `https://${subdomain}.preview.thundergun.io`;
             core.exportVariable('DOCS_PREVIEW_BASE_URL', baseUrl);
             core.setOutput('base_url', baseUrl);
 
