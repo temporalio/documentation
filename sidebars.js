@@ -988,7 +988,7 @@ module.exports = {
           },
           items: [
             'cloud/manage-access/roles-and-permissions',
-            'cloud/manage-access/users',
+            'cloud/get-started/users',
             'cloud/get-started/user-groups',
             'cloud/get-started/service-accounts',
             'cloud/saml',
