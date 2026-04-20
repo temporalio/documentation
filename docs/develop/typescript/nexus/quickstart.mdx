@@ -166,7 +166,7 @@ The `nexusServices` parameter registers the handler so it can receive Nexus Oper
 <>
 
 <CodeSnippet language="typescript">
-{`import { proxyActivities, createNexusClient } from '@temporalio/workflow';
+{`import { proxyActivities, createNexusServiceClient } from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 import { sayHelloService } from './service';
@@ -183,7 +183,7 @@ export async function example(name: string): Promise<string> {
 const NEXUS_ENDPOINT = 'my-nexus-endpoint-name';
 
 export async function callerWorkflow(name: string): Promise<string> {
-    const nexusClient = createNexusClient({
+    const nexusClient = createNexusServiceClient({
       service: sayHelloService,
       endpoint: NEXUS_ENDPOINT,
     });
@@ -203,7 +203,7 @@ The caller Workflow demonstrates the consumer side of Nexus.
 Instead of importing handler code directly, the caller only depends on the Service contract.
 This keeps the caller and handler decoupled so they can live in separate Namespaces, repositories, or even teams.
 
-The `wf.createNexusClient()` method creates a client bound to your Nexus Service and Endpoint.
+The `wf.createNexusServiceClient()` method creates a client bound to your Nexus Service and Endpoint.
 `executeOperation` starts the operation and waits for the result.
 
 </SetupStep>
