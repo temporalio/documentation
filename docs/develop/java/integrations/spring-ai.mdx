@@ -1,0 +1,162 @@
+---
+id: spring-ai
+title: Spring AI integration - Java SDK
+sidebar_label: Spring AI
+slug: /develop/java/integrations/spring-ai
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - spring ai
+  - java
+  - integrations
+tags:
+  - Spring AI
+  - Java SDK
+  - Temporal SDKs
+  - Integrations
+  - AI Frameworks
+description: Build durable AI Workflows in Java with the Temporal Spring AI integration.
+---
+
+The [Temporal Spring AI integration](https://central.sonatype.com/artifact/io.temporal/temporal-spring-ai) lets you call [Spring AI](https://docs.spring.io/spring-ai/reference/) models, tools, vector stores, embeddings, and MCP servers from Temporal Workflows as durable Activities. Model calls and tool invocations are recorded in Workflow history, so they retry on failure and replay deterministically — without you having to change how you write Spring AI code.
+
+The integration is built on the Temporal Java SDK's [Plugin system](/develop/plugins-guide) and is distributed as the `io.temporal:temporal-spring-ai` module alongside the existing [Spring Boot integration](/develop/java/integrations/spring-boot-integration).
+
+## Compatibility
+
+| Dependency        | Minimum version |
+| ----------------- | --------------- |
+| Java              | 17              |
+| Spring Boot       | 3.x             |
+| Spring AI         | 1.1.0           |
+| Temporal Java SDK | 1.33.0          |
+
+## Add the dependency
+
+Add `temporal-spring-ai` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`).
+
+**[Apache Maven](https://maven.apache.org/):**
+
+```xml
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-spring-ai</artifactId>
+    <version>${temporal-sdk.version}</version>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/):**
+
+```groovy
+implementation "io.temporal:temporal-spring-ai:${temporalSdkVersion}"
+```
+
+When `temporal-spring-ai` is on the classpath, the `SpringAiPlugin` auto-registers `ChatModelActivity` with all Temporal Workers created by the Spring Boot integration. Optional Activities are auto-configured when their dependencies are present:
+
+| Feature      | Dependency      | Registered Activity      |
+| ------------ | --------------- | ------------------------ |
+| Vector store | `spring-ai-rag` | `VectorStoreActivity`    |
+| Embeddings   | `spring-ai-rag` | `EmbeddingModelActivity` |
+| MCP          | `spring-ai-mcp` | `McpClientActivity`      |
+
+## Call a chat model from a Workflow
+
+Use `ActivityChatModel` as a Spring AI `ChatModel` inside a Workflow. Every call goes through a Temporal Activity, so model responses are durable and retried per your Activity options.
+
+Wrap `ActivityChatModel` in a `TemporalChatClient` to build prompts and register tools:
+
+```java
+@WorkflowInit
+public MyWorkflowImpl(String goal) {
+    ActivityChatModel chatModel = ActivityChatModel.forDefault();
+
+    WeatherActivity weather = Workflow.newActivityStub(
+            WeatherActivity.class, activityOptions);
+
+    this.chatClient = TemporalChatClient.builder(chatModel)
+            .defaultSystem("You are a helpful assistant.")
+            .defaultTools(weather, new TimestampTools())
+            .build();
+}
+
+@Override
+public String run(String goal) {
+    return chatClient.prompt().user(goal).call().content();
+}
+```
+
+`ActivityChatModel.forDefault()` resolves to the default Spring AI `ChatModel` bean. To target a specific model in a multi-model application, pass its bean name to `ActivityChatModel.forModel("openai")`.
+
+:::note
+Streaming responses are not supported. `ActivityChatModel.stream()` throws `UnsupportedOperationException` because streaming through Temporal Activities isn't a durable operation.
+:::
+
+## Register tools
+
+Tools passed to `defaultTools()` are dispatched based on their type. The integration handles Temporal determinism for you when the tool is durable, and gives you control when it isn't.
+
+### Activity stubs
+
+An interface annotated with both `@ActivityInterface` and Spring AI `@Tool` methods is auto-detected and executed as a Temporal Activity. Use this for external calls that need retries and timeouts.
+
+```java
+@ActivityInterface
+public interface WeatherActivity {
+    @Tool(description = "Get weather for a city")
+    @ActivityMethod
+    String getWeather(String city);
+}
+```
+
+### Nexus service stubs
+
+Nexus service stubs with `@Tool` methods are auto-detected and invoked as [Nexus operations](/develop/java/nexus), enabling cross-Namespace tool calls.
+
+### `@SideEffectTool`
+
+Classes annotated with `@SideEffectTool` have each `@Tool` method wrapped in `Workflow.sideEffect()`. The result is recorded in history on first execution and replayed from history afterward. Use this for cheap, non-deterministic operations such as timestamps or UUIDs.
+
+```java
+@SideEffectTool
+public class TimestampTools {
+    @Tool(description = "Get current time")
+    public String now() {
+        return Instant.now().toString();
+    }
+}
+```
+
+### Plain tools
+
+Any class with `@Tool` methods that isn't an Activity stub, Nexus stub, or `@SideEffectTool` runs directly on the Workflow thread. You're responsible for determinism — call Activities, `Workflow.sideEffect()`, child Workflows, or other durable primitives as needed.
+
+```java
+public class MyTools {
+    @Tool(description = "Process data")
+    public String process(String input) {
+        SomeActivity act = Workflow.newActivityStub(SomeActivity.class, opts);
+        return act.doWork(input);
+    }
+}
+```
+
+## Use vector stores, embeddings, and MCP
+
+When the corresponding Spring AI modules are on the classpath, the integration registers Activities for vector stores, embeddings, and MCP tool calls. Inject the matching Spring AI types into your Activities or Workflows and use them as you would in any Spring AI application — each operation is executed through a Temporal Activity.
+
+You can also register these plugins explicitly, without relying on auto-configuration:
+
+```java
+new VectorStorePlugin(vectorStore);
+new EmbeddingModelPlugin(embeddingModel);
+new McpPlugin();
+```
+
+`ActivityMcpClient` wraps a Spring AI MCP client so that remote MCP tool calls become durable Activity executions.
+
+## Learn more
+
+- [`temporal-spring-ai` README](https://github.com/temporalio/sdk-java/blob/master/temporal-spring-ai/README.md) — full reference for the module
+- [Spring Boot integration](/develop/java/integrations/spring-boot-integration) — required companion module
+- [Plugin system](/develop/plugins-guide) — how integrations are registered with Workers and Clients
