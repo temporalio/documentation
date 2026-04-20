@@ -70,7 +70,7 @@ module.exports = {
             'evaluate/temporal-cloud/limits',
             'evaluate/temporal-cloud/sla',
             'evaluate/temporal-cloud/pricing',
-            'evaluate/temporal-cloud/actions-usage',
+            'evaluate/temporal-cloud/actions',
             'evaluate/temporal-cloud/support',
           ],
         },
@@ -1045,7 +1045,7 @@ module.exports = {
           items: [
             'cloud/billing-and-usage/billing',
             'cloud/billing-and-usage/billing-api',
-            'cloud/billing-and-usage/actions',
+            'cloud/billing-and-usage/actions-usage',
           ],
         },
         {
