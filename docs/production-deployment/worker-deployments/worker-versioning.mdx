@@ -214,7 +214,7 @@ const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   taskQueue,
   workerDeploymentOptions: {
-    useWorkerVersioning: false,
+    useWorkerVersioning: true,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
   },
   connection: nativeConnection,
