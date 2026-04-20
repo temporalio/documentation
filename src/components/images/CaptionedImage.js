@@ -2,14 +2,22 @@
 import React, { useState } from "react";
 import styles from "./CaptionedImage.module.css";
 
-const CaptionedImage = ({ src, alt, title, width, inset = "0%", zoom = false }) => {
+const CaptionedImage = ({ src, srcDark, alt, title, width, inset = "0%", zoom = false }) => {
   const [isZoomed, setIsZoomed] = useState(false);
-  const isSVG = src.endsWith(".svg");
 
   const toggleZoom = () => {
-    if (zoom) { // Only toggle zoom if zoom prop is true
+    if (zoom) {
       setIsZoomed(!isZoomed);
     }
+  };
+
+  const imgStyle = {
+    width: isZoomed && zoom ? "auto" : "100%",
+    height: "auto",
+    maxWidth: isZoomed && zoom ? "none" : "100%",
+    maxHeight: isZoomed && zoom ? "none" : "auto",
+    objectFit: "contain",
+    transition: "transform 0.3s ease-in-out",
   };
 
   return (
@@ -19,25 +27,35 @@ const CaptionedImage = ({ src, alt, title, width, inset = "0%", zoom = false }) 
         width: width || "auto",
         paddingLeft: inset,
         paddingRight: inset,
-        cursor: zoom ? "pointer" : "default", // Change cursor if zoom is enabled
-        position: "relative", // Keep the container in its normal position
-        display: "inline-block", // Keep image in line with text
+        cursor: zoom ? "pointer" : "default",
+        position: "relative",
+        display: "inline-block",
       }}
-      onClick={toggleZoom} // Toggle zoom on image container click if zoom is true
+      onClick={toggleZoom}
     >
-      <img
-        src={src}
-        alt={alt || title}
-        className={styles.image}
-        style={{
-          width: isZoomed && zoom ? "auto" : "100%", // Zoomed image behavior (only if zoom is true)
-          height: isZoomed && zoom ? "auto" : "auto", // Keep height as auto to preserve aspect ratio
-          maxWidth: isZoomed && zoom ? "none" : "100%", // Allow the image to exceed its container when zoomed (only if zoom is true)
-          maxHeight: isZoomed && zoom ? "none" : "auto", // Allow the image to exceed its container when zoomed (only if zoom is true)
-          objectFit: "contain", // Preserve aspect ratio for zoomed image
-          transition: "transform 0.3s ease-in-out", // Smooth zoom transition
-        }}
-      />
+      {srcDark ? (
+        <>
+          <img
+            src={src}
+            alt={alt || title}
+            className={`${styles.image} ${styles.lightOnly}`}
+            style={imgStyle}
+          />
+          <img
+            src={srcDark}
+            alt={alt || title}
+            className={`${styles.image} ${styles.darkOnly}`}
+            style={imgStyle}
+          />
+        </>
+      ) : (
+        <img
+          src={src}
+          alt={alt || title}
+          className={styles.image}
+          style={imgStyle}
+        />
+      )}
       {title && <p className={styles.title}>{title}</p>}
     </div>
   );
