@@ -52,7 +52,7 @@ The following is the mapping of Action Categories to Action types.
 The Action Types that are visible on various endpoints can differ based what is visible to a system. 
 Note: Action Categories and Action Types are not available in the billing API. 
 
-Usage and Billing data will have the most complete Actions data while wWrkflow history and metrics will help with detailed _estimates_.
+Usage and Billing data will have the most complete Actions data while Workflow history and metrics will help with detailed _estimates_.
 For example, [History Event Types](https://docs.temporal.io/workflow-execution/event) are provided for transparency, but do not always have a simple 1:1 relationship with Action Types. 
 The Categories, Action types, and available endpoints are listed in the following sections: 
 
@@ -177,7 +177,7 @@ accrues three actions:
 | Update Schedule | `update_schedule` | N/A |
 | Patch Schedule | `patch_schedule` | N/A |
 | Delete Schedule | `delete_schedule` | N/A |
-| Schedule Workflow | `schedule_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` Note: `event.WorkflowExecutionStartedEventAttributes.indexedFields.TemporalScheduledById` tells if a Workflow was started by a Schedule` |
+| Schedule Workflow | `schedule_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` Note: `event.WorkflowExecutionStartedEventAttributes.indexedFields.TemporalScheduledById` tells if a Workflow was started by a Schedule. |
 
 
 ## Temporal Nexus {#nexus}
