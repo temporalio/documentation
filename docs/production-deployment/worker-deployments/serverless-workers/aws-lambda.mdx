@@ -126,7 +126,7 @@ aws lambda create-function \
 | `--function-name` | Name of the Lambda function. |
 | `--runtime` | Lambda runtime. Use `provided.al2023` for custom Go binaries. |
 | `--handler` | Entry point binary name. Must be `bootstrap` when using the `provided.al2023` custom runtime. |
-| `--role` | ARN of the Lambda [execution role](https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html), which grants the function permission to run. Trusted principal must be `lambda.amazonaws.com`. This is separate from the role Temporal uses to invoke the function in [Step 3](#configure-iam). |
+| `--role` | ARN of the Lambda [execution role](https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html), which grants the function permission to run. Trusted principal must be `lambda.amazonaws.com`. This is separate from the role Temporal uses to invoke the function in [Step 3](#configure-iam). The role must have at least the [`AWSLambdaBasicExecutionRole`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html) managed policy attached, which grants permission to write CloudWatch Logs. |
 | `--zip-file` | Path to your packaged deployment zip. |
 | `--timeout` | Invocation deadline in seconds. This is the maximum time each Lambda invocation can run before AWS terminates it. Set this high enough for the Worker to start, process Tasks, and [shut down gracefully](/serverless-workers#worker-lifecycle). |
 | `--memory-size` | Memory in MB allocated to each invocation. |
