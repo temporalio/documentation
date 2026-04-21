@@ -138,3 +138,11 @@ provider because the Worker process manages its own lifecycle.
 | Provider   | Description                                                                   |
 | ---------- | ----------------------------------------------------------------------------- |
 | AWS Lambda | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
+
+## Autoscaling {#autoscaling}
+
+Temporal automatically scales Serverless Workers based on Task Queue signals.
+When Tasks arrive and no worker is available, Temporal invokes new Lambda functions.
+When the work is done, workers exit and scale to zero.
+
+For a detailed explanation of the scaling signals, scaling flow, failure handling, and constraints, see [Serverless Worker Autoscaling](/serverless-worker-autoscaling).

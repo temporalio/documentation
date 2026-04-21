@@ -1397,6 +1397,7 @@ module.exports = {
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
             'encyclopedia/workers/serverless-workers',
+            'encyclopedia/workers/serverless-worker-autoscaling',
           ],
         },
         {
