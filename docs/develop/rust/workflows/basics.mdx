@@ -13,15 +13,15 @@ tags:
 
 ## How to develop a Workflow {#develop-workflows}
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
+Workflows are the fundamental unit of a Temporal Application and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
-In the Temporal Rust SDK programming model, a Workflow Definition comprises a Workflow struct and associated methods decorated with macros.
+In the Temporal Rust SDK programming model, a Workflow Definition is made of a Workflow struct and associated methods decorated with macros.
 
 A Workflow is defined by:
 
 1. A struct that holds the Workflow state
-2. An `#[init]` method that initializes the Workflow (optional)
 3. A `#[run]` method that contains the main Workflow logic
+2. An optional `#[init]` method that initializes the Workflow
 4. Optional `#[signal]`, `#[query]`, and `#[update]` methods for external interaction
 
 ```rust
@@ -48,8 +48,7 @@ impl GreetingWorkflow {
 }
 ```
 
-The `#[workflow]` macro marks the struct as a Workflow.
-The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
+The `#[workflow]` macro marks the struct as a Workflow. The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
 
 ### Workflow struct {#workflow-struct}
 
@@ -79,7 +78,7 @@ The `#[run]` method is required and contains the main Workflow logic. It:
 - Must be `async`
 - Receives a mutable `WorkflowContext<Self>`
 - Returns `WorkflowResult<T>` where T is the Workflow return type
-- Executes exactly once per Workflow Execution (with determinism)
+- Executes exactly once per Workflow execution
 
 ```rust
 #[run]
@@ -96,8 +95,6 @@ async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String
 ```
 
 ## Define Workflow parameters {#workflow-parameters}
-
-**How to define Workflow parameters using the Temporal Rust SDK.**
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
 
@@ -140,8 +137,6 @@ All Workflow input should be serializable by `serde`.
 
 ## Define Workflow return parameters {#workflow-return-values}
 
-**How to define Workflow return parameters using the Temporal Rust SDK.**
-
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
 The return type of a Workflow is `WorkflowResult<T>` where `T` implements `Serialize`. Success is represented by `Ok(value)` and failure by `Err(...)`:
@@ -160,8 +155,6 @@ async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<Proces
 ```
 
 ## Customize your Workflow Type {#workflow-type}
-
-**How to customize your Workflow Type using the Temporal Rust SDK.**
 
 Workflows have a Type that is referred to as the Workflow name. By default, the Workflow type is the name of the Workflow struct. You can customize it by providing a `name` parameter to the `#[workflow]` macro:
 
@@ -183,22 +176,22 @@ pub struct GreetingWorkflow {
 
 ## Workflow logic requirements {#workflow-logic-requirements}
 
-Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). 
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). For non-deterministic operations like API calls, LLM invocations, and database queries, use [Activities](/develop/rust/activities/basics).
 
 Workflow code must be deterministic because the Temporal Server may replay your Workflow to reconstruct its state. This means:
 
 ### Don't use nondeterministic functions
 
 - No direct system time access - use `ctx.workflow_time()` instead of `SystemTime::now()`
-- No random number generation - use `ctx.random()` instead
+- No random number generation - use `ctx.random_seed()` instead
 - No external I/O (network, filesystem, etc.) - perform these in Activities instead
 - No UUID generation via random means - the SDK doesn't have a direct UUID function, but you can use Activities for non-deterministic operations
+- Do not use `tokio` or `futures` concurrency primitives directly in Workflow code. Many of them, like `tokio::select!`, `tokio::spawn`, `futures::select!`, introduce non-deterministic behavior that will break Workflow replay.
 
-### Don't use nondeterministic concurrency
-
-- Don't use `tokio::spawn` directly - it introduces nondeterministic scheduling
-- Don't use `tokio::select!` - use `ctx.select!()` instead
-- Don't use `tokio::time::sleep` - use `ctx.timer()` instead
+Instead, use the deterministic wrappers provided in `temporalio_sdk::workflows`:
+    - `select!` — deterministic select (polls in declaration order)
+    - `join!` — deterministic join for a fixed number of futures
+    - `join_all` — deterministic join for a dynamic collection of futures
 
 ### Use Workflow-safe primitives
 
@@ -207,8 +200,8 @@ The Rust SDK provides:
 - `ctx.timer()` - Wait for a duration
 - `ctx.wait_condition(closure)` - Wait until a condition is true
 - `workflows::select!` - Deterministic select statement
-- `ctx.activity()` - Execute Activities
-- `ctx.local_activity()` - Execute local Activities
+- `ctx.start_activity()` - Execute Activities
+- `ctx.start_local_activity()` - Execute local Activities
 - `ctx.child_workflow()` - Execute child Workflows
 - `ctx.cancelled()` - Check if Workflow is cancelled
 
@@ -250,7 +243,7 @@ async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String
 }
 ```
 
-In sync signal and update handlers, you can mutate state directly via `&mut self`.
+In synchronous [`Signal`](/develop/rust/workflows/message-passing#signals) and [`Update`](/develop/rust/workflows/message-passing#updates) handlers, you can mutate state directly via `&mut self`.
 
 ## Workflow return types {#return-types}
 
