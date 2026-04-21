@@ -96,7 +96,7 @@ public String run(String goal) {
 `ActivityChatModel.forDefault()` resolves to the default Spring AI `ChatModel` bean. To target a specific model in a multi-model application, pass its bean name to `ActivityChatModel.forModel("openai")`.
 
 :::note
-Streaming responses are not supported. `ActivityChatModel.stream()` throws `UnsupportedOperationException` because streaming through Temporal Activities isn't a durable operation.
+Streaming responses are not currently supported.
 :::
 
 ## Register tools
