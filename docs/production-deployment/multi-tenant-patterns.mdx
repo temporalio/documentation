@@ -10,6 +10,8 @@ keywords:
   - task queues
   - worker patterns
   - SaaS
+  - fairness
+  - task queue fairness
 tags:
   - Multitenancy
   - Best Practices
@@ -17,7 +19,7 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
-Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) with [per-tenant Task Queues](#1-task-queues-per-tenant-recommended) to power their multi-tenant applications. This approach maximizes resource efficiency while maintaining logical separation between tenants.
+Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) with [per-tenant Task Queues](#1-task-queues-per-tenant-recommended) or [Task Queue Fairness](#2-single-task-queue-with-fairness) to power their multi-tenant applications. These approaches maximize resource efficiency while maintaining logical separation between tenants.
 
 This guide covers architectural patterns, design considerations, and practical examples for building multi-tenant applications with Temporal.
 
@@ -33,7 +35,7 @@ When designing a multi-tenant Temporal application, follow these principles:
 
 ## Architectural patterns
 
-There are three main patterns for multi-tenant applications in Temporal, listed from most to least recommended:
+There are four main patterns for multi-tenant applications in Temporal, listed from most to least recommended:
 
 ### 1. Task queues per tenant (Recommended)
 
@@ -57,7 +59,33 @@ This is the recommended pattern for most use cases. Each tenant gets dedicated T
   <RelatedReadItem path="#task-queue-isolation-pattern" text="Task Queue Isolation Pattern Details" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### 2. Shared Workflow Task Queues, separate Activity Task Queues
+### 2. Single Task Queue with Fairness
+
+**Use a single [Task Queue](/task-queue) with [Fairness keys](/develop/task-queue-priority-fairness#task-queue-fairness) to distribute work across tenants.**
+
+This pattern uses [Task Queue Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) to manage multi-tenant workloads within a single Task Queue. Each tenant is assigned a fairness key, and fairness weights control how much of the Task Queue's capacity each tenant receives.
+
+You can also set per-fairness-key rate limits (requests per second) to cap individual tenant throughput, preventing any single tenant from consuming too much capacity.
+
+**Pros:**
+- Priority and Fairness keys and weights can be adjusted without redeployment
+- Onboarding new tenants doesn't require spinning up additional [Workers](/workers)
+- Simpler Worker topology than per-tenant Task Queues
+
+**Cons:**
+- Fairness is probabilistic and may be harder to debug than strict isolation
+- The fairness weight applies at schedule time, not at dispatch time, so it only affects newly-scheduled Tasks
+- When using [Worker Versioning](/worker-versioning), Fairness isn't guaranteed between versions
+
+:::tip
+This pattern works well when you have many tenants with different service tiers and want to manage them without the operational overhead of per-tenant Task Queues or Workers.
+:::
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/develop/task-queue-priority-fairness#task-queue-fairness" text="Task Queue Fairness Reference" archetype="feature-guide" />
+</RelatedReadContainer>
+
+### 3. Shared Workflow Task Queues, separate Activity Task Queues
 
 **Share [Workflow Task Queues](/task-queue) but use different [Activity Task Queues](/task-queue) per tenant.**
 
@@ -73,26 +101,41 @@ Use this pattern when [Workflows](/workflows) are lightweight but [Activities](/
 - Workflow visibility is shared
 - More complex to reason about
 
-### 3. Namespace per tenant
+### 4. Namespace per tenant
 
 **Use a separate [Namespace](/namespaces) for each tenant.**
 
-Only practical for a small number (< 50) of high-value tenants due to operational overhead.
+Only practical for a smaller number of high-value tenants due to operational overhead. Most teams find this manageable for fewer than 50 tenants, though organizations with strong automation may scale higher. This pattern is not a good fit if you expect a very large number of tenants (10,000+).
 
 **Pros:**
-- Complete isolation between tenants
-- Per-tenant rate limiting
-- Maximum security
+- Complete isolation between tenants — no noisy neighbor problem
+- Each Namespace has its own [rate limits](/cloud/limits) that can be provisioned on demand per customer
+- Each Namespace can be deployed across [multiple regions](/cloud/service-availability) globally
+- Per-Namespace observability is available by default
+- Maximum security boundary
 
 **Cons:**
 - Higher operational overhead
 - Credential and connectivity management per [Namespace](/namespaces)
-- Requires more [Workers](/workers) (minimum 2 per Namespace for high availability)
-- Expensive at scale
+- Requires a new [Worker](/workers) pool deployment for each customer (minimum 2 per Namespace for high availability)
+- Not cost-effective at scale
 
 <RelatedReadContainer>
   <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
 </RelatedReadContainer>
+
+### Pattern comparison
+
+| | Task Queues per tenant | Fairness-based | Shared Workflow / Separate Activity TQs | Namespace per tenant |
+|---|---|---|---|---|
+| **Isolation** | Task Queue level | Probabilistic (weighted) | Activity-level only | Complete |
+| **Noisy neighbor protection** | Strong | Weight-based throttling | Activity-level | Full — separate rate limits |
+| **Worker management** | Moderate — config per tenant | Simple — single Task Queue | Moderate | High — Worker pool per tenant |
+| **Onboarding new tenants** | Config update and restart | Set fairness and priority values (no new Workers) | Config update and Worker restart | New Namespace and Worker pool |
+| **Observability** | Per-Task Queue metrics | Per-Task Queue metrics | Mixed | Per-Namespace |
+| **Rate limiting** | Shared across Task Queue | Per-key rate limits | Shared across Namespace | Independent per Namespace |
+| **Scale ceiling** | Thousands of tenants | Thousands of tenants | Thousands of tenants | 10,000 (Namespace limit) |
+| **Best for** | Most multi-tenant apps | Tiered SaaS with many tenants | Heavy Activity workloads | High-value, compliance-sensitive tenants |
 
 ## Task Queue isolation pattern
 
@@ -186,7 +229,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 | Current customers | 1,000 |
 | Workflow Task Queues per customer | 1 |
 | Activity Task Queues per customer | 1 |
-| Max Task Queue pollers per Namespace | 5,000 |
+| Max Task Queue pollers per Namespace | 20,000 (per [Cloud limits](/cloud/limits)) |
 | SDK concurrent Workflow task pollers | 5 |
 | SDK concurrent Activity task pollers | 5 |
 | Max concurrent Workflow executions | 200 |
@@ -196,7 +239,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
 **[Task Queue](/task-queue) poller limits:**
 - Each [Worker](/workers) uses 10 pollers per tenant (5 Workflow + 5 Activity)
-- Maximum Workers in [Namespace](/namespaces): 5,000 pollers ÷ 10 = **500 Workers**
+- Maximum Workers in [Namespace](/namespaces): 20,000 pollers ÷ 10 = **2,000 Workers**
 
 **Worker capacity:**
 - Each Worker can theoretically handle 200 [Workflows](/workflows) and 200 [Activities](/activities) concurrently
@@ -206,7 +249,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
 **Namespace capacity:**
 - At 250 tenants per Worker, need 2 Workers per group of tenants (for HA)
-- Maximum tenants in Namespace: (500 Workers ÷ 2) × 250 = **62,500 tenants**
+- Maximum tenants in Namespace: (2,000 Workers ÷ 2) × 250 = **250,000 tenants**
 
 :::note
 These are theoretical calculations based on SDK defaults. **Always perform load testing** to determine actual capacity for your specific workload. Monitor CPU, memory, and Temporal metrics during testing.
@@ -247,6 +290,7 @@ Even with [Task Queue](/task-queue) isolation, monitor for tenants that:
 
 Strategies:
 - Implement per-tenant rate limiting in your application
+- Implement fairness keys and apply per-key rate limits
 - Move problematic tenants to dedicated Workers
 - Use [Workflow](/workflows)/[Activity](/activities) timeouts aggressively
 
