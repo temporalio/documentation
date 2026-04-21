@@ -35,8 +35,6 @@ Pass a `WorkerDeploymentVersion` and a callback that registers your Workflows an
 package main
 
 import (
-	"crypto/tls"
-
 	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
@@ -48,7 +46,6 @@ func main() {
 		BuildID:        "build-1",
 	}, func(opts *lambdaworker.Options) error {
 		opts.TaskQueue = "my-task-queue"
-		opts.ClientOptions.ConnectionOptions.TLS = &tls.Config{}
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
 			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
