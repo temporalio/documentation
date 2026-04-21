@@ -32,17 +32,13 @@ The Go SDK includes an S3 storage driver. Follow these steps to set it up:
 
 ### Prerequisites
 
-- An Amazon S3 bucket that you have read and write access to. Refer to
-  [lifecycle management](/external-storage#lifecycle) to ensure that your payloads remain available for the entire
-  lifetime of the Workflow.
-- Install the S3 driver module and its dependencies:
-  `go get go.temporal.io/sdk/contrib/aws/s3driver go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2 github.com/aws/aws-sdk-go-v2/config github.com/aws/aws-sdk-go-v2/service/s3`
+- An Amazon S3 bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
+  to ensure that your payloads remain available for the entire lifetime of the Workflow.
+- Install the S3 driver module and its dependencies: `go get go.temporal.io/sdk/contrib/aws/s3driver go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2 github.com/aws/aws-sdk-go-v2/config github.com/aws/aws-sdk-go-v2/service/s3`
 
 ### Procedure
 
-1. Load your AWS configuration and create the S3 storage driver. The driver uses your standard
-   [AWS credentials](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) from the
-   environment (environment variables, IAM role, or AWS config file):
+1. Load your AWS configuration and create the S3 storage driver. The driver uses your standard [AWS credentials](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) from the environment (environment variables, IAM role, or AWS config file):
 
    <!--SNIPSTART go-s3-driver-create-->
 
@@ -221,25 +217,23 @@ A custom driver implements the `converter.StorageDriver` interface with four met
   reference so it can route retrieval requests to the correct driver. Changing the name after payloads have been stored
   breaks retrieval. For example, two S3 drivers could be named `"s3-primary"` and `"s3-archive"`.
 - `Type()` returns a string that identifies the driver implementation. Unlike `Name()`, this must be the same across all
-  instances of the same driver type regardless of configuration. Two S3 drivers named `"s3-primary"` and `"s3-archive"`
-  would both return `"aws.s3driver"` as their type, while the local disk driver in the custom driver code sample returns
-  `"local-disk"`.
+  instances of the same driver type regardless of configuration. Two S3 drivers named `"s3-primary"` and `"s3-archive"` would both return
+  `"aws.s3driver"` as their type, while the local disk driver in the custom driver code sample returns `"local-disk"`.
 - `Store()` receives a slice of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `Retrieve()` receives the claims that `Store()` produced and returns the original payloads.
 
 ### 2. Store payloads
 
-In `Store()`, marshal each Payload protobuf message to bytes with `proto.Marshal(payload)` and write the bytes to your
-storage system. The application data has already been serialized by the
-[Payload Converter](/develop/go/data-handling/data-conversion) and
-[Payload Codec](/develop/go/data-handling/data-encryption) before it reaches the driver. See the
-[data conversion pipeline](/external-storage#data-pipeline) for more details.
+In `Store()`, marshal each Payload protobuf message to bytes with `proto.Marshal(payload)` and write the bytes to
+your storage system. The application data has already been serialized by the [Payload Converter](/develop/go/data-handling/data-conversion)
+and [Payload Codec](/develop/go/data-handling/data-encryption) before it reaches the driver.
+See the [data conversion pipeline](/external-storage#data-pipeline) for more details.
 
-Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `ctx.Target` provides
-identity information (namespace, Workflow ID) depending on the operation. Use a type switch on
-`StorageDriverWorkflowInfo` and `StorageDriverActivityInfo` to access the concrete values. Consider structuring your
-storage keys to include this information so that you can identify which Workflow owns each payload.
+Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `ctx.Target`
+provides identity information (namespace, Workflow ID) depending on the operation. Use a type switch on
+`StorageDriverWorkflowInfo` and `StorageDriverActivityInfo` to access the concrete values. Consider structuring
+your storage keys to include this information so that you can identify which Workflow owns each payload.
 
 ### 3. Retrieve payloads
 
@@ -285,21 +279,21 @@ c, err := client.Dial(client.Options{
 ## Use multiple storage drivers
 
 When you register multiple drivers, you must provide a `DriverSelector` that implements the `StorageDriverSelector`
-interface. The selector chooses which driver stores each payload. Any driver in the list that is not selected for
-storing is still available for retrieval, which is useful when migrating between storage backends. Return `nil` from the
-selector to keep a specific payload inline in Event History.
+interface. The selector chooses which driver stores each payload. Any driver in the list that is not selected for storing is still
+available for retrieval, which is useful when migrating between storage backends. Return `nil` from the selector to
+keep a specific payload inline in Event History.
 
 Multiple drivers are useful in scenarios such as:
 
-- Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the one
-  you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads. The old
-  driver remains available for retrieving existing claims.
-- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For example, use S3
-  for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the appropriate driver
-  based on the runtime environment.
+- Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the
+  one you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads.
+  The old driver remains available for retrieving existing claims.
+- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For
+  example, use S3 for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the
+  appropriate driver based on the runtime environment.
 
-The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver` is
-only registered so the Worker can retrieve payloads that were previously stored with it:
+The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver`
+is only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART go-external-storage-multiple-drivers-->
 
