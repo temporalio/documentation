@@ -296,7 +296,7 @@ Create a [Worker Deployment Version](/production-deployment/worker-deployments/w
 The compute configuration tells Temporal how to invoke your Worker: the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume.
 The deployment name and build ID must match the values in your Worker code.
 
-You can create the version using the Temporal UI, the Temporal CLI, or programmatically with an SDK.
+You can create the version using the Temporal UI or the Temporal CLI.
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal UI">
@@ -337,51 +337,13 @@ temporal worker deployment create-version \
 | `--aws-lambda-assume-role-external-id` | External ID configured in the IAM role trust policy. |
 
 </TabItem>
-<TabItem value="sdk" label="SDK">
-
-Use the SDK when the deployment registration is part of your application, for example a setup program that provisions infrastructure and registers the version together, or when you need to compute values dynamically. When you create a version through the SDK, you must [set the version as current](#set-current-version) as a separate step.
-
-<SdkTabs hideUnsupportedLanguages>
-<SdkTabs.Go>
-
-```go
-// Create the worker deployment
-client.CreateWorkerDeployment(ctx, &workflowservice.CreateWorkerDeploymentRequest{
-    Namespace:      "default",
-    DeploymentName: "my-app",
-})
-
-// Create a version with Lambda compute config
-client.CreateWorkerDeploymentVersion(ctx, &workflowservice.CreateWorkerDeploymentVersionRequest{
-    Namespace: "default",
-    DeploymentVersion: &deploymentpb.WorkerDeploymentVersion{
-        DeploymentName: "my-app",
-        BuildId:        "build-1",
-    },
-    ComputeConfig: &computepb.ComputeConfig{
-        ScalingGroups: map[string]*computepb.ComputeConfigScalingGroup{
-            "default": {
-                Provider: &computepb.ComputeProvider{
-                    Type: "aws-lambda",
-                    Details: /* Lambda ARN, role ARN, external ID */,
-                },
-            },
-        },
-    },
-})
-```
-
-</SdkTabs.Go>
-</SdkTabs>
-
-</TabItem>
 </Tabs>
 
 ## 5. Set the version as current {#set-current-version}
 
 If you created the version through the Temporal UI, the version is already current and you can skip this step.
 
-If you used the CLI or SDK, set the version as current.
+If you used the CLI, set the version as current.
 Without this step, tasks on the Task Queue will not route to the version, and Temporal will not invoke the Lambda function.
 
 ```bash
