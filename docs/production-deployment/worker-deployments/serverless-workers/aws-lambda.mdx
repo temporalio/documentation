@@ -38,6 +38,11 @@ This guide walks through deploying a Temporal Worker on AWS Lambda.
 - The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+- The [Python SDK](/develop/python) (`temporalio`)
+
+</SdkTabs.Python>
 </SdkTabs>
 
 ## 1. Write the Worker code {#write-the-worker-code}
@@ -81,6 +86,36 @@ Each Workflow must declare a [versioning behavior](/worker-versioning#versioning
 For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+Use the Python SDK's `lambda_worker` contrib package.
+
+```python
+from temporalio.common import WorkerDeploymentVersion
+from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
+
+from my_workflows import MyWorkflow
+from my_activities import my_activity
+
+
+def configure(config: LambdaWorkerConfig) -> None:
+    config.worker_config["task_queue"] = "my-task-queue"
+    config.worker_config["workflows"] = [MyWorkflow]
+    config.worker_config["activities"] = [my_activity]
+
+
+lambda_handler = run_worker(
+    WorkerDeploymentVersion(
+        deployment_name="my-app",
+        build_id="build-1",
+    ),
+    configure,
+)
+```
+
+For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - Python SDK](/develop/python/workers/serverless-workers/aws-lambda).
+
+</SdkTabs.Python>
 </SdkTabs>
 
 ## 2. Deploy the Lambda function {#deploy-the-lambda-function}
@@ -105,9 +140,33 @@ zip function.zip bootstrap
 ```
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+Install dependencies into a local directory for packaging:
+
+```bash
+pip install --target ./package temporalio
+```
+
+Copy your application code into the package directory:
+
+```bash
+cp lambda_function.py my_workflows.py my_activities.py ./package/
+```
+
+Package everything into a zip file:
+
+```bash
+cd package && zip -r ../function.zip . && cd ..
+```
+
+</SdkTabs.Python>
 </SdkTabs>
 
 ### ii. Deploy the Lambda function {#deploy-lambda-function}
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
 
 ```bash
 aws lambda create-function \
@@ -126,11 +185,39 @@ aws lambda create-function \
 | `--function-name` | Name of the Lambda function. |
 | `--runtime` | Lambda runtime. Use `provided.al2023` for custom Go binaries. |
 | `--handler` | Entry point binary name. Must be `bootstrap` when using the `provided.al2023` custom runtime. |
+
+</SdkTabs.Go>
+<SdkTabs.Python>
+
+```bash
+aws lambda create-function \
+  --function-name my-temporal-worker \
+  --runtime python3.13 \
+  --handler lambda_function.lambda_handler \
+  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
+  --zip-file fileb://function.zip \
+  --timeout 600 \
+  --memory-size 256 \
+  --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
+```
+
+| Parameter | Description |
+|---|---|
+| `--function-name` | Name of the Lambda function. |
+| `--runtime` | Lambda runtime. Use `python3.13` or another supported Python version. |
+| `--handler` | Entry point in `module.function` format. Must point to the handler returned by `run_worker`. |
+
+</SdkTabs.Python>
+</SdkTabs>
+
+The following parameters apply to all SDKs:
+
+| Parameter | Description |
+|---|---|
 | `--role` | ARN of the Lambda [execution role](https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html), which grants the function permission to run. Trusted principal must be `lambda.amazonaws.com`. This is separate from the role Temporal uses to invoke the function in [Step 3](#configure-iam). The role must have at least the [`AWSLambdaBasicExecutionRole`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html) managed policy attached. |
 | `--zip-file` | Path to your packaged deployment zip. |
 | `--timeout` | Invocation deadline in seconds. This is the maximum time each Lambda invocation can run before AWS terminates it. Set this high enough for the Worker to start, process Tasks, and [shut down gracefully](/serverless-workers#worker-lifecycle). |
 | `--memory-size` | Memory in MB allocated to each invocation. |
-| `HOME` | Must be `/tmp`. |
 | `TEMPORAL_ADDRESS` | Temporal frontend address (e.g., `<namespace>.<account>.tmprl.cloud:7233`). |
 | `TEMPORAL_NAMESPACE` | Temporal Namespace. |
 | `TEMPORAL_TASK_QUEUE` | Task Queue name. Overrides the value set in code. |
@@ -138,7 +225,7 @@ aws lambda create-function \
 | `TEMPORAL_TLS_CLIENT_KEY_PATH` | Path to the TLS client key file for mTLS authentication. |
 | `TEMPORAL_API_KEY` | API key for API key authentication. |
 
-The `lambdaworker` package reads environment variables automatically at startup. For the full list, see [Client environment configuration](/references/client-environment-configuration).
+The serverless Worker packages read environment variables automatically at startup. For the full list, see [Client environment configuration](/references/client-environment-configuration).
 
 Sensitive values like TLS keys and API keys should be encrypted at rest. See [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
 
