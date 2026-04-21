@@ -1016,7 +1016,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/rust/nexus/index',
               },
-              items: ['develop/rust/nexus/service-handler'],
+              items: ['develop/rust/nexus/feature-guide'],
             },
           ],
         },
