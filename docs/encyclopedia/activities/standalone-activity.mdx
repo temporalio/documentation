@@ -49,20 +49,12 @@ the simplest way to run durable, retryable tasks on Temporal.
 
 A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a
 [Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow. This results in
-fewer [Billable Actions](/cloud/actions#actions-in-workflows) in Temporal Cloud than using a Workflow
+fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud than using a Workflow
 to run a single Activity. If your Activity Execution is short-lived, you will also notice lower
 latency, since there are fewer Worker round-trips.
 
 You write your Activity Functions the same way for both. In fact, the same Activity Function can be
 executed as a Standalone Activity and as a Workflow Activity with no code changes.
-
-## Get started {#get-started}
-
-If you need to orchestrate multiple Activities, then you should use a Workflow. But if you just need
-to execute a single Activity, then you can use a Standalone Activity. This will result in fewer
-[Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud than using a Workflow to
-run a single Activity. If your Activity Execution is short-lived, then you will also notice lower
-latency, since there are fewer Worker round-trips than when executing the Activity in a Workflow.
 
 :::tip GET STARTED
 
