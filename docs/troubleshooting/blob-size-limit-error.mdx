@@ -36,6 +36,7 @@ include:
 - `[TMPRL1103] Attempted to upload payloads with size that exceeded the error limit.`
 - `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
 - `Complete result exceeds size limit`
+- `CompleteWorkflowExecutionCommandAttributes.Result exceeds size limit`
 - `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
 ### Error behavior {#payload-error-behavior}
@@ -45,8 +46,13 @@ The behavior when a payload exceeds the size limit depends on the SDK version.
 **Python SDK 1.23.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
 Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue.
 
-**All other SDK versions:** The Temporal Service rejects the request and terminates the Workflow. You'll need to resolve
-the issue and restart the Workflow.
+**All other SDK versions:** The behavior depends on whether the oversized payload is an input or a result:
+
+- **Inputs (Workflow input, Activity input):** The Temporal Service rejects the command and terminates the Workflow.
+  You'll need to resolve the issue and restart the Workflow.
+- **Activity result:** The Temporal Service rejects the Activity completion and the Activity fails with an error.
+- **Workflow result:** The Workflow gets stuck in a retry loop. The server rejects the `CompleteWorkflowExecution`
+  command, and replay produces the same oversized result.
 
 ### How to resolve
 
