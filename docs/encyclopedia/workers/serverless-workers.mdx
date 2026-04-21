@@ -74,13 +74,13 @@ The invocation flow works as follows:
 2. The [Matching Service](/temporal-service/temporal-server#matching-service) attempts to route the Task directly to an
    available Worker (a sync match).
 3. If a Worker is available, the Task is routed to that Worker.
-4. If no Worker is available (sync match fails), the Matching Service pushes a signal to the WCI, and the WCI invokes the
-   configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API).
+4. If no Worker is available (sync match fails), the Matching Service pushes a signal to the WCI, and the WCI invokes
+   the configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API).
 5. The Serverless Worker starts, creates a Temporal Client, and begins polling the Task Queue.
 6. The Worker processes available Tasks until it exits (see [Worker lifecycle](#worker-lifecycle)).
 
-The WCI also monitors the Task Queue backlog independently. If tasks arrive faster than Workers can process them, the WCI
-invokes additional Workers in parallel until the backlog drains or provider concurrency limits are reached.
+The WCI also monitors the Task Queue backlog independently. If tasks arrive faster than Workers can process them, the
+WCI invokes additional Workers in parallel until the backlog drains or provider concurrency limits are reached.
 
 Each invocation is independent. The Worker creates a fresh client connection on every invocation. There is no connection
 reuse or shared state across invocations.
@@ -157,6 +157,9 @@ might terminate the Worker before the full stop timeout completes. In-flight Act
 timeout to finish, and the shutdown hooks may not run.
 
 ## Failure handling {#failure-handling}
+
+Serverless Workers rely on Temporal's standard retry and timeout semantics to recover from failures. The following
+sections describe common failure scenarios and how they are handled.
 
 ### Worker crash {#worker-crash}
 
