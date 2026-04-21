@@ -1,10 +1,10 @@
 ---
-id: billing
-title: Billing Center
-sidebar_label: Billing Center
+id: billing-and-cost
+title: Usage and billing management
+sidebar_label: Usage and billing
 sidebar_position: 3
 description: As an Account Owner, you can access and manage billing details anytime, with invoices available for download on the Billing page. Typical billing cycles begin on the first of the month (UTC).
-slug: /cloud/billing
+slug: /cloud/billing-and-cost
 toc_max_heading_level: 4
 keywords:
   - billing
@@ -21,7 +21,31 @@ tags:
   - Temporal Cloud
 ---
 
+import * as Components from '@site/src/components';
 
+Temporal strives to provide full transparency over billing and costs.
+Use this information to assess your spending patterns, inspect your credit ledger, check your invoice histories, update payment details,
+and manage your current plan as needed.
+
+For more information on current Temporal Cloud pricing for Actions, storage, and services/support, please visit our [Pricing](/cloud/pricing) page.
+
+Temporal Provides multiple ways to view your usage and billing data:
+
+- [Billing Center](https://cloud.temporal.io/billing) allows you to see summary invoices and credits, manage plans, and delete your accounts.
+    - Coming soon: Billing dashboard enhancements to visualize billing by Namespace over time
+    - Viewable by Account Owners and Finance Admin
+- [Usage Dashboards](https://cloud.temporal.io/usage) allow you to monitor Namespace level usage over time.
+    - Coming soon: Additional granularity based on Action Types, grouping by Tags, and grouping by Projects
+    - Viewable by Account Owners, Finance Admin, Global Admin on an account level. Namespace level usage is visible on the Namespace pages to those with access.
+- [Billing API](/cloud/billing-api) allow you to access billing information on a Namespace basis down to an hourly granularity, enriched with Tags and Projects.
+The Billing API provides a FOCUS-guided data format that can be ingested into your cloud cost management platform or analytics tooling, or downloaded as a CSV.
+    - Viewable by Account Owners, Finance Admin
+
+:::tip Support, stability, and dependency info
+
+The Temporal Cloud Billing API is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
 
 ## Current balance {#current-balance}
 

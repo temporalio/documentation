@@ -21,148 +21,64 @@ tags:
   - Support
 ---
 
-Temporal Cloud Actions are the primary unit of consumption-based pricing for Temporal Cloud. 
-They track billable operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat, or sending Signals.
+Actions track both the progress of a workflow (such as Workflow Start, Schedule Started, Workflow reset) and broader
+capabilities enabled by Temporal Cloud.
 
-Actions can be largely placed in the following categories:
+Temporal Cloud Actions are the primary unit of consumption-based pricing for Temporal Cloud. They track billable
+operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat, or sending messages.
 
-- [Workflow](#workflow)
-- [Activity](#activity)
-- [Timer](#timer)
-- [Signal](#signal)
-- [Query](#query)
-- [Update](#update)
-- [Schedule](#schedule)
-- [Nexus](#nexus)
+The following result in an action on Temporal Cloud:
 
-Some additional Temporal Cloud features are billed as Actions:
+## Workflows
 
-- [Export](#export)
-- [Fairness](#fairness)
-- [Capacity](#capacity)
+- **Workflow started**. Occurs via client start, [Continue-As-New](/workflow-execution/continue-as-new),
+  [Child Workflow](/child-workflows) start. If a Workflow start fails, an Action is not recorded. De-duplicated Workflow
+  starts that share a Workflow ID do _not_ count as an Action.
+- **Workflow reset**. Occurs when a [Workflow](/workflows) is reset. (Actions that occur before a
+  [Reset](/workflow-execution/event#reset) are counted even if they are no longer visible in
+  [Event History](/workflow-execution/event#event-history).)
+- **Timer started**. Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as
+  `AwaitWithTimeout` in Go or `condition` in TypeScript.
+- **Search Attribute upsert requested**. Occurs for each invocation of `UpsertSearchAttributes` command. Multiple Search
+  Attributes updated in a single `UpsertSearchAttributes` command count as one Action. Search Attributes specified
+  during Workflow start are _excluded_ from Action counts. The `TemporalChangeVersion` Search Attribute, used for
+  Workflow versioning, is also exempt from Action counting.
+- **Signal sent**. An Action occurs for every [Signal](/sending-messages#sending-signals), whether sent from a Client or
+  from a Workflow. Also, one total action occurs for any [Signal-With-Start](/sending-messages#signal-with-start),
+  regardless of whether the Workflow starts.
+- **Query received by Worker**. An Action occurs for every [Query](/sending-messages#sending-queries), including viewing
+  the call stack in the Temporal Cloud UI, which results in a Query behind the scenes.
+- **Update received by Worker**. An Action occurs for every successful [Update](/sending-messages#sending-updates) and
+  every [rejected](/handling-messages#update-validators) Update. This includes
+  [Update-With-Start](/sending-messages#update-with-start), and is in addition to the start Action in the case when the
+  Workflow starts as well. De-duplicated Updates that share an Update ID do _not_ count as an Action.
+- **Side Effect recorded**. For a mutable [Side Effect](/workflow-execution/event#side-effect), an Action occurs only
+  when the value changes.
+- **Workflow Execution Options updated.** An Action occurs for every
+  [Workflow-Execution-Options-Updated](/references/events#workflowexecutionoptionsupdated) event. This includes
+  attaching a Workflow completion callback or modifying a Workflow versioning override.
 
-Billable Actions are visible in the [OpenMetrics endpoint](https://metrics.temporal.io), [Workflow History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards, and the [Billing API](/cloud/billing-api).
-Action types and categories can help estimate usage, identify specific Action types that are driving usage, optimize workflows by tracking usage spikes, and troubleshoot errors. 
-For example:
+## Child Workflows
 
-- You can see if a new Workflow type on a Namespace is driving a significant usage increase
-- You can identify the aggregate usage of Activity Heartbeats on a Namespace
+- **Start Child Workflow** and **Child Workflow Execution**. When the parent Workflow durably records the intent to
+  start a Child Workflow, it results in two Actions, one for starting the Workflow, and another for the attempted
+  Execution.
 
-The following is the mapping of Action Categories to Action types. 
-The Action Types that are visible on various endpoints can differ based what is visible to a system. 
-Note: Action Categories and Action Types are not available in the billing API. 
-
-Usage and Billing data will have the most complete Actions data while Workflow history and metrics will help with detailed _estimates_.
-For example, [History Event Types](https://docs.temporal.io/workflow-execution/event) are provided for transparency, but do not always have a simple 1:1 relationship with Action Types. 
-The Categories, Action types, and available endpoints are listed in the following sections: 
-
-## Workflow {#workflow}
-
-- **Workflow started**
-  - Occurs via client start, [Continue-As-New](/workflow-execution/continue-as-new), [Child Workflow](/child-workflows) start. 
-  - If a Workflow start fails, an Action is not recorded. 
-  - De-duplicated Workflow starts that share a Workflow ID do _not_ count as an Action.
-- **Workflow reset**
-  - Occurs when a [Workflow](/workflows) is reset. 
-  - Actions that occur before a [Reset](/workflow-execution/event#reset) are counted on the original workflow. 
-    These events are not counted on the newly created workflow.
-- **Search Attribute upsert requested**
-  - Occurs for each invocation of `UpsertSearchAttributes` command. 
-  - Multiple Search Attributes updated in a single `UpsertSearchAttributes` command count as one Action. 
-  - Search Attributes specified during Workflow start are _excluded_ from Action counts. 
-  - The `TemporalChangeVersion` Search Attribute, used for Workflow versioning, is also exempt from Action counting.
-- **Workflow Execution Options updated.** 
-  - Occurs for every [Workflow-Execution-Options-Updated](/references/events#workflowexecutionoptionsupdated) event. 
-  - This includes attaching a Workflow completion callback or modifying a Workflow versioning override.
-- **Start Child Workflow Execution initiated.**
-  - Occurs when the parent Workflow durably records the intent to start a Child Workflow. 
-  - Results in two Actions, one for durably storing the intent to start a Child Workflow and one for the attempt to start it.
-- **Workflow started via Multi-Operation.**
-  - Occurs when a Workflow is started as part of an ExecuteMultiOperation request — a single atomic RPC that bundles a Workflow start with one or more Workflow Updates.
-    The start counts as one Action. 
-  - Each bundled Update that is accepted or rejected counts as an additional Action. 
-  - If the Workflow was already running and the start is de-duplicated, no Action is charged for the start (though an `update_workflow_options_via_start` Action may still apply).
-
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Start Workflow | `start_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` |
-| Start Child Workflow | `start_child_workflow` | `EVENT_TYPE_START_CHILD_WORKFLOW_EXECUTION_INITIATED` |
-| Continue As New Workflow | `continue_as_new_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_CONTINUED_AS_NEW` Note: The UI shows a billable action only for the `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` event of the newly started Workflow, not for this history event. |
-| Start Workflow (Multi-Operation) | `start_workflow_multi_operation` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` |
-| Update Workflow Options | `update_workflow_options` | `EVENT_TYPE_WORKFLOW_EXECUTION_OPTIONS_UPDATED` |
-| Update Workflow Options (Via Start) | `update_workflow_options_via_start` | `EVENT_TYPE_WORKFLOW_EXECUTION_OPTIONS_UPDATED` |
-| Upsert Workflow Search Attributes | `upsert_workflow_search_attributes` | `EVENT_TYPE_UPSERT_WORKFLOW_SEARCH_ATTRIBUTES` |
-| Reset Workflow | `reset_workflow` | `EVENT_TYPE_WORKFLOW_TASK_FAILED` Note: When `cause == WORKFLOW_TASK_FAILED_CAUSE_RESET_WORKFLOW` |
-| Record Workflow Heartbeat | `record_workflow_heartbeat` | N/A |
-
-## Activity {#activity}
+## Activities
 
 - **Activity started or retried**. Occurs each time an Activity is started or retried.
 - **Local Activity started**. All [Local Activities](/local-activity) associated with one Workflow Task count as a
-  single Action. Temporal Cloud counts all [RecordMarkers](/references/commands#recordmarker) from each
-  Workflow Task as one action, and not _N_ actions. Note:
-  - Each Workflow Task Heartbeat counts as an additional Action.
-  - Local Activities retried following a Workflow Task Heartbeat count as one Action (capped at 100 Actions).
+  single Action. That's because Temporal Cloud counts all [RecordMarkers](/references/commands#recordmarker) from each
+  Workflow Task as one action, and not _N_ actions. Please note:
+  - Each additional Workflow Task heartbeat after counts as an additional Action.
+  - Local Activities retried following a Workflow Task heartbeat count as one Action (capped at 100 Actions).
 - **Activity Heartbeat recorded**. A Heartbeat call from Activity code counts as an Action only if it reaches the
   [Temporal Server](/temporal-service/temporal-server). Temporal SDKs throttle
   [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat). The default throttle is 80% of
   the [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout). Heartbeats don't apply to Local
   Activities.
 
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Schedule Activity | `schedule_activity` | `EVENT_TYPE_ACTIVITY_TASK_SCHEDULED` |
-| Retry Activity | `retry_activity` | `EVENT_TYPE_ACTIVITY_TASK_STARTED` Note: Intermediate retry attempts do not produce separate history events. Total attempt count is recorded in the `ActivityTaskStartedEventAttributes.attempt` field on this event. The user should subtract 1, because the first attempt is not a retry. If the Workflow is terminated while Activity retry is in progress, this `STARTED` event is not written, so this data may not always be available. |
-| Retry Local Activity | `retry_activity_local` | `EVENT_TYPE_WORKFLOW_TASK_COMPLETED ` Note: the retry count is recorded in `WorkflowTaskCompletedEventAttributes.metering_metadata.nonfirst_local_activity_execution_attempts` field on this event. |
-| Record Activity Heartbeat | `record_activity_heartbeat` | N/A |
-| Record Activity Heartbeat by ID | `record_activity_heartbeat_by_id` | N/A |
-| Record Activity Markers | `record_activity_markers` | `EVENT_TYPE_MARKER_RECORDED` |
-| Start Standalone Activity | `start_standalone_activity` | N/A |
-| Retry Standalone Activity | `retry_standalone_activity` | N/A |
-| Record Standalone Activity Heartbeat | `record_standalone_activity_heartbeat` | N/A |
-| Record Standalone Activity Heartbeat By ID | `record_standalone_activity_heartbeat_by_id` | N/A |
-
-## Timer {#timer}
-
-- **Timer started**. Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
-
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Start Timer | `start_timer` | `EVENT_TYPE_TIMER_STARTED` |
-
-## Signal {#signal}
-
-- **Signal sent**. An Action occurs for every [Signal](https://docs.temporal.io/sending-messages#sending-signals), whether sent from a Client or from a Workflow. 
-Also, one total action occurs for any [Signal-With-Start](https://docs.temporal.io/sending-messages#signal-with-start), regardless of whether the Workflow starts.
-
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Signal Workflow | `signal_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` |
-| Signal External Workflow | `signal_external_workflow` | `EVENT_TYPE_SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED` (signaler workflow history) `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` (signaled Workflow history) Note: The UI shows a billable action only in the signaled Workflow history, not in the signaler Workflow history.   |
-| Signal Workflow With Start | `signal_workflow_with_start` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` followed by `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` if the workflow didn’t exist, or only `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` if the Workflow existed.|
-
-## Query {#query}
-
-- **Query received by Worker**. An Action occurs for every [Query](https://docs.temporal.io/sending-messages#sending-queries), including viewing the call stack in the Temporal Cloud UI, which results in a Query behind the scenes. 
-`__temporal_workflow_metadata` is a built-in query used to retrieve workflow metadata at runtime and is excluded.
-
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Query Workflow | `query_workflow` | N/A |
-
-## Update {#update}
-
-- **Update received by Worker**.   
-  - Occurs for every successful [Update](https://docs.temporal.io/sending-messages#sending-updates) and every [rejected](https://docs.temporal.io/handling-messages#update-validators) Update.   
-  - This includes [Update-With-Start](https://docs.temporal.io/sending-messages#update-with-start), and is in addition to the start Action in the case when the Workflow starts as well.   
-  - De-duplicated Updates that share an Update ID do *not* count as an Action.
-
-| Name | Action ID | History Event Type |
-| ----- | ----- | ----- |
-| Accept Workflow Update | `accept_workflow_update` | `EVENT_TYPE_WORKFLOW_EXECUTION_UPDATE_ACCEPTED` |
-| Reject Workflow Update | `reject_workflow_update` | `EVENT_TYPE_WORKFLOW_EXECUTION_UPDATE_REJECTED` Note: this event is never written to history.|
-
-## Schedule {#schedule}
+## Schedules
 
 [Schedules](/schedule) allows you to schedule a Workflow to start at a particular time. Each execution of a Schedule
 accrues three actions:
@@ -171,16 +87,15 @@ accrues three actions:
 - **Workflow started**. This is a single action to start the target Workflow. It includes initial Search Attributes as
   part of the start request.
 
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Create Schedule | `create_schedule` | N/A |
-| Update Schedule | `update_schedule` | N/A |
-| Patch Schedule | `patch_schedule` | N/A |
-| Delete Schedule | `delete_schedule` | N/A |
-| Schedule Workflow | `schedule_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` Note: `event.WorkflowExecutionStartedEventAttributes.indexedFields.TemporalScheduledById` tells if a Workflow was started by a Schedule. |
+## Export
 
+[Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your
+choice.
 
-## Temporal Nexus {#nexus}
+- **Workflow exported**. Each Workflow exported accrues a single action.
+- Excluded from APS calculations.
+
+## Temporal Nexus
 
 - For [Nexus Operation scheduled](/references/events#nexusoperationscheduled), the caller Workflow starting a Nexus
   Operation results in one Action on the caller Namespace.
@@ -191,41 +106,57 @@ accrues three actions:
   includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself
   or a retry of the Nexus Operation itself.
 
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Schedule Nexus Operation | `schedule_nexus_operation` | `EVENT_TYPE_NEXUS_OPERATION_SCHEDULED` |
-| Request Nexus Operation Cancellation | `request_nexus_operation_cancellation` | `EVENT_TYPE_NEXUS_OPERATION_CANCEL_REQUESTED` |
-
-## Export {#export}
-
-[Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your
-choice.
-
-- **Workflow exported**. Each Workflow exported accrues a single action.
-- Excluded from APS calculations.
-
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Export Workflow History | N/A | N/A |
-
-## Fairness {#fairness}
+## Fairness
 
 For each hour a Namespace has the [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) feature enabled, an additional `0.1` Action will be charged per Action in the Namespace.
-- Excluded from APS calculations.
+See [Fairness pricing](/cloud/pricing#fairness-pricing) for detailed billing examples.
 
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Enable Fairness | N/A | N/A |
-
-## Capacity {#capacity}
+## Capacity
 
 - For Namespace Capacity Temporal Resource Units (TRUs), Actions are generated up to the included hourly allocation for
   TRUs in any hour where TRUs are set and actual usage falls beneath the included hourly Action allocation.
 - Excluded from APS calculations.
 
-| Usage Name | Metric Name | History Event Type |
-| ----- | ----- | ----- |
-| Enable Provisioned Capacity | N/A | N/A |
+## Usage
 
-Actions usage can be tracked in multiple areas depending on the needed granularity. 
-Refer to the [Billing and Usage](/cloud/billing-and-usage) documentation for more information.
+Actions usage is tracked across an account in the [usage dashboard](https://cloud.temporal.io/usage) and is visible to
+Account Owners, Finance Admin and Global Admin. For individual namespaces, usage can be seen in the
+[namespace summary](https://cloud.temporal.io/namespaces/) for a specific namespace.
+
+![Temporal Cloud Usage dashboard](/img/cloud/billing/usage-dashboard.png)
+
+## Actions in Workflows
+
+When viewing a Workflow history, events that represent a Billable Action are annotated with the number consumed by the
+event in the **Billable Actions** Column. These Actions are summarized at the top of the workflow.
+
+![Temporal Cloud Usage dashboard showing aggregated Billable Actions](/img/cloud/billing/aggregate-billable-actions.png)
+
+![Temporal Cloud Usage dashboard showing individual Billable Actions associated with events](/img/cloud/billing/individual-billable-actions.png)
+
+This Billable Action estimate is useful for projecting the cost of workflows. For example, if you ran a test workflow
+that generated 20 Billable Actions and projected that it would be run 100 times a day for a month, you could anticipate
+that workflow to generate 20 Actions x 100 runs/day x 30 days = 60,000 Billable Actions per month. You can also use the
+Billable Action estimate to help optimize workflows by better understanding your cost drivers.
+
+:::tip Excluded Billable Actions
+
+The Billable Action estimate is an experimental feature and only measures Billable Actions that exist within workflow
+event histories. Some billable concepts are not included in these calculations such as:
+
+- Query
+- Activity Heartbeats
+- Rejected Update Workflow Executions
+- Export
+- Schedule
+- Replicated Actions that occur in a
+  [Namespace replication](../../cloud/high-availability/index.mdx#high-availability-features)
+
+Additionally, Workflows with the `TemporalNamespaceDivision` Search Attribute set may not have accurate Billable Action
+Estimates. The estimated Billable Actions should only be treated as an estimate. If billable events exist outside of
+event history, the Actions count could be higher.
+
+:::
+
+[Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of
+Actions.
