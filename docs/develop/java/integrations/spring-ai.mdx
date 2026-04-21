@@ -136,7 +136,7 @@ public class TimestampTools {
 
 ### Plain tools
 
-Any class with `@Tool` methods that isn't an Activity stub, Nexus stub, or `@SideEffectTool` runs directly on the Workflow thread. You're responsible for determinism — call Activities, `Workflow.sideEffect()`, child Workflows, or other durable primitives as needed.
+Any class with `@Tool` methods that isn't an Activity stub, Nexus stub, or `@SideEffectTool` runs directly on the Workflow thread. Use this for inherently deterministic tools (such as updating in-memory agent state), or for orchestration of durable primitives as you need, e.g. calling multiple Activities, child Workflows, wait conditions, or other Temporal durable primitives.
 
 ```java
 public class MyTools {
