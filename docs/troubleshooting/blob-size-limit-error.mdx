@@ -35,6 +35,7 @@ include:
 - `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
 - `[TMPRL1103] Attempted to upload payloads with size that exceeded the error limit.`
 - `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
+- `Complete result exceeds size limit`
 - `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
 ### Error behavior {#payload-error-behavior}
@@ -92,7 +93,7 @@ The error message depends on which operation carried the oversized gRPC message 
 - `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
 - `[TMPRL1103] Attempted to upload payloads with size that exceeded the error limit.`
 - `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`
-- `StartToCloseTimeout` (Activities only, see [error behavior](#grpc-error-behavior) below)
+- `ScheduleToCloseTimeout` (Activities only, see [error behavior](#grpc-error-behavior) below)
 
 ### Error behavior {#grpc-error-behavior}
 
@@ -104,16 +105,18 @@ the Activity fails with an explicit error instead of timing out silently.
 
 **All other SDK versions:** The behavior depends on where the oversized message originates:
 
-- **Workflow Tasks:** When a Workflow Worker completes a Workflow Task, it sends all the commands the Workflow produced
-  (such as Activity schedules and their inputs) back to the Temporal Service. If the combined size of the commands and
-  their inputs exceeds 4 MB, the SDK catches the gRPC error and sends a failed Workflow Task response with cause
-  `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. Because replay produces the same oversized request, the Workflow
-  gets stuck in a retry loop that isn't visible in the Event History.
+- **Workflow Tasks:** The Workflow gets stuck in a retry loop that isn't visible in the Event History. This happens
+  because when the Worker completes a Workflow Task, it sends all the commands the Workflow produced (such as Activity
+  schedules and their inputs) back to the Temporal Service. If the combined size exceeds 4 MB, the SDK catches the gRPC
+  error and sends a failed Workflow Task response with cause `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. Replay
+  produces the same oversized request every time, so the Workflow never makes progress.
 
-- **Activity Tasks:** When an Activity Worker completes an Activity Task, it sends the Activity result back to the
-  Temporal Service. If that result exceeds 4 MB, the gRPC call fails and the Worker can't deliver it. The server never
-  receives the completion and eventually times out the Activity, surfacing as a `StartToCloseTimeout`. The actual
-  `ResourceExhausted` gRPC error only appears in Worker logs.
+- **Activity Tasks:** The Activity gets stuck in a retry loop or exits with a `ScheduleToCloseTimeout`. The Activity
+  executes successfully, but the Worker can't deliver the oversized result over gRPC. The server never receives the
+  completion, so it retries the Activity. Each retry completes successfully but fails to deliver the result. The
+  Activity retries until the `ScheduleToCloseTimeout` expires. If no `ScheduleToCloseTimeout` is set, the Activity
+  retries indefinitely until the Workflow is manually terminated. The `ResourceExhausted` gRPC error only appears in
+  Worker logs.
 
 ### How to resolve
 
