@@ -35,6 +35,8 @@ Pass a `WorkerDeploymentVersion` and a callback that registers your Workflows an
 package main
 
 import (
+	"crypto/tls"
+
 	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
@@ -46,6 +48,7 @@ func main() {
 		BuildID:        "build-1",
 	}, func(opts *lambdaworker.Options) error {
 		opts.TaskQueue = "my-task-queue"
+		opts.ClientOptions.ConnectionOptions.TLS = &tls.Config{}
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
 			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
@@ -66,14 +69,6 @@ The `Options` callback gives you access to the same registration methods you use
 ## Configure the Temporal connection {#configure-connection}
 
 The `lambdaworker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
-
-To customize the TLS configuration, set `opts.ClientOptions.ConnectionOptions.TLS` in the options callback:
-
-```go
-opts.ClientOptions.ConnectionOptions.TLS = &tls.Config{
-    // Custom TLS settings, e.g., RootCAs for a private CA
-}
-```
 
 Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
 
