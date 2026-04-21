@@ -23,7 +23,10 @@ This page covers the following:
 
 - [What is a Serverless Worker?](#serverless-worker)
 - [How Serverless invocation works](#how-invocation-works)
+- [Autoscaling](#autoscaling)
 - [Worker lifecycle](#worker-lifecycle)
+- [Failure handling](#failure-handling)
+- [Constraints](#constraints)
 - [Compute providers](#compute-providers)
 
 ## What is a Serverless Worker? {#serverless-worker}
@@ -57,21 +60,50 @@ With Serverless Workers, Temporal starts the Worker.
       dark: '/diagrams/serverless-worker-flow-dark.svg',
     }}
   />
-  <figcaption>Temporal's Worker Controller Instance invokes a Serverless Worker when Tasks arrive on a Task Queue with a compute provider configured.</figcaption>
+  <figcaption>
+    Temporal's Worker Controller Instance invokes a Serverless Worker when Tasks arrive on a Task Queue with a compute
+    provider configured.
+  </figcaption>
 </figure>
+
+Temporal's internal Worker Controller Instance (WCI) decides when to start, scale, and stop compute invocations.
 
 The invocation flow works as follows:
 
-1. A Task arrives on a Task Queue that has a compute provider configured.
-2. Temporal's internal Worker Controller Instance (WCI) service detects that no Worker is polling the Task Queue.
-3. Temporal uses the compute provider configuration to invoke the Serverless Worker. For example, calling AWS Lambda's
-   `InvokeFunction` API.
-4. The Serverless Worker starts, creates a Temporal Client, and begins polling the Task Queue.
-5. The Worker processes available Tasks until the invocation deadline approaches.
-6. The Worker gracefully drains in-progress work and shuts down.
+1. A Task is submitted (for example, `StartWorkflow` or `ScheduleActivity`).
+2. The [Matching Service](/temporal-service/temporal-server#matching-service) attempts to route the Task directly to an
+   available Worker (a sync match).
+3. If a Worker is available, the Task is routed to that Worker.
+4. If no Worker is available (sync match fails), the Matching Service pushes a signal to the WCI, and the WCI invokes
+   the configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API).
+5. The Serverless Worker starts, creates a Temporal Client, and begins polling the Task Queue.
+6. The Worker processes available Tasks until it exits (see [Worker lifecycle](#worker-lifecycle)).
+
+The WCI also monitors the Task Queue backlog independently. If tasks arrive faster than Workers can process them, the
+WCI invokes additional Workers in parallel until the backlog drains or provider concurrency limits are reached.
 
 Each invocation is independent. The Worker creates a fresh client connection on every invocation. There is no connection
 reuse or shared state across invocations.
+
+## Autoscaling {#autoscaling}
+
+Temporal automatically scales Serverless Workers based on Task Queue signals. When Tasks arrive and no Worker is
+available, Temporal invokes new Workers. When the work is done, Workers exit and scale to zero.
+
+The WCI uses two signals to decide when to invoke new Workers:
+
+### Sync match failure {#sync-match-failure}
+
+When a Task is submitted, the [Matching Service](/temporal-service/temporal-server#matching-service) attempts to route
+it directly to an available Worker. If no Worker is available, the sync match fails, and the Matching Service pushes a
+signal to the WCI. The WCI then invokes a new Worker. This is the primary scaling path. Because the Matching Service
+pushes match failures to the WCI as they happen rather than the WCI polling on a timer, latency stays low and scaling is
+responsive.
+
+### Task Queue backlog {#task-queue-backlog}
+
+The WCI monitors Task Queue metadata to determine whether pending Tasks exist without enough Workers to process them. If
+there is work on the queue and not enough Workers, the WCI invokes additional Workers.
 
 ## Worker lifecycle {#worker-lifecycle}
 
@@ -85,7 +117,10 @@ A single Serverless Worker invocation has three phases: init, work, and shutdown
       dark: '/diagrams/serverless-worker-lifecycle-dark.svg',
     }}
   />
-  <figcaption>The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish before shutdown hooks run.</figcaption>
+  <figcaption>
+    The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long
+    the Worker waits for in-flight Tasks to finish before shutdown hooks run.
+  </figcaption>
 </figure>
 
 During the **init** phase, the Worker initializes and establishes a client connection to Temporal.
@@ -120,6 +155,50 @@ more time to complete.
 Raising only the Worker stop timeout does not make the Worker stop polling earlier, which means the compute provider
 might terminate the Worker before the full stop timeout completes. In-flight Activities then do not get the full stop
 timeout to finish, and the shutdown hooks may not run.
+
+## Failure handling {#failure-handling}
+
+Serverless Workers rely on Temporal's standard retry and timeout semantics to recover from failures. The following
+sections describe common failure scenarios and how they are handled.
+
+### Worker crash {#worker-crash}
+
+If a Worker invocation crashes (out of memory, unhandled exception, etc.), the behavior follows standard Temporal retry
+semantics:
+
+- The Activity Timeout fires after the configured duration.
+- Temporal retries the Activity on a different Worker invocation.
+- No manual intervention is required.
+
+### Provider concurrency limit {#provider-concurrency-limit}
+
+If the compute provider's concurrency limit is reached (for example, AWS Lambda account concurrency):
+
+- Further invocations from the WCI fail.
+- Tasks remain in the Task Queue backlog. No data loss occurs.
+- Processing slows until concurrency frees up.
+
+### Resource exhaustion across Activity slots {#resource-exhaustion}
+
+By default, a single Worker invocation may run multiple Activity slots. A crash or resource exhaustion in one Activity
+(for example, out-of-memory from a memory-intensive operation) can affect other Activities running in the same
+invocation.
+
+To isolate Activities from each other:
+
+- Split Workflow and Activity Workers into separate compute functions.
+- Set Activity slots to 1 per invocation.
+
+With single-slot configuration, each Activity gets a dedicated execution environment.
+
+## Constraints {#constraints}
+
+| Constraint        | Detail                                                                                                                                    |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes. |
+| Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.     |
+| Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                          |
+| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must declare `AutoUpgrade` or `Pinned` behavior.                       |
 
 ## Compute providers {#compute-providers}
 
