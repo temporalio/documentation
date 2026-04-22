@@ -22,7 +22,7 @@ import SdkTabs from '@site/src/components/elements/SdkTabs';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide walks through deploying a Temporal Worker on AWS Lambda.
+This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
 
 ## Prerequisites {#prerequisites}
 
@@ -45,7 +45,7 @@ This guide walks through deploying a Temporal Worker on AWS Lambda.
 </SdkTabs.Python>
 </SdkTabs>
 
-## 1. Write the Worker code {#write-the-worker-code}
+## 1. Write Worker code {#write-worker-code}
 
 Write a Worker that runs inside a Lambda function.
 The Worker handles the per-invocation lifecycle: connecting to Temporal, polling for tasks, and gracefully shutting down before the invocation deadline.
@@ -118,7 +118,7 @@ For details on configuration options, Lambda-tuned defaults, and observability, 
 </SdkTabs.Python>
 </SdkTabs>
 
-## 2. Deploy the Lambda function {#deploy-the-lambda-function}
+## 2. Deploy Lambda function {#deploy-lambda-function}
 
 Build your Worker for the Lambda runtime, package it as a zip, and deploy it to AWS Lambda.
 
@@ -163,7 +163,7 @@ cd package && zip -r ../function.zip . && cd ..
 </SdkTabs.Python>
 </SdkTabs>
 
-### ii. Deploy the Lambda function {#deploy-lambda-function}
+### ii. Deploy Lambda function {#deploy-lambda-function-step}
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -377,13 +377,13 @@ aws cloudformation create-stack \
 
 The stack output `RoleARN` contains the IAM role ARN to use in your Worker Deployment Version's compute configuration.
 
-## 4. Create a Worker Deployment Version {#create-worker-deployment-version}
+## 4. Create Worker Deployment Version {#create-worker-deployment-version}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute provider that points to your Lambda function.
 The compute configuration tells Temporal how to invoke your Worker: the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume.
 The deployment name and build ID must match the values in your Worker code.
 
-You can create the version using the Temporal UI, the Temporal CLI, or programmatically with an SDK.
+You can create the version using the Temporal UI or the Temporal CLI.
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal UI">
@@ -424,51 +424,13 @@ temporal worker deployment create-version \
 | `--aws-lambda-assume-role-external-id` | External ID configured in the IAM role trust policy. |
 
 </TabItem>
-<TabItem value="sdk" label="SDK">
-
-Use the SDK when the deployment registration is part of your application, for example a setup program that provisions infrastructure and registers the version together, or when you need to compute values dynamically. When you create a version through the SDK, you must [set the version as current](#set-current-version) as a separate step.
-
-<SdkTabs hideUnsupportedLanguages>
-<SdkTabs.Go>
-
-```go
-// Create the worker deployment
-client.CreateWorkerDeployment(ctx, &workflowservice.CreateWorkerDeploymentRequest{
-    Namespace:      "default",
-    DeploymentName: "my-app",
-})
-
-// Create a version with Lambda compute config
-client.CreateWorkerDeploymentVersion(ctx, &workflowservice.CreateWorkerDeploymentVersionRequest{
-    Namespace: "default",
-    DeploymentVersion: &deploymentpb.WorkerDeploymentVersion{
-        DeploymentName: "my-app",
-        BuildId:        "build-1",
-    },
-    ComputeConfig: &computepb.ComputeConfig{
-        ScalingGroups: map[string]*computepb.ComputeConfigScalingGroup{
-            "default": {
-                Provider: &computepb.ComputeProvider{
-                    Type: "aws-lambda",
-                    Details: /* Lambda ARN, role ARN, external ID */,
-                },
-            },
-        },
-    },
-})
-```
-
-</SdkTabs.Go>
-</SdkTabs>
-
-</TabItem>
 </Tabs>
 
-## 5. Set the version as current {#set-current-version}
+## 5. Set version as current {#set-current-version}
 
 If you created the version through the Temporal UI, the version is already current and you can skip this step.
 
-If you used the CLI or SDK, set the version as current.
+If you used the CLI, set the version as current.
 Without this step, tasks on the Task Queue will not route to the version, and Temporal will not invoke the Lambda function.
 
 ```bash
@@ -477,7 +439,7 @@ temporal worker deployment set-current-version \
   --build-id build-1
 ```
 
-## 6. Verify the deployment {#verify-the-deployment}
+## 6. Verify deployment {#verify-deployment}
 
 Start a Workflow on the same Task Queue to confirm that Temporal invokes your Lambda Worker.
 
