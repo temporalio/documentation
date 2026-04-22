@@ -16,6 +16,8 @@ tags:
   - Durable Execution
 ---
 
+import ThemedImage from '@theme/ThemedImage';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Standalone Activities are available as a [Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature in [Temporal Cloud](#temporal-cloud-support) and in a [special release](#temporal-cli-support) of the Temporal CLI.
@@ -26,21 +28,43 @@ See [limitations](#pre-release-limitations) below.
 
 ## What is a Standalone Activity? {#standalone-activity}
 
-A top-level [Activity Execution](/activity-execution) that is started directly by a
-[Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow, is called a
-Standalone Activity.
+If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to
+execute a single Activity, use a Standalone Activity.
 
-Standalone Activities are Temporal's [job queue](/evaluate/development-production-features/job-queue).
+Standalone Activities are Temporal’s [job queue](/evaluate/development-production-features/job-queue) -
+the simplest way to run durable, retryable tasks on Temporal.
 
-If you need to orchestrate multiple Activities, then you should use a Workflow. But if you just need
-to execute a single Activity, then you can use a Standalone Activity. This will result in fewer
-[Billable Actions](/cloud/actions#actions-in-workflows) in Temporal Cloud than using a Workflow to
-run a single Activity. If your Activity Execution is short-lived, then you will also notice lower
-latency, since there are fewer Worker round-trips than when executing the Activity in a Workflow.
+<div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <a href="/diagrams/standalone-activities-vs-workflowlight.svg" target="_blank" rel="noopener noreferrer">
+    <ThemedImage
+      alt="Standalone Activity vs. Workflow - Standalone Activities execute a single function reliably as a top-level primitive, while Workflows orchestrate multiple Activity steps"
+      sources={{
+        light: '/diagrams/standalone-activities-vs-workflowlight.svg',
+        dark: '/diagrams/standalone-activities-vs-workflowdark.svg',
+      }}
+      style={{maxWidth: '100%', cursor: 'pointer'}}
+    />
+  </a>
+</div>
 
-Standalone Activities support the same retry policies and timeouts as Workflow Activities, and you
-write your Activity Functions in the same way for both. In fact, an Activity Function can be
-executed both as a Standalone Activity and as a Workflow Activity.
+A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a
+[Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow. This results in
+fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud than using a Workflow
+to run a single Activity. If your Activity Execution is short-lived, you will also notice lower
+latency, since there are fewer Worker round-trips.
+
+You write your Activity Functions the same way for both. In fact, the same Activity Function can be
+executed as a Standalone Activity and as a Workflow Activity with no code changes.
+
+:::tip GET STARTED
+
+Pick your SDK and follow the quickstart:
+
+- [Go SDK - Standalone Activities quickstart and code sample](/develop/go/activities/standalone-activities)
+- [Python SDK - Standalone Activities quickstart and code sample](/develop/python/activities/standalone-activities)
+- [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities)
+
+:::
 
 ## Use cases
 
@@ -56,13 +80,26 @@ webhook, syncing data, or executing a single function reliably with built-in ret
 - At-least-once execution by default with native retry policy and timeouts
 - At-most-once execution if retry max attempts is 1
 - Addressable - get an Activity ID / Run ID and get the result, cancel, and terminate
-- Deduplication - with conflict policy: (USE_EXISTING, …), reuse policy: (REJECT_DUPLICATES, …)
+- Deduplication - with conflict policy: (USE_EXISTING, ...), reuse policy: (REJECT_DUPLICATES, ...)
 - Separate ID space from Workflows - Standalone Activities are a different kind of top-level execution
 - Priority and fairness - multi-tenant fairness, weighted priority tiers, and safeguards against starvation of lower-weighted tasks
 - Visibility - list Activity Executions and view status, retry count, and last error
 - Manual completion by ID (or token): ignore activity return and wait for external completion
 - Activity metrics - including counts for success, failure, timeout, and cancel
 - Dual use - execute Activities within a Workflow or standalone with no Worker code changes
+
+## Observability {#observability}
+
+All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
+to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
+and canceled activities.
+
+You can use [List Filters](/list-filter) to query Standalone Activity Executions by type, status,
+task queue, and other attributes using the SDK or the `temporal activity list` CLI command.
+
+`CountActivities` returns the total number of Standalone Activity Executions matching a filter,
+analogous to counting Workflow Executions. This is the total count of executions (running, completed,
+failed, etc.) - not the number of queued tasks.
 
 ## Pre-release limitations
 
@@ -80,20 +117,48 @@ Temporal Cloud limitations:
 
 ## Temporal CLI support
 
-A [special release of the Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.6.2-standalone-activity) supports Standalone Activities during Pre-release:
-- The `temporal activity` subcommand supports Standalone Activities with commands including: `start`, `result`, and `list`
-- Temporal Dev Server has Standalone Activities enabled by default in this special CLI release for local testing
+During Pre-release, Standalone Activities require a [special release of the Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.6.2-standalone-activity).
+
+Download and extract for your platform:
+
+```bash title="macOS (Apple Silicon)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_arm64.tar.gz | tar xz
+```
+
+```bash title="macOS (Intel)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_amd64.tar.gz | tar xz
+```
+
+```bash title="Linux (arm64)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_arm64.tar.gz | tar xz
+```
+
+```bash title="Linux (amd64)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_amd64.tar.gz | tar xz
+```
+
+Verify the installation:
+
+```bash
+./temporal --version
+# temporal version 1.6.2-standalone-activity (Server 1.31.0-151.2, UI 2.47.2)
+```
+
+Move the binary to your PATH or run it from the current directory as `./temporal`.
+
+The `temporal activity` subcommand supports Standalone Activities with commands including: `start`,
+`execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
+
+The Temporal Dev Server has Standalone Activities enabled by default in this special CLI release for local testing.
+
+:::warning
+
+If you see `Standalone activity is disabled` when running commands, you are using the standard
+Temporal CLI instead of the pre-release version above. The standard `brew install temporal` or
+`brew upgrade temporal` does not include Standalone Activity support during Pre-release.
+
+:::
 
 ## Temporal Cloud support
 
 Contact your account team to enable Standalone Activities in Temporal Cloud as a Pre-release feature.
-
-## Get started
-
-:::tip RESOURCES
-
-- [Go SDK - Standalone Activities quick start and code sample](/develop/go/activities/standalone-activities)
-- [Python SDK - Standalone Activities quick start and code sample](/develop/python/activities/standalone-activities)
-- [.NET SDK - Standalone Activities quick start and code sample](/develop/dotnet/activities/standalone-activities)
-
-  :::
