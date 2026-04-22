@@ -1,0 +1,281 @@
+---
+id: langsmith
+title: LangSmith integration
+sidebar_label: LangSmith
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - langsmith
+  - observability
+  - tracing
+tags:
+  - LangSmith
+  - Python SDK
+  - Temporal SDKs
+description:
+  Add LangSmith tracing to Python Workflows using the Temporal Python SDK.
+---
+
+Temporal's integration with [LangSmith](https://smith.langchain.com/) gives you end-to-end traces of your AI agent
+Workflows—capturing every LLM call, tool execution, and orchestration step in a single LangSmith project.
+
+When building AI agents with Temporal, you get durable execution: automatic retries, state persistence, and recovery
+from failures mid-Workflow. LangSmith adds the observability layer: see exactly what your agents do, inspect LLM
+inputs and outputs, and trace a single request from the Client all the way through to the model.
+
+Our LangSmith integration connects these capabilities with minimal code changes. The `LangSmithPlugin` propagates trace context
+across Temporal boundaries (Client → Workflow → Activity), and can optionally create LangSmith runs for Temporal
+operations (Workflow executions, Activity executions, Signals, Updates, Queries).
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Python SDK support for LangSmith is at
+[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+All APIs are experimental and may be subject to backwards-incompatible changes.
+
+:::
+
+All code snippets in this guide are taken from the
+[LangSmith tracing sample](https://github.com/temporalio/samples-python/tree/main/langsmith_tracing). Refer to the
+sample for complete code.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with LangSmith. If you aren't, refer to the
+  [LangSmith documentation](https://docs.smith.langchain.com/) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave
+  the Temporal Development Server running if you want to test your code locally.
+
+## Configure Workers to use LangSmith
+
+Workers execute the code that defines your Workflows and Activities. To trace Workflow and Activity execution in
+LangSmith, add the `LangSmithPlugin` to your Worker.
+
+Follow the steps below to configure your Worker.
+
+1. Install the Temporal Python SDK with the LangSmith extra.
+
+   ```bash
+   pip install "temporalio[langsmith]>=1.26.0"
+   ```
+
+2. Add the `LangSmithPlugin` to your Worker. Set `project_name` to the LangSmith project where you want traces to
+   appear.
+
+   ```python
+   from temporalio.contrib.langsmith import LangSmithPlugin
+   from temporalio.worker import Worker
+
+   worker = Worker(
+       client,
+       task_queue="my-task-queue",
+       workflows=[MyWorkflow],
+       activities=[my_activity],
+       plugins=[LangSmithPlugin(project_name="my-project")],
+   )
+   ```
+
+3. Run the Worker. Ensure the Worker process has access to your LangSmith API key via the `LANGSMITH_API_KEY`
+   environment variable, and enable tracing with `LANGCHAIN_TRACING_V2`.
+
+   ```bash
+   export LANGSMITH_API_KEY="your-api-key"
+   export LANGCHAIN_TRACING_V2=true
+   python worker.py
+   ```
+
+## Configure Clients to use LangSmith
+
+Add the plugin to your Temporal Client as well. This enables trace context propagation, so client-side operations
+(for example, starting a Workflow or sending an Update) are linked to the Workflows they trigger.
+
+```python
+from temporalio.client import Client
+from temporalio.contrib.langsmith import LangSmithPlugin
+
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[LangSmithPlugin(project_name="my-project")],
+)
+```
+
+:::tip
+
+Use the same `project_name` on both the Worker and the Client so their traces land in the same LangSmith project.
+
+:::
+
+:::note
+
+On the Client side, any additional `@traceable` functions you have that run outside the plugin's scope won't automatically pick
+up `project_name` from the plugin. Any of these which wrap a Client call to the Workflow must use the same `project_name` as passed
+into the `LangSmithPlugin`.
+
+:::
+
+## Trace Activities
+
+Any non-deterministic work in a Temporal Workflow—LLM calls, tool executions, database queries, external API
+calls—must run inside an Activity. Activities are also the right place to add LangSmith runs for that work: decorate
+the Activity function with `@traceable` and the run appears in LangSmith, nested under the Workflow that scheduled it.
+
+```python
+from dataclasses import dataclass
+from langsmith import traceable
+from temporalio import activity
+
+
+@traceable(name="Fetch Weather", run_type="tool")
+@activity.defn
+async def fetch_weather(city: str) -> str:
+    # Call an external weather API here.
+    ...
+```
+
+You can combine `@traceable` with provider-specific LangSmith wrappers for richer output. For OpenAI, for example,
+`wrap_openai` patches the client so each API call creates its own child run with the model name, prompt, completion,
+token counts, and latency—no extra code beyond the wrapping call:
+
+```python
+from langsmith import traceable
+from langsmith.wrappers import wrap_openai
+from openai import AsyncOpenAI
+from temporalio import activity
+
+
+@dataclass
+class OpenAIRequest:
+    model: str
+    input: str
+
+
+# wrap_openai patches the client — every API call adds a ChatOpenAI run under the @traceable.
+# max_retries=0 because Temporal's Activity retry policy handles retries.
+@traceable(name="Call OpenAI", run_type="llm")
+@activity.defn
+async def call_openai(request: OpenAIRequest) -> str:
+    client = wrap_openai(AsyncOpenAI(max_retries=0))
+    response = await client.responses.create(
+        model=request.model,
+        input=request.input,
+    )
+    return response.output_text
+```
+
+LangSmith ships similar wrappers for
+[Anthropic](https://docs.smith.langchain.com/observability/how-to/integrations#anthropic) and other providers; refer
+to the LangSmith documentation for the full list.
+
+## Add custom runs with @traceable
+
+Decorate functions with `@traceable` to create named runs for your business logic. You control the run name, tags,
+metadata, and `run_type` (`chain`, `llm`, `tool`, `retriever`).
+
+Put `@traceable` on Activities and on private helper methods within your Workflow class that get called from Workflow
+code. For example:
+
+```python
+from langsmith import traceable
+from temporalio import workflow
+
+
+@workflow.defn
+class ChatbotWorkflow:
+    # Private helper methods can be decorated directly.
+    @traceable(name="Save Note", run_type="tool")
+    def _save_note(self, name: str, content: str) -> str:
+        ...
+```
+
+:::warning
+
+Do not put `@traceable` directly on any `@workflow` method (for example, `@workflow.run`, `@workflow.signal`,
+`@workflow.update`, `@workflow.query`). Doing so can produce duplicate or orphaned (unknown parent) runs in LangSmith.
+If you want to trace the body of one of these methods, move the logic into an inner function and decorate that:
+
+```python
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        # Option 1: Use the @traceable decorator
+        @traceable(name=f"Ask: {prompt[:60]}", run_type="chain")
+        async def _run() -> str:
+            ...
+        return await _run()
+
+    @workflow.update
+    async def message_from_user(self, message: str) -> str:
+        async def _handle_message(self, message: str) -> str:
+            ...
+        # Option 2: Use the traceable() function
+        return await traceable(
+            name=f"Update: {message[:60]}",
+            run_type="chain",
+        )(self._handle_message)(message)
+```
+
+:::
+
+## Include Temporal operations as runs
+
+By default, `LangSmithPlugin(add_temporal_runs=False)` only propagates LangSmith context so that `@traceable` and
+`wrap_openai` calls nest correctly. The plugin does not create its own runs.
+
+Set `add_temporal_runs=True` to also create LangSmith runs for Temporal operations—Workflow executions, Activity
+executions, Signals, Updates, Queries, and Child Workflows:
+
+```python
+plugin = LangSmithPlugin(
+    project_name="my-project",
+    add_temporal_runs=True,
+)
+```
+
+With this on, your LangSmith traces include runs like `StartWorkflow:MyWorkflow`, `RunWorkflow:MyWorkflow`,
+`StartActivity:call_openai`, and `RunActivity:call_openai`. `Start*` and `Run*` pairs appear as siblings: the `Start*`
+run is emitted by the side scheduling the operation (for example, the Client), and the `Run*` run is emitted by the
+side executing it (for example, the Worker).
+
+## Trace hierarchy example
+
+With the plugin configured on both Client and Worker, and `add_temporal_runs=True`, a trace for a simple LLM call looks
+like this:
+
+```
+Run Agent                               (@traceable, client-side)
+├── StartWorkflow:MyWorkflow             (automatic, LangSmithPlugin)
+└── RunWorkflow:MyWorkflow               (automatic, LangSmithPlugin)
+    └── Ask: What is Temporal?          (@traceable, Workflow)
+        ├── StartActivity:call_openai    (automatic, LangSmithPlugin)
+        └── RunActivity:call_openai      (automatic, LangSmithPlugin)
+            └── Call OpenAI              (@traceable, Activity)
+                └── ChatOpenAI           (automatic via wrap_openai)
+```
+
+Without `add_temporal_runs` (the default), only the `@traceable` and `wrap_openai` runs appear. Context still
+propagates, so they nest correctly under the client-side run:
+
+```
+Run Agent                               (@traceable, client-side)
+└── Ask: What is Temporal?              (@traceable, Workflow-side)
+    └── Call OpenAI                     (@traceable, Activity-side)
+        └── ChatOpenAI                  (automatic via wrap_openai)
+```
+
+## Example sample
+
+The [LangSmith tracing sample](https://github.com/temporalio/samples-python/tree/main/langsmith_tracing)
+demonstrates these patterns end-to-end with two complete examples:
+
+- **`basic/`** — A one-shot Workflow that sends a prompt to OpenAI and returns the response.
+- **`chatbot/`** — A long-running conversational Workflow with tool calls (save and read notes), Update handlers, and
+  dynamic trace names per message.
+
+Each example shows the `LangSmithPlugin` configuration, `@traceable` runs on the Client, Workflow, and Activity, and
+expected trace output for both `add_temporal_runs=False` and `add_temporal_runs=True`.
