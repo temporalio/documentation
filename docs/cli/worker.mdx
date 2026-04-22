@@ -46,6 +46,72 @@ temporal worker deployment set-current-version \
 
 Sets the current Deployment Version for a given Deployment.
 
+### create
+
+Create a new Worker Deployment:
+
+```
+temporal worker deployment create [options]
+```
+
+Worker Deployments are lazily created the first time a Worker polls the
+Temporal Server and specifies a VersionOverride. However, if you need to
+pre-define a compute configuration (for instance to set up a serverless
+Worker), you need to call `temporal worker deployment create-version` and
+pass in the name of the Worker Deployment. The `temporal worker
+deployment create` command allows you to pre-define a Worker Deployment
+so that calls to `temporal worker deployment create-version` will
+succeed.
+
+If a Worker Deployment with the supplied name already exists, this
+command will return an error.
+
+Note: This is an experimental feature and may change in the future.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |
+
+### create-version
+
+
+Create a new Worker Deployment Version:
+
+```
+temporal worker deployment create-version [options]
+```
+
+Configure a Worker Deployment Version's compute configuration as needed.
+For example, pass compute provider information for an AWS Lambda function
+that spawns a Worker in the Worker Deployment:
+
+```
+temporal worker deployment create-version \
+    --namespace YourNamespaceName \
+    --deployment-name YourDeploymentName \
+    --build-id YourBuildID \
+    --aws-lambda-function-arn LambdaFunctionARN \
+    --aws-lambda-assume-role-arn LambdaAssumeRoleARN \
+    --aws-lambda-assume-role-external-id LambdaAssumeRoleExternalID
+```
+
+If a Worker Deployment Version with the supplied BuildID already exists,
+this command will return an error.
+
+Note: This is an experimental feature and may change in the future.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--aws-lambda-assume-role-arn` | No | **string** AWS IAM role ARN that the Temporal server will assume when invoking the Lambda function that spawns a new Worker in this Worker Deployment Version. Required when --aws-lambda-function-arn is specified. |
+| `--aws-lambda-assume-role-external-id` | No | **string** Temporal server will enforce that the AWS IAM trust policy associated with the AWS IAM role specified in --aws-lambda-assume-role-arn has an aws:ExternalId condition that matches the supplied value. Required when --aws-lambda-function-arn is specified. |
+| `--aws-lambda-function-arn` | No | **string** Qualified (contains version suffix) or unqualified AWS Lambda function ARN to invoke when there are no active pollers for task queue targets in the Worker Deployment. |
+| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+
 ### delete
 
 Remove a Worker Deployment given its Deployment Name.
@@ -179,7 +245,7 @@ Manager Identity commands change the `ManagerIdentity` of a Worker Deployment:
 temporal worker deployment manager-identity [command] [options]
 ```
 
-When present, `ManagerIdentity` is the identity of the user that has the
+When present, `ManagerIdentity` is the identity of the user that has the 
 exclusive right to make changes to this Worker Deployment. Empty by default.
 When set, users whose identity does not match the `ManagerIdentity` will not
 be able to change the Worker Deployment.
@@ -199,7 +265,7 @@ The current Manager Identity is returned with `describe`:
 
 Set the `ManagerIdentity` of a Worker Deployment given its Deployment Name.
 
-When present, `ManagerIdentity` is the identity of the user that has the
+When present, `ManagerIdentity` is the identity of the user that has the 
 exclusive right to make changes to this Worker Deployment. Empty by default.
 When set, users whose identity does not match the `ManagerIdentity` will not
 be able to change the Worker Deployment.
@@ -222,8 +288,8 @@ temporal worker deployment manager-identity set \
    --identity YourUserIdentity # optional, populated by CLI if not provided
 ```
 
-Sets the Manager Identity of the Deployment to the identity of the user making
-this request. If you don't specifically pass an identity field, the CLI will
+Sets the Manager Identity of the Deployment to the identity of the user making 
+this request. If you don't specifically pass an identity field, the CLI will 
 generate your identity for you.
 
 For example:
@@ -248,7 +314,7 @@ Use the following options to change the behavior of this command. You can also u
 
 Unset the `ManagerIdentity` of a Worker Deployment given its Deployment Name.
 
-When present, `ManagerIdentity` is the identity of the user that has the
+When present, `ManagerIdentity` is the identity of the user that has the 
 exclusive right to make changes to this Worker Deployment. Empty by default.
 When set, users whose identity does not match the `ManagerIdentity` will not
 be able to change the Worker Deployment.
@@ -448,19 +514,19 @@ The following options can be used with any command.
 | `--codec-header` | No | **string[]** HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. |  |
 | `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
 | `--command-timeout` | No | **duration** The command execution timeout. 0s means no timeout. |  |
-| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. _(Experimental)_ |  |
-| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. _(Experimental)_ |  |
-| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. _(Experimental)_ |  |
+| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. |  |
+| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. |  |
+| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. |  |
 | `--env` | No | **string** Active environment name (`ENV`). | `default` |
 | `--env-file` | No | **string** Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`. |  |
 | `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
 | `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
 | `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
-| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `info` |
+| `--log-level` | No | **string-enum** Log level. Default is "never" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `never` |
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
-| `--profile` | No | **string** Profile to use for config file. _(Experimental)_ |  |
+| `--profile` | No | **string** Profile to use for config file. |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
 | `--tls` | No | **bool** Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable. |  |
 | `--tls-ca-data` | No | **string** Data for server CA certificate. Can't be used with --tls-ca-path. |  |
