@@ -26,7 +26,7 @@ A Workflow is defined by:
 
 ```rust
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowResult, workflow::WorkflowContextView};
+use temporalio_sdk::{WorkflowResult, WorkflowContextView};
 
 #[workflow]
 pub struct GreetingWorkflow {
@@ -41,7 +41,7 @@ impl GreetingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
         Ok(format!("Hello, {}!", name))
     }
@@ -82,7 +82,7 @@ The `#[run]` method is required and contains the main Workflow logic. It:
 
 ```rust
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Execute activities, timers, child workflows, etc.
     let result = ctx.activity(
         MyActivities::process,
@@ -126,7 +126,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Use the initialized state
         Ok("Processing complete".to_string())
     }
@@ -143,7 +143,7 @@ The return type of a Workflow is `WorkflowResult<T>` where `T` implements `Seria
 
 ```rust
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
     // Can return a complex result type
     let result = ProcessingResult {
         status: "completed".to_string(),
@@ -209,7 +209,7 @@ The Rust SDK provides:
 use std::time::Duration;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
     ctx.timer(Duration::from_secs(10)).await;
 
@@ -232,7 +232,7 @@ Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access 
 
 ```rust
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Read-only access
     let name = ctx.state(|s| s.name.clone());
 
@@ -253,7 +253,7 @@ For errors, use a `WorkflowExecutionError`:
 
 ```rust
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     if some_validation_fails {
         return Err(WorkflowExecutionError::new("validation_failed", "Input is invalid"));
     }

@@ -24,7 +24,7 @@ use std::time::Duration;
 use temporalio_sdk::NexusOperationOptions;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Start a Nexus operation
     let started = ctx.start_nexus_operation(
         NexusOperationOptions {
@@ -82,7 +82,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Wait for operation to complete
         ctx.wait_condition(|s| s.operation_complete).await;
 

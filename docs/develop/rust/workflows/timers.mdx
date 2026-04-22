@@ -26,7 +26,7 @@ To set a Timer in a Rust Workflow, use the `ctx.timer()` method and pass the dur
 use std::time::Duration;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Wait for 10 seconds
     ctx.timer(Duration::from_secs(10)).await;
 
@@ -44,7 +44,7 @@ use std::time::Duration;
 use temporalio_sdk::TimerOptions;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let options = TimerOptions {
         // Custom timeout for the timer itself
         ..Default::default()
@@ -65,7 +65,7 @@ use std::time::Duration;
 use temporalio_sdk::workflows::select;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     select! {
         _ = ctx.timer(Duration::from_secs(60)) => {
             Ok("Timer completed".to_string())
@@ -87,7 +87,7 @@ Timers can be used with Activities to implement custom retry logic:
 use std::time::Duration;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let mut attempts = 0;
     let max_attempts = 3;
 
@@ -123,7 +123,7 @@ Use Timers in a loop to schedule periodic operations:
 use std::time::Duration;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let interval = Duration::from_secs(3600); // 1 hour
 
     for i in 0..10 {
