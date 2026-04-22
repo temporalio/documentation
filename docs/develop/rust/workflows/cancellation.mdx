@@ -26,7 +26,7 @@ A Workflow can detect that it has been cancelled using the `ctx.cancelled()` met
 use temporalio_sdk::workflows::select;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     select! {
         result = ctx.activity(
             MyActivities::long_running_operation,
@@ -55,7 +55,7 @@ When a Workflow is cancelled, you should stop executing new activities and clean
 use temporalio_sdk::workflows::select;
 
 #[run]
-async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<Vec<String>> {
+async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<String>> {
     let mut results = Vec::new();
 
     for item in &self.items {
@@ -170,7 +170,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
         let items = ctx.state(|s| s.items.clone());
         let mut successful = 0;
         let mut failed = 0;

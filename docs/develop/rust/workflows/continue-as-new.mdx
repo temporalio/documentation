@@ -65,7 +65,7 @@ impl IterativeWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let (current_index, total_items, batch_size) = ctx.state(|s| {
             (s.current_index, s.total_items, s.batch_size)
         });
@@ -118,7 +118,7 @@ pub struct WorkflowWithSignals {
 #[workflow_methods]
 impl WorkflowWithSignals {
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Wait for signal to be processed
         ctx.wait_condition(|s| s.should_continue).await;
 
@@ -179,7 +179,7 @@ impl SchedulerWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let iteration = ctx.state(|s| s.iteration);
 
         // Process scheduled work for this iteration

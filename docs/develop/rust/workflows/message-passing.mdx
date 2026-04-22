@@ -46,7 +46,7 @@ impl WorkflowWithSignals {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Wait for signal
         ctx.wait_condition(|s| s.count > 0).await;
 
@@ -108,7 +108,7 @@ impl WorkflowWithQueries {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Workflow logic
         Ok("done".to_string())
     }
@@ -169,7 +169,7 @@ impl WorkflowWithUpdates {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Workflow logic
         Ok("done".to_string())
     }
@@ -297,7 +297,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut workflow::WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Wait for update to be called
         ctx.wait_condition(|s| s.processed_count > 0).await;
 
