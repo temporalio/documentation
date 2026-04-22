@@ -51,17 +51,23 @@ Each Namespace Name must conform to the following rules:
   not permitted.
 - All letters in a Namespace Name must be lowercase.
 
+:::note
+The Namespace Name alone is not sufficient to connect to or reference a Namespace. All Temporal Cloud operations — SDK connections, CLI commands, and API calls — require the full **Namespace ID**, which combines your Namespace Name with your Account ID:
+
+`<namespace-name>.<account-id>`
+
+For example: `accounting-production.123de`
+
+The full Namespace ID is shown in the Namespace list in the Temporal Cloud UI and in the output of `tcld namespace list`. See [Cloud Namespace ID](#temporal-cloud-namespace-id) for details.
+:::
+
 ## What is a Temporal Cloud Account ID? {#temporal-cloud-account-id}
 
 A Temporal Cloud Account ID is a unique customer identifier assigned by Temporal Technologies. Each Id is a short string
-of numbers and letters like `f45a2`, at least five characters long. This account identifier is retained throughout the
-time each customer uses Temporal Cloud.
+of numbers and letters like `f45a2`, at least five characters long. This account identifier is part of every Namespace ID
+in your account and is retained throughout the time you use Temporal Cloud.
 
-At times you may need to know your customer Account ID. Accessing the account's Namespaces provides an easy way to
-capture this information. Each Temporal Namespace use an Account ID suffix. This is the alphanumeric character string
-found after the period in any Temporal Cloud Namespace name.
-
-You can retrieve an Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld`
+You can retrieve your Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld`
 utility at a command line interface (CLI). Follow these steps.
 
 <Tabs>
