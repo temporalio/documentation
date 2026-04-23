@@ -157,7 +157,7 @@ function buildTable(permissions) {
   md +=
     "Use these strings in the `actions` field of a Custom Role permission grant.\n";
   md +=
-    "Only non-internal permissions are listed. Permissions marked as internal (such as API key, service account, and custom role management) are reserved for predefined roles.\n\n";
+    "Not all Cloud Ops API operations can be assigned to a Custom Role. For details on which operations are excluded and why, see [Available permissions](/cloud/manage-access/custom-roles#available-permissions).\n\n";
 
   for (const resourceLabel of resourceOrder) {
     const perms = byResource[resourceLabel];
