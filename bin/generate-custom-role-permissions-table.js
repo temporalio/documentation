@@ -157,7 +157,9 @@ function buildTable(permissions) {
   md +=
     "Use these strings in the `actions` field of a Custom Role permission grant.\n";
   md +=
-    "Not all Cloud Ops API operations can be assigned to a Custom Role. For details on which operations are excluded and why, see [Available permissions](/cloud/manage-access/custom-roles#available-permissions).\n\n";
+    "Not all Cloud Ops API operations can be assigned to a Custom Role. For details on which operations are excluded and why, see [Available permissions](/cloud/manage-access/custom-roles#available-permissions).\n";
+  md +=
+    "Some Custom Role permissions apply to operations that are not yet part of the public Cloud Ops API.\n\n";
 
   for (const resourceLabel of resourceOrder) {
     const perms = byResource[resourceLabel];
