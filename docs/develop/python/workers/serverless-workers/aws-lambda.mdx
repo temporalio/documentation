@@ -55,7 +55,9 @@ lambda_handler = run_worker(
 ```
 
 `run_worker` takes a `WorkerDeploymentVersion` and a configure callback, and returns a Lambda handler.
-The `WorkerDeploymentVersion` is required. Worker Deployment Versioning is always enabled for Serverless Workers.
+The `WorkerDeploymentVersion` identifies the [Worker Deployment](/worker-versioning#worker-deployments) and [Build ID](/worker-versioning#build-id) for this Worker.
+The deployment name groups related Workers across versions, and the Build ID identifies a specific release of your Worker code.
+Worker Deployment Versioning is always enabled for Serverless Workers.
 
 The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
 Set the Task Queue, Workflows, and Activities through `worker_config`, which accepts the same keyword arguments as the `Worker` constructor.
