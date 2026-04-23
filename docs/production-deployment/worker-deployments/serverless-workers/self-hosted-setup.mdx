@@ -92,7 +92,7 @@ Deploy the following CloudFormation template to create the role. [Download the t
 
 | Parameter | Description |
 |---|---|
-| `TemporalIamRoleArn` | The ARN of the IAM role or user that the Temporal Service runs as. This is the identity the server uses to call `sts:AssumeRole`. |
+| `TemporalIamRoleArn` | The ARN of the IAM role or user that the Temporal Service runs as. This is the identity the server uses to call `sts:AssumeRole`. To find the ARN, run `aws sts get-caller-identity` in the server's environment. |
 | `AssumeRoleExternalId` | A unique string to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Choose any value and pass the same value when creating the Worker Deployment Version. |
 | `LambdaFunctionARNs` | Comma-separated list of Lambda function ARNs that Temporal may invoke. |
 | `RoleName` | Base name for the created IAM role. Defaults to `Temporal-Serverless-Worker`. |
@@ -192,3 +192,19 @@ aws cloudformation describe-stacks --stack-name temporal-serverless-worker --que
 ```
 
 Use this role ARN when creating the Worker Deployment Version.
+
+## Verify the Worker Controller {#verify-worker-controller}
+
+After you complete the [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) and create a Worker Deployment Version with a compute provider, the Temporal Service starts a Worker Controller Instance (WCI) workflow to manage scaling for that version.
+
+To confirm the WCI is running, list workflows with the `TemporalNamespaceDivision` search attribute filter:
+
+```bash
+temporal workflow list --query 'TemporalNamespaceDivision = "TemporalWorkerControllerInstance"'
+```
+
+The WCI workflow is hidden from the default workflow list.
+In the Temporal UI, add the same filter in the Workflows tab to view it.
+
+To verify end-to-end, start a Workflow on the Task Queue configured for the deployment.
+The WCI should detect the task, invoke the Lambda function, and the Workflow should complete.
