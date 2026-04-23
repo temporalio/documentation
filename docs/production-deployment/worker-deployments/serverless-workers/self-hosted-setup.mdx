@@ -185,4 +185,10 @@ Deploy the template:
 aws cloudformation create-stack --stack-name temporal-serverless-worker --template-body file://temporal-self-hosted-serverless-worker-role.yaml --parameters ParameterKey=TemporalIamRoleArn,ParameterValue=<TEMPORAL_SERVER_ROLE_ARN> ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> ParameterKey=LambdaFunctionARNs,ParameterValue='"<LAMBDA_FUNCTION_ARN>"' --capabilities CAPABILITY_NAMED_IAM --region <AWS_REGION>
 ```
 
-The stack output `RoleARN` contains the IAM role ARN to use when creating the Worker Deployment Version.
+After the stack finishes creating, retrieve the IAM role ARN from the stack outputs:
+
+```bash
+aws cloudformation describe-stacks --stack-name temporal-serverless-worker --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' --output text --region <AWS_REGION>
+```
+
+Use this role ARN when creating the Worker Deployment Version.
