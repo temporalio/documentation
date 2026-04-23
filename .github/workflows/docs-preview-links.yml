@@ -32,57 +32,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branchName = process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME;
-            const branchSlug = branchName.toLowerCase().replace(/_/g, '').replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-/, '').replace(/-$/, '');
-            const subdomain = `temporal-documentation-git-${branchSlug}`;
-
-            if (subdomain.length <= 63) {
-              const baseUrl = `https://${subdomain}.preview.thundergun.io`;
-              core.info(`Branch name is short enough (${subdomain.length} chars), using constructed URL: ${baseUrl}`);
-              core.exportVariable('DOCS_PREVIEW_BASE_URL', baseUrl);
-              core.setOutput('base_url', baseUrl);
-              return;
-            }
-
-            core.info(`Subdomain would be ${subdomain.length} chars (exceeds 63), polling for Vercel comment...`);
-            const maxAttempts = 18;
-            const intervalMs = 10_000;
-
-            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-              core.info(`Polling for Vercel comment (attempt ${attempt}/${maxAttempts})...`);
-              const { data: comments } = await github.rest.issues.listComments({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                per_page: 100,
-              });
-
-              const vercelComment = comments.find(
-                (c) => c.user?.login === 'vercel[bot]' && c.body?.includes('[vc]:'),
-              );
-
-              if (vercelComment) {
-                const match = vercelComment.body.match(/\[vc\]:\s*#[^:]*:(eyJ[A-Za-z0-9+/=]+)/);
-                if (match) {
-                  const payload = JSON.parse(Buffer.from(match[1], 'base64').toString('utf8'));
-                  const project = payload.projects?.[0];
-                  if (project?.previewUrl) {
-                    const baseUrl = `https://${project.previewUrl}`;
-                    core.info(`Found Vercel preview URL: ${baseUrl}`);
-                    core.exportVariable('DOCS_PREVIEW_BASE_URL', baseUrl);
-                    core.setOutput('base_url', baseUrl);
-                    return;
-                  }
-                }
-              }
-
-              if (attempt < maxAttempts) {
-                await new Promise((resolve) => setTimeout(resolve, intervalMs));
-              }
-            }
-
-            core.warning('Vercel comment not found after polling, using constructed URL as fallback (links may be broken for this long branch name)');
-            const baseUrl = `https://${subdomain}.preview.thundergun.io`;
+            const { resolvePreviewUrl } = require('./bin/preview-url-from-vercel.js');
+            const baseUrl = await resolvePreviewUrl({ github, context, core });
             core.exportVariable('DOCS_PREVIEW_BASE_URL', baseUrl);
             core.setOutput('base_url', baseUrl);
 
