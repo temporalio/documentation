@@ -976,7 +976,6 @@ module.exports = {
             'cloud/get-started/namespaces',
             'cloud/get-started/api-keys',
             'cloud/get-started/certificates',
-            'cloud/get-started/billing-and-cost',
           ],
         },
         {
@@ -989,10 +988,9 @@ module.exports = {
           },
           items: [
             'cloud/manage-access/roles-and-permissions',
-            'cloud/manage-access/users',
+            'cloud/get-started/users',
             'cloud/get-started/user-groups',
             'cloud/get-started/service-accounts',
-            'cloud/manage-access/custom-roles',
             'cloud/saml',
             'cloud/scim',
             'cloud/manage-access/permissions-reference',
@@ -1033,6 +1031,20 @@ module.exports = {
               items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
             },
             'cloud/metrics/sdk-metrics-setup',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Billing and Usage',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/billing-and-usage/index',
+          },
+          items: [
+            'cloud/billing-and-usage/billing',
+            'cloud/billing-and-usage/billing-api',
+            'cloud/billing-and-usage/actions-usage',
           ],
         },
         {
@@ -1096,7 +1108,6 @@ module.exports = {
         'cloud/service-health',
         'cloud/notifications',
         'cloud/operation-api',
-        'cloud/billing-api',
         'cloud/terraform-provider',
         {
           type: 'category',
