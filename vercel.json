@@ -6,6 +6,61 @@
   },
   "redirects": [
     {
+      "source": "/cli/activity",
+      "destination": "/cli/command-reference/activity",
+      "permanent": true
+    },
+    {
+      "source": "/cli/batch",
+      "destination": "/cli/command-reference/batch",
+      "permanent": true
+    },
+    {
+      "source": "/cli/cmd-options",
+      "destination": "/cli/command-reference/cmd-options",
+      "permanent": true
+    },
+    {
+      "source": "/cli/config",
+      "destination": "/cli/command-reference/config",
+      "permanent": true
+    },
+    {
+      "source": "/cli/env",
+      "destination": "/cli/command-reference/env",
+      "permanent": true
+    },
+    {
+      "source": "/cli/operator",
+      "destination": "/cli/command-reference/operator",
+      "permanent": true
+    },
+    {
+      "source": "/cli/schedule",
+      "destination": "/cli/command-reference/schedule",
+      "permanent": true
+    },
+    {
+      "source": "/cli/server",
+      "destination": "/cli/command-reference/server",
+      "permanent": true
+    },
+    {
+      "source": "/cli/task-queue",
+      "destination": "/cli/command-reference/task-queue",
+      "permanent": true
+    },
+    {
+      "source": "/cli/worker",
+      "destination": "/cli/command-reference/worker",
+      "permanent": true
+    },
+    {
+      "source": "/cli/workflow",
+      "destination": "/cli/command-reference/workflow",
+      "permanent": true
+    },
+    {
       "source": "/develop/go/data-handling/large-payload-storage",
       "destination": "/develop/go/data-handling/external-storage",
       "permanent": true

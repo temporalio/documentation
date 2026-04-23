@@ -1,0 +1,247 @@
+---
+id: cli-basics
+title: CLI basics
+sidebar_label: CLI basics
+slug: /cli/common-operations
+description:
+  Common Temporal CLI operations for running a development server, starting and managing Workflows, and working with
+  Schedules and Namespaces.
+keywords:
+  - Temporal CLI
+  - workflow start
+  - workflow list
+  - workflow describe
+  - workflow signal
+  - workflow terminate
+  - schedule
+  - namespace
+hide_table_of_contents: true
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+
+This page walks through the operations you're most likely to reach for when using the Temporal CLI. For the full set of
+commands, see the [command reference](/cli#command-reference).
+
+<SetupSteps>
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal server start-dev
+</CodeSnippet>
+<CodeSnippet language="bash">
+temporal server start-dev --db-filename temporal.db
+</CodeSnippet>
+</>
+}>
+
+## Run a development server
+
+The Temporal CLI ships with a complete Temporal binary. Start a local Temporal Service for development with a single
+command.
+
+The Temporal Service is available on `localhost:7233` and the Web UI at `http://localhost:8233`.
+
+To keep Workflow data between restarts, specify a database file.
+
+See [Install and configure](/cli/setup-cli#run-a-local-development-server) for more development server options.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+{`temporal workflow start \\
+  --task-queue my-task-queue \\
+  --type MyWorkflow \\
+  --workflow-id my-workflow-id \\
+  --input '"my-input-value"'`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal workflow execute \\
+  --task-queue my-task-queue \\
+  --type MyWorkflow \\
+  --workflow-id my-workflow-id \\
+  --input '"my-input-value"'`}
+</CodeSnippet>
+</>
+}>
+
+## Start a Workflow
+
+Start a Workflow Execution with `temporal workflow start`.
+
+To start a Workflow and wait for the result, use `temporal workflow execute` instead.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal workflow list
+</CodeSnippet>
+<CodeSnippet language="bash">
+temporal workflow describe --workflow-id my-workflow-id
+</CodeSnippet>
+<CodeSnippet language="bash">
+temporal workflow show --workflow-id my-workflow-id
+</CodeSnippet>
+</>
+}>
+
+## Check Workflow status
+
+List running Workflows.
+
+Get details about a specific Workflow Execution.
+
+View the Event History for a Workflow Execution.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+{`temporal workflow signal \\
+  --workflow-id my-workflow-id \\
+  --name my-signal \\
+  --input '"signal-value"'`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal workflow query \\
+  --workflow-id my-workflow-id \\
+  --name my-query`}
+</CodeSnippet>
+</>
+}>
+
+## Send Signals and Queries
+
+Send a [Signal](/sending-messages#sending-signals) to a running Workflow.
+
+[Query](/sending-messages#sending-queries) a running Workflow for its current state.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal workflow cancel --workflow-id my-workflow-id
+</CodeSnippet>
+<CodeSnippet language="bash">
+temporal workflow terminate --workflow-id my-workflow-id
+</CodeSnippet>
+</>
+}>
+
+## Cancel or Terminate a Workflow
+
+Cancel a Workflow Execution. Cancellation allows cleanup logic to run before the Workflow completes.
+
+Terminate a Workflow Execution. Termination stops the Workflow immediately with no cleanup.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal cloud login
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal workflow list \\
+  --address <namespace>.<account>.tmprl.cloud:7233 \\
+  --namespace <namespace>.<account>`}
+</CodeSnippet>
+</>
+}>
+
+## Log in to Temporal Cloud
+
+Log in to Temporal Cloud with `temporal cloud login`. After login, you can run commands against Temporal Cloud by
+providing the address and Namespace.
+
+See [Use with Temporal Cloud](/cli/temporal-cloud) for all authentication options.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+{`temporal schedule create \\
+  --schedule-id my-schedule \\
+  --interval 1h \\
+  --task-queue my-task-queue \\
+  --type MyScheduledWorkflow`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+temporal schedule list
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal schedule toggle \\
+  --schedule-id my-schedule \\
+  --pause --reason "maintenance"`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal schedule toggle \\
+  --schedule-id my-schedule \\
+  --unpause --reason "maintenance complete"`}
+</CodeSnippet>
+</>
+}>
+
+## Work with Schedules
+
+Create a [Schedule](/schedule) that starts a Workflow on an interval.
+
+List all Schedules.
+
+Pause and unpause a Schedule.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal operator namespace list
+</CodeSnippet>
+<CodeSnippet language="bash">
+temporal operator namespace create --namespace my-namespace
+</CodeSnippet>
+</>
+}>
+
+## Manage Namespaces
+
+List available [Namespaces](/namespaces).
+
+Create a new Namespace.
+
+To manage Namespaces on Temporal Cloud, use the Temporal Cloud extension and
+[`temporal cloud namespace`](/cli/command-reference/cloud/namespace) commands.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal workflow list --output json
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal workflow list --output json | jq '.[].type.name'`}
+</CodeSnippet>
+</>
+}>
+
+## Format and filter output
+
+Use `--output json` to get machine-readable output from any command.
+
+Combine with [jq](https://jqlang.github.io/jq/) for filtering.
+
+</SetupStep>
+</SetupSteps>
+
+## Next steps
+
+- [Use with Temporal Cloud](/cli/temporal-cloud) to connect the CLI to Temporal Cloud.
+- [Command reference](/cli#command-reference) for the full set of commands and options.

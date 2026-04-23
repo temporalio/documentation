@@ -1,0 +1,114 @@
+---
+id: cloud
+title: Use with Temporal Cloud
+sidebar_label: Use with Temporal Cloud
+slug: /cli/temporal-cloud
+description: Use the Temporal CLI with Temporal Cloud to run Workflows, manage Namespaces, and administer your account.
+keywords:
+  - Temporal CLI
+  - Temporal Cloud
+  - API keys
+  - mTLS
+  - authentication
+  - cloud extension
+---
+
+The Temporal CLI works with Temporal Cloud. The same commands you use for local or self-hosted Temporal services, such
+as `temporal workflow start` and `temporal workflow list`, work with Temporal Cloud as allowed by your role once you
+provide an address and credentials.
+
+For administrative tasks, install the Temporal Cloud extension. The extension adds `temporal cloud` commands for
+managing your Temporal Cloud account, including Namespaces, users, API keys, and Nexus endpoints.
+
+:::tip Support, stability, and dependency info
+
+The Temporal Cloud extension is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+APIs and configuration may change before the stable release.
+
+:::
+
+Access to Temporal Cloud is governed by role-based access control (RBAC). Your ability to perform actions, including
+running CLI commands against in Temporal Cloud is determined by the roles and permissions you have been assigned. Refer
+to the [Access control](/cloud/manage-access) page for more details.
+
+## Connect to Temporal Cloud
+
+To connect the CLI to Temporal Cloud, provide the Temporal service address, Namespace name, and credentials. Temporal
+Cloud supports three credential types: OAuth tokens obtained through the `temporal cloud login` interactive login
+command, API keys, and mTLS certificates.
+
+### Interactive login
+
+The `temporal cloud login` command opens a browser to authenticate with Temporal Cloud using OAuth. Provide a profile
+name to store credentials in. If no profile is specified, credentials are stored in the `default` profile.
+
+```bash
+temporal cloud login --profile prod
+```
+
+Complete the interactive login process in your browser. After login, your OAuth token is stored in the specified
+configuration profile. Run commands against Temporal Cloud by specifying the profile, address, and Namespace:
+
+```bash
+temporal workflow list --profile prod  \
+  --address <address>\
+  --namespace <namespace>
+```
+
+### Non-interactive login
+
+For AI agents, CI pipelines, scripts, and other non-interactive environments, use API keys or mTLS certificates. Store
+credentials in a [configuration profile](/develop/environment-configuration#cli-integration) or set them as
+[environment variables](/cli/setup-cli#environment-variables) to avoid passing them on every command.
+
+To pass credentials inline:
+
+```bash
+# Using an API key
+temporal workflow list \
+  --address <namespace>.<account>.tmprl.cloud:7233 \
+  --namespace <namespace>.<account> \
+  --api-key <your-api-key>
+
+# Using mTLS certificates
+temporal workflow list \
+  --address <namespace>.<account>.tmprl.cloud:7233 \
+  --namespace <namespace>.<account> \
+  --tls-cert-path /path/to/client.pem \
+  --tls-key-path /path/to/client.key
+```
+
+### Log out
+
+To log out, run the `temporal cloud logout` command.
+
+```bash
+temporal cloud logout --profile prod
+```
+
+This will remove the OAuth token from the specified configuration profile. If you provided API keys or mTLS
+certificates, they will remain in the profile.
+
+## Cloud administration
+
+The Temporal Cloud extension adds `temporal cloud` commands for managing your Temporal Cloud control plane resources in
+your Temporal Cloud account, including Namespaces, Users, Service Accounts, API keys, and others. Any of the
+authentication methods above grants access to these commands.
+
+The extension enables you to do the following through the CLI:
+
+- Create, configure, and delete Namespaces.
+- Create and manage API keys for programmatic access.
+- Invite users, assign roles, and manage user groups.
+- Create and configure Nexus endpoints.
+- View account information and manage connectivity rules.
+
+For installation instructions, see
+[Install the Temporal Cloud extension](/cli/setup-cli#install-the-temporal-cloud-extension). For the full list of
+commands, see the [`cloud` command reference](/cli/command-reference/cloud).
+
+## Next steps
+
+- [CLI basics](/cli/common-operations) for common CLI commands.
+- [Environment configuration](/develop/environment-configuration) for managing connection profiles across environments.
+- [Cloud command reference](/cli/command-reference/cloud) for all `temporal cloud` commands.

@@ -32,7 +32,7 @@ execution history is kept.
 
 You can create Namespaces using:
 
-- **Temporal CLI** (recommended): [`temporal operator namespace create`](/cli/operator#create)
+- **Temporal CLI** (recommended): [`temporal operator namespace create`](/cli/command-reference/operator#create)
 - **Go SDK**: [`RegisterNamespace`](/develop/go/client/namespaces#register-namespace)
 - **Java SDK**: [`RegisterNamespace`](/develop/java/client/namespaces#register-namespace)
 - **TypeScript SDK**: [Namespace management](/develop/typescript/client/namespaces#register-namespace)
@@ -42,7 +42,7 @@ You can create Namespaces using:
 If no Namespace is specified, SDKs and CLI use the `default` Namespace. You must register this Namespace before using
 it.
 
-For local development, the [`temporal server start-dev`](/cli/server#start-dev) command automatically creates the
+For local development, the [`temporal server start-dev`](/cli/command-reference/server#start-dev) command automatically creates the
 `default` Namespace.
 
 For all other deployment methods, create the `default` Namespace manually using the Temporal CLI:
@@ -58,12 +58,12 @@ Namespace.
 
 Common namespace management operations:
 
-| Operation | CLI Command                                                      | Description                         |
-| --------- | ---------------------------------------------------------------- | ----------------------------------- |
-| List      | [`temporal operator namespace list`](/cli/operator#list)         | List all registered Namespaces      |
-| Describe  | [`temporal operator namespace describe`](/cli/operator#describe) | Get details for a Namespace         |
-| Update    | [`temporal operator namespace update`](/cli/operator#update)     | Update Namespace configuration      |
-| Delete    | [`temporal operator namespace delete`](/cli/operator#delete)     | Delete a Namespace and all its data |
+| Operation | CLI Command                                                                        | Description                         |
+| --------- | ---------------------------------------------------------------------------------- | ----------------------------------- |
+| List      | [`temporal operator namespace list`](/cli/command-reference/operator#list)         | List all registered Namespaces      |
+| Describe  | [`temporal operator namespace describe`](/cli/command-reference/operator#describe) | Get details for a Namespace         |
+| Update    | [`temporal operator namespace update`](/cli/command-reference/operator#update)     | Update Namespace configuration      |
+| Delete    | [`temporal operator namespace delete`](/cli/command-reference/operator#delete)     | Delete a Namespace and all its data |
 
 For SDK-based namespace management:
 

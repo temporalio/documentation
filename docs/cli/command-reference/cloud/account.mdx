@@ -1,0 +1,318 @@
+---
+id: account
+title: Temporal CLI cloud account command reference
+sidebar_label: account
+description: Account Management Commands
+toc_max_heading_level: 4
+keywords:
+  - account
+  - management
+tags:
+  - account
+---
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
+
+This page provides a reference for the `temporal cloud account` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
+## audit-log
+
+Commands for working with account audit logs.
+
+### audit-log get
+
+Returns a paginated list of audit logs for the account, optionally filtered by time range.
+
+Example:
+  temporal cloud account audit-log get --page-size 50
+  temporal cloud account audit-log get --start-time 2024-01-01T00:00:00Z --end-time 2024-02-01T00:00:00Z
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--end-time` | No | **timestamp** Filter for logs before this UTC time (RFC3339 format, e.g. 2024-02-01T00:00:00Z). Defaults to current time. |
+| `--page-size` | No | **int** Number of logs to retrieve per page. Cannot exceed 1000. Defaults to 100. |
+| `--page-token` | No | **string** Page token from a previous response to retrieve the next page. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--start-time` | No | **timestamp** Filter for logs at or after this UTC time (RFC3339 format, e.g. 2024-01-01T00:00:00Z). Defaults to 30 days ago. |
+
+### audit-log sink
+
+Commands for working with account audit log sinks.
+
+#### audit-log sink delete
+
+Delete an audit log sink for the account. This action is irreversible.
+
+Example:
+  temporal cloud account audit-log sink delete --name my-sink
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** The name of the audit log sink to delete. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### audit-log sink disable
+
+Disable an audit log sink for the account.
+
+Example:
+  temporal cloud account audit-log sink disable --name my-sink
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** The name of the audit log sink to disable. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### audit-log sink enable
+
+Enable an audit log sink for the account.
+
+Example:
+  temporal cloud account audit-log sink enable --name my-sink
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** The name of the audit log sink to enable. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### audit-log sink get
+
+Returns the details of an audit log sink for the account.
+
+Example:
+  temporal cloud account audit-log sink get --name my-sink
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--name` | Yes | **string** The name of the audit log sink to get. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### audit-log sink kinesis
+
+Commands for managing Kinesis-based audit log sinks.
+
+##### audit-log sink kinesis create
+
+Create an account audit log sink that streams audit events to Amazon Kinesis.
+
+Temporal Cloud assumes the specified IAM role to write events to the Kinesis
+stream identified by the destination URI.
+
+Example:
+  temporal cloud account audit-log sink kinesis create \
+    --name my-sink \
+    --role-name arn:aws:iam::123456789012:role/MyRole \
+    --destination-uri arn:aws:kinesis:us-east-1:123456789012:stream/MyStream \
+    --region us-east-1
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--destination-uri` | Yes | **string** ARN of the Kinesis stream to deliver audit log events to. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** Name of the audit log sink. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--region` | Yes | **string** AWS region where the Kinesis stream is located (e.g. us-east-1). |
+| `--role-name` | Yes | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+##### audit-log sink kinesis update
+
+Update an existing Kinesis audit log sink. Only the flags you provide are changed;
+omitted string flags retain their current values. 
+
+Example:
+  temporal cloud account audit-log sink kinesis update \
+    --name my-sink \
+    --role-name arn:aws:iam::123456789012:role/NewRole
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--destination-uri` | No | **string** ARN of the Kinesis stream to deliver audit log events to. If omitted, the current value is kept. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** Name of the audit log sink to update. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--region` | No | **string** AWS region where the Kinesis stream is located (e.g. us-east-1). If omitted, the current value is kept. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--role-name` | No | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. If omitted, the current value is kept. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+##### audit-log sink kinesis validate
+
+Validate an audit log sink configuration against Amazon Kinesis without creating it.
+Use this to verify that the IAM role and Kinesis stream are correctly configured
+before creating or updating the sink.
+
+Example:
+  temporal cloud account audit-log sink kinesis validate \
+    --name my-sink \
+    --role-name arn:aws:iam::123456789012:role/MyRole \
+    --destination-uri arn:aws:kinesis:us-east-1:123456789012:stream/MyStream \
+    --region us-east-1
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--destination-uri` | Yes | **string** ARN of the Kinesis stream to deliver audit log events to. |
+| `--region` | Yes | **string** AWS region where the Kinesis stream is located (e.g. us-east-1). |
+| `--role-name` | Yes | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### audit-log sink list
+
+Returns a paginated list of audit log sinks for the account.
+
+Example:
+  temporal cloud account audit-log sink list
+  temporal cloud account audit-log sink list --page-size 50
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--page-size` | No | **int** Number of sinks to retrieve per page. Cannot exceed 1000. Defaults to 100. |
+| `--page-token` | No | **string** Page token from a previous response to retrieve the next page. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### audit-log sink pubsub
+
+Commands for managing PubSub audit log sinks.
+
+##### audit-log sink pubsub create
+
+Creates a new PubSub audit log sink for the account using Google Cloud Pub/Sub.
+
+Example:
+
+```
+temporal cloud account audit-log sink pubsub create \
+  --name my-sink \
+  --service-account-id my-sa \
+  --topic-name my-topic \
+  --gcp-project-id my-project
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--gcp-project-id` | Yes | **string** The GCP project ID of the PubSub topic and service account. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** The name of the audit log sink. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--service-account-id` | Yes | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
+| `--topic-name` | Yes | **string** The destination PubSub topic name where audit logs will be sent. |
+
+##### audit-log sink pubsub update
+
+Updates an existing PubSub audit log sink for the account.
+
+Example:
+
+```
+temporal cloud account audit-log sink pubsub update \
+  --name my-sink \
+  --service-account-id new-sa \
+  --topic-name new-topic \
+  --gcp-project-id new-project
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--gcp-project-id` | No | **string** The GCP project ID of the PubSub topic and service account. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--name` | Yes | **string** The name of the audit log sink to update. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--service-account-id` | No | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
+| `--topic-name` | No | **string** The destination PubSub topic name where audit logs will be sent. |
+
+##### audit-log sink pubsub validate
+
+Validates a PubSub audit log sink specification without creating or modifying any resources.
+
+Example:
+
+```
+temporal cloud account audit-log sink pubsub validate \
+  --name my-sink \
+  --service-account-id my-sa \
+  --topic-name my-topic \
+  --gcp-project-id my-project
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--gcp-project-id` | Yes | **string** The GCP project ID of the PubSub topic and service account. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--service-account-id` | Yes | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
+| `--topic-name` | Yes | **string** The destination PubSub topic name where audit logs will be sent. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |  |
+| `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
+| `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
+| `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl-test.cloud:443` |
+
