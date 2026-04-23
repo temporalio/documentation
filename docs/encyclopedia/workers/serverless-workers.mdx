@@ -24,6 +24,7 @@ This page covers the following:
 - [What is a Serverless Worker?](#serverless-worker)
 - [How Serverless invocation works](#how-invocation-works)
 - [Autoscaling](#autoscaling)
+- [Scaling with long-lived Workers](#scaling-with-long-lived-workers)
 - [Worker lifecycle](#worker-lifecycle)
 - [Failure handling](#failure-handling)
 - [Constraints](#constraints)
@@ -104,6 +105,16 @@ responsive.
 
 The WCI monitors Task Queue metadata to determine whether pending Tasks exist without enough Workers to process them. If
 there is work on the queue and not enough Workers, the WCI invokes additional Workers.
+
+## Scaling with long-lived Workers {#scaling-with-long-lived-workers}
+
+Serverless Workers can share a Task Queue with long-lived Workers.
+Because Serverless Workers are only invoked on [sync match failure](#sync-match-failure), Serverless Workers only pick up Tasks that no long-lived Worker was available to handle.
+In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
+
+If you configure Serverless and long-lived Workers on the same Task Queue, do not enable dynamic scaling on the long-lived Workers.
+The two groups cannot coordinate their scaling behavior.
+If both scale dynamically, the long-lived Workers may scale up to handle the same Tasks that Temporal is simultaneously invoking Serverless Workers for, leading to unnecessary invocations and unpredictable scaling.
 
 ## Worker lifecycle {#worker-lifecycle}
 
