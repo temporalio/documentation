@@ -370,9 +370,3 @@ You can verify the invocation by checking:
 
 - **Temporal UI:** The Workflow execution should show task completions in the event history.
 - **AWS CloudWatch Logs:** The Lambda function's log group (`/aws/lambda/my-temporal-worker`) should show invocation logs with the Worker startup, task processing, and graceful shutdown.
-
-To view the Worker Controller Instance (WCI) workflow that manages scaling for your deployment, filter workflows in the Temporal UI or CLI with:
-
-```bash
-temporal workflow list --query 'TemporalNamespaceDivision = "TemporalWorkerControllerInstance"'
-```
