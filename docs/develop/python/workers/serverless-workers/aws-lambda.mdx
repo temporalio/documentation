@@ -31,7 +31,7 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `run_worker` function to create a Lambda handler that runs a Temporal Worker.
 Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
 
-```python
+```python {14-20}
 from temporalio.common import WorkerDeploymentVersion
 from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
 
@@ -54,12 +54,15 @@ lambda_handler = run_worker(
 )
 ```
 
-The `WorkerDeploymentVersion` is required.
-Worker Deployment Versioning is always enabled for Serverless Workers.
+`run_worker` takes a `WorkerDeploymentVersion` and a configure callback, and returns a Lambda handler.
+The `WorkerDeploymentVersion` is required. Worker Deployment Versioning is always enabled for Serverless Workers.
 
-Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
+Set the Task Queue, Workflows, and Activities through `worker_config`, which accepts the same keyword arguments as the `Worker` constructor.
 
-```python
+Each Workflow registered with the Worker must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+
+```python {5}
 from temporalio import workflow
 from temporalio.common import VersioningBehavior
 
@@ -70,9 +73,6 @@ class MyWorkflow:
     async def run(self, input: str) -> str:
         ...
 ```
-
-The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
-Set the Task Queue, Workflows, and Activities through `worker_config`, which accepts the same keyword arguments as the `Worker` constructor.
 
 ## Configure the Temporal connection {#configure-connection}
 
