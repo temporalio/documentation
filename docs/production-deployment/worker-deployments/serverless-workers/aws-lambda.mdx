@@ -150,7 +150,7 @@ aws lambda update-function-code \
   --zip-file fileb://function.zip
 ```
 
-## 3. Configure IAM for Temporal invocation {#configure-iam}
+## 3. Configure IAM for Temporal invocation (Cloud only) {#configure-iam}
 
 Temporal needs permission to invoke your Lambda function.
 The Temporal server assumes an IAM role in your AWS account to call `lambda:InvokeFunction`.
