@@ -1,0 +1,416 @@
+/* ── Root ───────────────────────────────────────────────────────────────── */
+
+.demo {
+  font-family: var(--ifm-font-family-base);
+}
+
+/* ── Language tabs ──────────────────────────────────────────────────────── */
+
+.languageTabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  padding-bottom: 10px;
+}
+
+.langTab {
+  padding: 5px 18px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.langTab:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.langTabActive {
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border-color: var(--ifm-color-primary);
+}
+
+/* ── Two-column layout ──────────────────────────────────────────────────── */
+
+.columns {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.leftCol,
+.rightCol {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .columns {
+    flex-direction: column;
+  }
+}
+
+/* ── Section ────────────────────────────────────────────────────────────── */
+
+.section {
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Config form ────────────────────────────────────────────────────────── */
+
+.configGrid {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.configRow {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+}
+
+.configRow:last-child {
+  border-bottom: none;
+}
+
+.configLabel {
+  flex: 1;
+  font-size: 0.83rem;
+  color: var(--ifm-font-color-secondary);
+  user-select: none;
+}
+
+.configInput,
+.configSelect {
+  width: 150px;
+  padding: 4px 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.83rem;
+}
+
+.checkbox {
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.simNote {
+  font-size: 0.8rem;
+  color: var(--ifm-font-color-secondary);
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* ── Execute button ─────────────────────────────────────────────────────── */
+
+.executeBtn {
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.executeBtn:hover:not(.executeBtnDisabled) {
+  background: var(--ifm-color-primary-dark);
+}
+
+.executeBtnDisabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ────────────────────────────────────────────────────────────── */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Flow diagram ───────────────────────────────────────────────────────── */
+
+.flowDiagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  overflow-x: auto;
+  gap: 4px;
+}
+
+.flowNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  min-width: 68px;
+  text-align: center;
+  transition: border-color 0.3s, background 0.3s, opacity 0.3s;
+}
+
+.flowNodeLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.flowNodeSub {
+  font-size: 0.63rem;
+  color: var(--ifm-font-color-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* Node states */
+
+.flowNode_pending {
+  opacity: 0.38;
+}
+
+@keyframes nodePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(59, 130, 246, 0);
+  }
+}
+
+.flowNode_active {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+  animation: nodePulse 1.4s ease-in-out infinite;
+}
+
+.flowNode_active .flowNodeLabel {
+  color: #3b82f6;
+}
+
+.flowNode_completed {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.flowNode_completed .flowNodeLabel {
+  color: #15803d;
+}
+
+.flowNode_failed {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.flowNode_failed .flowNodeLabel {
+  color: #dc2626;
+}
+
+/* Arrows */
+
+.flowArrow {
+  font-size: 1.6rem;
+  color: var(--ifm-color-emphasis-300);
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.3s;
+  user-select: none;
+}
+
+.flowArrowLit {
+  color: #22c55e;
+}
+
+/* ── Activity log ───────────────────────────────────────────────────────── */
+
+.log {
+  height: 190px;
+  overflow-y: auto;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.logPlaceholder {
+  color: var(--ifm-font-color-secondary);
+  font-style: italic;
+  padding: 4px 0;
+}
+
+.logLine {
+  display: flex;
+  gap: 8px;
+  padding: 1px 0;
+}
+
+.logTime {
+  color: var(--ifm-font-color-secondary);
+  flex-shrink: 0;
+}
+
+.logLine_info .logMsg {
+  color: var(--ifm-font-color-base);
+}
+
+.logLine_success .logMsg {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.logLine_error .logMsg {
+  color: #dc2626;
+}
+
+.logLine_warn .logMsg {
+  color: #b45309;
+}
+
+/* Result banners */
+
+.resultSuccess {
+  margin-top: 8px;
+  padding: 9px 14px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  border-radius: 6px;
+  color: #15803d;
+  font-size: 0.88rem;
+}
+
+.resultFailed {
+  margin-top: 8px;
+  padding: 9px 14px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 0.88rem;
+}
+
+/* ── Activity history table ─────────────────────────────────────────────── */
+
+.historyCount {
+  font-weight: 400;
+  color: var(--ifm-font-color-secondary);
+  font-size: 0.85rem;
+}
+
+.historyWrapper {
+  overflow-x: auto;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+}
+
+.historyTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.historyTable th {
+  padding: 7px 12px;
+  text-align: left;
+  background: var(--ifm-background-surface-color);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-weight: 600;
+  color: var(--ifm-font-color-secondary);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.historyTable td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-100);
+  vertical-align: middle;
+}
+
+.historyTable tr:last-child td {
+  border-bottom: none;
+}
+
+.historyId {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+}
+
+.historyResult {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  color: var(--ifm-font-color-secondary);
+}
+
+.badgeSuccess {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgeFailed {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}

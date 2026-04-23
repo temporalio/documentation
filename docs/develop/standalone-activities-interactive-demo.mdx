@@ -1,0 +1,383 @@
+---
+id: standalone-activities-interactive-demo
+title: Standalone Activities Interactive Demo
+sidebar_label: Standalone Activities (Interactive)
+toc_max_heading_level: 3
+keywords:
+  - standalone activity
+  - activity execution
+  - execute activity
+  - activity handle
+  - quickstart
+  - interactive demo
+tags:
+  - Activities
+  - Temporal Client
+  - Temporal SDKs
+description: An interactive quickstart for Temporal Standalone Activities — run Activities directly from a Temporal Client without a Workflow.
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal SDK support for [Standalone Activities](/standalone-activity) is at
+[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+All APIs are experimental and may be subject to backwards-incompatible changes.
+
+:::
+
+Standalone Activities let you execute an Activity directly from a Temporal Client — no Workflow
+required. The Activity is durably enqueued on the Temporal Server, executed by a Worker, and its
+result is returned to the caller.
+
+Use the interactive demo below to explore the API, experiment with failure scenarios, and see the
+generated SDK code and CLI command update in real time.
+
+import { StandaloneActivityDemo } from '@site/src/components';
+
+<StandaloneActivityDemo />
+
+---
+
+## How it works
+
+When you call `client.ExecuteActivity()` (or the equivalent in your SDK), the following happens:
+
+1. **Connect** — Your application connects to the Temporal Server.
+2. **Schedule** — The Server durably persists the Activity execution on the specified Task Queue.
+3. **Poll** — A Worker polling that Task Queue picks up the Activity Task.
+4. **Execute** — The Worker runs your Activity function with the provided arguments.
+5. **Return** — The result is stored by the Server and returned to the original caller via the
+   `ActivityHandle`.
+
+Because the Server durably persists the Activity, it survives Worker restarts and network
+interruptions. If the Activity fails, the Server automatically retries it according to the Retry
+Policy you configure.
+
+### Standalone vs Workflow Activities
+
+| | Workflow Activity | Standalone Activity |
+|---|---|---|
+| Orchestrated by | A Workflow Definition | Your application code |
+| Started with | `workflow.ExecuteActivity()` | `client.ExecuteActivity()` |
+| Retry policy | Configured per `ActivityOptions` | Configured per `StartActivityOptions` |
+| Visibility | Workflow Event History | Activity Visibility (List/Count) |
+| Use case | Complex, multi-step orchestration | Simple, independent jobs |
+
+The Activity function and Worker registration are **identical** for both — only the execution path
+differs.
+
+---
+
+## Setup
+
+### 1. Install the Temporal CLI
+
+Download the Standalone Activity prerelease build of the Temporal CLI:
+
+```bash
+# macOS (Homebrew)
+brew install temporal
+
+# Or download directly from GitHub
+# https://github.com/temporalio/cli/releases/tag/v1.6.2-standalone-activity
+```
+
+### 2. Start a local development server
+
+```bash
+temporal server start-dev
+```
+
+The server starts at `localhost:7233` and the Web UI at
+[http://localhost:8233](http://localhost:8233). Standalone Activities appear under the **Activities**
+nav item in the Web UI.
+
+### 3. Install the SDK
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs groupId="language">
+<TabItem value="go" label="Go">
+
+Requires **Go SDK v1.41.0** or higher.
+
+```bash
+go get go.temporal.io/sdk@latest
+```
+
+Clone the samples repository to follow along:
+
+```bash
+git clone https://github.com/temporalio/samples-go.git
+cd samples-go
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+Requires **Python SDK v1.23.0** or higher.
+
+```bash
+uv add temporalio
+# or: pip install temporalio
+```
+
+Clone the samples repository to follow along:
+
+```bash
+git clone https://github.com/temporalio/samples-python.git
+cd samples-python
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+Requires **.NET SDK v1.12.0** or higher.
+
+```bash
+dotnet add package Temporalio
+```
+
+Clone the samples repository to follow along:
+
+```bash
+git clone https://github.com/temporalio/samples-dotnet.git
+cd samples-dotnet
+```
+
+</TabItem>
+</Tabs>
+
+### 4. Run the Worker
+
+The Worker registers the Activity and polls the Task Queue. Start it in a dedicated terminal:
+
+<Tabs groupId="language">
+<TabItem value="go" label="Go">
+
+```bash
+go run standalone-activity/helloworld/worker/main.go
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```bash
+uv run hello_standalone_activity/worker.py
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```bash
+dotnet run --project src/StandaloneActivity worker
+```
+
+</TabItem>
+</Tabs>
+
+### 5. Execute the Activity
+
+In a separate terminal, run the starter:
+
+<Tabs groupId="language">
+<TabItem value="go" label="Go">
+
+```bash
+go run standalone-activity/helloworld/starter/main.go
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```bash
+uv run hello_standalone_activity/execute_activity.py
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```bash
+dotnet run --project src/StandaloneActivity execute-activity
+```
+
+</TabItem>
+</Tabs>
+
+Or use the Temporal CLI directly:
+
+```bash
+temporal activity execute \
+  --type Activity \
+  --activity-id my-activity-id \
+  --task-queue my-task-queue \
+  --start-to-close-timeout 10s \
+  --input '"World"'
+```
+
+---
+
+## Key API concepts
+
+### `ExecuteActivity` — start and wait
+
+The primary call. Durably enqueues the Activity, waits for execution, and returns the result:
+
+<Tabs groupId="language">
+<TabItem value="go" label="Go">
+
+```go
+handle, err := c.ExecuteActivity(ctx, client.StartActivityOptions{
+    ID:                  "my-activity-id",
+    TaskQueue:           "my-task-queue",
+    StartToCloseTimeout: 10 * time.Second,
+}, helloworld.Activity, "World")
+
+var result string
+err = handle.Get(ctx, &result)
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+result = await client.execute_activity(
+    compose_greeting,
+    args=[ComposeGreetingInput("Hello", "World")],
+    id="my-activity-id",
+    task_queue="my-task-queue",
+    start_to_close_timeout=timedelta(seconds=10),
+)
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+var result = await client.ExecuteActivityAsync(
+    () => MyActivities.ComposeGreetingAsync(
+        new ComposeGreetingInput("Hello", "World")),
+    new("my-activity-id", "my-task-queue")
+    {
+        StartToCloseTimeout = TimeSpan.FromSeconds(10),
+    });
+```
+
+</TabItem>
+</Tabs>
+
+### `StartActivity` — fire and forget
+
+Enqueues the Activity without waiting for it to finish. Useful when you want to kick off
+long-running work and check back later:
+
+<Tabs groupId="language">
+<TabItem value="go" label="Go">
+
+```go
+handle, err := c.ExecuteActivity(ctx, options, helloworld.Activity, "World")
+// handle.Get() can be called later
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+handle = await client.start_activity(
+    compose_greeting,
+    args=[ComposeGreetingInput("Hello", "World")],
+    id="my-activity-id",
+    task_queue="my-task-queue",
+    start_to_close_timeout=timedelta(seconds=10),
+)
+# Later:
+result = await handle.result()
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+var handle = await client.StartActivityAsync(
+    () => MyActivities.ComposeGreetingAsync(
+        new ComposeGreetingInput("Hello", "World")),
+    new("my-activity-id", "my-task-queue")
+    {
+        StartToCloseTimeout = TimeSpan.FromSeconds(10),
+    });
+// Later:
+var result = await handle.GetResultAsync();
+```
+
+</TabItem>
+</Tabs>
+
+### List and Count Activities
+
+<Tabs groupId="language">
+<TabItem value="go" label="Go">
+
+```go
+// List
+resp, err := c.ListActivities(ctx, client.ListActivitiesOptions{
+    Query: "TaskQueue = 'my-task-queue'",
+})
+for info, err := range resp.Results { ... }
+
+// Count
+resp, err := c.CountActivities(ctx, client.CountActivitiesOptions{
+    Query: "TaskQueue = 'my-task-queue'",
+})
+log.Println("Total:", resp.Count)
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+# List
+async for info in client.list_activities(
+    query="TaskQueue = 'my-task-queue'"
+):
+    print(info.activity_id, info.status)
+
+# Count
+resp = await client.count_activities(
+    query="TaskQueue = 'my-task-queue'"
+)
+print("Total:", resp.count)
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+// List
+await foreach (var info in client.ListActivitiesAsync(
+    "TaskQueue = 'my-task-queue'"))
+{
+    Console.WriteLine($"{info.ActivityId}: {info.Status}");
+}
+
+// Count
+var resp = await client.CountActivitiesAsync(
+    "TaskQueue = 'my-task-queue'");
+Console.WriteLine($"Total: {resp.Count}");
+```
+
+</TabItem>
+</Tabs>
+
+The `Query` parameter uses the same [List Filter](/list-filter) syntax as Workflow Visibility.
+
+---
+
+## Next steps
+
+For complete API reference and advanced usage, see the SDK-specific guides:
+
+- [Standalone Activities — Go SDK](/develop/go/standalone-activities)
+- [Standalone Activities — Python SDK](/develop/python/standalone-activities)
+- [Standalone Activities — .NET SDK](/develop/dotnet/standalone-activities)
