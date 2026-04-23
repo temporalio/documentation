@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from '@docusaurus/Head';
-import { DocProvider, useDoc } from '@docusaurus/plugin-content-docs/client';
+import { DocProvider, useAllDocsData, useDoc } from '@docusaurus/plugin-content-docs/client';
 import DocItemMetadata from '@theme/DocItem/Metadata';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { HtmlClassNameProvider } from '@docusaurus/theme-common';
@@ -18,13 +18,147 @@ type CookbookDocItemProps = DocItemProps & { tags?: string[] };
 
 type CookbookIndexItem = {
   id: string;
+  title?: string;
+  description?: string;
+  tags?: string[];
+  permalink?: string;
   source?: string;
+  priority?: number;
+  last_updated?: unknown;
+  last_updated_at?: unknown;
+  last_updated_label?: string;
+  formatted_last_updated?: string;
 };
+
+type DocMeta = {
+  id: string;
+  unversionedId?: string;
+  title?: string;
+  permalink?: string;
+  frontMatter?: {
+    title?: string;
+    last_updated?: unknown;
+    last_updated_at?: unknown;
+  };
+  lastUpdatedAt?: number | string | null;
+};
+
+function normalizeCookbookId(id: string | undefined): string {
+  return (id ?? '').replace(/^cookbook:/, '').trim();
+}
+
+function normalizeTimestamp(value: unknown): number | undefined {
+  const normalizeNumber = (input: number): number | undefined => {
+    if (!Number.isFinite(input)) {
+      return undefined;
+    }
+    return input < 1e11 ? input * 1000 : input;
+  };
+
+  if (typeof value === 'number') {
+    return normalizeNumber(value);
+  }
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+    const numeric = Number(trimmed);
+    if (!Number.isNaN(numeric)) {
+      return normalizeNumber(numeric);
+    }
+    const parsed = Date.parse(trimmed);
+    return Number.isNaN(parsed) ? undefined : normalizeNumber(parsed);
+  }
+  if (value instanceof Date) {
+    const time = value.getTime();
+    return Number.isNaN(time) ? undefined : normalizeNumber(time);
+  }
+  return undefined;
+}
+
+function formatTimestamp(value: number): string | undefined {
+  if (!Number.isFinite(value)) {
+    return undefined;
+  }
+  try {
+    const formatter = new Intl.DateTimeFormat(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+    return formatter.format(new Date(value));
+  } catch {
+    return new Date(value).toLocaleDateString();
+  }
+}
+
+function resolveDocMeta(item: CookbookIndexItem, docsById: Map<string, DocMeta>) {
+  return (
+    docsById.get(item.id) ??
+    docsById.get(`cookbook:${item.id}`) ??
+    docsById.get(item.id.replace(/^cookbook:/, '')) ??
+    null
+  );
+}
+
+function getCookbookItemTimestamp(item: CookbookIndexItem, docsById: Map<string, DocMeta>): number {
+  const meta = resolveDocMeta(item, docsById);
+  const candidates = [
+    meta?.frontMatter?.last_updated,
+    meta?.frontMatter?.last_updated_at,
+    meta?.lastUpdatedAt,
+    item.last_updated,
+    item.last_updated_at,
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = normalizeTimestamp(candidate);
+    if (typeof normalized === 'number') {
+      return normalized;
+    }
+  }
+
+  return 0;
+}
+
+function sortCookbookItems(items: CookbookIndexItem[], docsById: Map<string, DocMeta>): CookbookIndexItem[] {
+  return [...items].sort((a, b) => {
+    const priorityA = typeof a.priority === 'number' && Number.isFinite(a.priority) ? a.priority : null;
+    const priorityB = typeof b.priority === 'number' && Number.isFinite(b.priority) ? b.priority : null;
+
+    if (priorityA !== null && priorityB !== null) {
+      if (priorityA !== priorityB) {
+        return priorityB - priorityA;
+      }
+    } else if (priorityA !== null) {
+      return -1;
+    } else if (priorityB !== null) {
+      return 1;
+    }
+
+    const updatedA = getCookbookItemTimestamp(a, docsById);
+    const updatedB = getCookbookItemTimestamp(b, docsById);
+
+    if (updatedA === updatedB) {
+      return 0;
+    }
+    return updatedB - updatedA;
+  });
+}
 
 function BackArrowIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 16 16" role="img" aria-hidden="true" {...props}>
       <path d="M6.28 3.22a.75.75 0 0 1 0 1.06L4.06 6.5H13a.75.75 0 0 1 0 1.5H4.06l2.22 2.22a.75.75 0 0 1-1.06 1.06l-3.5-3.5a.75.75 0 0 1 0-1.06l3.5-3.5a.75.75 0 0 1 1.06 0Z" />
+    </svg>
+  );
+}
+
+function ForwardArrowIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" role="img" aria-hidden="true" {...props}>
+      <path d="M9.72 3.22a.75.75 0 0 0 0 1.06l2.22 2.22H3a.75.75 0 0 0 0 1.5h8.94l-2.22 2.22a.75.75 0 1 0 1.06 1.06l3.5-3.5a.75.75 0 0 0 0-1.06l-3.5-3.5a.75.75 0 0 0-1.06 0Z" />
     </svg>
   );
 }
@@ -65,9 +199,41 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
     lastUpdatedAt?: number | string | null;
   };
   const indexData = usePluginData('cookbook-index') as { items?: CookbookIndexItem[] } | undefined;
+  const allDocsData = useAllDocsData();
+  const cookbookDocs =
+    allDocsData?.cookbook?.versions?.find((version: any) => version?.isLast) ?? allDocsData?.cookbook?.versions?.[0];
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
   const shouldRenderSyntheticTitle = !frontMatter?.hide_title && typeof contentTitle === 'undefined';
   const syntheticTitle = shouldRenderSyntheticTitle ? title : undefined;
+
+  const docsById = React.useMemo(() => {
+    const map = new Map<string, DocMeta>();
+    const docs: DocMeta[] = cookbookDocs?.docs ?? [];
+    docs.forEach((doc) => {
+      map.set(doc.id, doc);
+      map.set(`cookbook:${doc.id}`, doc);
+      if (doc.unversionedId) {
+        map.set(doc.unversionedId, doc);
+        map.set(`cookbook:${doc.unversionedId}`, doc);
+      }
+    });
+    return map;
+  }, [cookbookDocs]);
+
+  const cookbookItems = React.useMemo(() => {
+    const items = indexData?.items;
+    if (!Array.isArray(items)) {
+      return [];
+    }
+    return items.filter(
+      (item): item is CookbookIndexItem => !!item && typeof item.id === 'string' && item.id.trim().length > 0
+    );
+  }, [indexData]);
+
+  const sortedCookbookItems = React.useMemo(
+    () => sortCookbookItems(cookbookItems, docsById),
+    [cookbookItems, docsById]
+  );
 
   const resolvedTags = (tags ?? metaTags.map((t: any) => t.label)) as string[];
   const dataTags = resolvedTags.length ? resolvedTags.join(',') : undefined;
@@ -80,51 +246,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
         formatted_last_updated?: string;
       }
     | undefined;
-  const normalizeTimestamp = React.useCallback((value: unknown): number | undefined => {
-    const normalizeNumber = (input: number): number | undefined => {
-      if (!Number.isFinite(input)) {
-        return undefined;
-      }
-      // Treat smaller values (e.g. seconds) as seconds since epoch.
-      return input < 1e11 ? input * 1000 : input;
-    };
 
-    if (typeof value === 'number') {
-      return normalizeNumber(value);
-    }
-    if (typeof value === 'string') {
-      const trimmed = value.trim();
-      if (!trimmed) {
-        return undefined;
-      }
-      const numeric = Number(trimmed);
-      if (!Number.isNaN(numeric)) {
-        return normalizeNumber(numeric);
-      }
-      const parsed = Date.parse(trimmed);
-      return Number.isNaN(parsed) ? undefined : normalizeNumber(parsed);
-    }
-    if (value instanceof Date) {
-      const time = value.getTime();
-      return Number.isNaN(time) ? undefined : normalizeNumber(time);
-    }
-    return undefined;
-  }, []);
-  const formatTimestamp = React.useCallback((value: number): string | undefined => {
-    if (!Number.isFinite(value)) {
-      return undefined;
-    }
-    try {
-      const formatter = new Intl.DateTimeFormat(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-      return formatter.format(new Date(value));
-    } catch {
-      return new Date(value).toLocaleDateString();
-    }
-  }, []);
   const frontMatterLastUpdatedLabel = React.useMemo(() => {
     const formattedCandidates = [
       cookbookFrontMatter?.last_updated_label,
@@ -153,7 +275,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
     }
 
     return undefined;
-  }, [cookbookFrontMatter, formatTimestamp, normalizeTimestamp]);
+  }, [cookbookFrontMatter]);
   const pluginSource = React.useMemo(() => {
     const items = indexData?.items;
     if (!Array.isArray(items)) {
@@ -192,13 +314,56 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
     }
 
     return formatTimestamp(normalizedTimestamp);
-  }, [formatTimestamp, frontMatterLastUpdatedLabel, formattedLastUpdatedAt, lastUpdatedAt, normalizeTimestamp]);
+  }, [frontMatterLastUpdatedLabel, formattedLastUpdatedAt, lastUpdatedAt]);
+
+  const paginationTargets = React.useMemo(() => {
+    if (sortedCookbookItems.length === 0) {
+      return { previous: null, next: null };
+    }
+
+    const currentIds = new Set(
+      [id, unversionedId, `cookbook:${id}`, unversionedId ? `cookbook:${unversionedId}` : undefined]
+        .map((value) => normalizeCookbookId(value))
+        .filter(Boolean)
+    );
+
+    const currentIndex = sortedCookbookItems.findIndex((item) => currentIds.has(normalizeCookbookId(item.id)));
+
+    if (currentIndex < 0) {
+      return { previous: null, next: null };
+    }
+
+    const resolveNavTarget = (item: CookbookIndexItem | undefined) => {
+      if (!item) {
+        return null;
+      }
+
+      const docMeta = resolveDocMeta(item, docsById);
+      const href = docMeta?.permalink ?? item.permalink;
+      if (!href) {
+        return null;
+      }
+
+      const navTitle = docMeta?.title ?? docMeta?.frontMatter?.title ?? item.title ?? normalizeCookbookId(item.id);
+      return {
+        href,
+        title: navTitle,
+      };
+    };
+
+    return {
+      previous: resolveNavTarget(sortedCookbookItems[currentIndex - 1]),
+      next: resolveNavTarget(sortedCookbookItems[currentIndex + 1]),
+    };
+  }, [docsById, id, sortedCookbookItems, unversionedId]);
+
   const renderLastUpdated = React.useCallback(() => {
     if (!lastUpdatedLabel) {
       return null;
     }
-    return <p className={styles.lastUpdated}>Last updated {lastUpdatedLabel}</p>;
+    return <p className={styles.lastUpdated}>Updated {lastUpdatedLabel}</p>;
   }, [lastUpdatedLabel]);
+
   const renderActions = React.useCallback(
     () => (
       <div className={styles.actionsRow}>
@@ -222,6 +387,39 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
     ),
     [githubHref, handleGithubClick, isGithubEnabled]
   );
+
+  const renderRecipePagination = React.useCallback(() => {
+    if (!paginationTargets.previous && !paginationTargets.next) {
+      return null;
+    }
+
+    return (
+      <nav className={styles.recipePagination} aria-label="Recipe navigation">
+        {paginationTargets.previous ? (
+          <Link className={styles.recipeNavLink} to={paginationTargets.previous.href}>
+            <BackArrowIcon className={styles.actionIcon} />
+            <span>
+              <span className={styles.recipeNavLabel}>Previous</span>
+              <span className={styles.recipeNavTitle}>{paginationTargets.previous.title}</span>
+            </span>
+          </Link>
+        ) : (
+          <span />
+        )}
+        {paginationTargets.next ? (
+          <Link className={clsx(styles.recipeNavLink, styles.recipeNavLinkNext)} to={paginationTargets.next.href}>
+            <span>
+              <span className={styles.recipeNavLabel}>Next</span>
+              <span className={styles.recipeNavTitle}>{paginationTargets.next.title}</span>
+            </span>
+            <ForwardArrowIcon className={styles.actionIcon} />
+          </Link>
+        ) : (
+          <span />
+        )}
+      </nav>
+    );
+  }, [paginationTargets.next, paginationTargets.previous]);
 
   const components = React.useMemo(() => {
     const DefaultH1 =
@@ -273,6 +471,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
             <MDXProvider components={components}>
               <DocContent />
             </MDXProvider>
+            {renderRecipePagination()}
           </article>
           {hasTOC && (
             <aside className={styles.toc} aria-label="Table of contents">
