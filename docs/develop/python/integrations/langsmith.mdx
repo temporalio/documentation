@@ -22,7 +22,7 @@ Workflows—capturing every LLM call, tool execution, and orchestration step in 
 
 When building AI agents with Temporal, you get durable execution: automatic retries, state persistence, and recovery
 from failures mid-Workflow. LangSmith adds the observability layer: see exactly what your agents do, inspect LLM
-inputs and outputs, and trace a single request from the Client all the way through to the model.
+inputs and outputs, and trace a request from the Client all the way through to the model.
 
 Our LangSmith integration connects these capabilities with minimal code changes. The `LangSmithPlugin` propagates trace context
 across Temporal boundaries (Client → Workflow → Activity), and can optionally create LangSmith runs for Temporal
