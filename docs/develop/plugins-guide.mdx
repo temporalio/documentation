@@ -976,6 +976,9 @@ worker = Temporalio::Worker.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-Check for duplicate side effects or other types of failures.
+Inside this replay regime, you should test for duplicate side effects or other types of failures. When testing for duplicate side effects, it may not be sufficient to simply have a counter that increments once per effect, as activities may be retried. Instead, consider these patterns:
+
+- count `ActivityTaskScheduled` events of the expected activity type in workflow history (one per intended call, independent of retries), 
+- or accumulate activity IDs in a concurrency-safe set and assert on its size (different scheduled activities get different IDs; retries of the same scheduled activity share one).
 
 It's harder to test against side effects to global variables, so this practice is best avoided entirely.
