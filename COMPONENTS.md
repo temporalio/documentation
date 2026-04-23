@@ -137,6 +137,21 @@ Usage:
 
 Images are normally stored in the '/static' folder in `img` or `diagrams`.
 
+### Dark mode images
+
+To provide a separate image for dark mode, use the `srcDark` prop:
+
+```
+<CaptionedImage
+    src="/diagrams/my-diagram.svg"
+    srcDark="/diagrams/my-diagram-dark.svg"
+    title="My diagram"
+    alt="Description of the diagram"
+/>
+```
+
+When `srcDark` is provided, both images are rendered in the DOM and the browser loads both upfront. CSS toggles visibility based on the active theme, so switching between light and dark mode is instant with no loading delay. When `srcDark` is omitted, the component renders a single image as usual.
+
 ### Zooming images
 
 When images are complex and may not render in a readable fashion on normal monitors, you can enable a minimal form of zooming by setting the `zoom` prop to true:
