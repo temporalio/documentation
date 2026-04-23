@@ -288,7 +288,13 @@ aws cloudformation create-stack \
   --region <AWS_REGION>
 ```
 
-The stack output `RoleARN` contains the IAM role ARN to use in your Worker Deployment Version's compute configuration.
+After the stack finishes creating, retrieve the IAM role ARN from the stack outputs:
+
+```bash
+aws cloudformation describe-stacks --stack-name <STACK_NAME> --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' --output text --region <AWS_REGION>
+```
+
+Use this role ARN in your Worker Deployment Version's compute configuration.
 
 ## 4. Create Worker Deployment Version {#create-worker-deployment-version}
 
