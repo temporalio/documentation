@@ -57,6 +57,20 @@ lambda_handler = run_worker(
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
 
+Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+
+```python
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        ...
+```
+
 The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
 Set the Task Queue, Workflows, and Activities through `worker_config`, which accepts the same keyword arguments as the `Worker` constructor.
 

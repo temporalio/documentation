@@ -113,6 +113,20 @@ lambda_handler = run_worker(
 )
 ```
 
+Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+
+```python
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        ...
+```
+
 For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - Python SDK](/develop/python/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.Python>
@@ -142,22 +156,17 @@ zip function.zip bootstrap
 </SdkTabs.Go>
 <SdkTabs.Python>
 
-Install dependencies into a local directory for packaging:
+Install dependencies into a local directory for packaging. Use `--platform` to fetch Linux-compatible binaries for the Lambda runtime:
 
 ```bash
-pip install --target ./package temporalio
+pip install --target ./package --platform manylinux2014_x86_64 --only-binary=:all: temporalio
 ```
 
-Copy your application code into the package directory:
-
-```bash
-cp lambda_function.py my_workflows.py my_activities.py ./package/
-```
-
-Package everything into a zip file:
+Package the dependencies and your application code into a zip file:
 
 ```bash
 cd package && zip -r ../function.zip . && cd ..
+zip function.zip lambda_function.py my_workflows.py my_activities.py
 ```
 
 </SdkTabs.Python>
