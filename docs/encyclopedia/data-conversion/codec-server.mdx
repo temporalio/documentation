@@ -78,19 +78,20 @@ form.
 Your Codec Server should use the same Payload Codec implementation as your Workers to ensure consistent encoding and
 decoding.
 
-## Web UI and CLI integration
+## Codec Server vs. Payload Codec
 
-To use a Codec Server with the Web UI, configure the Codec Server endpoint in the Web UI settings. For the Temporal CLI,
-pass the `--codec-endpoint` flag. Once configured, the Web UI and CLI route payloads through your Codec Server
-automatically.
+Because both use the word "Codec," it is easy to confuse a Codec Server with a [Payload Codec](/payload-codec). They
+serve different purposes:
 
-Because the Web UI calls the Codec Server from the browser, you must enable
-[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on your Codec Server. At a minimum, allow the origin of
-your Web UI, the `POST` method, and the `Content-Type` and `X-Namespace` headers. Each request from the Web UI includes
-an `X-Namespace` header identifying the Namespace the payloads belong to.
+| | Payload Codec | Codec Server |
+| --- | --- | --- |
+| **What it is** | A component in your [Data Converter](/dataconversion) that transforms Payloads (bytes to bytes). | An HTTP server that exposes your Payload Codec over the network. |
+| **Where it runs** | In-process, inside your Workers and Clients. | As a standalone HTTP service in your environment. |
+| **Who calls it** | The Temporal SDK calls it automatically during serialization and deserialization. | The Web UI and CLI call it over HTTP to encode or decode Payloads on demand. |
+| **Purpose** | Applies encryption, compression, or other transformations to all Payloads that pass through the Data Converter. | Gives the Web UI and CLI access to those same transformations without bundling your codec logic into every tool. |
 
-For detailed configuration steps, CORS setup, and authorization options, see
-[Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
+A Codec Server wraps a Payload Codec. You implement the transformation logic once in a Payload Codec, then host that
+logic in a Codec Server so the Web UI and CLI can use it remotely.
 
 ## Authorization
 
