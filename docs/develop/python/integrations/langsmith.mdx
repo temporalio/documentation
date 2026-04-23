@@ -122,7 +122,7 @@ Use the same `project_name` on both the Worker and the Client so their traces la
 ## Trace Activities
 
 Any non-deterministic work in a Temporal Workflow (LLM calls, tool executions, database queries, external API calls,
-and so on) must run inside an Activity. That makes Activities the right place to add LangSmith runs. When you
+and so on) must run inside an Activity. That makes Activities an important place to add LangSmith runs. When you
 decorate an Activity function with `@traceable`, the run shows up in LangSmith nested under the Workflow that
 scheduled it.
 
