@@ -19,15 +19,18 @@ tags:
   - Self-hosted
 ---
 
-Temporal Cloud handles Serverless Worker infrastructure automatically.
-Self-hosted Temporal Service operators must enable the feature and configure the server to invoke compute providers.
-
 This page covers the prerequisites for running [Serverless Workers](/serverless-workers) on a self-hosted Temporal Service with AWS Lambda.
 Once setup is complete, follow the [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to deploy your Worker.
 
+To set up your self-hosted Temporal Service for Serverless Workers:
+
+1. Enable the Worker Controller Instance (WCI) on the server through dynamic configuration.
+2. Provide the server with AWS credentials to assume IAM roles.
+3. Create an IAM role in your AWS account that grants Temporal permission to invoke Lambda functions.
+
 ## Enable the Worker Controller {#enable-worker-controller}
 
-The Worker Controller is the server component that monitors Task Queues and invokes compute providers.
+The Worker Controller Instance (WCI) is the server component that monitors Task Queues and invokes compute providers.
 It is disabled by default and must be enabled through [dynamic configuration](/references/dynamic-configuration).
 
 Add the following keys to your dynamic config file:
@@ -55,16 +58,6 @@ workercontroller.enabled:
 ```
 
 The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
-
-### Worker Controller dynamic config reference {#dynamic-config-reference}
-
-| Key | Scope | Default | Description |
-|---|---|---|---|
-| `workercontroller.enabled` | Namespace | `false` | Enables the Worker Controller for a Namespace. |
-| `workercontroller.compute_providers.enabled` | Global | none | List of enabled compute providers (e.g., `["aws-lambda"]`). |
-| `workercontroller.scaling_algorithms.enabled` | Global | none | List of enabled scaling algorithms (e.g., `["no-sync"]`). |
-| `workercontroller.maxInstances` | Namespace | `100` | Maximum number of Worker Controller instances per Namespace. |
-| `workercontroller.compute_providers.aws.require_role_and_external_id` | Global | `true` | Whether AWS Lambda compute providers require a role ARN and external ID. |
 
 ## Configure AWS credentials {#configure-aws-credentials}
 
@@ -193,18 +186,6 @@ aws cloudformation describe-stacks --stack-name temporal-serverless-worker --que
 
 Use this role ARN when creating the Worker Deployment Version.
 
-## Verify the Worker Controller {#verify-worker-controller}
+## Next steps {#next-steps}
 
-After you complete the [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) and create a Worker Deployment Version with a compute provider, the Temporal Service starts a Worker Controller Instance (WCI) workflow to manage scaling for that version.
-
-To confirm the WCI is running, list workflows with the `TemporalNamespaceDivision` search attribute filter:
-
-```bash
-temporal workflow list --query 'TemporalNamespaceDivision = "TemporalWorkerControllerInstance"'
-```
-
-The WCI workflow is hidden from the default workflow list.
-In the Temporal UI, add the same filter in the Workflows tab to view it.
-
-To verify end-to-end, start a Workflow on the Task Queue configured for the deployment.
-The WCI should detect the task, invoke the Lambda function, and the Workflow should complete.
+Follow the [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to write your Worker code, deploy it to Lambda, and create a Worker Deployment Version with the IAM role from the previous step.
