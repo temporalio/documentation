@@ -1,0 +1,67 @@
+name: 'Update Custom Role Permissions'
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: 'Check for permission changes and open PR if needed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
+          private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
+
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          token: ${{ steps.generate_token.outputs.token }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch permissions and generate table
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: node bin/generate-custom-role-permissions-table.js --write
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet docs/cloud/manage-access/_custom_role_permissions_table.mdx; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          git config user.name "temporal-cicd[bot]"
+          git config user.email "temporal-cicd[bot]@users.noreply.github.com"
+
+          branch_name="update-custom-role-permissions-$(date +%Y%m%d)"
+          git checkout -b "$branch_name"
+          git add docs/cloud/manage-access/_custom_role_permissions_table.mdx
+          git commit -m "Update custom role permissions reference"
+          git push origin "$branch_name"
+
+          gh pr create \
+            --title "Update custom role permissions reference" \
+            --body "Automated update from \`temporalio/saas-proto\` \`custom_role_permissions.json\`." \
+            --head "$branch_name" \
+            --base "main"
