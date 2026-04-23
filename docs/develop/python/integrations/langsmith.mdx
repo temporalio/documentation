@@ -155,7 +155,7 @@ class OpenAIRequest:
 
 
 # wrap_openai patches the client — every API call adds a ChatOpenAI run under the @traceable.
-# max_retries=0 because Temporal's Activity retry policy handles retries.
+# Set max_retries=0 and use Temporal's Activity retry policy instead.
 @traceable(name="Call OpenAI", run_type="llm")
 @activity.defn
 async def call_openai(request: OpenAIRequest) -> str:
