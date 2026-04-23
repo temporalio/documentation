@@ -152,14 +152,14 @@ aws lambda update-function-code \
 
 ## 3. Configure IAM for Temporal invocation (Cloud only) {#configure-iam}
 
+This section applies to Temporal Cloud.
+For self-hosted Temporal Service deployments, see [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#create-invocation-role) for IAM configuration with a different CloudFormation template.
+
 Temporal needs permission to invoke your Lambda function.
 The Temporal server assumes an IAM role in your AWS account to call `lambda:InvokeFunction`.
 The trust policy on the role includes an External ID condition to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
 Deploy the following CloudFormation template to create the invocation role and its permissions. [Download the template](/files/temporal-cloud-serverless-worker-role.yaml).
-
-This section applies to Temporal Cloud.
-For self-hosted Temporal Service deployments, see [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#create-invocation-role) for IAM configuration with a different CloudFormation template.
 
 | Parameter | Description |
 |---|---|
