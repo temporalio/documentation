@@ -3,43 +3,114 @@ id: ha-connectivity
 title: Connectivity for High Availability
 sidebar_label: Connectivity for High Availability
 slug: /cloud/high-availability/ha-connectivity
-description: How to use private network connectivity with Temporal Cloud HA features
+description: How to choose endpoints and configure private network connectivity for Namespaces with Temporal Cloud High Availability features.
 ---
 
 import { CaptionedImage, JsonTable } from '@site/src/components';
 
-:::tip Namespaces with High Availability features and AWS PrivateLink
+A Namespace with High Availability features spans two regions, and the endpoint your Workers and Clients connect through determines how they behave before, during, and after a failover.
+This page covers:
 
-Proper networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
-This page describes how to configure routing for Namespaces with High Availability features on AWS PrivateLink.
+- How to choose between the Namespace Endpoint and a Regional Endpoint for a Namespace with High Availability features.
+- An advanced Active/Hot-Standby pattern that uses Regional Endpoints to minimize recovery time.
+- How to configure PrivateLink so that failover remains transparent to Workers on private networks.
+
+## How to choose an endpoint for a Namespace with High Availability features
+
+Temporal Cloud exposes two kinds of gRPC endpoints for a Namespace.
+See [How to access a Namespace](/cloud/namespaces#access-namespaces) for the general definitions; this section focuses on how each behaves with replication and failover.
+
+### Namespace Endpoint (recommended)
+
+Format: `<namespace>.<account>.tmprl.cloud:7233`
+
+The Namespace Endpoint always connects to whichever region is currently active.
+Under the hood, it is a CNAME that points at the active region's Regional Endpoint.
+When Temporal Cloud fails the Namespace over, it updates the CNAME to point at the new active region.
+The DNS <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> is 15 seconds, so Clients converge within about 30 seconds with no configuration change on your side.
+
+Use the Namespace Endpoint unless you have a specific reason to pin traffic to a region.
+
+### Regional Endpoint
+
+Format: `<cloud>-<region>.region.tmprl.cloud:7233` (for example, `aws-us-west-2.region.tmprl.cloud` or `gcp-us-central1.region.tmprl.cloud`).
+See [AWS regions](/cloud/regions/awsregions) and [GCP regions](/cloud/regions/gcpregions) for the full list.
+
+A Regional Endpoint is shared across every Namespace that is active or replicated in that region.
+Unlike the Namespace Endpoint, a Regional Endpoint stays pinned to the region in its name — if that region holds the passive replica of your Namespace, the Regional Endpoint connects to the passive replica.
+
+Use a Regional Endpoint only when you need explicit control over which replica a Client or Worker reaches.
+The most common case is the [Active/Hot-Standby pattern](#active-hot-standby) described below.
+
+Trade-offs to consider:
+
+- **Faster recovery.** A Worker connecting through a Regional Endpoint skips the DNS step that Clients on the Namespace Endpoint wait for during a failover. This removes the ~30-second DNS convergence window from the recovery path, which is useful for Workloads that must minimize [Recovery Time](/cloud/rpo-rto) at all costs.
+- **You are responsible for regional coverage.** A Worker using the Regional Endpoint of a region cannot reach the Namespace if that region is in an outage. To stay available through a failover, you must run Workers that use the **replica** region's Regional Endpoint — Workers pointed only at the outage region's Regional Endpoint will not reconnect automatically.
+
+When authenticating with mTLS, set the Client's `server_name` / `serverNameOverride` config equal to the Namespace Endpoint.
+This overrides the SNI that the Client will expect during the TLS Handshake with Temporal Cloud.
+The Regional Endpoint forwards the request to your Namespace, so the Client must expect the Namespace's certificate during the TLS handshake.
+
+For example, in Typescript, the Client's config would be set like this:
+
+```typescript
+await Connection.connect({
+  address: 'aws-us-east-1.region.tmprl.cloud:7233',
+  tls: {
+    serverNameOverride: 'my-namespace.my-account.tmprl.cloud',
+    clientCertPair: { crt: clientCert, key: clientKey },
+  },
+  ...
+});
+```
+
+### How endpoints route on failover
+
+Consider a Namespace replicated across `us-east-1` (initially active) and `us-west-2` (initially the replica), with a failover that swaps the two.
+
+| Client connects via                         | Before failover | After failover          |
+| ------------------------------------------- | --------------- | ----------------------- |
+| Namespace Endpoint                          | `us-east-1`     | `us-west-2` (automatic) |
+| Regional Endpoint `aws-us-east-1.region...` | `us-east-1`     | `us-east-1`             |
+| Regional Endpoint `aws-us-west-2.region...` | `us-west-2`     | `us-west-2`             |
+
+The Namespace Endpoint moves with the active region via an updated CNAME — no Client changes required.
+The Regional Endpoints do not change their targets on failover: each continues to route to the replica that lives in its region, which is how the Active/Hot-Standby pattern keeps Workers connected to the passive side across a failover.
+
+## How to use PrivateLink with High Availability features
+
+:::tip
+
+Proper networking configuration is required for failover to be transparent to Clients and Workers when using PrivateLink.
+This section describes how to configure routing for Namespaces with High Availability features on AWS PrivateLink.
 
 :::
 
 To use AWS PrivateLink with High Availability features, you may need to:
 
-- Override the regional DNS zone.
+- Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
 - Ensure network connectivity between the two regions.
 
 These instructions assume you already have the PrivateLink connections in place. If not, follow our [guide for creating AWS PrivateLink connections and configuring private DNS](/cloud/connectivity/aws-connectivity).
 
-## Customer side solutions
+### How Namespace DNS records work with PrivateLink
 
 When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
 Temporal treats each `region.<tmprl_domain>` as a separate zone.
-This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you’re using.
+This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you're using.
 
-A Namespace's active region is reflected in the target of a CNAME record.
-For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
-
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
-| ----------------------------------- | ----- | -------------------------------- |
-
-After a failover, the CNAME record will be updated to point to the failover region, for example:
+A Namespace's active region is reflected in the target of the Namespace Endpoint's CNAME record.
+For example, if the active region of a Namespace is AWS us-east-1, the DNS configuration would look like this:
 
 | ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-east-1.region.tmprl.cloud |
 | ----------------------------------- | ----- | -------------------------------- |
 
-The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
+After a failover, the CNAME record is updated to point to the failover region, for example:
+
+| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
+| ----------------------------------- | ----- | -------------------------------- |
+
+The Temporal domain did not change, but the CNAME updated from us-east-1 to us-west-2.
 
 <CaptionedImage
     src="/img/cloud/high-availability/private-link.png"
@@ -47,7 +118,7 @@ The Temporal domain did not change, but the CNAME updated from us-west-2 to us-e
     zoom="true"
 />
 
-## Setting up the DNS override
+### How to set up the DNS override
 
 :::caution
 
@@ -56,18 +127,18 @@ Private connectivity is not yet offered for GCP Multi-region Namespaces.
 :::
 
 To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
-For example, you might set aws-us-west-1.region.tmprl.cloud to target 192.168.1.2.
+For example, you might set `aws-us-west-1.region.tmprl.cloud` to target `192.168.1.2`.
 In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
 Link that private zone to the VPCs you use for Workers.
 
 When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
 This points to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your internal IP addresses.
 
-Consider how you’ll configure Workers for this setup.
-You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
-This way, Workers can access the newly activated region once failover occurs.
+Consider how you'll configure Workers for this setup.
+You can either have Workers run in both regions continuously (see the [Active/Hot-Standby pattern](#active-hot-standby)) or establish connectivity between regions using Transit Gateway or VPC Peering.
+Either approach ensures Workers can access the newly activated region once failover occurs.
 
-## Available regions, PrivateLink endpoints, and DNS record overrides
+### Available regions, PrivateLink endpoints, and DNS record overrides
 
 :::caution
 
