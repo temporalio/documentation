@@ -24,7 +24,7 @@ Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when
 Each invocation starts a Worker, polls for Tasks, then gracefully shuts down before a configurable invocation deadline.
 You register Workflows and Activities the same way you would with a standard Worker.
 
-For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
+For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
 
 ## Create and run a Worker in Lambda {#create-and-run}
 
@@ -48,7 +48,7 @@ func main() {
 		opts.TaskQueue = "my-task-queue"
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorPinned,
+			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
 		})
 		opts.RegisterActivity(MyActivity)
 
@@ -128,7 +128,7 @@ func main() {
 		}
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorPinned,
+			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
 		})
 		opts.RegisterActivity(MyActivity)
 

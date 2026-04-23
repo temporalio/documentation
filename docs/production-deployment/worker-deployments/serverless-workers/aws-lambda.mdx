@@ -43,11 +43,6 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - The [Python SDK](/develop/python) (`temporalio`)
 
 </SdkTabs.Python>
-<SdkTabs.TypeScript>
-
-- The [TypeScript SDK](/develop/typescript) (`@temporalio/client`, `@temporalio/worker`, `@temporalio/lambda-worker`)
-
-</SdkTabs.TypeScript>
 </SdkTabs>
 
 ## 1. Write Worker code {#write-worker-code}
@@ -77,7 +72,7 @@ func main() {
 		opts.TaskQueue = "my-task-queue"
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorPinned,
+			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
 		})
 		opts.RegisterActivity(MyActivity)
 
@@ -118,48 +113,9 @@ lambda_handler = run_worker(
 )
 ```
 
-Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
-
-```python
-from temporalio import workflow
-from temporalio.common import VersioningBehavior
-
-
-@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
-class MyWorkflow:
-    @workflow.run
-    async def run(self, input: str) -> str:
-        ...
-```
-
 For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - Python SDK](/develop/python/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.Python>
-<SdkTabs.TypeScript>
-
-Use the `@temporalio/lambda-worker` package.
-
-```typescript
-import { runWorker } from '@temporalio/lambda-worker';
-import * as activities from './activities';
-
-export const handler = runWorker(
-  { deploymentName: 'my-app', buildId: 'build-1' },
-  (config) => {
-    config.workerOptions.taskQueue = 'my-task-queue';
-    config.workerOptions.workflowBundle = {
-      codePath: require.resolve('./workflow-bundle.js'),
-    };
-    config.workerOptions.activities = activities;
-  },
-);
-```
-
-Use `workflowBundle` with pre-bundled code instead of `workflowsPath` to avoid webpack bundling overhead on Lambda cold starts.
-
-For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - TypeScript SDK](/develop/typescript/workers/serverless-workers/aws-lambda).
-
-</SdkTabs.TypeScript>
 </SdkTabs>
 
 ## 2. Deploy Lambda function {#deploy-lambda-function}
@@ -186,37 +142,25 @@ zip function.zip bootstrap
 </SdkTabs.Go>
 <SdkTabs.Python>
 
-Install dependencies into a local directory for packaging. Use `--platform` to fetch Linux-compatible binaries for the Lambda runtime:
+Install dependencies into a local directory for packaging:
 
 ```bash
-pip install --target ./package --platform manylinux2014_x86_64 --only-binary=:all: temporalio
+pip install --target ./package temporalio
 ```
 
-Package the dependencies and your application code into a zip file:
+Copy your application code into the package directory:
+
+```bash
+cp lambda_function.py my_workflows.py my_activities.py ./package/
+```
+
+Package everything into a zip file:
 
 ```bash
 cd package && zip -r ../function.zip . && cd ..
-zip function.zip lambda_function.py my_workflows.py my_activities.py
 ```
 
 </SdkTabs.Python>
-<SdkTabs.TypeScript>
-
-Build the Workflow bundle and compile the project:
-
-```bash
-npx ts-node src/scripts/build-workflow-bundle.ts
-npx tsc
-```
-
-Install production dependencies and package everything into a zip:
-
-```bash
-npm install --omit=dev
-zip -r function.zip lib/ node_modules/ workflow-bundle.js
-```
-
-</SdkTabs.TypeScript>
 </SdkTabs>
 
 ### ii. Deploy Lambda function {#deploy-lambda-function-step}
@@ -264,27 +208,6 @@ aws lambda create-function \
 | `--handler` | Entry point in `module.function` format. Must point to the handler returned by `run_worker`. |
 
 </SdkTabs.Python>
-<SdkTabs.TypeScript>
-
-```bash
-aws lambda create-function \
-  --function-name my-temporal-worker \
-  --runtime nodejs22.x \
-  --handler lib/index.handler \
-  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
-  --zip-file fileb://function.zip \
-  --timeout 600 \
-  --memory-size 256 \
-  --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
-```
-
-| Parameter | Description |
-|---|---|
-| `--function-name` | Name of the Lambda function. |
-| `--runtime` | Lambda runtime. Use `nodejs22.x` or another supported Node.js version (20+). |
-| `--handler` | Entry point in `module.export` format. Must point to the handler exported by `runWorker`. |
-
-</SdkTabs.TypeScript>
 </SdkTabs>
 
 The following parameters apply to all SDKs:
@@ -481,16 +404,6 @@ When you create a version through the UI, the version is automatically set as cu
 <TabItem value="cli" label="Temporal CLI">
 
 Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must [set the version as current](#set-current-version) as a separate step.
-
-First, create the Worker Deployment if it does not already exist:
-
-```bash
-temporal worker deployment create \
-  --namespace <YOUR_NAMESPACE> \
-  --name my-app
-```
-
-Then create the version with the compute provider configuration:
 
 ```bash
 temporal worker deployment create-version \
