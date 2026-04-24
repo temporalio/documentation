@@ -2,210 +2,235 @@
 id: cancellation
 title: Cancellation - Rust SDK
 sidebar_label: Cancellation
-description: Request cancellation of Workflows and Activities, and handle cancellation gracefully in your Rust Workflows.
-toc_max_heading_level: 2
+description:
+  Interrupt a Workflow Execution using the Temporal Rust SDK. Choose between canceling for a graceful stop or
+  terminating for a forceful stop.
 keywords:
-  - workflow cancellation
+  - cancel workflow execution
   - activity cancellation
-  - temporal rust
+  - terminate workflow execution
+  - interrupt workflow execution
+  - graceful workflow cancelation
+  - forceful workflow termination
+  - workflow cancelation logic
+  - activity heartbeats
 tags:
   - Workflows
-  - Activities
-  - Cancellation
   - Rust SDK
   - Temporal SDKs
 ---
 
-Workflows and Activities in the Temporal Rust SDK support cancellation. This page shows how to handle cancellation in your Workflows and Activities.
+You can interrupt a Workflow Execution in one of the following ways:
 
-## Detect Workflow Cancellation {#detect-workflow-cancellation}
+- [Cancel](#cancellation): Canceling a Workflow provides a graceful way to stop Workflow Execution.
+- [Terminate](#termination): Terminating a Workflow forcefully stops Workflow Execution.
 
-A Workflow can detect that it has been cancelled using the `ctx.cancelled()` method. This returns a future that resolves with the cancellation reason when the Workflow is cancelled:
+Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
+Workflow is stuck and cannot be canceled normally.
+
+## Cancel a Workflow Execution {#cancellation}
+
+Canceling a Workflow provides a graceful way to stop Workflow Execution. This action resembles sending a `SIGTERM` to a
+process.
+
+- The system records a `WorkflowExecutionCancelRequested` event in the Workflow History.
+- A Workflow Task gets scheduled to process the cancelation.
+- The Workflow code can handle the cancelation and execute any cleanup logic.
+- The system doesn't forcefully stop the Workflow.
+
+To cancel a Workflow Execution in Rust, use the `cancel` method on the Workflow handler:
 
 ```rust
-use temporalio_sdk::workflows::select;
+let handle = client.start_workflow(
+    GreetingsWorkflow::run, 
+    (), 
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
+).await?;
 
-#[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
-    select! {
-        result = ctx.activity(
-            MyActivities::long_running_operation,
-            input,
-            ActivityOptions {
-                start_to_close_timeout: Some(Duration::from_secs(300)),
-                ..Default::default()
+handle.cancel(WorkflowCancelOptions::builder().reason("No longer needed").build()).await?;
+````
+
+### Cancel an Activity from a Workflow {#cancel-activity}
+
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat
+Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. When any non-immediate
+Activity is executed, the Activity Execution should send Heartbeats and set a
+[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is
+still working.
+
+When an Activity is canceled, an error is returned in the Activity at the next available opportunity. If cleanup logic
+needs to be performed, it can be done when handling the cancellation error. However, for the Activity to appear canceled
+the error must be propagated.
+
+Example of a cancellable Activity in Rust:
+
+```rust
+#![allow(unreachable_pub)]
+use temporalio_macros::{activities};
+use temporalio_sdk::{
+    activities::{ActivityContext, ActivityError},
+};
+
+pub struct CancellationActivities;
+
+#[activities]
+impl CancellationActivities {
+    #[activity]
+    pub async fn long_running_cancellable_activity(
+        ctx: ActivityContext,
+        _input: (),
+    ) -> Result<String, ActivityError> {
+        loop {
+            if ctx.is_cancelled() {
+                return Err(ActivityError::cancelled());
             }
-        ) => {
-            Ok(format!("Activity completed: {:?}", result?))
+            ctx.record_heartbeat(vec![]);
+            tokio::time::sleep(std::time::Duration::from_millis(200)).await;
         }
-        reason = ctx.cancelled() => {
-            Ok(format!("Workflow cancelled: {}", reason))
-        }
+    }
+
+    #[activity]
+    pub async fn cleanup(_ctx: ActivityContext, _input: ()) -> Result<String, ActivityError> {
+        Ok("cleanup done".to_string())
     }
 }
 ```
 
-When the Workflow receives a cancellation request, `ctx.cancelled()` will resolve with the cancellation reason.
-
-## Graceful Cancellation Handling {#graceful-handling}
-
-When a Workflow is cancelled, you should stop executing new activities and clean up gracefully:
+Canceling the Activity from a Workflow:
 
 ```rust
-use temporalio_sdk::workflows::select;
-
-#[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<String>> {
-    let mut results = Vec::new();
-
-    for item in &self.items {
-        select! {
-            result = ctx.activity(
-                MyActivities::process_item,
-                item.clone(),
-                ActivityOptions {
-                    start_to_close_timeout: Some(Duration::from_secs(60)),
-                    ..Default::default()
-                }
-            ) => {
-                results.push(result??);
-            }
-            reason = ctx.cancelled() => {
-                // Workflow was cancelled
-                workflow::logger.info(format!("Processing cancelled: {}", reason));
-                return Err(WorkflowExecutionError::new_with_reason(
-                    "cancelled",
-                    &reason
-                ));
-            }
-        }
-    }
-
-    Ok(results)
-}
-```
-
-## Handle Cancellation in Activities {#activity-cancellation}
-
-Activities can allow graceful cancellation by regularly recording heartbeats:
-
-```rust
-use temporalio_sdk::activities::{ActivityContext, ActivityError};
-use std::time::Duration;
-
-#[activity]
-pub async fn process_many_items(
-    ctx: ActivityContext,
-    items: Vec<String>,
-) -> Result<usize, ActivityError> {
-    let mut processed = 0;
-
-    for item in items {
-        // Process the item
-        do_work(&item).await?;
-        processed += 1;
-
-        // Record heartbeat to detect cancellation
-        ctx.record_heartbeat(processed);
-
-        // Small delay to simulate work
-        tokio::time::sleep(Duration::from_millis(100)).await;
-    }
-
-    Ok(processed)
-}
-```
-
-When an Activity is cancelled:
-
-- The Activity will be notified through its heartbeat mechanism
-- The Activity should then clean up any resources and exit
-- The Workflow will receive an error with `ActivityError::Cancelled`
-
-## Workflow Cancellation Semantics {#semantics}
-
-When a Workflow is cancelled:
-
-1. The cancellation request is delivered to the Workflow task
-2. `ctx.cancelled()` resolves with the cancellation reason
-3. The Workflow should stop starting new activities and clean up
-4. The Workflow Execution terminates with a cancelled status
-
-### Immediate termination
-
-You can also use Workflow termination to immediately stop the Workflow without allowing it to handle cancellation:
-
-```rust
-// This terminates the workflow process immediately
-// from outside the workflow (e.g., from a client)
-let handle = client.get_workflow_handle::<MyWorkflow>("workflow-id");
-handle.terminate(TerminateWorkflowOptions::builder()
-    .reason("Emergency stop")
-    .build()).await?;
-```
-
-## Cancellation Best Practices {#best-practices}
-
-1. **Always handle cancellation**: Wrap long-running operations in `select!` to detect cancellation
-2. **Clean up resources**: When cancelled, make sure to properly close connections, stop child workflows, etc.
-3. **Record heartbeats in activities**: For long Activities, record heartbeats regularly so cancellation can be detected
-4. **Don't ignore cancellation**: Returning `Ok` after cancellation will mislead downstream systems
-5. **Be idempotent**: Ensure cancelled operations can be safely retried if the Workflow retries
-
-## Cancellation Flow Example {#example}
-
-Here's a complete example of handling cancellation in a Workflow with multiple activities:
-
-```rust
-#[workflow]
-pub struct ProcessingWorkflow {
-    items: Vec<String>,
+fn activity_opts() -> ActivityOptions {
+    ActivityOptions::start_to_close_timeout(Duration::from_secs(300))
+        .heartbeat_timeout(Duration::from_secs(5))
+        .build()
 }
 
 #[workflow_methods]
-impl ProcessingWorkflow {
-    #[init]
-    fn new(_ctx: &WorkflowContextView, items: Vec<String>) -> Self {
-        Self { items }
-    }
-
+impl CancellationWorkflow {
     #[run]
-    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
-        let items = ctx.state(|s| s.items.clone());
-        let mut successful = 0;
-        let mut failed = 0;
+    pub async fn run(ctx: &mut WorkflowContext<Self>, _input: ()) -> WorkflowResult<String> {
+        let mut activity_fut = ctx.start_activity(
+            CancellationActivities::long_running_activity,
+            (),
+            activity_opts(),
+        );
 
-        for item in items {
-            select! {
-                result = ctx.activity(
-                    MyActivities::process_item,
-                    item,
-                    ActivityOptions {
-                        start_to_close_timeout: Some(Duration::from_secs(60)),
-                        ..Default::default()
-                    }
-                ) => {
-                    match result? {
-                        Ok(_) => successful += 1,
-                        Err(_) => failed += 1,
-                    }
-                }
-                reason = ctx.cancelled() => {
-                    return Err(WorkflowExecutionError::new(
-                        "cancelled",
-                        format!("Processing cancelled after {} items. Reason: {}", successful + failed, reason)
-                    ));
-                }
+        temporalio_sdk::workflows::select! {
+            result = &mut activity_fut => {
+                let value = result.map_err(|e| anyhow::anyhow!("{e}"))?;
+                Ok(value)
+            }
+            reason = ctx.cancelled() => {
+                activity_fut.cancel();
+
+                let cleanup_result = ctx
+                    .start_activity(
+                        CancellationActivities::cleanup,
+                        (),
+                        ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
+                    )
+                    .await
+                    .map_err(|e| anyhow::anyhow!("{e}"))?;
+
+                Ok(format!("Cancelled (reason={reason}), {cleanup_result}"))
             }
         }
-
-        Ok(ProcessingResult {
-            successful,
-            failed,
-            total: successful + failed,
-        })
     }
 }
 ```
 
-This Workflow processes items but will stop and report progress if cancelled.
+## Terminate a Workflow Execution {#termination}
+
+Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+To terminate a Workflow Execution in Rust, use the `terminate` method on the client.
+
+```rust
+let handle = client.start_workflow(
+    GreetingsWorkflow::run, 
+    (), 
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
+).await?;
+
+handle.terminate(WorkflowTerminateOptions::builder()
+    .reason("Emergency shutdown")
+    .build()
+).await?;
+
+```
+
+## Reset a Workflow Execution {#reset}
+
+Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
+point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other
+issues that prevent it from completing.
+
+When you reset a Workflow, the Event History up to the reset point is copied to the new Workflow Execution, and the
+Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as
+removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when
+resetting, as it will be recorded in the Event History.
+
+<Tabs>
+
+<TabItem value="web-ui" label="Web UI">
+
+1. Navigate to the Workflow Execution details page,
+2. Click the **Reset** button in the top right dropdown menu,
+3. Select the Event ID to reset to,
+4. Provide a reason for the reset,
+5. Confirm the reset.
+
+The Web UI shows available reset points and creates a link to the new Workflow Execution after the reset completes.
+
+</TabItem>
+
+<TabItem value="cli" label="Temporal CLI">
+
+Use the `temporal workflow reset` command to reset a Workflow Execution:
+
+```bash
+temporal workflow reset \
+    --workflow-id <workflow-id> \
+    --event-id <event-id> \
+    --reason "Reason for reset"
+```
+
+For example:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code"
+```
+
+By default, the command resets the latest Workflow Execution in the `default` Namespace. Use `--run-id` to reset a
+specific run. Use `--namespace` to specify a different Namespace:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code" \
+    --namespace my-namespace \
+    --tls-cert-path /path/to/cert.pem \
+    --tls-key-path /path/to/key.pem
+```
+
+Monitor the new Workflow Execution after resetting to ensure it completes successfully.
+
+</TabItem>
+
+</Tabs>
