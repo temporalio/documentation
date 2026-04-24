@@ -131,6 +131,10 @@ Implement retry logic in your client to gracefully handle transient API failures
 
 Metric data points are available for query within 3 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
 
+### Scrape window
+
+The endpoint exposes only the most recently completed one-minute aggregation window. Each scrape returns a snapshot of that window—there is no query interface for historical data. To retain historical metrics, configure your monitoring system to store what it scrapes.
+
 ## Endpoints
 
 :::info
