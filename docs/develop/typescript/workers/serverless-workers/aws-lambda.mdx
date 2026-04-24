@@ -159,7 +159,7 @@ receivers:
         endpoint: 'localhost:4318'
 
 exporters:
-  debug:
+  logging:
   awsxray:
     region: <your-region>
   awsemf:
@@ -174,7 +174,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [awsxray, debug]
+      exporters: [awsxray, logging]
     metrics:
       receivers: [otlp]
       exporters: [awsemf]
