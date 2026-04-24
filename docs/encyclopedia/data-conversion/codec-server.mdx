@@ -93,9 +93,9 @@ where the codec logic runs and who calls it.
 You implement the transformation logic once in a Payload Codec, then host that logic in a Codec Server so the Web UI and
 CLI can use it remotely.
 
-## Authorization
+## Securing a Codec Server
 
-Access to a Codec Server should be restricted because it can decode sensitive data with a single API call. Common
+Access to a Codec Server needs to be restricted because it can decode sensitive data with a single API call. Common
 approaches include:
 
 - **Network-level restrictions.** Run the Codec Server on `localhost` or behind a VPN. The Web UI can communicate with a
@@ -104,8 +104,8 @@ approaches include:
   Temporal Cloud can pass access tokens (JWT) to your Codec Server with each request. Verify these tokens against the
   [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
 
-You may also need a [key management infrastructure](/key-management) to share encryption keys between your Workers and
-the Codec Server.
+You may also need [key management infrastructure](/key-management) to share encryption keys between your Workers and the
+Codec Server.
 
 ## SDK Codec Server samples
 
