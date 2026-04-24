@@ -141,10 +141,15 @@ export const handler = runWorker(
 `applyDefaults` registers Temporal SDK interceptors for tracing and configures the Core SDK to export metrics via OTLP.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 
-To collect this telemetry, attach two ADOT Lambda layers:
+To collect this telemetry, attach the [ADOT Node.js Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-js).
+This layer includes both the Node.js auto-instrumentation and the OTel Collector, which receives Core SDK metrics on `localhost:4317` and exports traces to AWS X-Ray.
 
-1. The [ADOT JavaScript layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-js) for Node.js-side auto-instrumentation and trace export.
-2. The [ADOT Collector layer](https://aws-otel.github.io/docs/getting-started/lambda) (`aws-otel-collector-amd64`) to receive Core SDK metrics and forward them to CloudWatch/X-Ray.
+Set the following environment variable on the Lambda function:
+
+- `AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler`
+
+The Lambda execution role must have the [`AWSXRayDaemonWriteAccess`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSXRayDaemonWriteAccess.html) managed policy attached.
+Without this permission, the ADOT Collector fails silently and no traces appear in X-Ray.
 
 When pre-bundling Workflow code, pass the plugin from `makeOtelPlugin()` so that Workflow interceptor modules are included in the bundle:
 
