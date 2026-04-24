@@ -53,8 +53,8 @@ A Codec Server follows the Temporal
 [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol). It
 exposes two HTTP POST endpoints:
 
-- **`/encode`** accepts plaintext payloads and returns encoded payloads.
-- **`/decode`** accepts encoded payloads and returns decoded payloads.
+- **`/encode`** accepts plaintext payloads and returns encoded payloads.  Used for sending payloads.
+- **`/decode`** accepts encoded payloads and returns decoded payloads.  Used for retrieving payloads.
 
 Both endpoints receive and respond with a JSON body containing a `payloads` array of [Payload](/dataconversion#payload)
 objects. The Codec Server passes each payload through your [Payload Codec](/payload-codec), which applies the same
@@ -68,8 +68,7 @@ encoding or decoding logic that your Workers use.
 />
 
 When the Web UI or CLI needs to display decoded data, it sends the encoded payloads to your Codec Server's `/decode`
-endpoint. The Codec Server decodes the payloads and returns them to the client. Decoding happens entirely on the client
-side. The Temporal Service never sees the decoded data.
+endpoint. The Codec Server decodes the payloads and returns them to the client.  The Temporal Service never sees the decoded data.
 
 The `/encode` endpoint works in the other direction. When you start a Workflow or send a Signal from the Web UI or CLI,
 the input is sent to the Codec Server's `/encode` endpoint first, so data reaches the Temporal Service in its encoded
@@ -95,7 +94,7 @@ CLI can use it remotely.
 
 ## Authorization
 
-Access to a Codec Server should be restricted because it can decode sensitive data with a single API call. Common
+Access to a Codec Server should be restricted because it can decode sensitive data. Common
 approaches include:
 
 - **Network-level restrictions.** Run the Codec Server on `localhost` or behind a VPN. The Web UI can communicate with a
