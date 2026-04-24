@@ -31,8 +31,8 @@ For setup instructions, see [Codec Server setup](/production-deployment/data-enc
 ## Why use a Codec Server
 
 When you apply a custom [Payload Codec](/payload-codec) for encryption or compression, data stored in the Temporal
-Service is encoded. The Temporal Service never has access to your encryption keys, so it cannot decode this data. Without
-a Codec Server, the Web UI and CLI display raw encoded payloads.
+Service is encoded. The Temporal Service never has access to your encryption keys, so it cannot decode this data.
+Without a Codec Server, the Web UI and CLI display raw encoded payloads.
 
 A Codec Server solves this by giving the Web UI and CLI a way to decode payloads on demand, without exposing keys to the
 Temporal Service. Common reasons to run a Codec Server include:
@@ -56,12 +56,13 @@ exposes two HTTP POST endpoints:
 - **`/encode`** accepts plaintext payloads and returns encoded payloads.
 - **`/decode`** accepts encoded payloads and returns decoded payloads.
 
-Both endpoints receive and respond with a JSON body containing a `payloads` array of
-[Payload](/dataconversion#payload) objects. The Codec Server passes each payload through your
-[Payload Codec](/payload-codec), which applies the same encoding or decoding logic that your Workers use.
+Both endpoints receive and respond with a JSON body containing a `payloads` array of [Payload](/dataconversion#payload)
+objects. The Codec Server passes each payload through your [Payload Codec](/payload-codec), which applies the same
+encoding or decoding logic that your Workers use.
 
 <CaptionedImage
-  src="/diagrams/tctl-diagram-codec-server.svg"
+  src="/diagrams/codec-server.svg"
+  srcDark="/diagrams/codec-server-dark.svg"
   title="Codec Server"
   width="50%"
   zoom="true"
@@ -80,18 +81,18 @@ decoding.
 
 ## Codec Server vs. Payload Codec
 
-Because both use the word "Codec," it is easy to confuse a Codec Server with a [Payload Codec](/payload-codec). They
-serve different purposes:
+A Codec Server runs a [Payload Codec](/payload-codec) internally, so the two are directly connected. The difference is
+where the codec logic runs and who calls it.
 
-| | Payload Codec | Codec Server |
-| --- | --- | --- |
-| **What it is** | A component in your [Data Converter](/dataconversion) that transforms Payloads (bytes to bytes). | An HTTP server that exposes your Payload Codec over the network. |
-| **Where it runs** | In-process, inside your Workers and Clients. | As a standalone HTTP service in your environment. |
-| **Who calls it** | The Temporal SDK calls it automatically during serialization and deserialization. | The Web UI and CLI call it over HTTP to encode or decode Payloads on demand. |
-| **Purpose** | Applies encryption, compression, or other transformations to all Payloads that pass through the Data Converter. | Gives the Web UI and CLI access to those same transformations without bundling your codec logic into every tool. |
+|                                   | Payload Codec                                                                                       | Codec Server                                                                                            |
+| --------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Purpose**                       | Encodes and decodes Payloads. Applies encryption, compression, or other byte-level transformations. | Hosts a Payload Codec as an HTTP service so the Web UI and CLI can encode and decode Payloads remotely. |
+| **Runs where**                    | In-process, inside your Workers and Clients. Also runs inside the Codec Server.                     | As a standalone HTTP service in your environment, with a Payload Codec inside it.                       |
+| **Called by**                     | The Temporal SDK, automatically on every serialization and deserialization.                         | The Web UI and CLI, over HTTP, when a user views or submits Payload data.                               |
+| **Has access to encryption keys** | Yes. Keys are available in the Worker or Client process.                                            | Yes. Must be configured with the same keys the Payload Codec uses.                                      |
 
-A Codec Server wraps a Payload Codec. You implement the transformation logic once in a Payload Codec, then host that
-logic in a Codec Server so the Web UI and CLI can use it remotely.
+You implement the transformation logic once in a Payload Codec, then host that logic in a Codec Server so the Web UI and
+CLI can use it remotely.
 
 ## Authorization
 
