@@ -183,7 +183,7 @@ service:
 
 Set the following environment variables on the Lambda function:
 
-- `AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-instrument`
+- `AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler`
 - `OPENTELEMETRY_COLLECTOR_CONFIG_URI=/var/task/otel-collector-config.yaml`
 
 Enable X-Ray active tracing on the Lambda function:
