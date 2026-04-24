@@ -131,6 +131,8 @@ If there is any chance that the code provided to the Side Effect could fail, use
 
 Principal Attribution is currently available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
 
+Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
+
 :::
 
 Principal Attribution for Workflow Executions is a server-derived, set of non-spoofable `Principal` fields for Workflow history events.
@@ -143,13 +145,6 @@ This is especially valuable for:
 - compliance and audit use cases
 - incident investigation and root cause analysis
 - access governance and internal accountability
-
-:::caution PII and Principal Attribution
-
-Principal Attributions may expose user email addresses, which may be considered Personally Identifiable Information.
-To avoid exposure, while this feature is in pre-release, we recommend using Principal Attribution in sandbox Namespaces with non-sensitive data.
-
-:::
 
 When enabled, Temporal Cloud populates the `Principal` value (with `Principal Type` and `Principal Name` fields).
 
