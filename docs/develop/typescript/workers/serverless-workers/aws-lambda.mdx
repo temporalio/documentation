@@ -49,6 +49,7 @@ export const handler = runWorker(
 
 The deployment version is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
+Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or `Pinned`.
 The default versioning behavior is `PINNED`. To change it, set `workerDeploymentOptions.defaultVersioningBehavior` in the configure callback.
 
 ### Pre-bundle Workflow code {#pre-bundle}
@@ -145,14 +146,15 @@ To collect this telemetry, attach two ADOT Lambda layers:
 1. The [ADOT JavaScript layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-js) for Node.js-side auto-instrumentation and trace export.
 2. The [ADOT Collector layer](https://aws-otel.github.io/docs/getting-started/lambda) (`aws-otel-collector-amd64`) to receive Core SDK metrics and forward them to CloudWatch/X-Ray.
 
-When pre-bundling Workflow code, pass `makeOtelPlugins()` so that Workflow interceptor modules are included in the bundle:
+When pre-bundling Workflow code, pass the plugin from `makeOtelPlugin()` so that Workflow interceptor modules are included in the bundle:
 
 ```typescript
 import { bundleWorkflowCode } from '@temporalio/worker';
-import { makeOtelPlugins } from '@temporalio/lambda-worker/otel';
+import { makeOtelPlugin } from '@temporalio/lambda-worker/otel';
 
+const { plugin } = makeOtelPlugin();
 const { code } = await bundleWorkflowCode({
   workflowsPath: require.resolve('./workflows'),
-  plugins: makeOtelPlugins(),
+  plugins: [plugin],
 });
 ```

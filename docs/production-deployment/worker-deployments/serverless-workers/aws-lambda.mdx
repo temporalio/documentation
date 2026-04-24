@@ -189,7 +189,7 @@ aws lambda create-function \
   --zip-file fileb://function.zip \
   --timeout 600 \
   --memory-size 256 \
-  --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
+  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
 ```
 
 | Parameter | Description |
