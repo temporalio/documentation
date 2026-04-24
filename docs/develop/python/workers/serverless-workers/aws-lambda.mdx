@@ -155,12 +155,11 @@ lambda_handler = run_worker(
 `apply_defaults` configures both metrics and tracing.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 
-To collect this telemetry, you need an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) running alongside your Lambda function.
-Attach the [ADOT Collector Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda) (`aws-otel-collector-amd64`) to run the Collector as a Lambda extension.
-The Collector receives metrics and traces via OTLP on `localhost:4317` and forwards them to AWS X-Ray and Amazon CloudWatch.
+To collect this telemetry, attach the [ADOT Python Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-python) to your Lambda function.
+The layer includes both auto-instrumentation and an OpenTelemetry Collector that receives telemetry on `localhost:4317` and forwards traces to AWS X-Ray and metrics to Amazon CloudWatch.
 
 The default Collector configuration does not route OTLP data to the traces pipeline.
-You must provide a custom Collector configuration file that wires the OTLP receiver to both the traces and metrics pipelines.
+You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
 ```yaml
@@ -173,7 +172,7 @@ receivers:
         endpoint: 'localhost:4318'
 
 exporters:
-  logging:
+  debug:
   awsxray:
     region: <your-region>
   awsemf:
@@ -188,15 +187,24 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [awsxray, logging]
+      exporters: [awsxray, debug]
     metrics:
       receivers: [otlp]
       exporters: [awsemf]
 ```
 
-Set the following environment variable on the Lambda function:
+Set the following environment variables on the Lambda function:
 
+- `AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-instrument`
 - `OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/otel-collector-config.yaml`
+
+Enable X-Ray active tracing on the Lambda function:
+
+```bash
+aws lambda update-function-configuration \
+  --function-name <your-function-name> \
+  --tracing-config Mode=Active
+```
 
 The Lambda execution role must have permissions to write to X-Ray and CloudWatch.
 Attach the [`AWSXRayDaemonWriteAccess`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSXRayDaemonWriteAccess.html) managed policy, or add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions.
