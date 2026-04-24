@@ -1,8 +1,10 @@
 ---
 id: blob-size-limit-error
-title: Troubleshoot the blob size limit error
-sidebar_label: Blob size limit error
-description: The BlobSizeLimitError occurs when a Workflow's payload exceeds the 2 MB request limit or the 4 MB Event History transaction limit set by Temporal. Reduce blob size via compression or batching.
+title: Troubleshoot payload and gRPC message size limit errors
+sidebar_label: Message size limit errors
+description:
+  Temporal enforces size limits on data passed between Workers and the Temporal Service. Learn about the 2 MB payload
+  limit and 4 MB gRPC message limit, their error messages, and how to resolve them.
 toc_max_heading_level: 4
 keywords:
   - error
@@ -12,48 +14,122 @@ tags:
   - Failures
 ---
 
-The `BlobSizeLimitError` is an error that occurs when the size of a blob (payloads including Workflow context and each Workflow and Activity argument and return value) exceeds the set limit in Temporal.
+Temporal enforces size limits on the data that passes between the Temporal Client, Workers, and the Temporal Service.
+There are two distinct limits, each producing different error messages and behaviors, and they require different
+solutions:
 
-- The max payload for a single request is 2 MB.
-- The max size limit for any given [Event History](/workflow-execution/event#event-history) transaction is 4 MB.
+- [Payload size limit](#payload-size-limit)
+- [gRPC message size limit](#grpc-message-size-limit)
 
-## Why does this error occur?
+## Payload size limit
 
-This error occurs when the size of the blob exceeds the maximum size allowed by Temporal.
+The Temporal Service enforces a size limit on individual payloads. This limit is 2 MB on Temporal Cloud, but is
+configurable on self-hosted deployments with a default of 2 MB. A [payload](/dataconversion#payload) represents the
+serialized binary data for the input and output of Workflows and Activities.
 
-This limit helps ensure that the Temporal Service prevents excessive resource usage and potential performance issues when handling large payloads.
+### Error messages
 
-## How do I resolve this error?
+The error message depends on which operation carried the oversized payload and which SDK version is in use. Examples
+include:
 
-To resolve this error, reduce the size of the blob so that it is within the 4 MB limit.
+- `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
+- `[TMPRL1103] Attempted to upload payloads with size that exceeded the error limit.`
+- `BadScheduleActivityAttributes: ScheduleActivityTaskCommandAttributes.Input exceeds size limit`
+- `Complete result exceeds size limit`
+- `CompleteWorkflowExecutionCommandAttributes.Result exceeds size limit`
+- `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
-There are multiple strategies you can use to avoid this error:
+### Error behavior {#payload-error-behavior}
 
-1. Use compression with a [custom payload codec](/payload-codec) for large payloads.
+The behavior when a payload exceeds the size limit depends on the SDK version.
 
-   - This addresses the immediate issue of the blob size limit; however, if blob sizes continue to grow this problem can arise again.
+**Python SDK 1.23.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
+Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue.
 
-2. Break larger batches of commands into smaller batch sizes:
+**All other SDK versions:** The behavior depends on whether the oversized payload is an input or a result:
 
-   - Workflow-level batching:
-     1. Modify the Workflow to process Activities or Child Workflows into smaller batches.
-     2. Iterate through each batch, waiting for completion before moving to the next.
-   - Workflow Task-level batching:
-     1. Execute Activities in smaller batches within a single Workflow Task.
-     2. Introduce brief pauses or sleeps (for example, 1ms) between batches.
+- **Inputs (Workflow input, Activity input):** The Temporal Service rejects the command and terminates the Workflow.
+  You'll need to resolve the issue and restart the Workflow.
+- **Activity result:** The Temporal Service rejects the Activity completion and the Activity fails with an error.
+- **Workflow result:** The Workflow gets stuck in a retry loop. The server rejects the `CompleteWorkflowExecution`
+  command, and replay produces the same oversized result.
 
-3. Consider offloading large payloads to an object store to reduce the risk of exceeding blob size limits:
+### How to resolve
+
+1. Offload large payloads to an object store to reduce the risk of exceeding payload size limits:
    1. Pass references to the stored payloads within the Workflow instead of the actual data.
-   2. Retrieve the payloads from the object store when needed during execution.
+   1. Retrieve the payloads from the object store when needed during execution.
 
-## Workflow termination due to oversized response
+   This is called the
+   [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern). You can
+   implement your own claim check pattern by using a custom [Payload Codec](/payload-codec), or use
+   [External Storage](/external-storage).
 
-When a Workflow Task response exceeds the 4 MB gRPC message size limit, Temporal automatically terminates the Workflow Execution. This is a non-recoverable error. The Workflow can't progress if it generates a response that's too large, so retrying won't help.
+   This is the most reliable way to avoid hitting payload size limits. Consider implementing the claim check pattern for
+   Workflows and Activities that have the potential to receive or return large payloads, even if they are currently
+   within the limit.
 
-This typically happens when a Workflow schedules too many Activities, Child Workflows, or other commands in a single Workflow Task. The total size of all commands generated by the Workflow Task must fit within the 4 MB limit.
+   :::tip Support, stability, and dependency info
 
-If your Workflow was terminated for this reason, you'll see a `WorkflowExecutionTerminated` event in the Event History with the cause `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`.
+   External Storage is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+   All APIs are experimental and may be subject to backwards-incompatible changes. Join the
+   [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for
+   help.
 
-To prevent this, use the batching strategies described above to split work across multiple Workflow Tasks instead of scheduling everything at once.
+   :::
 
-See the [gRPC Message Too Large error reference](/references/errors#grpc-message-too-large) for more details.
+1. Use compression with a [custom Payload Codec](/payload-codec) for large payloads. This may address the immediate
+   issue, but if payload sizes continue to grow, the problem can arise again.
+
+## gRPC message size limit
+
+All communication between the Temporal Client, Workers, and the Temporal Service uses gRPC, which enforces a 4 MB limit
+on each request. This limit applies to the full request, including all payload data and command metadata. For example,
+when a Workflow schedules multiple Activities in a single Workflow Task, the Worker sends one request containing all
+those commands to schedule the Activities and their inputs.
+
+A Workflow can hit this limit even when every individual payload is under 2 MB. Scheduling several Activities with
+moderate-sized inputs, or hundreds of Activities with tiny inputs in the same Workflow Task can push the combined
+request past 4 MB. Activity results are also subject to this limit.
+
+### Error messages
+
+The error message depends on which operation carried the oversized gRPC message and which SDK version is in use.
+
+- `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`
+- `ScheduleToCloseTimeout` (Activities only, see [error behavior](#grpc-error-behavior) below)
+
+### Error behavior {#grpc-error-behavior}
+
+The behavior when a gRPC message exceeds the size limit depends on the SDK version.
+
+**Python SDK 1.23.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
+Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue. For Activities,
+the Activity fails with an explicit error instead of timing out silently.
+
+**All other SDK versions:** The behavior depends on where the oversized message originates:
+
+- **Workflow Tasks:** The Workflow gets stuck in a retry loop that isn't visible in the Event History. This happens
+  because when the Worker completes a Workflow Task, it sends all the commands the Workflow produced (such as Activity
+  schedules and their inputs) back to the Temporal Service. If the combined size exceeds 4 MB, the SDK catches the gRPC
+  error and sends a failed Workflow Task response with cause `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. Replay
+  produces the same oversized request every time, so the Workflow never makes progress.
+
+- **Activity Tasks:** The Activity gets stuck in a retry loop or exits with a `ScheduleToCloseTimeout`. The Activity
+  executes successfully, but the Worker can't deliver the oversized result over gRPC. The server never receives the
+  completion, so it retries the Activity. Each retry completes successfully but fails to deliver the result. The
+  Activity retries until the `ScheduleToCloseTimeout` expires. If no `ScheduleToCloseTimeout` is set, the Activity
+  retries indefinitely until the Workflow is manually terminated. The `ResourceExhausted` gRPC error only appears in
+  Worker logs.
+
+### How to resolve
+
+1. Break larger batches of commands into smaller batch sizes:
+   - Workflow-level batching:
+     1. Modify the Workflow to process Activities or Child Workflows in smaller batches.
+     2. Iterate through each batch, waiting for completion before moving to the next.
+   - [Workflow Task](/tasks#workflow-task)-level batching:
+     1. Execute Activities in smaller batches within a single Workflow Task.
+     2. Introduce brief pauses or sleeps between batches.
+2. If the request is large because of payload sizes rather than the number of commands, refer to the
+   [Payload size limit](#payload-size-limit) section for solutions.
