@@ -123,3 +123,44 @@ A Side Effect does not re-execute upon replay, but instead returns the recorded 
 
 Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
 If there is any chance that the code provided to the Side Effect could fail, use an Activity.
+
+## What is a Principal Attribution? {#principal-attribution}
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Principal Attribution is currently available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
+Principal Attribution for Workflow Executions is a server-derived, set of non-spoofable `Principal` fields for Workflow history events.
+
+The `Principal` fields represent the authenticated principal responsible for a dataplane execution action. 
+This allows for identification of the entity that took a given action. 
+
+This is especially valuable for:
+
+- compliance and audit use cases
+- incident investigation and root cause analysis
+- access governance and internal accountability
+
+:::caution PII and Principal Attribution
+
+Principal Attributions may expose user email addresses, which may be considered Personally Identifiable Information.
+To avoid exposure, while this feature is in pre-release, we recommend using Principal Attribution in sandbox Namespaces with non-sensitive data.
+
+:::
+
+When enabled, Temporal Cloud populates the `Principal` value (with `Principal Type` and `Principal Name` fields).
+
+Possible values are as follows:
+
+| Type | Name |
+| ---- | ---- |
+| `users` | user email address |
+| `service-accounts` | service account name |
+| `mtls` | Common Name (CN) |
+| `temporal` | Temporal internal services |
+
+Anyone who has permission to read Workflow history in the Namespace (ReadOnly access and above) can see the Principal (and the metadata such as email address).
+
+To enable Principal Atribution for a Namespace, contact [Temporal Cloud support](https://docs.temporal.io/cloud/support#support-ticket).
