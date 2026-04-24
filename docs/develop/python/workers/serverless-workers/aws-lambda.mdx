@@ -155,7 +155,51 @@ lambda_handler = run_worker(
 `apply_defaults` configures both metrics and tracing.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 
-To collect this telemetry, attach the [AWS Distro for OpenTelemetry Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-python) to your Lambda function.
-The layer runs a collector sidecar that receives telemetry on `localhost:4317` and forwards it to your configured backend (e.g., AWS X-Ray, Amazon CloudWatch).
+To collect this telemetry, you need an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) running alongside your Lambda function.
+Attach the [ADOT Collector Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda) (`aws-otel-collector-amd64`) to run the Collector as a Lambda extension.
+The Collector receives metrics and traces via OTLP on `localhost:4317` and forwards them to AWS X-Ray and Amazon CloudWatch.
 
-If you only need metrics or tracing, use `apply_metrics` or `apply_tracing` individually.
+The default Collector configuration does not route OTLP data to the traces pipeline.
+You must provide a custom Collector configuration file that wires the OTLP receiver to both the traces and metrics pipelines.
+Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 'localhost:4317'
+      http:
+        endpoint: 'localhost:4318'
+
+exporters:
+  debug:
+  awsxray:
+    region: <your-region>
+  awsemf:
+    namespace: TemporalWorkerMetrics
+    log_group_name: /aws/lambda/<your-function-name>
+    region: <your-region>
+    dimension_rollup_option: NoDimensionRollup
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [awsxray, debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [awsemf]
+```
+
+Set the following environment variable on the Lambda function:
+
+- `OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/otel-collector-config.yaml`
+
+The Lambda execution role must have permissions to write to X-Ray and CloudWatch.
+Attach the [`AWSXRayDaemonWriteAccess`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSXRayDaemonWriteAccess.html) managed policy, or add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions.
+Without these permissions, the Collector fails silently and no telemetry appears.
+
+If you only need metrics or tracing, use `build_metrics_telemetry_config` or `apply_tracing` individually.
