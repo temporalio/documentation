@@ -70,7 +70,7 @@ credentials depends on where the Temporal Service runs.
 automatically. No additional credential configuration is needed. The attached role must have `sts:AssumeRole` permission
 for the Lambda invocation role created in the next step.
 
-**Outside AWS:** Configure AWS credentials in the server's environment:
+**Outside AWS:** Use [IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/), or configure static AWS credentials in the server's environment (not recommended):
 
 ```
 AWS_ACCESS_KEY_ID=<access-key>
@@ -83,7 +83,7 @@ role.
 
 ## Create the Lambda invocation role {#create-invocation-role}
 
-Temporal invokes Lambda functions by assuming an IAM role in your AWS account. This role needs `lambda:InvokeFunction`
+Temporal invokes Lambda functions by assuming an IAM role in your AWS account. This role needs `lambda:GetFunction` and `lambda:InvokeFunction`
 permission on your Worker Lambda functions, and a trust policy that allows the Temporal server's identity to assume it.
 
 Deploy the following CloudFormation template to create the role.
