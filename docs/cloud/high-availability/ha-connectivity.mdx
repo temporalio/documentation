@@ -34,7 +34,7 @@ Use the Namespace Endpoint unless you have a specific reason to pin traffic to a
 ### Regional Endpoint
 
 Format: `<cloud>-<region>.region.tmprl.cloud:7233` (for example, `aws-us-west-2.region.tmprl.cloud` or `gcp-us-central1.region.tmprl.cloud`).
-See [AWS regions](/cloud/regions/awsregions) and [GCP regions](/cloud/regions/gcpregions) for the full list.
+See [regions](/cloud/regions) for the full list.
 
 A Regional Endpoint is shared across every Namespace that is active or replicated in that region.
 Unlike the Namespace Endpoint, a Regional Endpoint stays pinned to the region in its name — if that region holds the passive replica of your Namespace, the Regional Endpoint connects to the passive replica.
