@@ -510,9 +510,9 @@ The approximate number of tasks pending in a task queue. Started Activities are 
 
 :::note Known accuracy limitations
 This metric is approximate.
-It can overcount because invalid or expired Tasks (for example, from cancelled, terminated, completed, or timed-out Workflows) remain in the count until they reach the head of the queue and are processed and discarded.
-It can also reset to zero on an idle Task Queue: if no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes, the Task Queue is unloaded from memory.
-Other smaller sources of inaccuracy (infrequent metadata updates, database row expirations) can also persist.
+It can overcount because invalid or expired Tasks (for example, from cancelled, terminated, completed, or timed out Workflows) remain in the count until they reach the head of the queue and are processed and discarded.
+It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes, the Task Queue is unloaded from memory.
+Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
 See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
 :::
 
