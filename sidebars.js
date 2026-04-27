@@ -969,6 +969,7 @@ module.exports = {
                 'develop/rust/workflows/message-passing',
                 'develop/rust/workflows/cancellation',
                 'develop/rust/workflows/timers',
+                'develop/rust/workflows/timeouts',
               ],
             },
             {
@@ -982,6 +983,7 @@ module.exports = {
               items: [
                 'develop/rust/activities/basics',
                 'develop/rust/activities/execution',
+                'develop/rust/activities/timeouts',
               ],
             },
             {
