@@ -56,18 +56,53 @@ This documentation uses source code from the
 
 ## Get Started with Standalone Activities {#get-started}
 
-
 Prerequisites:
 
-- Install the [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.6.2-standalone-activity) (Standalone Activity Prerelease version)
+- **[Go](https://go.dev/dl/)** 1.22+
 
-- Install the [Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk) (v1.41.0 or higher)
+- **[Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk)** (v1.41.0 or higher)
 
+- **Temporal CLI** (Pre-release version with Standalone Activity support)
 
-The first step in running a Standalone Activity involves starting a Temporal server:
+  Download for your platform:
+
+  ```bash title="macOS (Apple Silicon)"
+  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_arm64.tar.gz | tar xz
+  ```
+
+  ```bash title="macOS (Intel)"
+  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_amd64.tar.gz | tar xz
+  ```
+
+  ```bash title="Linux (arm64)"
+  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_arm64.tar.gz | tar xz
+  ```
+
+  ```bash title="Linux (amd64)"
+  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_amd64.tar.gz | tar xz
+  ```
+
+  Verify the installation:
+
+  ```bash
+  ./temporal --version
+  # temporal version 1.6.2-standalone-activity (Server 1.31.0-151.2, UI 2.47.2)
+  ```
+
+  Move the binary to your PATH or run it from the current directory as `./temporal`.
+
+  :::warning
+
+  If you see `Standalone activity is disabled` when running commands, you are using the standard
+  Temporal CLI instead of the pre-release version above. The standard `brew install temporal` or
+  `brew upgrade temporal` does not include Standalone Activity support during Pre-release.
+
+  :::
+
+Start the Temporal development server:
 
 ```
-temporal server start-dev
+./temporal server start-dev
 ```
 
 This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
@@ -171,11 +206,13 @@ func main() {
 }
 ```
 
-To run the Worker:
+Open a new terminal, navigate to the `samples-go` directory, and run the Worker:
 
 ```
 go run standalone-activity/helloworld/worker/main.go
 ```
+
+Leave this terminal running - the Worker needs to stay up to process activities.
 
 ## Execute a Standalone Activity {#execute-activity}
 
@@ -269,7 +306,11 @@ handle, err := c.ExecuteActivity(ctx, options, "Activity", "arg1")
 `StartToCloseTimeout`. See [`StartActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartActivityOptions)
 in the API reference for the full set of options.
 
-To run the starter (in a separate terminal from the Worker):
+To run the starter:
+
+1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
+2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
+3. Open a new terminal, navigate to the `samples-go` directory, and run:
 
 ```
 go run standalone-activity/helloworld/starter/main.go
@@ -278,7 +319,7 @@ go run standalone-activity/helloworld/starter/main.go
 Or use the Temporal CLI to execute a Standalone Activity:
 
 ```bash
-temporal activity execute \
+./temporal activity execute \
   --type Activity \
   --activity-id standalone_activity_helloworld_ActivityID \
   --task-queue standalone-activity-helloworld \
@@ -302,6 +343,12 @@ log.Println("Activity result:", result)
 
 If the Activity completed successfully, the result is deserialized into the provided pointer. If the Activity failed,
 the failure is returned as an error.
+
+Or use the Temporal CLI to wait for a result by Activity ID:
+
+```bash
+./temporal activity result --activity-id my-standalone-activity-id
+```
 
 ## Get a handle to an existing Standalone Activity {#get-activity-handle}
 
@@ -330,6 +377,8 @@ Use [`client.ListActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Cli
 Executions that match a [List Filter](/list-filter) query. The result contains an iterator that yields
 [`ActivityExecutionInfo`](https://pkg.go.dev/go.temporal.io/sdk/client#ActivityExecutionInfo) entries.
 
+These APIs return only Standalone Activity Executions. Activities running inside Workflows are not included.
+
 ```go
 resp, err := c.ListActivities(context.Background(), client.ListActivitiesOptions{
 	Query: "TaskQueue = 'standalone-activity-helloworld'",
@@ -350,7 +399,7 @@ for info, err := range resp.Results {
 Or use the Temporal CLI:
 
 ```bash
-temporal activity list
+./temporal activity list
 ```
 
 The `Query` field accepts the same [List Filter](/list-filter) syntax used for Workflow Visibility. For example,
@@ -360,7 +409,8 @@ The `Query` field accepts the same [List Filter](/list-filter) syntax used for W
 ## Count Standalone Activities {#count-activities}
 
 Use [`client.CountActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to count Standalone Activity
-Executions that match a [List Filter](/list-filter) query.
+Executions that match a [List Filter](/list-filter) query. This returns the total count of executions (running,
+completed, failed, etc.) - not the number of queued tasks. It works the same way as counting Workflow Executions.
 
 ```go
 resp, err := c.CountActivities(context.Background(), client.CountActivitiesOptions{
@@ -376,20 +426,22 @@ log.Println("Total activities:", resp.Count)
 Or use the Temporal CLI:
 
 ```bash
-temporal activity count
+./temporal activity count
 ```
 
 ## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
 
 The code samples on this page use `envconfig.MustLoadDefaultClientOptions()`, so the same code
-works against Temporal Cloud — just configure the connection via environment variables or a TOML
+works against Temporal Cloud - just configure the connection via environment variables or a TOML
 profile. No code changes are needed.
 
-For full details on connecting to Temporal Cloud, including Namespace creation, certificate
-generation, and authentication options, see
+For a step-by-step guide on connecting to Temporal Cloud, including Namespace creation, certificate
+generation, and authentication setup in the Cloud UI, see
 [Connect to Temporal Cloud](/develop/go/client/temporal-client#connect-to-temporal-cloud).
 
 ### Connect with mTLS
+
+Set these environment variables with values from your Temporal Cloud Namespace settings:
 
 ```
 export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
@@ -399,6 +451,8 @@ export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
 ```
 
 ### Connect with an API key
+
+Set these environment variables with values from your Temporal Cloud API key settings:
 
 ```
 export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233

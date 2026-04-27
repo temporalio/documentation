@@ -70,6 +70,14 @@ For example, to include `temporal_activity_type` in your scrape results:
 /v1/metrics?labels=temporal_activity_type
 ```
 
+
+Enable multiple labels at the same time by concatenating multiple `labels` query parameters:
+
+```
+/v1/metrics?labels=temporal_worker_build_id&labels=temporal_worker_deployment_name
+```
+
+
 ## Metrics Catalog
 
 ### Frontend Service Metrics
@@ -588,6 +596,27 @@ The total number of actions performed per second. Actions with `is_background=fa
 :::note
 
 Does not include the `region` label. Actions are scoped to the Namespace level.
+
+:::
+
+#### temporal\_cloud\_v1\_billable\_action\_count
+
+The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/cloud/actions) for details on exceptions.
+
+| Label | Description |
+| ----- | ----- |
+| `action_type` | The [action](/cloud/actions) type |
+| `temporal_workflow_type` | The workflow type |
+
+:::note Public Preview
+
+This metric is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+:::caution High Cardinality
+
+This metric could have high cardinality depending on number of action types and workflow types.
 
 :::
 
