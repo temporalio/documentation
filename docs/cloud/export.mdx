@@ -29,6 +29,102 @@ Exports run hourly, beginning 10 minutes after the hour.
 Allow up to 24 hours for a closed Workflow to appear in the exported file.
 Delivery is guaranteed at least once.
 
+## What's in the exported data {#exported-data}
+
+Each exported file contains one or more complete Workflow Execution histories serialized as protocol buffers using the [`WorkflowExecutions`](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) proto.
+
+Each history is an ordered sequence of events that records everything that happened during a Workflow Execution:
+
+- **Workflow configuration** - Input data, timeouts, Task Queue, retry policies, search attributes, and memo
+- **Activity lifecycle** - Each Activity scheduled, started, completed (or failed/timed out), including inputs and results
+- **Timers** - Timer starts and fires
+- **Signals and Updates** - External signals received and Update requests handled
+- **Child Workflows** - Child Workflow starts and completions
+- **Workflow result** - How the Workflow ended (completed, failed, timed out, terminated, canceled, or continued-as-new)
+
+Search attributes in the export use your **user-defined names** (for example, `customerId`), not internal column names.
+
+The export format is **protobuf binary**.
+You must deserialize using the [proto schema](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) before the data is human-readable.
+
+The following is a simplified JSON representation of what one Workflow Execution looks like after deserialization.
+This example shows a Workflow that started, ran one Activity, and completed:
+
+```json
+{
+  "items": [
+    {
+      "history": {
+        "events": [
+          {
+            "eventId": "1",
+            "eventTime": "2025-02-24T18:00:00Z",
+            "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_STARTED",
+            "workflowExecutionStartedEventAttributes": {
+              "workflowType": { "name": "OrderWorkflow" },
+              "taskQueue": { "name": "order-processing" },
+              "input": { "payloads": ["...serialized input..."] },
+              "workflowExecutionTimeout": "3600s",
+              "searchAttributes": {
+                "indexedFields": {
+                  "customerId": { "data": "\"customer-42\"" },
+                  "orderType": { "data": "\"standard\"" }
+                }
+              }
+            }
+          },
+          {
+            "eventId": "2",
+            "eventTime": "2025-02-24T18:00:00Z",
+            "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED"
+          },
+          {
+            "eventId": "3",
+            "eventTime": "2025-02-24T18:00:01Z",
+            "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+            "activityTaskScheduledEventAttributes": {
+              "activityType": { "name": "ChargeCustomer" },
+              "taskQueue": { "name": "order-processing" },
+              "input": { "payloads": ["...serialized input..."] },
+              "scheduleToCloseTimeout": "300s",
+              "startToCloseTimeout": "60s"
+            }
+          },
+          {
+            "eventId": "4",
+            "eventTime": "2025-02-24T18:00:02Z",
+            "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED"
+          },
+          {
+            "eventId": "5",
+            "eventTime": "2025-02-24T18:00:03Z",
+            "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+            "activityTaskCompletedEventAttributes": {
+              "result": { "payloads": ["...serialized result..."] }
+            }
+          },
+          {
+            "eventId": "6",
+            "eventTime": "2025-02-24T18:00:03Z",
+            "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED"
+          },
+          {
+            "eventId": "7",
+            "eventTime": "2025-02-24T18:00:03Z",
+            "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_COMPLETED",
+            "workflowExecutionCompletedEventAttributes": {
+              "result": { "payloads": ["...serialized result..."] }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+The outer `items` array can contain multiple Workflow Executions per file.
+Only the key fields are shown above. Actual events include additional fields like `version`, `taskId`, and `workerVersion`.
 
 ## Prerequisites {#prerequisites}
 
