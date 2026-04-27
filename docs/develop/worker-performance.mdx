@@ -722,14 +722,17 @@ You can rely on both these counts when making scaling decisions.
 
 #### Known accuracy limitations {#backlog-accuracy-limitations}
 
-These values are approximate and may be temporarily inaccurate in the following scenarios:
+These values are approximate.
+Some inaccuracies are transient and others persist.
+The most common sources:
 
-- **Overcount from cancelled Workflows**: When a Workflow is cancelled, its pending Tasks may still be counted in the backlog until they expire.
-  Workers process Tasks in order within a partition, so valid Tasks _can_ be blocked behind invalid (expired) Tasks, but invalid Tasks cannot block other invalid Tasks.
-  The count eventually converges to the correct value as expired Tasks are cleared.
-- **Reset to zero on partition unload**: If no Workers are polling a Task Queue and no new Tasks are added for approximately 5 minutes, the Temporal Service unloads the Task Queue partition from memory.
-  When this happens, `ApproximateBacklogCount` resets to zero until the partition is reloaded (by a Worker polling or a new Task being added).
-  This means that an idle Task Queue with a backlog but no active Workers may temporarily report zero.
+- **Overcount from invalid or expired Tasks**: Tasks belonging to cancelled, terminated, completed, or timed-out Workflows (and Activities) stay in the count until they reach the head of the queue and are processed and discarded.
+  An invalid or expired Task at the head is removed quickly, so it rarely holds up the count for long.
+  A valid Task at the head can stay there longer when there aren't enough Workers to dispatch it; while it sits there, invalid Tasks queued behind it cannot be removed.
+  Invalid and expired Tasks are eventually accounted for, but the count may not return to a fully accurate value because of other sources of discrepancy (such as infrequent metadata updates and database row expirations).
+- **Reset to zero on idle Task Queue unload**: If a Task Queue sees no activity for approximately 5 minutes - no Worker polls, no new Tasks added, and no other Task Queue calls (`DescribeTaskQueue`, `UpdateTaskQueueConfig`, etc.) - the Temporal Service unloads it from memory.
+  When this happens, `ApproximateBacklogCount` reports zero until the Task Queue is reloaded by the next Worker poll, new Task, or Task Queue API call.
+  An idle Task Queue with a backlog but no active Workers can therefore temporarily report zero.
 - **Sticky queue exclusion**: [Sticky queues](/sticky-execution) are not included in these values.
   Because Sticky queue Tasks only remain valid for a few seconds, this inaccuracy diminishes as the backlog grows.
 
