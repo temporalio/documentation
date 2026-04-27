@@ -25,7 +25,7 @@ Since Workflow Executions in Temporal can run for long periods — sometimes mon
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
 
-Common causes include adding, removing, or reordering await calls on Command-producing APIs such as Activities and timers — each await is a yield point that affects the Command sequence seen during replay.
+Common causes include adding, removing, or reordering `await` calls on Command-producing APIs such as Activities and timers. Each `await` is a yield point that affects the Command sequence seen during Replay.
 
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
 There are two primary Versioning methods that you can use:
