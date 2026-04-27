@@ -720,9 +720,20 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-Please note: [Sticky queues](https://docs.temporal.io/sticky-execution) will affect these values, but only for a few seconds.
-That's because Tasks sent to Sticky queues are not included in the returned values for `ApproximateBacklogCount` and `ApproximateBacklogAge`.
-Inaccuracies diminish as the backlog grows.
+#### Known accuracy limitations {#backlog-accuracy-limitations}
+
+These values are approximate.
+The most common sources:
+
+- **Overcount from invalid or expired Tasks**: Tasks belonging to cancelled, terminated, completed, or timed out Workflows (and Activities) stay in the count until they reach the head of the queue and are processed and discarded.
+  An invalid or expired Task at the head is removed quickly, so it rarely holds up the count for long.
+  A valid Task at the head can stay there longer when there aren't enough Workers to dispatch it; while it sits there, invalid or expired Tasks queued behind it cannot be removed.
+  Invalid and expired Tasks are eventually accounted for, but the count may not return to a fully accurate value because of other sources of discrepancy (such as infrequent metadata updates and database row expirations).
+- **Reset to zero on idle Task Queue unload**: If a Task Queue sees no activity for approximately 5 minutes - no Worker polls, no new Tasks added, and no other Task Queue calls (`DescribeTaskQueue`, `UpdateTaskQueueConfig`, etc.) - the Temporal Service unloads it from memory.
+  When this happens, `ApproximateBacklogCount` reports zero until the Task Queue is reloaded by the next Worker poll, new Task, or Task Queue API call.
+  An idle Task Queue with a backlog but no active Workers can therefore temporarily report zero even though there are Tasks waiting to be processed.
+- **Sticky queue exclusion**: [Sticky queues](/sticky-execution) are not included in these values.
+  Because Sticky queue Tasks only remain valid for a few seconds, this inaccuracy diminishes as the backlog grows.
 
 ### `TasksAddRate` and `TasksDispatchRate` {#TasksAddRate-and-TasksDispatchRate}
 
