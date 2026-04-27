@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 730" width="1200" height="730">
+  <defs>
+    <marker id="arrow-dark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#9ca3af"/>
+    </marker>
+    <style>
+      text { font-family: Inter, 'Helvetica Neue', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- ============================================================ -->
+  <!-- Header: UI, CLI, SDK -->
+  <!-- ============================================================ -->
+  <rect x="430" y="20" width="280" height="50" rx="12" ry="12" fill="#3b82f6"/>
+  <text x="570" y="51" text-anchor="middle" fill="#fff" font-size="17" font-weight="600"
+        font-family="'SF Mono', 'Fira Code', 'Courier New', monospace">UI, CLI, SDK</text>
+
+  <!-- Arrow down from header -->
+  <line x1="570" y1="70" x2="570" y2="100" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- "top-level primitives" label -->
+  <text x="570" y="118" text-anchor="middle" fill="#9ca3af" font-size="14" font-style="italic">top-level primitives</text>
+
+  <!-- Split arrows to left and right -->
+  <line x1="570" y1="125" x2="305" y2="155" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+  <line x1="570" y1="125" x2="835" y2="155" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- ============================================================ -->
+  <!-- Left: Standalone Activity Execution (green = featured) -->
+  <!-- ============================================================ -->
+  <rect x="150" y="160" width="300" height="55" rx="12" ry="12" fill="#22c55e"/>
+  <text x="300" y="180" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">
+    <tspan x="300" dy="0">Standalone Activity</tspan>
+    <tspan x="300" dy="1.3em">Execution</tspan>
+  </text>
+
+  <!-- Left annotation -->
+  <rect x="15" y="240" width="265" height="50" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+  <text x="147" y="258" text-anchor="middle" fill="#e5e7eb" font-size="13">
+    <tspan x="147" dy="0">Execute a single function</tspan>
+    <tspan x="147" dy="1.3em">reliably</tspan>
+  </text>
+
+  <!-- Arrow from Standalone Activity straight down to shared box -->
+  <line x1="300" y1="215" x2="300" y2="495" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- ============================================================ -->
+  <!-- Right: Workflow Execution (blue = structural) -->
+  <!-- ============================================================ -->
+  <rect x="685" y="160" width="300" height="55" rx="12" ry="12" fill="#3b82f6"/>
+  <text x="835" y="180" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">
+    <tspan x="835" dy="0">Workflow</tspan>
+    <tspan x="835" dy="1.3em">Execution</tspan>
+  </text>
+
+  <!-- Arrow from Workflow down to activity steps -->
+  <line x1="835" y1="215" x2="835" y2="260" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- Activity Execution (Step 1) -->
+  <rect x="725" y="265" width="220" height="45" rx="8" ry="8" fill="#3b82f6"/>
+  <text x="835" y="293" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Activity Execution (Step 1)</text>
+
+  <line x1="835" y1="310" x2="835" y2="330" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- Activity Execution (Step 2) -->
+  <rect x="725" y="335" width="220" height="45" rx="8" ry="8" fill="#3b82f6"/>
+  <text x="835" y="363" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Activity Execution (Step 2)</text>
+
+  <line x1="835" y1="380" x2="835" y2="400" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- Activity Execution (Step 3) -->
+  <rect x="725" y="405" width="220" height="45" rx="8" ry="8" fill="#3b82f6"/>
+  <text x="835" y="433" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Activity Execution (Step 3)</text>
+
+  <!-- Right annotation -->
+  <rect x="970" y="290" width="215" height="95" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+  <text x="1077" y="312" text-anchor="middle" fill="#e5e7eb" font-size="13">
+    <tspan x="1077" dy="0">Workflows: Multi-step</tspan>
+    <tspan x="1077" dy="1.3em">orchestration with automatic</tspan>
+    <tspan x="1077" dy="1.3em">durability via event history</tspan>
+    <tspan x="1077" dy="1.3em">&amp; replay</tspan>
+  </text>
+
+  <!-- Arrow from Step 3 down to shared box -->
+  <line x1="835" y1="450" x2="835" y2="495" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
+
+  <!-- ============================================================ -->
+  <!-- Shared: Activity Code & Worker Deployment (green = key insight) -->
+  <!-- ============================================================ -->
+  <rect x="220" y="500" width="700" height="55" rx="12" ry="12" fill="#22c55e"/>
+  <text x="570" y="521" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">
+    <tspan x="570" dy="0">Activity Code</tspan>
+    <tspan x="570" dy="1.3em">&amp; Worker Deployment</tspan>
+  </text>
+
+  <!-- ============================================================ -->
+  <!-- Bottom annotations -->
+  <!-- ============================================================ -->
+  <rect x="30" y="590" width="340" height="55" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+  <text x="200" y="610" text-anchor="middle" fill="#e5e7eb" font-size="13">
+    <tspan x="200" dy="0">Same Activity programming model:</tspan>
+    <tspan x="200" dy="1.3em">write once &amp; use anywhere.</tspan>
+  </text>
+
+  <rect x="420" y="590" width="490" height="55" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+  <text x="665" y="610" text-anchor="middle" fill="#e5e7eb" font-size="13">
+    <tspan x="665" dy="0">Activities can be used standalone or as steps in a</tspan>
+    <tspan x="665" dy="1.3em">Workflow, with optional checkpoints for long-running jobs.</tspan>
+  </text>
+
+  <!-- ============================================================ -->
+  <!-- Legend -->
+  <!-- ============================================================ -->
+  <rect x="15" y="690" width="18" height="18" rx="8" ry="8" fill="#22c55e"/>
+  <text x="40" y="704" fill="#e5e7eb" font-size="13">Standalone Activity</text>
+  <rect x="200" y="690" width="18" height="18" rx="8" ry="8" fill="#3b82f6"/>
+  <text x="225" y="704" fill="#e5e7eb" font-size="13">Workflow &amp; Activity Steps</text>
+  <rect x="430" y="690" width="18" height="18" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+  <text x="455" y="704" fill="#e5e7eb" font-size="13">Description</text>
+
+</svg>

@@ -28,11 +28,32 @@ error handling, testing strategies, worker configuration, versioning, and common
 1. Add the Temporal skills marketplace to Claude Code:
 
    ```bash
-   /plugin marketplace add temporalio/agent-skills
+   /plugin marketplace add temporalio/claude-temporal-plugin
    ```
 
-2. Open the plugin manager by running `/plugin` within Claude Code, select the marketplace, and install
-   `temporal-developer`.
+2. Install the Temporal Developer Skill:
+
+   ```bash
+   /plugin install temporal@temporal-marketplace
+   ```
+
+</TabItem>
+<TabItem value="cursor" label="Cursor">
+
+Install the Temporal plugin from the [Cursor Marketplace](https://cursor.com/marketplace/temporal), or run the following
+command in Cursor's agent chat:
+
+```
+/add-plugin temporal
+```
+
+</TabItem>
+<TabItem value="codex" label="Codex">
+
+Install from the Codex app or CLI:
+
+- **Codex app:** Open the plugins menu, search for **temporal**, then click **+** (or **Add to Codex**).
+- **Codex CLI:** Run `/plugin`, search for **temporal**, and mark it for installation.
 
 </TabItem>
 <TabItem value="npx" label="npx">

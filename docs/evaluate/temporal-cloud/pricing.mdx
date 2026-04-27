@@ -33,7 +33,7 @@ It gives you the information you need to understand and estimate costs for your 
 For more exact estimates, please reach out to [our team](https://pages.temporal.io/ask-an-expert).
 
 Billing and cost information is available directly in the Temporal Cloud UI.
-For more information, visit the [Billing and Cost](/cloud/billing-and-cost) page.
+For more information, visit the [Billing](/cloud/billing) page.
 
 ## Temporal Cloud pricing model {#pricing-model}
 
@@ -339,6 +339,34 @@ When upgrading an existing Namespace, some points to consider:
 - Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a replica.
 - Temporal charges for Replicated Storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new replica.
 
+### Fairness pricing {#fairness-pricing}
+
+**How does pricing for Fairness work?**
+
+When [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) is enabled on a Namespace, an additional `0.1` Action is charged per Action in that Namespace for each hour the feature is on, regardless of whether individual Workflows or Activities use fairness keys.
+
+The examples below use a Namespace, `your-namespace`, that normally generates 10,000 Actions per hour.
+
+**Fairness enabled, but no fairness keys in use**
+
+If Fairness is enabled but no Workflows or Activities send `fairness_key` metadata, all Tasks continue to route as before. Fairness Actions are still applied: billing is determined by whether Fairness is enabled on the Namespace.
+
+| Hour          | Actions in Namespace | Fairness enabled? | Fairness Actions | Total billed Actions |
+|---------------|----------------------|-------------------|--------------------|----------------------|
+| 2:00–3:00 PM  | 10,000               | Yes               | +1,000             | 11,000               |
+
+**Mix of Workflows with and without fairness keys**
+
+Suppose `your-namespace` has two Task Queues:
+- `payment-queue`, where Workflows pass `fairness_key = "customer-id"`
+- `notification-queue`, where Workflows have no fairness keys and behave exactly as before
+
+If each queue generates 5,000 Actions in a given hour (10,000 total), Fairness Actions apply to the full 10,000, not only to the 5,000 from `payment-queue`.
+
+| Hour          | Actions from payment-queue | Actions from notification-queue | Total Namespace Actions | Fairness | Total billed Actions |
+|---------------|----------------------------|---------------------------------|-------------------------|-----------------|----------------------|
+| 2:00–3:00 PM  | 5,000                      | 5,000                           | 10,000                  | +1,000          | 11,000               |
+
 ### SCIM and SSO via SAML pricing {#sso-and-saml}
 
 **What costs are associated with SSO/SAML use?**
@@ -384,7 +412,7 @@ For example, invoices for May will be issued at midnight UTC on June 3rd.
 **Where can I view my usage and billing information?**
 
 Account Owners and Finance Admins can view their detailed billing data at any time.
-Visit the [Usage and Billing dashboards](/cloud/billing-and-cost) in Temporal Cloud.
+Visit the [Billing dashboards](/cloud/billing) in Temporal Cloud.
 
 **How do I purchase Temporal Cloud credits?**
 
@@ -424,7 +452,7 @@ Account Owners and Finance Admins can update payment information at any time on 
 You need appropriate administrative permissions to access this section.
 Select the "Manage Payment Method" button.
 
-See [this overview](/cloud/billing-and-cost) for more details.
+See [this overview](/cloud/billing) for more details.
 
 **What happens if my payment fails?**
 
@@ -434,7 +462,7 @@ Temporal will periodically send you email reminders to complete the payment.
 
 Invoices are emailed to Account Owners or the designated billing contacts.
 Account Owners and Finance Admins can view their [detailed billing information](https://cloud.temporal.io/billing) at any time.
-See our [billing and cost](/cloud/billing-and-cost) page for details.
+See our [billing](/cloud/billing) page for details.
 You need appropriate administrative permissions to access this section.
 Alternatively, to view invoices and billing history, contact Temporal Finance at [ar@temporal.io](mailto: ar@temporal.io).
 
@@ -445,7 +473,7 @@ We charge applicable sales tax in US jurisdictions as required.
 **How do I cancel my account?**
 
 Account Owners can delete their account and cancel their subscription in the Plans tab in the billing center.
-See the [billing and cost](/cloud/billing-and-cost) page for details on how to access the billing center.
+See the [billing and cost](/cloud/billing) page for details on how to access the billing center.
 
 **Will I lose access immediately if I cancel my account?**
 

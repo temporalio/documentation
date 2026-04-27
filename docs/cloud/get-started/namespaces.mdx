@@ -47,8 +47,6 @@ Each Namespace Name must conform to the following rules:
 - A Namespace Name must contain at least 2 characters and no more than 39 characters.
 - A Namespace Name must begin with a letter, end with a letter or number, and contain only letters, numbers, and the
   hyphen (-) character.
-- Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are
-  not permitted.
 - All letters in a Namespace Name must be lowercase.
 
 ## What is a Temporal Cloud Account ID? {#temporal-cloud-account-id}
@@ -177,10 +175,7 @@ To create a Namespace, a user must have the Developer, Account Owner, or Global 
 
 :::tip
 
-By default, each account is allocated with a limit of ten Namespaces. As you start using Namespaces by scheduling
-Workflows, Temporal Cloud automatically raises your allowance. This automatic adjustment happens whenever all your
-Namespaces are in use, up to a maximum of 100 Namespaces. You can request further increases beyond the 100 Namespace
-limit by opening a [support ticket](/cloud/support#support-ticket).
+By default, each account starts with 10 Namespaces. This is automatically increased as you start creating namespaces. For large-scale needs, open a [support ticket](/cloud/support#support-ticket).
 
 :::
 
