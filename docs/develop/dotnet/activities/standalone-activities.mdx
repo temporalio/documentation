@@ -178,7 +178,6 @@ configuration options.
 [src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
 ```csharp
-using Microsoft.Extensions.Logging;
 using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
 using Temporalio.Worker;
@@ -186,10 +185,6 @@ using TemporalioSamples.StandaloneActivity;
 
 var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
 connectOptions.TargetHost ??= "localhost:7233";
-connectOptions.LoggerFactory = LoggerFactory.Create(builder =>
-    builder.
-        AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
-        SetMinimumLevel(LogLevel.Information));
 var client = await TemporalClient.ConnectAsync(connectOptions);
 
 const string taskQueue = "standalone-activity-sample";
