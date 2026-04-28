@@ -253,7 +253,7 @@ call Activities by string type name:
 
 ```java
 // Using a string type name
-String result = client.execute("composeGreeting", String.class, options, "Hello", "World");
+String result = client.execute("ComposeGreeting", String.class, options, "Hello", "World");
 ```
 
 `StartActivityOptions` requires `id`, `taskQueue`, and at least one of `startToCloseTimeout` or
@@ -273,7 +273,7 @@ Or use the Temporal CLI:
 
 ```bash
 ./temporal activity execute \
-  --type composeGreeting \
+  --type ComposeGreeting \
   --activity-id standalone-activity-id \
   --task-queue standalone-activity-task-queue \
   --start-to-close-timeout 10s \
@@ -318,7 +318,7 @@ Or use the Temporal CLI:
 
 ```bash
 ./temporal activity start \
-  --type composeGreeting \
+  --type ComposeGreeting \
   --activity-id standalone-activity-id \
   --task-queue standalone-activity-task-queue \
   --start-to-close-timeout 10s \
