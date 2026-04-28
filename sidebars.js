@@ -1231,6 +1231,7 @@ module.exports = {
               },
               items: [
                 'production-deployment/worker-deployments/serverless-workers/aws-lambda',
+                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
               ],
             },
           ],
