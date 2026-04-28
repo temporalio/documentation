@@ -248,21 +248,17 @@ aws lambda create-function \
 
 </SdkTabs.Go>
 <SdkTabs.Python>
-<SdkTabs.TypeScript>
 
 ```bash
 aws lambda create-function \
   --function-name my-temporal-worker \
   --runtime python3.13 \
   --handler lambda_function.lambda_handler \
-  --runtime nodejs22.x \
-  --handler lib/index.handler \
   --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
   --zip-file fileb://function.zip \
   --timeout 600 \
   --memory-size 256 \
   --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
-  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
 ```
 
 | Parameter | Description |
@@ -272,6 +268,23 @@ aws lambda create-function \
 | `--handler` | Entry point in `module.function` format. Must point to the handler returned by `run_worker`. |
 
 </SdkTabs.Python>
+<SdkTabs.TypeScript>
+
+```bash
+aws lambda create-function \
+  --function-name my-temporal-worker \
+  --runtime nodejs22.x \
+  --handler lib/index.handler \
+  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
+  --zip-file fileb://function.zip \
+  --timeout 600 \
+  --memory-size 256 \
+  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
+```
+
+| Parameter | Description |
+|---|---|
+| `--function-name` | Name of the Lambda function. |
 | `--runtime` | Lambda runtime. Use `nodejs22.x` or another supported Node.js version (20+). |
 | `--handler` | Entry point in `module.export` format. Must point to the handler exported by `runWorker`. |
 
