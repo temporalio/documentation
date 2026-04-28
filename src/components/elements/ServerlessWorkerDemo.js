@@ -47,12 +47,11 @@ aws lambda create-function \\
   --function-name ${lambdaFunctionName} \\
   --runtime provided.al2023 \\
   --handler bootstrap \\
-  --architectures x86_64 \\
   --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \\
   --zip-file fileb://function.zip \\
-  --timeout 60 \\
+  --timeout 600 \\
   --memory-size 256 \\
-  --environment "Variables={TEMPORAL_ADDRESS=${namespace}.tmprl.cloud:7233,TEMPORAL_NAMESPACE=${namespace}}"`;
+  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=${namespace}.tmprl.cloud:7233,TEMPORAL_NAMESPACE=${namespace},TEMPORAL_API_KEY=<your-api-key>}"`;
 }
 
 function generateIamScript(config) {

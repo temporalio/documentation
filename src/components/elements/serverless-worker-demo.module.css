@@ -138,6 +138,11 @@
   border-color: var(--ifm-color-primary);
 }
 
+:global(html[data-theme='dark']) .codeTabActive {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
 /* ── Execute button ─────────────────────────────────────────────────────── */
 
 .executeBtn {
@@ -370,9 +375,20 @@
   box-shadow: 0 0 0 1px var(--ifm-color-primary);
 }
 
+:global(html[data-theme='dark']) .stepActive {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
 .stepActive:hover {
   border-color: var(--ifm-color-primary);
   background: var(--ifm-color-primary-lightest, rgba(55, 125, 255, 0.06));
+}
+
+:global(html[data-theme='dark']) .stepActive:hover {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.18);
 }
 
 .stepNumber {
@@ -395,6 +411,10 @@
   background: var(--ifm-color-primary);
 }
 
+:global(html[data-theme='dark']) .stepNumberActive {
+  background: #2563eb;
+}
+
 .stepContent {
   flex: 1;
   min-width: 0;
@@ -408,7 +428,7 @@
 
 .stepDesc {
   font-size: 0.78rem;
-  color: var(--ifm-font-color-secondary);
+  color: var(--ifm-font-color-base);
   line-height: 1.4;
   margin-top: 4px;
 }
@@ -418,4 +438,8 @@
 .codeStepLabel {
   color: var(--ifm-color-primary);
   font-weight: 700;
+}
+
+:global(html[data-theme='dark']) .codeStepLabel {
+  color: #60a5fa;
 }
