@@ -41,14 +41,8 @@ Available timeout fields include:
 let greeting = ctx.start_activity(
     MyActivities::greet,
     name,
-    ActivityOptions {
-        start_to_close_timeout: Some(Duration::from_secs(10)),
-        // Optional timeouts:
-        // schedule_to_start_timeout: Some(Duration::from_secs(5)),
-        // schedule_to_close_timeout: Some(Duration::from_secs(10)),
-        ..Default::default()
-    }
-).await?;
+    ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+);
 ````
 
 ### Set an Activity Retry Policy {#activity-retries}
@@ -58,24 +52,20 @@ A Retry Policy works together with timeouts to provide fine-grained control over
 In Rust, configure the Retry Policy as part of the Activity options when scheduling the Activity from Workflow code. Because the Rust SDK API is still evolving, treat the following as representative of the current style rather than a guaranteed stable surface.
 
 ```rust
-let greeting = ctx.start_activity(
-    MyActivities::greet,
-    name,
-    ActivityOptions {
-        start_to_close_timeout: Some(Duration::from_secs(10)),
-        // Optional timeouts:
-        // schedule_to_start_timeout: Some(Duration::from_secs(5)),
-        // schedule_to_close_timeout: Some(Duration::from_secs(10)),
-        retry_policy: Some(RetryPolicy {
-            initial_interval: Some(prost_dur!(from_secs(10))),
-            backoff_coefficient: 2.0,
-            maximum_interval: Some(prost_dur!(from_secs(100))),
-            maximum_attempts: 5,
-            non_retryable_error_types: vec!["NonRetryableError".to_string()],
-        }),
-        ..Default::default()
-    }
-).await?;
+let language = ctx.start_activity(
+    MyActivities::call_greeting_service,
+    ActivityLanguages::English,
+    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
+        .retry_policy(
+            RetryPolicy {
+                initial_interval: Some(prost_dur!(from_secs(10))), 
+                backoff_coefficient: 2.0, 
+                maximum_interval: Some(prost_dur!(from_secs(100))), 
+                maximum_attempts: 5, 
+                non_retryable_error_types: vec!["NonRetryableError".to_string()]
+            }
+        ).build()
+    );
 ```
 
 ### Override the retry interval with `explicit_delay` {#next-retry-delay}
@@ -140,13 +130,11 @@ pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, Activit
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works together with Activity heartbeats and sets the maximum time allowed between heartbeats. Configure it as part of the Activity options when scheduling the Activity.
 
 ```rust
-let greeting = ctx.start_activity(
-    MyActivities::greet,
-    name,
-    ActivityOptions {
-        start_to_close_timeout: Some(Duration::from_secs(10)),
-        heartbeat_timeout: Some(Duration::from_secs(5)),
-        ..Default::default()
-    }
-).await?;
+let language = ctx.start_activity(
+    MyActivities::call_greeting_service,
+    ActivityLanguages::English,
+    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
+        .heartbeat_timeout(Duration::from_secs(5))
+        .build()
+    );
 ```

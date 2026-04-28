@@ -107,7 +107,7 @@ Canceling the Activity from a Workflow:
 
 ```rust
 fn activity_opts() -> ActivityOptions {
-    ActivityOptions::start_to_close_timeout(Duration::from_secs(300))
+    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(300))
         .heartbeat_timeout(Duration::from_secs(5))
         .build()
 }
