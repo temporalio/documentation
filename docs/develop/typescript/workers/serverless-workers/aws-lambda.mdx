@@ -138,7 +138,7 @@ export const handler = runWorker(
 );
 ```
 
-`applyDefaults` registers Temporal SDK interceptors for tracing and configures the Core SDK to export metrics via OTLP.
+`applyDefaults` registers Temporal SDK interceptors for tracing and configures the Core SDK to export metrics via OpenTelemetry Protocol (OTLP).
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 
 To collect this telemetry, attach two ADOT Lambda layers:

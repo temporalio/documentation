@@ -158,7 +158,7 @@ By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda laye
 To collect this telemetry, attach the [ADOT Python Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-python) to your Lambda function.
 The layer includes both auto-instrumentation and an OpenTelemetry Collector that receives telemetry on `localhost:4317` and forwards traces to AWS X-Ray and metrics to Amazon CloudWatch.
 
-The default Collector configuration does not route OTLP data to the traces pipeline.
+The default Collector configuration does not route OpenTelemetry Protocol (OTLP) data to the traces pipeline.
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
