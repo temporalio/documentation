@@ -38,7 +38,7 @@ environment. How to achieve this depends on your network setup. If the Temporal 
 may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a
 similar mechanism to allow the Lambda function to connect to the Temporal frontend.
 
-## Enable the Worker Controller {#enable-worker-controller}
+## Enable the Worker Controller Instance {#enable-worker-controller}
 
 [WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute
 providers. It is disabled by default and must be enabled through
@@ -59,7 +59,7 @@ workercontroller.scaling_algorithms.enabled:
       - no-sync
 ```
 
-To enable the Worker Controller for specific Namespaces instead of globally, add a `constraints` section with the
+To enable WCI for specific Namespaces instead of globally, add a `constraints` section with the
 Namespace name under `workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
 
 ```yaml
