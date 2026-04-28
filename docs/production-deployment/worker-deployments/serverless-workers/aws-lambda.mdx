@@ -28,7 +28,7 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 
 - A Temporal Cloud account or a self-hosted Temporal Service vx.xx.x or later.
   - For self-hosted deployments, complete the [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup) before following this guide.
-  - The Temporal Service frontend must be reachable from the Lambda execution environment. For Temporal Cloud, no additional configuration is needed. For self-hosted deployments on a private network, configure the Lambda function with [VPC access](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) to reach the Temporal frontend.
+  - The Temporal Service frontend must be reachable from the Lambda execution environment. For Temporal Cloud, no additional configuration is needed. For self-hosted deployments on a private network, use features like [VPC access](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) to reach the Temporal frontend.
 - An AWS account with permissions to create and invoke Lambda functions and create IAM roles.
 - The AWS-specific steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
 
