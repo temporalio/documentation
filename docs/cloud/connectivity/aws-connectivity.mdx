@@ -110,23 +110,15 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 | Temporal Cloud setup                      | Use this PHZ domain                | Example                                         |
 | ----------------------------------------- | ---------------------------------- | ----------------------------------------------- |
-| Single-region namespace with mTLS auth    | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
-| Single-region namespace with API-key auth | `<cloud_provider>.api.temporal.io` | `us-east-1.aws.api.temporal.io` ↔ `vpce-...`    |
-| Multi-region namespace                    | `region.tmprl.cloud`               | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
+| Single-region Namespace with mTLS auth        | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
+| Single-region Namespace with API-key auth     | `<cloud_provider>.api.temporal.io` | `us-east-1.aws.api.temporal.io` ↔ `vpce-...`    |
+| Namespace with High Availability              | `region.tmprl.cloud`               | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
 
 ### Step-by-step instructions
 
-:::warning Order matters: create the record before associating the zone with active VPCs
+:::warning Order matters
 
-A Route 53 private hosted zone with no records will cause DNS resolution for any matching name to fail (NXDOMAIN) inside any VPC associated with the zone. If you create an empty PHZ for `<account>.tmprl.cloud` and associate it with a VPC where Workers are running, **all Worker traffic to Temporal Cloud in that VPC stops** until you add the CNAME record.
-
-The safe sequence is:
-
-1. Create the PHZ **without associating it with any VPC** that has running Workers.
-2. Add the CNAME record.
-3. Then associate the PHZ with your Worker VPCs.
-
-You can also test the override end-to-end by associating the PHZ first with a non-production VPC, validating resolution, and then attaching production VPCs.
+A Route 53 private hosted zone with no records causes DNS resolution to fail (NXDOMAIN) inside any associated VPC. If you create an empty PHZ for `<account>.tmprl.cloud` and associate it with a VPC where Workers are running, **all Worker traffic to Temporal Cloud in that VPC stops** until you add the CNAME record. Follow the steps below in order to avoid this.
 
 :::
 
@@ -146,11 +138,11 @@ Save the **`vpce-*.amazonaws.com`** value — you will target it in the CNAME re
 
 #### 2. Create a Route 53 Private Hosted Zone (do not yet attach Worker VPCs)
 
-1. Open _Route 53 → Hosted zones → Create hosted zone_.
-2. Enter the domain chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
-3. Type: _Private hosted zone for Temporal Cloud_.
-4. Either leave VPC associations empty for now, or associate only a **non-production** VPC for verification. Leave production Worker VPCs detached until step 4.
-5. Create hosted zone.
+a. Open _Route 53 → Hosted zones → Create hosted zone_.
+b. Enter the domain chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
+c. Type: _Private hosted zone for Temporal Cloud_.
+d. Leave VPC associations empty for now (you'll add them in step 4).
+e. Create the hosted zone.
 
 #### 3. Add a CNAME record
 
@@ -161,11 +153,17 @@ Inside the new PHZ:
 | **Record name** | the Namespace Endpoint (e.g., `payments.abcde.tmprl.cloud`).                          |
 | **Record type** | `CNAME`                                                                               |
 | **Value**       | Your VPC Endpoint DNS name (`vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`) |
-| **TTL**         | 60s is typical; 15s for multi-region Namespaces; adjust as needed.                    |
+| **TTL**         | 60s is typical; 15s for Namespaces with High Availability (to minimize recovery time after failover). |
 
 #### 4. Associate the PHZ with your Worker VPCs and verify
 
 Now that the record exists, associate the PHZ with every VPC that contains Temporal Workers or SDK clients (Route 53 → your zone → _Edit settings_ → _Add VPC_).
+
+:::tip Test with a non-production VPC first
+
+We strongly recommend that you test with a non-production VPC first. Attach the PHZ to a non-production VPC, validate end-to-end resolution and connectivity from a host in that VPC, and only then attach production Worker VPCs. This catches misconfigured records before they affect production traffic.
+
+:::
 
 Verify DNS resolution from inside one of the associated VPCs:
 
@@ -189,7 +187,7 @@ clientOptions := client.Options{
 
 The DNS resolver inside your VPC returns the private endpoint, while TLS still validates the original hostname—simplifying both code and certificate management.
 
-## Configure private DNS for multi-region Namespaces
+## Configure private DNS for Namespaces with High Availability
 
 For Namespaces with [High Availability features](/cloud/high-availability), you need to override DNS for `region.tmprl.cloud` so each region resolves to the local VPC Endpoint, and you need to ensure Workers can reach whichever region is active. Failover is transparent to clients only when this is set up correctly.
 
