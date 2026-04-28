@@ -137,7 +137,7 @@ For detailed discussion of this tradeoff, see [How many Activities should I use 
 
 ### Child Workflows vs Activities
 
-[Child Workflows cost 2 Actions](/cloud/actions#child-workflows) compared to an Activity's 1 Action.
+[Child Workflows cost 2 Actions](/cloud/actions#workflow) compared to an Activity's 1 Action.
 See [Child Workflows documentation](/child-workflows) for detailed comparison of capabilities and use cases.
 
 ### Retry Policies
@@ -165,7 +165,7 @@ Refer to this blog post on [Mastering Workflow retry logic for resilient applica
 ### Local Activities
 
 A [Local Activity](/local-activity#local-activity) is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
-Therefore, multiple Local Activities that run back-to-back only [count as a single billable action](/cloud/actions#activities), whereas each regular Activity counts as a billable action.
+Therefore, multiple Local Activities that run back-to-back only [count as a single billable action](/cloud/actions#activity), whereas each regular Activity counts as a billable action.
 However, there are tradeoffs to converting regular Activities to Local Activities.
 For example, if a specific Local Activity fails, *all* of them will be retried together.
 Review [the docs](/local-activity) or reach out to your account team to learn more.
@@ -189,7 +189,7 @@ Use Regular Activities instead of Local Activities if you require any of the fol
 2. For Search Attributes that must be updated during Workflow Execution, each `UpsertSearchAttributes` call counts as 1 Action regardless of how many attributes are updated.
    Batch multiple related attribute updates into single operations to reduce Actions consumed.
 
-See the [Temporal Cloud Action Documentation](/cloud/actions#workflows) for details.
+See the [Temporal Cloud Action Documentation](/cloud/actions#workflow) for details.
 
 #### Signal handling
 
@@ -252,7 +252,7 @@ Alternatively, if you are looking to do analysis on closed Workflow Executions, 
 ### Validation approach
 
 1. **Test in non-production**: Validate functional correctness before production deployment
-2. **Monitor comprehensively**: Leverage the [Usage dashboard](/cloud/actions#usage) in the Cloud UI to track the impact on Actions and Storage after optimizations are made
+2. **Monitor comprehensively**: Leverage the [Usage dashboard](/cloud/actions-usage#usage) in the Cloud UI to track the impact on Actions and Storage after optimizations are made
 3. **Progressive rollout**: Deploy to a small percentage, validate, then expand. Review the [Worker Versioning documentation](/production-deployment/worker-deployments/worker-versioning) to learn about rolling out changes to Workflows
 4. **Continuous review**: Re-evaluate optimization effectiveness quarterly as system evolves
 

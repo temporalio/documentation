@@ -79,7 +79,7 @@
     "remark-math": "6",
     "snipsync": "^1.12.0",
     "tar-fs": "^2.1.4",
-    "uuid": "^11.1.0",
+    "uuid": "^14.0.0",
     "wait-on": "^7.2.0",
     "webpack-font-preload-plugin": "^1.5.0",
     "yaml": "^2.8.1"
