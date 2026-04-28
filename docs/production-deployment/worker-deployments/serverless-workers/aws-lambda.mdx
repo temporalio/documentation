@@ -40,6 +40,11 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
 
 </SdkTabs.Go>
+<SdkTabs.TypeScript>
+
+- The [TypeScript SDK](/develop/typescript) (`@temporalio/lambda-worker`)
+
+</SdkTabs.TypeScript>
 </SdkTabs>
 
 ## 1. Write Worker code {#write-worker-code}
@@ -85,6 +90,31 @@ For details on configuration options, Lambda-tuned defaults, and the invocation 
 [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.Go>
+<SdkTabs.TypeScript>
+
+Use the `@temporalio/lambda-worker` package.
+
+```typescript
+import { runWorker } from '@temporalio/lambda-worker';
+import * as activities from './activities';
+
+export const handler = runWorker(
+  { deploymentName: 'my-app', buildId: 'build-1' },
+  (config) => {
+    config.workerOptions.taskQueue = 'my-task-queue';
+    config.workerOptions.workflowBundle = {
+      codePath: require.resolve('./workflow-bundle.js'),
+    };
+    config.workerOptions.activities = activities;
+  },
+);
+```
+
+Use `workflowBundle` with pre-bundled code instead of `workflowsPath` to avoid webpack bundling overhead on Lambda cold starts.
+
+For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - TypeScript SDK](/develop/typescript/workers/serverless-workers/aws-lambda).
+
+</SdkTabs.TypeScript>
 </SdkTabs>
 
 ## 2. Deploy Lambda function {#deploy-lambda-function}
@@ -109,9 +139,29 @@ zip function.zip bootstrap
 ```
 
 </SdkTabs.Go>
+<SdkTabs.TypeScript>
+
+Build the Workflow bundle and compile the project:
+
+```bash
+npx ts-node src/scripts/build-workflow-bundle.ts
+npx tsc
+```
+
+Install production dependencies and package everything into a zip:
+
+```bash
+npm install --omit=dev
+zip -r function.zip lib/ node_modules/ workflow-bundle.js
+```
+
+</SdkTabs.TypeScript>
 </SdkTabs>
 
 ### ii. Deploy Lambda function {#deploy-lambda-function-step}
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
 
 ```bash
 aws lambda create-function \
@@ -125,28 +175,54 @@ aws lambda create-function \
   --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
 ```
 
-| Parameter                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--function-name`               | Name of the Lambda function.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--runtime`                     | Lambda runtime. Use `provided.al2023` for custom Go binaries.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `--handler`                     | Entry point binary name. Must be `bootstrap` when using the `provided.al2023` custom runtime.                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `--role`                        | ARN of the Lambda [execution role](https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html), which grants the function permission to run. Trusted principal must be `lambda.amazonaws.com`. This is separate from the role Temporal uses to invoke the function in [Step 3](#configure-iam). The role must have at least the [`AWSLambdaBasicExecutionRole`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html) managed policy attached. |
-| `--zip-file`                    | Path to your packaged deployment zip.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `--timeout`                     | Invocation deadline in seconds. This is the maximum time each Lambda invocation can run before AWS terminates it. Set this high enough for the Worker to start, process Tasks, and [shut down gracefully](/serverless-workers#worker-lifecycle).                                                                                                                                                                                                                                                              |
-| `--memory-size`                 | Memory in MB allocated to each invocation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `HOME`                          | Must be `/tmp`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `TEMPORAL_ADDRESS`              | Temporal frontend address (e.g., `<namespace>.<account>.tmprl.cloud:7233`).                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `TEMPORAL_NAMESPACE`            | Temporal Namespace.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `TEMPORAL_TASK_QUEUE`           | Task Queue name. Overrides the value set in code.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `TEMPORAL_TLS_CLIENT_CERT_PATH` | Path to the TLS client certificate file for mTLS authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `TEMPORAL_TLS_CLIENT_KEY_PATH`  | Path to the TLS client key file for mTLS authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `TEMPORAL_API_KEY`              | API key for API key authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Parameter | Description |
+|---|---|
+| `--function-name` | Name of the Lambda function. |
+| `--runtime` | Lambda runtime. Use `provided.al2023` for custom Go binaries. |
+| `--handler` | Entry point binary name. Must be `bootstrap` when using the `provided.al2023` custom runtime. |
 
-The `lambdaworker` package reads environment variables automatically at startup. For the full list, see
-[Client environment configuration](/references/client-environment-configuration).
+</SdkTabs.Go>
+<SdkTabs.TypeScript>
 
-Sensitive values like TLS keys and API keys should be encrypted at rest. See
-[AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
+```bash
+aws lambda create-function \
+  --function-name my-temporal-worker \
+  --runtime nodejs22.x \
+  --handler lib/index.handler \
+  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
+  --zip-file fileb://function.zip \
+  --timeout 600 \
+  --memory-size 256 \
+  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
+```
+
+| Parameter | Description |
+|---|---|
+| `--function-name` | Name of the Lambda function. |
+| `--runtime` | Lambda runtime. Use `nodejs22.x` or another supported Node.js version (20+). |
+| `--handler` | Entry point in `module.export` format. Must point to the handler exported by `runWorker`. |
+
+</SdkTabs.TypeScript>
+</SdkTabs>
+
+The following parameters apply to all SDKs:
+
+| Parameter | Description |
+|---|---|
+| `--role` | ARN of the Lambda [execution role](https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html), which grants the function permission to run. Trusted principal must be `lambda.amazonaws.com`. This is separate from the role Temporal uses to invoke the function in [Step 3](#configure-iam). The role must have at least the [`AWSLambdaBasicExecutionRole`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html) managed policy attached. |
+| `--zip-file` | Path to your packaged deployment zip. |
+| `--timeout` | Invocation deadline in seconds. This is the maximum time each Lambda invocation can run before AWS terminates it. Set this high enough for the Worker to start, process Tasks, and [shut down gracefully](/serverless-workers#worker-lifecycle). |
+| `--memory-size` | Memory in MB allocated to each invocation. |
+| `TEMPORAL_ADDRESS` | Temporal frontend address (e.g., `<namespace>.<account>.tmprl.cloud:7233`). |
+| `TEMPORAL_NAMESPACE` | Temporal Namespace. |
+| `TEMPORAL_TASK_QUEUE` | Task Queue name. Overrides the value set in code. |
+| `TEMPORAL_TLS_CLIENT_CERT_PATH` | Path to the TLS client certificate file for mTLS authentication. |
+| `TEMPORAL_TLS_CLIENT_KEY_PATH` | Path to the TLS client key file for mTLS authentication. |
+| `TEMPORAL_API_KEY` | API key for API key authentication. |
+
+The serverless Worker packages read environment variables automatically at startup. For the full list, see [Client environment configuration](/references/client-environment-configuration).
+
+Sensitive values like TLS keys and API keys should be encrypted at rest. See [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
 
 To update an existing function with new code:
 
@@ -333,6 +409,16 @@ When you create a version through the UI, the version is automatically set as cu
 
 Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must
 [set the version as current](#set-current-version) as a separate step.
+
+First, create the Worker Deployment if it does not already exist:
+
+```bash
+temporal worker deployment create \
+  --namespace <YOUR_NAMESPACE> \
+  --name my-app
+```
+
+Then create the version with the compute provider configuration:
 
 ```bash
 temporal worker deployment create-version \
