@@ -157,8 +157,16 @@
   transition: background 0.2s;
 }
 
+:global(html[data-theme='dark']) .executeBtn {
+  background: #2563eb;
+}
+
 .executeBtn:hover:not(.executeBtnDisabled) {
   background: var(--ifm-color-primary-dark);
+}
+
+:global(html[data-theme='dark']) .executeBtn:hover:not(.executeBtnDisabled) {
+  background: #1d4ed8;
 }
 
 .executeBtnDisabled {
