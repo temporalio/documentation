@@ -52,8 +52,8 @@ A Codec Server follows the Temporal
 [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol). It
 exposes two HTTP POST endpoints:
 
-- **`/encode`** accepts plaintext payloads and returns encoded payloads. Used for sending payloads.
-- **`/decode`** accepts encoded payloads and returns decoded payloads. Used for retrieving payloads.
+- **`/encode`** accepts plaintext payloads and returns encoded payloads.
+- **`/decode`** accepts encoded payloads and returns decoded payloads.
 
 Both endpoints receive and respond with a JSON body containing a `payloads` array of [Payload](/dataconversion#payload)
 objects. The Codec Server passes each payload through your [Payload Codec](/payload-codec), which applies the same
@@ -76,6 +76,54 @@ form.
 
 Your Codec Server should use the same Payload Codec implementation as your Workers to ensure consistent encoding and
 decoding.
+
+## Codec Server with External Storage {#external-storage}
+
+When your Workers use [External Storage](/external-storage), your storage drivers replace some payloads in the Event
+History with small reference tokens that point to data in an external store like Amazon S3. The Temporal Service and the
+Web UI only see these references, not the actual payload data. This is further complicated by setups where you run
+Codecs in proxy that encode payloads after the Data Converter has returned on the Worker. Your Codec Server must be able
+to handle downloading and decoding in the correct order for you to be able to view the Workflow data in the UI or CLI.
+
+To support External Storage, configure your Codec Server with your storage drivers, your Payload Codec, and any
+proxy-level codecs in a single configuration. The handler applies them in the correct order across all endpoints
+automatically. Deployments without a proxy leave the post-storage codecs empty, and deployments without external storage
+leave the storage drivers empty. When you configure your Codec Server with storage drivers, the existing endpoints
+become storage-aware with the following endpoints:
+
+- **`/download`** retrieves the actual payload data from external storage and decodes it through the Payload Codec. This
+  endpoint is used internally by `/decode` when it encounters storage references, but you can also call it directly from
+  the Temporal UI to retrieve the decoded payload.
+- **`/decode`** works the same as without external storage, but also handles storage references. By default, `/decode`
+  uses the download logic internally to retrieve and decode any storage references in the request alongside regular
+  payloads. With the `?preserveStorageRefs=true` query parameter, `/decode` skips retrieval and returns storage
+  references as-is.
+- **`/encode`** applies the Payload Codec, then uploads payloads that exceed the size threshold to external storage and
+  replaces them with reference tokens.
+
+<CaptionedImage
+  src="/diagrams/codec-server-with-external-storage.svg"
+  srcDark="/diagrams/codec-server-with-external-storage-dark.svg"
+  width="100%"
+  title="Codec Server with External Storage"
+/>
+
+The following example walks through the full flow for a Workflow that uses both a Payload Codec (encryption) and
+External Storage:
+
+1. A user starts a Workflow from the CLI with a plaintext input. The CLI sends the input to the Codec Server's `/encode`
+   endpoint.
+2. The Codec Server encrypts the payload through the Payload Codec. The encrypted payload exceeds the storage threshold,
+   so the Codec Server uploads it to external storage and returns a small reference token.
+3. The CLI sends the reference token to the Temporal Service, which stores it in the Event History.
+4. Later, a user views the Workflow in the Web UI. The Web UI retrieves the Event History from the Temporal Service and
+   sends the payloads to the Codec Server's `/decode` endpoint with the `preserveStorageRefs=true` query parameter.
+5. The Codec Server decodes any inline payloads that are below the storage threshold through the Payload Codec, but
+   returns storage references as-is. The Web UI displays the reference metadata, indicating the payload is stored
+   externally.
+6. The user clicks to view the full payload. The Web UI sends the storage reference to the `/download` endpoint.
+7. The Codec Server retrieves the encrypted payload from external storage, decrypts it through the Payload Codec, and
+   returns the plaintext result to the Web UI.
 
 ## Codec Server vs. Payload Codec
 
