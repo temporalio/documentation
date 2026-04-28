@@ -146,6 +146,8 @@ This is especially valuable for:
 - incident investigation and root cause analysis
 - access governance and internal accountability
 
+### Temporal Cloud
+
 When enabled, Temporal Cloud populates the `Principal` value (with `Principal Type` and `Principal Name` fields).
 
 Possible values are as follows:
@@ -154,9 +156,25 @@ Possible values are as follows:
 | ---- | ---- |
 | `users` | user email address |
 | `service-accounts` | service account name |
-| `mtls` | Common Name (CN) |
+| `mtls` | Common Name (CN) or Subject Domain Name (DN) if CN is not present |
 | `temporal` | Temporal internal services |
 
 Anyone who has permission to read Workflow history in the Namespace (ReadOnly access and above) can see the Principal (and the metadata such as email address).
 
 To enable Principal Atribution for a Namespace, contact [Temporal Cloud support](https://docs.temporal.io/cloud/support#support-ticket).
+
+### Self-hosted Temporal
+
+In self-hosted Temporal, you can control Principal Attribution with a dynamic config flag scoped to the Namespace. 
+When enabled, the Principal returned by the Authorizer is stamped on Workflow history events.
+To enable, set `frontend.enablePrincipalPropagation` to `true` for the appropriate Namespace.
+
+When using the default `Authorizer` with the default JWT `ClaimMapper`, the following values are populated:
+
+| Type | Name |
+| ---- | ---- |
+| `jwt ` | value of the JWT `sub` claim |
+| `temporal` | `internal` (for internal frontend requests) |
+
+A custom `Authorizer` must set the Principal field on `authorization.Result` for the request to be attributed.
+Custom `ClaimMapper` implementations control the `AuthType` and `Subject` values that the default `Authorizer` then copies into the `Principal`.
