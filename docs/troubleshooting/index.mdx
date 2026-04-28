@@ -22,3 +22,4 @@ Our troubleshooting guides are designed to help you quickly identify and resolve
   The "Context: deadline exceeded" error occurs when requests to the Temporal Service by the Client or Worker cannot be completed.
   This can be due to network issues, timeouts, server overload, or Query errors.
 - [Troubleshoot the Failed Reaching Server Error](/troubleshooting/last-connection-error): The message "Failed reaching server: last connection error" often happens due to an expired TLS certificate or during the Server startup process when Client requests reach the Server before roles are fully initialized.
+- [Troubleshoot missed Schedule Actions](/troubleshooting/schedule-missed-actions): When a Schedule does not fire at its expected time, alert on the missed catchup window metric, then narrow down to the affected Schedule with `ListSchedules` and `DescribeSchedule`.
