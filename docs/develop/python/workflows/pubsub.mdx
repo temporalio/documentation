@@ -1,0 +1,262 @@
+---
+id: pubsub
+title: Workflow pub/sub - Python SDK
+sidebar_label: Pub/sub
+toc_max_heading_level: 4
+keywords:
+  - pubsub
+  - pub/sub
+  - streaming
+  - signals
+  - updates
+  - python sdk
+tags:
+  - Workflows
+  - Messages
+  - Pub/Sub
+  - Python SDK
+  - Temporal SDKs
+description: Stream events from a Workflow to subscribers using the Temporal Python SDK pub/sub contrib module.
+---
+
+A Workflow can act as an in-process message broker that fans out incremental updates to many subscribers.
+This is useful for streaming progress from a long-running data pipeline, pushing AI agent token streams to a UI, or notifying watchers as an order moves through its states.
+Temporal's [Signals and Updates](/develop/python/workflows/message-passing) already provide the primitives, but wiring up batching, offset tracking, topic filtering, and continue-as-new hand-off is non-trivial.
+
+The `temporalio.contrib.pubsub` module packages that boilerplate into a reusable broker (`PubSub`) and client (`PubSubClient`).
+Publishers send via Signal; subscribers long-poll via Update.
+
+:::info
+
+The `temporalio.contrib.pubsub` module is currently in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
+[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
+The API may change before general availability.
+
+:::
+
+All code snippets in this guide are taken from the
+[pub/sub sample](https://github.com/temporalio/samples-python/tree/main/pubsub). Refer to the sample for the complete
+runnable code.
+
+## Prerequisites
+
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/python/set-up-your-local-python) guide.
+- Familiarity with [Workflow message passing](/develop/python/workflows/message-passing) — pub/sub is built on Signals and Updates.
+
+## Concepts
+
+- **Append-only log.** A `PubSub` instance maintains an in-memory list of `(topic, data)` entries inside the Workflow. Each entry has a monotonically increasing global offset.
+- **Topics.** Subscribers filter by a list of topic names. An empty list subscribes to all topics. Topics are implicit — publishing to a topic creates it.
+- **Publishers.** A publisher is identified by a `(publisher_id, sequence)` pair. The broker dedups on this pair so client retries don't duplicate events.
+- **Subscribers.** Subscribers track the offset they've consumed and request the next range via long-poll Update. They handle `more_ready` (server capped a large response) and `TruncatedOffset` (the subscriber fell behind a `truncate()`) transparently.
+- **Continue-as-new.** The append-only log and publisher dedup state can be carried across continue-as-new so subscribers see no gap.
+
+## Install and import
+
+The contrib module ships with the Temporal Python SDK:
+
+```bash
+pip install temporalio
+```
+
+```python
+from temporalio.contrib.pubsub import PubSub, PubSubClient, PubSubState
+```
+
+## Publish from a Workflow
+
+Construct a `PubSub` from your `@workflow.init` method.
+The constructor dynamically registers the pub/sub Signal, Update, and Query handlers on the current Workflow, and raises `RuntimeError` if called more than once.
+Constructing `PubSub` outside `@workflow.init` raises an error.
+
+To support continue-as-new, declare a `PubSubState | None` field on the Workflow input and pass it to the constructor — `None` on a fresh start, the carried state otherwise.
+The field type must be `PubSubState | None` (not `Any`) so the default data converter can reconstruct the dataclass.
+
+```python
+from dataclasses import dataclass
+
+from temporalio import workflow
+from temporalio.contrib.pubsub import PubSub, PubSubState
+
+
+@dataclass
+class StatusEvent:
+    state: str
+
+
+@dataclass
+class OrderInput:
+    order_id: str
+    pubsub_state: PubSubState | None = None
+
+
+@workflow.defn
+class OrderWorkflow:
+    @workflow.init
+    def __init__(self, input: OrderInput) -> None:
+        self.pubsub = PubSub(prior_state=input.pubsub_state)
+
+    @workflow.run
+    async def run(self, input: OrderInput) -> None:
+        self.pubsub.publish("status", StatusEvent(state="started"))
+        await process_order(input.order_id)
+        self.pubsub.publish("status", StatusEvent(state="completed"))
+```
+
+`publish()` runs the sync payload converter to encode each value. The codec chain (encryption, compression, and so on) runs once on the Signal or Update envelope that carries the batch — never per item — so encryption and compression are applied exactly once each direction.
+
+## Publish from an Activity
+
+Use `PubSubClient.from_activity()` inside an Activity. The Temporal client and target Workflow Id are taken from the Activity context. The async context manager batches publishes and flushes on exit.
+
+```python
+from datetime import timedelta
+
+from temporalio import activity
+from temporalio.contrib.pubsub import PubSubClient
+
+
+@activity.defn
+async def stream_chunks(order_id: str) -> None:
+    client = PubSubClient.from_activity(batch_interval=timedelta(seconds=2))
+    async with client:
+        for chunk in generate_chunks(order_id):
+            client.publish("events", chunk)
+            activity.heartbeat()
+        # Buffer is flushed on context manager exit.
+```
+
+For latency-sensitive events, pass `force_flush=True` to wake the background flusher so the buffer ships without waiting for the next batch interval. The call itself is still fire-and-forget — it does not wait for delivery:
+
+```python
+client.publish("events", chunk, force_flush=True)
+```
+
+When you need proof that prior publications have reached the server before continuing — for example, before returning from an Activity — use `await client.flush()`. This is the only confirmation point:
+
+```python
+async with client:
+    for chunk in generate_chunks(order_id):
+        client.publish("events", chunk)
+    await client.flush()
+    do_something_that_depends_on_delivery()
+```
+
+## Subscribe
+
+Use `PubSubClient.create()` and iterate `subscribe()`. With `result_type=T`, each `item.data` is decoded to `T` via the client's payload converter. Without `result_type`, `item.data` is a raw `temporalio.api.common.v1.Payload`. The codec chain is applied once at the Update envelope, not per item.
+
+```python
+from temporalio.client import Client
+from temporalio.contrib.pubsub import PubSubClient
+
+
+async def watch_order(order_id: str) -> None:
+    temporal_client = await Client.connect("localhost:7233")
+    pubsub = PubSubClient.create(temporal_client, workflow_id=order_id)
+
+    async for item in pubsub.subscribe(["status"], result_type=StatusEvent):
+        print(item.topic, item.data)
+        if item.data.state == "completed":
+            break
+```
+
+The iterator handles two operational details transparently:
+
+- **`more_ready`.** If the server caps a large response, the iterator immediately repolls instead of waiting for the cooldown.
+- **`TruncatedOffset`.** If a subscriber falls behind a Workflow-side `truncate()` call, the iterator resets to the current base offset and continues. Use this if your application can drop history rather than block on a slow consumer.
+
+When subscribing across heterogeneous topics whose payload types differ, omit `result_type` and inspect `item.topic` to dispatch decode per topic — `result_type=T` decodes every item as `T`, so it only fits a single payload type.
+
+Subscribers created via `create()` or `from_activity()` automatically follow continue-as-new chains.
+
+## Continue-as-new
+
+`PubSub.continue_as_new(build_args)` drains waiting subscribers, waits for in-flight handlers to finish, then calls `workflow.continue_as_new` with the args produced by `build_args(post_drain_state)`. Carry both your application state and the pub/sub state across the boundary:
+
+```python
+from dataclasses import dataclass, field
+
+from temporalio import workflow
+from temporalio.contrib.pubsub import PubSub, PubSubState
+
+
+@dataclass
+class AppState:
+    items_processed: int = 0
+
+
+@dataclass
+class WorkflowInput:
+    app_state: AppState = field(default_factory=AppState)
+    pubsub_state: PubSubState | None = None
+
+
+@workflow.defn
+class LongRunningWorkflow:
+    @workflow.init
+    def __init__(self, input: WorkflowInput) -> None:
+        self.app_state = input.app_state
+        self.pubsub = PubSub(prior_state=input.pubsub_state)
+
+    @workflow.run
+    async def run(self, input: WorkflowInput) -> None:
+        while True:
+            await do_one_iteration(self)
+            if workflow.info().is_continue_as_new_suggested():
+                await self.pubsub.continue_as_new(
+                    lambda pubsub_state: [
+                        WorkflowInput(
+                            app_state=self.app_state,
+                            pubsub_state=pubsub_state,
+                        )
+                    ]
+                )
+```
+
+To pass other continue-as-new parameters (`task_queue`, `retry_policy`, `run_timeout`), use the explicit recipe instead:
+
+```python
+self.pubsub.drain()
+await workflow.wait_condition(workflow.all_handlers_finished)
+workflow.continue_as_new(
+    args=[WorkflowInput(app_state=self.app_state, pubsub_state=self.pubsub.get_state())],
+    task_queue="other-tq",
+)
+```
+
+## Delivery semantics
+
+When publishing through `PubSubClient` (which assigns a stable `publisher_id` and monotonic `sequence`), delivery is exactly-once within the dedup window: the broker dedups on `(publisher_id, sequence)` so a retried Signal lands at most once in the log. Cross-language clients that follow the wire protocol must populate the same fields to get the same guarantee.
+
+Two limits are worth understanding:
+
+- **`publisher_ttl`.** Per-publisher dedup state is pruned when older than `publisher_ttl` (default 15 minutes) at continue-as-new. A publisher returning after this window may produce a duplicate.
+- **`max_retry_duration`.** A `PubSubClient` retries a failed batch for up to `max_retry_duration` (default 10 minutes). If the duration elapses with the batch still pending — for example, a sustained network partition — the client gives up: the pending batch is dropped and a `TimeoutError` is raised. The batch's actual delivery outcome is unknown (it may have reached the broker before the client gave up, or it may not), so subscribers might still see the events. Keep `max_retry_duration < publisher_ttl` to preserve dedup across publisher retries.
+
+Other ways events can be lost: a publisher process crashing before its batched buffer is flushed, or buffered publishes that haven't been picked up when the publisher exits without `await client.flush()`. Use `await client.flush()` when proof of delivery is required — `force_flush=True` only wakes the background flusher sooner and is still fire-and-forget.
+
+## Codec and payload encoding
+
+Per-item values go through the sync payload converter to produce `temporalio.api.common.v1.Payload` objects.
+The codec chain (the same one configured on your client) runs once on the Signal or Update envelope, not per item, so codec transforms apply symmetrically to Workflow-side and client-side publishes with no double-encryption.
+
+For details on configuring custom converters and codecs, see [Payload conversion](/develop/python/data-handling/data-conversion).
+
+## Caveats
+
+- **One `PubSub` per Workflow.** The constructor raises `RuntimeError` if called twice.
+- **Synchronous handlers can race published Signals.** If you add a custom synchronous `@workflow.signal` or `@workflow.update` handler that reads `PubSub` state, and a client calls `__temporal_pubsub_publish` immediately followed by your handler, the handler may observe pre-publish state when both land in the same activation. The recipe is to make the handler `async` and `await asyncio.sleep(0)` before reading state — that yield lets pending publishes apply with no Temporal timer or history events. Do not substitute `workflow.sleep(0)`, which schedules a timer. Most handlers are already safe (anything that `await`s before reading state, the module's own poll handler, and Workflow-internal publishes).
+- **Response size cap.** Poll responses are capped at roughly 1 MB. The server signals `more_ready` so subscribers repoll immediately — no special handling is required, but high-throughput producers should expect a steady stream of small batches rather than occasional large ones.
+- **Default data converter on the envelope.** Cross-language clients can publish and subscribe by following the wire protocol (`PublishInput`, `PollResult`, `PubSubState` envelopes use the default JSON converter). Custom converters at the envelope layer break interop.
+
+## See also
+
+- [Pub/sub sample (samples-python)](https://github.com/temporalio/samples-python/tree/main/pubsub) — runnable end-to-end example.
+- [`temporalio.contrib.pubsub` API reference](https://python.temporal.io/temporalio.contrib.pubsub.html).
+- [Workflow message passing](/develop/python/workflows/message-passing) — Signals, Updates, and Queries that pub/sub is built on.
+- [Payload conversion](/develop/python/data-handling/data-conversion) — converters and codecs.
