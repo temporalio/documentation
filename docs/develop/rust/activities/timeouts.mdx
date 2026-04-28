@@ -1,0 +1,140 @@
+---
+id: timeouts
+title: Activity Timeouts - Rust SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with the Temporal Rust SDK by configuring Activity Timeouts, Retry Policies, and Heartbeats.
+toc_max_heading_level: 4
+keywords:
+  - Rust
+  - failure detection
+  - timeouts
+tags:
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - Rust SDK
+  - Temporal SDKs
+---
+
+## Set Activity timeouts {#activity-timeouts}
+
+Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+
+The following timeouts are available in Activity options:
+
+- [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout): the maximum amount of time allowed for the overall [Activity Execution](/activity-execution).
+- [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout): the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
+- [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout): the maximum amount of time allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+
+An Activity Execution must have either the Start-To-Close Timeout or the Schedule-To-Close Timeout set. Temporal strongly recommends setting a Start-To-Close Timeout because the service relies on it to detect lost Activity Tasks and trigger retries when appropriate.
+
+In Rust, these values are configured as part of the Activity options when scheduling an Activity from a Workflow. The Rust SDK is currently pre-release and its API is still evolving, so exact method names may change over time.
+
+Available timeout fields include:
+
+- `schedule_to_close_timeout`
+- `schedule_to_start_timeout`
+- `start_to_close_timeout`
+
+```rust
+let greeting = ctx.start_activity(
+    MyActivities::greet,
+    name,
+    ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+);
+````
+
+### Set an Activity Retry Policy {#activity-retries}
+
+A Retry Policy works together with timeouts to provide fine-grained control over Activity failure handling. Activities automatically use a default [Retry Policy](/encyclopedia/retry-policies) unless you provide a custom one.
+
+In Rust, configure the Retry Policy as part of the Activity options when scheduling the Activity from Workflow code. Because the Rust SDK API is still evolving, treat the following as representative of the current style rather than a guaranteed stable surface.
+
+```rust
+let language = ctx.start_activity(
+    MyActivities::call_greeting_service,
+    ActivityLanguages::English,
+    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
+        .retry_policy(
+            RetryPolicy {
+                initial_interval: Some(prost_dur!(from_secs(10))), 
+                backoff_coefficient: 2.0, 
+                maximum_interval: Some(prost_dur!(from_secs(100))), 
+                maximum_attempts: 5, 
+                non_retryable_error_types: vec!["NonRetryableError".to_string()]
+            }
+        ).build()
+    );
+```
+
+### Override the retry interval with `explicit_delay` {#next-retry-delay}
+
+To override the next retry interval set by the current policy, return a failure from an Activity with a custom next retry delay. That value replaces the interval the Retry Policy would otherwise use for the next retry attempt. This is useful when retry timing depends on runtime state such as the current attempt number.
+
+For example, you can increase the delay linearly with each attempt instead of using the exponential backoff defined by a backoff coefficient:
+
+```rust
+use temporalio_macros::{activities};
+use temporalio_sdk::activities::{ActivityContext, ActivityError};
+use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
+
+struct TestGreetActivities {
+    counter: AtomicUsize,
+}
+
+#[activities]
+impl TestGreetActivities {
+    #[activity]
+    pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
+        if name == "ziggy" {
+            return Err(ActivityError::Retryable {
+                source: "Ziggy is not a valid name".into(),
+                // next retry will be after 5 seconds
+                explicit_delay: Some(std::time::Duration::from_secs(5)),
+            });
+        }
+        Ok(format!("Hello, {}!", name))
+    }
+}
+```
+
+## Heartbeat an Activity {#activity-heartbeats}
+
+An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a signal from the [Worker Process](/workers#worker-process) executing the Activity to the [Temporal Service](/temporal-service). Each heartbeat tells the service that the [Activity Execution](/activity-execution) is still making progress and that the Worker has not crashed. If the service does not receive a heartbeat within the configured [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), the Activity can time out and be retried according to its Retry Policy.
+
+Heartbeats may be throttled by the Worker, so not every heartbeat call is necessarily sent immediately to the Temporal Service. Activity cancellation is also delivered through heartbeat processing, which means Activities that don't heartbeat cannot receive cancellation promptly. ([Temporal Docs][3])
+
+Heartbeats can include `details` that describe current progress. If the Activity fails and is retried, the retried attempt can retrieve the details from the most recently recorded heartbeat. The Rust SDK exposes activity context support for heartbeat details.
+
+To heartbeat an Activity in Rust, call the heartbeat API from inside the Activity with `record_heartbeat`:
+
+```rust
+pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
+    ctx.record_heartbeat(vec!["greet activity started".into()]);
+
+    if name == "ziggy" {
+        return Err(ActivityError::Retryable {
+            source: "Ziggy is not a valid name".into(),
+            // next retry will be after 5 seconds
+            explicit_delay: Some(std::time::Duration::from_secs(5)),
+        });
+    }
+
+    Ok(format!("Hello, {}!", name))
+}
+```
+
+### Set a Heartbeat Timeout {#heartbeat-timeout}
+
+A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works together with Activity heartbeats and sets the maximum time allowed between heartbeats. Configure it as part of the Activity options when scheduling the Activity.
+
+```rust
+let language = ctx.start_activity(
+    MyActivities::call_greeting_service,
+    ActivityLanguages::English,
+    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
+        .heartbeat_timeout(Duration::from_secs(5))
+        .build()
+    );
+```

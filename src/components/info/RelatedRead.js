@@ -18,6 +18,7 @@ const languageIcons = {
   TypeScript: "/img/sdks/svgs/typescript.svg",
   ".NET": "/img/sdks/svgs/dotnet.svg",
   Ruby: "/img/sdks/svgs/ruby.svg",
+  Rust: "/img/sdks/svgs/rust.svg",
   "Temporal CLI": "/img/assets/terminal.svg",
 };
 

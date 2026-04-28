@@ -1,0 +1,72 @@
+---
+id: feature-guide
+title: Nexus feature guide - Rust SDK
+sidebar_label: Feature guide
+description: Use Temporal Nexus within the Rust SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+toc_max_heading_level: 3
+keywords:
+  - nexus
+  - service handlers
+tags:
+  - Nexus
+  - Rust SDK
+  - Temporal SDKs
+---
+
+[Nexus](/nexus) is a tool for coordinating asynchronous operations between Temporal and external systems. Service handlers allow Workflows to receive inbound requests through Nexus.
+
+## Call a Nexus Operation from a Workflow {#call-nexus-operation}
+
+You can start a Nexus operation from a Workflow using `ctx.start_nexus_operation()`:
+
+```rust
+use std::time::Duration;
+
+use temporalio_common::protos::{coresdk::nexus, temporal::api::{common::v1::Payload,}};
+use temporalio_macros::{workflow, workflow_methods};
+use temporalio_sdk::{NexusOperationOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
+
+#[workflow]
+pub struct GreetingWorkflow {
+    pub name: String,
+}
+
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+
+        let nexus_started = ctx.start_nexus_operation(NexusOperationOptions {
+            endpoint: "my-endpoint".to_string(),
+            service: "my-service".to_string(),
+            operation: "my-operation".to_string(),
+            input: Some(Payload {
+                data: name.as_bytes().to_vec(),
+                ..Default::default()
+            }),
+            start_to_close_timeout: Some(Duration::from_secs(10)),
+            ..Default::default()
+        }).await;
+
+        let nexus_result = nexus_started.unwrap();
+
+        println!("Nexus result: {:?}", nexus_result);
+
+        Ok(format!("nexus result: {:?}", nexus_result))
+    }
+}
+```
+
+### Nexus Operation Arguments
+
+- `endpoint` - The Nexus endpoint name
+- `service` - The service name
+- `operation` - The operation name
+- `input` - The input payload (optional)
+- `start_to_close_timeout` - How long the operation can run

@@ -1,0 +1,236 @@
+---
+id: cancellation
+title: Cancellation - Rust SDK
+sidebar_label: Cancellation
+description:
+  Interrupt a Workflow Execution using the Temporal Rust SDK. Choose between canceling for a graceful stop or
+  terminating for a forceful stop.
+keywords:
+  - cancel workflow execution
+  - activity cancellation
+  - terminate workflow execution
+  - interrupt workflow execution
+  - graceful workflow cancelation
+  - forceful workflow termination
+  - workflow cancelation logic
+  - activity heartbeats
+tags:
+  - Workflows
+  - Rust SDK
+  - Temporal SDKs
+---
+
+You can interrupt a Workflow Execution in one of the following ways:
+
+- [Cancel](#cancellation): Canceling a Workflow provides a graceful way to stop Workflow Execution.
+- [Terminate](#termination): Terminating a Workflow forcefully stops Workflow Execution.
+
+Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
+Workflow is stuck and cannot be canceled normally.
+
+## Cancel a Workflow Execution {#cancellation}
+
+Canceling a Workflow provides a graceful way to stop Workflow Execution. This action resembles sending a `SIGTERM` to a
+process.
+
+- The system records a `WorkflowExecutionCancelRequested` event in the Workflow History.
+- A Workflow Task gets scheduled to process the cancelation.
+- The Workflow code can handle the cancelation and execute any cleanup logic.
+- The system doesn't forcefully stop the Workflow.
+
+To cancel a Workflow Execution in Rust, use the `cancel` method on the Workflow handler:
+
+```rust
+let handle = client.start_workflow(
+    GreetingsWorkflow::run, 
+    (), 
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
+).await?;
+
+handle.cancel(WorkflowCancelOptions::builder().reason("No longer needed").build()).await?;
+````
+
+### Cancel an Activity from a Workflow {#cancel-activity}
+
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat
+Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. When any non-immediate
+Activity is executed, the Activity Execution should send Heartbeats and set a
+[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is
+still working.
+
+When an Activity is canceled, an error is returned in the Activity at the next available opportunity. If cleanup logic
+needs to be performed, it can be done when handling the cancellation error. However, for the Activity to appear canceled
+the error must be propagated.
+
+Example of a cancellable Activity in Rust:
+
+```rust
+#![allow(unreachable_pub)]
+use temporalio_macros::{activities};
+use temporalio_sdk::{
+    activities::{ActivityContext, ActivityError},
+};
+
+pub struct CancellationActivities;
+
+#[activities]
+impl CancellationActivities {
+    #[activity]
+    pub async fn long_running_cancellable_activity(
+        ctx: ActivityContext,
+        _input: (),
+    ) -> Result<String, ActivityError> {
+        loop {
+            if ctx.is_cancelled() {
+                return Err(ActivityError::cancelled());
+            }
+            ctx.record_heartbeat(vec![]);
+            tokio::time::sleep(std::time::Duration::from_millis(200)).await;
+        }
+    }
+
+    #[activity]
+    pub async fn cleanup(_ctx: ActivityContext, _input: ()) -> Result<String, ActivityError> {
+        Ok("cleanup done".to_string())
+    }
+}
+```
+
+Canceling the Activity from a Workflow:
+
+```rust
+fn activity_opts() -> ActivityOptions {
+    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(300))
+        .heartbeat_timeout(Duration::from_secs(5))
+        .build()
+}
+
+#[workflow_methods]
+impl CancellationWorkflow {
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>, _input: ()) -> WorkflowResult<String> {
+        let mut activity_fut = ctx.start_activity(
+            CancellationActivities::long_running_activity,
+            (),
+            activity_opts(),
+        );
+
+        temporalio_sdk::workflows::select! {
+            result = &mut activity_fut => {
+                let value = result.map_err(|e| anyhow::anyhow!("{e}"))?;
+                Ok(value)
+            }
+            reason = ctx.cancelled() => {
+                activity_fut.cancel();
+
+                let cleanup_result = ctx
+                    .start_activity(
+                        CancellationActivities::cleanup,
+                        (),
+                        ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
+                    )
+                    .await
+                    .map_err(|e| anyhow::anyhow!("{e}"))?;
+
+                Ok(format!("Cancelled (reason={reason}), {cleanup_result}"))
+            }
+        }
+    }
+}
+```
+
+## Terminate a Workflow Execution {#termination}
+
+Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+To terminate a Workflow Execution in Rust, use the `terminate` method on the client.
+
+```rust
+let handle = client.start_workflow(
+    GreetingsWorkflow::run, 
+    (), 
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
+).await?;
+
+handle.terminate(WorkflowTerminateOptions::builder()
+    .reason("Emergency shutdown")
+    .build()
+).await?;
+
+```
+
+## Reset a Workflow Execution {#reset}
+
+Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
+point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other
+issues that prevent it from completing.
+
+When you reset a Workflow, the Event History up to the reset point is copied to the new Workflow Execution, and the
+Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as
+removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when
+resetting, as it will be recorded in the Event History.
+
+<Tabs>
+
+<TabItem value="web-ui" label="Web UI">
+
+1. Navigate to the Workflow Execution details page,
+2. Click the **Reset** button in the top right dropdown menu,
+3. Select the Event ID to reset to,
+4. Provide a reason for the reset,
+5. Confirm the reset.
+
+The Web UI shows available reset points and creates a link to the new Workflow Execution after the reset completes.
+
+</TabItem>
+
+<TabItem value="cli" label="Temporal CLI">
+
+Use the `temporal workflow reset` command to reset a Workflow Execution:
+
+```bash
+temporal workflow reset \
+    --workflow-id <workflow-id> \
+    --event-id <event-id> \
+    --reason "Reason for reset"
+```
+
+For example:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code"
+```
+
+By default, the command resets the latest Workflow Execution in the `default` Namespace. Use `--run-id` to reset a
+specific run. Use `--namespace` to specify a different Namespace:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code" \
+    --namespace my-namespace \
+    --tls-cert-path /path/to/cert.pem \
+    --tls-key-path /path/to/key.pem
+```
+
+Monitor the new Workflow Execution after resetting to ensure it completes successfully.
+
+</TabItem>
+
+</Tabs>

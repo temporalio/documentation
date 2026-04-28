@@ -1,0 +1,154 @@
+---
+id: continue-as-new
+title: Continue-As-New - Rust SDK
+sidebar_label: Continue-As-New
+description: Use Temporal's Continue-As-New in Rust to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
+toc_max_heading_level: 2
+keywords:
+  - continue-as-new workflow
+  - restart workflow
+  - fresh event history
+  - avoid large event histories
+  - temporal rust continue-as-new
+tags:
+  - Workflows
+  - continue-as-new
+  - Rust SDK
+  - Temporal SDKs
+---
+
+This page answers the following questions for Rust developers:
+
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+
+## What is Continue-As-New? {#what}
+
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow execution close successfully and creates a new Workflow execution. You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+
+The new Workflow execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+
+## How to Continue-As-New using the Rust SDK {#how}
+
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically passed as a parameter or stored in the Workflow struct.
+
+Inside your Workflow, return a `WorkflowTermination::ContinueAsNew` error to continue as new:
+
+```rust
+use temporalio_common::protos::coresdk::workflow_commands::ContinueAsNewWorkflowExecution;
+use temporalio_macros::{workflow, workflow_methods};
+use temporalio_sdk::{ActivityOptions, WorkflowContext, WorkflowContextView, WorkflowResult, WorkflowTermination};
+use std::time::Duration;
+
+use crate::activities::MyActivities;
+
+#[workflow(name = "greeting-workflow-1")]
+pub struct GreetingWorkflow {
+    pub name: String,
+}
+
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+        // Execute an activity
+        let greeting = ctx.start_activity(
+            MyActivities::greet,
+            name,
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+        ).await?;
+
+        println!("{}", greeting);
+
+        if greeting.contains("Ziggy") {
+            Ok(greeting)
+        } else {
+            let new_input = "New Name".to_string();
+            // To continue as new, return an error with WorkflowTermination::ContinueAsNew
+            Err(WorkflowTermination::continue_as_new(ContinueAsNewWorkflowExecution {
+                workflow_type: "MyWorkflow".to_string(),
+                arguments: vec![new_input.into()],
+                ..Default::default()
+            }))
+        }
+    }
+}
+```
+
+The `WorkflowTermination::continue_as_new()` method accepts the input to pass to the next Workflow run.
+
+## When is it right to Continue-as-New using the Rust SDK? {#when}
+
+Use Continue-as-New when your Workflow might encounter degraded performance or [Event History Limits](/workflow-execution/event#event-history).
+
+Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New. Call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
+
+## How to test Continue-as-New using the Rust SDK
+
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive. Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+
+For example, if you have an internal value like `test_continue_as_new == True`, this sample creates a test-only variable called `self.max_history_length` and sets it to a small value. A helper method in the Workflow impl checks it each time it considers using Continue-as-New:
+
+```rust
+use temporalio_common::protos::coresdk::workflow_commands::ContinueAsNewWorkflowExecution;
+use temporalio_macros::{workflow, workflow_methods};
+use temporalio_sdk::{ActivityOptions, WorkflowContext, WorkflowContextView, WorkflowResult, WorkflowTermination};
+use std::time::Duration;
+use serde::{Serialize, Deserialize};
+
+use crate::activities::MyActivities;
+
+#[derive(Serialize, Deserialize)]
+pub struct GreetingInput {
+    pub name: String,
+    pub max_history_length: u32,
+}
+
+...
+
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, input: GreetingInput) -> Self {
+        Self {
+            name: input.name,
+            max_history_length: input.max_history_length,
+        }
+    }
+
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        // your Workflow code here
+    }
+
+    fn should_continue_as_new(&self, ctx: &WorkflowContext<Self>) -> bool {
+        if ctx.continue_as_new_suggested() {
+            return true;
+        }
+
+        // For testing
+        if self.max_history_length > 0 && ctx.history_length() > self.max_history_length {
+            return true;
+        }
+
+        false
+    }
+}
+```
+
+## Best practices {#best-practices}
+
+1. Pass all necessary state: When continuing as new, include all state the next run needs.
+2. Use meaningful iteration markers: Include iteration numbers or timestamps to track progress.
+3. Test your state passing: Ensure parameters serialize and deserialize correctly.
+4. Don't continue-as-new too frequently: It's better to have some Event History than to continue-as-new on every execution.
+5. Consider batch sizes: Find the right balance between batch size and number of continues as new.
