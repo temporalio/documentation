@@ -30,6 +30,7 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - For self-hosted deployments, complete the
   [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup) before following
   this guide.
+- Every Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors).
 - An AWS account with permissions to create and invoke Lambda functions and create IAM roles.
 - The AWS-specific steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured
   with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
@@ -155,11 +156,15 @@ export const handler = runWorker(
       codePath: require.resolve('./workflow-bundle.js'),
     };
     config.workerOptions.activities = activities;
+    config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'AUTO_UPGRADE';
   },
 );
 ```
 
 Use `workflowBundle` with pre-bundled code instead of `workflowsPath` to avoid webpack bundling overhead on Lambda cold starts.
+
+Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), either `AUTO_UPGRADE` or `PINNED`.
+Set it per-Workflow with `setWorkflowOptions` in the Workflow file, or set a default for all Workflows with `defaultVersioningBehavior` in the configure callback.
 
 For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - TypeScript SDK](/develop/typescript/workers/serverless-workers/aws-lambda).
 
@@ -224,6 +229,8 @@ zip -r function.zip lib/ node_modules/ workflow-bundle.js
 </SdkTabs>
 
 ### ii. Deploy Lambda function {#deploy-lambda-function-step}
+
+Replace the placeholder values and run the following command to create the Lambda function in your AWS environment.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
