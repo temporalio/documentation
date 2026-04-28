@@ -24,6 +24,7 @@ This page discusses the following:
 - [Time Constraints](#time-constraints)
 - [Reset](#reset)
 - [Side Effect](#side-effect)
+- Principal Attribution](#principal-attribution)
 
 The Temporal Service tracks the progress of each Workflow Execution by appending information about Events, such as when the Workflow Execution began or ended, to the Event History associated with that execution.
 This information not only enables developers to know what took place, but is also essential for providing Durable Execution, since it enables the Workflow Execution to recover from a crash and continue making progress.
@@ -123,3 +124,57 @@ A Side Effect does not re-execute upon replay, but instead returns the recorded 
 
 Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
 If there is any chance that the code provided to the Side Effect could fail, use an Activity.
+
+## What is a Principal Attribution? {#principal-attribution}
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Principal Attribution is currently available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
+
+:::
+
+Principal Attribution for Workflow Executions is a server-derived, set of non-spoofable `Principal` fields for Workflow history events.
+
+The `Principal` fields represent the authenticated principal responsible for a [dataplane](https://docs.temporal.io/cloud/overview#data-plane-and-control-plane) execution action. 
+This allows for identification of the entity that took a given action. 
+
+This is especially valuable for:
+
+- compliance and audit use cases
+- incident investigation and root cause analysis
+- access governance and internal accountability
+
+### Temporal Cloud
+
+When enabled, Temporal Cloud populates the `Principal` value (with `Principal Type` and `Principal Name` fields).
+
+Possible values are as follows:
+
+| Type | Name |
+| ---- | ---- |
+| `users` | user email address |
+| `service-accounts` | service account name |
+| `mtls` | Common Name (CN) or Subject Domain Name (DN) if CN is not present |
+| `temporal` | Temporal internal services |
+
+Anyone who has permission to read Workflow history in the Namespace (ReadOnly access and above) can see the Principal (and the metadata such as email address).
+
+To enable Principal Atribution for a Namespace, contact [Temporal Cloud support](https://docs.temporal.io/cloud/support#support-ticket).
+
+### Self-hosted Temporal
+
+In self-hosted Temporal, you can control Principal Attribution with a dynamic config flag scoped to the Namespace. 
+When enabled, the Principal returned by the Authorizer is stamped on Workflow history events.
+To enable, set `frontend.enablePrincipalPropagation` to `true` for the appropriate Namespace.
+
+When using the default `Authorizer` with the default JWT `ClaimMapper`, the following values are populated:
+
+| Type | Name |
+| ---- | ---- |
+| `jwt ` | value of the JWT `sub` claim |
+| `temporal` | `internal` (for internal frontend requests) |
+
+A custom `Authorizer` must set the Principal field on `authorization.Result` for the request to be attributed.
+Custom `ClaimMapper` implementations control the `AuthType` and `Subject` values that the default `Authorizer` then copies into the `Principal`.
