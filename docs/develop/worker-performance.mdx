@@ -178,7 +178,7 @@ To recover from errors, Eager Workflow Start falls back to the non-eager path. F
 
 ## Visualize Workers in the UI {#visualize-workers}
 
-The Temporal SDK includes a heartbeat for Worker processes that is sent to the Server every 60 seconds, carrying information such as available task slots, CPU usage, and Worker configuration.
+The Temporal SDK includes a heartbeat for Worker processes that is sent to the Server every 60 seconds by default, carrying information such as available task slots, CPU usage, and Worker configuration.
 The Server exposes this data through APIs that surface Worker details in the Temporal UI.
 Use the UI to view the list of Workers assigned to a Task Queue and inspect Worker details to troubleshoot Workflows with delayed processing.
 
