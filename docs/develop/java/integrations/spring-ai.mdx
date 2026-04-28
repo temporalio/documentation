@@ -73,25 +73,8 @@ Use `ActivityChatModel` as a Spring AI `ChatModel` inside a Workflow. Every call
 
 Wrap `ActivityChatModel` in a `TemporalChatClient` to build prompts and register tools:
 
-```java
-@WorkflowInit
-public MyWorkflowImpl(String goal) {
-    ActivityChatModel chatModel = ActivityChatModel.forDefault();
-
-    WeatherActivity weather = Workflow.newActivityStub(
-            WeatherActivity.class, activityOptions);
-
-    this.chatClient = TemporalChatClient.builder(chatModel)
-            .defaultSystem("You are a helpful assistant.")
-            .defaultTools(weather, new TimestampTools())
-            .build();
-}
-
-@Override
-public String run(String goal) {
-    return chatClient.prompt().user(goal).call().content();
-}
-```
+<!--SNIPSTART samples-java-spring-ai-chat-workflow-init-->
+<!--SNIPEND-->
 
 `ActivityChatModel.forDefault()` resolves to the default Spring AI `ChatModel` bean. To target a specific model in a multi-model application, pass its bean name to `ActivityChatModel.forModel("openai")`.
 
@@ -114,20 +97,8 @@ ActivityChatModel chatModel = ActivityChatModel.forDefault(
 
 For configuration-driven per-model overrides, declare a `ChatModelActivityOptions` bean. The plugin consults it whenever `forDefault()` or `forModel(name)` runs in a Workflow. Use the special key `ChatModelTypes.DEFAULT_MODEL_NAME` (the literal `"default"`) as a global catch-all that applies to any model not explicitly listed — including models contributed by third-party starters:
 
-```java
-@Bean
-ChatModelActivityOptions chatModelActivityOptions() {
-    ActivityOptions fiveMinute =
-            ActivityOptions.newBuilder(ActivityChatModel.defaultActivityOptions())
-                    .setStartToCloseTimeout(Duration.ofMinutes(5))
-                    .build();
-    return new ChatModelActivityOptions(Map.of(
-            ChatModelTypes.DEFAULT_MODEL_NAME, fiveMinute,                 // global baseline
-            "claude", ActivityOptions.newBuilder(fiveMinute)               // overrides for "claude"
-                    .setTaskQueue("claude-heavy")
-                    .build()));
-}
-```
+<!--SNIPSTART samples-java-spring-ai-per-model-options-->
+<!--SNIPEND-->
 
 Keys that neither match a registered `ChatModel` bean nor equal `"default"` cause plugin construction to fail, so a typo surfaces at startup rather than at first call.
 
@@ -137,17 +108,8 @@ Keys that neither match a registered `ChatModel` bean nor equal `"default"` caus
 
 Provider-specific `ChatOptions` subclasses — for example, `AnthropicChatOptions` to enable extended thinking, or `OpenAiChatOptions` to set `reasoning_effort` — pass through the Activity boundary unchanged. Attach them via `ChatClient.defaultOptions(...)` and the plugin re-applies them on the Activity side before calling the underlying model:
 
-```java
-AnthropicChatOptions thinking = AnthropicChatOptions.builder()
-        .thinking(AnthropicApi.ThinkingType.ENABLED, 1024)
-        .temperature(1.0)
-        .maxTokens(4096)
-        .build();
-
-ChatClient client = TemporalChatClient.builder(ActivityChatModel.forModel("anthropic"))
-        .defaultOptions(thinking)
-        .build();
-```
+<!--SNIPSTART samples-java-spring-ai-provider-options-->
+<!--SNIPEND-->
 
 The pass-through relies on the `ChatOptions` subclass overriding `copy()` to return its own type — every provider class shipped with Spring AI does.
 
@@ -170,14 +132,8 @@ Tools passed to `defaultTools()` are dispatched based on their type. The integra
 
 An interface annotated with both `@ActivityInterface` and Spring AI `@Tool` methods is auto-detected and executed as a Temporal Activity. Use this for external calls that need retries and timeouts.
 
-```java
-@ActivityInterface
-public interface WeatherActivity {
-    @Tool(description = "Get weather for a city")
-    @ActivityMethod
-    String getWeather(String city);
-}
-```
+<!--SNIPSTART samples-java-spring-ai-activity-tool-->
+<!--SNIPEND-->
 
 ### Nexus service stubs
 
@@ -187,29 +143,15 @@ Nexus service stubs with `@Tool` methods are auto-detected and invoked as [Nexus
 
 Classes annotated with `@SideEffectTool` have each `@Tool` method wrapped in `Workflow.sideEffect()`. The result is recorded in history on first execution and replayed from history afterward. Use this for cheap, non-deterministic operations such as timestamps or UUIDs.
 
-```java
-@SideEffectTool
-public class TimestampTools {
-    @Tool(description = "Get current time")
-    public String now() {
-        return Instant.now().toString();
-    }
-}
-```
+<!--SNIPSTART samples-java-spring-ai-side-effect-tool-->
+<!--SNIPEND-->
 
 ### Plain tools
 
 Any class with `@Tool` methods that isn't an Activity stub, Nexus stub, or `@SideEffectTool` runs directly on the Workflow thread. Use this for inherently deterministic tools (such as updating in-memory agent state), or for orchestration of durable primitives as you need, e.g. calling multiple Activities, child Workflows, wait conditions, or other Temporal durable primitives.
 
-```java
-public class MyTools {
-    @Tool(description = "Process data")
-    public String process(String input) {
-        SomeActivity act = Workflow.newActivityStub(SomeActivity.class, opts);
-        return act.doWork(input);
-    }
-}
-```
+<!--SNIPSTART samples-java-spring-ai-plain-tool-->
+<!--SNIPEND-->
 
 ## Use vector stores, embeddings, and MCP
 
