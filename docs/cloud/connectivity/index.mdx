@@ -23,7 +23,7 @@ import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/langua
 
 ## Private network connectivity for namespaces
 
-Temporal Cloud supports private connectivity to namespaces via AWS PrivateLink or GCP Private Services Connect in addition to the default internet endpoints.
+Temporal Cloud supports private connectivity to Namespaces via AWS PrivateLink or GCP Private Service Connect, in addition to the default public internet endpoints.
 
 Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of how you choose to connect.
 
@@ -31,13 +31,13 @@ For information about IP address stability and allowlisting, see [IP addresses](
 
 ### Required steps
 
-To use private connectivity with Temporal Cloud:
+Setting up private connectivity is a three-step process — and it's important to understand that **private connectivity** (the network path) and **Connectivity Rules** (Temporal's enforcement layer) are related but separate concepts:
 
-1. Set up the private connection from your VPC to the region where your Temporal namespace is located.
-1. Update your private DNS and/or worker configuration to use the private connection.
-1. (Required to complete Google PSC setup, optional if using AWS PrivateLink): create a connectivity rule for the private connection and attach it to the target namespace(s). This will block all access to the namespace that is not over the private connection, but you can also add a public rule to also allow internet connectivity.
+1. **Set up the private connection** from your VPC to the region where your Temporal Namespace is located.
+1. **Update your private DNS and/or client configuration** to actually use the private connection. Activating private connectivity does not change your Namespace Endpoint or Regional Endpoint automatically — clients keep resolving the public addresses until you do this step.
+1. **(GCP PSC: required. AWS PrivateLink: optional.) Create a Connectivity Rule** for the private connection and attach it to the target Namespace(s). This blocks all access to the Namespace that does not arrive over a configured connection. You can mix private and public rules to also allow internet connectivity.
 
-For steps 1 and 2, follow our guides for the target namespace's cloud provider:
+For steps 1 and 2, follow the guide for your Namespace's cloud provider:
 - [AWS PrivateLink](/cloud/connectivity/aws-connectivity) creation and private DNS setup
 - [Google Cloud Private Service Connect](/cloud/connectivity/gcp-connectivity) creation and private DNS setup
 
@@ -47,21 +47,15 @@ After creating a private connection, you must set up private DNS or update the c
 
 We recommend using private DNS.
 
-Without this step, your clients may connect to the namespace over the internet if they were previously using public connectivity, or they will not be able to connect at all.
+Without this step, your clients may connect to the Namespace over the internet if they were previously using public connectivity, or they will not be able to connect at all.
 
 If that's not an option for you, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
 :::
 
-For step 3, keep reading for details on [connectivity rules](/cloud/connectivity#connectivity-rules).
+For step 3, keep reading for details on [Connectivity Rules](/cloud/connectivity#connectivity-rules).
 
 ## Connectivity rules
-
-:::tip Support, stability, and dependency info
-
-Connectivity rules are currently in [public preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 :::info Web UI Connectivity
 
@@ -72,28 +66,41 @@ Even if a namespace is configured with private connectivity rules, the Web UI fo
 
 ### Definition
 
-Connectivity rules are Temporal Cloud's mechanism for limiting the network access paths that can be used to access a namespace.
+Connectivity Rules are Temporal Cloud's mechanism for restricting the network paths that can reach a Namespace. They are enforced by Temporal Cloud — they do not create or modify the underlying network connection.
 
-By default, a namespace has zero connectivity rules, and is accessible from 1. the public internet and 2. all private connections you've configured to the region containing the namespace. Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of connectivity rules.
+By default, a Namespace has zero Connectivity Rules and is reachable over (1) the public internet and (2) any private connections you've already configured to the region containing the Namespace. Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of Connectivity Rules.
 
-When you attach one or more connectivity rules to a namespace, Temporal Cloud will immediately block all traffic that does not have a corresponding connectivity rule from accessing the namespace. One namespace can have multiple connectivity rules, and may mix both public and private rules.
+When you attach one or more Connectivity Rules to a Namespace, Temporal Cloud immediately blocks any traffic that does not match a rule on that Namespace. A Namespace can have multiple Connectivity Rules, and you can mix public and private rules.
 
-Each connectivity rule specifies either generic public (i.e. internet) access or a specific private connection.
+Each Connectivity Rule specifies either generic public (internet) access or a specific private connection.
 
-A public connectivity rule takes no parameters.
+#### When you need a Connectivity Rule
 
-An AWS PrivateLink (PL) private connectivity rule requires the following parameters:
+| Provider | Connectivity Rule for private access | Why |
+| -------- | ------------------------------------ | --- |
+| AWS PrivateLink | **Optional.** Add one only if you want to enforce private-only access (block internet traffic to that Namespace). | AWS PrivateLink connections become usable as soon as the VPC endpoint is `Available`. Adding a Connectivity Rule restricts access; it does not establish it. |
+| GCP Private Service Connect | **Required.** The PSC endpoint stays in `Pending` until a matching Connectivity Rule is created. | The Connectivity Rule is what tells Temporal Cloud to accept the PSC connection. |
 
-- `connection-id`: The VPC endpoint ID of the PL connection (ex: `vpce-00939a7ed9EXAMPLE`)
-- `region`: The region of the PL connection, prefixed with aws (ex: `aws-us-east-1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+A public Connectivity Rule takes no parameters.
 
-A GCP Private Service Connect (PSC) private connectivity rule requires the following parameters:
+An AWS PrivateLink (PL) private Connectivity Rule requires:
 
-- `connection-id`: The ID of the PSC connection (ex: `1234567890123456789`)
-- `region`: The region of the PSC connection, prefixed with gcp (ex: `gcp-us-east1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
-- `gcp-project-id`: The ID of the GCP project where you created the PSC connection (ex: `my-example-project-123`)
+- `connection-id`: The **VPC endpoint identifier** of the PL connection — the `vpce-…` value from your AWS account, *not* the endpoint service or DNS name (ex: `vpce-00939a7ed9EXAMPLE`).
+- `region`: The region of the PL connection, prefixed with `aws-` (ex: `aws-us-east-1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 
-Connectivity rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops)
+A GCP Private Service Connect (PSC) private Connectivity Rule requires:
+
+- `connection-id`: The **PSC connection identifier** of the endpoint (ex: `1234567890123456789`). Find it on the endpoint's detail page in the Google Cloud console.
+- `region`: The region of the PSC connection, prefixed with `gcp-` (ex: `gcp-us-east1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+- `gcp-project-id`: The identifier of the GCP project where you created the PSC connection (ex: `my-example-project-123`).
+
+Connectivity Rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), the Web UI (under **Connectivity** in your account settings), or the [Cloud Ops API](/ops).
+
+:::tip Connectivity Rules give Temporal visibility into your private connections
+
+Without a Connectivity Rule, Temporal Cloud has no record that your PrivateLink or PSC endpoint exists. If you open a support ticket about a private-connectivity issue, having a Connectivity Rule attached to the affected Namespace lets us correlate the connection on our side and is the fastest path to debugging.
+
+:::
 
 ### Permissions and limits
 
@@ -200,15 +207,25 @@ tcld connectivity-rule list -n "my-namespace.abc123"
 
 ## Update DNS or clients to use private connectivity
 
-We strongly recommend using private DNS instead of updating client server and TLS settings: 
+We strongly recommend using private DNS instead of updating client server and TLS settings:
 
-- [How to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) 
+- [How to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink)
 - [How to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
 
 If you are unable to configure private DNS, you must update two settings in your Temporal clients:
 
-1. Set the endpoint server address to the PrivateLink or Private Services Connect endpoint (e.g. `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`)
-2. Set TLS configuration to override the TLS server name (e.g., my-namespace.my-account.tmprl.cloud)
+1. Set the endpoint server address to the PrivateLink or Private Service Connect endpoint (e.g. `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`).
+2. Set TLS configuration to override the TLS server name (the Namespace Endpoint, e.g., `my-namespace.my-account.tmprl.cloud`).
+
+The TLS server name override depends on your authentication method:
+
+| Authentication | TLS server name to use |
+| -------------- | ---------------------- |
+| mTLS (single-region Namespace) | The Namespace Endpoint, e.g. `my-namespace.my-account.tmprl.cloud` |
+| API key (single-region Namespace) | The regional API endpoint, e.g. `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
+| Multi-region Namespace (mTLS or API key) | The active region endpoint, e.g. `aws-us-east-1.region.tmprl.cloud` |
+
+If you authenticate with an API key over PrivateLink/PSC and use the wrong server name, the TLS handshake will fail with errors such as `connection reset by peer` even though `nc` reports the port as open.
 
 Updating these settings depends on the client you're using.
 

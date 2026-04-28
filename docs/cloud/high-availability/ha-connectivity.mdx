@@ -8,38 +8,53 @@ description: How to use private network connectivity with Temporal Cloud HA feat
 
 import { CaptionedImage, JsonTable } from '@site/src/components';
 
-:::tip Namespaces with High Availability features and AWS PrivateLink
+:::tip Namespaces with High Availability features and private connectivity
 
-Proper networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
-This page describes how to configure routing for Namespaces with High Availability features on AWS PrivateLink.
+Proper networking configuration is required for failover to be transparent to clients and Workers when using AWS PrivateLink or GCP Private Service Connect.
+
+This page covers single-cloud HA (both replicas on AWS, or both on GCP) and multi-cloud HA (one replica on AWS, one on GCP).
 
 :::
 
-To use AWS PrivateLink with High Availability features, you may need to:
+These instructions assume you already have the private connections in place. If not, follow the [AWS PrivateLink](/cloud/connectivity/aws-connectivity) or [GCP Private Service Connect](/cloud/connectivity/gcp-connectivity) creation guides first.
 
-- Override the regional DNS zone.
-- Ensure network connectivity between the two regions.
+## How HA + private connectivity works
 
-These instructions assume you already have the PrivateLink connections in place. If not, follow our [guide for creating AWS PrivateLink connections and configuring private DNS](/cloud/connectivity/aws-connectivity).
+A Namespace with High Availability features has two replicas — a primary and a secondary, in different regions or different cloud providers. At any moment, one is **active** and one is **passive**. On failover, Temporal Cloud changes the active replica.
 
-## Customer side solutions
+Temporal Cloud expresses the active replica through DNS:
+
+- The Namespace DNS record (`<ns>.<account>.tmprl.cloud`) is a CNAME.
+- It points to the active region's regional record (`<provider>-<region>.region.tmprl.cloud`).
+- On failover, Temporal Cloud rewrites the CNAME target.
+
+Namespace DNS records have a 15-second TTL. Clients should converge to the new region within roughly 30 seconds (about twice the TTL) once their resolver cache expires.
+
+For private connectivity, your job is to make sure that:
+
+1. Both regions resolve to the correct private endpoint inside your network — not the public internet.
+2. Your Workers have a network path to whichever region becomes active.
+
+## Single-cloud HA on AWS PrivateLink
+
+This is the most common setup: both replicas live in AWS regions, and Workers connect via AWS PrivateLink.
 
 When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
-Temporal treats each `region.<tmprl_domain>` as a separate zone.
-This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you’re using.
+Temporal treats each `region.tmprl.cloud` zone as a separate zone, so you override resolution per region.
 
-A Namespace's active region is reflected in the target of a CNAME record.
-For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
+Before failover, with the active region being `aws-us-west-2`:
 
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
-| ----------------------------------- | ----- | -------------------------------- |
+| Record name                         | Record type | Value                            |
+| ----------------------------------- | ----------- | -------------------------------- |
+| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-west-2.region.tmprl.cloud |
 
-After a failover, the CNAME record will be updated to point to the failover region, for example:
+After a failover to `aws-us-east-1`, Temporal Cloud rewrites the CNAME:
 
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-east-1.region.tmprl.cloud |
-| ----------------------------------- | ----- | -------------------------------- |
+| Record name                         | Record type | Value                            |
+| ----------------------------------- | ----------- | -------------------------------- |
+| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-east-1.region.tmprl.cloud |
 
-The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
+The Temporal-managed CNAME changed from us-west-2 to us-east-1 — your private DNS does not need to change.
 
 <CaptionedImage
     src="/img/cloud/high-availability/private-link.png"
@@ -47,25 +62,74 @@ The Temporal domain did not change, but the CNAME updated from us-west-2 to us-e
     zoom="true"
 />
 
-## Setting up the DNS override
+### Setting up the DNS override (AWS)
 
-:::caution
+In AWS, use a Route 53 private hosted zone for `region.tmprl.cloud` to override resolution per region:
 
-Private connectivity is not yet offered for GCP Multi-region Namespaces.
+| Record name                          | Record type | Value (your VPC Endpoint DNS)                                |
+| ------------------------------------ | ----------- | ------------------------------------------------------------ |
+| `aws-us-west-2.region.tmprl.cloud`   | CNAME       | `vpce-...-us-west-2.vpce.amazonaws.com`                      |
+| `aws-us-east-1.region.tmprl.cloud`   | CNAME       | `vpce-...-us-east-1.vpce.amazonaws.com`                      |
+
+Link the private zone to every VPC where Workers run.
+
+When your Workers connect to the Namespace, they first resolve `<ns>.<account>.tmprl.cloud`, which CNAMEs to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your local VPC Endpoint.
+
+You also need to decide how Workers reach whichever region becomes active. Either:
+
+- Run Workers in **both** regions continuously (recommended), or
+- Establish cross-region connectivity (Transit Gateway, VPC Peering) so Workers in one region can reach the VPC Endpoint in the other.
+
+## Single-cloud HA on GCP Private Service Connect
+
+For GCP-only HA, the same model applies, but use a Cloud DNS private zone for `region.tmprl.cloud` and point each `gcp-<region>.region.tmprl.cloud` record at the local PSC endpoint IP address.
+
+| Record name                              | Record type | Value (your PSC endpoint IP)        |
+| ---------------------------------------- | ----------- | ----------------------------------- |
+| `gcp-us-central1.region.tmprl.cloud`     | A           | `10.x.x.x` (PSC endpoint IP)        |
+| `gcp-us-east1.region.tmprl.cloud`        | A           | `10.x.x.x` (PSC endpoint IP)        |
+
+A Connectivity Rule is required for each PSC connection — see [GCP PSC setup](/cloud/connectivity/gcp-connectivity) and [Connectivity Rules](/cloud/connectivity#connectivity-rules).
+
+## Multi-cloud HA (AWS PrivateLink + GCP Private Service Connect)
+
+If your replicas span clouds — for example, AWS `us-east-1` (active) and GCP `us-east4` (passive) — your Workers need a way to reach the active replica regardless of which cloud it's in. The Temporal-managed CNAME rewrites still work the same way; the harder problems are on the client side.
+
+Plan for these three things:
+
+1. **DNS overrides for both clouds.** Your private DNS for `region.tmprl.cloud` needs entries for both the AWS region (CNAME → AWS VPCE) and the GCP region (A → PSC IP). This typically means a Route 53 private hosted zone in your AWS Worker VPCs *and* a Cloud DNS private zone in your GCP Worker network — both for the same `region.tmprl.cloud` parent — each with the records relevant to the cloud the Workers run in.
+2. **Worker reachability across clouds.** Your AWS-resident Workers must be able to reach the GCP PSC endpoint when GCP is active, and vice versa. Options include:
+   - Run Workers in both clouds (preferred — simplest, lowest latency, matches the failover model).
+   - Establish cross-cloud connectivity (e.g., AWS Transit Gateway + GCP Cloud Interconnect, or a third-party transit) so Workers in one cloud can resolve and reach the other cloud's private endpoint.
+3. **Connectivity Rules in both regions.** GCP PSC requires a Connectivity Rule. AWS PrivateLink does not, but if you want to enforce private-only access, add one for the AWS side as well so the Namespace is private-only in both regions.
+
+:::caution Alpine/musl + GCP PSC: missing AAAA records can break Workers
+
+GCP Private Service Connect endpoints return only A (IPv4) records — there is no AAAA (IPv6) record. Most Linux distributions handle a missing AAAA gracefully, but **Alpine Linux's musl resolver returns a SERVFAIL** when AAAA is missing, which can cause Temporal SDK clients to fail name resolution after a failover from AWS to GCP.
+
+If you run Workers on Alpine and use multi-cloud HA, either:
+
+- Switch the Worker base image to a glibc-based distribution (Debian, Ubuntu, distroless), or
+- Configure your application/runtime to disable AAAA lookups (e.g., set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
 
 :::
 
-To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
-For example, you might set aws-us-west-1.region.tmprl.cloud to target 192.168.1.2.
-In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
-Link that private zone to the VPCs you use for Workers.
+## Test failover before you depend on it
 
-When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
-This points to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your internal IP addresses.
+Failover is the only thing High Availability features exist to do — and DNS, cross-region or cross-cloud reachability, and Connectivity Rule coverage are exactly the kinds of configuration that look correct on paper and break under failover. Test it in a non-production Namespace first.
 
-Consider how you’ll configure Workers for this setup.
-You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
-This way, Workers can access the newly activated region once failover occurs.
+A reasonable validation plan:
+
+1. Set up the HA Namespace and the private connectivity for both regions, including all DNS overrides.
+2. Run Workers continuously in **both** regions (or arrange cross-region connectivity).
+3. Trigger a manual failover from the Web UI or `tcld` and verify:
+   - DNS for `<ns>.<account>.tmprl.cloud` resolves to the new region within ~30 seconds.
+   - Workers in both regions are picking up tasks.
+   - SDK clients connect successfully (no `Name resolution failed`, `connection reset by peer`, or `context deadline exceeded` errors).
+4. Trigger a failback to the original region and verify the same.
+5. For multi-cloud HA, repeat with each cloud as the active replica, including from base images (Alpine, distroless) you actually use in production.
+
+If a real failover finds a configuration gap that wasn't tested, recovery typically requires changes on the client side that are hard to make under pressure.
 
 ## Available regions, PrivateLink endpoints, and DNS record overrides
 
@@ -75,16 +139,16 @@ The `sa-east-1` region is not yet available for use with Multi-region Namespaces
 
 :::
 
-The following table lists the available Temporal regions, PrivateLink endpoints, and DNS record overrides:
+The following tables list the available Temporal regions and the DNS record overrides used for HA + private connectivity:
+
+### AWS regions and PrivateLink endpoints
 
 <JsonTable filename="/json/privatelink_aws.json" />
 
+### GCP regions and Private Service Connect endpoints
 
-When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<acct>.<tmprl_domain>` points to a regional DNS record in the format `<region>.region.<tmprl_domain>`.
-Here, `<region>` is the currently active region for your Namespace.
+<JsonTable filename="/json/privatelink_gcp.json" />
 
-During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another.
-Namespace DNS records are configured with a 15 second <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a>.
-Any DNS cache should re-resolve the record within this time.
-As a rule of thumb, receiving an updated DNS record takes about twice (2x) the TTL.
-Clients should converge to the newly targeted region within, at most, a 30-second delay.
+When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<account>.tmprl.cloud` points to a regional DNS record in the format `<provider>-<region>.region.tmprl.cloud`, where `<provider>-<region>` is the currently active region for your Namespace.
+
+During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another. Namespace DNS records are configured with a 15-second <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a>. Any DNS cache should re-resolve the record within this time. As a rule of thumb, receiving an updated DNS record takes about twice (2x) the TTL — clients should converge to the newly targeted region within, at most, a 30-second delay, assuming their resolver and language runtime honor the TTL.
