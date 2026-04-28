@@ -66,11 +66,11 @@ futures = "0.3.32"
 futures-util = "0.3.32"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-temporalio-client = "0.2.0"
-temporalio-common = "0.2.0"
-temporalio-macros = "0.2.0"
-temporalio-sdk = "0.2.0"
-temporalio-sdk-core = "0.2.0"
+temporalio-client = "0.3.0"
+temporalio-common = "0.3.0"
+temporalio-macros = "0.3.0"
+temporalio-sdk = "0.3.0"
+temporalio-sdk-core = "0.3.0"
 tokio = { version = "1", features = ["full"] }
 `}
 </CodeSnippet>
@@ -84,7 +84,7 @@ brew install protobuf
 
 ## Add Temporal Rust SDK Dependencies
 
-Now update your project's `Cargo.toml` file to match the example.
+Now update your project's `Cargo.toml` file to match the example and run `cargo build`.
 
 The core dependencies you'll need are:
 
@@ -231,10 +231,7 @@ impl GreetingWorkflow {
         let greeting = ctx.start_activity(
             MyActivities::greet,
             name,
-            ActivityOptions {
-                start_to_close_timeout: Some(Duration::from_secs(10)),
-                ..Default::default()
-            }
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
         ).await?;
 
         println!("{}", greeting);
@@ -248,11 +245,10 @@ impl GreetingWorkflow {
 Update your `/src/main.rs` file with the following:
 
 ```rust
-use std::str::FromStr;
-
-use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions};
+use temporalio_client::{Client, ClientOptions, Connection};
+use temporalio_common::envconfig::LoadClientConfigProfileOptions;
 use temporalio_sdk::{Worker, WorkerOptions};
-use temporalio_sdk_core::{CoreRuntime, RuntimeOptions, Url};
+use temporalio_sdk_core::{CoreRuntime, RuntimeOptions};
 
 mod workflows;
 mod activities;
@@ -262,15 +258,15 @@ use crate::activities::MyActivities;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Connect to local Temporal server
-    let connection_options =
-        ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
-
     let runtime = CoreRuntime::new_assume_tokio(RuntimeOptions::builder().build()?)?;
 
-    // Client setup
+    // Set up client connection options, loading from config if available
+    let (connection_options, client_options) = ClientOptions::load_from_config(
+        LoadClientConfigProfileOptions::default(),
+    )?;
+
     let connection = Connection::connect(connection_options).await?;
-    let client = Client::new(connection, ClientOptions::new("default").build())?;
+    let client = Client::new(connection, client_options)?;
 
     let worker_options = WorkerOptions::new("my-task-queue")
         .register_activities(MyActivities)
@@ -278,6 +274,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build();
 
     Worker::new(&runtime, client, worker_options)?.run().await?;
+
     Ok(())
 }
 ```
