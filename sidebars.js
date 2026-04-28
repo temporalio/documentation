@@ -524,6 +524,18 @@ module.exports = {
               items: [
                 'develop/python/workers/run-worker-process',
                 'develop/python/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/python/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/python/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {

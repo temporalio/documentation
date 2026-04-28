@@ -40,6 +40,11 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+- The [Python SDK](/develop/python) (`temporalio`)
+
+</SdkTabs.Python>
 <SdkTabs.TypeScript>
 
 - The [TypeScript SDK](/develop/typescript) (`@temporalio/lambda-worker`)
@@ -90,6 +95,50 @@ For details on configuration options, Lambda-tuned defaults, and the invocation 
 [Serverless Workers - Go SDK](/develop/go/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+Use the Python SDK's `lambda_worker` contrib package.
+
+```python
+from temporalio.common import WorkerDeploymentVersion
+from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
+
+from my_workflows import MyWorkflow
+from my_activities import my_activity
+
+
+def configure(config: LambdaWorkerConfig) -> None:
+    config.worker_config["task_queue"] = "my-task-queue"
+    config.worker_config["workflows"] = [MyWorkflow]
+    config.worker_config["activities"] = [my_activity]
+
+
+lambda_handler = run_worker(
+    WorkerDeploymentVersion(
+        deployment_name="my-app",
+        build_id="build-1",
+    ),
+    configure,
+)
+```
+
+Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+
+```python
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        ...
+```
+
+For details on configuration options, Lambda-tuned defaults, and observability, see [Serverless Workers - Python SDK](/develop/python/workers/serverless-workers/aws-lambda).
+
+</SdkTabs.Python>
 <SdkTabs.TypeScript>
 
 Use the `@temporalio/lambda-worker` package.
@@ -139,6 +188,22 @@ zip function.zip bootstrap
 ```
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+Install dependencies into a local directory for packaging. Use `--platform` to fetch Linux-compatible binaries for the Lambda runtime:
+
+```bash
+pip install --target ./package --platform manylinux2014_x86_64 --only-binary=:all: temporalio
+```
+
+Package the dependencies and your application code into a zip file:
+
+```bash
+cd package && zip -r ../function.zip . && cd ..
+zip function.zip lambda_function.py my_workflows.py my_activities.py
+```
+
+</SdkTabs.Python>
 <SdkTabs.TypeScript>
 
 Build the Workflow bundle and compile the project:
@@ -182,6 +247,27 @@ aws lambda create-function \
 | `--handler` | Entry point binary name. Must be `bootstrap` when using the `provided.al2023` custom runtime. |
 
 </SdkTabs.Go>
+<SdkTabs.Python>
+
+```bash
+aws lambda create-function \
+  --function-name my-temporal-worker \
+  --runtime python3.13 \
+  --handler lambda_function.lambda_handler \
+  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \
+  --zip-file fileb://function.zip \
+  --timeout 600 \
+  --memory-size 256 \
+  --environment "Variables={TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_API_KEY=<your-api-key>}"
+```
+
+| Parameter | Description |
+|---|---|
+| `--function-name` | Name of the Lambda function. |
+| `--runtime` | Lambda runtime. Use `python3.13` or another supported Python version. |
+| `--handler` | Entry point in `module.function` format. Must point to the handler returned by `run_worker`. |
+
+</SdkTabs.Python>
 <SdkTabs.TypeScript>
 
 ```bash
@@ -220,6 +306,7 @@ The following parameters apply to all SDKs:
 | `TEMPORAL_TLS_CLIENT_KEY_PATH` | Path to the TLS client key file for mTLS authentication. |
 | `TEMPORAL_API_KEY` | API key for API key authentication. |
 
+The SDKs read environment variables automatically at startup. For the full list, see [Client environment configuration](/references/client-environment-configuration).
 The serverless Worker packages read environment variables automatically at startup. For the full list, see [Client environment configuration](/references/client-environment-configuration).
 
 Sensitive values like TLS keys and API keys should be encrypted at rest. See [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
