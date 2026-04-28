@@ -22,18 +22,25 @@ tags:
 This page covers the prerequisites for running [Serverless Workers](/serverless-workers) on a self-hosted Temporal
 Service with AWS Lambda:
 
-1. Enable the Worker Controller Instance (WCI) on the server through dynamic configuration.
-2. Provide the server with AWS credentials to assume IAM roles.
-3. Create an IAM role in your AWS account that grants Temporal permission to invoke Lambda functions.
+1. Ensure Lambda can reach the Temporal Service.
+2. Enable the Worker Controller Instance (WCI) on the server through dynamic configuration.
+3. Provide the server with AWS credentials to assume IAM roles.
+4. Create an IAM role in your AWS account that grants Temporal permission to invoke Lambda functions.
 
 Once setup is complete, follow the
 [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to deploy your
 Worker.
 
+## Ensure Lambda can reach the Temporal Service {#ensure-network-reachability}
+
+The [Temporal Service frontend](/temporal-service#frontend-service) must be reachable from the Lambda execution environment.
+How to achieve this depends on your network setup.
+If the Temporal Service runs on a private network, you may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a similar mechanism to allow the Lambda function to connect to the Temporal frontend.
+
 ## Enable the Worker Controller {#enable-worker-controller}
 
-The Worker Controller Instance (WCI) is the server component that monitors Task Queues and invokes compute providers. It
-is disabled by default and must be enabled through [dynamic configuration](/references/dynamic-configuration).
+[WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute providers. It is disabled by default and must
+be enabled through [dynamic configuration](/references/dynamic-configuration).
 
 Add the following keys to your dynamic config file:
 
@@ -50,7 +57,8 @@ workercontroller.scaling_algorithms.enabled:
       - no-sync
 ```
 
-To enable the Worker Controller for specific Namespaces instead of globally:
+To enable the Worker Controller for specific Namespaces instead of globally, add a `constraints` section with the
+Namespace name under `workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
 
 ```yaml
 workercontroller.enabled:
@@ -70,7 +78,8 @@ credentials depends on where the Temporal Service runs.
 automatically. No additional credential configuration is needed. The attached role must have `sts:AssumeRole` permission
 for the Lambda invocation role created in the next step.
 
-**Outside AWS:** Use [IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/), or configure static AWS credentials in the server's environment (not recommended):
+**Outside AWS:** Use [IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/), or configure static AWS
+credentials in the server's environment (not recommended):
 
 ```
 AWS_ACCESS_KEY_ID=<access-key>
@@ -83,8 +92,9 @@ role.
 
 ## Create the Lambda invocation role {#create-invocation-role}
 
-Temporal invokes Lambda functions by assuming an IAM role in your AWS account. This role needs `lambda:GetFunction` and `lambda:InvokeFunction`
-permission on your Worker Lambda functions, and a trust policy that allows the Temporal server's identity to assume it.
+Temporal invokes Lambda functions by assuming an IAM role in your AWS account. This role needs `lambda:GetFunction` and
+`lambda:InvokeFunction` permission on your Worker Lambda functions, and a trust policy that allows the Temporal server's
+identity to assume it.
 
 Deploy the following CloudFormation template to create the role.
 [Download the template](/files/temporal-self-hosted-serverless-worker-role.yaml).
