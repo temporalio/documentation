@@ -475,6 +475,7 @@ module.exports = {
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
+                'develop/python/workflows/streaming',
               ]
             },
             {
@@ -1329,6 +1330,7 @@ module.exports = {
             'encyclopedia/workflow/workflow-schedule',
             'encyclopedia/workflow/cron-job',
             'encyclopedia/workflow/patching',
+            'encyclopedia/workflow/workflow-streaming'
           ],
         },
         {

@@ -1,0 +1,184 @@
+---
+id: workflow-streaming
+title: Streaming from Workflows
+sidebar_label: Streaming
+description: Streaming shows an application's progress in real time—like incremental results and status updates—as it runs, instead of waiting until the final result is complete.
+slug: /workflow-streaming
+toc_max_heading_level: 4
+keywords:
+  - streaming
+  - pub/sub
+  - server-sent events
+  - SSE
+  - signals
+  - updates
+  - AI agent
+  - LLM
+tags:
+  - Streaming
+  - Workflows
+  - AI agent
+---
+
+This page discusses streaming from Temporal Workflows, covering [the streaming problem](#the-streaming-problem), [architecture with and without Temporal](#architecture), the [pub/sub transport pattern](#pubsub-pattern), [concurrency model](#concurrency-model), [durability considerations](#durability-and-resumability), and an [AI agent use case](#ai-agents).
+
+## What is streaming from a Workflow? {#what-is-streaming}
+
+Streaming means delivering progress to an external observer as it happens, rather than only when an operation completes. A Workflow that streams exposes its internal progress like, partial results, status updates, and incremental output, to clients in real time.
+
+Some common examples are:
+
+- **Incremental output**: Results rendered progressively as they are produced, rather than all at once at the end.
+- **Status updates**: Notifications about what the Workflow is currently doing, which step is running, how long it has been running, or whether it succeeded or failed.
+- **Progress events**: Checkpoints, milestones, or sub-results published as the Workflow moves through its execution.
+
+Streaming keeps users engaged during long-running operations, makes system behavior more transparent, and enables callers to act on partial results like cancelling work that's heading in the wrong direction.
+
+## The streaming problem {#the-streaming-problem}
+
+Without durable infrastructure, a backend-for-frontend (BFF) service runs the business logic, buffers streaming events in memory, and pushes them to a client via Server-Sent Events (SSE) or WebSockets.
+If that server restarts while work is in progress, all in-flight state is lost and the client receives no further updates.
+
+The streaming problem has two core dimensions:
+
+1. **Where does session state live?** An in-memory BFF loses progress and history on restart.
+   For long-running or expensive operations, this means lost work and a degraded user experience.
+2. **How resumable is the underlying operation?** Some operations can be resumed mid-stream after a failure, while others have to restart from the beginning. The appropriate architecture depends on the cost of restarting work.
+
+A key question is the level of durability appropriate for a given application. Making state durable introduces latency and consumes system resources. If failures are rare or the impact is low, durable streaming may not be justified. But when work is expensive, long-running, or stateful, losing progress to a transient failure is costly.
+
+## Architecture {#architecture}
+
+### Without Temporal {#architecture-without-temporal}
+
+```
+Client ──(SSE)──▶ BFF ──(stream)──▶ Service
+```
+
+The BFF runs the business logic, buffers events in memory, and streams them to the client via SSE.
+If the server restarts, all in-flight work and session state is lost.
+
+### With Temporal {#architecture-with-temporal}
+
+```
+Client ──(SSE)──▶ BFF ──(subscribe: long-poll Update)──▶ Workflow
+                                                            │
+                                                    execute_activity
+                                                            │
+                                                        Activity
+                                                            │
+                                                publish (batched Signal)──▶ Workflow
+                                                            │
+                                                    external service
+```
+
+The BFF becomes a stateless proxy. Session state, history, and the event stream all live in the Workflow. The BFF can be restarted at any time without losing work.
+
+## Pub/Sub pattern {#pubsub-pattern}
+
+The streaming transport follows a pub/sub pattern in two directions:
+
+1. **Activity → Workflow (publish)**: The Activity publishes events via batched Signals as it receives them from an external service.
+2. **Workflow → external client (subscribe)**: The external client subscribes via long-poll Updates.
+
+[Signals](/sending-messages#sending-signals), [Updates](/sending-messages#sending-updates), and [Queries](/sending-messages#sending-queries) handle both directions of the stream without additional infrastructure like Redis or Kafka.
+
+### Activity to Workflow (publish) {#publish}
+
+As an Activity receives incremental output from an external service, it translates those outputs into application events and publishes them through a pub/sub client. The client batches events and flushes them to the Workflow via Signal at a configurable interval.
+
+This is a Nagle-like batching strategy: buffer events, flush on a timer. The client can also flush immediately for high-priority events.
+
+The Workflow receives published events through a Signal handler that appends them to a durable event buffer. The Workflow itself can also publish events directly for lifecycle events that originate inside the Workflow rather than inside an Activity.
+
+### Workflow to external client (subscribe) {#subscribe}
+
+The external client subscribes to the Workflow's event stream using long-poll Updates.
+Each poll includes the client's current offset into the event buffer.
+The Update handler inside the Workflow uses a wait condition to block until new events are available at or beyond that offset, then returns them.
+
+The subscribe iterator handles the poll loop, offset tracking, and reconnection internally. From the caller's perspective, subscribing is a normal async iteration.
+
+Because events are stored durably in the Workflow, the external client can reconnect at any time, even after a BFF restart and resume from its last known offset. No events are lost.
+
+## Concurrency model {#concurrency-model}
+
+A Workflow's main execution loop and its message handlers run concurrently on a single thread. A `wait_condition` yields so that the main loop and poll handlers can interleave at each `await` point.
+
+A typical streaming sequence looks like this:
+
+1. The client sends a Signal to trigger work and immediately opens a subscribe Update at the current event buffer offset.
+2. The Workflow starts an Activity and yields.
+3. The Activity publishes batches of events as Signals while it processes output from an external service.
+4. Each incoming Signal appends to the event buffer, waking up any blocked poll Update handlers.
+5. The poll handlers return the new batch and the client re-polls with the updated offset.
+6. When the Activity completes, the Workflow may publish lifecycle events and start the next Activity or publish a final completion event.
+
+This interleaving is deterministic and replay-safe because all coordination happens through Temporal's event-sourced execution model.
+
+## Durability and resumability {#durability-and-resumability}
+
+The appropriate level of durability depends on the cost of lost work:
+
+- **Low-stakes, short-running operations**: An in-memory BFF may be sufficient. Restarting work on failure is cheap.
+- **Expensive, long-running operations**: Losing in-flight progress to a restart is costly. A Temporal-backed Workflow preserves state, history, and the event stream across restarts.
+
+These streaming patterns work regardless of whether the underlying service supports mid-stream resumption. Even if an individual Activity must restart from the beginning on failure, the Workflow's retry policy handles that automatically and previously published events remain in the durable buffer.
+
+## Use case: AI agents {#ai-agents}
+
+AI agents are a compelling use case for Workflow streaming because agent loops are long-running, stateful, and expensive to restart.
+
+### What AI agents stream {#ai-agent-events}
+
+AI agent streams commonly include:
+
+- **LLM tokens**: Model responses rendered incrementally as they are generated.
+- **Reasoning outputs**: Internal chain-of-thought exposed separately from the final response.
+- **Application messages**: Tool calls, web search results, agent handoffs, and other progress indicators from the application or from behind the model API.
+
+Streaming keeps users engaged, builds trust through transparency, and enables agent steering like, cancelling unproductive work or interrupting to provide additional context.
+This is especially valuable for agents that do significant work between user interactions.
+
+### LLM provider resumability {#llm-resumability}
+
+Whether a specific LLM API call can resume mid-stream after a failure varies by provider:
+
+- **OpenAI**: Supports a fully resumable background mode.
+- **Google Gemini**: Provides access to end results of an interrupted stream once the call completes.
+- **Anthropic**: Accepts a response prefix that can resume a streaming response.
+- **Other providers**: May have no streaming recovery at all.
+
+The Temporal streaming pattern described on this page works regardless of provider resumability.
+If an Activity must restart from the beginning, Temporal's retry policy handles the retry and previously published events remain in the Workflow's durable buffer.
+
+### Multi-turn sessions and event indexing {#multi-turn-sessions}
+
+In a conversational agent, the Workflow persists across multiple turns. Each turn produces a new stream of events, but all events share a single global offset that increments across the lifetime of the session.
+
+Before triggering a new turn, the client queries the Workflow's current event buffer offset.
+The client then subscribes starting from that offset, receiving only events from the current turn instead of replayed events from prior turns.
+
+On reconnect, the client resumes from its last known offset. The Workflow holds all events durably and serves them on demand, even after a BFF restart.
+
+### Architecture {#ai-agent-architecture}
+
+In an AI agent application, the generic architecture maps as follows:
+
+```
+Browser ──(SSE)──▶ BFF ──(subscribe: long-poll Update)──▶ Workflow
+                                                               │
+                                                        execute_activity
+                                                               │
+                                                          LLM Activity
+                                                               │
+                                                     publish (batched Signal)──▶ Workflow
+                                                               │
+                                                            LLM API
+```
+
+The BFF is a stateless proxy. The Workflow holds conversation history, the current agent state, and the full event stream for the session. The LLM Activity streams model output from the provider API and batches events back to the Workflow via Signals.
+
+## SDK guides {#sdk-guides}
+
+- [How to stream from Workflows using the Python SDK](/develop/python/workflows/streaming)
