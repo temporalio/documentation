@@ -33,14 +33,16 @@ Worker.
 
 ## Ensure Lambda can reach the Temporal Service {#ensure-network-reachability}
 
-The [Temporal Service frontend](/temporal-service#frontend-service) must be reachable from the Lambda execution environment.
-How to achieve this depends on your network setup.
-If the Temporal Service runs on a private network, you may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a similar mechanism to allow the Lambda function to connect to the Temporal frontend.
+The [Temporal Service frontend](/temporal-service#frontend-service) must be reachable from the Lambda execution
+environment. How to achieve this depends on your network setup. If the Temporal Service runs on a private network, you
+may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a
+similar mechanism to allow the Lambda function to connect to the Temporal frontend.
 
 ## Enable the Worker Controller {#enable-worker-controller}
 
-[WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute providers. It is disabled by default and must
-be enabled through [dynamic configuration](/references/dynamic-configuration).
+[WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute
+providers. It is disabled by default and must be enabled through
+[dynamic configuration](/references/dynamic-configuration).
 
 Add the following keys to your dynamic config file:
 
@@ -97,7 +99,12 @@ Temporal invokes Lambda functions by assuming an IAM role in your AWS account. T
 identity to assume it.
 
 Deploy the following CloudFormation template to create the role.
-[Download the template](/files/temporal-self-hosted-serverless-worker-role.yaml).
+[Download the template](/files/temporal-self-hosted-serverless-worker-role.yaml). Replace the parameter values in the
+command below and run it in your terminal:
+
+```bash
+aws cloudformation create-stack --stack-name temporal-serverless-worker --template-body file://temporal-self-hosted-serverless-worker-role.yaml --parameters ParameterKey=TemporalIamRoleArn,ParameterValue=<TEMPORAL_SERVER_ROLE_ARN> ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> ParameterKey=LambdaFunctionARNs,ParameterValue='"<LAMBDA_FUNCTION_ARN>"' --capabilities CAPABILITY_NAMED_IAM --region <AWS_REGION>
+```
 
 | Parameter              | Description                                                                                                                                                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -187,12 +194,6 @@ Outputs:
 ```
 
 </details>
-
-Deploy the template:
-
-```bash
-aws cloudformation create-stack --stack-name temporal-serverless-worker --template-body file://temporal-self-hosted-serverless-worker-role.yaml --parameters ParameterKey=TemporalIamRoleArn,ParameterValue=<TEMPORAL_SERVER_ROLE_ARN> ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> ParameterKey=LambdaFunctionARNs,ParameterValue='"<LAMBDA_FUNCTION_ARN>"' --capabilities CAPABILITY_NAMED_IAM --region <AWS_REGION>
-```
 
 After the stack finishes creating, retrieve the IAM role ARN from the stack outputs:
 
