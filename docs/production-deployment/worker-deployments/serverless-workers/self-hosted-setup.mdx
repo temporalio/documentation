@@ -1,0 +1,210 @@
+---
+id: self-hosted-setup
+title: Self-hosted setup for Serverless Workers
+sidebar_label: Self-hosted setup
+description: Configure a self-hosted Temporal Service to use Serverless Workers with AWS Lambda.
+slug: /production-deployment/worker-deployments/serverless-workers/self-hosted-setup
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - self-hosted
+  - lambda
+  - aws
+  - worker
+  - deployment
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - Self-hosted
+---
+
+This page covers the prerequisites for running [Serverless Workers](/serverless-workers) on a self-hosted Temporal
+Service with AWS Lambda:
+
+1. Ensure Lambda can reach the Temporal Service.
+2. Enable the Worker Controller Instance (WCI) on the server through dynamic configuration.
+3. Provide the server with AWS credentials to assume IAM roles.
+4. Create an IAM role in your AWS account that grants Temporal permission to invoke Lambda functions.
+
+Once setup is complete, follow the
+[AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to deploy your
+Worker.
+
+## Ensure Lambda can reach the Temporal Service {#ensure-network-reachability}
+
+The [Temporal Service frontend](/temporal-service#frontend-service) must be reachable from the Lambda execution
+environment. How to achieve this depends on your network setup. If the Temporal Service runs on a private network, you
+may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a
+similar mechanism to allow the Lambda function to connect to the Temporal frontend.
+
+## Enable the Worker Controller Instance {#enable-worker-controller}
+
+[WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute
+providers. It is disabled by default and must be enabled through
+[dynamic configuration](/references/dynamic-configuration).
+
+Add the following keys to your dynamic config file:
+
+```yaml
+workercontroller.enabled:
+  - value: true
+
+workercontroller.compute_providers.enabled:
+  - value:
+      - aws-lambda
+
+workercontroller.scaling_algorithms.enabled:
+  - value:
+      - no-sync
+```
+
+To enable WCI for specific Namespaces instead of globally, add a `constraints` section with the
+Namespace name under `workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
+
+```yaml
+workercontroller.enabled:
+  - value: true
+    constraints:
+      namespace: 'your-namespace'
+```
+
+The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
+
+## Configure AWS credentials {#configure-aws-credentials}
+
+The Temporal Service needs AWS credentials to assume an IAM role that invokes Lambda functions. How you provide
+credentials depends on where the Temporal Service runs.
+
+**On AWS infrastructure (EC2, ECS, EKS):** The server uses the attached instance role, task role, or pod role
+automatically. No additional credential configuration is needed. The attached role must have `sts:AssumeRole` permission
+for the Lambda invocation role created in the next step.
+
+**Outside AWS:** Use [IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/), or configure static AWS
+credentials in the server's environment (not recommended):
+
+```
+AWS_ACCESS_KEY_ID=<access-key>
+AWS_SECRET_ACCESS_KEY=<secret-key>
+AWS_REGION=<region>
+```
+
+These credentials must belong to an IAM user or role that has `sts:AssumeRole` permission for the Lambda invocation
+role.
+
+## Create the Lambda invocation role {#create-invocation-role}
+
+Temporal invokes Lambda functions by assuming an IAM role in your AWS account. This role needs `lambda:GetFunction` and
+`lambda:InvokeFunction` permission on your Worker Lambda functions, and a trust policy that allows the Temporal server's
+identity to assume it.
+
+Deploy the following CloudFormation template to create the role.
+[Download the template](/files/temporal-self-hosted-serverless-worker-role.yaml). Replace the parameter values in the
+command below and run it in your terminal:
+
+```bash
+aws cloudformation create-stack --stack-name temporal-serverless-worker --template-body file://temporal-self-hosted-serverless-worker-role.yaml --parameters ParameterKey=TemporalIamRoleArn,ParameterValue=<TEMPORAL_SERVER_ROLE_ARN> ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> ParameterKey=LambdaFunctionARNs,ParameterValue='"<LAMBDA_FUNCTION_ARN>"' --capabilities CAPABILITY_NAMED_IAM --region <AWS_REGION>
+```
+
+| Parameter              | Description                                                                                                                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `TemporalIamRoleArn`   | The ARN of the IAM role or user that the Temporal Service runs as. This is the identity the server uses to call `sts:AssumeRole`. To find the ARN, run `aws sts get-caller-identity` in the server's environment.  |
+| `AssumeRoleExternalId` | A unique string to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Choose any value and pass the same value when creating the Worker Deployment Version. |
+| `LambdaFunctionARNs`   | Comma-separated list of Lambda function ARNs that Temporal may invoke.                                                                                                                                             |
+| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Serverless-Worker`.                                                                                                                                      |
+
+<details>
+<summary>CloudFormation template</summary>
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Creates an IAM role that a self-hosted Temporal Service can assume to invoke Lambda functions for Serverless Workers.
+
+Parameters:
+  TemporalIamRoleArn:
+    Type: String
+    Description: The ARN of the IAM role or user that the Temporal Service runs as.
+
+  AssumeRoleExternalId:
+    Type: String
+    Description: A unique identifier to prevent confused deputy attacks.
+    AllowedPattern: '[a-zA-Z0-9_+=,.@-]*'
+    MinLength: 5
+    MaxLength: 45
+
+  LambdaFunctionARNs:
+    Type: CommaDelimitedList
+    Description: >-
+      Comma-separated list of Lambda function ARNs to invoke (e.g.,
+      arn:aws:lambda:us-west-2:123456789012:function:worker-1,arn:aws:lambda:us-west-2:123456789012:function:worker-2)
+
+  RoleName:
+    Type: String
+    Default: 'Temporal-Serverless-Worker'
+
+Resources:
+  TemporalServerlessWorker:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${RoleName}-${AWS::StackName}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: [!Ref TemporalIamRoleArn]
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                'sts:ExternalId': [!Ref AssumeRoleExternalId]
+      Description: 'The role the Temporal Service uses to invoke Lambda functions for Serverless Workers'
+      MaxSessionDuration: 3600
+
+  TemporalLambdaInvokePermissions:
+    Type: AWS::IAM::Policy
+    DependsOn: TemporalServerlessWorker
+    Properties:
+      PolicyName: 'Temporal-Lambda-Invoke-Permissions'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+              - lambda:GetFunction
+            Resource: !Ref LambdaFunctionARNs
+      Roles:
+        - !Sub '${RoleName}-${AWS::StackName}'
+
+Outputs:
+  RoleARN:
+    Description: The ARN of the IAM role created for the Temporal Service
+    Value: !GetAtt TemporalServerlessWorker.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-RoleARN'
+
+  RoleName:
+    Description: The name of the IAM role
+    Value: !Ref RoleName
+
+  LambdaFunctionARNs:
+    Description: The Lambda function ARNs that can be invoked
+    Value: !Join [', ', !Ref LambdaFunctionARNs]
+```
+
+</details>
+
+After the stack finishes creating, retrieve the IAM role ARN from the stack outputs:
+
+```bash
+aws cloudformation describe-stacks --stack-name temporal-serverless-worker --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' --output text --region <AWS_REGION>
+```
+
+Use this role ARN when creating the Worker Deployment Version.
+
+## Next steps {#next-steps}
+
+Follow the [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to
+write your Worker code, deploy it to Lambda, and create a Worker Deployment Version with the IAM role from the previous
+step.

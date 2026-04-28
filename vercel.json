@@ -6,6 +6,8 @@
   },
   "redirects": [
     {
+      "source": "/evaluate/serverless-workers-demo",
+      "destination": "/evaluate/serverless-workers/demo",
       "source": "/develop/go/data-handling/large-payload-storage",
       "destination": "/develop/go/data-handling/external-storage",
       "permanent": true
@@ -2032,6 +2034,11 @@
     {
       "source": "/develop/typescript/versioning",
       "destination": "/develop/typescript/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/workers/cloud-worker",
+      "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
       "permanent": true
     }
   ]

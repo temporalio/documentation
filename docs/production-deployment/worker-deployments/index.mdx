@@ -35,6 +35,10 @@ You can optionally use the Temporal [Worker Controller](/production-deployment/w
 
 This section also covers specific Worker Deployment examples:
 
+- [**Serverless Workers**](/production-deployment/worker-deployments/serverless-workers)
+  Deploy Serverless Workers on serverless compute like AWS Lambda.
+  Temporal invokes your Worker when tasks arrive, with no long-lived processes to manage.
+
 - [**Deploy Workers to Amazon EKS**](/production-deployment/worker-deployments/deploy-workers-to-aws-eks)
   Containerize your Worker, publish it to Amazon Elastic Container Registry (ECR), and deploy it to Amazon Elastic Kubernetes Service (EKS) using the Temporal Python SDK.
   This guide covers the full deployment lifecycle and shows how to configure your Worker to connect to Temporal Cloud using Kubernetes-native tools like ConfigMaps and Secrets.

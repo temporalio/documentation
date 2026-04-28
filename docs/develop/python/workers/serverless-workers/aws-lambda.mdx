@@ -1,0 +1,213 @@
+---
+id: aws-lambda
+title: Serverless Workers on AWS Lambda - Python SDK
+sidebar_label: Serverless Workers on AWS Lambda
+description: Write a Temporal Worker that runs on AWS Lambda using the Python SDK lambda_worker package.
+slug: /develop/python/workers/serverless-workers/aws-lambda
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - lambda
+  - aws
+  - python sdk
+  - worker
+  - serverless worker
+tags:
+  - Workers
+  - Python SDK
+  - Serverless
+  - AWS Lambda
+---
+
+The `lambda_worker` contrib package lets you run a Temporal Serverless Worker on AWS Lambda.
+Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
+Each invocation starts a Worker, polls for Tasks, then gracefully shuts down before a configurable invocation deadline.
+You register Workflows and Activities the same way you would with a standard Worker.
+
+For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+
+## Create and run a Worker in Lambda {#create-and-run}
+
+Use the `run_worker` function to create a Lambda handler that runs a Temporal Worker.
+Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
+
+```python {14-20}
+from temporalio.common import WorkerDeploymentVersion
+from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
+
+from my_workflows import MyWorkflow
+from my_activities import my_activity
+
+
+def configure(config: LambdaWorkerConfig) -> None:
+    config.worker_config["task_queue"] = "my-task-queue"
+    config.worker_config["workflows"] = [MyWorkflow]
+    config.worker_config["activities"] = [my_activity]
+
+
+lambda_handler = run_worker(
+    WorkerDeploymentVersion(
+        deployment_name="my-app",
+        build_id="build-1",
+    ),
+    configure,
+)
+```
+
+`run_worker` takes a `WorkerDeploymentVersion` and a configure callback, and returns a Lambda handler.
+The `WorkerDeploymentVersion` identifies the [Worker Deployment](/worker-versioning#worker-deployments) and [Build ID](/worker-versioning#build-id) for this Worker.
+The deployment name groups related Workers across versions, and the Build ID identifies a specific release of your Worker code.
+Worker Versioning is required for Serverless Workers.
+
+The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
+Set the Task Queue, Workflows, and Activities through `worker_config`, which accepts the same keyword arguments as the `Worker` constructor.
+
+Each Workflow registered with the Worker must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+
+```python {5}
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        ...
+```
+
+## Configure the Temporal connection {#configure-connection}
+
+The `lambda_worker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
+
+The config file is resolved in order:
+
+1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
+2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
+3. `temporal.toml` in the current working directory.
+
+The file is optional. If absent, only environment variables are used.
+
+Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
+
+## Adjust Worker defaults for Lambda {#lambda-tuned-defaults}
+
+The `lambda_worker` package applies conservative defaults suited to short-lived Lambda invocations.
+These differ from standard Worker defaults to avoid overcommitting resources in a constrained environment.
+
+| Setting | Lambda default |
+|---|---|
+| `max_concurrent_activities` | 2 |
+| `max_concurrent_workflow_tasks` | 10 |
+| `max_concurrent_local_activities` | 2 |
+| `max_concurrent_nexus_tasks` | 5 |
+| `workflow_task_poller_behavior` | `SimpleMaximum(2)` |
+| `activity_task_poller_behavior` | `SimpleMaximum(1)` |
+| `nexus_task_poller_behavior` | `SimpleMaximum(1)` |
+| `graceful_shutdown_timeout` | 5 seconds |
+| `max_cached_workflows` | 30 |
+| `disable_eager_activity_execution` | Always `True` |
+| `shutdown_deadline_buffer` | 7 seconds |
+
+`disable_eager_activity_execution` is always `True` and cannot be overridden.
+Eager Activities require a persistent connection, which Lambda invocations don't maintain.
+
+`shutdown_deadline_buffer` is specific to the `lambda_worker` package.
+It controls how much time before the Lambda deadline the Worker begins its graceful shutdown.
+The default is `graceful_shutdown_timeout` + 2 seconds.
+
+If your Worker handles long-running Activities, increase `graceful_shutdown_timeout`, `shutdown_deadline_buffer`, and the Lambda invocation deadline (`--timeout`) together.
+For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+
+## Add observability with OpenTelemetry {#add-observability}
+
+The `lambda_worker.otel` module provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
+With this enabled, the Worker emits SDK metrics and distributed traces for Workflow and Activity executions.
+The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ray and metrics to Amazon CloudWatch.
+
+The underlying metrics and traces are the same ones the Python SDK emits in any environment.
+For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/observability) and the [SDK metrics reference](/references/sdk-metrics).
+
+from temporalio.common import WorkerDeploymentVersion
+from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
+from temporalio.contrib.aws.lambda_worker.otel import apply_defaults
+
+from my_workflows import MyWorkflow
+from my_activities import my_activity
+
+
+def configure(config: LambdaWorkerConfig) -> None:
+    config.worker_config["task_queue"] = "my-task-queue"
+    config.worker_config["workflows"] = [MyWorkflow]
+    config.worker_config["activities"] = [my_activity]
+    apply_defaults(config)
+
+
+lambda_handler = run_worker(
+    WorkerDeploymentVersion(
+        deployment_name="my-app",
+        build_id="build-1",
+    ),
+    configure,
+)
+```
+
+`apply_defaults` configures both metrics and tracing.
+By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
+
+To collect this telemetry, attach the [ADOT Python Lambda layer](https://aws-otel.github.io/docs/getting-started/lambda/lambda-python) to your Lambda function.
+The layer includes both auto-instrumentation and an OpenTelemetry Collector that receives telemetry on `localhost:4317` and forwards traces to AWS X-Ray and metrics to Amazon CloudWatch.
+
+The default Collector configuration does not route OTLP data to the traces pipeline.
+You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
+Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 'localhost:4317'
+      http:
+        endpoint: 'localhost:4318'
+
+exporters:
+  debug:
+  awsxray:
+    region: <your-region>
+  awsemf:
+    namespace: TemporalWorkerMetrics
+    log_group_name: /aws/lambda/<your-function-name>
+    region: <your-region>
+    dimension_rollup_option: NoDimensionRollup
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [awsxray, debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [awsemf]
+```
+
+Set the following environment variables on the Lambda function:
+
+- `AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-instrument`
+- `OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/otel-collector-config.yaml`
+
+Enable X-Ray active tracing on the Lambda function:
+
+```bash
+aws lambda update-function-configuration \
+  --function-name <your-function-name> \
+  --tracing-config Mode=Active
+```
+
+The Lambda execution role must have permissions to write to X-Ray and CloudWatch.
+Attach the [`AWSXRayDaemonWriteAccess`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSXRayDaemonWriteAccess.html) managed policy, or add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions.
+Without these permissions, the Collector fails silently and no telemetry appears.
+
+If you only need metrics or tracing, use `build_metrics_telemetry_config` or `apply_tracing` individually.
