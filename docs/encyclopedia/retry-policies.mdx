@@ -3,8 +3,7 @@ id: retry-policies
 title: What is a Temporal Retry Policy?
 sidebar_label: Retry Policies
 description:
-  Optimize your Workflow and Activity Task Executions with a custom Retry Policy on Temporal. Understand default
-  retries, intervals, backoff, and maximum attempts for error handling.
+  Optimize your Workflow and Activity Task Executions with a custom Retry Policy on Temporal Understand default retries, intervals, backoff, and maximum attempts for error handling.
 toc_max_heading_level: 4
 keywords:
   - activities
@@ -18,22 +17,17 @@ import { CaptionedImage, RelatedReadContainer, RelatedReadItem } from '@site/src
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A Retry Policy is a collection of settings that tells Temporal how and when to try again after something fails in a
-Workflow Execution or Activity Task Execution.
+A Retry Policy is a collection of settings that tells Temporal how and when to try again after something fails in a Workflow Execution or Activity Task Execution.
 
 ## Overview
 
-Temporal's default behavior is to automatically retry an Activity that fails, so transient or intermittent failures
-require no action on your part. This behavior is defined by the Retry Policy.
+Temporal's default behavior is to automatically retry an Activity that fails, so transient or intermittent failures require no action on your part. This behavior is defined by the Retry Policy.
 
-A Retry Policy is declarative. You do not need to implement your own logic for handling the retries; you only need to
-specify the desired behavior and Temporal will provide it.
+A Retry Policy is declarative. You do not need to implement your own logic for handling the retries; you only need to specify the desired behavior and Temporal will provide it.
 
-In contrast to the Activities it contains, a Workflow Execution itself is not associated with a Retry Policy by default.
-This may seem counterintuitive, but Workflows and Activities perform different roles. Activities are intended for
-operations that may fail, so having a default Retry Policy increases the likelihood that they will ultimately complete
-successfully, even if the initial attempt failed. On the other hand, Workflows must be deterministic and are not
-intended to perform failure-prone operations. While it is possible to assign a Retry Policy to a Workflow Execution,
+In contrast to the Activities it contains, a Workflow Execution itself is not associated with a Retry Policy by default. This may seem counterintuitive, but Workflows and Activities perform different roles. Activities are intended for operations that may fail, so having a default Retry Policy increases the likelihood that they will ultimately complete successfully, even if the initial attempt failed.
+
+On the other hand, Workflow code must be deterministic to support replay, and failure-prone or non-deterministic operations (API calls, LLM invocations, etc.) should be placed in Activities, which have built-in retry support. While it is possible to assign a Retry Policy to a Workflow Execution,
 this is not the default and it is uncommon to do so.
 
 Retry Policies do not apply to Workflow Task Executions, which retry until the Workflow Execution Timeout (which is
@@ -136,14 +130,9 @@ re-execute upon failure; this is not typically true of Workflows. In most use ca
 an issue with the design or deployment of your application; for example, a permanent failure that may require different
 input data.
 
-Retrying an entire Workflow Execution is not recommended due to Temporal's deterministic design. Since Workflows replay
-the same sequence of events to reach the same state, retrying the whole workflow would repeat the same logic without
-resolving the underlying issue that caused the failure. This repetition does not address problems related to external
-dependencies or unchanged conditions and can lead to unnecessary resource consumption and higher costs. Instead, it's
-more efficient to retry only the failed Activities. This approach targets specific points of failure, allowing the
-workflow to progress without redundant operations, thereby saving on resources and ensuring a more focused and effective
-error recovery process. If you need to retry parts of your Workflow Definition, we recommend you implement this in your
-Workflow code.
+Retrying an entire Workflow Execution is not recommended due to the deterministic nature of Workflow replay. Since Workflows replay the same sequence of events to reach the same state, retrying the whole Workflow would repeat the same logic without resolving the underlying issue that caused the failure. This repetition doesn't address problems related to external dependencies or unchanged conditions and can lead to unnecessary resource consumption and higher costs.
+
+Instead, retry failed Activities within the Workflow, which is Temporal's default behavior. This approach targets specific points of failure, allowing the Workflow to progress without redundant operations, thereby saving on resources and ensuring a more focused and effective error recovery process. If you need to retry parts of your Workflow Definition, we recommend you implement this in your Workflow code.
 
 ## Custom Retry Policy
 
