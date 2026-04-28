@@ -116,6 +116,20 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Step-by-step instructions
 
+:::warning Order matters: create the record before associating the zone with active VPCs
+
+A Route 53 private hosted zone with no records will cause DNS resolution for any matching name to fail (NXDOMAIN) inside any VPC associated with the zone. If you create an empty PHZ for `<account>.tmprl.cloud` and associate it with a VPC where Workers are running, **all Worker traffic to Temporal Cloud in that VPC stops** until you add the CNAME record.
+
+The safe sequence is:
+
+1. Create the PHZ **without associating it with any VPC** that has running Workers.
+2. Add the CNAME record.
+3. Then associate the PHZ with your Worker VPCs.
+
+You can also test the override end-to-end by associating the PHZ first with a non-production VPC, validating resolution, and then attaching production VPCs.
+
+:::
+
 #### 1. Collect your PrivateLink endpoint DNS name
 
 ```bash
@@ -128,14 +142,14 @@ aws ec2 describe-vpc-endpoints \
 # vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com
 ```
 
-Save the **`vpce-*.amazonaws.com`** value -- you will target it in the CNAME record.
+Save the **`vpce-*.amazonaws.com`** value — you will target it in the CNAME record.
 
-#### 2. Create a Route 53 Private Hosted Zone
+#### 2. Create a Route 53 Private Hosted Zone (do not yet attach Worker VPCs)
 
 1. Open _Route 53 → Hosted zones → Create hosted zone_.
 2. Enter the domain chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
 3. Type: _Private hosted zone for Temporal Cloud_.
-4. Associate the hosted zone with every VPC that contains Temporal Workers and/or SDK clients.
+4. Either leave VPC associations empty for now, or associate only a **non-production** VPC for verification. Leave production Worker VPCs detached until step 4.
 5. Create hosted zone.
 
 #### 3. Add a CNAME record
@@ -144,12 +158,16 @@ Inside the new PHZ:
 
 | Field           | Value                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------- |
-| **Record name** | the namespace endpoint (e.g., `payments.abcde.tmprl.cloud`).                          |
+| **Record name** | the Namespace Endpoint (e.g., `payments.abcde.tmprl.cloud`).                          |
 | **Record type** | `CNAME`                                                                               |
 | **Value**       | Your VPC Endpoint DNS name (`vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`) |
-| **TTL**         | 60s is typical; 15s for MRN namespaces; adjust as needed.                             |
+| **TTL**         | 60s is typical; 15s for multi-region Namespaces; adjust as needed.                    |
 
-#### 4. Verify DNS resolution from inside the VPC
+#### 4. Associate the PHZ with your Worker VPCs and verify
+
+Now that the record exists, associate the PHZ with every VPC that contains Temporal Workers or SDK clients (Route 53 → your zone → _Edit settings_ → _Add VPC_).
+
+Verify DNS resolution from inside one of the associated VPCs:
 
 ```bash
 dig payments.abcde.tmprl.cloud
@@ -171,62 +189,11 @@ clientOptions := client.Options{
 
 The DNS resolver inside your VPC returns the private endpoint, while TLS still validates the original hostname—simplifying both code and certificate management.
 
-## Configure Private DNS for Multi-Region Namespaces
+## Configure private DNS for multi-region Namespaces
 
-:::tip Namespaces with High Availability features and AWS PrivateLink
+For Namespaces with [High Availability features](/cloud/high-availability), you need to override DNS for `region.tmprl.cloud` so each region resolves to the local VPC Endpoint, and you need to ensure Workers can reach whichever region is active. Failover is transparent to clients only when this is set up correctly.
 
-Proper networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
-This page describes how to configure routing for Namespaces with High Availability features on AWS PrivateLink.
-
-:::
-
-To use AWS PrivateLink with High Availability features, you may need to:
-
-- Override the regional DNS zone.
-- Ensure network connectivity between the two regions.
-
-This page provides the details you need to set this up.
-
-### Customer side solutions
-
-When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
-Temporal treats each `region.<tmprl_domain>` as a separate zone.
-This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you’re using.
-
-A Namespace's active region is reflected in the target of a CNAME record.
-For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
-
-| Record name                         | Record type | Value                            |
-| ----------------------------------- | ----------- | -------------------------------- |
-| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-west-2.region.tmprl.cloud |
-
-After a failover, the CNAME record will be updated to point to the failover region, for example:
-
-| Record name                         | Record type | Value                            |
-| ----------------------------------- | ----------- | -------------------------------- |
-| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-east-1.region.tmprl.cloud |
-
-The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
-
-<CaptionedImage
-    src="/img/cloud/high-availability/private-link.png"
-    title="Customer side solution example"
-    zoom="true"
-/>
-
-### Setting up the DNS override
-
-To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
-For example, you might set aws-us-west-1.region.tmprl.cloud to target 192.168.1.2.
-In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
-Link that private zone to the VPCs you use for Workers.
-
-When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
-This points to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your internal IP addresses.
-
-Consider how you’ll configure Workers for this setup.
-You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
-This way, Workers can access the newly activated region once failover occurs.
+The complete guidance — including single-cloud (AWS-only) HA, multi-cloud HA (AWS PrivateLink + GCP Private Service Connect), and a recommended failover-testing plan — lives on a single page: [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 
 ## Direct VPCE targeting without per-Namespace DNS {#direct-vpce}
 
@@ -247,6 +214,22 @@ If you bypass DNS, your Workers cannot follow the CNAME to the new region.
 For HA Namespaces, use [private DNS](#configuring-private-dns-for-aws-privatelink) instead.
 
 :::
+
+## Adding PrivateLink from additional AWS accounts
+
+A common pattern is to have separate AWS accounts for different lines of business, environments (staging, production), or compliance scopes (PCI vs non-PCI), each with its own VPC and Workers connecting to the same Temporal Cloud account.
+
+You can create as many AWS PrivateLink VPC endpoints as you need to the same Temporal Cloud regional service — there is nothing to register, approve, or open a ticket for on the Temporal side.
+
+For each additional AWS account or VPC:
+
+1. In that account, create the AWS PrivateLink VPC endpoint targeting the regional service name from the [regions table](#available-aws-regions-privatelink-endpoints-and-dns-record-overrides) — same as in the [creation steps](#creating-an-aws-privatelink-connection) above.
+2. Configure DNS in that VPC. You have two options:
+   - Create a Route 53 Private Hosted Zone in that account scoped to the appropriate VPC(s), following the [private DNS steps](#configuring-private-dns-for-aws-privatelink) above. Each VPC's PHZ should point at the VPC Endpoint local to that VPC.
+   - Or, use [direct VPCE targeting](#direct-vpce) (single-region Namespaces only).
+3. **Optional:** if you want to enforce private-only access for a Namespace, add a Connectivity Rule for each VPC endpoint and attach all of them (plus a public rule, if needed) to the Namespace. See [Connectivity Rules](/cloud/connectivity#connectivity-rules).
+
+There is no upper limit on the number of VPC endpoints you can connect from your side to a regional PrivateLink service. The default per-account limit on private Connectivity Rules is 50 — [contact support](/cloud/support#support-ticket) if you need to raise it.
 
 ## Available AWS regions, PrivateLink endpoints, and DNS record overrides
 
