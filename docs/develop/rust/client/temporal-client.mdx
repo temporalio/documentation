@@ -417,7 +417,7 @@ let handle = client
         ).build(),
     ).await?;
 
-    let result = handle.get_result(WorkflowGetResultOptions::default()).await;
+let result = handle.get_result(WorkflowGetResultOptions::default()).await;
 
-    println!("Result: {:?}", result);
+println!("Result: {:?}", result);
 ```

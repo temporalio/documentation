@@ -84,10 +84,10 @@ The `#[run]` method is required and contains the main Workflow logic. It:
 #[run]
 async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Execute activities, timers, child workflows, etc.
-    let result = ctx.activity(
-        MyActivities::process,
-        input,
-        ActivityOptions::default(),
+    let result = ctx.start_activity(
+        MyActivities::greet,
+        name,
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
     ).await?;
 
     Ok(result)
@@ -96,7 +96,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 
 ## Define Workflow parameters {#workflow-parameters}
 
-Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
+Temporal Workflows may have any number of custom parameters. However, we strongly recommend that structs are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
 
 A method annotated with `#[init]` can have any number of parameters. We recommend passing a single struct that contains all the input fields:
 
@@ -126,7 +126,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+    async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Use the initialized state
         Ok("Processing complete".to_string())
     }
@@ -211,10 +211,13 @@ use std::time::Duration;
 #[run]
 async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
-    ctx.timer(Duration::from_secs(10)).await;
+    ctx.timer(TimerOptions {
+        duration: Duration::from_secs(60),
+        summary: Some("important timer".into())
+    }).await;
 
     // Good - deterministic wait for condition
-    ctx.wait_condition(|s| s.values.len() >= 3).await;
+    ctx.wait_condition(|s| s.data.len() >= 3).await;
 
     // Bad - nondeterministic sleep
     // tokio::time::sleep(Duration::from_secs(10)).await;

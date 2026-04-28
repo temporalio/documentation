@@ -21,5 +21,8 @@ Sleeping is a resource-light operation: it doesn't tie up the process, and you c
 To set a Timer in Rust, use the `timer()` function and pass the duration you want to wait before continuing.
 
 ```rust
-ctx.timer(Duration::from_secs(1)).await;
+ctx.timer(TimerOptions {
+    duration: Duration::from_secs(60),
+    summary: Some("important timer".into())
+}).await;
 ```

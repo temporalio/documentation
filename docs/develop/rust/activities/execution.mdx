@@ -38,10 +38,7 @@ impl GreetingWorkflow {
         let greeting = ctx.start_activity(
             MyActivities::greet,
             name,
-            ActivityOptions {
-                start_to_close_timeout: Some(Duration::from_secs(10)),
-                ..Default::default()
-            }
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
         ).await?;
 
         println!("{}", greeting);
@@ -62,11 +59,17 @@ These are configured as part of the Activity options when scheduling the Activit
 
 - `start_to_close_timeout`
 - `schedule_to_close_timeout`
-- `schedule_to_start_timeout`
+- `with_start_to_close_timeout`
+- `with_schedule_to_close_timeout`
 
 ```rust
 #[workflow_methods]
 impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
     #[run]
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
@@ -74,14 +77,7 @@ impl GreetingWorkflow {
         let greeting = ctx.start_activity(
             MyActivities::greet,
             name,
-            ActivityOptions {
-                // Required timeout
-                start_to_close_timeout: Some(Duration::from_secs(10)),
-                // Optional timeouts:
-                // schedule_to_start_timeout: Some(Duration::from_secs(5)),
-                // schedule_to_close_timeout: Some(Duration::from_secs(10)),
-                ..Default::default()
-            }
+            ActivityOptions::schedule_to_close_timeout(Duration::from_secs(30))
         ).await?;
 
         println!("{}", greeting);
@@ -113,10 +109,7 @@ impl GreetingWorkflow {
         let greeting = ctx.start_activity(
             MyActivities::greet,
             name,
-            ActivityOptions {
-                start_to_close_timeout: Some(Duration::from_secs(10)),
-                ..Default::default()
-            }
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
         ).await?;
 
         println!("{}", greeting);
@@ -128,6 +121,8 @@ impl GreetingWorkflow {
 For concurrent execution:
 
 ```rust
+use temporalio_sdk::workflows::join;
+
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let name = ctx.state(|s| s.name.clone());
@@ -135,25 +130,18 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let greeting = ctx.start_activity(
         MyActivities::greet,
         name,
-        ActivityOptions {
-            schedule_to_close_timeout: Some(Duration::from_secs(10)),
-            ..Default::default()
-        }
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
     );
 
     let language = ctx.start_activity(
         MyActivities::call_greeting_service,
         ActivityLanguages::English,
-        ActivityOptions {
-            start_to_close_timeout: Some(Duration::from_secs(10)),
-            ..Default::default()
-        }
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
     );
 
     // Run in parallel
-    let (greeting_res, language_res) = tokio::join!(greeting, language);
+    let (greeting_res, language_res) = join!(greeting, language);
 }
-
 ```
 
 Use direct `.await` in most cases. More advanced patterns, like parallel execution or cancellation, can be built using Rust’s async primitives.
