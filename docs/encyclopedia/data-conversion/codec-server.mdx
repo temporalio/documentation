@@ -2,19 +2,17 @@
 id: codec-server
 title: Codec Server
 sidebar_label: Codec Server
-description: A Codec Server is an HTTP server that provides remote encoding and decoding for Temporal Payloads.
+description:
+  A Codec Server is an HTTP server that provides remote encoding and decoding for Temporal Payloads, enabling the Web UI
+  and CLI to display decoded data without exposing encryption keys to the Temporal Service.
 slug: /codec-server
 toc_max_heading_level: 4
 keywords:
   - encryption
-  - explanation
-  - keys
+  - codec-server
   - payloads
-  - secrets
   - data-converters
-  - codec-server
 tags:
-  - codec-server
   - Concepts
   - Encryption
   - Data Converters
@@ -23,43 +21,96 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-This page discusses [Codec Server](#codec-server).
+A Codec Server is an HTTP/HTTPS server that you host and operate. It runs your [Payload Codec](/payload-codec) logic to
+encode and decode [Payloads](/dataconversion#payload) on behalf of the Temporal CLI and Web UI. The Codec Server is
+independent of the Temporal Service. Encryption keys and codec logic remain in your environment.
 
-## What is a Codec Server? {#codec-server}
+For setup instructions, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
 
-A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-deployment/data-encryption) to decode your data remotely through endpoints.
+## Why use a Codec Server
 
-{/* This should not have changed with tctl-to-temporal */}
+When you apply a custom [Payload Codec](/payload-codec) for encryption or compression, data stored in the Temporal
+Service is encoded. The Temporal Service never has access to your encryption keys, so it cannot decode this data.
+Without a Codec Server, the Web UI and CLI display raw encoded payloads.
+
+A Codec Server solves this by giving the Web UI and CLI a way to decode payloads on demand, without exposing keys to the
+Temporal Service. Common reasons to run a Codec Server include:
+
+- **Debugging Workflows.** View decoded Workflow inputs, outputs, and Event History in the Web UI instead of reading
+  base64-encoded or encrypted blobs.
+- **Operating from the CLI.** Use commands like `temporal workflow show` and `temporal workflow execute` with readable
+  data, even when payloads are encrypted at rest.
+- **Encoding inputs from the UI and CLI.** When you start or signal a Workflow from the Web UI or CLI, the Codec Server
+  can encode the input before it reaches the Temporal Service, so sensitive data is never sent in plaintext.
+- **Compliance and access control.** Because the Codec Server runs in your environment, you control who can decode
+  payloads and under what conditions. You can layer authorization on top of the decode endpoint to restrict access per
+  user or per Namespace.
+
+## How a Codec Server works
+
+A Codec Server follows the Temporal
+[Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol). It
+exposes two HTTP POST endpoints:
+
+- **`/encode`** accepts plaintext payloads and returns encoded payloads. Used for sending payloads.
+- **`/decode`** accepts encoded payloads and returns decoded payloads. Used for retrieving payloads.
+
+Both endpoints receive and respond with a JSON body containing a `payloads` array of [Payload](/dataconversion#payload)
+objects. The Codec Server passes each payload through your [Payload Codec](/payload-codec), which applies the same
+encoding or decoding logic that your Workers use.
 
 <CaptionedImage
-    src="/diagrams/tctl-diagram-codec-server.svg"
-    title="Codec Server"
-    width="50%"
-    zoom="true"
+  src="/diagrams/codec-server.svg"
+  srcDark="/diagrams/codec-server-dark.svg"
+  width="100%"
+  title="Codec Server"
 />
 
-A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
-It implements two endpoints:
+When the Web UI or CLI needs to display decoded data, it sends the encoded payloads to your Codec Server's `/decode`
+endpoint. The Codec Server decodes the payloads and returns them to the client. The Temporal Service never sees the
+decoded data.
 
-- `/encode`
-- `/decode`
+The `/encode` endpoint works in the other direction. When you start a Workflow or send a Signal from the Web UI or CLI,
+the input is sent to the Codec Server's `/encode` endpoint first, so data reaches the Temporal Service in its encoded
+form.
 
-Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of [Payloads](/dataconversion#payload).
-The endpoints run the Payloads through a [Payload Codec](/payload-codec) before returning them.
+Your Codec Server should use the same Payload Codec implementation as your Workers to ensure consistent encoding and
+decoding.
 
-Most SDKs provide example Codec Server implementation samples, listed here:
+## Codec Server vs. Payload Codec
+
+A Codec Server runs a [Payload Codec](/payload-codec) internally, so the two are directly connected. The difference is
+where the codec logic runs and who calls it.
+
+|                                   | Payload Codec                                                                                       | Codec Server                                                                                            |
+| --------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Purpose**                       | Encodes and decodes Payloads. Applies encryption, compression, or other byte-level transformations. | Hosts a Payload Codec as an HTTP service so the Web UI and CLI can encode and decode Payloads remotely. |
+| **Runs where**                    | In-process, inside your Workers and Clients. Also runs inside the Codec Server.                     | As a standalone HTTP service in your environment, with a Payload Codec inside it.                       |
+| **Called by**                     | The Temporal SDK, automatically on every serialization and deserialization.                         | The Web UI and CLI, over HTTP, when a user views or submits Payload data.                               |
+| **Has access to encryption keys** | Yes. Keys are available in the Worker or Client process.                                            | Yes. Must be configured with the same keys the Payload Codec uses.                                      |
+
+You implement the transformation logic once in a Payload Codec, then host that logic in a Codec Server so the Web UI and
+CLI can use it remotely.
+
+## Securing a Codec Server
+
+Access to a Codec Server should be restricted because it can decode sensitive data. Common approaches include:
+
+- **Network-level restrictions.** Run the Codec Server on `localhost` or behind a VPN. The Web UI can communicate with a
+  Codec Server that is only accessible locally.
+- **Token-based authorization.** Integrate your organization's authentication provider (OAuth, Auth0, or similar).
+  Temporal Cloud can pass access tokens (JWT) to your Codec Server with each request. Verify these tokens against the
+  [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
+
+You may also need [key management infrastructure](/key-management) to share encryption keys between your Workers and the
+Codec Server.
+
+## SDK Codec Server samples
+
+Most Temporal SDKs provide example Codec Server implementations:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
-- [.NET](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
-
-#### Usage
-
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Securing your data](/production-deployment/data-encryption).
-
-To see decoded data when using the Temporal CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and the Temporal CLI.
-When you configure the Codec Server endpoints, the Temporal CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
-
-For details on creating your Codec Server, see [Codec Server Setup](/production-deployment/data-encryption#codec-server-setup).
+- [.NET](https://github.com/temporalio/samples-dotnet/blob/main/src/Encryption/CodecServer/Program.cs)
