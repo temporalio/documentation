@@ -61,7 +61,30 @@ Each Activity method must:
 
 The `ActivityContext` parameter provides access to Activity execution information and capabilities like heartbeating. If you don't need it, you can use `_ctx` as a parameter name.
 
-Activities can also take `Arc<Self>` and be registered using an instance.
+Activities can also take `Arc<Self>` and be registered using an instance. Here's an example using `Arc`:
+
+```rust
+struct SleeperActivities {
+    acts_started: Arc<Semaphore>,
+    acts_done: Arc<Semaphore>,
+}
+
+#[activities]
+impl SleeperActivities {
+    #[activity]
+    async fn sleeper(
+        self: Arc<Self>,
+        ctx: ActivityContext,
+        _: String,
+    ) -> Result<(), ActivityError> {
+        self.acts_started.add_permits(1);
+        // just wait to be cancelled
+        ctx.cancelled().await;
+        self.acts_done.add_permits(1);
+        Err(ActivityError::cancelled())
+    }
+}
+```
 
 Activity parameters should be serializable and deserializable using serde. Use `#[derive(Serialize, Deserialize)]` on your data types:
 
