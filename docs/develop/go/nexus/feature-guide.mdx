@@ -174,6 +174,30 @@ All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-o
 The ctx provided to the handler is automatically set with this deadline, so passing it directly to Temporal Client calls will correctly propagate the timeout. 
 Updates should be short-lived to stay within this deadline.
 
+EVAN
+
+The [nexus_messaging](https://github.com/temporalio/samples-go/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
+
+Use the Nexus library (as shown below) to get the Client that the Worker was initialized with. In this example, the workflow ID is derived from the client ID, with the method "get_workflow_id" converting a given client ID (in this case, the client is passing in a user ID) to generate a workflow ID from it.
+This way the client only needs to know about the identifier they care about.
+
+[nexus-messaging/callerpattern/handler/app.go](https://github.com/temporalio/samples-go/blob/nexus-messaging/callerpattern/handler/app.go)
+
+```go
+func GetWorkflowID(userID string) string {
+	return WorkflowIDPrefix + userID
+}
+
+var GetLanguagesOperation = nexus.NewSyncOperation(service.GetLanguagesOperationName, func(ctx context.Context, input service.GetLanguagesInput, options nexus.StartOperationOptions) (service.GetLanguagesOutput, error) {
+	c := temporalnexus.GetClient(ctx)
+	workflowID := GetWorkflowID(input.UserID)
+    ...
+```
+
+There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-go/tree/main/nexus-messaging/callerpattern/) and [on demand pattern](https://github.com/temporalio/samples-go/tree/main/nexus-messaging/ondemandpattern/).
+Caller pattern shows how to send messages to an existing workflow, while the on demand pattern shows how to start a workflow through Nexus and then send signals to it.
+EVAN
+
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use the `NewWorkflowRunOperation` constructor, which is the easiest way to expose a Workflow as an operation.
