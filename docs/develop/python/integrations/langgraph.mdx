@@ -22,8 +22,9 @@ Temporal's integration with [LangGraph](https://www.langchain.com/langgraph) run
 Temporal Activities, giving your AI agent workflows durable execution, automatic retries, and timeouts.
 
 The plugin supports both the LangGraph **Graph API** (`StateGraph` with nodes and edges) and the **Functional API**
-(`@entrypoint` / `@task` decorators). Each graph node or task executes as a Temporal Activity, so you get configurable
-timeouts and retry policies out of the box.
+(`@entrypoint` / `@task` decorators). Each graph node and task must specify whether it runs as a Temporal Activity or
+directly inside the Workflow — Activity nodes get configurable timeouts and retry policies, while Workflow nodes run
+inline and must be deterministic.
 
 :::info
 
@@ -87,7 +88,10 @@ def build_graph() -> StateGraph:
     g.add_node(
         "process_query",
         process_query,
-        metadata={"start_to_close_timeout": timedelta(seconds=10)},
+        metadata={
+            "execute_in": "activity",
+            "start_to_close_timeout": timedelta(seconds=10),
+        },
     )
     g.add_edge(START, "process_query")
     return g
@@ -131,7 +135,8 @@ if __name__ == "__main__":
 
 ### Set Activity options
 
-Pass Activity options as node `metadata` when calling `add_node`:
+Pass Activity options as node `metadata` when calling `add_node`. Every node must include `"execute_in"` set to either
+`"activity"` or `"workflow"`; the plugin raises an error if it's missing.
 
 ```python
 from datetime import timedelta
@@ -142,11 +147,19 @@ g.add_node(
     "my_node",
     my_node,
     metadata={
+        "execute_in": "activity",
         "start_to_close_timeout": timedelta(seconds=30),
         "retry_policy": RetryPolicy(maximum_attempts=3),
     },
 )
 ```
+
+:::warning
+
+Don't pass a LangGraph `retry_policy=` to `add_node` (or `@task(retry_policy=...)`) — the plugin raises an error if you
+do. Use Temporal's `RetryPolicy` via the node's `metadata` (Graph API) or `activity_options` (Functional API) instead.
+
+:::
 
 ## Functional API
 
@@ -194,7 +207,10 @@ async def react_agent(query: str) -> dict:
 all_tasks = [agent_think, execute_tool]
 
 activity_options = {
-    t.func.__name__: {"start_to_close_timeout": timedelta(seconds=30)}
+    t.func.__name__: {
+        "execute_in": "activity",
+        "start_to_close_timeout": timedelta(seconds=30),
+    }
     for t in all_tasks
 }
 
@@ -227,8 +243,8 @@ worker = Worker(
 
 ## Checkpointer
 
-Use `InMemorySaver` as your checkpointer. Temporal handles durability, so third-party checkpointers (like PostgreSQL or
-Redis) are not needed.
+If your LangGraph code requires a checkpointer (for example, if you're using interrupts), use `InMemorySaver`. Temporal
+handles durability, so third-party checkpointers (like PostgreSQL or Redis) are not needed.
 
 ```python
 import langgraph.checkpoint.memory
@@ -238,16 +254,56 @@ g = graph("my-graph").compile(
 )
 ```
 
+## Runtime context
+
+LangGraph's run-scoped context (`context_schema`) is reconstructed on the Activity side, so nodes and tasks can read
+from `runtime.context`:
+
+```python
+from langgraph.runtime import Runtime
+from typing_extensions import TypedDict
+
+from temporalio.contrib.langgraph import graph
+
+
+class Context(TypedDict):
+    user_id: str
+
+
+async def my_node(state: State, runtime: Runtime[Context]) -> dict:
+    return {"user": runtime.context["user_id"]}
+
+
+# In the Workflow:
+g = graph("my-graph").compile()
+await g.ainvoke({...}, context=Context(user_id="alice"))
+```
+
+Your `context` object must be serializable by the configured Temporal payload converter, since it crosses the Activity
+boundary.
+
+## Stores are not supported
+
+LangGraph's `Store` (for example, `InMemoryStore` passed via `graph.compile(store=...)` or `@entrypoint(store=...)`)
+isn't accessible inside Activity-wrapped nodes: the Store holds live state that can't cross the Activity boundary, and
+Activities may run on a different worker than the Workflow. If you pass a store, the plugin logs a warning on first use
+and `runtime.store` is `None` inside nodes.
+
+Use Workflow state for per-run memory, or an external database (Postgres, Redis, etc.) configured on each worker if you
+need shared memory across runs.
+
 ## Activity vs Workflow execution
 
-By default, every graph node or `@task` runs as a Temporal Activity. You can override this by setting `execute_in` to
-`"workflow"`, which runs the node directly inside the Workflow.
+Every graph node and `@task` must specify `execute_in` — set it to `"activity"` to run as a Temporal Activity, or
+`"workflow"` to run directly inside the Workflow. The plugin raises an error if you forget to set it.
+
+`execute_in` must be set per node or task; it cannot be set in `default_activity_options`.
 
 Understanding when to use each mode is important for correctness and durability.
 
-### When to use an Activity (default)
+### When to use an Activity
 
-Use an Activity — the default — when a node does any of the following:
+Use `execute_in: "activity"` when a node does any of the following:
 
 - **Makes network calls** — LLM calls, HTTP requests, database queries, or any I/O. Activities can do I/O; Workflows
   cannot.
@@ -280,20 +336,20 @@ non-determinism errors on replay.
 
 ```
 Does this node make network calls (LLM, HTTP, DB)?
-├── Yes → Activity (default)
+├── Yes → execute_in: "activity"
 └── No
     Does this node have non-deterministic behavior?
-    ├── Yes → Activity (default)
+    ├── Yes → execute_in: "activity"
     └── No
         Does this node call interrupt()?
-        ├── Yes → Activity (default)
+        ├── Yes → execute_in: "activity"
         └── No
             Is this node orchestrating a subgraph or doing a pure state transform?
             ├── Yes → execute_in: "workflow"
-            └── No → Activity (default, the safe choice)
+            └── No → execute_in: "activity" (the safe choice)
 ```
 
-When in doubt, use the default (Activity). The Activity overhead is small, and it gives you retries, timeouts, and
+When in doubt, choose `"activity"`. The Activity overhead is small, and it gives you retries, timeouts, and
 correctness guarantees.
 
 ### Where LangGraph primitives run
@@ -302,13 +358,12 @@ Not all LangGraph primitives are node functions. Some run in the Workflow contex
 
 | Primitive | Runs in | Notes |
 | --- | --- | --- |
-| Node functions | Activity (default) or Workflow | Controlled by `execute_in` |
-| `@task` functions | Activity (default) or Workflow | Controlled by `activity_options` |
+| Node functions | Activity or Workflow | Controlled by `execute_in` in node `metadata` (required) |
+| `@task` functions | Activity or Workflow | Controlled by `execute_in` in `activity_options` (required) |
 | Conditional edge functions (`add_conditional_edges`) | Workflow | Always runs in the Workflow. Must be **deterministic** and **async** (sync functions trigger `run_in_executor`, which is not allowed in the Temporal sandbox). |
 | `interrupt()` | Activity | Call `interrupt()` inside Activity nodes. The plugin serializes the interrupt and propagates it to the Workflow. |
 | `Command(resume=...)` | Workflow | Used from Workflow code to resume after an interrupt. |
 | `InMemorySaver` checkpointer | Workflow | Runs in-process. Temporal handles durability — external checkpointers are not needed. |
-| Streaming (`astream`) | Workflow | The Workflow drives the stream; each node still executes as an Activity. |
 
 :::tip
 
@@ -368,16 +423,38 @@ LangGraph's `interrupt()` works with Temporal signals and queries to support hum
 See the [human-in-the-loop samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin/graph_api/human_in_the_loop) for
 complete working examples using both Graph and Functional APIs.
 
-## Continue-as-new with caching
+## Static analysis for Workflow nodes
 
-For long-running workflows, use `continue_as_new` with the task result cache to avoid re-executing completed nodes:
+The Temporal sandbox catches non-deterministic code at runtime, but you can catch issues earlier with the
+[`lint_langgraph_workflows.py`](https://github.com/temporalio/documentation/blob/main/sample-apps/python/langgraph_workflow_lint/lint_langgraph_workflows.py)
+static checker.
 
-1. Call `cache()` before continuing to capture completed task results.
-2. Pass the cache to the next Workflow execution.
-3. On the next execution, pass the cache to `graph()` to restore results.
+The linter parses your Python source files, finds LangGraph nodes configured with `execute_in="workflow"`, and flags
+non-deterministic code inside them — mirroring the Temporal sandbox restrictions at lint time rather than runtime.
 
-See the [continue-as-new samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin/graph_api/continue_as_new)
-for complete working examples.
+```bash
+python lint_langgraph_workflows.py my_workflow.py
+```
+
+Example output:
+
+```
+my_workflow.py:17:8: in 'routing_node' — datetime.datetime.now() — use workflow.now() instead
+my_workflow.py:18:11: in 'routing_node' — random.choice() — use workflow.random() instead
+my_workflow.py:19:4: in 'routing_node' — print() — use workflow.logger instead
+
+3 warning(s) found in workflow nodes.
+```
+
+The linter checks for:
+- **Time/date calls** — `datetime.now()`, `time.time()`, `time.sleep()`
+- **Randomness** — `random.randint()`, `uuid.uuid4()`, `secrets.*`
+- **Network I/O** — `requests`, `httpx`, `aiohttp`, `urllib`, `http.client`
+- **File I/O** — `open()`, `pathlib.Path.read_text()`, `shutil`, `glob`
+- **OS/subprocess** — `os.environ`, `subprocess.run()`, `os.system()`
+- **Other** — `print()`, `multiprocessing`, `socket`
+
+Activity nodes are not checked — they can safely use all of these.
 
 ## Samples
 
@@ -388,7 +465,6 @@ supported patterns across both APIs:
 | --- | --- | --- | --- |
 | Hello World | Yes | Yes | Simplest possible single-node graph |
 | Human-in-the-loop | Yes | Yes | `interrupt()` with Temporal signals and queries |
-| Continue-as-new | Yes | Yes | Long-running workflows with task result caching |
 | ReAct Agent | Yes | Yes | Tool-calling agent loop |
 | Control Flow | — | Yes | Parallel execution, loops, and branching |
 
