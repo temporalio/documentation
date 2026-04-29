@@ -17,7 +17,7 @@ tags:
   - Serverless
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import CaptionedImage from '@site/src/components/images/CaptionedImage';
 
 This page covers the following:
 
@@ -53,19 +53,12 @@ Temporal does not need to know anything about the Worker's infrastructure.
 
 With Serverless Workers, Temporal starts the Worker.
 
-<figure>
-  <ThemedImage
-    alt="Serverless invocation flow"
-    sources={{
-      light: '/diagrams/serverless-worker-flow.svg',
-      dark: '/diagrams/serverless-worker-flow-dark.svg',
-    }}
-  />
-  <figcaption>
-    Temporal's Worker Controller Instance invokes a Serverless Worker when Tasks arrive on a Task Queue with a compute
-    provider configured.
-  </figcaption>
-</figure>
+<CaptionedImage
+  src="/diagrams/serverless-worker-flow.svg"
+  srcDark="/diagrams/serverless-worker-flow-dark.svg"
+  alt="Serverless invocation flow"
+  title="Temporal's Worker Controller Instance invokes a Serverless Worker when Tasks arrive on a Task Queue with a compute provider configured."
+/>
 
 Temporal's internal Worker Controller Instance (WCI) decides when to start, scale, and stop compute invocations.
 
@@ -120,19 +113,12 @@ If both scale dynamically, the long-lived Workers may scale up to handle the sam
 
 A single Serverless Worker invocation has three phases: init, work, and shutdown.
 
-<figure>
-  <ThemedImage
-    alt="Serverless Worker lifecycle"
-    sources={{
-      light: '/diagrams/serverless-worker-lifecycle.svg',
-      dark: '/diagrams/serverless-worker-lifecycle-dark.svg',
-    }}
-  />
-  <figcaption>
-    The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long
-    the Worker waits for in-flight Tasks to finish before shutdown hooks run.
-  </figcaption>
-</figure>
+<CaptionedImage
+  src="/diagrams/serverless-worker-lifecycle.svg"
+  srcDark="/diagrams/serverless-worker-lifecycle-dark.svg"
+  alt="Serverless Worker lifecycle"
+  title="The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish before shutdown hooks run. Diagram is not to scale. Shutdown hooks typically take less than a few seconds."
+/>
 
 During the **init** phase, the Worker initializes and establishes a client connection to Temporal.
 
