@@ -166,7 +166,7 @@ To enable Principal Atribution for a Namespace, contact [Temporal Cloud support]
 ### Self-hosted Temporal
 
 In self-hosted Temporal, you can control Principal Attribution with a dynamic config flag scoped to the Namespace. 
-When enabled, the Principal returned by the Authorizer is stamped on Workflow history events.
+When enabled, the Principal returned by the `Authorizer` is stamped on Workflow history events.
 To enable, set `frontend.enablePrincipalPropagation` to `true` for the appropriate Namespace.
 
 When using the default `Authorizer` with the default JWT `ClaimMapper`, the following values are populated:
