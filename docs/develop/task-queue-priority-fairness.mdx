@@ -330,17 +330,17 @@ Each field of `Priority` (`priority_key`, `fairness_key`, `fairness_weight`) is 
 
 **Activity inheritance order:**
 
-1. [Task Queue configuration override](#fairness-weight-overrides)
+1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue
 2. Value set explicitly in the Activity options
-3. Inherited from the calling Workflow's `Priority`
-4. Default (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
+3. Inherited from the calling Workflow
+4. Default value (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
 
 **Workflow inheritance order:**
 
-1. [Task Queue configuration override](#fairness-weight-overrides)
+1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue
 2. Value set explicitly in the Workflow start options
-3. Inherited from the parent Workflow's `Priority` (Child Workflows only)
-4. Default (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
+3. Inherited from the parent Workflow (Child Workflows only)
+4. Default value (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
 
 Continue-As-New inherits from the current execution unless explicit values are passed.
 
