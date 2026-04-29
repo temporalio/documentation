@@ -19,13 +19,13 @@ import SdkTabs from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
 distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
-Fairness aims to prevent one set of Tasks from blocking others within the same priority level.
+Fairness prevents one set of Tasks from blocking others within the same priority level.
 
-You can use Priority and Fairness individually or combine them to express Fairness within a Priority tier.
+You can use Priority and Fairness individually or combine them to express Fairness within a Priority level.
 
 ## Task Queue Priority
 
-**Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a _single_ Task Queue. Each priority level acts as a sub-queue that separates Tasks so that high priority Tasks can cut in front of low priority Tasks.
+**Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a Task Queue. Each priority level acts as a sub-queue that separates Tasks so that high priority Tasks can cut in front of low priority Tasks.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-details.png"
@@ -44,10 +44,12 @@ Priority is available for both self-hosted Temporal instances and Temporal Cloud
 
 To enable Priority in self-hosted Temporal, set the dynamic config `matching.useNewMatcher` to `true` on a Task Queue, Namespace, or globally. Priority is enabled by default in Temporal Cloud.
 
+To use Priority, you need to set a priority key at the Workflow, Activity, or Child Workflow level.
+
 You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value
 implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
-Priority of `3`. Activities will inherit the priority level of their Workflow if a separate Activity priority level
-isn't set.
+Priority of `3`. Activities and Child Workflows will inherit their Workflow's priority unless they explicitly specify
+their own priority.
 
 When you set a priority level within your Task Queues, this means that they will **all** be processed in priority order.
 For example, all of your priority level `1` Tasks will execute before your priority level `2` Tasks and so on. So your
