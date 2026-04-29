@@ -5,7 +5,7 @@ Description: Creates an IAM role that Temporal Cloud can assume to invoke multip
 Parameters:
   AssumeRoleExternalId:
     Type: String
-    Description: The External ID provided by Temporal Cloud
+    Description: A string you choose. Can be any value.
     AllowedPattern: '[a-zA-Z0-9_+=,.@-]*'
     MinLength: 5
     MaxLength: 45
@@ -34,7 +34,7 @@ Metadata:
           - RoleName
     ParameterLabels:
       AssumeRoleExternalId:
-        default: "External ID (provided by Temporal Cloud)"
+        default: "External ID"
       LambdaFunctionARNs:
         default: "Lambda Function ARNs (comma-separated list)"
       RoleName:
