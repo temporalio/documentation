@@ -117,7 +117,7 @@ impl CancellationWorkflow {
     #[run]
     pub async fn run(ctx: &mut WorkflowContext<Self>, _input: ()) -> WorkflowResult<String> {
         let mut activity_fut = ctx.start_activity(
-            CancellationActivities::long_running_activity,
+            CancellationActivities::long_running_cancellable_activity,
             (),
             activity_opts(),
         );
