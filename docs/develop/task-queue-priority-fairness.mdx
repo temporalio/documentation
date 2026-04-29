@@ -51,7 +51,7 @@ their own priority.
 
 When Priority is enabled, all Tasks within a Task Queue will be processed in Priority order. For example, all priority level `1` Tasks will execute before the first priority level `2` Task, and so on. Lower priority Tasks will be blocked until all higher priority Tasks finish running. Tasks are scheduled by default to run in first-in-first-out (FIFO) order within each priority level. If you need greater control of task ordering within a priority level, such as preventing large tenants from overwhelming small tenants, check out [the Fairness section](#task-queue-fairness).
 
-You can do this via the Temporal CLI where you set the priority key parameter on a Workflow:
+You can set a Workflow's priority key via the CLI like so:
 
 ```
 temporal workflow start \
