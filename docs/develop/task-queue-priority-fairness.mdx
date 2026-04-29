@@ -220,12 +220,6 @@ Each fairness key creates its own "virtual queue", allowing you to organize Task
 
 By default, each fairness key is weighted equally in the round-robin, with a _fairness weight_ of 1.0. This behavior can be customized by assigning a different fairness weight to a key. For example, Tasks belonging to a fairness key with a weight of 2.0 will be dispatched twice as often as keys with the default weight.
 
-:::info
-
-When you start using fairness keys, it switches your active Task Queues to fairness mode. That means new Tasks are created with Fairness and the existing queued Tasks get processed before any of the new ones.
-
-:::
-
 ### When to use Fairness
 
 Fairness is intended to address common situations like:
