@@ -553,6 +553,8 @@ temporal worker deployment create-version \
 </TabItem>
 </Tabs>
 
+To verify that Temporal can reach your Lambda function, go to **Workers** > **Deployments** > select your deployment > open the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can assume the IAM role and invoke the function.
+
 ## 5. Set version as current {#set-current-version}
 
 If you created the version through the Temporal UI, the version is already current and you can skip this step.
