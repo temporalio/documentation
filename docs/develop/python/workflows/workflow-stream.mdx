@@ -38,7 +38,7 @@ The API may change before general availability.
 
 :::
 
-For a runnable end-to-end example, see the [Workflow Streams sample](https://github.com/temporalio/samples-python/tree/main/pubsub) — it covers more ground than the snippets here.
+For runnable end-to-end examples, see the [Workflow Streams samples](https://github.com/temporalio/samples-python/tree/main/workflow_stream). The directory has four scenarios: basic publish/subscribe with heterogeneous topics, a reconnecting subscriber that demonstrates offset-based resume, an external (non-Activity) publisher pattern, and a long-running ticker that bounds its log via `truncate()`.
 
 ## Prerequisites
 
@@ -344,7 +344,7 @@ The user-facing API hides three pieces of machinery worth understanding when you
 
 ## See also
 
-- [Workflow Streams sample (samples-python)](https://github.com/temporalio/samples-python/tree/main/pubsub) — runnable end-to-end example.
+- [Workflow Streams samples (samples-python)](https://github.com/temporalio/samples-python/tree/main/workflow_stream) — four runnable scenarios covering basic publish/subscribe, reconnecting subscribers, external publishers, and bounded logs via `truncate()`.
 - [`temporalio.contrib.workflow_stream` API reference](https://python.temporal.io/temporalio.contrib.workflow_stream.html).
 - [Workflow message passing](/develop/python/workflows/message-passing) — Signals, Updates, and Queries that Workflow Streams is built on.
 - [Payload conversion](/develop/python/data-handling/data-conversion) — converters and codecs.
