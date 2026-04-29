@@ -47,7 +47,7 @@ aws lambda create-function \\
   --function-name ${lambdaFunctionName} \\
   --runtime provided.al2023 \\
   --handler bootstrap \\
-  --role arn:aws:iam::<YOUR_ACCOUNT_ID>:role/my-temporal-worker-execution \\
+  --role <EXECUTION_ROLE_ARN> \\
   --zip-file fileb://function.zip \\
   --timeout 600 \\
   --memory-size 256 \\
