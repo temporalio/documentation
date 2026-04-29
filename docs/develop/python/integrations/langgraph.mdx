@@ -34,8 +34,9 @@ future versions.
 :::
 
 Code snippets in this guide are taken from the
-[LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin). Refer to the
-samples for the complete code.
+[LangGraph plugin samples](https://github.com/DABH/samples-python/tree/langgraph-samples/langgraph_plugin) (on a PR
+branch — see [samples-python#289](https://github.com/temporalio/samples-python/pull/289)). Refer to the samples for the
+complete code.
 
 ## Prerequisites
 
@@ -420,46 +421,14 @@ LangGraph's `interrupt()` works with Temporal signals and queries to support hum
 3. An external process (UI, CLI) queries the draft and sends approval via a Temporal signal.
 4. The graph resumes — `interrupt()` returns the signal value and the node completes.
 
-See the [human-in-the-loop samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin/graph_api/human_in_the_loop) for
+See the [human-in-the-loop samples](https://github.com/DABH/samples-python/tree/langgraph-samples/langgraph_plugin/graph_api/human_in_the_loop) for
 complete working examples using both Graph and Functional APIs.
-
-## Static analysis for Workflow nodes
-
-The Temporal sandbox catches non-deterministic code at runtime, but you can catch issues earlier with the
-[`lint_langgraph_workflows.py`](https://github.com/temporalio/documentation/blob/main/sample-apps/python/langgraph_workflow_lint/lint_langgraph_workflows.py)
-static checker.
-
-The linter parses your Python source files, finds LangGraph nodes configured with `execute_in="workflow"`, and flags
-non-deterministic code inside them — mirroring the Temporal sandbox restrictions at lint time rather than runtime.
-
-```bash
-python lint_langgraph_workflows.py my_workflow.py
-```
-
-Example output:
-
-```
-my_workflow.py:17:8: in 'routing_node' — datetime.datetime.now() — use workflow.now() instead
-my_workflow.py:18:11: in 'routing_node' — random.choice() — use workflow.random() instead
-my_workflow.py:19:4: in 'routing_node' — print() — use workflow.logger instead
-
-3 warning(s) found in workflow nodes.
-```
-
-The linter checks for:
-- **Time/date calls** — `datetime.now()`, `time.time()`, `time.sleep()`
-- **Randomness** — `random.randint()`, `uuid.uuid4()`, `secrets.*`
-- **Network I/O** — `requests`, `httpx`, `aiohttp`, `urllib`, `http.client`
-- **File I/O** — `open()`, `pathlib.Path.read_text()`, `shutil`, `glob`
-- **OS/subprocess** — `os.environ`, `subprocess.run()`, `os.system()`
-- **Other** — `print()`, `multiprocessing`, `socket`
-
-Activity nodes are not checked — they can safely use all of these.
 
 ## Samples
 
-The [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin) demonstrate all
-supported patterns across both APIs:
+The [LangGraph plugin samples](https://github.com/DABH/samples-python/tree/langgraph-samples/langgraph_plugin)
+demonstrate all supported patterns across both APIs (samples are on a PR branch — see
+[samples-python#289](https://github.com/temporalio/samples-python/pull/289)):
 
 | Sample | Graph API | Functional API | Description |
 | --- | --- | --- | --- |
