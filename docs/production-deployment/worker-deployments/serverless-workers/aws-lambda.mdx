@@ -43,7 +43,7 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 
 :::tip
 
-If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample Workflows and Activities from the [Go Quickstart](/develop/go/set-up). The Worker code samples on this page already set a default versioning behavior, so you don't need to modify the Workflow or Activity code.
+If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample Workflows and Activities from the [Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker). The Worker code samples on this page already set a default versioning behavior, so you don't need to modify the Workflow or Activity code.
 
 :::
 
@@ -54,7 +54,7 @@ If you are just exploring the Serverless Worker feature and don't have a Workflo
 
 :::tip
 
-If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample Workflows and Activities from the [Python Quickstart](/develop/python/set-up). The Worker code samples on this page already set a default versioning behavior, so you don't need to modify the Workflow or Activity code.
+If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample Workflows and Activities from the [Python Lambda Worker sample](https://github.com/temporalio/samples-python/tree/main/lambda_worker). The Worker code samples on this page already set a default versioning behavior, so you don't need to modify the Workflow or Activity code.
 
 :::
 
@@ -65,7 +65,7 @@ If you are just exploring the Serverless Worker feature and don't have a Workflo
 
 :::tip
 
-If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample Workflows and Activities from the [TypeScript Quickstart](/develop/typescript/set-up). The Worker code samples on this page already set a default versioning behavior, so you don't need to modify the Workflow or Activity code.
+If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample Workflows and Activities from the [TypeScript Lambda Worker sample](https://github.com/temporalio/samples-typescript/tree/main/lambda-worker). The Worker code samples on this page already set a default versioning behavior, so you don't need to modify the Workflow or Activity code.
 
 :::
 
@@ -540,8 +540,8 @@ temporal worker deployment create-version \
   --namespace <YOUR_NAMESPACE> \
   --deployment-name my-app \
   --build-id build-1 \
-  --aws-lambda-function-arn arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:my-temporal-worker \
-  --aws-lambda-assume-role-arn arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME> \
+  --aws-lambda-function-arn <LAMBDA_FUNCTION_ARN> \
+  --aws-lambda-assume-role-arn <INVOCATION_ROLE_ARN> \
   --aws-lambda-assume-role-external-id <EXTERNAL_ID>
 ```
 
