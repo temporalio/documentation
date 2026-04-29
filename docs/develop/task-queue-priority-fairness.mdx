@@ -60,8 +60,8 @@ You can toggle Priority enablement on a Task Queue, Namespace, or globally by se
 
 You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value
 implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
-Priority of `3`. Activities will inherit the priority level of their Workflow if a separate Activity priority level
-isn't set.
+Priority of `3`. Activities and Child Workflows inherit `Priority` (including `fairness_key` and `fairness_weight`) from
+the Workflow that created them unless overridden. See [Inheritance](#inheritance).
 
 When you set a priority level within your Task Queues, this means that they will **all** be processed in priority order.
 For example, all of your priority level `1` Tasks will execute before your priority level `2` Tasks and so on. So your
@@ -323,6 +323,67 @@ each priority level.
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
   alt="High-level of how priority and fairness work together"
 />
+
+### Inheritance
+
+Each field of `Priority` (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
+For each field, the effective value comes from the first layer below that has it set.
+
+**For an Activity:**
+
+1. Task Queue config override (admin-set via `temporal task-queue config set`; affects `fairness_weight` only)
+2. Explicit value set on the Activity's options at the call site in Workflow code
+3. Inherited from the calling Workflow's effective `Priority` (resolved by the same chain when the Workflow started)
+4. Default
+
+**For a Workflow:**
+
+Same chain, one layer shorter:
+
+1. Task Queue config override (`fairness_weight` only)
+2. Explicit value set on `StartWorkflowOptions.priority` (or equivalent) when started
+3. Inherited from the parent Workflow's effective `Priority` (Child Workflows only; top-level Workflows have no parent)
+4. Default
+
+**Defaults**, when no other layer applies:
+
+| Field | Default |
+|-------|---------|
+| `priority_key` | `3` (midpoint of the configured range; the default range is 1 to 5) |
+| `fairness_key` | `""` (empty string) |
+| `fairness_weight` | `1.0` |
+
+Continue-As-New inherits from the current execution unless explicit values are passed.
+
+:::warning `fairness_weight` override beats explicit code
+
+The Task Queue config override sits above explicit values set in Workflow or Activity options.
+If you set `fairness_weight=5.0` on a Workflow but an admin has configured a weight override for that `fairness_key` on the Task Queue, the override wins.
+See [Fairness weight overrides](#fairness-weight-overrides).
+
+:::
+
+:::warning Empty string on `fairness_key` means "inherit", not "no key"
+
+For `fairness_key`, an empty string is the signal to fall through to the next layer; it is not a way to clear the key.
+If a Workflow has a non-empty `fairness_key`, an Activity or Child Workflow started from it cannot be overridden to the empty string.
+
+Tasks with no `fairness_key` set share an implicit empty-string bucket alongside named keys.
+That bucket is unreachable from a parent that has a non-empty key.
+To put an Activity in a different fairness bucket from its parent, set a different non-empty `fairness_key`.
+To use the unkeyed bucket, don't set a non-empty key on the parent.
+
+:::
+
+#### Example
+
+A Workflow is started with `priority_key=1`, `fairness_key="tenant-a"`, and no `fairness_weight` set.
+It executes an Activity with no `Priority` set at all.
+The Activity's effective `Priority` is `priority_key=1`, `fairness_key="tenant-a"`, `fairness_weight=1.0`.
+Each field is resolved independently: two fall through to the Workflow layer, one falls through to the default.
+
+If the same Workflow instead executes an Activity with only `priority_key=5` set, the Activity's effective `Priority` is `priority_key=5`, `fairness_key="tenant-a"`, `fairness_weight=1.0`.
+Only the field that was explicitly set is overridden.
 
 ### How to use Fairness
 
