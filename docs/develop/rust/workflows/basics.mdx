@@ -250,15 +250,15 @@ In synchronous [`Signal`](/develop/rust/workflows/message-passing#signals) and [
 
 ## Workflow return types {#return-types}
 
-The `#[run]` method must return `WorkflowResult<T>`. This is a type alias for `Result<T, WorkflowExecution Error>`. 
+The `#[run]` method must return `WorkflowResult<T>`. This is a type alias for `Result<T, WorkflowTermination>`. 
 
-For errors, use a `WorkflowExecutionError`:
+For errors, use `WorkflowTermination::Failed` which can be constructed from other error types via `into()`:
 
 ```rust
 #[run]
 async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     if some_validation_fails {
-        return Err(WorkflowExecutionError::new("validation_failed", "Input is invalid"));
+        return Err(anyhow::anyhow!("validation_failed: Input is invalid").into());
     }
 
     Ok("Success".to_string())
