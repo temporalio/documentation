@@ -601,6 +601,14 @@ var handle = await Client.StartWorkflowAsync(
 </SdkTabs.DotNet>
 </SdkTabs>
 
+### Switching Fairness with an active backlog
+
+When Fairness is enabled on a Namespace, Task Queues in the Namespace begin honoring fairness keys on Tasks for dispatch ordering. Existing queued Tasks are dispatched first, in their original priority + FIFO order. Fairness keys on Tasks already in the backlog do not retroactively affect their dispatch order.
+
+When Fairness is disabled on a Namespace, Task Queues in the Namespace stop honoring fairness keys for dispatch ordering. The existing fairness-ordered backlog is dispatched first, in its original fairness order. After the backlog drains, Task Queues run in priority-only mode.
+
+In both directions, the existing backlog is dispatched before any new Tasks queued under the new mode. New Tasks dispatch only after the backlog fully drains. Tasks are not lost in either transition.
+
 ### Set rate limits at the Task Queue level
 
 When you're starting to scale your Temporal Services, you may decide to set [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits) limits to test your workload or experiment with provisioning benchmarks. You can set the RPS limit at the Task Queue level with `queue-rps-limit` in the CLI.
