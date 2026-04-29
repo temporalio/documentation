@@ -61,9 +61,9 @@ Workflow is not terminated and remains open, so you can deploy a fix and allow t
    1. Retrieve the payloads from the object store when needed during execution.
 
    This is called the
-   [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern). You can
-   implement your own claim check pattern by using a custom [Payload Codec](/payload-codec), or use
-   [External Storage](/external-storage).
+   [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern). The claim
+   check pattern is built into the SDKs as [External Storage](/external-storage), or you can implement your own claim
+   check pattern by using a custom [Payload Codec](/paload-codec)
 
    This is the most reliable way to avoid hitting payload size limits. Consider implementing the claim check pattern for
    Workflows and Activities that have the potential to receive or return large payloads, even if they are currently
