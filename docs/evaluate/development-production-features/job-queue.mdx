@@ -22,9 +22,11 @@ A job is a single, discrete unit of work that runs asynchronously in the backgro
 
 A job queue is the system that manages these jobs: accepting work, dispatching it to workers, retrying on failure, and providing visibility into what's running and what failed.
 
-**Standalone Activities are Temporal's job queue.**
+**[Standalone Activities](/standalone-activity) are Temporal's job queue.**
 
 They let you use Temporal Activities as background jobs, in addition to using the same Activities as steps inside a Workflow. You write an Activity once and can run it either as a background job or as part of a multi-step Workflow.
+
+Under the hood, Standalone Activities use Temporal's [Task Queues](/task-queue) for dispatching work to Workers.
 
 Temporal provides stronger guarantees, better visibility, and more control than traditional job queues - while remaining cost-effective for high-volume use cases and offering a clean upgrade path to multi-step workflow orchestration.
 
@@ -53,9 +55,10 @@ Standalone Activities add the ability to execute any Temporal Activity as a top-
 - Lifecycle controls: cancel, pause, unpause, reset, terminate
 - Manual completion for external integrations & on-call management
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/standalone-activity" text="Standalone Activity concepts and getting started" archetype="encyclopedia" />
-  <RelatedReadItem path="/develop/go/activities/standalone-activities" text="Go SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/activities/standalone-activities" text="Python SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/activities/standalone-activities" text=".NET SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
-</RelatedReadContainer>
+## Next steps
+
+Learn more about [Standalone Activity concepts, features, and limitations](/standalone-activity), or jump to a language-specific quickstart:
+
+- [Go SDK - Standalone Activities quickstart and code sample](/develop/go/activities/standalone-activities)
+- [Python SDK - Standalone Activities quickstart and code sample](/develop/python/activities/standalone-activities)
+- [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities)
