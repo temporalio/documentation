@@ -601,7 +601,7 @@ var handle = await Client.StartWorkflowAsync(
 </SdkTabs.DotNet>
 </SdkTabs>
 
-### Switching Fairness with an active backlog
+### Enabling or disabling Fairness with an active backlog
 
 When Fairness is enabled on a Namespace, Task Queues in the Namespace begin honoring fairness keys on Tasks for dispatch ordering. Existing queued Tasks are dispatched first, in their original priority + FIFO order. Fairness keys on Tasks already in the backlog do not retroactively affect their dispatch order.
 
