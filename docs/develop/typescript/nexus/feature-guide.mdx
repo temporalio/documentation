@@ -198,6 +198,36 @@ The handler context also exposes `ctx.requestDeadline` as an optional `Date`, re
 Note that this is the deadline for the current _request_, not the overall operation.
 Use it to make decisions about whether to start work that may not finish in time, or to set timeouts on downstream calls.
 
+EVAN
+
+The [nexus_messaging](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
+
+Use the Nexus library (as shown below) to get the Client that the Worker was initialized with. In this example, the workflow ID is derived from the client ID, with the method "get_workflow_id" converting a given client ID (in this case, the client is passing in a user ID) to generate a workflow ID from it.
+This way the client only needs to know about the identifier they care about.
+
+[nexus-messaging/src/callerpattern/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/nexus-messaging/src/callerpattern/service/handler.ts)
+
+```ts
+import * as temporalNexus from '@temporalio/nexus';
+
+function workflowIdForUser(userId: string): string {
+  return `GreetingWorkflow_for_${userId}`;
+}
+
+export const nexusGreetingServiceHandler = nexus.serviceHandler(nexusGreetingService, {
+  getLanguages: async (ctx, input: GetLanguagesInput) => {
+    const client = temporalNexus.getClient();
+    const handle = client.workflow.getHandle(workflowIdForUser(input.userId));
+    return await handle.query(getLanguagesQuery);
+  },
+
+    ...
+```
+
+There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging/callerpattern/) and [on demand pattern](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging/ondemandpattern/).
+Caller pattern shows how to send messages to an existing workflow, while the on demand pattern shows how to start a workflow through Nexus and then send signals to it.
+EVAN
+
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use `@temporalio/nexus`'s `WorkflowRunOperationHandler` helper class to easily expose a Temporal Workflow as a Nexus Operation.
