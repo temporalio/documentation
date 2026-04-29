@@ -218,9 +218,7 @@ Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and _fair
 
 These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key in turn when selecting the next Task to dispatch. This prevents any single fairness key from hogging Worker capacity, even if one key has a much larger backlog than the others.
 
-By default, each fairness key is weighted equally in the round-robin. This behavior can be customized by assigning a _fairness weight_ to a key.
-
-Fairness weight can be used to give more or less resources to a fairness key. By default, fairness keys have a fairness weight of 1.0. Tasks belonging to a fairness key with weight of 2.0 will be dispatched twice as often as other keys with a weight of 1.0.
+By default, each fairness key is weighted equally in the round-robin, with a _fairness weight_ of 1.0. This behavior can be customized by assigning a different fairness weight to a key. For example, Tasks belonging to a fairness key with a weight of 2.0 will be dispatched twice as often as keys with the default weight.
 
 Using the fairness keys and their corresponding fairness weights lets you define levels with weighted capacities. For example, you can have free, basic, and premium levels and Fairness makes sure that an influx of premium Tasks don't overwhelm your resources and block free and basic Tasks.
 
