@@ -59,7 +59,8 @@ func main() {
 
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
-Each Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors) at registration time, either `AutoUpgrade` or `Pinned`.
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or `Pinned`.
+Set it per-Workflow at registration time, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 
 The `Options` callback gives you access to the same registration methods you use with a traditional Worker: `RegisterWorkflow`, `RegisterWorkflowWithOptions`, `RegisterActivity`, `RegisterActivityWithOptions`, and `RegisterNexusService`.
 

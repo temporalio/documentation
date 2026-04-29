@@ -62,7 +62,8 @@ Worker Versioning is required for Serverless Workers.
 The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
 Set the Task Queue, Workflows, and Activities through `worker_config`, which accepts the same keyword arguments as the `Worker` constructor.
 
-Each Workflow registered with the Worker must declare a [versioning behavior](/worker-versioning#versioning-behaviors) in the `@workflow.defn` decorator, either `PINNED` or `AUTO_UPGRADE`:
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Set it per-Workflow in the `@workflow.defn` decorator, or set a worker-level default with `default_versioning_behavior` in the worker config.
 
 ```python {5}
 from temporalio import workflow
@@ -128,6 +129,7 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Python SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
+```python
 from temporalio.common import WorkerDeploymentVersion
 from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
 from temporalio.contrib.aws.lambda_worker.otel import apply_defaults
