@@ -51,7 +51,7 @@ aws lambda create-function \\
   --zip-file fileb://function.zip \\
   --timeout 600 \\
   --memory-size 256 \\
-  --environment "Variables={HOME=/tmp,TEMPORAL_ADDRESS=${namespace}.tmprl.cloud:7233,TEMPORAL_NAMESPACE=${namespace},TEMPORAL_API_KEY=<your-api-key>}"`;
+  --environment '{"Variables":{"HOME":"/tmp","TEMPORAL_ADDRESS":"${namespace}.tmprl.cloud:7233","TEMPORAL_NAMESPACE":"${namespace}","TEMPORAL_API_KEY":"<your-api-key>"}}'`;
 }
 
 function generateIamScript(config) {
