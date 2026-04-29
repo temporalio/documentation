@@ -214,7 +214,7 @@ await Workflow.ExecuteChildWorkflowAsync(
 
 ## Task Queue Fairness
 
-Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and _fairness weights_ within a Task Queue. The fairness keys are used to describe your Task structure. Each fairness key creates its own "virtual queue" within a Task Queue, allowing you to organize Tasks into logical groups like tenants, applications, or workload types.
+Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and _fairness weights_ within a Task Queue. Each fairness key creates its own "virtual queue" within a Task Queue, allowing you to organize Tasks into logical groups like tenants, applications, or workload types.
 
 These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key in turn when selecting the next Task to dispatch. The round-robin approach essentially prevents any single fairness key from hogging Worker capacity. This ensures that Tasks from one fairness key can't completely block Tasks from other keys, even if one key has a much larger backlog than the others.
 
