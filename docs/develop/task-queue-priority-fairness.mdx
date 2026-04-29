@@ -60,7 +60,7 @@ You can toggle Priority enablement on a Task Queue, Namespace, or globally by se
 
 You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value
 implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
-Priority of `3`. Activities and Child Workflows inherit `Priority` (including `fairness_key` and `fairness_weight`) from
+Priority of `3`. Activities and Child Workflows inherit Priority (including `fairness_key` and `fairness_weight`) from
 the Workflow that created them unless overridden. See [Inheritance](#inheritance).
 
 When you set a priority level within your Task Queues, this means that they will **all** be processed in priority order.
@@ -326,18 +326,18 @@ each priority level.
 
 ### Inheritance
 
-Each field of `Priority` (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
+Each field of Priority (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
 
-**Activity inheritance order:**
+**Activity inheritance order** (highest precedence first):
 
-1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue
+1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue (`fairness_weight` only)
 2. Value set explicitly in the Activity options
 3. Inherited from the calling Workflow
 4. Default value (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
 
-**Workflow inheritance order:**
+**Workflow inheritance order** (highest precedence first):
 
-1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue
+1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue (`fairness_weight` only)
 2. Value set explicitly in the Workflow start options
 3. Inherited from the parent Workflow (Child Workflows only)
 4. Default value (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
