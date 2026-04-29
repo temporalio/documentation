@@ -50,12 +50,7 @@ A lower value implies higher priority, so `1` is the highest priority level. If 
 Priority of `3`. Activities and Child Workflows will inherit their Workflow's priority unless they explicitly specify
 their own priority.
 
-When you set a priority level within your Task Queues, this means that they will **all** be processed in priority order.
-For example, all of your priority level `1` Tasks will execute before your priority level `2` Tasks and so on. So your
-lower priority Tasks will be blocked until the higher priority Tasks finish running. Tasks with the same priority level
-are scheduled to run in first-in-first-out (FIFO) order. If you need more flexibility to allocate resources to Tasks of
-the same type, like processing payments for multiple e-commerce platforms, check out
-[the Fairness section](#task-queue-fairness).
+When Priority is enabled, all Tasks within a Task Queue will be processed in Priority order. For example, all priority level `1` Tasks will execute before the first priority level `2` Task, and so on. Lower priority Tasks will be blocked until all higher priority Tasks finish running. Tasks are scheduled by default to run in first-in-first-out (FIFO) order within each priority level. If you need greater control of task ordering within a priority level, such as preventing large tenants from overwhelming small tenants, check out [the Fairness section](#task-queue-fairness).
 
 You can do this via the Temporal CLI where you set the priority key parameter on a Workflow:
 
