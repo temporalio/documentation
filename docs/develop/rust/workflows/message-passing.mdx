@@ -298,15 +298,10 @@ wf_handle.signal(
 #### From a Workflow
 
 ```rust
-let signal_res = ctx.signal_workflow(SignalWorkflowOptions::new(
-    "workflow-id-1",
-    "run-id-1",
-    "approve",
-    serde_json::to_vec(&ApproveInput {
-        name: "Ziggy".to_string(),
-    }),
-)).await;
-```
+let signal_res = ctx
+    .external_workflow("workflow-id-1", Some("run-id-1".into()))
+    .signal(GreetingsWorkflow::approve, ApproveInput { name: "Ziggy".to_string() })
+    .await;
 
 ### Signal-With-Start {#signal-with-start}
 
