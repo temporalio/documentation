@@ -437,7 +437,7 @@ async fn set_language_activity(
             let greeting = ctx.start_activity(
                 MyActivities::call_greeting_service, 
                 Language::French,
-                ActivityOptions::default()
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(10))
             ).await;
 
             ctx.state_mut(|s| {
