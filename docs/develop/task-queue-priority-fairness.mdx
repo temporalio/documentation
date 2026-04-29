@@ -45,7 +45,6 @@ Priority is available for both self-hosted Temporal instances and Temporal Cloud
 To enable Priority in self-hosted Temporal, set the dynamic config `matching.useNewMatcher` to `true` on a Task Queue, Namespace, or globally. Priority is enabled by default in Temporal Cloud.
 
 To use Priority, you need to set a priority key at the Workflow, Activity, or Child Workflow level to a value within the integer range `[1,5]`.
-
 A lower value implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
 Priority of `3`. Activities and Child Workflows will inherit their Workflow's priority unless they explicitly specify
 their own priority.
