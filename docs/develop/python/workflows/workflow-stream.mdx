@@ -8,6 +8,7 @@ keywords:
   - streaming
   - signals
   - updates
+  - queries
   - python sdk
 tags:
   - Workflows
@@ -18,16 +19,17 @@ tags:
 description: Stream events from a Workflow to subscribers using the Temporal Python SDK Workflow Streams contrib module.
 ---
 
-**Workflow Streams** is a Temporal Python SDK contrib library that gives a Workflow a durable, offset-addressed event channel built on Signals and polling Updates.
-Cost scales with durable batches, not tokens.
-Latency is around 100ms per roundtrip; not for ultra-low-latency voice.
+**Workflow Streams** is a Temporal Python SDK contrib library that gives a Workflow a durable, offset-addressed event channel built on Temporal's basic message primitives: Signals, Updates, and Queries.
+The library implements batching to amortize overheads, deduplication for exactly-once delivery, topics for stream filtering, and continue-as-new helpers to support long-running operations.
+Workflow Streams are intended for keeping outside observers updated on the progress being made by a Workflow and its associated Activities.
+Example applications include updating a user interface to show the progress being made by an AI agent, or providing updates on in-flight payment or order processing work.
+Workflow Streams are not designed for ultra-low-latency applications such as real-time voice streaming.
 
-A Workflow that hosts a `WorkflowStream` instance fans out incremental updates to many subscribers.
-This is useful for streaming progress from a long-running data pipeline, pushing AI agent token streams to a UI, or notifying watchers as an order moves through its states.
+A Workflow that hosts a `WorkflowStream` instance fans out incremental updates to multiple subscribers.
 Temporal's [Signals and Updates](/develop/python/workflows/message-passing) already provide the primitives, but wiring up batching, offset tracking, topic filtering, and continue-as-new hand-off is non-trivial.
-
 The `temporalio.contrib.workflow_stream` module packages that boilerplate into a reusable Workflow-side stream object (`WorkflowStream`) and external client (`WorkflowStreamClient`).
-Publishers send via Signal; subscribers long-poll via Update.
+
+Cross-language client support is on the roadmap; today only the Python client is covered here.
 
 :::info
 
@@ -38,9 +40,7 @@ The API may change before general availability.
 
 :::
 
-All code snippets in this guide are taken from the
-[Workflow Streams sample](https://github.com/temporalio/samples-python/tree/main/pubsub). Refer to the sample for the complete
-runnable code.
+For a runnable end-to-end example, see the [Workflow Streams sample](https://github.com/temporalio/samples-python/tree/main/pubsub) — it covers more ground than the snippets here.
 
 ## Prerequisites
 
@@ -52,15 +52,32 @@ runnable code.
 
 ## Concepts
 
-- **Append-only log.** A `WorkflowStream` instance maintains an in-memory list of `(topic, data)` entries inside the Workflow. Each entry has a monotonically increasing global offset.
-- **Topics.** Subscribers filter by a list of topic names. An empty list subscribes to all topics. Topics are implicit — publishing to a topic creates it.
-- **Publishers.** A publisher is identified by a `(publisher_id, sequence)` pair. The stream dedups on this pair so client retries don't duplicate events.
-- **Subscribers.** Subscribers track the offset they've consumed and request the next range via long-poll Update. They handle `more_ready` (server capped a large response) and `TruncatedOffset` (the subscriber fell behind a `truncate()`) transparently.
-- **Continue-as-new.** The append-only log and publisher dedup state can be carried across continue-as-new so subscribers see no gap.
+Three roles cover everything you need to use Workflow Streams:
+
+- **A streaming Workflow** hosts the event stream. Constructing a `WorkflowStream` instance from `@workflow.init` registers the handlers that accept publishes and serve subscribers.
+- **Publishers** append events. The Workflow itself can publish via the in-memory `WorkflowStream`. Activities and external clients publish via `WorkflowStreamClient`, which batches and ships events to the Workflow.
+- **Subscribers** consume events. They call `WorkflowStreamClient.subscribe(...)` and iterate the returned async iterator.
+
+Events are organized by **topic** — a string label set when publishing. Subscribers can filter to one or more topics or consume all of them. Topics are implicit; publishing to a topic creates it.
+
+The deeper picture — where Signals and Updates fit, how batching works, how state is carried across continue-as-new — appears in [Architecture](#architecture) at the end of this guide. You can skip ahead to it once the basics are wired up.
+
+## Usage patterns
+
+Workflow Streams is built for the case where an observer can show up late — after a page refresh, server restart, or closed laptop — and still see what happened while they were away. Three patterns recur when applying the library; the surrounding rationale is published separately (see [TODO: blog post link]).
+
+**End-to-end durability.** The event log lives inside the Workflow. Any process that bridges events to the outside world — an SSE proxy serving a browser, a WebSocket fan-out, a forwarding Activity — stays stateless: a reconnecting client supplies its `from_offset`, the bridge polls forward from there, and the Workflow is the single source of truth. Don't put Redis or Kafka in front of the stream to "buffer" reconnects; splitting authority between two stores creates state that drifts and has to be reconciled under retries. The Workflow already owns ordering, persistence, and replay — let it.
+
+**Build consumer state from individual events.** Publishers emit facts in their own vocabulary (`STATUS_CHANGE`, `TOOL_CALL`, `TEXT_DELTA`, and so on) and consumers project those facts into whatever they want to render. Re-running the projection from offset 0 reproduces consumer state, which is what makes reconnection trivially correct. Two event shapes show up in practice:
+
+- *Set-semantic* events are idempotent and last-writer-wins (`STATUS_CHANGE`, lifecycle markers). Safe to replay or deduplicate by key.
+- *Append-semantic* events are cumulative and order-dependent (`TEXT_DELTA` from a token stream). Carry an explicit application-level sequence number on the payload — distinct from the stream's global offset — so the consumer can detect or recover from out-of-order delivery within a topic.
+
+**Workflow as conduit, not consumer.** When the source of events is an Activity (for example, an Activity streaming tokens from an LLM), have the Activity publish events directly to the Workflow's stream. The Workflow publishes its own lifecycle events and processes only the *complete result* returned by each Activity — it does not read the token stream. This separation keeps the Workflow's deterministic progress independent of side-channel events that may include partial output from an Activity attempt that ended up retrying. Surface retry transitions to consumers as their own event (e.g., a `RETRY` event published with `force_flush=True`) and let the consumer decide how to present them.
 
 ## Install and import
 
-The contrib module ships with the Temporal Python SDK:
+The library ships as a contrib module with the Temporal Python SDK:
 
 ```bash
 pip install temporalio
@@ -70,25 +87,34 @@ pip install temporalio
 from temporalio.contrib.workflow_stream import WorkflowStream, WorkflowStreamClient, WorkflowStreamState
 ```
 
-## Publish from a Workflow
+## Enable streaming on a Workflow
 
-Construct a `WorkflowStream` from your `@workflow.init` method.
-The constructor dynamically registers the Workflow Streams Signal, Update, and Query handlers on the current Workflow, and raises `RuntimeError` if called more than once.
-Constructing `WorkflowStream` outside `@workflow.init` raises an error.
+Turn an existing Workflow into a streaming source by constructing a `WorkflowStream` from its `@workflow.init` method:
 
-To support continue-as-new, declare a `WorkflowStreamState | None` field on the Workflow input and pass it to the constructor — `None` on a fresh start, the carried state otherwise.
-The field type must be `WorkflowStreamState | None` (not `Any`) so the default data converter can reconstruct the dataclass.
+```python
+from temporalio import workflow
+from temporalio.contrib.workflow_stream import WorkflowStream
+
+
+@workflow.defn
+class OrderWorkflow:
+    @workflow.init
+    def __init__(self, input: OrderInput) -> None:
+        self.stream = WorkflowStream()
+```
+
+Constructing `WorkflowStream` does two things: it allocates the in-memory event log that holds published entries, and it dynamically registers the Workflow Streams Signal, Update, and Query handlers on the current Workflow. Once these are in place, the Workflow accepts publish Signals from external publishers and serves long-poll subscribe Updates with no further code on your part.
+
+Construction must happen exactly once and must happen in `@workflow.init`. Calling `WorkflowStream(...)` outside `@workflow.init`, or constructing more than one stream on the same Workflow, raises `RuntimeError`.
+
+### Optional: support continue-as-new {#carry-stream-state}
+
+If your Workflow uses continue-as-new, carry the stream's state across the boundary so subscribers see no gap when the run rolls over. Add a `WorkflowStreamState | None` field to your Workflow input and pass it to the constructor:
 
 ```python
 from dataclasses import dataclass
 
-from temporalio import workflow
 from temporalio.contrib.workflow_stream import WorkflowStream, WorkflowStreamState
-
-
-@dataclass
-class StatusEvent:
-    state: str
 
 
 @dataclass
@@ -102,15 +128,48 @@ class OrderWorkflow:
     @workflow.init
     def __init__(self, input: OrderInput) -> None:
         self.stream = WorkflowStream(prior_state=input.stream_state)
+```
+
+The `| None` on the field type is required: `prior_state` is `None` on a fresh start and a `WorkflowStreamState` after a continue-as-new. The explicit type also tells the default data converter how to reconstruct the dataclass on the new run — typing the field as `Any` would silently deserialize it as a plain dict and break the rollover.
+
+Carrying the field is all that's needed to *receive* state across continue-as-new; see [Continue-as-new](#continue-as-new) below for how to invoke the rollover.
+
+## Publish from a Workflow
+
+Inside `@workflow.run`, call `self.stream.publish(topic, value)` to append an event to the stream:
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class StatusEvent:
+    state: str
+    progress: int = 0
+    detail: str = ""
+
+
+@workflow.defn
+class OrderWorkflow:
+    @workflow.init
+    def __init__(self, input: OrderInput) -> None:
+        self.stream = WorkflowStream(prior_state=input.stream_state)
 
     @workflow.run
     async def run(self, input: OrderInput) -> None:
-        self.stream.publish("status", StatusEvent(state="started"))
-        await process_order(input.order_id)
-        self.stream.publish("status", StatusEvent(state="completed"))
+        self.stream.publish("status", StatusEvent(state="validating", detail="checking inventory"))
+        await validate_order(input.order_id)
+
+        self.stream.publish("status", StatusEvent(state="charging", progress=33, detail="authorizing payment"))
+        await charge_payment(input.order_id)
+
+        self.stream.publish("status", StatusEvent(state="shipping", progress=66, detail="dispatching to warehouse"))
+        await dispatch_order(input.order_id)
+
+        self.stream.publish("status", StatusEvent(state="completed", progress=100))
 ```
 
-`publish()` runs the sync payload converter to encode each value. The codec chain (encryption, compression, and so on) runs once on the Signal or Update envelope that carries the batch — never per item — so encryption and compression are applied exactly once each direction.
+`publish()` runs the payload converter to encode each value. The codec chain (encryption, compression, and so on) runs once on the Signal or Update envelope that carries the batch — never per item — so encryption and compression are applied exactly once each direction.
 
 ## Publish from an Activity
 
@@ -133,13 +192,15 @@ async def stream_chunks(order_id: str) -> None:
         # Buffer is flushed on context manager exit.
 ```
 
-For latency-sensitive events, pass `force_flush=True` to wake the background flusher so the buffer ships without waiting for the next batch interval. The call itself is still fire-and-forget — it does not wait for delivery:
+To skip buffering for latency-sensitive events, pass `force_flush=True` to wake the background flusher so the buffer ships without waiting for the next batch interval. The call itself is still fire-and-forget — it does not wait for delivery to the Workflow or to subscribers:
 
 ```python
 client.publish("events", chunk, force_flush=True)
 ```
 
-When you need proof that prior publications have reached the server before continuing — for example, before returning from an Activity — use `await client.flush()`. This is the only confirmation point:
+`publish()` is non-blocking and applies no backpressure: it appends to an in-memory buffer and returns. If a publisher emits faster than batches can ship, the buffer grows; subscriber slowness does not slow publishers down because subscribers pull from the Workflow's log on their own schedule. If your producer can run unboundedly faster than its batches can drain — a tight loop generating events, for example — apply your own rate limiting upstream of `publish()`, or use `truncate()` on the Workflow side to bound log growth (see [Architecture](#architecture)).
+
+When you need proof that prior publications have reached the Temporal server before continuing — for example, before returning from an Activity — use `await client.flush()`. This is the only confirmation point:
 
 ```python
 async with client:
@@ -163,21 +224,19 @@ async def watch_order(order_id: str) -> None:
     stream = WorkflowStreamClient.create(temporal_client, workflow_id=order_id)
 
     async for item in stream.subscribe(["status"], result_type=StatusEvent):
-        print(item.topic, item.data)
-        if item.data.state == "completed":
+        status = item.data
+        print(f"[{status.progress:3d}%] {status.state}: {status.detail}")
+        if status.state == "completed":
             break
 ```
 
-The iterator handles two operational details transparently:
-
-- **`more_ready`.** If the server caps a large response, the iterator immediately repolls instead of waiting for the cooldown.
-- **`TruncatedOffset`.** If a subscriber falls behind a Workflow-side `truncate()` call, the iterator resets to the current base offset and continues. Use this if your application can drop history rather than block on a slow consumer.
+The iterator handles re-polling, server-imposed range limits, and Workflow-side log truncation transparently — there are no extra signals or exceptions for normal callers to handle. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_stream.html) if you need the underlying details.
 
 When subscribing across heterogeneous topics whose payload types differ, omit `result_type` and inspect `item.topic` to dispatch decode per topic — `result_type=T` decodes every item as `T`, so it only fits a single payload type.
 
-Subscribers created via `create()` or `from_activity()` automatically follow continue-as-new chains.
+Subscribers automatically follow continue-as-new chains, so a long-running Workflow can roll over without disrupting active consumers.
 
-## Continue-as-new
+## Continue-as-new {#continue-as-new}
 
 `WorkflowStream.continue_as_new(build_args)` drains waiting subscribers, waits for in-flight handlers to finish, then calls `workflow.continue_as_new` with the args produced by `build_args(post_drain_state)`. Carry both your application state and the stream state across the boundary:
 
@@ -234,12 +293,12 @@ workflow.continue_as_new(
 
 ## Delivery semantics
 
-When publishing through `WorkflowStreamClient` (which assigns a stable `publisher_id` and monotonic `sequence`), delivery is exactly-once within the dedup window: the stream dedups on `(publisher_id, sequence)` so a retried Signal lands at most once in the log. Cross-language clients that follow the wire protocol must populate the same fields to get the same guarantee.
+`WorkflowStreamClient` provides exactly-once delivery within a configurable retention window, and that window is preserved across continue-as-new — so a retried publish lands at most once in the log, even when the rollover happens between the original send and the retry.
 
 Two limits are worth understanding:
 
-- **`publisher_ttl`.** Per-publisher dedup state is pruned when older than `publisher_ttl` (default 15 minutes) at continue-as-new. A publisher returning after this window may produce a duplicate.
-- **`max_retry_duration`.** A `WorkflowStreamClient` retries a failed batch for up to `max_retry_duration` (default 10 minutes). If the duration elapses with the batch still pending — for example, a sustained network partition — the client gives up: the pending batch is dropped and a `TimeoutError` is raised. The batch's actual delivery outcome is unknown (it may have reached the stream before the client gave up, or it may not), so subscribers might still see the events. Keep `max_retry_duration < publisher_ttl` to preserve dedup across publisher retries.
+- **`publisher_ttl`** (default 15 minutes). Retention for the per-publisher dedup state. At each continue-as-new, dedup entries older than this are dropped. A publisher that returns after a longer pause may produce a duplicate. Tune this upward if your publishers can be silent for extended windows.
+- **`max_retry_duration`** (default 10 minutes). A `WorkflowStreamClient` retries a failed batch for up to this long. If the duration elapses with the batch still pending — for example, a sustained network partition — the client gives up: the pending batch is dropped and a `TimeoutError` is raised. The batch's actual delivery outcome is unknown, so subscribers might still see the events. Keep `max_retry_duration < publisher_ttl` to preserve dedup across publisher retries.
 
 Other ways events can be lost: a publisher process crashing before its batched buffer is flushed, or buffered publishes that haven't been picked up when the publisher exits without `await client.flush()`. Use `await client.flush()` when proof of delivery is required — `force_flush=True` only wakes the background flusher sooner and is still fire-and-forget.
 
@@ -250,12 +309,25 @@ The codec chain (the same one configured on your client) runs once on the Signal
 
 For details on configuring custom converters and codecs, see [Payload conversion](/develop/python/data-handling/data-conversion).
 
+## Architecture
+
+The user-facing API hides three pieces of machinery worth understanding when you tune throughput, debug delivery, or reason about history size.
+
+**Append-only log inside the Workflow.** `WorkflowStream` keeps an in-memory list of `(topic, data)` entries inside the Workflow's state. Each entry has a monotonically increasing global offset. Subscribers maintain their own offset cursor; on each long-poll, they receive the next range past that cursor. The log is part of the Workflow's state, so it persists for the life of the run and is carried across continue-as-new through `WorkflowStreamState`. To bound log growth in long-lived Workflows, call `self.stream.truncate(up_to_offset)` on the Workflow side; subscribers that fall behind a truncation jump forward to the new base offset and continue.
+
+**Where Signals, Updates, and Queries fit.** The three handlers registered when you construct a `WorkflowStream` map to Temporal's basic message primitives:
+
+- **Publishers send Signals.** `WorkflowStreamClient` batches publishes inside its async context manager and ships each batch as a single `__temporal_workflow_stream_publish` Signal. The default batch interval is two seconds; `force_flush=True` skips that timer for an immediate send.
+- **Subscribers send Updates.** `subscribe()` issues a long-poll `__temporal_workflow_stream_poll` Update that returns when entries past the requested offset are available, or when the polling cooldown elapses with no progress.
+- **Position is queryable.** A Query (`__temporal_workflow_stream_offset`) reports the current head offset for tools that need to bookmark a position without consuming entries.
+
+**Batching and dedup.** Each publisher is identified by a `(publisher_id, sequence)` pair, and the stream dedups on this pair. `WorkflowStreamClient` assigns a stable `publisher_id` and a monotonic `sequence` per publish, so a retried Signal — for example, after a transient network error — lands at most once in the log. Dedup state is part of the carried Workflow state, so the guarantee survives continue-as-new (subject to `publisher_ttl`).
+
 ## Caveats
 
 - **One `WorkflowStream` per Workflow.** The constructor raises `RuntimeError` if called twice.
 - **Synchronous handlers can race published Signals.** If you add a custom synchronous `@workflow.signal` or `@workflow.update` handler that reads `WorkflowStream` state, and a client calls `__temporal_workflow_stream_publish` immediately followed by your handler, the handler may observe pre-publish state when both land in the same activation. The recipe is to make the handler `async` and `await asyncio.sleep(0)` before reading state — that yield lets pending publishes apply with no Temporal timer or history events. Do not substitute `workflow.sleep(0)`, which schedules a timer. Most handlers are already safe (anything that `await`s before reading state, the module's own poll handler, and Workflow-internal publishes).
-- **Response size cap.** Poll responses are capped at roughly 1 MB. The server signals `more_ready` so subscribers repoll immediately — no special handling is required, but high-throughput producers should expect a steady stream of small batches rather than occasional large ones.
-- **Default data converter on the envelope.** Cross-language clients can publish and subscribe by following the wire protocol (`PublishInput`, `PollResult`, `WorkflowStreamState` envelopes use the default JSON converter). Custom converters at the envelope layer break interop.
+- **Response size cap.** Poll responses are capped at roughly 1 MB. Subscribers repoll immediately when the server caps a response — no special handling is required, but high-throughput producers should expect a steady stream of small batches rather than occasional large ones.
 
 ## See also
 
