@@ -18,24 +18,14 @@ import { EnlargeImage } from '@site/src/components';
 import SdkTabs from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
-distribution of work within Task Queues. Priority focuses on how Tasks are prioritized within a single Task Queue.
+distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
 Fairness aims to prevent one set of Tasks from blocking others within the same priority level.
 
-You can use Priority and Fairness individually within your Task Queues or you can use them together for more complex
-scenarios.
-
-:::tip Support, stability, and dependency info
-
-Priority and Fairness are currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Priority is a free feature in Temporal Cloud and for self-hosted Temporal Services.
-
-Fairness will be a __paid__ feature in Temporal Cloud and billing will be enabled in the near future. You can find more details about the pricing structure for Fairness [here](/cloud/actions#fairness).
-
-:::
+You can use Priority and Fairness individually or combine them to express Fairness within a Priority tier.
 
 ## Task Queue Priority
 
-**Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a _single_ Task Queue. Each priority level acts as a sub-queue that separates Tasks within a single Task Queue so that high priority Tasks can cut in front of low priority Tasks.
+**Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a _single_ Task Queue. Each priority level acts as a sub-queue that separates Tasks so that high priority Tasks can cut in front of low priority Tasks.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-details.png"
@@ -50,13 +40,9 @@ You can also use this as a way to run urgent Tasks immediately and override othe
 
 ### How to use Priority
 
-Priority is available for both self-hosted Temporal instances and Temporal Cloud and it will be automatically enabled. If you apply priority keys, the feature will be in use.
+Priority is available for both self-hosted Temporal instances and Temporal Cloud.
 
-:::info
-
-You can toggle Priority enablement on a Task Queue, Namespace, or globally by setting the dynamic config `matching.useNewMatcher` to `true` or `false`.
-
-:::
+To enable Priority in self-hosted Temporal, set the dynamic config `matching.useNewMatcher` to `true` on a Task Queue, Namespace, or globally. Priority is enabled by default in Temporal Cloud.
 
 You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value
 implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
