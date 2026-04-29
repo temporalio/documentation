@@ -472,7 +472,7 @@ module.exports = {
                 'develop/python/workflows/cancellation',
                 'develop/python/workflows/timeouts',
                 'develop/python/workflows/message-passing',
-                'develop/python/workflows/pubsub',
+                'develop/python/workflows/workflow-stream',
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
