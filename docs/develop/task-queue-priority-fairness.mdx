@@ -244,9 +244,9 @@ Fairness applies at Task dispatch time based on information about the Tasks pass
 each Task as having equal cost until dispatch. It doesn't consider any Task execution that is currently being done by
 Workers. As a result, fair dispatch may not be immediately visible in the mix of Tasks currently running on Workers.
 
-There are two ways to use Task Queue Fairness: without Priority and with Priority.
-
 ### How Fairness works
+
+There are two ways to use Task Queue Fairness: without Priority and with Priority.
 
 If you use Fairness without Priority, Tasks with different fairness keys will use a weighted distribution based on the
 fairness weights to allocate resources in the Task Queue. For example, say you have three fairness keys to describe
