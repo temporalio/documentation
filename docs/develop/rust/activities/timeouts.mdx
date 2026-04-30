@@ -88,11 +88,11 @@ impl TestGreetActivities {
     #[activity]
     pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
         if name == "ziggy" {
-            return Err(ActivityError::Retryable {
-                source: "Ziggy is not a valid name".into(),
+            return Err(ApplicationFailure::builder(anyhow::anyhow!("Ziggy is not a valid name")
                 // next retry will be after 5 seconds
-                explicit_delay: Some(std::time::Duration::from_secs(5)),
-            });
+                .next_retry_delay(std::time::Duration::from_secs(5))
+                .build()
+                .into());
         }
         Ok(format!("Hello, {}!", name))
     }
