@@ -202,7 +202,7 @@ EVAN
 
 The [nexus_messaging](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
-Use the Nexus library (as shown below) to get the Client that the Worker was initialized with. In this example, the workflow ID is derived from the client ID, with the method "get_workflow_id" converting a given client ID (in this case, the client is passing in a user ID) to generate a workflow ID from it.
+Use the Nexus library, as shown below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id, with the "workflowIdForUser" method. This converts a given client Id (in this case, the client is passing in a user ID) into a Workflow Id.
 This way the client only needs the identifier it cares about.
 
 [nexus-messaging/src/callerpattern/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-messaging/src/callerpattern/service/handler.ts)
