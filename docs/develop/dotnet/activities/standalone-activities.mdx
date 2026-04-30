@@ -22,9 +22,7 @@ description: Execute Activities independently without a Workflow using the Tempo
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal .NET SDK support for [Standalone Activities](/standalone-activity) is at
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-All APIs are experimental and may be subject to backwards-incompatible changes.
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
@@ -63,47 +61,26 @@ Prerequisites:
 
 - **Temporal .NET SDK** (v1.12.0 or higher). See the [.NET Quickstart](https://docs.temporal.io/develop/dotnet/set-up-your-local-dotnet) for install instructions.
 
-- **Temporal CLI** (Pre-release version with Standalone Activity support)
+- **Temporal CLI** v1.7.0 or higher
 
-  Download for your platform:
+  Install with Homebrew:
 
-  ```bash title="macOS (Apple Silicon)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_arm64.tar.gz | tar xz
+  ```bash
+  brew install temporal
   ```
 
-  ```bash title="macOS (Intel)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_amd64.tar.gz | tar xz
-  ```
-
-  ```bash title="Linux (arm64)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_arm64.tar.gz | tar xz
-  ```
-
-  ```bash title="Linux (amd64)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_amd64.tar.gz | tar xz
-  ```
+  Or see the [Temporal CLI install guide](/cli#install) for other platforms.
 
   Verify the installation:
 
   ```bash
-  ./temporal --version
-  # temporal version 1.6.2-standalone-activity (Server 1.31.0-151.2, UI 2.47.2)
+  temporal --version
   ```
-
-  Move the binary to your PATH or run it from the current directory as `./temporal`.
-
-  :::warning
-
-  If you see `Standalone activity is disabled` when running commands, you are using the standard
-  Temporal CLI instead of the pre-release version above. The standard `brew install temporal` or
-  `brew upgrade temporal` does not include Standalone Activity support during Pre-release.
-
-  :::
 
 Start the Temporal development server:
 
 ```bash
-./temporal server start-dev
+temporal server start-dev
 ```
 
 This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
@@ -284,7 +261,7 @@ dotnet run --project src/StandaloneActivity execute-activity
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity execute \
+temporal activity execute \
   --type ComposeGreeting \
   --activity-id standalone-activity-id \
   --task-queue standalone-activity-sample \
@@ -331,7 +308,7 @@ dotnet run --project src/StandaloneActivity start-activity
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity start \
+temporal activity start \
   --type ComposeGreeting \
   --activity-id standalone-activity-id \
   --task-queue standalone-activity-sample \
@@ -366,7 +343,7 @@ var result = await handle.GetResultAsync();
 Or use the Temporal CLI to wait for a result by Activity ID:
 
 ```bash
-./temporal activity result --activity-id my-standalone-activity-id
+temporal activity result --activity-id my-standalone-activity-id
 ```
 
 ## List Standalone Activities {#list-activities}
@@ -405,7 +382,7 @@ dotnet run --project src/StandaloneActivity list-activities
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity list
+temporal activity list
 ```
 
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
@@ -443,7 +420,7 @@ dotnet run --project src/StandaloneActivity count-activities
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity count
+temporal activity count
 ```
 
 ## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
