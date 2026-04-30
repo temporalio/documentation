@@ -119,7 +119,7 @@ All data returned from an Activity must be serializable.
 
 Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction. Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
-The return type of an Activity is `Result<T, ActivityError>`. The `T` type must implement `Serialize`. Use `ActivityError::Retryable` for errors that should be retried, and `ActivityError::NonRetryable` for permanent failures:
+The return type of an Activity is `Result<T, ActivityError>`. The `T` type must implement `Serialize`. Use `ApplicationFailure::new` for errors that should be retried, and `ApplicationFailure::non_retryable` for permanent failures:
 
 ```rust
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
