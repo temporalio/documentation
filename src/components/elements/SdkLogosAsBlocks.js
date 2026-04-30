@@ -49,6 +49,12 @@ const supportedTech = [
     alt: '.Net logo',
     className: 'sdkDotNet',
   },
+  {
+    name: 'rustBlock',
+    link: '/develop/rust',
+    alt: 'Rust logo',
+    className: 'sdkRust',
+  },
 ];
 
 const displayTechListItems = () => {
