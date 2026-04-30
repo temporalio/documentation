@@ -136,10 +136,10 @@ impl MyActivities {
     ) -> Result<ProcessedData, ActivityError> {
         // If an error should be retried
         if !validate_input(&input) {
-            return Err(ActivityError::Retryable { 
-                source: "Invalid input format".into(), 
-                explicit_delay: Some(Duration::from_secs(5)) 
-            });
+            return Err(ApplicationFailure::builder(anyhow::anyhow!("Invalid input format"))
+                .next_retry_delay(Duration::from_secs(5))
+                .build()
+                .into());
         }
 
         // If an error should not be retried
