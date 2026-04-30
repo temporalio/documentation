@@ -247,9 +247,7 @@ multiple vendors where several vendors have the majority of the orders.
 
 Fairness applies at Task dispatch time based on information about the Tasks passing through the Task Queue and considers
 each Task as having equal cost until dispatch. It doesn't consider any Task execution that is currently being done by
-Workers. So if you look at Tasks being processed by Workers, you might not see "fairness" across tenants. For example,
-if you already have Tasks from _tenant-big_ being processed, when Tasks for _tenant-small_ are dispatched it may still
-look like _tenant-big_ is using the most resources.
+Workers. As a result, fair dispatch may not be immediately visible in the mix of Tasks currently running on Workers.
 
 There are two ways to use Task Queue Fairness: without Priority and with Priority.
 
