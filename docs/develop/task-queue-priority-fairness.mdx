@@ -516,12 +516,7 @@ var handle = await Client.StartWorkflowAsync(
 
 There are two ways to use Task Queue Fairness: without Priority and with Priority.
 
-If you use Fairness without Priority, Tasks with different fairness keys will use a weighted distribution based on the
-fairness weights to allocate resources in the Task Queue. For example, say you have three fairness keys to describe
-customer tiers: _free-tier_, _basic-tier_, and _premium-tier_. You give _premium-tier_ a fairness weight of 5.0,
-_basic-tier_ a fairness weight of 3.0, and _free-tier_ a fairness weight of 2.0. With Fairness, that means 50% of the
-time _premium-tier_ Tasks dispatch, 30% of the time _basic-tier_ Tasks dispatch, and 20% of the time _free-tier_ Tasks
-dispatch from the Task Queue backlog.
+If you use Fairness without Priority, Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, if you weight _premium-tier_ at 5.0, _basic-tier_ at 3.0, and _free-tier_ at 2.0, then 50% of dispatched Tasks come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_.
 
 If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in
 [FIFO order](/task-queue#task-ordering).
