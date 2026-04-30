@@ -177,7 +177,7 @@ Updates should be short-lived to stay within this deadline.
 The [nexus_messaging](https://github.com/temporalio/samples-go/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries.
 
 Use the Nexus library, as shown below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id, with the `GetWorkflowID` method. This converts a given client Id (in this case, the client is passing in a user Id) to generate a Workflow Id from it.
-This way the client only needs to know about the identifier they care about.
+This way the client only needs the identifier it cares about.
 
 [nexus-messaging/callerpattern/handler/app.go](https://github.com/temporalio/samples-go/blob/nexus-messaging/callerpattern/handler/app.go)
 
