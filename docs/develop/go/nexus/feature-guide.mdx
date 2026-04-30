@@ -174,7 +174,6 @@ All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-o
 The ctx provided to the handler is automatically set with this deadline, so passing it directly to Temporal Client calls will correctly propagate the timeout. 
 Updates should be short-lived to stay within this deadline.
 
-EVAN
 
 The [nexus_messaging](https://github.com/temporalio/samples-go/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
