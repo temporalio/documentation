@@ -40,8 +40,6 @@ You can also use this as a way to run urgent Tasks immediately and override othe
 
 ### How to use Priority
 
-Priority is available for both self-hosted Temporal instances and Temporal Cloud.
-
 Priority is enabled by default in both Temporal Cloud and self-hosted Temporal. To disable Priority in self-hosted Temporal, set the [dynamic config](/temporal-service/configuration#dynamic-configuration) `matching.useNewMatcher` to `false` on a Task Queue, Namespace, or globally.
 
 To use Priority, you need to set a _priority key_ at the Workflow, Activity, or Child Workflow level to a value within the integer range `[1,5]`.
@@ -246,9 +244,7 @@ Fairness is available for both self-hosted Temporal instances and Temporal Cloud
 
 To enable Fairness for a Namespace in Temporal Cloud, navigate to the Namespace's Overview page in the UI and activate the Fairness toggle. Note that Fairness is a paid feature in Temporal Cloud. For more information, see [Fairness pricing](/cloud/pricing#fairness-pricing).
 
-If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` and
-`matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration)
-on the relevant Task Queues or Namespaces.
+If you're self-hosting Temporal, set `matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration) on the relevant Task Queues or Namespaces.
 
 To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level. Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, if you weight _premium-tier_ at 5.0, _basic-tier_ at 3.0, and _free-tier_ at 2.0, then 50% of dispatched Tasks come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_. If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in [FIFO order](/task-queue#task-ordering).
 
