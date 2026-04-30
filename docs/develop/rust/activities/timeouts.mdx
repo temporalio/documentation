@@ -114,11 +114,7 @@ pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, Activit
     ctx.record_heartbeat(vec!["greet activity started".into()]);
 
     if name == "ziggy" {
-        return Err(ActivityError::Retryable {
-            source: "Ziggy is not a valid name".into(),
-            // next retry will be after 5 seconds
-            explicit_delay: Some(std::time::Duration::from_secs(5)),
-        });
+        return Err(anyhow::anyhow!("Ziggy is not a valid name").into());
     }
 
     Ok(format!("Hello, {}!", name))
