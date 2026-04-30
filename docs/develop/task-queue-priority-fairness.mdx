@@ -249,8 +249,7 @@ To enable Fairness for a Namespace in Temporal Cloud, navigate to the Namespace'
 If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` and
 `matching.enableFairness` to `true` in the
 [dynamic config](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1345-L1348)
-on the relevant Task Queues or Namespaces. You'll also need to set `matching.enableMigration` to `true` in order to
-support draining Tasks in existing backlogs after Fairness is enabled.
+on the relevant Task Queues or Namespaces.
 
 Enabling `matching.useNewMatcher` and `matching.enableFairness` is only applicable for self-hosted Temporal instances.
 There is a toggle coming to Temporal Cloud soon to enable Priority and Fairness at the Namespace level.
