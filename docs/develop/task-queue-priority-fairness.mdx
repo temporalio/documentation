@@ -240,7 +240,7 @@ prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness,
 fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others.
 
 In this case, _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are
-executed "fairly". Although, if all your Tasks can be dispatched immediately, then you don't need to use fairness.
+executed "fairly".
 
 This same scenario can apply to batch jobs where certain jobs run more often than others or processing orders from
 multiple vendors where several vendors have the majority of the orders.
