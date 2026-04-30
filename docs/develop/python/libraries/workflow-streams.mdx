@@ -1,5 +1,5 @@
 ---
-id: workflow-stream
+id: workflow-streams
 title: Workflow Streams - Python SDK
 sidebar_label: Workflow Streams
 toc_max_heading_level: 4
@@ -24,6 +24,8 @@ The library implements batching to amortize overheads, deduplication for exactly
 Workflow Streams are intended for keeping outside observers updated on the progress being made by a Workflow and its associated Activities.
 Example applications include updating a user interface to show the progress being made by an AI agent, or providing updates on in-flight payment or order processing work.
 Workflow Streams are not designed for ultra-low-latency applications such as real-time voice streaming.
+
+For a conceptual overview — the streaming problem, architecture, transport pattern, and AI agent use case — see [Workflow Streams](/workflow-streams).
 
 A `WorkflowStream` instance is a many-to-many communication channel hosted inside a Workflow: any number of publishers (the Workflow itself, its Activities, other Workflows, etc.) append events, and any number of subscribers consume them. Temporal's [Signals and Updates](/develop/python/workflows/message-passing) provide the underlying message-passing primitives; the `temporalio.contrib.workflow_streams` module packages the batching, offset tracking, topic filtering, and continue-as-new hand-off that turn those primitives into a usable stream.
 
@@ -128,13 +130,7 @@ class OrderWorkflow:
         self.stream = WorkflowStream(prior_state=input.stream_state)
 ```
 
-The `| None` on the field type is required: `prior_state` is `None` on a fresh start and a `WorkflowStreamState` instance after a continue-as-new.
-
-:::warning
-
-Type the field exactly as `WorkflowStreamState | None` — do not use `Any`. The default data converter uses the explicit type to rebuild the dataclass on the new run; with `Any`, the carried state arrives as a plain dict, the type information is silently stripped, and the new run starts with a broken stream. The type checker won't catch this; the failure only surfaces when the rollover actually runs.
-
-:::
+The `| None` on the field type is required: `prior_state` is `None` on a fresh start and a `WorkflowStreamState` instance after a continue-as-new. Use the concrete type, not `Any`, so the default data converter can rebuild the dataclass on the new run.
 
 Carrying the field is all that's needed to *receive* state across continue-as-new; see [Continue-as-new](#continue-as-new) below for how to invoke the rollover.
 
@@ -208,20 +204,24 @@ events.publish(chunk, force_flush=True)
 
 `publish()` is non-blocking and applies no backpressure: it appends to an in-memory buffer and returns. If a publisher emits faster than batches can ship, the buffer grows; subscriber slowness does not slow publishers down because subscribers pull from the Workflow's log on their own schedule. If your producer can run unboundedly faster than its batches can drain — a tight loop generating events, for example — apply your own rate limiting upstream of `publish()`, or use `truncate()` on the Workflow side to bound log growth (see [Architecture](#architecture)).
 
-When you need proof that prior publications have reached the Temporal server before continuing — for example, before returning from an Activity — use `await client.flush()`. This is the only confirmation point:
+Use `await client.flush()` when you need a mid-stream barrier — proof that prior publications have reached the Temporal server before subsequent work runs, while the client stays open for more publishing. Exiting `async with client` already flushes on its way out, so the explicit call is only for barriers in the middle:
 
 ```python
 async with client:
     events = client.topic("events", type=Chunk)
-    for chunk in generate_chunks(order_id):
+    for chunk in first_phase():
         events.publish(chunk)
+
     await client.flush()
-    do_something_that_depends_on_delivery()
+    checkpoint_id = await record_phase_one_complete()  # only safe once subscribers have seen phase one
+
+    for chunk in second_phase(checkpoint_id):
+        events.publish(chunk)
 ```
 
 ## Subscribe
 
-Use `WorkflowStreamClient.create()` and iterate `subscribe()`. With `result_type=T`, each `item.data` is decoded to `T` via the client's payload converter. Without `result_type`, `item.data` is a raw `temporalio.api.common.v1.Payload`. The codec chain is applied once at the Update envelope, not per item.
+Use `WorkflowStreamClient.create()` to get a client bound to a Workflow, then iterate a topic handle's `subscribe()` — the symmetric counterpart to `publish()`. The handle's bound type drives decoding, so each `item.data` arrives as `T` via the client's payload converter. The codec chain is applied once at the Update envelope, not per item.
 
 ```python
 from temporalio.client import Client
@@ -232,10 +232,11 @@ async def watch_order(order_id: str) -> None:
     temporal_client = await Client.connect("localhost:7233")
     stream = WorkflowStreamClient.create(temporal_client, workflow_id=order_id)
 
-    async for item in stream.subscribe(["status"], result_type=StatusEvent):
-        status = item.data
-        print(f"[{status.progress:3d}%] {status.state}: {status.detail}")
-        if status.state == "completed":
+    status = stream.topic("status", type=StatusEvent)
+    async for item in status.subscribe():
+        evt = item.data
+        print(f"[{evt.progress:3d}%] {evt.state}: {evt.detail}")
+        if evt.state == "completed":
             break
 ```
 
@@ -243,7 +244,23 @@ The iterator handles re-polling, server-imposed range limits, and Workflow-side 
 
 When the Workflow run completes (or fails), the iterator yields any remaining buffered items and then exits the `async for` loop normally — there is no terminal sentinel value and no exception. The recommended pattern is to have the Workflow publish its own completion event (the `StatusEvent(state="completed")` in the example above is the minimal form) so subscribers recognize the end of work in their own vocabulary and can render it. As a fallback for runs that crashed before publishing a final event, call `handle.describe()` after the loop returns and inspect the Workflow's status.
 
-When subscribing across heterogeneous topics whose payload types differ, omit `result_type` and inspect `item.topic` to dispatch decode per topic — `result_type=T` decodes every item as `T`, so it only fits a single payload type. Pass an empty list (`subscribe([], ...)`) to receive every published topic.
+### Heterogeneous topics
+
+A topic handle binds one name to one type, so it only fits a single-type subscription. To consume multiple topics whose payload types differ, call `client.subscribe()` directly with a list of names (or `subscribe([])` for every topic), omit `result_type`, and dispatch on `item.topic` using the client's payload converter:
+
+```python
+converter = temporal_client.data_converter.payload_converter
+
+async for item in stream.subscribe(["status", "progress"]):
+    if item.topic == "status":
+        evt = converter.from_payload(item.data, StatusEvent)
+        print(f"[status] {evt.state}: {evt.detail}")
+    elif item.topic == "progress":
+        evt = converter.from_payload(item.data, ProgressEvent)
+        print(f"[progress] {evt.message}")
+```
+
+A single iterator over multiple topics also avoids the cancellation race that two concurrent subscribers would create. Pass `result_type=temporalio.common.RawValue` when you want to forward the bytes through to another system without decoding them.
 
 Subscribers automatically follow continue-as-new chains, so a long-running Workflow can roll over without disrupting active consumers.
 Under the hood the iterator re-resolves the Workflow handle to the new run and continues polling from the carried offset.
