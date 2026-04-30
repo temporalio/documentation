@@ -74,11 +74,7 @@ impl GreetingWorkflow {
         } else {
             let new_input = "New Name".to_string();
             // To continue as new, return an error with WorkflowTermination::ContinueAsNew
-            Err(WorkflowTermination::continue_as_new(ContinueAsNewWorkflowExecution {
-                workflow_type: "MyWorkflow".to_string(),
-                arguments: vec![new_input.into()],
-                ..Default::default()
-            }))
+            ctx.continue_as_new(&new_input, Default::default());
         }
     }
 }
