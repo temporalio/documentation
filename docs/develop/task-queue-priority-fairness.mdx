@@ -254,17 +254,6 @@ on the relevant Task Queues or Namespaces. For example, to enable Fairness on th
 temporal server start-dev --dynamic-config-value matching.enableFairness=true
 ```
 
-Enabling `matching.useNewMatcher` and `matching.enableFairness` is only applicable for self-hosted Temporal instances.
-There is a toggle coming to Temporal Cloud soon to enable Priority and Fairness at the Namespace level.
-
-:::info
-
-Fairness will be a paid feature in Temporal Cloud and billing will be enabled in the near future. You will be notified
-before billing is enabled for your Namespaces. When Temporal begins billing for this feature, you will be able to enable or disable Fairness at the Namespace level and
-billing will be disabled at the next calendar hour after it is disabled.
-
-:::
-
 You can do this via the Temporal CLI where you set the fairness key and weight parameters for your Workflow:
 
 ```
