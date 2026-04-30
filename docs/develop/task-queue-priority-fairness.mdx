@@ -42,7 +42,7 @@ You can also use this as a way to run urgent Tasks immediately and override othe
 
 Priority is available for both self-hosted Temporal instances and Temporal Cloud.
 
-Priority is enabled by default in Temporal Cloud. To enable Priority in self-hosted Temporal, set the dynamic config `matching.useNewMatcher` to `true` on a Task Queue, Namespace, or globally. For example, to enable Priority on the dev server:
+Priority is enabled by default in Temporal Cloud. To enable Priority in self-hosted Temporal, set the [dynamic config](/temporal-service/configuration#dynamic-configuration) `matching.useNewMatcher` to `true` on a Task Queue, Namespace, or globally. For example, to enable Priority on the dev server:
 
 ```
 temporal server start-dev --dynamic-config-value matching.useNewMatcher=true
