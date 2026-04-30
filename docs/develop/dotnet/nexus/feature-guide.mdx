@@ -175,7 +175,7 @@ All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-o
 The [nexus_messaging](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
 Use `NexusOperationExecutionContext`, like below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id using the `WorkflowIdForUser` method. This converts a given client Id (in this case, the client is passing in a user Id) to generate a Workflow Id from it.
-This way the client only needs to know about the identifier they care about.
+This way the client only needs the identifier it cares about.
 
 [NexusMessaging/CallerPattern/Handler/NexusGreetingService.cs](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging/CallerPattern/Handler/NexusGreetingService.cs)
 
