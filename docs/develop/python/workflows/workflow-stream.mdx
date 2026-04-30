@@ -25,20 +25,20 @@ Workflow Streams are intended for keeping outside observers updated on the progr
 Example applications include updating a user interface to show the progress being made by an AI agent, or providing updates on in-flight payment or order processing work.
 Workflow Streams are not designed for ultra-low-latency applications such as real-time voice streaming.
 
-A `WorkflowStream` instance is a many-to-many communication channel hosted inside a Workflow: any number of publishers (the Workflow itself, its Activities, other Workflows, etc.) append events, and any number of subscribers consume them. Temporal's [Signals and Updates](/develop/python/workflows/message-passing) provide the underlying message-passing primitives; the `temporalio.contrib.workflow_stream` module packages the batching, offset tracking, topic filtering, and continue-as-new hand-off that turn those primitives into a usable stream.
+A `WorkflowStream` instance is a many-to-many communication channel hosted inside a Workflow: any number of publishers (the Workflow itself, its Activities, other Workflows, etc.) append events, and any number of subscribers consume them. Temporal's [Signals and Updates](/develop/python/workflows/message-passing) provide the underlying message-passing primitives; the `temporalio.contrib.workflow_streams` module packages the batching, offset tracking, topic filtering, and continue-as-new hand-off that turn those primitives into a usable stream.
 
 Cross-language client support is on the roadmap; today only the Python client is covered here.
 
 :::info
 
-The `temporalio.contrib.workflow_stream` module is currently in
+The `temporalio.contrib.workflow_streams` module is currently in
 [Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
 [Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
 The API may change before general availability.
 
 :::
 
-For runnable end-to-end examples, see the [Workflow Streams samples](https://github.com/temporalio/samples-python/tree/main/workflow_stream). The directory has four scenarios: basic publish/subscribe with heterogeneous topics, a reconnecting subscriber that demonstrates offset-based resume, an external (non-Activity) publisher pattern, and a long-running ticker that bounds its log via `truncate()`.
+For runnable end-to-end examples, see the [Workflow Streams samples](https://github.com/temporalio/samples-python/tree/main/workflow_streams). The directory has four scenarios: basic publish/subscribe with heterogeneous topics, a reconnecting subscriber that demonstrates offset-based resume, an external (non-Activity) publisher pattern, and a long-running ticker that bounds its log via `truncate()`.
 
 ## Prerequisites
 
@@ -82,7 +82,7 @@ pip install temporalio
 ```
 
 ```python
-from temporalio.contrib.workflow_stream import WorkflowStream, WorkflowStreamClient, WorkflowStreamState
+from temporalio.contrib.workflow_streams import WorkflowStream, WorkflowStreamClient, WorkflowStreamState
 ```
 
 ## Enable streaming on a Workflow
@@ -91,7 +91,7 @@ Turn an existing Workflow into a streaming source by constructing a `WorkflowStr
 
 ```python
 from temporalio import workflow
-from temporalio.contrib.workflow_stream import WorkflowStream
+from temporalio.contrib.workflow_streams import WorkflowStream
 
 
 @workflow.defn
@@ -112,7 +112,7 @@ If your Workflow uses continue-as-new, carry the stream's state across the bound
 ```python
 from dataclasses import dataclass
 
-from temporalio.contrib.workflow_stream import WorkflowStream, WorkflowStreamState
+from temporalio.contrib.workflow_streams import WorkflowStream, WorkflowStreamState
 
 
 @dataclass
@@ -140,7 +140,7 @@ Carrying the field is all that's needed to *receive* state across continue-as-ne
 
 ## Publish from a Workflow
 
-Inside `@workflow.run`, call `self.stream.publish(topic, value)` to append an event to the stream:
+Bind a topic name to its event type once via `self.stream.topic("name", type=Type)`, then call `publish()` on the returned handle to append events. The handle records the per-stream binding from topic name to value type so call sites do not have to repeat the type on every publish, and so subscribers reading the same handle decode to the matching type.
 
 ```python
 from dataclasses import dataclass
@@ -158,40 +158,44 @@ class OrderWorkflow:
     @workflow.init
     def __init__(self, input: OrderInput) -> None:
         self.stream = WorkflowStream(prior_state=input.stream_state)
+        self.status = self.stream.topic("status", type=StatusEvent)
 
     @workflow.run
     async def run(self, input: OrderInput) -> None:
-        self.stream.publish("status", StatusEvent(state="validating", detail="checking inventory"))
+        self.status.publish(StatusEvent(state="validating", detail="checking inventory"))
         await validate_order(input.order_id)
 
-        self.stream.publish("status", StatusEvent(state="charging", progress=33, detail="authorizing payment"))
+        self.status.publish(StatusEvent(state="charging", progress=33, detail="authorizing payment"))
         await charge_payment(input.order_id)
 
-        self.stream.publish("status", StatusEvent(state="shipping", progress=66, detail="dispatching to warehouse"))
+        self.status.publish(StatusEvent(state="shipping", progress=66, detail="dispatching to warehouse"))
         await dispatch_order(input.order_id)
 
-        self.stream.publish("status", StatusEvent(state="completed", progress=100))
+        self.status.publish(StatusEvent(state="completed", progress=100))
 ```
 
 `publish()` runs the payload converter to encode each value. The codec chain (encryption, compression, and so on) runs once on the Signal or Update envelope that carries the batch — never per item — so encryption and compression are applied exactly once each direction.
 
+The `type=` argument is optional and defaults to `Any`. Pass it when you want the binding recorded so re-binding the same name to an unequal type raises, or so subscribers can pick up the type from the same handle.
+
 ## Publish from an Activity
 
-Use `WorkflowStreamClient.from_activity()` inside an Activity. The Temporal client and target Workflow Id are taken from the Activity context. The async context manager batches publishes and flushes on exit.
+Use `WorkflowStreamClient.from_within_activity()` inside an Activity. The Temporal client and target Workflow Id are taken from the Activity context. The async context manager batches publishes and flushes on exit. Bind a topic handle on the client and publish through it, the same way you would on the Workflow side.
 
 ```python
 from datetime import timedelta
 
 from temporalio import activity
-from temporalio.contrib.workflow_stream import WorkflowStreamClient
+from temporalio.contrib.workflow_streams import WorkflowStreamClient
 
 
 @activity.defn
 async def stream_chunks(order_id: str) -> None:
-    client = WorkflowStreamClient.from_activity(batch_interval=timedelta(seconds=2))
+    client = WorkflowStreamClient.from_within_activity(batch_interval=timedelta(seconds=2))
     async with client:
+        events = client.topic("events", type=Chunk)
         for chunk in generate_chunks(order_id):
-            client.publish("events", chunk)
+            events.publish(chunk)
             activity.heartbeat()
         # Buffer is flushed on context manager exit.
 ```
@@ -199,7 +203,7 @@ async def stream_chunks(order_id: str) -> None:
 To skip buffering for latency-sensitive events, pass `force_flush=True` to wake the background flusher so the buffer ships without waiting for the next batch interval. The call itself is still fire-and-forget — it does not wait for delivery to the Workflow or to subscribers:
 
 ```python
-client.publish("events", chunk, force_flush=True)
+events.publish(chunk, force_flush=True)
 ```
 
 `publish()` is non-blocking and applies no backpressure: it appends to an in-memory buffer and returns. If a publisher emits faster than batches can ship, the buffer grows; subscriber slowness does not slow publishers down because subscribers pull from the Workflow's log on their own schedule. If your producer can run unboundedly faster than its batches can drain — a tight loop generating events, for example — apply your own rate limiting upstream of `publish()`, or use `truncate()` on the Workflow side to bound log growth (see [Architecture](#architecture)).
@@ -208,8 +212,9 @@ When you need proof that prior publications have reached the Temporal server bef
 
 ```python
 async with client:
+    events = client.topic("events", type=Chunk)
     for chunk in generate_chunks(order_id):
-        client.publish("events", chunk)
+        events.publish(chunk)
     await client.flush()
     do_something_that_depends_on_delivery()
 ```
@@ -220,7 +225,7 @@ Use `WorkflowStreamClient.create()` and iterate `subscribe()`. With `result_type
 
 ```python
 from temporalio.client import Client
-from temporalio.contrib.workflow_stream import WorkflowStreamClient
+from temporalio.contrib.workflow_streams import WorkflowStreamClient
 
 
 async def watch_order(order_id: str) -> None:
@@ -234,7 +239,7 @@ async def watch_order(order_id: str) -> None:
             break
 ```
 
-The iterator handles re-polling, server-imposed range limits, and Workflow-side log truncation transparently — there are no extra signals or exceptions for normal callers to handle. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_stream.html) if you need the underlying details.
+The iterator handles re-polling, server-imposed range limits, and Workflow-side log truncation transparently — there are no extra signals or exceptions for normal callers to handle. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html) if you need the underlying details.
 
 When the Workflow run completes (or fails), the iterator yields any remaining buffered items and then exits the `async for` loop normally — there is no terminal sentinel value and no exception. The recommended pattern is to have the Workflow publish its own completion event (the `StatusEvent(state="completed")` in the example above is the minimal form) so subscribers recognize the end of work in their own vocabulary and can render it. As a fallback for runs that crashed before publishing a final event, call `handle.describe()` after the loop returns and inspect the Workflow's status.
 
@@ -251,7 +256,7 @@ Under the hood the iterator re-resolves the Workflow handle to the new run and c
 from dataclasses import dataclass, field
 
 from temporalio import workflow
-from temporalio.contrib.workflow_stream import WorkflowStream, WorkflowStreamState
+from temporalio.contrib.workflow_streams import WorkflowStream, WorkflowStreamState
 
 
 @dataclass
@@ -290,7 +295,7 @@ class LongRunningWorkflow:
 To pass other continue-as-new parameters (`task_queue`, `retry_policy`, `run_timeout`), use the explicit recipe instead:
 
 ```python
-self.stream.drain()
+self.stream.detach_pollers()
 await workflow.wait_condition(workflow.all_handlers_finished)
 workflow.continue_as_new(
     args=[WorkflowInput(app_state=self.app_state, stream_state=self.stream.get_state())],
@@ -344,7 +349,7 @@ The user-facing API hides three pieces of machinery worth understanding when you
 
 ## See also
 
-- [Workflow Streams samples (samples-python)](https://github.com/temporalio/samples-python/tree/main/workflow_stream) — four runnable scenarios covering basic publish/subscribe, reconnecting subscribers, external publishers, and bounded logs via `truncate()`.
-- [`temporalio.contrib.workflow_stream` API reference](https://python.temporal.io/temporalio.contrib.workflow_stream.html).
+- [Workflow Streams samples (samples-python)](https://github.com/temporalio/samples-python/tree/main/workflow_streams) — four runnable scenarios covering basic publish/subscribe, reconnecting subscribers, external publishers, and bounded logs via `truncate()`.
+- [`temporalio.contrib.workflow_streams` API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html).
 - [Workflow message passing](/develop/python/workflows/message-passing) — Signals, Updates, and Queries that Workflow Streams is built on.
 - [Payload conversion](/develop/python/data-handling/data-conversion) — converters and codecs.
