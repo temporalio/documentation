@@ -240,48 +240,6 @@ prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness,
 fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others. In this case,
 _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are executed "fairly".
 
-### How Fairness works
-
-There are two ways to use Task Queue Fairness: without Priority and with Priority.
-
-If you use Fairness without Priority, Tasks with different fairness keys will use a weighted distribution based on the
-fairness weights to allocate resources in the Task Queue. For example, say you have three fairness keys to describe
-customer tiers: _free-tier_, _basic-tier_, and _premium-tier_. You give _premium-tier_ a fairness weight of 5.0,
-_basic-tier_ a fairness weight of 3.0, and _free-tier_ a fairness weight of 2.0. With Fairness, that means 50% of the
-time _premium-tier_ Tasks dispatch, 30% of the time _basic-tier_ Tasks dispatch, and 20% of the time _free-tier_ Tasks
-dispatch from the Task Queue backlog.
-
-If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in
-[FIFO order](/task-queue#task-ordering).
-
-This is how you are able to ensure that one tier doesn't use all the resources and block other Tasks in the Task Queue
-backlog from dispatching.
-
-When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
-haven't dispatched yet.
-
-<EnlargeImage
-  src="/img/develop/task-queue-priority-fairness/fairness-details.png"
-  alt="High-level of how fairness works"
-/>
-
-Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key.
-All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0.
-
-This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others.
-Unkeyed Tasks do not bypass Fairness; they compete as one group alongside all explicitly keyed Tasks.
-
-### Using Fairness and Priority together
-
-When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
-Priority implemented will have different sub-queues based on priority levels. Fairness will apply to the Tasks within
-each priority level.
-
-<EnlargeImage
-  src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
-  alt="High-level of how priority and fairness work together"
-/>
-
 ### How to use Fairness
 
 Fairness is available for both self-hosted Temporal instances and Temporal Cloud.
@@ -564,6 +522,48 @@ var handle = await Client.StartWorkflowAsync(
 ```
 </SdkTabs.DotNet>
 </SdkTabs>
+
+### How Fairness works
+
+There are two ways to use Task Queue Fairness: without Priority and with Priority.
+
+If you use Fairness without Priority, Tasks with different fairness keys will use a weighted distribution based on the
+fairness weights to allocate resources in the Task Queue. For example, say you have three fairness keys to describe
+customer tiers: _free-tier_, _basic-tier_, and _premium-tier_. You give _premium-tier_ a fairness weight of 5.0,
+_basic-tier_ a fairness weight of 3.0, and _free-tier_ a fairness weight of 2.0. With Fairness, that means 50% of the
+time _premium-tier_ Tasks dispatch, 30% of the time _basic-tier_ Tasks dispatch, and 20% of the time _free-tier_ Tasks
+dispatch from the Task Queue backlog.
+
+If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in
+[FIFO order](/task-queue#task-ordering).
+
+This is how you are able to ensure that one tier doesn't use all the resources and block other Tasks in the Task Queue
+backlog from dispatching.
+
+When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
+haven't dispatched yet.
+
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/fairness-details.png"
+  alt="High-level of how fairness works"
+/>
+
+Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key.
+All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0.
+
+This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others.
+Unkeyed Tasks do not bypass Fairness; they compete as one group alongside all explicitly keyed Tasks.
+
+### Using Fairness and Priority together
+
+When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
+Priority implemented will have different sub-queues based on priority levels. Fairness will apply to the Tasks within
+each priority level.
+
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
+  alt="High-level of how priority and fairness work together"
+/>
 
 ### Set rate limits at the Task Queue level
 
