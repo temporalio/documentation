@@ -41,7 +41,9 @@ Temporal Service. Common reasons to run a Codec Server include:
 - **Operating from the CLI.** Use commands like `temporal workflow show` and `temporal workflow execute` with readable
   data, even when payloads are encrypted at rest.
 - **Encoding inputs from the UI and CLI.** When you start or signal a Workflow from the Web UI or CLI, the Codec Server
-  can encode the input before it reaches the Temporal Service, so sensitive data is never sent in plaintext.
+  can encode the input before it reaches the Temporal Service, so the Temporal Service never sees 
+  plaintext (the input still travels from your browser or CLI to the Codec Server, which is why HTTPS 
+  matters  in any non-loopback deployment).
 - **Compliance and access control.** Because the Codec Server runs in your environment, you control who can decode
   payloads and under what conditions. You can layer authorization on top of the decode endpoint to restrict access per
   user or per Namespace.
@@ -74,8 +76,8 @@ The `/encode` endpoint works in the other direction. When you start a Workflow o
 the input is sent to the Codec Server's `/encode` endpoint first, so data reaches the Temporal Service in its encoded
 form.
 
-Your Codec Server should use the same Payload Codec implementation as your Workers to ensure consistent encoding and
-decoding.
+decoding. Because the Codec Server often holds the same keys as your Workers, treat its
+host with the same trust as a Worker; anyone who can call it has effective decrypt parity.
 
 ## Codec Server vs. Payload Codec
 
