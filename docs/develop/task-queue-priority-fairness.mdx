@@ -247,8 +247,7 @@ Fairness is available for both self-hosted Temporal instances and Temporal Cloud
 To enable Fairness for a Namespace in Temporal Cloud, navigate to the Namespace's Overview page in the UI and activate the Fairness toggle. Note that CLI support is coming soon.
 
 If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` and
-`matching.enableFairness` to `true` in the
-[dynamic config](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1345-L1348)
+`matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration)
 on the relevant Task Queues or Namespaces.
 
 Enabling `matching.useNewMatcher` and `matching.enableFairness` is only applicable for self-hosted Temporal instances.
