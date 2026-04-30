@@ -34,66 +34,50 @@ The Go SDK includes an S3 storage driver. Follow these steps to set it up:
 
 - An Amazon S3 bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
   to ensure that your payloads remain available for the entire lifetime of the Workflow.
-- Install the S3 driver module: `go get go.temporal.io/sdk/contrib/aws/s3driver`
+- Install the S3 driver module and its dependencies: `go get go.temporal.io/sdk/contrib/aws/s3driver go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2 github.com/aws/aws-sdk-go-v2/config github.com/aws/aws-sdk-go-v2/service/s3`
 
 ### Procedure
 
-1. Load your AWS configuration and create the S3 storage driver. The driver uses your standard AWS
-   credentials from the environment (environment variables, IAM role, or AWS config file):
+1. Load your AWS configuration and create the S3 storage driver. The driver uses your standard [AWS credentials](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) from the environment (environment variables, IAM role, or AWS config file):
 
    <!--SNIPSTART go-s3-driver-create-->
+[features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
+```go
+cfg, err := config.LoadDefaultConfig(context.Background(),
+	config.WithRegion("us-east-2"),
+)
+if err != nil {
+	log.Fatalf("load AWS config: %v", err)
+}
 
-   ```go
-   import (
-       "github.com/aws/aws-sdk-go-v2/config"
-       "github.com/aws/aws-sdk-go-v2/service/s3"
-       "go.temporal.io/sdk/contrib/aws/s3driver"
-       "go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2"
-   )
-
-   cfg, err := config.LoadDefaultConfig(context.Background(),
-       config.WithRegion("us-east-2"),
-   )
-   if err != nil {
-       log.Fatalf("load AWS config: %v", err)
-   }
-
-   driver, err := s3driver.NewDriver(s3driver.Options{
-       Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
-       Bucket: s3driver.StaticBucket("my-temporal-payloads"),
-   })
-   if err != nil {
-       log.Fatalf("create S3 driver: %v", err)
-   }
-   ```
-
+driver, err := s3driver.NewDriver(s3driver.Options{
+	Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
+	Bucket: s3driver.StaticBucket("my-temporal-payloads"),
+})
+if err != nil {
+	log.Fatalf("create S3 driver: %v", err)
+}
+```
    <!--SNIPEND-->
 
 2. Configure the driver on `ExternalStorage` and pass it in your Client options:
 
    <!--SNIPSTART go-s3-external-storage-setup-->
+[features/snippets/external_storage/s3_setup/s3_external_storage_setup.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.go)
+```go
+c, err := client.Dial(client.Options{
+	HostPort: "localhost:7233",
+	ExternalStorage: converter.ExternalStorage{
+		Drivers: []converter.StorageDriver{driver},
+	},
+})
+if err != nil {
+	log.Fatalf("connect to Temporal: %v", err)
+}
+defer c.Close()
 
-   ```go
-   import (
-       "go.temporal.io/sdk/client"
-       "go.temporal.io/sdk/converter"
-       "go.temporal.io/sdk/worker"
-   )
-
-   c, err := client.Dial(client.Options{
-       HostPort: "localhost:7233",
-       ExternalStorage: converter.ExternalStorage{
-           Drivers: []converter.StorageDriver{driver},
-       },
-   })
-   if err != nil {
-       log.Fatalf("connect to Temporal: %v", err)
-   }
-   defer c.Close()
-
-   w := worker.New(c, "my-task-queue", worker.Options{})
-   ```
-
+w := worker.New(c, "my-task-queue", worker.Options{})
+```
    <!--SNIPEND-->
 
    By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
@@ -113,21 +97,8 @@ The following example shows a custom driver that uses local disk as the backing 
 development and testing only. In production, use a durable storage system that is accessible to all Workers:
 
 <!--SNIPSTART go-custom-storage-driver-->
-
+[features/snippets/external_storage/custom_driver/custom_storage_driver.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.go)
 ```go
-package main
-
-import (
-	"fmt"
-	"os"
-	"path/filepath"
-
-	"github.com/google/uuid"
-	commonpb "go.temporal.io/api/common/v1"
-	"go.temporal.io/sdk/converter"
-	"google.golang.org/protobuf/proto"
-)
-
 type LocalDiskStorageDriver struct {
 	storeDir string
 }
@@ -205,7 +176,6 @@ func (d *LocalDiskStorageDriver) Retrieve(
 	return payloads, nil
 }
 ```
-
 <!--SNIPEND-->
 
 The following sections walk through the key parts of the driver implementation.
@@ -263,18 +233,15 @@ are offloaded to external storage. You can adjust this with the `PayloadSizeThre
 externalize all payloads regardless of size. A value of 0 is interpreted as the default (256 KiB).
 
 <!--SNIPSTART go-external-storage-threshold-->
-
+[features/snippets/external_storage/threshold/threshold_config.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.go)
 ```go
-import "go.temporal.io/sdk/converter"
-
 c, err := client.Dial(client.Options{
-    ExternalStorage: converter.ExternalStorage{
-        Drivers:              []converter.StorageDriver{driver},
-        PayloadSizeThreshold: 1,
-    },
+	ExternalStorage: converter.ExternalStorage{
+		Drivers:              []converter.StorageDriver{driver},
+		PayloadSizeThreshold: 1,
+	},
 })
 ```
-
 <!--SNIPEND-->
 
 ## Use multiple storage drivers
@@ -297,29 +264,24 @@ The following example registers two drivers but always selects `preferredDriver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART go-external-storage-multiple-drivers-->
-
+[features/snippets/external_storage/multiple_drivers/multiple_drivers.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.go)
 ```go
-import (
-    commonpb "go.temporal.io/api/common/v1"
-    "go.temporal.io/sdk/converter"
-)
-
 type PreferredSelector struct {
-    preferred converter.StorageDriver
+	preferred converter.StorageDriver
 }
 
 func (s *PreferredSelector) SelectDriver(
-    ctx converter.StorageDriverStoreContext,
-    payload *commonpb.Payload,
+	ctx converter.StorageDriverStoreContext,
+	payload *commonpb.Payload,
 ) (converter.StorageDriver, error) {
-    return s.preferred, nil
+	return s.preferred, nil
 }
 
-// Usage:
-converter.ExternalStorage{
-    Drivers:        []converter.StorageDriver{preferredDriver, legacyDriver},
-    DriverSelector: &PreferredSelector{preferred: preferredDriver},
+func MultipleDriversSetup(preferredDriver, legacyDriver converter.StorageDriver) converter.ExternalStorage {
+	return converter.ExternalStorage{
+		Drivers:        []converter.StorageDriver{preferredDriver, legacyDriver},
+		DriverSelector: &PreferredSelector{preferred: preferredDriver},
+	}
 }
 ```
-
 <!--SNIPEND-->

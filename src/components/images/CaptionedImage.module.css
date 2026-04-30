@@ -16,3 +16,27 @@
   padding-left: 8px;
   padding-right: 8px;
 }
+
+.lightOnly {
+  visibility: visible;
+  position: relative;
+}
+
+.darkOnly {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+:global([data-theme='dark']) .lightOnly {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+:global([data-theme='dark']) .darkOnly {
+  visibility: visible;
+  position: relative;
+}
