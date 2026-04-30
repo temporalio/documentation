@@ -347,7 +347,7 @@ the failure is returned as an error.
 Or use the Temporal CLI to wait for a result by Activity ID:
 
 ```bash
-./temporal activity result --activity-id my-standalone-activity-id
+./temporal activity result --activity-id standalone_activity_helloworld_ActivityID
 ```
 
 ## Get a handle to an existing Standalone Activity {#get-activity-handle}
@@ -359,7 +359,7 @@ Both `ActivityID` and `RunID` are required.
 
 ```go
 handle := c.GetActivityHandle(client.GetActivityHandleOptions{
-	ActivityID: "my-standalone-activity-id",
+	ActivityID: "standalone_activity_helloworld_ActivityID",
 	RunID:      "the-run-id",
 })
 
