@@ -73,7 +73,7 @@ impl GreetingWorkflow {
             Ok(greeting)
         } else {
             let new_input = "New Name".to_string();
-            // To continue as new, return an error with WorkflowTermination::ContinueAsNew
+            
             ctx.continue_as_new(&new_input, Default::default());
         }
     }
