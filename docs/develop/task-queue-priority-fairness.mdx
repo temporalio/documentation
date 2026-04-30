@@ -240,10 +240,6 @@ prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness,
 fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others. In this case,
 _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are executed "fairly".
 
-Fairness applies at Task dispatch time based on information about the Tasks passing through the Task Queue and considers
-each Task as having equal cost until dispatch. It doesn't consider any Task execution that is currently being done by
-Workers. As a result, fair dispatch may not be immediately visible in the mix of Tasks currently running on Workers.
-
 ### How Fairness works
 
 There are two ways to use Task Queue Fairness: without Priority and with Priority.
@@ -616,3 +612,4 @@ Weight overrides are stored per Task Queue, including type, so they must be set 
 - The fairness weight applies at schedule time, not at dispatch time. So it only affects newly-scheduled Tasks, not currently backlogged ones. This means if you need to throttle a single fairness key in the existing backlog of Tasks, you won't be able to.
 - When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
 - Backlogged tasks are durable and unaffected by server restarts. Fairness ordering is preserved across restarts for the most active keys; less active keys may briefly dispatch new tasks ahead of their existing backlog until ordering normalizes.
+- Fairness doesn't consider Task executions that have already been dispatched to Workers. As a result, fair dispatch may not be immediately visible in the mix of Tasks currently running on Workers.
