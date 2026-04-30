@@ -117,8 +117,9 @@ authenticated with the Codec Server. This is the recommended approach because th
 boundary, separate from the Temporal UI.
 
 **Pass access token.** Enable **Pass access token** in the Web UI Codec Server settings. The Web UI includes the same
-JWT the user used to log into the Temporal UI in the `Authorization` header of each request. Your Codec Server validates
-the token signature against the OIDC provider's JWKS endpoint. On Temporal Cloud, verify against the
+JSON Web Token (JWT) the user used to log into the Temporal UI in the `Authorization` header of each request. Your Codec
+Server validates the token signature against the OpenID Connect (OIDC) provider's JSON Web Key Set (JWKS) endpoint. On
+Temporal Cloud, verify against the
 [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json). On a self-hosted Temporal Service, the
 token comes from whatever auth provider you have [configured for the Web UI](/references/web-ui-configuration#auth).
 This approach requires less setup but reuses the same token across the Temporal UI and the Codec Server.
