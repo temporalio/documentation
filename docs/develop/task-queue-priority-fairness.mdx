@@ -248,11 +248,7 @@ To enable Fairness for a Namespace in Temporal Cloud, navigate to the Namespace'
 
 If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` and
 `matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration)
-on the relevant Task Queues or Namespaces. For example, to enable Fairness on the dev server:
-
-```
-temporal server start-dev --dynamic-config-value matching.enableFairness=true
-```
+on the relevant Task Queues or Namespaces.
 
 To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level.
 
