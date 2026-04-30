@@ -31,21 +31,24 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `runWorker` function to create a Lambda handler that runs a Temporal Worker.
 Pass a deployment version and a configure callback that sets up your Workflows and Activities.
 
-```typescript
+<!--SNIPSTART typescript-lambda-worker {"selectedLines": ["1", "3-11", "13"]}-->
+[samples-typescript/lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/lambda-worker/samples-typescript/lambda-worker/src/index.ts)
+```ts
 import { runWorker } from '@temporalio/lambda-worker';
+// ...
 import * as activities from './activities';
+import { TASK_QUEUE } from './workflows';
 
-export const handler = runWorker(
-  { deploymentName: 'my-app', buildId: 'build-1' },
-  (config) => {
-    config.workerOptions.taskQueue = 'my-task-queue';
-    config.workerOptions.workflowBundle = {
-      codePath: require.resolve('./workflow-bundle.js'),
-    };
-    config.workerOptions.activities = activities;
-  },
-);
+export const handler = runWorker({ deploymentName: 'sdk-demo', buildId: 'v1' }, (config) => {
+  config.workerOptions.taskQueue = TASK_QUEUE;
+  config.workerOptions.workflowBundle = {
+    codePath: require.resolve('./workflow-bundle.js'),
+  };
+  config.workerOptions.activities = activities;
+// ...
+});
 ```
+<!--SNIPEND-->
 
 The deployment version is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
@@ -120,23 +123,24 @@ With this enabled, the Worker emits SDK metrics and distributed traces for Workf
 The underlying metrics and traces are the same ones the TypeScript SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - TypeScript SDK](/develop/typescript/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-```typescript
+<!--SNIPSTART typescript-lambda-worker-->
+[samples-typescript/lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/lambda-worker/samples-typescript/lambda-worker/src/index.ts)
+```ts
 import { runWorker } from '@temporalio/lambda-worker';
 import { applyDefaults } from '@temporalio/lambda-worker/otel';
 import * as activities from './activities';
+import { TASK_QUEUE } from './workflows';
 
-export const handler = runWorker(
-  { deploymentName: 'my-app', buildId: 'build-1' },
-  (config) => {
-    config.workerOptions.taskQueue = 'my-task-queue';
-    config.workerOptions.workflowBundle = {
-      codePath: require.resolve('./workflow-bundle.js'),
-    };
-    config.workerOptions.activities = activities;
-    applyDefaults(config);
-  },
-);
+export const handler = runWorker({ deploymentName: 'sdk-demo', buildId: 'v1' }, (config) => {
+  config.workerOptions.taskQueue = TASK_QUEUE;
+  config.workerOptions.workflowBundle = {
+    codePath: require.resolve('./workflow-bundle.js'),
+  };
+  config.workerOptions.activities = activities;
+  applyDefaults(config);
+});
 ```
+<!--SNIPEND-->
 
 `applyDefaults` registers Temporal SDK interceptors for tracing and configures the Core SDK to export metrics via OpenTelemetry Protocol (OTLP).
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
@@ -150,6 +154,8 @@ The default Collector configuration does not route OTLP data to the traces pipel
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
+<!--SNIPSTART typescript-lambda-worker-otel-collector-config-->
+[samples-typescript/lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-typescript/blob/lambda-worker/samples-typescript/lambda-worker/otel-collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -162,11 +168,14 @@ receivers:
 exporters:
   debug:
   awsxray:
-    region: <your-region>
+    region: us-west-2
   awsemf:
+    # AWS EMF exporter for metrics
+    # These are example configurations
     namespace: TemporalWorkerMetrics
-    log_group_name: /aws/lambda/<your-function-name>
-    region: <your-region>
+    # log_group_name: /aws/lambda/<your-function-name>
+    log_group_name: /aws/lambda/sdk-worker-typescript
+    region: us-west-2
     dimension_rollup_option: NoDimensionRollup
     resource_to_telemetry_conversion:
       enabled: true
@@ -179,7 +188,13 @@ service:
     metrics:
       receivers: [otlp]
       exporters: [awsemf]
+  telemetry:
+    logs:
+      level: debug
+    metrics:
+      address: localhost:8888
 ```
+<!--SNIPEND-->
 
 Set the following environment variables on the Lambda function:
 

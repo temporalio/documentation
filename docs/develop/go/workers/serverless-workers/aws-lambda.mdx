@@ -31,11 +31,16 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `RunWorker` function to start a Lambda-based Worker.
 Pass a `WorkerDeploymentVersion` and a callback that registers your Workflows and Activities.
 
+<!--SNIPSTART go-lambda-worker {"selectedLines": ["1-6", "8-18", "22-30"]}-->
+[samples-go/lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/lambda-worker/samples-go/lambda-worker/worker/main.go)
 ```go
 package main
 
 import (
+	greeting "github.com/temporalio/samples-go/lambda-worker/greeting"
+
 	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
+// ...
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
 )
@@ -45,17 +50,20 @@ func main() {
 		DeploymentName: "my-app",
 		BuildID:        "build-1",
 	}, func(opts *lambdaworker.Options) error {
-		opts.TaskQueue = "my-task-queue"
+		opts.TaskQueue = "serverless-task-queue-1"
 
-		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+// ...
+
+		opts.RegisterWorkflowWithOptions(greeting.SampleWorkflow, workflow.RegisterOptions{
+			VersioningBehavior: workflow.VersioningBehaviorPinned,
 		})
-		opts.RegisterActivity(MyActivity)
+		opts.RegisterActivity(greeting.HelloActivity)
 
 		return nil
 	})
 }
 ```
+<!--SNIPEND-->
 
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
@@ -117,8 +125,14 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Go SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Go SDK](/develop/go/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
+<!--SNIPSTART go-lambda-worker-->
+[samples-go/lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/lambda-worker/samples-go/lambda-worker/worker/main.go)
 ```go
+package main
+
 import (
+	greeting "github.com/temporalio/samples-go/lambda-worker/greeting"
+
 	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
 	otel "go.temporal.io/sdk/contrib/aws/lambdaworker/otel"
 	"go.temporal.io/sdk/worker"
@@ -130,21 +144,22 @@ func main() {
 		DeploymentName: "my-app",
 		BuildID:        "build-1",
 	}, func(opts *lambdaworker.Options) error {
-		opts.TaskQueue = "my-task-queue"
+		opts.TaskQueue = "serverless-task-queue-1"
 
 		if err := otel.ApplyDefaults(opts, &opts.ClientOptions, otel.Options{}); err != nil {
 			return err
 		}
 
-		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+		opts.RegisterWorkflowWithOptions(greeting.SampleWorkflow, workflow.RegisterOptions{
+			VersioningBehavior: workflow.VersioningBehaviorPinned,
 		})
-		opts.RegisterActivity(MyActivity)
+		opts.RegisterActivity(greeting.HelloActivity)
 
 		return nil
 	})
 }
 ```
+<!--SNIPEND-->
 
 `ApplyDefaults` configures both metrics and tracing.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
@@ -157,36 +172,46 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
+<!--SNIPSTART go-lambda-worker-otel-collector-config-->
+[samples-go/lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-go/blob/lambda-worker/samples-go/lambda-worker/otel-collector-config.yaml)
 ```yaml
 receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 'localhost:4317'
-      http:
-        endpoint: 'localhost:4318'
+    otlp:
+        protocols:
+            grpc:
+                endpoint: "localhost:4317"
+            http:
+                endpoint: "localhost:4318"
 
 exporters:
-  debug:
-  awsxray:
-    region: <your-region>
-  awsemf:
-    namespace: TemporalWorkerMetrics
-    log_group_name: /aws/lambda/<your-function-name>
-    region: <your-region>
-    dimension_rollup_option: NoDimensionRollup
-    resource_to_telemetry_conversion:
-      enabled: true
+    debug:
+    awsxray:
+        region: us-west-2
+    awsemf:
+        # AWS EMF exporter for metrics
+        # These are example configurations
+        namespace: TemporalWorkerMetrics
+        log_group_name: /aws/lambda/<your-function-name>
+        region: us-west-2
+        dimension_rollup_option: NoDimensionRollup
+        resource_to_telemetry_conversion:
+            enabled: true
 
 service:
-  pipelines:
-    traces:
-      receivers: [otlp]
-      exporters: [awsxray, debug]
-    metrics:
-      receivers: [otlp]
-      exporters: [awsemf]
+    pipelines:
+        traces:
+            receivers: [otlp]
+            exporters: [awsxray, debug]
+        metrics:
+            receivers: [otlp]
+            exporters: [awsemf]
+    telemetry:
+        logs:
+            level: debug
+        metrics:
+            address: localhost:8888
 ```
+<!--SNIPEND-->
 
 Set the following environment variable on the Lambda function to point the Collector at the bundled config:
 

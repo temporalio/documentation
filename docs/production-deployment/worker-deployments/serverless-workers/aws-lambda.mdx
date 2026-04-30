@@ -96,7 +96,7 @@ func main() {
 		opts.TaskQueue = "my-task-queue"
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+			VersioningBehavior: workflow.VersioningBehaviorPinned,
 		})
 		opts.RegisterActivity(MyActivity)
 
@@ -173,7 +173,7 @@ export const handler = runWorker(
       codePath: require.resolve('./workflow-bundle.js'),
     };
     config.workerOptions.activities = activities;
-    config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'AUTO_UPGRADE';
+    config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'PINNED';
   },
 );
 ```
