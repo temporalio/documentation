@@ -302,6 +302,7 @@ let signal_res = ctx
     .external_workflow("workflow-id-1", Some("run-id-1".into()))
     .signal(GreetingsWorkflow::approve, ApproveInput { name: "Ziggy".to_string() })
     .await;
+```
 
 ### Signal-With-Start {#signal-with-start}
 
