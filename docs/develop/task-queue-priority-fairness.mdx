@@ -250,7 +250,7 @@ If you're self-hosting Temporal, use the latest pre-release development server a
 `matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration)
 on the relevant Task Queues or Namespaces.
 
-To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level.
+To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level. Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, if you weight _premium-tier_ at 5.0, _basic-tier_ at 3.0, and _free-tier_ at 2.0, then 50% of dispatched Tasks come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_.
 
 You can set a Workflow's fairness key and weight via the CLI like so:
 
