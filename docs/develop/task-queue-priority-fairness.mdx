@@ -252,6 +252,11 @@ on the relevant Task Queues or Namespaces.
 
 To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level. Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, if you weight _premium-tier_ at 5.0, _basic-tier_ at 3.0, and _free-tier_ at 2.0, then 50% of dispatched Tasks come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_. If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in [FIFO order](/task-queue#task-ordering).
 
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/fairness-details.png"
+  alt="High-level of how fairness works"
+/>
+
 You can set a Workflow's fairness key and weight via the CLI like so:
 
 ```
@@ -526,11 +531,6 @@ backlog from dispatching.
 
 When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
 haven't dispatched yet.
-
-<EnlargeImage
-  src="/img/develop/task-queue-priority-fairness/fairness-details.png"
-  alt="High-level of how fairness works"
-/>
 
 Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key.
 All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0.
