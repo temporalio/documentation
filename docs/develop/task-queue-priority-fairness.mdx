@@ -524,6 +524,34 @@ When you use Priority and Fairness together, Priority determines which "sub-queu
   alt="High-level of how priority and fairness work together"
 />
 
+### Inheritance
+
+Each field of Priority (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
+
+**Activity inheritance order** (highest precedence first):
+
+1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue (`fairness_weight` only)
+2. Value set explicitly in the Activity options
+3. Inherited from the calling Workflow
+4. Default value (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
+
+**Workflow inheritance order** (highest precedence first):
+
+1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue (`fairness_weight` only)
+2. Value set explicitly in the Workflow start options
+3. Inherited from the parent Workflow (Child Workflows only)
+4. Default value (`priority_key=3`, `fairness_key=""`, `fairness_weight=1.0`)
+
+Continue-As-New inherits from the current execution unless explicit values are passed.
+
+### Enabling or disabling Fairness with an active backlog
+
+When Fairness is enabled on a Namespace, Task Queues in the Namespace begin honoring fairness keys on Tasks for dispatch ordering. Existing queued Tasks are dispatched first, in their original priority + FIFO order. Fairness keys on Tasks already in the backlog do not retroactively affect their dispatch order.
+
+When Fairness is disabled on a Namespace, Task Queues in the Namespace stop honoring fairness keys for dispatch ordering. The existing fairness-ordered backlog is dispatched first, in its original fairness order. After the backlog drains, Task Queues dispatch in priority + FIFO order.
+
+In both directions, the existing backlog is dispatched before any new Tasks queued under the new mode. New Tasks dispatch only after the backlog fully drains. Tasks are not lost in either transition.
+
 ### Set rate limits at the Task Queue level
 
 When you're starting to scale your Temporal Services, you may decide to set [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits) limits to test your workload or experiment with provisioning benchmarks. You can set the RPS limit at the Task Queue level with `queue-rps-limit` in the CLI.
