@@ -198,7 +198,6 @@ The handler context also exposes `ctx.requestDeadline` as an optional `Date`, re
 Note that this is the deadline for the current _request_, not the overall operation.
 Use it to make decisions about whether to start work that may not finish in time, or to set timeouts on downstream calls.
 
-EVAN
 
 The [nexus_messaging](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
