@@ -131,7 +131,7 @@ After setting the Current version, unversioned in-flight Workflows aren't droppe
 
 Sleeping or idle Workflows will not automatically begin to receive the new version information. If you have Workflows that are sleeping or waiting for an event, you must send them a Signal to wake them up so they can be dispatched to the versioned Worker on their next Task execution.
 
-To Signal all running Workflows at once:
+Here's an example of how to Signal all running Workflows at once:
 
 ```shell
 temporal workflow signal \
