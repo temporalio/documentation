@@ -144,9 +144,9 @@ impl MyActivities {
 
         // If an error should not be retried
         if input.len() > 1000000 {
-            return Err(ActivityError::NonRetryable(
-                "Input too large".into()
-            ));
+            return Err(ApplicationFailure::non_retryable(
+                anyhow::anyhow!("Input too large")
+            ).into());
         }
 
         let result = ProcessedData {
