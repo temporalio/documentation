@@ -172,7 +172,7 @@ A common pattern is to use the Temporal Client from within a sync handler to Sig
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
 
-The [nexus_messaging](https://github.com/temporalio/samples-dotnet/tree/src/NexusMessaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
+The [nexus_messaging](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
 
 Use NexusOperationExecutionContext (as shown below)  to get the Client that the Worker was initialized with. In this example, the workflow ID is derived from the client ID, with the method "WorkflowIdForUser" converting a given client ID (in this case, the client is passing in a user ID) to generate a workflow ID from it.
 This way the client only needs to know about the identifier they care about.
