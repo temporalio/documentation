@@ -242,25 +242,40 @@ async def watch_order(order_id: str) -> None:
 
 The iterator handles re-polling, server-imposed range limits, and Workflow-side log truncation transparently — there are no extra signals or exceptions for normal callers to handle. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html) if you need the underlying details.
 
-When the Workflow run completes (or fails), the iterator yields any remaining buffered items and then exits the `async for` loop normally — there is no terminal sentinel value and no exception. The recommended pattern is to have the Workflow publish its own completion event (the `StatusEvent(state="completed")` in the example above is the minimal form) so subscribers recognize the end of work in their own vocabulary and can render it. As a fallback for runs that crashed before publishing a final event, call `handle.describe()` after the loop returns and inspect the Workflow's status.
+`WorkflowStreamClient.subscribe()` is a long-poll loop and does not exit on its own when the host Workflow completes — closing a streamed Workflow cleanly takes two pieces working together:
+
+1. **The Workflow publishes an in-band terminator** that consumers recognize and break on. The `StatusEvent(state="completed")` in the example above is the minimal form; the consumer's `if evt.state == "completed": break` is the matching half. Each subscription needs to know its own end-of-stream marker — the contrib does not impose one.
+2. **The Workflow holds its run open briefly after publishing the terminator** so subscribers' next poll fetches it before the in-memory log is gone. Items published in the same Workflow task that returns from `@workflow.run` are abandoned: the next subscriber poll lands on a completed Workflow. A short `await workflow.sleep(timedelta(milliseconds=500))` before returning is enough to let one more poll come through.
+
+   ```python
+   self.status.publish(StatusEvent(state="completed", progress=100))
+   await workflow.sleep(timedelta(milliseconds=500))
+   return result
+   ```
+
+With both pieces in place, subscribers receive the terminator, break out of their `async for`, and stop polling — by the time the Workflow exits there are no in-flight poll handlers, so the SDK does not warn about unfinished handlers. As a fallback for runs that crashed before publishing a final event, call `handle.describe()` after the loop returns and inspect the Workflow's status.
 
 ### Heterogeneous topics
 
-A topic handle binds one name to one type, so it only fits a single-type subscription. To consume multiple topics whose payload types differ, call `client.subscribe()` directly with a list of names (or `subscribe([])` for every topic), omit `result_type`, and dispatch on `item.topic` using the client's payload converter:
+A topic handle binds one name to one type, so it only fits a single-type subscription. To consume multiple topics whose payload types differ, call `client.subscribe()` directly with a list of names (or `subscribe([])` for every topic) and pass `result_type=temporalio.common.RawValue` so each item arrives as the underlying `Payload` wrapped in a `RawValue`. Dispatch on `item.topic` and decode the wrapped payload with the client's payload converter:
 
 ```python
+from temporalio.common import RawValue
+
 converter = temporal_client.data_converter.payload_converter
 
-async for item in stream.subscribe(["status", "progress"]):
+async for item in stream.subscribe(["status", "progress"], result_type=RawValue):
     if item.topic == "status":
-        evt = converter.from_payload(item.data, StatusEvent)
+        evt = converter.from_payload(item.data.payload, StatusEvent)
         print(f"[status] {evt.state}: {evt.detail}")
     elif item.topic == "progress":
-        evt = converter.from_payload(item.data, ProgressEvent)
+        evt = converter.from_payload(item.data.payload, ProgressEvent)
         print(f"[progress] {evt.message}")
 ```
 
-A single iterator over multiple topics also avoids the cancellation race that two concurrent subscribers would create. Pass `result_type=temporalio.common.RawValue` when you want to forward the bytes through to another system without decoding them.
+A single iterator over multiple topics also avoids the cancellation race that two concurrent subscribers would create. `RawValue` is also the right shape when you want to forward the bytes through to another system without decoding them.
+
+Omitting `result_type` entirely (or passing `result_type=None`) decodes each item with the converter's default rules — for the stock JSON converter, a Python primitive, `dict`, or `list`. That works for fully homogeneous streams, but not for the dispatch-by-topic pattern above, where each topic has its own concrete dataclass.
 
 Subscribers automatically follow continue-as-new chains, so a long-running Workflow can roll over without disrupting active consumers.
 Under the hood the iterator re-resolves the Workflow handle to the new run and continues polling from the carried offset.
