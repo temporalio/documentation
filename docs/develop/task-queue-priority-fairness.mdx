@@ -519,18 +519,6 @@ There should only be one fairness weight assigned to each fairness key within a 
 
 :::
 
-### How Fairness works
-
-There are two ways to use Task Queue Fairness: without Priority and with Priority.
-
-If you use Fairness without Priority, Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, if you weight _premium-tier_ at 5.0, _basic-tier_ at 3.0, and _free-tier_ at 2.0, then 50% of dispatched Tasks come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_.
-
-If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in
-[FIFO order](/task-queue#task-ordering).
-
-This is how you are able to ensure that one tier doesn't use all the resources and block other Tasks in the Task Queue
-backlog from dispatching.
-
 ### Using Fairness and Priority together
 
 When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
