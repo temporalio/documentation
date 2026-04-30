@@ -254,6 +254,8 @@ on the relevant Task Queues or Namespaces. For example, to enable Fairness on th
 temporal server start-dev --dynamic-config-value matching.enableFairness=true
 ```
 
+To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level.
+
 You can do this via the Temporal CLI where you set the fairness key and weight parameters for your Workflow:
 
 ```
