@@ -265,12 +265,6 @@ temporal workflow start \
   --fairness-weight 3.14
 ```
 
-:::info
-
-There should only be one fairness weight assigned to each fairness key within a Task Queue. Having multiple fairness weights on a fairness key will result in unspecific behavior.
-
-:::
-
 You can set fairness keys and weights for a Workflow within the SDK like so:
 
 <SdkTabs>
@@ -511,6 +505,12 @@ var handle = await Client.StartWorkflowAsync(
 ```
 </SdkTabs.DotNet>
 </SdkTabs>
+
+:::info
+
+There should only be one fairness weight assigned to each fairness key within a Task Queue. Having multiple fairness weights on a fairness key will result in unspecific behavior.
+
+:::
 
 ### How Fairness works
 
