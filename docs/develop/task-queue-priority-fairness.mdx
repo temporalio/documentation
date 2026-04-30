@@ -232,7 +232,7 @@ It sequences Tasks in the Task Queue probabilistically using a weighted distribu
 
 - Fairness weights you set
 - The current backlog of Tasks
-- A data structure that tracks how you've distributed Tasks for different fairness keys
+- A [data structure](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) that tracks how you've distributed Tasks for different fairness keys
 
 As an example, imagine a workload with three tenants, _tenant-big_, _tenant-mid_, _tenant-small_, that have varying
 numbers of Tasks at all times. Your _tenant-big_ has a large number of Tasks that can overwhelm your Task Queue and
