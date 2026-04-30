@@ -511,6 +511,8 @@ var handle = await Client.StartWorkflowAsync(
 </SdkTabs.DotNet>
 </SdkTabs>
 
+Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key. All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0. This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others. Unkeyed Tasks do not bypass Fairness; they compete as one group alongside all explicitly keyed Tasks.
+
 :::info
 
 There should only be one fairness weight assigned to each fairness key within a Task Queue. Having multiple fairness weights on a fairness key will result in unspecific behavior.
@@ -531,12 +533,6 @@ backlog from dispatching.
 
 When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
 haven't dispatched yet.
-
-Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key.
-All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0.
-
-This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others.
-Unkeyed Tasks do not bypass Fairness; they compete as one group alongside all explicitly keyed Tasks.
 
 ### Using Fairness and Priority together
 
