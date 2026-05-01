@@ -218,7 +218,7 @@ When defining Workflows using the Temporal Java SDK, the Workflow code must be w
 The following constraints apply when writing Workflow Definitions:
 
 - Do not use mutable global variables in your Workflow implementations. This will ensure that multiple Workflow instances are fully isolated.
-- Workflow code must be deterministic. If you need to call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code. The Temporal SDK provides specific API for calling non-deterministic code in your Workflows.
+- Workflow code must be deterministic. If you need to call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code, the Temporal SDK provides specific API for calling non-deterministic code in your Workflows.
   - For operations like calling external APIs, invoking LLMs, querying databases, or performing I/O, use Activities. Activities run outside Workflow replay and are retried reliably.
 - Use Temporal-provided functions instead of that rely on system time. For example, only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
 - Use `Async.function` or `Async.procedure`, provided by the Temporal SDK, to execute code asynchronously instead of native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`.
