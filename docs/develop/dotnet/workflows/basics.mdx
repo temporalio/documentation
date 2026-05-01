@@ -44,11 +44,9 @@ All Workflow Definition parameters must be serializable.
 
 ## Workflow logic requirements {#workflow-logic-requirements}
 
-Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
-Therefore, each language is limited to the use of certain idiomatic techniques.
-However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow.
 
-This means there are several things Workflows cannot do such as:
+This means there are several things Workflows shouldn't do such as:
 
 - Perform IO (network, disk, stdio, etc)
 - Access/alter external mutable state
@@ -65,27 +63,20 @@ This is especially true with `Task`s.
 Temporal requires that the deterministic `TaskScheduler.Current` is used, but many .NET async calls will use `TaskScheduler.Default` implicitly (and some analyzers even encourage this).
 Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 
-- Do not use `Task.Run` - this uses the default scheduler and puts work on the thread pool.
-  - Use `Workflow.RunTaskAsync` instead.
-  - Can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
-- Do not use `Task.ConfigureAwait(false)` - this will not use the current context.
-  - If you must use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`.
-  - There is no significant performance benefit to `Task.ConfigureAwait` in workflows anyways due to how the scheduler works.
-- Do not use anything that defaults to the default task scheduler.
-- Do not use `Task.Delay`, `Task.Wait`, timeout-based `CancellationTokenSource`, or anything that uses .NET built-in timers.
-  - `Workflow.DelayAsync`, `Workflow.WaitConditionAsync`, or non-timeout-based cancellation token source is suggested.
-- Do not use `Task.WhenAny`.
-  - Use `Workflow.WhenAnyAsync` instead.
+-  Use `Workflow.RunTaskAsync` instead of `Task.Run`. `Task.Run` uses the default scheduler and puts work on the thread pool.
+    - You can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
+- If you need to use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`. `Task.ConfigureAwait(false)` won't use the current context.
+  - There is no significant performance benefit to `Task.ConfigureAwait` in workflows because of how the scheduler works.
+- Avoid anything that defaults to the default task scheduler.
+- Use `Workflow.DelayAsync`, `Workflow.WaitConditionAsync`, or non-timeout-based cancellation token sources instead of `Task.Delay`, `Task.Wait`, timeout-based `CancellationTokenSource`, or anything that uses .NET built-in timers.
+- Use `Workflow.WhenAnyAsync` instead of `Task.WhenAny`.
   - Technically this only applies to an enumerable set of tasks with results or more than 2 tasks with results. Other
     uses are safe. See [this issue](https://github.com/dotnet/runtime/issues/87481).
-- Do not use `Task.WhenAll`
-  - Use `Workflow.WhenAllAsync` instead.
+- Use `Workflow.WhenAllAsync` instead of `Task.WhenAll`.
   - Technically `Task.WhenAll` is currently deterministic in .NET and safe, but it is better to use the wrapper to be
     sure.
-- Do not use `CancellationTokenSource.CancelAsync`.
-  - Use `CancellationTokenSource.Cancel` instead.
-- Do not use `System.Threading.Semaphore` or `System.Threading.SemaphoreSlim` or `System.Threading.Mutex`.
-  - Use `Temporalio.Workflows.Semaphore` or `Temporalio.Workflows.Mutex` instead.
+- Use `CancellationTokenSource.Cancel` instead of `CancellationTokenSource.CancelAsync`.
+- Use `Temporalio.Workflows.Semaphore` or `Temporalio.Workflows.Mutex` instead of `System.Threading.Semaphore`, `System.Threading.SemaphoreSlim`, or `System.Threading.Mutex`.
   - _Technically_ `SemaphoreSlim` does work if only the async form of `WaitAsync` is used without no timeouts and
     `Release` is used. But anything else can deadlock the workflow and its use is cumbersome since it must be disposed.
 - Be wary of additional libraries' implicit use of the default scheduler.
@@ -93,6 +84,7 @@ Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 
 In order to help catch wrong scheduler use, by default the Temporal .NET SDK adds an event source listener for info-level task events.
 While this technically receives events from all uses of tasks in the process, we make sure to ignore anything that is not running in a Workflow in a high performant way (basically one thread local check).
+
 For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Task which continually retries until the code is fixed).
 This is unfortunately a runtime-only check, but can help catch mistakes early. If this needs to be turned off for any reason, set `DisableWorkflowTracingEventListener` to `true` in Worker options.
 
