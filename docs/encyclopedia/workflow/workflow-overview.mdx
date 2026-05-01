@@ -39,7 +39,7 @@ Each Workflow Execution emits a series of **Commands** and processes a sequence 
 
 ### How Workflow replay works
 
-When a Workflow stops or encounters an error, the goal of Temporal is to bring the Workflow back to the exact same state it was in before the pause occurred. To make that possible, Temporal keeps the Event History. This is a complete, ordered log of everything that has already happened in a Workflow.
+When a Workflow [yields](https://en.wikipedia.org/wiki/Yield_(multithreading)) or encounters an error, the goal of Temporal is to bring the Workflow back to the exact same state it was in before the pause occurred. To make that possible, Temporal keeps the Event History. This is a complete, ordered log of everything that has already happened in a Workflow.
 
 The Event History could look like this for example:
 
