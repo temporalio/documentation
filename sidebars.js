@@ -1568,16 +1568,6 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Libraries',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'encyclopedia/libraries/index',
-          },
-          items: ['encyclopedia/libraries/workflow-streams'],
-        },
-        {
-          type: 'category',
           label: 'Extensibility',
           collapsed: true,
           link: {

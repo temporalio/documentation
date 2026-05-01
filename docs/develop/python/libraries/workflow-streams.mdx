@@ -26,8 +26,6 @@ Workflow Streams are intended for keeping outside observers updated on the progr
 Example applications include updating a user interface to show the progress being made by an AI agent, or providing updates on in-flight payment or order processing work.
 Workflow Streams are not designed for ultra-low-latency applications such as real-time voice streaming.
 
-For a conceptual overview — the streaming problem, architecture, transport pattern, and AI agent use case — see [Workflow Streams](/workflow-streams).
-
 A `WorkflowStream` instance is a many-to-many communication channel hosted inside a Workflow: any number of publishers (the Workflow itself, its Activities, other Workflows, etc.) append events, and any number of subscribers consume them. Temporal's [Signals and Updates](/develop/python/workflows/message-passing) provide the underlying message passing primitives; the `temporalio.contrib.workflow_streams` module packages the batching, offset tracking, topic filtering, and continue-as-new hand-off that turn those primitives into a usable stream.
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
@@ -377,7 +375,7 @@ The user-facing API hides three pieces of machinery worth understanding when you
 
 **Append-only log inside the Workflow.** `WorkflowStream` keeps an in-memory list of `(topic, data)` entries inside the Workflow's state. Each entry has a monotonically increasing global offset. Subscribers maintain their own offset cursor and on each long-poll, they receive the next range past that cursor.
 
-The log is part of the Workflow's state, so it persists for the life of the run and is carried across Continue-As-New through `WorkflowStreamState`. To bound log growth in long-lived Workflows, call `self.stream.truncate(up_to_offset)` on the Workflow side. Subscribers that fall behind a truncation jump forward to the new base offset and continue.
+The log is part of the Workflow's state, so it persists for the life of the run and is carried across Continue-As-New through `WorkflowStreamState`. To bound log growth in long-lived Workflows, call `self.stream.truncate(up_to_offset)` on the Workflow side. Subscribers that fall behind a truncation jump forward to the new base offset and continue. Streams that carry large items risk exceeding Temporal's per-payload size limit — most acutely on the carried state at Continue-As-New, but also on inbound publish Signals and outbound subscribe Update responses. Offload the bytes via [External Storage](/external-storage) so each item is a small reference rather than the full payload.
 
 **Where Signals, Updates, and Queries fit.** The three handlers registered when you construct a `WorkflowStream` map to Temporal's basic message primitives:
 
