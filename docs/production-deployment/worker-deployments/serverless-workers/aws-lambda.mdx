@@ -22,12 +22,20 @@ import SdkTabs from '@site/src/components/elements/SdkTabs';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+APIs are experimental and may be subject to backwards-incompatible changes.
+
+:::
+
 This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
 
 ## Prerequisites {#prerequisites}
 
-- A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service vx.xx.x or later. The
-  Namespace's cloud provider must match the serverless compute provider.
+- A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later.
+  The Namespace's cloud provider must match the serverless compute provider.
 - For self-hosted deployments, complete the
   [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup) before following
   this guide.
@@ -100,7 +108,7 @@ func main() {
 		opts.TaskQueue = "my-task-queue"
 
 		opts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-			VersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+			VersioningBehavior: workflow.VersioningBehaviorPinned,
 		})
 		opts.RegisterActivity(MyActivity)
 
@@ -172,14 +180,17 @@ Use the `@temporalio/lambda-worker` package.
 import { runWorker } from '@temporalio/lambda-worker';
 import * as activities from './activities';
 
-export const handler = runWorker({ deploymentName: 'my-app', buildId: 'build-1' }, (config) => {
-  config.workerOptions.taskQueue = 'my-task-queue';
-  config.workerOptions.workflowBundle = {
-    codePath: require.resolve('./workflow-bundle.js'),
-  };
-  config.workerOptions.activities = activities;
-  config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'AUTO_UPGRADE';
-});
+export const handler = runWorker(
+  { deploymentName: 'my-app', buildId: 'build-1' },
+  (config) => {
+    config.workerOptions.taskQueue = 'my-task-queue';
+    config.workerOptions.workflowBundle = {
+      codePath: require.resolve('./workflow-bundle.js'),
+    };
+    config.workerOptions.activities = activities;
+    config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'PINNED';
+  },
+);
 ```
 
 Use `workflowBundle` with pre-bundled code instead of `workflowsPath` to avoid webpack bundling overhead on Lambda cold
@@ -573,6 +584,8 @@ temporal worker deployment create-version \
 
 </TabItem>
 </Tabs>
+
+To verify that Temporal can reach your Lambda function, go to **Workers** > **Deployments** > select your deployment > open the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can assume the IAM role and invoke the function.
 
 ## 5. Set version as current {#set-current-version}
 

@@ -221,7 +221,7 @@ Workflow IDs should typically be business-meaningful IDs and are used to dedupe 
 A Nexus Operation can only take one input parameter. If you want a Nexus Operation to start a Workflow that takes multiple arguments use the `ctx.start_workflow` method.
 
 <!--SNIPSTART samples-python-nexus-handler-multiargs-->
-[nexus_multiple_args/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/nexus_multiple_args/handler/service_handler.py)
+[nexus_multiple_args/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/lambda-worker/nexus_multiple_args/handler/service_handler.py)
 ```py
 @nexusrpc.handler.service_handler(service=MyNexusService)
 class MyNexusServiceHandler:
