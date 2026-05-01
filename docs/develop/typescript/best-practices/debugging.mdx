@@ -53,7 +53,7 @@ If you are developing Workflows and finding that code isn't executing as expecte
 
 If those old Workflows have the same name and are on the same Task Queue, Temporal will try to continue executing them on your new code by design. You may get errors that make no sense to you because:
 
-- Temporal is trying to execute old Workflow code that no longer exists in your codebase
+- Temporal is trying to execute old Workflow code that no longer exists in your codebase.
 - Your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
 
 Stale Workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run. If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
