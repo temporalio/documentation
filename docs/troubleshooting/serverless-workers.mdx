@@ -58,58 +58,38 @@ If the Lambda is being invoked but Workflows are not progressing, skip to
 
 ## Lambda is not being invoked {#lambda-not-invoked}
 
-Work through the following checks in order. Each check corresponds to a step in the invocation flow.
+Work through the following checks in order.
 
-### Check that the WCI Workflow is running {#check-wci-running}
+### Validate the connection to Lambda {#validate-connection}
 
-The [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) is a system Workflow in the same
-Namespace as your Worker Deployment that monitors Task Queue backlogs and invokes your Lambda function. One WCI Workflow
-runs per Worker Deployment Version that has a compute provider configured.
+Start by verifying that Temporal can reach the Lambda function. Go to **Workers > Deployments > select your
+deployment**, open the **Actions** menu on the version, and click **Validate Connection**. A successful validation
+confirms that the Worker Deployment Version has a compute provider configured, that Temporal can assume the invocation
+role, and that the Lambda function can be invoked.
 
-List WCI Workflows in your Namespace:
+If validation fails, check the following:
 
-```bash
-temporal workflow list \
-  --namespace <NAMESPACE> \
-  --query 'TemporalNamespaceDivision = "TemporalWorkerControllerInstance"'
-```
+- The Lambda function ARN in the Worker Deployment Version configuration points to an existing function.
+- The invocation role ARN is correct.
+- The trust policy on the invocation role allows the Temporal Cloud account to assume the role.
+- The External ID in the trust policy matches the External ID in the Worker Deployment Version configuration.
+- The invocation role has `lambda:InvokeFunction` permission for the Lambda function ARN.
 
-Look for a Workflow ID that matches your deployment name and build ID. WCI Workflow IDs follow the pattern
-`temporal-sys-worker-controller-instance:<deployment-name>:<build-id>`.
+For the correct IAM configuration, see
+[Create an invocation role](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-invocation-role).
 
-If no WCI Workflow exists for your Worker Deployment Version, the compute provider configuration may not have been
-applied. Verify the Worker Deployment Version has a compute provider configured:
-
-```bash
-temporal worker deployment describe \
-  --namespace <NAMESPACE> \
-  --name <DEPLOYMENT_NAME>
-```
-
-A common cause of a missing WCI is manually invoking the Lambda function before running creating the Worker Deployment
+If the Worker Deployment Version does not have a compute provider configured, no
+[Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow exists and the Lambda is never
+automatically invoked. A common cause is manually invoking the Lambda function before creating the Worker Deployment
 Version in the UI or CLI. When the Lambda runs, the Worker connects to Temporal and polls the Task Queue. That polling
-registers the Worker Deployment Version and binds the Task Queue on the server, but the version has no compute provider
-and no IAM configuration needed to invoke the Lambda. Without a compute provider, no WCI Workflow is created and the
-Lambda is never automatically invoked.
-
-To fix the issue, run `temporal worker deployment create-version` with the compute provider flags as described in the
-[deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version),
-or edit the Worker Deployment Version configuration in the UI by providing the correct compute provider details.
+registers the Worker Deployment Version and binds the Task Queue on the server, but the version has no compute provider.
+To fix the issue, create or update the Worker Deployment Version with the compute provider flags as described in the
+[deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version).
 
 ### Check that the WCI is detecting Tasks {#check-wci-detecting-tasks}
 
-If the WCI Workflow is running but the Lambda is not being invoked, inspect the WCI's recent Activity.
-
-View the WCI Workflow history:
-
-```bash
-temporal workflow show \
-  --namespace <NAMESPACE> \
-  --workflow-id 'temporal-sys-worker-controller-instance:<DEPLOYMENT_NAME>:<BUILD_ID>'
-```
-
-The WCI runs a `PullStats` Activity on a regular interval (typically every 5 minutes when idle). If `PullStats`
-consistently returns no Tasks, the server does not associate any Task Queues with your Worker Deployment Version.
+If the connection validates successfully but the Lambda is still not being invoked, the WCI may not be detecting Tasks
+on the Task Queue.
 
 Check which Task Queues are bound to the Worker Deployment Version and whether there is a backlog:
 
@@ -122,73 +102,16 @@ temporal worker deployment describe-version \
 ```
 
 If no Task Queues are listed, the binding has not been established. The server binds a Task Queue to a Worker Deployment
-Version when a Worker with that deployment version polls the Task Queue. If the Lambda has never been successfully
-invoked, or the deployment name or build ID in the Worker code does not match the WCI configuration, the binding does
-not exist. See [Check that the deployment name and build ID match](#check-deployment-match) for how to diagnose a
-mismatch.
+Version when a Worker with that deployment version successfully connects and polls the Task Queue.
 
-### Check that the deployment name and build ID match {#check-deployment-match}
+A common cause is a failed first invocation. When you create a Worker Deployment Version, the WCI invokes the Lambda to
+validate the configuration. If that first invocation fails (for example, due to missing environment variables, incorrect
+TLS configuration, or missing dependencies), the Worker never connects to Temporal and never polls. Without a successful
+poll, the Task Queue binding is never created.
 
-The deployment name and build ID in your Worker code must exactly match the values in the Worker Deployment Version
-configuration.
-
-Compare the values in your Lambda function code:
-
-```go
-// Go
-lambdaworker.RunWorker(worker.WorkerDeploymentVersion{
-    DeploymentName: "my-app",
-    BuildID:        "build-1",
-}, ...)
-```
-
-```python
-# Python
-run_worker(
-    deployment_version=WorkerDeploymentVersion(
-        deployment_name="my-app",
-        build_id="build-1",
-    ),
-    ...
-)
-```
-
-```typescript
-// TypeScript
-runWorker({ deploymentName: 'my-app', buildId: 'build-1' }, ...)
-```
-
-Against the values in the WCI Workflow ID (`temporal-sys-worker-controller-instance:<deployment-name>:<build-id>`) and
-the output of `temporal worker deployment describe`.
-
-A mismatch means the Worker registers with one Worker Deployment Version while the WCI monitors a different one. The
-server never associates the Task Queue with the WCI's Worker Deployment Version, so `PullStats` never sees Tasks.
-
-### Check IAM permissions for Lambda invocation {#check-iam-permissions}
-
-If the WCI detects Tasks but the Lambda is not invoked, the issue is likely an IAM permission problem.
-
-Verify that the invocation role trust policy allows Temporal to assume the role. Check for the following common issues:
-
-- The invocation role ARN in the Worker Deployment Version configuration is incorrect.
-- The trust policy does not allow the Temporal Cloud account to assume the role.
-- The External ID in the trust policy does not match the External ID in the Worker Deployment Version configuration.
-- The invocation role does not have `lambda:InvokeFunction` permission for the Lambda function ARN.
-
-For the correct IAM configuration, see
-[Create an invocation role](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-invocation-role).
-
-### Check the Lambda function ARN {#check-lambda-arn}
-
-Verify that the Lambda function ARN in the Worker Deployment Version configuration points to an existing function.
-
-```bash
-aws lambda get-function \
-  --function-name <LAMBDA_FUNCTION_ARN>
-```
-
-If you are using a versioned ARN (with a version number or alias suffix), confirm the version or alias exists and points
-to the correct code.
+To diagnose a failed first invocation, check the Lambda function's CloudWatch logs for errors from the initial
+invocation. Fix the Lambda configuration, then update the Worker Deployment Version to trigger a new validation
+invocation.
 
 ## Lambda is invoked but Tasks are not completing {#lambda-invoked-not-completing}
 
@@ -221,15 +144,18 @@ For long-running Activities, increase the Lambda timeout and the Worker's shutdo
 [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities) for guidance on how these
 values relate.
 
-### Check for infinite invocation loops {#check-infinite-loop}
+### Check that the deployment name and build ID match {#check-deployment-match}
 
-If CloudWatch shows rapid, repeated invocations with no Workflow progress, you may have a build ID mismatch.
+If CloudWatch shows rapid, repeated invocations with no Workflow progress, the deployment name or build ID in the Worker
+code may not match the Worker Deployment Version configuration.
 
-This happens when the Lambda function code is updated but the build ID in the Worker code is not changed to match a new
-Worker Deployment Version. The WCI invokes the Lambda, the Worker starts with the old build ID, the server rejects the
-poll because the build ID does not match the Worker Deployment Version, and the WCI invokes the Lambda again.
+The deployment name and build ID in your Lambda function code must exactly match the values you used when creating the
+Worker Deployment Version. Compare the values in your code against the WCI Workflow ID
+(`temporal-sys-worker-controller-instance:<deployment-name>:<build-id>`) and the output of
+`temporal worker deployment describe`.
 
-To fix the loop, ensure the build ID in the Worker code matches the build ID in the Worker Deployment Version
-configuration. See the
-[Lambda versioning caution](/production-deployment/worker-deployments/serverless-workers/aws-lambda#deploy-lambda-function)
-for details.
+A mismatch causes an invocation loop: the WCI invokes the Lambda, the Worker starts and polls with a different
+deployment version than the WCI expects, the Task is not processed, and the WCI invokes the Lambda again.
+
+To fix the loop, update the deployment name and build ID in the Worker code to match the Worker Deployment Version, then
+redeploy the Lambda function.
