@@ -456,6 +456,14 @@ Set the `WorkerHeartbeatInterval` property on [`TemporalRuntimeOptions`](https:/
 Set it to `null` to disable heartbeating.
 
 </SdkTabs.DotNet>
+<SdkTabs.Java>
+
+_Available since Java SDK v1.35.0_
+
+Set the heartbeat interval on [`WorkflowClientOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html) with `setWorkerHeartbeatInterval(Duration)`.
+Set it to a negative `Duration` to disable heartbeating.
+
+</SdkTabs.Java>
 <SdkTabs.Ruby>
 
 _Available since Ruby SDK v1.1.0_
