@@ -147,6 +147,13 @@ If your Worker handles long-running Activities, set these three values together:
 - **Invocation deadline > longest Activity runtime + shutdown deadline buffer.** Set on the compute provider to give
   each invocation enough total runtime.
 
+  :::tip
+
+  If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be difficult or impossible to meet.
+  In this case, use [Activity Heartbeats](/activity-heartbeat) to record the state of the Activity execution so that the next retry can pick up where it left off.
+
+  :::
+
 For example, if your longest Activity runtime is 5 minutes, and your shutdown hooks take 3 seconds to run, set the
 Worker stop timeout to more than 5 minutes, and the shutdown deadline buffer to more than 303 seconds (5 minutes + 3
 seconds). Set your invocation deadline to at least 10 minutes and 3 seconds (5 minutes + 303 seconds).
