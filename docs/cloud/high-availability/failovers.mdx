@@ -22,36 +22,56 @@ keywords:
 import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
 
 In case of an incident or an outage, Temporal will automatically <ToolTipTerm term="fail over" src="failover" /> your Namespace from the primary to the replica.
-This lets Workflow Executions continue with minimal interruptions or data loss.
-You can also [manually initiate failovers](/cloud/high-availability/failovers) based on your situational monitoring or for testing.
+This lets in-flight Workflow Executions continue, new Workflow Executions start, and closed Workflow Executions be inspected, all with minimal interruptions or data loss.
+You can also [manually trigger a failover](/cloud/high-availability/failovers) based on your own monitoring or for failover testing.
 
 Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />.
 After a Temporal-managed failover, Temporal automatically fails back to the original region once it is healthy.
 See [Returning to the primary with failbacks](#failbacks) for details on automatic and manual failback options.
 
-## Failovers
+## Automatic failover
 
-Occasionally, a Namespace may become temporarily unavailable due to an unexpected incident.
-Temporal Cloud detects these issues using regular health checks.
+When an unexpected outage hits your Temporal Namespace, failing over to a healthy cloud region can prevent data loss and application interruptions.
+After a failover, in-flight Workflows continue, new Workflows start, and closed Workflows can be inspected, even while the Namespace's original region is unhealthy.
 
-### Health checks
+Temporal Cloud offers managed outage detection and failover to all Namespaces that use High Availability.
+Temporal-managed failovers, also known as "automatic failovers," keep your Temporal Cloud Namespace available without manual intervention from you.
+We aim to both detect the outage and complete a Temporal-managed failover in minutes from when the outage began, according to our stated [Recovery Time Objective (RTO)](/cloud/rto-rpo).
 
-Temporal Cloud monitors error rates, latencies, and infrastructure problems, such as request timeouts.
-If it finds unhealthy conditions where indicators exceed the allowed thresholds, Temporal automatically switches the primary to the replica.
-In most cases, the replica is unaffected by the issue.
-This process is known as failover.
-
-### Automatic failovers
-
-Failovers prevent data loss and application interruptions.
-Existing Workflows continue, and new Workflows start as the incident is addressed.
-
-Temporal Cloud handles failovers automatically, ensuring continuity without manual intervention.
-Once the incident is resolved, Temporal Cloud automatically performs a [failback](#failbacks), shifting Workflow Execution processing back to the original region.
+After a Temporal-managed failover, your Namespace will have a replica in its original region.
+Once the original region is healthy again, Temporal Cloud automatically performs a [failback](#failbacks), moving your Namespace back home.
 
 <CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
 
-For more control over the failover process, you can [disable automated failovers](/cloud/high-availability/failovers#disabling-temporal-initiated).
+To opt-out of Temporal-managed failovers and its RTO, you can [disable automated failovers](/cloud/high-availability/failovers#disabling-temporal-initiated).
+lth checks.
+
+### Conditions that trigger an automatic failover
+
+While the failover operation usually completes in seconds, it can take much longer in an outage to actually detect the disruption and decide to trigger a failover.
+ 
+To achieve Temporal Cloud's Recovery Time Objective (RTO) for Namespaces that have enabled High Availability and Temporal-managed failovers (also known as "automatic failovers"), Temporal Cloud runs automated Workflows that detect outages and trigger failovers.
+These Workflows continuously monitor the health of Temporal Cloud in every region and every cell.
+
+The main conditions these Workflows check are listed below.
+If any of these conditions are failing for too long, Temporal Cloud automatically triggers a failover on any Namespaces with High Availability that have a healthy replica.
+Additionally, Temporal's on-call engineers may trigger a failover at their discretion, for example, if they see early signs of a regional outage.
+
+:::note
+
+The following list is meant to give Temporal Cloud users a general idea of the conditions that trigger a Temporal-managed failover.
+This is not an exhaustive list of all cases, and it may change over time.
+
+:::
+
+#### Example conditions monitored
+
+1. Whether Temporal Cloud's services in the cell are reachable from the control plane. Unreachable services are considered "unhealthy".
+2. The average latency of inbound RPC calls (excluding long-polling APIs) to Temporal services in the cell. If the average latency rises too high over a rolling time window, this condition is considered "unhealthy".
+3. The percentage of inbound RPC calls that returned errors related to server health. If the percentage rises too high over a rolling time window, this condition is considered "unhealthy".
+4. The average latency of calls from Temporal Cloud's services in the cell to its persistence layer. If the average latency rises too high over a rolling time window, this condition is considered "unhealthy".
+5. The percentage of recent calls to the persistence layer that returned errors related to persistence health. If the percentage rises too high over a rolling time window, this condition is considered "unhealthy".
+
 
 :::tip
 
@@ -72,15 +92,15 @@ After failover, be aware of the following points:
 
 ### The failover process {#failover-process}
 
-Temporal's automated failover process works as follows:
+Temporal's failover process works as follows:
 
-- During normal operation, the primary asynchronously copies operations and metadata to its replica, keeping them in sync.
-- If the primary becomes unavailable, Temporal detects the issue through health checks.
-  It automatically switches to the replica, using one of its available [failover scenarios](#scenarios).
-- The replica takes over the active role and becomes the primary.
+1. During normal operation, the primary asynchronously copies operations and metadata to its replica, keeping them in sync.
+1. A failover is triggered, either automatically by Temporal or manually by a user.
+1. The replica takes over and the Namespace becomes active in the replica's cloud region.
   Operations continue with minimal disruption.
-- When the original primary recovers, the roles can either switch back (failback, by default) or remain as they are, based on your Namespace settings.
-  Automatic role switching with failover and failback minimizes downtime for consistent availability.
+1. If the failover was triggered by Temporal, when the original primary region recovers, Temporal triggers another failover to fail back to the Namespace's original region. 
+   (It is possible to opt-out of this automatic fail back)
+1. If the failover was triggered by a user, then the Namespace will continue as-is until a user triggers another failover.
 
 :::info
 
@@ -91,9 +111,11 @@ This update is replicated through the Namespace metadata mechanism.
 
 ## Failover scenarios {#scenarios}
 
-The Temporal Cloud failover mechanism supports several modes for executing Namespace failovers.
-These modes include graceful failover ("handover"), forced failover, and a hybrid mode.
-The hybrid mode is Temporal Cloud’s default Namespace behavior.
+A failover on Temporal Cloud always executes in a "hybrid" fashion:
+1. It first attempts a "graceful" failover 
+2. If the graceful failover does not complete after 10 seconds, then it triggers a "forced" failover.
+
+This strategy balances _consistency_ and _availability_ requirements.
 
 ### Graceful failover (handover) {#graceful-failover}
 
@@ -121,28 +143,6 @@ In this mode, a Namespace immediately activates in the replica.
 Events not replicated due to replication lag undergo conflict resolution upon reaching the new active Namespace.
 
 This mode prioritizes _availability_ over consistency.
-
-### Hybrid failover mode {#hybrid-failover}
-
-While graceful failovers are preferred for consistency, they aren’t always practical.
-Temporal Cloud’s hybrid failover mode (the default mode) limits the initial graceful failover attempt to 10 seconds or less.
-
-During this period:
-
-- Existing Workflows stop progress.
-- Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
-
-If the graceful approach doesn’t resolve the issue, Temporal Cloud automatically switches to a forced failover.
-
-This strategy balances _consistency_ and _availability_ requirements.
-
-### Scenario summary
-
-| Failover Scenario            | Characteristics                                         |
-| ---------------------------- | ------------------------------------------------------- |
-| Graceful failover (handover) | Favors _consistency_ over availability.                 |
-| Forced failover              | Prioritizes _availability_ over consistency.            |
-| Hybrid failover mode         | Balances _consistency_ and _availability_ requirements. |
 
 ## Network partitions
 
