@@ -90,8 +90,28 @@ To fix the issue, create or update the Worker Deployment Version with the comput
 
 ### Check that the WCI is detecting Tasks {#check-wci-detecting-tasks}
 
-If the connection validates successfully but the Lambda is still not being invoked, the WCI may not be detecting Tasks
-on the Task Queue.
+If the connection validates successfully but the Lambda is still not being invoked, the
+[Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) may not be detecting Tasks on the Task
+Queue. The WCI is a system Workflow that runs in the same Namespace as your Worker Deployment. One WCI Workflow runs per
+Worker Deployment Version that has a compute provider configured. The WCI monitors bound Task Queues and invokes the
+Lambda function when Tasks arrive.
+
+You can view the WCI Workflow by listing system Workflows in your Namespace:
+
+```bash
+temporal workflow list \
+  --namespace <NAMESPACE> \
+  --query 'TemporalNamespaceDivision = "TemporalWorkerControllerInstance"'
+```
+
+WCI Workflow IDs follow the pattern `temporal-sys-worker-controller-instance:<deployment-name>:<build-id>`. You can
+inspect the WCI's history to see its recent `PullStats` Activity results:
+
+```bash
+temporal workflow show \
+  --namespace <NAMESPACE> \
+  --workflow-id 'temporal-sys-worker-controller-instance:<DEPLOYMENT_NAME>:<BUILD_ID>'
+```
 
 Check which Task Queues are bound to the Worker Deployment Version and whether there is a backlog:
 
