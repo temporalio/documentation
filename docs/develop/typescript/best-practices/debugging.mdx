@@ -56,8 +56,6 @@ If those old Workflows have the same name and are on the same Task Queue, Tempor
 - Temporal is trying to execute old Workflow code that no longer exists in your codebase
 - Your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
 
-The biggest sign that this is happening is if you notice Workflow executions are producing different results on replay. If running the same Workflow twice gets different results, that points to a non-determinism error.
-
 Stale Workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run. If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
 
 ### Workflow/Activity registration errors

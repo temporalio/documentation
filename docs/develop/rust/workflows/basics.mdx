@@ -176,7 +176,7 @@ pub struct GreetingWorkflow {
 
 ## Workflow logic requirements {#workflow-logic-requirements}
 
-Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). For non-deterministic operations like API calls, LLM invocations, and database queries, use [Activities](/develop/rust/activities/basics).
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). For non-deterministic operations like API calls, and database queries, use [Activities](/develop/rust/activities/basics).
 
 Workflow code must be deterministic because the Temporal Server may replay your Workflow to reconstruct its state. This means:
 

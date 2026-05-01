@@ -35,11 +35,11 @@ You'll develop those Workflows by writing code in a general-purpose programming 
 
 Temporal Workflows are resilient. They can run—and keep running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-Each Workflow Execution progresses through a series of **Commands** and **Events**, which are recorded in an **Event History**.
+Each Workflow Execution emits a series of **Commands** and processes a sequence of **Events**, which are recorded in an **Event History**.
 
 ### How Workflow replay works
 
-When a Workflow pauses or encounters an error, the goal of Temporal is to bring the Workflow back to the exact same state it was in before the pause occurred. To make that possible, Temporal keeps the Event History. This is a complete, ordered log of everything that has already happened in a Workflow.
+When a Workflow stops or encounters an error, the goal of Temporal is to bring the Workflow back to the exact same state it was in before the pause occurred. To make that possible, Temporal keeps the Event History. This is a complete, ordered log of everything that has already happened in a Workflow.
 
 The Event History could look like this for example:
 
@@ -52,18 +52,18 @@ This history is the source of truth for everything that happens in the Workflow.
 
 #### Resuming a Workflow
 
-When it's time to continue the Workflow, Temporal doesn't restore memory from a snapshot. It starts the Workflow code from the beginning, replays the Event History step by step, and uses that history to guide the code back to the exact state as before. So the Workflow code is re-run, but uses the recorded events instead of redoing work.
+When it's time to continue the Workflow, Temporal doesn't restore memory from a snapshot. It starts the Workflow code from the beginning, replays the Event History step by step, and uses that history to guide the code back to the exact state as before. So the Workflow code is re-run, but uses the recorded events instead of redoing work. Although Temporal doesn't always have to start from the beginning if the state is cached.
 
 Because the Workflow is re-executed to rebuild its state:
 
 - It has to make the same decisions when given the same history, which makes a Workflow deterministic.
-- It shouldn't depend on values that can change between runs.
+- It shouldn't depend on any values _not_ recorded in the history which would be different between runs.
 
 For example:
 
 - A direct call to `Date.now()` could return a different value on replay.
 - A random number could change.
-- A network call could return something new.
+- A network call, which wasn't performed inside an Activity, could return something new.
 
 If those values changed, the Workflow could take a different path and fail to match the recorded history. To solve this, Temporal provides replay-safe versions of common operations:
 
