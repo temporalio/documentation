@@ -103,7 +103,7 @@ separately. If you need both, set up `NewPayloadHTTPHandler` for the Web UI and 
 :::
 
 - **`/download`** retrieves the actual payload data from external storage and decodes it through the Payload Codec. This
-  endpoint is used internally by `/decode` when it encounters storage references, but you can also call it directly from
+  endpoint is used internally by `/decode` when it encounters storage references, but you can also call it directly from the Web UI 
   to retrieve the decoded payload. The Temporal Web UI uses this endpoint when you click to view the full payload for a
   storage reference.
 - **`/decode`** still decodes encoded payloads, but also handles storage references. By default, `/decode` uses the
