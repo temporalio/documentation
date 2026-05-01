@@ -66,7 +66,7 @@ Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 -  Use `Workflow.RunTaskAsync` instead of `Task.Run`. `Task.Run` uses the default scheduler and puts work on the thread pool.
     - Can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
 - If you need to use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`. `Task.ConfigureAwait(false)` won't use the current context.
-  - There is no significant performance benefit to `Task.ConfigureAwait` in workflows anyways due to how the scheduler works.
+  - There is no significant performance benefit to `Task.ConfigureAwait` in workflows because of how the scheduler works.
 - Avoid anything that defaults to the default task scheduler.
 - Use `Workflow.DelayAsync`, `Workflow.WaitConditionAsync`, or non-timeout-based cancellation token sources instead of `Task.Delay`, `Task.Wait`, timeout-based `CancellationTokenSource`, or anything that uses .NET built-in timers.
 - Use `Workflow.WhenAnyAsync` instead of `Task.WhenAny`.
