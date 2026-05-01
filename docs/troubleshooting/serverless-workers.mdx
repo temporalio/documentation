@@ -111,10 +111,21 @@ temporal workflow show \
 The WCI runs a `PullStats` Activity on a regular interval (typically every 5 minutes when idle). If `PullStats`
 consistently returns no Tasks, the server does not associate any Task Queues with your Worker Deployment Version.
 
-The server binds a Task Queue to a Worker Deployment Version when a Worker with that deployment version polls the Task
-Queue. If the Lambda has never been successfully invoked, or the deployment name or build ID in the Worker code does not
-match the WCI configuration, the binding does not exist. See
-[Check that the deployment name and build ID match](#check-deployment-match) for how to diagnose a mismatch.
+Check which Task Queues are bound to the Worker Deployment Version and whether there is a backlog:
+
+```bash
+temporal worker deployment describe-version \
+  --namespace <NAMESPACE> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --build-id <BUILD_ID> \
+  --report-task-queue-stats
+```
+
+If no Task Queues are listed, the binding has not been established. The server binds a Task Queue to a Worker Deployment
+Version when a Worker with that deployment version polls the Task Queue. If the Lambda has never been successfully
+invoked, or the deployment name or build ID in the Worker code does not match the WCI configuration, the binding does
+not exist. See [Check that the deployment name and build ID match](#check-deployment-match) for how to diagnose a
+mismatch.
 
 ### Check that the deployment name and build ID match {#check-deployment-match}
 
@@ -200,15 +211,15 @@ Common errors include:
 
 ### Check for Lambda timeout {#check-lambda-timeout}
 
-If the Lambda function times out before the Worker finishes processing, you see a `Task timed out` error in CloudWatch.
+If the Lambda function reaches its configured timeout before the Worker finishes processing, AWS terminates the
+invocation.
 
-The Worker begins graceful shutdown before the Lambda deadline, controlled by `ShutdownDeadlineBuffer` (Go),
-`shutdown_deadline_buffer` (Python), or `shutdownDeadlineBufferMs` (TypeScript). If Activities take longer than the
-available execution window, the Activities are abandoned mid-execution and retried on the next invocation.
+The Worker begins graceful shutdown before the Lambda deadline. If Activities take longer than the available execution
+window, the Activities are abandoned mid-execution and retried on the next invocation.
 
-For long-running Activities, increase the Lambda timeout, `WorkerStopTimeout`/`shutdownGraceTime`, and
-`ShutdownDeadlineBuffer`/`shutdownDeadlineBufferMs` together. See
-[Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+For long-running Activities, increase the Lambda timeout and the Worker's shutdown buffer together. See
+[Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities) for guidance on how these
+values relate.
 
 ### Check for infinite invocation loops {#check-infinite-loop}
 
