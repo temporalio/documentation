@@ -48,7 +48,7 @@ For runnable end-to-end examples, see the [Workflow Streams samples](https://git
 
 Three roles cover everything you need to use Workflow Streams:
 
-- **A streaming Workflow** hosts the event stream. Constructing a `WorkflowStream` instance from `@workflow.init` registers the handlers that accept publishes and serve subscribers.
+- **A streaming Workflow** hosts the event stream. Constructing a `WorkflowStream` instance from `@workflow.init` registers the handlers that accept publishes and serve subscribers. Each Workflow has at most one `WorkflowStream`; constructing more than one raises `RuntimeError`.
 - **Publishers** append events. The Workflow itself can publish via the in-memory `WorkflowStream`. Activities and external clients publish via `WorkflowStreamClient`, which batches and ships events to the Workflow.
 - **Subscribers** consume events. They call `WorkflowStreamClient.subscribe(...)` and iterate the returned async iterator.
 
