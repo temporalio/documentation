@@ -64,7 +64,7 @@ Temporal requires that the deterministic `TaskScheduler.Current` is used, but ma
 Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 
 -  Use `Workflow.RunTaskAsync` instead of `Task.Run`. `Task.Run` uses the default scheduler and puts work on the thread pool.
-    - Can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
+    - You can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
 - If you need to use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`. `Task.ConfigureAwait(false)` won't use the current context.
   - There is no significant performance benefit to `Task.ConfigureAwait` in workflows because of how the scheduler works.
 - Avoid anything that defaults to the default task scheduler.
