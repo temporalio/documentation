@@ -528,6 +528,11 @@ When you use Priority and Fairness together, Priority determines which "sub-queu
 
 Each field of Priority (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
 
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/inheritance.png"
+  alt="Flowchart of how a Priority field is resolved: check for a Task Queue weight override (fairness_weight only), then an explicit value, then inherit from the calling Workflow, otherwise use the default"
+/>
+
 **Activity inheritance order** (highest precedence first):
 
 1. [Fairness weight overrides](#fairness-weight-overrides) on the Task Queue (`fairness_weight` only)
