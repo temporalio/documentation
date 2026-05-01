@@ -12,15 +12,6 @@ It contains a single count integer variable. The Update handler adds the new int
 The second Workflow shows how to validate the Update and then handle it.
 It also contains a single count integer variable, but the validator function rejects the new integer if it is not positive.
 
-Note that you may need to enable Updates if you are using a Temporal Server version that is older than 1.21.
-For example, when using the Temporal CLI dev server:
-
-```
-temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
-```
-
-Update validator functions may not work with Server versions older than 1.21.
-
 ### How to run the sample
 
 Run the Worker:
