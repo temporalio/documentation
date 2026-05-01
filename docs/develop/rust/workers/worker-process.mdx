@@ -1,0 +1,69 @@
+---
+id: worker-process
+title: Worker processes - Rust SDK
+description: Shows how to run Worker processes with the Rust SDK
+sidebar_label: Worker processes
+toc_max_heading_level: 3
+tags:
+  - Rust SDK
+  - Temporal SDKs
+  - Worker
+---
+
+## Run a Worker Process {#run-a-dev-worker}
+
+The [Worker Process](/workers#worker-process) is where Workflow and Activity code executes. A Worker polls a specific [Task Queue](/task-queue), processes Tasks from that queue, and reports results back to the Temporal Service.
+
+- Each [Worker Entity](/workers#worker-entity) in a Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must associate with exactly one [Task Queue](/task-queue).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens on a specific Task Queue.
+
+A Worker Entity may host a Workflow Worker, an Activity Worker, or both. In many applications, a single Worker Process is enough, though you can scale out by running multiple Workers polling the same Task Queue.
+
+In Rust, create a `Worker`, configure it with your Task Queue, register your Workflows and Activities, and then run it.
+
+```rust
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions};
+use temporalio_sdk::{Worker, WorkerOptions};
+use temporalio_sdk_core::{CoreRuntime, RuntimeOptions, Url};
+
+use crate::workflow_messaging::GreetingsWorkflow;
+use crate::activities::MyActivities;
+
+#[tokio::main]
+pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    // Connect to local Temporal server
+    let connection_options =
+        ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
+
+    let runtime = CoreRuntime::new_assume_tokio(RuntimeOptions::builder().build()?)?;
+
+    // Client setup
+    let connection = Connection::connect(connection_options).await?;
+    let client = Client::new(connection, ClientOptions::new("default").build())?;
+
+    let worker_options = WorkerOptions::new("my-task-queue")
+        .register_activities(MyActivities)
+        .register_workflow::<GreetingsWorkflow>()
+        .build();
+
+    Worker::new(&runtime, client, worker_options)?.run().await?;
+
+    Ok(())
+}
+```
+
+### Register types {#register-types}
+
+All Workers polling the same Task Queue name must be registered to handle the exact same Workflow Types and Activity Types. If a Worker receives a Task for a type it does not know how to execute, that Task fails, but the Workflow Execution itself does not necessarily fail.
+
+When you create a Worker in Rust, register the Workflow and Activity types it's allowed to execute in the `WorkerOptions`:
+
+```rust
+let worker_options = WorkerOptions::new("my-task-queue")
+    .register_activities(MyActivities)
+    .register_workflow::<GreetingsWorkflow>()
+    .build();
+```
