@@ -58,7 +58,7 @@ The deeper picture — where Signals and Updates fit, how batching works, how st
 
 ## Usage patterns
 
-Workflow Streams is built for the case where an observer can show up late — after a page refresh, server restart, or closed laptop — and still see what happened while they were away. Three patterns recur when applying the library. You can find the surrounding rationale in [this blog post](see [TODO: blog post link]).
+Workflow Streams is built for the case where an observer can show up late — after a page refresh, server restart, or closed laptop — and still see what happened while they were away. Three patterns recur when applying the library.
 
 **End-to-end durability.** The event log lives inside the Workflow. Any process that bridges events to the outside world, like an SSE proxy serving a browser, a WebSocket fan-out, a forwarding Activity, stays stateless. A reconnecting client supplies its `from_offset`, the bridge polls forward from there, and the Workflow is the single source of truth.
 
