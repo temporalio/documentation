@@ -22,6 +22,8 @@ import SdkTabs from '@site/src/components/elements/SdkTabs';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
@@ -30,12 +32,10 @@ APIs are experimental and may be subject to backwards-incompatible changes.
 
 :::
 
-This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
-
 ## Prerequisites {#prerequisites}
 
-- A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later.
-  The Namespace's cloud provider must match the serverless compute provider.
+- A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
+  Namespace's cloud provider must match the serverless compute provider.
 - For self-hosted deployments, complete the
   [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup) before following
   this guide.
@@ -50,13 +50,13 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 
 - The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
 
-:::tip
+  :::tip
 
-If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample
-Workflows and Activities from the
-[Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker).
+  If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample
+  Workflows and Activities from the
+  [Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker).
 
-:::
+  :::
 
 </SdkTabs.Go>
 <SdkTabs.Python>
@@ -186,17 +186,14 @@ Use the `@temporalio/lambda-worker` package.
 import { runWorker } from '@temporalio/lambda-worker';
 import * as activities from './activities';
 
-export const handler = runWorker(
-  { deploymentName: 'my-app', buildId: 'build-1' },
-  (config) => {
-    config.workerOptions.taskQueue = 'my-task-queue';
-    config.workerOptions.workflowBundle = {
-      codePath: require.resolve('./workflow-bundle.js'),
-    };
-    config.workerOptions.activities = activities;
-    config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'PINNED';
-  },
-);
+export const handler = runWorker({ deploymentName: 'my-app', buildId: 'build-1' }, (config) => {
+  config.workerOptions.taskQueue = 'my-task-queue';
+  config.workerOptions.workflowBundle = {
+    codePath: require.resolve('./workflow-bundle.js'),
+  };
+  config.workerOptions.activities = activities;
+  config.workerOptions.workerDeploymentOptions!.defaultVersioningBehavior = 'PINNED';
+});
 ```
 
 Use `workflowBundle` with pre-bundled code instead of `workflowsPath` to avoid webpack bundling overhead on Lambda cold
@@ -546,8 +543,9 @@ You can create the version using the Temporal UI or the Temporal CLI.
    your Worker code.
 5. Under **Compute**, select **AWS Lambda** and provide:
    - **Lambda ARN**: the ARN of your Lambda function.
-   - **IAM Role ARN**: the role ARN from [Step 3](#configure-iam) (output of the CloudFormation stack). This is not the
-     Lambda execution role from [Step 2](#deploy-lambda-function) or your own IAM user/role.
+   - **IAM Role ARN**: the ARN of the role Temporal assumes to invoke your Lambda function. This is the role ARN from
+     [Step 3](#configure-iam) (output of the CloudFormation stack). This is not the Lambda execution role from
+     [Step 2](#deploy-lambda-function) or your own IAM user/role.
    - **External ID**: the same value you passed to the CloudFormation template.
 6. Click **Save**.
 
@@ -591,7 +589,9 @@ temporal worker deployment create-version \
 </TabItem>
 </Tabs>
 
-To verify that Temporal can reach your Lambda function, go to **Workers** > **Deployments** > select your deployment > open the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can assume the IAM role and invoke the function.
+To verify that Temporal can reach your Lambda function, go to **Workers** > **Deployments** > select your deployment >
+open the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can assume the IAM
+role and invoke the function.
 
 ## 5. Set version as current {#set-current-version}
 
