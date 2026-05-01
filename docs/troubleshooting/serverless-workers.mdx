@@ -34,12 +34,14 @@ This page walks through the Serverless Worker invocation flow and helps you iden
 
 When a Serverless Worker invocation works correctly, the following sequence happens:
 
-1. A Task arrives on a Task Queue.
-2. The server associates the Task Queue with a Worker Deployment Version that has a compute provider configured.
-3. The Worker Controller Instance (WCI) Workflow detects the backlog via the `PullStats` Activity.
-4. The WCI invokes the Lambda function.
-5. The Lambda function starts, the Worker connects to Temporal and polls the Task Queue.
-6. The Worker processes Tasks and shuts down gracefully.
+1. You deploy the Worker function on Lambda.
+2. You configure a [Worker Deployment Version](/worker-versioning#worker-deployment-version) with a compute provider. This starts a [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow and a validation invocation of the Lambda function.
+3. The Lambda polls the Temporal Service successfully, binding the [Task Queue](/encyclopedia/task-queues) configured on the Worker to the Worker Deployment Version.
+4. The WCI continuously monitors the associated Task Queue on a schedule. The [Matching Service](/clusters#matching-service) also notifies the WCI Workflow of sync match failures immediately as they happen.
+5. A Task arrives on the Task Queue and the WCI detects the backlog.
+6. The WCI invokes the Lambda function.
+7. The Lambda function starts, the Worker connects to Temporal and polls the Task Queue.
+8. The Worker processes Tasks and shuts down gracefully.
 
 Start by determining whether the Lambda function is being invoked at all, then narrow down from there.
 
