@@ -91,6 +91,10 @@ The SDK parallelizes uploads and downloads to minimize latency. When a single Wo
 that exceed the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
 external storage operations to scale well even when a Task carries many large payloads.
 
+When a payload is offloaded to external storage, the Temporal UI displays a reference token instead of the actual data.
+This is expected. Your application code receives the fully decoded result because the SDK transparently retrieves the
+payload from external storage before returning it to your Workflow or Client.
+
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
 

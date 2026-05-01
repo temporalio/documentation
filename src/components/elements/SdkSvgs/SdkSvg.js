@@ -7,6 +7,7 @@ import JavaBlock from './JavaBlock';
 import PhpBlock from './PhpBlock';
 import PythonBlock from './PythonBlock';
 import RubyBlock from './RubyBlock';
+import RustBlock from './RustBlock';
 import TypeScriptBlock from './TypeScriptBlock';
 
 const SdkSvg = ({ name }) => {
@@ -23,6 +24,8 @@ const SdkSvg = ({ name }) => {
       return <PythonBlock />;
     case 'rubyBlock':
       return <RubyBlock />;
+    case 'rustBlock':
+      return <RustBlock />;
     case 'typeScriptBlock':
       return <TypeScriptBlock />;
     default:
