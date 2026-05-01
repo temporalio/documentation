@@ -88,6 +88,21 @@
   }
 }
 
+.sdkRust {
+  border: 1px solid #a52c00;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #a52c00;
+    transition: opacity 0.3s ease;
+  }
+}
+
 .sdkTypeScript {
   border: 1px solid #59fda0;
 

@@ -20,11 +20,11 @@ import ThemedImage from '@theme/ThemedImage';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Standalone Activities are available as a [Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature in [Temporal Cloud](#temporal-cloud-support) and in a [special release](#temporal-cli-support) of the Temporal CLI.
+Standalone Activities are available as a [Public Preview](/evaluate/development-production-features/release-stages#public-preview) feature in [Temporal Cloud](#temporal-cloud-support) and in the [Temporal CLI](#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher.
 
 :::
 
-See [limitations](#pre-release-limitations) below.
+See [limitations](#public-preview-limitations) below.
 
 ## What is a Standalone Activity? {#standalone-activity}
 
@@ -101,64 +101,41 @@ task queue, and other attributes using the SDK or the `temporal activity list` C
 analogous to counting Workflow Executions. This is the total count of executions (running, completed,
 failed, etc.) - not the number of queued tasks.
 
-## Pre-release limitations
+## Public Preview limitations
 
-The pre-release of Standalone Activities is recommended for experimental use only and has some known limitations.
+The Public Preview of Standalone Activities has some known limitations:
 
-General limitations:
-- Not suitable for production use cases during Pre-release
-- Delete, pause, reset, and update options are not supported yet
-- The `TerminateExisting` conflict policy is not supported yet
-
-Temporal Cloud limitations:
-- Standalone Activities are free for evaluation purposes during Pre-release, so we reserve the right to limit usage if it exceeds a reasonable amount
-- 1 day max retention for Standalone Activities
-- We recommend enabling Standalone Activities on a new namespace for dev/test experimental use only
+- Pause, reset, and update options are not supported in Public Preview but scheduled for GA.
+- `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
 
 ## Temporal CLI support
 
-During Pre-release, Standalone Activities require a [special release of the Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.6.2-standalone-activity).
+Standalone Activities require [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.7.0) v1.7.0 or higher and [Temporal Server](https://github.com/temporalio/temporal/releases/tag/v1.31.0) v1.31.0 or higher.
 
-Download and extract for your platform:
+Install with Homebrew:
 
-```bash title="macOS (Apple Silicon)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_arm64.tar.gz | tar xz
+```bash
+brew install temporal
 ```
 
-```bash title="macOS (Intel)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_amd64.tar.gz | tar xz
-```
-
-```bash title="Linux (arm64)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_arm64.tar.gz | tar xz
-```
-
-```bash title="Linux (amd64)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_amd64.tar.gz | tar xz
-```
+Or see the [Temporal CLI install guide](/cli#install) for other platforms.
 
 Verify the installation:
 
 ```bash
-./temporal --version
-# temporal version 1.6.2-standalone-activity (Server 1.31.0-151.2, UI 2.47.2)
+temporal --version
 ```
 
-Move the binary to your PATH or run it from the current directory as `./temporal`.
+Which should output v1.7.0 or higher, for example:
+```
+temporal version 1.7.0 (Server 1.31.0, UI 2.49.1)
+```
 
 The `temporal activity` subcommand supports Standalone Activities with commands including: `start`,
 `execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
 
-The Temporal Dev Server has Standalone Activities enabled by default in this special CLI release for local testing.
-
-:::warning
-
-If you see `Standalone activity is disabled` when running commands, you are using the standard
-Temporal CLI instead of the pre-release version above. The standard `brew install temporal` or
-`brew upgrade temporal` does not include Standalone Activity support during Pre-release.
-
-:::
+The Temporal Dev Server has Standalone Activities enabled by default for local testing.
 
 ## Temporal Cloud support
 
-Contact your account team to enable Standalone Activities in Temporal Cloud as a Pre-release feature.
+Standalone Activities in Temporal Cloud is available as a Public Preview feature.
