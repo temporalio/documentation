@@ -39,6 +39,12 @@ This page is a guide to monitoring a Temporal Worker fleet and covers the follow
 - [How to detect misconfigured Workers](#detect-misconfigured-workers)
 - [How to configure Sticky cache](#configure-sticky-cache)
 
+:::tip
+
+You can also inspect Workers and the Workers assigned to a Task Queue directly in the Temporal UI. See [Visualize Workers in the UI](/develop/worker-performance#visualize-workers).
+
+:::
+
 ## Minimal Observations {#minimal-observations}
 
 These alerts should be configured and understood first to gain intelligence into your application health and behaviors.
@@ -450,6 +456,14 @@ Set the `WorkerHeartbeatInterval` property on [`TemporalRuntimeOptions`](https:/
 Set it to `null` to disable heartbeating.
 
 </SdkTabs.DotNet>
+<SdkTabs.Java>
+
+_Available since Java SDK v1.35.0_
+
+Set the heartbeat interval on [`WorkflowClientOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html) with `setWorkerHeartbeatInterval(Duration)`.
+Set it to a negative `Duration` to disable heartbeating.
+
+</SdkTabs.Java>
 <SdkTabs.Ruby>
 
 _Available since Ruby SDK v1.1.0_
