@@ -385,20 +385,24 @@ The carried `WorkflowStreamState` includes the entire in-memory log of the previ
 
 The most important question when tuning is: how often do you want to update your UI? That answer drives the trade-off between user-perceived latency and the number of history events your Workflow accumulates. The library defaults assume a slow-moving UI; LLM token streaming and other interactive cases need lower latency, which means tuning.
 
-The trade-off is direct. Each batched publish becomes one Signal event in the Workflow's history, and each poll becomes two Update events. A more responsive UI means more events per second, which approaches Temporal's per-run history limits faster. For long-running streams, plan a [Continue-As-New](#continue-as-new) policy from the start.
+The trade-off is direct. Each batched publish is one Signal, and each subscriber poll is one Update. Each Signal and each Update accumulates against the Workflow's history. A more responsive UI means more messages and more history per second; messages drive workload (and on metered deployments, billing), while history accumulates against Temporal's per-run limits. For long-running streams, plan a [Continue-As-New](#continue-as-new) policy from the start.
 
-### Knobs that matter most
+### Settings that matter most
 
 - **`batch_interval`** (default 2 seconds). Maximum time between automatic flushes from the client. Lower it to make the stream feel live; raise it to amortize Signal cost. For an LLM token stream feeding a chat UI, 200 ms is a good starting point: the user perceives it as live, and a 30-second response generates roughly 150 publish Signals rather than several hundred. Below 100 ms the per-Signal RPC overhead starts to dominate.
-- **`force_flush=True`** (per publish). Use on the *first* delta of a response so the user sees something fast, and on punctuated events like `RETRY` or `STATUS_CHANGE` where latency matters. Do not make it the default mode: per-token `force_flush=True` on a 500-token completion produces 500 publish Signals, which is meaningful but tractable; per-character `force_flush=True` is not.
 
-### Other knobs
+For per-publish overrides where one specific event needs lower latency than the batch interval (for example, the first delta of a response so the user sees something fast, or punctuated events like `RETRY` and `STATUS_CHANGE`), pass `force_flush=True` on that publish. Don't make this the default mode: per-token `force_flush=True` on a 500-token completion produces 500 publish Signals, which is meaningful but tractable; per-character `force_flush=True` is not.
 
-You usually do not need to touch these, but they are available when the basic knobs are not enough:
+### Other settings
+
+You usually do not need to touch these, but they are available when the basic settings are not enough:
 
 - **`max_batch_size`** (default unbounded). Caps the number of items per batch. With the default, only `batch_interval` bounds batch size, so a hot publisher can accumulate enough items between intervals that the resulting Signal exceeds Temporal's per-message gRPC payload limit. Set `max_batch_size` to bound by item count, or call `force_flush=True` after each logical chunk to bound by application boundaries (for example, publish per generated sentence in a TTS Activity so each Signal carries one audio chunk). For large items, offload via [External Storage](/external-storage) so each item is a small reference.
-- **`poll_cooldown`** (subscriber-side, default 100 ms). Minimum interval between polls when the previous poll returned no progress. Hot subscribers skip the cooldown when the previous poll hit the 1 MB response cap, so this knob mainly governs subscriber load on idle Workflows. Hold a single iterator and consume from it rather than opening and closing subscriptions in a loop, which multiplies the Update events.
-- **`max_retry_duration`** (default 10 minutes) and **`publisher_ttl`** (default 15 minutes). Failure-recovery limits. The defaults satisfy the constraint `max_retry_duration < publisher_ttl`; if you tune one, tune the other. See [Delivery semantics](#delivery-semantics) for the full failure model.
+- **`poll_cooldown`** (subscriber-side, default 100 ms). Minimum interval between polls when the previous poll returned no progress. Hot subscribers skip the cooldown when the previous poll hit the 1 MB response cap, so this setting mainly governs subscriber load on idle Workflows. Hold a single iterator and consume from it rather than opening and closing subscriptions in a loop, which multiplies the Update events.
+- **`max_retry_duration`** (default 10 minutes). How long the client retries a failed publish batch before giving up and raising `TimeoutError`. Tune higher if your application can tolerate longer outages while a publisher retries through transient failures; lower if you want failures to surface quickly.
+- **`publisher_ttl`** (default 15 minutes). How long the Workflow retains per-publisher deduplicate state. At each Continue-As-New, entries older than this are dropped. Tune higher if your publishers can be silent for extended windows.
+
+The last two settings are related. Keep `max_retry_duration < publisher_ttl` so a long-running retry cannot outlast its dedup record and produce a duplicate when it finally succeeds. If you tune one, tune the other. See [Delivery semantics](#delivery-semantics) for the full failure model.
 
 ## Delivery semantics
 
@@ -419,7 +423,7 @@ Two limits on the deduplication window are worth understanding:
 - **`publisher_ttl`** (default 15 minutes). Retention for the per-publisher deduplicate state. At each Continue-As-New, deduplicate entries whose `last_seen` is older than this are dropped. `last_seen` is updated on each *successful* publish (not on each retry attempt), so a publisher that retries through a long partition without success can still age out. A publisher that returns after a longer pause may produce a duplicate. Tune upward via `WorkflowStream.continue_as_new(publisher_ttl=...)` if your publishers can be silent for extended windows.
 - **`max_retry_duration`** (default 10 minutes). A `WorkflowStreamClient` retries a failed batch for up to this long. If the duration elapses with the batch still pending (for example, during a sustained network partition), the client gives up, the pending batch is dropped, and a `TimeoutError` is raised.
 
-    Two consequences are worth knowing. First, the client advances its internal sequence past the dropped batch before giving up, so subsequent batches are guaranteed to use a fresh sequence and will not be silently deduplicated against a (possibly delivered) timed-out batch. The batch is at-most-once on timeout, but downstream publishes resume cleanly. Second, the timeout raises from inside the background flusher loop, which terminates that task; until you call `await client.flush()` or exit the `async with` block, subsequent publishes accumulate in the buffer with no flusher to ship them.
+    On timeout, the dropped batch is at-most-once: it may or may not have reached the Workflow. Subsequent publishes resume cleanly with the next sequence. One operational caveat: the `TimeoutError` raises from inside the background flusher task and terminates it. Until you call `await client.flush()` or exit the `async with` block, subsequent publishes accumulate in the buffer with no flusher to ship them.
 
 **The two limits must satisfy `max_retry_duration < publisher_ttl`.** If a publisher's retry window exceeds the dedup retention, the dedup state for that publisher can age out (at the next Continue-As-New) before the retry lands. A retry that arrives after its dedup record has been pruned is treated as a fresh publish, and if the original delivery had also succeeded, the same logical batch lands twice. The defaults (10 minutes < 15 minutes) satisfy this; if you tune one, tune the other to preserve the relationship.
 
