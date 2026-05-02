@@ -179,7 +179,7 @@ from temporalio.contrib.workflow_streams import WorkflowStreamClient
 
 @activity.defn
 async def stream_deltas(order_id: str) -> None:
-    client = WorkflowStreamClient.from_within_activity(batch_interval=timedelta(seconds=2))
+    client = WorkflowStreamClient.from_within_activity()
     async with client:
         deltas = client.topic("delta", type=Delta)
         for delta in generate_deltas(order_id):
@@ -282,6 +282,7 @@ There are two ways to provide that overlap.
 **Fixed sleep (simplest).** Sleep between the terminator and the return so any in-flight poll has time to fetch the terminator before the Workflow exits:
 
 ```python
+# at the end of @workflow.run
 self.status.publish(StatusEvent(state="completed", progress=100))
 await workflow.sleep(timedelta(seconds=30))
 return result
@@ -457,6 +458,9 @@ If your Activity can retry, the consumer side has to account for it: a retried a
 
 ```python
 # activity.py
+from openai import AsyncOpenAI
+
+
 @dataclass
 class TextDelta:
     text: str
@@ -468,13 +472,15 @@ class TextComplete:
 
 @activity.defn
 async def stream_completion(prompt: str) -> str:
-    client = WorkflowStreamClient.from_within_activity(
+    stream_client = WorkflowStreamClient.from_within_activity(
         batch_interval=timedelta(milliseconds=200),
     )
-    async with client:
-        deltas = client.topic("delta", type=TextDelta)
-        complete = client.topic("complete", type=TextComplete)
-        retry = client.topic("retry", type=dict)
+    openai_client = AsyncOpenAI()
+
+    async with stream_client:
+        deltas = stream_client.topic("delta", type=TextDelta)
+        complete = stream_client.topic("complete", type=TextComplete)
+        retry = stream_client.topic("retry", type=dict)
 
         # Tell consumers an earlier attempt's deltas are stale.
         if activity.info().attempt > 1:
@@ -482,12 +488,20 @@ async def stream_completion(prompt: str) -> str:
 
         full: list[str] = []
         first = True
-        async for chunk in openai_client.chat.completions.stream(prompt=prompt):
+        oai_stream = await openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            stream=True,
+        )
+        async for chunk in oai_stream:
+            text = chunk.choices[0].delta.content
+            if not text:
+                continue
             # force_flush only on the first delta so the user sees something
             # immediately; subsequent deltas batch at the 200 ms interval.
-            deltas.publish(TextDelta(text=chunk.text), force_flush=first)
+            deltas.publish(TextDelta(text=text), force_flush=first)
             first = False
-            full.append(chunk.text)
+            full.append(text)
         complete.publish(TextComplete(full_text="".join(full)))
     return "".join(full)
 ```
@@ -526,24 +540,22 @@ class ChatWorkflow:
 ```
 
 ```python
-# api.py: FastAPI SSE endpoint with a retry-aware reducer
+# api.py: FastAPI SSE endpoint that forwards deltas and a reset signal
 @app.get("/chat/{chat_id}/stream")
 async def chat_stream(chat_id: str):
+    # Subscribe-only; no `async with` needed because the flusher only runs for publishers.
     stream = WorkflowStreamClient.create(temporal_client, workflow_id=chat_id)
+    converter = temporal_client.data_converter.payload_converter
 
     async def events():
-        accumulator: list[str] = []
         async for item in stream.subscribe(
             ["delta", "retry", "complete"], result_type=RawValue
         ):
-            converter = temporal_client.data_converter.payload_converter
             if item.topic == "retry":
                 # Earlier attempt's deltas are stale; tell the browser to reset.
-                accumulator.clear()
                 yield "event: reset\ndata:\n\n"
             elif item.topic == "delta":
                 delta = converter.from_payload(item.data.payload, TextDelta)
-                accumulator.append(delta.text)
                 yield f"data: {delta.text}\n\n"
             elif item.topic == "complete":
                 # Acknowledge so the Workflow can return without a sleep.
