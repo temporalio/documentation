@@ -80,7 +80,7 @@ Whichever shape you pick, the Workflow Id is the address subscribers use to atta
 
 ## Enable streaming on a Workflow
 
-The library ships with the Temporal Python SDK; import it from `temporalio.contrib.workflow_streams`. Enable streaming by constructing a `WorkflowStream` from your Workflow's `@workflow.init` method:
+The library ships with the Temporal Python SDK; import it from `temporalio.contrib.workflow_streams`. Enable streaming by constructing a `WorkflowStream` from your Workflow's `@workflow.init` method. (If you've only seen `@workflow.run` before, think of `@workflow.init` as the Workflow's constructor: it runs once when the Workflow is created, before any Signals or Updates can be delivered.) Construction must happen there because the stream's handlers have to be registered before the first publish Signal arrives; doing it from `@workflow.run` raises `RuntimeError` and would miss any publishes that arrived before the run body started executing.
 
 ```python
 from dataclasses import dataclass
@@ -101,12 +101,7 @@ class OrderWorkflow:
         self.stream = WorkflowStream()
 ```
 
-Constructing `WorkflowStream` does two things:
-
-- It creates the in-memory event log that holds published entries
-- It dynamically registers the Workflow Streams Signal, Update, and Query handlers on the current Workflow. Once these are in place, the Workflow accepts publish Signals from external publishers and serves long-poll subscribe Updates with no further code on your part.
-
-`@workflow.init` is the only hook guaranteed to run before any Signals or Updates can be delivered, so stream handlers must be registered there to avoid missing early publishes. (If you've only seen `@workflow.run` before, think of `@workflow.init` as the Workflow's constructor.) Calling `WorkflowStream(...)` outside `@workflow.init`, or constructing more than one stream on the same Workflow, raises `RuntimeError`.
+Constructing `WorkflowStream` creates the in-memory event log and dynamically registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. Constructing more than one stream on the same Workflow also raises `RuntimeError`.
 
 If your Workflow uses Continue-As-New, see [Continue-As-New](#continue-as-new) below for how to carry stream state across runs so subscribers see no gap.
 
@@ -197,7 +192,7 @@ For a [standalone Activity](/develop/python/activities/standalone-activities) (o
 
 Two operations give the application explicit control over when batches ship: `force_flush=True` on a publish for latency, and `await client.flush()` for confirmation that prior publications have landed.
 
-Pass `force_flush=True` on a publish to ship the current buffer immediately without waiting for the next interval. The call returns as soon as the flusher is woken; it does not wait for delivery to the Workflow or to subscribers:
+Pass `force_flush=True` on a publish to wake the background flusher so the current buffer ships without waiting for the next interval. The flusher only runs while the client is entered (`async with client`); outside that, `force_flush=True` queues the wake event but nothing ships until you enter the context or call `await client.flush()`. The call returns immediately after appending to the buffer and signaling the flusher; it does not wait for delivery to the Workflow or to subscribers:
 
 ```python
 deltas.publish(delta, force_flush=True)
@@ -249,7 +244,7 @@ async def watch_order(order_id: str) -> None:
             break
 ```
 
-The iterator handles re-polling, pagination when a poll response hits the ~1 MB cap, and Workflow-side log truncation transparently. There are no extra signals or exceptions for normal callers to handle. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html) if you need the underlying details.
+The iterator handles re-polling, pagination when a poll response hits the ~1 MB cap, and Workflow-side log truncation transparently. Callers don't need to wrap the iterator for the common cases. Two edge cases are worth knowing: an RPC timeout where Continue-As-New cannot be followed ends the iterator silently (no exception raised), and a validator rejection during a CAN handoff can surface as a `WorkflowUpdateFailedError`. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html) for details.
 
 ### Heterogeneous topics
 
@@ -398,7 +393,7 @@ For per-publish overrides where one specific event needs lower latency than the 
 You usually do not need to touch these, but they are available when the basic settings are not enough:
 
 - **`max_batch_size`** (default unbounded). Caps the number of items per batch. With the default, only `batch_interval` bounds batch size, so a hot publisher can accumulate enough items between intervals that the resulting Signal exceeds Temporal's per-message gRPC payload limit. Set `max_batch_size` to bound by item count, or call `force_flush=True` after each logical chunk to bound by application boundaries (for example, publish per generated sentence in a TTS Activity so each Signal carries one audio chunk). For large items, offload via [External Storage](/external-storage) so each item is a small reference.
-- **`poll_cooldown`** (subscriber-side, default 100 ms). Minimum interval between polls when the previous poll returned no progress. Hot subscribers skip the cooldown when the previous poll hit the 1 MB response cap, so this setting mainly governs subscriber load on idle Workflows. Hold a single iterator and consume from it rather than opening and closing subscriptions in a loop, which multiplies the Update events.
+- **`poll_cooldown`** (subscriber-side, default 100 ms). The subscriber sleeps for this interval between polls. The cooldown is skipped only when a poll response was capped at the ~1 MB gRPC limit and more items remain (a `more_ready` flag in the response), so the next poll can drain the rest immediately. That path is an optimization for bursty producers; in the steady state, every poll waits the cooldown before the next. Hold a single iterator and consume from it rather than opening and closing subscriptions in a loop.
 - **`max_retry_duration`** (default 10 minutes). How long the client retries a failed publish batch before giving up and raising `TimeoutError`. Tune higher if your application can tolerate longer outages while a publisher retries through transient failures; lower if you want failures to surface quickly.
 - **`publisher_ttl`** (default 15 minutes). How long the Workflow retains per-publisher deduplicate state. At each Continue-As-New, entries older than this are dropped. Tune higher if your publishers can be silent for extended windows.
 
@@ -440,7 +435,7 @@ Two mechanisms bound log growth, and they do different jobs:
 
 A subscriber whose offset falls below the new base after a `truncate()` is silently advanced. Internally, the poll raises `ApplicationError("TruncatedOffset")`; the Python client catches it and resets to offset 0, which the Workflow reads as "from the current base." The iterator does not raise, but the subscriber may re-receive items already in the log past the new base. Applications that depend on seeing every event exactly once must keep subscribers ahead of truncation or implement their own gap and re-delivery handling using `item.offset`.
 
-**Wire-level handlers.** The three handlers registered when you construct a `WorkflowStream` are `__temporal_workflow_stream_publish` (the Signal that receives batched publishes), `__temporal_workflow_stream_poll` (the long-poll Update that subscribers use), and `__temporal_workflow_stream_offset` (the Query that reports the current head offset). Poll responses are capped at roughly 1 MB; subscribers repoll immediately when the server caps a response, so high-throughput producers see a steady stream of small batches rather than occasional large ones.
+**Wire-level handlers.** The three handlers registered when you construct a `WorkflowStream` are `__temporal_workflow_stream_publish` (the Signal that receives batched publishes), `__temporal_workflow_stream_poll` (the long-poll Update that subscribers use), and `__temporal_workflow_stream_offset` (the Query that reports the current head offset). Poll responses are capped at roughly 1 MB by accumulating items until the next would exceed the budget, so high-throughput producers see a steady stream of small batches. A single item that exceeds 1 MB on its own is admitted unconditionally; offload large items via [External Storage](/external-storage) so each item is a small reference.
 
 **Batching and deduplicating.** Every batch carries a unique identifier (the client's id paired with a monotonic batch sequence number), so a Signal retried by the SDK or the network deduplicates to a single landing in the Workflow's event log. Deduplicate state is part of the Workflow's carried state, so the guarantee survives Continue-As-New (subject to `publisher_ttl`).
 
@@ -457,6 +452,8 @@ A few details worth knowing about, mostly relevant if you're writing custom mess
 ## Application: Stream LLM output {#stream-llm-output}
 
 The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive; the Workflow kicks off the Activity and emits its own lifecycle events; an HTTP endpoint subscribes and forwards deltas to the browser over Server-Sent Events (SSE).
+
+If your Activity can retry, the consumer side has to account for it: a retried attempt is a fresh publisher, so its output appears in the stream alongside the previous attempt's. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern; see [Delivery semantics](#delivery-semantics) for the precise guarantees.
 
 ```python
 # activity.py
