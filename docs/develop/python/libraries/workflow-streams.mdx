@@ -39,7 +39,7 @@ The API may change before general availability.
 **Looking for...**
 
 - Runnable end-to-end samples (basic publish/subscribe, reconnecting subscriber, external publisher, bounded log): [Workflow Streams samples](https://github.com/temporalio/samples-python/tree/main/workflow_streams).
-- A complete LLM streaming example on this page (Activity publishes deltas, FastAPI SSE consumer with retry handling): [Stream LLM output](#stream-llm-output).
+- A complete LLM streaming example on this page (Activity publishes deltas, terminal consumer that resets on retry): [Stream LLM output](#stream-llm-output).
 - Delivery guarantees, ordering, and retry semantics: [Delivery semantics](#delivery-semantics).
 - History-size cost and tuning: [Architecture](#architecture).
 - Long-running streams that need Continue-As-New: [Continue-As-New](#continue-as-new).
@@ -452,7 +452,7 @@ A few details worth knowing about, mostly relevant if you're writing custom mess
 
 ## Application: Stream LLM output {#stream-llm-output}
 
-The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive; the Workflow kicks off the Activity and emits its own lifecycle events; an HTTP endpoint subscribes and forwards deltas to the browser over Server-Sent Events (SSE).
+The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive; the Workflow kicks off the Activity and waits for the consumer to acknowledge end-of-stream; the consumer subscribes, accumulates the deltas, and clears its accumulated state on `RETRY` before continuing. The shape works for a terminal client, a desktop UI, or a Server-Sent Events (SSE) endpoint forwarding to a browser; whatever holds the displayed state calls `render()` to display it.
 
 If your Activity can retry, the consumer side has to account for it: a retried attempt is a fresh publisher, so its output appears in the stream alongside the previous attempt's. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern; see [Delivery semantics](#delivery-semantics) for the precise guarantees.
 
@@ -475,7 +475,8 @@ async def stream_completion(prompt: str) -> str:
     stream_client = WorkflowStreamClient.from_within_activity(
         batch_interval=timedelta(milliseconds=200),
     )
-    openai_client = AsyncOpenAI()
+    # Disable provider-side retries; let Temporal own retry policy at the Activity layer.
+    openai_client = AsyncOpenAI(max_retries=0)
 
     async with stream_client:
         deltas = stream_client.topic("delta", type=TextDelta)
@@ -494,6 +495,8 @@ async def stream_completion(prompt: str) -> str:
             stream=True,
         )
         async for chunk in oai_stream:
+            if not chunk.choices:
+                continue
             text = chunk.choices[0].delta.content
             if not text:
                 continue
@@ -540,31 +543,35 @@ class ChatWorkflow:
 ```
 
 ```python
-# api.py: FastAPI SSE endpoint that forwards deltas and a reset signal
-@app.get("/chat/{chat_id}/stream")
-async def chat_stream(chat_id: str):
+# consumer.py: accumulates the model's output and resets on retry
+async def stream_chat(chat_id: str) -> str:
     # Subscribe-only; no `async with` needed because the flusher only runs for publishers.
     stream = WorkflowStreamClient.create(temporal_client, workflow_id=chat_id)
     converter = temporal_client.data_converter.payload_converter
+    output: list[str] = []
 
-    async def events():
-        async for item in stream.subscribe(
-            ["delta", "retry", "complete"], result_type=RawValue
-        ):
-            if item.topic == "retry":
-                # Earlier attempt's deltas are stale; tell the browser to reset.
-                yield "event: reset\ndata:\n\n"
-            elif item.topic == "delta":
-                delta = converter.from_payload(item.data.payload, TextDelta)
-                yield f"data: {delta.text}\n\n"
-            elif item.topic == "complete":
-                # Acknowledge so the Workflow can return without a sleep.
-                await temporal_client.get_workflow_handle(chat_id).signal(
-                    ChatWorkflow.subscriber_acknowledged_terminator
-                )
-                break
+    def render() -> None:
+        ...  # display the accumulated output (terminal redraw, UI update, etc.)
 
-    return StreamingResponse(events(), media_type="text/event-stream")
+    async for item in stream.subscribe(
+        ["delta", "retry", "complete"], result_type=RawValue
+    ):
+        if item.topic == "retry":
+            # Earlier attempt's deltas are stale; drop what we've shown.
+            output.clear()
+            render()
+        elif item.topic == "delta":
+            delta = converter.from_payload(item.data.payload, TextDelta)
+            output.append(delta.text)
+            render()
+        elif item.topic == "complete":
+            # Acknowledge so the Workflow can return without a sleep.
+            await temporal_client.get_workflow_handle(chat_id).signal(
+                ChatWorkflow.subscriber_acknowledged_terminator
+            )
+            break
+
+    return "".join(output)
 ```
 
 A few choices in this shape are deliberate:
