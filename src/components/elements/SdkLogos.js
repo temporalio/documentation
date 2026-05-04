@@ -43,6 +43,12 @@ const supportedTech = [
     alt: 'Ruby logo',
     class: 'w-10',
   },
+  {
+    link: '/develop/rust',
+    image: '/img/sdks/svgs/rust.svg',
+    alt: 'Rust logo',
+    class: 'w-10',
+  },
 ];
 
 const displayTechListItems = () => {

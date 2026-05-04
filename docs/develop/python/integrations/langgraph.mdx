@@ -50,7 +50,7 @@ complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with LangGraph support:
+Install the Temporal Python SDK with LangGraph support (requires `temporalio` 1.27.0 or later):
 
 ```bash
 uv add "temporalio[langgraph]"
@@ -61,6 +61,14 @@ or with pip:
 ```bash
 pip install "temporalio[langgraph]"
 ```
+
+:::note
+
+Python 3.11 or newer is required for the Functional API (`@entrypoint` / `@task`) and for `interrupt()`. On older
+Python versions the plugin loads but emits a warning, and those features will not work because LangGraph relies on
+`contextvars` propagation through `asyncio.create_task()`, which is only available from Python 3.11 onward.
+
+:::
 
 ## Graph API
 
@@ -161,6 +169,23 @@ Don't pass a LangGraph `retry_policy=` to `add_node` (or `@task(retry_policy=...
 do. Use Temporal's `RetryPolicy` via the node's `metadata` (Graph API) or `activity_options` (Functional API) instead.
 
 :::
+
+### Shared defaults
+
+To apply the same Activity options across every node and task, pass `default_activity_options` to `LangGraphPlugin`.
+Per-node `metadata` (Graph API) and per-task `activity_options` (Functional API) override these defaults key by key:
+
+```python
+plugin = LangGraphPlugin(
+    graphs={"my-graph": g},
+    default_activity_options={
+        "start_to_close_timeout": timedelta(seconds=30),
+        "retry_policy": RetryPolicy(maximum_attempts=3),
+    },
+)
+```
+
+`execute_in` cannot be set in `default_activity_options` — you must set it on each node or task individually.
 
 ## Functional API
 
@@ -282,6 +307,35 @@ await g.ainvoke({...}, context=Context(user_id="alice"))
 
 Your `context` object must be serializable by the configured Temporal payload converter, since it crosses the Activity
 boundary.
+
+## Continue-as-new
+
+Long-running graphs can hit Temporal's per-Workflow history size limit. Use Temporal's
+[continue-as-new](/develop/python/continue-as-new) to start a fresh execution while preserving the results of nodes
+and tasks that have already completed.
+
+The `cache()` helper returns the current task-result cache as a serializable dict. Pass it to `graph(name, cache=...)`
+or `entrypoint(name, cache=...)` in the new run to skip re-executing nodes that already produced a result.
+
+```python
+from temporalio import workflow
+from temporalio.contrib.langgraph import cache, graph
+
+
+@workflow.defn
+class LongRunningWorkflow:
+    @workflow.run
+    async def run(self, state: State, prior_cache: dict | None = None) -> State:
+        g = graph("my-graph", cache=prior_cache).compile()
+        # ... run some steps, then continue-as-new before history grows too large ...
+        workflow.continue_as_new(args=[state, cache()])
+```
+
+## Tracing
+
+For tracing your LangGraph Workflows and Activities, we recommend the
+[Temporal LangSmith plugin](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith). It
+composes with `LangGraphPlugin` — pass both plugins to your Worker.
 
 ## Stores are not supported
 
@@ -435,6 +489,8 @@ demonstrate all supported patterns across both APIs (samples are on a PR branch 
 | Hello World | Yes | Yes | Simplest possible single-node graph |
 | Human-in-the-loop | Yes | Yes | `interrupt()` with Temporal signals and queries |
 | ReAct Agent | Yes | Yes | Tool-calling agent loop |
+| Continue-as-new | Yes | Yes | Preserve completed task results across continue-as-new with `cache()` |
+| LangSmith tracing | Yes | Yes | Tracing with the Temporal LangSmith plugin |
 | Control Flow | — | Yes | Parallel execution, loops, and branching |
 
 To run any sample:

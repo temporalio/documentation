@@ -83,13 +83,7 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 
 :::info DEPRECATION NOTICE
 
-The following fields are deprecated and are planned for removal on or after April 1 2026. 
-
-- `user_email`.  This field is duplicated by `principal.name` for principals of type `user`. Other principal types do not have associated emails.
-- `level`.  This field is duplicated by `status`.
-- `caller_ip_address`.  This field is replaced by `x_forwarded_for`.
-- `details`.  This field is replaced by `raw_details` that includes request details.
-- `category`.  This field is no longer used.
+The `request_id` field is deprecated and is planned for removal on or after November 1 2026. Use `async_operation_id` instead.
 
 :::
 
@@ -97,20 +91,16 @@ Audit Logs use the following JSON format:
 
 ```json
 {
-  "operation":  // Operation that was performed
-  "principal": // Information about who initiated the operation
-  "details":  // DEPRECATED, see raw_details
-  "raw_details": // details about the request
-  "user_email":  // DEPRECATED, use principal.user where applicable
-  "x_forwarded_for": // the IP address making the call
-  "caller_ip_address": // DEPRECATED, use x_forwarded_for
-  "category":  // DEPRECATED, no longer used
-  "emit_time": // Time the operation was recorded
-  "level": // DEPRECATED, use status
-  "log_id": // Unique ID of the log entry
-  "request_id": // Optional async request id set by the user when sending a request
-  "status": // Status, such as OK or ERROR
-  "version": // Version of the log entry
+  "operation":          // Operation that was performed
+  "principal":          // Information about who initiated the operation
+  "raw_details":        // Details about the request
+  "x_forwarded_for":    // The IP address(es) making the call
+  "emit_time":          // Time the operation was recorded
+  "log_id":             // Unique ID of the log entry
+  "async_operation_id": // Optional async operation id set by the user when sending a request
+  "request_id":         // DEPRECATED, use async_operation_id
+  "status":             // Status, such as OK or ERROR
+  "version":            // Version of the log entry
 }
 ```
 
