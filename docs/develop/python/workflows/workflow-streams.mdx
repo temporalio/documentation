@@ -170,7 +170,7 @@ async def publish_status(workflow_id: str) -> None:
         # Buffer is flushed on context manager exit.
 ```
 
-Inside an Activity scheduled by a Workflow, `WorkflowStreamClient.from_within_activity()` is a convenience that infers the Temporal `Client` and the parent Workflow Id from the Activity context, so you don't have to thread them through the Activity's input:
+Inside an Activity scheduled by a Workflow, `WorkflowStreamClient.from_within_activity()` is a convenience that infers the Temporal `Client` and the parent Workflow ID from the Activity context, so you don't have to thread them through the Activity's input:
 
 ```python
 from temporalio import activity
