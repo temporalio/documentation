@@ -25,7 +25,7 @@ func main() {
 \t\topts.TaskQueue = "${taskQueue}"
 
 \t\topts.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
-\t\t\tVersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+\t\t\tVersioningBehavior: workflow.VersioningBehaviorPinned,
 \t\t})
 \t\topts.RegisterActivity(MyActivity)
 
