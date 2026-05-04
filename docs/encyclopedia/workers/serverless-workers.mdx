@@ -138,10 +138,14 @@ Serverless Workers can share a Task Queue with long-lived Workers. Because Serve
 [sync match failure](#sync-match-failure), Serverless Workers only pick up Tasks that no long-lived Worker was available
 to handle. In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
 
+:::caution
+
 If you configure Serverless and long-lived Workers on the same Task Queue, do not enable dynamic scaling on the
 long-lived Workers. The two groups cannot coordinate their scaling behavior. If both scale dynamically, the long-lived
 Workers may scale up to handle the same Tasks that Temporal is simultaneously invoking Serverless Workers for, leading
 to unnecessary invocations and unpredictable scaling.
+
+:::
 
 ## Worker lifecycle {#worker-lifecycle}
 
@@ -177,8 +181,8 @@ If your Worker handles long-running Activities, set these three values together:
 
   If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be
   difficult or impossible to meet. In this case, use
-  [Activity Heartbeats](/detecting-activity-failures#activity-heartbeat) to record the state of the Activity execution
-  so that the next retry can pick up where it left off.
+  [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) to record the state of the
+  Activity execution so that the next retry can pick up where it left off.
 
   :::
 
