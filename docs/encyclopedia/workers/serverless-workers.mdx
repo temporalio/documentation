@@ -61,6 +61,34 @@ Temporal does not need to know anything about the Worker's infrastructure.
 
 With Serverless Workers, Temporal starts the Worker.
 
+### Worker Controller Instance {#worker-controller-instance}
+
+The Worker Controller Instance (WCI) is a system Workflow that scales Serverless Workers based on Task Queue conditions.
+One WCI Workflow runs per Worker Deployment Version that has a compute provider configured. The WCI runs in the same
+Namespace as your Worker Deployment.
+
+The WCI responds to two triggers. The Matching Service notifies the WCI when a sync match failure occurs, meaning a Task
+arrived but no Worker was available to handle it. The WCI also polls Task Queue backlogs on a schedule to detect
+accumulated work. When either trigger fires, the WCI produces a scaling action, such as invoking the configured compute
+provider (for example, calling AWS Lambda's `InvokeFunction` API) to start new Workers.
+
+You can list WCI Workflows in your Namespace:
+
+```bash
+temporal workflow list \
+  --namespace <NAMESPACE> \
+  --query 'TemporalNamespaceDivision = "TemporalWorkerControllerInstance"'
+```
+
+WCI Workflow IDs follow the pattern `temporal-sys-worker-controller-instance:<deployment-name>:<build-id>`. You can
+inspect a WCI Workflow's history to see its recent Activity results:
+
+```bash
+temporal workflow show \
+  --namespace <NAMESPACE> \
+  --workflow-id 'temporal-sys-worker-controller-instance:<DEPLOYMENT_NAME>:<BUILD_ID>'
+```
+
 <CaptionedImage
   src="/diagrams/serverless-worker-flow.svg"
   srcDark="/diagrams/serverless-worker-flow-dark.svg"
