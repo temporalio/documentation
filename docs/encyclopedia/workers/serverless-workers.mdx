@@ -67,10 +67,10 @@ The Worker Controller Instance (WCI) is a system Workflow that scales Serverless
 One WCI Workflow runs per Worker Deployment Version that has a compute provider configured. The WCI runs in the same
 Namespace as your Worker Deployment.
 
-The WCI responds to two triggers. The Matching Service notifies the WCI when a sync match failure occurs, meaning a Task
-arrived but no Worker was available to handle it. The WCI also polls Task Queue backlogs on a schedule to detect
-accumulated work. When either trigger fires, the WCI produces a scaling action, such as invoking the configured compute
-provider (for example, calling AWS Lambda's `InvokeFunction` API) to start new Workers.
+The WCI responds to two triggers: [sync match failures](#sync-match-failure) and
+[Task Queue backlog](#task-queue-backlog). When either trigger fires, the WCI produces a scaling action, such as
+invoking the configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API) to start new Workers.
+For details on how scaling works, see [Autoscaling](#autoscaling).
 
 You can list WCI Workflows in your Namespace:
 
@@ -89,14 +89,14 @@ temporal workflow show \
   --workflow-id 'temporal-sys-worker-controller-instance:<DEPLOYMENT_NAME>:<BUILD_ID>'
 ```
 
+The following diagram illustrates the invocation flow of a Serverless Worker.
+
 <CaptionedImage
   src="/diagrams/serverless-worker-flow.svg"
   srcDark="/diagrams/serverless-worker-flow-dark.svg"
   alt="Serverless invocation flow"
   title="Temporal's Worker Controller Instance invokes a Serverless Worker when Tasks arrive on a Task Queue with a compute provider configured."
 />
-
-Temporal's internal Worker Controller Instance (WCI) decides when to start, scale, and stop compute invocations.
 
 The invocation flow works as follows:
 
@@ -105,20 +105,17 @@ The invocation flow works as follows:
    available Worker (a sync match).
 3. If a Worker is available, the Task is routed to that Worker.
 4. If no Worker is available (sync match fails), the Matching Service pushes a signal to the WCI, and the WCI invokes
-   the configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API).
+   the configured compute provider.
 5. The Serverless Worker starts, creates a Temporal Client, and begins polling the Task Queue.
 6. The Worker processes available Tasks until it exits (see [Worker lifecycle](#worker-lifecycle)).
-
-The WCI also monitors the Task Queue backlog independently. If Tasks arrive faster than Workers can process them, the
-WCI invokes additional Workers in parallel until the backlog drains or provider concurrency limits are reached.
 
 Each invocation is independent. The Worker creates a fresh client connection on every invocation. There is no connection
 reuse or shared state across invocations.
 
 ## Autoscaling {#autoscaling}
 
-Temporal automatically scales Serverless Workers based on Task Queue signals. When Tasks arrive and no Worker is
-available, Temporal invokes new Workers. When the Tasks are done, Workers exit and scale to zero.
+The [WCI](#worker-controller-instance) automatically scales Serverless Workers based on Task Queue signals. When Tasks
+arrive and no Worker is available, the WCI invokes new Workers. When the Tasks are done, Workers exit and scale to zero.
 
 The WCI uses two signals to decide when to invoke new Workers:
 
@@ -137,13 +134,14 @@ there are Tasks on the queue and not enough Workers, the WCI invokes additional 
 
 ## Scaling with long-lived Workers {#scaling-with-long-lived-workers}
 
-Serverless Workers can share a Task Queue with long-lived Workers.
-Because Serverless Workers are only invoked on [sync match failure](#sync-match-failure), Serverless Workers only pick up Tasks that no long-lived Worker was available to handle.
-In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
+Serverless Workers can share a Task Queue with long-lived Workers. Because Serverless Workers are only invoked on
+[sync match failure](#sync-match-failure), Serverless Workers only pick up Tasks that no long-lived Worker was available
+to handle. In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
 
-If you configure Serverless and long-lived Workers on the same Task Queue, do not enable dynamic scaling on the long-lived Workers.
-The two groups cannot coordinate their scaling behavior.
-If both scale dynamically, the long-lived Workers may scale up to handle the same Tasks that Temporal is simultaneously invoking Serverless Workers for, leading to unnecessary invocations and unpredictable scaling.
+If you configure Serverless and long-lived Workers on the same Task Queue, do not enable dynamic scaling on the
+long-lived Workers. The two groups cannot coordinate their scaling behavior. If both scale dynamically, the long-lived
+Workers may scale up to handle the same Tasks that Temporal is simultaneously invoking Serverless Workers for, leading
+to unnecessary invocations and unpredictable scaling.
 
 ## Worker lifecycle {#worker-lifecycle}
 
@@ -177,8 +175,10 @@ If your Worker handles long-running Activities, set these three values together:
 
   :::tip
 
-  If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be difficult or impossible to meet.
-  In this case, use [Activity Heartbeats](/detecting-activity-failures#activity-heartbeat) to record the state of the Activity execution so that the next retry can pick up where it left off.
+  If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be
+  difficult or impossible to meet. In this case, use
+  [Activity Heartbeats](/detecting-activity-failures#activity-heartbeat) to record the state of the Activity execution
+  so that the next retry can pick up where it left off.
 
   :::
 
@@ -233,11 +233,11 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 
 ## Constraints {#constraints}
 
-| Constraint        | Detail                                                                                                                                    |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes. |
-| Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.     |
-| Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                          |
+| Constraint        | Detail                                                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes.                          |
+| Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.                              |
+| Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                   |
 | Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. |
 
 ## Compute providers {#compute-providers}
