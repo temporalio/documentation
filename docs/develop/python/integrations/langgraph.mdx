@@ -34,9 +34,8 @@ future versions.
 :::
 
 Code snippets in this guide are taken from the
-[LangGraph plugin samples](https://github.com/DABH/samples-python/tree/langgraph-samples/langgraph_plugin) (on a PR
-branch — see [samples-python#289](https://github.com/temporalio/samples-python/pull/289)). Refer to the samples for the
-complete code.
+[LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin). Refer to the
+samples for the complete code.
 
 ## Prerequisites
 
@@ -475,14 +474,13 @@ LangGraph's `interrupt()` works with Temporal signals and queries to support hum
 3. An external process (UI, CLI) queries the draft and sends approval via a Temporal signal.
 4. The graph resumes — `interrupt()` returns the signal value and the node completes.
 
-See the [human-in-the-loop samples](https://github.com/DABH/samples-python/tree/langgraph-samples/langgraph_plugin/graph_api/human_in_the_loop) for
+See the [human-in-the-loop samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin/graph_api/human_in_the_loop) for
 complete working examples using both Graph and Functional APIs.
 
 ## Samples
 
-The [LangGraph plugin samples](https://github.com/DABH/samples-python/tree/langgraph-samples/langgraph_plugin)
-demonstrate all supported patterns across both APIs (samples are on a PR branch — see
-[samples-python#289](https://github.com/temporalio/samples-python/pull/289)):
+The [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin)
+demonstrate all supported patterns across both APIs:
 
 | Sample | Graph API | Functional API | Description |
 | --- | --- | --- | --- |
