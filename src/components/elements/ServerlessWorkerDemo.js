@@ -170,8 +170,8 @@ const STEPS = [
 const FLOW_NODES = [
   { label: 'Start', sub: 'Client' },
   { label: 'Task Queue', sub: 'No pollers' },
-  { label: 'Temporal', sub: 'Invokes Lambda' },
-  { label: 'Worker', sub: 'Lambda' },
+  { label: 'Temporal', sub: 'Invokes Worker' },
+  { label: 'Worker', sub: 'Processing' },
   { label: 'Done', sub: 'Result' },
 ];
 
@@ -449,7 +449,7 @@ export default function ServerlessWorkerDemo() {
                 onChange={(v) => updateConfig('namespace', v)}
               />
               <ConfigField
-                label="Lambda Function Name"
+                label="Function Name"
                 value={config.lambdaFunctionName}
                 onChange={handleFunctionNameChange}
               />
