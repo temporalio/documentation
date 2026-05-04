@@ -465,10 +465,6 @@ from openai import AsyncOpenAI
 class TextDelta:
     text: str
 
-@dataclass
-class TextComplete:
-    full_text: str
-
 
 @activity.defn
 async def stream_completion(prompt: str) -> str:
@@ -480,8 +476,8 @@ async def stream_completion(prompt: str) -> str:
 
     async with stream_client:
         deltas = stream_client.topic("delta", type=TextDelta)
-        complete = stream_client.topic("complete", type=TextComplete)
         retry = stream_client.topic("retry", type=dict)
+        close = stream_client.topic("close")
 
         # Tell consumers an earlier attempt's deltas are stale.
         if activity.info().attempt > 1:
@@ -505,7 +501,7 @@ async def stream_completion(prompt: str) -> str:
             deltas.publish(TextDelta(text=text), force_flush=first)
             first = False
             full.append(text)
-        complete.publish(TextComplete(full_text="".join(full)))
+        close.publish({})
     return "".join(full)
 ```
 
@@ -529,7 +525,7 @@ class ChatWorkflow:
             input.prompt,
             start_to_close_timeout=timedelta(minutes=5),
         )
-        # Wait for the subscriber to ack the terminal `complete` event.
+        # Wait for the subscriber to ack the terminal `close` event.
         # The timeout is a fallback for when no subscriber is attached;
         # with the ack, the typical case exits as soon as the subscriber confirms.
         try:
@@ -554,7 +550,7 @@ async def stream_chat(chat_id: str) -> str:
         ...  # display the accumulated output (terminal redraw, UI update, etc.)
 
     async for item in stream.subscribe(
-        ["delta", "retry", "complete"], result_type=RawValue
+        ["delta", "retry", "close"], result_type=RawValue
     ):
         if item.topic == "retry":
             # Earlier attempt's deltas are stale; drop what we've shown.
@@ -564,7 +560,7 @@ async def stream_chat(chat_id: str) -> str:
             delta = converter.from_payload(item.data.payload, TextDelta)
             output.append(delta.text)
             render()
-        elif item.topic == "complete":
+        elif item.topic == "close":
             # Acknowledge so the Workflow can return without a sleep.
             await temporal_client.get_workflow_handle(chat_id).signal(
                 ChatWorkflow.subscriber_acknowledged_terminator
@@ -578,7 +574,7 @@ A few choices in this shape are deliberate:
 
 - The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value (see [How it works at a glance](#how-it-works-at-a-glance) for why the Workflow acts as a conduit rather than reading its own stream).
 - The Activity publishes a `RETRY` event when `activity.info().attempt > 1`. This lets the UI respond appropriately to the failure, typically by clearing accumulated deltas before the next attempt's deltas arrive (see [Delivery semantics](#delivery-semantics)).
-- Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `complete` event, so the Workflow can return as soon as the subscriber confirms. The `wait_condition` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
+- Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `close` event, so the Workflow can return as soon as the subscriber confirms. The `wait_condition` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
 - `force_flush=True` is used only on the first delta and on the `RETRY` sentinel, where latency matters. Subsequent deltas batch at the 200 ms `batch_interval`; per-delta `force_flush=True` would generate one Signal per token (see [Tuning](#tuning) for the trade-off).
 
 ## See also
