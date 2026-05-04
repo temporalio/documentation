@@ -475,6 +475,7 @@ module.exports = {
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
+                'develop/python/workflows/workflow-streams',
               ]
             },
             {
@@ -574,16 +575,6 @@ module.exports = {
                 },
                 'develop/python/best-practices/python-sdk-sync-vs-async',
               ],
-            },
-            {
-              type: 'category',
-              label: 'Libraries',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/libraries/index',
-              },
-              items: ['develop/python/libraries/workflow-streams'],
             },
             {
               type: 'category',
