@@ -104,7 +104,7 @@ const STEPS = [
   {
     id: 'worker',
     number: '1',
-    title: 'Write worker code',
+    title: 'Write Worker code',
     description:
       'Use the lambdaworker package to write a Worker that runs inside a Lambda function. Register Workflows and Activities the same way you would with a standard Worker.',
     codeLabel: 'Worker Code',
@@ -136,7 +136,7 @@ const STEPS = [
     number: '4',
     title: 'Create a Worker Deployment Version',
     description:
-      'Use the CLI to create a Worker Deployment Version with your Lambda ARN as the compute provider. The deployment name and build ID must match your Worker code.',
+      'Use the CLI to create a Worker Deployment Version with your Lambda ARN as the compute provider. The deployment name and Build Id must match your Worker code.',
     codeLabel: 'CLI Command',
     language: 'bash',
     generate: generateCliCode,
