@@ -310,7 +310,7 @@ boundary.
 ## Continue-as-new
 
 Long-running graphs can hit Temporal's per-Workflow history size limit. Use Temporal's
-[continue-as-new](/develop/python/continue-as-new) to start a fresh execution while preserving the results of nodes
+[continue-as-new](/develop/python/workflows/continue-as-new) to start a fresh execution while preserving the results of nodes
 and tasks that have already completed.
 
 The `cache()` helper returns the current task-result cache as a serializable dict. Pass it to `graph(name, cache=...)`
