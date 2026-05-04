@@ -20,7 +20,7 @@ description: Stream events from a Workflow to subscribers using the Temporal Pyt
 ---
 
 **Workflow Streams** is a Temporal Python SDK `contrib` library that gives a Workflow a durable, offset-addressed event channel built on Temporal's basic message primitives: Signals, Updates, and Queries.
-It batches publishes to amortize per-Signal cost, deduplicates batches for exactly-once delivery to the log, supports topic filtering, and carries stream state across Continue-As-New for long-running runs.
+It batch-publishes events to amortize per-Signal cost, deduplicates batches for exactly-once delivery to the log, supports topic filtering, and carries state across Continue-As-New for long-running streams.
 
 Use Workflow Streams when you want outside observers to follow the progress of a Workflow and its Activities: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, reporting intermediate results from a data job. It is not suited to ultra-low-latency cases like real-time voice, and it targets modest fan-out: tens of publishers and subscribers per Workflow, not thousands.
 
