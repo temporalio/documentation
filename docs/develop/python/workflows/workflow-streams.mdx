@@ -76,7 +76,7 @@ A `WorkflowStream` is hosted inside a Workflow, so the first design choice is wh
 
 **Use a dedicated Workflow for the stream alone** when the stream should outlive any single producer, accept fan-in from multiple unrelated sources, or be subscribable before any work has started. Producers publish from outside the stream Workflow (Activities of other Workflows, or external `WorkflowStreamClient` instances). The trade-off is explicit lifecycle management: a dedicated stream Workflow does not terminate on its own, so you need a signal-driven shutdown or a Continue-As-New strategy.
 
-Whichever shape you pick, the Workflow Id is the address subscribers use to attach. Multiple subscribers can attach to the same Id concurrently, which is the normal case for a UI with multiple browser tabs. Use distinct Workflow Ids for unrelated streams rather than packing them into one Workflow.
+Whichever shape you pick, the Workflow ID is the address subscribers use to attach. Multiple subscribers can attach to the same ID concurrently, which is the normal case for a UI with multiple browser tabs. Use distinct Workflow IDs for unrelated streams rather than packing them into one Workflow.
 
 ## Enable streaming on a Workflow
 
