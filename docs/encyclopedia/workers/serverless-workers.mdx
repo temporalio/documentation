@@ -81,7 +81,7 @@ The invocation flow works as follows:
 5. The Serverless Worker starts, creates a Temporal Client, and begins polling the Task Queue.
 6. The Worker processes available Tasks until it exits (see [Worker lifecycle](#worker-lifecycle)).
 
-The WCI also monitors the Task Queue backlog independently. If tasks arrive faster than Workers can process them, the
+The WCI also monitors the Task Queue backlog independently. If Tasks arrive faster than Workers can process them, the
 WCI invokes additional Workers in parallel until the backlog drains or provider concurrency limits are reached.
 
 Each invocation is independent. The Worker creates a fresh client connection on every invocation. There is no connection
@@ -90,7 +90,7 @@ reuse or shared state across invocations.
 ## Autoscaling {#autoscaling}
 
 Temporal automatically scales Serverless Workers based on Task Queue signals. When Tasks arrive and no Worker is
-available, Temporal invokes new Workers. When the work is done, Workers exit and scale to zero.
+available, Temporal invokes new Workers. When the Tasks are done, Workers exit and scale to zero.
 
 The WCI uses two signals to decide when to invoke new Workers:
 
@@ -105,7 +105,7 @@ responsive.
 ### Task Queue backlog {#task-queue-backlog}
 
 The WCI monitors Task Queue metadata to determine whether pending Tasks exist without enough Workers to process them. If
-there is work on the queue and not enough Workers, the WCI invokes additional Workers.
+there are Tasks on the queue and not enough Workers, the WCI invokes additional Workers.
 
 ## Scaling with long-lived Workers {#scaling-with-long-lived-workers}
 
@@ -125,7 +125,7 @@ A single Serverless Worker invocation has three phases: init, work, and shutdown
   src="/diagrams/serverless-worker-lifecycle.svg"
   srcDark="/diagrams/serverless-worker-lifecycle-dark.svg"
   alt="Serverless Worker lifecycle"
-  title="The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish before shutdown hooks run. Diagram is not to scale. Shutdown hooks typically take less than a few seconds."
+  title="Diagram is not to scale. The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish before shutdown hooks run. Shutdown hooks typically take less than a few seconds."
 />
 
 During the **init** phase, the Worker initializes and establishes a client connection to Temporal.
@@ -150,7 +150,7 @@ If your Worker handles long-running Activities, set these three values together:
   :::tip
 
   If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be difficult or impossible to meet.
-  In this case, use [Activity Heartbeats](/activity-heartbeat) to record the state of the Activity execution so that the next retry can pick up where it left off.
+  In this case, use [Activity Heartbeats](/detecting-activity-failures#activity-heartbeat) to record the state of the Activity execution so that the next retry can pick up where it left off.
 
   :::
 
@@ -210,7 +210,7 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 | Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes. |
 | Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.     |
 | Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                          |
-| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a worker-level default. |
+| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. |
 
 ## Compute providers {#compute-providers}
 

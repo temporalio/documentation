@@ -41,7 +41,7 @@ Worker.
 
 ## Ensure Lambda can reach the Temporal Service {#ensure-network-reachability}
 
-The [Temporal Service frontend](/temporal-service#frontend-service) must be reachable from the Lambda execution
+The [Temporal Service frontend](/temporal-service/temporal-server#frontend-service) must be reachable from the Lambda execution
 environment. How to achieve this depends on your network setup. If the Temporal Service runs on a private network, you
 may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a
 similar mechanism to allow the Lambda function to connect to the Temporal frontend.

@@ -21,8 +21,8 @@ Deploy your Worker code to a serverless provider, configure a compute provider f
 There are no long-lived processes to provision or scale.
 
 Temporal monitors Task Queues that have a compute provider configured.
-When a task arrives and no Worker is polling, Temporal invokes the configured compute target.
-The Worker starts, processes available tasks, and shuts down when the invocation window ends.
+When a Task arrives and no Worker is polling, Temporal invokes the configured compute target.
+The Worker starts, processes available Tasks, and shuts down when the invocation window ends.
 
 ## Supported providers
 

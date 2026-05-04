@@ -45,47 +45,17 @@ APIs are experimental and may be subject to backwards-incompatible changes.
 - The AWS-specific steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured
   with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
 
-<SdkTabs hideUnsupportedLanguages>
-<SdkTabs.Go>
-
-- The [Go SDK](/develop/go) (`go.temporal.io/sdk`)
+- The [Go SDK](/develop/go), [Python SDK](/develop/python), or [TypeScript SDK](/develop/typescript), depending on which
+  language you are using. Use the tabs to select your language and the rest of the page will update accordingly.
 
   :::tip
 
-  If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample
-  Workflows and Activities from the
-  [Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker).
-
-  :::
-
-</SdkTabs.Go>
-<SdkTabs.Python>
-
-- The [Python SDK](/develop/python) (`temporalio`)
-
-  :::tip
-
-  If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample
-  Workflows and Activities from the
-  [Python Lambda Worker sample](https://github.com/temporalio/samples-python/tree/main/lambda_worker).
-
-  :::
-
-</SdkTabs.Python>
-<SdkTabs.TypeScript>
-
-- The [TypeScript SDK](/develop/typescript) (`@temporalio/lambda-worker`)
-
-  :::tip
-
-  If you are just exploring the Serverless Worker feature and don't have a Workflow ready, you can use the sample
-  Workflows and Activities from the
+  If you are exploring the Serverless Worker feature and don't have a Workflow ready, you can use a sample from
+  the [Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker),
+  [Python Lambda Worker sample](https://github.com/temporalio/samples-python/tree/main/lambda_worker), or
   [TypeScript Lambda Worker sample](https://github.com/temporalio/samples-typescript/tree/main/lambda-worker).
 
   :::
-
-</SdkTabs.TypeScript>
-</SdkTabs>
 
 ## 1. Write Worker code {#write-worker-code}
 
@@ -124,7 +94,7 @@ func main() {
 ```
 
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or
-`Pinned`. Set it per-Workflow at registration time, or set a worker-level default with `DefaultVersioningBehavior` in
+`Pinned`. Set it per-Workflow at registration time, or set a Worker-level default with `DefaultVersioningBehavior` in
 `DeploymentOptions`.
 
 For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see
@@ -159,7 +129,7 @@ lambda_handler = run_worker(
 ```
 
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or
-`AUTO_UPGRADE`. Set it per-Workflow in the `@workflow.defn` decorator, or set a worker-level default with
+`AUTO_UPGRADE`. Set it per-Workflow in the `@workflow.defn` decorator, or set a Worker-level default with
 `default_versioning_behavior` in the worker config.
 
 ```python
