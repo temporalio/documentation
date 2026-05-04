@@ -147,7 +147,7 @@ The `type=` argument is optional and defaults to `Any`. Pass it when you want th
 
 ## Publish from a client
 
-Any process that has a Temporal `Client` and the target Workflow Id can publish to that Workflow's stream by constructing a `WorkflowStreamClient`. This is the general pattern and covers HTTP backends, starters, one-off scripts, other Workflows' Activities, and standalone Activities. Construct one with `WorkflowStreamClient.create(client, workflow_id)`, then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let the async context manager flush on exit.
+Any process that has a Temporal `Client` and the target Workflow ID can publish to that Workflow's stream by constructing a `WorkflowStreamClient`. This is the general pattern and covers HTTP backends, starters, one-off scripts, other Workflows' Activities, and standalone Activities. Construct one with `WorkflowStreamClient.create(client, workflow_id)`, then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let the async context manager flush on exit.
 
 ```python
 from datetime import timedelta
