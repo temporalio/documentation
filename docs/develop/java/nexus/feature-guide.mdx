@@ -255,7 +255,7 @@ The [nexus_messaging](https://github.com/temporalio/samples-java/tree/main/core/
 Use the Nexus library, as shown below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id, with the "getWorkflowId" method. This converts a given client Id (in this case, the client is passing in a user Id) to generate a Workflow Id from it.
 This way the client only needs the identifier it cares about.
 
-[nexusmessaging/callerpattern/handler/NexusGreetingServiceImpl.java](https://github.com/temporalio/samples-java/blob/core/src/main/java/io/temporal/samples/nexusmessaging/callerpattern/handler/NexusGreetingServiceImpl.java)
+[nexusmessaging/callerpattern/handler/NexusGreetingServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexusmessaging/callerpattern/handler/NexusGreetingServiceImpl.java)
 ```java
 static final String WORKFLOW_ID_PREFIX = "GreetingWorkflow_for_";
 
