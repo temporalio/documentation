@@ -253,9 +253,6 @@ export default function ServerlessWorkerDemo() {
       }));
     };
 
-    // Jump to the last step and start simulation
-    setActiveStep(STEPS.length - 1);
-
     setSim({
       running: true,
       nodeStates: [...IDLE_NODES],
@@ -355,9 +352,10 @@ export default function ServerlessWorkerDemo() {
     <div className={styles.demo}>
       {/* ── Simulation: the main interactive area ── */}
       <div className={styles.columns}>
-        <div className={styles.leftCol}>
-          <section className={styles.section}>
-            <h3 className={styles.sectionTitle}>Serverless Worker Flow</h3>
+          <h3 className={`${styles.sectionTitle} ${styles.row1Left}`}>Serverless Worker Flow</h3>
+          <div className={styles.row1Right} />
+
+          <div className={styles.row2Left}>
             <div className={styles.flowDiagram}>
               {FLOW_NODES.map((node, i) => (
                 <React.Fragment key={i}>
@@ -383,10 +381,29 @@ export default function ServerlessWorkerDemo() {
                 </React.Fragment>
               ))}
             </div>
-          </section>
+          </div>
 
-          <section className={styles.section}>
-            <h3 className={styles.sectionTitle}>Execution Log</h3>
+          <div className={styles.row2Right}>
+            <button
+              className={`${styles.executeBtn} ${sim.running ? styles.executeBtnDisabled : ''}`}
+              onClick={handleSimulate}
+              disabled={sim.running}
+            >
+              {sim.running ? (
+                <>
+                  <span className={styles.spinner} />
+                  Running...
+                </>
+              ) : (
+                'Simulate Workflow'
+              )}
+            </button>
+          </div>
+
+          <h3 className={`${styles.sectionTitle} ${styles.row3Left}`}>Execution Log</h3>
+          <h3 className={`${styles.sectionTitle} ${styles.row3Right}`}>Configuration</h3>
+
+          <div className={styles.row4Left}>
             <div className={styles.log} ref={logScrollRef}>
               {sim.log.length === 0 ? (
                 <div className={styles.logPlaceholder}>
@@ -403,34 +420,13 @@ export default function ServerlessWorkerDemo() {
                   </div>
                 ))
               )}
-            </div>
-
-            {sim.status === 'completed' && (
-              <div className={styles.resultSuccess}>Workflow completed successfully.</div>
-            )}
-          </section>
-        </div>
-
-        <div className={styles.rightCol}>
-          <section className={styles.section}>
-            <button
-              className={`${styles.executeBtn} ${sim.running ? styles.executeBtnDisabled : ''}`}
-              onClick={handleSimulate}
-              disabled={sim.running}
-            >
-              {sim.running ? (
-                <>
-                  <span className={styles.spinner} />
-                  Running...
-                </>
-              ) : (
-                'Simulate Workflow'
+              {sim.status === 'completed' && (
+                <div className={styles.resultSuccess}>Workflow completed successfully.</div>
               )}
-            </button>
-          </section>
+            </div>
+          </div>
 
-          <section className={styles.section}>
-            <h3 className={styles.sectionTitle}>Configuration</h3>
+          <div className={styles.row4Right}>
             <div className={styles.configGrid}>
               <ConfigField
                 label="Deployment Name"
@@ -458,8 +454,7 @@ export default function ServerlessWorkerDemo() {
                 onChange={handleFunctionNameChange}
               />
             </div>
-          </section>
-        </div>
+          </div>
       </div>
 
       <Admonition type="note" title="Simulated logs">
