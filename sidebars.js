@@ -495,6 +495,7 @@ module.exports = {
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
+                'develop/python/workflows/workflow-streams',
               ]
             },
             {
