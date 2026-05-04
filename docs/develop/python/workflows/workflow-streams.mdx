@@ -24,6 +24,8 @@ It batches publishes to amortize per-Signal cost, deduplicates batches for exact
 
 Use Workflow Streams when you want outside observers to follow the progress of a Workflow and its Activities: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, reporting intermediate results from a data job. It is not suited to ultra-low-latency cases like real-time voice, and it targets modest fan-out: tens of publishers and subscribers per Workflow, not thousands.
 
+The Workflow hosts the event log. Publishers append events — the Workflow itself, Activities, or external processes via `WorkflowStreamClient`. Subscribers attach to the Workflow Id, optionally filter by **topic** (a string label set when publishing; topics are implicit and created on first publish), and consume events by long-polling from an offset they store.
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 The `temporalio.contrib.workflow_streams` module is currently in
@@ -44,31 +46,7 @@ The API may change before general availability.
 - History-size cost and tuning: [Architecture](#architecture).
 - Long-running streams that need Continue-As-New: [Continue-As-New](#continue-as-new).
 
-## Concepts
-
-A `WorkflowStream` is a many-to-many event channel hosted inside a Workflow:
-
-- **The streaming Workflow** hosts the event log and ensures durability. Constructing a `WorkflowStream` instance from `@workflow.init` registers the handlers that accept publishes and serve subscribers.
-- **Publishers** append events. The Workflow itself publishes via its in-memory `WorkflowStream`. Activities and external clients publish via `WorkflowStreamClient`, which batches and ships events to the Workflow.
-- **Subscribers** consume events. They call `WorkflowStreamClient.subscribe(...)` and iterate the returned async iterator.
-
-Events are organized by **topic**, a string label set when publishing. Subscribers can filter to one or more topics or consume all of them. Topics are implicit; publishing to a topic creates it.
-
-The event log lives inside the Workflow, so the Workflow is the single source of truth. Any process that bridges events to the outside world (an SSE proxy serving a browser, a forwarding Activity) can stay stateless and resume by replaying from a stored offset.
-
-## How it works at a glance
-
-Temporal's standard message-passing primitives carry the work. No new transport is involved:
-
-- **Publishers send Signals.** A `WorkflowStreamClient` batches publishes (default every 2 seconds) and ships each batch as a single Signal to the Workflow.
-- **Subscribers send Updates.** `subscribe()` issues a long-poll Update that returns when new entries are available past the requested offset.
-- **Position is queryable.** A Query exposes the current head offset, useful as a snapshot of how much has been written.
-
-The Workflow keeps an in-memory append-only log of `(topic, data)` entries, each with a monotonically increasing offset. Subscribers maintain their own cursor and receive the next range past that cursor on every poll. See [Architecture](#architecture) for batching, dedup, history-size implications, and tuning.
-
-When events originate in an Activity, for example an Activity streaming output from an LLM, have the Activity publish to the stream directly. The Workflow acts as a conduit: it hosts the stream, processes only the Activity's return value, and emits its own lifecycle events, but does not read the stream itself. This keeps the Workflow's own state independent of partial output from Activity attempts that ended up retrying, since the Workflow only sees the successful attempt's return. See [Delivery semantics](#delivery-semantics) for the precise guarantees.
-
-## Where the stream lives
+## Choose where to host the stream
 
 A `WorkflowStream` is hosted inside a Workflow, so the first design choice is whether one Workflow handles both the work and the stream, or whether a separate Workflow exists only to host the stream. The choice is mostly about lifecycle.
 
@@ -149,6 +127,8 @@ The `type=` argument is optional and defaults to `Any`. Pass it when you want th
 
 Any process that has a Temporal `Client` and the target Workflow ID can publish to that Workflow's stream by constructing a `WorkflowStreamClient`. This is the general pattern and covers HTTP backends, starters, one-off scripts, other Workflows' Activities, and standalone Activities. Construct one with `WorkflowStreamClient.create(client, workflow_id)`, then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let the async context manager flush on exit.
 
+When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but does not read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state — see [Delivery semantics](#delivery-semantics).
+
 ```python
 from datetime import timedelta
 
@@ -223,7 +203,9 @@ If your application needs to bound this (to cap memory, to keep the stream close
 
 Subscribing uses the same client construction as publishing: `WorkflowStreamClient.create(client, workflow_id)` from any process that has a Temporal `Client`, or `from_within_activity()` inside an Activity. Subscribing from an Activity is less common in practice, so the general client case is the primary example below.
 
-Subscribing from inside the host Workflow is intentionally unsupported. The Workflow only sees the successful return value of each Activity; the stream may carry partial output from attempts that failed and were retried. Letting the Workflow read its own stream would mix those two views and break the conduit role the Workflow is meant to play. See [How it works at a glance](#how-it-works-at-a-glance) for the framing.
+Subscribing from inside the host Workflow is intentionally unsupported. The Workflow only sees the successful return value of each Activity; the stream may carry partial output from attempts that failed and were retried. Letting the Workflow read its own stream would mix those two views and break the conduit role the Workflow is meant to play.
+
+The Workflow is the single source of truth for stream state, so any process bridging events to the outside world (an SSE proxy serving a browser, a forwarding Activity) can stay stateless — store the last delivered `item.offset`, and reconnects resume from that offset without coordinating with anyone but the Workflow.
 
 Once you have a client, iterate a topic handle's `subscribe()`, the counterpart to `publish()`. The handle's bound type drives decoding, so each `item.data` arrives as `T` via the client's payload converter. The codec chain is applied once at the Update envelope, not per item.
 
@@ -576,7 +558,7 @@ async def stream_chat(chat_id: str) -> str:
 
 A few choices in this shape are deliberate:
 
-- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value (see [How it works at a glance](#how-it-works-at-a-glance) for why the Workflow acts as a conduit rather than reading its own stream).
+- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream — see [Publish from a client](#publish-from-a-client) for why.
 - The Activity publishes a `RETRY` event when `activity.info().attempt > 1`. This lets the UI respond appropriately to the failure, typically by clearing accumulated deltas before the next attempt's deltas arrive (see [Delivery semantics](#delivery-semantics)).
 - Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `complete` event, so the Workflow can return as soon as the subscriber confirms. The `wait_condition` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
 - `force_flush=True` is used only on the first delta and on the `RETRY` sentinel, where latency matters. Subsequent deltas batch at the 200 ms `batch_interval`; per-delta `force_flush=True` would generate one Signal per token (see [Tuning](#tuning) for the trade-off).
