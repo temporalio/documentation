@@ -265,6 +265,7 @@ module.exports = {
               items: [
                 'develop/java/activities/basics',
                 'develop/java/activities/execution',
+                'develop/java/activities/standalone-activities',
                 'develop/java/activities/timeouts',
                 'develop/java/activities/asynchronous-activity',
                 'develop/java/activities/benign-exceptions',
@@ -945,7 +946,84 @@ module.exports = {
             },
           ],
         },
-        'develop/run-a-development-server',
+        {
+          type: 'category',
+          label: 'Rust SDK',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/rust/index',
+          },
+          items: [
+            'develop/rust/quickstart',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/workflows/index',
+              },
+              items: [
+                'develop/rust/workflows/basics',
+                'develop/rust/workflows/child-workflows',
+                'develop/rust/workflows/continue-as-new',
+                'develop/rust/workflows/message-passing',
+                'develop/rust/workflows/cancellation',
+                'develop/rust/workflows/timers',
+                'develop/rust/workflows/timeouts',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/activities/index',
+              },
+              items: [
+                'develop/rust/activities/basics',
+                'develop/rust/activities/execution',
+                'develop/rust/activities/timeouts',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/workers/index',
+              },
+              items: [
+                'develop/rust/workers/worker-process',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/client/index',
+              },
+              items: [
+                'develop/rust/client/temporal-client',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Nexus',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/nexus/index',
+              },
+              items: ['develop/rust/nexus/feature-guide'],
+            },
+          ],
+        },
         'develop/environment-configuration',
         'develop/activity-retry-simulator',
         'develop/worker-performance',
@@ -977,7 +1055,6 @@ module.exports = {
             'cloud/get-started/namespaces',
             'cloud/get-started/api-keys',
             'cloud/get-started/certificates',
-            'cloud/get-started/billing-and-cost',
           ],
         },
         {
@@ -1033,6 +1110,20 @@ module.exports = {
               items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
             },
             'cloud/metrics/sdk-metrics-setup',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Billing and Usage',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/billing-and-usage/index',
+          },
+          items: [
+            'cloud/billing-and-usage/billing',
+            'cloud/billing-and-usage/billing-api',
+            'cloud/billing-and-usage/actions-usage',
           ],
         },
         {
@@ -1096,7 +1187,6 @@ module.exports = {
         'cloud/service-health',
         'cloud/notifications',
         'cloud/operation-api',
-        'cloud/billing-api',
         'cloud/terraform-provider',
         {
           type: 'category',
