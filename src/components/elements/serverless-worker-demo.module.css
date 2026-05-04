@@ -319,12 +319,20 @@
   color: var(--ifm-color-success-darkest, #2e7d32);
 }
 
+[data-theme='dark'] .logLine_success .logMsg {
+  color: var(--ifm-color-success-lightest, #81c784);
+}
+
 .logLine_error .logMsg {
   color: var(--ifm-color-danger);
 }
 
 .logLine_warn .logMsg {
   color: var(--ifm-color-warning-darkest, #e65100);
+}
+
+[data-theme='dark'] .logLine_warn .logMsg {
+  color: var(--ifm-color-warning-lightest, #ffb74d);
 }
 
 /* ── Result banner ──────────────────────────────────────────────────────── */
@@ -338,6 +346,11 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--ifm-color-success-darkest, #2e7d32);
+}
+
+[data-theme='dark'] .resultSuccess {
+  color: var(--ifm-color-success-lightest, #81c784);
+  background: rgba(76, 175, 80, 0.15);
 }
 
 /* ── Steps (clickable) ──────────────────────────────────────────────────── */
