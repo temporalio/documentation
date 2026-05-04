@@ -65,7 +65,7 @@ lambda_handler = run_worker(
 
 `run_worker` takes a `WorkerDeploymentVersion` and a configure callback, and returns a Lambda handler.
 The `WorkerDeploymentVersion` identifies the [Worker Deployment](/worker-versioning#deployments) and [Build Id](/worker-versioning#build-id) for this Worker.
-The deployment name groups related Workers across versions, and the Build ID identifies a specific release of your Worker code.
+The deployment name groups related Workers across versions, and the Build Id identifies a specific release of your Worker code.
 Worker Versioning is required for Serverless Workers.
 
 The `configure` callback receives a `LambdaWorkerConfig` dataclass with fields pre-populated with Lambda-appropriate defaults.
@@ -136,7 +136,7 @@ With this enabled, the Worker emits SDK metrics and distributed traces for Workf
 The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ray and metrics to Amazon CloudWatch.
 
 The underlying metrics and traces are the same ones the Python SDK emits in any environment.
-For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/observability) and the [SDK metrics reference](/references/sdk-metrics).
+For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
 <!--SNIPSTART python-lambda-worker-->
 [lambda_worker/lambda_function.py](https://github.com/temporalio/samples-python/blob/lambda-worker/lambda_worker/lambda_function.py)

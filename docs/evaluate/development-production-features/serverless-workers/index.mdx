@@ -26,7 +26,7 @@ Worker shuts down when the work is done.
 Serverless Workers use the same Temporal SDKs as traditional long-lived Workers. You register Workflows and Activities
 the same way. The difference is in the lifecycle: instead of running a long-lived process, Temporal invokes the
 Serverless Worker on demand when Tasks arrive. The Worker starts, polls for available Tasks, processes them, and exits
-when the work is done.
+when the Task is done.
 
 For a deeper look at how Serverless invocation works under the hood, see [Serverless Workers](/serverless-workers) in
 the encyclopedia.
