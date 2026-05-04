@@ -64,7 +64,7 @@ lambda_handler = run_worker(
 <!--SNIPEND-->
 
 `run_worker` takes a `WorkerDeploymentVersion` and a configure callback, and returns a Lambda handler.
-The `WorkerDeploymentVersion` identifies the [Worker Deployment](/worker-versioning#deployments) and [Build Id](/worker-versioning#build-id) for this Worker.
+The `WorkerDeploymentVersion` identifies the [Worker Deployment](/worker-versioning#deployments) and [Build ID](/worker-versioning#deployment-versions) for this Worker.
 The deployment name groups related Workers across versions, and the Build Id identifies a specific release of your Worker code.
 Worker Versioning is required for Serverless Workers.
 

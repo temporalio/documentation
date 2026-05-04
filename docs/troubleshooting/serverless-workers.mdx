@@ -35,9 +35,9 @@ This page walks through the Serverless Worker invocation flow and helps you iden
 When a Serverless Worker invocation works correctly, the following sequence happens:
 
 1. You deploy the Worker function on Lambda.
-2. You configure a [Worker Deployment Version](/worker-versioning#worker-deployment-version) with a compute provider. This starts a [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow and a validation invocation of the Lambda function.
-3. The Lambda polls the Temporal Service successfully, binding the [Task Queue](/encyclopedia/task-queues) configured on the Worker to the Worker Deployment Version.
-4. The WCI continuously monitors the associated Task Queue on a schedule. The [Matching Service](/clusters#matching-service) also notifies the WCI Workflow of sync match failures immediately as they happen.
+2. You configure a [Worker Deployment Version](/worker-versioning#deployment-versions) with a compute provider. This starts a [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow and a validation invocation of the Lambda function.
+3. The Lambda polls the Temporal Service successfully, binding the [Task Queue](/task-queue) configured on the Worker to the Worker Deployment Version.
+4. The WCI continuously monitors the associated Task Queue on a schedule. The [Matching Service](/temporal-service/temporal-server#matching-service) also notifies the WCI Workflow of sync match failures immediately as they happen.
 5. A Task arrives on the Task Queue and the WCI detects the backlog.
 6. The WCI invokes the Lambda function.
 7. The Lambda function starts, the Worker connects to Temporal and polls the Task Queue.
@@ -71,7 +71,7 @@ role, and that the Lambda function can be invoked.
 
 If validation fails, verify that the Lambda function ARN and invocation role ARN in the Worker Deployment Version
 configuration are correct. Verify the invocation role was created using the
-[CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-invocation-role)
+[CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
 and that the External ID matches the value in the Worker Deployment Version configuration.
 
 If the Worker Deployment Version does not have a compute provider configured, no
@@ -134,7 +134,7 @@ Common errors include:
 - **Connection failures**: The Worker cannot reach the Temporal Service. Check that the `TEMPORAL_ADDRESS` and
   `TEMPORAL_API_KEY` environment variables (or `temporal.toml` config file) are correctly set on the Lambda function.
   For self-hosted deployments, verify
-  [network reachability](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#ensure-reachability).
+  [network reachability](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#ensure-network-reachability).
 - **TLS errors**: The TLS certificate or key is missing, expired, or does not match the Namespace.
 - **Authentication errors**: The API key is invalid or does not have access to the Namespace.
 
