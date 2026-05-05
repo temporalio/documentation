@@ -32,7 +32,9 @@ The Spring AI Integration is in Public Preview. Refer to the
 
 :::
 
-## Compatibility
+## Prerequisites
+
+The integration requires all of the following on your application's classpath. The plugin won't auto-configure if any of these are missing or below the listed minimum:
 
 | Dependency        | Minimum version |
 | ----------------- | --------------- |
@@ -40,6 +42,8 @@ The Spring AI Integration is in Public Preview. Refer to the
 | Spring Boot       | 3.x             |
 | Spring AI         | 1.1.0           |
 | Temporal Java SDK | 1.35.0          |
+
+You also need the [`temporal-spring-boot-starter`](/develop/java/integrations/spring-boot-integration) and a Spring AI model starter (for example, `spring-ai-starter-model-openai`) — `temporal-spring-ai` does not pull in a model provider on its own.
 
 ## Add the dependency
 
