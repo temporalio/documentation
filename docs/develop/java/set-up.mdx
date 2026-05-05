@@ -129,8 +129,8 @@ Gradle directory structure.
 repositories { mavenCentral() }
 
 dependencies {
-  implementation 'io.temporal:temporal-sdk:1.33.0'
-  testImplementation 'io.temporal:temporal-testing:1.33.0'
+    implementation 'io.temporal:temporal-sdk:1.33.0'
+    testImplementation 'io.temporal:temporal-testing:1.33.0'
 }
 
 // Define the main class for the application
@@ -138,17 +138,17 @@ application { mainClass = 'helloworkflow.Starter' }
 
 // Helper tasks to run the worker and the starter
 tasks.register('runWorker', JavaExec) {
-  group = 'application'
-  description = 'Run the Temporal worker'
-  classpath = sourceSets.main.runtimeClasspath
-  mainClass = 'helloworkflow.SayHelloWorker'
+    group = 'application'
+    description = 'Run the Temporal worker'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'helloworkflow.SayHelloWorker'
 }
 
 tasks.register('runStarter', JavaExec) {
-  group = 'application'
-  description = 'Run the workflow starter'
-  classpath = sourceSets.main.runtimeClasspath
-  mainClass = 'helloworkflow.Starter'
+    group = 'application'
+    description = 'Run the workflow starter'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'helloworkflow.Starter'
 }`}
 
 </CodeSnippet>
