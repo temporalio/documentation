@@ -136,7 +136,9 @@ Streaming responses are not currently supported.
 
 ## Register tools
 
-Tools passed to `defaultTools()` are dispatched based on their type. The integration handles Temporal determinism for you when the tool is durable, and gives you control when it isn't.
+In Spring AI, [tools](https://docs.spring.io/spring-ai/reference/api/tools.html) are methods the model can choose to call to fetch data or take action — you make them available to a chat client by registering them, typically through `ChatClient.defaultTools(...)` or per-prompt `tools(...)`. The chat client advertises the methods to the model, the model decides which (if any) to call, and the framework runs the chosen method and feeds the result back into the conversation.
+
+The Temporal integration extends this by inspecting the type of each tool you register and dispatching it to the appropriate Temporal primitive, so you can mix durable and in-Workflow tools in the same chat client. The integration handles Temporal determinism for you when the tool is durable, and gives you control when it isn't.
 
 ### Activity stubs
 
