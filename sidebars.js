@@ -39,6 +39,14 @@ module.exports = {
             'evaluate/development-production-features/job-queue',
             {
               type: 'category',
+              label: 'Serverless Workers',
+              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
+              items: [
+                'evaluate/development-production-features/serverless-workers/demo',
+              ],
+            },
+            {
+              type: 'category',
               label: 'Product release stages',
               collapsed: true,
               link: {
@@ -148,8 +156,19 @@ module.exports = {
               },
               items: [
                 'develop/go/workers/run-worker-process',
-                'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/go/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/go/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -508,6 +527,18 @@ module.exports = {
               items: [
                 'develop/python/workers/run-worker-process',
                 'develop/python/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/python/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/python/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -648,6 +679,18 @@ module.exports = {
               items: [
                 'develop/typescript/workers/run-worker-process',
                 'develop/typescript/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/typescript/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/typescript/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -1282,6 +1325,19 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/serverless-workers/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
+                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
+              ],
+            },
           ],
         },
         'production-deployment/data-encryption',
@@ -1346,6 +1402,7 @@ module.exports = {
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
+        'troubleshooting/serverless-workers',
       ],
     },
     {
@@ -1457,6 +1514,7 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
+            'encyclopedia/workers/serverless-workers',
           ],
         },
         {
