@@ -172,6 +172,32 @@ A common pattern is to use the Temporal Client from within a sync handler to Sig
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates should be short-lived to stay within this deadline.
 
+The [nexus_messaging](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries:
+
+Use `NexusOperationExecutionContext`, like below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id using the `WorkflowIdForUser` method. This converts a given client Id (in this case, the client is passing in a user Id) to generate a Workflow Id from it.
+This way the client only needs the identifier it cares about.
+
+[NexusMessaging/CallerPattern/Handler/NexusGreetingService.cs](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging/CallerPattern/Handler/NexusGreetingService.cs)
+
+```csharp
+private static string WorkflowIdForUser(string userId) => $"GreetingWorkflow_for_{userId}";
+
+[NexusOperationHandler]
+public IOperationHandler<INexusGreetingService.GetLanguagesInput, INexusGreetingService.GetLanguagesOutput> GetLanguages() =>
+    OperationHandler.Sync<INexusGreetingService.GetLanguagesInput, INexusGreetingService.GetLanguagesOutput>(
+        async (ctx, input) =>
+        {
+            // Access the Temporal client from the Nexus operation context
+            var client = NexusOperationExecutionContext.Current.TemporalClient;
+            var handle = client.GetWorkflowHandle<GreetingWorkflow>(WorkflowIdForUser(input.UserId));
+            return await handle.QueryAsync(wf => wf.QueryLanguages(input.IncludeUnsupported));
+        });
+    ...
+```
+
+There are two examples of messaging through Nexus in the sample code: the [caller pattern](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging/CallerPattern) and the [on-demand pattern](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging/OnDemandPattern).
+The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
+
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use the `WorkflowRunOperationHandler.FromHandleFactory` method, which is the easiest way to expose a Workflow as an operation.
