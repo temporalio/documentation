@@ -27,12 +27,12 @@ Other metrics are considered deprecated, inconsistent or experimental.
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 
-- [How to emit metrics using the Go SDK](/develop/go/observability#metrics)
-- [How to emit metrics using the Java SDK](/develop/java/observability#metrics)
-- [How to emit metrics using the Python SDK](/develop/python/observability#metrics)
-- [How to emit metrics using the TypeScript SDK](/develop/typescript/observability#metrics)
-- [How to emit metrics using the .NET SDK](/develop/dotnet/observability#metrics)
-- [How to emit metrics using the Ruby SDK](/develop/ruby/observability#metrics)
+- [How to emit metrics using the Go SDK](/develop/go/platform/observability#metrics)
+- [How to emit metrics using the Java SDK](/develop/java/platform/observability#metrics)
+- [How to emit metrics using the Python SDK](/develop/python/platform/observability#metrics)
+- [How to emit metrics using the TypeScript SDK](/develop/typescript/platform/observability#metrics)
+- [How to emit metrics using the .NET SDK](/develop/dotnet/platform/observability#metrics)
+- [How to emit metrics using the Ruby SDK](/develop/ruby/platform/observability#metrics)
 - [How to tune Worker performance based on metrics](/develop/worker-performance)
 
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
@@ -371,7 +371,7 @@ Latency of a Temporal Client gRPC request.
 
 ### resource_slots_cpu_usage
 
-CPU usage as a value between 0 and 100. As percieved by the resource-based slots tuner, if
+CPU usage as a value between 0 and 100. As perceived by the resource-based slots tuner, if
 enabled.
 
 - Type: Gauge
@@ -379,7 +379,7 @@ enabled.
 
 ### resource_slots_mem_usage
 
-Memory usage as a value between 0 and 100. As percieved by the resource-based slots tuner, if
+Memory usage as a value between 0 and 100. As perceived by the resource-based slots tuner, if
 enabled.
 
 - Type: Gauge
@@ -512,7 +512,7 @@ A Workflow Task Execution failed.
 
 Valid values for the `failure_reason` tag:
 
-- `NonDeterminismError`: The Workflow Task failed due to a non-determinim error.
+- `NonDeterminismError`: The Workflow Task failed due to a non-determinism error.
 - `WorkflowError`: The Workflow Task failed for any other reason.
 
 ### workflow_task_execution_latency

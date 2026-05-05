@@ -43,7 +43,7 @@ func main() {
 		Name: "JustAnotherWorkflow",
 	}
 	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
-	// Register your Activity Definitons with the Worker.
+	// Register your Activity Definitions with the Worker.
 	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
 	message := "This could be a connection string or endpoint details"
 	number := 100

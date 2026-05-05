@@ -18,13 +18,17 @@ tags:
   - Temporal Cloud
 ---
 
-Temporal Workers run in [Kubernetes](https://kubernetes.io)-based deployments deliver scale, resilience, and flexible resource management.
+Temporal Workers running in [Kubernetes](https://kubernetes.io)-based deployments deliver scale, resilience, and flexible resource management.
 Amazon EKS (Elastic Kubernetes Service) offers one of the most popular choices for running Temporal Workers.
 It integrates smoothly with AWS services and supports auto-scaling and fault tolerance—key features for many Temporal users.
 
 Follow this guide to deploy and manage your Temporal Workers in EKS.
 This guide walks you through writing Temporal Worker code, containerizing and publishing the Worker to the Amazon Elastic Container Registry (ECR), and deploying the worker to Amazon EKS.
 The example on this page uses Temporal’s Python SDK and Temporal Cloud.
+
+For production Kubernetes deployments that use [Worker Versioning](/production-deployment/worker-deployments/worker-versioning),
+use the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) so deployment
+rollouts and autoscaling stay attached to each Worker Deployment Version.
 
 :::tip
 

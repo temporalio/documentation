@@ -1,0 +1,57 @@
+---
+id: run-worker-process
+title: Worker processes - Ruby SDK
+description: Shows how to run Worker processes with the Ruby SDK
+sidebar_label: Worker processes
+slug: /develop/ruby/workers/run-worker-process
+toc_max_heading_level: 3
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+  - Worker
+---
+
+## Run Worker Process {#run-worker-process}
+
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are actually executed.
+In a Temporal application deployment, you ship and scale as many Workers as you need to handle the load of your Workflows and Activities.
+
+- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+
+Workers are implemented in each Temporal SDK, and can be deployed with just a bit of boilerplate.
+To create a Worker, use `Temporalio::Worker.new()`, providing the Worker options which include Task Queue, Workflows, and Activities and more.
+
+The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
+When a Worker is created, it accepts a list of Workflows, a list of Activities, or both.
+
+```ruby
+# Create a client to localhost on default namespace
+client = Temporalio::Client.connect('localhost:7233', 'default')
+
+# Create a worker with the client, activities, and workflows
+worker = Temporalio::Worker.new(
+  client:,
+  task_queue: 'my-task-queue',
+  workflows: [MyWorkflow],
+  # This provides the activity instance which means it is reused for each attempt, but
+  # just the class can be provided to instantiate for each attempt
+  activities: [MyActivity.new]
+)
+
+# Run the worker until SIGINT. There are other ways to wait for shutdown, or a block can
+# be provided that will shutdown when the block completes
+worker.run(shutdown_signals: ['SIGINT'])
+```
+
+To run multiple workers, `Temporalio::Worker.run_all` may be used instead.
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.

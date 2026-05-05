@@ -1,0 +1,96 @@
+---
+id: run-worker-process
+title: Run a Worker - Go SDK
+description: Create and run a Temporal Worker using the Go SDK.
+sidebar_label: Run a Worker
+slug: /develop/go/workers/run-worker-process
+toc_max_heading_level: 3
+tags:
+  - Go SDK
+  - Temporal SDKs
+  - Worker
+---
+
+This page covers long-lived Workers that you host and run as persistent processes.
+For Workers that run on serverless compute like AWS Lambda, see [Serverless Workers](/develop/go/workers/serverless-workers).
+
+## Create and run a Worker {#develop-worker}
+
+Create a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) and passing:
+
+1. A Temporal Client.
+2. The name of the Task Queue to poll.
+3. A [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) struct (can be empty for defaults).
+
+Register your Workflow and Activity types, then call `Run()` to start polling.
+
+```go
+package main
+
+import (
+    "log"
+
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+)
+
+func main() {
+    c, err := client.Dial(client.Options{})
+    if err != nil {
+        log.Fatalln("Unable to create client", err)
+    }
+    defer c.Close()
+
+    w := worker.New(c, "my-task-queue", worker.Options{})
+    w.RegisterWorkflow(MyWorkflow)
+    w.RegisterActivity(MyActivity)
+
+    err = w.Run(worker.InterruptCh())
+    if err != nil {
+        log.Fatalln("Unable to start Worker", err)
+    }
+}
+```
+
+`Run()` accepts an interrupt channel so the Worker shuts down on `SIGINT` or `SIGTERM`.
+You can also call `Start()` and `Stop()` separately for more control over the lifecycle.
+
+:::tip
+
+If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker automatically reloads when you update the file:
+
+```bash
+go install github.com/mitranim/gow@latest
+gow run worker/main.go
+```
+
+:::
+
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+To run a Worker against Temporal Cloud, configure the client connection with your Namespace address and authentication credentials.
+See [Connect to Temporal Cloud](/develop/go/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
+
+## Register Workflows and Activities {#register-types}
+
+All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
+If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+
+Use `RegisterWorkflow()` and `RegisterActivity()` to register types.
+To register an Activity struct with multiple methods, pass the struct. The Worker gets access to all exported methods.
+
+```go
+w.RegisterWorkflow(WorkflowA)
+w.RegisterWorkflow(WorkflowB)
+w.RegisterActivity(&MyActivities{})
+```
+
+To customize the registered name or other options, use `RegisterWorkflowWithOptions()` or `RegisterActivityWithOptions()`.
+See [`workflow.RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) and [`activity.RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions).
+
+## Worker options {#worker-options}
+
+Pass a [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) struct to `worker.New()` to configure concurrency limits, pollers, timeouts, and other Worker behavior.
+An empty struct uses defaults that work for most cases.
+
+For the full list of options and their defaults, see the [Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk@v1.42.0/internal#WorkerOptions).

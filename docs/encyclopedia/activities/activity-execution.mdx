@@ -31,12 +31,12 @@ An Activity Execution is the full chain of [Activity Task Executions](/tasks#act
 
 :::info
 
-- [How to start an Activity Execution using the Go SDK](/develop/go/core-application#activity-execution)
-- [How to start an Activity Execution using the Java SDK](/develop/java/core-application#activity-execution)
-- [How to start an Activity Execution using the PHP SDK](/develop/php/core-application#activity-execution)
-- [How to start an Activity Execution using the Python SDK](/develop/python/core-application#activity-execution)
-- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/core-application#activity-execution)
-- [How to start an Activity Execution using the .NET SDK](/develop/dotnet/core-application#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/develop/go/activities/execution)
+- [How to start an Activity Execution using the Java SDK](/develop/java/activities/execution)
+- [How to start an Activity Execution using the PHP SDK](/develop/php/activities/execution)
+- [How to start an Activity Execution using the Python SDK](/develop/python/activities/execution)
+- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/activities/execution)
+- [How to start an Activity Execution using the .NET SDK](/develop/dotnet/activities/execution)
 
 :::
 
@@ -46,8 +46,9 @@ You can customize [Activity Execution timeouts](/encyclopedia/detecting-activity
 [retry policies](/encyclopedia/retry-policies).
 
 If an Activity Execution fails (because it exhausted all retries, threw a
-[non-retryable error](/encyclopedia/retry-policies#non-retryable-errors), or was canceled), the error is returned to the
-[Workflow](/workflows), which decides how to handle it.
+[non-retryable error](/encyclopedia/retry-policies#non-retryable-errors), or was canceled), the error is returned to your
+[Workflow](/workflows) code when it attempts to fetch the Activity result. For [Standalone Activities](/standalone-activity) the error is
+returned to the Client when you attempt to fetch the Activity result.
 
 :::note
 
@@ -113,6 +114,9 @@ an Activity Id if an earlier Activity Execution with the same Id has closed.)
 
 An Activity Id can be used to [complete the Activity asynchronously](#asynchronous-activity-completion).
 
+[Standalone Activities](/standalone-activity) have a separate ID space from Workflows and other Temporal primitives.
+This means use of conflict policy (`USE_EXISTING`, …) and reuse policy (`REJECT_DUPLICATES`, …) will only observe the Standalone Activity ID space.
+
 ## What is Asynchronous Activity Completion? {#asynchronous-activity-completion}
 
 Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity
@@ -121,12 +125,12 @@ and eventually complete the Activity Execution and provide a result.
 
 How to complete an Activity Asynchronously in:
 
-- [Go](/develop/go/asynchronous-activity-completion)
-- [Java](/develop/java/asynchronous-activity-completion)
-- [PHP](/develop/php/asynchronous-activity-completion)
-- [Python](/develop/python/asynchronous-activity-completion)
-- [TypeScript](/develop/typescript/asynchronous-activity-completion)
-- [.NET](/develop/dotnet/asynchronous-activity)
+- [Go](/develop/go/activities/asynchronous-activity)
+- [Java](/develop/java/activities/asynchronous-activity)
+- [PHP](/develop/php/activities/asynchronous-activity)
+- [Python](/develop/python/activities/asynchronous-activity)
+- [TypeScript](/develop/typescript/activities/asynchronous-activity)
+- [.NET](/develop/dotnet/activities/asynchronous-activity)
 
 ### When to use Async Completion
 
