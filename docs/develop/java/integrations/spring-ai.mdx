@@ -313,7 +313,7 @@ public class StringTools {
 
 `ActivityChatModel.forDefault()` and `forModel(name)` build the chat Activity stub with sensible defaults: a 2-minute start-to-close timeout, 3 attempts, and `org.springframework.ai.retry.NonTransientAiException` and `java.lang.IllegalArgumentException` classified as non-retryable so a bad API key or invalid prompt fails fast.
 
-Pass an `ActivityOptions` directly when you need finer control — a specific Task Queue, heartbeats, priority, or a custom `RetryOptions`:
+Pass an `ActivityOptions` directly when you need finer control — a specific Task Queue, [heartbeats](/develop/java/activities/execution#heartbeattimeout), [priority](/develop/task-queue-priority-fairness), or a custom `RetryOptions`:
 
 ```java
 ActivityChatModel chatModel = ActivityChatModel.forDefault(
