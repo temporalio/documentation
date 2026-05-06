@@ -1,0 +1,167 @@
+---
+id: serverless-workers
+title: Troubleshoot Serverless Workers
+sidebar_label: Serverless Workers
+description:
+  Diagnose and fix issues with Temporal Serverless Workers on AWS Lambda by tracing the invocation flow from Task Queue
+  to Worker execution.
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - lambda
+  - troubleshooting
+  - worker
+  - invocation
+tags:
+  - Workers
+  - Serverless
+  - Troubleshooting
+  - AWS Lambda
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+APIs are experimental and may be subject to backwards-incompatible changes.
+
+:::
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+This page walks through the Serverless Worker invocation flow and helps you identify where a failure is occurring.
+
+When a Serverless Worker invocation works correctly, the following sequence happens:
+
+1. You deploy the Worker function on Lambda.
+2. You configure a [Worker Deployment Version](/worker-versioning#deployment-versions) with a compute provider. This starts a [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow and a validation invocation of the Lambda function.
+3. The Lambda polls the Temporal Service successfully, binding the [Task Queue](/task-queue) configured on the Worker to the Worker Deployment Version.
+4. The WCI continuously monitors the associated Task Queue on a schedule. The [Matching Service](/temporal-service/temporal-server#matching-service) also notifies the WCI Workflow of sync match failures immediately as they happen.
+5. A Task arrives on the Task Queue and the WCI detects the backlog.
+6. The WCI invokes the Lambda function.
+7. The Lambda function starts, the Worker connects to Temporal and polls the Task Queue.
+8. The Worker processes Tasks and shuts down gracefully.
+
+Start by determining whether the Lambda function is being invoked at all, then narrow down from there.
+
+## Is the Lambda function being invoked? {#is-lambda-invoked}
+
+Check the Lambda function's CloudWatch metrics or invocation logs.
+
+In the AWS Console, go to **Lambda > Functions > your function > Monitor**. Look for recent invocations in the
+**Invocations** graph. You can also check **CloudWatch > Log groups > /aws/lambda/your-function-name** for execution
+logs.
+
+If there are no invocations, continue to [Lambda is not being invoked](#lambda-not-invoked).
+
+If the Lambda is being invoked but Workflows are not progressing, skip to
+[Lambda is invoked but Tasks are not completing](#lambda-invoked-not-completing).
+
+## Lambda is not being invoked {#lambda-not-invoked}
+
+Work through the following checks in order.
+
+### Validate the connection to Lambda {#validate-connection}
+
+Start by verifying that Temporal can reach the Lambda function. Go to **Workers > Deployments > select your
+deployment**, open the **Actions** menu on the version, and click **Validate Connection**. A successful validation
+confirms that the Worker Deployment Version has a compute provider configured, that Temporal can assume the invocation
+role, and that the Lambda function can be invoked.
+
+If validation fails, verify that the Lambda function ARN and invocation role ARN in the Worker Deployment Version
+configuration are correct. Verify the invocation role was created using the
+[CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
+and that the External ID matches the value in the Worker Deployment Version configuration.
+
+If the Worker Deployment Version does not have a compute provider configured, no
+[Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow exists and the Lambda is never
+automatically invoked. A common cause is manually invoking the Lambda function before creating the Worker Deployment
+Version in the UI or CLI. When the Lambda runs, the Worker connects to Temporal and polls the Task Queue. That polling
+registers the Worker Deployment Version and binds the Task Queue on the server, but the version has no compute provider.
+To fix the issue, create or update the Worker Deployment Version with the compute provider flags as described in the
+[deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version).
+
+### Check that the version is set as current {#check-version-current}
+
+The Worker Deployment Version must be set as the current version for new Tasks to route to it. If you created the
+version through the CLI, you need to
+[set it as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version).
+
+You can verify the current version with `temporal worker deployment describe`.
+
+### Check that the WCI is detecting Tasks {#check-wci-detecting-tasks}
+
+If the connection validates successfully but the Lambda is still not being invoked, the
+[Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) may not be detecting Tasks on the
+Task Queue.
+
+Check which Task Queues are bound to the Worker Deployment Version and whether there is a backlog:
+
+```bash
+temporal worker deployment describe-version \
+  --namespace <NAMESPACE> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --build-id <BUILD_ID> \
+  --report-task-queue-stats
+```
+
+If no Task Queues are listed, the binding has not been established. The server binds a Task Queue to a Worker Deployment
+Version when a Worker with that deployment version successfully connects and polls the Task Queue.
+
+A common cause is a failed first invocation. When you create a Worker Deployment Version, the WCI invokes the Lambda to
+validate the configuration. If that first invocation fails (for example, due to missing environment variables, incorrect
+TLS configuration, or missing dependencies), the Worker never connects to Temporal and never polls. Without a successful
+poll, the Task Queue binding is never created.
+
+To diagnose a failed first invocation, invoke the Lambda function manually from the AWS Console. The console displays
+the execution result and any errors directly, making it easier to identify configuration issues than searching through
+CloudWatch logs. Once the Lambda runs successfully and the Worker connects to Temporal, the Task Queue binding is
+established.
+
+## Lambda is invoked but Tasks are not completing {#lambda-invoked-not-completing}
+
+If CloudWatch shows Lambda invocations but Workflows are not progressing, the problem is in the Worker's execution
+within the Lambda function.
+
+### Check Lambda execution logs {#check-execution-logs}
+
+Check CloudWatch logs for errors during Worker startup. In the AWS Console, go to **CloudWatch > Log groups >
+/aws/lambda/your-function-name** and look for recent error messages.
+
+Common errors include:
+
+- **Connection failures**: The Worker cannot reach the Temporal Service. Check that the `TEMPORAL_ADDRESS` and
+  `TEMPORAL_API_KEY` environment variables (or `temporal.toml` config file) are correctly set on the Lambda function.
+  For self-hosted deployments, verify
+  [network reachability](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#ensure-network-reachability).
+- **TLS errors**: The TLS certificate or key is missing, expired, or does not match the Namespace.
+- **Authentication errors**: The API key is invalid or does not have access to the Namespace.
+
+### Check for Lambda timeout {#check-lambda-timeout}
+
+If the Lambda function reaches its configured timeout before the Worker finishes processing, AWS terminates the
+invocation.
+
+The Worker begins graceful shutdown before the Lambda deadline. If Activities take longer than the available execution
+window, the Activities are abandoned mid-execution and retried on the next invocation.
+
+For long-running Activities, increase the Lambda timeout and the Worker's shutdown buffer together. See
+[Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities) for guidance on how these
+values relate.
+
+### Check that the deployment name and build ID match {#check-deployment-match}
+
+If CloudWatch shows rapid, repeated invocations with no Workflow progress, the deployment name or build ID in the Worker
+code may not match the Worker Deployment Version configuration.
+
+The deployment name and build ID in your Lambda function code must exactly match the values you used when creating the
+Worker Deployment Version. Compare the values in your code against the WCI Workflow ID
+(`temporal-sys-worker-controller-instance:<deployment-name>:<build-id>`) and the output of
+`temporal worker deployment describe`.
+
+A mismatch causes an invocation loop: the WCI invokes the Lambda, the Worker starts and polls with a different
+deployment version than the WCI expects, the Task is not processed, and the WCI invokes the Lambda again.
+
+To fix the loop, update the deployment name and build ID in the Worker code to match the Worker Deployment Version, then
+redeploy the Lambda function.

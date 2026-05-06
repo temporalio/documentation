@@ -287,6 +287,7 @@ If you have a namespace that requests 4 TRUs (ie 2,000 APS) for 4 hours and have
 * Hour 2: 5,000,000 Actions
 * Hour 3: 4,000,000 Actions
 * Hour 4: 500,000 Actions
+
 Then the cost of Provisioned Capacity would be calculated as:
 
 4 TRUs Requested - 1 Default TRU included = 3 TRUs with a minimum usage requirement
@@ -295,6 +296,7 @@ Then the cost of Provisioned Capacity would be calculated as:
 * Hour 2: 5,000,000 Actions > 1,080,000 minimum Actions = No additional Actions accrued
 * Hour 3: 4,000,000 Actions > 1,080,000 minimum Actions = No additional Actions accrued
 * Hour 4: 500,000 Actions < 1,080,000 minimum Actions so 1,080,000-500,000 Actions = 580,000 additional actions will be added to the hour
+
 Total for 4 hours: 2,000,000+5,000,000+4,000,000+1,080,000=12,080,000 Actions
 
 If TRUs are changed multiple times within an hour, the highest value within that hour will be used to calculate the minimum actions required.
