@@ -63,9 +63,10 @@ pip install "temporalio[langgraph]"
 
 :::note
 
-Python 3.11 or newer is required for the Functional API (`@entrypoint` / `@task`) and for `interrupt()`. On older
-Python versions the plugin loads but emits a warning, and those features will not work because LangGraph relies on
-`contextvars` propagation through `asyncio.create_task()`, which is only available from Python 3.11 onward.
+Python 3.11 or newer is required for the Functional API (`@entrypoint` / `@task`), for `interrupt()`, and for streaming
+from a node running in the Workflow. On older Python versions the plugin loads but emits a warning, and those features
+will not work because LangGraph relies on `contextvars` propagation through `asyncio.create_task()`, which is only
+available from Python 3.11 onward.
 
 :::
 
@@ -188,8 +189,8 @@ To mitigate potential determinism bugs, `execute_in` cannot be set in `default_a
 
 ## Functional API
 
-The Functional API uses `@entrypoint` and `@task` decorators, which let you express agent loops with native Python
-control flow (`while`, `if/else`, `for`).
+The Functional API uses `@entrypoint` and `@task` decorators, letting you orchestrate tasks with native Python
+control flow (`while`, `if/else`, `for`) rather than declaring nodes and edges.
 
 ### Define tasks and a Workflow
 
