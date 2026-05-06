@@ -18,8 +18,8 @@ description:
   Run LangGraph AI agent workflows with durable execution using the Temporal Python SDK and LangGraph plugin.
 ---
 
-Temporal's integration with [LangGraph](https://www.langchain.com/langgraph) runs your LangGraph nodes and tasks as
-Temporal Activities, giving your AI agent workflows durable execution, automatic retries, and timeouts.
+Temporal's integration with [LangGraph](https://www.langchain.com/langgraph) gives your LangGraph AI agent workflows
+durable execution, automatic retries, and timeouts via the Temporal platform.
 
 The plugin supports both the LangGraph **Graph API** (`StateGraph` with nodes and edges) and the **Functional API**
 (`@entrypoint` / `@task` decorators). Each graph node and task must specify whether it runs as a Temporal Activity or
@@ -184,7 +184,7 @@ plugin = LangGraphPlugin(
 )
 ```
 
-`execute_in` cannot be set in `default_activity_options` — you must set it on each node or task individually.
+To mitigate potential determinism bugs, `execute_in` cannot be set in `default_activity_options` — you must set it on each node or task individually.  See [Activity vs. Workflow execution](#activity-vs-workflow-execution).
 
 ## Functional API
 
@@ -346,7 +346,7 @@ and `runtime.store` is `None` inside nodes.
 Use Workflow state for per-run memory, or an external database (Postgres, Redis, etc.) configured on each worker if you
 need shared memory across runs.
 
-## Activity vs Workflow execution
+## Activity vs. Workflow execution
 
 Every graph node and `@task` must specify `execute_in` — set it to `"activity"` to run as a Temporal Activity, or
 `"workflow"` to run directly inside the Workflow. The plugin raises an error if you forget to set it.
@@ -385,26 +385,6 @@ the Workflow **must not** make network calls, use `random`, read the system cloc
 non-determinism errors on replay.
 
 :::
-
-### Decision tree: should this node be an Activity?
-
-```
-Does this node make network calls (LLM, HTTP, DB)?
-├── Yes → execute_in: "activity"
-└── No
-    Does this node have non-deterministic behavior?
-    ├── Yes → execute_in: "activity"
-    └── No
-        Does this node call interrupt()?
-        ├── Yes → execute_in: "activity"
-        └── No
-            Is this node orchestrating a subgraph or doing a pure state transform?
-            ├── Yes → execute_in: "workflow"
-            └── No → execute_in: "activity" (the safe choice)
-```
-
-When in doubt, choose `"activity"`. The Activity overhead is small, and it gives you retries, timeouts, and
-correctness guarantees.
 
 ### Where LangGraph primitives run
 
@@ -480,26 +460,4 @@ complete working examples using both Graph and Functional APIs.
 ## Samples
 
 The [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin)
-demonstrate all supported patterns across both APIs:
-
-| Sample | Graph API | Functional API | Description |
-| --- | --- | --- | --- |
-| Hello World | Yes | Yes | Simplest possible single-node graph |
-| Human-in-the-loop | Yes | Yes | `interrupt()` with Temporal signals and queries |
-| ReAct Agent | Yes | Yes | Tool-calling agent loop |
-| Continue-as-new | Yes | Yes | Preserve completed task results across continue-as-new with `cache()` |
-| LangSmith tracing | Yes | Yes | Tracing with the Temporal LangSmith plugin |
-| Control Flow | — | Yes | Parallel execution, loops, and branching |
-
-To run any sample:
-
-```bash
-# Terminal 1: Start Temporal
-temporal server start-dev
-
-# Terminal 2: Start the worker
-uv run langgraph_plugin/<api>/<sample>/run_worker.py
-
-# Terminal 3: Run the workflow
-uv run langgraph_plugin/<api>/<sample>/run_workflow.py
-```
+demonstrate all supported patterns across both APIs.
