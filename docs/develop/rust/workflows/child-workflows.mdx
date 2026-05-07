@@ -22,9 +22,9 @@ This page shows how to do the following:
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
-When using a Child Workflow API, Child Workflow related Events are logged in the Workflow Execution Event History.
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History. The Child Workflow needs to have an _Abandon_ [Parent Close Policy](/parent-close-policy) set in the Child Workflow Options.
 
-Always wait until the Child Workflow Execution has started before moving on. Using [`PendingChildWorkflow`](https://docs.rs/temporalio-sdk/0.2.0/temporalio_sdk/struct.PendingChildWorkflow.html) ensures this.
+You should block progress on the Parent Workflow until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started. If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution doesn't start. In Rust, you can make sure your Child Workflow started by awaiting `child_workflow`.
 
 To start a Child Workflow in Rust, use `ctx.child_workflow()`:
 
