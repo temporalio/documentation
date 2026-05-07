@@ -71,7 +71,7 @@ jobs:
         working-directory: cli
         run: |
           go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
-          go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -split cloud
+          go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -subdir cloud
 
       - name: Publish generated docs to documentation repo
         env:
