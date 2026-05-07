@@ -29,7 +29,7 @@ A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is s
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History. The Child Workflow needs to have an _Abandon_ [Parent Close Policy](/parent-close-policy) set in the Child Workflow Options.
 
-You should block progress on the Parent Workflow until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started. If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution doesn't start. In Ruby, you can make sure your Child Workflow started by awaiting `execute_child_workflow`.
+You should block progress on the Parent Workflow until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started. If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution doesn't start. In Ruby, you can make sure your Child Workflow started by awaiting `start_child_workflow`.
 
 To spawn a Child Workflow Execution in Ruby, use the `execute_child_workflow` method which starts the Child Workflow and waits for completion or
 use the `start_child_workflow` method to start a Child Workflow and return its handle.
