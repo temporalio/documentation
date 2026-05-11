@@ -1,0 +1,330 @@
+---
+id: langfuse
+title: Langfuse integration
+sidebar_label: Langfuse
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - langfuse
+  - observability
+  - tracing
+  - opentelemetry
+tags:
+  - Langfuse
+  - Python SDK
+  - Temporal SDKs
+description:
+  Trace Temporal Python Workflows with Langfuse over OpenTelemetry.
+---
+
+[Langfuse](https://langfuse.com) is an open-source LLM observability platform. With this integration, every Workflow
+run, Activity, and LLM call shows up in Langfuse as an OpenTelemetry span. You see prompts, completions, token usage,
+cost, and latency, and you can debug failures from the same trace.
+
+Temporal handles durable execution. Langfuse handles observability. They connect over OpenTelemetry: you instrument the
+OpenAI Agents SDK with the OpenInference instrumentor, and Langfuse receives the spans.
+
+Code snippets below come from the [Langfuse Temporal cookbook](https://langfuse.com/integrations/frameworks/temporal).
+Refer to the cookbook for the full runnable example.
+
+## Prerequisites
+
+- A Langfuse project. Sign up for [Langfuse Cloud](https://langfuse.com/cloud) or
+  [self-host Langfuse](https://langfuse.com/self-hosting) to get API keys. For background, see the
+  [Langfuse documentation](https://langfuse.com/docs).
+- Familiarity with Temporal. If you're new, read [Understanding Temporal](/evaluate/understanding-temporal) or take
+  [Temporal 101](https://learn.temporal.io/courses/temporal_101/).
+- A working local Temporal setup. Follow
+  [Set up your local development environment](/develop/python/set-up-your-local-python) and leave the Temporal
+  Development Server running.
+
+## Install dependencies
+
+```bash
+pip install temporalio openai openai-agents langfuse openinference-instrumentation-openai-agents
+```
+
+## Configure environment and API keys
+
+Set credentials for Langfuse, OpenAI, and Temporal. Find your Langfuse keys in the project settings page on
+[Langfuse Cloud](https://cloud.langfuse.com).
+
+```python
+import os
+
+# Get keys for your project from the project settings page: https://cloud.langfuse.com
+os.environ["LANGFUSE_PUBLIC_KEY"] = "pk-lf-..."
+os.environ["LANGFUSE_SECRET_KEY"] = "sk-lf-..."
+os.environ["LANGFUSE_BASE_URL"] = "https://cloud.langfuse.com" # 🇪🇺 EU region
+# Other Langfuse data regions include 🇺🇸 US: https://us.cloud.langfuse.com, 🇯🇵 Japan: https://jp.cloud.langfuse.com and ⚕️ HIPAA: https://hipaa.cloud.langfuse.com
+
+# Your openai key
+os.environ["OPENAI_API_KEY"] = "sk-proj-..."
+
+# Temporal server address (use Temporal Cloud or local dev server)
+os.environ["TEMPORAL_HOST"] = "localhost:7233"
+os.environ.setdefault("TEMPORAL_NAMESPACE", "default")
+os.environ.setdefault("TEMPORAL_TASK_QUEUE", "agents-task-queue")
+```
+
+## Enable OpenTelemetry tracing for OpenAI Agents
+
+Wrap the OpenAI Agents SDK with the
+[`OpenAIAgentsInstrumentor`](https://github.com/Arize-ai/openinference/tree/main/python/instrumentation/openinference-instrumentation-openai-agents)
+to forward OpenTelemetry spans to Langfuse.
+
+```python
+from openinference.instrumentation.openai_agents import OpenAIAgentsInstrumentor
+
+OpenAIAgentsInstrumentor().instrument()
+```
+
+For more on tracing in the Temporal Python SDK, see the [Python observability guide](/develop/python/observability).
+
+## Initialize the Langfuse client
+
+Verify the connection before running your Worker.
+
+```python
+from langfuse import get_client
+
+langfuse = get_client()
+
+# Verify connection
+if langfuse.auth_check():
+    print("✅ Langfuse client is authenticated and ready!")
+else:
+    print("❌ Authentication failed. Please check your credentials and host.")
+```
+
+## Define Temporal Activities and Workflow
+
+Orchestration runs in a Workflow. LLM calls run in Activities, so they're durable and retryable. The example defines
+three agents (planner, search, writer) used by a research Workflow.
+
+```python
+from __future__ import annotations
+
+import asyncio
+from temporalio import workflow
+from agents import Agent, RunConfig, Runner, WebSearchTool, custom_span, gen_trace_id, trace
+from agents.model_settings import ModelSettings
+from pydantic import BaseModel
+
+# Planner Agent Models
+class WebSearchItem(BaseModel):
+    reason: str
+    "Your reasoning for why this search is important to the query."
+
+    query: str
+    "The search term to use for the web search."
+
+class WebSearchPlan(BaseModel):
+    searches: list[WebSearchItem]
+    """A list of web searches to perform to best answer the query."""
+
+# Writer Agent Models
+class ReportData(BaseModel):
+    short_summary: str
+    """A short 2-3 sentence summary of the findings."""
+
+    markdown_report: str
+    """The final report"""
+
+    follow_up_questions: list[str]
+    """Suggested topics to research further"""
+
+# Agent factory functions
+def new_planner_agent():
+    return Agent(
+        name="PlannerAgent",
+        instructions=(
+            "You are a helpful research assistant. Given a query, come up with a set of web searches "
+            "to perform to best answer the query. Output between 5 and 20 terms to query for."
+        ),
+        model="gpt-4o",
+        output_type=WebSearchPlan,
+    )
+
+def new_search_agent():
+    return Agent(
+        name="Search agent",
+        instructions=(
+            "You are a research assistant. Given a search term, you search the web for that term and "
+            "produce a concise summary of the results. The summary must 2-3 paragraphs and less than 300 "
+            "words. Capture the main points. Write succinctly, no need to have complete sentences or good "
+            "grammar. This will be consumed by someone synthesizing a report, so its vital you capture the "
+            "essence and ignore any fluff. Do not include any additional commentary other than the summary "
+            "itself."
+        ),
+        tools=[WebSearchTool()],
+        model_settings=ModelSettings(tool_choice="required"),
+    )
+
+def new_writer_agent():
+    return Agent(
+        name="WriterAgent",
+        instructions=(
+            "You are a senior researcher tasked with writing a cohesive report for a research query. "
+            "You will be provided with the original query, and some initial research done by a research "
+            "assistant.\n"
+            "You should first come up with an outline for the report that describes the structure and "
+            "flow of the report. Then, generate the report and return that as your final output.\n"
+            "The final output should be in markdown format, and it should be lengthy and detailed. Aim "
+            "for 5-10 pages of content, at least 1000 words."
+        ),
+        model="o3-mini",
+        output_type=ReportData,
+    )
+```
+
+Next, orchestrate the agents inside a Workflow. `ResearchManager` runs the planner, fans out searches in parallel, and
+writes the final report.
+
+```python
+class ResearchManager:
+    def __init__(self):
+        self.run_config = RunConfig()
+        self.search_agent = new_search_agent()
+        self.planner_agent = new_planner_agent()
+        self.writer_agent = new_writer_agent()
+
+    async def run(self, query: str) -> str:
+        trace_id = gen_trace_id()
+        with trace("Research trace", trace_id=trace_id):
+            search_plan = await self._plan_searches(query)
+            search_results = await self._perform_searches(search_plan)
+            report = await self._write_report(query, search_results)
+
+        return report.markdown_report
+
+    async def _plan_searches(self, query: str) -> WebSearchPlan:
+        result = await Runner.run(
+            self.planner_agent,
+            f"Query: {query}",
+            run_config=self.run_config,
+        )
+        return result.final_output_as(WebSearchPlan)
+
+    async def _perform_searches(self, search_plan: WebSearchPlan) -> list[str]:
+        with custom_span("Search the web"):
+            num_completed = 0
+            tasks = [
+                asyncio.create_task(self._search(item)) for item in search_plan.searches
+            ]
+            results = []
+            for task in workflow.as_completed(tasks):
+                result = await task
+                if result is not None:
+                    results.append(result)
+                num_completed += 1
+            return results
+
+    async def _search(self, item: WebSearchItem) -> str | None:
+        input = f"Search term: {item.query}\nReason for searching: {item.reason}"
+        try:
+            result = await Runner.run(
+                self.search_agent,
+                input,
+                run_config=self.run_config,
+            )
+            return str(result.final_output)
+        except Exception:
+            return None
+
+    async def _write_report(self, query: str, search_results: list[str]) -> ReportData:
+        input = f"Original query: {query}\nSummarized search results: {search_results}"
+        result = await Runner.run(
+            self.writer_agent,
+            input,
+            run_config=self.run_config,
+        )
+
+        return result.final_output_as(ReportData)
+```
+
+```python
+from temporalio import workflow
+
+@workflow.defn
+class ResearchWorkflow:
+    @workflow.run
+    async def run(self, query: str) -> str:
+        return await ResearchManager().run(query)
+```
+
+## Run the Worker
+
+Configure the Temporal Client and Worker with the `OpenAIAgentsPlugin`. The OpenInference instrumentor is already
+attached, so Temporal and OpenAI Agents SDK spans both flow to Langfuse.
+
+This requires a running Temporal server. Start a local dev server with:
+
+```bash
+temporal server start-dev
+```
+
+```python
+import sys
+import os
+from temporalio.client import Client
+from temporalio.worker import Worker
+from temporalio.contrib.openai_agents import OpenAIAgentsPlugin
+from temporalio.worker import UnsandboxedWorkflowRunner
+
+async def main():
+    tls = os.environ.get("TEMPORAL_TLS", "").lower() in ("1", "true", "yes")
+    api_key = os.environ.get("TEMPORAL_API_KEY")
+
+    plugin = OpenAIAgentsPlugin()
+
+    client = await Client.connect(
+        target_host=os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        namespace=os.environ.get("TEMPORAL_NAMESPACE", "default"),
+        api_key=api_key or None,
+        tls=tls,
+        plugins=[plugin]
+    )
+
+    worker = Worker(
+        client,
+        task_queue=os.environ.get("TEMPORAL_TASK_QUEUE", "openai-agents-task-queue"),
+        workflows=[ResearchWorkflow],
+        workflow_runner=UnsandboxedWorkflowRunner()
+    )
+
+    async with worker:
+        handle = await client.start_workflow(
+            ResearchWorkflow.run,
+            id="research-workflow-01",
+            task_queue=os.environ.get("TEMPORAL_TASK_QUEUE", "openai-agents-task-queue"),
+            args=["Caribbean vacation spots in April, optimizing for surfing, hiking and water sports"],
+        )
+        result = await handle.result()
+        print("\nWorkflow result:\n", result)
+
+await main()
+```
+
+:::tip
+
+Only the Worker process needs the API credentials. The client that starts Workflow Executions doesn't need the Langfuse
+or OpenAI keys.
+
+:::
+
+## View traces in Langfuse
+
+After the Workflow runs, open the trace in Langfuse. You'll see:
+
+- **Workflow execution**: the `ResearchWorkflow` with timing and status.
+- **Activity spans**: each Activity nested under the Workflow.
+- **LLM calls**: prompts, completions, and token usage per OpenAI call.
+- **Cost**: estimated cost per model from token usage.
+- **Latency**: time spent in each component.
+
+![Example trace in Langfuse](https://langfuse.com/images/cookbook/integration_temporal/temporal-research-workflow-trace.png)
+
+For a live example, see this
+[trace in Langfuse Cloud](https://cloud.langfuse.com/project/cloramnkj0002jz088vzn1ja4/traces/02c0ff139fa7df3142e4bd436d72c09b?timestamp=2025-10-22T09:05:59.516Z).
