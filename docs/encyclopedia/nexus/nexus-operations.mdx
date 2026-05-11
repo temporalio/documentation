@@ -346,11 +346,6 @@ Callers migrate to the new version on their own deployment schedule.
 
 ## Attaching multiple Nexus callers to a handler Workflow {#attaching-multiple-nexus-callers}
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) with [New-Workflow-Run-Operation](/nexus/operations#sdk-support) is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 Operations started with [New-Workflow-Run-Operation](/nexus/operations#sdk-support) automatically attach a completion Callback to the handler Workflow.
 Additional callers can attach to the same handler Workflow using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).

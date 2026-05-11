@@ -57,7 +57,7 @@ jobs:
           git checkout -B "$branch_name"
           git add docs/
           git commit -m "chore: sync code snippets via snipsync"
-          git push --force-with-lease origin "$branch_name"
+          git push --force origin "$branch_name"
 
       - name: Create or update PR
         if: steps.changes.outputs.has_changes == 'true'

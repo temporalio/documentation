@@ -30,11 +30,12 @@ configuration may change before the stable release. Join the
 :::
 
 External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
-the Event History instead. This is called the [claim check pattern](https://en.wikipedia.org/wiki/Claim_check_pattern).
+the Event History instead. This is called the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern).
 
 For SDK-specific usage guides, see:
 
-- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
+- [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
+- [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
 
 ## Why use External Storage
 
@@ -63,7 +64,8 @@ External Storage addresses several common scenarios:
 
 For SDK-specific usage guides, see:
 
-- [Python SDK: Large payload storage](/develop/python/data-handling/large-payload-storage)
+- [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
+- [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
 
 ## How External Storage fits in the data conversion pipeline {#data-pipeline}
 
@@ -72,7 +74,9 @@ During [Data Conversion](/dataconversion), External Storage sits at the end of t
 
 <CaptionedImage
   src="/diagrams/data-converter-flow-with-external-storage.svg"
+  srcDark="/diagrams/data-converter-flow-dark.svg"
   title="The Flow of Data through a Data Converter"
+  alt="The Flow of Data through a Data Converter"
 />
 
 When a Temporal Client sends a payload that exceeds the configured size threshold, the storage driver uploads the
@@ -86,6 +90,10 @@ reconstruct the original data.
 The SDK parallelizes uploads and downloads to minimize latency. When a single Workflow Task involves multiple payloads
 that exceed the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
 external storage operations to scale well even when a Task carries many large payloads.
+
+When a payload is offloaded to external storage, the Temporal UI displays a reference token instead of the actual data.
+This is expected. Your application code receives the fully decoded result because the SDK transparently retrieves the
+payload from external storage before returning it to your Workflow or Client.
 
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
@@ -104,10 +112,10 @@ as hot and cold storage tiers.
 
 ### Custom storage drivers
 
-If the built-in drivers don't support your storage backend, you can implement a custom driver by extending the
-`StorageDriver` abstract class. For an example, see
-[Implement a custom storage driver](/develop/python/data-handling/large-payload-storage#implement-a-custom-storage-driver)
-in the Python SDK guide.
+If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific examples, see:
+
+- [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
+- [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
 
 ## Key configuration settings
 

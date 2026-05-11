@@ -1,8 +1,8 @@
 ---
-id: large-payload-storage
+id: external-storage
 title: External Storage - Python SDK
 sidebar_label: External Storage
-slug: /develop/python/data-handling/large-payload-storage
+slug: /develop/python/data-handling/external-storage
 toc_max_heading_level: 3
 tags:
   - Python SDK
@@ -42,49 +42,38 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    credentials from the environment (environment variables, IAM role, or AWS config file):
 
    <!--SNIPSTART python-s3-driver-create-->
-
-   ```python
-   import aioboto3
-   from temporalio.contrib.aws.s3driver import S3StorageDriver
-   from temporalio.contrib.aws.s3driver.aioboto3 import new_aioboto3_client
-
-   session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
-   async with session.client("s3") as s3_client:
-       driver = S3StorageDriver(
-           client=new_aioboto3_client(s3_client),
-           bucket="my-temporal-payloads",
-       )
-   ```
-
+[features/snippets/external_storage/s3_setup/s3_driver_create.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.py)
+```py
+session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
+async with session.client("s3") as s3_client:
+    driver = S3StorageDriver(
+        client=new_aioboto3_client(s3_client),
+        bucket="my-temporal-payloads",
+    )
+```
    <!--SNIPEND-->
 
 2. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
    <!--SNIPSTART python-s3-external-storage-setup-->
+[features/snippets/external_storage/s3_setup/s3_external_storage_setup.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.py)
+```py
+data_converter = dataclasses.replace(
+    DataConverter.default,
+    external_storage=ExternalStorage(drivers=[driver]),
+)
 
-   ```python
-   import dataclasses
-   from temporalio.client import Client, ClientConfig
-   from temporalio.converter import DataConverter, ExternalStorage
-   from temporalio.worker import Worker
+client_config = ClientConfig.load_client_connect_config()
 
-   data_converter = dataclasses.replace(
-       DataConverter.default,
-       external_storage=ExternalStorage(drivers=[driver]),
-   )
+client = await Client.connect(**client_config, data_converter=data_converter)
 
-   client_config = ClientConfig.load_client_connect_config()
-
-   client = await Client.connect(**client_config, data_converter=data_converter)
-
-   worker = Worker(
-       client,
-       task_queue="my-task-queue",
-       workflows=[MyWorkflow],
-       activities=[my_activity],
-   )
-   ```
-
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[],
+    activities=[],
+)
+```
    <!--SNIPEND-->
 
    By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
@@ -104,22 +93,8 @@ The following example shows a custom driver that uses local disk as the backing 
 development and testing only. In production, use a durable storage system that is accessible to all Workers:
 
 <!--SNIPSTART python-custom-storage-driver-->
-
-```python
-import os
-import uuid
-from collections.abc import Sequence
-
-from temporalio.api.common.v1 import Payload
-from temporalio.converter import (
-    StorageDriver,
-    StorageDriverClaim,
-    StorageDriverStoreContext,
-    StorageDriverRetrieveContext,
-    StorageDriverWorkflowInfo,
-)
-
-
+[features/snippets/external_storage/custom_driver/custom_storage_driver.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.py)
+```py
 class LocalDiskStorageDriver(StorageDriver):
     def __init__(self, store_dir: str = "/tmp/temporal-payload-store") -> None:
         self._store_dir = store_dir
@@ -146,7 +121,7 @@ class LocalDiskStorageDriver(StorageDriver):
             file_path = os.path.join(prefix, key)
             with open(file_path, "wb") as f:
                 f.write(payload.SerializeToString())
-            claims.append(StorageDriverClaim(data={"path": file_path}))
+            claims.append(StorageDriverClaim(claim_data={"path": file_path}))
         return claims
 
     async def retrieve(
@@ -156,15 +131,16 @@ class LocalDiskStorageDriver(StorageDriver):
     ) -> list[Payload]:
         payloads = []
         for claim in claims:
-            file_path = claim.data["path"]
+            file_path = claim.claim_data["path"]
             with open(file_path, "rb") as f:
                 raw = f.read()
             payload = Payload()
             payload.ParseFromString(raw)
             payloads.append(payload)
         return payloads
-```
 
+
+```
 <!--SNIPEND-->
 
 The following sections walk through the key parts of the driver implementation.
@@ -203,11 +179,8 @@ Pass an `ExternalStorage` instance to your `DataConverter` and use the converter
 You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
 <!--SNIPSTART python-custom-driver-data-converter-->
-
-```python
-import dataclasses
-from temporalio.converter import DataConverter, ExternalStorage
-
+[features/snippets/external_storage/custom_driver/custom_driver_data_converter.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_driver_data_converter.py)
+```py
 data_converter = dataclasses.replace(
     DataConverter.default,
     external_storage=ExternalStorage(
@@ -215,7 +188,6 @@ data_converter = dataclasses.replace(
     ),
 )
 ```
-
 <!--SNIPEND-->
 
 ## Configure payload size threshold
@@ -225,11 +197,8 @@ are offloaded to external storage. You can adjust this with the `payload_size_th
 externalize all payloads regardless of size.
 
 <!--SNIPSTART python-external-storage-threshold-->
-
-```python
-import dataclasses
-from temporalio.converter import DataConverter, ExternalStorage
-
+[features/snippets/external_storage/threshold/threshold_config.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.py)
+```py
 data_converter = dataclasses.replace(
     DataConverter.default,
     external_storage=ExternalStorage(
@@ -238,7 +207,6 @@ data_converter = dataclasses.replace(
     ),
 )
 ```
-
 <!--SNIPEND-->
 
 ## Use multiple storage drivers
@@ -252,18 +220,16 @@ Multiple drivers are useful in scenarios such as:
 - Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the
   one you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads.
   The old driver remains available for retrieving existing claims.
-- Latency vs. durability tradeoffs. Some Workflow types may benefit from a faster storage backend 
-  at the cost of durability, while others require a durable backend like S3. Use the selector to route based on
-  Workflow context.
+- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For
+  example, use S3 for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the
+  appropriate driver based on the runtime environment.
 
 The following example registers two drivers but always selects `preferred_driver` for new payloads. The `legacy_driver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART python-external-storage-multiple-drivers-->
-
-```python
-from temporalio.converter import ExternalStorage
-
+[features/snippets/external_storage/multiple_drivers/multiple_drivers.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.py)
+```py
 preferred_driver = S3StorageDriver(client=s3_client, bucket="my-bucket")
 legacy_driver = LegacyStorageDriver()
 
@@ -272,5 +238,4 @@ ExternalStorage(
     driver_selector=lambda context, payload: preferred_driver,
 )
 ```
-
 <!--SNIPEND-->

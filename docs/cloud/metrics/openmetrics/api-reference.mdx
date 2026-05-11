@@ -131,6 +131,10 @@ Implement retry logic in your client to gracefully handle transient API failures
 
 Metric data points are available for query within 3 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
 
+### Scrape window
+
+The endpoint exposes only the most recently completed one-minute aggregation window. Each scrape returns a snapshot of that window—there is no query interface for historical data. To retain historical metrics, configure your monitoring system to store what it scrapes.
+
 ## Endpoints
 
 :::info
@@ -189,7 +193,7 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace="production",temp
 #### Summary of Best Practices
 
 * *Honor timestamps*: Set `honor_timestamps: true` in Prometheus  
-* *Scrape interval*: Use 30 or 60 second intervals  
+* *Scrape interval*: Use 30s. Intervals longer than 60s may skip datapoints because metrics update once per minute.  
 * *Timeout*: Set scrape timeout to 10 seconds for large responses  
 * *Filtering*: Use query parameters to reduce response size
 
@@ -365,4 +369,4 @@ count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 | Limit | Impact | Mitigation |
 | ----- | ----- | ----- |
 | 30k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
-| 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set appropriate scrape interval of 30-60s |
+| 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set scrape interval to 30s |

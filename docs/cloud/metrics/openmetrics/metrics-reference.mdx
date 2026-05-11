@@ -60,13 +60,23 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | Label | Available on | Description |
 | ----- | ----- | ----- |
 | `temporal_activity_type` | Activity metrics | The activity type name |
-| `worker_version` | `temporal_cloud_v1_approximate_backlog_count` | The Worker version |
+| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment name |
+| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
+| `worker_version` | `temporal_cloud_v1_approximate_backlog_count` | **Deprecated.** The legacy Worker Build ID from the pre-Worker-Deployments versioning API. Use `temporal_worker_deployment_name` and `temporal_worker_build_id` instead |
 
 For example, to include `temporal_activity_type` in your scrape results:
 
 ```
 /v1/metrics?labels=temporal_activity_type
 ```
+
+
+Enable multiple labels at the same time by concatenating multiple `labels` query parameters:
+
+```
+/v1/metrics?labels=temporal_worker_build_id&labels=temporal_worker_deployment_name
+```
+
 
 ## Metrics Catalog
 
@@ -104,7 +114,7 @@ gRPC errors per second.
 
 #### temporal\_cloud\_v1\_service\_pending\_requests
 
-The number of pollers that are waiting for a task. Use this to track against ``temporal_cloud_v1_poller_limit``
+The number of pollers that are actively long polling for a task. Use this to track against ``temporal_cloud_v1_poller_limit``
 
 | Label | Description |
 | ----- | ----- |
@@ -513,7 +523,9 @@ The approximate number of tasks pending in a task queue. Started Activities are 
 | `temporal_task_queue` | The task queue name |
 | `task_type` | Type of task: `workflow` or `activity` |
 | `task_priority` | The task priority |
-| `worker_version` | The Worker version (opt-in) |
+| `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
+| `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
+| `worker_version` | **Deprecated.** The legacy Worker Build ID (opt-in). Use `temporal_worker_deployment_name` and `temporal_worker_build_id` instead |
 
 **Type**: Value
 
@@ -584,6 +596,27 @@ The total number of actions performed per second. Actions with `is_background=fa
 :::note
 
 Does not include the `region` label. Actions are scoped to the Namespace level.
+
+:::
+
+#### temporal\_cloud\_v1\_billable\_action\_count
+
+The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/cloud/actions) for details on exceptions.
+
+| Label | Description |
+| ----- | ----- |
+| `action_type` | The [action](/cloud/actions) type |
+| `temporal_workflow_type` | The workflow type |
+
+:::note Public Preview
+
+This metric is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+:::caution High Cardinality
+
+This metric could have high cardinality depending on number of action types and workflow types.
 
 :::
 

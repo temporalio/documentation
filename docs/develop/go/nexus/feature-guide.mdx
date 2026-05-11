@@ -20,7 +20,7 @@ import { CaptionedImage } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Go SDK support for Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
+Temporal Go SDK support for Nexus is [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
 
 :::
 
@@ -173,6 +173,27 @@ You can also use Signal-With-Start or Update-With-Start to ensure the Workflow i
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). 
 The ctx provided to the handler is automatically set with this deadline, so passing it directly to Temporal Client calls will correctly propagate the timeout. 
 Updates should be short-lived to stay within this deadline.
+
+The [nexus_messaging](https://github.com/temporalio/samples-go/tree/main/nexus-messaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries.
+
+Use the Nexus library, as shown below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id, with the `GetWorkflowID` method. This converts a given client Id (in this case, the client is passing in a user Id) to generate a Workflow Id from it.
+This way the client only needs the identifier it cares about.
+
+[nexus-messaging/callerpattern/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus-messaging/callerpattern/handler/app.go)
+
+```go
+func GetWorkflowID(userID string) string {
+	return WorkflowIDPrefix + userID
+}
+
+var GetLanguagesOperation = nexus.NewSyncOperation(service.GetLanguagesOperationName, func(ctx context.Context, input service.GetLanguagesInput, options nexus.StartOperationOptions) (service.GetLanguagesOutput, error) {
+	c := temporalnexus.GetClient(ctx)
+	workflowID := GetWorkflowID(input.UserID)
+    ...
+```
+
+There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-go/tree/main/nexus-messaging/callerpattern/) and [on-demand pattern](https://github.com/temporalio/samples-go/tree/main/nexus-messaging/ondemandpattern/).
+The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -552,7 +573,7 @@ See the [Nexus cancelation sample](https://github.com/temporalio/samples-go/tree
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
-This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](/develop/go/workers/cloud-worker).
+This section assumes you are already familiar with [how to connect a Worker to Temporal Cloud](/develop/go/client/temporal-client#connect-to-temporal-cloud).
 The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
 
 ### Install the latest `tcld` CLI and generate certificates
