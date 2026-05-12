@@ -41,7 +41,7 @@ Use the `RunWorker` function to start a Lambda-based Worker.
 Pass a `WorkerDeploymentVersion` and a callback that registers your Workflows and Activities.
 
 <!--SNIPSTART go-lambda-worker {"selectedLines": ["1-6", "8-18", "22-30"]}-->
-[samples-go/lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/lambda-worker/samples-go/lambda-worker/worker/main.go)
+[lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/main/lambda-worker/worker/main.go)
 ```go
 package main
 
@@ -135,7 +135,7 @@ The underlying metrics and traces are the same ones the Go SDK emits in any envi
 For general observability concepts and the full list of available metrics, see [Observability - Go SDK](/develop/go/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
 <!--SNIPSTART go-lambda-worker-->
-[samples-go/lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/lambda-worker/samples-go/lambda-worker/worker/main.go)
+[lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/main/lambda-worker/worker/main.go)
 ```go
 package main
 
@@ -182,7 +182,7 @@ You must provide a custom Collector configuration that wires the OTLP receiver t
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
 <!--SNIPSTART go-lambda-worker-otel-collector-config-->
-[samples-go/lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-go/blob/lambda-worker/samples-go/lambda-worker/otel-collector-config.yaml)
+[lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-go/blob/main/lambda-worker/otel-collector-config.yaml)
 ```yaml
 receivers:
     otlp:
