@@ -75,7 +75,7 @@ Temporal has put extensive work into tools and processes that minimize the recov
 
 However, user actions on a Namespace can affect the recovery point. For example, suddenly spiking into much higher throughput than a Namespace has seen before could create a period of replication lag where the replica falls behind the active. 
 
-Temporal provides a [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) metric for each Namespace. This metric approximates the recovery point the Namespace would achieve in a worst case failure at that given moment.
+Temporal provides a [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) metric for each Namespace. This metric approximates the recovery point the Namespace would achieve in a worst case failure at that given moment.
 
 :::note
 

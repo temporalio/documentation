@@ -61,7 +61,12 @@ function SearchResultItem({ hit }: { hit: any }) {
     const fullUrl = hit.url || hit.objectID;
     try {
       const url = new URL(fullUrl, window.location.origin);
-      history.push(url.pathname + url.hash);
+      if (url.origin !== window.location.origin) {
+        // External URL (e.g. learn.temporal.io) — navigate directly
+        window.location.href = fullUrl;
+      } else {
+        history.push(url.pathname + url.hash);
+      }
     } catch {
       history.push(fullUrl);
     }

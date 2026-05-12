@@ -127,7 +127,7 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
-Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly Request-Eager-Start when starting a Workflow.
+Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+. No additional configuration or access request is needed. However, you must set Request-Eager-Start to true when starting each Workflow for Eager Workflow Start to be used.
 
 :::
 
@@ -176,6 +176,15 @@ The above figure shows Eager Workflow Start in action:
 
 To recover from errors, Eager Workflow Start falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker fails or times out while processing the task, the server retries this task non-eagerly after WorkflowTaskTimeout.
 
+## Visualize Workers in the UI {#visualize-workers}
+
+The Temporal SDK includes a heartbeat for Worker processes that is sent to the Server, carrying information such as available task slots, CPU usage, and Worker configuration.
+The Server exposes this data through APIs that surface Worker details in the Temporal UI. See a list of all running Workers by selecting Workers in the left navigation menu.
+View the list of Workers assigned to the Workflow Task Queue and inspect Worker details to troubleshoot Workflows with delayed processing by selecting the Workers tab in the Workflow details page.
+
+This feature requires Temporal Server 1.30 or higher with API version 1.62 or higher, and is also available in Temporal Cloud.
+Worker Heartbeating is required; see [Manage Worker Heartbeating](/cloud/worker-health#manage-worker-heartbeating) for the minimum SDK versions.
+
 ## Performance metrics for tuning {#metrics}
 
 The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
@@ -223,7 +232,13 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 #### Recommended Approach
 
-The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs. 
+The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
+
+:::tip
+
+`PollerBehaviorAutoscaling` is only enabled in Temporal Server v1.28.0 and later.
+
+:::
 
 #### Manual Configuration
 
@@ -470,48 +485,76 @@ These examples focus on Activities and Local Activities, since Workflow Tasks no
 
 ### Go SDK
 
+**Resource-based tuner:**
+
+<!--SNIPSTART go-resource-based-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
 ```go
-// Using the ResourceBasedTuner in worker options
-tuner, err := resourcetuner.NewResourceBasedTuner(resourcetuner.ResourceBasedTunerOptions{
-    TargetMem: 0.8,
-    TargetCpu: 0.9,
-})
-if err != nil {
-  return err
+func resourceBasedTuner() (worker.Options, error) {
+	tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
+		TargetMem:    0.8,
+		TargetCpu:    0.9,
+		InfoSupplier: sysinfo.SysInfoProvider(),
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: tuner,
+	}, nil
 }
-workerOptions := worker.Options{
-    Tuner: tuner
-}
-// Combining different types
-options := DefaultResourceControllerOptions()
-options.MemTargetPercent = 0.8
-options.CpuTargetPercent = 0.9
-controller := NewResourceController(options)
-wfSS, err := worker.NewFixedSizeSlotSupplier(10)
-if err != nil {
-  return err
-}
-actSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-laSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
-if err != nil {
-  return err
-}
-compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
-    WorkflowSlotSupplier:      wfSS,
-    ActivitySlotSupplier:      actSS,
-    LocalActivitySlotSupplier: laSS,
-    NexusSlotSupplier:         nexusSS,
-})
-if err != nil {
-  return err
-}
-workerOptions := worker.Options{
-    Tuner: compositeTuner
-}
+
 ```
+<!--SNIPEND-->
+
+**Composite tuner:**
+
+A composite tuner lets you mix different slot supplier strategies for each Task type.
+For example, you can use fixed-size slot suppliers for Workflow and Nexus Tasks while using resource-based slot suppliers for Activity and Local Activity Tasks.
+
+<!--SNIPSTART go-composite-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
+```go
+func compositeTuner() (worker.Options, error) {
+	options := worker.DefaultResourceControllerOptions()
+	options.MemTargetPercent = 0.8
+	options.CpuTargetPercent = 0.9
+	options.InfoSupplier = sysinfo.SysInfoProvider()
+	controller := worker.NewResourceController(options)
+	wfSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	actSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	laSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
+		WorkflowSlotSupplier:      wfSS,
+		ActivitySlotSupplier:      actSS,
+		LocalActivitySlotSupplier: laSS,
+		NexusSlotSupplier:         nexusSS,
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: compositeTuner,
+	}, nil
+}
+
+```
+<!--SNIPEND-->
 
 ### Java SDK
 
@@ -686,9 +729,20 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-Please note: [Sticky queues](https://docs.temporal.io/sticky-execution) will affect these values, but only for a few seconds.
-That's because Tasks sent to Sticky queues are not included in the returned values for `ApproximateBacklogCount` and `ApproximateBacklogAge`.
-Inaccuracies diminish as the backlog grows.
+#### Known accuracy limitations {#backlog-accuracy-limitations}
+
+These values are approximate.
+The most common sources:
+
+- **Overcount from invalid or expired Tasks**: Tasks belonging to cancelled, terminated, completed, or timed out Workflows and Activities stay in the count until they reach the head of the queue and are processed and discarded.
+  An invalid or expired Task at the head is removed quickly, so it rarely holds up the count for long.
+  A valid Task at the head can stay there longer when there aren't enough Workers to dispatch it. While it sits there, invalid or expired Tasks queued behind it cannot be removed.
+  Invalid and expired Tasks are eventually accounted for, but the count may not return to a fully accurate value because of other sources of discrepancy like infrequent metadata updates and database row expirations.
+- **Reset to zero on idle Task Queue unload**: If a Task Queue sees no activity for approximately 5 minutes - no Worker polls, no new Tasks added, and no other Task Queue calls (`DescribeTaskQueue`, `UpdateTaskQueueConfig`, etc.) - the Temporal Service unloads it from memory.
+  When this happens, `ApproximateBacklogCount` reports zero until the Task Queue is reloaded by the next Worker poll, new Task, or Task Queue API call.
+  An idle Task Queue with a backlog but no active Workers can therefore temporarily report zero even though there are Tasks waiting to be processed.
+- **Sticky queue exclusion**: [Sticky queues](/sticky-execution) are not included in these values.
+  Because Sticky queue Tasks only remain valid for a few seconds, this inaccuracy diminishes as the backlog grows.
 
 ### `TasksAddRate` and `TasksDispatchRate` {#TasksAddRate-and-TasksDispatchRate}
 
@@ -866,8 +920,8 @@ Then consider increasing the number of pollers by adjusting `maxConcurrentWorkfl
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
-- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/develop/go/core-application#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
-- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/develop/go/core-application#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 
 ## Related reading
 
