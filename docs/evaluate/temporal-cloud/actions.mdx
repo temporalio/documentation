@@ -42,7 +42,8 @@ Some additional Temporal Cloud features are billed as Actions:
 - [Capacity](#capacity)
 
 Actions that occur during [Workflow Replay](/workflow-execution#replay) do not count towards billed Actions. Replay
-reconstructs Workflow state from Event History and does not generate new server-side operations.
+happens only on the Worker side to reconstruct Workflow state from Event History and does not generate new server-side
+operations.
 
 Billable Actions are visible in the [OpenMetrics endpoint](https://metrics.temporal.io),
 [Workflow History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards,
