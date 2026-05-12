@@ -15,6 +15,7 @@ hide_table_of_contents: true
 ---
 
 import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+import { CallToAction } from '@site/src/components/elements/CallToAction';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -72,6 +73,7 @@ temporalio-macros = "0.4.0"
 temporalio-sdk = "0.4.0"
 temporalio-sdk-core = "0.4.0"
 tokio = { version = "1", features = ["full"] }
+anyhow = "1"
 `}
 </CodeSnippet>
 
@@ -304,3 +306,8 @@ Now that you have the basics working, explore the following resources to build m
 - [Develop an Activity](/develop/rust/activities/basics) - Understand activity patterns and best practices
 - [Worker Processes](/develop/rust/workers/worker-process) - Configure and scale workers
 - [Using the Temporal Client](/develop/rust/client/temporal-client) - Start workflows and interact with the Temporal Service
+
+<CallToAction href="https://learn.temporal.io/courses/">
+  <h3>Take a Temporal 101 course</h3>
+  <p>Learn Temporal concepts and build your first application with a guided course</p>
+</CallToAction>
