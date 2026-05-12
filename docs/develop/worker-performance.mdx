@@ -734,7 +734,7 @@ You can rely on both these counts when making scaling decisions.
 These values are approximate.
 The most common sources:
 
-- **Overcount from invalid or expired Tasks**: Tasks belonging to cancelled, terminated, completed, or timed out Workflows (and Activities) stay in the count until they reach the head of the queue and are processed and discarded.
+- **Overcount from invalid or expired Tasks**: Tasks belonging to cancelled, terminated, completed, or timed out Workflows and Activities stay in the count until they reach the head of the queue and are processed and discarded.
   An invalid or expired Task at the head is removed quickly, so it rarely holds up the count for long.
   A valid Task at the head can stay there longer when there aren't enough Workers to dispatch it; while it sits there, invalid or expired Tasks queued behind it cannot be removed.
   Invalid and expired Tasks are eventually accounted for, but the count may not return to a fully accurate value because of other sources of discrepancy (such as infrequent metadata updates and database row expirations).
