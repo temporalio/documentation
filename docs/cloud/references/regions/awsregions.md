@@ -78,7 +78,7 @@
 - **Cloud API Code**: `aws-ap-southeast-2`
 - **Regional Endpoint**: `aws-ap-southeast-2.region.tmprl.cloud`
 - **PrivateLink Endpoint Service**: `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08`
-- **Same Region Replication**:  Not Available
+- **Same Region Replication**: Available
 - **Multi-Region Replication**:
   - `aws-ap-northeast-1`
   - `aws-ap-northeast-2`

@@ -663,6 +663,7 @@ module.exports = {
               items: [
                 'develop/typescript/activities/basics',
                 'develop/typescript/activities/execution',
+                'develop/typescript/activities/standalone-activities',
                 'develop/typescript/activities/timeouts',
                 'develop/typescript/activities/asynchronous-activity',
                 'develop/typescript/activities/benign-exceptions',
@@ -1402,6 +1403,7 @@ module.exports = {
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
+        'troubleshooting/schedule-missed-actions',
         'troubleshooting/serverless-workers',
       ],
     },
