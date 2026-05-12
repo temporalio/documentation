@@ -1,0 +1,23 @@
+---
+id: extensibility
+title: Extensibility
+sidebar_label: Extensibility
+description: Temporal offers mechanisms to augment the functionality of Workflows and Activities, including data conversion, context propagation, interceptors, and plugins.
+toc_max_heading_level: 4
+keywords:
+  - extensibility
+  - interceptors
+  - context propagation
+  - data conversion
+  - plugins
+tags:
+  - Concepts
+---
+
+Temporal offers many mechanisms to augment the functionality of Workflows and Activities.
+These allow you to customize how data is serialized, propagate metadata across execution boundaries, and inject cross-cutting behavior like tracing and logging.
+
+- [Data Conversion](/dataconversion) - Customize how arguments and return values are serialized, compressed, or encrypted
+- [Context Propagation](/encyclopedia/context-propagation) - Pass custom metadata (tracing IDs, tenant IDs, auth tokens) across Workflow, Activity, and Child Workflow boundaries
+- [Interceptors](/encyclopedia/interceptors) - Add cross-cutting behavior (observability, authorization, header manipulation) before and after SDK operations
+- [Plugins](/encyclopedia/plugins) - Bundle interceptors, context propagators, data converters, and built-in definitions into reusable packages

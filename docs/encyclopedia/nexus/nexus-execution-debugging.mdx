@@ -1,0 +1,112 @@
+---
+id: nexus-execution-debugging
+slug: /nexus/execution-debugging
+title: Execution Debugging - Temporal Nexus
+description: Learn about execution debugging in Temporal Nexus.
+sidebar_label: Nexus Execution Debugging
+keywords:
+  - nexus
+  - temporal nexus
+  - debugging
+  - execution debugging
+tags:
+  - Nexus
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+
+Nexus supports end-to-end execution debugging across caller Workflows, Nexus Operations, and handler Workflows - even across [multi-level calls](/nexus#multi-level-calls) spanning multiple Namespaces.
+
+## Bi-directional linking
+
+Bidirectional links connect Nexus Operation events in the caller's Workflow History to corresponding events in the handler's Workflow History.
+They are automatically wired by SDK builder functions like New-Workflow-Run-Operation, enabling click-through navigation across Namespaces, regions, and clouds in the Temporal UI.
+
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-bi-directional-linking.png"
+    title="Bi-directional linking"
+    zoom="true"
+/>
+
+- **Forward**: From a caller's Nexus Operation event to the handler's Workflow.
+- **Backward**: From the handler's Workflow back to the caller's Nexus Operation event.
+
+## Pending Operations
+
+Pending Nexus Operations are displayed in the UI on the Workflow details page and can be listed from the CLI using the `temporal workflow describe` command.
+
+From the UI:
+
+<CaptionedImage
+    src="/img/cloud/nexus/pending-nexus-operations.png"
+    title="Pending Operations"
+    zoom="true"
+/>
+
+From the CLI:
+
+```
+temporal workflow describe
+
+Pending Nexus Operations: 1
+
+  Endpoint                 myendpoint
+  Service                  my-hello-service
+  Operation                echo
+  OperationToken
+  State                    BackingOff
+  Attempt                  6
+  ScheduleToCloseTimeout   0s
+  NextAttemptScheduleTime  20 seconds from now
+  LastAttemptCompleteTime  11 seconds ago
+  LastAttemptFailure       {"message":"handler error (INTERNAL): internal error","applicationFailureInfo":{}}
+```
+
+[Retryable errors](/nexus/error-handling#errors-in-nexus-handlers) surface in the Pending Operation.
+Non-retryable errors resolve the Operation with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout), or [Canceled](/references/events#nexusoperationcanceled) event.
+
+## Pending Callbacks
+
+Nexus completion callbacks are sent from the handler's Namespace to the caller's Namespace for asynchronous Operations.
+These can be viewed in the UI or from the CLI using the `temporal workflow describe` command.
+
+From the UI:
+
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-callback.png"
+    title="Pending Callbacks"
+    zoom="true"
+/>
+
+From the CLI:
+
+```
+temporal workflow describe
+
+Callbacks: 1
+
+  URL               https://nexus.phil-caller-Namespace.a2dd6.cluster.tmprl.cloud:7243/Namespaces/phil-caller-Namespace.a2dd6/nexus/callback
+  Trigger           WorkflowClosed
+  State             Succeeded
+  Attempt           1
+  RegistrationTime  32 minutes ago
+```
+
+## Tracing
+
+Temporal integrates with [OpenTelemetry](https://opentelemetry.io/) and [OpenTracing](https://opentracing.io/) to visualize call graphs across Activities, Nexus Operations, and Child Workflows.
+Enable tracing by installing an interceptor on the Client or Worker:
+
+- [Go SDK](https://github.com/temporalio/samples-go/tree/main/opentelemetry)
+- [Java SDK](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/tracing)
+- [Python SDK](https://github.com/temporalio/samples-python/tree/main/open_telemetry)
+- [TypeScript](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry)
+- [.NET SDK](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry)
+
