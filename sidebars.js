@@ -39,6 +39,14 @@ module.exports = {
             'evaluate/development-production-features/job-queue',
             {
               type: 'category',
+              label: 'Serverless Workers',
+              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
+              items: [
+                'evaluate/development-production-features/serverless-workers/demo',
+              ],
+            },
+            {
+              type: 'category',
               label: 'Product release stages',
               collapsed: true,
               link: {
@@ -148,8 +156,19 @@ module.exports = {
               },
               items: [
                 'develop/go/workers/run-worker-process',
-                'develop/go/workers/cloud-worker',
                 'develop/go/workers/sessions',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/go/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/go/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -265,6 +284,7 @@ module.exports = {
               items: [
                 'develop/java/activities/basics',
                 'develop/java/activities/execution',
+                'develop/java/activities/standalone-activities',
                 'develop/java/activities/timeouts',
                 'develop/java/activities/asynchronous-activity',
                 'develop/java/activities/benign-exceptions',
@@ -345,6 +365,7 @@ module.exports = {
               },
               items: [
                 'develop/java/integrations/spring-boot',
+                'develop/java/integrations/spring-ai',
               ],
             },
           ],
@@ -475,6 +496,7 @@ module.exports = {
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
+                'develop/python/workflows/workflow-streams',
               ]
             },
             {
@@ -505,6 +527,18 @@ module.exports = {
               items: [
                 'develop/python/workers/run-worker-process',
                 'develop/python/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/python/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/python/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -629,6 +663,7 @@ module.exports = {
               items: [
                 'develop/typescript/activities/basics',
                 'develop/typescript/activities/execution',
+                'develop/typescript/activities/standalone-activities',
                 'develop/typescript/activities/timeouts',
                 'develop/typescript/activities/asynchronous-activity',
                 'develop/typescript/activities/benign-exceptions',
@@ -645,6 +680,18 @@ module.exports = {
               items: [
                 'develop/typescript/workers/run-worker-process',
                 'develop/typescript/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/typescript/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/typescript/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -944,7 +991,84 @@ module.exports = {
             },
           ],
         },
-        'develop/run-a-development-server',
+        {
+          type: 'category',
+          label: 'Rust SDK',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/rust/index',
+          },
+          items: [
+            'develop/rust/quickstart',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/workflows/index',
+              },
+              items: [
+                'develop/rust/workflows/basics',
+                'develop/rust/workflows/child-workflows',
+                'develop/rust/workflows/continue-as-new',
+                'develop/rust/workflows/message-passing',
+                'develop/rust/workflows/cancellation',
+                'develop/rust/workflows/timers',
+                'develop/rust/workflows/timeouts',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/activities/index',
+              },
+              items: [
+                'develop/rust/activities/basics',
+                'develop/rust/activities/execution',
+                'develop/rust/activities/timeouts',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/workers/index',
+              },
+              items: [
+                'develop/rust/workers/worker-process',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/client/index',
+              },
+              items: [
+                'develop/rust/client/temporal-client',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Nexus',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/nexus/index',
+              },
+              items: ['develop/rust/nexus/feature-guide'],
+            },
+          ],
+        },
         'develop/environment-configuration',
         'develop/activity-retry-simulator',
         'develop/worker-performance',
@@ -1202,6 +1326,19 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/serverless-workers/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
+                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
+              ],
+            },
           ],
         },
         'production-deployment/data-encryption',
@@ -1266,6 +1403,7 @@ module.exports = {
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
+        'troubleshooting/serverless-workers',
       ],
     },
     {
@@ -1377,6 +1515,7 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
+            'encyclopedia/workers/serverless-workers',
           ],
         },
         {

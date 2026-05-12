@@ -36,9 +36,10 @@ system behavior; however there is no guarantee that there is compatibility betwe
 
 When upgrading the Temporal Server, there are two key considerations to keep in mind:
 
-1. **Sequential Upgrades:** Temporal Server should be upgraded sequentially. That is, if you're on version \(v1.n.x\),
-   your next upgrade should be to \(v1.n+1.x\) or the closest available subsequent version. This sequence should be
-   repeated until your desired version is reached.
+1. **Sequential Upgrades:** Temporal Server should be upgraded sequentially, one minor version at a time. Before
+   bumping to the next minor version, first upgrade to the highest available patch version of your current minor
+   version. For example, if you're on \(v1.n.0\), upgrade to \(v1.n.latest\) first, then proceed to
+   \(v1.(n+1).latest\). Repeat this sequence until you reach your desired version.
 
 2. **Data Compatibility:** During an upgrade, the Temporal Server either updates or restructures the existing version
    data to match the data format of the newer version. Temporal Server ensures backward compatibility only between two
@@ -71,7 +72,8 @@ formats to become unrecognizable. If the old format of the data can't be read to
 upgrades fail.
 
 Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in
-order. You can skip patch versions; use the latest patch of a minor version when upgrading.
+order. Before upgrading to the next minor version, upgrade to the highest available patch version of your current minor
+version first.
 
 Also, be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow
 approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
