@@ -126,7 +126,13 @@ cloud-side resource planning. For each Namespace, collect the following metrics:
 ### Prepare mTLS certificates
 
 mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Provide a single certificate using the process outlined
-[here](/cloud/certificates#issue-certificates). 
+[here](/cloud/certificates#issue-certificates).
+
+Verify your end-entity certificate with the following command.
+
+```
+openssl verify -CAfile ca.pem client-cert.pem
+```
 
 
 ### Report collected data
