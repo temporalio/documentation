@@ -66,18 +66,20 @@ support ticket.
   single Account that contains your Namespaces.
 - Target Temporal Cloud provider/region per cluster. See the list of [current regions](/cloud/regions).
 - Server Configuration for each cluster.
+- VisibilityStore used by each cluster(e.g. Elasticsearch or SQL)
 - For each Namespace:
   - Namespace name and its translated cloud-side name. Since Namespaces in Temporal Cloud follow a
     [specific format](/cloud/namespaces#temporal-cloud-namespace-name), existing Namespaces must be converted to the new
     format.
-  - Namespace sizing metrics. These are used to properly size cloud-side resources for the migration.
-  - Custom search attributes (if any). Temporal must ensure that your custom search attributes, specifically when using
+  - Custom search attributes. Temporal must ensure that your custom search attributes, specifically when using
     SQL-based visibility store, are compatible with Temporal Cloud.
+  - Namespace sizing metrics. These are used to properly size cloud-side resources for the migration.
 
 ### Capture cluster configurations
 
-Temporal must review your self-hosted server configurations to ensure compatibility. For modern versions of Temporal
-OSS, run the following command against each of your clusters:
+Temporal must review your self-hosted server configurations to ensure compatibility.
+
+For newer versions of Temporal OSS, run the following command against each of your clusters:
 
 ```
 temporal operator cluster describe --address <frontend:7233> --output json
@@ -95,6 +97,19 @@ or
 grpcurl -v -plaintext <your temporal address and port> temporal.server.api.adminservice.v1.AdminService.DescribeCluster
 ```
 
+### Capture custom search attributes
+Capture any custom search attributes using one of the following commands:
+
+For Elasticsearch/OpenSearch
+```
+temporal operator search-attribute list
+```
+
+For SQL
+```
+temporal operator search-attribute list --namespace="your_namespace"
+```
+
 ### Capture Namespace metrics
 
 It is vital that current usage patterns for production Namespaces are well understood, as this data is used for
@@ -106,43 +121,36 @@ cloud-side resource planning. For each Namespace, collect the following metrics:
   [default retention policy](/cloud/limits#default-retention-period) in Temporal Cloud.
 - Peak [action per second](/glossary#actions-per-second-aps) (APS). See the section
   [below](#how-to-gather-self-hosted-metrics) for instructions on collecting these metrics.
-- If you use custom search Attributes:
-  - provide _CustomSearchAttributeAliases_ of your Namespace (see command below).
-  - provide the VisibilityStore used (e.g. Elasticsearch or SQL)
 
-Use the following command to capture _CustomSearchAttributeAliases_, if needed:
-
-```
-temporal operator namespace describe -n <namespace>
-```
 
 ### Prepare mTLS certificates
 
-mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Generate new certificates following the process outlined
-[here](/cloud/certificates#issue-certificates). You will need to provide these certificates as part of your support request.
+mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Provide a single certificate using the process outlined
+[here](/cloud/certificates#issue-certificates). 
 
 
 ### Report collected data
-Provide all collected data and mTLS certificates to Temporal via a [support ticket](/cloud/support#ticketing). 
+Provide all collected data to Temporal via a [support ticket](/cloud/support#ticketing). 
 
 Use the following template for the collected data.
 
 ```
 Temporal Cloud Account:
+mTLS Certificate:
 
 <for each cluster>
 Cluster Name: <name>
 Target Cloud/Region: <region>
 Type of Visibility Store: <store>
-Cluster Configuration:
+Cluster Configuration: <temporal cli output>
+Custom Search Attributes (if Elasticsearch/OpenSearch): <temporal cli output>
 
 Namespaces:
    <for each Namespace>
    Namespace Name: <name>
    Translated Name: <name>
-   Metrics:
-     Peak APS: <aps>
-     Custom Search Attributes: <temporal cli output>
+   Custom Search Attributes (if SQL): <temporal cli output>
+   Metrics: <metrics data>
    <end>
 <end>
 ```
@@ -244,7 +252,7 @@ currentClusterName: _NO_CHANGE_
 clusterInformation:
   _NO_CHANGE_:
     enabled: true
-    initialFailoverVersion: CHANGEME # use unique number between 1 and 100 for each server
+    initialFailoverVersion: CHANGEME # set in the range 2-99. use a unique number per cluster
     rpcName: _NO_CHANGE_
     rpcAddress: _NO_CHANGE_
 ```
@@ -262,6 +270,11 @@ The following sample output is expected:
 "initialFailoverVersion": "the number you picked"
 "isGlobalNamespaceEnabled": true
 ```
+
+### Verify current cluster utilization
+It is important to ensure that your production cluster has been allocated enough resources to support the migration. In particular, 
+it is important to verify that your persistence/database layer has plenty of CPU and I/O capacity.
+
 
 ## Phase 3: Testing
 
@@ -493,49 +506,38 @@ The answer depends on your specific situation. However, automated migration is m
 In contrast, automated migration may not be the best solution if your self-hosted clusters do not meet the [minimum requirements](#limitations).
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
-
 No. All Workflows will be migrated.
 
 ### Can I combine manual and auto migration?
-
 No. Auto migration requires a "fresh" target cloud-side Namespace (one that has never had a running Workflow). 
 If Workflows were manually migrated to a cloud-side Namespace, then this Namespace would not be suitable as an auto-migration target.
 
 ### Why does it matter if custom search attributes are used?
-
 Custom search attributes must be mapped to a Namespace in Temporal Cloud. They matter because configurations in a self-hosted environment 
 may not be directly compatible with Temporal Cloud, potentially requiring additional migration work. The exact process can also differ 
 depending on the type of visibility data store used.
 
 ### What Workflows are migrated by default?
-
 All Workflows are migrated by default. For closed Workflows, you may specify a date range to be migrated. Your cloud-side Namespace must
 be configured with your desired retention period prior to starting the migration.
 
 ### What can I do to speed up an automated migration?
-
 The #1 speed optimization is to limit the time range for closed Workflows. This will reduce the amount of data required to be 
 migrated and in many cases will dramatically reduce overall migration time. 
 
 ### Is the migration of Schedules supported?
-
 Yes. Under the hood, Schedules are essentially Workflows.
 
 ### I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?
-
 Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
 is [supported](/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
 [archival](/temporal-service/archival) to store closed Workflows that cannot be migrated. In general, archival is
 recommended over large retention periods since the extra data can stress the persistence layer of the system.
 
 ### I am using payload encryption in my self-hosted Temporal cluster. Is this supported in cloud?
-
 Yes. If payloads are already [encrypted](/payload-codec#encryption) in your self-hosted server via data converter, then 
 they will remain encrypted during and after migration.
 
-
 ### I would like to enable payload encryption as part of the migration. Is this supported?
-
 The automated migration tooling cannot add payload encryption. To encrypt payloads sent to Temporal Cloud, you must encrypt
 payloads in your cluster before starting the automated migration process.
-
