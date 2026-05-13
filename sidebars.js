@@ -1437,6 +1437,7 @@ module.exports = {
       items: [
         'encyclopedia/temporal',
         'encyclopedia/temporal-sdks',
+        'encyclopedia/understanding-temporals-architecture',
         {
           type: 'category',
           label: 'Workflows',

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 840" width="900" height="840" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif">
+  <defs>
+    <marker id="arr-blue" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L11,4 L0,8" fill="none" stroke="#444CE7" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-green" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L11,4 L0,8" fill="none" stroke="#1ff1a5" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-muted" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L11,4 L0,8" fill="none" stroke="#576e8f" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="840" fill="#141414" rx="12"/>
+
+  <!-- ══════════════════════
+       LAYER 1: Client Apps  y=20–168
+       ══════════════════════ -->
+  <rect x="24" y="20" width="852" height="148" rx="10" fill="#1c1c2e" stroke="#444CE7" stroke-width="1.5"/>
+  <text x="44" y="42" font-size="13" fill="#444CE7" font-weight="700" letter-spacing="1">CLIENT APPLICATIONS</text>
+
+  <!-- Your Application -->
+  <rect x="44" y="50" width="248" height="100" rx="8" fill="#2a2a40" stroke="#444CE7" stroke-width="1.5"/>
+  <text x="168" y="80" font-size="17" fill="#F8FAFC" font-weight="700" text-anchor="middle">Your Application</text>
+  <text x="168" y="101" font-size="13" fill="#F8FAFC" text-anchor="middle">Temporal Client (SDK)</text>
+  <text x="168" y="120" font-size="13" fill="#F8FAFC" text-anchor="middle">Starts, signals, and queries Workflows.</text>
+
+  <!-- CLI -->
+  <rect x="312" y="50" width="248" height="100" rx="8" fill="#1e1e1e" stroke="#374761" stroke-width="1.5"/>
+  <text x="436" y="93" font-size="17" fill="#F8FAFC" font-weight="700" text-anchor="middle">CLI</text>
+  <text x="436" y="116" font-size="13" fill="#F8FAFC" text-anchor="middle">Temporal command-line tool.</text>
+
+  <!-- Web UI -->
+  <rect x="580" y="50" width="248" height="100" rx="8" fill="#1e1e1e" stroke="#374761" stroke-width="1.5"/>
+  <text x="704" y="93" font-size="17" fill="#F8FAFC" font-weight="700" text-anchor="middle">Web UI</text>
+  <text x="704" y="116" font-size="13" fill="#F8FAFC" text-anchor="middle">Browser-based observability.</text>
+
+  <!-- Arrows: client → Temporal Service (38px lines + label room) -->
+  <line x1="168" y1="150" x2="168" y2="204" stroke="#444CE7" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-blue)"/>
+  <line x1="436" y1="150" x2="436" y2="204" stroke="#444CE7" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-blue)"/>
+  <line x1="704" y1="150" x2="704" y2="204" stroke="#444CE7" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-blue)"/>
+  <text x="436" y="184" font-size="12" fill="#F8FAFC" text-anchor="middle">gRPC / HTTP</text>
+
+  <!-- ══════════════════════
+       LAYER 2: Temporal Service  y=208–694
+       ══════════════════════ -->
+  <rect x="24" y="208" width="852" height="486" rx="10" fill="#1c1c2e" stroke="#1ff1a5" stroke-width="1.5"/>
+  <text x="44" y="230" font-size="13" fill="#1ff1a5" font-weight="700" letter-spacing="1">TEMPORAL SERVICE</text>
+
+  <!-- Frontend Service -->
+  <rect x="44" y="238" width="808" height="90" rx="8" fill="#22293a" stroke="#444CE7" stroke-width="1.5"/>
+  <text x="448" y="268" font-size="18" fill="#F8FAFC" font-weight="700" text-anchor="middle">Frontend Service</text>
+  <text x="448" y="292" font-size="14" fill="#F8FAFC" text-anchor="middle">Handles rate limiting, authorization, and routing — the single entry point for all clients.</text>
+  <text x="448" y="314" font-size="12" fill="#F8FAFC" text-anchor="middle">Clients never communicate directly with backend services or Workers.</text>
+
+  <!-- Arrows: Frontend → 3 backend services (42px lines) -->
+  <line x1="168" y1="328" x2="168" y2="368" stroke="#576e8f" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+  <line x1="436" y1="328" x2="436" y2="368" stroke="#576e8f" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+  <line x1="704" y1="328" x2="704" y2="368" stroke="#576e8f" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+
+  <!-- History Service  x=44, w=248, center=168 -->
+  <rect x="44" y="372" width="248" height="192" rx="8" fill="#1e1e1e" stroke="#444CE7" stroke-width="1.5"/>
+  <path d="M 52,372 H 284 Q 292,372 292,380 V 416 H 44 V 380 Q 44,372 52,372 Z" fill="#444CE7"/>
+  <text x="168" y="399" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">History Service</text>
+  <text x="168" y="434" font-size="14" fill="#F8FAFC" text-anchor="middle">Persists the ordered Event History</text>
+  <text x="168" y="455" font-size="14" fill="#F8FAFC" text-anchor="middle">and all Workflow Execution state.</text>
+  <text x="168" y="476" font-size="13" fill="#F8FAFC" text-anchor="middle">Manages Transfer and Timer tasks.</text>
+  <text x="168" y="500" font-size="12" fill="#F8FAFC" text-anchor="middle">Source of truth for replay.</text>
+
+  <!-- Matching Service  x=312, w=248, center=436 -->
+  <rect x="312" y="372" width="248" height="192" rx="8" fill="#1e1e1e" stroke="#444CE7" stroke-width="1.5"/>
+  <path d="M 320,372 H 552 Q 560,372 560,380 V 416 H 312 V 380 Q 312,372 320,372 Z" fill="#444CE7"/>
+  <text x="436" y="399" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">Matching Service</text>
+  <text x="436" y="434" font-size="14" fill="#F8FAFC" text-anchor="middle">Coordinates Task Queue dispatch</text>
+  <text x="436" y="455" font-size="14" fill="#F8FAFC" text-anchor="middle">and Worker polling for both</text>
+  <text x="436" y="476" font-size="14" fill="#F8FAFC" text-anchor="middle">Workflow and Activity Tasks.</text>
+
+  <!-- Worker Service  x=580, w=248, center=704 -->
+  <rect x="580" y="372" width="248" height="192" rx="8" fill="#1e1e1e" stroke="#374761" stroke-width="1.5"/>
+  <path d="M 588,372 H 820 Q 828,372 828,380 V 416 H 580 V 380 Q 580,372 588,372 Z" fill="#374761"/>
+  <text x="704" y="399" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">Worker Service</text>
+  <text x="704" y="434" font-size="14" fill="#F8FAFC" text-anchor="middle">Runs Temporal's internal Workflows</text>
+  <text x="704" y="455" font-size="14" fill="#F8FAFC" text-anchor="middle">for archival, cleanup, replication,</text>
+  <text x="704" y="476" font-size="14" fill="#F8FAFC" text-anchor="middle">and visibility indexing.</text>
+  <text x="704" y="502" font-size="12" fill="#F8FAFC" text-anchor="middle">Not your application Workers.</text>
+
+  <!-- Arrows: service boxes → Persistence (36px lines) -->
+  <line x1="168" y1="564" x2="168" y2="598" stroke="#576e8f" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+  <line x1="436" y1="564" x2="436" y2="598" stroke="#576e8f" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+  <line x1="704" y1="564" x2="704" y2="598" stroke="#576e8f" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+
+  <!-- Persistence Layer -->
+  <rect x="44" y="602" width="808" height="74" rx="8" fill="#0d1117" stroke="#243349" stroke-width="1.5"/>
+  <text x="448" y="630" font-size="15" fill="#F8FAFC" font-weight="600" text-anchor="middle">Persistence Layer</text>
+  <text x="448" y="654" font-size="13" fill="#F8FAFC" text-anchor="middle">Stores Workflow state, Event History, and Task Queues · Cassandra · MySQL · PostgreSQL · SQLite</text>
+
+  <!-- Arrow: Temporal Service → Worker Infrastructure (44px line) -->
+  <line x1="448" y1="694" x2="448" y2="736" stroke="#1ff1a5" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-green)"/>
+  <text x="560" y="718" font-size="12" fill="#F8FAFC" text-anchor="middle">Task polling and dispatch</text>
+
+  <!-- ══════════════════════
+       LAYER 3: Worker Infrastructure  y=740–826
+       ══════════════════════ -->
+  <rect x="24" y="740" width="852" height="86" rx="10" fill="#1c1c2e" stroke="#cacbf9" stroke-width="1.5"/>
+  <text x="44" y="762" font-size="13" fill="#cacbf9" font-weight="700" letter-spacing="1">YOUR WORKER INFRASTRUCTURE</text>
+
+  <!-- Workflow Workers -->
+  <rect x="44" y="770" width="248" height="42" rx="6" fill="#22293a" stroke="#444CE7" stroke-width="1.5"/>
+  <text x="168" y="796" font-size="15" fill="#F8FAFC" font-weight="600" text-anchor="middle">Workflow Workers</text>
+
+  <!-- Activity Workers -->
+  <rect x="312" y="770" width="248" height="42" rx="6" fill="#22293a" stroke="#444CE7" stroke-width="1.5"/>
+  <text x="436" y="796" font-size="15" fill="#F8FAFC" font-weight="600" text-anchor="middle">Activity Workers</text>
+
+  <!-- External Services -->
+  <rect x="580" y="770" width="248" height="42" rx="6" fill="#1e1e1e" stroke="#374761" stroke-width="1.5"/>
+  <text x="704" y="796" font-size="15" fill="#F8FAFC" font-weight="600" text-anchor="middle">External Services</text>
+</svg>

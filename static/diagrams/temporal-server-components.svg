@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" width="900" height="530" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif">
+  <defs>
+    <marker id="arr-blue" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L11,4 L0,8" fill="none" stroke="#444CE7" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-muted" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L11,4 L0,8" fill="none" stroke="#F8FAFC" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="530" fill="#141414" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="34" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">Temporal Server — Internal Components</text>
+
+  <!-- Outer boundary -->
+  <rect x="24" y="48" width="852" height="466" rx="10" fill="#1c1c2e" stroke="#1ff1a5" stroke-width="1.5"/>
+  <text x="44" y="70" font-size="13" fill="#1ff1a5" font-weight="600" letter-spacing="1">TEMPORAL SERVER</text>
+
+  <!-- Frontend Service -->
+  <rect x="44" y="78" width="808" height="82" rx="8" fill="#2a2a40" stroke="#444CE7" stroke-width="2"/>
+  <text x="448" y="107" font-size="18" fill="#F8FAFC" font-weight="700" text-anchor="middle">Frontend Service</text>
+  <text x="448" y="129" font-size="14" fill="#F8FAFC" text-anchor="middle">Single gRPC entry point — handles rate limiting, authorization, and request routing.</text>
+  <text x="448" y="150" font-size="12" fill="#F8FAFC" text-anchor="middle">All SDK, CLI, and Web UI clients connect here.</text>
+
+  <!-- Arrows: Frontend → 3 backend services -->
+  <line x1="168" y1="160" x2="168" y2="200" stroke="#444CE7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <line x1="450" y1="160" x2="450" y2="200" stroke="#444CE7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <line x1="732" y1="160" x2="732" y2="200" stroke="#444CE7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- History Service (x=44, w=248, center=168) -->
+  <rect x="44" y="202" width="248" height="192" rx="8" fill="#1e1e1e" stroke="#444CE7" stroke-width="1.5"/>
+  <path d="M 52,202 H 284 Q 292,202 292,210 V 244 H 44 V 210 Q 44,202 52,202 Z" fill="#444CE7"/>
+  <text x="168" y="229" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">History Service</text>
+  <text x="168" y="264" font-size="14" fill="#F8FAFC" text-anchor="middle">Owns every Workflow Execution</text>
+  <text x="168" y="284" font-size="14" fill="#F8FAFC" text-anchor="middle">and tracks all state changes.</text>
+  <text x="168" y="308" font-size="13" fill="#F8FAFC" text-anchor="middle">Writes the ordered Event History</text>
+  <text x="168" y="328" font-size="13" fill="#F8FAFC" text-anchor="middle">to the database on each step.</text>
+  <text x="168" y="348" font-size="13" fill="#F8FAFC" text-anchor="middle">Manages Transfer and Timer tasks.</text>
+  <text x="168" y="374" font-size="12" fill="#F8FAFC" text-anchor="middle">Source of truth for replay.</text>
+
+  <!-- Matching Service (x=326, w=248, center=450) -->
+  <rect x="326" y="202" width="248" height="192" rx="8" fill="#1e1e1e" stroke="#444CE7" stroke-width="1.5"/>
+  <path d="M 334,202 H 566 Q 574,202 574,210 V 244 H 326 V 210 Q 326,202 334,202 Z" fill="#444CE7"/>
+  <text x="450" y="229" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">Matching Service</text>
+  <text x="450" y="264" font-size="14" fill="#F8FAFC" text-anchor="middle">Manages all Task Queues</text>
+  <text x="450" y="284" font-size="14" fill="#F8FAFC" text-anchor="middle">and their internal partitions.</text>
+  <text x="450" y="308" font-size="13" fill="#F8FAFC" text-anchor="middle">Dispatches Workflow and Activity</text>
+  <text x="450" y="328" font-size="13" fill="#F8FAFC" text-anchor="middle">Tasks to polling Workers.</text>
+  <text x="450" y="348" font-size="13" fill="#F8FAFC" text-anchor="middle">Handles Worker long-polling.</text>
+
+  <!-- Worker Service (x=608, w=248, center=732) -->
+  <rect x="608" y="202" width="248" height="192" rx="8" fill="#1e1e1e" stroke="#374761" stroke-width="1.5"/>
+  <path d="M 616,202 H 848 Q 856,202 856,210 V 244 H 608 V 210 Q 608,202 616,202 Z" fill="#374761"/>
+  <text x="732" y="229" font-size="16" fill="#F8FAFC" font-weight="700" text-anchor="middle">Worker Service</text>
+  <text x="732" y="264" font-size="14" fill="#F8FAFC" text-anchor="middle">Runs Temporal's internal system</text>
+  <text x="732" y="284" font-size="14" fill="#F8FAFC" text-anchor="middle">Workflows for maintenance.</text>
+  <text x="732" y="308" font-size="13" fill="#F8FAFC" text-anchor="middle">Handles archival, cleanup,</text>
+  <text x="732" y="328" font-size="13" fill="#F8FAFC" text-anchor="middle">replication, and indexing.</text>
+  <text x="732" y="362" font-size="12" fill="#F8FAFC" text-anchor="middle">Not your application Workers.</text>
+
+  <!-- Inter-service arrow: History ↔ Matching -->
+  <line x1="292" y1="300" x2="326" y2="300" stroke="#F8FAFC" stroke-width="1" stroke-dasharray="4 3"/>
+  <path d="M323,295 L331,300 L323,305" fill="none" stroke="#F8FAFC" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M295,295 L287,300 L295,305" fill="none" stroke="#F8FAFC" stroke-width="1" stroke-linejoin="round"/>
+
+  <!-- Arrows: all services → Persistence -->
+  <line x1="168" y1="394" x2="168" y2="426" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+  <line x1="450" y1="394" x2="450" y2="426" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+  <line x1="732" y1="394" x2="732" y2="426" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+
+  <!-- Persistence Layer -->
+  <rect x="44" y="428" width="808" height="74" rx="8" fill="#0d1117" stroke="#243349" stroke-width="1.5"/>
+  <text x="448" y="456" font-size="15" fill="#F8FAFC" font-weight="600" text-anchor="middle">Persistence Layer</text>
+  <text x="448" y="478" font-size="13" fill="#F8FAFC" text-anchor="middle">Stores Workflow state, Event History, and Task Queues.</text>
+  <text x="448" y="496" font-size="13" fill="#F8FAFC" text-anchor="middle">Supports Cassandra, MySQL, PostgreSQL, and SQLite.</text>
+</svg>
