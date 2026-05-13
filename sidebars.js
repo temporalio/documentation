@@ -1375,6 +1375,7 @@ module.exports = {
         id: 'references/index',
       },
       items: [
+        'references/api-reference',
         'references/cluster-metrics',
         'references/commands',
         'references/configuration',
@@ -1403,6 +1404,7 @@ module.exports = {
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
+        'troubleshooting/schedule-missed-actions',
         'troubleshooting/serverless-workers',
       ],
     },
