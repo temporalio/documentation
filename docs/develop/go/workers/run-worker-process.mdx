@@ -22,7 +22,8 @@ Create a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by call
 2. The name of the Task Queue to poll.
 3. A [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) struct (can be empty for defaults).
 
-Register your Workflow and Activity types, then call `Run()` to start polling.
+Register your Workflow and Activity types, then call `Run()` to start polling. The Worker process is a long-running process that blocks while polling for tasks.
+Run it in a separate terminal from your starter code or other application logic.
 
 ```go
 package main
