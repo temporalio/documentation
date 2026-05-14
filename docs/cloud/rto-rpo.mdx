@@ -38,6 +38,8 @@ Historically, AZ outages are the most common type of outage in the cloud, and Te
 
 **Temporal Cloud feature to mitigate this outage:** Every Namespace is automatically spread across at least three Availability Zones, and any Namespace can handle a single AZ failure without disruption to end-user Temporal operations. [High Availability](/cloud/high-availability) features are _not_ required to keep Temporal Cloud operations running through an AZ outage.
 
+**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation. Any errors during an AZ outage count toward SLA credits, since AZ resilience is within Temporal's responsibility.
+
 If two AZs fail simultaneously, Temporal Cloud treats the event as a [Cloud Region outage](#cloud-region-outage). In that case, Namespaces in the region may be impacted, including those using Same-region Replication (in Preview).
 
 :::note
@@ -63,6 +65,8 @@ Temporal Cloud runs on a [cell architecture](https://docs.aws.amazon.com/wellarc
 
 **Temporal Cloud feature to mitigate this outage:** [Multi-region Replication](/cloud/high-availability) (GA) and [Multi-cloud Replication](/cloud/high-availability) (GA) replicate a Namespace into another cell in a different region or different cloud provider. [Same-region Replication](/cloud/high-availability) (Preview) replicates a Namespace into another cell in the same region. With any of these features enabled, an outage that disrupts a single cell can be mitigated by failing the Namespace over to its replica.
 
+**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation. Any errors during a cell outage count toward SLA credits, since mitigating cell outages is within Temporal's responsibility.
+
 Cell-level disruptions occur from time to time, and Temporal's replication and failover tooling has restored affected Namespaces in real-world incidents.
 
 #### RTO and RPO
@@ -84,6 +88,10 @@ A cloud region as a whole can become degraded, with effects that span beyond any
 
 **Temporal Cloud feature to mitigate this outage:** [Multi-region Replication](/cloud/high-availability) and [Multi-cloud Replication](/cloud/high-availability) place the replica outside the affected region, so a Namespace can fail over and continue serving Workflows. Same-region Replication does not protect against a Cloud Region outage, since the replica resides in the same region.
 
+**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation only for Namespaces that have Multi-region Replication or Multi-cloud Replication enabled with Temporal-managed failovers — in those cases, Temporal can mitigate the outage. For Namespaces without these features, a Cloud Region outage is excluded from the SLA calculation, as it is beyond Temporal's control to mitigate.
+
+If two or more regions in the same cloud provider experience an outage simultaneously, Temporal Cloud treats the event as a [Cloud-wide outage](#cloud-wide-outage).
+
 Regional outages are less common than cell or AZ outages, but they happen. During the [AWS us-east-1 incident on October 20, 2025](https://temporal.io/blog/how-devs-kept-running-during-the-aws-us-east-1-oct-20-2025), Temporal Cloud's regional failover kept customer Namespaces running.
 
 #### RTO and RPO
@@ -97,13 +105,15 @@ Even though the RPO target is under 1 minute, data is virtually never "lost" tha
 
 ### Cloud-wide outage
 
-On rare occasions, an issue affects most or all regions of a single cloud provider at once.
+On rare occasions, an issue affects two or more regions of a single cloud provider at once. Any simultaneous outage of two or more regions in the same cloud provider is treated as a cloud-wide outage.
 
-**Example causes:** a software bug rolled out to every region of a cloud provider that triggers cascading failures across the provider's infrastructure.
+**Example causes:** a software bug rolled out to every region of a cloud provider that triggers cascading failures across the provider's infrastructure, or two or more regions in the same cloud experiencing independent regional outages at the same time.
 
 **Blast Radius:** Most or all regions of a single cloud provider. Every Namespace and every Worker hosted in that cloud is potentially affected.
 
 **Temporal Cloud feature to mitigate this outage:** [Multi-cloud Replication](/cloud/high-availability) places the replica in a different cloud provider entirely, so the Namespace can fail over even when an entire cloud provider goes down.
+
+**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation only for Namespaces that have Multi-cloud Replication enabled with Temporal-managed failovers — in those cases, Temporal can mitigate the outage. For Namespaces without this feature, a cloud-wide outage is excluded from the SLA calculation, as it is beyond Temporal's control to mitigate.
 
 Cloud-wide outages are the rarest category, but they [have occurred](https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW). Multi-cloud Replication is designed to keep Namespaces running through such events.
 
