@@ -22,7 +22,7 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 
 The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
 In TypeScript, awaiting `startChild()` or `executeChild()` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call resolves.
-If you start a Child Workflow from a non-main context (for example, a signal or update handler), make sure the Parent Workflow doesn't complete before that call resolves.
+If you start a Child Workflow from a non-main context (for example, a Signal or Update handler), make sure the Parent Workflow doesn't complete before that call resolves.
 
 To start a Child Workflow Execution and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [startChild](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 
