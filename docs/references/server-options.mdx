@@ -117,6 +117,17 @@ s, err := temporal.NewServer(
 )
 ```
 
+### WithTokenProvider
+
+Configures a [`TokenProvider`](/self-hosted-guide/security#token-provider) that supplies bearer tokens for outbound cross-cluster RPCs.
+`TokenProvider` is defined in the `go.temporal.io/server/common/rpc/auth` package.
+
+```go
+s, err := temporal.NewServer(
+	temporal.WithTokenProvider(myTokenProvider),
+)
+```
+
 ### WithCustomMetricsReporter
 
 Sets a custom tally metric reporter.
