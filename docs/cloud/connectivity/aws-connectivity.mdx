@@ -197,7 +197,7 @@ The DNS resolver inside your VPC returns the private endpoint, while TLS still v
 
 ## Configure private DNS for Namespaces with High Availability
 
-For Namespaces with [High Availability features](/cloud/high-availability), you need to override DNS for `region.tmprl.io` so each region resolves to the local VPC Endpoint, and you need to ensure Workers can reach whichever region is active. Failover is transparent to clients only when this is set up correctly.
+For Namespaces with [High Availability features](/cloud/high-availability), you need to override DNS for `region.tmprl.cloud` so each region resolves to the local VPC Endpoint, and you need to ensure Workers can reach whichever region is active. Failover is transparent to clients only when this is set up correctly.
 
 The complete guidance — including single-cloud (AWS-only) HA, multi-cloud HA (AWS PrivateLink + GCP Private Service Connect), and a recommended failover-testing plan — lives on a single page: [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 

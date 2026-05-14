@@ -12,8 +12,8 @@
         ["eu-west-1","com.amazonaws.vpce.eu-west-1.vpce-svc-04388e89f3479b739"],
         ["eu-west-2","com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695"],
         ["sa-east-1","com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a"],
-        [ "us-east-1","com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f"],
-        [ "us-east-2","com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4"],
+        ["us-east-1","com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f"],
+        ["us-east-2","com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4"],
         ["us-west-2","com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94"]
     ]
 }
