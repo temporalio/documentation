@@ -34,7 +34,7 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 
 The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
 In Python, awaiting `start_child_workflow()` or `execute_child_workflow()` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call resolves.
-If you start a Child Workflow from a non-main coroutine (for example, a signal or update handler), make sure the Parent Workflow doesn't complete before that call resolves.
+If you start a Child Workflow from a non-main coroutine (for example, a Signal or Update handler), make sure the Parent Workflow doesn't complete before that call resolves.
 
 To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function which starts the Child Workflow and waits for completion or
 use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle.
