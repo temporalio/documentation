@@ -34,6 +34,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 - An Amazon S3 bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
   to ensure that your payloads remain available for the entire lifetime of the Workflow.
+  - The S3 driver has been validated with single-region buckets. Multi-region configurations such as AWS Multi-Region Access Points (MRAP) have not been validated.
 - Install the `aioboto3` extra: `python -m pip install "temporalio[aioboto3]"`
 
 ### Procedure
