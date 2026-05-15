@@ -337,12 +337,6 @@ There are two types of gRPC endpoints for accessing a Namespace in Temporal Clou
     - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region. This can be useful in advanced [High Availability](/cloud/high-availability) setups where you want explicit control over which region handles requests.
     - When using mTLS to authenticate, the Temporal Client must set the `server_name` property to `<namespace endpoint value>` in its request to the value of the Namespace endpoint. This tells the client to expect a different SNI header during the TLS handshake, since the request to the regional endpoint is redirected to the specific Namespace.
 
-:::note Update outdated regional endpoints
-
-The older regional endpoint format ending in `region.tmprl.cloud` (for example, `aws-us-east-1.region.tmprl.cloud`) is outdated. Update any Clients, Workers, and private DNS records to the current format ending in `api.temporal.io` (for example, `us-east-1.aws.api.temporal.io:7233`) to ensure uninterrupted access to your Temporal Cloud Namespaces.
-
-:::
-
 ### Configuring a Temporal Client with API keys or mTLS
 
 To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
