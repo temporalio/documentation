@@ -115,7 +115,7 @@ export async function helloWorld(): Promise<string> {
 ## How to develop Workflow logic {#workflow-logic-requirements}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
-Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a
+Each Temporal SDK provides a
 set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
 In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment. The code is bundled on Worker

@@ -57,6 +57,9 @@ The authentication process follows this pathway:
   unexpected or unauthorized activity.
 - **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
 
+For guidance on which identities should own API keys, when to use Namespace-scoped Service Accounts, and how to align
+API keys with your Namespace topology, see [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
+
 ### API key use cases
 
 API keys are used for the following scenarios:
@@ -222,6 +225,9 @@ Temporal API keys automatically expire based on the specified expiration time. F
 1. Ensure that both the original key and new key function properly before moving to the next step.
 1. Switch clients to load the new key and start using it.
 1. Delete the old key after it is no longer in use.
+
+For a broader machine-identity rotation strategy across API keys and Service Accounts, see
+[Managing Temporal Cloud access control](/best-practices/cloud-access-control).
 
 ## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
