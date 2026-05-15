@@ -22,17 +22,17 @@ import { ToolTipTerm } from '@site/src/components';
 
 When a cloud outage disrupts a Namespace, Temporal Cloud takes measures to maintain the Namespace's availability and data durability. The time it takes to recover from the outage is called the "recovery time." The amount of data (event histories) lost is called the "recovery point." A durable system should have a low recovery time and recovery point.
 
-To help users plan for keeping critical Workflows available during a cloud outage, Temporal Cloud publishes goals for the recovery time and recovery point for each kind of outage. These goals are called the Recovery Time Objective (RTO) and Recovery Point Objective (RPO). These objectives are complementary to Temporal Cloud's [Service Level Agreement (SLA)](/cloud/sla).
+To help you plan for keeping critical Workflows available during a cloud outage, Temporal Cloud publishes goals for the recovery time and recovery point for each kind of outage. These goals are called the Recovery Time Objective (RTO) and Recovery Point Objective (RPO). These objectives are complementary to Temporal Cloud's [Service Level Agreement (SLA)](/cloud/sla).
 
 ## Types of outages Temporal Cloud designs around
 
-Temporal Cloud is engineered to withstand four broad categories of cloud outage. The categories are listed below in order of how commonly they occur in the real world. For each category, Temporal has experienced the outage in production, and the corresponding Temporal Cloud features have successfully mitigated the impact for real customer Namespaces.
+Temporal Cloud is engineered to withstand four broad categories of cloud outages. The categories are listed below in order of how commonly they occur in the real world. For each category, Temporal has experienced the outage in production, and the corresponding Temporal Cloud features have successfully mitigated the impact for real customer Namespaces.
 
 ### Availability Zone outage
 
 An [Availability Zone](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (AZ) is akin to an isolated datacenter managed by a cloud hyperscaler, with independent power, networking, and cooling infrastructure. Each cloud region contains multiple AZs, and an individual AZ can fail due to events such as hardware failure, power loss, or a localized network partition.
 
-Historically, AZ outages are the most common type of outage in the cloud, and Temporal Cloud has weathered many of them transparently to its customers.
+Historically, AZ outages are the most common type of outage in the cloud, and Temporal Cloud has weathered many of them transparently to our customers.
 
 **Blast Radius:** A single Availability Zone within a single cloud region. Because every Namespace's components are spread across at least three AZs, the blast radius to Temporal Cloud users is typically zero — Namespaces stay operational with little to no downtime. However, the outage will take out any Workers the user is running in that AZ. We recommend spreading Workers across multiple AZs to mitigate this.
 
@@ -40,11 +40,11 @@ Historically, AZ outages are the most common type of outage in the cloud, and Te
 
 **SLA inclusion:** Included in the [SLA](/cloud/sla) calculation. Any errors during an AZ outage count toward SLA credits, since AZ resilience is within Temporal's responsibility.
 
-If two AZs fail simultaneously, Temporal Cloud treats the event as a [Cloud Region outage](#cloud-region-outage). In that case, Namespaces in the region may be impacted, including those using Same-region Replication (in Preview).
+If two AZs fail simultaneously, Temporal Cloud treats the event as a [Cloud Region outage](#cloud-region-outage). In that case, Namespaces in the region may be impacted, including those using [Same-region Replication](/cloud/high-availability#same-region-replication).
 
 :::note
 
-When an AZ fails, Temporal may also trigger a failover on Namespaces that have High Availability enabled, as a precaution in case the outage scope expands. You can opt out of this behavior by disabling Temporal-managed failovers on the Namespace.
+When an AZ fails, Temporal may also trigger a failover on Namespaces that have High Availability enabled, as a precaution in case the outage scope expands. You can opt out of this behavior by [disabling Temporal-managed failovers](cloud/high-availability/failovers#disabling-temporal-initiated) on the Namespace.
 
 :::
 
@@ -63,7 +63,7 @@ Temporal Cloud runs on a [cell architecture](https://docs.aws.amazon.com/wellarc
 
 **Blast Radius:** One cell--and the Namespaces within that cell--within a single region. Even though your Workers will remain healthy, they will not be able to process Workflows because the Namespace is down.
 
-**Temporal Cloud feature to mitigate this outage:** [Multi-region Replication](/cloud/high-availability) (GA) and [Multi-cloud Replication](/cloud/high-availability) (GA) replicate a Namespace into another cell in a different region or different cloud provider. [Same-region Replication](/cloud/high-availability) (Preview) replicates a Namespace into another cell in the same region. With any of these features enabled, an outage that disrupts a single cell can be mitigated by failing the Namespace over to its replica.
+**Temporal Cloud feature to mitigate this outage:** [Multi-region Replication](/cloud/high-availability) (GA) and [Multi-cloud Replication](/cloud/high-availability) (GA) replicate a Namespace into another cell in a different region or different cloud provider. [Same-region Replication](/cloud/high-availability) (Preview) replicates a Namespace into another cell within the same region. When any of these features enabled for a namespace, an outage that disrupts a single cell can be mitigated by failing the Namespace over to its replica.
 
 **SLA inclusion:** Included in the [SLA](/cloud/sla) calculation. Any errors during a cell outage count toward SLA credits, since mitigating cell outages is within Temporal's responsibility.
 
