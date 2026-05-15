@@ -70,18 +70,106 @@ When Stable IPs are enabled on a Namespace:
 
 ### How to enable Stable IPs
 
-You can enable Stable IPs on a Namespace using the Cloud Ops API, Terraform provider, or CLI. There is no UI option at this time.
+Stable IPs is a setting on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). You enable it by creating (or updating) a public Connectivity Rule with Stable IPs enabled, then attaching that rule to the Namespaces that should resolve to Stable IPs.
+
+You can manage Connectivity Rules through the Cloud Ops API, Terraform provider, or `tcld` CLI. There is no UI option at this time.
 
 To enable Stable IPs:
 
-1. Use the Cloud Ops API, Terraform, or the `temporal cloud` CLI to toggle the Stable IPs setting for your Namespace
-2. Retrieve the list of Stable IPs from the public API (see below)
-3. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region
-4. Ensure your Workers and Temporal Clients connect using the Namespace endpoint, not regional endpoints
+1. Create a public Connectivity Rule with Stable IPs enabled (for example, `tcld connectivity-rule create --connectivity-type public --enable-stable-ips`). Only one public Connectivity Rule exists per account, so if you already have one, update or recreate it with Stable IPs enabled.
+2. Attach the rule to your Namespace with `tcld namespace set-connectivity-rules` (or the equivalent Cloud Ops API or Terraform call).
+3. Retrieve the list of Stable IPs from the public API (see below).
+4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
+5. Ensure your Workers and Temporal Clients connect using the Namespace endpoint, not regional endpoints.
 
-You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces.
+You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces. The Cloud Ops API field is `enable_stable_ips` on the `PublicConnectivityRule` message and requires Cloud Ops API `v0.15.0` or later.
 
 **DNS propagation**: When enabling Stable IPs on an existing Namespace, Temporal updates DNS records to point the Namespace endpoint to Stable IPs. DNS propagation typically takes 5 to 15 minutes for AWS, but can take up to 60 minutes or longer if you have custom TTLs configured.
+
+#### How to enable Stable IPs with curl
+
+If you cannot use `tcld` or Terraform, you can drive the Cloud Ops API directly. The following walkthrough creates a public Connectivity Rule with Stable IPs enabled and attaches it to a Namespace.
+
+All requests require two headers:
+
+- `Authorization: Bearer $TEMPORAL_CLOUD_API_KEY`
+- `temporal-cloud-api-version: v0.16.0` (or any version ≥ `v0.15.0`)
+
+Base URL: `https://saas-api.tmprl.cloud`
+
+Set up environment variables:
+
+```bash
+export TEMPORAL_CLOUD_API_KEY='<paste-api-key>'
+export NS='<namespace>.<account>'   # The Cloud-side Namespace identifier, e.g. "myns.a1b2c3"
+H_AUTH="Authorization: Bearer $TEMPORAL_CLOUD_API_KEY"
+H_VER="temporal-cloud-api-version: v0.16.0"
+```
+
+**Step 1. Read the current Namespace spec and resource version.**
+
+`UpdateNamespace` replaces the entire spec and requires the latest `resource_version`. Fetch them first:
+
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "$H_AUTH" -H "$H_VER" | tee /tmp/ns.json | \
+  jq '{resource_version: .namespace.resourceVersion, connectivity_rule_ids: .namespace.spec.connectivityRuleIds}'
+
+RV=$(jq -r '.namespace.resourceVersion' /tmp/ns.json)
+```
+
+**Step 2. Create a public Connectivity Rule with Stable IPs enabled.**
+
+```bash
+curl -sS -X POST "https://saas-api.tmprl.cloud/cloud/connectivity-rules" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+        "spec": {
+          "publicRule": { "enableStableIps": true }
+        }
+      }' | tee /tmp/cr.json
+
+CR_ID=$(jq -r '.connectivityRuleId' /tmp/cr.json)
+OP_ID=$(jq -r '.asyncOperation.id // .asyncOperation.operationId' /tmp/cr.json)
+```
+
+Field names follow proto3 JSON camelCase: `enable_stable_ips` becomes `enableStableIps`.
+
+**Step 3. Wait for the create operation to reach a terminal state.**
+
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/operations/$OP_ID" \
+  -H "$H_AUTH" -H "$H_VER" | jq '.asyncOperation.state'
+```
+
+Re-run until `state` is `FULFILLED` (the rule is now `ACTIVE`). Any `*_FAILED` state means you should stop and inspect the operation.
+
+**Step 4. Attach the rule to the Namespace.**
+
+`UpdateNamespace` posts the whole `NamespaceSpec` back. Mutate the spec from Step 1 by appending `$CR_ID` to `connectivityRuleIds`:
+
+```bash
+jq --arg id "$CR_ID" --arg rv "$RV" --arg ns "$NS" '
+  {
+    namespace: $ns,
+    resourceVersion: $rv,
+    spec: (.namespace.spec
+           | .connectivityRuleIds = ((.connectivityRuleIds // []) + [$id]))
+  }' /tmp/ns.json > /tmp/update.json
+
+curl -sS -X POST "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d @/tmp/update.json | tee /tmp/update-resp.json
+```
+
+Poll the returned `asyncOperation` the same way as Step 3.
+
+**Gotchas:**
+
+- The `namespace` in the URL is the Cloud-side Namespace identifier (for example, `myns.a1b2c3`), not the SDK gRPC hostname (`myns.a1b2c3.tmprl.cloud`). Strip the trailing `.tmprl.cloud`.
+- Do not omit fields from `spec` in Step 4. Proto3 update is full-replace — any field left out will be cleared. Building the body from the GET response avoids surprises.
+- A Namespace can have at most one public Connectivity Rule attached, and only one public rule exists per account. If `connectivityRuleIds` already references a public rule without Stable IPs, replace that entry instead of appending — you cannot create a second public rule.
+- Stable IPs requires `temporal-cloud-api-version` of `v0.15.0` or later.
 
 ### How to view Stable IP ranges
 
@@ -161,7 +249,7 @@ When you enable Stable IPs on an existing Namespace:
 - To use Stable IPs, update Worker configuration to use the Namespace endpoint and restart Workers
 - Note: You cannot use both PrivateLink and Stable IPs simultaneously
 
-**Connectivity Rules**: If your Namespace uses Connectivity Rules, ensure it has a "public" connectivity rule attached to allow connections through Stable IPs.
+**Connectivity Rules**: Stable IPs is set as the `enable_stable_ips` flag on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). Every Namespace that should resolve to Stable IPs must have that public Connectivity Rule attached. Namespaces without the rule attached continue to resolve to dynamic IPs.
 
 ### Changes to Stable IP ranges
 

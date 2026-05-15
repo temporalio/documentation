@@ -27,11 +27,6 @@ Metrics can be exported from Temporal Cloud using the OpenMetrics endpoint. This
 This document is for basic configuration only. For advanced concepts such as label management and high cardinality scenarios see the 
 [general API reference](/cloud/metrics/openmetrics/api-reference).
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 ## Integrations
 
@@ -52,7 +47,7 @@ includes a default dashboard to visualize the data with HyperDX. See the [integr
 
 ### New Relic
 
-New Relic integrates with Temporal Cloud via the infrastructure agent using a flex integration that pull data from the OpenMetrics endpoint. See the [integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/) for more details.
+New Relic integrates with Temporal Cloud via the infrastructure agent using a flex integration that pulls data from the OpenMetrics endpoint. See the [integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/) for more details.
 
 ### Prometheus \+ Grafana
 
@@ -63,7 +58,7 @@ Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.
 ```yaml
 scrape_configs:
   - job_name: 'temporal-cloud'
-    scrape_interval: 60s
+    scrape_interval: 30s
     scrape_timeout: 30s
     honor_timestamps: true
     scheme: https
@@ -89,7 +84,7 @@ receivers:
     config:
       scrape_configs:
       - job_name: 'temporal-cloud'
-        scrape_interval: 60s
+        scrape_interval: 30s
         scrape_timeout: 30s
         honor_timestamps: true
         scheme: https

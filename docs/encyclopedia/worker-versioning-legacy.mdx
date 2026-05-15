@@ -117,7 +117,7 @@ By default, both Task Queues and Workers are in an unversioned state.
 To use this feature, both the Task Queue and the Worker must be associated with Build IDs.
 
 If you run a Worker using versioning against a Task Queue that has not been set up to use versioning (or is missing that Worker's Build ID), it won't get any tasks.
-Likewise, a unversioned Worker polling a Task Queue with versioning won't work either.
+Likewise, an unversioned Worker polling a Task Queue with versioning won't work either.
 
 :::note Versions don't need to follow semver or any other semantic versioning scheme!
 
@@ -140,7 +140,7 @@ If Workflows that don't have an assigned version are still running on the Task Q
 So ensure that such Workers are still operational if any Workflows were open when you added the first version.
 If you deployed any Workers with a _different_ version, those Workers receive no Tasks.
 
-Now, imagine you need change the Workflow for some reason.
+Now, imagine you need to change the Workflow for some reason.
 
 Add `2.0` to the sets as the new default:
 
@@ -196,7 +196,7 @@ A request to change the sets can do one of the following:
 - Promote a version within an existing set to become the default for that set.
 - Promote a set to become the overall-default set.
 
-You can't explicitly delete versions.This helps you avoid the situation in which Workflows accidentally become stuck with no means of making progress because the version they're associated with no longer exists.
+You can't explicitly delete versions. This helps you avoid the situation in which Workflows accidentally become stuck with no means of making progress because the version they're associated with no longer exists.
 
 However, sometimes you might want to do this intentionally.
 If you _want_ to make sure that all Workflows currently being processed by, say, `2.0` stop (even if you don't yet have a new version ready), you can add a new version `2.1` to the sets marked as compatible with `2.0`.

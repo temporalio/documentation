@@ -47,7 +47,8 @@ const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
       {tabLanguages.map(({ key, icon: Icon, label }) => (
         <TabItem key={key} value={key} label={<Icon title={label} />}>
           {contentMap[key] || (
-            <div style={{ backgroundColor: '#ffffcc', padding: '1rem', borderRadius: '6px' }}>
+            // Setting the text color to black for better readability on light yellow background in dark mode
+            <div style={{ backgroundColor: '#ffffcc', color: '#000', padding: '1rem', borderRadius: '6px' }}>
               <strong>{label}</strong> example coming soon.
             </div>
           )}
