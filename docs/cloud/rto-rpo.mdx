@@ -24,6 +24,12 @@ When a cloud outage disrupts a Namespace, Temporal Cloud takes measures to maint
 
 To help you plan for keeping critical Workflows available during a cloud outage, Temporal Cloud publishes goals for the recovery time and recovery point for each kind of outage. These goals are called the Recovery Time Objective (RTO) and Recovery Point Objective (RPO). These objectives are complementary to Temporal Cloud's [Service Level Agreement (SLA)](/cloud/sla).
 
+:::tip White paper
+
+For an in-depth guide covering everything from why you need High Availability to setting it up in production and advanced options, read the [High Availability White Paper](https://temporal.io/pages/high-availability-white-paper).
+
+:::
+
 ## Types of outages Temporal Cloud designs around
 
 Temporal Cloud is engineered to withstand four broad categories of cloud outages. The categories are listed below in order of how commonly they occur in the real world. For each category, Temporal has experienced the outage in production, and the corresponding Temporal Cloud features have successfully mitigated the impact for real customer Namespaces.
@@ -200,6 +206,11 @@ Temporal recommends monitoring the replication lag and alerting should it rise t
 The Recovery Time for a given incident is measured from the moment the incident begins to cause abnormal Namespace operation — for example, when unavailability or error rates rise above an acceptable level — to the moment the Namespace is restored to full functionality.
 
 For most incidents, the vast majority of the Recovery Time is spent detecting the incident, determining the affected boundary (a single cell, a region, or an entire cloud), and deciding to fail Namespaces over to their replicas. The actual time to complete the failover is usually a very small piece of the Recovery Time.
+
+A Temporal-triggered failover unfolds in two stages:
+
+1. **Detection.** Outages are rarely black and white; they often begin as a slow degradation. Temporal's automated health checks continuously watch every cell and region.
+2. **Failover.** Once detection completes, Temporal triggers failovers across all impacted Namespaces.
 
 This Recovery Time covers only the Temporal Namespace. Your application's overall Recovery Time also depends on having enough healthy Workers that can reach the Namespace and process Workflows. Maintaining sufficient Worker capacity that can reach the replica region (or replica cloud) during a failover is your responsibility.
 

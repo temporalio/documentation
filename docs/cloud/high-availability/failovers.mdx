@@ -29,6 +29,12 @@ Returning control from the replica to the primary is called a <ToolTipTerm term=
 After a Temporal-managed failover, Temporal automatically fails back to the original region once it is healthy.
 See [Returning to the primary with failbacks](#failbacks) for details on automatic and manual failback options.
 
+:::tip White paper
+
+For an in-depth guide covering everything from why you need High Availability to setting it up in production and advanced options, read the [High Availability White Paper](https://temporal.io/pages/high-availability-white-paper).
+
+:::
+
 ## Automatic failover
 
 When an unexpected outage hits your Temporal Namespace, failing over to a healthy cloud region can prevent data loss and application interruptions.
@@ -48,7 +54,7 @@ lth checks.
 
 ### Conditions that trigger an automatic failover
 
-While the failover operation usually completes in seconds, it can take much longer in an outage to actually detect the disruption and decide to trigger a failover.
+While the failover operation itself usually completes in seconds, the bulk of the Recovery Time in an outage is spent detecting the disruption and deciding to trigger a failover. See [How long does a failover take?](#failover-duration) for a detailed breakdown.
  
 To achieve Temporal Cloud's Recovery Time Objective (RTO) for Namespaces that have enabled High Availability and Temporal-managed failovers (also known as "automatic failovers"), Temporal Cloud runs automated Workflows that detect outages and trigger failovers.
 These Workflows continuously monitor the health of Temporal Cloud in every region and every cell.
@@ -108,6 +114,24 @@ A Namespace failover, which updates the "active region" field in the Namespace r
 This update is replicated through the Namespace metadata mechanism.
 
 :::
+
+### How long does a failover take? {#failover-duration}
+
+The time to complete a failover depends on who triggered it.
+
+#### User-triggered failover
+
+A failover that you trigger yourself happens in two stages:
+
+1. **The Namespace becomes active in the other region.** Temporal Cloud completes this stage within 10 seconds (internal SLO). Existing Workflow Executions resume in the new active region, and new Workflow Executions can be started.
+2. **The Namespace Endpoint re-routes to the active region.** This DNS change can take a few minutes to fully propagate to all Clients and Workers. If your application has an extremely demanding Recovery Time, you can eliminate this stage by connecting through a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) instead of the Namespace Endpoint. Regional Endpoints require more setup, so most users should stick with the default Namespace Endpoint.
+
+#### Temporal-triggered failover
+
+A failover that Temporal triggers in response to an outage also happens in two stages:
+
+1. **Detecting the outage.** This is the bulk of the Recovery Time. Outages are rarely black and white; they often start as a slow degradation. Temporal continuously runs the automated health checks described in [Conditions that trigger an automatic failover](#conditions-that-trigger-an-automatic-failover).
+2. **Triggering the failover commands.** Once detection completes, Temporal triggers failovers across all impacted Namespaces.
 
 ## Failover scenarios {#scenarios}
 
@@ -190,6 +214,14 @@ Always check the <ToolTipTerm term="replication lag" /> before initiating a fail
 A forced failover when there is a significant replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
+
+### When to trigger a manual failover {#when-to-trigger}
+
+Most Namespaces with High Availability are well-served by Temporal-managed failovers. The cases where a manual failover is warranted are:
+
+- **Testing failover or migrating to a new region.** A manual failover is the standard way to exercise your failover process with your Clients and Workers, or to move a Namespace to a different region.
+- **An outage that affects only your systems.** If an outage is contained to your application, Workers, or other infrastructure — and Temporal Cloud is not affected — Temporal will not initiate a failover on your behalf. Detect the outage with your own monitoring and trigger a failover yourself.
+- **Failing over more aggressively during a regional outage.** Even with Temporal-managed failovers enabled, you can still trigger a failover yourself if you detect a regional outage before Temporal does. Whichever failover happens first takes effect, and the later one is a no-op, so a user-triggered failover does not conflict with Temporal's automatic failover. This can help you achieve a lower Recovery Time when every minute matters.
 
 ### Trigger the failover {#manual-failovers}
 
