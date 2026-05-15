@@ -44,7 +44,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -119,7 +119,7 @@ jobs:
         shardTotal: [4]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -212,7 +212,7 @@ jobs:
       actions: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
