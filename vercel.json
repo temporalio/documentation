@@ -4,6 +4,30 @@
   "github": {
     "silent": true
   },
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "(?:.*,\\s*)?text/markdown(?:\\s*;.*)?"
+        }
+      ],
+      "destination": "/index.md"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "(?:.*,\\s*)?text/markdown(?:\\s*;.*)?"
+        }
+      ],
+      "destination": "/:path*.md"
+    }
+  ],
   "redirects": [
     {
       "source": "/evaluate/serverless-workers-demo",
