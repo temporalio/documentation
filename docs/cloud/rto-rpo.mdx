@@ -76,13 +76,13 @@ When using Same-region Replication, Multi-region Replication, or Multi-cloud Rep
 - **RTO under 20 minutes.** Temporal detects the disruption and fails the Namespace over to its replica cell.
 - **RPO under 1 minute.** Asynchronous replication keeps the replica close to the active cell.
 
-Even though the RPO target is under 1 minute, data is virtually never "lost" thanks to Temporal's built-in Recovery and Conflict Resolution process, which reconciles state between the active and replica when a failover occurs.
+Even though the RPO target is under 1 minute, data is virtually never "lost" thanks to Temporal's built-in Recovery and Conflict Resolution process, which reconciles state between the active and replica when the outage is over.
 
 ### Cloud Region outage
 
 A cloud region as a whole can become degraded, with effects that span beyond any single cell or Availability Zone.
 
-**Example causes:** failure of a key cloud service in the region (for example, the cloud provider's DNS resolver) causing cascading failures, two or more Availability Zones failing simultaneously, or network partitions between the region and other regions.
+**Example causes:** failure of a key cloud service in the region causing cascading failures, two or more Availability Zones failing simultaneously, or network partitions between the region and other regions.
 
 **Blast Radius:** All Namespaces and Workers within a single cloud region are potentially affected. Namespaces and Workers in other regions of the same cloud — and in other clouds — are unaffected.
 
@@ -155,7 +155,7 @@ Notes:
 
 - The above goals are only applicable to Namespaces that have enabled Temporal-initiated failovers, which comes enabled by default. Temporal-initiated failovers are initiated by Temporal's tooling and/or on-call engineers without user action. Users can always initiate a failover on their Namespace, even when Temporal-initiated failovers are enabled. In an outage, a user-initiated failover will not cancel out or accidentally reverse a Temporal-initiated failover.
 
-:::note
+:::tip
 
 Temporal highly recommends keeping Temporal-initiated failovers enabled. When Temporal-initiated failovers are _disabled,_ Temporal Cloud cannot set an RPO and RTO for that Namespace, because it cannot control when or if the user will trigger a failover.
 
@@ -217,7 +217,7 @@ Temporal has put extensive work into tools and processes that minimize the recov
 
 - Expert engineers on-call 24/7 monitoring Temporal Cloud Namespaces and ready to assist should an outage occur.
 
-#### How users can achieve a lower Recovery Time
+#### Tips for a lower Recovery Time
 
 To achieve the lowest possible recovery times, Temporal recommends that you:
 
