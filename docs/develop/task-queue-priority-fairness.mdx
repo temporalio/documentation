@@ -29,7 +29,7 @@ You can use Priority and Fairness individually or combine them to express Fairne
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-details.png"
-  alt="Detailed view of how Priority works"
+  alt="Flowchart of how Priority dispatches Tasks from highest to lowest priority queue"
 />
 
 ### When to use Priority
@@ -250,7 +250,7 @@ To use Fairness, you need to set fairness keys and optionally fairness weights a
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/fairness-details.png"
-  alt="High-level of how fairness works"
+  alt="Flowchart of how Fairness selects a virtual queue weighted by fairness weight when the backlog has Tasks"
 />
 
 You can set a Workflow's fairness key and weight via the CLI like so:
@@ -521,12 +521,17 @@ When you use Priority and Fairness together, Priority determines which "sub-queu
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
-  alt="High-level of how priority and fairness work together"
+  alt="Flowchart of how Priority and Fairness combine: poller checks priority levels in order, then within each level Fairness selects a virtual queue weighted by fairness weight"
 />
 
 ### Inheritance
 
 Each field of Priority (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
+
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/inheritance.png"
+  alt="Flowchart of how a Priority field is resolved: check for a Task Queue weight override (fairness_weight only), then an explicit value, then inherit from the calling Workflow, otherwise use the default"
+/>
 
 **Activity inheritance order** (highest precedence first):
 
