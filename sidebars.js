@@ -619,6 +619,7 @@ module.exports = {
               },
               items: [
                 'develop/python/integrations/braintrust',
+                'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
               ],
             },
