@@ -144,6 +144,35 @@ public class YourBasicWorkflow {
 ```
 
 </TabItem>
+<TabItem value="rust" label="Rust">
+
+**[Workflow Definition in Rust](/develop/rust/workflows/basics)**
+
+```rust
+use temporalio_macros::{workflow, workflow_methods};
+use temporalio_sdk::{WorkflowContext, WorkflowContextView, WorkflowResult};
+
+#[workflow]
+pub struct YourBasicWorkflow {
+    param: String,
+}
+
+#[workflow_methods]
+impl YourBasicWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, param: String) -> Self {
+        Self { param }
+    }
+
+    #[run]
+    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        // ...
+        Ok(String::new())
+    }
+}
+```
+
+</TabItem>
 
 </Tabs>
 
@@ -159,6 +188,12 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 A critical aspect of developing Workflow Definitions is ensuring that they are deterministic.
 Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input.
 Some changes to those API calls are safe to make.
+
+:::tip Note on determinism
+
+Workflow code must be deterministic to support replay. To handle non-deterministic operations like API calls, LLM/AI invocations, database queries, and other external interactions, put them in Activities. Activities execute outside the replay path and are automatically retried so they don't cause non-determinism errors.
+
+:::
 
 For example, you can change:
 
@@ -266,6 +301,7 @@ For SDK-specific replay-safe APIs and examples (logging, random numbers, time, r
 - [TypeScript: Develop Workflow logic](/develop/typescript/workflows/basics#workflow-logic-requirements)
 - [.NET: Workflow logic requirements](/develop/dotnet/workflows/basics#workflow-logic-requirements)
 - [Ruby: Workflow Logic Requirements](/develop/ruby/workflows/basics#workflow-logic-requirements)
+- [Rust: Workflow Logic Requirements](/develop/rust/workflows/basics#workflow-logic-requirements)
 
 ### Versioning Workflows {#workflow-versioning}
 

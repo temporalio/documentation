@@ -49,6 +49,16 @@ All certificates used by Temporal Cloud must meet the following requirements.
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
+**When a client presents an end-entity certificate, and the whole certificate chain is constructed, each certificate in
+the chain (from end-entity to the root) must have a unique Distinguished Name.**
+
+:::caution
+
+Distinguished Names are _not_ case sensitive; that is, uppercase letters (such as ABC) and lowercase letters (such as
+abc) are equivalent.
+
+:::
+
 ### CA certificates
 
 A CA certificate is a type of X.509v3 certificate used for secure communication and authentication. In Temporal Cloud,
@@ -84,16 +94,6 @@ An end-entity (leaf) certificate _must_ meet the following criteria:
 - The key usage must include Digital Signature.
 - The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication. SHA-1
   and MD5 cannot be used.
-
-When a client presents an end-entity certificate, and the whole certificate chain is constructed, each certificate in
-the chain (from end-entity to the root) must have a unique Distinguished Name.
-
-:::caution
-
-Distinguished Names are _not_ case sensitive; that is, uppercase letters (such as ABC) and lowercase letters (such as
-abc) are equivalent.
-
-:::
 
 ## How to issue root CA and end-entity certificates {#issue-certificates}
 
