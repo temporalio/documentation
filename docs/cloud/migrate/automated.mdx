@@ -434,7 +434,7 @@ The following are known limitations.
   this may impact your eligibility for automated migration. Specifically, whenever Global Namespace has been previously
   enabled the following restrictions apply:
   1. Initial Failover Version must be less than or equal to 1,000,000
-  2. Failover Version Increment must be a divisor of 1,000,000
+  2. Failover Version Increment must be a divisor of 1,000,000 (eg. 10)
 - OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the
   `system.enableCrossNamespaceCommands` configuration. This configuration is disabled on Temporal Cloud. The
   `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be
