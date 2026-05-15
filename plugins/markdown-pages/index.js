@@ -25,7 +25,8 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     const withoutExt = rel.replace(/\.(md|mdx)$/i, '');
     const id = frontmatter.id || path.basename(withoutExt);
     const dir = path.dirname(withoutExt);
-    if (dir === '.') return id;
+    if (dir === '.') return id === 'index' ? 'index' : id;
+    if (id === 'index') return dir;
     return `${dir}/${id}`;
   }
 
