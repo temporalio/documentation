@@ -23,8 +23,8 @@ import { CaptionedImage } from '@site/src/components';
 
 :::info Release, stability, and dependency info
 
-External Storage is in [Pre-Release](/evaluate/development-production-features/release-stages#pre-release). APIs and
-configuration may change before the stable release. Join the
+External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs and
+configuration may change before General Availability. Join the
 [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 
 :::
@@ -105,6 +105,8 @@ A storage driver connects External Storage to a backing store. Each driver provi
 - **Store**. Upload payloads and return a claim, which is a set of key-value pairs the driver uses to locate the payload
   later.
 - **Retrieve**. Download payloads using the claims that `store` produced.
+
+The S3 driver also includes diagnostic metadata in error messages, such as the AWS region, to help with troubleshooting storage failures.
 
 Temporal SDKs include built-in drivers for common storage systems like Amazon S3. You can configure multiple storage
 drivers and use a selector function to route payloads to different drivers based on size, type, or other criteria such
