@@ -218,7 +218,8 @@ Direct VPCE targeting bypasses the Temporal-managed DNS CNAME that normally rout
 
 - Workers in the primary region: the local VPC Endpoint for that region (e.g., `vpce-...-us-east-1.vpce.amazonaws.com:7233`).
 - Workers in the replica region: the local VPC Endpoint for that region (e.g., `vpce-...-us-west-2.vpce.amazonaws.com:7233`).
-- All Workers: the same SNI override — the Namespace Endpoint value (e.g., `my-namespace.my-account.tmprl.cloud`).
+
+All Workers require the same SNI override — the Namespace Endpoint value (e.g., `my-namespace.my-account.tmprl.cloud`).
 
 :::
 
