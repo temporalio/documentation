@@ -289,6 +289,12 @@ Temporal will generate the endpoint-id and initiate the migration. During this p
 while the cloud Namespace becomes passive. Workflows are replicated from the self-hosted Namespace to the cloud Namespace. Once the
 cloud Namespace has fully synced with self-hosted Namespace, migration is ready for handover.
 
+:::note Billing
+
+Billing for the cloud Namespace does not begin until the migration is [confirmed](#confirm-complete).
+
+:::
+
 The following [command](https://pkg.go.dev/github.com/temporalio/tcld#readme-start-a-migration) is used to start the
 migration:
 
@@ -341,7 +347,7 @@ Use the following checklist prior to finalizing the migration:
   lead to unexpected symptoms and optimizations.
 - Know how to reach out to your Temporal Solutions Architect (SA) and Account Executive (AE) for assistance.
 
-### Confirm complete
+### Confirm complete {#confirm-complete}
 
 Once a Namespace has been transferred to the cloud and validated, the migration will be completed. Note that this step
 is final and may not be undone. Once performed, Workflow replication from the cloud Namespace to the self-hosted server
