@@ -41,7 +41,7 @@ Use the `runWorker` function to create a Lambda handler that runs a Temporal Wor
 Pass a deployment version and a configure callback that sets up your Workflows and Activities.
 
 <!--SNIPSTART typescript-lambda-worker {"selectedLines": ["1", "3-11", "13"]}-->
-[samples-typescript/lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/lambda-worker/samples-typescript/lambda-worker/src/index.ts)
+[lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/src/index.ts)
 ```ts
 import { runWorker } from '@temporalio/lambda-worker';
 // ...
@@ -133,7 +133,7 @@ The underlying metrics and traces are the same ones the TypeScript SDK emits in 
 For general observability concepts and the full list of available metrics, see [Observability - TypeScript SDK](/develop/typescript/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
 <!--SNIPSTART typescript-lambda-worker-->
-[samples-typescript/lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/lambda-worker/samples-typescript/lambda-worker/src/index.ts)
+[lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/src/index.ts)
 ```ts
 import { runWorker } from '@temporalio/lambda-worker';
 import { applyDefaults } from '@temporalio/lambda-worker/otel';
@@ -164,7 +164,7 @@ You must provide a custom Collector configuration that wires the OTLP receiver t
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
 <!--SNIPSTART typescript-lambda-worker-otel-collector-config-->
-[samples-typescript/lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-typescript/blob/lambda-worker/samples-typescript/lambda-worker/otel-collector-config.yaml)
+[lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/otel-collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -182,8 +182,7 @@ exporters:
     # AWS EMF exporter for metrics
     # These are example configurations
     namespace: TemporalWorkerMetrics
-    # log_group_name: /aws/lambda/<your-function-name>
-    log_group_name: /aws/lambda/sdk-worker-typescript
+    log_group_name: /aws/lambda/<your-function-name>
     region: us-west-2
     dimension_rollup_option: NoDimensionRollup
     resource_to_telemetry_conversion:
@@ -199,7 +198,7 @@ service:
       exporters: [awsemf]
   telemetry:
     logs:
-      level: debug
+      level: info
     metrics:
       address: localhost:8888
 ```

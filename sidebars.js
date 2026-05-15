@@ -617,7 +617,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/integrations/index',
               },
-              items: ['develop/python/integrations/braintrust', 'develop/python/integrations/langgraph'],
+              items: [
+                'develop/python/integrations/braintrust',
+                'develop/python/integrations/langgraph',
+                'develop/python/integrations/langsmith',
+              ],
             },
           ],
         },
@@ -1375,6 +1379,7 @@ module.exports = {
         id: 'references/index',
       },
       items: [
+        'references/api-reference',
         'references/cluster-metrics',
         'references/commands',
         'references/configuration',
@@ -1403,6 +1408,7 @@ module.exports = {
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
+        'troubleshooting/schedule-missed-actions',
         'troubleshooting/serverless-workers',
       ],
     },
