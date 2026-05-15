@@ -211,7 +211,7 @@ For single-region Namespaces, you can avoid creating DNS records for each Namesp
 
 With this approach, new Namespaces do not require new DNS records.
 
-:::warning Extra care needed for Namespaces with High Availability
+:::caution Extra care needed for Namespaces with High Availability
 
 Direct VPCE targeting bypasses the Temporal-managed DNS CNAME that normally routes a Namespace to its active region, so each Worker is pinned to whichever VPC Endpoint you configure. To keep both regions reachable, you must run Workers in each region and configure them with **different endpoints**:
 
