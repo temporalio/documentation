@@ -13,8 +13,8 @@ description: Offload large payloads to external storage using the claim check pa
 
 :::info Release, stability, and dependency info
 
-External Storage is in [Pre-Release](/evaluate/development-production-features/release-stages#pre-release). APIs and
-configuration may change before the stable release. Join the
+External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs and
+configuration may change before General Availability. Join the
 [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 
 :::
@@ -34,6 +34,7 @@ The Go SDK includes an S3 storage driver. Follow these steps to set it up:
 
 - An Amazon S3 bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
   to ensure that your payloads remain available for the entire lifetime of the Workflow.
+  - The S3 driver has been validated with single-region buckets. Multi-region configurations such as AWS Multi-Region Access Points (MRAP) have not been validated.
 - Install the S3 driver module and its dependencies: `go get go.temporal.io/sdk/contrib/aws/s3driver go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2 github.com/aws/aws-sdk-go-v2/config github.com/aws/aws-sdk-go-v2/service/s3`
 
 ### Procedure
@@ -86,6 +87,8 @@ w := worker.New(c, "my-task-queue", worker.Options{})
 
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
    business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
+
+   The S3 driver includes diagnostic metadata, such as the AWS region, in error messages to help troubleshoot storage failures.
 
 ## Implement a custom storage driver
 
