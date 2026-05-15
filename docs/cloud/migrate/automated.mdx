@@ -423,7 +423,7 @@ The following are known limitations.
 
 - OSS server versions 1.22 or newer are required. Refer to the
   [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
-- History shard counts must be a multiple of two.
+- History shard counts must be a power of two (eg. 512, 1024, etc...).
 - If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal
   uses 'active' as cluster name), they cannot be connected to a single migration server simultaneously due to cluster
   name collision. There are 2 available options:
