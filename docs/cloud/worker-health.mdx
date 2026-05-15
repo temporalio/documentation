@@ -400,33 +400,17 @@ Set it to a negative value to disable heartbeating.
 #### Enable host resource reporting
 
 By default, the Go SDK reports `0` for CPU and memory usage in Worker heartbeats.
-To enable host resource reporting, provide a `SysInfoProvider` when creating your Worker.
-You must use a resource based tuner to enable host resource reporting.
-
-The SDK includes a [gopsutil](https://github.com/shirou/gopsutil)-based implementation via the [sysinfo](https://pkg.go.dev/go.temporal.io/sdk/contrib/sysinfo) library that supports cgroup metrics in containerized Linux environments:
+Set `SysInfoProvider` on [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) to enable host resource reporting.
+Host resource reporting is not included in the core SDK module. Add the [sysinfo](https://pkg.go.dev/go.temporal.io/sdk/contrib/sysinfo) contrib package to your imports - it provides a [gopsutil](https://github.com/shirou/gopsutil)-based implementation that supports cgroup metrics in containerized Linux environments:
 
 ```go
 import (
-    "log"
-    
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/contrib/envconfig"
-    "go.temporal.io/sdk/contrib/sysinfo"
-    "go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/contrib/sysinfo"
+	"go.temporal.io/sdk/worker"
 )
 
-c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
-if err != nil {
-	log.Fatalln("Unable to create client", err)
-}
-defer c.Close()
-tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
-	TargetMem:    0.8,
-	TargetCpu:    0.9,
-	InfoSupplier: sysinfo.SysInfoProvider(),
-})
 w := worker.New(c, "my-task-queue", worker.Options{
-	Tuner:                      tuner,
+	SysInfoProvider: sysinfo.SysInfoProvider(),
 })
 ```
 

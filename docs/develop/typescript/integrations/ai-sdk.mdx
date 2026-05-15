@@ -164,7 +164,6 @@ from the tool function. The following is an example of an Activity that gets the
 export async function getWeather(input: {
   location: string;
 }): Promise<{ city: string; temperatureRange: string; conditions: string }> {
-  console.log('Activity execution');
   return {
     city: input.location,
     temperatureRange: '14-20C',
