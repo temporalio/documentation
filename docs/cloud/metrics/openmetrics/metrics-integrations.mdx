@@ -60,9 +60,42 @@ For Grafana-side details, see the [Grafana Cloud integration page](https://grafa
 ClickHouse provides an integration with the OpenMetrics endpoint for ClickStack. This integration uses an OpenTelemetry collector to read from the OpenMetrics endpoint, ingest data into ClickHouse, and
 includes a default dashboard to visualize the data with HyperDX. See the [integration page](https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics) for more details.
 
+1. Save your Temporal Cloud API key to a local file named `temporal.key` (no trailing newline or spaces).
+2. Create an OpenTelemetry collector config named `temporal-metrics.yaml` that uses a Prometheus receiver against `metrics.temporal.io` with Bearer token auth, a 60-second scrape interval, the `service.name: "temporal"` resource attribute, and the ClickHouse exporter. Copy the full template from the [ClickStack integration page](https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics).
+3. Mount both files into your ClickStack collector and set the custom config env var. With Docker Compose:
+
+   ```yaml
+   volumes:
+     - ./temporal-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml
+     - ./temporal.key:/etc/otelcol-contrib/temporal.key
+   environment:
+     CUSTOM_OTELCOL_CONFIG_FILE: /etc/otelcol-contrib/custom.config.yaml
+   ```
+
+4. In HyperDX, open the **Metrics explorer** and confirm metrics with the `temporal` prefix are arriving.
+5. Import the pre-built dashboard: in HyperDX click **Import Dashboard**, upload `temporal-metrics-dashboard.json` from the ClickStack integration page, then click **Finish Import**.
+
 ### New Relic
 
-New Relic integrates with Temporal Cloud via the infrastructure agent using a flex integration that pulls data from the OpenMetrics endpoint. See the [integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/) for more details.
+The New Relic integration pulls metrics from the OpenMetrics endpoint via the `nri-flex` integration that runs alongside the New Relic infrastructure agent.
+
+:::note Requires a host
+
+The integration runs on a host (Linux, Windows, or Kubernetes) with the New Relic infrastructure agent installed. The agent scrapes the endpoint and forwards metrics to New Relic.
+
+:::
+
+1. Install the **New Relic infrastructure agent** on a host. See the [agent install docs](https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/get-started/install-infrastructure-agent/) for platform-specific instructions.
+2. Create `/etc/newrelic-infra/integrations.d/nri-flex-temporal-cloud-config.yml` using the template from the [New Relic integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/), and replace the `${TEMPORAL_API_KEY}` placeholder with your Temporal Cloud API key.
+3. Restart the agent so the new config is picked up:
+
+   ```shell
+   sudo systemctl restart newrelic-infra.service
+   ```
+
+4. In **one.newrelic.com**, go to **Integrations & Agents → Dashboards**, search for **Temporal Cloud**, and install the pre-built dashboard. Data appears within a few minutes.
+
+For New Relic-side details, see the [New Relic integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/).
 
 ### Prometheus \+ Grafana {#prometheus-grafana}
 
