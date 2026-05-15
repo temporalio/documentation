@@ -12,7 +12,6 @@ A Namespace with High Availability features spans two regions, and the endpoint 
 This page covers:
 
 - How to choose between the Namespace Endpoint and a Regional Endpoint for a Namespace with High Availability features.
-- An advanced Active/Hot-Standby pattern that uses Regional Endpoints to minimize recovery time.
 - How to configure PrivateLink so that failover remains transparent to Workers on private networks.
 
 ## How to choose an endpoint for a Namespace with High Availability features
@@ -40,7 +39,6 @@ A Regional Endpoint is shared across every Namespace that is active or replicate
 Unlike the Namespace Endpoint, a Regional Endpoint stays pinned to the region in its name — if that region holds the passive replica of your Namespace, the Regional Endpoint connects to the passive replica.
 
 Use a Regional Endpoint only when you need explicit control over which replica a Client or Worker reaches.
-The most common case is the [Active/Hot-Standby pattern](#active-hot-standby) described below.
 
 Trade-offs to consider:
 
@@ -75,7 +73,7 @@ Consider a Namespace replicated across `us-east-1` (initially active) and `us-we
 | Regional Endpoint `aws-us-west-2.region...` | `us-west-2`     | `us-west-2`             |
 
 The Namespace Endpoint moves with the active region via an updated CNAME — no Client changes required.
-The Regional Endpoints do not change their targets on failover: each continues to route to the replica that lives in its region, which is how the Active/Hot-Standby pattern keeps Workers connected to the passive side across a failover.
+The Regional Endpoints do not change their targets on failover: each continues to route to the replica that lives in its region.
 
 ## How to use PrivateLink with High Availability features
 
@@ -135,7 +133,7 @@ When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.
 This points to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your internal IP addresses.
 
 Consider how you'll configure Workers for this setup.
-You can either have Workers run in both regions continuously (see the [Active/Hot-Standby pattern](#active-hot-standby)) or establish connectivity between regions using Transit Gateway or VPC Peering.
+You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
 Either approach ensures Workers can access the newly activated region once failover occurs.
 
 ### Available regions, PrivateLink endpoints, and DNS record overrides
