@@ -1,9 +1,6 @@
 {
   "public": true,
   "trailingSlash": false,
-  "framework": null,
-  "buildCommand": "docusaurus build",
-  "outputDirectory": "build",
   "github": {
     "silent": true
   },
