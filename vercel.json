@@ -4,6 +4,17 @@
   "github": {
     "silent": true
   },
+  "headers": [
+    {
+      "source": "/(.*)\\.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/evaluate/serverless-workers-demo",
