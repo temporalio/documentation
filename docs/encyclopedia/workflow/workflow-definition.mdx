@@ -150,7 +150,7 @@ public class YourBasicWorkflow {
 
 ```rust
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowResult, WorkflowContextView};
+use temporalio_sdk::{WorkflowContext, WorkflowContextView, WorkflowResult};
 
 #[workflow]
 pub struct YourBasicWorkflow {
