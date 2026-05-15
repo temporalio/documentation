@@ -25,7 +25,7 @@ A Namespace with High Availability features has two replicas — a primary and a
 Temporal Cloud expresses the active replica through DNS:
 
 - The Namespace DNS record (`<ns>.<account>.tmprl.cloud`) is a CNAME.
-- It points to the active region's regional record (`<region>.<provider>.api.temporal.io`).
+- It points to the active region's regional record (`<provider>-<region>.region.tmprl.cloud`).
 - On failover, Temporal Cloud rewrites the CNAME target.
 
 Namespace DNS records have a 15-second TTL. Clients should converge to the new region within roughly 30 seconds (about twice the TTL) once their resolver cache expires.
