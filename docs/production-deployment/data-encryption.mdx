@@ -335,7 +335,8 @@ temporal workflow show \
 ### Working with large payloads
 
 If your payloads exceed the Temporal Service's size limits, use [External Storage](/external-storage) to offload large
-payloads to an external store like Amazon S3. When External Storage is configured, your Codec Server can also retrieve
+payloads to an external store like Amazon S3. The Web UI displays a claim reference instead of the payload content for
+externally stored payloads. When External Storage is configured on your Codec Server, the Codec Server can retrieve
 and decode these payloads for viewing in the Web UI and CLI. See
 [Codec Server with External Storage](/codec-server#external-storage) for details.
 
