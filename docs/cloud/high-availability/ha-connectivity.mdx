@@ -98,6 +98,12 @@ Temporal Cloud expresses the active replica through DNS:
 
 Namespace DNS records have a 15-second TTL. Clients should converge to the new region within roughly 30 seconds (about twice the TTL) once their resolver cache expires.
 
+:::note Deterministic DNS behavior is unique to HA Namespace Endpoints
+
+This is the **only** place in Temporal Cloud where you can depend on Temporal-managed DNS to behave in a specific, deterministic way — a Namespace Endpoint on an HA Namespace CNAMEing to its active region's regional record. Everywhere else, take a dependency on Temporal's published endpoints (the hostnames themselves), not on what they resolve to. The underlying IP addresses, CNAME chains, and resolution behavior of non-HA endpoints can change at any time without notice.
+
+:::
+
 For private connectivity, your job is to make sure that:
 
 - Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
@@ -182,17 +188,6 @@ If you run Workers on Alpine and use multi-cloud HA, either:
 - Configure your application/runtime to disable AAAA lookups (e.g., set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
 
 :::
-
-To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
-For example, you might set `aws-us-west-1.region.tmprl.cloud` to target `192.168.1.2`.
-In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
-Link that private zone to the VPCs you use for Workers.
-
-A reasonable validation plan:
-
-Consider how you'll configure Workers for this setup.
-You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
-Either approach ensures Workers can access the newly activated region once failover occurs.
 
 ### Available regions, PrivateLink endpoints, and DNS record overrides
 

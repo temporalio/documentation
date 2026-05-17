@@ -37,3 +37,9 @@ If you have to allowlist IP ranges, you must allowlist the entire cloud provider
 - [GCP IP address ranges](https://www.gstatic.com/ipranges/cloud.json)
 
 :::
+
+:::note Don't depend on DNS resolution behavior
+
+Take a dependency on Temporal's published endpoints (the hostnames themselves), not on what they resolve to. The underlying IP addresses, CNAME chains, and resolution behavior can change at any time without notice. The **only** exception is the Namespace Endpoint for a Namespace with [High Availability features](/cloud/high-availability), which deterministically CNAMEs to its active region's regional record — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for details.
+
+:::
