@@ -33,6 +33,17 @@ When used together, Cloud and SDK metrics measure the health and performance of 
 
 Cloud metrics for all Namespaces in your account are available from the [OpenMetrics endpoint](/cloud/metrics/openmetrics), a Prometheus-compatible scrapable endpoint at `metrics.temporal.io`.
 
+Use the following rule of thumb when deciding which signal to rely on:
+
+| Question | Primary signal |
+|---|---|
+| Is Temporal Cloud accepting and serving work normally? | Cloud metrics |
+| Are Tasks backing up in a Task Queue? | Cloud metrics plus SDK Schedule-To-Start metrics |
+| Are my Workers saturated, under-provisioned, or misconfigured? | SDK metrics |
+| Is my application logic, downstream dependency, or Activity behavior unhealthy? | SDK metrics and traces |
+
+For a Worker-focused view of how to combine these signals, see [Monitor worker health](/cloud/worker-health).
+
 - [OpenMetrics overview](/cloud/metrics/openmetrics) - Getting started and key concepts
 - [Metrics integrations](/cloud/metrics/openmetrics/metrics-integrations) - Datadog, Grafana Cloud, New Relic, ClickStack, and more
 - [API reference](/cloud/metrics/openmetrics/api-reference) - Endpoint specification and advanced configuration

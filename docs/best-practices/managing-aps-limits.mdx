@@ -175,7 +175,11 @@ An APS limit is set per Namespace, so multiple use cases with multiple traffic p
 
 #### How to Mitigate
 
-Plan for a set of Namespaces (one per environment) per use case. See [Managing a Namespace](/best-practices/managing-namespace) for more details.
+Plan for a set of Namespaces (one per environment) per use case. This gives each use case its own APS envelope and
+reduces the blast radius when one workload spikes or misbehaves.
+
+If you are deciding whether to split by use case, service, or domain, see
+[Managing a Namespace](/best-practices/managing-namespace) for a topology decision framework.
 
 ## Provisioned Capacity and TRUs
 
