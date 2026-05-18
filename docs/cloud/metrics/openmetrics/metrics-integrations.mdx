@@ -42,6 +42,14 @@ Datadog provides a serverless integration with the OpenMetrics endpoint. It scra
 
 For Datadog-side details, see the [Datadog integration page](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/).
 
+For Datadog users, treat this integration as the Cloud-side half of your observability setup:
+
+- Use OpenMetrics in Datadog to monitor Temporal Cloud behavior such as Task Queue backlog, poll success, and rate limiting.
+- Collect [SDK metrics](/cloud/metrics/sdk-metrics-setup) from your Workers separately to monitor saturation, Schedule-To-Start latency, slot availability, and sticky cache behavior.
+
+If you only ingest Cloud metrics, you will miss many worker-side bottlenecks. For recommended Worker monitors, see
+[Monitor worker health](/cloud/worker-health).
+
 ### Grafana Cloud
 
 Grafana Cloud provides a serverless integration with the OpenMetrics endpoint. It scrapes metrics, stores them in Grafana Cloud, and ships a default dashboard for visualizing them.
