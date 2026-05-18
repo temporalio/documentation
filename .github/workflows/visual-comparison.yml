@@ -142,7 +142,7 @@ jobs:
         with:
           attempt_limit: 3
           attempt_delay: 60000
-          action: actions/download-artifact@v5
+          action: actions/download-artifact@v8
           with: |
             name: build
             path: build
@@ -228,7 +228,7 @@ jobs:
           attempt_delay: 60000
 
       - name: Download blob reports
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: all-blob-reports
           pattern: blob-report-*
@@ -266,7 +266,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Download HTML report
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: report
           path: playwright-report
