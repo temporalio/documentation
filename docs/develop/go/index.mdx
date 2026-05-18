@@ -1,0 +1,120 @@
+---
+id: index
+title: Go SDK developer guide
+sidebar_label: Go SDK
+description:
+  Explore the Temporal Go SDK feature guides to seamlessly develop and manage Temporal Applications with core
+  components, Temporal Client connections, testing, debugging, versioning, and more.
+toc_max_heading_level: 4
+keywords:
+  - Go SDK
+tags:
+  - Go SDK
+  - Temporal SDKs
+---
+
+import * as Components from '@site/src/components';
+
+![Go SDK Banner](/img/assets/banner-go-temporal.png)
+
+## Install and get started
+
+You can find detailed installation instructions for the Go SDK in the [Quickstart](/develop/go/set-up-your-local-go).
+
+There's also a short walkthrough of how to use the Temporal primitives (Activities, Workflows, and Workers) to build and run a Temporal application to get you up and running.
+
+Once your local Temporal Service is set up, continue building with the following resources:
+
+- [Workflow basics](/develop/go/workflows/basics)
+- [Activity basics](/develop/go/activities/basics)
+- [Start an Activity execution](/develop/go/activities/execution)
+- [Run Worker processes](/develop/go/workers/run-worker-process)
+
+From there, you can dive deeper into any of the Temporal primitives to start building Workflows that fit your use cases.
+
+## [Workflows](/develop/go/workflows)
+
+- [Workflow basics](/develop/go/workflows/basics)
+- [Child Workflows](/develop/go/workflows/child-workflows)
+- [Continue-As-New](/develop/go/workflows/continue-as-new)
+- [Cancellation](/develop/go/workflows/cancellation)
+- [Timeouts](/develop/go/workflows/timeouts)
+- [Message passing](/develop/go/workflows/message-passing)
+- [Selectors](/develop/go/workflows/selectors)
+- [Side effects](/develop/go/workflows/side-effects)
+- [Schedules](/develop/go/workflows/schedules)
+- [Timers](/develop/go/workflows/timers)
+- [Dynamic Workflow](/develop/go/workflows/dynamic-workflow)
+- [Versioning](/develop/go/workflows/versioning)
+
+## [Activities](/develop/go/activities)
+
+- [Activity basics](/develop/go/activities/basics)
+- [Activity execution](/develop/go/activities/execution)
+- [Standalone Activities](/develop/go/activities/standalone-activities)
+- [Timeouts](/develop/go/activities/timeouts)
+- [Asynchronous Activity completion](/develop/go/activities/asynchronous-activity)
+- [Dynamic Activity](/develop/go/activities/dynamic-activity)
+- [Benign exceptions](/develop/go/activities/benign-exceptions)
+
+## [Workers](/develop/go/workers)
+
+- [Run a Worker](/develop/go/workers/run-worker-process)
+- [Sessions](/develop/go/workers/sessions)
+- [Serverless Workers](/develop/go/workers/serverless-workers)
+
+## [Temporal Client](/develop/go/client)
+
+- [Temporal Client](/develop/go/client/temporal-client)
+- [Namespaces](/develop/go/client/namespaces)
+
+## [Temporal Nexus](/develop/go/nexus)
+
+- [Quickstart](/develop/go/nexus/quickstart)
+- [Feature guide](/develop/go/nexus/feature-guide)
+
+## [Platform](/develop/go/platform)
+
+- [Observability](/develop/go/platform/observability)
+- [Enriching the UI](/develop/go/platform/enriching-ui)
+
+## [Best practices](/develop/go/best-practices)
+
+- [Multithreading](/develop/go/best-practices/multithreading)
+- [Context propagation](/develop/go/best-practices/context-propagation)
+- [Error handling](/develop/go/best-practices/error-handling)
+- [Debugging](/develop/go/best-practices/debugging)
+- [Testing](/develop/go/best-practices/testing-suite)
+- [Data handling](/develop/go/data-handling)
+
+## Temporal Go Technical Resources
+
+- [Go SDK Quickstart - Setup Guide](/develop/go/set-up-your-local-go)
+- [Go API Documentation](https://pkg.go.dev/go.temporal.io/sdk)
+- [Go SDK Code Samples](https://github.com/temporalio/samples-go)
+- [Go SDK GitHub](https://github.com/temporalio/sdk-go)
+- [Temporal 101 in Go Free Course](https://learn.temporal.io/courses/temporal_101/go/)
+
+### Where are SDK-specific code examples? {#code-samples}
+
+- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal
+  Application implementation in conjunction with
+  [application documentation](https://learn.temporal.io/examples/go/background-checks/).
+- [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a
+  quick-start development app for users. This sample works in conjunction with the
+  ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
+- [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go):
+  Provides a quick-start development app for users. It demonstrates a basic "money transfer" Workflow Definition and
+  works in conjunction with the
+  [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
+- [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go):
+  Demonstrates some of the patterns that could be implemented for a subscription-style business process.
+- [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping
+  cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
+  This application sample works in conjunction with the
+  [eCommerce in Go tutorial](https://learn.temporal.io/tutorials/go/build-an-ecommerce-app).
+
+## Get Connected with the Temporal Go Community
+
+- [Temporal Go Community Slack](https://temporalio.slack.com/archives/CTDTU3J4T)
+- [Go SDK Forum](https://community.temporal.io/tag/go-sdk)

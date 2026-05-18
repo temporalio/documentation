@@ -1,0 +1,58 @@
+# Worker Shutdown Behavior
+
+When a Worker shuts down, it stops polling for new tasks and begins the shutdown sequence.
+In the case of in-flight Workflow Tasks, shutdown may cause them to fail if they aren’t completed in time, after exhausting Retry Policy attempts.
+
+There are two types of shutdown behavior that can occur, depending on whether an idea of “graceful shutdown” is configured.
+
+## Graceful Shutdown
+
+Graceful shutdown configures how much time a Worker has to complete its current task before shutting down.
+An Activity is able to determine that the Worker it’s running on is being shut down, through the Activity context.
+
+> Core SDKs - `graceful_shutdown_period`
+
+> Go - `WorkerStopTimeout`
+
+> Java - `shutdown()` followed by `awaitTermination(timeout, unit)`
+
+### Workflow tasks
+
+Any in-flight Workflow Tasks are (attempted to be) completed.
+The only reason they may not immediately, is if Workflow code is (incorrectly) blocking, or because of Local Activities (see below).
+
+### Activities
+
+Activities are allowed to complete during the graceful shutdown period.
+
+### Local Activities
+
+Because Local Activities run within a Workflow Task, current and future Local Activities within the same Workflow Task will be allowed to run and complete, assuming there is no additional command to yield to.
+
+If the Local Activity is unable to complete by the graceful shutdown period, the Local Activity attempt is sent a cancel signal.
+In this case, no new Local Activities will be retried or started, and the Worker is shut down.
+The Worker still waits for the current Workflow Task to complete, meaning you can eventually hit your Workflow Task or execution timeout, unless another Worker is spun up.
+
+## Non-Graceful Period Shutdown
+
+This behavior is for either no graceful period being specified, or if the shutdown has taken longer than the configured graceful period.
+In all cases, the Activity context is canceled and the Worker will finish shutdown when the current Workflow Task completes (with either success or failure).
+
+:::note
+Go and Core SDKs behave differently when we pass task timeout and the Activity or Local Activity is still running:
+
+**Go** - The shutdown completes, but the Activity will continue to run and use a slot.
+
+**Core** - The Worker shutdown will not complete while the Activity completes.
+:::
+
+### Local Activities
+
+The Local Activity is sent a cancel signal, then the Workflow Task heartbeats stop, and no new Local Activities will be retried or started.
+The Worker still waits for the current Workflow Task to complete, meaning you can eventually hit your Workflow Task or execution timeout, unless another Worker is spun up.
+
+## General Developer Guidance
+
+- Ensure Activities and Local Activities **honor context cancellation** or other shutdown signals.
+- Expect that **long or hung Local Activities may block shutdown** unless you fail early.
+  It is recommended that Local Activities should already generally be used for short Activities.

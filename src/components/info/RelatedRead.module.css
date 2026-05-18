@@ -1,0 +1,38 @@
+/* src/components/RelatedRead.module.css */
+.relatedReadDiv {
+  margin: 20px 0;
+}
+
+.relatedReadLabel {
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.relatedReadList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.relatedReadLink {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.archetypeTag {
+  margin-left: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--tag-background-color);
+  color: var(--tag-text-color);
+  font-size: 0.8rem;
+}
+
+.languageIcon,
+.encyclopediaIcon {
+  width: 1.3rem; /* Increased size by 30% */
+  height: 1.3rem; /* Increased size by 30% */
+  margin-right: 10px;
+  filter: grayscale(100%);
+  vertical-align: middle; /* Align icon vertically with the text */
+}

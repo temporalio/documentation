@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",          // keep in sync with webpack
+    "jsx": "react-jsx",                  // fine
+    "skipLibCheck": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    // Avoid redefining @site/@generated here unless you also wire webpack.
+    // If you must, ensure webpack aliases match exactly.
+    // "baseUrl": ".",
+    // "paths": { "@site/*": ["./*"], "@generated/*": [".docusaurus/*"] },
+
+    "types": ["@docusaurus/module-type-aliases", "react", "react-dom"]
+  },
+  "include": [
+    "src",
+    "docusaurus.config.*",
+    "sidebars.*",
+    "types"
+  ],
+  "exclude": ["node_modules", "build", ".docusaurus"]
+}

@@ -1,0 +1,41 @@
+---
+id: security
+title: Temporal Platform security
+sidebar_label: Security
+description: Discover general security practices of Temporal Technologies, SaaS security with Temporal Cloud, and how to self-host a secure Temporal Platform on our security pages.
+slug: /security
+toc_max_heading_level: 4
+keywords:
+  - security
+tags:
+  - Security
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Find security information for your Temporal deployment, whether you're using Temporal Cloud or self-hosting.
+
+<PatternCards items={[
+  {
+    href: "https://trust.temporal.io",
+    title: "Company Security",
+    description: "Learn about Temporal Technologies' general security practices, compliance certifications, and organizational security measures.",
+    external: true,
+  },
+  {
+    href: "/cloud/security",
+    title: "Temporal Cloud Security",
+    description: "Explore the security features of our SaaS offering, including mTLS, end-to-end encryption, and enterprise compliance.",
+  },
+  {
+    href: "/self-hosted-guide/security",
+    title: "Self-Hosted Security",
+    description: "Discover how to deploy and secure your own Temporal Platform infrastructure with production-ready best practices.",
+  },
+  {
+    href: "https://temporal.io/pages/cloud-security-white-paper",
+    title: "Temporal Cloud Security Whitepaper",
+    description: "Learn how Temporal Cloud provides provable security by design - orchestrating encrypted workflows without ever accessing your sensitive data.",
+    external: true,
+  },
+]} />

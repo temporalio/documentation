@@ -1,0 +1,34 @@
+---
+id: latency-availability
+slug: /cloud/nexus/latency-availability
+title: Latency and Availability - Temporal Nexus
+description: Learn about Nexus latency and availability
+sidebar_label: Latency and Availability
+tags:
+  - Temporal Cloud
+  - Nexus
+keywords:
+  - Temporal Nexus
+  - Nexus
+  - latency
+  - availability
+  - SLO
+  - SLA
+  - error rate
+  - service level
+  - service level objective
+  - service level agreement
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+Nexus latency and availability in Temporal Cloud:
+
+- **SLOs and SLAs** - Nexus operations (for example, `RespondWorkflowTaskCompleted`, `PollNexusTaskQueue`, `RespondNexusTaskCompleted`, and `RespondNexusTaskFailed`) have the same [latency SLOs](/cloud/service-availability#latency) and [availability SLAs](/cloud/sla) as other Worker requests in both caller and handler Namespaces.
+- **[Nexus metrics](/nexus/metrics)** - SDK and Cloud latency metrics for monitoring Nexus performance.
+- **Cross-Namespace connectivity** - Traffic routes through a global mTLS-secured Envoy mesh. Same-region Namespaces have low latency; cross-region latency varies by provider. See [secure connectivity](/nexus/security#secure-connectivity).

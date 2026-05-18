@@ -1,0 +1,131 @@
+---
+id: nexus-registry
+title: Nexus Registry
+sidebar_label: Nexus Registry
+description: Use the Nexus Registry to manage Nexus Endpoints.
+toc_max_heading_level: 4
+slug: /nexus/registry
+keywords:
+  - nexus registry
+  - manage endpoint
+  - create endpoint
+  - edit endpoint
+  - search endpoint
+  - endpoint access control
+  - nexus
+  - temporal nexus
+tags:
+  - Nexus
+  - Concepts
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+The [Nexus Registry](/glossary#nexus-registry) manages [Nexus Endpoints](/nexus/endpoints). 
+Developers can advertise available Endpoints and Services, so others can find and use them in their caller Workflows.
+Adding an Endpoint to the Registry deploys it for immediate runtime use.
+Endpoint names must be unique within the Registry.
+In Temporal Cloud, the Registry is global across your entire Account, spanning all Namespaces.
+In self-hosted deployments, it is scoped to a Cluster.
+
+## View and manage Nexus Endpoints
+
+Manage Endpoints using the Temporal UI, CLI, Terraform provider, or [Cloud Ops API](/ops).
+
+:::tip RESOURCES
+
+- [Terraform support](/cloud/terraform-provider#manage-temporal-cloud-nexus-endpoints-with-terraform) for Temporal Cloud.
+- [tcld nexus](/cloud/tcld/nexus) for Temporal Cloud.
+- [temporal operator nexus](/cli/operator#nexus) for self-hosted deployments.
+  :::
+
+### Search for a Nexus Endpoint
+
+Search by Endpoint name or target Namespace.
+
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-endpoints-ss.png"
+    title="Nexus Endpoints"
+/>
+
+The details page shows the target Namespace, Task Queue, and description rendered as markdown.
+
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-billing-ss.png"
+    title="Nexus Billing"
+/>
+
+### Create a Nexus Endpoint
+
+Creating an Endpoint includes setting an Access Policy - the allowlist of caller Namespaces permitted to use the Endpoint.
+No callers are allowed by default, even if in the same Namespace as the Endpoint target.
+
+<CaptionedImage
+    src="/img/cloud/nexus/create-nexus-endpoint-ss.png"
+    title="Create Nexus Endpoint"
+/>
+
+### Edit a Nexus Endpoint
+
+Everything except the Endpoint name can be edited.
+New Operations route to the updated target immediately.
+
+:::caution Changing the target Namespace
+
+- **In-flight async Operations** - Completion callbacks point to the original handler Namespace and are unaffected, but Cancel requests route to the new target.
+- **Workflow ID uniqueness** - IDs are scoped per Namespace. Signal-With-Start creates a new Workflow in the new target even if the same ID is active in the old target, resulting in potential duplicates.
+- **Recommendation:** Drain existing Nexus Operations and underlying handler Workflows before changing the target Namespace.
+
+:::
+
+<CaptionedImage
+    src="/img/cloud/nexus/target-namespace-ss.png"
+    title="Edit Nexus Endpoint"
+/>
+
+### Configure runtime access controls
+
+The Access Policy controls which caller Namespaces can use an Endpoint at runtime.
+No callers are allowed by default.
+
+See [Runtime Access Controls](/nexus/security#runtime-access-controls) for details.
+
+<CaptionedImage
+    src="/img/cloud/nexus/create-nexus-endpoint-ss.png"
+    title="Configure runtime access controls"
+/>
+
+## Roles and permissions
+
+:::info
+
+The Nexus Registry uses default roles in Temporal Cloud. For self-hosted deployments, you can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin to restrict access).
+
+:::
+
+In Temporal Cloud, Nexus Registry respects RBAC permissions, and restricts functionality based on user role:
+
+| Action                     | Required permissions                                      |
+|---------------------------|-----------------------------------------------------------|
+| View or search Endpoints  | Read-only role (or higher) at the Account level           |
+| Manage Endpoints          | Developer role (or higher) and Namespace Admin on target Namespace |
+
+See [Nexus security in Temporal Cloud](/cloud/nexus/security).
+
+## Automate Nexus Endpoint provisioning and lifecycle management
+
+There are two ways to automate endpoint provisioning and lifecycle management: Terraform and the Operator API.
+
+:::tip RESOURCES
+
+- [Terraform support](/cloud/terraform-provider#manage-temporal-cloud-nexus-endpoints-with-terraform) for Temporal Cloud.
+- [Cloud Ops API](/ops) for Temporal Cloud.
+- [Operator API](https://github.com/temporalio/api/blob/master/temporal/api/operatorservice/v1/service.proto) for self-hosted deployments.
+
+:::

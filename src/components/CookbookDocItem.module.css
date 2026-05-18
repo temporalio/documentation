@@ -1,0 +1,129 @@
+.main {
+  padding: 0 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  display: grid;
+  gap: 2rem;
+  width: min(100%, 1080px);
+  grid-template-columns: minmax(0, min(90vw, 720px));
+  justify-content: center;
+}
+
+.wrapper[data-has-toc='true'] {
+  grid-template-columns: minmax(0, min(90vw, 720px)) 260px;
+}
+
+.article {
+  width: 100%;
+  max-width: min(90vw, 720px);
+  margin: 0 auto;
+}
+
+.syntheticHeader {
+  margin-bottom: var(--ifm-spacing-lg, 1.5rem);
+}
+
+.syntheticHeader h1 {
+  margin-bottom: var(--ifm-spacing-md, 1rem);
+}
+
+.lastUpdated {
+  margin: 0 0 var(--ifm-spacing-sm, 0.75rem);
+  color: #465A78;
+  font-size: 0.95rem;
+}
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: var(--ifm-spacing-sm, 0.75rem);
+  margin-bottom: var(--ifm-spacing-lg, 1.5rem);
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ifm-color-emphasis-800);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease,
+    color 160ms ease, box-shadow 160ms ease;
+}
+
+.actionLink:hover,
+.actionLink:focus-visible {
+  text-decoration: none;
+  background: color-mix(in srgb, var(--ifm-color-emphasis-800) 12%, transparent);
+  color: var(--ifm-color-emphasis-900);
+}
+
+.actionLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ifm-color-emphasis-800) 18%, transparent);
+}
+
+.actionGithub {
+  margin-left: auto;
+}
+
+.actionGithub[aria-disabled='true'] {
+  opacity: 0.5;
+}
+
+.actionIcon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.actionsRow :is(.actionLink, .actionGithub) {
+  white-space: nowrap;
+}
+
+.tocMobile {
+  margin-bottom: var(--ifm-spacing-lg, 1.5rem);
+}
+
+.toc {
+  position: sticky;
+  top: calc(var(--ifm-navbar-height, 60px) + 24px);
+  max-height: calc(100vh - var(--ifm-navbar-height, 60px) - 48px);
+  overflow: auto;
+}
+
+@media (max-width: 1200px) {
+  .wrapper[data-has-toc='true'] {
+    grid-template-columns: minmax(0, min(90vw, 720px));
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .actionsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actionGithub {
+    margin-left: 0;
+  }
+
+  .actionsRow :is(.actionLink, .actionGithub) {
+    width: 100%;
+    text-align: center;
+  }
+}

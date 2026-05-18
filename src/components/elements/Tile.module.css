@@ -1,0 +1,109 @@
+:global([data-theme='light']) {
+	--cookbook-tile-border-color: rgba(15, 23, 42, 0.08);
+	--cookbook-tile-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+}
+
+
+:global([data-theme='dark']) {
+	--cookbook-tile-border-color: rgba(148, 163, 184, 0.32);
+	--cookbook-tile-shadow: 0 24px 44px rgba(0, 5, 29, 0.5);
+}
+
+
+.tile,
+.tile.card,
+.card.tile {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	text-decoration: none;
+	color: var(--ifm-color-emphasis-900);
+	background-color: var(--ifm-background-color);
+	border-radius: 0;
+	border: 0.1px solid var(--cookbook-tile-border-color);
+	box-shadow: 0 0 0 1px var(--cookbook-tile-border-color);
+	transition: box-shadow 0.28s ease 70ms;
+}
+
+
+.tile[data-clickable='true'] {
+	cursor: pointer;
+}
+
+
+.tile:hover,
+.tile[data-clickable='true']:focus-visible {
+	box-shadow: 0 0 0 1px var(--cookbook-tile-border-color), var(--cookbook-tile-shadow);
+	text-decoration: none;
+}
+
+
+.tile[data-clickable='true']:focus-visible {
+	outline: none;
+}
+
+
+.header {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+}
+
+
+.icon {
+font-size: 1.5rem;
+line-height: 1;
+}
+
+
+.title {
+margin: 0;
+font-size: 1.1rem;
+font-weight: 600;
+color: inherit;
+}
+
+
+.body {
+color: var(--ifm-color-emphasis-700);
+}
+
+
+.description {
+margin: 0.25rem 0 0 0;
+}
+
+
+.tags {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+margin-top: 0.75rem;
+padding: 0;
+list-style: none;
+}
+
+
+.tag {
+font-size: 0.75rem;
+}
+
+
+.footer {
+margin-top: auto;
+}
+
+
+.cta {
+display: inline-flex;
+align-items: center;
+gap: 0.375rem;
+font-weight: 500;
+transition: color 0.18s ease;
+}
+
+
+.arrow {
+transform: translateX(0);
+transition: transform 0.18s ease;
+}

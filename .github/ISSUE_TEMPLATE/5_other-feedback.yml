@@ -1,0 +1,22 @@
+name: Other Feedback
+description: Share anything, such as positive feedback or general suggestions for improvement.
+labels: ["feedback"]
+body:
+  - type: checkboxes
+    id: employee
+    attributes:
+      label: Temporal Affiliation
+      options:
+        - label: I am a Temporal employee
+          required: false
+  - type: textarea
+    id: feedback
+    attributes:
+      label: General Feedback
+      description: Share feedback or broad suggestions for improving the documentation here. What did you like or find helpful about our site? What suggestions do you have for making our documentation better?
+      placeholder: Let us know what you think!
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "Thanks for helping us improve our documentation."

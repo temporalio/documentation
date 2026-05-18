@@ -1,0 +1,51 @@
+---
+id: index
+slug: /cloud/nexus
+title: Nexus
+description: Temporal Cloud adds global Nexus Registry, built-in access controls, audit logging, and multi-region connectivity on top of core Nexus.
+sidebar_label: Temporal Nexus
+keywords:
+  - Temporal Nexus
+  - cross namespace workflows
+  - cross team
+  - multi team
+  - cross domain
+  - multi region
+  - multi cloud
+  - modular workflow design
+  - workflow orchestration
+  - Temporal Cloud security
+  - Temporal Cloud services
+  - distributed workflows
+  - workflow API management
+tags:
+  - Nexus
+  - Temporal Cloud
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+Temporal Cloud builds on the [core Nexus experience](/nexus) with:
+
+- **Global [Nexus Registry](/nexus/registry)** - Scoped to your entire Account across all Namespaces. Workers in any Namespace can host Nexus Services for others to use.
+- **Built-in [access controls](/nexus/registry#configure-runtime-access-controls)** - Restrict which caller Namespaces can use a Nexus Endpoint at runtime.
+- **[Audit logging](/cloud/audit-logs)** - Stream Nexus Registry actions (create, update, delete Endpoints) to your audit log integration.
+- **Multi-region connectivity** - Nexus requests route across Namespaces within and across AWS and GCP using a global mTLS-secured Envoy mesh. Compatible with Namespaces that have [High Availability](/cloud/high-availability) as Endpoint targets.
+- **[Terraform support](/cloud/terraform-provider#manage-temporal-cloud-nexus-endpoints-with-terraform)** - Manage Nexus Endpoints with the Temporal Cloud Terraform provider.
+
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-overview-short.png"
+    title="Nexus Overview"
+/>
+
+## Learn more
+
+- [Evaluate Nexus](/evaluate/nexus) | [Keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082)
+- [How Nexus works](/nexus) | [Deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=934s)
