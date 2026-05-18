@@ -27,7 +27,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
@@ -67,7 +67,7 @@ jobs:
         shardTotal: [4]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4

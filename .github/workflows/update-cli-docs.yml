@@ -36,7 +36,7 @@ jobs:
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
 
       - name: Checkout docs repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
@@ -44,7 +44,7 @@ jobs:
           ref: main
 
       - name: Checkout CLI repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: cli
           ref: ${{ github.event.inputs.cli_release_tag }}
