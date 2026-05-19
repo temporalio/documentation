@@ -94,7 +94,7 @@ gRPC requests received per second.
 
 #### temporal\_cloud\_v1\_service\_request\_throttled\_count
 
-gRPC requests throttled per second.
+gRPC requests throttled per second. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) for guidance on setting alert thresholds against the corresponding limit metric.
 
 | Label | Description |
 | ----- | ----- |
@@ -124,7 +124,9 @@ The number of pollers that are actively long polling for a task. Use this to tra
 
 #### temporal\_cloud\_v1\_resource\_exhausted\_error\_count
 
-Resource exhaustion errors per second. This metric does not include throttling due to Namespace limits.
+Resource exhaustion errors per second, incremented when a single resource receives a burst larger than it can absorb. SDKs retry these errors gracefully. This metric does not include throttling due to Namespace limits - see [`temporal_cloud_v1_total_action_throttled_count`](#temporal_cloud_v1_total_action_throttled_count) and related throttle metrics for rate limiting against account limits.
+
+See [Detecting Resource Exhaustion](/cloud/service-health#detecting-resource-exhaustion) for guidance on investigating non-zero values.
 
 | Label | Description |
 | ----- | ----- |
@@ -633,7 +635,7 @@ This metric could have high cardinality depending on number of action types and 
 
 #### temporal\_cloud\_v1\_total\_action\_throttled\_count
 
-The total number of actions throttled per second.
+The total number of actions throttled per second. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) for guidance on setting alert thresholds against the corresponding limit metric.
 
 **Type**: Rate
 
@@ -651,7 +653,7 @@ Operations performed per second.
 
 #### temporal\_cloud\_v1\_operations\_throttled\_count
 
-Operations throttled due to rate limits per second.
+Operations throttled due to rate limits per second. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) for guidance on setting alert thresholds against the corresponding limit metric.
 
 | Label | Description |
 | ----- | ----- |
