@@ -56,22 +56,27 @@ There are different options for partial string matching when the type of the Sea
 #### Text
 
 Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
+Two things determine whether a query matches: how values are **tokenized**, and how the search **matches tokens**.
 
-The standard tokenizer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) designed for natural language, not structured identifiers.
-The splitting behavior is context-dependent: hyphens cause splits, but dots and underscores typically do not.
+##### Tokenization
+
+Both stored values and query strings are broken into tokens by the [standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) designed for natural language.
+The splitting behavior is context-dependent and often surprising for structured identifiers:
+
+| Delimiter | Splits? | Example |
+| --- | --- | --- |
+| Hyphens (`-`) | Yes | `order-processing-v2` → `order`, `processing`, `v2` |
+| Whitespace | Yes | `my business id` → `my`, `business`, `id` |
+| Underscores (`_`) | No | `payment_retry_handler` → one token |
+| Dots between words (`.`) | No | `com.example.workflows.ProcessOrder` → one token |
+| Dots between digits (`.`) | No | `v1.2.3` → one token |
+
 All tokens are lowercased.
-The query string is also tokenized, and the `=` operator returns a result if **any** query token matches **any** indexed token.
 
-The following table shows how the tokenizer handles common value shapes:
+##### Search matching
 
-| Stored value | Example query | Matches? | Why |
-| --- | --- | --- | --- |
-| `order-processing-v2` | `= "v2"` | Yes | Hyphens split: tokens are `order`, `processing`, `v2` |
-| `order-processing-v2` | `= "order-processing-v2"` | Yes | But also matches `payment-retry-v2` because `v2` is a shared token |
-| `payment_retry_handler` | `= "retry"` | No | Underscores do not split: the entire value is one token |
-| `payment_retry_handler` | `= "payment_retry"` | No | Partial underscore-joined strings are not tokens either |
-| `com.example.workflows.ProcessOrder` | `= "example"` | No | Dots between words do not split |
-| `v1.2.3-beta` | `= "v1.2.3"` | Yes | Dot-digit sequences stay together; hyphen splits off `beta` |
+The `=` operator on `Text` Search Attributes uses **OR matching**: a result is returned if **any** query token matches **any** indexed token.
+This means the query string is tokenized using the same rules, and each resulting token is matched independently.
 
 For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
@@ -95,10 +100,14 @@ Description = 'foo'
 
 :::caution Text type is unreliable for structured identifiers
 
-The standard tokenizer produces unpredictable results for structured data like dotted class names, hyphenated IDs, and snake_case identifiers.
-Some punctuation splits tokens (hyphens), some does not (underscores, dots between words), and mixed-delimiter strings produce especially surprising results.
-Additionally, the `=` operator uses **OR matching** across tokens: `= "order-processing-v2"` matches any workflow that contains `order`, `processing`, **or** `v2` as a token, which can return unexpected results.
-If you store structured identifiers in a Search Attribute, use the `Keyword` type for reliable exact matching.
+The combination of inconsistent tokenization and OR matching makes `Text` unreliable for structured data.
+
+**Tokenization is inconsistent:** hyphens split, but underscores and dots between words do not.
+Searching for `= "retry"` matches `payment-retry-v2` (hyphen splits) but not `payment_retry_handler` (underscore does not).
+
+**OR matching causes false positives:** `= "processing-v2"` is tokenized into `processing` and `v2`, then returns any workflow that contains **either** token — matching both `order-processing-v2` and `payment-retry-v2`.
+
+Use the `Keyword` type for reliable exact matching on structured identifiers.
 See [Choose a string type](/search-attribute#choose-a-string-type) for a comparison of string-based Search Attribute types.
 
 :::
