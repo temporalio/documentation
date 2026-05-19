@@ -159,12 +159,7 @@ Note:
 - **Double** is backed up by `scaled_float` Elasticsearch type with scale factor 10000 (4 decimal digits).
 - **Datetime** is backed up by `date` type with milliseconds precision in Elasticsearch 6 and `date_nanos` type with nanoseconds precision in Elasticsearch 7.
 - **Int** is 64-bit integer (`long` Elasticsearch type).
-- **Keyword** and **Text** types are concepts taken from Elasticsearch. Each word in a **Text** is considered a searchable keyword.
-  For a UUID, that can be problematic because Elasticsearch indexes each portion of the UUID separately.
-  To have the whole string considered as a searchable keyword, use the **Keyword** type.
-  For example, if the key `ProductId` has the value of `2dd29ab7-2dd8-4668-83e0-89cae261cfb1`:
-  - As a **Keyword** it would be matched only by `ProductId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1`.
-  - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
+- With Temporal Server v1.19 and earlier, the **Keyword** type can store a list of values.
 - With Temporal Server v1.20 and later, the **Keyword** type supports only a single value.
   To store a list of values, use **KeywordList**.
 
@@ -181,6 +176,33 @@ If you are storing lists in **Int** attributes, consider either migrating to **K
 :::
 
 - The **Text** type cannot be used in the "Order By" clause.
+
+#### Choose a string type {#choose-a-string-type}
+
+Temporal offers three string-based Search Attribute types with different indexing and matching behavior.
+
+| Type | Indexing | Supported operators | Best for |
+| --- | --- | --- | --- |
+| **Keyword** | Stored as a single token | `=`, `!=`, `IN`, `STARTS_WITH`, `BETWEEN`, `ORDER BY` | Identifiers, UUIDs, enum values, structured strings |
+| **KeywordList** | List of single tokens | `=`, `!=`, `IN` | Multi-value tags, labels |
+| **Text** | Tokenized into individual words | `=` (matches any individual token) | Free-form descriptions, notes |
+
+:::caution Text type splits values at punctuation
+
+The `Text` type uses the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which splits values at punctuation characters (`.`, `-`, `/`, `_`, `:`, and others) and lowercases each token.
+For example, `order-processing-v2` becomes the tokens `[order, processing, v2]`.
+A query for `= "order-processing"` will not match because `order-processing` is not a single token.
+
+Use `Keyword` for structured identifiers such as workflow type names, hyphenated IDs, file paths, and host:port pairs.
+See [Text matching in List Filters](/list-filter#text) for details on how tokenization affects queries.
+
+:::
+
+:::note
+
+Broader tokenizer and exact-matching improvements are being evaluated as part of future Visibility enhancements.
+
+:::
 
 #### Custom Search Attributes limits {#custom-search-attribute-limits}
 
