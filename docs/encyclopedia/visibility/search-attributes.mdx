@@ -187,14 +187,13 @@ Temporal offers three string-based Search Attribute types with different indexin
 | **KeywordList** | List of single tokens | `=`, `!=`, `IN` | Multi-value tags, labels |
 | **Text** | Tokenized into individual words | `=` (matches any individual token) | Free-form descriptions, notes |
 
-:::caution Text type splits values at punctuation
+:::caution Text type is unreliable for structured identifiers
 
-The `Text` type uses the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which splits values at punctuation characters (`.`, `-`, `/`, `:`, and others) and lowercases each token.
-Underscores do not cause splits (`payment_retry` stays as one token).
-For example, `order-processing-v2` becomes the tokens `[order, processing, v2]`.
-A query for `= "order-processing"` will not match because `order-processing` is not a single token.
+The `Text` type uses the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) designed for natural language.
+The splitting behavior is context-dependent and often surprising for structured data: hyphens cause splits, but dots and underscores typically do not.
+For example, searching for `= "v2"` matches a stored value of `order-processing-v2`, but searching for `= "retry"` does not match `payment_retry_handler`.
 
-Use `Keyword` for structured identifiers such as workflow type names, hyphenated IDs, file paths, and host:port pairs.
+Use `Keyword` for structured identifiers such as workflow type names, hyphenated IDs, file paths, and dotted class names.
 See [Text matching in List Filters](/list-filter#text) for details on how tokenization affects queries.
 
 :::

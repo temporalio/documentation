@@ -57,16 +57,18 @@ There are different options for partial string matching when the type of the Sea
 
 Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
 
-The standard tokenizer splits values on [Unicode word boundaries](https://unicode.org/reports/tr29/) — punctuation characters like `.`, `-`, `/`, and `:` act as delimiters.
-Underscores do not cause splits (`payment_retry` stays as one token).
+The standard tokenizer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) designed for natural language, not structured identifiers.
+The splitting behavior is context-dependent: hyphens cause splits, but dots and underscores typically do not.
 All tokens are lowercased.
-The following table shows how common value shapes are tokenized:
 
-| Stored value | Tokens produced |
-| --- | --- |
-| `com.example.workflows.payment.ProcessOrder` | `com`, `example`, `workflows`, `payment`, `processorder` |
-| `order-processing-v2` | `order`, `processing`, `v2` |
-| `/app/workflows/payment/retry` | `app`, `workflows`, `payment`, `retry` |
+The following table shows how the tokenizer handles common value shapes:
+
+| Stored value | Example query | Matches? | Why |
+| --- | --- | --- | --- |
+| `order-processing-v2` | `= "v2"` | Yes | Hyphens split: tokens are `order`, `processing`, `v2` |
+| `order-processing-v2` | `= "order-processing"` | No | `order-processing` is not a single token |
+| `payment_retry_handler` | `= "retry"` | No | Underscores do not split: the entire value is one token |
+| `com.example.workflows.ProcessOrder` | `= "example"` | No | Dots between words do not split as expected |
 
 For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
@@ -88,11 +90,11 @@ Description = 'foobar'
 Description = 'foo'
 ```
 
-:::caution Queries must match complete tokens
+:::caution Text type is unreliable for structured identifiers
 
-Searches match individual tokens, not substrings that span across token boundaries.
-For example, `= "order-processing"` will not match a stored value of `order-processing-v2` because `order-processing` is not a single token — the tokenizer splits it into `order` and `processing` separately.
-If you need exact matching on structured identifiers, use the `Keyword` type instead.
+The standard tokenizer produces unpredictable results for structured data like dotted class names, hyphenated IDs, and snake_case identifiers.
+Some punctuation splits tokens (hyphens), some does not (underscores, dots between words), and mixed-delimiter strings produce especially surprising results.
+If you store structured identifiers in a Search Attribute, use the `Keyword` type for reliable exact matching.
 See [Choose a string type](/search-attribute#choose-a-string-type) for a comparison of string-based Search Attribute types.
 
 :::
