@@ -170,7 +170,8 @@ Note:
 
 :::warning List-of-values deprecation for non-list types
 
-Storing a list of values in a non-list Search Attribute type (for example, multiple integers in an **Int** attribute or multiple strings in a **Keyword** attribute) is deprecated and will be enforced after September 30, 2026.
+Storing a list of values in a non-list Search Attribute type (such as multiple strings in a **Keyword** attribute) is deprecated.  
+New namespaces on Temporal Cloud are already blocked from using this pattern. Existing Namespaces that rely on it will need to migrate before Sep. 30, 2026. After that date, Workflow Executions with invalid Search Attribute values will fail. 
 This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
 
 If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
