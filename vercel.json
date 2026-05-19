@@ -1947,11 +1947,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/typescript/converters-and-encryption",
-      "destination": "/develop/typescript/best-practices/converters-and-encryption",
-      "permanent": true
-    },
-    {
       "source": "/develop/typescript/debugging",
       "destination": "/develop/typescript/best-practices/debugging",
       "permanent": true
