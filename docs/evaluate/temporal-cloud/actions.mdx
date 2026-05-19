@@ -46,7 +46,7 @@ happens only on the Worker side to reconstruct Workflow state from Event History
 operations.
 
 Billable Actions are visible in the [OpenMetrics endpoint](https://metrics.temporal.io),
-[Workflow History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards,
+[Event History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards,
 and the [Billing API](/cloud/billing-api). Action types and categories can help estimate usage, identify specific Action
 types that are driving usage, optimize workflows by tracking usage spikes, and troubleshoot errors. For example:
 
@@ -57,7 +57,7 @@ The following is the mapping of Action Categories to Action types. The Action Ty
 endpoints can differ based on what is visible to a system. Action Categories and Action Types are not available in the
 billing API.
 
-Usage and Billing data will have the most complete Actions data while Workflow history and metrics will help with
+Usage and Billing data will have the most complete Actions data while Event history and metrics will help with
 detailed _estimates_. For example, [History Event Types](https://docs.temporal.io/workflow-execution/event) are provided
 for transparency, but do not always have a simple 1:1 relationship with Action Types. The Categories, Action types, and
 available endpoints are listed in the following sections:
@@ -150,7 +150,7 @@ available endpoints are listed in the following sections:
 | Usage Name                 | Metric Name                  | History Event Type                                                                                                                                                                                                                                                           |
 | -------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Signal Workflow            | `signal_workflow`            | `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED`                                                                                                                                                                                                                                     |
-| Signal External Workflow   | `signal_external_workflow`   | `EVENT_TYPE_SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED` (signaler workflow history) `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` (signaled Workflow history) Note: The UI shows a billable action only in the signaled Workflow history, not in the signaler Workflow history. |
+| Signal External Workflow   | `signal_external_workflow`   | `EVENT_TYPE_SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED` (signaler event history) `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` (signaled Event history) Note: The UI shows a billable action only in the signaled Event history, not in the signaler Event history. |
 | Signal Workflow With Start | `signal_workflow_with_start` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` followed by `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` if the workflow didn’t exist, or only `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` if the Workflow existed.                                                                         |
 
 ## Query {#query}
@@ -213,7 +213,7 @@ accrues three actions:
 
 ## Export {#export}
 
-[Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your
+[Workflow History Export](/cloud/export) enables you to export closed Event Histories to a cloud storage sink of your
 choice.
 
 - **Workflow exported**. Each Workflow exported accrues a single action.

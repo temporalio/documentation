@@ -109,7 +109,7 @@ Ports are configurable in the Temporal Service configuration.
 
 ## What is a History Service? {#history-service}
 
-The History Service is responsible for persisting Workflow Execution state to the Workflow History.
+The History Service is responsible for persisting Workflow Execution state to the Event History.
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 

@@ -836,7 +836,7 @@ including retries and any usage of Continue As New.
 
 #### [Workflow History Export](/cloud/export)
 
-Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.
+Workflow History export allows users to export Closed Event Histories to a user's Cloud Storage Sink.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_ -->
 
