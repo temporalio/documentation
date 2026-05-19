@@ -176,7 +176,6 @@ This pattern was unintended behavior inherited from the underlying Elasticsearch
 If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
 If you are storing lists in **Int** attributes, consider either migrating to **KeywordList** (storing integers as strings, with string-based comparison only) or splitting into multiple individual **Int** attributes.
 
-New namespaces are already blocked from using this pattern, and existing namespaces that rely on it will need to migrate.
 
 :::
 
