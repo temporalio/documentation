@@ -57,7 +57,8 @@ There are different options for partial string matching when the type of the Sea
 
 Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
 
-The standard tokenizer splits values on Unicode word boundaries — punctuation characters like `.`, `-`, `/`, `_`, and `:` act as delimiters.
+The standard tokenizer splits values on [Unicode word boundaries](https://unicode.org/reports/tr29/) — punctuation characters like `.`, `-`, `/`, and `:` act as delimiters.
+Underscores do not cause splits (`payment_retry` stays as one token).
 All tokens are lowercased.
 The following table shows how common value shapes are tokenized:
 

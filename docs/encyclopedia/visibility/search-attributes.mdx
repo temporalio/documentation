@@ -189,7 +189,8 @@ Temporal offers three string-based Search Attribute types with different indexin
 
 :::caution Text type splits values at punctuation
 
-The `Text` type uses the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which splits values at punctuation characters (`.`, `-`, `/`, `_`, `:`, and others) and lowercases each token.
+The `Text` type uses the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which splits values at punctuation characters (`.`, `-`, `/`, `:`, and others) and lowercases each token.
+Underscores do not cause splits (`payment_retry` stays as one token).
 For example, `order-processing-v2` becomes the tokens `[order, processing, v2]`.
 A query for `= "order-processing"` will not match because `order-processing` is not a single token.
 
