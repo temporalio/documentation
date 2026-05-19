@@ -179,30 +179,27 @@ If you are storing lists in **Int** attributes, consider either migrating to **K
 
 #### Choose a string type {#choose-a-string-type}
 
-Temporal offers three string-based Search Attribute types with different indexing and matching behavior.
+Temporal offers three string-based Search Attribute types.
+The right choice depends on what you store and how you need to search for it.
 
-| Type | Indexing | Supported operators | Best for |
-| --- | --- | --- | --- |
-| **Keyword** | Stored as a single token | `=`, `!=`, `IN`, `STARTS_WITH`, `BETWEEN`, `ORDER BY` | Identifiers, UUIDs, enum values, structured strings |
-| **KeywordList** | List of single tokens | `=`, `!=`, `IN` | Multi-value tags, labels |
-| **Text** | Tokenized into individual words | `=` (matches any individual token) | Free-form descriptions, notes |
+- **Use `Keyword`** when you need exact matching on a single value — workflow type names, UUIDs, hyphenated IDs, dotted class names, file paths, enum values, or any structured identifier.
+  `Keyword` stores the value as-is and supports `=`, `!=`, `IN`, `STARTS_WITH`, `BETWEEN`, and `ORDER BY`.
+- **Use `KeywordList`** when you need to store and match against multiple values on a single attribute — tags, labels, or categories.
+  `KeywordList` supports `=`, `!=`, and `IN`.
+- **Use `Text`** only for free-form, human-readable content where you want word-level search — descriptions, notes, or error messages.
+  `Text` tokenizes values into individual words and uses OR matching with the `=` operator.
+  See [Text matching in List Filters](/list-filter#text) for details on how tokenization and matching work.
 
-:::caution Text type is unreliable for structured identifiers
+:::tip
 
-The `Text` type uses the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), which applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) designed for natural language.
-There are two problems for structured data:
-
-1. **Tokenization is inconsistent:** hyphens split tokens, but underscores and dots between words do not. Searching for `= "retry"` matches `payment-retry-v2` but not `payment_retry_handler`.
-2. **Search uses OR matching:** the `=` operator returns results if **any** query token matches **any** indexed token. `= "processing-v2"` matches any workflow containing `processing` **or** `v2`, returning false positives.
-
-Use `Keyword` for structured identifiers such as workflow type names, hyphenated IDs, file paths, and dotted class names.
-See [Text matching in List Filters](/list-filter#text) for details.
+Most custom Search Attributes store structured identifiers, so `Keyword` is the right default choice.
+Choose `Text` only when you specifically need word-level search on prose-like content.
 
 :::
 
 :::note
 
-Broader tokenizer and exact-matching improvements are being evaluated as part of future Visibility enhancements.
+Broader tokenizer and exact-matching improvements for `Text` Search Attributes are being evaluated as part of future Visibility enhancements.
 
 :::
 
