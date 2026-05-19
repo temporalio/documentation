@@ -60,15 +60,18 @@ Search Attributes of type `Text` are [broken up into words](https://www.elastic.
 The standard tokenizer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) designed for natural language, not structured identifiers.
 The splitting behavior is context-dependent: hyphens cause splits, but dots and underscores typically do not.
 All tokens are lowercased.
+The query string is also tokenized, and the `=` operator returns a result if **any** query token matches **any** indexed token.
 
 The following table shows how the tokenizer handles common value shapes:
 
 | Stored value | Example query | Matches? | Why |
 | --- | --- | --- | --- |
 | `order-processing-v2` | `= "v2"` | Yes | Hyphens split: tokens are `order`, `processing`, `v2` |
-| `order-processing-v2` | `= "order-processing"` | No | `order-processing` is not a single token |
+| `order-processing-v2` | `= "order-processing-v2"` | Yes | But also matches `payment-retry-v2` because `v2` is a shared token |
 | `payment_retry_handler` | `= "retry"` | No | Underscores do not split: the entire value is one token |
-| `com.example.workflows.ProcessOrder` | `= "example"` | No | Dots between words do not split as expected |
+| `payment_retry_handler` | `= "payment_retry"` | No | Partial underscore-joined strings are not tokens either |
+| `com.example.workflows.ProcessOrder` | `= "example"` | No | Dots between words do not split |
+| `v1.2.3-beta` | `= "v1.2.3"` | Yes | Dot-digit sequences stay together; hyphen splits off `beta` |
 
 For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
@@ -94,6 +97,7 @@ Description = 'foo'
 
 The standard tokenizer produces unpredictable results for structured data like dotted class names, hyphenated IDs, and snake_case identifiers.
 Some punctuation splits tokens (hyphens), some does not (underscores, dots between words), and mixed-delimiter strings produce especially surprising results.
+Additionally, the `=` operator uses **OR matching** across tokens: `= "order-processing-v2"` matches any workflow that contains `order`, `processing`, **or** `v2` as a token, which can return unexpected results.
 If you store structured identifiers in a Search Attribute, use the `Keyword` type for reliable exact matching.
 See [Choose a string type](/search-attribute#choose-a-string-type) for a comparison of string-based Search Attribute types.
 
