@@ -165,9 +165,22 @@ Note:
   For example, if the key `ProductId` has the value of `2dd29ab7-2dd8-4668-83e0-89cae261cfb1`:
   - As a **Keyword** it would be matched only by `ProductId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1`.
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
-- With Temporal Server v1.19 and earlier, the **Keyword** type can store a list of values.
 - With Temporal Server v1.20 and later, the **Keyword** type supports only a single value.
   To store a list of values, use **KeywordList**.
+
+:::warning List-of-values deprecation for non-list types
+
+Storing a list of values in a non-list Search Attribute type (for example, multiple integers in an **Int** attribute or multiple strings in a **Keyword** attribute) is deprecated and will be enforced after September 30, 2026.
+This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
+
+If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
+If you are storing lists in **Int** attributes, consider either migrating to **KeywordList** (storing integers as strings, with string-based comparison only) or splitting into multiple individual **Int** attributes.
+
+Temporal Cloud is actively enforcing this restriction.
+New namespaces are already blocked from using this pattern, and existing namespaces that rely on it will need to migrate.
+
+:::
+
 - The **Text** type cannot be used in the "Order By" clause.
 
 #### Custom Search Attributes limits {#custom-search-attribute-limits}
