@@ -56,15 +56,15 @@ There are different options for partial string matching when the type of the Sea
 #### Text
 
 `Text` Search Attributes support word-level search.
-Both stored values and query strings are broken into tokens by the [Elasticsearch standard tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html), and the `=` operator returns a result if any query token matches any indexed token.
+Both stored values and query strings are analyzed by the [Elasticsearch standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html), and the `=` operator returns a result if any query token matches any indexed token.
 
 If you need exact matching on identifiers, UUIDs, or other structured strings, use `Keyword` instead.
 See [Choose a string type](/search-attribute#choose-a-string-type).
 
 ##### Tokenization {#text-tokenization}
 
-The standard tokenizer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) to split values into tokens.
-All tokens are lowercased.
+The standard analyzer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) to split values into tokens.
+All tokens are lowercased by the analyzer's lowercase filter.
 The splitting behavior depends on the delimiter:
 
 | Delimiter | Splits? | Example |
@@ -74,6 +74,8 @@ The splitting behavior depends on the delimiter:
 | Underscores (`_`) | No | `payment_retry_handler` → one token |
 | Dots between words (`.`) | No | `com.example.workflows.ProcessOrder` → one token |
 | Dots between digits (`.`) | No | `v1.2.3` → one token |
+
+A dot between a digit and a letter (for example, `v1.ProcessOrder`) may split into separate tokens.
 
 ##### Search matching {#text-search-matching}
 
