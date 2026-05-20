@@ -138,27 +138,31 @@ openssl verify -CAfile ca.pem client-cert.pem
 ### Report collected data
 Provide all collected data to Temporal via a [support ticket](/cloud/support#ticketing). 
 
-Use the following template for the collected data.
+In your ticket, please provide:
+* mTLS certificate
+* cluster configuration json output for each cluster
+* type of visibility store for each cluster
+* customer search attributes for each cluster/namespace
+* metrics for each namespace
 
-```
-Temporal Cloud Account:
-mTLS Certificate:
+Use the following template for reporting cluster/namespace mappings.
 
-<for each cluster>
-Cluster Name: <name>
-Target Cloud/Region: <region>
-Type of Visibility Store: <store>
-Cluster Configuration: <temporal cli output>
-Custom Search Attributes (if Elasticsearch/OpenSearch): <temporal cli output>
+```yaml
+customer:
+  account_id: "temporal cloud account id"
 
-Namespaces:
-   <for each Namespace>
-   Namespace Name: <name>
-   Translated Name: <name>
-   Custom Search Attributes (if SQL): <temporal cli output>
-   Metrics: <metrics data>
-   <end>
-<end>
+clusters:
+  - cluster_name: "cluster1"
+    namespaces:
+      - source_namespace: "ns1"
+        cloud_namespace: "ns1.account"
+        cloud_region: "changeme"
+      - source_namespace: "ns2"
+        cloud_namespace: "ns2.account"
+        cloud_region: "changeme"  
+
+  - cluster_name: "clusterN"
+    namespaces: ...
 ```
 
 ## Phase 2: Setup
