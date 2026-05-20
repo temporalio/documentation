@@ -166,7 +166,7 @@ At a high level, when a caller Workflow executes a Nexus Operation:
 1. The caller Worker schedules the Operation with a [ScheduleNexusOperation command](/references/commands#schedulenexusoperation), atomically handing off execution to the caller's Nexus Machinery.
 2. The handler Worker receives a [Nexus Task](/tasks#nexus-task) by polling the Endpoint's target Task Queue.
 3. The handler processes the task and returns the result (synchronous) or an Operation token (asynchronous).
-4. The caller's Nexus Machinery records a NexusOperation event ([Started](/references/events#nexusoperationstarted), [Completed](/references/events#nexusoperationcompleted), [Failed](/references/events#nexusoperationfailed), [Canceled](/references/events#nexusoperationcanceled), or [TimedOut](/references/events#nexusoperationtimedout)) in the caller's Workflow History.
+4. The caller's Nexus Machinery records a NexusOperation event ([Started](/references/events#nexusoperationstarted), [Completed](/references/events#nexusoperationcompleted), [Failed](/references/events#nexusoperationfailed), [Canceled](/references/events#nexusoperationcanceled), or [TimedOut](/references/events#nexusoperationtimedout)) in the caller's Event History.
 
 ## Automatic retries {#automatic-retries}
 
