@@ -18,7 +18,7 @@ jobs:
       BRANCH_REPORTS_DIR: reports/${{ github.event.ref }}
     steps:
       - name: Checkout GitHub Pages Branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: gh-pages
 

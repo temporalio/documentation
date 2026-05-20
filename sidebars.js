@@ -617,7 +617,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/integrations/index',
               },
-              items: ['develop/python/integrations/braintrust'],
+              items: [
+                'develop/python/integrations/braintrust',
+                'develop/python/integrations/langgraph',
+                'develop/python/integrations/langsmith',
+              ],
             },
           ],
         },
@@ -1326,6 +1330,7 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            'production-deployment/worker-deployments/unversioned-to-versioned-migration',
             {
               type: 'category',
               label: 'Serverless Workers',
