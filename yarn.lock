@@ -3743,6 +3743,18 @@
   resolved "https://registry.npmjs.org/@ungap/structured-clone/-/structured-clone-1.3.0.tgz"
   integrity sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==
 
+"@vercel/functions@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.5.1.tgz#008c45551eacec2ea595c76d260581bf100aaa69"
+  integrity sha512-ndh5v+uhWqGA8033oD0i0KHvqUHcLlLCOaLOw5L+xx5zVsWUSQcZPKEYk2nm51aisnKhcnTylxnOmhx+w4UCRA==
+  dependencies:
+    "@vercel/oidc" "3.4.1"
+
+"@vercel/oidc@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-3.4.1.tgz#7f7f0361da6e021273bbf5bf467f5c495488c91e"
+  integrity sha512-H6B+/ig/GoahccL3WZjiHayHw1H5KhvTJNceqYulwfK9kkz5iul2hTmYzcJ7tTCQzyd0dutuL9xYFZCyLUqsog==
+
 "@webassemblyjs/ast@1.14.1", "@webassemblyjs/ast@^1.14.1":
   version "1.14.1"
   resolved "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.14.1.tgz"
