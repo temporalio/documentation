@@ -65,17 +65,21 @@ See [Choose a string type](/search-attribute#choose-a-string-type).
 
 The standard analyzer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) to split values into tokens.
 All tokens are lowercased by the analyzer's lowercase filter.
-The splitting behavior depends on the delimiter:
 
-| Delimiter | Splits? | Example |
+Most punctuation and whitespace act as delimiters.
+For example, `order-processing-v2` produces three tokens: `order`, `processing`, `v2`.
+
+The following characters do **not** split when they appear between two letters or between two digits:
+
+| Character | Example | Tokens |
 | --- | --- | --- |
-| Hyphens (`-`) | Yes | `order-processing-v2` → `order`, `processing`, `v2` |
-| Whitespace | Yes | `my business id` → `my`, `business`, `id` |
-| Underscores (`_`) | No | `payment_retry_handler` → one token |
-| Dots between words (`.`) | No | `com.example.workflows.ProcessOrder` → one token |
-| Dots between digits (`.`) | No | `v1.2.3` → one token |
+| Underscores (`_`) | `payment_retry_handler` | one token |
+| Dots (`.`) | `com.example.workflows.ProcessOrder` | one token |
+| Colons (`:`) | `alpha:bravo` | one token |
+| Apostrophes (`'`) | `it's` | one token |
 
-A dot between a digit and a letter (for example, `v1.ProcessOrder`) may split into separate tokens.
+Dots and colons between digits also stay connected (`v1.2.3` → one token).
+However, a dot or colon between a digit and a letter does split: `v1.ProcessOrder` → `v1`, `processorder`.
 
 ##### Search matching {#text-search-matching}
 
