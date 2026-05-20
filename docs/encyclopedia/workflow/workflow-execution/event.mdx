@@ -135,7 +135,7 @@ Email addresses can be displayed, which may be considered Personally Identifiabl
 
 :::
 
-Principal Attribution for Workflow Executions is a server-derived set of non-spoofable `Principal` fields for Workflow history events.
+Principal Attribution for Workflow Executions is a server-derived set of non-spoofable `Principal` fields for Event history events.
 
 The `Principal` fields represent the authenticated principal responsible for a [dataplane](/cloud/overview#data-plane-and-control-plane) execution action. 
 This allows for identification of the entity that took a given action. 
@@ -159,14 +159,14 @@ Possible values are as follows:
 | `mtls` | Common Name (CN) or Subject Domain Name (DN) if CN is not present |
 | `temporal` | Temporal internal services |
 
-Anyone who has permission to read Workflow history in the Namespace (ReadOnly access and above) can see the Principal (and the metadata such as email address).
+Anyone who has permission to read Event history in the Namespace (ReadOnly access and above) can see the Principal (and the metadata such as email address).
 
 To enable Principal Attribution for a Namespace, contact [Temporal Cloud support](https://docs.temporal.io/cloud/support#support-ticket).
 
 ### Self-hosted Temporal
 
 In self-hosted Temporal, you can control Principal Attribution with a dynamic config flag scoped to the Namespace. 
-When enabled, the Principal returned by the `Authorizer` is stamped on Workflow history events.
+When enabled, the Principal returned by the `Authorizer` is stamped on Event history events.
 To enable, set `frontend.enablePrincipalPropagation` to `true` for the appropriate Namespace.
 
 When using the default `Authorizer` with the default JWT `ClaimMapper`, the following values are populated:
