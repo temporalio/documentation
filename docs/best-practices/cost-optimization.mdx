@@ -198,7 +198,7 @@ Use `SignalWithStart` instead of separate `StartWorkflow` and `SignalWorkflow` c
 
 ## Storage optimization
 
-[Storage costs](/cloud/pricing#storage) are divided into Active Storage (open Workflows) and Retained Storage (closed Event History during retention period).
+[Storage costs](/cloud/pricing#storage) are divided into Active Storage (open Workflows) and Retained Storage (closed Workflow History during retention period).
 Active Storage is significantly more expensive than Retained Storage.
 
 ### Active Storage
@@ -223,7 +223,7 @@ For very large payloads or binary data, store data externally (S3 or GCS) and pa
 
 ### Retained Storage
 
-Retained Storage applies to closed Event History during the retention period.
+Retained Storage applies to closed Workflow History during the retention period.
 The following sections detail optimization opportunities for Retained Storage.
 
 #### Retention periods
