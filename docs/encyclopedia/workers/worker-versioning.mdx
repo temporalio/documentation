@@ -34,6 +34,8 @@ Each Deployment has a name (such as your service name) and supports versioning t
 ## Worker Deployment Versions {#deployment-versions}
 
 A Worker Deployment Version represents an iteration of a Worker Deployment.
+Each Deployment Version is identified by a deployment name and a Build ID.
+The deployment name groups related Workers across versions, and the Build ID identifies a specific release of your Worker code.
 Each Deployment Version consists of Workers that share the same code build and environment.
 When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 

@@ -24,6 +24,9 @@ Worker Versioning is a Temporal feature that allows you to confidently deploy ne
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
 called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 
+For most teams, Worker Versioning should be the default recommendation for deploying Workflow code changes in
+production. If you can run versioned worker deployments, prefer Worker Versioning over patching.
+
 Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
 
 - Ramping traffic gradually to a new Worker Deployment Version.
@@ -58,8 +61,6 @@ Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and s
 
 :::note
 
-Worker Versioning is currently available in Public Preview.
-
 Minimum versions:
 
 - Go SDK version [v1.35.0](https://github.com/temporalio/sdk-go/releases/tag/v1.35.0)
@@ -68,7 +69,6 @@ Minimum versions:
 - Typescript [v1.12](https://github.com/temporalio/sdk-typescript/releases/tag/v1.12.0)
 - .NET [v1.7.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.7.0)
 - Ruby [v0.5.0](https://github.com/temporalio/sdk-ruby/releases/tag/v0.5.0)
-- Other SDKs: coming soon!
 
 Self-hosted users:
 
@@ -132,6 +132,9 @@ You also have the option to use the
 rainbow deployments of your Workers if you're using Kubernetes.
 
 :::
+
+If you cannot yet support blue-green or rainbow style deployments, use [patching](/patching) as a fallback while you
+work toward a versioned deployment model.
 
 ## Configuring a Worker for Versioning
 
@@ -210,8 +213,6 @@ const myWorker = await Worker.create({
   workerDeploymentOptions: {
     useWorkerVersioning: true,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
-
-    defaultVersioningBehavior: 'UNSPECIFIED',
   },
   connection: nativeConnection,
 });
@@ -310,7 +311,7 @@ Unspecified.
 :::
 
 You also want to make sure you understand how your Activities are going to work across different Worker Deployment
-Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#actvity-behavior-across-versions)
+Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
 ## Rolling out changes with the CLI
