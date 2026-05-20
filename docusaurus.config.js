@@ -389,7 +389,7 @@ module.exports = async function createConfigAsync() {
           // Generate both llms.txt (index) and llms-full.txt (complete content)
           generateLLMsTxt: true,
           generateLLMsFullTxt: true,
-          generateMarkdownFiles: true,
+          generateMarkdownFiles: false,
 
           // Exclude imported markdown partials that should not be published as standalone LLM docs.
           ignoreFiles: ['docs/cloud/references/regions/private-service.md', 'docs/cloud/references/regions/gcpregions.md'],
