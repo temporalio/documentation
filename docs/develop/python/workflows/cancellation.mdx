@@ -27,7 +27,7 @@ You can interrupt a Workflow Execution in one of the following ways:
 
 Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
 
-- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The system records a `WorkflowExecutionTerminated` event in the Event History.
 - The termination forcefully and immediately stops the Workflow Execution.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
@@ -40,7 +40,7 @@ Workflow is stuck and cannot be canceled normally.
 Canceling a Workflow provides a graceful way to stop Workflow Execution. This action resembles sending a `SIGTERM` to a
 process.
 
-- The system records a `WorkflowExecutionCancelRequested` event in the Workflow History.
+- The system records a `WorkflowExecutionCancelRequested` event in the Event History.
 - A Workflow Task gets scheduled to process the cancelation.
 - The Workflow code can handle the cancelation and execute any cleanup logic.
 - The system doesn't forcefully stop the Workflow.
@@ -119,7 +119,7 @@ The Activity handle is a Python task. By calling `cancel()`, you're essentially 
 
 Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
 
-- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The system records a `WorkflowExecutionTerminated` event in the Event History.
 - The termination forcefully and immediately stops the Workflow Execution.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
