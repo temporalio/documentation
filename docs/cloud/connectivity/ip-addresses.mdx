@@ -341,6 +341,60 @@ When you enable Stable IPs on an existing Namespace:
 
 **Connectivity Rules**: Stable IPs is set as the `enable_stable_ips` flag on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). Every Namespace that should resolve to Stable IPs must have that public Connectivity Rule attached. Namespaces without the rule attached continue to resolve to dynamic IPs.
 
+#### How to migrate from AWS PrivateLink to Stable IPs
+
+If your Namespace is currently reached over AWS PrivateLink and protected by a private Connectivity Rule, the safe migration path is to add the public path while the private path is still working, verify, and then remove the private path. This applies whether your Namespace is single-region or replicated.
+
+**Prerequisites:**
+
+- Note your existing private (PrivateLink) Connectivity Rule ID — you'll keep it attached during the overlap window.
+- Check whether your account already has a public Connectivity Rule. Only one is allowed per account; if one exists without Stable IPs enabled, you'll need to delete and recreate it (see [Permissions and limits](/cloud/connectivity#permissions-and-limits)).
+- Confirm that the VPCs and security groups that host your Workers and Temporal Clients allow egress to the Stable IP ranges on port `443`. If your egress is currently locked down to the PrivateLink VPC endpoint, you must expand it first.
+
+**Steps:**
+
+1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from `https://saas-api.tmprl.cloud/stable-ip-ranges` and add them to your egress allowlist before changing anything else. If you skip this, the cutover will black-hole traffic.
+
+2. **Create (or update) the account's public Connectivity Rule with Stable IPs enabled.**
+
+   ```bash
+   tcld connectivity-rule create --connectivity-type public --enable-stable-ips
+   ```
+
+   If you already have a public Connectivity Rule without Stable IPs, delete and recreate it — there is no in-place update flag, and creating a second public rule returns an error. Wait for the rule to reach `ACTIVE` before continuing.
+
+3. **Attach both rules to the Namespace simultaneously.** Connectivity Rules attach as a set (full replace), so include the existing private rule ID and the new public rule ID in one call:
+
+   ```bash
+   tcld namespace set-connectivity-rules \
+     --namespace "<namespace>.<account>" \
+     --connectivity-rule-ids "<private-rule-id>" \
+     --connectivity-rule-ids "<public-rule-id>"
+   ```
+
+   Workers continue to use PrivateLink at this point, because your private DNS still resolves the Namespace endpoint to the VPC endpoint. The public path is now *allowed* on Temporal's side but not yet *used*.
+
+4. **Switch client DNS resolution from PrivateLink to public.** This is the actual cutover. Remove the private DNS override — Route 53 private hosted zone, `/etc/hosts`, or VPC DNS resolver rules — so that `<namespace>.<account>.tmprl.cloud` resolves through public DNS to a Stable IP. Restart Workers to drop existing PrivateLink connections and force re-resolution.
+
+5. **Verify traffic is flowing over Stable IPs.** On a Worker host, run `dig <namespace>.<account>.tmprl.cloud` and confirm the answer is a Stable IP from the `/stable-ip-ranges` list, not your VPC endpoint IP. Confirm Workers are polling and there are no `RESOURCE_EXHAUSTED` or connection errors in their logs.
+
+6. **Detach the private Connectivity Rule.** Once you are confident all traffic is on the public path, remove the private rule by re-attaching only the public rule:
+
+   ```bash
+   tcld namespace set-connectivity-rules \
+     --namespace "<namespace>.<account>" \
+     --connectivity-rule-ids "<public-rule-id>"
+   ```
+
+7. **(Optional) Tear down the PrivateLink VPC endpoint** in AWS to stop incurring PrivateLink hourly and data-processing charges. Do not do this until step 6 has been stable for at least a few hours.
+
+**Gotchas:**
+
+- Do not remove the private Connectivity Rule before step 4. If you detach the private rule while Workers are still resolving the Namespace endpoint to the PrivateLink VPC endpoint, Temporal Cloud will block those connections at the edge.
+- A single connection uses one network path or the other. Workers connect over either PrivateLink or Stable IPs based on DNS resolution at connect time. There is no in-place switch without dropping the connection — that's why step 4 includes a Worker restart.
+- Same-region traffic still stays on the AWS backbone over Stable IPs (since both your Worker and the Namespace are in AWS), so you do not lose the "does not traverse the public internet" property by moving off PrivateLink.
+- TLS and SNI do not change. You are still hitting the Namespace endpoint (`<namespace>.<account>.tmprl.cloud`); only the IP it resolves to changes. mTLS and API key authentication continue to work unchanged.
+
 ### Changes to Stable IP ranges
 
 Temporal aims to keep Stable IP ranges consistent. Each Stable IP address is expected to remain active for at least 12 months.
