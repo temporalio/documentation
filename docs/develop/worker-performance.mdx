@@ -399,9 +399,8 @@ Activity slot counts depend on per-Activity resource consumption. Profile your A
 
 #### When to use resource-based slot suppliers
 
-Resource-based slot suppliers are suited to a narrow set of use cases.
-They can never perform as well as a properly configured fixed-size tuner, and they have foot-guns that make them tricky to use effectively.
-Reserve resource-based suppliers for the following scenarios:
+Resource-based slot suppliers are suited to specific use cases.
+A properly configured fixed-size tuner often delivers better performance, so reserve resource-based suppliers for the following scenarios:
 
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
