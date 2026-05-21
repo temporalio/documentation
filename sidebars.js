@@ -1429,6 +1429,7 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/error-handling-strategy',
         'best-practices/cost-optimization',
         'best-practices/knowledge-hub',
       ],
@@ -1494,13 +1495,15 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Detecting application failures',
+          label: 'Failures and error handling',
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'encyclopedia/detecting-application-failures',
+            id: 'encyclopedia/failures-and-error-handling',
           },
           items: [
+            'encyclopedia/application-failures',
+            'encyclopedia/detecting-application-failures',
             'encyclopedia/detecting-activity-failures',
             'encyclopedia/detecting-workflow-failures',
             'encyclopedia/retry-policies',
