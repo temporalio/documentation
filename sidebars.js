@@ -1495,11 +1495,11 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Failures and error handling',
+          label: 'Detecting application failures',
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'encyclopedia/failures-and-error-handling',
+            id: 'encyclopedia/detecting-application-failures',
           },
           items: [
             'encyclopedia/application-failures',
