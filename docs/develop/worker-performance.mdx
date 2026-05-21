@@ -391,10 +391,8 @@ Temporal offers three types of slot suppliers: fixed assignment, resource-based,
 **For most workloads, Temporal recommends fixed-size slot suppliers.**
 A fixed-size tuner with appropriately chosen values delivers better performance and more predictable behavior than a resource-based tuner.
 
-Each SDK provides sensible defaults for fixed-size slot counts.
-See [Compute defaults by SDK](/develop/worker-tuning-reference#compute-defaults-by-sdk) for the default values per language.
-Start with these defaults and adjust based on profiling.
-Activity slot counts depend on per-Activity resource consumption. Profile your Activities under load and adjust the count to maximize throughput without exhausting Worker resources.
+Each SDK provides [default slot counts](/develop/worker-tuning-reference#compute-defaults-by-sdk), but Temporal recommends actively tuning these values for your workload.
+See [Worker runtime performance tuning](#worker-performance-tuning) for guidance.
 
 #### When to use resource-based slot suppliers
 
