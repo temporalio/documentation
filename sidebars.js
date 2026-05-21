@@ -1429,7 +1429,6 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
-        'best-practices/error-handling-strategy',
         'best-practices/cost-optimization',
         'best-practices/knowledge-hub',
       ],
@@ -1502,8 +1501,6 @@ module.exports = {
             id: 'encyclopedia/detecting-application-failures',
           },
           items: [
-            'encyclopedia/application-failures',
-            'encyclopedia/detecting-application-failures',
             'encyclopedia/detecting-activity-failures',
             'encyclopedia/detecting-workflow-failures',
             'encyclopedia/retry-policies',
