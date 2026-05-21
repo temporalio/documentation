@@ -394,13 +394,11 @@ A fixed-size tuner with appropriately chosen values delivers better performance 
 Each SDK provides sensible defaults for fixed-size slot counts.
 See [Compute defaults by SDK](/develop/worker-tuning-reference#compute-defaults-by-sdk) for the default values per language.
 Start with these defaults and adjust based on profiling.
-Workflow Tasks make minimal demands on CPU and memory, so their slot counts rarely need tuning.
 Activity slot counts depend on per-Activity resource consumption. Profile your Activities under load and adjust the count to maximize throughput without exhausting Worker resources.
 
 #### When to use resource-based slot suppliers
 
 Resource-based slot suppliers are suited to specific use cases.
-A properly configured fixed-size tuner often delivers better performance, so reserve resource-based suppliers for the following scenarios:
 
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
