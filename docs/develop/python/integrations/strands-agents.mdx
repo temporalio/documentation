@@ -378,7 +378,7 @@ Worker(client, task_queue="strands", workflows=[MyWorkflow], activities=[delete_
 ## Structured output
 
 Like Strands' `Agent`, `TemporalAgent` supports structured output with `structured_output_model`. The plugin defaults
-to the [`pydantic_data_converter`](/develop/python/best-practices/data-handling/data-conversion), so Pydantic types
+to the [`pydantic_data_converter`](/develop/python/data-handling/data-conversion), so Pydantic types
 serialize cleanly across the Activity and Workflow boundary:
 
 ```python
@@ -553,7 +553,7 @@ class ChatWorkflow:
 
 ## Observability
 
-`StrandsPlugin` composes cleanly with the [OpenTelemetry plugin](/develop/python/observability#tracing). Register
+`StrandsPlugin` composes cleanly with the [OpenTelemetry plugin](/develop/python/platform/observability#tracing). Register
 `OpenTelemetryPlugin` on the client (Workers built from that client pick it up automatically) and `StrandsPlugin` on
 the Worker. You'll get OTel spans around the model, tool, and MCP Activities the plugin schedules, plus any spans
 Strands itself emits inside `invoke_async`:
