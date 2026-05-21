@@ -30,8 +30,6 @@ Those further break down into different interceptor types.
 Workflow inbound and outbound interceptor methods also execute during [replay](/develop/dotnet/best-practices/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
 See [Develop Workflow logic](/develop/dotnet/workflows/basics#workflow-logic-requirements) for details.
 
-If you want to write generic code shared by all inbound Workflow call handlers but want to skip read-only operations, check `workflow.unsafe.is_read_only()`.
-
 Activity and Client interceptors are not affected by replay.
 
 :::
@@ -58,7 +56,7 @@ var client = await TemporalClient.ConnectAsync(new()
 ```
 
 The `Interceptors` list can contain multiple interceptors.
-In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
+The default behavior for interceptors is to form a chain. A method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
 
 ### Register via a Plugin
 
@@ -66,7 +64,7 @@ If you're building a reusable library or want to bundle interceptors with other 
 
 ### Register on the Worker only 
 
-If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
+If your interceptor doesn't affect the Client, you can pass interceptors in the `Interceptors` argument of `TemporalWorker()`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
 
 ```dotnet
