@@ -28,7 +28,7 @@ All APIs are experimental and may be subject to backwards-incompatible changes.
 
 :::
 
-Standalone Nexus Operations are Nexus Operation Executions that run independently, without being orchestrated by a
+Standalone Nexus Operations let you run Nexus Operation Executions independently, without being orchestrated by a
 Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using `workflow.NewNexusClient()`, you
 execute a Standalone Nexus Operation directly from a Nexus Client created using `client.NewNexusClient()`.
 
@@ -61,8 +61,8 @@ application code (for example, a starter program), not from inside a Workflow De
 
 `ExecuteOperation` returns a [`NexusOperationHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#NexusOperationHandle)
 that you can use to get the result of the Operation.
-[`StartNexusOperationOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartNexusOperationOptions) requires `ID`
-and at least one of `ScheduleToCloseTimeout` or `StartToCloseTimeout`.
+[`StartNexusOperationOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartNexusOperationOptions) requires `ID`.
+`ScheduleToCloseTimeout` is optional and defaults to the maximum allowed by the Temporal server.
 
 ```go
 nexusClient, err := c.NewNexusClient(client.NexusClientOptions{
