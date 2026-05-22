@@ -90,7 +90,7 @@
     "@types/node": "^24.5.1",
     "@types/yaml": "^1.9.7",
     "dprint": "^0.54.0",
-    "eslint": "^7.32.0",
+    "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
     "husky": "^9.1.7",
     "hyperlink": "^5.0.4"
