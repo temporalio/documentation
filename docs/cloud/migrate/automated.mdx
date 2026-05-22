@@ -123,6 +123,8 @@ Verify your end-entity certificate with the following command.
 openssl verify -CAfile ca.pem client-cert.pem
 ```
 
+In the example above, the ca.pem file will be provided to Temporal where the client-cert.pem will be used by your S2S Proxy.
+
 ### Create Cloud Namespaces
 
 Create your cloud-side Namespaces noting current [naming requirements](/cloud/namespaces#temporal-cloud-namespace-name).
