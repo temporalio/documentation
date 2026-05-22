@@ -1,0 +1,175 @@
+.shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  overflow: hidden;
+  margin: 1.5rem 0;
+  min-height: 420px;
+}
+
+/* Step list sidebar */
+.stepList {
+  background: var(--ifm-background-surface-color);
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.stepBtn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: var(--ifm-color-emphasis-600);
+  transition: background 0.15s, color 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.stepBtn:hover {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+}
+
+.stepBtnActive {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+  border-left-color: #444CE7;
+}
+
+.stepBtnDone .stepNum {
+  background: #141414;
+  color: #F8FAFC;
+}
+
+.stepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 0;
+  background: var(--ifm-color-emphasis-300);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+  transition: background 0.15s;
+}
+
+.stepBtnActive .stepNum {
+  background: #444CE7;
+  color: #F8FAFC;
+}
+
+.stepTitle {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+/* Main panel */
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-background-color);
+  min-height: 0;
+}
+
+.description {
+  margin: 0;
+  padding: 1rem 1.25rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+  border-bottom: 1px solid var(--ifm-color-emphasis-100);
+}
+
+.codeArea {
+  flex: 1;
+  overflow: auto;
+  padding: 0.75rem 1rem;
+}
+
+/* Override Docusaurus tab styling inside the panel so it looks flush */
+.codeArea [class*='tabs__'] {
+  margin-bottom: 0;
+}
+
+/* Nav footer */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+}
+
+.navBtn {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.navBtn:hover:not(:disabled) {
+  background: #444CE7;
+  border-color: #444CE7;
+  color: #F8FAFC;
+}
+
+.navBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.navProgress {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Responsive: stack on narrow screens */
+@media (max-width: 640px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .stepList {
+    border-right: none;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .stepBtn {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    padding: 0.5rem 0.75rem;
+    gap: 0.25rem;
+  }
+
+  .stepBtnActive {
+    border-left-color: transparent;
+    border-bottom-color: #444CE7;
+  }
+
+  .stepTitle {
+    font-size: 0.7rem;
+    text-align: center;
+  }
+}

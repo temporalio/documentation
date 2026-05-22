@@ -1,0 +1,74 @@
+.wrapper {
+  margin: 0 0 2rem;
+}
+
+/* Tab bar */
+.tabBar {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  margin-bottom: 2rem;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-600);
+  transition: color 0.15s, border-color 0.15s;
+  border-radius: 0;
+}
+
+.tab:hover {
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.tabActive {
+  color: #444CE7;
+  border-bottom-color: #444CE7;
+  background: none;
+}
+
+.tabDone .tabNum {
+  background: #141414;
+  color: #F8FAFC;
+}
+
+.tabNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 0;
+  background: var(--ifm-color-emphasis-300);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+}
+
+.tabActive .tabNum {
+  background: #444CE7;
+  color: #F8FAFC;
+}
+
+.tabContent {
+  /* no extra wrapping styles — content flows naturally */
+}
+
+@media (max-width: 480px) {
+  .tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
