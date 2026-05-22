@@ -85,11 +85,17 @@ In this case, each type of box would have its own Task Queue and a Workflow can 
 
 If your use case involves more than one priority, you can create one Task Queue per priority, with a Worker pool per priority.
 
+Alternatively, you can use [Task Queue Priority](/develop/task-queue-priority-fairness), which lets you assign priority levels to Tasks within a single Task Queue.
+This approach avoids the overhead of managing multiple Task Queues and separate Worker pools while still ensuring higher-priority Tasks are processed first.
+
 ### Versioning
 
 Task Routing is the simplest way to version your code.
 
 If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
+
+Alternatively, you can use [Worker Versioning](/worker-versioning), which lets you tag Workers with a version and route Workflow and Activity Tasks to specific versions without requiring separate Task Queues.
+Worker Versioning supports both Pinned Workflows (which complete on a single Worker Deployment Version) and Auto-Upgrade Workflows (which automatically move to the latest version).
 
 ## What is a Worker Session? {#worker-session}
 
