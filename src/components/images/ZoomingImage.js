@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useColorMode } from '@docusaurus/theme-common';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
-const ZoomingImage = ({ src, alt, ariaLabel, initialWidth = '200px' }) => {
+function ZoomingImageContent({ src, alt, ariaLabel, initialWidth = '200px' }) {
   const [isZoomed, setIsZoomed] = useState(false);
   const { colorMode } = useColorMode();
 
@@ -44,6 +45,12 @@ const ZoomingImage = ({ src, alt, ariaLabel, initialWidth = '200px' }) => {
       />
     </div>
   );
-};
+}
+
+const ZoomingImage = (props) => (
+  <BrowserOnly fallback={<img src={props.src} alt={props.alt} style={{ width: props.initialWidth || '200px' }} />}>
+    {() => <ZoomingImageContent {...props} />}
+  </BrowserOnly>
+);
 
 export default ZoomingImage;
