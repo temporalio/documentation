@@ -27,7 +27,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
@@ -67,7 +67,7 @@ jobs:
         shardTotal: [4]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
@@ -90,7 +90,7 @@ jobs:
         with:
           attempt_limit: 3
           attempt_delay: 60000
-          action: actions/download-artifact@v5
+          action: actions/download-artifact@v8
           with: |
             name: build
             path: build
@@ -116,7 +116,7 @@ jobs:
       actions: read
     steps:
       - name: Download screenshots
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: screenshots
           pattern: screenshots-*

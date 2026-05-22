@@ -790,12 +790,12 @@ This will result in:
 ### Web UI
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and
-`NexusOperationCompleted` events in the caller's Workflow history:
+`NexusOperationCompleted` events in the caller's Event history:
 
 <CaptionedImage src="/img/cloud/nexus/go-sdk-observability-sync.png" title="Observability Sync" />
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`,
-`NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Workflow history:
+`NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Event history:
 
 <CaptionedImage src="/img/cloud/nexus/go-sdk-observability-async.png" title="Observability Async" />
 
@@ -808,7 +808,7 @@ on the handler Workflow:
 temporal workflow describe -w <ID>
 ```
 
-Nexus events are included in the caller's Workflow history:
+Nexus events are included in the caller's Event history:
 
 ```
 temporal workflow show -w <ID>

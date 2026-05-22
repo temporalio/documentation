@@ -151,7 +151,7 @@ export async function yourWorkflow(): Promise<string> {
 
 This is invalid because activity implementations should not be directly referenced by Workflow code.
 Activities are used by Workflows in order to make network calls and read from the filesystem, operations which are non-deterministic by nature because they rely on external state.
-Temporal records Activity results in the Workflow history and in case your Workflow is replayed, completed Activities will not be rerun, instead their recorded result will be delivered to the Workflow.
+Temporal records Activity results in the Event history and in case your Workflow is replayed, completed Activities will not be rerun, instead their recorded result will be delivered to the Workflow.
 
 You'll typically see an error in this form in the Webpack output:
 
@@ -270,7 +270,7 @@ Log it out and make sure it is an exact match with what is expected (often, the 
 
 ### Resetting Workflows to deal with logical bugs
 
-You can "rewind time" using the Temporal CLI, resetting Workflow History to some previous point in time. You can read the Temporal CLI docs on:
+You can "rewind time" using the Temporal CLI, resetting Event History to some previous point in time. You can read the Temporal CLI docs on:
 
 - [Restarting and resetting Workflows by ID](/cli)
 - [Resetting all Workflows by binary checksum identifier](/cli)

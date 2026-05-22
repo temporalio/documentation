@@ -19,8 +19,8 @@ tags:
 
 Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3 or GCP GCS), enabling:
 
-- Compliance and audit trails of complete Workflow History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto)
-- Analytics on Workflow History when ingested to the data platform of your choice
+- Compliance and audit trails of complete Event History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto)
+- Analytics on Event History when ingested to the data platform of your choice
 
 Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a Self-Hosted Temporal Server. 
 Archival is not supported in Temporal Cloud.
@@ -157,7 +157,7 @@ After Export has been configured, you can check that it's still working in sever
 1. **Object Storage**:
 
    - File Delivery: After the initial hour of setting up, inspect your object storage.
-     You should see the exported Workflow History files.
+     You should see the exported Event History files.
    - Directory Structure: Your exported files will adhere to the following naming convention and path:
 
    ```bash
