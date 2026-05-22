@@ -1,6 +1,7 @@
 import Chart from "chart.js/auto";
 import CodeBlock from "@theme/CodeBlock";
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import styles from "./retry-simulator.module.css";
 import { useColorMode } from "@docusaurus/theme-common";
 
@@ -45,6 +46,14 @@ func TestActivity(ctx context.Context, url string) error {
 );
 
 export default function RetrySimulator() {
+  return (
+    <BrowserOnly fallback={<div>Loading...</div>}>
+      {() => <RetrySimulatorContent />}
+    </BrowserOnly>
+  );
+}
+
+function RetrySimulatorContent() {
   const [state, setState] = useState({
     retries: [{ success: true, runtimeMS: 1 }],
     language: "typescript",
