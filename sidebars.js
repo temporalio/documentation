@@ -16,19 +16,7 @@ module.exports = {
           },
           items: [],
         },
-        {
-          type: 'category',
-          label: 'Build Your First Temporal Application',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'build-your-first-basic-workflow/index',
-          },
-          items: [
-            'build-your-first-basic-workflow/build-your-first-workflow',
-            'build-your-first-basic-workflow/simulate-failure',
-          ],
-        },
+        'build-your-first-basic-workflow/build-your-first-workflow',
       ],
     },
     {

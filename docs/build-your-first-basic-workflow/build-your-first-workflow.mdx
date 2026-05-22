@@ -1,7 +1,7 @@
 ---
 id: build-your-first-workflow
 title: Build Your First Temporal Application
-sidebar_label: "Part 1: Build Your First Temporal Application"
+sidebar_label: "Build Your First Temporal Application"
 hide_table_of_contents: true
 description: Learn Temporal's core concepts by building a money transfer Workflow. Experience reliability, failure handling, and live debugging in a short tutorial.
 keywords:
@@ -16,25 +16,26 @@ tags:
 ---
 
 import { CallToAction } from "@site/src/components/elements/CallToAction";
-import { TemporalProgress } from "@site/src/components/TemporalProgress";
 import { StatusIndicators } from "@site/src/components/StatusIndicators";
 import { RetryPolicyComparison } from "@site/src/components/RetryPolicyComparison";
 import { NextButton } from "@site/src/components/TutorialNavigation";
+import { TutorialCodeWalkthrough, TutorialStep } from "@site/src/components/TutorialCodeWalkthrough";
+import { TutorialTabs, TutorialTab } from "@site/src/components/TutorialTabs";
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import SdkTabs from "@site/src/components/elements/SdkTabs";
-import ThemedImage from '@theme/ThemedImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<TemporalProgress steps={[
-  { id: 'part1', label: 'Part 1: Build Your First Temporal Application', status: 'active', href: '/build-your-first-basic-workflow/build-your-first-workflow' },
-  { id: 'part2', label: 'Part 2: Simulate Failure', status: 'pending', href: '/build-your-first-basic-workflow/simulate-failure' }
-]} />
+<TutorialTabs>
 
-You'll build a money transfer app that withdraws from one account, deposits to another, and automatically refunds if the deposit fails — then run it against a local Temporal server and watch it complete in the UI.
+{/* ─── Part 1 ─── */}
+<TutorialTab label="Part 1: Build">
+
+You'll build a money transfer app that withdraws from one account, deposits to another, and refunds if the deposit fails. You'll run it against a local Temporal server and watch it complete in the UI.
 
 ### Before you begin
 
-<CallToAction 
+<CallToAction
   href="/quickstarts"
   buttonText="Quickstart Guide"
   description="Run through the Quickstart to set up your local environment."
@@ -48,8 +49,14 @@ You'll build a money transfer app that withdraws from one account, deposits to a
 ```bash
 git clone https://github.com/temporalio/money-transfer-project-template-python
 cd money-transfer-project-template-python
-python -m pip install temporalio
+python3 -m venv .venv
+source .venv/bin/activate
+pip install temporalio
 ```
+
+:::note Python virtual environment
+Python 3.12 and later requires packages to be installed inside a virtual environment. The `source .venv/bin/activate` command activates it in your current terminal. Run this in each new terminal window you open for this project.
+:::
 
 </SdkTabs.Python>
 <SdkTabs.Go>
@@ -63,9 +70,13 @@ cd money-transfer-project-template-go
 <SdkTabs.Java>
 
 ```bash
-git clone https://github.com/temporalio/money-transfer-project-java
-cd money-transfer-project-java
+git clone https://github.com/temporalio/money-transfer-project-template-java
+cd money-transfer-project-template-java
 ```
+
+:::note Prerequisites
+This project requires a JDK (Java 8+) and Maven. If `java -version` or `mvn -version` returns "command not found", install them before continuing.
+:::
 
 </SdkTabs.Java>
 <SdkTabs.TypeScript>
@@ -84,6 +95,10 @@ git clone https://github.com/temporalio/money-transfer-project-template-dotnet
 cd money-transfer-project-template-dotnet
 ```
 
+:::note Prerequisites
+This project requires the [.NET 8.0 SDK](https://dotnet.microsoft.com/download). Run `dotnet --version` to confirm it is installed.
+:::
+
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 
@@ -93,11 +108,15 @@ cd money-transfer-project-template-ruby
 bundle install
 ```
 
+:::note Prerequisites
+This project requires Ruby 3.1+ and Bundler. Run `ruby --version` and `bundle --version` to confirm both are installed.
+:::
+
 </SdkTabs.Ruby>
 </SdkTabs>
 
 :::tip
-Each repo is a GitHub Template — you can clone it to your own account as a starting point for your own Temporal application.
+Each repo is a GitHub Template. Clone it to your own account as a starting point for your own application.
 :::
 
 ## 2. Explore the code
@@ -106,459 +125,448 @@ A Temporal application has three parts: a **Workflow** that orchestrates the ste
 
 ### Workflow
 
-The Workflow defines the sequence: withdraw → deposit, and if the deposit fails, refund. It doesn't call the bank directly — it schedules Activities and Temporal handles retries and state.
+The Workflow takes a `PaymentDetails` input (source account, target account, amount, reference ID) defined in a shared file, and uses it to call each Activity in turn. Walk through the Workflow code step by step. Select your SDK in the tab row, then use **Next** to move through each piece.
+
+All snippets below come from your Workflow file:
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
 
-<!--SNIPSTART python-money-transfer-project-template-workflows-->
 [workflows.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/workflows.py)
-```py
-from datetime import timedelta
-
-from temporalio import workflow
-from temporalio.common import RetryPolicy
-from temporalio.exceptions import ActivityError
-
-with workflow.unsafe.imports_passed_through():
-    from activities import BankingActivities
-    from shared import PaymentDetails
-
-
-@workflow.defn
-class MoneyTransfer:
-    @workflow.run
-    async def run(self, payment_details: PaymentDetails) -> str:
-        retry_policy = RetryPolicy(
-            maximum_attempts=3,
-            maximum_interval=timedelta(seconds=2),
-            non_retryable_error_types=["InvalidAccountError", "InsufficientFundsError"],
-        )
-
-        # Withdraw money
-        withdraw_output = await workflow.execute_activity_method(
-            BankingActivities.withdraw,
-            payment_details,
-            start_to_close_timeout=timedelta(seconds=5),
-            retry_policy=retry_policy,
-        )
-
-        # Deposit money
-        try:
-            deposit_output = await workflow.execute_activity_method(
-                BankingActivities.deposit,
-                payment_details,
-                start_to_close_timeout=timedelta(seconds=5),
-                retry_policy=retry_policy,
-            )
-
-            result = f"Transfer complete (transaction IDs: {withdraw_output}, {deposit_output})"
-            return result
-        except ActivityError as deposit_err:
-            # Handle deposit error
-            workflow.logger.error(f"Deposit failed: {deposit_err}")
-            # Attempt to refund
-            try:
-                refund_output = await workflow.execute_activity_method(
-                    BankingActivities.refund,
-                    payment_details,
-                    start_to_close_timeout=timedelta(seconds=5),
-                    retry_policy=retry_policy,
-                )
-                workflow.logger.info(
-                    f"Refund successful. Confirmation ID: {refund_output}"
-                )
-            except ActivityError as refund_error:
-                workflow.logger.error(f"Refund failed: {refund_error}")
-                raise refund_error from deposit_err
-
-            # Re-raise deposit error if refund was successful
-            raise deposit_err
-
-
-```
-<!--SNIPEND-->
 
 </SdkTabs.Python>
-
 <SdkTabs.Go>
 
-<!--SNIPSTART money-transfer-project-template-go-workflow-->
 [workflow.go](https://github.com/temporalio/money-transfer-project-template-go/blob/main/workflow.go)
-```go
-func MoneyTransfer(ctx workflow.Context, input PaymentDetails) (string, error) {
-
-	// RetryPolicy specifies how to automatically handle retries if an Activity fails.
-	retrypolicy := &temporal.RetryPolicy{
-		InitialInterval:        time.Second,
-		BackoffCoefficient:     2.0,
-		MaximumInterval:        100 * time.Second,
-		MaximumAttempts:        500, // 0 is unlimited retries
-		NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
-	}
-
-	options := workflow.ActivityOptions{
-		// Timeout options specify when to automatically timeout Activity functions.
-		StartToCloseTimeout: time.Minute,
-		// Optionally provide a customized RetryPolicy.
-		// Temporal retries failed Activities by default.
-		RetryPolicy: retrypolicy,
-	}
-
-	// Apply the options.
-	ctx = workflow.WithActivityOptions(ctx, options)
-
-	// Withdraw money.
-	var withdrawOutput string
-
-	withdrawErr := workflow.ExecuteActivity(ctx, Withdraw, input).Get(ctx, &withdrawOutput)
-
-	if withdrawErr != nil {
-		return "", withdrawErr
-	}
-
-	// Deposit money.
-	var depositOutput string
-
-	depositErr := workflow.ExecuteActivity(ctx, Deposit, input).Get(ctx, &depositOutput)
-
-	if depositErr != nil {
-		// The deposit failed; put money back in original account.
-
-		var result string
-
-		refundErr := workflow.ExecuteActivity(ctx, Refund, input).Get(ctx, &result)
-
-		if refundErr != nil {
-			return "",
-				fmt.Errorf("Deposit: failed to deposit money into %v: %v. Money could not be returned to %v: %w",
-					input.TargetAccount, depositErr, input.SourceAccount, refundErr)
-		}
-
-		return "", fmt.Errorf("Deposit: failed to deposit money into %v: Money returned to %v: %w",
-			input.TargetAccount, input.SourceAccount, depositErr)
-	}
-
-	result := fmt.Sprintf("Transfer complete (transaction IDs: %s, %s)", withdrawOutput, depositOutput)
-	return result, nil
-}
-
-```
-<!--SNIPEND-->
 
 </SdkTabs.Go>
-
 <SdkTabs.Java>
 
-<Tabs>
-  <TabItem value="interface" label="Interface" default>
-
-<!--SNIPSTART money-transfer-java-workflow-interface-->
-[src/main/java/moneytransferapp/MoneyTransferWorkflow.java](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/MoneyTransferWorkflow.java)
-```java
-package moneytransferapp;
-
-import io.temporal.workflow.WorkflowInterface;
-import io.temporal.workflow.WorkflowMethod;
-
-@WorkflowInterface
-public interface MoneyTransferWorkflow {
-    // The Workflow Execution that starts this method can be initiated from code or
-    // from the 'temporal' CLI utility.
-    @WorkflowMethod
-    void transfer(TransactionDetails transaction);
-}
-```
-<!--SNIPEND-->
-
-  </TabItem>
-  <TabItem value="implementation" label="Implementation">
-
-<!--SNIPSTART money-transfer-java-workflow-implementation-->
-[src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java)
-```java
-package moneytransferapp;
-
-import io.temporal.activity.ActivityOptions;
-import io.temporal.workflow.Workflow;
-import io.temporal.common.RetryOptions;
-
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-
-public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
-    private static final String WITHDRAW = "Withdraw";
-
-    // RetryOptions specify how to automatically handle retries when Activities fail
-    private final RetryOptions retryoptions = RetryOptions.newBuilder()
-        .setInitialInterval(Duration.ofSeconds(1)) // Wait 1 second before first retry
-        .setMaximumInterval(Duration.ofSeconds(20)) // Do not exceed 20 seconds between retries
-        .setBackoffCoefficient(2) // Wait 1 second, then 2, then 4, etc
-        .setMaximumAttempts(5000) // Fail after 5000 attempts
-        .build();
-
-    // ActivityOptions specify the limits on how long an Activity can execute before
-    // being interrupted by the Orchestration service
-    private final ActivityOptions defaultActivityOptions = ActivityOptions.newBuilder()
-        .setRetryOptions(retryoptions) // Apply the RetryOptions defined above
-        .setStartToCloseTimeout(Duration.ofSeconds(2)) // Max execution time for single Activity
-        .setScheduleToCloseTimeout(Duration.ofSeconds(5000)) // Entire duration from scheduling to completion including queue time
-        .build();
-
-    private final Map<String, ActivityOptions> perActivityMethodOptions = new HashMap<String, ActivityOptions>() {{
-        // A heartbeat time-out is a proof-of life indicator that an activity is still working.
-        // The 5 second duration used here waits for up to 5 seconds to hear a heartbeat.
-        // If one is not heard, the Activity fails.
-        // The `withdraw` method is hard-coded to succeed, so this never happens.
-        // Use heartbeats for long-lived event-driven applications.
-        put(WITHDRAW, ActivityOptions.newBuilder().setHeartbeatTimeout(Duration.ofSeconds(5)).build());
-    }};
-
-    // ActivityStubs enable calls to methods as if the Activity object is local but actually perform an RPC invocation
-    private final AccountActivity accountActivityStub = Workflow.newActivityStub(AccountActivity.class, defaultActivityOptions, perActivityMethodOptions);
-
-    // The transfer method is the entry point to the Workflow
-    // Activity method executions can be orchestrated here or from within other Activity methods
-    @Override
-    public void transfer(TransactionDetails transaction) {
-        // Retrieve transaction information from the `transaction` instance
-        String sourceAccountId = transaction.getSourceAccountId();
-        String destinationAccountId = transaction.getDestinationAccountId();
-        String transactionReferenceId = transaction.getTransactionReferenceId();
-        int amountToTransfer = transaction.getAmountToTransfer();
-
-        // Stage 1: Withdraw funds from source
-        try {
-            // Launch `withdrawal` Activity
-            accountActivityStub.withdraw(sourceAccountId, transactionReferenceId, amountToTransfer);
-        } catch (Exception e) {
-            // If the withdrawal fails, for any exception, it's caught here
-            System.out.printf("[%s] Withdrawal of $%d from account %s failed", transactionReferenceId, amountToTransfer, sourceAccountId);
-            System.out.flush();
-
-            // Transaction ends here
-            return;
-        }
-
-        // Stage 2: Deposit funds to destination
-        try {
-            // Perform `deposit` Activity
-            accountActivityStub.deposit(destinationAccountId, transactionReferenceId, amountToTransfer);
-
-            // The `deposit` was successful
-            System.out.printf("[%s] Transaction succeeded.\n", transactionReferenceId);
-            System.out.flush();
-
-            //  Transaction ends here
-            return;
-        } catch (Exception e) {
-            // If the deposit fails, for any exception, it's caught here
-            System.out.printf("[%s] Deposit of $%d to account %s failed.\n", transactionReferenceId, amountToTransfer, destinationAccountId);
-            System.out.flush();
-        }
-
-        // Continue by compensating with a refund
-
-        try {
-            // Perform `refund` Activity
-            System.out.printf("[%s] Refunding $%d to account %s.\n", transactionReferenceId, amountToTransfer, sourceAccountId);
-            System.out.flush();
-
-            accountActivityStub.refund(sourceAccountId, transactionReferenceId, amountToTransfer);
-
-            // Recovery successful. Transaction ends here
-            System.out.printf("[%s] Refund to originating account was successful.\n", transactionReferenceId);
-            System.out.printf("[%s] Transaction is complete. No transfer made.\n", transactionReferenceId);
-            return;
-        } catch (Exception e) {
-            // A recovery mechanism can fail too. Handle any exception here
-            System.out.printf("[%s] Deposit of $%d to account %s failed. Did not compensate withdrawal.\n",
-                transactionReferenceId, amountToTransfer, destinationAccountId);
-            System.out.printf("[%s] Workflow failed.", transactionReferenceId);
-            System.out.flush();
-
-            // Rethrowing the exception causes a Workflow Task failure
-            throw(e);
-        }
-    }
-}
-```
-<!--SNIPEND-->
-
-  </TabItem>
-</Tabs>
+[src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java](https://github.com/temporalio/money-transfer-project-template-java/blob/main/src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java)
 
 </SdkTabs.Java>
-
 <SdkTabs.TypeScript>
 
-<!--SNIPSTART money-transfer-project-template-ts-workflow-->
 [src/workflows.ts](https://github.com/temporalio/money-transfer-project-template-ts/blob/main/src/workflows.ts)
-```ts
-import { proxyActivities } from '@temporalio/workflow';
-import { ApplicationFailure } from '@temporalio/common';
-
-import type * as activities from './activities';
-import type { PaymentDetails } from './shared';
-
-export async function moneyTransfer(details: PaymentDetails): Promise<string> {
-  // Get the Activities for the Workflow and set up the Activity Options.
-  const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
-    // RetryPolicy specifies how to automatically handle retries if an Activity fails.
-    retry: {
-      initialInterval: '1 second',
-      maximumInterval: '1 minute',
-      backoffCoefficient: 2,
-      maximumAttempts: 500,
-      nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],
-    },
-    startToCloseTimeout: '1 minute',
-  });
-
-  // Execute the withdraw Activity
-  let withdrawResult: string;
-  try {
-    withdrawResult = await withdraw(details);
-  } catch (withdrawErr) {
-    throw new ApplicationFailure(`Withdrawal failed. Error: ${withdrawErr}`);
-  }
-
-  // Execute the deposit Activity
-  let depositResult: string;
-  try {
-    depositResult = await deposit(details);
-  } catch (depositErr) {
-    // The deposit failed; try to refund the money.
-    let refundResult;
-    try {
-      refundResult = await refund(details);
-    } catch (refundErr) {
-      throw ApplicationFailure.create({
-        message: `Failed to deposit money into account ${details.targetAccount}. Money could not be returned to ${details.sourceAccount}. Cause: ${refundErr}.`,
-      });
-    }
-    throw ApplicationFailure.create({
-      message: `Failed to deposit money into account ${details.targetAccount}. Money returned to ${details.sourceAccount}. Cause: ${depositErr}.`,
-    });
-  }
-  return `Transfer complete (transaction IDs: ${withdrawResult}, ${depositResult})`;
-}
-```
-<!--SNIPEND-->
 
 </SdkTabs.TypeScript>
-
 <SdkTabs.DotNet>
 
-<!--SNIPSTART money-transfer-project-template-dotnet-workflow-->
 [MoneyTransferWorker/Workflow.cs](https://github.com/temporalio/money-transfer-project-template-dotnet/blob/main/MoneyTransferWorker/Workflow.cs)
-```cs
-using Temporalio.Exceptions;
-using Temporalio.Workflows;
-using Temporalio.MoneyTransferProject.MoneyTransferWorker;
-
-namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
-
-[Workflow]
-public class MoneyTransferWorkflow
-{
-    [WorkflowRun]
-    public async Task<string> RunAsync(PaymentDetails details)
-    {
-        var options = new ActivityOptions
-        {
-            StartToCloseTimeout = TimeSpan.FromSeconds(5),
-            RetryPolicy = new()
-            {
-                InitialInterval = TimeSpan.FromSeconds(1),
-                MaximumInterval = TimeSpan.FromSeconds(100),
-                BackoffCoefficient = 2,
-                MaximumAttempts = 3,
-                NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
-            }
-        };
-
-        var withdrawResult = await Workflow.ExecuteActivityAsync(
-            (BankingActivities act) => act.WithdrawAsync(details), options);
-
-        try
-        {
-            var depositResult = await Workflow.ExecuteActivityAsync(
-                (BankingActivities act) => act.DepositAsync(details), options);
-            return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
-        }
-        catch (ActivityFailureException ex) when (ex.InnerException is ApplicationFailureException)
-        {
-            await Workflow.ExecuteActivityAsync(
-                (BankingActivities act) => act.RefundAsync(details), options);
-            throw;
-        }
-    }
-}
-```
-<!--SNIPEND-->
 
 </SdkTabs.DotNet>
-
 <SdkTabs.Ruby>
 
-<!--SNIPSTART money-transfer-project-template-ruby-workflow-->
 [workflow.rb](https://github.com/temporalio/money-transfer-project-template-ruby/blob/main/workflow.rb)
-```rb
-require_relative 'activities'
-require_relative 'shared'
-require 'temporalio/workflow'
-
-module MoneyTransfer
-  class MoneyTransferWorkflow < Temporalio::Workflow::Definition
-    def execute(details)
-      retry_policy = Temporalio::RetryPolicy.new(
-        max_interval: 10,
-        non_retryable_error_types: [
-          'InvalidAccountError',
-          'InsufficientFundsError'
-        ]
-      )
-
-      activity_options = {
-        start_to_close_timeout: 10,
-        retry_policy:
-      }
-
-      withdraw_result = Temporalio::Workflow.execute_activity(
-        BankActivities::Withdraw, details, **activity_options
-      )
-
-      begin
-        deposit_result = Temporalio::Workflow.execute_activity(
-          BankActivities::Deposit, details, **activity_options
-        )
-        "Transfer complete (transaction IDs: #{withdraw_result}, #{deposit_result})"
-      rescue Temporalio::Error::ActivityError
-        Temporalio::Workflow.execute_activity(
-          BankActivities::Refund, details, **activity_options
-        )
-        raise
-      end
-    end
-  end
-end
-```
-<!--SNIPEND-->
 
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Activities
+<TutorialCodeWalkthrough>
 
-Activities are where the real work happens — each one calls an external service. If an Activity fails, Temporal retries it automatically. This application has three: Withdraw, Deposit, and Refund.
+<TutorialStep
+  title="Retry Policy"
+  description="Before calling any Activity, the Workflow defines a retry policy. Temporal retries failed Activities automatically. This policy controls how many times, how long to wait between attempts, and which errors should never be retried."
+>
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
 
-<Tabs>
-  <TabItem value="withdraw" label="Withdraw" default>
+```python
+retry_policy = RetryPolicy(
+    maximum_attempts=3,
+    maximum_interval=timedelta(seconds=2),
+    non_retryable_error_types=[
+        "InvalidAccountError",
+        "InsufficientFundsError",
+    ],
+)
+```
+
+`InvalidAccountError` and `InsufficientFundsError` are non-retryable because retrying won't fix them. The input is wrong. A transient network error is what retries are for.
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+    InitialInterval:        time.Second,
+    BackoffCoefficient:     2.0,
+    MaximumInterval:        100 * time.Second,
+    MaximumAttempts:        500, // 0 = unlimited
+    NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
+}
+
+options := workflow.ActivityOptions{
+    StartToCloseTimeout: time.Minute,
+    RetryPolicy:         retrypolicy,
+}
+ctx = workflow.WithActivityOptions(ctx, options)
+```
+
+`BackoffCoefficient: 2.0` means Temporal doubles the wait between each attempt: 1s, 2s, 4s, up to the `MaximumInterval` cap.
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```java
+private final RetryOptions retryoptions = RetryOptions.newBuilder()
+    .setInitialInterval(Duration.ofSeconds(1))
+    .setMaximumInterval(Duration.ofSeconds(20))
+    .setBackoffCoefficient(2)
+    .setMaximumAttempts(5000)
+    .build();
+
+private final ActivityOptions defaultActivityOptions = ActivityOptions.newBuilder()
+    .setRetryOptions(retryoptions)
+    .setStartToCloseTimeout(Duration.ofSeconds(2))
+    .setScheduleToCloseTimeout(Duration.ofSeconds(5000))
+    .build();
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+```typescript
+const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
+  retry: {
+    initialInterval: '1 second',
+    maximumInterval: '1 minute',
+    backoffCoefficient: 2,
+    maximumAttempts: 500,
+    nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],
+  },
+  startToCloseTimeout: '1 minute',
+});
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+var options = new ActivityOptions
+{
+    StartToCloseTimeout = TimeSpan.FromMinutes(5),
+    RetryPolicy = new()
+    {
+        InitialInterval = TimeSpan.FromSeconds(1),
+        MaximumInterval = TimeSpan.FromSeconds(100),
+        BackoffCoefficient = 2,
+        MaximumAttempts = 3,
+        NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
+    }
+};
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+retry_policy = Temporalio::RetryPolicy.new(
+  max_interval: 10,
+  non_retryable_error_types: ['InvalidAccountError', 'InsufficientFundsError']
+)
+
+activity_options = {
+  start_to_close_timeout: 10,
+  retry_policy:
+}
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+<RetryPolicyComparison />
+
+</TutorialStep>
+
+<TutorialStep
+  title="Withdraw"
+  description="The first Activity call withdraws from the source account. If it fails, the Workflow stops. There's nothing to undo yet, so no compensation is needed."
+>
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```python
+withdraw_output = await workflow.execute_activity_method(
+    BankingActivities.withdraw,
+    payment_details,
+    start_to_close_timeout=timedelta(seconds=5),
+    retry_policy=retry_policy,
+)
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```go
+var withdrawOutput string
+withdrawErr := workflow.ExecuteActivity(ctx, Withdraw, input).Get(ctx, &withdrawOutput)
+if withdrawErr != nil {
+    return "", withdrawErr
+}
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```java
+try {
+    accountActivityStub.withdraw(sourceAccountId, transactionReferenceId, amountToTransfer);
+} catch (Exception e) {
+    System.out.printf("[%s] Withdrawal of $%d from account %s failed",
+        transactionReferenceId, amountToTransfer, sourceAccountId);
+    return; // stop; nothing to compensate
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+```typescript
+let withdrawResult: string;
+try {
+    withdrawResult = await withdraw(details);
+} catch (withdrawErr) {
+    throw new ApplicationFailure(`Withdrawal failed. Error: ${withdrawErr}`);
+}
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+var withdrawResult = await Workflow.ExecuteActivityAsync(
+    (BankingActivities act) => act.WithdrawAsync(details), options);
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+withdraw_result = Temporalio::Workflow.execute_activity(
+  BankActivities::Withdraw, details, **activity_options
+)
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+</TutorialStep>
+
+<TutorialStep
+  title="Deposit"
+  description="If the withdrawal succeeded, the Workflow deposits into the target account. This is wrapped in error handling because a failed deposit needs compensation; money has already left the source account."
+>
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```python
+try:
+    deposit_output = await workflow.execute_activity_method(
+        BankingActivities.deposit,
+        payment_details,
+        start_to_close_timeout=timedelta(seconds=5),
+        retry_policy=retry_policy,
+    )
+    return f"Transfer complete (transaction IDs: {withdraw_output}, {deposit_output})"
+except ActivityError as deposit_err:
+    workflow.logger.error(f"Deposit failed: {deposit_err}")
+    # → falls through to refund
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```go
+var depositOutput string
+depositErr := workflow.ExecuteActivity(ctx, Deposit, input).Get(ctx, &depositOutput)
+if depositErr != nil {
+    // deposit failed; need to compensate
+}
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```java
+try {
+    accountActivityStub.deposit(destinationAccountId, transactionReferenceId, amountToTransfer);
+    System.out.printf("[%s] Transaction succeeded.\n", transactionReferenceId);
+    return;
+} catch (Exception e) {
+    System.out.printf("[%s] Deposit of $%d to account %s failed.\n",
+        transactionReferenceId, amountToTransfer, destinationAccountId);
+    // → falls through to refund
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+```typescript
+let depositResult: string;
+try {
+    depositResult = await deposit(details);
+} catch (depositErr) {
+    // deposit failed; try to refund
+}
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+try
+{
+    var depositResult = await Workflow.ExecuteActivityAsync(
+        () => BankingActivities.DepositAsync(details),
+        new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy });
+    return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
+}
+catch (Exception depositEx)
+{
+    // → falls through to refund
+}
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+begin
+  deposit_result = Temporalio::Workflow.execute_activity(
+    BankActivities::Deposit, details, **activity_options
+  )
+  "Transfer complete (transaction IDs: #{withdraw_result}, #{deposit_result})"
+rescue Temporalio::Error::ActivityError
+  # → falls through to refund
+end
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+</TutorialStep>
+
+<TutorialStep
+  title="Refund (compensation)"
+  description="If the deposit fails after a successful withdrawal, the Workflow compensates by refunding the source account. Each step that can be undone gets an explicit compensation path."
+>
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```python
+# inside the except block after a failed deposit
+try:
+    refund_output = await workflow.execute_activity_method(
+        BankingActivities.refund,
+        payment_details,
+        start_to_close_timeout=timedelta(seconds=5),
+        retry_policy=retry_policy,
+    )
+    workflow.logger.info(f"Refund successful. Confirmation ID: {refund_output}")
+except ActivityError as refund_error:
+    workflow.logger.error(f"Refund failed: {refund_error}")
+    raise refund_error from deposit_err
+
+raise deposit_err  # re-raise after successful refund
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```go
+// inside the depositErr != nil block
+var refundResult string
+refundErr := workflow.ExecuteActivity(ctx, Refund, input).Get(ctx, &refundResult)
+if refundErr != nil {
+    return "", fmt.Errorf("deposit failed: %v. Refund also failed: %w",
+        depositErr, refundErr)
+}
+return "", fmt.Errorf("deposit failed into %v: money returned to %v: %w",
+    input.TargetAccount, input.SourceAccount, depositErr)
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```java
+// after deposit fails, try to refund
+try {
+    System.out.printf("[%s] Refunding $%d to account %s.\n",
+        transactionReferenceId, amountToTransfer, sourceAccountId);
+    accountActivityStub.refund(sourceAccountId, transactionReferenceId, amountToTransfer);
+    System.out.printf("[%s] Refund successful. No transfer made.\n", transactionReferenceId);
+} catch (Exception e) {
+    System.out.printf("[%s] Refund also failed.\n", transactionReferenceId);
+    throw e;
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+```typescript
+// inside the depositErr catch block
+try {
+    await refund(details);
+} catch (refundErr) {
+    throw ApplicationFailure.create({
+        message: `Deposit failed and refund also failed. Cause: ${refundErr}`,
+    });
+}
+throw ApplicationFailure.create({
+    message: `Deposit failed. Money returned to ${details.sourceAccount}.`,
+});
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+// inside the catch (Exception depositEx) block
+string refundResult = await Workflow.ExecuteActivityAsync(
+    () => BankingActivities.RefundAsync(details),
+    new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy });
+throw new ApplicationFailureException(
+    $"Deposit failed. Money returned to {details.SourceAccount}.", depositEx);
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+# inside the ActivityError rescue block
+Temporalio::Workflow.execute_activity(
+  BankActivities::Refund, details, **activity_options
+)
+raise # re-raise after successful refund
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+</TutorialStep>
+
+</TutorialCodeWalkthrough>
+
+### Activities
+
+Activities do the real work. Each one calls an external service. If an Activity fails, Temporal retries it. The three Activities in this app: Withdraw, Deposit, and Refund.
+
+<TutorialCodeWalkthrough>
+
+<TutorialStep
+  title="Withdraw"
+  description="Each Activity is a plain function or method that calls an external service. There's no Temporal-specific orchestration logic. The Withdraw Activity debits the source account and returns a confirmation string."
+>
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
 
 <!--SNIPSTART python-money-transfer-project-template-withdraw-->
 [activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
@@ -592,8 +600,97 @@ class BankingActivities:
 ```
 <!--SNIPEND-->
 
-  </TabItem>
-  <TabItem value="deposit" label="Deposit">
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+<!--SNIPSTART money-transfer-project-template-go-activity-withdraw-->
+[activity.go](https://github.com/temporalio/money-transfer-project-template-go/blob/main/activity.go)
+```go
+func Withdraw(ctx context.Context, data PaymentDetails) (string, error) {
+	log.Printf("Withdrawing $%d from account %s.\n\n",
+		data.Amount,
+		data.SourceAccount,
+	)
+
+	referenceID := fmt.Sprintf("%s-withdrawal", data.ReferenceID)
+	bank := BankingService{"bank-api.example.com"}
+	confirmation, err := bank.Withdraw(data.SourceAccount, data.Amount, referenceID)
+	return confirmation, err
+}
+
+```
+<!--SNIPEND-->
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+[src/main/java/moneytransferapp/AccountActivityImpl.java](https://github.com/temporalio/money-transfer-project-template-java/blob/main/src/main/java/moneytransferapp/AccountActivityImpl.java)
+```java
+@Override
+public void withdraw(String accountId, String referenceId, int amount) {
+    System.out.printf("\nWithdrawing $%d from account %s.\n[ReferenceId: %s]\n", amount, accountId, referenceId);
+    System.out.flush();
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+<!--SNIPSTART money-transfer-project-template-ts-withdraw-activity-->
+[src/activities.ts](https://github.com/temporalio/money-transfer-project-template-ts/blob/main/src/activities.ts)
+```ts
+import type { PaymentDetails } from './shared';
+import { BankingService } from './banking-client';
+
+export async function withdraw(details: PaymentDetails): Promise<string> {
+  console.log(`Withdrawing $${details.amount} from account ${details.sourceAccount}.\n\n`);
+  const bank1 = new BankingService('bank1.example.com');
+  return await bank1.withdraw(details.sourceAccount, details.amount, details.referenceId);
+}
+```
+<!--SNIPEND-->
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+[MoneyTransferWorker/Activities.cs](https://github.com/temporalio/money-transfer-project-template-dotnet/blob/main/MoneyTransferWorker/Activities.cs)
+```cs
+[Activity]
+public static async Task<string> WithdrawAsync(PaymentDetails details)
+{
+    Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
+    var bank = new BankingService("bank1.example.com");
+    return await bank.WithdrawAsync(details.SourceAccount, details.Amount, details.ReferenceId);
+}
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+<!--SNIPSTART money-transfer-project-template-ruby-withdraw-->
+[activities.rb](https://github.com/temporalio/money-transfer-project-template-ruby/blob/main/activities.rb)
+```rb
+class Withdraw < Temporalio::Activity::Definition
+  def execute(details)
+    bank = BankingService.new('bank1.example.com')
+    bank.withdraw(details.source_account, details.amount, details.reference_id)
+  end
+end
+```
+<!--SNIPEND-->
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+</TutorialStep>
+
+<TutorialStep
+  title="Deposit"
+  description="The Deposit Activity credits the target account. Notice the commented-out depositThatFails line. You'll uncomment that in Part 2 to simulate a failure and watch Temporal retry."
+>
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
 
 <!--SNIPSTART python-money-transfer-project-template-deposit-->
 [activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
@@ -623,59 +720,8 @@ class BankingActivities:
 ```
 <!--SNIPEND-->
 
-  </TabItem>
-  <TabItem value="refund" label="Refund">
-
-<!--SNIPSTART python-money-transfer-project-template-refund-->
-[activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
-```py
-    @activity.defn
-    async def refund(self, data: PaymentDetails) -> str:
-        reference_id = f"{data.reference_id}-refund"
-        try:
-            confirmation = await asyncio.to_thread(
-                self.bank.deposit, data.source_account, data.amount, reference_id
-            )
-            return confirmation
-        except InvalidAccountError:
-            raise
-        except Exception:
-            activity.logger.exception("Refund failed")
-            raise
-
-```
-<!--SNIPEND-->
-
-  </TabItem>
-</Tabs>
-
 </SdkTabs.Python>
-
 <SdkTabs.Go>
-
-<Tabs>
-  <TabItem value="withdraw" label="Withdraw" default>
-
-<!--SNIPSTART money-transfer-project-template-go-activity-withdraw-->
-[activity.go](https://github.com/temporalio/money-transfer-project-template-go/blob/main/activity.go)
-```go
-func Withdraw(ctx context.Context, data PaymentDetails) (string, error) {
-	log.Printf("Withdrawing $%d from account %s.\n\n",
-		data.Amount,
-		data.SourceAccount,
-	)
-
-	referenceID := fmt.Sprintf("%s-withdrawal", data.ReferenceID)
-	bank := BankingService{"bank-api.example.com"}
-	confirmation, err := bank.Withdraw(data.SourceAccount, data.Amount, referenceID)
-	return confirmation, err
-}
-
-```
-<!--SNIPEND-->
-
-  </TabItem>
-  <TabItem value="deposit" label="Deposit">
 
 <!--SNIPSTART money-transfer-project-template-go-activity-deposit-->
 [activity.go](https://github.com/temporalio/money-transfer-project-template-go/blob/main/activity.go)
@@ -697,8 +743,119 @@ func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
 ```
 <!--SNIPEND-->
 
-  </TabItem>
-  <TabItem value="refund" label="Refund">
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+[src/main/java/moneytransferapp/AccountActivityImpl.java](https://github.com/temporalio/money-transfer-project-template-java/blob/main/src/main/java/moneytransferapp/AccountActivityImpl.java)
+```java
+@Override
+public void deposit(String accountId, String referenceId, int amount) {
+    boolean activityShouldSucceed = true;
+    if (!activityShouldSucceed) {
+        System.out.println("Deposit failed");
+        System.out.flush();
+        throw Activity.wrap(new RuntimeException("Simulated Activity error during deposit of funds"));
+    }
+    System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", amount, accountId, referenceId);
+    System.out.flush();
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+<!--SNIPSTART money-transfer-project-template-ts-deposit-activity-->
+[src/activities.ts](https://github.com/temporalio/money-transfer-project-template-ts/blob/main/src/activities.ts)
+```ts
+export async function deposit(details: PaymentDetails): Promise<string> {
+  console.log(`Depositing $${details.amount} into account ${details.targetAccount}.\n\n`);
+  const bank2 = new BankingService('bank2.example.com');
+  // Uncomment to simulate a failure for Part 2:
+  // return await bank2.depositThatFails(details.targetAccount, details.amount, details.referenceId);
+  return await bank2.deposit(details.targetAccount, details.amount, details.referenceId);
+}
+```
+<!--SNIPEND-->
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+[MoneyTransferWorker/Activities.cs](https://github.com/temporalio/money-transfer-project-template-dotnet/blob/main/MoneyTransferWorker/Activities.cs)
+```cs
+[Activity]
+public static async Task<string> DepositAsync(PaymentDetails details)
+{
+    Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+    var bank = new BankingService("bank2.example.com");
+
+    // Uncomment below and comment out the try-catch block to simulate a failure for Part 2:
+    /*
+    return await bank.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    */
+
+    try
+    {
+        return await bank.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    }
+    catch (Exception ex)
+    {
+        throw new ApplicationFailureException("Deposit failed", ex);
+    }
+}
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+<!--SNIPSTART money-transfer-project-template-ruby-deposit-->
+[activities.rb](https://github.com/temporalio/money-transfer-project-template-ruby/blob/main/activities.rb)
+```rb
+class Deposit < Temporalio::Activity::Definition
+  def execute(details)
+    bank = BankingService.new('bank2.example.com')
+    # Uncomment to simulate a failure for Part 2:
+    # bank.deposit_that_fails(details.target_account, details.amount, details.reference_id)
+    bank.deposit(details.target_account, details.amount, details.reference_id)
+  end
+end
+```
+<!--SNIPEND-->
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+</TutorialStep>
+
+<TutorialStep
+  title="Refund"
+  description="The Refund Activity is the compensation step. If the deposit fails after the withdrawal already succeeded, the Workflow calls Refund to return the money to the source account."
+>
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+<!--SNIPSTART python-money-transfer-project-template-refund-->
+[activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
+```py
+    @activity.defn
+    async def refund(self, data: PaymentDetails) -> str:
+        reference_id = f"{data.reference_id}-refund"
+        try:
+            confirmation = await asyncio.to_thread(
+                self.bank.deposit, data.source_account, data.amount, reference_id
+            )
+            return confirmation
+        except InvalidAccountError:
+            raise
+        except Exception:
+            activity.logger.exception("Refund failed")
+            raise
+
+```
+<!--SNIPEND-->
+
+</SdkTabs.Python>
+<SdkTabs.Go>
 
 <!--SNIPSTART money-transfer-project-template-go-activity-refund-->
 [activity.go](https://github.com/temporalio/money-transfer-project-template-go/blob/main/activity.go)
@@ -718,382 +875,77 @@ func Refund(ctx context.Context, data PaymentDetails) (string, error) {
 ```
 <!--SNIPEND-->
 
-  </TabItem>
-</Tabs>
-
 </SdkTabs.Go>
-
 <SdkTabs.Java>
 
-<Tabs>
-  <TabItem value="interface" label="Interface" default>
-
-<!--SNIPSTART money-transfer-java-activity-interface-->
-[src/main/java/moneytransferapp/AccountActivity.java](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/AccountActivity.java)
+[src/main/java/moneytransferapp/AccountActivityImpl.java](https://github.com/temporalio/money-transfer-project-template-java/blob/main/src/main/java/moneytransferapp/AccountActivityImpl.java)
 ```java
-package moneytransferapp;
-
-import io.temporal.activity.ActivityInterface;
-import io.temporal.activity.ActivityMethod;
-
-@ActivityInterface
-public interface AccountActivity {
-    // Withdraw an amount of money from the source account
-    @ActivityMethod
-    void withdraw(String accountId, String referenceId, int amount);
-
-    // Deposit an amount of money into the destination account
-    @ActivityMethod
-    void deposit(String accountId, String referenceId, int amount);
-
-    // Compensate a failed deposit by refunding to the original account
-    @ActivityMethod
-    void refund(String accountId, String referenceId, int amount);
+@Override
+public void refund(String accountId, String referenceId, int amount) {
+    boolean activityShouldSucceed = true;
+    if (!activityShouldSucceed) {
+        System.out.println("Refund failed");
+        System.out.flush();
+        throw Activity.wrap(new RuntimeException("Simulated Activity error during refund to source account"));
+    }
+    System.out.printf("\nRefunding $%d to account %s.\n[ReferenceId: %s]\n", amount, accountId, referenceId);
+    System.out.flush();
 }
 ```
-<!--SNIPEND-->
-
-  </TabItem>
-  <TabItem value="implementation" label="Implementation">
-
-<!--SNIPSTART money-transfer-java-activity-implementation-->
-[src/main/java/moneytransferapp/AccountActivityImpl.java](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/AccountActivityImpl.java)
-```java
-package moneytransferapp;
-
-import io.temporal.activity.*;
-
-public class AccountActivityImpl implements AccountActivity {
-    // Mock up the withdrawal of an amount of money from the source account
-    @Override
-    public void withdraw(String accountId, String referenceId, int amount) {
-        System.out.printf("\nWithdrawing $%d from account %s.\n[ReferenceId: %s]\n", amount, accountId, referenceId);
-        System.out.flush();
-    }
-
-    // Mock up the deposit of an amount of money from the destination account
-    @Override
-    public void deposit(String accountId, String referenceId, int amount) {
-        boolean activityShouldSucceed = true;
-
-        if (!activityShouldSucceed) {
-            System.out.println("Deposit failed");
-            System.out.flush();
-            throw Activity.wrap(new RuntimeException("Simulated Activity error during deposit of funds"));
-        }
-
-        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", amount, accountId, referenceId);
-        System.out.flush();
-    }
-
-    // Mock up a compensation refund to the source account
-    @Override
-    public void refund(String accountId, String referenceId, int amount) {
-        boolean activityShouldSucceed = true;
-
-        if (!activityShouldSucceed) {
-            System.out.println("Refund failed");
-            System.out.flush();
-            throw Activity.wrap(new RuntimeException("Simulated Activity error during refund to source account"));
-        }
-
-        System.out.printf("\nRefunding $%d to account %s.\n[ReferenceId: %s]\n", amount, accountId, referenceId);
-        System.out.flush();
-   }
-}
-```
-<!--SNIPEND-->
-
-  </TabItem>
-</Tabs>
 
 </SdkTabs.Java>
-
 <SdkTabs.TypeScript>
-
-<Tabs>
-  <TabItem value="withdraw" label="Withdraw" default>
-
-<!--SNIPSTART money-transfer-project-template-ts-withdraw-activity-->
-[src/activities.ts](https://github.com/temporalio/money-transfer-project-template-ts/blob/main/src/activities.ts)
-```ts
-import type { PaymentDetails } from './shared';
-import { BankingService } from './banking-client';
-
-export async function withdraw(details: PaymentDetails): Promise<string> {
-  console.log(
-    `Withdrawing $${details.amount} from account ${details.sourceAccount}.\n\n`
-  );
-  const bank1 = new BankingService('bank1.example.com');
-  return await bank1.withdraw(
-    details.sourceAccount,
-    details.amount,
-    details.referenceId
-  );
-}
-```
-<!--SNIPEND-->
-
-  </TabItem>
-  <TabItem value="deposit" label="Deposit">
-
-<!--SNIPSTART money-transfer-project-template-ts-deposit-activity-->
-[src/activities.ts](https://github.com/temporalio/money-transfer-project-template-ts/blob/main/src/activities.ts)
-```ts
-export async function deposit(details: PaymentDetails): Promise<string> {
-  console.log(
-    `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
-  );
-  const bank2 = new BankingService('bank2.example.com');
-  // Uncomment lines 25-29 and comment lines 30-34 to simulate an unknown failure
-  // return await bank2.depositThatFails(
-  //   details.targetAccount,
-  //   details.amount,
-  //   details.referenceId
-  // );
-  return await bank2.deposit(
-    details.targetAccount,
-    details.amount,
-    details.referenceId
-  );
-}
-```
-<!--SNIPEND-->
-
-  </TabItem>
-  <TabItem value="refund" label="Refund">
 
 <!--SNIPSTART money-transfer-project-template-ts-refund-activity-->
 [src/activities.ts](https://github.com/temporalio/money-transfer-project-template-ts/blob/main/src/activities.ts)
 ```ts
 export async function refund(details: PaymentDetails): Promise<string> {
-  console.log(
-    `Refunding $${details.amount} to account ${details.sourceAccount}.\n\n`
-  );
+  console.log(`Refunding $${details.amount} to account ${details.sourceAccount}.\n\n`);
   const bank1 = new BankingService('bank1.example.com');
-  return await bank1.deposit(
-    details.sourceAccount,
-    details.amount,
-    details.referenceId
-  );
+  return await bank1.deposit(details.sourceAccount, details.amount, details.referenceId);
 }
 ```
 <!--SNIPEND-->
-
-  </TabItem>
-</Tabs>
 
 </SdkTabs.TypeScript>
-
 <SdkTabs.DotNet>
 
-<!--SNIPSTART money-transfer-project-template-dotnet-activity-->
-[MoneyTransferWorker/BankingActivities.cs](https://github.com/temporalio/money-transfer-project-template-dotnet/blob/main/MoneyTransferWorker/BankingActivities.cs)
+[MoneyTransferWorker/Activities.cs](https://github.com/temporalio/money-transfer-project-template-dotnet/blob/main/MoneyTransferWorker/Activities.cs)
 ```cs
-using Temporalio.Activities;
-using Temporalio.MoneyTransferProject.MoneyTransferWorker;
-
-namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
-
-public class BankingActivities
+[Activity]
+public static async Task<string> RefundAsync(PaymentDetails details)
 {
-    [Activity]
-    public async Task<string> WithdrawAsync(PaymentDetails details)
-    {
-        Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
-        var bank = new BankingService("bank1.example.com");
-        return await bank.WithdrawAsync(details.SourceAccount, details.Amount, details.ReferenceId);
-    }
-
-    [Activity]
-    public async Task<string> DepositAsync(PaymentDetails details)
-    {
-        Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
-        var bank = new BankingService("bank2.example.com");
-        // Uncomment below to simulate a deposit failure for Part 2
-        // return await bank.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
-        return await bank.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
-    }
-
-    [Activity]
-    public async Task<string> RefundAsync(PaymentDetails details)
-    {
-        Console.WriteLine($"Refunding ${details.Amount} to account {details.SourceAccount}.");
-        var bank = new BankingService("bank1.example.com");
-        return await bank.DepositAsync(details.SourceAccount, details.Amount, details.ReferenceId);
-    }
+    Console.WriteLine($"Refunding ${details.Amount} to account {details.SourceAccount}.");
+    var bank = new BankingService("bank1.example.com");
+    return await bank.RefundAsync(details.SourceAccount, details.Amount, details.ReferenceId);
 }
 ```
-<!--SNIPEND-->
 
 </SdkTabs.DotNet>
-
 <SdkTabs.Ruby>
 
-<Tabs>
-  <TabItem value="withdraw" label="Withdraw" default>
-
-<!--SNIPSTART money-transfer-project-template-ruby-withdraw-->
+<!--SNIPSTART money-transfer-project-template-ruby-refund-->
 [activities.rb](https://github.com/temporalio/money-transfer-project-template-ruby/blob/main/activities.rb)
 ```rb
-module MoneyTransfer
-  module BankActivities
-    class Withdraw < Temporalio::Activity::Definition
-      def execute(details)
-        bank = BankingService.new('bank1.example.com')
-        bank.withdraw(details.source_account, details.amount, details.reference_id)
-      end
-    end
+class Refund < Temporalio::Activity::Definition
+  def execute(details)
+    bank = BankingService.new('bank1.example.com')
+    bank.deposit(details.source_account, details.amount, details.reference_id)
   end
 end
 ```
 <!--SNIPEND-->
 
-  </TabItem>
-  <TabItem value="deposit" label="Deposit">
-
-<!--SNIPSTART money-transfer-project-template-ruby-deposit-->
-[activities.rb](https://github.com/temporalio/money-transfer-project-template-ruby/blob/main/activities.rb)
-```rb
-    class Deposit < Temporalio::Activity::Definition
-      def execute(details)
-        bank = BankingService.new('bank2.example.com')
-        # Uncomment to simulate a failure for Part 2:
-        # bank.deposit_that_fails(details.target_account, details.amount, details.reference_id)
-        bank.deposit(details.target_account, details.amount, details.reference_id)
-      end
-    end
-```
-<!--SNIPEND-->
-
-  </TabItem>
-  <TabItem value="refund" label="Refund">
-
-<!--SNIPSTART money-transfer-project-template-ruby-refund-->
-[activities.rb](https://github.com/temporalio/money-transfer-project-template-ruby/blob/main/activities.rb)
-```rb
-    class Refund < Temporalio::Activity::Definition
-      def execute(details)
-        bank = BankingService.new('bank1.example.com')
-        bank.deposit(details.source_account, details.amount, details.reference_id)
-      end
-    end
-```
-<!--SNIPEND-->
-
-  </TabItem>
-</Tabs>
-
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Retry Policy
+</TutorialStep>
 
-Temporal retries failed Activities by default. The retry policy in the Workflow controls how long to wait between attempts, how many times to try, and which errors are permanent failures that should never be retried.
+</TutorialCodeWalkthrough>
 
-<SdkTabs hideUnsupportedLanguages>
-<SdkTabs.Python>
+### Worker
 
-```python
-retry_policy = RetryPolicy(
-    maximum_attempts=3,                    # Stop after 3 tries
-    maximum_interval=timedelta(seconds=2), # Don't wait longer than 2s between retries
-    non_retryable_error_types=[           # Give up immediately on these
-        "InvalidAccountError", 
-        "InsufficientFundsError"
-    ],
-)
-```
-
-</SdkTabs.Python>
-
-<SdkTabs.Go>
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-    InitialInterval:        time.Second,        // Start with 1s wait
-    BackoffCoefficient:     2.0,                // Double the wait each time
-    MaximumInterval:        100 * time.Second,  // Cap at 100s
-    MaximumAttempts:        500,                // 0 = unlimited
-    NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
-}
-```
-
-</SdkTabs.Go>
-
-<SdkTabs.Java>
-
-```java
-private final RetryOptions retryoptions = RetryOptions.newBuilder()
-    .setInitialInterval(Duration.ofSeconds(1))   // Start with 1s wait
-    .setMaximumInterval(Duration.ofSeconds(20))  // Cap at 20s
-    .setBackoffCoefficient(2)                    // Double each time (1s, 2s, 4s, ...)
-    .setMaximumAttempts(5000)
-    .build();
-```
-
-</SdkTabs.Java>
-
-<SdkTabs.TypeScript>
-
-```typescript
-retry: {
-  initialInterval: '1 second',
-  maximumInterval: '1 minute',
-  backoffCoefficient: 2,
-  maximumAttempts: 500,
-  nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],
-},
-```
-
-</SdkTabs.TypeScript>
-
-<SdkTabs.DotNet>
-
-```csharp
-RetryPolicy = new()
-{
-    InitialInterval = TimeSpan.FromSeconds(1),
-    MaximumInterval = TimeSpan.FromSeconds(100),
-    BackoffCoefficient = 2,
-    MaximumAttempts = 3,
-    NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
-}
-```
-
-</SdkTabs.DotNet>
-
-<SdkTabs.Ruby>
-
-```ruby
-retry_policy = Temporalio::RetryPolicy.new(
-  max_interval: 10,
-  non_retryable_error_types: ['InvalidAccountError', 'InsufficientFundsError']
-)
-```
-
-</SdkTabs.Ruby>
-</SdkTabs>
-
-`InvalidAccountError` and `InsufficientFundsError` are marked non-retryable because retrying won't fix them — you need a human to correct the input. A transient network error, on the other hand, is exactly the kind of thing automatic retries handle for you.
-
-<RetryPolicyComparison />
-
-:::important
-This tutorial shows core Temporal features and is not intended for production use.
-:::
-
-## 3. Run the application
-
-You need three terminals. Start them in order — the server first, then the Worker, then the Workflow starter.
-
-**Terminal 1 — Start the Temporal server:**
-
-```bash
-temporal server start-dev
-```
-
-**Terminal 2 — Start the Worker:**
+The Worker is the process that runs your Workflow and Activity code. It connects to Temporal, polls a Task Queue, and executes tasks as they arrive. The Task Queue name must match what the Client uses to start the Workflow. A mismatch silently prevents execution.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
@@ -1129,12 +981,7 @@ if __name__ == "__main__":
 ```
 <!--SNIPEND-->
 
-```bash
-python run_worker.py
-```
-
 </SdkTabs.Python>
-
 <SdkTabs.Go>
 
 <!--SNIPSTART money-transfer-project-template-go-worker-->
@@ -1162,20 +1009,14 @@ func main() {
 		log.Fatalln("unable to start Worker", err)
 	}
 }
-
 ```
 <!--SNIPEND-->
 
-```bash
-go run worker/main.go
-```
-
 </SdkTabs.Go>
-
 <SdkTabs.Java>
 
 <!--SNIPSTART money-transfer-java-worker-->
-[src/main/java/moneytransferapp/MoneyTransferWorker.java](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/MoneyTransferWorker.java)
+[src/main/java/moneytransferapp/MoneyTransferWorker.java](https://github.com/temporalio/money-transfer-project-template-java/blob/main/src/main/java/moneytransferapp/MoneyTransferWorker.java)
 ```java
 package moneytransferapp;
 
@@ -1220,12 +1061,7 @@ public class MoneyTransferWorker {
 ```
 <!--SNIPEND-->
 
-```bash
-mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
-```
-
 </SdkTabs.Java>
-
 <SdkTabs.TypeScript>
 
 <!--SNIPSTART money-transfer-project-template-ts-worker-->
@@ -1236,16 +1072,12 @@ import * as activities from './activities';
 import { namespace, taskQueueName } from './shared';
 
 async function run() {
-  // Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
   const worker = await Worker.create({
     workflowsPath: require.resolve('./workflows'),
     activities,
     namespace,
     taskQueue: taskQueueName,
   });
-
-  // Start accepting tasks from the Task Queue.
   await worker.run();
 }
 
@@ -1256,12 +1088,7 @@ run().catch((err) => {
 ```
 <!--SNIPEND-->
 
-```bash
-npm run worker
-```
-
 </SdkTabs.TypeScript>
-
 <SdkTabs.DotNet>
 
 <!--SNIPSTART money-transfer-project-template-dotnet-worker-->
@@ -1308,12 +1135,7 @@ catch (OperationCanceledException)
 ```
 <!--SNIPEND-->
 
-```bash
-dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
-```
-
 </SdkTabs.DotNet>
-
 <SdkTabs.Ruby>
 
 <!--SNIPSTART money-transfer-project-template-ruby-worker-->
@@ -1351,14 +1173,12 @@ worker.run(shutdown_signals: ['SIGINT'])
 ```
 <!--SNIPEND-->
 
-```bash
-bundle exec ruby worker.rb
-```
-
 </SdkTabs.Ruby>
 </SdkTabs>
 
-**Terminal 3 — Start the Workflow:**
+### Client
+
+The Client is what starts a Workflow Execution. It connects to Temporal, submits the request with a unique Workflow ID and Task Queue name, then waits for the result. The Workflow ID makes each execution idempotent. Submitting the same ID twice returns the existing execution instead of starting a new one.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
@@ -1367,29 +1187,34 @@ bundle exec ruby worker.rb
 [run_workflow.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/run_workflow.py)
 ```py
 import asyncio
+import traceback
 
-from temporalio.client import Client
+from temporalio.client import Client, WorkflowFailureError
 
 from shared import MONEY_TRANSFER_TASK_QUEUE_NAME, PaymentDetails
 from workflows import MoneyTransfer
 
 
-async def main():
-    client = await Client.connect("localhost:7233", namespace="default")
+async def main() -> None:
+    client: Client = await Client.connect("localhost:7233")
 
-    result = await client.execute_workflow(
-        MoneyTransfer.run,
-        PaymentDetails(
-            source_account="85-150",
-            target_account="43-812",
-            amount=250,
-            reference_id="12345",
-        ),
-        id="pay-invoice-701",
-        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
+    data: PaymentDetails = PaymentDetails(
+        source_account="85-150",
+        target_account="43-812",
+        amount=250,
+        reference_id="12345",
     )
 
-    print(f"Result: {result}")
+    try:
+        result = await client.execute_workflow(
+            MoneyTransfer.run,
+            data,
+            id="pay-invoice-701",
+            task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
+        )
+        print(f"Result: {result}")
+    except WorkflowFailureError:
+        print("Got expected exception: ", traceback.format_exc())
 
 
 if __name__ == "__main__":
@@ -1397,17 +1222,7 @@ if __name__ == "__main__":
 ```
 <!--SNIPEND-->
 
-```bash
-python run_workflow.py
-```
-
-Expected output:
-```text
-Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. ReferenceId: 12345, Deposited $250 into account 43-812. ReferenceId: 12345)
-```
-
 </SdkTabs.Python>
-
 <SdkTabs.Go>
 
 <!--SNIPSTART money-transfer-project-template-go-start-workflow-->
@@ -1454,27 +1269,14 @@ func main() {
 
 	log.Println(result)
 }
-
 ```
 <!--SNIPEND-->
 
-```bash
-go run start/main.go
-```
-
-Expected output:
-```text
-Starting transfer from account 85-150 to account 43-812 for 250
-2022/11/14 10:52:20 WorkflowID: pay-invoice-701 RunID: 3312715c-9fea-4dc3-8040-cf8f270eb53c
-Transfer complete (transaction IDs: W1779185060, D1779185060)
-```
-
 </SdkTabs.Go>
-
 <SdkTabs.Java>
 
 <!--SNIPSTART money-transfer-java-initiate-transfer-->
-[src/main/java/moneytransferapp/TransferApp.java](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/TransferApp.java)
+[src/main/java/moneytransferapp/TransferApp.java](https://github.com/temporalio/money-transfer-project-template-java/blob/main/src/main/java/moneytransferapp/TransferApp.java)
 ```java
 package moneytransferapp;
 
@@ -1550,21 +1352,7 @@ public class TransferApp {
 ```
 <!--SNIPEND-->
 
-```bash
-mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"
-```
-
-Expected output (account numbers and amounts are randomized each run):
-```text
-Worker is running and actively polling the Task Queue.
-
-Withdrawing $[AMOUNT] from account [SOURCE_ACCOUNT].
-Depositing $[AMOUNT] into account [DEST_ACCOUNT].
-[[UUID]] Transaction succeeded.
-```
-
 </SdkTabs.Java>
-
 <SdkTabs.TypeScript>
 
 <!--SNIPSTART money-transfer-project-template-ts-start-workflow-->
@@ -1612,17 +1400,7 @@ run().catch((err) => {
 ```
 <!--SNIPEND-->
 
-```bash
-npm run client
-```
-
-Expected output:
-```text
-Transfer complete (transaction IDs: W3436600150, D9270097234)
-```
-
 </SdkTabs.TypeScript>
-
 <SdkTabs.DotNet>
 
 <!--SNIPSTART money-transfer-project-template-dotnet-start-workflow-->
@@ -1667,17 +1445,7 @@ catch (Exception ex)
 ```
 <!--SNIPEND-->
 
-```bash
-dotnet run --project MoneyTransferClient/MoneyTransferClient.csproj
-```
-
-Expected output:
-```text
-Workflow result: Transfer complete (transaction IDs: W-caa90e06-3a48-406d-86ff-e3e958a280f8, D-1910468b-5951-4f1d-ab51-75da5bba230b)
-```
-
 </SdkTabs.DotNet>
-
 <SdkTabs.Ruby>
 
 <!--SNIPSTART money-transfer-project-template-ruby-starter-->
@@ -1723,19 +1491,98 @@ end
 ```
 <!--SNIPEND-->
 
-```bash
-bundle exec ruby starter.rb
-```
-
-Expected output:
-```text
-Initiated transfer of $100 from A1001 to B2002
-Workflow ID: moneytransfer-2926a650-1aaf-49d9-bf87-0e3a09ef7b32
-Workflow result: Transfer complete (transaction IDs: OKW-100-A1001, OKD-100-B2002)
-```
-
 </SdkTabs.Ruby>
 </SdkTabs>
+
+## 3. Run the application
+
+You need three terminals. Start them in order.
+
+<SetupSteps>
+
+<SetupStep code={
+  <CodeSnippet language="bash">temporal server start-dev --db-filename ./temporal.db</CodeSnippet>
+}>
+
+### Terminal 1: Temporal server
+
+Start the local Temporal server. This runs the scheduler, state store, and Web UI at [localhost:8233](http://localhost:8233). The `--db-filename` flag persists Workflow state to disk, which is required for the crash recovery demo in Part 2.
+
+:::note Port conflict
+If you get an `address already in use` error, a previous process may still hold port 7233. Run `lsof -ti:7233 | xargs kill` on macOS/Linux to clear it.
+:::
+
+</SetupStep>
+
+<SetupStep code={
+  <SdkTabs hideUnsupportedLanguages>
+    <SdkTabs.Python>
+      <CodeSnippet language="bash">{`source .venv/bin/activate\npython run_worker.py`}</CodeSnippet>
+    </SdkTabs.Python>
+    <SdkTabs.Go>
+      <CodeSnippet language="bash">go run worker/main.go</CodeSnippet>
+    </SdkTabs.Go>
+    <SdkTabs.Java>
+      <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn</CodeSnippet>
+    </SdkTabs.Java>
+    <SdkTabs.TypeScript>
+      <CodeSnippet language="bash">npm run worker</CodeSnippet>
+    </SdkTabs.TypeScript>
+    <SdkTabs.DotNet>
+      <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj</CodeSnippet>
+    </SdkTabs.DotNet>
+    <SdkTabs.Ruby>
+      <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
+    </SdkTabs.Ruby>
+  </SdkTabs>
+}>
+
+### Terminal 2: Worker
+
+Start the Worker. It connects to Temporal, polls the Task Queue, and executes your Workflow and Activity code. Leave it running.
+
+:::note Java: first-run compile time
+Maven downloads the Temporal SDK and its dependencies on the first run. This can take a few minutes on a fresh machine. Subsequent runs compile from cache and start in seconds.
+:::
+
+</SetupStep>
+
+<SetupStep code={
+  <SdkTabs hideUnsupportedLanguages>
+    <SdkTabs.Python>
+      <CodeSnippet language="bash">{`source .venv/bin/activate\npython run_workflow.py`}</CodeSnippet>
+      <CodeSnippet language="text">Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. ReferenceId: 12345, Deposited $250 into account 43-812. ReferenceId: 12345)</CodeSnippet>
+    </SdkTabs.Python>
+    <SdkTabs.Go>
+      <CodeSnippet language="bash">go run start/main.go</CodeSnippet>
+      <CodeSnippet language="text">Transfer complete (transaction IDs: W1779185060, D1779185060)</CodeSnippet>
+    </SdkTabs.Go>
+    <SdkTabs.Java>
+      <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"</CodeSnippet>
+      <CodeSnippet language="text">{`Withdrawing $[AMOUNT] from account [SOURCE].\nDepositing $[AMOUNT] into account [DEST].\n[[UUID]] Transaction succeeded.`}</CodeSnippet>
+    </SdkTabs.Java>
+    <SdkTabs.TypeScript>
+      <CodeSnippet language="bash">npm run client</CodeSnippet>
+      <CodeSnippet language="text">Transfer complete (transaction IDs: W3436600150, D9270097234)</CodeSnippet>
+    </SdkTabs.TypeScript>
+    <SdkTabs.DotNet>
+      <CodeSnippet language="bash">dotnet run --project MoneyTransferClient/MoneyTransferClient.csproj</CodeSnippet>
+      <CodeSnippet language="text">Workflow result: Transfer complete (transaction IDs: W-caa90e06-..., D-1910468b-...)</CodeSnippet>
+    </SdkTabs.DotNet>
+    <SdkTabs.Ruby>
+      <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
+      <CodeSnippet language="text">Workflow result: Transfer complete (transaction IDs: OKW-100-A1001, OKD-100-B2002)</CodeSnippet>
+    </SdkTabs.Ruby>
+  </SdkTabs>
+}>
+
+### Terminal 3: Start the Workflow
+
+Run the client to submit a Workflow Execution. You should see a transfer result printed when it completes.
+
+</SetupStep>
+
+</SetupSteps>
 
 <StatusIndicators items={[
   { id: 'workflow', label: 'Workflow Status', value: 'COMPLETED', status: 'success' },
@@ -1746,9 +1593,9 @@ Workflow result: Transfer complete (transaction IDs: OKW-100-A1001, OKD-100-B200
 
 ## 4. View in the Temporal UI
 
-The Temporal Web UI shows exactly what happened — each event in the Workflow's history, the input and result, and options to query, signal, or cancel.
+The Temporal Web UI shows the full event history: every Activity scheduled, started, and completed, plus the Workflow input and result.
 
-<CallToAction 
+<CallToAction
   href="http://localhost:8233"
   buttonText="Open Temporal UI"
   description="View your Workflow Execution at localhost:8233"
@@ -1761,11 +1608,389 @@ The Temporal Web UI shows exactly what happened — each event in the Workflow's
 
 Click on the Workflow in the list to see the full event history. In Part 2, you'll use that history to debug a live failure.
 
-## Continue to Part 2
+</TutorialTab>
 
-<NextButton 
-  href="/build-your-first-basic-workflow/simulate-failure" 
-  description="Simulate crashes and debug live Workflows with Durable Execution"
->
-  Part 2: Simulate Failures
-</NextButton>
+{/* ─── Part 2 ─── */}
+<TutorialTab label="Part 2: Simulate Failures">
+
+You'll take down the server while a Workflow is running to see what Temporal preserves, then break the deposit Activity and fix it live without losing state.
+
+## Scenario A: Crash recovery
+
+The goal is to show that Temporal stores Workflow state durably. State lives on the server, not in the Worker process, and survives server restarts.
+
+<SetupSteps>
+
+<SetupStep code={
+  <CodeSnippet language="text">Ctrl+C in Terminal 2</CodeSnippet>
+}>
+
+### Step 1: Stop the Worker
+
+If the Worker from Part 1 is still running, stop it. You're going to start a Workflow with no Worker running.
+
+</SetupStep>
+
+<SetupStep code={
+  <SdkTabs hideUnsupportedLanguages>
+    <SdkTabs.Python>
+      <CodeSnippet language="bash">{`source .venv/bin/activate\npython run_workflow.py`}</CodeSnippet>
+    </SdkTabs.Python>
+    <SdkTabs.Go>
+      <CodeSnippet language="bash">go run start/main.go</CodeSnippet>
+    </SdkTabs.Go>
+    <SdkTabs.Java>
+      <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"</CodeSnippet>
+    </SdkTabs.Java>
+    <SdkTabs.TypeScript>
+      <CodeSnippet language="bash">npm run client</CodeSnippet>
+    </SdkTabs.TypeScript>
+    <SdkTabs.DotNet>
+      <CodeSnippet language="bash">dotnet run --project MoneyTransferClient/MoneyTransferClient.csproj</CodeSnippet>
+    </SdkTabs.DotNet>
+    <SdkTabs.Ruby>
+      <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
+    </SdkTabs.Ruby>
+  </SdkTabs>
+}>
+
+### Step 2: Start the Workflow
+
+In Terminal 3, submit a new Workflow Execution. Since no Worker is running yet, the Workflow is accepted but not executed. The client process will hang while it waits for a result.
+
+:::note Java
+`TransferApp` exits immediately after submitting the Workflow and does not wait for the result. That's expected. The Workflow is still Running in Temporal.
+:::
+
+</SetupStep>
+
+<SetupStep code={
+  <CodeSnippet language="text">Open localhost:8233</CodeSnippet>
+}>
+
+### Step 3: Check the Web UI
+
+The Workflow is listed as **Running**. Temporal has recorded the Execution and is holding its state, even though no Worker has done any work yet.
+
+</SetupStep>
+
+<SetupStep code={
+  <CodeSnippet language="text">Ctrl+C in Terminal 1</CodeSnippet>
+}>
+
+### Step 4: Kill the Temporal server
+
+Stop the local server you started in Part 1.
+
+</SetupStep>
+
+<SetupStep code={
+  <CodeSnippet language="bash">temporal server start-dev --db-filename ./temporal.db</CodeSnippet>
+}>
+
+### Step 5: Restart the Temporal server
+
+If you see a port conflict error, wait a few seconds and try again. The previous process may still be releasing port 7233.
+
+</SetupStep>
+
+<SetupStep code={
+  <CodeSnippet language="text">Reload localhost:8233</CodeSnippet>
+}>
+
+### Step 6: Check the Web UI again
+
+The Workflow is still **Running**. The server crashed and restarted, and the Workflow survived as you left it.
+
+</SetupStep>
+
+</SetupSteps>
+
+<StatusIndicators items={[
+  { id: 'server', label: 'Server', value: 'RESTARTED', status: 'success' },
+  { id: 'workflow', label: 'Workflow Status', value: 'RUNNING', status: 'running' }
+]} />
+
+Workflow state lives on the Temporal server, not in your Worker process. A Worker crash, a server restart, or a network blip will not lose the transaction.
+
+Leave the Workflow running. You'll resolve it in Scenario B.
+
+## Scenario B: Fix a bug in a running Workflow
+
+The Workflow from Scenario A is still pending. The Worker is stopped. You're going to introduce a failing deposit, watch Temporal retry, then deploy a fix to the in-flight Workflow.
+
+### Step 1: Introduce the failing deposit
+
+Open the deposit Activity and switch to the failing version:
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+In **activities.py**, the `deposit()` method currently has `deposit_that_fails` wrapped in triple-quoted strings. Remove the triple quotes and comment out the working `deposit` call instead, so the method body looks like this:
+
+```python
+try:
+    # confirmation = await asyncio.to_thread(
+    #     self.bank.deposit, data.target_account, data.amount, reference_id
+    # )
+    confirmation = await asyncio.to_thread(
+        self.bank.deposit_that_fails,
+        data.target_account,
+        data.amount,
+        reference_id,
+    )
+    return confirmation
+except InvalidAccountError:
+    raise
+except Exception:
+    activity.logger.exception("Deposit failed")
+    raise
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+In **activity.go**, swap `Deposit` for `DepositThatFails`:
+
+```go
+// Comment out:
+// confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+
+// Uncomment:
+confirmation, err := bank.DepositThatFails(data.TargetAccount, data.Amount, referenceID)
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+In **`src/main/java/moneytransferapp/AccountActivityImpl.java`**, set `activityShouldSucceed` to `false`:
+
+```java
+boolean activityShouldSucceed = false;
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+In **src/activities.ts**, uncomment lines 25-29 and comment out lines 30-34:
+
+```typescript
+  // Uncomment this block:
+  return await bank2.depositThatFails(
+    details.targetAccount,
+    details.amount,
+    details.referenceId
+  );
+  // Comment out this block:
+  // return await bank2.deposit(
+  //   details.targetAccount,
+  //   details.amount,
+  //   details.referenceId
+  // );
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+In **`MoneyTransferWorker/Activities.cs`**, the `DepositAsync` method has a block comment around `DepositThatFailsAsync`. Remove the `/*` and `*/` markers to enable it, then comment out the `try { ... } catch { ... }` block below it:
+
+```csharp
+// Remove the /* and */ to uncomment:
+return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+
+// Comment out the try-catch block:
+// try
+// {
+//     return await bankService.DepositAsync(...);
+// }
+// catch (Exception ex)
+// {
+//     throw new ApplicationFailureException("Deposit failed", ex);
+// }
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+In **activities.rb**, add a `raise` to the top of the `Deposit` class's `execute` method:
+
+```ruby
+class Deposit < Temporalio::Activity::Definition
+  def execute(details)
+    raise 'Simulated deposit failure'
+    puts("Doing a deposit into #{details.target_account} for #{details.amount}")
+    raise InvalidAccountError, 'Invalid account number' if details.target_account == 'B5555'
+    "OKD-#{details.amount}-#{details.target_account}"
+  end
+end
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+### Step 2: Start the Worker
+
+In Terminal 2, start the Worker:
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```bash
+python run_worker.py
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```bash
+go run worker/main.go
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```bash
+mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+```bash
+npm run worker
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```bash
+dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```bash
+bundle exec ruby worker.rb
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+The Worker picks up the pending Workflow from Scenario A. The Withdraw Activity succeeds. Then the Deposit Activity runs and fails. Temporal retries it according to the retry policy. You'll see attempts accumulating in the Worker logs and in the Web UI event history. The Workflow stays **Running**. It's stuck retrying, but nothing is lost.
+
+<StatusIndicators items={[
+  { id: 'withdraw', label: 'Withdraw', value: 'COMPLETED', status: 'success' },
+  { id: 'deposit', label: 'Deposit', value: 'RETRYING', status: 'running' },
+  { id: 'workflow', label: 'Workflow Status', value: 'RUNNING', status: 'running' }
+]} />
+
+:::note Python and .NET: move quickly
+The retry policy in the Python and .NET templates sets `maximum_attempts: 3`. Once all three attempts are exhausted, the Workflow triggers the refund and then fails. You won't be able to resume it. Stop the Worker and apply your fix before the third retry fires. If the Workflow does fail before you finish, you can still inspect the full event history in the Web UI (including the Refund Activity). To run the scenario again, change the Workflow ID in your client script and start fresh.
+:::
+
+### Step 3: Fix the bug and redeploy
+
+Stop the Worker (`Ctrl+C`) and revert your change. Put the working deposit line back and remove (or re-wrap) the failing version. Then restart the Worker in Terminal 2:
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```bash
+python run_worker.py
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```bash
+go run worker/main.go
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```bash
+mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+```
+
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+
+```bash
+npm run worker
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```bash
+dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```bash
+bundle exec ruby worker.rb
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+On the next retry, the fixed Activity code runs. The deposit succeeds. The Workflow completes.
+
+Where to see the result depends on your SDK:
+
+- **Python / Ruby**: Terminal 3 is still running and prints the transfer result when the Workflow completes.
+- **Go / TypeScript**: Terminal 3 exited when the server was killed in Step 4. Check Terminal 2 (Worker logs) or the Web UI event history for the completed result.
+- **Java**: Terminal 3 already exited after submitting the Workflow. Check Terminal 2 (Worker logs) or the Web UI.
+- **.NET**: Terminal 3 is still running and prints the transfer result when the Workflow completes.
+
+:::tip
+You just fixed a bug in a running application without losing state or restarting the transaction. Temporal stored every completed step, so Withdraw was not re-run. Execution resumed from the first failing Activity and completed from there.
+:::
+
+<StatusIndicators items={[
+  { id: 'withdraw', label: 'Withdraw', value: 'COMPLETED', status: 'success' },
+  { id: 'deposit', label: 'Deposit', value: 'COMPLETED', status: 'success' },
+  { id: 'workflow', label: 'Workflow Status', value: 'COMPLETED', status: 'success' },
+  { id: 'transaction', label: 'Transaction', value: 'SUCCESS', status: 'success' }
+]} />
+
+## What you've learned
+
+- Temporal stores Workflow state durably. A crashed Worker or server restart doesn't lose the transaction.
+- Activity retries are automatic. A failing step keeps retrying until it succeeds or hits your policy limits.
+- Completed Activities aren't re-executed on retry. Temporal knows which steps finished.
+- You can fix Activity code and redeploy while a Workflow is running. It picks up from where it failed.
+
+## Continue learning
+
+<div className="row">
+  <div className="col col--4">
+    <CallToAction
+      href="/evaluate/understanding-temporal"
+      buttonText="Understanding Temporal"
+      description="Learn core concepts"
+    />
+  </div>
+  <div className="col col--4">
+    <CallToAction
+      href="https://learn.temporal.io/courses/"
+      buttonText="Take a Free Course"
+      description="Enroll in Temporal 101 and 102"
+    />
+  </div>
+  <div className="col col--4">
+    <CallToAction
+      href="https://temporal.io/code-exchange"
+      buttonText="Code Exchange"
+      description="Explore example applications"
+    />
+  </div>
+</div>
+
+</TutorialTab>
+
+</TutorialTabs>
