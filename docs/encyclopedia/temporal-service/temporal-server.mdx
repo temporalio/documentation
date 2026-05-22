@@ -109,7 +109,7 @@ Ports are configurable in the Temporal Service configuration.
 
 ## What is a History Service? {#history-service}
 
-The History Service is responsible for persisting Workflow Execution state to the Workflow History.
+The History Service is responsible for persisting Workflow Execution state to the Event History.
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
@@ -208,8 +208,8 @@ Ports are configurable in the Temporal Service configuration.
 Retention Period is the duration for which the Temporal Service stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/cli/operator#create)
-- [How to set the Retention Period for a Namespace using the Go SDK](/develop/go/namespaces)
-- [How to set the Retention Period for a Namespace using the Java SDK](/develop/java/namespaces)
+- [How to set the Retention Period for a Namespace using the Go SDK](/develop/go/client/namespaces)
+- [How to set the Retention Period for a Namespace using the Java SDK](/develop/java/client/namespaces)
 
 A Retention Period applies to all closed Workflow Executions within a [Namespace](/namespaces) and is set when the Namespace is registered.
 

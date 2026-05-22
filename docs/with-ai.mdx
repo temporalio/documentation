@@ -1,59 +1,165 @@
 ---
 id: with-ai
-title: Use these docs with AI
-sidebar_label: Use with AI
-description: Connect Temporal documentation to your AI tools for real-time, accurate answers.
+title: Develop with AI
+sidebar_label: Develop with AI
+description: Give your AI coding agent Temporal expertise and real-time access to Temporal documentation.
 ---
 
-# Use These Docs with AI
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Connect Temporal documentation directly to your AI assistant for accurate, up-to-date answers about Temporal.
-The Temporal docs MCP server gives AI tools real-time access to our documentation, so responses draw from current docs rather than training data.
+Give your AI coding agent Temporal expertise with Skills and real-time documentation access with the Temporal Knowledge Base MCP
+Server.
 
-The server requires anonymous authentication using any Google account to enforce rate limits and prevent abuse.
-We cannot see nor do we collect any contact information from this.
+## Skills
 
-## Claude Code
+Skills give AI agents domain-specific Temporal expertise. They work with Claude Code, Codex, Cursor, and any agent that
+supports [Skills](https://agentskills.io).
 
-Add the Temporal docs MCP server to Claude Code with a single command:
+### Temporal Developer Skill
 
-```bash
-claude mcp add --scope user --transport http temporal-docs https://temporal.mcp.kapa.ai
+The [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer) gives your AI coding agent
+expert-level knowledge of Temporal's programming model — workflow determinism rules, activity patterns, retry policies,
+error handling, testing strategies, worker configuration, versioning, and common gotchas.
+
+<Tabs groupId="skill-install" queryString>
+<TabItem value="claude-code" label="Claude Code Plugin">
+
+1. Add the Temporal skills marketplace to Claude Code:
+
+   ```bash
+   /plugin marketplace add temporalio/claude-temporal-plugin
+   ```
+
+2. Install the Temporal Developer Skill:
+
+   ```bash
+   /plugin install temporal@temporal-marketplace
+   ```
+
+</TabItem>
+<TabItem value="cursor" label="Cursor">
+
+Install the Temporal plugin from the [Cursor Marketplace](https://cursor.com/marketplace/temporal), or run the following
+command in Cursor's agent chat:
+
+```
+/add-plugin temporal
 ```
 
-This adds the server globally so it's available in all your projects.
+</TabItem>
+<TabItem value="codex" label="Codex">
 
-To add it to a specific project only (stored in `.mcp.json`):
+Install from the Codex app or CLI:
+
+- **Codex app:** Open the plugins menu, search for **temporal**, then click **+** (or **Add to Codex**).
+- **Codex CLI:** Run `/plugin`, search for **temporal**, and mark it for installation.
+
+</TabItem>
+<TabItem value="npx" label="npx">
+
+This works with Claude Code, Codex, Cline, and other agents.
+
+Install the skill using the `skills` CLI:
+
+```bash
+npx skills add https://github.com/temporalio/skill-temporal-developer
+```
+
+</TabItem>
+<TabItem value="manual" label="Manual">
+
+Clone the skill repository into your Claude skills directory. Change the target directory if you are using agents other
+than Claude:
+
+```bash
+git clone https://github.com/temporalio/skill-temporal-developer.git ~/.claude/skills/temporal-developer
+```
+
+</TabItem>
+</Tabs>
+
+Restart your coding agent after installing.
+
+### Temporal Cloud Skill
+
+The [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud) helps your AI coding agent troubleshoot
+Temporal Cloud connectivity, authentication, and configuration issues.
+
+<Tabs groupId="skill-install" queryString>
+<TabItem value="npx" label="npx">
+
+This works with Claude Code, Codex, Cline, and other agents.
+
+Install the skill using the `skills` CLI:
+
+```bash
+npx skills add https://github.com/temporalio/skill-temporal-cloud
+```
+
+</TabItem>
+<TabItem value="manual" label="Manual">
+
+Clone the skill repository into your Claude skills directory. Change the target directory if you are using agents other
+than Claude:
+
+```bash
+git clone https://github.com/temporalio/skill-temporal-cloud.git ~/.claude/skills/temporal-cloud
+```
+
+</TabItem>
+</Tabs>
+
+Restart your coding agent after installing.
+
+## Temporal Knowledge Base  MCP Server
+
+Connect Temporal expertise directly to your AI assistant for accurate, up-to-date answers about Temporal. The
+Temporal knowledge base MCP server gives AI tools real-time access to best practices compiled from our documentation, educational materials, community forum responses, and slack channels, so responses draw from current expertise
+rather than training data.
+
+:::info Authentication required
+
+The Temporal Knowledge Base MCP Server is publicly available, but requires a one-time login with a Google or GitHub account to enforce rate limits and prevent abuse.
+Only an opaque user ID is used for rate limiting. Your name, email, repositories, and other personal data are not accessed or collected.
+
+:::
+
+### Claude Code
+
+Add the Temporal knowledge base MCP server globally so it's available in all your projects:
+
+1. Register the MCP server with Claude Code:
+
+   ```bash
+   claude mcp add --scope user --transport http temporal-docs https://temporal.mcp.kapa.ai
+   ```
+
+2. Restart Claude Code and run `/mcp` to authenticate with your Google account.
+
+To add the server to a specific project only, omit the `--scope user` flag. This stores the configuration in the
+project's `.mcp.json` file:
 
 ```bash
 claude mcp add --transport http temporal-docs https://temporal.mcp.kapa.ai
 ```
 
-After adding, restart Claude Code and run `/mcp` to authenticate with your Google account.
-
-## Claude Desktop
+### Claude Desktop
 
 1. Open Claude Desktop settings
 2. Navigate to **Settings > Connectors**
 3. Add a new MCP server with the URL: `https://temporal.mcp.kapa.ai`
 
-## Other MCP-compatible tools
+### Other MCP-compatible tools
 
-For any tool that supports the Model Context Protocol, use the following server URL:
+The Temporal Knowledge Base MCP Server URL is:
 
 ```
 https://temporal.mcp.kapa.ai
 ```
 
-Configuration format varies by tool. Here's a generic JSON configuration:
-
-```json
-{
-  "mcpServers": {
-    "temporal-docs": {
-      "transport": "http",
-      "url": "https://temporal.mcp.kapa.ai"
-    }
-  }
-}
-```
+The server requires authentication through MCP OAuth.
+Not all MCP clients support this protocol.
+If your client supports MCP OAuth, it will open a browser window to verify with Google or GitHub on first connection.
+If your client does not support MCP OAuth, you may need to use a stdio proxy that handles the OAuth flow and passes credentials to the remote server.
+Check your client's documentation for details on connecting to OAuth-protected MCP servers.

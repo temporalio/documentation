@@ -18,14 +18,13 @@ tags:
   - Users
 ---
 
-To authenticate the users of your Temporal Cloud account, you can connect an identity provider (IdP) to your account by
-using Security Assertion Markup Language (SAML) 2.0.
+Integrating with your organization's identity provider (IdP) with Temporal Cloud through Security Assertion Markup
+Language (SAML) 2.0 allows you to authenticate users of your Temporal Cloud account using your organization's IdP. This
+allows you to enforce your corporate identity policies, such as multi-factor authentication (MFA), password complexity,
+and reduces the risk of credential theft.
 
-:::info
-
-SAML is a paid feature. See the [pricing page](/cloud/pricing) for details.
-
-:::
+SAML is included in the Business, Enterprise, and Mission Critical plans. For more details, refer to
+[Temporal Cloud pricing](/cloud/pricing#base_plans).
 
 ## Integrate SAML with your Temporal Cloud account
 
@@ -95,7 +94,6 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
 
 1. You can leave the other fields blank. Near the top of the pane, select **Save**.
 1. In the **Attributes & Claims** section, select **Edit**. Configure the following settings. Under **Required claim**:
-
    - Set **Unique User Identifier (NameID)** to `user.userprincipalname`
    - Set the **NameID format** to `emailAddress`
 
@@ -172,5 +170,4 @@ Generally, the provided IdP domain is the same as the domain for your email addr
 domains.
 
 When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud. This time, though,
-enter your email address in **Enterprise identity** and select **Continue**. Do not select **Continue with Google** or
-**Continue with Microsoft**. You will be redirected to the authentication page of your IdP.
+enter your email address and click **Continue**. You will be directed to the authentication page of your IdP.

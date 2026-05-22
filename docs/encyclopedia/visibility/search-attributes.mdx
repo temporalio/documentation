@@ -30,9 +30,14 @@ A Search Attribute is an indexed field used in a [List Filter](/list-filter) to 
 Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
 
-:::note
+:::caution Do not use sensitive data or PII in Search Attributes
 
-Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/payload-codec#payload-codec).
+The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
+
+Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.
+Using sensitive data in either names or values risks exposure to anyone with Namespace access and may violate data protection regulations such as GDPR, HIPAA, or SOC 2.
 
 :::
 
@@ -53,41 +58,52 @@ You might experience lag due to time passing between the Workflow's state change
 
 ### Default Search Attributes {#default-search-attribute}
 
+:::caution
+The `BinaryChecksums` and `BuildIds` Search Attributes are deprecated. They will stop being propagated for new Workflows starting in Temporal Server 1.32 and will be fully removed from query support in Temporal Server 1.34.
+
+Instead use:
+- `TemporalWorkflowVersioningBehavior` for querying the Workflow Versioning behavior or if it is unversioned.
+- `TemporalWorkerDeploymentVersion` for querying the Worker Deployment Version the Workflow is assigned to at the moment.
+- `TemporalUsedWorkerDeploymentVersions` for querying the list of all Worker Deployment Versions that processed the Workflow.
+
+:::
+
 A Temporal Service has a set of default Search Attributes already available.
 Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
-| NAME                               | TYPE         | DEFINITION                                                                                                                                                                                                   |
-| ---------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| BatcherUser                        | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
-| BinaryChecksums                    | Keyword List | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
-| BuildIds                           | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
-| CloseTime                          | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                          |
-| ExecutionDuration                  | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                         |
-| ExecutionStatus                    | Keyword      | The current state of the Workflow Execution.                                                                                                                                                                 |
-| ExecutionTime                      | Datetime     | The time at which the Workflow Execution actually begins running; same as `StartTime` for most cases but different for Cron Workflows and retried Workflows.                                                 |
-| HistoryLength                      | Int          | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                                                              |
-| HistorySizeBytes                   | Long         | The size of the Event History.                                                                                                                                                                               |
-| RunId                              | Keyword      | Identifies the current Workflow Execution Run.                                                                                                                                                               |
-| StartTime                          | Datetime     | The time at which the Workflow Execution started.                                                                                                                                                            |
-| StateTransitionCount               | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                    |
-| TaskQueue                          | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                       |
-| TemporalChangeVersion              | Keyword List | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
-| TemporalReportedProblems           | Keyword List | Stores information about Workflow task failures. Formatted as `category=<category> cause=<cause>`.
-| TemporalScheduledStartTime         | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                 |
-| TemporalScheduledById              | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                            |
-| TemporalSchedulePaused             | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                            |
-| TemporalWorkerDeployment           | Keyword      | Indicates the name of the associated Worker Deployment.                                                                                                                                                      |
-| TemporalWorkerDeploymentVersion    | Keyword      | Indicates the Version string of the associated Worker Deployment, in the format `<deployment name>:<build id>`.                                                                                              |
-| TemporalWorkflowVersioningBehavior | Keyword      | Indicates the associated Worker Versioning behavior ("Pinned", "Auto-Upgrade", or null if not using Worker Versioning).                                                                                      |
-| WorkflowId                         | Keyword      | Identifies the Workflow Execution.                                                                                                                                                                           |
-| WorkflowType                       | Keyword      | The type of Workflow.                                                                                                                                                                                        |
+| NAME                                 | TYPE         | DEFINITION                                                                                                                                                                                                                                                                             |
+|--------------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| BatcherUser                          | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                                                                                              |
+| ~BinaryChecksums~                    | ~Keyword List~ | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21.                                                                                                                                                                                  |
+| ~BuildIds~                           | ~Keyword List~ | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Deprecated since server version 1.31 in favor of the `TemporalUsedWorkerDeploymentVersions` search attribute. |
+| CloseTime                            | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                                                                                                    |
+| ExecutionDuration                    | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                                                                                                   |
+| ExecutionStatus                      | Keyword      | The current state of the Workflow Execution.                                                                                                                                                                                                                                           |
+| ExecutionTime                        | Datetime     | The time at which the Workflow Execution actually begins running; same as `StartTime` for most cases but different for Cron Workflows and retried Workflows.                                                                                                                           |
+| HistoryLength                        | Int          | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                                                                                                                                        |
+| HistorySizeBytes                     | Long         | The size of the Event History.                                                                                                                                                                                                                                                         |
+| RunId                                | Keyword      | Identifies the current Workflow Execution Run.                                                                                                                                                                                                                                         |
+| StartTime                            | Datetime     | The time at which the Workflow Execution started.                                                                                                                                                                                                                                      |
+| StateTransitionCount                 | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                                                                                              |
+| TaskQueue                            | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                                                                                                 |
+| TemporalChangeVersion                | Keyword List | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                                                                                          |
+| TemporalReportedProblems             | Keyword List | Stores information about Workflow task failures. Formatted as `category=<category> cause=<cause>`.                                                                                                                                                                                     |
+| TemporalScheduledStartTime           | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                                                                                           |
+| TemporalScheduledById                | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                                                                                                      |
+| TemporalSchedulePaused               | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                                                                                                      |
+| TemporalUsedWorkerDeploymentVersions | Keyword List | The list of all Worker Deployment Versions that completed Workflow Tasks for the Workflow Execution. Each item is in the format `<deployment name>:<build id>`.                                                                                                                        |
+| TemporalWorkerDeployment             | Keyword      | Indicates the name of the associated Worker Deployment.                                                                                                                                                                                                                                |
+| TemporalWorkerDeploymentVersion      | Keyword      | Indicates the Version string of the associated Worker Deployment, in the format `<deployment name>:<build id>`.                                                                                                                                                                        |
+| TemporalWorkflowVersioningBehavior   | Keyword      | Indicates the associated Worker Versioning behavior ("Pinned", "Auto-Upgrade", or null if not using Worker Versioning).                                                                                                                                                                |
+| WorkflowId                           | Keyword      | Identifies the Workflow Execution.                                                                                                                                                                                                                                                     |
+| WorkflowType                         | Keyword      | The type of Workflow.                                                                                                                                                                                                                                                                  |
 
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.
 
-- Search attributes are not encrypted in the system.
-  Do not use PII as either the search attribute name or the value.
+- Search Attributes are not encrypted in the system.
+  Do not use sensitive data or PII as either the Search Attribute name or value.
 
 - To use default Search Attributes with the `Temporal` prefix in a List Filter, you can use their non-prefixed alias.
   Refer to [Search Attribute aliasing](./list-filter.mdx#search-attribute-aliasing) for details.
@@ -143,16 +159,49 @@ Note:
 - **Double** is backed up by `scaled_float` Elasticsearch type with scale factor 10000 (4 decimal digits).
 - **Datetime** is backed up by `date` type with milliseconds precision in Elasticsearch 6 and `date_nanos` type with nanoseconds precision in Elasticsearch 7.
 - **Int** is 64-bit integer (`long` Elasticsearch type).
-- **Keyword** and **Text** types are concepts taken from Elasticsearch. Each word in a **Text** is considered a searchable keyword.
-  For a UUID, that can be problematic because Elasticsearch indexes each portion of the UUID separately.
-  To have the whole string considered as a searchable keyword, use the **Keyword** type.
-  For example, if the key `ProductId` has the value of `2dd29ab7-2dd8-4668-83e0-89cae261cfb1`:
-  - As a **Keyword** it would be matched only by `ProductId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1`.
-  - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - With Temporal Server v1.19 and earlier, the **Keyword** type can store a list of values.
 - With Temporal Server v1.20 and later, the **Keyword** type supports only a single value.
   To store a list of values, use **KeywordList**.
+
+:::warning List-of-values deprecation for non-list types
+
+Storing a list of values in a non-list Search Attribute type (such as multiple strings in a **Keyword** attribute) is deprecated.  
+New namespaces on Temporal Cloud are already blocked from using this pattern. Existing Namespaces that rely on it will need to migrate before Sep. 30, 2026. After that date, Workflow Executions with invalid Search Attribute values will fail. 
+This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
+
+If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
+If you are storing lists in **Int** attributes, consider either migrating to **KeywordList** (storing integers as strings, with string-based comparison only) or splitting into multiple individual **Int** attributes.
+
+
+:::
+
 - The **Text** type cannot be used in the "Order By" clause.
+
+#### Choose a string type {#choose-a-string-type}
+
+Temporal offers three string-based Search Attribute types.
+The right choice depends on what you store and how you need to search for it.
+
+- **Use `Keyword`** when you need exact matching on a single value — workflow type names, UUIDs, hyphenated IDs, dotted class names, file paths, enum values, or any structured identifier.
+  `Keyword` stores the value as-is and supports `=`, `!=`, `IN`, `STARTS_WITH`, `BETWEEN`, and `ORDER BY`.
+- **Use `KeywordList`** when you need to store and match against multiple values on a single attribute — tags, labels, or categories.
+  `KeywordList` supports `=`, `!=`, and `IN`.
+- **Use `Text`** only for free-form, human-readable content where you want word-level search — descriptions, notes, or error messages.
+  `Text` tokenizes values into individual words and uses OR matching with the `=` operator.
+  See [Text matching in List Filters](/list-filter#text) for details on how tokenization and matching work.
+
+:::tip
+
+Most custom Search Attributes store structured identifiers, so `Keyword` is the right default choice.
+Choose `Text` only when you specifically need word-level search on prose-like content.
+
+:::
+
+:::note
+
+Broader tokenizer and exact-matching improvements for `Text` Search Attributes are being evaluated as part of future Visibility enhancements.
+
+:::
 
 #### Custom Search Attributes limits {#custom-search-attribute-limits}
 
@@ -213,12 +262,12 @@ With Workflows you can do the following:
 
 :::info Manage Search Attributes by SDK
 
-- [How to manage Search Attributes using the Go SDK](/develop/go/observability#visibility)
-- [How to manage Search Attributes using the Java SDK](/develop/java/observability#visibility)
-- [How to manage Search Attributes using the PHP SDK](/develop/php/observability#visibility)
-- [How to manage Search Attributes using the Python SDK](/develop/python/observability#visibility)
-- [How to manage Search Attributes using the TypeScript SDK](/develop/typescript/observability#visibility)
-- [How to manage Search Attributes using the .NET SDK](/develop/dotnet/observability#search-attributes)
+- [How to manage Search Attributes using the Go SDK](/develop/go/platform/observability#visibility)
+- [How to manage Search Attributes using the Java SDK](/develop/java/platform/observability#visibility)
+- [How to manage Search Attributes using the PHP SDK](/develop/php/platform/observability#visibility)
+- [How to manage Search Attributes using the Python SDK](/develop/python/platform/observability#visibility)
+- [How to manage Search Attributes using the TypeScript SDK](/develop/typescript/platform/observability#visibility)
+- [How to manage Search Attributes using the .NET SDK](/develop/dotnet/platform/observability#search-attributes)
 
 :::
 

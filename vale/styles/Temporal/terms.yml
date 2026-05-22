@@ -102,6 +102,8 @@ swap:
   temporal sdks: Temporal SDKs
   temporal server: Temporal Server
   '\bworker\b': Worker
+  serverless worker: Serverless Worker
+  serverless workers: Serverless Workers
   worker controller: Worker Controller
   '\bworkflow\b': Workflow
   timer: Timer
