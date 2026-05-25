@@ -66,6 +66,7 @@
     "clsx": "^1.1.1",
     "comlink": "^4.4.2",
     "concurrently": "^8.2.2",
+    "docusaurus-plugin-copy-page-button": "^0.6.2",
     "docusaurus-plugin-llms": "^0.2.0",
     "docusaurus-pushfeedback": "^1.0.3",
     "js-yaml": "^4.1.1",

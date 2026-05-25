@@ -444,6 +444,7 @@ module.exports = async function createConfigAsync() {
           ],
         },
       ],
+      'docusaurus-plugin-copy-page-button',
     ],
     future: {
       v4: true,
