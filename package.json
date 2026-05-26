@@ -51,7 +51,7 @@
   "dependencies": {
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/faster": "^3.8.1",
-    "@docusaurus/mdx-loader": "^3.8.1",
+    "@docusaurus/mdx-loader": "^3.10.1",
     "@docusaurus/module-type-aliases": "^3.8.1",
     "@docusaurus/plugin-content-docs": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
@@ -86,7 +86,7 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.1",
+    "@playwright/test": "^1.59.1",
     "@types/node": "^24.5.1",
     "@types/yaml": "^1.9.7",
     "dprint": "^0.54.0",
