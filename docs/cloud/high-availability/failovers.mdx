@@ -156,7 +156,7 @@ After the network partition is resolved and communication between the regions is
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
 In contrast, with a Temporal Cloud Namespace with High Availability Features, only the primary accepts requests and writes at any given time.
-Workflow History Events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
+Event History Events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
 
 :::
 
@@ -171,10 +171,10 @@ High Availability Namespaces provide _at-least-once_ semantics for execution of 
 Completed Activities _may_ be re-dispatched in a newly active Namespace, leading to repeated executions.
 
 When a Workflow Execution is updated in a newly active replica following a failover, events from the previously active Namespace that arrive after the failover can't be directly applied.
-At this point, Temporal Cloud has forked the Workflow History.
+At this point, Temporal Cloud has forked the Event History.
 
 After failover, Temporal Cloud creates a new branch history for execution, and begins its <ToolTipTerm term="conflict resolution"/> process.
-The Temporal Service ensures that Workflow Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
+The Temporal Service ensures that Event Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
 This capability is crucial for ensuring Workflow Executions continue forward without losing progress, and for maintaining consistency across replication, even during incidents that cause disruptions in replication.
 
 
