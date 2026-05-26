@@ -41,7 +41,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 - [How to run a development Worker using the TypeScript SDK](/develop/typescript/workers/run-worker-process#run-a-dev-worker)
 - [How to run a development Worker using the .NET SDK](/develop/dotnet/workers/run-worker-process)
 
-- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/workers/cloud-worker)
+- [How to connect a Go SDK Worker to Temporal Cloud](/develop/go/workers/run-worker-process#connect-to-temporal-cloud)
 - [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/workers/run-worker-process#run-a-temporal-cloud-worker)
 
 :::
@@ -72,7 +72,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 Workers have an associated identifier that helps identify the specific Worker instance.
 By default, Temporal SDKs set a Worker Identity to `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
 
-The Worker Identity is visible in various contexts, such as Workflow History and the list of pollers on a Task Queue.
+The Worker Identity is visible in various contexts, such as Event History and the list of pollers on a Task Queue.
 
 You can use the Worker Identity to aid in debugging operational issues.
 By providing a user assigned identifier, you can trace issues back to specific Worker instances.

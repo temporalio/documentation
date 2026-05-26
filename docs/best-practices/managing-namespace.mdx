@@ -27,6 +27,15 @@ For reference documentation, see:
 A [Namespace](/namespaces) is a unit of isolation within the Temporal Platform.
 It ensures that Workflow Executions, Task Queues, and resources are logically separated, preventing conflicts and enabling safe multi-tenant usage.
 
+Use this page to decide how many Namespaces you need and where to draw boundaries between environments, services,
+domains, and tenants. For Cloud-specific namespace mechanics such as creation, tagging, and gRPC endpoints, see
+[Namespaces (Temporal Cloud)](/cloud/namespaces).
+
+Related guidance:
+- [Managing Temporal Cloud access control](/best-practices/cloud-access-control)
+- [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns)
+- [Managing Actions per Second (APS) limits in Temporal Cloud](/best-practices/managing-aps-limits)
+
 ## Naming Conventions
 
 ### Use lowercase and hyphens
@@ -66,30 +75,72 @@ If you need to include region, use short codes (e.g., `aps1`, `use1`).
 
 ## Organizational Patterns
 
+### Choose your Namespace boundary intentionally
+
+Start with the smallest number of Namespaces that gives you clear ownership and safe isolation.
+In Temporal Cloud, a Namespace boundary affects:
+
+- [APS limits](/cloud/limits#actions-per-second) and rate limiting
+- access control and credential scope
+- blast radius for misconfigured or overloaded Workers
+- observability boundaries for dashboards and alerts
+- operational overhead for provisioning, tagging, and lifecycle management
+
+Use the following decision table as a starting point:
+
+| If you need... | Prefer... | Why |
+|---|---|---|
+| Basic environment isolation for a single application or use case | Namespace per use case and environment | This is the simplest pattern and works well for most initial deployments |
+| Separate operational ownership for services within the same use case | Namespace per use case, service, and environment | This isolates credentials, limits, and operational changes per service |
+| Stronger boundaries across teams, domains, or business capabilities | Namespace per use case, domain, and environment | This reduces blast radius and lets teams own their own Namespace contracts |
+| Tenant-specific credentials, rate limits, or compliance boundaries | Namespace per tenant | Use this only for a small number of high-value tenants because of the operational overhead |
+
+As a default, start with one Namespace per use case and environment. Split later when APS pressure, security
+requirements, ownership boundaries, or troubleshooting needs justify the extra operational cost.
+
 ### Pattern 1: Namespace per use case and environment
 
 For simple configurations without multiple services or team boundaries.
 
-**Naming convention**: `<use-case>_<environment>`
+**Naming convention**: `<use-case>-<environment>`
 
-**Example**: `payments_prod`, `orders_dev`
+**Example**: `payments-prd`, `orders-dev`
+
+Choose this pattern when:
+
+- one team owns the use case
+- environments need clean separation
+- workload volume and criticality do not yet require further isolation
 
 ### Pattern 2: Namespace per use case, service, and environment
 
 When multiple services that are part of the same use case communicate externally to Temporal via API (HTTP/gRPC).
 
-**Naming convention**: `<use-case>_<service>_<environment>`
+**Naming convention**: `<use-case>-<service>-<environment>`
 
-**Example**: `payments_gateway_prod`, `payments_processor_prod`
+**Example**: `payments-gateway-prd`, `payments-processor-prd`
+
+Choose this pattern when:
+
+- services need separate credentials or access policies
+- one service can exhaust APS or operational limits independently of the others
+- teams want separate ownership of deployment, alerting, or on-call boundaries
 
 ### Pattern 3: Namespace per use case, domain, and environment
 
 When multiple services need to communicate with each other, use [Temporal Nexus](/nexus) to connect Workflows across Namespace boundaries.
 This provides better security, fault isolation, and modularity than sharing a Namespace.
 
-**Naming convention**: `<use-case>_<domain>_<environment>`
+**Naming convention**: `<use-case>-<domain>-<environment>`
 
-**Example**: `payments_checkout_prod`, `payments_refunds_prod`
+**Example**: `payments-checkout-prd`, `payments-refunds-prd`
+
+Choose this pattern when:
+
+- multiple teams or domains need independent release cadence and ownership
+- failures in one domain should not affect the others
+- you want a stronger permission boundary between capabilities
+- you plan to expose cross-Namespace contracts through Nexus
 
 For systems without Nexus, services can communicate via [Signals](/sending-messages#sending-signals) or [Child Workflows](/child-workflows) within the same Namespace.
 
@@ -97,6 +148,33 @@ For systems without Nexus, services can communicate via [Signals](/sending-messa
 When multiple teams share a Namespace, prefix each Workflow ID with a service-specific string to ensure uniqueness.
 Task Queue names must also be unique within the Namespace.
 :::
+
+### Pattern 4: Namespace per tenant
+
+Use a separate [Namespace](/namespaces) per tenant only when each tenant needs a true isolation boundary.
+
+This is usually appropriate only for a small number of high-value tenants that require:
+
+- dedicated credentials and access control
+- tenant-specific rate limits or capacity decisions
+- strict compliance or data-isolation boundaries
+- independent debugging, alerting, and operational ownership
+
+For most SaaS use cases, a shared Namespace with per-tenant [Task Queues](/task-queue) is simpler and more scalable.
+See [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns) for those designs.
+
+### What should cause you to split a Namespace later?
+
+Revisit your topology when one or more of the following becomes true:
+
+- one workload is consuming enough APS that it regularly threatens others in the same Namespace
+- one team needs tighter access controls or dedicated credentials
+- production troubleshooting requires clearer dashboards, alerts, or ownership boundaries
+- one application or domain is business-critical enough that its blast radius must be reduced
+- a tenant or regulated workload needs stronger separation than Task Queue isolation can provide
+
+Splitting a Namespace increases safety, but it also adds overhead for provisioning, tagging, credentials, and cross-Namespace coordination.
+Use [Nexus](/nexus) where possible instead of sharing Temporal primitives across team or domain boundaries.
 
 ## Production Safeguards
 

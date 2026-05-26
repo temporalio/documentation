@@ -44,7 +44,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -76,7 +76,7 @@ jobs:
           fi
 
       - name: Post PR comment
-        uses: mshick/add-pr-comment@v2
+        uses: mshick/add-pr-comment@v3
         with:
           message: |
             🤖 Starting the visual tests. This will take approximately 15 minutes.
@@ -119,7 +119,7 @@ jobs:
         shardTotal: [4]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -142,7 +142,7 @@ jobs:
         with:
           attempt_limit: 3
           attempt_delay: 60000
-          action: actions/download-artifact@v5
+          action: actions/download-artifact@v8
           with: |
             name: build
             path: build
@@ -212,7 +212,7 @@ jobs:
       actions: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -228,7 +228,7 @@ jobs:
           attempt_delay: 60000
 
       - name: Download blob reports
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: all-blob-reports
           pattern: blob-report-*
@@ -266,7 +266,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Download HTML report
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: report
           path: playwright-report
@@ -282,7 +282,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Post report URL comment
-        uses: mshick/add-pr-comment@v2
+        uses: mshick/add-pr-comment@v3
         env:
           HEAD_REF: ${{ github.head_ref }}
           RUN_ID: ${{ github.run_id }}

@@ -32,7 +32,7 @@ keywords:
 ---
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
-import ThemedImage from '@theme/ThemedImage';
+import { CaptionedImage } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -78,13 +78,10 @@ Use the following decision tree to help determine if Nexus is right for your use
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <a href="/diagrams/nexusadoptionlight.svg" target="_blank" rel="noopener noreferrer">
-    <ThemedImage
+    <CaptionedImage
+      src="/diagrams/nexusadoptionlight.svg"
+      srcDark="/diagrams/nexusadoptiondark.svg"
       alt="Should I use Nexus? Decision tree"
-      sources={{
-        light: '/diagrams/nexusadoptionlight.svg',
-        dark: '/diagrams/nexusadoptiondark.svg',
-      }}
-      style={{maxWidth: '100%', cursor: 'pointer'}}
     />
   </a>
 </div>
@@ -95,9 +92,8 @@ Join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in 
 
 <RelatedReadContainer>
   <RelatedReadItem path="/nexus" text="Nexus concepts and architecture" archetype="encyclopedia" />
-  <RelatedReadItem path="/develop/go/nexus/quickstart" text="Go SDK - Nexus quick start" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/go/nexus" text="Go SDK - Nexus quick start" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/nexus" text="Java SDK - Nexus quick start" archetype="feature-guide" />
-  <RelatedReadItem path="https://learn.temporal.io/tutorials/nexus/nexus-sync-tutorial/" text="Java SDK - Nexus sync tutorial" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/nexus" text="Python SDK - Nexus quick start" archetype="feature-guide" />
   <RelatedReadItem path="/develop/typescript/nexus" text="TypeScript SDK - Nexus quick start" archetype="feature-guide" />
   <RelatedReadItem path="/develop/dotnet/nexus" text=".NET SDK - Nexus quick start" archetype="feature-guide" />

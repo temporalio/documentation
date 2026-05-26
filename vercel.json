@@ -4,7 +4,30 @@
   "github": {
     "silent": true
   },
+  "headers": [
+    {
+      "source": "/(.*)\\.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ],
   "redirects": [
+    {
+      "source": "/evaluate/serverless-workers-demo",
+      "destination": "/evaluate/serverless-workers/demo",
+      "source": "/develop/go/data-handling/large-payload-storage",
+      "destination": "/develop/go/data-handling/external-storage",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/data-handling/large-payload-storage",
+      "destination": "/develop/python/data-handling/external-storage",
+      "permanent": true
+    },
     {
       "source": "/cloud/introduction",
       "destination": "/cloud/overview",
@@ -1370,11 +1393,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/dotnet/nexus",
-      "destination": "/develop/dotnet/nexus/feature-guide",
-      "permanent": true
-    },
-    {
       "source": "/develop/dotnet/observability",
       "destination": "/develop/dotnet/platform/observability",
       "permanent": true
@@ -1940,11 +1958,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/typescript/converters-and-encryption",
-      "destination": "/develop/typescript/best-practices/converters-and-encryption",
-      "permanent": true
-    },
-    {
       "source": "/develop/typescript/debugging",
       "destination": "/develop/typescript/best-practices/debugging",
       "permanent": true
@@ -2027,6 +2040,11 @@
     {
       "source": "/develop/typescript/versioning",
       "destination": "/develop/typescript/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/workers/cloud-worker",
+      "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
       "permanent": true
     }
   ]

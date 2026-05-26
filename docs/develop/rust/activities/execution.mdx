@@ -1,0 +1,147 @@
+---
+id: execution
+title: Activity execution - Rust SDK
+description: Shows how to perform Activity execution with the Rust SDK
+sidebar_label: Activity execution
+slug: /develop/rust/activities/execution
+toc_max_heading_level: 3
+tags:
+  - Rust SDK
+  - Temporal SDKs
+  - Activity
+---
+
+## Start an Activity Execution {#activity-execution}
+
+Calls to spawn [Activity Executions](/activity-execution) are written within a
+[Workflow Definition](/workflow-definition). The call to spawn an Activity Execution generates the
+[ScheduleActivityTask](/references/commands#scheduleactivitytask) Command. This results in a set of three [Activity Task](/tasks#activity-task) related Events in your Workflow Execution Event History:
+[ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTaskClosed.
+
+A single instance of the Activity implementation may be used across multiple concurrent Activity invocations. Activity implementation code should be *idempotent*.
+
+Values passed to Activities as input parameters or returned as results are recorded in the Workflow Execution history. This history is replayed to Workflow Workers during recovery. Large payloads can negatively impact Workflow performance.
+
+Be mindful of the size of data passed to and from Activities. Otherwise, there are no strict limitations on Activity implementations.
+
+To spawn an Activity Execution, use the Workflow context’s Activity execution APIs within your Workflow code.
+
+In Rust, Activities are typically executed using `ctx.start_activity(...)`, which returns a `Future` that can be awaited.
+
+```rust
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+        // Execute an activity
+        let greeting = ctx.start_activity(
+            MyActivities::greet,
+            name,
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+        ).await?;
+
+        println!("{}", greeting);
+
+        Ok(greeting)
+    }
+}
+```
+
+### Set the required Activity Timeouts {#required-timeout}
+
+Activity Execution semantics rely on several timeout parameters. You need to set at least one of these:
+
+* [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)
+* [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)
+
+These are configured as part of the Activity options when scheduling the Activity. Available timeouts include:
+
+- `start_to_close_timeout`
+- `schedule_to_close_timeout`
+- `with_start_to_close_timeout`
+- `with_schedule_to_close_timeout`
+
+```rust
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+        // Execute an activity
+        let greeting = ctx.start_activity(
+            MyActivities::greet,
+            name,
+            ActivityOptions::schedule_to_close_timeout(Duration::from_secs(30))
+        ).await?;
+
+        println!("{}", greeting);
+        Ok(greeting)
+    }
+}
+```
+
+### Get the results of an Activity Execution {#get-activity-results}
+
+Spawning an [Activity Execution](/activity-execution) generates a [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and returns a `Future` to the Workflow.
+
+Workflows can either:
+
+* `await` the result immediately (blocking progress), or
+* store the `Future` and await it later to allow concurrent execution.
+
+In Rust, calling `.await` on the Activity invocation returns the result. If you need more control (e.g., parallel execution), you can create multiple Activity futures and await them selectively.
+
+You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
+
+```rust
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+        // Execute an activity
+        let greeting = ctx.start_activity(
+            MyActivities::greet,
+            name,
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+        ).await?;
+
+        println!("{}", greeting);
+        Ok(greeting)
+    }
+}
+```
+
+For concurrent execution:
+
+```rust
+use temporalio_sdk::workflows::join;
+
+#[run]
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+    let name = ctx.state(|s| s.name.clone());
+    // Execute an activity
+    let greeting = ctx.start_activity(
+        MyActivities::greet,
+        name,
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+    );
+
+    let language = ctx.start_activity(
+        MyActivities::call_greeting_service,
+        ActivityLanguages::English,
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+    );
+
+    // Run in parallel
+    let (greeting_res, language_res) = join!(greeting, language);
+}
+```
+
+Use direct `.await` in most cases. More advanced patterns, like parallel execution or cancellation, can be built using Rust’s async primitives.
