@@ -29,12 +29,6 @@ Returning control from the replica to the primary is called a <ToolTipTerm term=
 After a Temporal-managed failover, Temporal automatically fails back to the original region once it is healthy.
 See [Returning to the primary with failbacks](#failbacks) for details on automatic and manual failback options.
 
-:::tip White paper
-
-For an in-depth guide covering everything from why you need High Availability to setting it up in production and advanced options, read the [High Availability White Paper](https://temporal.io/pages/high-availability-white-paper).
-
-:::
-
 ## Automatic failover
 
 When an unexpected outage hits your Temporal Namespace, failing over to a healthy cloud region can prevent data loss and application interruptions.
@@ -42,15 +36,14 @@ After a failover, in-flight Workflows continue, new Workflows start, and closed 
 
 Temporal Cloud offers managed outage detection and failover to all Namespaces that use High Availability.
 Temporal-managed failovers, also known as "automatic failovers," keep your Temporal Cloud Namespace available without manual intervention from you.
-We aim to both detect the outage and complete a Temporal-managed failover in minutes from when the outage began, according to our stated [Recovery Time Objective (RTO)](/cloud/rto-rpo).
+We aim to both detect the outage and complete a Temporal-managed failover in minutes from when the outage began, according to our stated [Recovery Time Objective (RTO)](/cloud/rpo-rto).
 
 After a Temporal-managed failover, your Namespace will have a replica in its original region.
 Once the original region is healthy again, Temporal Cloud automatically performs a [failback](#failbacks), moving your Namespace back home.
 
 <CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
 
-To opt-out of Temporal-managed failovers and its RTO, you can [disable automated failovers](/cloud/high-availability/failovers#disabling-temporal-initiated).
-lth checks.
+To opt out of Temporal-managed failovers and its RTO, you can [disable automated failovers](/cloud/high-availability/failovers#disabling-temporal-initiated).
 
 ### Conditions that trigger an automatic failover
 
