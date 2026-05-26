@@ -654,6 +654,7 @@ module.exports = {
                 'develop/typescript/workflows/schedules',
                 'develop/typescript/workflows/timers',
                 'develop/typescript/workflows/versioning',
+                'develop/typescript/workflows/workflow-streams',
               ],
             },
             {
