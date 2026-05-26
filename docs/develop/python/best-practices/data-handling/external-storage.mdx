@@ -34,9 +34,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 - An Amazon S3 bucket that you have read and write access to. Refer to
   [lifecycle management](/external-storage#lifecycle) to ensure that your payloads remain available for the entire
-  lifetime of the Workflow.
-  - The S3 driver has been validated with single-region buckets. Multi-region configurations such as AWS Multi-Region
-    Access Points (MRAP) have not been validated.
+  lifetime of the Workflow. For multi-region durability, see
+  [Durable External Storage with Amazon S3](/external-storage#durable-s3).
 - Install the `aioboto3` extra: `python -m pip install "temporalio[aioboto3]"`
 
 ### Procedure
@@ -248,3 +247,26 @@ ExternalStorage(
 )
 ```
 <!--SNIPEND-->
+
+## Multi-region durability
+
+To make your S3-backed External Storage tolerant of regional failures, configure the AWS side with
+[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) and an
+[S3 Multi-Region Access Point (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/), then point the
+driver at the MRAP ARN instead of a bucket name. See
+[Durable External Storage with Amazon S3](/external-storage#durable-s3) for the full pattern, trade-offs, and how it
+relates to Temporal Cloud High Availability.
+
+In code, the only change is the value you pass as `bucket`:
+
+```py
+session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
+async with session.client("s3") as s3_client:
+    driver = S3StorageDriver(
+        client=new_aioboto3_client(s3_client),
+        bucket="arn:aws:s3::123456789012:accesspoint/mfzwi23gnjvgw.mrap",
+    )
+```
+
+`aioboto3` (via `botocore`) automatically uses [SigV4A](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html)
+signing when the bucket value is an MRAP ARN. Make sure your `botocore` version is recent enough to support SigV4A.

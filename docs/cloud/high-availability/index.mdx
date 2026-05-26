@@ -115,3 +115,13 @@ These are often major concerns for financial services, e-commerce, gaming, globa
 In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
 This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
+
+## Related considerations
+
+### External Storage
+
+If your Workflows use [External Storage](/external-storage) to offload large payloads, durability of the external store
+is a separate concern from Namespace replication. 
+
+- For S3, see [Durable External Storage with Amazon S3](/external-storage#durable-s3) to see how CRR + MRAP can be used.
+- For external storage providers other than what is listed above, we do not yet provide guidance. Consult the providers documentation for more information.
