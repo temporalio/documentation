@@ -174,13 +174,13 @@ At any time only the primary or the replica is active.
 The only exception occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition), when a Network splits into separate subnetworks.
 Should this occur, you can promote a replica to active status.
 **Caution:** This temporarily makes both regions active.
-After the network partition is resolved and communication between the isolation domains/regions is restored, a conflict resolution algorithm determines whether the primary or replica remains active.
+After the network partition is resolved and communication between the regions is restored, a conflict resolution algorithm determines whether the primary or replica remains active.
 
 :::tip
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
 In contrast, with a Temporal Cloud Namespace with High Availability Features, only the primary accepts requests and writes at any given time.
-Workflow History Events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
+Event History Events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
 
 :::
 
@@ -195,10 +195,10 @@ High Availability Namespaces provide _at-least-once_ semantics for execution of 
 Completed Activities _may_ be re-dispatched in a newly active Namespace, leading to repeated executions.
 
 When a Workflow Execution is updated in a newly active replica following a failover, events from the previously active Namespace that arrive after the failover can't be directly applied.
-At this point, Temporal Cloud has forked the Workflow History.
+At this point, Temporal Cloud has forked the Event History.
 
 After failover, Temporal Cloud creates a new branch history for execution, and begins its <ToolTipTerm term="conflict resolution"/> process.
-The Temporal Service ensures that Workflow Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
+The Temporal Service ensures that Event Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
 This capability is crucial for ensuring Workflow Executions continue forward without losing progress, and for maintaining consistency across replication, even during incidents that cause disruptions in replication.
 
 
@@ -321,7 +321,7 @@ See [Returning to the primary with failbacks](#failbacks) for details on how and
 
 After any failover, whether triggered by you or by Temporal, an event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
 The audit log entry for Failover uses the `"operation": "FailoverNamespace"` event.
-After failover, the replica becomes active, taking over in the isolation domain or region.
+After failover, the replica becomes active, taking over from the original region.
 
 You don't need to monitor Temporal Cloud's failover response in real time.
 Whenever there is a failover event, Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications)
@@ -437,14 +437,14 @@ Failover testing (also known as "<ToolTipTerm term="trigger testing" />)" can:
 
 - **Validate replicated deployments**:
   In multi-region setups, failover testing ensures your app can run from another region when the primary region experiences outages.
-  In standard setups, failover testing instead works with an isolation domain.
+  In Same-region Replication setups, failover testing instead works with a separate cell within the same region.
   This maintains high availability in mission-critical deployments.
   Manual testing confirms the failover mechanism works as expected, so your system handles incidents effectively.
 
 - **Assess replication lag**:
   In multi-region deployment, monitoring [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) between regions is crucial.
   Check the lag before initiating a failover to avoid rolling back Workflow progress.
-  This is less important when using isolation domains as failover is usually instantaneous.
+  This is less important with Same-region Replication, as failover is usually instantaneous.
   Manual testing helps you practice this critical step and understand its impact.
 
 - **Assess recovery time**:

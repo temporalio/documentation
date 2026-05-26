@@ -4,6 +4,17 @@
   "github": {
     "silent": true
   },
+  "headers": [
+    {
+      "source": "/(.*)\\.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/evaluate/serverless-workers-demo",
@@ -1944,11 +1955,6 @@
     {
       "source": "/develop/typescript/benign-exceptions",
       "destination": "/develop/typescript/activities/benign-exceptions",
-      "permanent": true
-    },
-    {
-      "source": "/develop/typescript/converters-and-encryption",
-      "destination": "/develop/typescript/best-practices/converters-and-encryption",
       "permanent": true
     },
     {
