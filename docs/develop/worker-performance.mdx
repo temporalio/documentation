@@ -388,28 +388,15 @@ For example, it might provide a fixed assignment slot supplier for Workflows and
 ### Choosing slot supplier types {#choosing-slot-supplier-types}
 
 Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
-Here’s how to choose the best approach based on your system requirements and workload characteristics.
+**For most workloads, Temporal recommends fixed-size slot suppliers.**
+A fixed-size tuner with appropriately chosen values delivers better performance and more predictable behavior than a resource-based tuner.
 
-When choosing whether to opt for fixed assignment or resource-based suppliers, consider:
+Each SDK provides [default slot counts](/develop/worker-tuning-reference#compute-defaults-by-sdk), but Temporal recommends [actively tuning these values](/best-practices/worker#actively-tune-worker-options-instead-of-relying-on-defaults) for your workload.
 
-- Workflow Tasks make minimal demands on the CPU and, normally, do not consume much memory.
-  They are well-served by fixed-sized slot suppliers.
-- When very low Task completion latency & maximum throughput is important, avoid resourced-based auto-tuning slot suppliers.
-- Reserve auto-tuned resource-based slot suppliers for deployments with workloads that have resource
-  usage patterns you don't fully understand, and don't care to. It can offer **good-enough** performance
-  for workloads you don't want to spend time profiling.
+#### When to use resource-based slot suppliers
 
-Scenarios with tasks that have variable, or very high, per-task resource needs should rely on
-fixed-size suppliers and manual tuning. The resource-based tuner can never perform as well as a
-fixed-size tuner with appropriately chosen configuration, but can offer reasonable performance
-without the need for profiling.
+Resource-based slot suppliers are suited to specific use cases.
 
-The following use cases are well suited to resource-based auto-tuning slot suppliers: 
-
-- **You want acceptable performance with minimum effort**:
-  Resource-based suppliers can provide reasonable performance without the need for profiling your
-  workfload. They can be a great way to get started with new workloads. If a workload becomes very
-  performance-sensitive, we suggest you profile it and choose appropriate fixed-size numbers.
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
   For example: HTTP calls or other blocking I/Os that spend most of their time waiting on external events.
@@ -419,12 +406,12 @@ The following use cases are well suited to resource-based auto-tuning slot suppl
   In these cases, the resource-based supplier is a good match.
   Keep in mind that auto-tuning can never do a _perfect_ job and may sometimes exceed your requested system limits for CPU and memory.
 
-For the highest level of control over slot allocation, consider custom slot suppliers.
-This allows you to tailor the logic of how slots are allocated based on your system requirements.
-Custom suppliers provide flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers may not fully address.
+Scenarios with tasks that have variable, or very high, per-task resource needs should rely on fixed-size suppliers and manual tuning rather than resource-based suppliers.
 
-Choosing the right slot supplier depends on your workload complexity and the control you need over resource allocation.
-For predictable tasks, variable workloads, or complex dynamic scenarios, Temporal slot suppliers can meet your needs.
+#### When to use custom slot suppliers
+
+For the highest level of control over slot allocation, consider custom slot suppliers.
+Custom suppliers let you tailor the logic of how slots are allocated based on your system requirements, providing flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers do not fully address.
 
 ### Implement Custom Slot Suppliers {#custom-slot-implementation}
 
