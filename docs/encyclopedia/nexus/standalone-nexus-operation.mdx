@@ -1,0 +1,99 @@
+---
+id: standalone-nexus-operation
+title: Standalone Nexus Operation
+sidebar_label: Standalone Nexus Operation
+description: Learn about Standalone Nexus Operations in Temporal, their benefits, execution model, and when to use them.
+slug: /standalone-nexus-operation
+toc_max_heading_level: 4
+keywords:
+  - standalone nexus operation
+  - nexus operation execution
+  - execute nexus operation
+  - explanation
+  - term
+tags:
+  - Concepts
+  - Nexus
+  - Durable Execution
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Standalone Nexus Operations are at [Pre-release](/evaluate/development-production-features/release-stages#pre-release). APIs are experimental and may be subject to backwards-incompatible changes.
+
+:::
+
+## What is a Standalone Nexus Operation? {#standalone-nexus-operation}
+
+A Standalone Nexus Operation is a top-level [Nexus Operation Execution](/nexus/operations) started
+directly by a [Client](/encyclopedia/temporal-sdks#temporal-client), without using a caller
+Workflow. Instead of calling a Nexus Operation from within a Workflow Definition, you execute it
+directly from a Nexus Client created from the Temporal SDK Client and bound to a
+[Nexus Endpoint](/nexus/endpoints) and Service.
+
+<div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <a href="/diagrams/standalone-nexus-operations-vs-workflowlight.svg" target="_blank" rel="noopener noreferrer">
+    <ThemedImage
+      alt="Standalone Nexus Operation vs. Workflow - Standalone Nexus Operations execute a single Operation across Namespaces as a top-level primitive, while Workflows orchestrate multiple Nexus Operation steps"
+      sources={{
+        light: '/diagrams/standalone-nexus-operations-vs-workflowlight.svg',
+        dark: '/diagrams/standalone-nexus-operations-vs-workflowdark.svg',
+      }}
+      style={{maxWidth: '100%', cursor: 'pointer'}}
+    />
+  </a>
+</div>
+
+Standalone Nexus Operations use the same Service contract, Operation handlers, and Worker setup as
+Workflow-driven Operations — only the caller side differs. The same Operation can be executed as a
+Standalone Nexus Operation and as a Workflow-driven Nexus Operation with no handler code changes.
+
+If you need to orchestrate multiple Nexus Operations, call them from a [Workflow](/workflows). But if
+you just need to execute a single Nexus Operation across Namespace boundaries, use a Standalone
+Nexus Operation.
+
+:::tip GET STARTED
+
+Pick your SDK and follow the quickstart:
+
+- [Go SDK - Standalone Nexus Operations](/develop/go/nexus/standalone-operations)
+
+:::
+
+## Use cases
+
+Standalone Nexus Operations are useful when application code outside of a Workflow needs to invoke
+functionality exposed by another team's Namespace through a Nexus Endpoint — for example, calling a
+shared service from a starter program, a job runner, an HTTP handler, or a script — with all the
+reliability, retries, and observability of Nexus, but without paying the cost of a caller Workflow.
+
+## Key features
+
+- Execute any Nexus Operation as a top-level primitive without the overhead of a caller Workflow
+- Same Service contract, Operation handlers, and Worker setup as Workflow-driven Operations
+- Supports both synchronous and asynchronous (Workflow-backed) Nexus Operations
+- At-least-once execution with automatic retries by the Nexus Machinery
+- Addressable — get a handle to retrieve results, with the Operation token for asynchronous Operations
+- Visibility — list and count Standalone Nexus Operation Executions using [List Filter](/list-filter) queries
+- Dual use — execute the same Operation from a Workflow or standalone with no handler code changes
+
+## Observability {#observability}
+
+You can use [List Filters](/list-filter) to query Standalone Nexus Operation Executions by Endpoint,
+Service, Operation, status, and other attributes using the SDK.
+
+`CountNexusOperations` returns the total number of Standalone Nexus Operation Executions matching a
+filter. This is the total count of executions (running, completed, failed, etc.) — not the number of
+queued tasks.
+
+## Pre-release limitations
+
+Standalone Nexus Operations are at Pre-release. APIs are experimental and may be subject to
+backwards-incompatible changes.
+
+
+## Temporal Cloud support
+
+Standalone Activities in Temporal Cloud is available as a Public Preview feature.
