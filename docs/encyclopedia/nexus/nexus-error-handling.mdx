@@ -35,7 +35,7 @@ By default, handler errors are retryable unless they are:
 
 When the caller's Nexus Machinery receives an error:
 
-- **Non-retryable** - A [NexusOperationFailed](/references/events#nexusoperationfailed) event is added to the caller's Workflow History.
+- **Non-retryable** - A [NexusOperationFailed](/references/events#nexusoperationfailed) event is added to the caller's Event History.
 - **Retryable** - The Nexus Machinery [automatically retries](/nexus/operations#automatic-retries). These errors surface in [Pending Operations](/nexus/execution-debugging/#pending-operations).
 
 :::tip

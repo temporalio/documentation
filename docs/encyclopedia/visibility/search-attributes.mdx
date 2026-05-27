@@ -159,16 +159,49 @@ Note:
 - **Double** is backed up by `scaled_float` Elasticsearch type with scale factor 10000 (4 decimal digits).
 - **Datetime** is backed up by `date` type with milliseconds precision in Elasticsearch 6 and `date_nanos` type with nanoseconds precision in Elasticsearch 7.
 - **Int** is 64-bit integer (`long` Elasticsearch type).
-- **Keyword** and **Text** types are concepts taken from Elasticsearch. Each word in a **Text** is considered a searchable keyword.
-  For a UUID, that can be problematic because Elasticsearch indexes each portion of the UUID separately.
-  To have the whole string considered as a searchable keyword, use the **Keyword** type.
-  For example, if the key `ProductId` has the value of `2dd29ab7-2dd8-4668-83e0-89cae261cfb1`:
-  - As a **Keyword** it would be matched only by `ProductId = "2dd29ab7-2dd8-4668-83e0-89cae261cfb1`.
-  - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - With Temporal Server v1.19 and earlier, the **Keyword** type can store a list of values.
 - With Temporal Server v1.20 and later, the **Keyword** type supports only a single value.
   To store a list of values, use **KeywordList**.
+
+:::warning List-of-values deprecation for non-list types
+
+Storing a list of values in a non-list Search Attribute type (such as multiple strings in a **Keyword** attribute) is deprecated.  
+New namespaces on Temporal Cloud are already blocked from using this pattern. Existing Namespaces that rely on it will need to migrate before Sep. 30, 2026. After that date, Workflow Executions with invalid Search Attribute values will fail. 
+This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
+
+If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
+If you are storing lists in **Int** attributes, consider either migrating to **KeywordList** (storing integers as strings, with string-based comparison only) or splitting into multiple individual **Int** attributes.
+
+
+:::
+
 - The **Text** type cannot be used in the "Order By" clause.
+
+#### Choose a string type {#choose-a-string-type}
+
+Temporal offers three string-based Search Attribute types.
+The right choice depends on what you store and how you need to search for it.
+
+- **Use `Keyword`** when you need exact matching on a single value — workflow type names, UUIDs, hyphenated IDs, dotted class names, file paths, enum values, or any structured identifier.
+  `Keyword` stores the value as-is and supports `=`, `!=`, `IN`, `STARTS_WITH`, `BETWEEN`, and `ORDER BY`.
+- **Use `KeywordList`** when you need to store and match against multiple values on a single attribute — tags, labels, or categories.
+  `KeywordList` supports `=`, `!=`, and `IN`.
+- **Use `Text`** only for free-form, human-readable content where you want word-level search — descriptions, notes, or error messages.
+  `Text` tokenizes values into individual words and uses OR matching with the `=` operator.
+  See [Text matching in List Filters](/list-filter#text) for details on how tokenization and matching work.
+
+:::tip
+
+Most custom Search Attributes store structured identifiers, so `Keyword` is the right default choice.
+Choose `Text` only when you specifically need word-level search on prose-like content.
+
+:::
+
+:::note
+
+Broader tokenizer and exact-matching improvements for `Text` Search Attributes are being evaluated as part of future Visibility enhancements.
+
+:::
 
 #### Custom Search Attributes limits {#custom-search-attribute-limits}
 
