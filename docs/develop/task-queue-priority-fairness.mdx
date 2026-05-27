@@ -517,19 +517,15 @@ There should only be one fairness weight assigned to each fairness key within a 
 
 ### Choosing between Priority, Fairness, and both
 
-- **Priority alone** when you need strict preemption — for example, break-glass or SEV-style overrides, or separating real-time Tasks from batch Tasks on a shared Worker pool.
+- **Priority alone** when you need strict priority ordering - for example, separating real-time Tasks from batch Tasks.
 - **Fairness alone** when you need tier or tenant isolation so no group is starved, but you don't need to preempt any group ahead of another.
-- **Both** when you have a tiered SLA hierarchy — Priority for the broad tier (for example, paid vs. free), Fairness for per-tenant equity within a tier.
-
-### Using Priority and Fairness together
+- **Both** when you have a tiered SLA hierarchy - Priority for the broad tier (for example, paid vs. free), Fairness for per-tenant equity within a tier.
 
 When you use Priority and Fairness together, the next Task to dispatch is chosen by walking three rules in order:
 
-1. **Priority tier (strict).** Tasks at a lower `priority_key` (higher priority) always dispatch before any Task at a higher `priority_key`, regardless of fairness keys or weights. A single priority-1 Task is dispatched before any priority-2 Task in the backlog.
-2. **Fairness key within a tier (weighted).** Within a priority tier, each fairness key is a virtual queue. Keys are dispatched proportional to their weights — a key with weight 2.0 is dispatched twice as often as a key with weight 1.0.
+1. **Priority tier (strict).** Tasks at a higher priority always dispatch before tasks at lower priorities, regardless of fairness keys or weights.
+2. **Fairness key within a tier (weighted).** Within a priority tier, each fairness key is a virtual queue. Keys are dispatched proportional to their weights — a key with weight 2.0 is dispatched twice as often as one with weight 1.0.
 3. **FIFO within a key.** Tasks that share a priority tier _and_ fairness key dispatch in the order they were enqueued.
-
-So if two Tasks have the same `priority_key`, the same `fairness_key`, and the same `fairness_weight`, the older one dispatches first.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
