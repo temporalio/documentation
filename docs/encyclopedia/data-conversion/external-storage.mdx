@@ -23,14 +23,15 @@ import { CaptionedImage } from '@site/src/components';
 
 :::info Release, stability, and dependency info
 
-External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs and
-configuration may change before General Availability. Join the
+External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs
+and configuration may change before General Availability. Join the
 [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 
 :::
 
 External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
-the Event History instead. This is called the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern).
+the Event History instead. This is called the
+[claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern).
 
 For SDK-specific usage guides, see:
 
@@ -39,14 +40,15 @@ For SDK-specific usage guides, see:
 
 ## Why use External Storage
 
-The Temporal Service enforces a maximum per-payload size. The default and recommended limit is 2 MB. Self-hosted users can
-[configure this limit](/self-hosted-guide/defaults), but it is fixed at 2 MB on Temporal Cloud. Payloads that exceed this limit fail the
-operation. Without External Storage, you must restructure your code to work around the limit, for example by splitting
-data across multiple Workflows.
+The Temporal Service enforces a maximum per-payload size. The default and recommended limit is 2 MB. Self-hosted users
+can [configure this limit](/self-hosted-guide/defaults), but it is fixed at 2 MB on Temporal Cloud. Payloads that exceed
+this limit fail the operation. Without External Storage, you must restructure your code to work around the limit, for
+example by splitting data across multiple Workflows.
 
 Even when individual payloads stay under the hard limit, payload data accumulates in Event History. Every Activity input
 and output is persisted, so Workflows that pass data through many Activities can see history size grow quickly. Large
-histories degrade Workflow Task latency. You may use [Continue-as-New](/workflow-execution/continue-as-new) to work around this problem, but that comes with other tradeoffs.
+histories degrade Workflow Task latency. You may use [Continue-as-New](/workflow-execution/continue-as-new) to work
+around this problem, but that comes with other tradeoffs.
 
 External Storage addresses several common scenarios:
 
@@ -59,11 +61,10 @@ External Storage addresses several common scenarios:
 - **Migration to Temporal Cloud.** Self-hosted deployments may have higher configured payload limits. External Storage
   lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
-  payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads regardless
-  of size.
-- **Resilience to regional failures.** When backed by Amazon S3, External Storage can be configured for cross-region
-  durability so that payloads remain available during a regional outage. See
-  [Durable External Storage with Amazon S3](#durable-s3).
+  payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads
+  regardless of size.
+- **Resilience to regional failures.** External Storage can be configured for cross-region durability so that payloads
+  remain available during a regional outage. See [Durable External Storage](#durable-external-storage).
 
 For SDK-specific usage guides, see:
 
@@ -109,7 +110,8 @@ A storage driver connects External Storage to a backing store. Each driver provi
   later.
 - **Retrieve**. Download payloads using the claims that `store` produced.
 
-The S3 driver also includes diagnostic metadata in error messages, such as the AWS region, to help with troubleshooting storage failures.
+The S3 driver also includes diagnostic metadata in error messages, such as the AWS region, to help with troubleshooting
+storage failures.
 
 Temporal SDKs include built-in drivers for common storage systems like Amazon S3. You can configure multiple storage
 drivers and use a selector function to route payloads to different drivers based on size, type, or other criteria such
@@ -117,7 +119,8 @@ as hot and cold storage tiers.
 
 ### Custom storage drivers
 
-If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific examples, see:
+If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific
+examples, see:
 
 - [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
@@ -152,67 +155,37 @@ based on your operational needs. Use [Continue-as-New](/workflow-execution/conti
 run longer. The new run uploads fresh payloads, and the old run's payloads only need to survive through its retention
 period.
 
-## Durable External Storage with Amazon S3 {#durable-s3}
+## Durable External Storage {#durable-external-storage}
 
-If you use the S3 storage driver, you can make External Storage tolerant of regional failures by combining
-[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) with an
-[S3 Multi-Region Access Point (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/). This complements
-Temporal Cloud's [High Availability](/cloud/high-availability) offering (see
-[Relationship to Temporal Cloud High Availability](#external-storage-and-temporal-cloud-ha) below to decide whether you
-need it).
+External Storage stores payloads in a single storage backend. If that backend becomes unavailable, Workers can't
+retrieve payloads. To protect against regional or provider failures, use your storage provider's redundancy features,
+such as cross-region replication and multi-region routing.
 
-### The problem
+### S3 Multi-Region Access Points
 
-S3 buckets are tied to a single AWS region. Writing to a single bucket creates a single point of failure if that region
-or bucket becomes unavailable.
+The built-in S3 storage driver supports
+[S3 Multi-Region Access Points (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/) as the bucket
+endpoint. Combined with
+[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html), this gives you
+automatic failover across regions: if a bucket or region becomes unavailable, requests route to the closest healthy
+bucket.
 
-### How CRR and MRAP help
+For setup instructions, see
+[Configuring S3 Multi-Region Access Points with replication](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiRegionAccessPointBucketReplication.html)
+in the AWS documentation. After creating the MRAP, configure the External Storage S3 driver to use the MRAP ARN in place
+of the bucket name.
 
-AWS provides two technologies for mitigating S3 failure:
+### Replication tradeoffs
 
-- **S3 Cross-Region Replication (CRR)** asynchronously replicates objects from a source bucket to one or more destination
-  buckets.
-- **S3 Multi-Region Access Points (MRAP)** provide a single global endpoint that routes requests to the lowest-latency
-  available regional bucket.
-
-Use CRR for durability across regions, and MRAP as the bucket endpoint in your driver configuration.
-
-To get started:
-
-1. Create an S3 bucket in each failover region.
-2. Enable versioning on all buckets (required for CRR).
-3. Configure CRR and the replication IAM role and policy.
-4. Create a [Multi-Region Access Point](https://aws.amazon.com/s3/features/multi-region-access-points/) that includes all
-   regional buckets.
-5. If you need an explicit replication SLA, enable
-   [Replication Time Control (RTC)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html).
-6. Configure the External Storage S3 driver to use the MRAP ARN in place of the bucket name.
-
-If a bucket or region becomes unavailable, Workers using the MRAP automatically fail over to the closest healthy bucket.
-
-### Considerations
-
-**Replication lag (eventual consistency).** CRR and MRAP do not make S3 strongly consistent across regions. After a
-write, a read in another region may temporarily miss the object. To mitigate:
+Cross-region replication introduces eventual consistency. After a write, a read in another region may temporarily miss
+the object. To mitigate:
 
 - Ensure Activities that read from External Storage have appropriate retry policies, so they recover from transient
   unavailability caused by replication lag.
 - If an Activity needs to read a payload immediately after it is written, prefer scheduling it on the same Worker or in
   the same region to avoid the lag window.
 
-**Replication SLA.** By default, CRR has no SLA on replication time. If you need stronger guarantees, enable
+By default, S3 CRR has no SLA on replication time. If you need stronger guarantees, enable
 [Replication Time Control](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html).
 
-**Cost.** S3 replication and versioning can significantly increase storage costs.
-
-### Relationship to Temporal Cloud High Availability {#external-storage-and-temporal-cloud-ha}
-
-Temporal Cloud's [High Availability](/cloud/high-availability) offering and External Storage durability are independent
-concerns. Use the table below to decide whether you should enable CRR and MRAP.
-
-|                                                | Temporal Service (single region)                                                                | Temporal Cloud High Availability (multi-region)                                                          |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **S3 External Storage without CRR and MRAP**   | Both the Temporal Service and External Storage are regional single points of failure.           | The Service can fail over across regions, but External Storage may still be a regional point of failure. |
-| **S3 External Storage with CRR and MRAP**      | External Storage tolerates S3 regional failure, but the Temporal Service may still be single-region. | Best end-to-end resilience across regional failures.                                                 |
-
-In any multi-region External Storage setup, plan for replication lag and added cost from versioning and replication.
+Replication and versioning can also significantly increase storage costs. Check your provider's pricing before enabling.
