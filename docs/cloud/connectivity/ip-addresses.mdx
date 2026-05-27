@@ -40,6 +40,17 @@ If you have to allowlist IP ranges without using Stable IPs, you must allowlist 
 
 :::
 
+## When Namespace Endpoint DNS resolution is predictable
+
+In general, do not take dependencies on what Temporal Cloud endpoints resolve to over DNS. The resolved values are subject to change without notice, and Workers, Temporal Clients, and firewalls that target the specific IPs you observe at a point in time will eventually fail.
+
+Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
+
+1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the Stable IPs for the Namespace's active region. The set of Stable IPs is published and changes only on a managed schedule, so it is safe to allowlist them in a firewall. See [Stable IP addresses](#stable-ip-addresses) below.
+2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves via CNAME to the regional intermediary `<provider>-<region>.region.tmprl.cloud` for the active region. You can override that record in a Route 53 private hosted zone or GCP private DNS zone to direct traffic to your VPC Endpoint, and Temporal Cloud updates the CNAME on failover so the override stays correct. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for the full setup.
+
+For all other connectivity patterns, treat the resolved IP as ephemeral and use one of the two approaches above, or allowlist the entire cloud provider IP range.
+
 ## Stable IP addresses
 
 Stable IPs is an optional Namespace setting that provides a fixed, published set of IP addresses for your Namespace endpoint. When enabled, Workers and Temporal Clients connecting to your Namespace through its Namespace endpoint will resolve to a predictable set of IP addresses that you can allowlist in your firewall.
@@ -92,7 +103,7 @@ If you cannot use `tcld` or Terraform, you can drive the Cloud Ops API directly.
 
 All requests require two headers:
 
-- `Authorization: Bearer $TEMPORAL_CLOUD_API_KEY`
+- `Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY`
 - `temporal-cloud-api-version: v0.16.0` (or any version ≥ `v0.15.0`)
 
 Base URL: `https://saas-api.tmprl.cloud`
@@ -100,9 +111,9 @@ Base URL: `https://saas-api.tmprl.cloud`
 Set up environment variables:
 
 ```bash
-export TEMPORAL_CLOUD_API_KEY='<paste-api-key>'
+export TEMPORAL_CLOUD_OPS_API_KEY='<paste-api-key>'
 export NS='<namespace>.<account>'   # The Cloud-side Namespace identifier, e.g. "myns.a1b2c3"
-H_AUTH="Authorization: Bearer $TEMPORAL_CLOUD_API_KEY"
+H_AUTH="Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY"
 H_VER="temporal-cloud-api-version: v0.16.0"
 ```
 
@@ -178,7 +189,7 @@ If you prefer to call the Cloud Ops API directly over gRPC (for example, with `g
 - Endpoint: `saas-api.tmprl.cloud:443` (TLS required)
 - Fully qualified service: `temporal.api.cloud.cloudservice.v1.CloudService`
 - Required metadata on every call:
-  - `authorization: Bearer $TEMPORAL_CLOUD_API_KEY`
+  - `authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY`
   - `temporal-cloud-api-version: v0.16.0` (or any version ≥ `v0.15.0`)
 
 The examples below use `grpcurl`. They assume you have a local checkout of [`temporalio/api-cloud`](https://github.com/temporalio/api-cloud) at `./api-cloud` and a `proto/` directory containing the standard `google/api/annotations.proto` and friends.
@@ -186,9 +197,9 @@ The examples below use `grpcurl`. They assume you have a local checkout of [`tem
 Set up environment variables:
 
 ```bash
-export TEMPORAL_CLOUD_API_KEY='<paste-api-key>'
+export TEMPORAL_CLOUD_OPS_API_KEY='<paste-api-key>'
 export NS='<namespace>.<account>'   # The Cloud-side Namespace identifier, e.g. "myns.a1b2c3"
-GRPC_HEADERS=(-H "authorization: Bearer $TEMPORAL_CLOUD_API_KEY" -H "temporal-cloud-api-version: v0.16.0")
+GRPC_HEADERS=(-H "authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY" -H "temporal-cloud-api-version: v0.16.0")
 PROTO_FLAGS=(-import-path ./api-cloud -import-path ./proto -proto temporal/api/cloud/cloudservice/v1/service.proto)
 ```
 
