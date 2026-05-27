@@ -158,8 +158,8 @@ period.
 ## Durable External Storage {#durable-external-storage}
 
 External Storage stores payloads in a single storage backend. If that backend becomes unavailable, Workers can't
-retrieve payloads. To protect against regional or provider failures, use your storage provider's redundancy features,
-such as cross-region replication and multi-region routing.
+retrieve payloads. To protect against regional or provider failures, implement your drivers in a way that takes
+advantage of your storage provider's redundancy features, such as cross-region replication and multi-region routing.
 
 ### S3 Multi-Region Access Points
 
