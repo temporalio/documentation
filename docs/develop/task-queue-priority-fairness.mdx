@@ -580,9 +580,9 @@ temporal task-queue config set \
     --fairness-key-rps-limit-reason "per-key limit"
 ```
 
-Whole queue rate limits: applies to the whole queue regardless of the fairness key. This is the same setting as is exposed through the [Worker Options](/develop/worker-tuning-reference#io-configuration-options) in the SDKs, and when set via the API, takes precedence over the limit set through Worker Options.
+**Whole queue rate limits:** applies to the whole queue regardless of the fairness key. This is the same setting as is exposed through the [Worker Options](/develop/worker-tuning-reference#io-configuration-options) in the SDKs, and when set via the API, takes precedence over the limit set through Worker Options.
 
-Fairness key rate limits: The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
+**Fairness key rate limits:** The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
 
 - The whole queue limit and per-fairness-key limit may be set independently: none, one or the other, or both may be set. If both are set, then the more restrictive one applies.
 - The per-fairness-key limit for a key is scaled by the fairness weight assigned to that key. So if the per-fairness-key limit for a queue is set to 10, then all keys with the default weight (1.0) will have a limit of 10 tasks/second. But if a particular key is given a weight of 2.5, then the per-key rate limit for that key will be 25 tasks/second.
