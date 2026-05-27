@@ -346,6 +346,15 @@ module.exports = async function createConfigAsync() {
         };
       },
       [
+        './plugins/cloud-region-counts',
+        {
+          regionFiles: {
+            aws: 'docs/cloud/references/regions/awsregions.md',
+            gcp: 'docs/cloud/references/regions/gcpregions.md',
+          },
+        },
+      ],
+      [
         'docusaurus-pushfeedback',
         {
           project: '6c1ptrxbky',
