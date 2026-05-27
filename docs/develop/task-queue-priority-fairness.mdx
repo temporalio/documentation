@@ -580,7 +580,7 @@ temporal task-queue config set \
     --fairness-key-rps-limit-reason "per-key limit"
 ```
 
-Whole queue rate limits: applies to the whole queue regardless of the fairness key. This is the same setting as is exposed through the Worker Options in the SDKs, and when set via the API, takes precedence over the limit set through Worker Options.
+Whole queue rate limits: applies to the whole queue regardless of the fairness key. This is the same setting as is exposed through the [Worker Options](/develop/worker-tuning-reference#io-configuration-options) in the SDKs, and when set via the API, takes precedence over the limit set through Worker Options.
 
 Fairness key rate limits: The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
 
