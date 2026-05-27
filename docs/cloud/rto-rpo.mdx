@@ -43,7 +43,7 @@ Temporal's tooling and on-call engineers without user action. Users can always i
 outage, a user-initiated failover will not cancel out or reverse a Temporal-initiated failover.
 
 These targets are for unplanned cloud outages and do not apply to user-initiated failovers during healthy periods, such
-as DR drills. Read about [triggering a failover](/cloud/high-availability/failovers) to see how a Namespace failover
+as DR drills. Read about [triggering a failover](/cloud/high-availability/failovers/manage#trigger-failover) to see how a Namespace failover
 performs during healthy periods.
 
 | Outage type                                           | Applicable Namespaces                                                 | RPO            | RTO              |
@@ -112,7 +112,7 @@ that case, Namespaces in the region may be impacted, including those using
 
 When an AZ fails, Temporal may also trigger a failover on Namespaces that have High Availability enabled, as a
 precaution in case the outage scope expands. You can opt out of this behavior by
-[disabling Temporal-managed failovers](/cloud/high-availability/failovers#disabling-temporal-initiated) on the Namespace.
+[disabling Temporal-managed failovers](/cloud/high-availability/failovers/manage#disabling-temporal-initiated) on the Namespace.
 
 :::
 
