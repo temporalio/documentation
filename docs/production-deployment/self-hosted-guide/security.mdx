@@ -351,14 +351,16 @@ A typical approach pairs a JWT-emitting `TokenProvider` on the sender with the [
 
 ```go
 type TokenProvider interface {
-    GetToken(ctx context.Context, rpcAddress string) (token string, expiresAt time.Time, err error)
+    GetToken(ctx context.Context, rpcAddress string) (token string, err error)
 }
 ```
 
-`GetToken` is called for each outbound cross-cluster connection.
+`GetToken` is called on every outbound cross-cluster RPC.
+`rpcAddress` is the receiver cluster's `host:port`. Providers commonly use this value as the JWT's `aud` claim to scope each token to a specific receiver.
 
-- `rpcAddress` is the receiver cluster's `host:port`. Providers commonly use this value as the JWT's `aud` claim to scope each token to a specific receiver.
-- `expiresAt` lets the credential cache rotate tokens before they expire. Return `time.Time{}` if the token never expires.
+The Temporal Service does not cache the returned token; implementations are responsible for caching and refresh.
+A provider that fetches tokens from an external service must cache internally, otherwise every outbound RPC triggers a network round-trip to that service.
+OAuth 2.0 client libraries typically handle this caching, and a `TokenProvider` can often be a thin wrapper around one.
 
 #### Required claims on the receiver
 
@@ -384,15 +386,6 @@ The token is attached when a stream is opened, and the receiver's `ClaimMapper` 
 Already-open streams are not re-checked when the token later expires.
 Rotation and revocation therefore only take effect when a stream is reestablished, for example after a reconnect or a process restart.
 
-#### TokenCredentials caching
-
-Tokens returned by `GetToken` are cached per outbound connection by `auth.TokenCredentials`.
-The credential refreshes proactively within a configurable grace window before expiry.
-If a fetch fails before the token is hard-expired, the credential falls back to the last cached token.
-
-Configure the refresh behavior through `global.authorization.remoteClusterAuth.graceWindow`, a Go duration string such as `30s` or `5m`.
-The default is `30s`.
-
 #### Transport security
 
 `auth.TokenCredentials` requires transport security, so the gRPC runtime refuses to attach the credential to a plaintext dial.
@@ -409,11 +402,6 @@ This catches the misconfiguration at startup rather than on the first cross-clus
 
 Set `global.authorization.remoteClusterAuth.require: true` to require a non-empty token on every outbound remote-cluster RPC.
 When `require` is `true`, the Temporal Service refuses to start if no `TokenProvider` is configured, and the credential returns `Unauthenticated` rather than sending an empty `authorization` header.
-
-#### JWT helpers
-
-For providers that emit JWTs, `auth.ParseJWTExpiry(token string) time.Time` extracts the `exp` claim without verifying the signature.
-This lets a `TokenProvider` return the JWT's own expiry as the `expiresAt` so cache rotation tracks the token's real lifetime.
 
 #### Configuration
 

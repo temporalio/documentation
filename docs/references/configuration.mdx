@@ -264,9 +264,6 @@ This block has no effect unless a `TokenProvider` is also configured via [`tempo
 - `require` - _boolean_ - _Default:_ `false`.
   When `true`, every outbound cross-cluster RPC must carry a non-empty token; the credential returns `Unauthenticated` rather than sending an empty `authorization` header.
   The Temporal Service refuses to start when `require` is `true` but no `TokenProvider` is configured.
-- `graceWindow` - _Go duration string_ (for example `30s`, `5m`) - _Default:_ `30s`.
-  How long before a token's `expiresAt` the credential cache refreshes proactively.
-  If a refresh fails, the credential falls back to the last cached token until its hard expiry.
 
 A combined example pairing inbound JWT validation with outbound replication-stream auth on a sender cluster:
 
@@ -282,7 +279,6 @@ global:
     audience: temporal-frontend
     remoteClusterAuth:
       require: true
-      graceWindow: 30s
 ```
 
 ## persistence
