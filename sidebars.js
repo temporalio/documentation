@@ -1534,7 +1534,15 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
-            'encyclopedia/workers/serverless-workers',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/index' },
+              items: [
+                'encyclopedia/workers/serverless-workers/autoscaling',
+              ],
+            },
           ],
         },
         {

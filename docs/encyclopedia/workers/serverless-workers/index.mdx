@@ -10,6 +10,7 @@ keywords:
   - serverless
   - workers
   - lambda
+  - cloud run
   - compute provider
 tags:
   - Workers
@@ -68,10 +69,9 @@ The Worker Controller Instance (WCI) is a system Workflow that scales Serverless
 One WCI Workflow runs per Worker Deployment Version that has a compute provider configured. The WCI runs in the same
 Namespace as your Worker Deployment.
 
-The WCI responds to two triggers: [sync match failures](#sync-match-failure) and
-[Task Queue backlog](#task-queue-backlog). When either trigger fires, the WCI produces a scaling action, such as
-invoking the configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API) to start new Workers.
-For details on how scaling works, see [Autoscaling](#autoscaling).
+The WCI responds to two triggers: sync match failures and Task Queue backlog. When either trigger fires, the WCI
+produces a scaling action, such as invoking the configured compute provider to start new Workers. For details on how
+scaling works, see [Autoscaling](#autoscaling).
 
 You can list WCI Workflows in your Namespace:
 
@@ -115,28 +115,15 @@ reuse or shared state across invocations.
 
 ## Autoscaling {#autoscaling}
 
-The [WCI](#worker-controller-instance) automatically scales Serverless Workers based on Task Queue signals. When Tasks
-arrive and no Worker is available, the WCI invokes new Workers. When the Tasks are done, Workers exit and scale to zero.
-
-The WCI uses two signals to decide when to invoke new Workers:
-
-### Sync match failure {#sync-match-failure}
-
-When a Task is submitted, the [Matching Service](/temporal-service/temporal-server#matching-service) attempts to route
-it directly to an available Worker. If no Worker is available, the sync match fails, and the Matching Service pushes a
-signal to the WCI. The WCI then invokes a new Worker. This is the primary scaling path. Because the Matching Service
-pushes match failures to the WCI as they happen rather than the WCI polling on a timer, latency stays low and scaling is
-responsive.
-
-### Task Queue backlog {#task-queue-backlog}
-
-The WCI monitors Task Queue metadata to determine whether pending Tasks exist without enough Workers to process them. If
-there are Tasks on the queue and not enough Workers, the WCI invokes additional Workers.
+The [WCI](#worker-controller-instance) automatically scales Serverless Workers based on Task Queue signals. The
+autoscaling algorithm differs by compute provider because of differences in cold start latency, invocation duration
+limits, and provider APIs. For details on how autoscaling works on each platform, see
+[Serverless Worker autoscaling](/encyclopedia/workers/serverless-workers/autoscaling).
 
 ## Scaling with long-lived Workers {#scaling-with-long-lived-workers}
 
 Serverless Workers can share a Task Queue with long-lived Workers. Because Serverless Workers are only invoked on
-[sync match failure](#sync-match-failure), Serverless Workers only pick up Tasks that no long-lived Worker was available
+sync match failure, Serverless Workers only pick up Tasks that no long-lived Worker was available
 to handle. In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
 
 :::caution
@@ -259,6 +246,7 @@ provider because the Worker process manages its own lifecycle.
 
 ### Supported providers
 
-| Provider   | Description                                                                   |
-| ---------- | ----------------------------------------------------------------------------- |
-| AWS Lambda | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
+| Provider      | Description                                                                   |
+| ------------- | ----------------------------------------------------------------------------- |
+| AWS Lambda    | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
+| GCP Cloud Run | Temporal manages Cloud Run instance scaling through the Cloud Run admin API.  |
