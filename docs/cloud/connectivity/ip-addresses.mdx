@@ -42,14 +42,14 @@ If you have to allowlist IP ranges without using Stable IPs, you must allowlist 
 
 ## When Namespace Endpoint DNS resolution is predictable
 
-In general, do not take dependencies on what Temporal Cloud endpoints resolve to over DNS. The resolved values are subject to change without notice, and Workers, Temporal Clients, and firewalls that target the specific IPs you observe at a point in time will eventually fail.
+In general, do not take dependencies on what Temporal Cloud endpoints resolve to over DNS. The resolved values are subject to change without notice, and Workers, Temporal Clients, and firewalls that target the specific IPs provided at a specific point in time will eventually fail.
 
 Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
 
 1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the Stable IPs for the Namespace's active region. The set of Stable IPs is published and changes only on a managed schedule, so it is safe to allowlist them in a firewall. See [Stable IP addresses](#stable-ip-addresses) below.
 2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves via CNAME to the regional intermediary `<provider>-<region>.region.tmprl.cloud` for the active region. You can override that record in a Route 53 private hosted zone or GCP private DNS zone to direct traffic to your VPC Endpoint, and Temporal Cloud updates the CNAME on failover so the override stays correct. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for the full setup.
 
-For all other connectivity patterns, treat the resolved IP as ephemeral and use one of the two approaches above, or allowlist the entire cloud provider IP range.
+For all other connectivity patterns, treat the resolved IP as temporary and use one of the two approaches above, or allowlist the entire cloud provider IP range.
 
 ## Stable IP addresses
 
@@ -77,7 +77,11 @@ When Stable IPs are enabled on a Namespace:
 - Regional endpoints continue to work but resolve to dynamic IP addresses
 - For replicated Namespaces, the Stable IP corresponds to the Namespace's active region. During failover to a different region, DNS updates to point to a Stable IP in the new active region.
 
-**Important**: Stable IPs apply only to Namespace traffic, sometimes called the "data plane." The Temporal Cloud management plane, observability endpoints, and Web UI do not have stable public IP addresses.
+:::note
+
+Stable IPs apply only to Namespace traffic, sometimes called the "data plane." The Temporal Cloud management plane, observability endpoints, and Web UI do not have stable public IP addresses.
+
+:::
 
 ### How to enable Stable IPs
 
@@ -93,13 +97,17 @@ To enable Stable IPs:
 4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
 5. Ensure your Workers and Temporal Clients connect using the Namespace endpoint, not regional endpoints.
 
-You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces. The Cloud Ops API field is `enable_stable_ips` on the `PublicConnectivityRule` message and requires Cloud Ops API `v0.15.0` or later.
+You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces. The Cloud Ops API field is `enableStableIps` (boolean) on the `PublicConnectivityRule` message and requires Cloud Ops API `v0.15.0` or later.
 
-**DNS propagation**: When enabling Stable IPs on an existing Namespace, Temporal updates DNS records to point the Namespace endpoint to Stable IPs. DNS propagation typically takes 5 to 15 minutes for AWS, but can take up to 60 minutes or longer if you have custom TTLs configured.
+:::note DNS propagation
+
+When enabling Stable IPs on an existing Namespace, Temporal updates DNS records to point the Namespace endpoint to Stable IPs. DNS propagation typically takes 5 to 15 minutes for AWS, but can take up to 60 minutes or longer if you have custom TTLs configured.
+
+:::
 
 #### How to enable Stable IPs with curl
 
-If you cannot use `tcld` or Terraform, you can drive the Cloud Ops API directly. The following walkthrough creates a public Connectivity Rule with Stable IPs enabled and attaches it to a Namespace.
+If you cannot use `tcld` or Terraform, you can access the Cloud Ops API directly. The following procedure creates a public Connectivity Rule with Stable IPs enabled and attaches it to a Namespace.
 
 All requests require two headers:
 
@@ -157,7 +165,7 @@ Re-run until `state` is `FULFILLED` (the rule is now `ACTIVE`). Any `*_FAILED` s
 
 **Step 4. Attach the rule to the Namespace.**
 
-`UpdateNamespace` posts the whole `NamespaceSpec` back. Mutate the spec from Step 1 by appending `$CR_ID` to `connectivityRuleIds`:
+`UpdateNamespace` posts the whole `NamespaceSpec` back. Update the spec from Step 1 by appending `$CR_ID` to `connectivityRuleIds`:
 
 ```bash
 jq --arg id "$CR_ID" --arg rv "$RV" --arg ns "$NS" '
@@ -175,7 +183,7 @@ curl -sS -X POST "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
 
 Poll the returned `asyncOperation` the same way as Step 3.
 
-**Gotchas:**
+Take note of the following:
 
 - The `namespace` in the URL is the Cloud-side Namespace identifier (for example, `myns.a1b2c3`), not the SDK gRPC hostname (`myns.a1b2c3.tmprl.cloud`). Strip the trailing `.tmprl.cloud`.
 - Do not omit fields from `spec` in Step 4. Proto3 update is full-replace — any field left out will be cleared. Building the body from the GET response avoids surprises.
@@ -192,7 +200,7 @@ If you prefer to call the Cloud Ops API directly over gRPC (for example, with `g
   - `authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY`
   - `temporal-cloud-api-version: v0.16.0` (or any version ≥ `v0.15.0`)
 
-The examples below use `grpcurl`. They assume you have a local checkout of [`temporalio/api-cloud`](https://github.com/temporalio/api-cloud) at `./api-cloud` and a `proto/` directory containing the standard `google/api/annotations.proto` and friends.
+The examples below use `grpcurl`. They assume you have a local checkout of [`temporalio/api-cloud`](https://github.com/temporalio/api-cloud) at `./api-cloud` and a `proto/` directory containing the standard `google/api/annotations.proto` and associated files.
 
 Set up environment variables:
 
@@ -245,7 +253,7 @@ Re-run until `state` is `FULFILLED` (the rule is now `ACTIVE`). Any `*_FAILED` s
 
 **Step 4. Attach the rule to the Namespace.**
 
-`UpdateNamespace` posts the whole `NamespaceSpec` back. Mutate the spec from Step 1 by appending `$CR_ID` to `connectivity_rule_ids`:
+`UpdateNamespace` posts the whole `NamespaceSpec` back. Update the spec from Step 1 by appending `$CR_ID` to `connectivity_rule_ids`:
 
 ```bash
 jq --arg id "$CR_ID" --arg rv "$RV" --arg ns "$NS" '
@@ -264,7 +272,7 @@ grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
 
 Poll the returned `asyncOperation` the same way as Step 3.
 
-**Gotchas:**
+Take note of the following:
 
 - The `namespace` field is the Cloud-side Namespace identifier (for example, `myns.a1b2c3`), not the SDK gRPC hostname (`myns.a1b2c3.tmprl.cloud`). Strip the trailing `.tmprl.cloud`.
 - Do not omit fields from `spec` in Step 4. Proto3 update is full-replace — any field left out will be cleared. Building the body from the `GetNamespace` response avoids surprises.
@@ -316,7 +324,11 @@ This API is publicly accessible without authentication and returns a JSON respon
 
 You can also load this URL in a browser to view the list.
 
-**IP format**: IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, Temporal uses predominantly `/32` ranges (single IP addresses). Each region typically contains approximately 6 IP addresses.
+:::note IP format
+
+IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, Temporal uses predominantly `/32` ranges (single IP addresses). Each region typically contains approximately 6 IP addresses.
+
+:::
 
 ### How to connect using Stable IPs
 
@@ -326,9 +338,9 @@ To connect to a Namespace with Stable IPs enabled:
 2. **Do not use Regional endpoints**: Regional endpoints (`<region>.<cloud>.api.temporal.io`) will route to the Namespace but resolve to dynamic IP addresses
 3. **Do not use PrivateLink**: PrivateLink endpoints do not resolve to Stable IPs. To use Stable IPs, connect over public endpoints.
 
-**Authentication**: Stable IPs work with both mTLS certificate-based authentication and API key authentication.
+Stable IPs work with both mTLS certificate-based authentication and API key authentication.
 
-**Network routing**: If your Workers run on the same cloud provider as your Namespace (for example, both on AWS), traffic stays on the cloud provider's backbone network and does not traverse the public internet, even when using public Stable IPs. AWS, GCP, and Azure all guarantee that traffic between locations on their networks never leaves their backbone.
+If your Workers run on the same cloud provider as your Namespace (for example, both on AWS), traffic stays on the cloud provider's backbone network and does not traverse the public internet, even when using public Stable IPs. AWS, GCP, and Azure all guarantee that traffic between locations on their networks never leaves their backbone.
 
 ### How to migrate to Stable IPs
 
@@ -350,7 +362,7 @@ When you enable Stable IPs on an existing Namespace:
 - To use Stable IPs, update Worker configuration to use the Namespace endpoint and restart Workers
 - Note: You cannot use both PrivateLink and Stable IPs simultaneously
 
-**Connectivity Rules**: Stable IPs is set as the `enable_stable_ips` flag on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). Every Namespace that should resolve to Stable IPs must have that public Connectivity Rule attached. Namespaces without the rule attached continue to resolve to dynamic IPs.
+**Connectivity Rules**: Stable IPs is enabled when the `enableStableIps` config is `true` on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). Every Namespace that should resolve to Stable IPs must have that public Connectivity Rule attached. Namespaces without the rule attached continue to resolve to dynamic IPs.
 
 #### How to migrate from AWS PrivateLink to Stable IPs
 
@@ -364,7 +376,7 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 **Steps:**
 
-1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from `https://saas-api.tmprl.cloud/stable-ip-ranges` and add them to your egress allowlist before changing anything else. If you skip this, the cutover will black-hole traffic.
+1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from `https://saas-api.tmprl.cloud/stable-ip-ranges` and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
 
 2. **Create (or update) the account's public Connectivity Rule with Stable IPs enabled.**
 
@@ -399,7 +411,7 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 7. **(Optional) Tear down the PrivateLink VPC endpoint** in AWS to stop incurring PrivateLink hourly and data-processing charges. Do not do this until step 6 has been stable for at least a few hours.
 
-**Gotchas:**
+Take note of the following:
 
 - Do not remove the private Connectivity Rule before step 4. If you detach the private rule while Workers are still resolving the Namespace endpoint to the PrivateLink VPC endpoint, Temporal Cloud will block those connections at the edge.
 - A single connection uses one network path or the other. Workers connect over either PrivateLink or Stable IPs based on DNS resolution at connect time. There is no in-place switch without dropping the connection — that's why step 4 includes a Worker restart.
@@ -418,6 +430,6 @@ Temporal Cloud does not charge additional fees for using Stable IPs.
 
 ### How to disable Stable IPs
 
-You can disable Stable IPs on a Namespace using the Cloud Ops API, Terraform, or CLI. Temporal performs a DNS update to point the Namespace endpoint back to dynamic IP addresses.
+You can disable Stable IPs on a Namespace by detaching the public Connectivity Rule from that Namespace. Temporal performs a DNS update to point the Namespace endpoint back to dynamic IP addresses.
 
 Existing Worker connections are not interrupted. New Worker connections will no longer resolve to Stable IPs after DNS propagates.
