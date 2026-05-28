@@ -124,30 +124,30 @@ not support triggering failovers. You must use the Web UI, tcld CLI, or Cloud Op
 :::
 
 Once the failover async operation returns successfully, the Namespace will be failed over. Temporal manages retries for
-the failover workflow. In the rare event that an internal error prevents the failover from completing, the Temporal
+the failover Workflow. In the rare event that an internal error prevents the failover from completing, the Temporal
 on-call team is automatically paged to intervene and force the failover to completion.
 
 ## Return to the primary with failbacks {#failbacks}
 
-After a Temporal-managed (automatic) failover, Temporal Cloud automatically fails back to the original region once it is
-healthy. Follow [Temporal's status page](https://status.temporal.io) for updates on the original region's health.
+Failback behavior depends on whether the failover was automatic or manually triggered.
 
 ### After a Temporal-managed failover
 
-When Temporal triggers an automatic failover due to an outage, Temporal will also trigger an automatic failback to the
-original region once the region recovers. No action is required from you.
+After a Temporal-managed failover, Temporal Cloud automatically fails back to the original region once the region is
+healthy. No action is required from you. Follow [Temporal's status page](https://status.temporal.io) for updates on the
+original region's health.
 
 If you prefer to manage failback yourself, you have two options:
 
-- **Opt out of automatic failback (manage failback manually):**
-  [Disable Temporal-managed failovers](#disabling-temporal-initiated) on the Namespace. When you're ready to fail back
-  to the original region, [trigger a failover](#trigger-failover) to that region and then re-enable Temporal-managed
-  failovers.
+- **Opt out of automatic failback (manage failback manually):** After the automatic failover has completed,
+  [disable Temporal-managed failovers](#disabling-temporal-initiated) on the Namespace to prevent Temporal from
+  automatically failing back. When you're ready to return to the original region,
+  [trigger a failover](#trigger-failover) to that region and then re-enable Temporal-managed failovers.
 
-- **Stay on the new region permanently ("fail forward"):** [Trigger a failover](#trigger-failover) to the region that is
-  already active. This tells Temporal that you want to treat the new region as your primary for as long as it's healthy.
-  Temporal-managed automatic failovers remain enabled, so Temporal will still protect you if the new region has an
-  outage.
+- **Stay on the new region permanently ("fail forward"):** After the automatic failover has completed,
+  [trigger a failover](#trigger-failover) to the region that is already active. This tells Temporal that you want to
+  treat the new region as your primary for as long as it's healthy. Temporal-managed automatic failovers remain enabled,
+  so Temporal will still protect you if the new region has an outage.
 
 ### After a user-triggered failover
 

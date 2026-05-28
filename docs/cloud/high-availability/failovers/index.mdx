@@ -25,8 +25,9 @@ over the Namespace from the primary to the replica. This lets in-flight Workflow
 Executions start, and closed Workflow Executions be inspected, all with minimal interruptions or data loss.
 
 Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />. After a Temporal-managed
-failover, Temporal automatically fails back to the original region once it is healthy. See
-[Failbacks](/cloud/high-availability/failovers/manage#failbacks) for details on automatic and manual failback options.
+failover, Temporal automatically fails back to the original region once it is healthy, unless you
+[opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). See
+[Failbacks](/cloud/high-availability/failovers/manage#failbacks) for details.
 
 ## Automatic failover
 
@@ -123,7 +124,7 @@ The failover process is the same whether it is triggered automatically by Tempor
 
 After any failover, whether triggered by you or by Temporal, an event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs. The audit log entry uses the `"operation": "FailoverNamespace"` event. Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications) whenever a failover occurs.
 
-After a Temporal-managed failover, Temporal automatically fails back to the original region once the region is healthy. After a user-triggered failover, the Namespace stays in the replica region until a user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for details on managing failback behavior.
+After a Temporal-managed failover, Temporal automatically fails back to the original region once the region is healthy, unless you [opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). After a user-triggered failover, the Namespace stays in the replica region until a user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for details.
 
 ## Split-brain scenario
 
