@@ -20,11 +20,9 @@ keywords:
 
 import { ToolTipTerm, CaptionedImage } from '@site/src/components';
 
-When a Namespace with [High Availability](/cloud/high-availability) is disrupted by an outage, Temporal Cloud can
-
-<ToolTipTerm term="fail over" src="failover" /> the Namespace from the primary to the replica. This lets in-flight
-Workflow Executions continue, new Workflow Executions start, and closed Workflow Executions be inspected, all with
-minimal interruptions or data loss.
+When a Namespace with [High Availability](/cloud/high-availability) is disrupted by an outage, Temporal Cloud can fail
+over the Namespace from the primary to the replica. This lets in-flight Workflow Executions continue, new Workflow
+Executions start, and closed Workflow Executions be inspected, all with minimal interruptions or data loss.
 
 Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />. After a Temporal-managed
 failover, Temporal automatically fails back to the original region once it is healthy. See
@@ -123,9 +121,14 @@ The failover process is the same whether it is triggered automatically by Tempor
 
 ## Split-brain scenario
 
-At any time, only the primary or the replica should be active. However, if a network partition separates the two regions, the regions cannot communicate with each other. If you promote the replica to active during a network partition, both regions will be active simultaneously, accepting writes independently. This is known as a split-brain scenario.
+At any time, only the primary or the replica should be active. However, if a network partition separates the two
+regions, the regions cannot communicate with each other. If you promote the replica to active during a network
+partition, both regions will be active simultaneously, accepting writes independently. This is known as a split-brain
+scenario.
 
-When the network partition resolves and the regions can communicate again, Temporal's [conflict resolution](#conflict-resolution) process reconciles the divergent histories and determines which region remains active.
+When the network partition resolves and the regions can communicate again, Temporal's
+[conflict resolution](#conflict-resolution) process reconciles the divergent histories and determines which region
+remains active.
 
 ## Conflict resolution {#conflict-resolution}
 
