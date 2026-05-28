@@ -135,29 +135,31 @@ The following example shows how to set up your MySQL as both your persistence an
 with different databases.
 
 {/* SNIPSTART compose-mysql-setup */}
-[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-mysql.sh)
-
+[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql.sh)
 ```sh
 set -eu
 
+# Validate required environment variables
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
 echo 'Starting MySQL schema setup...'
 echo 'Waiting for MySQL port to be available...'
-nc -z -w 10 mysql 3306
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
 echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Create and setup visibility database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
 
 echo 'MySQL schema setup complete'
 ```
-
 {/* SNIPEND */}
 
 Note that the script uses
@@ -228,29 +230,31 @@ The following example shows how to set up your PostgreSQL as both persistence an
 with different databases.
 
 {/* SNIPSTART compose-postgres-setup */}
-[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-postgres.sh)
-
+[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-postgres.sh)
 ```sh
 set -eu
 
+# Validate required environment variables
+: "${POSTGRES_SEEDS:?ERROR: POSTGRES_SEEDS environment variable is required}"
+: "${POSTGRES_USER:?ERROR: POSTGRES_USER environment variable is required}"
+
 echo 'Starting PostgreSQL schema setup...'
 echo 'Waiting for PostgreSQL port to be available...'
-nc -z -w 10 postgresql 5432
+nc -z -w 10 ${POSTGRES_SEEDS} ${DB_PORT:-5432}
 echo 'PostgreSQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
 
 # Create and setup visibility database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
 
 echo 'PostgreSQL schema setup complete'
 ```
-
 {/* SNIPEND */}
 
 Note that the script uses
@@ -469,8 +473,7 @@ The following example shows how to set up an Elasticsearch Visibility store with
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
 
 {/* SNIPSTART compose-mysql-es-setup */}
-[compose/scripts/setup-mysql-es.sh](https://github.com/temporalio/samples-server/blob/docker-image-restructure-snipsync/compose/scripts/setup-mysql-es.sh)
-
+[compose/scripts/setup-mysql-es.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql-es.sh)
 ```sh
 set -eu
 
@@ -481,15 +484,18 @@ set -eu
 : "${ES_VISIBILITY_INDEX:?ERROR: ES_VISIBILITY_INDEX environment variable is required}"
 : "${ES_VERSION:?ERROR: ES_VERSION environment variable is required}"
 
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
 echo 'Starting MySQL and Elasticsearch schema setup...'
 echo 'Waiting for MySQL port to be available...'
-nc -z -w 10 mysql 3306
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
 echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Setup Elasticsearch index
 # temporal-elasticsearch-tool is available in v1.30+ server releases
@@ -499,7 +505,7 @@ if [ -x /usr/local/bin/temporal-elasticsearch-tool ]; then
   temporal-elasticsearch-tool --ep "$ES_SCHEME://$ES_HOST:$ES_PORT" create-index --index $ES_VISIBILITY_INDEX
 else
   echo 'Using curl for Elasticsearch setup'
-  echo 'WARNING: this curl fallback is for older images; current admin-tools images include temporal-elasticsearch-tool.'
+  echo 'WARNING: curl will be removed from admin-tools in v1.30.'
   echo 'Waiting for Elasticsearch to be ready...'
   max_attempts=30
   attempt=0
@@ -526,7 +532,6 @@ fi
 
 echo 'MySQL and Elasticsearch setup complete'
 ```
-
 {/* SNIPEND */}
 
 ### Elasticsearch privileges
@@ -868,12 +873,12 @@ With Temporal Cloud, you can create and rename custom Search Attributes. If you 
 To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/operator#search-attribute).
 With a self-hosted Temporal Service, you can create and remove custom Search Attributes.
 
-If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#current-and-legacy-visibility-support) version supports custom Search Attributes before proceeding. 
+If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#supported-databases) version supports custom Search Attributes before proceeding.
 
 :::caution Do not use sensitive data or PII in Search Attributes
 
 Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
-Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/dataconversion#payload-codec).
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/payload-codec#payload-codec).
 The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
 
 Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.

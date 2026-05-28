@@ -1,0 +1,68 @@
+---
+id: basics
+title: Activity basics - Ruby SDK
+sidebar_label: Activity basics
+description: This section explains Activity basics with the Ruby SDK
+toc_max_heading_level: 4
+keywords:
+  - Ruby SDK
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+---
+
+## Develop an Activity {#develop-activity}
+
+One of the primary things that Workflows do is orchestrate the execution of Activities.
+An Activity is a normal method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
+
+You can develop an Activity Definition by creating a class that extends `Temporalio::Activity::Definition`.
+To register a class as an Activity with a custom name, use the `activity_name` class method in the class definition.
+Otherwise, the activity name is the unqualified class name.
+
+```ruby
+class MyActivity < Temporalio::Activity::Definition
+  def execute(input)
+    "#{input['greeting']}, #{input['name']}!"
+  end
+end
+```
+
+Activity implementation code should be _idempotent_. Learn more about [idempotency](/activity-definition#idempotency).
+
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+
+A single argument is limited to a maximum size of 2 MB.
+And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single hash or object as an argument that wraps the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a method signature.
+
+The `execute` method in your Activity can technically accept multiple parameters of any data type that Temporal can convert.
+However, Temporal strongly encourages using a single parameter object to simplify versioning and maintainability.
+
+### Activity Concurrency and Executors {#activity-concurrency-and-executors}
+
+:::note
+
+This section covers advanced concurrency and execution options that most users will not need when getting started.
+
+:::
+
+By default, activities run in the "thread pool executor" (i.e. `Temporalio::Worker::ActivityExecutor::ThreadPool`).
+This default is shared across all workers and is a naive thread pool that continually makes threads as needed when none are
+idle/available to handle incoming work.
+If a thread sits idle long enough, it will be killed.
+
+The maximum number of concurrent activities a worker will run at a time is configured via its `tuner` option.
+The default is `Temporalio::Worker::Tuner.create_fixed` which defaults to 100 activities at a time for that worker.
+When this value is reached, the worker will stop asking for work from the server until there are slots available again.
+
+In addition to the thread pool executor, there is also a fiber executor in the default executor set.
+To use fibers, call `activity_executor :fiber` class method at the top of the activity class (the default of this value is `:default` which is the thread pool executor).
+Activities can only choose the fiber executor if the worker has been created and run in a fiber, but thread pool executor is always available.
+Currently due to [an issue](https://github.com/temporalio/sdk-ruby/issues/162), workers can only run in a fiber on Ruby versions 3.3 and newer.

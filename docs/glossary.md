@@ -315,13 +315,6 @@ data integrity and prevent costly errors.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Isolation Domain](/cloud/high-availability)
-
-An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents
-them from spreading to other parts of the system, providing redundancy and fault tolerance.
-
-<!-- _Tags: [term](/tags/term)_ -->
-
 #### [List Filter](/list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
@@ -386,8 +379,7 @@ A Nexus Async Completion Callback is the completion callback for an asynchronous
 A Nexus Endpoint is a reverse proxy that can serve one or more Nexus Services. It routes Nexus requests to a target
 Namespace and Task Queue, that a Nexus Worker is polling. This allows service providers to present a clean service
 contract and hide the underlying implementation, which may consist of many internal Workflows. Multiple Nexus Endpoints
-can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service
-routing rules.
+can target the same Namespace.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -508,7 +500,7 @@ endpoints.
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/monitoring#replication-lag-metric)
+#### [Replication Lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
@@ -550,7 +542,7 @@ A Run Id is a globally unique, platform-level identifier for a Workflow Executio
 
 #### [Same-region Replication](/cloud/high-availability/enable)
 
-Same-region Replication replicates Workflows and metadata to an isolation domain within the same region as the primary
+Same-region Replication replicates Workflows and metadata to a separate cell within the same region as the primary
 Namespace. It provides a reliable failover mechanism while maintaining deployment simplicity.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->

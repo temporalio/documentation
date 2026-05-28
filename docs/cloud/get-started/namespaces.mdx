@@ -47,21 +47,25 @@ Each Namespace Name must conform to the following rules:
 - A Namespace Name must contain at least 2 characters and no more than 39 characters.
 - A Namespace Name must begin with a letter, end with a letter or number, and contain only letters, numbers, and the
   hyphen (-) character.
-- Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are
-  not permitted.
 - All letters in a Namespace Name must be lowercase.
+
+:::note
+The Namespace Name alone is not sufficient to connect to or reference a Namespace. All Temporal Cloud operations — SDK connections, CLI commands, and API calls — require the full **Namespace ID**, which combines your Namespace Name with your Account ID:
+
+`<namespace-name>.<account-id>`
+
+For example: `accounting-production.123de`
+
+The full Namespace ID is shown in the Namespace list in the Temporal Cloud UI and in the output of `tcld namespace list`. See [Cloud Namespace ID](#temporal-cloud-namespace-id) for details.
+:::
 
 ## What is a Temporal Cloud Account ID? {#temporal-cloud-account-id}
 
 A Temporal Cloud Account ID is a unique customer identifier assigned by Temporal Technologies. Each Id is a short string
-of numbers and letters like `f45a2`, at least five characters long. This account identifier is retained throughout the
-time each customer uses Temporal Cloud.
+of numbers and letters like `f45a2`, at least five characters long. This account identifier is part of every Namespace ID
+in your account and is retained while you use Temporal Cloud.
 
-At times you may need to know your customer Account ID. Accessing the account's Namespaces provides an easy way to
-capture this information. Each Temporal Namespace uses an Account ID suffix. This is the alphanumeric character string
-found after the period in any Temporal Cloud Namespace name.
-
-You can retrieve an Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld`
+You can retrieve your Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld`
 utility at a command line interface (CLI). Follow these steps.
 
 <Tabs>
@@ -177,10 +181,7 @@ To create a Namespace, a user must have the Developer, Account Owner, or Global 
 
 :::tip
 
-By default, each account is allocated with a limit of ten Namespaces. As you start using Namespaces by scheduling
-Workflows, Temporal Cloud automatically raises your allowance. This automatic adjustment happens whenever all your
-Namespaces are in use, up to a maximum of 100 Namespaces. You can request further increases beyond the 100 Namespace
-limit by opening a [support ticket](/cloud/support#support-ticket).
+By default, each account starts with 10 Namespaces. This limit increases automatically when your existing Namespaces have scheduled or running Workflow Executions. For large-scale needs, open a [support ticket](/cloud/support#support-ticket).
 
 :::
 
@@ -235,76 +236,11 @@ See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command referen
 
 ## What are some Namespace best practices? {#best-practices}
 
-This section provides general guidance for organizing [Namespaces](/namespaces) across use cases, services,
-applications, or domains. Temporal Cloud provides Namespace–as-a-service, so the Namespace is the endpoint. Customers
-should consider not only a Namespace naming convention but also how to group or isolate workloads using the Namespace as
-a boundary.
+For guidance on how many Namespaces to create, how to split workloads across services or domains, and when to isolate
+tenants or teams, see [Namespace best practices](/best-practices/managing-namespace).
 
-Each team can have their own Namespace for improved modularity, security, debugging, and fault isolation. Namespaces
-contain the blast radius of misbehaving Workers that may exhaust rate limits. Sensitive Workflow state (PCI data) can be
-secured with per-Namespace permissions and encrypted with a separate encryption key.
-
-Temporal Applications in different Namespaces may be connected with [Nexus](/cloud/nexus) by exposing a clean service
-contract for others to use with built-in [Nexus access controls](/cloud/nexus/security). Nexus supports cross-team,
-cross-domain, multi-region, and multi-cloud use cases.
-
-### Constraints and limitations
-
-Before considering an appropriate Namespace configuration, you should be aware of the constraints 
-listed on the [Temporal Cloud Limits](/cloud/limits) page. 
-
-For advice on managing Namespaces within limits, see the [Namespace Best Practices](/best-practices/managing-namespace) page.
-
-### General guidance
-
-Namespace configuration requires some consideration. Following are some general guidelines to consider.
-
-- Namespaces are usually defined per use case. A use case can encompass a broad range of Workflow types and a nearly
-  unlimited scale of concurrent [Workflow Executions](/workflow-execution). 
-- Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
-- Namespaces should be used to reduce the "blast radius" for mission-critical applications.
-- Environments such as production and development usually have requirements for isolation. We recommend that each
-  environment has its own Namespace. This helps keep production Namespaces secure. It also protects production Namespaces from being throttled due to throughput spikes in development.
-- Workflows should use Nexus to communicate across Namespaces with a clean service contract instead of sharing Temporal primitives directly.
-- Workflows in the same Namespace can communicate with each other directly.
-
-### Examples
-
-Following are some ideas about how to organize Namespaces.
-
-#### Example 1: Namespace per use case and environment
-
-We recommend using one Namespace for each use case and environment combination for simple configurations in which
-multiple services and team or domain boundaries don't exist.
-
-Sample naming convention:
-
-<pre>&lt;use-case>_&lt;environment></pre>
-
-#### Example 2: Namespace per use case, service, and environment
-
-We recommend using one Namespace for each use case, service, and environment combination when multiple services that are
-part of same use case communicate externally to Temporal via API (HTTP/gRPC).
-
-Sample naming convention:
-
-<pre>&lt;use-case>_&lt;service>_&lt;environment></pre>
-
-#### Example 3: Namespace per use case, domain, and environment
-
-We recommend using one namespace per use case, domain, and environment combination when multiple services that are part
-of the same use case need to communicate with each another via [Signals](/sending-messages#sending-signals) or by
-starting [Child Workflows](/child-workflows). In this case, though, you must be mindful about Workflow Id uniqueness by
-prefixing each Workflow Id with a service-specific string. The name of each Task Queue must also be unique. If multiple
-teams are involved, the domain could also represent a team boundary.
-
-Sample naming convention:
-
-<pre>&lt;use-case>_&lt;domain>_&lt;environment></pre>
-
-Sample workflowId convention:
-
-<pre>&lt;service-string>_&lt;workflow-id></pre>
+This page focuses on Temporal Cloud namespace mechanics such as naming rules, provisioning, authentication, tagging, and
+accessing Namespace endpoints.
 
 ## How to access a Namespace in Temporal Cloud {#access-namespaces}
 

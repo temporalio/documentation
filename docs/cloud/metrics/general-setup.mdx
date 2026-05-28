@@ -23,6 +23,16 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
+:::danger PromQL endpoint deprecated
+
+The PromQL endpoint and its `temporal_cloud_v0_*` metrics were deprecated on April 2, 2026 and are no longer accepting new users.
+The PromQL endpoint will be disabled for all users on **October 5, 2026**.
+
+New users should set up the [OpenMetrics endpoint](/cloud/metrics/openmetrics) instead.
+Existing users should follow the [migration guide](/cloud/metrics/openmetrics/migration-guide) to transition to the OpenMetrics endpoint.
+
+:::
+
 You will learn how to do the following:
 
 - [Configure an endpoint using the UI](#configure-via-ui)
@@ -53,7 +63,7 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
 Use the endpoint to configure your observability tool.
-For example, if you use Grafana, see [Grafana data sources configuration](/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration).
+For example, if you use Grafana, see [Grafana data source configuration](/cloud/metrics/prometheus-grafana#grafana-data-source-configuration).
 
 You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
 
