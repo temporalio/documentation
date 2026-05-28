@@ -127,15 +127,6 @@ Once the failover async operation returns successfully, the Namespace will be fa
 the failover workflow. In the rare event that an internal error prevents the failover from completing, the Temporal
 on-call team is automatically paged to intervene and force the failover to completion.
 
-## Post-failover event information {#info}
-
-After any failover, whether triggered by you or by Temporal, an event appears in both the
-[Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs. The
-audit log entry for Failover uses the `"operation": "FailoverNamespace"` event. After failover, the replica becomes
-active, taking over from the original region.
-
-Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications) whenever there is a failover event.
-
 ## Return to the primary with failbacks {#failbacks}
 
 After a Temporal-managed (automatic) failover, Temporal Cloud automatically fails back to the original region once it is
