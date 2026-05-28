@@ -1,0 +1,350 @@
+---
+id: workflow-streams
+title: Workflow Streams
+sidebar_label: Workflow Streams
+description:
+  Learn how Workflow Streams provides a durable, offset-addressed event channel for streaming events from a Workflow to
+  external subscribers.
+slug: /workflow-streams
+toc_max_heading_level: 4
+keywords:
+  - workflow streams
+  - streaming
+  - workflow events
+  - publish subscribe
+  - topics
+  - signals
+  - updates
+  - queries
+  - batching
+  - deduplication
+  - continue as new
+  - llm streaming
+  - ai agent streaming
+tags:
+  - Concepts
+  - Workflows
+  - Messages
+  - Streaming
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Workflow Streams is currently in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). The API may change before
+general availability.
+
+Cross-language client support is on the roadmap. The TypeScript and Python clients are available today.
+
+:::
+
+This page covers the following:
+
+- [What is Workflow Streams?](#what-is-workflow-streams)
+- [How Workflow Streams works](#how-it-works)
+- [Choose where to host the stream](#choose-where-to-host)
+- [Closing the stream](#closing-the-stream)
+- [Delivery semantics](#delivery-semantics)
+- [Tuning](#tuning)
+- [Continue-As-New](#continue-as-new)
+
+## What is Workflow Streams? {#what-is-workflow-streams}
+
+A Workflow Stream is a durable event channel hosted inside a Workflow. Publishers append events to topics on the stream.
+Subscribers attach to the Workflow by its Workflow ID, optionally filter by topic, and consume events by long-polling.
+Subscribers can disconnect and resume from where they left off.
+
+Use Workflow Streams when outside observers need to follow the progress of a Workflow and its Activities as work
+happens: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, or reporting
+intermediate results from a data job.
+
+Workflow Streams is not suited to ultra-low-latency cases like real-time voice. It targets modest fan-out: tens of
+publishers and subscribers per Workflow, not thousands.
+
+<RelatedReadContainer>
+  <RelatedReadItem
+    path="/develop/python/workflows/workflow-streams"
+    text="Workflow Streams with the Python SDK"
+    archetype="feature-guide"
+  />
+  <RelatedReadItem
+    path="/develop/typescript/workflows/workflow-streams"
+    text="Workflow Streams with the TypeScript SDK"
+    archetype="feature-guide"
+  />
+</RelatedReadContainer>
+
+## How Workflow Streams works {#how-it-works}
+
+The stream lives inside a Workflow, not on a separate broker.
+A Workflow creates the stream by constructing a `WorkflowStream` object, which sets up an in-memory, append-only event
+log and registers [Signal](/sending-messages#sending-signals), [Update](/sending-messages#sending-updates), and
+[Query](/sending-messages#sending-queries) handlers that publishers and subscribers interact with.
+A Workflow can have at most one stream.
+The Workflow ID is the address that publishers and subscribers use to connect.
+
+### Publishing
+
+A **publisher** appends events to the stream.
+The Workflow itself, its Activities, and external processes can all publish to the same stream:
+
+- **The Workflow itself** appends events synchronously to the in-memory log.
+  Events are immediately available to subscribers on the next poll.
+- **Activities** scheduled by the Workflow use a client that infers the Temporal Client and parent Workflow ID from
+  the Activity context.
+- **External processes** (HTTP backends, starters, scripts, Activities of other Workflows) use a client constructed with
+  an explicit Temporal Client and Workflow ID.
+
+Activities and external processes publish through a client-side buffer. The client accumulates events in memory and
+flushes the buffer as a single Signal on a configurable batch interval (default: 2 seconds). A single flush batches all
+events across all topics that have accumulated since the last flush. This amortizes the cost of Signals: instead of one
+Signal per event, one Signal carries an entire batch.
+
+To send a specific event without waiting for the next interval, mark the publish with a force-flush flag. The
+force-flush flag wakes the background flusher immediately. The call returns after appending to the buffer and signaling
+the flusher; it does not wait for delivery.
+
+Each client has a unique publisher ID and a monotonic sequence number. Every batch is tagged with this pair so that a
+Signal retried by the SDK or the network deduplicates to a single landing in the log. See
+[Delivery semantics](#delivery-semantics) for the full guarantee.
+
+<RelatedReadContainer>
+  <RelatedReadItem
+    path="/develop/python/workflows/workflow-streams#publish-from-a-workflow"
+    text="Publish from a Workflow with the Python SDK"
+    archetype="feature-guide"
+  />
+  <RelatedReadItem
+    path="/develop/python/workflows/workflow-streams#publish-from-a-client"
+    text="Publish from a client with the Python SDK"
+    archetype="feature-guide"
+  />
+  <RelatedReadItem
+    path="/develop/typescript/workflows/workflow-streams#publish-from-a-workflow"
+    text="Publish from a Workflow with the TypeScript SDK"
+    archetype="feature-guide"
+  />
+  <RelatedReadItem
+    path="/develop/typescript/workflows/workflow-streams#publish-from-a-client"
+    text="Publish from a client with the TypeScript SDK"
+    archetype="feature-guide"
+  />
+</RelatedReadContainer>
+
+### Topics
+
+A **topic** is a string label attached to each event when published. Topics are implicit: they are created on first
+publish, not declared ahead of time.
+
+A topic handle binds a name to a type so that publish and subscribe call sites carry the type with them. Subscribers can
+filter by one or more topic names, or subscribe to all topics on the stream.
+
+Multiple publishers can publish to the same topic. Ordering is guaranteed within a single publisher. Across publishers,
+events interleave in whatever order the Workflow receives the Signals.
+
+### Subscribing
+
+A **subscriber** is any process with a Temporal Client that long-polls the Workflow for new events.
+Each poll is an Update that blocks until events are available past the subscriber's current offset, then returns a batch.
+
+The subscriber maintains its own offset.
+On reconnect, the subscriber resumes from its last offset without coordinating with anyone but the Workflow.
+Multiple subscribers can attach to the same Workflow concurrently.
+
+Poll responses are capped at roughly 1 MB.
+When a response hits the cap, the subscriber polls again immediately to drain the rest before applying its cooldown.
+
+Subscribing from inside the Workflow that hosts the stream is not supported.
+The Workflow processes only the successful return value of each Activity, while the stream may carry partial output from
+attempts that failed and were retried.
+Letting the Workflow read its own stream would mix those two views.
+
+<RelatedReadContainer>
+  <RelatedReadItem
+    path="/develop/python/workflows/workflow-streams#subscribe"
+    text="Subscribe with the Python SDK"
+    archetype="feature-guide"
+  />
+  <RelatedReadItem
+    path="/develop/typescript/workflows/workflow-streams#subscribe"
+    text="Subscribe with the TypeScript SDK"
+    archetype="feature-guide"
+  />
+</RelatedReadContainer>
+
+### Log management
+
+Two mechanisms bound the growth of the in-memory log:
+
+- **Truncation** drops entries below a given offset from the in-memory log (and from the Continue-As-New payload). It
+  does not remove publish Signals already recorded in Workflow history. A subscriber whose offset falls below the new
+  base after truncation is silently advanced to the current base.
+- **Continue-As-New** starts a fresh Workflow history. This is the only way to shrink history. See
+  [Continue-As-New](#continue-as-new).
+
+## Choose where to host the stream {#choose-where-to-host}
+
+The first design choice is whether the Workflow that does the work also hosts the stream, or whether a separate Workflow
+exists only to host the stream.
+
+**Host the stream on the Workflow that does the work** when the events come from what that Workflow is already
+orchestrating: an agent run, an order pipeline, a chat session. The stream's lifecycle aligns with the work. The
+Workflow ID that starts the work is the same one subscribers attach to.
+
+**Use a dedicated Workflow for the stream** when the stream should outlive any single producer, accept fan-in from
+multiple unrelated sources, or be subscribable before any work has started. Producers publish from outside the stream
+Workflow (Activities of other Workflows, or external clients). The trade-off is explicit lifecycle management: a
+dedicated stream Workflow does not terminate on its own, so you need a Signal-driven shutdown or a Continue-As-New
+strategy.
+
+Use distinct Workflow IDs for unrelated streams rather than packing them into one Workflow.
+
+## Closing the stream {#closing-the-stream}
+
+A subscriber's iterator does not know when the publisher is done. End-of-stream is an application-level concern. Without
+coordination, a subscriber keeps polling until the Workflow reaches a terminal state.
+
+A Workflow that returns immediately after its last publish can return before the subscriber's next poll fetches that
+event. Two patterns handle this.
+
+### Fixed sleep
+
+Sleep between the last publish and the Workflow return so any in-flight poll has time to fetch the final event:
+
+1. The Workflow (or its Activity) publishes a sentinel event the subscriber recognizes (for example,
+   `{ state: "completed" }`).
+2. The Workflow sleeps for a duration long enough to cover the subscriber's poll round-trip (30 seconds is a generous
+   default).
+3. The Workflow returns.
+
+The cost is small: the Workflow stays open for the sleep duration but does no other work.
+
+### Acknowledgment handshake
+
+The subscriber sends a Signal to the Workflow once it has received the sentinel event. The Workflow waits for that
+Signal up to a timeout, returning as soon as the ack arrives:
+
+1. The Workflow (or its Activity) publishes a sentinel event.
+2. The subscriber receives the sentinel and signals the Workflow.
+3. The Workflow's wait condition resolves and the Workflow returns.
+
+The timeout is still required because the subscriber may not be attached. With the ack, the typical case (subscriber
+online) exits as soon as the subscriber confirms receipt.
+
+### Inspecting terminal status
+
+The subscribe iterator exits cleanly when the Workflow reaches `COMPLETED`, `FAILED`, `CANCELLED`, `TERMINATED`, or
+`TIMED_OUT`, but does not distinguish among them. If your application needs to know which, describe the Workflow handle
+after the loop returns to inspect the status.
+
+## Delivery semantics {#delivery-semantics}
+
+### Exactly-once publishing
+
+Each `(publisher_id, sequence)` batch lands in the log at most once, even if the publisher's underlying Signal is
+retried by the SDK or the network. Once an event is in the log, every subscriber that polls past its offset sees it.
+Deduplicate state is carried across Continue-As-New, so a retried publish that arrives after a rollover still lands at
+most once.
+
+### Ordering
+
+The log imposes a single total order on all events, fixed once written: an event at offset N stays at offset N on every
+read. Within one publisher (one client instance or the Workflow itself), events appear in publish order. Across
+concurrent publishers, the interleaving is whatever the Workflow saw when serializing inbound Signals. The order is
+stable once recorded but not under application control. If event A must precede event B, publish them from the same
+publisher.
+
+### Activity retries surface to subscribers
+
+When an Activity that publishes events fails partway through and Temporal retries it, both attempts' events appear in
+the stream. An Activity that publishes three events and then errors, then retries and publishes its full output,
+delivers three partial events followed by the complete sequence. The Workflow itself sees only the successful attempt's
+return value, but a subscriber sees all attempts' output.
+
+Consumers must handle this. The conventional pattern is for an Activity that detects it is on a retry attempt to publish
+a retry-sentinel event with force-flush. The consumer clears or annotates prior-attempt output when it sees the
+sentinel.
+
+This is the price of streaming events as they happen rather than waiting for the Workflow's durable view to settle. If
+the library waited for a successful Activity return before surfacing anything, there would be nothing to stream.
+
+### Other failure modes
+
+- Events still in a publisher's in-memory buffer are lost if the process crashes before they ship.
+- Subscribers that handle an item and crash before persisting their next offset reprocess that item on resume.
+
+### Deduplication window
+
+Two settings control the deduplication window:
+
+| Setting                | Default    | Description                                                                                                                |
+| ---------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **publisher TTL**      | 15 minutes | How long the Workflow retains per-publisher deduplicate state. Entries older than this are pruned at each Continue-As-New. |
+| **max retry duration** | 10 minutes | How long a client retries a failed publish batch before dropping it and raising an error.                                  |
+
+These two settings must satisfy **max retry duration < publisher TTL**. If a publisher's retry window exceeds the dedup
+retention, the dedup state can age out before the retry lands. A retry that arrives after its dedup record has been
+pruned is treated as a fresh publish, producing a duplicate. If you tune one, tune the other.
+
+## Tuning {#tuning}
+
+The most important question when tuning is: how often do you want to update your UI? That answer drives the trade-off
+between user-perceived latency and the number of history events your Workflow accumulates.
+
+Each batched publish is one Signal, and each subscriber poll is one Update. Each Signal and each Update counts against
+the Workflow's history. A more responsive UI means more messages and more history per second. For long-running streams,
+plan a [Continue-As-New](#continue-as-new) policy from the start.
+
+### Batch interval
+
+The batch interval (default: 2 seconds) is the maximum time between automatic flushes from the client. Lower it to make
+the stream feel live. Raise it to amortize Signal cost. For an LLM token stream feeding a chat UI, 200 milliseconds is a
+good starting point: the user perceives it as live, and a 30-second response generates roughly 150 publish Signals.
+Below 100 milliseconds, the per-Signal RPC overhead starts to dominate.
+
+For per-publish overrides where one event needs lower latency than the batch interval (the first delta of a response, or
+punctuated events like retry sentinels), use force-flush on that publish. Per-token force-flush on a 500-token
+completion produces 500 publish Signals, which is meaningful but tractable. Per-character force-flush is not.
+
+### Other settings
+
+| Setting            | Default   | Description                                                                                                                                                                                                       |
+| ------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **max batch size** | unbounded | Caps the number of items per batch. Without this, only batch interval bounds batch size. A hot publisher can accumulate enough items that the resulting Signal exceeds Temporal's per-message gRPC payload limit. |
+| **poll cooldown**  | 100 ms    | Minimum interval between subscriber polls. Skipped only when a poll response was capped at the 1 MB limit and more items remain.                                                                                  |
+
+## Continue-As-New {#continue-as-new}
+
+If your Workflow runs for minutes and finishes (a single chat completion, an order pipeline, a one-shot agent), you can
+skip this section. Continue-As-New becomes relevant for streams that run for hours or accumulate thousands of events,
+where you need to roll the Workflow over to keep history bounded.
+
+Subscribers automatically follow Continue-As-New chains. Workflow IDs are stable across Continue-As-New, so the
+subscriber fetches a fresh handle for the same Workflow ID and continues polling from its carried offset.
+
+To roll a long-running streaming Workflow over without subscribers seeing a gap:
+
+1. Add an optional stream-state field to your Workflow input. Pass it to the `WorkflowStream` constructor. On a fresh
+   start, this field is empty. After a rollover, it carries the accumulated state.
+2. When the Workflow decides to roll over (for example, when `continueAsNewSuggested` is true), call the stream's
+   continue-as-new helper. The helper drains waiting subscribers, waits for in-flight handlers to finish, then calls
+   `continueAsNew` with the snapshot.
+
+The carried state includes the entire in-memory log of the previous run. Streams that carry large items can hit
+Temporal's per-payload size limit at the rollover. To keep the carried state small, offload large payloads via external
+storage so each item is a small reference, and use truncation to drop entries that subscribers have already consumed.
+
+<RelatedReadContainer>
+  <RelatedReadItem
+    path="/develop/python/workflows/workflow-streams#continue-as-new"
+    text="Continue-As-New with the Python SDK"
+    archetype="feature-guide"
+  />
+  <RelatedReadItem
+    path="/develop/typescript/workflows/workflow-streams#continue-as-new"
+    text="Continue-As-New with the TypeScript SDK"
+    archetype="feature-guide"
+  />
+</RelatedReadContainer>
