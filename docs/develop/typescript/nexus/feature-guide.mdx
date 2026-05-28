@@ -160,15 +160,13 @@ Simple RPC handlers can be implemented as synchronous Nexus Operation handlers, 
 Use `getClient()` from `@temporalio/nexus` to get the Temporal Client for signaling, querying, and listing Workflows.
 Implementations can also make other calls, but handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking).
 
-<!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["2","4","6-17","37"]}-->
+<!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["1","3","17-27","46"]}-->
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
 ```ts
-// ...
 import * as nexus from 'nexus-rpc';
 // ...
 import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from '../api';
 // ...
-
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
   echo: async (ctx, input: EchoInput): Promise<EchoOutput> => {
     // A simple async function can be used to defined a Synchronous Nexus Operation.
@@ -232,15 +230,15 @@ Note that even though a Nexus operation can only take one input parameter, if yo
 multiple arguments through to the workflow, you can do so by using multiple properties of the input object, and placing them in
 the array provided to the `args` option when calling `startWorkflow`.
 
-<!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["1-7","18-37"]}-->
+<!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["1-5","17","28-46"]}-->
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
 ```ts
-import { randomUUID } from 'crypto';
 import * as nexus from 'nexus-rpc';
 import * as temporalNexus from '@temporalio/nexus';
 import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from '../api';
 import { helloWorkflow } from './workflows';
 
+// ...
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
 // ...
   hello: new temporalNexus.WorkflowRunOperationHandler<HelloInput, HelloOutput>(
@@ -254,9 +252,8 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
         args: [input],
 
         // Workflow IDs should typically be business-meaningful IDs and are used to dedupe workflow starts.
-        // For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
-        // the operation, this ID is guaranteed to be stable across retries of this operation.
-        workflowId: ctx.requestId ?? randomUUID(),
+        // For this example, the workflow handles the greeting request for a given person and language pair.
+        workflowId: workflowIdForHello(input),
 
         // Task queue defaults to the task queue this Operation is handled on.
       });
