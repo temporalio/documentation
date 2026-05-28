@@ -527,6 +527,8 @@ When you use Priority and Fairness together, the next Task to dispatch is chosen
 2. **Fairness key within a tier (weighted).** Within a priority tier, each fairness key is a virtual queue. Keys are dispatched proportional to their weights - a key with weight 2.0 is dispatched twice as often as one with weight 1.0.
 3. **FIFO within a key.** Tasks that share a priority tier _and_ fairness key dispatch in the order they were enqueued.
 
+These rules apply within a Task Queue partition. See [Limitations of Fairness](#limitations-of-fairness) for how partitioning can affect ordering.
+
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
   alt="Flowchart of how Priority and Fairness combine: poller checks priority levels in order, then within each level Fairness selects a virtual queue weighted by fairness weight"
@@ -601,6 +603,7 @@ Set overrides with `temporal task-queue config set`:
 temporal task-queue config set \
     --task-queue my-task-queue \
     --task-queue-type activity \
+    --namespace my-namespace \
     --fairness-key-weight premium=5.0 \
     --fairness-key-weight basic=1.0
 ```
