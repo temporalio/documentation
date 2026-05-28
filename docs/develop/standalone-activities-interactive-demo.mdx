@@ -1,20 +1,15 @@
 ---
 id: standalone-activities-interactive-demo
-title: Standalone Activities Interactive Demo
-sidebar_label: Standalone Activities (Interactive)
+title: Standalone Activities Demo
+sidebar_label: Standalone Activities
 toc_max_heading_level: 3
 keywords:
   - standalone activity
-  - activity execution
-  - execute activity
-  - activity handle
-  - quickstart
   - interactive demo
 tags:
-  - Activities
-  - Temporal Client
+  - Standalone Activities
   - Temporal SDKs
-description: An interactive overview of Temporal Standalone Activities that lets you run Activities directly from a Temporal Client without a Workflow.
+description: An interactive overview of Temporal Standalone Activities.
 ---
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
@@ -29,12 +24,13 @@ Standalone Activities require Temporal CLI v1.7.0 or higher and Temporal Server 
 
 :::
 
-Standalone Activities let you execute an Activity directly from a Temporal Client without
-requiring a Workflow Definition, since the Activity is durably enqueued on the Temporal Server,
-executed by a Worker, and returned to the caller through an Activity handle.
+Standalone Activities let you run a single Activity straight from your application without
+writing a Workflow. Your code calls the Temporal Client, the Server durably enqueues the request
+for a Worker to pick up, and the result comes back through a handle that your code can wait on or
+check later.
 
-Use the interactive demo below to explore the API, experiment with failure scenarios, and see the
-generated SDK code and CLI command update in real time.
+Try the demo below to walk through the full flow, tweak the retry and timeout settings, and watch
+the SDK code and CLI command update as you go.
 
 import { StandaloneActivityDemo } from '@site/src/components';
 
