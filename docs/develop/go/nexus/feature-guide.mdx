@@ -97,22 +97,21 @@ The default data converter encodes payloads in the following order: Null, Byte a
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses native Go types.
 
-<!--SNIPSTART samples-go-nexus-service {"selectedLines": ["2-17"]}-->
+<!--SNIPSTART samples-go-nexus-service {"selectedLines": ["8-18"]}-->
 [nexus/service/api.go](https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go)
 ```go
 // ...
-
-import (
-	"fmt"
-	"strings"
-)
-
 const HelloServiceName = "my-hello-service"
 
 // Echo operation
 const EchoOperationName = "echo"
 
 type EchoInput struct {
+	Message string
+}
+
+type EchoOutput EchoInput
+
 ```
 <!--SNIPEND-->
 
