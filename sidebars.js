@@ -1661,6 +1661,14 @@ module.exports = {
         'web-ui',
       ],
     },
+    {
+      type: 'category',
+      label: 'Interactive Demos',
+      collapsed: true,
+      items: [
+        'develop/standalone-activities-interactive-demo',
+      ],
+    },
     'glossary',
     'with-ai',
     // {

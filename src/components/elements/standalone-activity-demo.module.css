@@ -17,7 +17,7 @@
 .langTab {
   padding: 5px 18px;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 4px;
+  border-radius: 0;
   background: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
   cursor: pointer;
@@ -73,7 +73,7 @@
 
 .configGrid {
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 6px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -101,7 +101,7 @@
   width: 150px;
   padding: 4px 8px;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 4px;
+  border-radius: 0;
   background: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
   font-size: 0.83rem;
@@ -118,7 +118,7 @@
   margin: 8px 0 0;
   padding: 8px 12px;
   background: var(--ifm-color-emphasis-100);
-  border-radius: 4px;
+  border-radius: 0;
   line-height: 1.4;
 }
 
@@ -130,7 +130,7 @@
   background: var(--ifm-color-primary);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 0;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -178,7 +178,7 @@
   padding: 14px 12px;
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 6px;
+  border-radius: 0;
   overflow-x: auto;
   gap: 4px;
 }
@@ -188,7 +188,7 @@
   flex-direction: column;
   align-items: center;
   padding: 8px 10px;
-  border-radius: 6px;
+  border-radius: 0;
   border: 2px solid var(--ifm-color-emphasis-300);
   background: var(--ifm-background-color);
   min-width: 68px;
@@ -276,7 +276,7 @@
   overflow-y: auto;
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 6px;
+  border-radius: 0;
   padding: 10px 12px;
   font-family: var(--ifm-font-family-monospace);
   font-size: 0.78rem;
@@ -324,7 +324,7 @@
   padding: 9px 14px;
   background: rgba(34, 197, 94, 0.1);
   border: 1px solid rgba(34, 197, 94, 0.5);
-  border-radius: 6px;
+  border-radius: 0;
   color: #15803d;
   font-size: 0.88rem;
 }
@@ -334,7 +334,7 @@
   padding: 9px 14px;
   background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.45);
-  border-radius: 6px;
+  border-radius: 0;
   color: #dc2626;
   font-size: 0.88rem;
 }
@@ -350,7 +350,7 @@
 .historyWrapper {
   overflow-x: auto;
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .historyTable {
@@ -398,7 +398,7 @@
   padding: 2px 8px;
   background: rgba(34, 197, 94, 0.12);
   color: #15803d;
-  border-radius: 9999px;
+  border-radius: 0;
   font-size: 0.74rem;
   font-weight: 600;
   white-space: nowrap;
@@ -409,7 +409,7 @@
   padding: 2px 8px;
   background: rgba(239, 68, 68, 0.1);
   color: #dc2626;
-  border-radius: 9999px;
+  border-radius: 0;
   font-size: 0.74rem;
   font-weight: 600;
   white-space: nowrap;

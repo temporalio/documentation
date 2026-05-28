@@ -6,27 +6,33 @@ import styles from './standalone-activity-demo.module.css';
 // Code generation
 // ---------------------------------------------------------------------------
 
+const GREETING = 'Hello';
+
 function generateSdkCode(language, config) {
-  const { activityId, taskQueue, greeting, name, timeout, timeoutType, simulateFailures, maxRetries } = config;
-  const expectedResult = `${greeting}, ${name}!`;
+  const { activityId, taskQueue, name, timeout, timeoutType, simulateFailures, maxRetries } = config;
+  const expectedResult = `${GREETING}, ${name}!`;
 
   if (language === 'go') {
     const timeoutField =
       timeoutType === 'start_to_close'
         ? `StartToCloseTimeout:    ${timeout} * time.Second,`
         : `ScheduleToCloseTimeout: ${timeout} * time.Second,`;
+    const retryImport =
+      simulateFailures && maxRetries > 0
+        ? '// import "go.temporal.io/sdk/temporal"\n'
+        : '';
     const retryPolicy =
       simulateFailures && maxRetries > 0
         ? `\n\tRetryPolicy: &temporal.RetryPolicy{\n\t\tMaximumAttempts: ${maxRetries + 1},\n\t},`
         : '';
-    return `activityOptions := client.StartActivityOptions{
+    return `${retryImport}activityOptions := client.StartActivityOptions{
 \tID:        "${activityId}",
 \tTaskQueue: "${taskQueue}",
 \t${timeoutField}${retryPolicy}
 }
 
 handle, err := c.ExecuteActivity(ctx, activityOptions,
-\thelloworld.Activity, "${greeting}", "${name}")
+\thelloworld.Activity, "${name}")
 if err != nil {
 \tlog.Fatalln("Unable to execute activity", err)
 }
@@ -41,13 +47,17 @@ err = handle.Get(ctx, &result)
       timeoutType === 'start_to_close'
         ? `start_to_close_timeout=timedelta(seconds=${timeout}),`
         : `schedule_to_close_timeout=timedelta(seconds=${timeout}),`;
+    const retryImport =
+      simulateFailures && maxRetries > 0
+        ? '# from temporalio.common import RetryPolicy\n'
+        : '';
     const retryPolicy =
       simulateFailures && maxRetries > 0
         ? `\n    retry_policy=RetryPolicy(\n        maximum_attempts=${maxRetries + 1},\n    ),`
         : '';
-    return `result = await client.execute_activity(
+    return `${retryImport}result = await client.execute_activity(
     compose_greeting,
-    args=[ComposeGreetingInput("${greeting}", "${name}")],
+    args=[ComposeGreetingInput("${GREETING}", "${name}")],
     id="${activityId}",
     task_queue="${taskQueue}",
     ${timeoutField}${retryPolicy}
@@ -60,13 +70,17 @@ err = handle.Get(ctx, &result)
       timeoutType === 'start_to_close'
         ? `StartToCloseTimeout = TimeSpan.FromSeconds(${timeout}),`
         : `ScheduleToCloseTimeout = TimeSpan.FromSeconds(${timeout}),`;
+    const retryImport =
+      simulateFailures && maxRetries > 0
+        ? '// using Temporalio.Common;\n'
+        : '';
     const retryPolicy =
       simulateFailures && maxRetries > 0
-        ? `\n        MaximumAttempts = ${maxRetries + 1},`
+        ? `\n        RetryPolicy = new() { MaximumAttempts = ${maxRetries + 1} },`
         : '';
-    return `var result = await client.ExecuteActivityAsync(
+    return `${retryImport}var result = await client.ExecuteActivityAsync(
     () => MyActivities.ComposeGreetingAsync(
-        new ComposeGreetingInput("${greeting}", "${name}")),
+        new ComposeGreetingInput("${GREETING}", "${name}")),
     new("${activityId}", "${taskQueue}")
     {
         ${timeoutField}${retryPolicy}
@@ -77,18 +91,32 @@ err = handle.Get(ctx, &result)
   return '';
 }
 
-function generateCliCode(config) {
+function generateCliCode(language, config) {
   const { activityId, taskQueue, name, timeout, timeoutType } = config;
   const timeoutFlag =
     timeoutType === 'start_to_close'
       ? `--start-to-close-timeout ${timeout}s`
       : `--schedule-to-close-timeout ${timeout}s`;
+
+  let activityType;
+  let inputFlag;
+  if (language === 'go') {
+    activityType = 'Activity';
+    inputFlag = `--input '"${name}"'`;
+  } else if (language === 'python') {
+    activityType = 'compose_greeting';
+    inputFlag = `--input '{"greeting": "${GREETING}", "name": "${name}"}'`;
+  } else {
+    activityType = 'ComposeGreeting';
+    inputFlag = `--input '{"Greeting": "${GREETING}", "Name": "${name}"}'`;
+  }
+
   return `temporal activity execute \\
-  --type Activity \\
+  --type ${activityType} \\
   --activity-id ${activityId} \\
   --task-queue ${taskQueue} \\
   ${timeoutFlag} \\
-  --input '"${name}"'`;
+  ${inputFlag}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -114,7 +142,6 @@ const IDLE_NODES = ['pending', 'pending', 'pending', 'pending', 'pending'];
 const DEFAULT_CONFIG = {
   activityId: 'my-activity-id',
   taskQueue: 'my-task-queue',
-  greeting: 'Hello',
   name: 'World',
   timeout: 10,
   timeoutType: 'start_to_close',
@@ -232,7 +259,7 @@ export default function StandaloneActivityDemo() {
         // Step 3: execute
         update(
           ['completed', 'completed', 'completed', 'active', 'pending'],
-          `[Attempt ${attempt}] Executing Activity("${config.greeting}", "${config.name}")...`
+          `[Attempt ${attempt}] Executing Activity("${config.name}")...`
         );
         await sleep(750);
         if (isCancelled()) return;
@@ -298,7 +325,7 @@ export default function StandaloneActivityDemo() {
         await sleep(400);
         if (isCancelled()) return;
 
-        const result = `${config.greeting}, ${config.name}!`;
+        const result = `${GREETING}, ${config.name}!`;
         logEntries.push({ time: elapsed(), msg: `Result: "${result}"`, type: 'success' });
 
         setSim({
@@ -332,8 +359,8 @@ export default function StandaloneActivityDemo() {
   const failureNote =
     config.simulateFailures
       ? config.failCount > config.maxRetries
-        ? `⚠ All ${config.maxRetries + 1} attempt(s) will fail — failCount exceeds maxRetries.`
-        : `ℹ Activity will fail ${config.failCount} time(s), then succeed on attempt ${config.failCount + 1}.`
+        ? `All ${config.maxRetries + 1} attempt(s) will fail because failCount exceeds maxRetries.`
+        : `Activity will fail ${config.failCount} time(s), then succeed on attempt ${config.failCount + 1}.`
       : null;
 
   return (
@@ -366,11 +393,6 @@ export default function StandaloneActivityDemo() {
                 label="Task Queue"
                 value={config.taskQueue}
                 onChange={(v) => updateConfig('taskQueue', v)}
-              />
-              <ConfigField
-                label="Greeting"
-                value={config.greeting}
-                onChange={(v) => updateConfig('greeting', v)}
               />
               <ConfigField
                 label="Name"
@@ -444,7 +466,7 @@ export default function StandaloneActivityDemo() {
 
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>CLI Command</h3>
-            <CodeBlock language="bash">{generateCliCode(config)}</CodeBlock>
+            <CodeBlock language="bash">{generateCliCode(language, config)}</CodeBlock>
           </section>
         </div>
 
@@ -462,7 +484,7 @@ export default function StandaloneActivityDemo() {
                   Running…
                 </>
               ) : (
-                '▶  Execute Activity'
+                'Execute Activity'
               )}
             </button>
           </section>
@@ -523,12 +545,12 @@ export default function StandaloneActivityDemo() {
 
             {sim.status === 'completed' && sim.result && (
               <div className={styles.resultSuccess}>
-                ✅ Result: <strong>"{sim.result}"</strong>
+                Result: <strong>"{sim.result}"</strong>
               </div>
             )}
             {sim.status === 'failed' && (
               <div className={styles.resultFailed}>
-                ❌ Activity failed after exhausting all retry attempts
+                Activity failed after exhausting all retry attempts
               </div>
             )}
           </section>
