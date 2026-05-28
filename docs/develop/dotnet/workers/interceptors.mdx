@@ -50,7 +50,7 @@ request and response data.
 
 ### Register on the Client 
 
-Pass interceptors in the `Interceptors` argument of [`TemporalClientConnectOptions`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClientConnectOptions.html). Client interceptors modify outbound calls such
+Pass interceptors in the `Interceptors` property of [`TemporalClientConnectOptions`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClientConnectOptions.html). Client interceptors modify outbound calls such
 as starting and signaling Workflows. One example is [setting up tracing](/develop/dotnet/platform/observability) to see your call graph of a Workflow.
 
 ```csharp
@@ -106,6 +106,17 @@ using Temporalio.Api.Common.V1;
 using Temporalio.Client;
 using Temporalio.Client.Interceptors;
 
+public static class UserContext
+{
+    private static readonly AsyncLocal<string?> CurrentUser = new();
+
+    public static string? UserId
+    {
+        get => CurrentUser.Value;
+        set => CurrentUser.Value = value;
+    }
+}
+
 public class ContextPropagationInterceptor : IClientInterceptor
 {
     public ClientOutboundInterceptor InterceptClient(
@@ -120,13 +131,14 @@ public class ContextPropagationClientOutboundInterceptor(
     public override Task<WorkflowHandle<TWorkflow, TResult>>
         StartWorkflowAsync<TWorkflow, TResult>(StartWorkflowInput input)
     {
-        input.Headers["user-id"] = new Payload
+        var headers = input.Headers ?? new Dictionary<string, Payload>();
+        headers["user-id"] = new Payload
         {
             Metadata = { ["encoding"] = ByteString.CopyFromUtf8("plain/text") },
             Data = ByteString.CopyFromUtf8(UserContext.UserId),
         };
 
-        return base.StartWorkflowAsync<TWorkflow, TResult>(input);
+        return base.StartWorkflowAsync<TWorkflow, TResult>(input with { Headers = headers });
     }
 }
 ```
