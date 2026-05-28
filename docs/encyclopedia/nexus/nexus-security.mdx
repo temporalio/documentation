@@ -91,9 +91,14 @@ This encrypts only Nexus traffic with a dedicated key, without sharing Namespace
 
 :::warning Incompatible with typed operations
 
-The wrapper approach changes the static type of the operation input, so it only compiles when the caller uses `ExecuteOperation` with a **string operation name**.
-A typed reference declared as `nexus.Operation[Input, Output]` constrains the input through Go generics, and the wrapped value will not satisfy that constraint.
-The call fails at compile time, not at runtime.
+The wrapper approach changes the type of the operation input.
+When using `ExecuteOperation` directly, both operation and input are typed as `any`, so the call itself compiles.
+However, if the caller uses a typed wrapper or generated helper that constrains the input type through Go generics, the wrapped value will not satisfy that constraint and the call will fail at compile time:
+
+```
+cannot assign argument of type "converter.NexusOperation" to type "…EchoInput"
+```
+For string-based operation names called directly via `ExecuteOperation`, the mismatch may only surface at runtime during deserialization.
 
 For typed operations, pass the Endpoint name to the Data Converter through the workflow context instead of wrapping the input.
 
