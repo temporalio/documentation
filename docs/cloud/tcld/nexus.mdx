@@ -18,7 +18,7 @@ Alias: `nxs`
 
 - [tcld nexus endpoint](#endpoint)
 
-## endpoint
+## endpoint {/* #endpoint */}
 
 The `tcld nexus endpoint` commands manage Nexus Endpoints in Temporal Cloud.
 
@@ -31,7 +31,7 @@ Alias: `ep`
 - [tcld nexus endpoint list](#list)
 - [tcld nexus endpoint update](#update)
 
-### allowed-namespace
+### allowed-namespace {/* #allowed-namespace */}
 
 The `tcld nexus endpoint allowed-namespace` commands manage the allowed namespaces for a Nexus Endpoint.
 
@@ -42,109 +42,109 @@ Alias: `an`
 - [tcld nexus endpoint allowed-namespace remove](#remove)
 - [tcld nexus endpoint allowed-namespace set](#set)
 
-#### add
+#### add {/* #add */}
 
 The `tcld nexus endpoint allowed-namespace add` command adds allowed namespaces to a Nexus Endpoint.
 
 Alias: `a`
 
-##### --name
+##### --name {/* #--name */}
 
 Endpoint name.
 
 Alias: `n`
 
-##### --namespace
+##### --namespace {/* #--namespace */}
 
 Namespace that is allowed to call this endpoint.
 
 Alias: `ns`
 
-##### --request-id
+##### --request-id {/* #--request-id */}
 
 The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
 
 Alias: `r`
 
-##### --resource-version
+##### --resource-version {/* #--resource-version */}
 
 The resource-version (etag) to update from, if not set the cli will use the latest (optional).
 
 Alias: `v`
 
-#### list
+#### list {/* #list */}
 
 The `tcld nexus endpoint allowed-namespace list` command lists the allowed namespaces of a Nexus Endpoint.
 
 Alias: `l`
 
-##### --name
+##### --name {/* #--name-1 */}
 
 Endpoint name.
 
 Alias: `n`
 
-#### remove
+#### remove {/* #remove */}
 
 The `tcld nexus endpoint allowed-namespace remove` command removes allowed namespaces from a Nexus Endpoint.
 
 Alias: `r`
 
-##### --name
+##### --name {/* #--name-2 */}
 
 Endpoint name.
 
 Alias: `n`
 
-##### --namespace
+##### --namespace {/* #--namespace-1 */}
 
 Namespace that is allowed to call this endpoint.
 
 Alias: `ns`
 
-##### --request-id
+##### --request-id {/* #--request-id-1 */}
 
 The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
 
 Alias: `r`
 
-##### --resource-version
+##### --resource-version {/* #--resource-version-1 */}
 
 The resource-version (etag) to update from, if not set the cli will use the latest (optional).
 
 Alias: `v`
 
-#### set
+#### set {/* #set */}
 
 The `tcld nexus endpoint allowed-namespace set` command sets the allowed namespaces of a Nexus Endpoint.
 
 Alias: `s`
 
-##### --name
+##### --name {/* #--name-3 */}
 
 Endpoint name.
 
 Alias: `n`
 
-##### --namespace
+##### --namespace {/* #--namespace-2 */}
 
 Namespace that is allowed to call this endpoint.
 
 Alias: `ns`
 
-##### --request-id
+##### --request-id {/* #--request-id-2 */}
 
 The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
 
 Alias: `r`
 
-##### --resource-version
+##### --resource-version {/* #--resource-version-2 */}
 
 The resource-version (etag) to update from, if not set the cli will use the latest (optional).
 
 Alias: `v`
 
-### create
+### create {/* #create */}
 
 The `tcld nexus endpoint create` command creates a new Nexus Endpoint on the Cloud Account.
 An endpoint name is used by in workflow code to invoke Nexus operations.
@@ -153,92 +153,92 @@ This will fail if an endpoint with the same name is already registered.
 
 Alias: `c`
 
-#### --allow-namespace
+#### --allow-namespace {/* #--allow-namespace */}
 
 Namespace that is allowed to call this endpoint (optional).
 
 Alias: `ans`
 
-#### --description
+#### --description {/* #--description */}
 
 Endpoint description in markdown format (optional).
 
 Alias: `d`
 
-#### --description-file
+#### --description-file {/* #--description-file */}
 
 Endpoint description file in markdown format (optional).
 
 Alias: `df`
 
-#### --name
+#### --name {/* #--name-4 */}
 
 Endpoint name.
 
 Alias: `n`
 
-#### --request-id
+#### --request-id {/* #--request-id-3 */}
 
 The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
 
 Alias: `r`
 
-#### --target-namespace
+#### --target-namespace {/* #--target-namespace */}
 
 Namespace in which a handler worker will be polling for Nexus tasks on.
 
 Alias: `tns`
 
-#### --target-task-queue
+#### --target-task-queue {/* #--target-task-queue */}
 
 Task Queue in which a handler worker will be polling for Nexus tasks on.
 
 Alias: `ttq`
 
-### delete
+### delete {/* #delete */}
 
 The `tcld nexus endpoint delete` command deletes a Nexus Endpoint on the Cloud Account.
 .
 
 Alias: `d`
 
-#### --name
+#### --name {/* #--name-5 */}
 
 Endpoint name.
 
 Alias: `n`
 
-#### --request-id
+#### --request-id {/* #--request-id-4 */}
 
 The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
 
 Alias: `r`
 
-#### --resource-version
+#### --resource-version {/* #--resource-version-3 */}
 
 The resource-version (etag) to update from, if not set the cli will use the latest (optional).
 
 Alias: `v`
 
-### get
+### get {/* #get */}
 
 The `tcld nexus endpoint get` command gets a Nexus Endpoint configuration by name from the Cloud Account.
 
 Alias: `g`
 
-#### --name
+#### --name {/* #--name-6 */}
 
 Endpoint name.
 
 Alias: `n`
 
-### list
+### list {/* #list-1 */}
 
 The `tcld nexus endpoint list` command lists all Nexus Endpoint configurations on the Cloud Account.
 
 Alias: `l`
 
-### update
+### update {/* #update */}
 
 The `tcld nexus endpoint update` command updates an existing Nexus Endpoint on the Cloud Account.
 An endpoint name is used by in workflow code to invoke Nexus operations.
@@ -248,48 +248,48 @@ The endpoint is patched leaving any existing fields for which flags are not prov
 
 Alias: `u`
 
-#### --description
+#### --description {/* #--description-1 */}
 
 Endpoint description in markdown format (optional).
 
 Alias: `d`
 
-#### --description-file
+#### --description-file {/* #--description-file-1 */}
 
 Endpoint description file in markdown format (optional).
 
 Alias: `df`
 
-#### --name
+#### --name {/* #--name-7 */}
 
 Endpoint name.
 
 Alias: `n`
 
-#### --request-id
+#### --request-id {/* #--request-id-5 */}
 
 The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
 
 Alias: `r`
 
-#### --resource-version
+#### --resource-version {/* #--resource-version-4 */}
 
 The resource-version (etag) to update from, if not set the cli will use the latest (optional).
 
 Alias: `v`
 
-#### --target-namespace
+#### --target-namespace {/* #--target-namespace-1 */}
 
 Namespace in which a handler worker will be polling for Nexus tasks on (optional).
 
 Alias: `tns`
 
-#### --target-task-queue
+#### --target-task-queue {/* #--target-task-queue-1 */}
 
 Task Queue in which a handler worker will be polling for Nexus tasks on (optional).
 
 Alias: `ttq`
 
-#### --unset-description
+#### --unset-description {/* #--unset-description */}
 
 Unset endpoint description.

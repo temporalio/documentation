@@ -11,7 +11,7 @@ tags:
   - Activity
 ---
 
-## Start an Activity Execution {#activity-execution}
+## Start an Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -46,7 +46,7 @@ Calling a method on the Activity interface schedules the Activity invocation wit
 
 Activities can be invoked synchronously or asynchronously.
 
-### Invoking Activities Synchronously
+### Invoking Activities Synchronously {/* #invoking-activities-synchronously */}
 
 In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
 
@@ -118,7 +118,7 @@ This is useful when the Activity type is not known at compile time, or to invoke
     activity.execute("ComposeGreeting", String.class, "Hello World", "Spanish");
 ```
 
-### Invoking Activities Asynchronously
+### Invoking Activities Asynchronously {/* #invoking-activities-asynchronously */}
 
 Sometimes Workflows need to perform certain operations in parallel.
 The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
@@ -179,7 +179,7 @@ The following example shows how to call two Activity methods, "download" and "up
   }
 ```
 
-### Activity Execution Context
+### Activity Execution Context {/* #activity-execution-context */}
 
 `ActivityExecutionContext` is a context object passed to each Activity implementation by default.
 You can access it in your Activity implementations via `Activity.getExecutionContext()`.
@@ -213,7 +213,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
 
-## Set required Activity Timeouts {#required-timeout}
+## Set required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -263,7 +263,7 @@ If you define options per-Activity Type options with `WorkflowImplementationOpti
 
 :::
 
-## Java ActivityOptions reference {#activity-options-reference}
+## Java ActivityOptions reference {/* #activity-options-reference */}
 
 Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure how to invoke an Activity Execution.
 
@@ -282,7 +282,7 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
 | [`setRetryOptions`](#retryoptions)                     | No                                                 | RetryOptions             |
 | [`setCancellationType`](#setcancellationtype)          | No                                                 | ActivityCancellationType |
 
-### ScheduleToCloseTimeout
+### ScheduleToCloseTimeout {/* #scheduletoclosetimeout */}
 
 To set a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
@@ -318,7 +318,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                       .build();
   ```
 
-### ScheduleToStartTimeout
+### ScheduleToStartTimeout {/* #scheduletostarttimeout */}
 
 To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
@@ -354,7 +354,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                       .build();
   ```
 
-### StartToCloseTimeout
+### StartToCloseTimeout {/* #starttoclosetimeout */}
 
 To set a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
@@ -390,7 +390,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                       .build();
   ```
 
-### HeartbeatTimeout
+### HeartbeatTimeout {/* #heartbeattimeout */}
 
 To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
@@ -431,7 +431,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                       .build();
   ```
 
-### TaskQueue
+### TaskQueue {/* #taskqueue */}
 
 - Type: `String`
 - Default: Defaults to the Task Queue that the Workflow was started with.
@@ -467,7 +467,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 
 See [Task Queue](/task-queue)
 
-### RetryOptions
+### RetryOptions {/* #retryoptions */}
 
 To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
@@ -510,7 +510,7 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-### setCancellationType
+### setCancellationType {/* #setcancellationtype */}
 
 - Type: `ActivityCancellationType`
 - Default: `ActivityCancellationType.TRY_CANCEL`
@@ -540,7 +540,7 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-## Get the result of an Activity Execution {#activity-execution-result}
+## Get the result of an Activity Execution {/* #activity-execution-result */}
 
 The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.

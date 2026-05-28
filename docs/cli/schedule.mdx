@@ -29,7 +29,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `schedule` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## backfill
+## backfill {/* #backfill */}
 
 Batch-execute actions that would have run during a specified time interval.
 Use this command to fill in Workflow runs from when a Schedule was paused,
@@ -77,7 +77,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--schedule-id`, `-s` | Yes | **string** Schedule ID. |
 | `--start-time` | Yes | **timestamp** Backfill start time. |
 
-## create
+## create {/* #create */}
 
 Create a new Schedule on the Temporal Service. A Schedule automatically starts
 new Workflow Executions at the times you specify.
@@ -142,7 +142,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--type` | Yes | **string** Workflow Type name. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## delete
+## delete {/* #delete */}
 
 Deletes a Schedule on the front end Service:
 
@@ -161,7 +161,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--schedule-id`, `-s` | Yes | **string** Schedule ID. |
 
-## describe
+## describe {/* #describe */}
 
 Show a Schedule configuration, including information about past, current, and
 future Workflow runs:
@@ -177,7 +177,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--schedule-id`, `-s` | Yes | **string** Schedule ID. |
 
-## list
+## list {/* #list */}
 
 Lists the Schedules hosted by a Namespace:
 
@@ -194,7 +194,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--query`, `-q` | No | **string** Filter results using given List Filter. |
 | `--really-long` | No | **bool** Show extensive information in non-table form. |
 
-## toggle
+## toggle {/* #toggle */}
 
 Pause or unpause a Schedule by passing a flag with your desired state:
 
@@ -227,7 +227,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--schedule-id`, `-s` | Yes | **string** Schedule ID. |
 | `--unpause` | No | **bool** Unpause the Schedule. |
 
-## trigger
+## trigger {/* #trigger */}
 
 Trigger a Schedule to run immediately:
 
@@ -243,7 +243,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--overlap-policy` | No | **string-enum** Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. |
 | `--schedule-id`, `-s` | Yes | **string** Schedule ID. |
 
-## update
+## update {/* #update */}
 
 Update an existing Schedule with new configuration details, including time
 specifications, action, and policies:
@@ -301,7 +301,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--type` | Yes | **string** Workflow Type name. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## Global Flags
+## Global Flags {/* #global-flags */}
 
 The following options can be used with any command.
 

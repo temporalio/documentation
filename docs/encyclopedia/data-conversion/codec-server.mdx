@@ -27,7 +27,7 @@ independent of the Temporal Service. Encryption keys and codec logic remain in y
 
 For setup instructions, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
 
-## Why use a Codec Server
+## Why use a Codec Server {/* #why-use-a-codec-server */}
 
 When you apply a custom [Payload Codec](/payload-codec) for encryption or compression, data stored in the Temporal
 Service is encoded. The Temporal Service never has access to your encryption keys, so it cannot decode this data.
@@ -48,7 +48,7 @@ Temporal Service. Common reasons to run a Codec Server include:
   payloads and under what conditions. You can layer authorization on top of the decode endpoint to restrict access per
   user or per Namespace.
 
-## How a Codec Server works
+## How a Codec Server works {/* #how-a-codec-server-works */}
 
 A Codec Server follows the Temporal
 [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol). It
@@ -79,7 +79,7 @@ form.
 Your Codec Server should use the same Payload Codec implementation as your Workers to ensure consistent encoding and
 decoding.
 
-## Codec Server with External Storage {#external-storage}
+## Codec Server with External Storage {/* #external-storage */}
 
 When your Workers and Clients use [External Storage](/external-storage), your storage drivers replace some payloads in
 the Event History with small references that point to data in an external store like Amazon S3. The Temporal Service and
@@ -134,7 +134,7 @@ The following example walks through how all three endpoints work together:
 7. The Codec Server retrieves the encoded payload from external storage, decodes it through the Payload Codec, and
    returns the plaintext result to the Web UI.
 
-## Codec Server vs. Payload Codec
+## Codec Server vs. Payload Codec {/* #codec-server-vs-payload-codec */}
 
 A Codec Server runs a [Payload Codec](/payload-codec) internally, so the two are directly connected. The difference is
 where the codec logic runs and who calls it.
@@ -149,18 +149,18 @@ where the codec logic runs and who calls it.
 You implement the transformation logic once in a Payload Codec, then host that logic in a Codec Server so the Web UI and
 CLI can use it remotely.
 
-## Securing a Codec Server
+## Securing a Codec Server {/* #securing-a-codec-server */}
 
 Because a Codec Server can decode sensitive data, treat it with the same trust as a Worker. Anyone who can call it has
 effective decrypt access. Use HTTPS for any deployment that is not strictly loopback (`localhost`).
 
-### Network-level restrictions
+### Network-level restrictions {/* #network-level-restrictions */}
 
 Restrict network access to the Codec Server. The Web UI can communicate with a Codec Server that is only accessible on
 `localhost`, so running the Codec Server locally is a viable security pattern. For team access, place the Codec Server
 behind a VPN.
 
-### Authentication
+### Authentication {/* #authentication */}
 
 When the Codec Server is accessible beyond `localhost`, authenticate requests to verify the identity of the caller. The
 Web UI supports two approaches:
@@ -179,19 +179,19 @@ Temporal Cloud, verify against the
 token comes from whatever auth provider you have [configured for the Web UI](/references/web-ui-configuration#auth).
 This approach requires less setup but reuses the same token across the Temporal UI and the Codec Server.
 
-### Namespace-level authorization
+### Namespace-level authorization {/* #namespace-level-authorization */}
 
 Authentication identifies the caller, but does not confirm the caller is authorized to decode payloads for a specific
 Namespace. Each request from the Web UI includes an `X-Namespace` header identifying the Namespace. To enforce
 Namespace-level access control, your Codec Server must enforce an additional check on whether the authenticated user has
 permissions for the requested Namespace. This applies regardless of which authentication approach you use.
 
-### Key management
+### Key management {/* #key-management */}
 
 You may also need [key management infrastructure](/key-management) to share encryption keys between your Workers and the
 Codec Server.
 
-## SDK Codec Server samples
+## SDK Codec Server samples {/* #sdk-codec-server-samples */}
 
 Most Temporal SDKs provide example Codec Server implementations:
 

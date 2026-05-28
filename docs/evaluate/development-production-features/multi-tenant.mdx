@@ -18,11 +18,11 @@ import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
 Multi-tenancy in Temporal operates at two levels:
 
-## Namespace isolation
+## Namespace isolation {/* #namespace-isolation */}
 
 [Namespaces](/namespaces) are Temporal's unit of isolation, providing logical separation for multi-tenant deployments in both open source Temporal and Temporal Cloud.
 
-### Open source Temporal
+### Open source Temporal {/* #open-source-temporal */}
 
 Namespaces in self-hosted Temporal provide:
 
@@ -32,7 +32,7 @@ Namespaces in self-hosted Temporal provide:
 - **Access control**: Use a custom [Authorizer](/self-hosted-guide/security#authorization) on your Frontend Service to restrict who can access each Namespace.
 - **Inter-namespace communication**: Use [Nexus](/evaluate/nexus) for controlled communication between Namespaces.
 
-### Temporal Cloud
+### Temporal Cloud {/* #temporal-cloud */}
 
 Temporal Cloud builds on these capabilities with additional isolation guarantees:
 
@@ -46,7 +46,7 @@ Temporal Cloud builds on these capabilities with additional isolation guarantees
   <RelatedReadItem path="/cloud/pricing" text="Temporal Cloud Pricing" archetype="cloud-guide" />
 </RelatedReadContainer>
 
-## Application multi-tenancy
+## Application multi-tenancy {/* #application-multi-tenancy */}
 
 Many organizations use Temporal to power their own multi-tenant SaaS applications, isolating their customers' workloads using Task Queues, Search Attributes, and Worker design patterns.
 

@@ -40,11 +40,11 @@ When design changes aren't enough, Temporal Cloud offers [Provisioned Capacity M
 
 Whether you're just getting started with Temporal Cloud or optimizing an existing deployment, managing APS effectively is key to building scalable, reliable applications.
 
-## Understanding Actions in Temporal
+## Understanding Actions in Temporal {/* #understanding-actions-in-temporal */}
 
 Before we dive into why customers hit APS limits, let's talk about what actions are.
 
-### What Counts as an Action?
+### What Counts as an Action? {/* #what-counts-as-an-action */}
 
 In Temporal, actions are the fundamental operations that drive your Workflows forward. 
 Here's an overview of what counts, with [the full list in our documentation](/cloud/actions).
@@ -56,7 +56,7 @@ Here's an overview of what counts, with [the full list in our documentation](/cl
 Actions that count toward an APS limit are, with a few exemptions, the same as actions that are billable. 
 The key insight here is that nearly everything that happens in Temporal--state changes, decision points, interactions--is counted as an action.
 
-### The Action Multiplier Effect
+### The Action Multiplier Effect {/* #the-action-multiplier-effect */}
 
 What this means is that when you start a single Workflow, you're not performing just one action as it relates to APS because a Workflow isn’t a single atomic operation, it’s a series of events that Temporal orchestrates. 
 Each Activity at the start of the Workflow is an Action, so there can be a burst of Activities at the start of a Workflow. 
@@ -64,16 +64,16 @@ Additionally, there are often business reasons to start multiple Workflows at th
 
 These can all contribute to the multiplier effect. 
 
-### The Effect of Rate Limiting
+### The Effect of Rate Limiting {/* #the-effect-of-rate-limiting */}
 
 In Temporal Cloud, the effect of rate limiting is increased latency, not lost work. 
 Workers [might take longer](/cloud/service-availability#throughput) to complete Workflows. 
 
-## Common Reasons Customers Hit APS Limits
+## Common Reasons Customers Hit APS Limits {/* #common-reasons-customers-hit-aps-limits */}
 
 Now that you understand how actions are defined and how they count toward APS limits, let's look at the patterns that most commonly push customers into APS constraints. 
 
-### Bursty Traffic
+### Bursty Traffic {/* #bursty-traffic */}
 
 Most businesses don't operate at constant velocity—they have rhythms, cycles, and spikes. 
 These patterns can create APS challenges because Temporal Cloud enforces limits at the per-second level.
@@ -89,7 +89,7 @@ Common bursty patterns include:
 
 These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour/day/event/etc. 
 
-#### How to Mitigate
+#### How to Mitigate {/* #how-to-mitigate */}
 
 You can’t change the patterns of how customers interact with your systems, but there are some adjustments you can make to your Workflows to make traffic patterns more consistent, especially for use cases where immediate response isn’t necessary. 
 
@@ -100,7 +100,7 @@ These adjustments include:
 - Accept rate limiting
 - [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity)
 
-### Cascading Workflows and Fan-Out Patterns
+### Cascading Workflows and Fan-Out Patterns {/* #cascading-workflows-and-fan-out-patterns */}
 
 Decomposing complex processes into parent and Child Workflows (or with Nexus) is a common and often appropriate pattern, but the APS costs multiply dramatically with depth and fan-out.
 
@@ -113,13 +113,13 @@ This pattern appears frequently in:
 
 This challenge additionally compounds when you have multiple levels of nesting--parent Workflows that create children, which create their own children. 
 
-#### How to Mitigate
+#### How to Mitigate {/* #how-to-mitigate-1 */}
 
 - Evaluate whether Child Workflows are necessary--other options include Activities or Workflows in another Namespace (via Nexus)
 - When you do use Child Workflows, limit fan-out size--design a Child Workflow to process its work in batches rather than one Child per work item. [This sample application](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/batch/slidingwindow) shows more detail.
 - Consider flattening deeply nested hierarchies into shallower structures. 
 
-### Human-in-the-Loop Processes at Scale
+### Human-in-the-Loop Processes at Scale {/* #human-in-the-loop-processes-at-scale */}
 
 Workflows that incorporate human decision-making--approvals, reviews, manual data entry, quality checks--tend to be long-running and interaction-intensive, which creates sustained APS load.
 
@@ -127,11 +127,11 @@ These Workflows can involve Queries from UIs to display current state and pendin
 
 At small scale, this is manageable. But when you're running thousands of them at the same time--like a content moderation queue with pending reviews, or a loan approval system processing applications, or a support ticket system managing thousands of open cases--the cumulative APS load from all of those long-running Workflows adds up.
 
-#### How to Mitigate
+#### How to Mitigate {/* #how-to-mitigate-2 */}
 
 - Avoid polling patterns where UIs constantly query Workflow state. Instead, push state changes to a database that UIs can read. 
 
-### Real-Time SLAs and Deadline Management
+### Real-Time SLAs and Deadline Management {/* #real-time-slas-and-deadline-management */}
 
 Businesses with strict service level agreements often implement active monitoring and escalation in their Workflows. 
 This is generally accomplished by setting Timers every [x] minutes to determine if an SLA deadline is approaching, allowing the Workflow to trigger escalations or alerts. 
@@ -140,17 +140,17 @@ Each of these Timers/monitoring actions affect APS.
 When you have thousands of in-flight Workflows all actively monitoring their own SLAs, the background load becomes significant.
 You're consuming substantial APS capacity even when Workflows aren't doing their primary work.
 
-#### How to Mitigate
+#### How to Mitigate {/* #how-to-mitigate-3 */}
 
 - Use longer monitoring intervals where possible. For example, check SLAs every 30 minutes rather than every 1 minute.
 - Where possible, consolidate Timers. Rather than 10 Timers that check 10 tasks, have 1 Timer and then check those 10 tasks.
 - Where possible, have an external system signal your Workflow rather than using short-lived Timers to poll.
 - For retries, use exponential backoff with reasonable initial intervals.
 
-## Additional Design Patterns
+## Additional Design Patterns {/* #additional-design-patterns */}
 There are some design patterns that can lead to high APS that are consistent across many different types of business use cases. 
 
-### Many Small Activities
+### Many Small Activities {/* #many-small-activities */}
 
 Consider two approaches to processing 1,000 records:
 
@@ -161,19 +161,19 @@ Approach B will clearly result in less APS.
 This is a simple example, but this pattern shows up everywhere: processing individual transactions versus batches, sending individual notifications versus bulk operations, or making separate API calls versus batch endpoints. 
 Each separate Activity adds Action overhead.
 
-#### How to Mitigate
+#### How to Mitigate {/* #how-to-mitigate-4 */}
 
 - Consider if you can combine multiple external calls within a single Activity.
 - If processing a large amount of data, process it in chunks.
 - See [How Many Activities should I use in my Temporal Workflow?](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow) for more information.
 
-### Multiple Use Cases in One Namespace
+### Multiple Use Cases in One Namespace {/* #multiple-use-cases-in-one-namespace */}
 Often when starting with Temporal, the first use case is implemented in a single Namespace, generally one per logical environment. 
 When the second Temporal use case is implemented, it runs in the same Namespace, the same for the third, fourth, etc. 
 
 An APS limit is set per Namespace, so multiple use cases with multiple traffic patterns in the same Namespace can exhaust this limit quickly.
 
-#### How to Mitigate
+#### How to Mitigate {/* #how-to-mitigate-5 */}
 
 Plan for a set of Namespaces (one per environment) per use case. This gives each use case its own APS envelope and
 reduces the blast radius when one workload spikes or misbehaves.
@@ -181,7 +181,7 @@ reduces the blast radius when one workload spikes or misbehaves.
 If you are deciding whether to split by use case, service, or domain, see
 [Managing a Namespace](/best-practices/managing-namespace) for a topology decision framework.
 
-## Provisioned Capacity and TRUs
+## Provisioned Capacity and TRUs {/* #provisioned-capacity-and-trus */}
 
 The strategies above help you design Workflows that use actions efficiently.
 But sometimes you need more capacity than the on-demand model provides, especially for spiky or unpredictable workloads.
@@ -193,7 +193,7 @@ Temporal Cloud offers two [Capacity Modes](/cloud/capacity-modes):
 
 See [Capacity Modes](/cloud/capacity-modes) for complete details on TRUs, available increments, and how to manage capacity via UI, CLI, or API.
 
-### Choosing the Right Approach
+### Choosing the Right Approach {/* #choosing-the-right-approach */}
 
 Use Provisioned capacity when the on-demand model can't respond quickly enough:
 
@@ -210,7 +210,7 @@ When switching back to on-demand mode, your APS limit resets to the running aver
 Plan for this if your workload is sensitive to the transition.
 :::
 
-### Cost Optimization Tips
+### Cost Optimization Tips {/* #cost-optimization-tips */}
 
 See [Capacity Modes Pricing](/cloud/pricing#capacity-modes-pricing) for billing details. To minimize costs:
 
@@ -218,7 +218,7 @@ See [Capacity Modes Pricing](/cloud/pricing#capacity-modes-pricing) for billing 
 - Deprovision promptly after spikes end
 - For predictable patterns, automate scaling to minimize time in provisioned mode
 
-### Automation Best Practices
+### Automation Best Practices {/* #automation-best-practices */}
 
 Since you understand your workload patterns better than any auto-scaling system, consider building your own TRU automation:
 
@@ -227,13 +227,13 @@ Since you understand your workload patterns better than any auto-scaling system,
 - **Schedule capacity changes**: Use [Temporal Schedules](/schedule) or Workflows to increase TRUs before known events
 - **React to leading indicators**: If your application has upstream signals (incoming order queue depth, marketing campaign start), use those to trigger capacity changes proactively
 
-## Knowing if You're Hitting APS Limits
+## Knowing if You're Hitting APS Limits {/* #knowing-if-youre-hitting-aps-limits */}
 
 In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it's also important to know if you're approaching (or exceeding) these limits.
 Temporal Cloud provides several metrics that, if tracked, will tell you if you're being rate limited due to APS.
 See the documentation on [detecting resource exhaustion](/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
 
-### Monitoring for TRU Decisions
+### Monitoring for TRU Decisions {/* #monitoring-for-tru-decisions */}
 
 If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
 
@@ -242,7 +242,7 @@ If you're considering Provisioned capacity, set up monitoring to understand your
 - **Set alerts at 70-80% utilization**: This gives you time to provision TRUs before hitting limits
 - **Analyze historical patterns**: Understanding your traffic patterns helps you decide between reactive TRU provisioning and proactive automation
 
-## Key Takeaways
+## Key Takeaways {/* #key-takeaways */}
 
 Let's recap the main reasons customers hit APS limits and how to address them:
 
@@ -259,7 +259,7 @@ Let's recap the main reasons customers hit APS limits and how to address them:
 | New workload onboarding       | Bridge with TRUs while the on-demand envelope adjusts (approximately 7 days). |
 
 
-## General guidance
+## General guidance {/* #general-guidance */}
 
 When designing Temporal Workflows with an eye toward APS limits, ask yourself the following questions: 
 - How many actions will a single execution of this Workflow consume?

@@ -29,7 +29,7 @@ failover, Temporal automatically fails back to the original region once it is he
 [opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). See
 [Failbacks](/cloud/high-availability/failovers/manage#failbacks) for details.
 
-## Automatic failover
+## Automatic failover {/* #automatic-failover */}
 
 Temporal Cloud offers managed outage detection and failover to all Namespaces that use High Availability.
 Temporal-managed failovers, also known as "automatic failovers," keep your Namespace available without manual
@@ -48,7 +48,7 @@ moving the Namespace back to its original region.
 To opt out of Temporal-managed failovers and their RTO, you can
 [disable automated failovers](/cloud/high-availability/failovers/manage#disabling-temporal-initiated).
 
-### Conditions that trigger an automatic failover
+### Conditions that trigger an automatic failover {/* #conditions-that-trigger-an-automatic-failover */}
 
 While the failover operation itself usually completes in seconds, the bulk of the Recovery Time in an outage is spent
 detecting the disruption and deciding to trigger a failover. See [The failover process](#failover-process) for a
@@ -76,7 +76,7 @@ exhaustive list, and it may change over time.
 - The average latency of calls from Temporal Cloud's services in the cell to its persistence layer.
 - The percentage of calls to the persistence layer that returned errors related to persistence health.
 
-## Manual failover
+## Manual failover {/* #manual-failover */}
 
 You can also [manually trigger a failover](/cloud/high-availability/failovers/manage#trigger-failover) based on your own
 monitoring or for failover testing.
@@ -94,7 +94,7 @@ is warranted are:
   takes effect, and the later one is a no-op. A user-triggered failover does not conflict with Temporal's automatic
   failover.
 
-## The failover process {#failover-process}
+## The failover process {/* #failover-process */}
 
 The failover process is the same whether it is triggered automatically by Temporal or manually by a user.
 
@@ -120,13 +120,13 @@ The failover process is the same whether it is triggered automatically by Tempor
    user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for
    details.
 
-## Post-failover events {#post-failover-events}
+## Post-failover events {/* #post-failover-events */}
 
 After any failover, whether triggered by you or by Temporal, an event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs. The audit log entry uses the `"operation": "FailoverNamespace"` event. Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications) whenever a failover occurs.
 
 After a Temporal-managed failover, Temporal automatically fails back to the original region once the region is healthy, unless you [opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). After a user-triggered failover, the Namespace stays in the replica region until a user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for details.
 
-## Split-brain scenario
+## Split-brain scenario {/* #split-brain-scenario */}
 
 At any time, only the primary or the replica should be active. However, if a network partition separates the two
 regions, the regions cannot communicate with each other. If you promote the replica to active during a network
@@ -137,7 +137,7 @@ When the network partition resolves and the regions can communicate again, Tempo
 [conflict resolution](#conflict-resolution) process reconciles the divergent histories and determines which region
 remains active.
 
-## Conflict resolution {#conflict-resolution}
+## Conflict resolution {/* #conflict-resolution */}
 
 Namespaces with replicas rely on asynchronous event replication. Updates made to the primary may not immediately be
 reflected in the replica due to <ToolTipTerm term="replication lag" />, particularly during failovers. In the event of a

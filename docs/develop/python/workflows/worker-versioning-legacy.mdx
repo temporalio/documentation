@@ -12,7 +12,7 @@ tags:
   - Python SDK
 ---
 
-## (Deprecated) How to use Worker Versioning in Python {#worker-versioning}
+## (Deprecated) How to use Worker Versioning in Python {/* #worker-versioning */}
 
 :::caution
 
@@ -27,7 +27,7 @@ information.
 A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
 To use Worker Versioning, you need to pass a Build ID to your Python Worker and opt in to Worker Versioning.
 
-### Assign a Build ID to your Worker and opt in to Worker Versioning
+### Assign a Build ID to your Worker and opt in to Worker Versioning {/* #assign-a-build-id-to-your-worker-and-opt-in-to-worker-versioning */}
 
 You should understand assignment rules before completing this step. See the
 [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for
@@ -52,7 +52,7 @@ Importantly, when you start this Worker, it won't receive any tasks until you se
 
 :::
 
-### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
+### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows {/* #specify-versions-for-activities-child-workflows-and-continue-as-new-workflows */}
 
 :::caution
 
@@ -81,7 +81,7 @@ await workflow.execute_activity(
 # ...
 ```
 
-### Tell the Task Queue about your Worker's Build ID (Deprecated)
+### Tell the Task Queue about your Worker's Build ID (Deprecated) {/* #tell-the-task-queue-about-your-workers-build-id-deprecated */}
 
 :::caution
 

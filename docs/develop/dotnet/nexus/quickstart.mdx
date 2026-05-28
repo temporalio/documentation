@@ -39,7 +39,7 @@ To evaluate whether Nexus fits your use case, see the [evaluation guide](/evalua
 **Prerequisites:** Complete the [.NET SDK Quickstart](/develop/dotnet/set-up-your-local-dotnet) first.
 You should have `SayHelloWorkflow`, `MyActivities`, and a `Worker` project from that guide.
 
-## What you'll build
+## What you'll build {/* #what-youll-build */}
 
 You have `SayHelloWorkflow` running in the `default` Namespace.
 
@@ -74,7 +74,7 @@ public interface ISayHelloNexusService
 </>
 }>
 
-## 1. Define the Nexus Service
+## 1. Define the Nexus Service {/* #1-define-the-nexus-service */}
 
 Create a file called `ISayHelloNexusService.cs` in the `Workflow` project.
 
@@ -109,7 +109,7 @@ public class SayHelloNexusServiceHandler
 </>
 }>
 
-## 2. Define the Nexus Operation handler
+## 2. Define the Nexus Operation handler {/* #2-define-the-nexus-operation-handler */}
 
 Create a file called `SayHelloNexusServiceHandler.cs` in the `Workflow` project.
 
@@ -138,7 +138,7 @@ using var worker = new TemporalWorker(
 </>
 }>
 
-## 3. Register the Nexus Service handler in a Worker
+## 3. Register the Nexus Service handler in a Worker {/* #3-register-the-nexus-service-handler-in-a-worker */}
 
 Update `Worker/Program.cs` to register the Nexus Service handler alongside the existing Workflow and Activity registrations.
 
@@ -173,7 +173,7 @@ public class CallerWorkflow
 </>
 }>
 
-## 4. Develop the caller Workflow
+## 4. Develop the caller Workflow {/* #4-develop-the-caller-workflow */}
 
 Create a file called `CallerWorkflow.cs` in the `Workflow` project.
 
@@ -200,7 +200,7 @@ The caller only depends on the Service contract (`ISayHelloNexusService`), not t
 </>
 }>
 
-## 5. Create the caller Namespace and Nexus Endpoint
+## 5. Create the caller Namespace and Nexus Endpoint {/* #5-create-the-caller-namespace-and-nexus-endpoint */}
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler. The handler uses the `default` Namespace that was created when you started the dev server.
 
@@ -225,7 +225,7 @@ dotnet add CallerStarter/CallerStarter.csproj package Temporalio`}
 </>
 }>
 
-## 6. Add the caller project
+## 6. Add the caller project {/* #6-add-the-caller-project */}
 
 Create a `CallerStarter` console project that starts a caller Worker and executes the Workflow.
 
@@ -272,7 +272,7 @@ try { await workerTask; } catch (OperationCanceledException) { }`}
 </>
 }>
 
-## 7. Create the caller starter
+## 7. Create the caller starter {/* #7-create-the-caller-starter */}
 
 Create the `CallerStarter/Program.cs` file with the code on the right.
 
@@ -294,7 +294,7 @@ This brings everything together: the caller Worker hosts `CallerWorkflow`, which
 </>
 }>
 
-## 8. Run and verify
+## 8. Run and verify {/* #8-run-and-verify */}
 
 Run the application using the commands on the right.
 
@@ -310,7 +310,7 @@ Open the [Temporal Web UI](http://localhost:8233) and find the `CallerWorkflow` 
 
 </SetupSteps>
 
-## Next Steps
+## Next Steps {/* #next-steps */}
 
 Now that you have a working Nexus Service, here are some resources to deepen your understanding:
 

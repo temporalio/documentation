@@ -13,12 +13,12 @@ tags:
 
 This page discusses [Sticky Execution](#sticky-execution).
 
-## What is a Sticky Execution? {#sticky-execution}
+## What is a Sticky Execution? {/* #sticky-execution */}
 
 Workers cache the state of the Workflow they execute.
 To make this caching more effective, Temporal employs a performance optimization known as "Sticky Execution", which directs Workflow Tasks to the same Worker that previously processed tasks for a specific Workflow Execution.
 
-### How Sticky Execution Works
+### How Sticky Execution Works {/* #how-sticky-execution-works */}
 
 Once Workflow Execution begins, the Temporal Service schedules a Workflow Task and puts it into a Task Queue with the name you specify.
 Any Worker that polls that Task Queue is eligible to accept the Task and begin executing the Workflow.
@@ -35,7 +35,7 @@ When stickiness is disabled, the Temporal Service reschedules the Workflow Task 
 If a Workflow Task fails, the Worker removes that Workflow Execution from its cache (as it's now in an unknown state), which invalidates the Sticky Execution.
 The Workflow Task is then put back into the original Task Queue.
 
-### Why Sticky Execution?
+### Why Sticky Execution? {/* #why-sticky-execution */}
 
 The main benefit of Sticky Execution is improved performance.
 By caching the Workflow state in memory and directing tasks to the same Worker, it reduces the need to reconstruct the Workflow from its Event History for every Task, which is particularly useful for latency-sensitive Workflows.

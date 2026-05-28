@@ -32,7 +32,7 @@ With Temporal, those steps are defined by writing code, known as a Workflow Defi
 In day-to-day conversations, the term _Workflow_ might refer to [Workflow Type](#workflow-type), a [Workflow Definition](/workflow-definition), or a [Workflow Execution](/workflow-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
-## What is a Workflow Definition? {#workflow-definition}
+## What is a Workflow Definition? {/* #workflow-definition */}
 
 A Workflow Definition is the code that defines the Workflow.
 It is written with a programming language and corresponding Temporal SDK.
@@ -183,7 +183,7 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
-### Deterministic constraints {#deterministic-constraints}
+### Deterministic constraints {/* #deterministic-constraints */}
 
 A critical aspect of developing Workflow Definitions is ensuring that they are deterministic.
 Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input.
@@ -235,7 +235,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-### Code changes can cause non-deterministic behavior {#non-deterministic-change}
+### Code changes can cause non-deterministic behavior {/* #non-deterministic-change */}
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
@@ -271,7 +271,7 @@ The following are examples of minor changes that would not result in non-determi
   - Call to Signal an External Workflow Execution.
 - Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
 
-### Intrinsic non-deterministic logic {#intrinsic-nondeterministic-logic}
+### Intrinsic non-deterministic logic {/* #intrinsic-nondeterministic-logic */}
 
 Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
@@ -303,7 +303,7 @@ For SDK-specific replay-safe APIs and examples (logging, random numbers, time, r
 - [Ruby: Workflow Logic Requirements](/develop/ruby/workflows/basics#workflow-logic-requirements)
 - [Rust: Workflow Logic Requirements](/develop/rust/workflows/basics#workflow-logic-requirements)
 
-### Versioning Workflows {#workflow-versioning}
+### Versioning Workflows {/* #workflow-versioning */}
 
 The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
 This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
@@ -322,11 +322,11 @@ Support for the experimental method of Worker Versioning prior to 2025 will be r
 
 You can use either strategy, or a combination.
 
-#### Worker Versioning {#worker-versioning}
+#### Worker Versioning {/* #worker-versioning */}
 
 This is the **recommended** way to handle versioning and users see improved error rates when adopting it. To learn more about Worker Versioning, see our [Worker Versioning in production](production-deployment/worker-deployments/worker-versioning) page.
 
-#### Versioning with Patching {#workflow-patching}
+#### Versioning with Patching {/* #workflow-patching */}
 
 When keeping Workflows compatible, you should patch and ideally how to test your running Workflows will be safe to run on a new code version.
 
@@ -341,7 +341,7 @@ To patch:
 
 To test, see [Safe Deployments](/develop/safe-deployments.mdx).
 
-### Handling unreliable Worker Processes {#unreliable-worker-processes}
+### Handling unreliable Worker Processes {/* #unreliable-worker-processes */}
 
 You do not handle Worker Process failure or restarts in a Workflow Definition.
 
@@ -349,7 +349,7 @@ Workflow Function Executions are completely oblivious to the Worker Process in t
 The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Service itself.
 The only reason a Workflow Execution might fail is due to the code throwing an error or exception, not because of underlying infrastructure outages.
 
-### What is a Workflow Type? {#workflow-type}
+### What is a Workflow Type? {/* #workflow-type */}
 
 A Workflow Type is a name that maps to a Workflow Definition.
 

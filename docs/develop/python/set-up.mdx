@@ -32,7 +32,7 @@ Configure your local development environment to get started developing with Temp
     </CodeSnippet>
   </>
 }>
-## Install Python
+## Install Python {/* #install-python */}
 
 Make sure you have Python installed. Check your version of Python with the following command.
 
@@ -58,7 +58,7 @@ pip install temporalio
 </>
 }>
 
-## Install the Temporal Python SDK
+## Install the Temporal Python SDK {/* #install-the-temporal-python-sdk */}
 
 You should install the Temporal Python SDK in your project using a virtual environment. Create a directory for your
 Temporal project, switch to the new directory, create a Python virtual environment, activate it, and then install the
@@ -104,7 +104,7 @@ Next, you'll configure a local Temporal Service for development.
 </>
 }>
 
-## Install Temporal CLI
+## Install Temporal CLI {/* #install-temporal-cli */}
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
@@ -131,7 +131,7 @@ temporal server start-dev --ui-port 8080
 </>
 }>
 
-## Start the development server
+## Start the development server {/* #start-the-development-server */}
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
@@ -149,7 +149,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -161,7 +161,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity
+### 1. Create the Activity {/* #1-create-the-activity */}
 
 Create an Activity file (activities.py):
 
@@ -178,7 +178,7 @@ which often involve interacting with the outside world, such as sending emails, 
 database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based
 on your configuration.
 
-### 2. Create the Workflow
+### 2. Create the Workflow {/* #2-create-the-workflow */}
 
 Create a Workflow file (workflows.py):
 
@@ -204,7 +204,7 @@ Workflows orchestrate Activities and contain the application logic. Temporal Wor
 keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will
 automatically recreate its pre-failure state so it can continue right where it left off.
 
-### 3. Create the Worker
+### 3. Create the Worker {/* #3-create-the-worker */}
 
 Create a Worker file (worker.py):
 
@@ -250,7 +250,7 @@ Workers are a crucial part of your Temporal application as they're what actually
 Workflows and Activities. For more information on Workers, see
 [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-### 4. Execute the Workflow
+### 4. Execute the Workflow {/* #4-execute-the-workflow */}
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
@@ -284,7 +284,7 @@ source env/bin/activate
 python3 starter.py
 ```
 
-### Verify Success
+### Verify Success {/* #verify-success */}
 
 If everything is working correctly, you should see:
 

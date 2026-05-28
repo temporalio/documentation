@@ -14,12 +14,12 @@ This page covers:
 - How to choose between the Namespace Endpoint and a Regional Endpoint for a Namespace with High Availability features.
 - How to configure PrivateLink so that failover remains transparent to Workers on private networks.
 
-## How to choose an endpoint for a Namespace with High Availability features
+## How to choose an endpoint for a Namespace with High Availability features {/* #how-to-choose-an-endpoint-for-a-namespace-with-high-availability-features */}
 
 Temporal Cloud exposes two kinds of gRPC endpoints for a Namespace.
 See [How to access a Namespace](/cloud/namespaces#access-namespaces) for the general definitions; this section focuses on how each behaves with replication and failover.
 
-### Namespace Endpoint (recommended)
+### Namespace Endpoint (recommended) {/* #namespace-endpoint-recommended */}
 
 Format: `<namespace>.<account>.tmprl.cloud:7233`
 
@@ -30,7 +30,7 @@ The DNS <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> is 15 secon
 
 Use the Namespace Endpoint unless you have a specific reason to pin traffic to a region.
 
-### Regional Endpoint
+### Regional Endpoint {/* #regional-endpoint */}
 
 Format: `<cloud>-<region>.region.tmprl.cloud:7233` (for example, `aws-us-west-2.region.tmprl.cloud` or `gcp-us-central1.region.tmprl.cloud`).
 See [regions](/cloud/regions) for the full list.
@@ -62,7 +62,7 @@ await Connection.connect({
 });
 ```
 
-### How endpoints route on failover
+### How endpoints route on failover {/* #how-endpoints-route-on-failover */}
 
 Consider a Namespace replicated across `us-east-1` (initially active) and `us-west-2` (initially the replica), with a failover that swaps the two.
 
@@ -75,7 +75,7 @@ Consider a Namespace replicated across `us-east-1` (initially active) and `us-we
 The Namespace Endpoint moves with the active region via an updated CNAME — no Client changes required.
 The Regional Endpoints do not change their targets on failover: each continues to route to the replica that lives in its region.
 
-## How to use PrivateLink with High Availability features
+## How to use PrivateLink with High Availability features {/* #how-to-use-privatelink-with-high-availability-features */}
 
 :::tip
 
@@ -86,7 +86,7 @@ This section describes how to configure routing for Namespaces with High Availab
 
 These instructions assume you already have the private connections in place. If not, follow the [AWS PrivateLink](/cloud/connectivity/aws-connectivity) or [GCP Private Service Connect](/cloud/connectivity/gcp-connectivity) creation guides first.
 
-## How HA + private connectivity works
+## How HA + private connectivity works {/* #how-ha--private-connectivity-works */}
 
 A Namespace with High Availability features has two replicas — a primary and a secondary, in different regions or different cloud providers. At any moment, one is **active** and one is **passive**. On failover, Temporal Cloud changes the active replica.
 
@@ -103,9 +103,9 @@ For private connectivity, your job is to make sure that:
 - Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
 - Ensure network connectivity between the two regions.
 
-## Single-cloud HA on AWS PrivateLink
+## Single-cloud HA on AWS PrivateLink {/* #single-cloud-ha-on-aws-privatelink */}
 
-### How Namespace DNS records work with PrivateLink
+### How Namespace DNS records work with PrivateLink {/* #how-namespace-dns-records-work-with-privatelink */}
 
 When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
 Temporal treats each `region.<tmprl_domain>` as a separate zone.
@@ -130,7 +130,7 @@ The Temporal domain did not change, but the CNAME updated from us-east-1 to us-w
     zoom="true"
 />
 
-### How to set up the DNS override
+### How to set up the DNS override {/* #how-to-set-up-the-dns-override */}
 
 In AWS, use a Route 53 private hosted zone for `region.tmprl.cloud` to override resolution per region:
 
@@ -148,7 +148,7 @@ You also need to decide how Workers reach whichever region becomes active. Eithe
 - Run Workers in **both** regions continuously (recommended), or
 - Establish cross-region connectivity (Transit Gateway, VPC Peering) so Workers in one region can reach the VPC Endpoint in the other.
 
-## Single-cloud HA on GCP Private Service Connect
+## Single-cloud HA on GCP Private Service Connect {/* #single-cloud-ha-on-gcp-private-service-connect */}
 
 For GCP-only HA, the same model applies, but use a Cloud DNS private zone for `region.tmprl.cloud` and point each `gcp-<region>.region.tmprl.cloud` record at the local PSC endpoint IP address.
 
@@ -159,7 +159,7 @@ For GCP-only HA, the same model applies, but use a Cloud DNS private zone for `r
 
 A Connectivity Rule is required for each PSC connection — see [GCP PSC setup](/cloud/connectivity/gcp-connectivity) and [Connectivity Rules](/cloud/connectivity#connectivity-rules).
 
-## Multi-cloud HA (AWS PrivateLink + GCP Private Service Connect)
+## Multi-cloud HA (AWS PrivateLink + GCP Private Service Connect) {/* #multi-cloud-ha-aws-privatelink--gcp-private-service-connect */}
 
 If your replicas span clouds — for example, AWS `us-east-1` (active) and GCP `us-east4` (passive) — your Workers need a way to reach the active replica regardless of which cloud it's in. The Temporal-managed CNAME rewrites still work the same way; the harder problems are on the client side.
 
@@ -193,7 +193,7 @@ Consider how you'll configure Workers for this setup.
 You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
 Either approach ensures Workers can access the newly activated region once failover occurs.
 
-### Available regions, PrivateLink endpoints, and DNS record overrides
+### Available regions, PrivateLink endpoints, and DNS record overrides {/* #available-regions-privatelink-endpoints-and-dns-record-overrides */}
 
 :::caution
 
@@ -203,11 +203,11 @@ The `sa-east-1` region is not yet available for use with Multi-region Namespaces
 
 The following tables list the available Temporal regions and the DNS record overrides used for HA + private connectivity:
 
-### AWS regions and PrivateLink endpoints
+### AWS regions and PrivateLink endpoints {/* #aws-regions-and-privatelink-endpoints */}
 
 <JsonTable filename="/json/privatelink_aws.json" />
 
-### GCP regions and Private Service Connect endpoints
+### GCP regions and Private Service Connect endpoints {/* #gcp-regions-and-private-service-connect-endpoints */}
 
 <JsonTable filename="/json/privatelink_gcp.json" />
 

@@ -78,7 +78,7 @@ Self-hosted users:
 
 :::
 
-## Getting Started with Worker Versioning {#definition}
+## Getting Started with Worker Versioning {/* #definition */}
 
 To get started with Worker Versioning, you should understand some concepts around versioning and deployments.
 
@@ -109,7 +109,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the
   version it will move to next.
 
-## Setting up your deployment system {#deployment-systems}
+## Setting up your deployment system {/* #deployment-systems */}
 
 If you haven't already, you'll want to pick a container deployment solution for your Workers.
 
@@ -136,7 +136,7 @@ rainbow deployments of your Workers if you're using Kubernetes.
 If you cannot yet support blue-green or rainbow style deployments, use [patching](/patching) as a fallback while you
 work toward a versioned deployment model.
 
-## Configuring a Worker for Versioning
+## Configuring a Worker for Versioning {/* #configuring-a-worker-for-versioning */}
 
 You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning. There are
 three new parameters, with different names depending on the language:
@@ -252,11 +252,11 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-## Choosing a Versioning Behavior {#choosing-behavior}
+## Choosing a Versioning Behavior {/* #choosing-behavior */}
 
 The right versioning behavior depends on how long your Workflows run relative to your deployment frequency.
 
-### Decision guide {#decision-guide}
+### Decision guide {/* #decision-guide */}
 
 | Workflow Duration                        | Uses Continue-as-New? | Recommended Behavior                                     | Patching Required? |
 | ---------------------------------------- | --------------------- | -------------------------------------------------------- | ------------------ |
@@ -265,7 +265,7 @@ The right versioning behavior depends on how long your Workflows run relative to
 | **Long** (weeks to years)                | Yes                   | `PINNED` + [upgrade on CaN](#upgrade-on-continue-as-new) | Never              |
 | **Long** (weeks to years)                | No                    | `AUTO_UPGRADE` + patching                                | Yes                |
 
-### Examples by Workflow type {#behavior-examples}
+### Examples by Workflow type {/* #behavior-examples */}
 
 | Workflow Type        | Duration     | Recommended Behavior       | Notes                               |
 | -------------------- | ------------ | -------------------------- | ----------------------------------- |
@@ -283,7 +283,7 @@ CaN boundary without patching. See [Upgrading on Continue-as-New](#upgrade-on-co
 
 :::
 
-### Default Versioning Behavior Considerations
+### Default Versioning Behavior Considerations {/* #default-versioning-behavior-considerations */}
 
 If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
 Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
@@ -314,7 +314,7 @@ You also want to make sure you understand how your Activities are going to work 
 Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
-## Rolling out changes with the CLI
+## Rolling out changes with the CLI {/* #rolling-out-changes-with-the-cli */}
 
 Next, deploy your Worker with the additional configuration parameters. Before making any Workflow revisions, you can use
 the `temporal` CLI to check which of your Worker versions are currently polling:
@@ -360,7 +360,7 @@ Versioning Info:
   OverrideBehavior       Unspecified
 ```
 
-## Marking a Workflow Type as Pinned
+## Marking a Workflow Type as Pinned {/* #marking-a-workflow-type-as-pinned */}
 
 You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. This will cause it
 to remain on its original deployed version:
@@ -444,7 +444,7 @@ end
 </SdkTabs.Ruby>
 </SdkTabs>
 
-## Moving a pinned Workflow
+## Moving a pinned Workflow {/* #moving-a-pinned-workflow */}
 
 Sometimes you'll need to manually move a set of pinned Workflows off of a version that has a bug to a version with the
 fix.
@@ -488,7 +488,7 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
-## Migrating a Workflow from Pinned to Auto-Upgrade
+## Migrating a Workflow from Pinned to Auto-Upgrade {/* #migrating-a-workflow-from-pinned-to-auto-upgrade */}
 
 There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your
 Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
@@ -527,7 +527,7 @@ When you change the behavior to Auto-Upgrade, the Workflow will resume work on t
 
 :::
 
-## Upgrading on Continue-as-New {#upgrade-on-continue-as-new}
+## Upgrading on Continue-as-New {/* #upgrade-on-continue-as-new */}
 
 Long-running Workflows that use [Continue-as-New](/workflow-execution/continue-as-new) can upgrade to newer Worker
 Deployment Versions at Continue-as-New boundaries without requiring patching.
@@ -544,7 +544,7 @@ This feature is in Public Preview as an experimental SDK-level option.
 
 :::
 
-### How it works {#upgrade-on-can-how-it-works}
+### How it works {/* #upgrade-on-can-how-it-works */}
 
 By default, Pinned Workflows stay on their original Worker Deployment Version even when they Continue-as-New. With the
 upgrade option enabled:
@@ -553,7 +553,7 @@ upgrade option enabled:
 2. The Temporal Server tells the workflow when a new [Target Version](/worker-versioning#versioning-definitions) becomes available
 3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the [Target Version](/worker-versioning#versioning-definitions)
 
-### Checking for new versions {#checking-for-new-versions}
+### Checking for new versions {/* #checking-for-new-versions */}
 
 When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
 `target_worker_deployment_version_changed`:
@@ -604,7 +604,7 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
 }
 ```
 
-### Limitations {#upgrade-on-can-limitations}
+### Limitations {/* #upgrade-on-can-limitations */}
 
 :::caution Current Limitations
 
@@ -617,7 +617,7 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
 
 :::
 
-## Sunsetting an old Deployment Version
+## Sunsetting an old Deployment Version {/* #sunsetting-an-old-deployment-version */}
 
 A Worker Deployment Version moves through the following states:
 
@@ -667,7 +667,7 @@ Task Queues:
 If you have implemented [Queries](/sending-messages#sending-queries) on closed pinned Workflows, you may need to keep
 some Workers running to handle them.
 
-### Adding a pre-deployment test
+### Adding a pre-deployment test {/* #adding-a-pre-deployment-test */}
 
 Before deploying a new Workflow revision, you can test it with synthetic traffic.
 
@@ -756,7 +756,7 @@ handle = env.client.start_workflow(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-## Garbage collection
+## Garbage collection {/* #garbage-collection */}
 
 Worker Deployments are never garbage collected, but _Worker Deployment Versions_ (often referred to as Versions, Worker
 Versions, Deployment Versions) are.

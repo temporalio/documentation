@@ -23,7 +23,7 @@ We also provide a reference application, the Order Management System (OMS), that
 practices in action. You can find the OMS codebase on
 [GitHub](https://github.com/temporalio/reference-app-orders-go/tree/main/docs).
 
-## Quick checklist
+## Quick checklist {/* #quick-checklist */}
 
 Designing a comprehensive Worker deployment strategy to optimize production performance involves many considerations. We
 provide a quick checklist to help you get started. Before deploying Workers to production, ensure you address the
@@ -41,12 +41,12 @@ following. Follow the links to the relevant sections for more details.
 - **Run benchmarks**: Test your configuration under realistic load to confirm limits and settings are appropriate for
   your environment.
 
-## Deployment and lifecycle management
+## Deployment and lifecycle management {/* #deployment-and-lifecycle-management */}
 
 Well-designed Worker deployment ensures resilience, observability, and maintainability. A Worker should be treated as a
 long-running service that can be deployed, upgraded, and scaled in a controlled way.
 
-### Package and configure Workers for flexibility
+### Package and configure Workers for flexibility {/* #package-and-configure-workers-for-flexibility */}
 
 Workers should be artifacts produced by a CI/CD pipeline. Inject all required parameters for connecting to Temporal
 Cloud or a self-hosted Temporal Service at runtime via environment variables, configuration files, or command-line
@@ -121,7 +121,7 @@ uses environment variables to configure the Worker:
 ```
 {/* SNIPEND */}
 
-### Separate Task Queues logically
+### Separate Task Queues logically {/* #separate-task-queues-logically */}
 
 Use separate Task Queues for distinct workloads. This isolation allows you to control rate limiting, prioritize certain
 workloads, and prevent one workload from starving another. For each Task Queue, ensure you configure at least two
@@ -163,7 +163,7 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 ```
 {/* SNIPEND */}
 
-### Use Worker Versioning to safely deploy new Workflow code
+### Use Worker Versioning to safely deploy new Workflow code {/* #use-worker-versioning-to-safely-deploy-new-workflow-code */}
 
 Use Worker Versioning to deploy new Workflow code without breaking running Executions. Worker Versioning lets you map
 each Workflow Execution to a specific Worker Deployment Version identified by a build ID, which guarantees that pinned
@@ -185,7 +185,7 @@ cannot adopt versioned worker deployments yet, not as the default recommendation
 
 :::
 
-### Manage Event History growth
+### Manage Event History growth {/* #manage-event-history-growth */}
 
 If a Worker goes offline and another Worker picks up the same Workflow Execution, the new Worker must replay the
 existing Event History to resume the Workflow Execution. If the Event History is too large or has too many Events,
@@ -214,12 +214,12 @@ Temporal in a database or file system. Pass an identifier for the data, such as 
 and use an Activity to retrieve it as needed. If your Activity produces large output, use a similar approach: write the
 data to an external system and return an identifier that can be used to retrieve it later.
 
-## Scaling, monitoring, and tuning
+## Scaling, monitoring, and tuning {/* #scaling-monitoring-and-tuning */}
 
 Scaling and tuning are critical to Worker performance and cost efficiency. The goal is to balance concurrency,
 throughput, and resource utilization while maintaining low Task latency.
 
-### Actively tune Worker options instead of relying on defaults
+### Actively tune Worker options instead of relying on defaults {/* #actively-tune-worker-options-instead-of-relying-on-defaults */}
 
 Default Worker settings are designed to work across a wide range of use cases primarily for ease in development and
 testing. In production environments, your Workflow complexity, Activity duration, payload sizes, and infrastructure
@@ -241,7 +241,7 @@ To get started, focus on these key Worker options:
 
 Use the metrics listed in [Interpret metrics as a whole](#interpret-metrics-as-a-whole) to guide your tuning decisions.
 
-### Interpret metrics as a whole
+### Interpret metrics as a whole {/* #interpret-metrics-as-a-whole */}
 
 No single metric tells the full story. The following are some of the most useful Worker-related metrics to monitor. We
 recommend having all metrics listed below on your Worker monitoring dashboard. When you observe anomalies, correlate
@@ -273,7 +273,7 @@ metrics:
 Refer to [Intro to Worker Tuning](https://temporal.io/blog/an-introduction-to-worker-tuning) for more details and
 examples on how to interpret Worker metrics.
 
-### Optimize Worker cache
+### Optimize Worker cache {/* #optimize-worker-cache */}
 
 Workers keep a cache of Workflow Executions to improve performance by reducing replay overhead. However, larger caches
 consume more memory. The `temporal_sticky_cache_size` tracks the size of the cache. If you observe high memory usage for
@@ -286,7 +286,7 @@ sizes in a staging environment to find the optimal setting for your Workflows. R
 [Troubleshooting - Caching](../troubleshooting/performance-bottlenecks.mdx#caching) for more details on how to interpret
 the different cache-related metrics.
 
-### Manage scale-down safely
+### Manage scale-down safely {/* #manage-scale-down-safely */}
 
 Before shutting down a Worker, verify that it does not have too many active Tasks. This is especially relevant if your
 Workers are handling long-running, expensive Activities.

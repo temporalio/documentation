@@ -32,7 +32,7 @@ As a platform grows, coordinating work across teams and applications becomes inc
 Nexus lets teams selectively expose functionality that other teams can discover and reuse, without exposing their internal implementation details.
 This approach makes it easier to build new applications by reusing what already exists, forming the foundation for a more modular and collaborative platform.
 
-## What is Nexus?
+## What is Nexus? {/* #what-is-nexus */}
 
 Nexus connects Temporal Applications across (and within) isolated Namespaces.
 Each team gets their own Namespace for security and fault isolation, while exposing a clean service contract for others to use through a [Nexus Endpoint](/nexus/endpoints).
@@ -49,9 +49,9 @@ Caller and handler Workflows are siblings that communicate across Namespace boun
     zoom="true"
 />
 
-## How Nexus works
+## How Nexus works {/* #how-nexus-works */}
 
-### Services and Operations
+### Services and Operations {/* #services-and-operations */}
 
 A [Nexus Service](/nexus/services) is a named collection of [Nexus Operations](/nexus/operations) that a team exposes.
 Operations abstract the underlying implementation - callers don't need to know whether an Operation starts a Workflow, sends a Signal, runs a Query, or executes other reliable code.
@@ -73,7 +73,7 @@ Services and Operations are built with the Temporal SDK and typically [collocate
 
 :::
 
-### Endpoints and Registry
+### Endpoints and Registry {/* #endpoints-and-registry */}
 
 A [Nexus Endpoint](/nexus/endpoints) is a reverse proxy that decouples callers from handlers.
 Callers reference an Endpoint by name. The Endpoint routes requests to a target Namespace and Task Queue.
@@ -81,7 +81,7 @@ Callers never need to know the handler's Namespace, Task Queue, or internal impl
 
 Endpoints are managed in the [Nexus Registry](/nexus/registry) using the UI, CLI, or Cloud Ops API.
 
-### Queue-based Worker architecture
+### Queue-based Worker architecture {/* #queue-based-worker-architecture */}
 
 Nexus uses the same queue-based Worker architecture as the rest of Temporal.
 Handler Workers poll the Endpoint's target Task Queue for [Nexus Tasks](/tasks#nexus-task).
@@ -97,7 +97,7 @@ No bespoke service deployments needed. Load balancing is automatic.
 
 See [system interactions](/nexus/operations#system-interactions) for the full request flow.
 
-### Built-in Nexus Machinery
+### Built-in Nexus Machinery {/* #built-in-nexus-machinery */}
 
 When a caller Workflow executes a Nexus Operation, the [Nexus Machinery](/glossary#nexus-machinery) handles delivery with [at-least-once](/nexus/operations#execution-semantics) execution:
 
@@ -109,7 +109,7 @@ When a caller Workflow executes a Nexus Operation, the [Nexus Machinery](/glossa
 The Machinery uses [Nexus RPC](/glossary#nexus-rpc) on the wire - a protocol supporting arbitrary-duration Operations.
 You interact only with the Temporal SDK, not Nexus RPC directly.
 
-### Multi-level calls
+### Multi-level calls {/* #multi-level-calls */}
 
 Nexus Operations can be composed across multiple services and teams. A handler Workflow can call another Nexus Operation, forming a chain:
 
@@ -117,7 +117,7 @@ Nexus Operations can be composed across multiple services and teams. A handler W
 
 Each step is a separate, durable Operation with its own retries and failure handling. This enables service composition across Namespaces without requiring direct connectivity or shared configuration between teams.
 
-## Operational reference
+## Operational reference {/* #operational-reference */}
 
 - [Nexus security](/nexus/security) - Access controls, secure connectivity, and payload encryption.
 - [Nexus execution debugging](/nexus/execution-debugging) - Bi-directional linking, pending Operations, and tracing.

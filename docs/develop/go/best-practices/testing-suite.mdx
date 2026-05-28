@@ -37,13 +37,13 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
 
 This framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
 
-## Test setup
+## Test setup {/* #test-setup */}
 
 To run unit tests, we first define a test suite struct that absorbs both the basic suite functionality from [testify](https://pkg.go.dev/github.com/stretchr/testify/suite) via `suite.Suite` and the suite functionality from the Temporal test framework via `testsuite.WorkflowTestSuite`.
 
@@ -87,12 +87,12 @@ func TestUnitTestSuite(t *testing.T) {
 }
 ```
 
-## Testing Activities {#test-activities}
+## Testing Activities {/* #test-activities */}
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-## Mock and override Activities
+## Mock and override Activities {/* #mock-and-override-activities */}
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation. Additionally, we want to inject Activity errors during our test runs. The test framework provides two mechanisms that support these scenarios: Activity mocking and Activity overriding. Both of these mechanisms allow you to change the behavior of Activities invoked by your Workflow without the need to modify the actual Workflow code.
 
@@ -149,19 +149,19 @@ Additionally, the framework will validate that the signature of the "mock" funct
 
 Since this can be an entire function, there is no limitation as to what we can do here. In this example, we assert that the `value` param has the same content as the value param we passed to the Workflow.
 
-### Run an Activity {#run-an-activity}
+### Run an Activity {/* #run-an-activity */}
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
-### Listen to Heartbeats {#listen-to-heartbeats}
+### Listen to Heartbeats {/* #listen-to-heartbeats */}
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
-### Cancel an Activity {#cancel-an-activity}
+### Cancel an Activity {/* #cancel-an-activity */}
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
-## Mock and override Nexus operations
+## Mock and override Nexus operations {/* #mock-and-override-nexus-operations */}
 
 Mocking Nexus operations lets you test a Workflow that executes Nexus operations without needing a
 Nexus handler to run the actual Nexus operation. You can mock the Nexus operation or override its
@@ -291,7 +291,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
 }
 ```
 
-## Testing Workflows {#test-workflows}
+## Testing Workflows {/* #test-workflows */}
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation.
 The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results.
@@ -312,7 +312,7 @@ Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked
 After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowCompleted()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
 If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
 
-### Query tests
+### Query tests {/* #query-tests */}
 
 `TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
 For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
@@ -377,13 +377,13 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 When using "Signal-With-Start", set the delay to `0`.
 :::
 
-### How to mock Activities {#mock-activities}
+### How to mock Activities {/* #mock-activities */}
 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
-### How to skip time {#skip-time}
+### How to skip time {/* #skip-time */}
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -396,7 +396,7 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Set up time skipping {#setting-up}
+#### Set up time skipping {/* #setting-up */}
 
 Set up the time-skipping test framework in the SDK of your choice.
 
@@ -410,11 +410,11 @@ For example, in the time-skipping mode, Timers, which include sleeps and conditi
 
 Skip time manually in the SDK of your choice.
 
-#### Skip time in Activities {#skip-time-in-activities}
+#### Skip time in Activities {/* #skip-time-in-activities */}
 
 Skip time in Activities in the SDK of your choice.
 
-## How to Replay a Workflow Execution {#replay}
+## How to Replay a Workflow Execution {/* #replay */}
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

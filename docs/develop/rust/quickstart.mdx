@@ -32,7 +32,7 @@ Configure your local development environment to get started developing with Temp
   </>
 }>
 
-## Install Rust
+## Install Rust {/* #install-rust */}
 
 Make sure you have Rust installed on your system. You can download and install Rust from [rustup.rs](https://rustup.rs/).
 
@@ -48,7 +48,7 @@ After installation, verify it's working by checking the version. You'll also nee
 </>
 }>
 
-## Create a Project
+## Create a Project {/* #create-a-project */}
 
 Now that you have Rust and Cargo installed, create a new Rust project to manage your dependencies.
 
@@ -84,7 +84,7 @@ brew install protobuf
 </>
 }>
 
-## Add Temporal Rust SDK Dependencies
+## Add Temporal Rust SDK Dependencies {/* #add-temporal-rust-sdk-dependencies */}
 
 Now update your project's `Cargo.toml` file to match the example and run `cargo build`.
 
@@ -133,7 +133,7 @@ sudo mv temporal /usr/local/bin
 </>
 }>
 
-## Install Temporal CLI and start the development server
+## Install Temporal CLI and start the development server {/* #install-temporal-cli-and-start-the-development-server */}
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
@@ -159,7 +159,7 @@ temporal server start-dev --ui-port 8080
 </>
 }>
 
-## Start the development server
+## Start the development server {/* #start-the-development-server */}
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
@@ -172,7 +172,7 @@ Leave the local Temporal Service running as you work through tutorials and other
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
@@ -183,7 +183,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Define Your Activity
+### 1. Define Your Activity {/* #1-define-your-activity */}
 
 Create a `/src/activities.rs` file with the Activity definition:
 
@@ -202,7 +202,7 @@ impl MyActivities {
 }
 ```
 
-### 2. Define Your Workflow
+### 2. Define Your Workflow {/* #2-define-your-workflow */}
 
 Create a `/src/workflows.rs` file with the Workflow definition:
 
@@ -242,7 +242,7 @@ impl GreetingWorkflow {
 }
 ```
 
-### 3. Create and Run a Worker
+### 3. Create and Run a Worker {/* #3-create-and-run-a-worker */}
 
 Update your `/src/main.rs` file with the following:
 
@@ -287,7 +287,7 @@ Open a new terminal and run the Worker with:
 cargo run
 ```
 
-### 4. Start a Workflow
+### 4. Start a Workflow {/* #4-start-a-workflow */}
 
 You can now start a Workflow execution using the client. In a new terminal, run the Workflow with:
 
@@ -298,7 +298,7 @@ temporal workflow start \
   --input '"Ziggy"'
 ```
 
-## Next Steps
+## Next Steps {/* #next-steps */}
 
 Now that you have the basics working, explore the following resources to build more sophisticated applications:
 

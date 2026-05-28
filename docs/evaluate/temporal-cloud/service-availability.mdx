@@ -18,7 +18,7 @@ The operating envelope of Temporal Cloud includes throughput, latency, and limit
 Service regions are listed on [this page](/cloud/regions).
 If you need more details, [contact us](https://pages.temporal.io/contact-us).
 
-## Throughput expectations {#throughput}
+## Throughput expectations {/* #throughput */}
 
 **What kind of throughput can I get with Temporal Cloud?**
 
@@ -28,7 +28,7 @@ With On-Demand Capacity, Namespace capacity is increased automatically along wit
 With Provisioned Capacity, you can control your capacity limits by requesting Temporal Resource Units (TRUs).
 
 
-## Latency Service Level Objective (SLO) {#latency}
+## Latency Service Level Objective (SLO) {/* #latency */}
 
 **What kind of latency can I expect from Temporal Cloud?**
 
@@ -36,11 +36,11 @@ Temporal Cloud has a p99 latency SLO of 200ms per region.
 
 The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
 
-### Historical latency data
+### Historical latency data {/* #historical-latency-data */}
 
 Latency over a week-long period for starting and signaling Workflow Executions was as follows:
 
-#### January 2026
+#### January 2026 {/* #january-2026 */}
 
 | Operation                          |  p50   | p90  |  p99 |
 | :--------------------------------- | :----: | :--: | ---: |
@@ -48,7 +48,7 @@ Latency over a week-long period for starting and signaling Workflow Executions w
 | `SignalWorkflowExecution`          | 11ms | 19ms | 46ms |
 | `SignalWithStartWorkflowExecution` | 19ms | 37ms | 95ms |
 
-#### March 2024
+#### March 2024 {/* #march-2024 */}
 
 | Operation                          | p90  |  p99 |
 | :--------------------------------- | :--: | ---: |

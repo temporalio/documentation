@@ -32,7 +32,7 @@ Temporal offers two different modes for adjusting capacity: On-Demand Capacity o
 With On-Demand Capacity, Namespace capacity is increased automatically along with usage.
 With Provisioned Capacity, you can control your capacity limits by requesting Temporal Resource Units (TRUs).
 
-## Namespace Capacity
+## Namespace Capacity {/* #namespace-capacity */}
 
 Namespaces in Temporal can be set to either an **On-Demand** or **Provisioned Capacity** Mode. 
 These modes govern how limits are assigned to a Namespace.  
@@ -65,7 +65,7 @@ RPS and OPS  are lower-level measures to control and balance request rates at th
 
 :::
 
-### What happens when my Actions Rate exceeds my Limit?
+### What happens when my Actions Rate exceeds my Limit? {/* #what-happens-when-my-actions-rate-exceeds-my-limit */}
 
 When your Action rate exceeds your quota, Temporal Cloud throttles Actions.
 Throttling limits the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
@@ -97,7 +97,7 @@ Actions that are external to the core Temporal service do not contribute to your
 * Capacity Related Actions
 :::
 
-## On-Demand Capacity {#on-demand-capacity}
+## On-Demand Capacity {/* #on-demand-capacity */}
 
 Using On-Demand Capacity, your rate limit grows automatically along with your usage. 
 
@@ -113,7 +113,7 @@ If you experience usage spikes, you may hit a throughput limit.
 In that case, consider switching to [Provisioned Capacity](#provisioned-capacity). 
 You can also optimize your workload to remain under the On-Demand limits. See [Best Practices for Managing APS Limits](/best-practices/managing-aps-limits) for more information. 
 
-### What kind of throughput can I get on Temporal Cloud with On-Demand Capacity?
+### What kind of throughput can I get on Temporal Cloud with On-Demand Capacity? {/* #what-kind-of-throughput-can-i-get-on-temporal-cloud-with-on-demand-capacity */}
 
 Each Namespace has a rate limit, which is measured in Actions per second (APS). 
 A Namespace's default limit is set at 500 APS and automatically adjusts based on a formula that compares your average usage over the last 7 days and your usage at the 90th percentile, or P90. 
@@ -131,7 +131,7 @@ This means that your default limit would be 800 APS.
 
 ![Usage graph showing increasing APS usage for one month, with occasional spikes, and a rising APS limit](/img/cloud/provisioned-capacity/usage_graph.png)
 
-## Provisioned Capacity {#provisioned-capacity}
+## Provisioned Capacity {/* #provisioned-capacity */}
 
 Provisioned Capacity provides an alternative to On-Demand Capacity by allowing you to control the limits on your Namespace based on your specific need.
 
@@ -143,7 +143,7 @@ Customers can set 2, 3, 4, 6, 8, 10, 12 TRUs, subject to availability. TRUs can 
 
 See [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing) for pricing implications.
 
-### What kind of throughput can I get with Temporal Cloud with Provisioned Capacity?
+### What kind of throughput can I get with Temporal Cloud with Provisioned Capacity? {/* #what-kind-of-throughput-can-i-get-with-temporal-cloud-with-provisioned-capacity */}
 
 With Provisioned Capacity, you can set your rate limits by selecting the number of Temporal Resource Units (TRUs) on your Namespace.
 Each TRU supports up to 500 APS and can be provisioned in groups of 2, 3, 4, 6, 8, 10, or 12 TRUs if there is capacity available in a region. 
@@ -155,13 +155,13 @@ For Requests in excess of 4 TRUs in regions outside of the US, we recommend subm
 
 :::
 
-### Provisioned Capacity Availability
+### Provisioned Capacity Availability {/* #provisioned-capacity-availability */}
 The amount of capacity available within a region may vary. 
 Temporal will check available capacity at the time of your request and aims to provision requested capacity within two minutes. 
 If you need capacity beyond what is self-serviceable or available in a region, please [file a support ticket](https://docs.temporal.io/cloud/support#ticketing) indicating the limit, region, and timeframe that the capacity is needed. 
 
 
-### When should I use Provisioned Capacity?
+### When should I use Provisioned Capacity? {/* #when-should-i-use-provisioned-capacity */}
 
 Provisioned Capacity works well when you’re aware of specific increases in load on your Namespace. For example:
 
@@ -174,11 +174,11 @@ Provisioned Capacity works well when you’re aware of specific increases in loa
 Depending on your usage patterns and your system monitoring, you can use Provisioned Capacity to quickly remedy rate limiting without contacting support.
 You can also automate changes in capacity if you have a known event or a recurring usage pattern that produces predictable usage spikes. 
 
-## Setting Capacity Modes
+## Setting Capacity Modes {/* #setting-capacity-modes */}
 Capacity Modes and TRUs can be set via the Temporal Cloud UI, CLI, or API. 
 Capacity modes can be set and adjusted by Global Admin and Namespace Admin. 
 
-### Setting Capacity Modes from the UI
+### Setting Capacity Modes from the UI {/* #setting-capacity-modes-from-the-ui */}
 
 You can set Capacity Modes for an individual Namespace by navigating to the Namespace page in the Temporal Cloud UI (`https://cloud.temporal.io/namespaces/<Namespace ID>`). 
 To view your current capacity configuration and change your capacity mode, navigate to the capacity tile and click *Manage Capacity*.
@@ -202,7 +202,7 @@ See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits
 
 ![Manage Capacity panel in the Temporal UI](/img/cloud/provisioned-capacity/manage_capacity_panel.png)
 
-### Setting Capacity Modes from the CLI
+### Setting Capacity Modes from the CLI {/* #setting-capacity-modes-from-the-cli */}
 
 ```command
 tcld namespace capacity update --namespace <namespace_name> --capacity-mode <on_demand|provisioned> --capacity-value <tru value> [--request–id <request_id> --resource-version <resource-version>]
@@ -220,6 +220,6 @@ Optional flags:
 
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before capacity update.
 
-### Setting Capacity Modes from the API
+### Setting Capacity Modes from the API {/* #setting-capacity-modes-from-the-api */}
 
 Call the `UpdateNamespace` API after Namespace creation and define the desired capacity state as part of the capacity spec.

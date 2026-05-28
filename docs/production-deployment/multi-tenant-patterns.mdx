@@ -27,7 +27,7 @@ For related guidance on where to draw Namespace boundaries and how to scope cred
 [Namespace best practices](/best-practices/managing-namespace) and
 [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
 
-## Architectural principles
+## Architectural principles {/* #architectural-principles */}
 
 When designing a multi-tenant Temporal application, follow these principles:
 
@@ -37,11 +37,11 @@ When designing a multi-tenant Temporal application, follow these principles:
 - **Test at scale** - Performance testing must drive your capacity decisions
 - **Plan for growth** - Consider how you'll onboard new tenants and scale workers
 
-## Architectural patterns
+## Architectural patterns {/* #architectural-patterns */}
 
 There are four main patterns for multi-tenant applications in Temporal, listed from most to least recommended:
 
-### 1. Task queues per tenant (Recommended)
+### 1. Task queues per tenant (Recommended) {/* #1-task-queues-per-tenant-recommended */}
 
 **Use different [Task Queues](/task-queue) for each tenant's [Workflows](/workflows) and [Activities](/activities).**
 
@@ -63,7 +63,7 @@ This is the recommended pattern for most use cases. Each tenant gets dedicated T
   <RelatedReadItem path="#task-queue-isolation-pattern" text="Task Queue Isolation Pattern Details" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### 2. Single Task Queue with Fairness
+### 2. Single Task Queue with Fairness {/* #2-single-task-queue-with-fairness */}
 
 **Use a single [Task Queue](/task-queue) with [Fairness keys](/develop/task-queue-priority-fairness#task-queue-fairness) to distribute work across tenants.**
 
@@ -89,7 +89,7 @@ This pattern works well when you have many tenants with different service tiers 
   <RelatedReadItem path="/develop/task-queue-priority-fairness#task-queue-fairness" text="Task Queue Fairness Reference" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### 3. Shared Workflow Task Queues, separate Activity Task Queues
+### 3. Shared Workflow Task Queues, separate Activity Task Queues {/* #3-shared-workflow-task-queues-separate-activity-task-queues */}
 
 **Share [Workflow Task Queues](/task-queue) but use different [Activity Task Queues](/task-queue) per tenant.**
 
@@ -105,7 +105,7 @@ Use this pattern when [Workflows](/workflows) are lightweight but [Activities](/
 - Workflow visibility is shared
 - More complex to reason about
 
-### 4. Namespace per tenant
+### 4. Namespace per tenant {/* #4-namespace-per-tenant */}
 
 **Use a separate [Namespace](/namespaces) for each tenant.**
 
@@ -133,7 +133,7 @@ need its own service accounts, API keys, dashboards, or rate limits. If that is 
   <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
 </RelatedReadContainer>
 
-### Pattern comparison
+### Pattern comparison {/* #pattern-comparison */}
 
 | | Task Queues per tenant | Fairness-based | Shared Workflow / Separate Activity TQs | Namespace per tenant |
 |---|---|---|---|---|
@@ -146,11 +146,11 @@ need its own service accounts, API keys, dashboards, or rate limits. If that is 
 | **Scale ceiling** | Thousands of tenants | Thousands of tenants | Thousands of tenants | 10,000 (Namespace limit) |
 | **Best for** | Most multi-tenant apps | Tiered SaaS with many tenants | Heavy Activity workloads | High-value, compliance-sensitive tenants |
 
-## Task Queue isolation pattern
+## Task Queue isolation pattern {/* #task-queue-isolation-pattern */}
 
 This section details the recommended pattern for most multi-tenant applications.
 
-### Worker design
+### Worker design {/* #worker-design */}
 
 When a [Worker](/workers) starts up:
 
@@ -170,7 +170,7 @@ for _, tenant := range assignedTenants {
 }
 ```
 
-### Routing requests to Task Queues
+### Routing requests to Task Queues {/* #routing-requests-to-task-queues */}
 
 Your application needs to route [Workflow](/workflows) starts and other operations to the correct tenant [Task Queue](/task-queue):
 
@@ -190,7 +190,7 @@ Consider creating an API or service that:
     1. Tenant IDs to Task Queues 
     1. Workers to tenants
 
-### Capacity planning
+### Capacity planning {/* #capacity-planning */}
 
 Key questions to answer through performance testing:
 
@@ -212,7 +212,7 @@ Key questions to answer through performance testing:
 - `MaxConcurrentActivityTaskPollers`
 - Worker replicas (in Kubernetes deployments)
 
-### Provisioning new tenants
+### Provisioning new tenants {/* #provisioning-new-tenants */}
 
 Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
@@ -227,11 +227,11 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
 3. Update Worker deployments to pick up new tenant assignments
 
-## Practical example
+## Practical example {/* #practical-example */}
 
 **Scenario:** A SaaS company has 1,000 customers and expects to grow to 5,000 customers over 3 years. They have 2 [Workflows](/workflows) and ~25 [Activities](/activities) per Workflow. All customers are on the same tier (no segmentation yet).
 
-### Assumptions
+### Assumptions {/* #assumptions */}
 
 | Item | Value |
 |------|-------|
@@ -244,7 +244,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 | Max concurrent Workflow executions | 200 |
 | Max concurrent Activity executions | 200 |
 
-### Capacity calculations
+### Capacity calculations {/* #capacity-calculations */}
 
 **[Task Queue](/task-queue) poller limits:**
 - Each [Worker](/workers) uses 10 pollers per tenant (5 Workflow + 5 Activity)
@@ -266,7 +266,7 @@ These are theoretical calculations based on SDK defaults. **Always perform load 
 While testing, also pay attention to your [metrics capacity and cardinality](/cloud/metrics/openmetrics/api-reference#managing-high-cardinality).
 :::
 
-### Worker assignment strategies
+### Worker assignment strategies {/* #worker-assignment-strategies */}
 
 **Option 1: Static configuration**
 - Each [Worker](/workers) reads a config file listing assigned tenant IDs
@@ -279,9 +279,9 @@ While testing, also pay attention to your [metrics capacity and cardinality](/cl
 - API returns tenant list based on Worker ID
 - More flexible, no deployment needed for new tenants
 
-## Best practices
+## Best practices {/* #best-practices */}
 
-### How tenant isolation affects Namespace and access design
+### How tenant isolation affects Namespace and access design {/* #how-tenant-isolation-affects-namespace-and-access-design */}
 
 Your multi-tenant architecture also determines how much isolation you get from Namespaces and access controls:
 
@@ -295,7 +295,7 @@ If tenants, teams, or regulated workloads need different credentials or RBAC bou
 Namespace topology. See [Namespace best practices](/best-practices/managing-namespace) and
 [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
 
-### Monitoring
+### Monitoring {/* #monitoring */}
 
 Track these [metrics](/references/sdk-metrics) per tenant:
 - [Workflow completion](/cloud/metrics/openmetrics/metrics-reference#workflow-completion-metrics) rates
@@ -304,7 +304,7 @@ Track these [metrics](/references/sdk-metrics) per tenant:
 - [Worker resource utilization](/references/sdk-metrics#worker_task_slots_used)
 - [Workflow failure rates](/encyclopedia/detecting-workflow-failures)
 
-### Handling noisy neighbors
+### Handling noisy neighbors {/* #handling-noisy-neighbors */}
 
 Even with [Task Queue](/task-queue) isolation, monitor for tenants that:
 - Generate excessive load
@@ -317,7 +317,7 @@ Strategies:
 - Move problematic tenants to dedicated Workers
 - Use [Workflow](/workflows)/[Activity](/activities) timeouts aggressively
 
-### Tenant lifecycle
+### Tenant lifecycle {/* #tenant-lifecycle */}
 
 Plan for:
 - **Onboarding** - Automated provisioning [Workflow](/workflows)
@@ -325,7 +325,7 @@ Plan for:
 - **Offboarding** - Graceful tenant removal and data cleanup
 - **Rebalancing** - Redistributing tenants across Workers
 
-### Search Attributes
+### Search Attributes {/* #search-attributes */}
 
 Use [Search Attributes](/search-attribute) to enable tenant-scoped queries:
 ```go
@@ -340,7 +340,7 @@ This allows filtering [Workflows](/workflows) by tenant in the UI and SDK:
 TenantId = 'customer-123' AND ExecutionStatus = 'Running'
 ```
 
-## Related resources
+## Related resources {/* #related-resources */}
 
 <RelatedReadContainer>
   <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy" text="Multi-tenancy Overview" archetype="feature-guide" />

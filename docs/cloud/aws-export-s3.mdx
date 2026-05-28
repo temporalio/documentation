@@ -22,7 +22,7 @@ tags:
 
 import * as Components from '@site/src/components';
 
-## Prerequisites
+## Prerequisites {/* #prerequisites */}
 
 Before configuring the Export Sink, ensure you have the following:
 
@@ -32,11 +32,11 @@ Before configuring the Export Sink, ensure you have the following:
    - You can follow the automation in the UI to create the IAM role. Please pre-create the role if setting up Export via terraform/tcld.
 - (Optional) A KMS ARN associated with the S3 bucket.
 
-## Configure Workflow History export
+## Configure Workflow History export {/* #configure-workflow-history-export */}
 
 There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), [`tcld`](#using-tcld), or [`terraform`](#using-terraform).
 
-### Using Temporal Cloud UI
+### Using Temporal Cloud UI {/* #using-temporal-cloud-ui */}
 
 You can use the Temporal Cloud UI to configure the Workflow History Export.
 
@@ -69,7 +69,7 @@ Don't forget to click **Create** at the end of your setup to confirm your export
 
 :::
 
-#### Automated setup
+#### Automated setup {/* #automated-setup */}
 
 You can use the automated setup to create a CloudFormation stack with write permission to your S3 bucket.
 Make sure to verify the export setup before you save the configuration.
@@ -85,7 +85,7 @@ Make sure to verify the export setup before you save the configuration.
 4. You will be taken to the CloudFormation Console to create the stack with pre-populated information.
    - Review the information and then select **Create stack**.
 
-#### Manual setup
+#### Manual setup {/* #manual-setup */}
 
 You can manually configure a CloudFormation stack using the provided template.
 
@@ -96,7 +96,7 @@ You can manually configure a CloudFormation stack using the provided template.
    - Configure the CloudFormation template for your export sink.
    - Follow the steps in the [AWS documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-template.html) by uploading the template to the CloudFormation console.
 
-### Using `tcld`
+### Using `tcld` {/* #using-tcld */}
 
 Run the `tcld namespace export s3 create` command and provide the following information:
 
@@ -145,12 +145,12 @@ The following is an example of the output:
 }
 ```
 
-### Using `terraform`
+### Using `terraform` {/* #using-terraform */}
 
 See the [terraform export support](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace_export_sink) for setup instructions.
 
 
-### Next Steps
+### Next Steps {/* #next-steps */}
 
 - [Verify export setup](/cloud/export#verify)
 - [Monitor export progress](/cloud/export#monitor)

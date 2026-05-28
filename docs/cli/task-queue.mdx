@@ -20,7 +20,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `task-queue` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## config
+## config {/* #config */}
 
 Manage Task Queue configuration:
 
@@ -32,7 +32,7 @@ Available commands:
 - `get`: Retrieve the current configuration for a task queue
 - `set`: Update the configuration for a task queue
 
-### get
+### get {/* #get */}
 
 Retrieve the current configuration for a Task Queue:
 
@@ -57,7 +57,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 | `--task-queue-type` | Yes | **string-enum** Task Queue type. Accepted values: workflow, activity, nexus. Accepted values: workflow, activity, nexus. |
 
-### set
+### set {/* #set */}
 
 Update configuration settings for a Task Queue.
 
@@ -101,7 +101,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 | `--task-queue-type` | Yes | **string-enum** Task Queue type. Accepted values: workflow, activity, nexus. Accepted values: workflow, activity, nexus. |
 
-## describe
+## describe {/* #describe */}
 
 Display a list of active Workers that have recently polled a Task Queue. The
 Temporal Server records each poll request time. A `LastAccessTime` over one
@@ -200,7 +200,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--task-queue-type` | No | **string-enum[]** Task Queue type. If not specified, all types are reported. Accepted values: workflow, activity, nexus. |
 | `--task-queue-type-legacy` | No | **string-enum** Task Queue type (legacy mode only). Accepted values: workflow, activity. |
 
-## get-build-id-reachability
+## get-build-id-reachability {/* #get-build-id-reachability */}
 
 ```
 +-----------------------------------------------------------------------------+
@@ -229,7 +229,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--reachability-type` | No | **string-enum** Reachability filter. `open`: reachable by one or more open workflows. `closed`: reachable by one or more closed workflows. `existing`: reachable by either. New Workflow Executions reachable by a Build ID are always reported. Accepted values: open, closed, existing. |
 | `--task-queue`, `-t` | No | **string[]** Search only the specified task queue(s). Can be passed multiple times. |
 
-## get-build-ids
+## get-build-ids {/* #get-build-ids */}
 
 ```
 +-----------------------------------------------------------------------------+
@@ -254,7 +254,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--max-sets` | No | **int** Max return count. Use 1 for default major version. Use 0 for all sets. |
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
-## list-partition
+## list-partition {/* #list-partition */}
 
 Display a Task Queue's partition list with assigned matching nodes:
 
@@ -269,7 +269,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
-## update-build-ids
+## update-build-ids {/* #update-build-ids */}
 
 ```
 +-----------------------------------------------------------------------------+
@@ -285,7 +285,7 @@ temporal task-queue update-build-ids [subcommands] [options] \
     --task-queue YourTaskQueue
 ```
 
-### add-new-compatible
+### add-new-compatible {/* #add-new-compatible */}
 
 Add a compatible Build ID to a Task Queue's existing version set. Provide an
 existing Build ID and a new Build ID:
@@ -311,7 +311,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--set-as-default` | No | **bool** Set the expanded Build ID set as the Task Queue default. |
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
-### add-new-default
+### add-new-default {/* #add-new-default */}
 
 ```
 +-----------------------------------------------------------------------------+
@@ -344,7 +344,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--build-id` | Yes | **string** Build ID to be added. |
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
-### promote-id-in-set
+### promote-id-in-set {/* #promote-id-in-set */}
 
 ```
 +-----------------------------------------------------------------------------+
@@ -376,7 +376,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--build-id` | Yes | **string** Build ID to set as default. |
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
-### promote-set
+### promote-set {/* #promote-set */}
 
 ```
 +-----------------------------------------------------------------------------+
@@ -409,7 +409,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--build-id` | Yes | **string** Build ID within the promoted set. |
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
-## versioning
+## versioning {/* #versioning */}
 
 ```
 +---------------------------------------------------------------------+
@@ -436,7 +436,7 @@ Task Queues support the following versioning rules and policies:
   Redirect rules require that a target Build ID is fully compatible with
   the source Build ID.
 
-### add-redirect-rule
+### add-redirect-rule {/* #add-redirect-rule */}
 
 Add a new redirect rule for a given Task Queue. You may add at most one
 redirect rule for each distinct source build ID:
@@ -462,7 +462,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--target-build-id` | Yes | **string** Target build ID. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-### commit-build-id
+### commit-build-id {/* #commit-build-id */}
 
 Complete a Build ID's rollout and clean up unnecessary rules that might have
 been created during a gradual rollout:
@@ -499,7 +499,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--force` | No | **bool** Bypass recent-poller validation. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-### delete-assignment-rule
+### delete-assignment-rule {/* #delete-assignment-rule */}
 
 Deletes a rule identified by its index in the Task Queue's list of assignment
 rules.
@@ -528,7 +528,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--rule-index`, `-i` | Yes | **int** Position of the assignment rule to be replaced. Requests for invalid indices will fail. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-### delete-redirect-rule
+### delete-redirect-rule {/* #delete-redirect-rule */}
 
 Deletes the routing rule for the given source Build ID.
 
@@ -551,7 +551,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--source-build-id` | Yes | **string** Source Build ID. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-### get-rules
+### get-rules {/* #get-rules */}
 
 Retrieve all the Worker Build ID assignments and redirect rules associated
 with a Task Queue:
@@ -579,7 +579,7 @@ Task Queues support the following versioning rules:
 
 Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
-### insert-assignment-rule
+### insert-assignment-rule {/* #insert-assignment-rule */}
 
 Inserts a new assignment rule for this Task Queue. Rules are evaluated in
 order, starting from index 0. The first applicable rule is applied, and the
@@ -608,7 +608,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--rule-index`, `-i` | No | **int** Insertion position. Ranges from 0 (insert at start) to count (append). Any number greater than the count is treated as "append". |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-### replace-assignment-rule
+### replace-assignment-rule {/* #replace-assignment-rule */}
 
 Change an assignment rule for this Task Queue. By default, this enforces one
 unconditional rule (no hint filter or percentage). Otherwise, the operation
@@ -652,7 +652,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--rule-index`, `-i` | Yes | **int** Position of the assignment rule to be replaced. Requests for invalid indices will fail. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-### replace-redirect-rule
+### replace-redirect-rule {/* #replace-redirect-rule */}
 
 Updates a Build ID's redirect rule on a Task Queue by replacing its target
 Build ID:
@@ -678,7 +678,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--target-build-id` | Yes | **string** Target Build ID. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
-## Global Flags
+## Global Flags {/* #global-flags */}
 
 The following options can be used with any command.
 

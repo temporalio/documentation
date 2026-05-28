@@ -41,11 +41,11 @@ Temporal supports three types of messages: Signals, Queries, and Updates:
 - Updates are synchronous, tracked write requests. The sender of the Update can wait for a response on completion or an
   error on failure.
 
-## How to choose between Signals, Updates, and Queries as a Workflow author? {#choosing-messages}
+## How to choose between Signals, Updates, and Queries as a Workflow author? {/* #choosing-messages */}
 
 This section will help you write Workflows that receive messages.
 
-### For write requests
+### For write requests {/* #for-write-requests */}
 
 Unlike Signals, Updates must be synchronous and must wait for the Worker running the Workflow to acknowledge the
 request.
@@ -60,7 +60,7 @@ The following table compares when to use **Signals** versus **Updates**.
 | **Concurrency and throughput** | You don’t want to limit the number of messages processed concurrently by a single Workflow. | You don’t need more concurrent Updates per Workflow than the allowed limits for [Cloud](/cloud/limits#per-workflow-execution-update-limits) or [Self-Hosted](/self-hosted-guide/defaults). |
 | **Latency sensitivity**        | Since clients don’t expect a result, latency is often not relevant when using Signals.      | Clients want a low-latency end-to-end operation and are willing to wait for completion or validation.                                                                                      |
 
-### For read requests
+### For read requests {/* #for-read-requests */}
 
 You normally want to do a Query, because:
 
@@ -75,7 +75,7 @@ achieves a certain desired state, you have two options:
 - You could write your read operation as an Update, which will give you better efficiency and latency, though it will
   write an entry to the [Workflow Event History](/workflow-execution/event#event-history).
 
-### For read/write requests
+### For read/write requests {/* #for-readwrite-requests */}
 
 Use an Update for synchronous read/write requests. If your request must be asynchronous, consider sending a Signal
 followed by polling with a Query.

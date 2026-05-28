@@ -37,13 +37,13 @@ There are two primary Versioning methods that you can use:
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths.
 - [Versioning with Patching](#php-sdk-patching-api). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
-## Worker Versioning
+## Worker Versioning {/* #worker-versioning */}
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
-## Versioning with Patching {#php-sdk-patching-api}
+## Versioning with Patching {/* #php-sdk-patching-api */}
 
-### Patching with GetVersion
+### Patching with GetVersion {/* #patching-with-getversion */}
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -160,7 +160,7 @@ After all the Workflow Executions for version 1 have left retention, you can rem
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
-### Workflow cutovers
+### Workflow cutovers {/* #workflow-cutovers */}
 
 To understand why Patching is useful, it's helpful to demonstrate cutting over an entire Workflow.
 
@@ -184,7 +184,7 @@ The downside of this method is that it requires you to duplicate code and to upd
 This can become impractical over time.
 This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching.
 
-## Runtime checking {#runtime-checking}
+## Runtime checking {/* #runtime-checking */}
 
 The Temporal PHP SDK performs a runtime check to help prevent obvious incompatible changes.
 Adding, removing, or reordering any of these methods without Versioning triggers the runtime check and results in a nondeterminism error:

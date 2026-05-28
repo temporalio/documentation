@@ -26,7 +26,7 @@ Standalone Activities are available as a [Public Preview](/evaluate/development-
 
 See [limitations](#public-preview-limitations) below.
 
-## What is a Standalone Activity? {#standalone-activity}
+## What is a Standalone Activity? {/* #standalone-activity */}
 
 If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to
 execute a single Activity, use a Standalone Activity.
@@ -68,13 +68,13 @@ Pick your SDK and follow the quickstart:
 
 :::
 
-## Use cases
+## Use cases {/* #use-cases */}
 
 Standalone Activities can be used for [durable job processing use
 cases](/evaluate/development-production-features/job-queue) such as sending an email, processing a
 webhook, syncing data, or executing a single function reliably with built-in retries and timeouts.
 
-## Key features
+## Key features {/* #key-features */}
 - Execute any Temporal Activity as a top-level primitive without the overhead of a Workflow
 - Native async job processing model: schedule -> dispatch -> process -> result
 - No head-of-line blocking - a slow job doesn’t block the dispatch of other Tasks
@@ -90,7 +90,7 @@ webhook, syncing data, or executing a single function reliably with built-in ret
 - Activity metrics - including counts for success, failure, timeout, and cancel
 - Dual use - execute Activities within a Workflow or standalone with no Worker code changes
 
-## Observability {#observability}
+## Observability {/* #observability */}
 
 All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
 to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
@@ -103,14 +103,14 @@ task queue, and other attributes using the SDK or the `temporal activity list` C
 analogous to counting Workflow Executions. This is the total count of executions (running, completed,
 failed, etc.) - not the number of queued tasks.
 
-## Public Preview limitations
+## Public Preview limitations {/* #public-preview-limitations */}
 
 The Public Preview of Standalone Activities has some known limitations:
 
 - Pause, reset, and update options are not supported in Public Preview but scheduled for GA.
 - `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
 
-## Temporal CLI support
+## Temporal CLI support {/* #temporal-cli-support */}
 
 Standalone Activities require [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.7.0) v1.7.0 or higher and [Temporal Server](https://github.com/temporalio/temporal/releases/tag/v1.31.0) v1.31.0 or higher.
 
@@ -138,6 +138,6 @@ The `temporal activity` subcommand supports Standalone Activities with commands 
 
 The Temporal Dev Server has Standalone Activities enabled by default for local testing.
 
-## Temporal Cloud support
+## Temporal Cloud support {/* #temporal-cloud-support */}
 
 Standalone Activities in Temporal Cloud is available as a Public Preview feature.

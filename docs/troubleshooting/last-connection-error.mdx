@@ -20,7 +20,7 @@ This troubleshooting guide shows you how to do the following:
 - Renew the certification
 - Update the server configuration
 
-### Verify TLS certification expiration date
+### Verify TLS certification expiration date {/* #verify-tls-certification-expiration-date */}
 
 The first step in troubleshooting this error is to verify the expiration date of the TLS certification.
 Then you can renew the certification and update the server configuration.
@@ -62,7 +62,7 @@ temporal namespace describe \
 
 Your Namespace gRPC endpoint is available on the details page for your [Temporal Cloud Namespace](https://cloud.temporal.io/namespaces).
 
-### Renew TLS certification
+### Renew TLS certification {/* #renew-tls-certification */}
 
 If the certificate has expired or is about to expire, the next step is to renew it.
 
@@ -78,7 +78,7 @@ If you are using a self-signed certificate or don't have an existing infrastruct
 
 For information on generating a self-signed certificate, see [Control authorization](/cloud/certificates#control-authorization).
 
-### Update the CA certification in the server configuration
+### Update the CA certification in the server configuration {/* #update-the-ca-certification-in-the-server-configuration */}
 
 Update the new CA certificate in the Temporal Cloud server configuration.
 
@@ -89,12 +89,12 @@ You can update certificates using any of the following methods:
 
 After you update the TLS certification in the server configuration, retry your connection.
 
-### Set reminders
+### Set reminders {/* #set-reminders */}
 
 Don't let your certificates expire.
 Add reminders to your calendar to issue new CA certificates well before the expiration dates of the existing ones.
 
-### Additional resources
+### Additional resources {/* #additional-resources */}
 
 The preceding steps should help you troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certificate.
 

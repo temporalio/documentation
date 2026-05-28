@@ -25,7 +25,7 @@ This section includes the following topics:
 - [Integrations](#integrations)
 - [Testing](#testing)
 
-## Setup Dependency {#setup-dependency}
+## Setup Dependency {/* #setup-dependency */}
 
 To start using the Temporal Spring Boot integration, you need to add [`io.temporal:temporal-spring-boot-starter`](https://search.maven.org/artifact/io.temporal/temporal-spring-boot-starter)
 as a dependency to your Spring project:
@@ -50,13 +50,13 @@ Temporal's Spring Boot integration currently supports Spring Boot 2.x, 3.x, and 
 implementation ("io.temporal:temporal-spring-boot-starter:1.31.0")
 ```
 
-## Connect {#connect}
+## Connect {/* #connect */}
 
 See the [Temporal Client documentation](/develop/java/client/temporal-client) for more information about connecting to a Temporal Service.
 
 To create an autoconfigured `WorkflowClient`, you need to specify some connection details in your `application.yml` file, as described in the next section.
 
-### Connect to your local Temporal Service
+### Connect to your local Temporal Service {/* #connect-to-your-local-temporal-service */}
 
 ```yaml
 spring.temporal:
@@ -74,7 +74,7 @@ class App {
 }
 ```
 
-### Connect to a custom Namespace
+### Connect to a custom Namespace {/* #connect-to-a-custom-namespace */}
 
 You can also connect to a custom Namespace by specifying the `spring.temporal.namespace` property.
 
@@ -85,13 +85,13 @@ spring.temporal:
   namespace: <custom namespace> # you can specify a custom namespace that you are using
 ```
 
-## Connect to Temporal Cloud {#connect}
+## Connect to Temporal Cloud {/* #connect */}
 
 You can also connect to Temporal Cloud, using either an API key or mTLS for authentication.
 
 See the [Connect to Temporal Cloud](/develop/java/client/temporal-client#connect-to-temporal-cloud) section for more information about connecting to Temporal Cloud.
 
-### Using an API key
+### Using an API key {/* #using-an-api-key */}
 
 ```yaml
 spring.temporal:
@@ -101,7 +101,7 @@ spring.temporal:
   namespace: <namespace>
 ```
 
-### Using mTLS
+### Using mTLS {/* #using-mtls */}
 
 ```
 spring.temporal:
@@ -113,11 +113,11 @@ spring.temporal:
   namespace: <namespace>
 ```
 
-## Configure Workers {#configure-workers}
+## Configure Workers {/* #configure-workers */}
 
 Temporal's Spring Boot integration supports two configuration methods for Workers: explicit configuration and auto-discovery.
 
-### Explicit configuration
+### Explicit configuration {/* #explicit-configuration */}
 
 ```yaml
 spring.temporal:
@@ -130,7 +130,7 @@ spring.temporal:
         - activity-bean-name1
 ```
 
-### Auto Discovery
+### Auto Discovery {/* #auto-discovery */}
 
 Auto Discovery allows you to skip specifying Workflow classes, Activity beans, and Nexus Service beans explicitly in the config by referencing Worker Task Queue names or Worker Names on Workflow, Activity implementations, and Nexus Service implementations. Auto-discovery is applied after and on top of an explicit configuration.
 
@@ -141,7 +141,7 @@ spring.temporal:
       - your.package # enumerate all the packages that contain your workflow implementations.
 ```
 
-#### What is auto-discovered:
+#### What is auto-discovered: {/* #what-is-auto-discovered */}
 
 - Workflow implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
 - Activity beans present Spring context whose implementations are annotated with `io.temporal.spring.boot.ActivityImpl`
@@ -167,27 +167,27 @@ public class MyActivityImpl implements MyActivity {
 Auto-discovered Workflow implementation classes, Activity beans, and Nexus Service beans will be registered with the configured Workers if not already registered.
 :::
 
-## Interceptors {#interceptors}
+## Interceptors {/* #interceptors */}
 
 To enable Interceptors, you can create beans by implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
 
-## Integrations {#integrations}
+## Integrations {/* #integrations */}
 
 The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem, such as metrics and tracing.
 
-### Metrics
+### Metrics {/* #metrics */}
 
 You can set up built-in Spring Boot metrics using [Spring Boot Actuator](https://docs.spring.io/spring-boot/reference/actuator/metrics.html). The Temporal Spring Boot integration will pick up the `MeterRegistry` bean and use it to report Temporal metrics.
 
 Alternatively, you can define a custom `io.micrometer.core.instrument.MeterRegistry` bean in the application context.
 
-### Tracing
+### Tracing {/* #tracing */}
 
 You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) with an OpenTelemetry export. The Temporal Spring Boot integration will pick up the OpenTelemetry bean configured by `spring-cloud-sleuth-otel-autoconfigure` and use it for Temporal traces.
 
 Alternatively, you can define a custom `io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for an OpenTracing bean in the application context.
 
-## Customization of Options {#customize-options}
+## Customization of Options {/* #customize-options */}
 
 To programmatically customize the various options that are created by the Spring Boot integration, you can create beans that implement the `io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>` interface. This will be called after the options in your properties files are applied.
 
@@ -204,7 +204,7 @@ Where `OptionsType` may be one of:
 
 `io.temporal.spring.boot.WorkflowImplementationOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkflowImplementationOptions.Builder>` if `WorkflowImplementationOptions` needs to be customized on Workflow Type.
 
-## Testing {#testing}
+## Testing {/* #testing */}
 
 The Temporal Spring Boot integration also has easy support for testing your Temporal code. Add the following to your `application.yml` to reconfigure the client to work through `io.temporal.testing.TestWorkflowEnvironment` that uses in-memory Java Test Server:
 

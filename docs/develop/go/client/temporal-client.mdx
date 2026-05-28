@@ -51,7 +51,7 @@ Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the
 [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a
@@ -240,7 +240,7 @@ func main() {
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -544,7 +544,7 @@ apiKeyProvider.APIKey = myKeyUpdated
 
 </Tabs>
 
-## Start Workflow Execution {#start-workflow-execution}
+## Start Workflow Execution {/* #start-workflow-execution */}
 
 **How to start a Workflow Execution using the Go SDK**
 
@@ -618,7 +618,7 @@ Workflow Type can be provided as a `string`.
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
 
-### Set Workflow Task Queue {#set-task-queue}
+### Set Workflow Task Queue {/* #set-task-queue */}
 
 **How to set a Workflow's Task Queue using the Go SDK**
 
@@ -651,7 +651,7 @@ application load. For more information, refer to
 [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and
 [Worker Versioning](https://docs.temporal.io/worker-versioning).
 
-### Set custom Workflow Id {#workflow-id}
+### Set custom Workflow Id {/* #workflow-id */}
 
 **How to set a custom Workflow Id using the Go SDK**
 
@@ -678,7 +678,7 @@ if err != nil {
 }
 ```
 
-### Go StartWorkflowOptions reference {#workflow-options-reference}
+### Go StartWorkflowOptions reference {/* #workflow-options-reference */}
 
 Create an instance of
 [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the
@@ -700,7 +700,7 @@ The following fields are available:
 | [`Memo`](#memo)                                                                         | No       | `map[string]interface{}`                                                                        |
 | [`SearchAttributes`](#searchattributes)                                                 | No       | `map[string]interface{}`                                                                        |
 
-#### ID
+#### ID {/* #id */}
 
 Although it is not required, we recommend providing your own
 [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
@@ -724,7 +724,7 @@ if err != nil {
 }
 ```
 
-#### TaskQueue
+#### TaskQueue {/* #taskqueue */}
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions)
 from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow`
@@ -745,7 +745,7 @@ if err != nil {
 }
 ```
 
-#### WorkflowExecutionTimeout
+#### WorkflowExecutionTimeout {/* #workflowexecutiontimeout */}
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the
 `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the
@@ -766,7 +766,7 @@ if err != nil {
 }
 ```
 
-#### WorkflowRunTimeout
+#### WorkflowRunTimeout {/* #workflowruntimeout */}
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the
 `go.temporal.io/sdk/client` package, set the `WorkflowRunTimeout` field, and pass the instance to the `ExecuteWorkflow`
@@ -786,7 +786,7 @@ if err != nil {
 }
 ```
 
-#### WorkflowTaskTimeout
+#### WorkflowTaskTimeout {/* #workflowtasktimeout */}
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the
 `go.temporal.io/sdk/client` package, set the `WorkflowTaskTimeout` field, and pass the instance to the `ExecuteWorkflow`
@@ -806,7 +806,7 @@ if err != nil {
 }
 ```
 
-#### WorkflowIDReusePolicy
+#### WorkflowIDReusePolicy {/* #workflowidreusepolicy */}
 
 - Type: [WorkflowIdReusePolicy](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy)
 - Default: `enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE`
@@ -824,7 +824,7 @@ if err != nil {
 }
 ```
 
-#### WorkflowExecutionErrorWhenAlreadyStarted
+#### WorkflowExecutionErrorWhenAlreadyStarted {/* #workflowexecutionerrorwhenalreadystarted */}
 
 - Type: `bool`
 - Default: `false`
@@ -840,7 +840,7 @@ if err != nil {
 }
 ```
 
-#### RetryPolicy
+#### RetryPolicy {/* #retrypolicy */}
 
 Create an instance of a [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the
 `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of
@@ -865,7 +865,7 @@ if err != nil {
 }
 ```
 
-#### CronSchedule
+#### CronSchedule {/* #cronschedule */}
 
 - Type: `string`
 - Default: None
@@ -883,7 +883,7 @@ if err != nil {
 
 [Sample](https://github.com/temporalio/samples-go/tree/master/cron)
 
-#### Memo
+#### Memo {/* #memo */}
 
 - Type: `map[string]interface{}`
 - Default: Empty
@@ -901,7 +901,7 @@ if err != nil {
 }
 ```
 
-#### SearchAttributes
+#### SearchAttributes {/* #searchattributes */}
 
 **How to set Workflow Execution Search Attributes in Go**
 
@@ -932,7 +932,7 @@ if err != nil {
 }
 ```
 
-### Get Workflow results {#get-workflow-results}
+### Get Workflow results {/* #get-workflow-results */}
 
 **How to get the results of a Workflow Execution using the Go SDK**
 

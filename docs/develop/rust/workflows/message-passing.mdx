@@ -32,7 +32,7 @@ The Workflow implementation defines these endpoints via handler methods that can
 Temporal Clients use messages to read Workflow state and control its execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic. This page introduces these features for the Temporal Rust SDK.
 
-## Write message handlers {#writing-message-handlers}
+## Write message handlers {/* #writing-message-handlers */}
 
 Follow these guidelines when writing your message handlers:
 
@@ -40,7 +40,7 @@ Follow these guidelines when writing your message handlers:
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
 - Prefer structs to multiple input parameters to allow for forward-compatible changes.
 
-### Query handlers {#queries}
+### Query handlers {/* #queries */}
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
@@ -126,7 +126,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - Query handlers can't mutate Workflow state.
 - Query handlers can't perform async operations, like executing Activities.
 
-### Signal handlers {#signals}
+### Signal handlers {/* #signals */}
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
@@ -193,7 +193,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 * Signal handlers do not return values.
 * They can trigger async work (Activities, timers) depending on SDK capabilities.
 
-### Update handlers and validators {#updates}
+### Update handlers and validators {/* #updates */}
 
 An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution. It can change the Workflow state, control its flow, and return a result. The sender must wait until the Worker accepts or rejects the Update. The sender may wait further to receive a returned value or an exception if something goes wrong:
 
@@ -251,7 +251,7 @@ impl GreetingsWorkflow {
     - When a Validator raises an error, the Update is rejected and `WorkflowExecutionUpdateAccepted` won't be added to the Event History. The caller receives an "Update failed" error.
 - Update and Signal handlers can be async, letting you use Activities, Child Workflows, and more. See [Async handlers](#async-handlers) for safe usage guidelines.
 
-## Send messages {#send-messages}
+## Send messages {/* #send-messages */}
 
 To send Queries, Signals, or Updates, use a Workflow handle from the client:
 
@@ -265,7 +265,7 @@ let wf_handle = client.start_workflow(
 ).await?;
 ```
 
-### Send a Query {#send-query}
+### Send a Query {/* #send-query */}
 
 ```rust
 let supported_languages = wf_handle.query(
@@ -279,11 +279,11 @@ let supported_languages = wf_handle.query(
 - You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period. This includes Workflows that have completed, failed, or timed out. Querying terminated Workflows is not safe and, therefore, not supported.
 - A Worker must be online and polling the Task Queue to process a Query.
 
-### Send a Signal {#send-signal}
+### Send a Signal {/* #send-signal */}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution. However, you can only send Signals to Workflow Executions that haven’t closed.
 
-#### From a Client
+#### From a Client {/* #from-a-client */}
 
 ```rust
 wf_handle.signal(
@@ -295,7 +295,7 @@ wf_handle.signal(
 
 - The call returns when the server accepts the Signal; it does not wait for the Signal to be delivered to the Workflow Execution.
 
-#### From a Workflow
+#### From a Workflow {/* #from-a-workflow */}
 
 ```rust
 let signal_res = ctx
@@ -304,7 +304,7 @@ let signal_res = ctx
     .await;
 ```
 
-### Signal-With-Start {#signal-with-start}
+### Signal-With-Start {/* #signal-with-start */}
 
 ```rust
 let signal_input = Payloads {
@@ -322,7 +322,7 @@ let wf_handle = client.start_workflow(
 ).await?;
 ```
 
-### Send an Update {#send-update-from-client}
+### Send an Update {/* #send-update-from-client */}
 
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
@@ -343,7 +343,7 @@ let previous_language = wf_handle.execute_update(
 ).await?;
 ```
 
-#### Update-With-Start
+#### Update-With-Start {/* #update-with-start */}
 
 You can also send `start_update` to receive an `UpdateHandle` as soon as the Update is accepted.
 
@@ -364,9 +364,9 @@ let update_handle = main_wf_handle.start_update(
 - Updates are synchronous and return results.
 - Worker must accept the Update before it proceeds.
 
-## Message handler patterns {#message-handler-patterns}
+## Message handler patterns {/* #message-handler-patterns */}
 
-### Async handlers {#async-handlers}
+### Async handlers {/* #async-handlers */}
 
 Signal and Update handlers can be `async fn` as well as `fn`. Using `async fn` allows you to use await with Activities, Child Workflows, Timers, etc. This expands the possibilities for what can be done by a handler, but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
@@ -458,7 +458,7 @@ async fn set_language_activity(
 }
 ```
 
-### Add wait conditions to block
+### Add wait conditions to block {/* #add-wait-conditions-to-block */}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue. You can use `ctx.wait_condition` to prevent the code from proceeding until a condition is true. You specify the condition by passing a function that returns a boolean and you can optionally set a timeout. This is an important feature that helps you control your handler logic.
 
@@ -482,7 +482,7 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 }
 ```
 
-### Ensure handlers finish before completion
+### Ensure handlers finish before completion {/* #ensure-handlers-finish-before-completion */}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes. When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
 

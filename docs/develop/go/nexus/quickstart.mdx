@@ -38,7 +38,7 @@ To evaluate whether Nexus fits your use case, see the [evaluation guide](/evalua
 **Prerequisites:** Complete the [Go SDK Quickstart](/develop/go/set-up-your-local-go) first.
 You should have `activity.go`, `workflow.go`, `worker/main.go`, and `start/main.go` from that guide.
 
-## What you'll build
+## What you'll build {/* #what-youll-build */}
 
 You have `SayHelloWorkflow` running in the `default` Namespace.
 By the end of this guide:
@@ -68,7 +68,7 @@ type HelloInput struct {
 </>
 }>
 
-## 1. Define the Nexus Service
+## 1. Define the Nexus Service {/* #1-define-the-nexus-service */}
 
 Create a file called `service.go` that defines the Nexus Service contract.
 
@@ -117,7 +117,7 @@ var HelloOperation = temporalnexus.NewWorkflowRunOperation(
 </>
 }>
 
-## 2. Define the Nexus Operation handlers
+## 2. Define the Nexus Operation handlers {/* #2-define-the-nexus-operation-handlers */}
 
 Create a file called `nexus_handler.go` that implements the Nexus Operation handler.
 
@@ -177,7 +177,7 @@ func main() {
 </>
 }>
 
-## 3. Register the Nexus Service handler in a Worker
+## 3. Register the Nexus Service handler in a Worker {/* #3-register-the-nexus-service-handler-in-a-worker */}
 
 Update your existing `worker/main.go` to register the Nexus Service Handler.
 
@@ -228,7 +228,7 @@ func CallerWorkflow(ctx workflow.Context, name string) (string, error) {
 </>
 }>
 
-## 4. Develop the caller Workflow
+## 4. Develop the caller Workflow {/* #4-develop-the-caller-workflow */}
 
 Create a file called `caller_workflow.go` that defines a Workflow which invokes the Nexus Operation.
 
@@ -259,7 +259,7 @@ temporal operator namespace create --namespace my-caller-namespace
 </>
 }>
 
-## 5. Create the caller Namespace and Nexus Endpoint
+## 5. Create the caller Namespace and Nexus Endpoint {/* #5-create-the-caller-namespace-and-nexus-endpoint */}
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
 The handler uses the `default` Namespace that was created when you started the dev server.
@@ -324,7 +324,7 @@ func main() {
 </>
 }>
 
-## 6. Run and Verify
+## 6. Run and Verify {/* #6-run-and-verify */}
 
 Create `caller/main.go` to start the caller Worker and execute the Workflow.
 
@@ -366,7 +366,7 @@ In `default`, find the `HelloNexusWorkflow` execution that was started by the Ne
 </SetupStep>
 </SetupSteps>
 
-## Next Steps
+## Next Steps {/* #next-steps */}
 
 Now that you have a working Nexus Service, here are some resources to deepen your understanding:
 

@@ -27,7 +27,7 @@ Worker performance is constrained by three primary resources:
 | **Memory** | Workflow cache, thread pools |
 | **IO** | Network calls to Temporal Service, polling |
 
-## How a Worker works
+## How a Worker works {/* #how-a-worker-works */}
 
 Workers poll a [Task Queue](/task-queue) in Temporal Cloud or a self-hosted Temporal Service, execute Tasks, and respond with the result.
 
@@ -41,7 +41,7 @@ Workers poll a [Task Queue](/task-queue) in Temporal Cloud or a self-hosted Temp
 
 Multiple Workers can poll the same Task Queue, providing horizontal scalability.
 
-### How Worker failure recovery works
+### How Worker failure recovery works {/* #how-worker-failure-recovery-works */}
 
 When a Worker crashes or experiences a host outage:
 
@@ -52,11 +52,11 @@ When a Worker crashes or experiences a host outage:
 
 For more details on Worker architecture, see [What is a Temporal Worker?](/workers)
 
-## Compute settings
+## Compute settings {/* #compute-settings */}
 
 Compute settings control how many Tasks a Worker can execute concurrently.
 
-### Compute configuration options
+### Compute configuration options {/* #compute-configuration-options */}
 
 | Setting | Description |
 |---------|-------------|
@@ -65,7 +65,7 @@ Compute settings control how many Tasks a Worker can execute concurrently.
 | `MaxConcurrentLocalActivityTaskExecutionSize` | Maximum concurrent Local Activities |
 | `MaxWorkflowThreadCount` / `workflowThreadPoolSize` | Thread pool for Workflow execution |
 
-### Compute defaults by SDK
+### Compute defaults by SDK {/* #compute-defaults-by-sdk */}
 
 | SDK | MaxConcurrentWorkflowTaskExecutionSize | MaxConcurrentActivityTaskExecutionSize | MaxConcurrentLocalActivityTaskExecutionSize | MaxWorkflowThreadCount |
 |-----|----------------------------------------|----------------------------------------|---------------------------------------------|------------------------|
@@ -75,16 +75,16 @@ Compute settings control how many Tasks a Worker can execute concurrently.
 | **Python** | 100 | 100 | 100 | - |
 | **.NET** | 100 | 100 | 100 | - |
 
-### Resource-based slot suppliers
+### Resource-based slot suppliers {/* #resource-based-slot-suppliers */}
 
 Instead of fixed slot counts, you can use resource-based slot suppliers that automatically adjust available Task slots based on CPU and memory utilization.
 For implementation details, see [Slot suppliers](/develop/worker-performance#slot-suppliers).
 
-## Memory settings
+## Memory settings {/* #memory-settings */}
 
 Memory settings control the Workflow cache size and thread pool allocation.
 
-### Memory configuration options
+### Memory configuration options {/* #memory-configuration-options */}
 
 | Setting | Description |
 |---------|-------------|
@@ -92,7 +92,7 @@ Memory settings control the Workflow cache size and thread pool allocation.
 | `MaxWorkflowThreadCount` | Thread pool size |
 | `reuseV8Context` (TypeScript) | Reuse V8 context for Workflows |
 
-### Memory defaults by SDK
+### Memory defaults by SDK {/* #memory-defaults-by-sdk */}
 
 | SDK | MaxCachedWorkflows / StickyWorkflowCacheSize |
 |-----|----------------------------------------------|
@@ -104,11 +104,11 @@ Memory settings control the Workflow cache size and thread pool allocation.
 
 For cache tuning guidance, see [Workflow cache tuning](/develop/worker-performance#workflow-cache-tuning).
 
-## IO settings
+## IO settings {/* #io-settings */}
 
 IO settings control the number of pollers and rate limits for Task Queue interactions.
 
-### IO configuration options
+### IO configuration options {/* #io-configuration-options */}
 
 | Setting | Description |
 |---------|-------------|
@@ -117,7 +117,7 @@ IO settings control the number of pollers and rate limits for Task Queue interac
 | `Namespace APS` | Actions per second limit for Namespace |
 | `TaskQueueActivitiesPerSecond` | Activity rate limit per Task Queue |
 
-### IO defaults by SDK
+### IO defaults by SDK {/* #io-defaults-by-sdk */}
 
 | SDK | MaxConcurrentWorkflowTaskPollers | MaxConcurrentActivityTaskPollers | Namespace APS | TaskQueueActivitiesPerSecond |
 |-----|----------------------------------|----------------------------------|---------------|------------------------------|
@@ -127,17 +127,17 @@ IO settings control the number of pollers and rate limits for Task Queue interac
 | **Python** | 5 | 5 | - | - |
 | **.NET** | 5 | 5 | - | - |
 
-### Poller autoscaling
+### Poller autoscaling {/* #poller-autoscaling */}
 
 Use poller autoscaling to automatically adjust the number of concurrent polls based on workload.
 For configuration details, see [Configuring poller options](/develop/worker-performance#configuring-poller-options).
 
-## Metrics reference by resource type
+## Metrics reference by resource type {/* #metrics-reference-by-resource-type */}
 
 Use these metrics to identify bottlenecks and guide tuning decisions.
 For the complete metrics reference, see [SDK metrics](/references/sdk-metrics).
 
-### Compute-related metrics
+### Compute-related metrics {/* #compute-related-metrics */}
 
 | Worker configuration option | SDK metric |
 |-----------------------------|------------|
@@ -148,7 +148,7 @@ For the complete metrics reference, see [SDK metrics](/references/sdk-metrics).
 
 Also monitor your machine's CPU consumption (for example, `container_cpu_usage_seconds_total` in Kubernetes).
 
-### Memory-related metrics
+### Memory-related metrics {/* #memory-related-metrics */}
 
 | Worker configuration option | SDK metric |
 |-----------------------------|------------|
@@ -156,7 +156,7 @@ Also monitor your machine's CPU consumption (for example, `container_cpu_usage_s
 
 Also monitor your machine's memory consumption (for example, `container_memory_usage_bytes` in Kubernetes).
 
-### IO-related metrics
+### IO-related metrics {/* #io-related-metrics */}
 
 | Worker configuration option | SDK metric |
 |-----------------------------|------------|
@@ -164,7 +164,7 @@ Also monitor your machine's memory consumption (for example, `container_memory_u
 | `MaxConcurrentActivityTaskPollers` | [`num_pollers {poller_type = activity_task}`](/references/sdk-metrics#num_pollers) |
 | Network latency | [`request_latency {namespace, operation}`](/references/sdk-metrics#request_latency) |
 
-### Task Queue metrics
+### Task Queue metrics {/* #task-queue-metrics */}
 
 | Metric | Description |
 |--------|-------------|
@@ -180,7 +180,7 @@ Task Queue statistics are also available via the `DescribeTaskQueue` API:
 
 For more on Task Queue metrics, see [Available Task Queue information](/develop/worker-performance#task-queue-metrics).
 
-### Failure metrics
+### Failure metrics {/* #failure-metrics */}
 
 | Metric | Description |
 |--------|-------------|
@@ -192,7 +192,7 @@ Common failure codes:
 - `DEADLINE_EXCEEDED` - Operation timeout
 - `NOT_FOUND` - Resource not found
 
-## Worker tuning tips
+## Worker tuning tips {/* #worker-tuning-tips */}
 
 1. **Scale test before production**: Validate your configuration under realistic load.
 2. **Infrastructure matters**: Workers don't operate in a vacuum. Consider network latency, database performance, and external service dependencies.
@@ -204,7 +204,7 @@ For detailed tuning guidance, see:
 - [Worker deployment and performance best practices](/best-practices/worker)
 - [Performance bottlenecks troubleshooting](/troubleshooting/performance-bottlenecks)
 
-## Related resources
+## Related resources {/* #related-resources */}
 
 - [What is a Temporal Worker?](/workers) - Conceptual overview
 - [Worker performance](/develop/worker-performance) - Comprehensive tuning guide

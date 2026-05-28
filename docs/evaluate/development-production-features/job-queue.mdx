@@ -16,7 +16,7 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
-## What is a Job Queue?
+## What is a Job Queue? {/* #what-is-a-job-queue */}
 
 A job is a single, discrete unit of work that runs asynchronously in the background such as sending an email, processing a webhook, syncing data, or executing a single function reliably.
 
@@ -30,17 +30,17 @@ Under the hood, Standalone Activities use Temporal's [Task Queues](/task-queue) 
 
 Temporal provides stronger guarantees, better visibility, and more control than traditional job queues - while remaining cost-effective for high-volume use cases and offering a clean upgrade path to multi-step workflow orchestration.
 
-### Overview
+### Overview {/* #overview */}
 
 Standalone Activities add the ability to execute any Temporal Activity as a top-level Activity Execution for durable job processing.
 
-#### Unified programming model & worker deployment
+#### Unified programming model & worker deployment {/* #unified-programming-model--worker-deployment */}
 
 - Write an Activity once and use it anywhere - with a unified Activity programming model
 - Optional heartbeats support checkpointing for long-running jobs
 - Deploy to an Activity Worker once, and invoke standalone or from within a Workflow
 
-#### Execution lifecycle
+#### Execution lifecycle {/* #execution-lifecycle */}
 
 - Jobs are submitted as Standalone Activity Executions
 - Each job is durably persisted with Temporal reliability, so jobs are not lost
@@ -48,14 +48,14 @@ Standalone Activities add the ability to execute any Temporal Activity as a top-
 - Workers poll task queues and execute Activities (you run your own Workers)
 - Temporal ensures retries, timeouts, and exponential backoff policy is enforced
 
-#### Observability & lifecycle controls
+#### Observability & lifecycle controls {/* #observability--lifecycle-controls */}
 
 - Full job visibility (list, search) with detailed execution state, retry count, errors & results
 - OpenMetrics support
 - Lifecycle controls: cancel, pause, unpause, reset, terminate
 - Manual completion for external integrations & on-call management
 
-## Next steps
+## Next steps {/* #next-steps */}
 
 Learn more about [Standalone Activity concepts, features, and limitations](/standalone-activity), or jump to a language-specific quickstart:
 

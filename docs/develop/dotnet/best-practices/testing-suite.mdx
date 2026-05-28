@@ -33,21 +33,21 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 **Compatible testing frameworks**
 
 The .NET SDK is compatible with any testing framework and does not have a specific recommendation.
 Most .NET SDK samples use [xUnit](https://xunit.net/).
 
-## Testing Workflows {#testing-workflows}
+## Testing Workflows {/* #testing-workflows */}
 
 **How to test Workflow Definitions using the Temporal .NET SDK**
 
 Workflow testing can be done in an integration-test fashion against a real server, however it is hard to simulate timeouts and other long time-based code.
 Using the time-skipping Workflow test environment can help there.
 
-### Testing Workflows with standard server
+### Testing Workflows with standard server {/* #testing-workflows-with-standard-server */}
 
 A non-time-skipping `Temporalio.Testing.WorkflowEnvironment` can be started via `StartLocalAsync` which supports all standard Temporal features.
 It is actually the real Temporal dev server packaged in the Temporal CLI, lazily downloaded on first use, and run as a sub-process in the background.
@@ -99,7 +99,7 @@ public async Task SayHelloWorkflow_SimpleRun_Succeeds()
 
 While this is just a demonstration, a local server is often used as a fixture across many tests.
 
-### Testing Workflows with time skipping
+### Testing Workflows with time skipping {/* #testing-workflows-with-time-skipping */}
 
 Sometimes there is a need to test Workflows that run a long time or to test that timeouts occur.
 A time-skipping `Temporalio.Testing.WorkflowEnvironment` can be started via `StartTimeSkippingAsync` which is a reimplementation of the Temporal server with special time skipping capabilities.
@@ -108,7 +108,7 @@ Note, unlike `StartLocalAsync`, this class is not thread safe nor safe for use w
 It can be technically be reused, but only for one test at a time because time skipping is locked/unlocked at the environment level.
 Developers are encouraged to run it per test needed.
 
-#### Automatic time skipping
+#### Automatic time skipping {/* #automatic-time-skipping */}
 
 Here's a simple example of a Workflow that waits a day:
 
@@ -162,7 +162,7 @@ This is because by calling `ExecuteWorkflowAsync` on our client, we are actually
 
 To disable automatic time-skipping while waiting for a workflow result, run code as a lambda passed to `env.WithAutoTimeSkippingDisabled` or `env.WithAutoTimeSkippingDisabledAsync`.
 
-#### Manual time skipping
+#### Manual time skipping {/* #manual-time-skipping */}
 
 Until a Workflow is waited on, all time skipping in the time-skipping environment is done manually via `WorkflowEnvironment.DelayAsync`.
 
@@ -240,13 +240,13 @@ public async Task SignalWorkflow_SignalTimeout_HasExpectedResult()
 }
 ```
 
-### Mocking Activities
+### Mocking Activities {/* #mocking-activities */}
 
 When testing Workflows, often you don't want to actually run the Activities.
 Activities are just methods with the `[Activity]` attribute.
 Simply write different/empty/fake/asserting ones and pass those to the Worker to have different activities called during the test.
 
-## Testing Activities {#test-activities}
+## Testing Activities {/* #test-activities */}
 
 **How to test Activity Definitions using the Temporal .NET SDK**
 
@@ -263,7 +263,7 @@ The following important members are available on the environment to affect the a
 - `WorkerShutdownTokenSource` - Token source for issuing Worker shutdown.
 - `PayloadConverter` - Defaulted to default payload converter.
 
-## Replay test {#replay}
+## Replay test {/* #replay */}
 
 **How to do a Replay test using the Temporal .NET SDK**
 

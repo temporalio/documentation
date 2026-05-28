@@ -21,7 +21,7 @@ Alias: `gen`
 - [tcld generate-certificates certificate-authority-certificate](#certificate-authority-certificate)
 - [tcld generate-certificates end-entity-certificate](#end-entity-certificate)
 
-## tcld generate-certificates certificate-authority-certificate {#certificate-authority-certificate}
+## tcld generate-certificates certificate-authority-certificate {/* #certificate-authority-certificate */}
 
 The `tcld generate-certificates certificate-authority-certificate` command generates certificate authority (CA) certificates for Temporal Cloud.
 
@@ -31,7 +31,7 @@ Alias: `ca`
 
 The following modifiers control the behavior of the command.
 
-#### --organization
+#### --organization {/* #--organization */}
 
 Specify an organization name for certificate generation.
 
@@ -43,7 +43,7 @@ Alias: `--org`
 tcld generate-certificates certificate-authority-certificate --organization <value>
 ```
 
-#### --validity-period
+#### --validity-period {/* #--validity-period */}
 
 Specify the duration for which the certificate is valid.
 Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
@@ -56,7 +56,7 @@ Alias: `-d`
 tcld generate-certificates certificate-authority-certificate --validity-period <value>
 ```
 
-#### --ca-certificate-file
+#### --ca-certificate-file {/* #--ca-certificate-file */}
 
 Specify a path to a `.pem` file where the generated X.509 certificate file will be stored.
 
@@ -68,7 +68,7 @@ Alias: `--ca-cert`
 tcld generate-certificates certificate-authority-certificate --ca-certificate-file <path>
 ```
 
-#### --ca-key-file
+#### --ca-key-file {/* #--ca-key-file */}
 
 Specify a path to a `.key` file where the certificate's private key will be stored.
 
@@ -80,7 +80,7 @@ Alias: `--ca-key`
 tcld generate-certificates certificate-authority-certificate --ca-key-file <path>
 ```
 
-#### --rsa-algorithm
+#### --rsa-algorithm {/* #--rsa-algorithm */}
 
 When enabled, a 4096-bit RSA key pair is generated for the certificate instead of an ECDSA P-384 key pair.
 Because an ECDSA P-384 key pair is the recommended default, this option is disabled.
@@ -93,7 +93,7 @@ Alias: `--rsa`
 tcld generate-certificates certificate-authority-certificate --rsa-algorithm <boolean>
 ```
 
-## tcld generate-certificates end-entity-certificate {#end-entity-certificate}
+## tcld generate-certificates end-entity-certificate {/* #end-entity-certificate */}
 
 The `tcld generate-certificates end-entity-certificate` command generates end-entity (leaf) certificates for Temporal Cloud.
 
@@ -103,7 +103,7 @@ Alias: `leaf`
 
 The following modifiers control the behavior of the command.
 
-#### --organization
+#### --organization {/* #--organization-1 */}
 
 Specify an organization name for certificate generation.
 
@@ -115,7 +115,7 @@ Alias: `--org`
 tcld generate-certificates end-entity-certificate --organization <value>
 ```
 
-#### --organization-unit
+#### --organization-unit {/* #--organization-unit */}
 
 Optional: Specify the name of the organization unit.
 
@@ -125,7 +125,7 @@ Optional: Specify the name of the organization unit.
 tcld generate-certificates end-entity-certificate --organization-unit <value>
 ```
 
-#### --validity-period
+#### --validity-period {/* #--validity-period-1 */}
 
 Specify the duration for which the certificate is valid.
 Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
@@ -138,7 +138,7 @@ Alias: `-d`
 tcld generate-certificates end-entity-certificate --validity-period <value>
 ```
 
-#### --ca-certificate-file
+#### --ca-certificate-file {/* #--ca-certificate-file-1 */}
 
 Specify the path of the X.509 CA certificate in a `.pem` file for the certificate authority.
 
@@ -150,7 +150,7 @@ Alias: `--ca-cert`
 tcld generate-certificates end-entity-certificate --ca-certificate-file <path>
 ```
 
-#### --ca-key-file
+#### --ca-key-file {/* #--ca-key-file-1 */}
 
 Specify the path of the private key in a `.key` file for the certificate authority.
 
@@ -162,7 +162,7 @@ Alias: `--ca-key`
 tcld generate-certificates end-entity-certificate --ca-key-file <path>
 ```
 
-#### --certificate-file
+#### --certificate-file {/* #--certificate-file */}
 
 Specify a path to a `.pem` file where the generated X.509 leaf certificate file will be stored.
 
@@ -174,7 +174,7 @@ Alias: `--cert`
 tcld generate-certificates end-entity-certificate --certificate-file <path>
 ```
 
-#### --key-file
+#### --key-file {/* #--key-file */}
 
 Specify a path to a `.key` file where the leaf certificate's private key will be stored.
 

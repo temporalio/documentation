@@ -25,7 +25,7 @@ For example, it is also possible to use the [OpenTelemetry Collector](https://te
 
 This configuration assumes that you have [Docker](https://www.docker.com/) installed and are running a [Temporal dev server](https://temporal.io/setup/start-development-server) via the CLI. 
 
-## Prometheus
+## Prometheus {/* #prometheus */}
 
 This section discusses exporting metrics from Temporal SDKs, and setting up Prometheus to collect metrics on Temporal Service, Temporal Client, and Temporal Worker performance.
 
@@ -88,7 +88,7 @@ Refer to the [Temporal Cluster configuration reference](/references/configuratio
 You should now have both Prometheus and a Temporal Service running locally, with Temporal providing Service metrics to Prometheus.
 Next, you'll want to configure SDK metrics as well.
 
-### SDK metrics setup
+### SDK metrics setup {/* #sdk-metrics-setup */}
 
 SDK metrics are emitted by Temporal Workers and other Clients, and must be configured in your application code.
 The Metrics section in the Observability guide details how to create hooks for all supported SDKs:
@@ -113,7 +113,7 @@ Some of these may require you to set different metrics port numbers based on the
 Follow the instructions from each of the samples to run Workflows and begin emitting metrics.
 This will allow you to populate a dashboard in the next section and understand how to further customize Temporal observability for your needs.
 
-### Verifying Prometheus configuration
+### Verifying Prometheus configuration {/* #verifying-prometheus-configuration */}
 
 Once your Workflows are running and emitting metrics, you can visit [http://localhost:9090/targets](http://localhost:9090/targets) on your local Prometheus instance to verify that it is able to scrape the provided endpoints.
 
@@ -125,7 +125,7 @@ If you are not pushing data to exactly 3 metrics endpoints, your environment may
 
 Next, you can visit the [local Prometheus query endpoint](http://localhost:9090/query) to manually run [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) queries on your exported metrics, or proceed to the next section to configure Grafana to generate dashboards from those metrics.
 
-## Grafana
+## Grafana {/* #grafana */}
 
 With [Prometheus](#prometheus) configured, deploy Grafana as a metrics frontend, and configure it to use Prometheus as a data source.
 
@@ -159,7 +159,7 @@ In this example, Grafana is set to pull metrics from Prometheus at the port 9090
 
 Now, you'll just need to add some of our provided dashboards for visualizing Temporal metrics.
 
-### Dashboard setup
+### Dashboard setup {/* #dashboard-setup */}
 
 We provide community-driven Grafana dashboards that can be used for monitoring Temporal Server and SDK metrics in a [dashboards](https://github.com/temporalio/dashboards/) repo.
 Follow the instructions in that repo's README to import the dashboards to Grafana.
@@ -182,7 +182,7 @@ For more details on configuring Grafana dashboards, see the [Grafana Dashboards 
 From here, you can configure Grafana [Alerts](https://grafana.com/docs/grafana/latest/alerting/) for any monitored parameters, add custom metrics to your Temporal SDK code, and use these observability features to help scale your Temporal deployment.
 Refer to the [Cluster metrics](/references/cluster-metrics) and [SDK metrics](/references/sdk-metrics) reference for more.
 
-## Configuring Temporal Service health checks {#health-checks}
+## Configuring Temporal Service health checks {/* #health-checks */}
 
 The [Frontend Service](/temporal-service/temporal-server#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
 
@@ -210,11 +210,11 @@ service {
   }
 ```
 
-## Installing via Helm Chart
+## Installing via Helm Chart {/* #installing-via-helm-chart */}
 
 If you are installing and running Temporal via [Helm chart](https://github.com/temporalio/helm-charts), you can also [provide additional parameters](https://github.com/temporalio/helm-charts?tab=readme-ov-file#exploring-metrics-via-grafana) to populate and explore a Grafana dashboard out of the box.
 
-## Datadog {#datadog}
+## Datadog {/* #datadog */}
 
 Datadog has a Temporal integration for collecting Temporal Service metrics.
 Once you've [configured Prometheus](#prometheus), you can configure the [Datadog Agent](https://docs.datadoghq.com/integrations/temporal/).

@@ -17,7 +17,7 @@ account-level and within a Namespace. On the account-level, each access principa
 the Namespace-level, each access principal can be assigned one Namespace-level permission. Some account-level roles,
 such as Account Owner and Global Admin, automatically have Namespace Admin permissions on all Namespaces in the account.
 
-## Account-level roles
+## Account-level roles {/* #account-level-roles */}
 
 Account-level roles are assigned to access principals at the account level. They control access to account resources,
 such as:
@@ -47,7 +47,7 @@ and these permissions cannot be revoked without removing the role. Developers ca
 Admin permissions for each Namespace they create. This permission can be revoked. Developer roles also don't have
 automatic access to Namespaces that they didn't create.
 
-### Best practice for assigning the Account Owner role
+### Best practice for assigning the Account Owner role {/* #best-practice-for-assigning-the-account-owner-role */}
 
 The Account Owner role holds the highest level of access in the system. This role configures account-level parameters
 and manages Temporal billing and payment information. It allows users to perform all actions within the Temporal Cloud
@@ -62,7 +62,7 @@ We strongly recommend the following precautions when assigning the Account Owner
 This latter rule is useful for anyone on your team who may need to be contacted urgently, regardless of their Account
 role.
 
-## Namespace-level permissions {#namespace-level-permissions}
+## Namespace-level permissions {/* #namespace-level-permissions */}
 
 Namespace-level permissions govern access to resources within a Namespace, such as the following:
 

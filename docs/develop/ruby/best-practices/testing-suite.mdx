@@ -26,7 +26,7 @@ This page shows how to do the following:
 
 The Ruby test-suite feature guide describes the frameworks that facilitate Workflow and integration testing.
 
-## Types of Tests {#types-of-tests}
+## Types of Tests {/* #types-of-tests */}
 
 In the context of Temporal, you can create these types of automated tests:
 
@@ -41,19 +41,19 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 **Compatible testing frameworks**
 
 The Ruby SDK is compatible with any testing framework and does not have a specific recommendation.
 Most Ruby SDK samples use [minitest](https://github.com/minitest/minitest).
 
-## Testing Workflows {#testing-workflows}
+## Testing Workflows {/* #testing-workflows */}
 
 Workflow testing can be done in an integration-test fashion against a real server, however it is hard to simulate timeouts and other long time-based code.
 Using the time-skipping Workflow test environment can help there.
 
-### Testing Workflows with standard server
+### Testing Workflows with standard server {/* #testing-workflows-with-standard-server */}
 
 A non-time-skipping `Temporalio::Testing::WorkflowEnvironment` can be started via `start_local` which supports all standard Temporal features.
 It is actually the real Temporal dev server packaged in the Temporal CLI, lazily downloaded on first use, and run as a sub-process in the background.
@@ -96,7 +96,7 @@ end
 While this is just a demonstration, a local server is often used as a fixture across many tests.
 In minitest for instance, users often start the environment lazily (with no block), and shut it down inside a block passed to `Minitest.after_run`.
 
-### Testing Workflows with time skipping
+### Testing Workflows with time skipping {/* #testing-workflows-with-time-skipping */}
 
 Sometimes there is a need to test Workflows that run a long time or to test that timeouts occur.
 A time-skipping `Temporalio::Testing::WorkflowEnvironment` can be started via `start_time_skipping` which is a reimplementation of the Temporal server with special time skipping capabilities.
@@ -105,7 +105,7 @@ Note, unlike `start_local`, this class is not thread safe nor safe for use with 
 It can be technically be reused, but only for one test at a time because time skipping is locked/unlocked at the environment level.
 Developers are encouraged to run it per test needed.
 
-#### Automatic time skipping
+#### Automatic time skipping {/* #automatic-time-skipping */}
 
 Here's a simple example of a Workflow that waits a day:
 
@@ -149,7 +149,7 @@ This is because by calling `execute_workflow` on our client, we are actually cal
 
 To disable automatic time-skipping while waiting for a workflow result, run code in a block passed to `env.auto_time_skipping_disabled`.
 
-#### Manual time skipping
+#### Manual time skipping {/* #manual-time-skipping */}
 
 Until a Workflow is waited on, all time skipping in the time-skipping environment is done manually via `WorkflowEnvironment#sleep`.
 
@@ -219,19 +219,19 @@ def test_signal_workflow_timeout
 end
 ```
 
-### Mocking Activities
+### Mocking Activities {/* #mocking-activities */}
 
 When testing Workflows, often you don't want to actually run the Activities.
 Activities are just classes that extend `Temporalio::Activity::Definition`.
 Simply write different/empty/fake/asserting ones and pass those to the Worker to have different activities called during the test.
 
-## Testing Activities {#test-activities}
+## Testing Activities {/* #test-activities */}
 
 Unit testing an Activity or any code that could run in an Activity is done via the `Temporalio::Testing::ActivityEnvironment` class.
 Simply instantiate the class, and any code inside the block to `run` will be invoked inside the activity context.
 Several things about the activity environment can be customized via parameters when constructing the environment including setting the info, providing a proc to call back on each heartbeat, setting the cancellation to be used, etc.
 
-## Replay test {#replay-test}
+## Replay test {/* #replay-test */}
 
 Given a Workflow's history, it can be replayed locally to check for things like non-determinism errors.
 For example, assuming the `history_json` parameter below is given a JSON string of history exported from the CLI or web UI for workflow `MyWorkflow`, the following method will replay it:

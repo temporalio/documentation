@@ -1,4 +1,4 @@
-### North America - Iowa (`us-central1`)
+### North America - Iowa (`us-central1`) {/* #north-america---iowa-us-central1 */}
 
 - **Cloud API Code**: `gcp-us-central1`
 - **Regional Endpoint**: `gcp-us-central1.region.tmprl.cloud`
@@ -13,7 +13,7 @@
   - `aws-us-east-2`
   - `aws-us-west-2`
 
-### North America - Oregon (`us-west1`)
+### North America - Oregon (`us-west1`) {/* #north-america---oregon-us-west1 */}
 
 - **Cloud API Code**: `gcp-us-west1`
 - **Regional Endpoint**: `gcp-us-west1.region.tmprl.cloud`
@@ -28,7 +28,7 @@
   - `aws-us-east-2`
   - `aws-us-west-2`
 
-### North America - Northern Virginia (`us-east4`)
+### North America - Northern Virginia (`us-east4`) {/* #north-america---northern-virginia-us-east4 */}
 
 - **Cloud API Code**: `gcp-us-east4`
 - **Regional Endpoint**: `gcp-us-east4.region.tmprl.cloud` 
@@ -43,7 +43,7 @@
   - `aws-us-east-2`
   - `aws-us-west-2`
 
-### Europe - Frankfurt (`europe-west3`)
+### Europe - Frankfurt (`europe-west3`) {/* #europe---frankfurt-europe-west3 */}
 
 - **Cloud API Code**: `gcp-europe-west3`
 - **Regional Endpoint**: `gcp-europe-west3.region.tmprl.cloud`
@@ -56,7 +56,7 @@
   - `aws-eu-west-1`
   - `aws-eu-west-2`
 
-### Asia Pacific - Mumbai (`asia-south1`)
+### Asia Pacific - Mumbai (`asia-south1`) {/* #asia-pacific---mumbai-asia-south1 */}
 
 - **Cloud API Code**: `gcp-asia-south1`
 - **Regional Endpoint**: `gcp-asia-south1.region.tmprl.cloud`
@@ -72,7 +72,7 @@
   - `aws-ap-southeast-1`
   - `aws-ap-southeast-2`
 
-### Asia Pacific - Jakarta (`asia-southeast2`)
+### Asia Pacific - Jakarta (`asia-southeast2`) {/* #asia-pacific---jakarta-asia-southeast2 */}
 
 - **Cloud API Code**: `gcp-asia-southeast2`
 - **Regional Endpoint**: `gcp-asia-southeast2.region.tmprl.cloud`

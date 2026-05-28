@@ -32,13 +32,13 @@ There are two primary Versioning methods that you can use:
 Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/go/worker-versioning-legacy) docs if needed. 
 :::
 
-## Worker Versioning
+## Worker Versioning {/* #worker-versioning */}
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
-## Versioning with Patching {#patching}
+## Versioning with Patching {/* #patching */}
 
-### Patching with GetVersion
+### Patching with GetVersion {/* #patching-with-getversion */}
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -159,7 +159,7 @@ You can add multiple calls to `GetVersion` in a single Workflow.
 This can become challenging to manage if you have many long-running Workflows, as you will wind up with many code branches over time.
 To clean these up, you can gradually deprecate older Workflow versions.
 
-### Deprecating old Workflow versions
+### Deprecating old Workflow versions {/* #deprecating-old-workflow-versions */}
 
 You can safely remove support for older Workflow versions once you are certain that there are no longer any open Workflow Executions based on that version. You can use the following [List Filter](/list-filter) syntax for this (the 1 near the end of the last line represents the version number):
 
@@ -191,7 +191,7 @@ if version  == 2 {
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
-### Workflow cutovers
+### Workflow cutovers {/* #workflow-cutovers */}
 
 
 To understand why Patching is useful, it's helpful to demonstrate cutting over an entire Workflow.
@@ -225,7 +225,7 @@ The downside of this method is that it requires you to duplicate code and to upd
 This can become impractical over time.
 This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching.
 
-## Runtime checking {#runtime-checking}
+## Runtime checking {/* #runtime-checking */}
 
 The Temporal Go SDK performs a runtime check to help prevent obvious incompatible changes.
 Adding, removing, or reordering any of these methods without Versioning triggers the runtime check and results in a nondeterminism error:

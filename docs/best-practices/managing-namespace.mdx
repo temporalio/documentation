@@ -36,9 +36,9 @@ Related guidance:
 - [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns)
 - [Managing Actions per Second (APS) limits in Temporal Cloud](/best-practices/managing-aps-limits)
 
-## Naming Conventions
+## Naming Conventions {/* #naming-conventions */}
 
-### Use lowercase and hyphens
+### Use lowercase and hyphens {/* #use-lowercase-and-hyphens */}
 
 Use lowercase letters and hyphens (`-`) as separators in Namespace names.
 
@@ -49,7 +49,7 @@ To avoid confusion across environments, always use lowercase.
 
 **Example**: `payment-checkout-prd`
 
-### Follow a consistent naming pattern
+### Follow a consistent naming pattern {/* #follow-a-consistent-naming-pattern */}
 
 Use a pattern like `<use-case>-<domain>-<environment>` to name Namespaces:
 
@@ -73,9 +73,9 @@ Cloud Namespace names are limited to [39 characters](/cloud/namespaces#temporal-
 If you need to include region, use short codes (e.g., `aps1`, `use1`).
 :::
 
-## Organizational Patterns
+## Organizational Patterns {/* #organizational-patterns */}
 
-### Choose your Namespace boundary intentionally
+### Choose your Namespace boundary intentionally {/* #choose-your-namespace-boundary-intentionally */}
 
 Start with the smallest number of Namespaces that gives you clear ownership and safe isolation.
 In Temporal Cloud, a Namespace boundary affects:
@@ -98,7 +98,7 @@ Use the following decision table as a starting point:
 As a default, start with one Namespace per use case and environment. Split later when APS pressure, security
 requirements, ownership boundaries, or troubleshooting needs justify the extra operational cost.
 
-### Pattern 1: Namespace per use case and environment
+### Pattern 1: Namespace per use case and environment {/* #pattern-1-namespace-per-use-case-and-environment */}
 
 For simple configurations without multiple services or team boundaries.
 
@@ -112,7 +112,7 @@ Choose this pattern when:
 - environments need clean separation
 - workload volume and criticality do not yet require further isolation
 
-### Pattern 2: Namespace per use case, service, and environment
+### Pattern 2: Namespace per use case, service, and environment {/* #pattern-2-namespace-per-use-case-service-and-environment */}
 
 When multiple services that are part of the same use case communicate externally to Temporal via API (HTTP/gRPC).
 
@@ -126,7 +126,7 @@ Choose this pattern when:
 - one service can exhaust APS or operational limits independently of the others
 - teams want separate ownership of deployment, alerting, or on-call boundaries
 
-### Pattern 3: Namespace per use case, domain, and environment
+### Pattern 3: Namespace per use case, domain, and environment {/* #pattern-3-namespace-per-use-case-domain-and-environment */}
 
 When multiple services need to communicate with each other, use [Temporal Nexus](/nexus) to connect Workflows across Namespace boundaries.
 This provides better security, fault isolation, and modularity than sharing a Namespace.
@@ -149,7 +149,7 @@ When multiple teams share a Namespace, prefix each Workflow ID with a service-sp
 Task Queue names must also be unique within the Namespace.
 :::
 
-### Pattern 4: Namespace per tenant
+### Pattern 4: Namespace per tenant {/* #pattern-4-namespace-per-tenant */}
 
 Use a separate [Namespace](/namespaces) per tenant only when each tenant needs a true isolation boundary.
 
@@ -163,7 +163,7 @@ This is usually appropriate only for a small number of high-value tenants that r
 For most SaaS use cases, a shared Namespace with per-tenant [Task Queues](/task-queue) is simpler and more scalable.
 See [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns) for those designs.
 
-### What should cause you to split a Namespace later?
+### What should cause you to split a Namespace later? {/* #what-should-cause-you-to-split-a-namespace-later */}
 
 Revisit your topology when one or more of the following becomes true:
 
@@ -176,9 +176,9 @@ Revisit your topology when one or more of the following becomes true:
 Splitting a Namespace increases safety, but it also adds overhead for provisioning, tagging, credentials, and cross-Namespace coordination.
 Use [Nexus](/nexus) where possible instead of sharing Temporal primitives across team or domain boundaries.
 
-## Production Safeguards
+## Production Safeguards {/* #production-safeguards */}
 
-### Use an Authorizer (open source only) {#authorizer}
+### Use an Authorizer (open source only) {/* #authorizer */}
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -186,15 +186,15 @@ If an Authorizer is not set, Temporal uses the `nopAuthority` authorizer that un
 
 On Temporal Cloud, [role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) provide namespace-level authorization without custom configuration.
 
-### Enable deletion protection (Temporal Cloud only) {#deletion-protection}
+### Enable deletion protection (Temporal Cloud only) {/* #deletion-protection */}
 
 [Enable deletion protection](/cloud/namespaces#delete-protection) for production Namespaces to prevent accidental deletion.
 
-### Enable High Availability (Temporal Cloud only) {#high-availability}
+### Enable High Availability (Temporal Cloud only) {/* #high-availability */}
 
 For business-critical use cases with strict uptime requirements, enable [High Availability features](/cloud/high-availability) for a [99.99% contractual SLA](/cloud/high-availability#high-availability-features).
 
-### Use Infrastructure as Code (Temporal Cloud only) {#terraform}
+### Use Infrastructure as Code (Temporal Cloud only) {/* #terraform */}
 
 Use the [Temporal Cloud Terraform provider](/cloud/terraform-provider) to manage Namespaces.
 If Terraform isn't suitable, scripting against the [Cloud Ops API](/ops) or [tcld](/cloud/tcld) is a good alternative.
@@ -209,14 +209,14 @@ This is separate from [Temporal Cloud deletion protection](/cloud/namespaces#del
 
 **Reference**: [Example Terraform configuration](https://github.com/kawofong/temporal-terraform)
 
-## Tagging (Temporal Cloud only) {#tagging}
+## Tagging (Temporal Cloud only) {/* #tagging */}
 
 [Tags](/cloud/namespaces#tag-a-namespace) are key-value metadata pairs that help organize, track, and manage Namespaces.
 
 Tags complement your naming convention by adding metadata that doesn't fit in the Namespace name.
 While the name captures use case, domain, and environment, tags can capture additional dimensions like team ownership, data sensitivity, or business criticality.
 
-### Recommended tag categories
+### Recommended tag categories {/* #recommended-tag-categories */}
 
 | Tag Key | Purpose | Examples |
 |---------|---------|----------|
@@ -229,7 +229,7 @@ While the name captures use case, domain, and environment, tags can capture addi
 
 For tag structure, limits, and management instructions, see [How to tag a Namespace](/cloud/namespaces#tag-a-namespace).
 
-## SDK Client Configuration
+## SDK Client Configuration {/* #sdk-client-configuration */}
 
 Set Namespaces in your SDK Client to isolate your Workflow Executions.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the `default` Namespace.

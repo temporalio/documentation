@@ -26,7 +26,7 @@ import { ToolTipTerm } from '@site/src/components';
 Temporal Cloud offers several ways for you to track the health and performance of your
 [High Availability](/cloud/high-availability) namespaces.
 
-## Replication status
+## Replication status {/* #replication-status */}
 
 You can monitor your replica status with the Temporal Cloud UI. If the replica is unhealthy, Temporal Cloud disables the
 "Trigger a failover" option to prevent failing over to an unhealthy replica. An unhealthy replica might be due to:
@@ -39,7 +39,7 @@ You can monitor your replica status with the Temporal Cloud UI. If the replica i
 
 These issues prevent the replica from being used during a failover, ensuring system stability and consistency.
 
-## Monitoring replication
+## Monitoring replication {/* #monitoring-replication */}
 
 Temporal Cloud's High Availability features use asynchronous replication between the primary and the replica. Workflow
 updates in the primary, along with associated History Events, are transmitted to the replica. Replication lag refers to
@@ -62,7 +62,7 @@ When a Namespace is using a replica, you may notice that the Action count in `te
 2x what it was before adding a replica. This happens because Actions are replicated; they occur on both the primary and
 the replica.
 
-## Failover audit log
+## Failover audit log {/* #failover-audit-log */}
 
 When Temporal triggers failovers, the [audit log](/cloud/audit-logs) will update with details.
 

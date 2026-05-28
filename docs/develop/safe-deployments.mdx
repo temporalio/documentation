@@ -22,7 +22,7 @@ In this article, we’ll provide some advice on how you can safely validate chan
 Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
 :::
 
-## Use Replay Testing before and during your deployments
+## Use Replay Testing before and during your deployments {/* #use-replay-testing-before-and-during-your-deployments */}
 
 The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](/workflow-execution#replay).
 
@@ -41,13 +41,13 @@ When you're writing changes to Workflow code, you can fetch some representative 
 Additionally if your Workflows contain any PII (which should be encrypted), make sure this information is scrubbed for the purposes of your tests, or err on the side of caution and don’t use this method.
 With that constraint in mind, we’ll focus on how you can perform replay tests in a production deployment of a Worker with new Workflow code. The core of how replay testing is done is the same regardless of when you choose to do it, so you can apply some of the lessons here to earlier stages in your development process.
 
-## Implement a deployment-time replay test
+## Implement a deployment-time replay test {/* #implement-a-deployment-time-replay-test */}
 
 The key to a successful safe deployment is to break it into two phases: a verification phase, where you’ll run the replay test, followed by the actual deployment of your new Worker code.
 
 You can accomplish this by wrapping your Worker application with some code that can choose whether it will run in verification mode, or in production. This is most easily done if you do not deploy your Workers side-by-side with other application code, which is a recommended best practice. If you do deploy your Workers as part of some other application, you will likely need to separate out a different entry point specifically for verification.
 
-### Run a replay and real Worker with the same code
+### Run a replay and real Worker with the same code {/* #run-a-replay-and-real-worker-with-the-same-code */}
 
 The following code demonstrates how the same entry point could be used to either verify the new code using replay testing, or to actually run the Worker.
 
@@ -106,6 +106,6 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Use the multi-modal Worker
+### Use the multi-modal Worker {/* #use-the-multi-modal-worker */}
 
 The most straightforward way to use this bimodal Worker is to deploy one instance of it at the beginning of your deployment process in verify mode, see that it passes, and then proceed to deploy the rest of your new workers in run mode.

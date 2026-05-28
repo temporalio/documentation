@@ -13,7 +13,7 @@ tags:
 description: How to handle errors using the Temporal Go SDK.
 ---
 
-## Error handling {#error-handling}
+## Error handling {/* #error-handling */}
 
 Within a Workflow, an Activity or Child Workflow execution might fail. You can
 handle errors differently based on the error type.
@@ -76,7 +76,7 @@ if err != nil {
 }
 ```
 
-### Panics and deferred functions
+### Panics and deferred functions {/* #panics-and-deferred-functions */}
 
 In Go, [`defer` schedules cleanup functions and `recover()` catches panics](https://go.dev/blog/defer-panic-and-recover) to prevent them from crashing the program.
 This doesn't work the same way in Temporal Workflow code — you cannot `recover()` from a panic inside a `defer`.

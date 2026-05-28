@@ -31,7 +31,7 @@ if err != nil{
 Each function returns a `ServerOption` that is applied to the instance.
 Source code for parameter reference is here: https://github.com/temporalio/temporal/blob/main/temporal/server_option.go
 
-### WithConfig
+### WithConfig {/* #withconfig */}
 
 To launch a Temporal server, a configuration file is required. The server automatically searches for this configuration
 in the default location ./config/development.yaml when starting. If you need to use a custom configuration, you can
@@ -44,7 +44,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithConfigLoader
+### WithConfigLoader {/* #withconfigloader */}
 
 Load a custom configuration from a file.
 
@@ -54,7 +54,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### ForServices
+### ForServices {/* #forservices */}
 
 Sets the list of all valid temporal services.
 The default can be used from the `go.temporal.io/server/temporal` package.
@@ -65,7 +65,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### InterruptOn
+### InterruptOn {/* #interrupton */}
 
 This option provides a channel that interrupts the server on the signal from that channel.
 
@@ -80,7 +80,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithAuthorizer
+### WithAuthorizer {/* #withauthorizer */}
 
 Sets a low level [authorization mechanism](/self-hosted-guide/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
 
@@ -90,7 +90,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithTLSConfigFactory
+### WithTLSConfigFactory {/* #withtlsconfigfactory */}
 
 Overrides the default TLS configuration provider.
 `TLSConfigProvider` is defined in the `go.temporal.io/server/common/rpc/encryption` package.
@@ -101,7 +101,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithClaimMapper
+### WithClaimMapper {/* #withclaimmapper */}
 
 Configures a [mechanism to map roles](/self-hosted-guide/security#claim-mapper) to `Claims` for authorization.
 
@@ -117,7 +117,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithCustomMetricsReporter
+### WithCustomMetricsReporter {/* #withcustommetricsreporter */}
 
 Sets a custom tally metric reporter.
 

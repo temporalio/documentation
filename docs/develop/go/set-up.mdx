@@ -33,7 +33,7 @@ Configure your local development environment to get started developing with Temp
   </>
 }>
 
-## Install Go
+## Install Go {/* #install-go */}
 
 Make sure you have Go installed. These tutorials were produced using Go 1.18. Check your version of Go with the
 following command:
@@ -65,7 +65,7 @@ go mod tidy
 </>
 }>
 
-## Install the Temporal Go SDK
+## Install the Temporal Go SDK {/* #install-the-temporal-go-sdk */}
 
 If you are creating a new project using the Temporal Go SDK, you can start by creating a new directory.
 
@@ -113,7 +113,7 @@ Finally, install the Temporal SDK with `go get`.
 </>
 }>
 
-## Install Temporal CLI and start the development server
+## Install Temporal CLI and start the development server {/* #install-temporal-cli-and-start-the-development-server */}
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
@@ -139,7 +139,7 @@ temporal server start-dev --ui-port 8080
 </>
 }>
 
-## Start the development server
+## Start the development server {/* #start-the-development-server */}
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
@@ -157,7 +157,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -169,7 +169,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity
+### 1. Create the Activity {/* #1-create-the-activity */}
 
 An Activity is a normal function or method that executes a single, well-defined action (either short- or long-running)
 that is typically prone to failure. Examples include any action that interacts with the outside world, such as sending
@@ -191,7 +191,7 @@ func Greet(ctx context.Context, name string) (string, error) {
 }
 ```
 
-### 2. Create the Workflow
+### 2. Create the Workflow {/* #2-create-the-workflow */}
 
 Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and
 keep running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will
@@ -225,7 +225,7 @@ func SayHelloWorkflow(ctx workflow.Context, name string) (string, error) {
 
 ```
 
-### 3. Create and Run the Worker
+### 3. Create and Run the Worker {/* #3-create-and-run-the-worker */}
 
 With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you
 configure it to poll, looking for work to do. Once the Worker dequeues a Workflow or Activity task from the Task Queue,
@@ -274,7 +274,7 @@ Run the Worker:
 go run worker/main.go
 ```
 
-### 4. Execute the Workflow
+### 4. Execute the Workflow {/* #4-execute-the-workflow */}
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
@@ -326,7 +326,7 @@ Then run:
 go run start/main.go Temporal
 ```
 
-### Verify Success
+### Verify Success {/* #verify-success */}
 
 If everything is working correctly, you should see:
 

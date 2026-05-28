@@ -56,7 +56,7 @@ The environment variables are defined in the
 [UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/config/docker.yaml) and
 described in more detail below.
 
-## `TEMPORAL_ADDRESS`
+## `TEMPORAL_ADDRESS` {/* #temporal_address */}
 
 The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Cluster. This
 variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using
@@ -64,50 +64,50 @@ variable can be set [in the base configuration file](/references/web-ui-configur
 
 This variable is required for setting other environment variables.
 
-## `TEMPORAL_UI_PORT`
+## `TEMPORAL_UI_PORT` {/* #temporal_ui_port */}
 
 The port used by the Temporal WebUI Server and the HTTP API.
 
 This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
 
-## `TEMPORAL_UI_PUBLIC_PATH`
+## `TEMPORAL_UI_PUBLIC_PATH` {/* #temporal_ui_public_path */}
 
 Stores a value such as "" or "/custom-path" that allows the UI to be served from a subpath.
 
-## `TEMPORAL_UI_ENABLED`
+## `TEMPORAL_UI_ENABLED` {/* #temporal_ui_enabled */}
 
 Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
 
 Enabling the browser UI allows the Server to be accessed from your web browser. If disabled, the server cannot be viewed
 on the web, but the UI server APIs remain available for use.
 
-## `TEMPORAL_CLOUD_UI`
+## `TEMPORAL_CLOUD_UI` {/* #temporal_cloud_ui */}
 
 If enabled, use the alternate UI from Temporal Cloud.
 
-## `TEMPORAL_DEFAULT_NAMESPACE`
+## `TEMPORAL_DEFAULT_NAMESPACE` {/* #temporal_default_namespace */}
 
 The default [Namespace](/namespaces) that the Web UI opens first.
 
-## `TEMPORAL_FEEDBACK_URL`
+## `TEMPORAL_FEEDBACK_URL` {/* #temporal_feedback_url */}
 
 The URL that users are directed to when they click the Feedback button in the UI.
 
 If not specified, this variable defaults to the UI's GitHub Issue page.
 
-## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
+## `TEMPORAL_CONFIG_REFRESH_INTERVAL` {/* #temporal_config_refresh_interval */}
 
 Determines how often the UI Server reads the configuration file for new values.
 
-## `TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE`
+## `TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE` {/* #temporal_show_temporal_system_namespace */}
 
 If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI.
 
-## `TEMPORAL_DISABLE_WRITE_ACTIONS`
+## `TEMPORAL_DISABLE_WRITE_ACTIONS` {/* #temporal_disable_write_actions */}
 
 Disables any button in the UI that allows the user to modify Workflows or Activities.
 
-## `TEMPORAL_AUTH_ENABLED`
+## `TEMPORAL_AUTH_ENABLED` {/* #temporal_auth_enabled */}
 
 Enables or disables Web UI authentication and authorization methods.
 
@@ -117,113 +117,113 @@ When enabled, the Web UI will use the provider information in the
 All auth-related variables can be defined when `TEMPORAL_AUTH_ENABLED` is set to "true". Disabling the variable will
 retain given values.
 
-## `TEMPORAL_AUTH_TYPE`
+## `TEMPORAL_AUTH_TYPE` {/* #temporal_auth_type */}
 
 Specifies the type of authentication. Defaults to `oidc`.
 
-## `TEMPORAL_AUTH_PROVIDER_URL`
+## `TEMPORAL_AUTH_PROVIDER_URL` {/* #temporal_auth_provider_url */}
 
 The .well-known IDP discovery URL for authentication and authorization.
 
 This can be set as in the UI server configuration with [auth](/references/web-ui-configuration#auth).
 
-## `TEMPORAL_AUTH_ISSUER_URL`
+## `TEMPORAL_AUTH_ISSUER_URL` {/* #temporal_auth_issuer_url */}
 
 The URL for the authentication or authorization issuer.
 
 This value is only needed when the issuer differs from the auth provider URL.
 
-## `TEMPORAL_AUTH_CLIENT_ID`
+## `TEMPORAL_AUTH_CLIENT_ID` {/* #temporal_auth_client_id */}
 
 The client ID used for authentication or authorization.
 
 This value is a required parameter.
 
-## `TEMPORAL_AUTH_CLIENT_SECRET`
+## `TEMPORAL_AUTH_CLIENT_SECRET` {/* #temporal_auth_client_secret */}
 
 The client secret used for authentication and authorization.
 
 Client Secrets are used by the oAuth Client for authentication.
 
-## `TEMPORAL_AUTH_CALLBACK_URL`
+## `TEMPORAL_AUTH_CALLBACK_URL` {/* #temporal_auth_callback_url */}
 
 The callback URL used by Temporal for authentication and authorization.
 
 Callback URLs are invoked by IDP after user has finished authenticating in IDP.
 
-## `TEMPORAL_AUTH_SCOPES`
+## `TEMPORAL_AUTH_SCOPES` {/* #temporal_auth_scopes */}
 
 Specifies a set of scopes for auth. Typically, this is `openid`, `profile`, `email`.
 
-## `TEMPORAL_TLS_CA`
+## `TEMPORAL_TLS_CA` {/* #temporal_tls_ca */}
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
 In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued
 by a trusted Certificate Authority. Set this variable to properly locate and use the file.
 
-## `TEMPORAL_TLS_CERT`
+## `TEMPORAL_TLS_CERT` {/* #temporal_tls_cert */}
 
 The path for the Transport Layer Security (TLS) Certificate.
 
 In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed
 certificate. Set the path to allow the environment to locate and use the certificate.
 
-## `TEMPORAL_TLS_KEY`
+## `TEMPORAL_TLS_KEY` {/* #temporal_tls_key */}
 
 The path for the Transport Layer Security (TLS) [key file](/references/web-ui-configuration#tls).
 
 A key file is used to create private and public keys for encryption and signing. Together, these keys are used to create
 certificates.
 
-## `TEMPORAL_TLS_CA_DATA`
+## `TEMPORAL_TLS_CA_DATA` {/* #temporal_tls_ca_data */}
 
 Stores the data for a TLS CA file.
 
 This variable can be used instead of providing a path for `TEMPORAL_TLS_CA`.
 
-## `TEMPORAL_TLS_CERT_DATA`
+## `TEMPORAL_TLS_CERT_DATA` {/* #temporal_tls_cert_data */}
 
 Stores the data for a TLS cert file.
 
 This variable can be used instead of providing a path for `TEMPORAL_TLS_CERT`.
 
-## `TEMPORAL_TLS_KEY_DATA`
+## `TEMPORAL_TLS_KEY_DATA` {/* #temporal_tls_key_data */}
 
 Stores the data for a TLS key file.
 
 This variable can be used instead of providing a path for `TEMPORAL_TLS_KEY`.
 
-## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
+## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` {/* #temporal_tls_enable_host_verification */}
 
 Enables or disables [Transport Layer Security (TLS) host verification](/references/web-ui-configuration#tls).
 
 When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
 
-## `TEMPORAL_TLS_SERVER_NAME`
+## `TEMPORAL_TLS_SERVER_NAME` {/* #temporal_tls_server_name */}
 
 The server on which to operate [Transport Layer Security (TLS) protocols](/references/web-ui-configuration#tls).
 
 TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself. Because of
 this, TLS operates a go-between server.
 
-## `TEMPORAL_CODEC_ENDPOINT`
+## `TEMPORAL_CODEC_ENDPOINT` {/* #temporal_codec_endpoint */}
 
 The endpoint for the [Codec Server](/codec-server), if configured.
 
-## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
+## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN` {/* #temporal_codec_pass_access_token */}
 
 Specifies whether to send a JWT access token as ‘authorization' header in requests with the Codec Server.
 
-## `TEMPORAL_CODEC_INCLUDE_CREDENTIALS`
+## `TEMPORAL_CODEC_INCLUDE_CREDENTIALS` {/* #temporal_codec_include_credentials */}
 
 Specifies whether to include credentials along with requests to the Codec Server.
 
-## `TEMPORAL_FORWARD_HEADERS`
+## `TEMPORAL_FORWARD_HEADERS` {/* #temporal_forward_headers */}
 
 Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend. This is a comma-delimited
 list of the HTTP headers to be forwarded.
 
-## `TEMPORAL_HIDE_LOGS`
+## `TEMPORAL_HIDE_LOGS` {/* #temporal_hide_logs */}
 
 If enabled, does not print logs from the Temporal Service.

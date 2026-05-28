@@ -11,12 +11,12 @@ import TabItem from '@theme/TabItem';
 Give your AI coding agent Temporal expertise with Skills and real-time documentation access with the Temporal Knowledge Base MCP
 Server.
 
-## Skills
+## Skills {/* #skills */}
 
 Skills give AI agents domain-specific Temporal expertise. They work with Claude Code, Codex, Cursor, and any agent that
 supports [Skills](https://agentskills.io).
 
-### Temporal Developer Skill
+### Temporal Developer Skill {/* #temporal-developer-skill */}
 
 The [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer) gives your AI coding agent
 expert-level knowledge of Temporal's programming model — workflow determinism rules, activity patterns, retry policies,
@@ -81,7 +81,7 @@ git clone https://github.com/temporalio/skill-temporal-developer.git ~/.claude/s
 
 Restart your coding agent after installing.
 
-### Temporal Cloud Skill
+### Temporal Cloud Skill {/* #temporal-cloud-skill */}
 
 The [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud) helps your AI coding agent troubleshoot
 Temporal Cloud connectivity, authentication, and configuration issues.
@@ -112,7 +112,7 @@ git clone https://github.com/temporalio/skill-temporal-cloud.git ~/.claude/skill
 
 Restart your coding agent after installing.
 
-## Temporal Knowledge Base  MCP Server
+## Temporal Knowledge Base  MCP Server {/* #temporal-knowledge-base--mcp-server */}
 
 Connect Temporal expertise directly to your AI assistant for accurate, up-to-date answers about Temporal. The
 Temporal knowledge base MCP server gives AI tools real-time access to best practices compiled from our documentation, educational materials, community forum responses, and slack channels, so responses draw from current expertise
@@ -125,7 +125,7 @@ Only an opaque user ID is used for rate limiting. Your name, email, repositories
 
 :::
 
-### Claude Code
+### Claude Code {/* #claude-code */}
 
 Add the Temporal knowledge base MCP server globally so it's available in all your projects:
 
@@ -144,13 +144,13 @@ project's `.mcp.json` file:
 claude mcp add --transport http temporal-docs https://temporal.mcp.kapa.ai
 ```
 
-### Claude Desktop
+### Claude Desktop {/* #claude-desktop */}
 
 1. Open Claude Desktop settings
 2. Navigate to **Settings > Connectors**
 3. Add a new MCP server with the URL: `https://temporal.mcp.kapa.ai`
 
-### Other MCP-compatible tools
+### Other MCP-compatible tools {/* #other-mcp-compatible-tools */}
 
 The Temporal Knowledge Base MCP Server URL is:
 

@@ -24,7 +24,7 @@ This page covers namespace operations for **open source Temporal**. For core nam
 A [Namespace](/namespaces) is a unit of isolation within the Temporal Platform. Before you can run Workflows, you must
 register at least one Namespace with your Temporal Service.
 
-## Create a Namespace
+## Create a Namespace {/* #create-a-namespace */}
 
 Registering a Namespace creates it on the Temporal Service. When you register a Namespace, you must set a
 [Retention Period](/temporal-service/temporal-server#retention-period) that determines how long closed Workflow
@@ -37,7 +37,7 @@ You can create Namespaces using:
 - **Java SDK**: [`RegisterNamespace`](/develop/java/client/namespaces#register-namespace)
 - **TypeScript SDK**: [Namespace management](/develop/typescript/client/namespaces#register-namespace)
 
-### The default Namespace
+### The default Namespace {/* #the-default-namespace */}
 
 If no Namespace is specified, SDKs and CLI use the `default` Namespace. You must register this Namespace before using
 it.
@@ -54,7 +54,7 @@ temporal operator namespace create --namespace default
 Namespace registration takes up to 15 seconds to complete. Wait for this process to finish before making calls to the
 Namespace.
 
-## Manage Namespaces
+## Manage Namespaces {/* #manage-namespaces */}
 
 Common namespace management operations:
 
@@ -71,12 +71,12 @@ For SDK-based namespace management:
 - [Java SDK namespace management](/develop/java/client/namespaces#manage-namespaces)
 - [TypeScript SDK namespace management](/develop/typescript/client/namespaces#manage-namespaces)
 
-### Deprecate vs Delete
+### Deprecate vs Delete {/* #deprecate-vs-delete */}
 
 - **Deprecate**: Prevents new Workflow Executions from starting, but existing Workflows continue to run.
 - **Delete**: Removes the Namespace and all Workflow Executions. This is irreversible.
 
-## Security
+## Security {/* #security */}
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service to control who can
 create, update, or deprecate Namespaces.
@@ -85,7 +85,7 @@ Without an Authorizer configured, Temporal uses the `nopAuthority` authorizer th
 
 For Temporal Cloud, [role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) provide namespace-level authorization without custom configuration.
 
-## Best practices
+## Best practices {/* #best-practices */}
 
 For namespace naming conventions, organizational patterns, and production safeguards, see
 [Namespace Best Practices](/best-practices/managing-namespace).

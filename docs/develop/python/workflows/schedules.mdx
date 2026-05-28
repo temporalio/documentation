@@ -38,7 +38,7 @@ This page shows how to do the following:
 - [Temporal Cron Jobs](#temporal-cron-jobs)
 - [Start Delay](#start-delay)
 
-## Schedule a Workflow {#schedule-a-workflow}
+## Schedule a Workflow {/* #schedule-a-workflow */}
 
 **How to Schedule a Workflow Execution**
 
@@ -46,7 +46,7 @@ Scheduling Workflows is a crucial aspect of any automation process, especially w
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
-### Create a Scheduled Workflow {#create}
+### Create a Scheduled Workflow {/* #create */}
 
 **How to create a Scheduled Workflow**
 
@@ -95,7 +95,7 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 :::
 
-### Backfill a Scheduled Workflow {#backfill}
+### Backfill a Scheduled Workflow {/* #backfill */}
 
 **How to backfill a Scheduled Workflow**
 
@@ -136,7 +136,7 @@ async def main():
     )
 ```
 
-### Delete a Scheduled Workflow {#delete}
+### Delete a Scheduled Workflow {/* #delete */}
 
 **How to delete a Scheduled Workflow**
 
@@ -161,7 +161,7 @@ async def main():
     await handle.delete()
 ```
 
-### Describe a Scheduled Workflow {#describe}
+### Describe a Scheduled Workflow {/* #describe */}
 
 **How to describe a Scheduled Workflow**
 
@@ -190,7 +190,7 @@ async def main():
     print(f"Returns the note: {desc.schedule.state.note}")
 ```
 
-### List a Scheduled Workflow {#list}
+### List a Scheduled Workflow {/* #list */}
 
 **How to list a Scheduled Workflow**
 
@@ -214,7 +214,7 @@ async def main() -> None:
         print(f"List Schedule Info: {schedule.info}.")
 ```
 
-### Pause a Scheduled Workflow {#pause}
+### Pause a Scheduled Workflow {/* #pause */}
 
 **How to pause a Scheduled Workflow**
 
@@ -241,7 +241,7 @@ async def main():
     await handle.pause(note="Pausing the schedule for now")
 ```
 
-### Trigger a Scheduled Workflow {#trigger}
+### Trigger a Scheduled Workflow {/* #trigger */}
 
 **How to trigger a Scheduled Workflow**
 
@@ -267,7 +267,7 @@ async def main():
     await handle.trigger()
 ```
 
-### Update a Scheduled Workflow {#update}
+### Update a Scheduled Workflow {/* #update */}
 
 **How to update a Scheduled Workflow**
 
@@ -294,7 +294,7 @@ The following example updates the Schedule to use a new argument.
         return ScheduleUpdate(schedule=input.description.schedule)
 ```
 
-## Temporal Cron Jobs {#temporal-cron-jobs}
+## Temporal Cron Jobs {/* #temporal-cron-jobs */}
 
 **How to use Temporal Cron Jobs**
 
@@ -341,7 +341,7 @@ Temporal Workflow Schedule Cron strings follow this format:
 * * * * *
 ```
 
-## Start Delay {#start-delay}
+## Start Delay {/* #start-delay */}
 
 **How to use Start Delay**
 

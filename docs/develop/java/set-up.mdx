@@ -31,7 +31,7 @@ Configure your local development environment to get started developing with Temp
     </CodeSnippet>
   </>
 }>
-## Install the Java JDK
+## Install the Java JDK {/* #install-the-java-jdk */}
 
 Make sure you have the Java JDK installed. You can either download a copy directly from Oracle or select an OpenJDK
 distribution from your preferred vendor.
@@ -73,7 +73,7 @@ You'll also need either Maven or Gradle installed.
 </>
 }>
 
-## Create a Project
+## Create a Project {/* #create-a-project */}
 
 Now that you have your build tool installed, create a project to manage your dependencies and build your Temporal
 application.
@@ -161,7 +161,7 @@ tasks.register('runStarter', JavaExec) {
 </>
 }>
 
-## Add Temporal Java SDK Dependencies
+## Add Temporal Java SDK Dependencies {/* #add-temporal-java-sdk-dependencies */}
 
 Now add the Temporal SDK dependencies to your project configuration file.
 
@@ -208,7 +208,7 @@ Next, you'll configure a local Temporal Service for development.
 </>
 }>
 
-## Install Temporal CLI and start the development server
+## Install Temporal CLI and start the development server {/* #install-temporal-cli-and-start-the-development-server */}
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
@@ -234,7 +234,7 @@ temporal server start-dev --ui-port 8080
 </>
 }>
 
-## Start the development server
+## Start the development server {/* #start-the-development-server */}
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
@@ -251,7 +251,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 
 </SetupStep>
 </SetupSteps>
-## Run Hello World: Test Your Installation
+## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -263,7 +263,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity Interface
+### 1. Create the Activity Interface {/* #1-create-the-activity-interface */}
 
 Create an Activity interface file (GreetActivities.java):
 
@@ -290,7 +290,7 @@ an API, which are prone to failure. If an Activity fails, Temporal automatically
 
 You define Activities in Java as an annotated interface, and its implementation.
 
-### 2. Create the Activity Implementation
+### 2. Create the Activity Implementation {/* #2-create-the-activity-implementation */}
 
 Create an Activity implementation file (GreetActivitiesImpl.java):
 
@@ -307,7 +307,7 @@ public class GreetActivitiesImpl implements GreetActivities {
 }
 ```
 
-### 3. Create the Workflow
+### 3. Create the Workflow {/* #3-create-the-workflow */}
 
 Create a Workflow file (SayHelloWorkflow.java):
 
@@ -332,7 +332,7 @@ automatically recreate its pre-failure state so it can continue right where it l
 
 You define Workflows in Java as an annotated interface, and its implementation.
 
-### 4. Create the Workflow Implementation
+### 4. Create the Workflow Implementation {/* #4-create-the-workflow-implementation */}
 
 Create a Workflow implementation file (SayHelloWorkflowImpl.java):
 
@@ -361,7 +361,7 @@ public class SayHelloWorkflowImpl implements SayHelloWorkflow {
 }
 ```
 
-### 5. Create and Run the Worker
+### 5. Create and Run the Worker {/* #5-create-and-run-the-worker */}
 
 Create a Worker file (SayHelloWorker.java):
 
@@ -423,7 +423,7 @@ Workers are a crucial part of your Temporal application as they're what actually
 Workflows and Activities. For more information on Workers, see
 [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-### 6. Execute the Workflow
+### 6. Execute the Workflow {/* #6-execute-the-workflow */}
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
@@ -480,7 +480,7 @@ mvn compile exec:java -Dexec.mainClass="helloworkflow.Starter"
 </TabItem>
 </Tabs>
 
-### Verify Success
+### Verify Success {/* #verify-success */}
 
 If everything is working correctly, you should see:
 

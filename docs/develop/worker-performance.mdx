@@ -25,11 +25,11 @@ The omitted prefix makes the names more readable and descriptive.
 
 :::
 
-## Worker performance concepts {#worker-performance-concepts}
+## Worker performance concepts {/* #worker-performance-concepts */}
 
 A Worker's performance characteristics are affected by, but not limited to, the following elements.
 
-### Task slots {#slots}
+### Task slots {/* #slots */}
 
 A **Worker Task Slot**, represents the capacity of a Temporal Worker to execute a single concurrent Task.
 Slots are crucial for managing the workload and performance of Workers in a Temporal application.
@@ -37,7 +37,7 @@ They're used for both Workflow and Activity Tasks.
 When a Worker starts processing a Task, it occupies one slot.
 The number of available slots directly affects how many tasks a Worker can handle simultaneously.
 
-### Slot suppliers {#slot-suppliers}
+### Slot suppliers {/* #slot-suppliers */}
 
 A **Slot Supplier** defines a strategy to provide slots for a Worker, increasing or decreasing the Worker's slot count.
 The supplier determines when it's acceptable to begin a new Task.
@@ -86,7 +86,7 @@ When running in a containerized environment, all SDKs use cgroups for both CPU a
 
 :::
 
-### Worker tuning {#worker-tuning}
+### Worker tuning {/* #worker-tuning */}
 
 Worker tuning is the process of defining customized slot suppliers for the different task slots of a Worker to fine-tune its performance.
 You use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
@@ -100,7 +100,7 @@ Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options
 
 :::
 
-### Task Pollers 
+### Task Pollers {/* #task-pollers */}
 
 A Worker's **Task Pollers** play a crucial role in the Temporal architecture by efficiently ingesting work to Workers to support scalable, resilient Workflow Execution. 
 Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process. When a Task Poller receives a Task, it delivers the Task to the appropriate Executor Slot for processing.
@@ -109,7 +109,7 @@ Temporal SDKs implement support for *Poller Autoscaling*, which dynamically adju
 Temporal recommends using Poller Autoscaling for the majority of use cases, as manually setting the number of pollers too high or too low for your workload will result in decreased performance. 
 To configure Poller Autoscaling, see [Configuring Poller Options](#configuring-poller-options) and samples for each Temporal SDK.
 
-### Eager task execution
+### Eager task execution {/* #eager-task-execution */}
 
 :::caution
 Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
@@ -117,12 +117,12 @@ Eager start does not respect Worker versioning. An eagerly started Workflow may 
 
 As a latency optimization, Activity and Workflow Tasks may be started eagerly in a local Worker under the right circumstances.
 
-#### Eager Activity Start
+#### Eager Activity Start {/* #eager-activity-start */}
 
 Eager Activity Start may happen automatically if the Worker processing a Workflow Task has also registered the Activity Definition being called.
 If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
 
-#### Eager Workflow Start
+#### Eager Workflow Start {/* #eager-workflow-start */}
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -176,7 +176,7 @@ The above figure shows Eager Workflow Start in action:
 
 To recover from errors, Eager Workflow Start falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker fails or times out while processing the task, the server retries this task non-eagerly after WorkflowTaskTimeout.
 
-## Visualize Workers in the UI {#visualize-workers}
+## Visualize Workers in the UI {/* #visualize-workers */}
 
 The Temporal SDK includes a heartbeat for Worker processes that is sent to the Server, carrying information such as available task slots, CPU usage, and Worker configuration.
 The Server exposes this data through APIs that surface Worker details in the Temporal UI. See a list of all running Workers by selecting Workers in the left navigation menu.
@@ -185,12 +185,12 @@ View the list of Workers assigned to the Workflow Task Queue and inspect Worker 
 This feature requires Temporal Server 1.30 or higher with API version 1.62 or higher, and is also available in Temporal Cloud.
 Worker Heartbeating is required; see [Manage Worker Heartbeating](/cloud/worker-health#manage-worker-heartbeating) for the minimum SDK versions.
 
-## Performance metrics for tuning {#metrics}
+## Performance metrics for tuning {/* #metrics */}
 
 The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 Performance tuning uses three important SDK metric groups:
 
-### Slot availability metrics
+### Slot availability metrics {/* #slot-availability-metrics */}
 
 Temporal's [`worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available) and `worker_task_slots_used` gauges can report the number of available executor “slots” that are currently available and unoccupied for a Worker type.
 Tag these with `worker_type=WorkflowWorker` for Workflow Task Workers or `worker_type=ActivityWorker` for Activity Workers.
@@ -201,23 +201,23 @@ Unlike `worker_task_slots_used`, `worker_task_slots_available` can only be used 
 
 :::
 
-### Latency metrics
+### Latency metrics {/* #latency-metrics */}
 
 Temporal provides two latency timers: [`workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency) for Workflow Tasks and [`activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency) for Activities.
 A Schedule-To-Start latency is the time from when an Task is scheduled (that is, placed in a Queue) to when a Worker starts (that is, picks up from the Task Queue) that Task.
 These metrics help ensure that Tasks are being processed from the queue in a timely manner.
 For more information about `schedule_to_start` timeout and latency, see [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout).
 
-### Cache metrics
+### Cache metrics {/* #cache-metrics */}
 
 The [`sticky_cache_size`](/references/sdk-metrics#sticky_cache_size) and [`workflow_active_thread_count`](/references/sdk-metrics#workflow_active_thread_count) metrics report the size of the Workflow cache and the number of cached Workflow threads.
 
-## Worker performance options {#configuration}
+## Worker performance options {/* #configuration */}
 
 Each Worker can be configured by providing custom Worker options (`WorkerOptions`) at instantiation.
 Options are specific to individual Workers and do not affect other members of your fleet.
 
-### Executor slot options
+### Executor slot options {/* #executor-slot-options */}
 
 The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` options define the number of total available Workflow Task and Activity Task slots for a Worker.
 
@@ -228,9 +228,9 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 :::
 
-### Configuring Poller Options 
+### Configuring Poller Options {/* #configuring-poller-options */}
 
-#### Recommended Approach
+#### Recommended Approach {/* #recommended-approach */}
 
 The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
 
@@ -240,7 +240,7 @@ The Temporal SDKs support Poller Autoscaling, which automatically selects an app
 
 :::
 
-#### Manual Configuration
+#### Manual Configuration {/* #manual-configuration */}
 
 There are options available to manually configure minimum, maximum, and initial poller counts, but it is not recommended to set these values manually for production use cases. To set these values manually, the following options are available: 
 
@@ -249,7 +249,7 @@ There are options available to manually configure minimum, maximum, and initial 
 
 These options define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues, respectively. 
 
-#### SDK Examples
+#### SDK Examples {/* #sdk-examples */}
 
 <SdkTabs>
 <SdkTabs.Go>
@@ -346,7 +346,7 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Cache options (Java SDK) {#cache-options}
+### Cache options (Java SDK) {/* #cache-options */}
 
 A Workflow Cache is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
@@ -362,13 +362,13 @@ This includes memory and the total thread count, which should be limited per hos
 
 For Go, use [`SetStickyWorkflowCacheSize`](https://pkg.go.dev/go.temporal.io/sdk/worker#SetStickyWorkflowCacheSize). For Python, use the `max_cached_workflows` Worker option.
 
-### "Large value" drawbacks
+### "Large value" drawbacks {/* #large-value-drawbacks */}
 
 There are drawbacks when you use "large values everywhere."
 As with any multithreading system, specifying excessively large values without monitoring with the SDK and system metrics leads to constant resource contention/stealing
 This decreases the total throughput and increases latency jitter of the system.
 
-### Invariants (JavaSDK only) {#invariants}
+### Invariants (JavaSDK only) {/* #invariants */}
 
 These properties should always be true for a Worker's configuration.
 
@@ -378,14 +378,14 @@ Perform this sanity check after the adjustments to Worker settings.
 2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It's recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
 3. `maxConcurrentWorkflowTaskPollers` should be significantly ≤ `maxConcurrentWorkflowTaskExecutionSize`. And `maxConcurrentActivityTaskPollers` should be significantly ≤ `maxConcurrentActivityExecutionSize`. The number of pollers should always be lower than the number of executors.
 
-## Worker runtime performance tuning {#worker-performance-tuning}
+## Worker runtime performance tuning {/* #worker-performance-tuning */}
 
 Worker tuning manages the assignment of slot suppliers.
 A **Worker Tuner** instance exists per-Worker, providing slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
 A tuner assigns different suppliers to each slot type.
 For example, it might provide a fixed assignment slot supplier for Workflows and use a resource-based supplier for Activities.
 
-### Choosing slot supplier types {#choosing-slot-supplier-types}
+### Choosing slot supplier types {/* #choosing-slot-supplier-types */}
 
 Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
 **For most workloads, Temporal recommends fixed-size slot suppliers.**
@@ -393,7 +393,7 @@ A fixed-size tuner with appropriately chosen values delivers better performance 
 
 Each SDK provides [default slot counts](/develop/worker-tuning-reference#compute-defaults-by-sdk), but Temporal recommends [actively tuning these values](/best-practices/worker#actively-tune-worker-options-instead-of-relying-on-defaults) for your workload.
 
-#### When to use resource-based slot suppliers
+#### When to use resource-based slot suppliers {/* #when-to-use-resource-based-slot-suppliers */}
 
 Resource-based slot suppliers are suited to specific use cases.
 
@@ -408,12 +408,12 @@ Resource-based slot suppliers are suited to specific use cases.
 
 Scenarios with tasks that have variable, or very high, per-task resource needs should rely on fixed-size suppliers and manual tuning rather than resource-based suppliers.
 
-#### When to use custom slot suppliers
+#### When to use custom slot suppliers {/* #when-to-use-custom-slot-suppliers */}
 
 For the highest level of control over slot allocation, consider custom slot suppliers.
 Custom suppliers let you tailor the logic of how slots are allocated based on your system requirements, providing flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers do not fully address.
 
-### Implement Custom Slot Suppliers {#custom-slot-implementation}
+### Implement Custom Slot Suppliers {/* #custom-slot-implementation */}
 
 Implement your own Slot Supplier to control how Workers are allocated Tasks and manage the processing of Workflows, Activities, and Nexus Operations.
 Custom Slot Suppliers let you fine-tune task processing based on your application's needs.
@@ -442,7 +442,7 @@ Custom Slot Suppliers must implement these functions:
 Custom policies require more effort, but provide finer control over Task processing.
 By implementing your own Slot Supplier, you can tailor how Workflows, Activities, and Nexus Operations are handled, optimizing performance for your specific needs.
 
-### Slot supplier throttles
+### Slot supplier throttles {/* #slot-supplier-throttles */}
 
 Auto-tuned suppliers may diverge from requested thresholds.
 The resources a given Task will use can't be known ahead of time.
@@ -463,14 +463,14 @@ If a just-started worker were to have no throttle, and there was a backlog of Ta
 If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.
 The throttle enforces a wait before handing out new slots (after a minimum number of slots have been occupied) so you can measure newly consumed resources.
 
-## Performance tuning examples {#examples}
+## Performance tuning examples {/* #examples */}
 
 The following examples show how to create and provision composite Worker tuners and set other
 performance related options.
 Each tuner provides slot suppliers for various Task types.
 These examples focus on Activities and Local Activities, since Workflow Tasks normally do not need resource-based tuning.
 
-### Go SDK
+### Go SDK {/* #go-sdk */}
 
 **Resource-based tuner:**
 
@@ -543,7 +543,7 @@ func compositeTuner() (worker.Options, error) {
 ```
 <!--SNIPEND-->
 
-### Java SDK
+### Java SDK {/* #java-sdk */}
 
 ```java
 // Just resource based
@@ -574,7 +574,7 @@ WorkerOptions.newBuilder()
     .build();
 ```
 
-### TypeScript SDK
+### TypeScript SDK {/* #typescript-sdk */}
 
 ```tsx
 // Just resource based
@@ -610,7 +610,7 @@ const workerOptions = {
 };
 ```
 
-### Python SDK
+### Python SDK {/* #python-sdk */}
 
 ```python
 # Just a resource based tuner, with poller autoscaling
@@ -647,7 +647,7 @@ worker = Worker(
 )
 ```
 
-### .NET C# SDK
+### .NET C# SDK {/* #net-c-sdk */}
 
 ```csharp
 // Just resource based
@@ -674,7 +674,7 @@ var worker = new TemporalWorker(
     });
 ```
 
-## Workflow Cache Tuning
+## Workflow Cache Tuning {/* #workflow-cache-tuning */}
 
 When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` _or_ the number of threads reported by the `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions will start to be evicted from the cache.
 An evicted Workflow Execution will need to be replayed when it gets any action that may advance it.
@@ -690,7 +690,7 @@ The `maxWorkflowThreadCount` and `workflow_active_thread_count` parameters are f
 
 :::
 
-## Available Task Queue information {#task-queue-metrics}
+## Available Task Queue information {/* #task-queue-metrics */}
 
 :::tip Support, stability, and dependency info
 
@@ -706,7 +706,7 @@ Available data include:
 - [`TasksAddRate`](#TasksAddRate-and-TasksDispatchRate) and [`TasksDispatchRate`](#TasksAddRate-and-TasksDispatchRate)
 - [`BacklogIncreaseRate`](#BacklogIncreaseRate) (derived from [`TasksAddRate`](#TasksAddRate-and-TasksDispatchRate) and [`TasksDispatchRate`](#TasksAddRate-and-TasksDispatchRate))
 
-### `ApproximateBacklogCount` and `ApproximateBacklogAge` {#ApproximateBacklogCountAndAge}
+### `ApproximateBacklogCount` and `ApproximateBacklogAge` {/* #ApproximateBacklogCountAndAge */}
 
 `ApproximateBacklogCount` represents the approximate count of Tasks currently backlogged in this Task Queue.
 The number may include expired Tasks as well as active Tasks, but it will eventually converge to the correct count over time.
@@ -716,7 +716,7 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-#### Known accuracy limitations {#backlog-accuracy-limitations}
+#### Known accuracy limitations {/* #backlog-accuracy-limitations */}
 
 These values are approximate.
 The most common sources:
@@ -731,7 +731,7 @@ The most common sources:
 - **Sticky queue exclusion**: [Sticky queues](/sticky-execution) are not included in these values.
   Because Sticky queue Tasks only remain valid for a few seconds, this inaccuracy diminishes as the backlog grows.
 
-### `TasksAddRate` and `TasksDispatchRate` {#TasksAddRate-and-TasksDispatchRate}
+### `TasksAddRate` and `TasksDispatchRate` {/* #TasksAddRate-and-TasksDispatchRate */}
 
 Reports the approximate Tasks-per-second added to or dispatched from a Task Queue.
 This rate is averaged over the most recent 30-second time interval.
@@ -743,7 +743,7 @@ The actual Task delivery count may be significantly higher than the number repor
   Tasks using Eager dispatch do not pass through Task Queues.
 - Tasks passed to Sticky Task Queues not included in the returned values for `TasksAddRate` and `TasksDispatchRate`.
 
-### `BacklogIncreaseRate` {#BacklogIncreaseRate}
+### `BacklogIncreaseRate` {/* #BacklogIncreaseRate */}
 
 Approximates the _net_ Tasks per second added to the backlog, averaged over the most recent 30 seconds.
 This is calculated as:
@@ -757,7 +757,7 @@ TasksAddRate - TasksDispatchRate
 
 While individual `add` and `dispatch` rates may be inaccurate due to Eager and Sticky Task Queues, the `BacklogIncreaseRate` reliably reflects the rate at which the backlog is shrinking or growing for backlogs older than a few seconds.
 
-## Evaluate Task Queue performance {#evaluate-worker-loads}
+## Evaluate Task Queue performance {/* #evaluate-worker-loads */}
 
 A [Task Queue](https://docs.temporal.io/task-queue) is a lightweight, dynamically allocated queue.
 [Worker Entities](/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
@@ -779,7 +779,7 @@ Evaluate your Worker loads and assess whether you need to scale up or reduce you
 
 :::
 
-### Query Task Queue info with Temporal CLI {#cli-task-queue-info}
+### Query Task Queue info with Temporal CLI {/* #cli-task-queue-info */}
 
 The Temporal CLI helps you monitor and evaluate Worker performance.
 Issue the following command to display a list of active Workers that have recently polled a Task Queue:
@@ -800,7 +800,7 @@ This feature may significantly change or be removed in a future release.
 
 :::
 
-### Query Task Queue info with the Go SDK {#go-sdk-task-queue-info}
+### Query Task Queue info with the Go SDK {/* #go-sdk-task-queue-info */}
 
 Retrieve Task Queue data using the Go SDK by calling `DescribeTaskQueueEnhanced`.
 Specify the Task Queue name and set `ReportStats` to `true`, as in the following example:
@@ -820,7 +820,7 @@ for _, taskQueueName := range taskQueueNames {
     }
 ```
 
-### Evaluate Worker availability and capacity issues {#worker-capacity-issues}
+### Evaluate Worker availability and capacity issues {/* #worker-capacity-issues */}
 
 Each Temporal [Server](https://docs.temporal.io/temporal-service/temporal-server) records the last time of each poll request.
 This time is displayed in the `temporal task-queue describe` output.
@@ -833,7 +833,7 @@ This time is displayed in the `temporal task-queue describe` output.
 - Values over 5 minutes since the last poll request usually suggest that Workers have shut down or been removed.
   Workers are removed if 5 minutes have passed since the last poll request.
 
-### Manage your Worker fleet {#manage-your-worker-fleet}
+### Manage your Worker fleet {/* #manage-your-worker-fleet */}
 
 You can adjust the number of Workers to enhance Workflow Execution performance and manage your fleet size.
 For instance, a large backlog of Tasks with too few Workers will slow down Workflow Execution completions and decrease processing efficiency.
@@ -852,14 +852,14 @@ The values provided by `temporal task-queue describe` can help you manage your W
   As this rate increases, you may need to add more Workers until demand and capacity are balanced.
   As it decreases, you may be able to reduce your Worker fleet.
 
-## Task Queue processing tuning {#task-queues-processing-tuning}
+## Task Queue processing tuning {/* #task-queues-processing-tuning */}
 
 The following steps limit delays in Task Queue processing due to insufficient or unbalanced Workers.
 Review these steps if you notice high `schedule_to_start` metrics.
 
 The steps are arranged in the recommended order of execution.
 
-### Hosts and Resources provisioning
+### Hosts and Resources provisioning {/* #hosts-and-resources-provisioning */}
 
 If currently provisioned Worker hosts are fully utilized (near full CPU usage, high load average, etc), additional Workers hosts have to be provisioned to increase the capacity of the Workers pool.
 
@@ -879,7 +879,7 @@ If you see
 
 then you might have too many workers, consider sizing down.
 
-### Worker Executor Slots sizing
+### Worker Executor Slots sizing {/* #worker-executor-slots-sizing */}
 
 The main area to focus on when tuning is the number of Worker Executor Slots.
 Increase the maximum number of working slots by adjusting `maxConcurrentWorkflowTaskExecutionSize` or `maxConcurrentActivityExecutionSize` if both of the following conditions are met:
@@ -889,7 +889,7 @@ Increase the maximum number of working slots by adjusting `maxConcurrentWorkflow
 
 Alternatively, consider using a resource-based slot supplier as described [here](#slot-suppliers).
 
-### Poller count
+### Poller count {/* #poller-count */}
 
 Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
@@ -903,14 +903,14 @@ Consider manual adjustment if:
 
 Then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
 
-### Rate Limiting
+### Rate Limiting {/* #rate-limiting */}
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
 - If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 - If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 
-## Related reading
+## Related reading {/* #related-reading */}
 
 - [Worker tuning quick reference](/develop/worker-tuning-reference) - SDK defaults and metrics by resource type
 - [Workers in production operation guide](https://temporal.io/blog/workers-in-production)

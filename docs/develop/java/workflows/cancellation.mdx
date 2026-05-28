@@ -35,7 +35,7 @@ Terminating a Workflow forcefully stops Workflow Execution. This action resemble
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
 Workflow is stuck and cannot be canceled normally.
 
-## Cancel a Workflow Execution {#cancellation}
+## Cancel a Workflow Execution {/* #cancellation */}
 
 Canceling a Workflow provides a graceful way to stop Workflow Execution. This action resembles sending a `SIGTERM` to a
 process.
@@ -54,7 +54,7 @@ WorkflowStub workflowStub = WorkflowStub.fromTyped(workflow);
 workflowStub.cancel();
 ```
 
-## Cancellation scopes in Java {#cancellation-scopes}
+## Cancellation scopes in Java {/* #cancellation-scopes */}
 
 In the Java SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors
 you can specify. By default, everything runs in the "root" scope.
@@ -84,7 +84,7 @@ created within it, such as the following:
 - Child Workflows
 - Nexus Operations
 
-### Cancel an Activity from a Workflow {#cancel-activity}
+### Cancel an Activity from a Workflow {/* #cancel-activity */}
 
 Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat
 Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. When any non-immediate
@@ -158,7 +158,7 @@ public class GreetingWorkflowImpl implements GreetingWorkflow {
 }
 ```
 
-## Terminate a Workflow Execution {#termination}
+## Terminate a Workflow Execution {/* #termination */}
 
 Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
 
@@ -176,7 +176,7 @@ WorkflowStub untyped = WorkflowStub.fromTyped(myWorkflowStub);
 untyped.terminate("Sample reason");
 ```
 
-## Reset a Workflow Execution {#reset}
+## Reset a Workflow Execution {/* #reset */}
 
 Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
 point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other

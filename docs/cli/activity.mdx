@@ -34,7 +34,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `activity` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## cancel
+## cancel {/* #cancel */}
 
 Request cancellation of a Standalone Activity.
 
@@ -57,7 +57,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--reason` | No | **string** Reason for cancellation. |
 | `--run-id`, `-r` | No | **string** Activity Run ID. If not set, targets the latest run. |
 
-## complete
+## complete {/* #complete */}
 
 Complete an Activity, marking it as successfully finished. Specify the
 Activity ID and include a JSON result for the returned value:
@@ -78,7 +78,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. For workflow Activities (when --workflow-id is provided), this is the Workflow Run ID. For Standalone Activities, this is the Activity Run ID. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. Required for workflow Activities. Omit for Standalone Activities. |
 
-## count
+## count {/* #count */}
 
 Return a count of Standalone Activities. Use `--query` to filter
 the activities to be counted.
@@ -97,7 +97,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--query`, `-q` | No | **string** Query to filter Activity Executions to count. |
 
-## describe
+## describe {/* #describe */}
 
 Display information about a Standalone Activity.
 
@@ -114,7 +114,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--raw` | No | **bool** Print properties without changing their format. |
 | `--run-id`, `-r` | No | **string** Activity Run ID. If not set, targets the latest run. |
 
-## execute
+## execute {/* #execute */}
 
 Start a new Standalone Activity and block until it completes.
 The result is output to stdout.
@@ -157,7 +157,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--task-queue`, `-t` | Yes | **string** Activity task queue. |
 | `--type` | Yes | **string** Activity Type name. |
 
-## fail
+## fail {/* #fail */}
 
 Fail an Activity, marking it as having encountered an error:
 
@@ -177,7 +177,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. For workflow Activities (when --workflow-id is provided), this is the Workflow Run ID. For Standalone Activities, this is the Activity Run ID. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. Required for workflow Activities. Omit for Standalone Activities. |
 
-## list
+## list {/* #list */}
 
 List Standalone Activities. Use `--query` to filter results.
 
@@ -197,7 +197,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--page-size` | No | **int** Maximum number of Activity Executions to fetch at a time from the server. |
 | `--query`, `-q` | No | **string** Query to filter the Activity Executions to list. |
 
-## pause
+## pause {/* #pause */}
 
 Pause an Activity. Not supported for Standalone Activities.
 
@@ -231,7 +231,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## reset
+## reset {/* #reset */}
 
 Reset an activity. Not supported for Standalone Activities.
 This restarts the activity as if it were first being
@@ -253,7 +253,7 @@ is provided - it will stay paused.
 
 Either `--activity-id` (with `--workflow-id`) or `--query` must be specified.
 
-### Resetting activities that heartbeat {#reset-heartbeats}
+### Resetting activities that heartbeat {/* #reset-heartbeats */}
 
 Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure)
 the next time they heartbeat after a reset.
@@ -298,7 +298,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## result
+## result {/* #result */}
 
 Wait for a Standalone Activity to complete and output the
 result.
@@ -315,7 +315,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--activity-id`, `-a` | Yes | **string** Activity ID. |
 | `--run-id`, `-r` | No | **string** Activity Run ID. If not set, targets the latest run. |
 
-## start
+## start {/* #start */}
 
 Start a new Standalone Activity. Outputs the Activity ID and
 Run ID.
@@ -358,7 +358,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--task-queue`, `-t` | Yes | **string** Activity task queue. |
 | `--type` | Yes | **string** Activity Type name. |
 
-## terminate
+## terminate {/* #terminate */}
 
 Terminate a Standalone Activity.
 
@@ -378,7 +378,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--reason` | No | **string** Reason for termination. Defaults to a message with the current user's name. |
 | `--run-id`, `-r` | No | **string** Activity Run ID. If not set, targets the latest run. |
 
-## unpause
+## unpause {/* #unpause */}
 
 Re-schedule a previously-paused Activity for execution.
 Not supported for Standalone Activities.
@@ -429,7 +429,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## update-options
+## update-options {/* #update-options */}
 
 Update the options of a running Activity that were passed into it from
 a Workflow. Updates are incremental, only changing the specified options.
@@ -487,7 +487,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## Global Flags
+## Global Flags {/* #global-flags */}
 
 The following options can be used with any command.
 

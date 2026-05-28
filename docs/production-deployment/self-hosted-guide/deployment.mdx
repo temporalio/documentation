@@ -35,18 +35,18 @@ network configurations that restrict access to trusted internal networks only.
 For step-by-step guides on deploying and configuring Temporal, refer to our
 [Infrastructure tutorials](https://learn.temporal.io/tutorials/infrastructure/).
 
-## Use Docker Compose
+## Use Docker Compose {/* #use-docker-compose */}
 
 You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using
 [Docker Compose](https://docs.docker.com/compose/install).
 
-### Prerequisites
+### Prerequisites {/* #prerequisites */}
 
 - You have Docker Compose installed.
 - Docker is running and the daemon is available.
 - Git is installed and available.
 
-### Procedure
+### Procedure {/* #procedure */}
 
 1. Clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repository.
 
@@ -70,7 +70,7 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
    available in the samples-server repository and use `docker compose up` with the corresponding configuration file to
    try them out. The configurations include different databases, visibility stores, and TLS settings.
 
-## Use Temporal Server binaries
+## Use Temporal Server binaries {/* #use-temporal-server-binaries */}
 
 You can run a complete Temporal Server by deploying two Go binaries -- the
 [core Temporal Server](https://github.com/temporalio/temporal/releases/), and the
@@ -83,7 +83,7 @@ tutorials to deploy the Temporal Service behind an
 [Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an
 [Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
 
-### Configuration templating
+### Configuration templating {/* #configuration-templating */}
 
 Configuration templating is how the Temporal Server turns a template config file into the final `config.yaml` it runs
 with. It lets you reuse one template across environments by filling in values from environment variables. For example,
@@ -92,7 +92,7 @@ database endpoints, TLS paths, or feature flags.
 If you are **not** using a custom config template, you can skip this section. The default configuration is rendered
 automatically by the server and embedded in the binary.
 
-#### Template compatibility
+#### Template compatibility {/* #template-compatibility */}
 
 If you use a custom configuration template, be aware of the following:
 
@@ -101,7 +101,7 @@ If you use a custom configuration template, be aware of the following:
 - Refer to the [sprig documentation](http://masterminds.github.io/sprig/) for supported template functions
 - Use `temporal-server render-config` to verify your templates render correctly
 
-#### Helm Chart configuration
+#### Helm Chart configuration {/* #helm-chart-configuration */}
 
 When deploying with Helm charts versions 0.73.1 or later, you may need to adjust the following configuration options
 depending on the images you are using.
@@ -120,7 +120,7 @@ Refer to the following guidelines to determine if you need to adjust the configu
 - If you need use the Helm chart with both pre-1.30 and 1.30+ images, you need to set `server.configMapsToMount` to
   `"both"` and `server.useEntrypointScript` to `true`. Keep the `server.setConfigFilePath` as `false`.
 
-## Import the Server package
+## Import the Server package {/* #import-the-server-package */}
 
 The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another
 project.
@@ -131,7 +131,7 @@ You might want to do this to pass custom plugins or any other customizations thr
 This requires Go v1.19 or later, as specified in the Temporal Server
 [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
-## Use Helm charts
+## Use Helm charts {/* #use-helm-charts */}
 
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enable you to get a Temporal Service running on
 [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to

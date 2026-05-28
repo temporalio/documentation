@@ -36,11 +36,11 @@ If you use GCP Private Service Connect, you must manually update your workers to
 
 :::
 
-## Requirements
+## Requirements {/* #requirements */}
 
 Your GCP Private Service Connect connection must be in the same region as your Temporal Cloud namespace. If using [replication for High Availability](/cloud/high-availability), the PSC connection must be in the same region as one of the replicas.
 
-## Creating a Private Service Connect connection
+## Creating a Private Service Connect connection {/* #creating-a-private-service-connect-connection */}
 
 Set up Private Service Connect with Temporal Cloud with these steps:
 
@@ -99,9 +99,9 @@ You still need to set up private DNS or override client configuration for your c
 See [configuring private DNS for GCP Private Service Connect](#configuring-private-dns-for-gcp-private-service-connect)
 :::
 
-## Configuring Private DNS for GCP Private Service Connect
+## Configuring Private DNS for GCP Private Service Connect {/* #configuring-private-dns-for-gcp-private-service-connect */}
 
-### Why configure private DNS?
+### Why configure private DNS? {/* #why-configure-private-dns */}
 
 When you connect to Temporal Cloud through GCP Private Service Connect you normally must:
 
@@ -116,7 +116,7 @@ By creating a **private Cloud DNS zone (PZ)** that maps the public Temporal Clou
 
 This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations. If you cannot use private DNS, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
-### Prerequisites
+### Prerequisites {/* #prerequisites */}
 
 | Requirement                                           | Notes                                                                             |
 | ----------------------------------------------------- | --------------------------------------------------------------------------------- |
@@ -125,7 +125,7 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 | Cloud DNS API enabled and roles/dns.admin permissions | Needed to create private zones and records.                                       |
 | Namespace details                                     | Determines which hostname pattern you override (table below).                     |
 
-### Choose the override domain and endpoint
+### Choose the override domain and endpoint {/* #choose-the-override-domain-and-endpoint */}
 
 | Temporal Cloud setup                       | Use this PHZ domain                | Example                                        |
 | ------------------------------------------ | ---------------------------------- | ---------------------------------------------- |
@@ -133,9 +133,9 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 | Single-region namespace with API-key auth  | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔ `X.X.X.X`  |
 | Multi-region namespace | `region.tmprl.cloud`               | `gcp-us-central1.region.tmprl.cloud` ↔ `X.X.X.X` |
 
-### Step-by-step instructions
+### Step-by-step instructions {/* #step-by-step-instructions */}
 
-#### 1. Collect your PSC endpoint IP address
+#### 1. Collect your PSC endpoint IP address {/* #1-collect-your-psc-endpoint-ip-address */}
 
 ```shell
 # List the forwarding rule you created for the endpoint
@@ -147,7 +147,7 @@ gcloud compute forwarding-rules list \
 
 Save the internal IP -- you will point the A record at it.
 
-#### 2. Create a Cloud DNS private zone
+#### 2. Create a Cloud DNS private zone {/* #2-create-a-cloud-dns-private-zone */}
 
 1. Open _Network Services → Cloud DNS → Create zone_.
 2. Select zone type **Private**.
@@ -156,7 +156,7 @@ Save the internal IP -- you will point the A record at it.
 5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
 6. Click **Create**.
 
-#### 3. Add an A record
+#### 3. Add an A record {/* #3-add-an-a-record */}
 
 Inside the new zone, add a _standard A record_:
 
@@ -167,7 +167,7 @@ Inside the new zone, add a _standard A record_:
 | TTL                  | 60s is typical, but you can adjust as needed.                  |
 | IPv4 Address         | the internal IP address of your PSC endpoint (e.g. `10.1.2.3`) |
 
-#### 4. Verify DNS resolution from inside the Network
+#### 4. Verify DNS resolution from inside the Network {/* #4-verify-dns-resolution-from-inside-the-network */}
 
 ```shell
 dig payments.abcde.tmprl.cloud
@@ -175,7 +175,7 @@ dig payments.abcde.tmprl.cloud
 
 If the hostname resolves to the PSC endpoint IP address from a VM in the bound network, the override is working.
 
-### Updating your workers/clients
+### Updating your workers/clients {/* #updating-your-workersclients */}
 
 With private DNS in place, configure your SDKs exactly as the public-internet examples show (filling in your own namespace):
 
@@ -189,7 +189,7 @@ clientOptions := client.Options{
 
 The DNS resolver inside your network returns the private endpoint IP address, while TLS still validates the original hostname—simplifying both code and certificate management.
 
-## Available GCP regions, PSC endpoints, and DNS record overrides
+## Available GCP regions, PSC endpoints, and DNS record overrides {/* #available-gcp-regions-psc-endpoints-and-dns-record-overrides */}
 
 The following table lists the available Temporal regions, PrivateLink endpoints, and regional endpoints used for DNS record overrides:
 

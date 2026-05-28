@@ -19,7 +19,7 @@ tags:
 Migrating to Temporal Cloud from a self-hosted Temporal Service will have different requirements depending on your usage.
 This guide provides some guidance based on our experience helping customers of all sizes successfully migrate.
 
-### What to expect from a migration
+### What to expect from a migration {/* #what-to-expect-from-a-migration */}
 
 Depending on your Workflows' requirements, the migration process may be as simple as changing a few parameters, or may require more extensive code changes.
 There are two aspects to consider when migrating: your Temporal Client connection code and your Workflow Executions.
@@ -31,7 +31,7 @@ Here's a high-level overview of what you can expect:
   - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained might require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
   - **Completed Workflow Executions:** Completed Workflow Execution History cannot be automatically migrated to Temporal Cloud. Refer to [Multi-Cluster Replication](#multi-cluster-replication) for more information.
 
-### Updating Client connection code in your Workers
+### Updating Client connection code in your Workers {/* #updating-client-connection-code-in-your-workers */}
 
 Whether you're self-hosting Temporal or using Temporal Cloud, you manage runtime of your code.
 To migrate your Workflows to Temporal Cloud, you need to change some parameters in the Client connection code, such as updating the namespace and gRPC endpoint.
@@ -46,7 +46,7 @@ Namespace are only a few lines of code, including:
 - [Configure tcld, the Cloud CLI](/cloud/tcld), with the same address, Namespace, and
   certificate used to create a Client through code.
 
-### Migrating your Workflow Executions
+### Migrating your Workflow Executions {/* #migrating-your-workflow-executions */}
 
 A Temporal Service stores the complete Event History for the entire lifecycle of a
 Workflow Execution.
@@ -70,7 +70,7 @@ Also, the Query API loads the entire history of Workflows into Workers to comput
 That means that your self-hosted Temporal Service Worker capacity will need to support having those executions in memory to serve those requests.
 The volume of these requests might be high to execute against all the matches to a `ListFilter`.
 
-### Considerations when resuming Workflows on a new Temporal Service or Namespace
+### Considerations when resuming Workflows on a new Temporal Service or Namespace {/* #considerations-when-resuming-workflows-on-a-new-temporal-service-or-namespace */}
 
 - **Skipping Steps:** If your Workflow steps cannot guarantee idempotency, determine whether you need to skip those steps when resuming the execution in the target Namespace.
 - **Elapsed Time:** If your Workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.
@@ -81,14 +81,14 @@ The volume of these requests might be high to execute against all the matches to
 - Duration between Awaitables inside a Workflow definition needs to be considered for elapsed time accuracy when resuming in the target Namespace.
 - When Signaling directly from one Workflow to another, make sure to handle `NotFound` executions in the target Namespace. The Workflows may resume out of order.
 
-### Other considerations when migrating
+### Other considerations when migrating {/* #other-considerations-when-migrating */}
 
 - Have you added an mTLS certificate to your Temporal Namespace? Review our [documentation for adding a certificate to your Temporal Cloud account](/cloud/certificates) for more information.
 - There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics/) for more information.
 - Consider the implications for [security and access to your Temporal Service](/cloud/security).
 - Review your current load (actions per second) and speak to your Account Executive and Solutions Architect so we can set appropriate [Namespace limits](/cloud/limits).
 
-### Multi-Cluster Replication
+### Multi-Cluster Replication {/* #multi-cluster-replication */}
 
 [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) is an experimental feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters for backup and state reconstruction.
 Migrating Execution History from a self-hosted Temporal Service to Temporal Cloud is not currently supported.

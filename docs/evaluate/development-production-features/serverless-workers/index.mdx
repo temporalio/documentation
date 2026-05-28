@@ -31,12 +31,12 @@ when the Task is done.
 For a deeper look at how Serverless invocation works under the hood, see [Serverless Workers](/serverless-workers) in
 the encyclopedia.
 
-## Why use Serverless Workers?
+## Why use Serverless Workers? {/* #why-use-serverless-workers */}
 
 Serverless Workers are a good fit for many workloads. They offer several advantages compared to long-lived Workers on
 dedicated compute.
 
-### Reduce operational overhead
+### Reduce operational overhead {/* #reduce-operational-overhead */}
 
 Long-lived Workers require you to provision infrastructure, configure scaling policies, manage deployments, and monitor
 host-level health. Serverless Workers reduce this burden by offloading invocation and scaling to Temporal and the
@@ -47,7 +47,7 @@ Worker management is one of the most common sources of support questions for Tem
 prescriptive deployment path that reduces the operational surface area and lets you focus on writing Workflows instead
 of managing infrastructure.
 
-### Get started faster
+### Get started faster {/* #get-started-faster */}
 
 Running a long-lived Worker requires choosing a hosting strategy, configuring compute resources, and setting up
 deployment pipelines before you can execute your first Workflow in production.
@@ -56,7 +56,7 @@ With Serverless Workers, deploying a Worker is as simple as deploying a function
 your serverless provider, and configure the connection to Temporal. There is no need to set up Kubernetes, manage
 container orchestration, or design a scaling strategy.
 
-### Scale automatically
+### Scale automatically {/* #scale-automatically */}
 
 Serverless compute providers handle scaling natively. When Task volume increases, the provider spins up additional
 function instances. When traffic drops, instances scale down. When there is no work, there is no compute running.
@@ -64,13 +64,13 @@ function instances. When traffic drops, instances scale down. When there is no w
 This automatic scaling is especially useful for bursty, event-driven workloads where traffic patterns are unpredictable
 or highly variable.
 
-### Pay only for what you use
+### Pay only for what you use {/* #pay-only-for-what-you-use */}
 
 Long-lived Workers run continuously, whether or not there is work to process. Serverless Workers run only when Tasks are
 available. For workloads with low or intermittent volume, this pay-per-invocation model can significantly reduce compute
 costs.
 
-## When to use Serverless Workers
+## When to use Serverless Workers {/* #when-to-use-serverless-workers */}
 
 Serverless Workers are a good fit when:
 
@@ -96,7 +96,7 @@ Serverless Workers may not be ideal when:
 - **You need persistent connections.** Some features require a persistent connection between the Worker and Temporal,
   which serverless invocations do not maintain.
 
-## How Serverless Workers compare to long-lived Workers
+## How Serverless Workers compare to long-lived Workers {/* #how-serverless-workers-compare-to-long-lived-workers */}
 
 |                | Long-lived Worker                                          | Serverless Worker                                                                                  |
 | -------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -104,13 +104,13 @@ Serverless Workers may not be ideal when:
 | **Scaling**    | You manage scaling (Kubernetes HPA, instance count, etc.). | Temporal invokes additional instances as needed, within the compute provider's concurrency limits. |
 | **Connection** | Persistent connection to Temporal.                         | Fresh connection on each invocation.                                                               |
 
-## Supported providers
+## Supported providers {/* #supported-providers */}
 
 | Provider   | Status    |
 | ---------- | --------- |
 | AWS Lambda | Available |
 
-## Next steps
+## Next steps {/* #next-steps */}
 
 - [Interactive demo](/evaluate/serverless-workers/demo) to explore the configuration and invocation flow.
 - [How Serverless Workers work](/serverless-workers) for a deeper look at the invocation lifecycle, compute providers,

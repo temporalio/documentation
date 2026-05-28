@@ -31,11 +31,11 @@ commands. For details, see [CLI release notes](https://github.com/temporalio/cli
 
 :::
 
-## Install the Temporal CLI {#install}
+## Install the Temporal CLI {/* #install */}
 
 The Temporal CLI is available on macOS, Windows, and Linux, or as a Docker image.
 
-### macOS
+### macOS {/* #macos */}
 
 Choose one of the following install methods to install the Temporal CLI on macOS:
 
@@ -56,7 +56,7 @@ brew install temporal
 
   3. Add the Temporal CLI binary to your PATH.
 
-### Linux
+### Linux {/* #linux */}
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
@@ -71,7 +71,7 @@ Choose one of the following install methods to install the Temporal CLI on Linux
 
   3. Add the `temporal` binary to your PATH.
 
-### Windows
+### Windows {/* #windows */}
 
 Choose one of the following methods to install the Temporal CLI on Windows:
 
@@ -86,7 +86,7 @@ Choose one of the following methods to install the Temporal CLI on Windows:
 
   3. Add the `temporal.exe` binary to your PATH.
 
-### Docker
+### Docker {/* #docker */}
 
 The Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be
 run directly:
@@ -107,7 +107,7 @@ docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev -
 
 :::
 
-## Start a Temporal development server {#start-dev-server}
+## Start a Temporal development server {/* #start-dev-server */}
 
 To start a Temporal development server, run the following command:
 
@@ -142,11 +142,11 @@ For the full list of development server options, use the `--help` flag:
 temporal server start-dev --help
 ```
 
-## Enable auto-completion {#enable-auto-completion}
+## Enable auto-completion {/* #enable-auto-completion */}
 
 Enable auto-completion using the following commands.
 
-### zsh auto-completion
+### zsh auto-completion {/* #zsh-auto-completion */}
 
 1. Add the following line to your `~/.zshrc` startup script:
 
@@ -160,7 +160,7 @@ Enable auto-completion using the following commands.
    source ~/.zshrc
    ```
 
-### Bash auto-completion
+### Bash auto-completion {/* #bash-auto-completion */}
 
 1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your
    `~/.bashrc`.
@@ -185,7 +185,7 @@ shell for `temporal` auto-completion to work.
 
 :::
 
-### Fish auto-completion
+### Fish auto-completion {/* #fish-auto-completion */}
 
 1. Create the Fish custom completions directory if it does not already exist:
 
@@ -206,7 +206,7 @@ shell for `temporal` auto-completion to work.
    source ~/.config/fish/completions/temporal.fish
    ```
 
-## Command set
+## Command set {/* #command-set */}
 
 - [temporal activity](/cli/activity/)
 - [temporal batch](/cli/batch/)
@@ -217,11 +217,11 @@ shell for `temporal` auto-completion to work.
 - [temporal task-queue](/cli/task-queue/)
 - [temporal workflow](/cli/workflow/)
 
-## Configuration
+## Configuration {/* #configuration */}
 
 The following information provides important configuration details.
 
-### Namespace registration
+### Namespace registration {/* #namespace-registration */}
 
 Namespaces are pre-registered at startup for immediate use. Customize pre-registered Namespaces with the following
 command:
@@ -236,7 +236,7 @@ Register Namespaces with `namespace create`:
 temporal operator namespace create --namespace foo
 ```
 
-### Enable or disable Temporal UI
+### Enable or disable Temporal UI {/* #enable-or-disable-temporal-ui */}
 
 By default, the Temporal UI is enabled when running the development server using the Temporal CLI. To disable the UI,
 use the `--headless` modifier:
@@ -245,7 +245,7 @@ use the `--headless` modifier:
 temporal server start-dev --headless
 ```
 
-### Dynamic configuration
+### Dynamic configuration {/* #dynamic-configuration */}
 
 Advanced Temporal CLI configuration requires a dynamic configuration file.
 
@@ -258,7 +258,7 @@ temporal server start-dev --dynamic-config-value system.forceSearchAttributesCac
 
 This setting makes created Search Attributes immediately available.
 
-## Environment variables
+## Environment variables {/* #environment-variables */}
 
 The following table describes the environment variables you can set for the Temporal CLI.
 
@@ -286,18 +286,18 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 :::
 
-## Create and modify configuration files {#configuration-files}
+## Create and modify configuration files {/* #configuration-files */}
 
 The Temporal CLI lets you create and modify TOML configuration files to store your environment variables and other
 settings. Refer to [Environment Configuration](../develop/environment-configuration#cli-integration) for more
 information.
 
-## Proxy support
+## Proxy support {/* #proxy-support */}
 
 The Temporal CLI provides support for users who are operating behind a proxy. This feature ensures seamless
 communication even in network-restricted environments.
 
-#### Setting up proxy support
+#### Setting up proxy support {/* #setting-up-proxy-support */}
 
 If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy. You can
 achieve this by setting the `HTTPS_PROXY` environment variable.
@@ -324,11 +324,11 @@ specific addresses or domains you wish to exclude from proxying.
 For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC
 documentation.
 
-## Common CLI operations {#common-operations}
+## Common CLI operations {/* #common-operations */}
 
 The following are some of the more common operations you can perform with the Temporal CLI.
 
-### Start a Workflow
+### Start a Workflow {/* #start-a-workflow */}
 
 In another terminal, use the following commands to interact with the Server. The following command starts a Workflow:
 
@@ -450,7 +450,7 @@ To see the full range of Workflow-related commands, run `temporal workflow` or s
 
 For a full list of available commands, run `temporal` without arguments or see [Available commands](#command-set).
 
-### Customize your environment variables
+### Customize your environment variables {/* #customize-your-environment-variables */}
 
 To communicate with a different Server, like a production Namespace on Temporal Cloud:
 

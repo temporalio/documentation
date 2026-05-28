@@ -1,4 +1,4 @@
-### Asia Pacific - Tokyo (`ap-northeast-1`)
+### Asia Pacific - Tokyo (`ap-northeast-1`) {/* #asia-pacific---tokyo-ap-northeast-1 */}
 
 - **Cloud API Code**: `aws-ap-northeast-1`
 - **Regional Endpoint**: `aws-ap-northeast-1.region.tmprl.cloud`
@@ -13,7 +13,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-asia-south1`
 
-### Asia Pacific - Seoul (`ap-northeast-2`)
+### Asia Pacific - Seoul (`ap-northeast-2`) {/* #asia-pacific---seoul-ap-northeast-2 */}
 
 - **Cloud API Code**: `aws-ap-northeast-2`
 - **Regional Endpoint**: `aws-ap-northeast-2.region.tmprl.cloud`
@@ -28,7 +28,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-asia-south1`
 
-### Asia Pacific - Mumbai (`ap-south-1`)
+### Asia Pacific - Mumbai (`ap-south-1`) {/* #asia-pacific---mumbai-ap-south-1 */}
 
 - **Cloud API Code**: `aws-ap-south-1`
 - **Regional Endpoint**: `aws-ap-south-1.region.tmprl.cloud`
@@ -43,7 +43,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-asia-south1`
 
-### Asia Pacific - Hyderabad (`ap-south-2`)
+### Asia Pacific - Hyderabad (`ap-south-2`) {/* #asia-pacific---hyderabad-ap-south-2 */}
 
 - **Cloud API Code**: `aws-ap-south-2`
 - **Regional Endpoint**: `aws-ap-south-2.region.tmprl.cloud`
@@ -58,7 +58,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-asia-south1`
 
-### Asia Pacific - Singapore (`ap-southeast-1`)
+### Asia Pacific - Singapore (`ap-southeast-1`) {/* #asia-pacific---singapore-ap-southeast-1 */}
 
 - **Cloud API Code**: `aws-ap-southeast-1`
 - **Regional Endpoint**: `aws-ap-southeast-1.region.tmprl.cloud`
@@ -73,7 +73,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-asia-south1`
 
-### Asia Pacific - Sydney (`ap-southeast-2`)
+### Asia Pacific - Sydney (`ap-southeast-2`) {/* #asia-pacific---sydney-ap-southeast-2 */}
 
 - **Cloud API Code**: `aws-ap-southeast-2`
 - **Regional Endpoint**: `aws-ap-southeast-2.region.tmprl.cloud`
@@ -88,7 +88,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-asia-south1`
 
-### Europe - Frankfurt (`eu-central-1`)
+### Europe - Frankfurt (`eu-central-1`) {/* #europe---frankfurt-eu-central-1 */}
 
 - **Cloud API Code**: `aws-eu-central-1`
 - **Regional Endpoint**: `aws-eu-central-1.region.tmprl.cloud`
@@ -100,7 +100,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-europe-west3`
 
-### Europe - Ireland (`eu-west-1`)
+### Europe - Ireland (`eu-west-1`) {/* #europe---ireland-eu-west-1 */}
 
 - **Cloud API Code**: `aws-eu-west-1`
 - **Regional Endpoint**: `aws-eu-west-1.region.tmprl.cloud`
@@ -112,7 +112,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-europe-west3`
 
-### Europe - London (`eu-west-2`)
+### Europe - London (`eu-west-2`) {/* #europe---london-eu-west-2 */}
 
 - **Cloud API Code**: `aws-eu-west-2`
 - **Regional Endpoint**: `aws-eu-west-2.region.tmprl.cloud`
@@ -124,7 +124,7 @@
 - **Multi-Cloud Replication**:
   - `gcp-europe-west3`
 
-### North America - Central Canada (`ca-central-1`)
+### North America - Central Canada (`ca-central-1`) {/* #north-america---central-canada-ca-central-1 */}
 
 - **Cloud API Code**: `aws-ca-central-1`
 - **PrivateLink Endpoint Service**: `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`
@@ -139,7 +139,7 @@
   - `gcp-us-west1`
   - `gcp-us-east4`
 
-### North America - Northern Virginia (`us-east-1`)
+### North America - Northern Virginia (`us-east-1`) {/* #north-america---northern-virginia-us-east-1 */}
 
 - **Cloud API Code**: `aws-us-east-1`
 - **Regional Endpoint**: `aws-us-east-1.region.tmprl.cloud`
@@ -154,7 +154,7 @@
   - `gcp-us-west1`
   - `gcp-us-east4`
 
-### North America - Ohio (`us-east-2`)
+### North America - Ohio (`us-east-2`) {/* #north-america---ohio-us-east-2 */}
 
 - **Cloud API Code**: `aws-us-east-2`
 - **Regional Endpoint**: `aws-us-east-2.region.tmprl.cloud`
@@ -169,7 +169,7 @@
   - `gcp-us-west1`
   - `gcp-us-east4`
 
-### North America - Oregon (`us-west-2`)
+### North America - Oregon (`us-west-2`) {/* #north-america---oregon-us-west-2 */}
 
 - **Cloud API Code**: `aws-us-west-2`
 - **Regional Endpoint**: `aws-us-west-2.region.tmprl.cloud`
@@ -184,7 +184,7 @@
   - `gcp-us-west1`
   - `gcp-us-east4`
 
-### South America - São Paulo (`sa-east-1`)
+### South America - São Paulo (`sa-east-1`) {/* #south-america---são-paulo-sa-east-1 */}
 
 - **Cloud API Code**: `aws-sa-east-1`
 - **Regional Endpoint**: `aws-sa-east-1.region.tmprl.cloud`

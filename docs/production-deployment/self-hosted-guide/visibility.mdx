@@ -39,7 +39,7 @@ Supported Visibility stores include:
 - PostgreSQL v12 and later with Temporal Server v1.20 and later
 - SQLite v3.31.0 and later with Temporal Server v1.20 and later
 
-## Current and legacy Visibility support {#supported-databases}
+## Current and legacy Visibility support {/* #supported-databases */}
 
 [Advanced Visibility](/visibility#advanced-visibility) is the current generation of Temporal Visibility. It supports the
 modern query model, including [custom Search Attributes](/search-attribute#custom-search-attribute).
@@ -66,7 +66,7 @@ You can use any combination of the supported databases for your Persistence and 
 Temporal Server v1.21 introduced support for a secondary Visibility store in your Temporal Service to enable
 [Dual Visibility](/dual-visibility). This is useful for migrating your Visibility store database.
 
-## How to set up MySQL Visibility store {#mysql}
+## How to set up MySQL Visibility store {/* #mysql */}
 
 :::tip Support, stability, and dependency info
 
@@ -83,7 +83,7 @@ If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1
 [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
 Namespace in that Temporal Service.
 
-### Persistence configuration
+### Persistence configuration {/* #persistence-configuration */}
 
 Set your MySQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -124,7 +124,7 @@ Temporal Server and database schemas.
 For example configuration templates, see
 [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/main/config/development-mysql8.yaml).
 
-### Database schema and setup
+### Database schema and setup {/* #database-schema-and-setup */}
 
 Visibility data is stored in a database table called `executions_visibility` and must be created using the schema for
 [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/main/schema/mysql/v8/visibility).
@@ -166,7 +166,7 @@ Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
 to run the setup.
 
-## How to set up PostgreSQL Visibility store {#postgresql}
+## How to set up PostgreSQL Visibility store {/* #postgresql */}
 
 :::tip Support, stability, and dependency info
 
@@ -184,7 +184,7 @@ If using PostgreSQL v12 or later as your Visibility store with Temporal Server v
 [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
 Namespace in that Temporal Service.
 
-### Persistence configuration
+### Persistence configuration {/* #persistence-configuration-1 */}
 
 Set your PostgreSQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -219,7 +219,7 @@ To enable advanced Visibility features on your PostgreSQL Visibility store, upgr
 Temporal Server v1.20 or later. See [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server) for details on
 how to upgrade your Temporal Server and database schemas.
 
-### Database schema and setup
+### Database schema and setup {/* #database-schema-and-setup-1 */}
 
 Visibility data is stored in a database table called `executions_visibility` and must be created using the schema for
 [PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/main/schema/postgresql/v12/visibility)
@@ -261,7 +261,7 @@ Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
 to run the setup.
 
-## How to set up SQLite Visibility store {#sqlite}
+## How to set up SQLite Visibility store {/* #sqlite */}
 
 :::tip Support, stability, and dependency info
 
@@ -283,7 +283,7 @@ If using SQLite v3.31.0 and later as your Visibility store with Temporal Server 
 [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
 Namespace in that Temporal Service.
 
-### Persistence configuration
+### Persistence configuration {/* #persistence-configuration-2 */}
 
 Set your SQLite Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -323,7 +323,7 @@ persistence:
 
 SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
-### Database schema and setup
+### Database schema and setup {/* #database-schema-and-setup-2 */}
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
 schemas defined (by supported versions) in
@@ -332,12 +332,12 @@ https://github.com/temporalio/temporal/blob/main/schema/sqlite/v3/visibility/sch
 For an example of setting up the SQLite schema, see
 [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
 
-## Legacy standard Visibility configuration {#legacy-standard-visibility}
+## Legacy standard Visibility configuration {/* #legacy-standard-visibility */}
 
 The following section applies to older self-hosted deployments that still use standard Visibility. For new deployments,
 use one of the advanced Visibility backends described earlier on this page.
 
-### How to set up Cassandra Visibility store {#cassandra}
+### How to set up Cassandra Visibility store {/* #cassandra */}
 
 :::tip Support, stability, and dependency info
 
@@ -356,7 +356,7 @@ Executions because these backends support the Visibility request load and help o
 To migrate from Cassandra to a supported SQL database, see
 [Migrating Visibility database](#migrating-visibility-database).
 
-### Persistence configuration
+### Persistence configuration {/* #persistence-configuration-3 */}
 
 Set your Cassandra Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -380,7 +380,7 @@ persistence:
 #...
 ```
 
-### Database schema and setup
+### Database schema and setup {/* #database-schema-and-setup-3 */}
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
 schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/main/schema/cassandra/visibility.
@@ -421,7 +421,7 @@ setup_cassandra_schema() {
 }
 ```
 
-## How to integrate Elasticsearch or OpenSearch into a Temporal Service {#elasticsearch}
+## How to integrate Elasticsearch or OpenSearch into a Temporal Service {/* #elasticsearch */}
 
 You can integrate Elasticsearch or OpenSearch with your Temporal Service as your Visibility store. We recommend using
 one of these backends for large-scale operations on the Temporal Service.
@@ -439,7 +439,7 @@ Use the following version guidance:
 The examples in this section use Elasticsearch. For OpenSearch, use the same datastore configuration shape and
 operational flow unless a release note for your target Temporal Server version says otherwise.
 
-### Persistence configuration
+### Persistence configuration {/* #persistence-configuration-4 */}
 
 Set your Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the
 search backend configuration under `datastores`.
@@ -463,7 +463,7 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-### Index schema and index
+### Index schema and index {/* #index-schema-and-index */}
 
 To set up Elasticsearch as your Visibility store, use the `temporal-elasticsearch-tool` available in the
 `temporalio/admin-tools` image.
@@ -534,7 +534,7 @@ echo 'MySQL and Elasticsearch setup complete'
 ```
 {/* SNIPEND */}
 
-### Elasticsearch privileges
+### Elasticsearch privileges {/* #elasticsearch-privileges */}
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 
@@ -550,7 +550,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster):
     `monitor` or `manage`.
 
-## How to set up Dual Visibility {#dual-visibility}
+## How to set up Dual Visibility {/* #dual-visibility */}
 
 To enable [Dual Visibility](/dual-visibility), set up a secondary Visibility store with your primary Visibility store,
 and configure your Temporal Service to enable read and/or write operations on the secondary Visibility store.
@@ -558,7 +558,7 @@ and configure your Temporal Service to enable read and/or write operations on th
 With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Service to
 write to primary only, secondary only, or to both primary and secondary stores.
 
-#### Set up secondary Visibility store
+#### Set up secondary Visibility store {/* #set-up-secondary-visibility-store */}
 
 Set the secondary store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and
 then define the secondary Visibility store configuration under `datastores`.
@@ -608,7 +608,7 @@ persistence:
         closeIdleConnectionsInterval: 15s
 ```
 
-#### Database schema and setup
+#### Database schema and setup {/* #database-schema-and-setup-4 */}
 
 The database schema and setup for a secondary store depends on the database you plan to use.
 
@@ -720,7 +720,7 @@ setup_es_index() {
 }
 ```
 
-#### Update Temporal Service configuration
+#### Update Temporal Service configuration {/* #update-temporal-service-configuration */}
 
 With the primary and secondary stores set, update the `system.secondaryVisibilityWritingMode` and
 `system.enableReadFromSecondaryVisibility` configuration keys in your self-hosted Temporal Service's dynamic
@@ -743,7 +743,7 @@ For details on the configuration options, see:
 - [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings)
 - [Migrating Visibility databases](#migrating-visibility-database)
 
-## How to migrate Visibility database {#migrating-visibility-database}
+## How to migrate Visibility database {/* #migrating-visibility-database */}
 
 To migrate your Visibility database, [set up a secondary Visibility store](#dual-visibility) to enable
 [Dual Visibility](/dual-visibility), and update the dynamic configuration in your Temporal Service to update the read
@@ -758,7 +758,7 @@ The following steps describe how to migrate your Visibility database.
 After you make any changes to your [Temporal Service configuration](/temporal-service/configuration), ensure that you
 restart your services.
 
-#### Set up secondary Visibility store
+#### Set up secondary Visibility store {/* #set-up-secondary-visibility-store-1 */}
 
 1. In your Temporal Service configuration,
    [add a secondary Visibility store](/references/configuration#secondaryvisibilitystore) to your Visibility setup under
@@ -807,7 +807,7 @@ does not migrate any existing data in the primary store to the secondary store.
 For details on write options to the secondary store, see
 [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings).
 
-#### Run in dual mode
+#### Run in dual mode {/* #run-in-dual-mode */}
 
 When you enable a secondary store, only new Visibility data is written to both primary and secondary stores. The primary
 store still holds the Workflow Execution data from before the secondary store was set up.
@@ -828,7 +828,7 @@ Example:
 You can run your Visibility setup in dual mode for an indefinite period, or until you are ready to deprecate the primary
 store and move completely to the secondary store without losing data.
 
-#### Deprecate primary Visibility store
+#### Deprecate primary Visibility store {/* #deprecate-primary-visibility-store */}
 
 When you are ready to deprecate your primary store, follow these steps.
 
@@ -866,7 +866,7 @@ When you are ready to deprecate your primary store, follow these steps.
        closeIdleConnectionsInterval: 15s
    ```
 
-## Managing custom Search Attributes {#custom-search-attributes}
+## Managing custom Search Attributes {/* #custom-search-attributes */}
 
 To manage custom Search Attributes on Temporal Cloud, use the [`tcld`](/cloud/tcld/namespace#search-attributes) CLI tool.
 With Temporal Cloud, you can create and rename custom Search Attributes. If you need to delete a custom Search Attribute, contact Support at [support.temporal.io](https://support.temporal.io).
@@ -886,7 +886,7 @@ Using sensitive data in either names or values risks exposure to anyone with Nam
 
 :::
 
-### How to create custom Search Attributes {#create-custom-search-attributes}
+### How to create custom Search Attributes {/* #create-custom-search-attributes */}
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and
 [List Filters](/list-filter).
@@ -964,7 +964,7 @@ add_custom_search_attributes() {
 When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow
 code.
 
-### How to remove custom Search Attributes {#remove-custom-search-attributes}
+### How to remove custom Search Attributes {/* #remove-custom-search-attributes */}
 
 To remove a Search Attribute key from your self-hosted Temporal Service Visibility store, use the command
 `temporal operator search-attribute remove`. Removing Search Attributes is not supported on Temporal Cloud.

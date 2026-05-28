@@ -39,14 +39,14 @@ Without these, your server could be accessed by unwanted entities.
 What is documented on this page are the built-in opt-in security measures that come with Temporal.
 However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside of a VPC environment.
 
-### Server Samples
+### Server Samples {/* #server-samples */}
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
 - **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal Service.
 - **Authorizer:** how to inject a low-level authorizer component that can control access to all API calls.
 
-### Encryption in transit with mTLS
+### Encryption in transit with mTLS {/* #encryption-in-transit-with-mtls */}
 
 Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a Temporal Service and also between application processes and a Temporal Service.
 Self-signed or properly minted certificates can be used for mTLS.
@@ -60,11 +60,11 @@ A customized configuration can be passed using either the [WithConfig](/referenc
 
 See [TLS configuration reference](/references/configuration#tls) for more details.
 
-### Authentication
+### Authentication {/* #authentication */}
 
 There are a few authentication protocols available to prevent unwanted access such as authentication of servers, clients, and users.
 
-### Servers
+### Servers {/* #servers */}
 
 To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) you can specify the `serverName` in the `client` section of your respective mTLS configuration.
 This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the appropriate server name in its CN property.
@@ -72,16 +72,16 @@ It can be used for both `internode` and `frontend` endpoints.
 
 More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/main/tls) and you can reach out to us for further guidance.
 
-### Client connections
+### Client connections {/* #client-connections */}
 
 To restrict a client's network access to Temporal Service endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
 Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
 
-### Users
+### Users {/* #users */}
 
 To restrict access to specific users, authentication and authorization is performed through extensibility points and plugins as described in the [Authorization](#authorization) section below.
 
-#### Authorization
+#### Authorization {/* #authorization */}
 
 :::note
 Information regarding [`Authorizer`](#authorizer-plugin) and [`ClaimMapper`](#claim-mapper) has been moved to another location.
@@ -102,12 +102,12 @@ See https://github.com/temporalio/samples-server/blob/main/extensibility/authori
     title="Front-end authorization order of operations"
 />
 
-### Single sign-on integration
+### Single sign-on integration {/* #single-sign-on-integration */}
 
 Temporal can be integrated with a single sign-on (SSO) experience by using the `ClaimMapper` and `Authorizer` plugins.
 The default JWT `ClaimMapper` implementation can be used as is or as a base for a custom implementation of a similar plugin.
 
-### Temporal UI
+### Temporal UI {/* #temporal-ui */}
 
 To enable SSO authentication in the Temporal UI using environment credentials, you need to configure the UI container with specific environment variables that define your identity provider and OAuth settings.
 In your docker-compose.yaml, set `TEMPORAL_AUTH_ENABLED=true` to activate authentication.
@@ -146,11 +146,11 @@ temporal-ui:
 For more general guidance for configuration, refer to the [Temporal UI README](https://github.com/temporalio/ui?tab=readme-ov-file#configuration).
 For more details on configuration with Docker, refer to [Temporal UI Config](https://github.com/temporalio/ui/blob/c95265ee6431fd0f6cf78ae06373885d66a8ee0c/server/docker/config-template.yaml).
 
-## Temporal Service plugins {#plugins}
+## Temporal Service plugins {/* #plugins */}
 
 The Temporal Service supports some pluggable components.
 
-### What is a ClaimMapper Plugin? {#claim-mapper}
+### What is a ClaimMapper Plugin? {/* #claim-mapper */}
 
 The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
 
@@ -169,20 +169,20 @@ Temporal also offers a default JWT `ClaimMapper` for your use.
 A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JWT, such as membership in groups, and map them to Temporal roles for the user.
 The subject information from the caller's mTLS certificate can also be a parameter in determining roles.
 
-#### `AuthInfo`
+#### `AuthInfo` {/* #authinfo */}
 
 `AuthInfo` is a struct that is passed to `GetClaims`. `AuthInfo` contains an authorization token extracted from the `authorization` header of the gRPC request.
 
 `AuthInfo` includes a pointer to the `pkix.Name` struct.
 This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) Distinguished Name from the caller's mTLS certificate.
 
-#### `Claims`
+#### `Claims` {/* #claims */}
 
 `Claims` is a struct that contains information about permission claims granted to the caller.
 
 `Authorizer` assumes that the caller has been properly authenticated, and trusts the `Claims` when making an authorization decision.
 
-#### Default JWT ClaimMapper
+#### Default JWT ClaimMapper {/* #default-jwt-claimmapper */}
 
 Temporal offers a default JWT `ClaimMapper` that extracts the information needed to form Temporal `Claims`.
 This plugin requires a public key to validate digital signatures.
@@ -195,7 +195,7 @@ To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMap
 
 The code for the default `ClaimMapper` can also be used to build a custom `ClaimMapper`.
 
-#### Token key provider
+#### Token key provider {/* #token-key-provider */}
 
 A `TokenKeyProvider` obtains public keys from specified issuers' URIs that adhere to a specific format.
 The default JWT `ClaimMapper` uses this component to obtain and refresh public keys over time.
@@ -220,7 +220,7 @@ By default, "permissions" is used to name the `permissionsClaimName` value.
 
 Configure the plugin with `config.Config.Global.Authorization.JWTKeyProvider`.
 
-#### JSON Web Token format
+#### JSON Web Token format {/* #json-web-token-format */}
 
 The default JWT `ClaimMapper` expects authorization tokens to be formatted as follows:
 
@@ -245,7 +245,7 @@ This can be one of Temporal's four values:
 
 Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 
-##### Example of a payload for the default JWT ClaimMapper
+##### Example of a payload for the default JWT ClaimMapper {/* #example-of-a-payload-for-the-default-jwt-claimmapper */}
 
 ```
 {
@@ -261,14 +261,14 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
-### What is an Authorizer Plugin? {#authorizer-plugin}
+### What is an Authorizer Plugin? {/* #authorizer-plugin */}
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
 `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
 `Authorizer` allows for a wide range of authorization logic, including call target, role/permissions claims, and other data available to the system.
 
-#### Configuration
+#### Configuration {/* #configuration */}
 
 The following arguments must be passed to `Authorizer`:
 
@@ -304,7 +304,7 @@ temporalServer, err := temporal.NewServer(
 )
 ```
 
-#### How to authorize SDK API calls {#authorize-api-calls}
+#### How to authorize SDK API calls {/* #authorize-api-calls */}
 
 When authentication is enabled, you can authorize API calls made to the Frontend Service.
 
@@ -339,20 +339,20 @@ Related read:
 
 - [How to secure a Temporal Service](/security)
 
-## Data Converter {#data-converter}
+## Data Converter {/* #data-converter */}
 
 Each Temporal SDK provides a [Data Converter](/dataconversion) that can be customized with a custom [Payload Codec](/payload-codec) to encode and secure your data.
 
 For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-deployment/data-encryption).
 
-#### Codec Server
+#### Codec Server {/* #codec-server */}
 
 You can use a [Codec Server](/codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
 However, ensure that you consider all security implications of [remote data encoding](/remote-data-encoding) before using a Codec Server.
 
 For details on how to set up a Codec Server, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
 
-## Configuration Options for Restricting and Securing Access  
+## Configuration Options for Restricting and Securing Access {/* #configuration-options-for-restricting-and-securing-access */}
 
 Temporal provides extensive configuration options to limit and control which callers can access your services and how those services behave in different environments. These options help you enforce stricter security boundaries in self-hosted deployments and tune behavior for production use cases. For more details on available settings and how to configure them, see the following references:
 

@@ -37,9 +37,9 @@ There are two primary Versioning methods that you can use:
 Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/typescript/worker-versioning-legacy) docs if needed. 
 :::
 
-## Versioning with Patching {#patching}
+## Versioning with Patching {/* #patching */}
 
-### Adding a patch
+### Adding a patch {/* #adding-a-patch */}
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -76,7 +76,7 @@ Patching is a three-step process:
 3. Once there are no longer any open Workflow Executions of the previous version of the code, remove `deprecatePatch()`.
    Let's walk through this process in sequence.
 
-### Patching in new code
+### Patching in new code {/* #patching-in-new-code */}
 
 Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case `your-change-id`).
@@ -97,7 +97,7 @@ export async function myWorkflow(): Promise<void> {
 }
 ```
 
-### Deprecating patches {#deprecated-patches}
+### Deprecating patches {/* #deprecated-patches */}
 
 After ensuring that all Workflows started with `v1` code have left retention, you can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
 
@@ -116,14 +116,14 @@ export async function myWorkflow(): Promise<void> {
 }
 ```
 
-### Removing a patch {#deploy-new-code}
+### Removing a patch {/* #deploy-new-code */}
 
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecatePatch()` calls:
 
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
-### Workflow cutovers
+### Workflow cutovers {/* #workflow-cutovers */}
 
 To understand why Patching is useful, it's helpful to demonstrate cutting over an entire Workflow.
 
@@ -155,10 +155,10 @@ The downside of this method is that it requires you to duplicate code and to upd
 This can become impractical over time.
 This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching.
 
-### Testing a Workflow for replay safety
+### Testing a Workflow for replay safety {/* #testing-a-workflow-for-replay-safety */}
 
 To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/typescript/best-practices/testing-suite#replay).
 
-## Worker Versioning
+## Worker Versioning {/* #worker-versioning */}
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.

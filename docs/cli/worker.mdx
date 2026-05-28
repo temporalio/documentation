@@ -18,7 +18,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `worker` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## deployment
+## deployment {/* #deployment */}
 
 Deployment commands perform operations on Worker Deployments:
 
@@ -46,7 +46,7 @@ temporal worker deployment set-current-version \
 
 Sets the current Deployment Version for a given Deployment.
 
-### create
+### create {/* #create */}
 
 Create a new Worker Deployment:
 
@@ -74,7 +74,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |
 
-### create-version
+### create-version {/* #create-version */}
 
 
 Create a new Worker Deployment Version:
@@ -112,7 +112,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
 | `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
 
-### delete
+### delete {/* #delete */}
 
 Remove a Worker Deployment given its Deployment Name.
 A Deployment can only be deleted if it has no Version in it.
@@ -136,7 +136,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |
 
-### delete-version
+### delete-version {/* #delete-version */}
 
 Remove a Worker Deployment Version given its fully-qualified identifier.
 This is rarely needed during normal operation
@@ -168,7 +168,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
 | `--skip-drainage` | No | **bool** Ignore the deletion requirement of not draining. |
 
-### describe
+### describe {/* #describe */}
 
 Describe properties of a Worker Deployment, such as the versions
 associated with it, routing information of new or existing tasks
@@ -192,7 +192,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |
 
-### describe-version
+### describe-version {/* #describe-version */}
 
 Describe properties of a Worker Deployment Version, such as the task
 queues polled by workers in this Deployment Version, or drainage
@@ -220,7 +220,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
 | `--report-task-queue-stats` | No | **bool** Report stats for task queues that are present in this version. |
 
-### list
+### list {/* #list */}
 
 List existing Worker Deployments in the client's namespace.
 
@@ -237,7 +237,7 @@ temporal worker deployment list \
 
 Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
-### manager-identity
+### manager-identity {/* #manager-identity */}
 
 Manager Identity commands change the `ManagerIdentity` of a Worker Deployment:
 
@@ -261,7 +261,7 @@ The current Manager Identity is returned with `describe`:
     --deployment-name YourDeploymentName
 ```
 
-#### set
+#### set {/* #set */}
 
 Set the `ManagerIdentity` of a Worker Deployment given its Deployment Name.
 
@@ -310,7 +310,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--self` | No | **bool** Set Manager Identity to the identity of the user submitting this request. Required unless --manager-identity is specified. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm set Manager Identity. |
 
-#### unset
+#### unset {/* #unset */}
 
 Unset the `ManagerIdentity` of a Worker Deployment given its Deployment Name.
 
@@ -344,7 +344,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--deployment-name` | No | **string** Name for a Worker Deployment. Required. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm unset Manager Identity. |
 
-### set-current-version
+### set-current-version {/* #set-current-version */}
 
 Set the Current Version for a Deployment.
 When a Version is current, Workers of that Deployment Version will receive
@@ -388,7 +388,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm set Current Version. |
 
-### set-ramping-version
+### set-ramping-version {/* #set-ramping-version */}
 
 Set the Ramping Version and Percentage for a Deployment.
 
@@ -442,7 +442,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm set Ramping Version. |
 
-### update-version-metadata
+### update-version-metadata {/* #update-version-metadata */}
 
 Update metadata associated with a Worker Deployment Version.
 
@@ -470,7 +470,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--metadata` | No | **string[]** Set deployment metadata using `KEY="VALUE"` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |
 | `--remove-entries` | No | **string[]** Keys of entries to be deleted from metadata. Can be passed multiple times. |
 
-## describe
+## describe {/* #describe-1 */}
 
 Look up information of a specific worker.
 
@@ -484,7 +484,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--worker-instance-key` | Yes | **string** Worker instance key to describe. |
 
-## list
+## list {/* #list-1 */}
 
 Get a list of workers to the specified namespace.
 
@@ -499,7 +499,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--limit` | No | **int** Maximum number of workers to display. |
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
-## Global Flags
+## Global Flags {/* #global-flags */}
 
 The following options can be used with any command.
 

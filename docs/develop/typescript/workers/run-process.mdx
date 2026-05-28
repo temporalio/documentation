@@ -11,7 +11,7 @@ tags:
   - Worker
 ---
 
-## How to run Worker Processes {#run-a-dev-worker}
+## How to run Worker Processes {/* #run-a-dev-worker */}
 
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
@@ -29,7 +29,7 @@ perfectly sufficient. For more information, see the [Worker tuning guide](/devel
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and
 Activity Executions, respectively.
 
-## How to run a Worker on Docker in TypeScript {#run-a-worker-on-docker}
+## How to run a Worker on Docker in TypeScript {/* #run-a-worker-on-docker */}
 
 :::note
 
@@ -64,7 +64,7 @@ For smaller images and/or more secure deployments, it is also possible to use `-
 `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the
 following caveats.
 
-### Using `node:slim` images
+### Using `node:slim` images {/* #using-nodeslim-images */}
 
 `node:slim` images do not contain some of the common packages found in regular images. This results in significantly
 smaller images.
@@ -89,7 +89,7 @@ RUN apt-get update \
 Failure to install this dependency results in a `[TransportError: transport error]` runtime error, because the
 certificates cannot be verified.
 
-### Using `distroless/nodejs` images
+### Using `distroless/nodejs` images {/* #using-distrolessnodejs-images */}
 
 `distroless/nodejs` images include only the files that are strictly required to execute `node`. This results in even
 smaller images (approximately half the size of `node:slim` images). It also significantly reduces the surface of
@@ -124,7 +124,7 @@ WORKDIR /app
 CMD ["node", "build/worker.js"]
 ```
 
-### Properly configure Node.js memory in Docker
+### Properly configure Node.js memory in Docker {/* #properly-configure-nodejs-memory-in-docker */}
 
 By default, `node` configures its maximum old-gen memory to 25% of the _physical memory_ of the machine on which it is
 executing, with a maximum of 4 GB. This is likely inappropriate when running Node.js in a Docker environment and can
@@ -139,7 +139,7 @@ adjustment to find the most appropriate value based on your specific application
 In practice, it is generally easier to provide this argument through the
 [`NODE_OPTIONS` environment variable](https://nodejs.org/api/cli.html#node_optionsoptions).
 
-### Do not use Alpine
+### Do not use Alpine {/* #do-not-use-alpine */}
 
 Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. If you receive errors
 like the following, it's probably because you are using Alpine.
@@ -154,7 +154,7 @@ Or like this:
 Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
 ```
 
-## How to run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
+## How to run a Temporal Cloud Worker {/* #run-a-temporal-cloud-worker */}
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that
 include the following:
@@ -170,7 +170,7 @@ For more information about managing and generating client certificates for Tempo
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-### How to register types {#register-types}
+### How to register types {/* #register-types */}
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and
 Activity Types.
@@ -249,7 +249,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-## How to shut down a Worker and track its state {#shut-down-a-worker}
+## How to shut down a Worker and track its state {/* #shut-down-a-worker */}
 
 Workers shut down if they receive any of the Signals enumerated in
 [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`,
@@ -271,7 +271,7 @@ You might want to programmatically shut down Workers (with
 [Worker.shutdown()](https://typescript.temporal.io/api/classes/worker.Worker#shutdown)) in integration tests or when
 automating a fleet of Workers.
 
-### Worker states
+### Worker states {/* #worker-states */}
 
 At any time, you can Query Worker state with
 [Worker.getState()](https://typescript.temporal.io/api/classes/worker.Worker#getstate). A Worker is always in one of

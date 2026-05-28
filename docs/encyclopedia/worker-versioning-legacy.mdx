@@ -30,7 +30,7 @@ Worker Versioning helps manage nondeterministic changes by providing a convenien
 
 Accomplish this goal by assigning a Build ID (a free-form string) to the code that defines a Worker, and specifying which Build IDs are compatible with each other by updating the version sets associated with the Task Queue, stored by the Temporal Server.
 
-### When and why you should use Worker Versioning
+### When and why you should use Worker Versioning {/* #when-and-why-you-should-use-worker-versioning */}
 
 :::caution
 
@@ -43,7 +43,7 @@ On Task Queues using this feature, the Workflow starter doesn't have to know abo
 
 The new code in the newly deployed Workers executes new [Workflow Executions](/workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
-#### Decommission old Workers
+#### Decommission old Workers {/* #decommission-old-workers */}
 
 You can decommission old Workers after you archive all open Workflows using their version.
 If you have no need to query closed Workflows, you can decommission them when no open Workflows remain at that version.
@@ -58,7 +58,7 @@ Operations to add new Build IDs to the sets will fail if they exceed this limit.
 There is also a limit on the number of Version Sets, which defaults to 10.
 A version can only be garbage collected after a Workflow Execution is deleted.
 
-#### Deploy code changes to Workers
+#### Deploy code changes to Workers {/* #deploy-code-changes-to-workers */}
 
 The feature also lets you implement compatible changes to or prevent a buggy code path from executing on currently open Workflows.
 You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
@@ -91,7 +91,7 @@ By default, a versioned Task Queue's Continue-as-New function starts the continu
 If you continue-as-new onto a different Task Queue, the system doesn't assign any particular version.
 You also have the option to specify that the continued Workflow should start using the Task Queue's latest default version.
 
-### How to use Worker Versioning
+### How to use Worker Versioning {/* #how-to-use-worker-versioning */}
 
 :::caution
 
@@ -105,7 +105,7 @@ To use Worker Versioning, follow these steps:
    You can use either the Temporal CLI or your choice of SDK.
 2. Enable the feature on your Worker by specifying a Build ID.
 
-#### Defining the version sets
+#### Defining the version sets {/* #defining-the-version-sets */}
 
 Whether you use [Temporal CLI](/cli/) or an SDK, updating the version sets feels the same.
 You specify the Task Queue that you're targeting, the Build ID that you're adding (or promoting), whether it becomes the new default version, and any existing versions it should be considered compatible with.
@@ -185,7 +185,7 @@ This operation is supported by performing an update targeting `2.1` (or `2.0`) a
 
 Now new Workflows start on `2.1`.
 
-#### Permitted and forbidden operations on version sets
+#### Permitted and forbidden operations on version sets {/* #permitted-and-forbidden-operations-on-version-sets */}
 
 A request to change the sets can do one of the following:
 
@@ -202,7 +202,7 @@ However, sometimes you might want to do this intentionally.
 If you _want_ to make sure that all Workflows currently being processed by, say, `2.0` stop (even if you don't yet have a new version ready), you can add a new version `2.1` to the sets marked as compatible with `2.0`.
 New tasks will target `2.1`, but because you haven't deployed any `2.1` Workers, they won't make any progress.
 
-#### Set constraints
+#### Set constraints {/* #set-constraints */}
 
 The sets have a maximum size limit, which defaults to 100 build IDs across all sets.
 This limit is configurable on Temporal Server via the `limit.versionBuildIdLimitPerQueue` dynamic config property.
@@ -216,7 +216,7 @@ In practice, these limits should rarely be a concern because a version is no lon
 There is also a limit on the size of each Build ID or version string, which defaults to 255 characters.
 This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic config property.
 
-### Build ID reachability
+### Build ID reachability {/* #build-id-reachability */}
 
 :::caution
 
@@ -249,7 +249,7 @@ For more information, see the [CLI documentation](/cli/) or help output.
 
 You can also use this API `GetWorkerTaskReachability` directly from within language SDKs.
 
-### Unversioned Workers
+### Unversioned Workers {/* #unversioned-workers */}
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
 They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open Workflows that began executing before versions were added to the queue.

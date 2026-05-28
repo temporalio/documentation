@@ -40,7 +40,7 @@ All code snippets in this guide are taken from the
 [deep research sample](https://github.com/braintrustdata/braintrust-cookbook/blob/main/examples/TemporalDeepResearch/TemporalDeepResearch.mdx). Refer to the sample for the
 complete code and run it locally.
 
-## Prerequisites
+## Prerequisites {/* #prerequisites */}
 
 - This guide assumes you are already familiar with Braintrust. If you aren't, refer to the
   [Braintrust documentation](https://www.braintrust.dev/docs) for more details.
@@ -50,7 +50,7 @@ complete code and run it locally.
   [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave the
   Temporal Development Server running if you want to test your code locally.
 
-## Configure Workers to use Braintrust
+## Configure Workers to use Braintrust {/* #configure-workers-to-use-braintrust */}
 
 Workers execute the code that defines your Workflows and Activities. To trace Workflow and Activity execution in
 Braintrust, add the `BraintrustPlugin` to your Worker.
@@ -117,7 +117,7 @@ Follow the steps below to configure your Worker.
 
    :::
 
-## Trace LLM calls with wrap_openai
+## Trace LLM calls with wrap_openai {/* #trace-llm-calls-with-wrap_openai */}
 
 The simplest way to trace LLM calls is to wrap your OpenAI client. Every call through the wrapped client automatically
 creates a span in Braintrust with inputs, outputs, token counts, and latency.
@@ -160,7 +160,7 @@ my-workflow-request (client span)
         └── Chat Completion (gpt-4o)
 ```
 
-## Add custom spans for application context
+## Add custom spans for application context {/* #add-custom-spans-for-application-context */}
 
 Add your own spans to capture business-level context like user queries, workflow inputs, and final outputs.
 
@@ -182,7 +182,7 @@ async def run_research(query: str):
         return result
 ```
 
-## Manage prompts with load_prompt
+## Manage prompts with load_prompt {/* #manage-prompts-with-load_prompt */}
 
 Braintrust lets you manage prompts in a UI and deploy changes without code deploys. The workflow is:
 
@@ -247,7 +247,7 @@ except Exception as e:
 
 :::
 
-## Example: Deep Research Agent
+## Example: Deep Research Agent {/* #example-deep-research-agent */}
 
 The [deep research sample](https://github.com/braintrustdata/braintrust-cookbook/blob/main/examples/TemporalDeepResearch/TemporalDeepResearch.mdx) demonstrates a complete AI
 agent that:

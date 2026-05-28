@@ -51,7 +51,7 @@ Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-## Connect to a development Temporal Service {#connect-to-development-service}
+## Connect to a development Temporal Service {/* #connect-to-development-service */}
 
 Use the `newLocalServiceStubs` method to create a stub that points to the Temporal development service, and then use the
 [`WorkflowClient.newInstance` method](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newInstance(io.temporal.serviceclient.WorkflowServiceStubs))
@@ -288,7 +288,7 @@ variables or a configuration file, and then override specific options in code.
 </TabItem>
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through [mTLS](/cloud/certificates).
 Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to
@@ -601,7 +601,7 @@ the new Client:
 </TabItem>
 </Tabs>
 
-## Start a Workflow Execution {#start-workflow-execution}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
 you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
@@ -748,7 +748,7 @@ written in other language SDKs.
 You can start a Workflow Execution on a regular schedule by using
 [`setCronSchedule`](/develop/java/workflows/schedules#cron-schedule) Workflow option in the Client code.
 
-### How to set a Workflow's Task Queue {#set-task-queue}
+### How to set a Workflow's Task Queue {/* #set-task-queue */}
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
@@ -775,7 +775,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-### How to set a Workflow Id {#workflow-id}
+### How to set a Workflow Id {/* #workflow-id */}
 
 Although it is not required, we recommend providing your own
 [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
@@ -801,7 +801,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-### Java WorkflowOptions reference {#workflow-options-reference}
+### Java WorkflowOptions reference {/* #workflow-options-reference */}
 
 Create a
 [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in
@@ -824,7 +824,7 @@ The following fields are available:
 | [`Memo`](#memo)                                         | No                   | string                                                                                                               |
 | [`SearchAttributes`](#searchattributes)                 | No                   | `Map<String, Object>`                                                                                                |
 
-#### WorkflowId
+#### WorkflowId {/* #workflowid */}
 
 Set the Workflow Id with the
 [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
@@ -846,7 +846,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### TaskQueue
+#### TaskQueue {/* #taskqueue */}
 
 Set the Workflow Task Queue with the
 [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
@@ -868,7 +868,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### WorkflowExecutionTimeout
+#### WorkflowExecutionTimeout {/* #workflowexecutiontimeout */}
 
 Set the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) with the
 [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
@@ -891,7 +891,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### WorkflowRunTimeout
+#### WorkflowRunTimeout {/* #workflowruntimeout */}
 
 Set the Workflow Run Timeout with the
 [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
@@ -914,7 +914,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### WorkflowTaskTimeout
+#### WorkflowTaskTimeout {/* #workflowtasktimeout */}
 
 Set the Workflow Task Timeout with the
 [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
@@ -938,7 +938,7 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### WorkflowIDReusePolicy
+#### WorkflowIDReusePolicy {/* #workflowidreusepolicy */}
 
 - Type: `WorkflowIdReusePolicy`
 - Default: `AllowDuplicate`
@@ -962,7 +962,7 @@ GreetWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### RetryOptions
+#### RetryOptions {/* #retryoptions */}
 
 To set a Workflow Retry Options in the
 [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
@@ -985,7 +985,7 @@ GreetWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### CronSchedule
+#### CronSchedule {/* #cronschedule */}
 
 A [Temporal Cron Job](/cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the
 call to spawn a Workflow Execution.
@@ -1019,7 +1019,7 @@ YourWorkflowInterface workflow1 =
 For more details, see the
 [HelloCron Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java).
 
-#### Memo
+#### Memo {/* #memo */}
 
 - Type: `String`
 - Default: None
@@ -1039,7 +1039,7 @@ GreetWorkflowInterface workflow1 =
                 .build());
 ```
 
-#### SearchAttributes
+#### SearchAttributes {/* #searchattributes */}
 
 Search Attributes are additional indexed information attributed to Workflow and used for search and visibility. These
 can be used in a query of List/Scan/Count Workflow APIs. The key and its value type must be registered on Temporal
@@ -1066,7 +1066,7 @@ The following Java types are supported:
 - OffsetDateTime
 - Collection of the types in this list.
 
-### How to get the result of a Workflow Execution in Java {#get-workflow-results}
+### How to get the result of a Workflow Execution in Java {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
