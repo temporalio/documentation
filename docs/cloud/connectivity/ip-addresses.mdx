@@ -408,31 +408,9 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 ### Changes to Stable IP ranges
 
-Temporal aims to keep Stable IP ranges consistent. Each Stable IP address is expected to remain active for at least 12 months.
-
-**When Stable IPs are added**:
-1. New IP ranges appear in the API response before traffic is routed to them
-2. Update your firewall to include the new ranges
-3. Temporal announces the activation date in the [Temporal Cloud changelog](https://temporal.io/change-log)
-4. Traffic begins routing to new IP ranges on the announced date
-
-**If a Stable IP must be removed** (rare):
-1. The IP range is marked as deprecated and removed from the API response
-2. Traffic continues to route through the deprecated IP for a 3-month deprecation period
-3. Temporal announces the deprecation and removal date in the changelog and documentation
-4. After the deprecation period, traffic stops routing to the deprecated IP
+Temporal does not intend to make changes to published Stable IP ranges. In the rare exception that a Stable IP range needs to be added to or removed from the list, Temporal will communicate via targeted communication to affected Temporal Cloud users and the [Temporal Cloud changelog](https://temporal.io/change-log), and will give ample time for users to update their firewalls with the changed IPs.
 
 Temporal will never route traffic to IP addresses that are not listed in the API response.
-
-### Regional availability
-
-Stable IPs are rolling out by cloud provider and region:
-
-- **AWS**: Starting with us-west-2, expanding to all regions
-- **GCP**: Rolling out to regions following AWS
-- **New regions**: All new Temporal Cloud regions include Stable IPs at launch
-
-Contact [Temporal support](https://docs.temporal.io/cloud/support) if you need Stable IPs in a region that does not yet have them. Temporal may be able to prioritize enabling Stable IPs in your region.
 
 ### Pricing
 
