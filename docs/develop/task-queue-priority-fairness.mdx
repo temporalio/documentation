@@ -515,9 +515,19 @@ There should only be one fairness weight assigned to each fairness key within a 
 
 :::
 
-### Using Priority and Fairness together
+### Choosing between Priority, Fairness, and both
 
-When you use Priority and Fairness together, Priority determines which "sub-queue" Tasks go into, and Fairness determines the order in which Tasks within each priority level are executed.
+- **Priority alone** when you need strict priority ordering - for example, separating real-time Tasks from batch Tasks.
+- **Fairness alone** when you need tier or tenant isolation so no group is starved, but you don't need to preempt any group ahead of another.
+- **Both** when you have a tiered SLA hierarchy - Priority for the broad tier (for example, paid vs. free), Fairness for per-tenant equity within a tier.
+
+When you use Priority and Fairness together, the next Task to dispatch is chosen by walking three rules in order:
+
+1. **Priority tier (strict).** Tasks at a higher priority always dispatch before tasks at lower priorities, regardless of fairness keys or weights.
+2. **Fairness key within a tier (weighted).** Within a priority tier, each fairness key is a virtual queue. Keys are dispatched proportional to their weights - a key with weight 2.0 is dispatched twice as often as one with weight 1.0.
+3. **FIFO within a key.** Tasks that share a priority tier _and_ fairness key dispatch in the order they were enqueued.
+
+These rules apply within a Task Queue partition. See [Limitations of Fairness](#limitations-of-fairness) for how partitioning can affect ordering.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
@@ -559,17 +569,7 @@ In both directions, the existing backlog is dispatched before any new Tasks queu
 
 ### Set rate limits at the Task Queue level
 
-When you're starting to scale your Temporal Services, you may decide to set [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits) limits to test your workload or experiment with provisioning benchmarks. You can set the RPS limit at the Task Queue level with `queue-rps-limit` in the CLI.
-
-The whole queue rate limits the dispatch rate of Tasks regardless of the fairness key. Tasks won't be dispatched faster than the specified limit when averaged over a few seconds, although you may see small bursts due to partitioning.
-
-:::note
-
-The whole queue rate limit is the same feature that's available through the Worker Options in the SDKs. If it's set through the API, that limit takes precedence over the limit set through Worker Options.
-
-:::
-
-If you want to make sure that a specific fairness key has limits to throttle Tasks, you can also set an RPS limit based on fairness keys with `fairness-key-rps-limit-default` in the CLI. This could be how you distinguish customer tiers in a way that only allows a defined number of Tasks to be processed by that tier.
+Within a Task Queue, you can set dispatch rate limits for the whole queue using `queue-rps-limit` and for each fairness key using `fairness-key-rps-limit-default`.
 
 ```
 temporal task-queue config set \
@@ -582,7 +582,9 @@ temporal task-queue config set \
     --fairness-key-rps-limit-reason "per-key limit"
 ```
 
-The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
+**Whole queue rate limits:** applies to the whole queue regardless of the fairness key. This is the same setting as is exposed through the [Worker Options](/develop/worker-tuning-reference#io-configuration-options) in the SDKs, and when set via the API, takes precedence over the limit set through Worker Options.
+
+**Fairness key rate limits:** The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
 
 - The whole queue limit and per-fairness-key limit may be set independently: none, one or the other, or both may be set. If both are set, then the more restrictive one applies.
 - The per-fairness-key limit for a key is scaled by the fairness weight assigned to that key. So if the per-fairness-key limit for a queue is set to 10, then all keys with the default weight (1.0) will have a limit of 10 tasks/second. But if a particular key is given a weight of 2.5, then the per-key rate limit for that key will be 25 tasks/second.
@@ -591,11 +593,22 @@ The per-fairness-key rate limit works in conjunction with Task Queue Fairness. I
 
 ### Fairness weight overrides
 
-In many cases, supplying the weight of a fairness key along with the key itself is straightforward. In some situations, it's convenient to leave the weights out of client code and instead control the weights of a small number of keys through a config API.
-
 You can override the weights of up to 1000 keys through the config API. When an override is set for a key, the weight attached to the Task, through Workflow or Activity priority metadata, will be ignored, and the overridden weight will be used instead.
 
 Weight overrides are stored per Task Queue, including type, so they must be set for both Workflow and Activity Task Queues to take effect for both.
+
+Set overrides with `temporal task-queue config set`:
+
+```
+temporal task-queue config set \
+    --task-queue my-task-queue \
+    --task-queue-type activity \
+    --namespace my-namespace \
+    --fairness-key-weight premium=5.0 \
+    --fairness-key-weight basic=1.0
+```
+
+To unset a single key's override, pass `key=default`. To clear all overrides on the Task Queue, use `--fairness-key-weight-clear-all`.
 
 ### Limitations of Fairness
 
