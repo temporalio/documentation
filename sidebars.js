@@ -823,6 +823,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/interceptors',
               ]
             },
             {
