@@ -45,7 +45,7 @@ moving the Namespace back to its original region.
   title="On failover, the replica becomes active and the Namespace endpoint directs access to it."
 />
 
-To opt out of Temporal-managed failovers and its RTO, you can
+To opt out of Temporal-managed failovers and their RTO, you can
 [disable automated failovers](/cloud/high-availability/failovers/manage#disabling-temporal-initiated).
 
 ### Conditions that trigger an automatic failover
@@ -152,7 +152,4 @@ When a Workflow Execution is updated in a newly active replica following a failo
 Namespace that arrive after the failover cannot be directly applied. At this point, Temporal Cloud has forked the Event
 History.
 
-After failover, Temporal Cloud creates a new branch history for execution and begins its
-
-<ToolTipTerm term="conflict resolution" /> process. The Temporal Service ensures that Event Histories remain valid and
-are replayable by SDKs post-failover or after conflict resolution.
+After failover, Temporal Cloud creates a new branch history for execution and begins its <ToolTipTerm term="conflict resolution" /> process. The Temporal Service ensures that Event Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
