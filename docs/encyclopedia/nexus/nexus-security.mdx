@@ -89,6 +89,16 @@ See the [encryption sample](https://github.com/temporalio/samples-go/blob/main/e
 Use wrapper types (for example, `EndpointValue`) so the Data Converter selects an Endpoint-specific encryption key.
 This encrypts only Nexus traffic with a dedicated key, without sharing Namespace keys across teams.
 
+:::warning Incompatible with typed operations
+
+The wrapper approach changes the static type of the operation input, so it only compiles when the caller uses `ExecuteOperation` with a **string operation name**.
+A typed reference declared as `nexus.Operation[Input, Output]` constrains the input through Go generics, and the wrapped value will not satisfy that constraint.
+The call fails at compile time, not at runtime.
+
+For typed operations, pass the Endpoint name to the Data Converter through the workflow context instead of wrapping the input.
+
+:::
+
 See the [draft endpoint-based encryption sample](https://github.com/temporalio/samples-go/compare/main...bergundy:samples-go:nexus-encryption-by-endpoint).
 
 ### Choosing an approach
