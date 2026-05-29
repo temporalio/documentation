@@ -87,22 +87,26 @@ If you attach a public Connectivity Rule with Stable IPs to a Namespace that is 
 
 Stable IPs is a setting on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). You enable it by creating (or updating) a public Connectivity Rule with Stable IPs enabled, then attaching that rule to the Namespaces that should resolve to Stable IPs.
 
-You can manage Connectivity Rules through the Cloud Ops API, Terraform provider, or `tcld` CLI. There is no UI option at this time.
+:::note Creating a public Connectivity Rule with Stable IPs requires the Cloud Ops API
+
+`tcld` does not currently support creating a public Connectivity Rule with Stable IPs enabled. Create the rule using either:
+
+- The [Cloud Ops API](/ops) directly (HTTP or gRPC at `saas-api.tmprl.cloud`), or
+- The generated client in the [`temporalio/cloud-api`](https://github.com/temporalio/cloud-api) repository.
+
+Once the rule exists, you can attach it to a Namespace using any Connectivity Rule management interface: `tcld`, the Cloud Ops API, the `cloud-api` client, or the [Terraform provider](/cloud/terraform-provider). There is no Temporal Cloud UI option at this time.
+
+:::
 
 To enable Stable IPs:
 
-1. Create a public Connectivity Rule with Stable IPs enabled. Only one public Connectivity Rule exists per account, so if you already have one, update or recreate it with Stable IPs enabled. For example:
-
-```
-tcld connectivity-rule create --connectivity-type public --enable-stable-ips
-```
-
-2. Attach the rule to your Namespace with `tcld namespace set-connectivity-rules` (or the equivalent Cloud Ops API or Terraform call).
-3. Retrieve the list of Stable IPs from the [public API](/cloud/connectivity/ip-addresses#how-to-view-stable-ip-ranges).
+1. Create a public Connectivity Rule with Stable IPs enabled via the Cloud Ops API or the `cloud-api` client. Only one public Connectivity Rule exists per account, so if you already have one, update or recreate it with Stable IPs enabled. The Cloud Ops API field is `enableStableIps` (boolean) on the `PublicConnectivityRule` message and requires Cloud Ops API `v0.15.0` or later. See [How to enable Stable IPs with curl](#how-to-enable-stable-ips-with-curl) below for a copy-pasteable example.
+2. Attach the rule to your Namespace using any Connectivity Rule management interface — for example, `tcld namespace set-connectivity-rules`, the Cloud Ops API, the `cloud-api` client, or Terraform.
+3. Retrieve the list of Stable IPs from the [public JSON file](/cloud/connectivity/ip-addresses#how-to-view-stable-ip-ranges).
 4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
 5. Ensure your Workers and Temporal Clients connect using the Namespace endpoint, not regional endpoints.
 
-You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces. The Cloud Ops API field is `enableStableIps` (boolean) on the `PublicConnectivityRule` message and requires Cloud Ops API `v0.15.0` or later.
+You can enable Stable IPs on new Namespaces at creation time or on existing Namespaces.
 
 :::note DNS propagation
 
@@ -385,11 +389,7 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [https://docs.temporal.io/json/stable-ip-ranges-prod.json](https://docs.temporal.io/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
 
-2. **Create (or update) the account's public Connectivity Rule with Stable IPs enabled.**
-
-   ```bash
-   tcld connectivity-rule create --connectivity-type public --enable-stable-ips
-   ```
+2. **Create (or update) the account's public Connectivity Rule with Stable IPs enabled.** This step requires the [Cloud Ops API](#how-to-enable-stable-ips-with-curl) or the [`cloud-api` client](https://github.com/temporalio/cloud-api) — `tcld` does not currently support creating a public Connectivity Rule with Stable IPs.
 
    If you already have a public Connectivity Rule without Stable IPs, delete and recreate it — there is no in-place update flag, and creating a second public rule returns an error. Wait for the rule to reach `ACTIVE` before continuing.
 
