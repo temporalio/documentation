@@ -91,7 +91,7 @@ To enable Stable IPs:
 
 1. Create a public Connectivity Rule with Stable IPs enabled (for example, `tcld connectivity-rule create --connectivity-type public --enable-stable-ips`). Only one public Connectivity Rule exists per account, so if you already have one, update or recreate it with Stable IPs enabled.
 2. Attach the rule to your Namespace with `tcld namespace set-connectivity-rules` (or the equivalent Cloud Ops API or Terraform call).
-3. Retrieve the list of Stable IPs from the public API (see below).
+3. Retrieve the list of Stable IPs from the [public API](/cloud/connectivity/ip-addresses#how-to-view-stable-ip-ranges).
 4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
 5. Ensure your Workers and Temporal Clients connect using the Namespace endpoint, not regional endpoints.
 
