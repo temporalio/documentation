@@ -62,13 +62,13 @@ Please note:
 
 :::
 
-## Available Temporal Cloud metrics {#available-metrics}
+## Available Temporal Cloud metrics {/* #available-metrics */}
 
 **What metrics are emitted from Temporal Cloud?**
 
 The following metrics are emitted for your Namespaces:
 
-### Frontend Service metrics {#frontend}
+### Frontend Service metrics {/* #frontend */}
 
 #### temporal_cloud_v0_frontend_service_error_count
 
@@ -94,7 +94,7 @@ Count of state transitions for each Namespace.
 Approximate count of Temporal Cloud Actions.
 Labels: temporal_account, temporal_namespace, is_background, namespace_mode
 
-### Poll metrics {#poll}
+### Poll metrics {/* #poll */}
 
 #### temporal_cloud_v0_poll_success_count
 
@@ -111,7 +111,7 @@ Labels: temporal_account, temporal_namespace, operation, task_type, temporal_ser
 When no tasks are available for a poller before timing out.
 Labels: temporal_account, temporal_namespace, operation, task_type, temporal_service_type
 
-### Replication lag metrics {#replication-lag}
+### Replication lag metrics {/* #replication-lag */}
 
 #### temporal_cloud_v0_replication_lag_bucket
 
@@ -128,7 +128,7 @@ Labels: temporal_account, temporal_namespace
 The sum of [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) during a specific time interval for a Namespace with high availability.
 Labels: temporal_account, temporal_namespace
 
-### Schedule metrics {#schedule}
+### Schedule metrics {/* #schedule */}
 
 #### temporal_cloud_v0_schedule_action_success_count
 
@@ -150,7 +150,7 @@ Labels: temporal_account, temporal_namespace
 Workflows that were delayed due to exceeding a rate limit.
 Labels: temporal_account, temporal_namespace
 
-### Service latency metrics {#service-latency}
+### Service latency metrics {/* #service-latency */}
 
 #### temporal_cloud_v0_service_latency_bucket
 
@@ -167,7 +167,7 @@ Labels: temporal_account, temporal_namespace, operation, temporal_service_type
 Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
 Labels: temporal_account, temporal_namespace, operation, temporal_service_type
 
-### Workflow metrics {#workflow}
+### Workflow metrics {/* #workflow */}
 
 #### temporal_cloud_v0_workflow_cancel_count
 
@@ -199,7 +199,7 @@ Labels: temporal_account, temporal_namespace, operation, temporal_service_type
 Workflows that timed out before completing execution.
 Labels: temporal_account, temporal_namespace, operation, temporal_service_type
 
-## Metrics labels {#metrics-labels}
+## Metrics labels {/* #metrics-labels */}
 
 **What labels can you use to filter metrics?**
 
@@ -228,7 +228,7 @@ The following is an example of how you can filter metrics using labels:
 temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
 ```
 
-## Operations {#metrics-operations}
+## Operations {/* #metrics-operations */}
 
 **What operation labels are captured by Temporal Cloud?**
 

@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a basic Workflow {#develop-workflows}
+## How to develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -42,7 +42,7 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 }
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+### How to define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -90,7 +90,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+### How to define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -141,7 +141,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to customize Workflow Type in Go {#customize-workflow-type}
+### How to customize Workflow Type in Go {/* #customize-workflow-type */}
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
@@ -181,7 +181,7 @@ func main() {
 }
 ```
 
-### How to develop Workflow logic {#workflow-logic-requirements}
+### How to develop Workflow logic {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow.
 

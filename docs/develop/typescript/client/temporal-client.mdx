@@ -48,7 +48,7 @@ different type of connection than connecting from a Worker. The sections
 an Activity. See [Connect to Temporal Service from a Worker](#connect-to-temporal-service-from-a-worker) for details on
 connecting from a Worker.
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 To connect to a development Temporal service from a Temporal Application or from within an Activity, import the
 [`Connection` class](https://typescript.temporal.io/api/classes/client.Connection) from `@temporalio/client` and use
@@ -266,7 +266,7 @@ const client = new Client({
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -480,7 +480,7 @@ connection.setApiKey(<APIKey>);
 
 </Tabs>
 
-## Connect to Temporal Service from a Worker {#connect-to-temporal-service-from-a-worker}
+## Connect to Temporal Service from a Worker {/* #connect-to-temporal-service-from-a-worker */}
 
 Connecting to Temporal Service from a Worker requires the same set of connections options as connecting from a Temporal
 Application or from within an Activity, but the connection type is different. When connecting from a Worker, you create
@@ -607,14 +607,14 @@ communication with the Temporal Service. This section explains the differences b
 respective use cases. For detailed information about each class, refer to the
 [Temporal TypeScript API documentation](https://typescript.temporal.io/api/namespaces/client).
 
-### NativeConnection vs. Connection {#native-connection-vs-connection}
+### NativeConnection vs. Connection {/* #native-connection-vs-connection */}
 
 The TypeScript SDK provides two types of connection classes to connect to the Temporal Service: `NativeConnection` and
 `Connection`. The `NativeConnection` class is used to connect from a Worker, while the `Connection` class is used to
 connect from a Temporal Application or from within an Activity, typically through a `Client` object. Both connection
 classes accept the same set of connection options.
 
-### Connection vs. Client {#connection-vs-client}
+### Connection vs. Client {/* #connection-vs-client */}
 
 A `Client` object is a high-level, lightweight abstraction that simplifies interaction with the Temporal Service. It
 internally manages a `Connection` object to handle the low-level communication details. The `Client` class provides
@@ -629,7 +629,7 @@ When instantiating a `Connection`, you specify most connection options except fo
 Service endpoint, TLS settings, and authentication credentials. When instantiating a `Client`, you provide the
 `Connection` object and the Namespace you want to connect to, along with other client options.
 
-## Start Workflow Execution {#start-workflow-execution}
+## Start Workflow Execution {/* #start-workflow-execution */}
 
 **How to start a Workflow Execution using the Typescript SDK**
 
@@ -673,7 +673,7 @@ and Workflow Definition.
 Workflow Execution run in a separate V8 isolate context in order to provide a
 [deterministic runtime](/workflow-definition#deterministic-constraints).
 
-### Set a Workflow's Task Queue {#set-task-queue}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
@@ -757,7 +757,7 @@ Optionally, in Workflow code, when calling an Activity, you can specify the Task
 to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify `taskQueue`, the TypeScript SDK
 places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
-### Set a Workflow Id {#workflow-id}
+### Set a Workflow Id {/* #workflow-id */}
 
 Although it is not required, we recommend providing your own
 [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
@@ -776,7 +776,7 @@ const handle = await client.workflow.start(example, {
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
 
-### Get the results of a Workflow Execution {#get-workflow-results}
+### Get the results of a Workflow Execution {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 

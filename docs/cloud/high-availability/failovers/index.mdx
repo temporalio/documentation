@@ -94,7 +94,7 @@ is warranted are:
   takes effect, and the later one is a no-op. A user-triggered failover does not conflict with Temporal's automatic
   failover.
 
-## The failover process {#failover-process}
+## The failover process {/* #failover-process */}
 
 The failover process is the same whether it is triggered automatically by Temporal or manually by a user.
 
@@ -120,7 +120,7 @@ The failover process is the same whether it is triggered automatically by Tempor
    user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for
    details.
 
-## Post-failover events {#post-failover-events}
+## Post-failover events {/* #post-failover-events */}
 
 After any failover, whether triggered by you or by Temporal, an event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs. The audit log entry uses the `"operation": "FailoverNamespace"` event. Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications) whenever a failover occurs.
 
@@ -137,7 +137,7 @@ When the network partition resolves and the regions can communicate again, Tempo
 [conflict resolution](#conflict-resolution) process reconciles the divergent histories and determines which region
 remains active.
 
-## Conflict resolution {#conflict-resolution}
+## Conflict resolution {/* #conflict-resolution */}
 
 Namespaces with replicas rely on asynchronous event replication. Updates made to the primary may not immediately be
 reflected in the replica due to <ToolTipTerm term="replication lag" />, particularly during failovers. In the event of a

@@ -14,7 +14,7 @@ tags:
 description: A Workflow sets durable Timers for fixed periods using sleep() or timer(). Timers are persisted, ensuring execution continues after downtime, using minimal resources.
 ---
 
-## What is a Timer? {#timers}
+## What is a Timer? {/* #timers */}
 
 A Workflow can set a durable Timer for a fixed time period.
 In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
@@ -24,7 +24,7 @@ Timers are persisted, so even if your Worker or Temporal Service is down when th
 
 Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
 
-## Asynchronous design patterns in TypeScript {#asynchronous-design-patterns}
+## Asynchronous design patterns in TypeScript {/* #asynchronous-design-patterns */}
 
 The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
 Here are some examples we use the most; we welcome more if you can think of them!

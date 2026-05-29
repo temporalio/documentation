@@ -28,7 +28,7 @@ This page discusses the following:
 In day-to-day conversation, the term _Activity_ denotes an [Activity Definition](/activity-definition), [Activity Type](/activity-definition#activity-type), or [Activity Execution](/activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
-## What is an Activity Definition? {#activity-definition}
+## What is an Activity Definition? {/* #activity-definition */}
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks#activity-task-execution).
 Activities encapsulate business logic that is prone to failure, allowing for automatic retries when issues occur.
@@ -184,7 +184,7 @@ Activity Definitions are named and referenced in code by their [Activity Type](/
     title="Activity Definition"
     />
 
-### Idempotency {#idempotency}
+### Idempotency {/* #idempotency */}
 
 Temporal recommends that Activities be idempotent.
 
@@ -253,7 +253,7 @@ For an Activity with a [Retry Policy](/encyclopedia/retry-policies) that allows 
 Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
 :::
 
-### Constraints {#activity-constraints}
+### Constraints {/* #activity-constraints */}
 
 Activity Definitions are executed as normal functions.
 
@@ -261,7 +261,7 @@ In the event of failure, the function begins at its initial state when retried (
 
 Therefore, an Activity Definition has no restrictions on the code it contains.
 
-### Parameters {#activity-parameters}
+### Parameters {/* #activity-parameters */}
 
 An Activity Definition can support as many parameters as needed.
 
@@ -276,7 +276,7 @@ Activity Definitions must contain the following parameters:
 
 Other parameters, such as [Retry Policies](/encyclopedia/retry-policies) and return values, can be seen in the implementation guides, listed in the next section.
 
-## What is an Activity Type? {#activity-type}
+## What is an Activity Type? {/* #activity-type */}
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
