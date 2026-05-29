@@ -56,7 +56,7 @@ You can scope roles to:
 * All resources of a given type
 * Specific resources by explicit ID list
 
-::: warning Custom Roles are additive only
+:::warning Custom Roles are additive only
 
 Custom Roles define a set of granular permissions and assign them alongside a predefined
 role. The effective access is the union of both. You cannot use custom roles
@@ -114,17 +114,120 @@ When you're done assiging permissions to resources, click Create Custom Role at 
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
 
-Use the [`CreateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CreateCustomRoleRequest) to create the Custom Role:
+Use the [`CreateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CreateCustomRoleRequest) to create a Custom Role.
+The structure of the `CreateCustomRoleRequest` is as follows:
 
 ```
-TODO: CLI command to come >
+{
+  "spec": {
+    "name": "my-role-name",
+    "description": "Optional description",
+    "permissions": [
+      {
+        "actions": ["cloud.namespace.create"],
+        "resources": {
+          "resource_type": "projects",
+          "allow_all": true
+        }
+      }
+    ]
+  }
+}
 ```
 
-This example creates a Custom Role with the defined `roleSpec`, and returns the `RoleID`.
+This example creates a Custom Role with the defined `spec`. 
+The example shown here creates a role named `my-role-name` and grants the ability to create projects in all Namespaces.
+The request returns a `RoleID`.
+
+The following constraints apply to the request:
+
+- **Name constraints:**
+    - A name is required, with a max of 64 characters
+    - The following characters are allowed: letters (a-z, A-Z), numbers (0-9), hyphens (-), underscores (_)
+    - Names are not unique per account, meaning two different roles can share the same name
+- **Description constraints:**
+    - A description is optional, with a max of 256 characters
+- **Permissions constraints:**
+    - At least one permission is required
+    - You can assign up to 25 permissions per role (account default, may vary) 
+
+**Permission Structure**
+
+Each permission has two parts: actions and resources.
+
+- **Resource Types & Scoping Behavior**
+
+| **Resource Type** | **Scoping Behavior** | NOTE |
+| --- | --- | --- |
+| account | Account-level; no specific resource ID needed     |  |
+| projects (coming soon)  | [At the time of Custom Roles release] Scoped to default project <br />[Future] Scoped to specific project IDs, or `allow_all: true` for all projects.  | `default` project to start with because with introduction of projects, all namespaces will be moved to `default` project to start with   |
+| Namespaces | Scoped to specific Namespace IDs, or `allow_all: true` for all Namespaces    |  |
+| Nexus endpoints | Scoped to specific Nexus endpoint IDs, or `allow_all: true` for all Nexus endpoints |  |
+| connectivity rules | Scoped to specific connectivity rule IDs, or `allow_all: true` for all connectivity rules |  |
+
+Resource IDs must exist in your account. Specifying an unknown resource ID will return an error.
+
+Either `allow_all: true` or `resource_ids` must be set, not both.
+
+For a list of available actions, see [the list of Custom Role permissions](https://github.com/temporalio/saas-proto/blob/main/protogen/custom_role_permissions.json).
+    - Account-scoped actions (resource_type: "accounts")
+    - Project-scoped actions (resource_type: "projects")
+    - Namespace-scoped actions (resource_type: "namespaces")
+    - Nexus endpoint-scoped actions (resource_type: "nexus_endpoints")
+    - Connectivity rule-scoped actions (resource_type: "connectivity_rules")
+
+The following example allows creating Namespaces in all projects.
+The action is `cloud.namespace.create`, the resource type is `projects`, and `allow_all` is set to true.
+
+```jsx
+  {
+    "actions": ["cloud.namespace.create"],
+    "resources": {
+      "resource_type": "projects",
+      "allow_all": true
+    }
+  }
+```
+
+The following example allows read access to specific Namespaces.
+The action is `cloud.namespace.get`, the resource type is `namespaces`, and the list of resource IDs is specified.
+
+```jsx
+{
+    "actions": ["cloud.namespace.get"],
+    "resources": {
+      "resource_type": "namespaces",
+      "resource_ids": ["my-namespace.account-id"]
+    }
+  }
+```
+
+The following example assigns multiple permissions to one Role.
+The permissions are assigned in an array, with the action `cloud.namespace.get` granted for all Namespaces, and `cloud.user.list` granted for all accounts.
+
+```jsx
+ {
+    "spec": {
+      "name": "ns-reader-user-lister",
+      "description": "Can read namespaces and list users",
+      "permissions": [
+        {
+          "actions": ["cloud.namespace.get"],
+          "resources": { "resource_type": "namespaces", "allow_all": true }
+        },
+        {
+          "actions": ["cloud.user.list"],
+          "resources": { "resource_type": "accounts", "allow_all": true }
+        }
+      ]
+    }
+  }
+```
 
 For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
   </TabItem>
 </Tabs>
+
 
 ## Assigning Custom Roles to users
 
@@ -151,15 +254,7 @@ When finished, click Update Custom Role.
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
 
-Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.UpdateCustomRoleRequest) to modify the Custom Role:
-
-```
-TODO: CLI command needed
-```
-
-This example updates a Custom Role with the defined `roleSpec`.
-
-For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
+Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.UpdateCustomRoleRequest) to modify the Custom Role.
 
   </TabItem>
 </Tabs>
@@ -178,14 +273,6 @@ A pop-up notification will let you know that the Custom Role has been deleted.
   <TabItem value="cloud-api" label="Cloud Operations API">
 
 Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.DeleteCustomRoleRequest) to delete the Custom Role:
-
-```
-TODO: CLI command needed
-```
-
-This example deletes a Custom Role with the defined `roleSpec`.
-
-For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
 
   </TabItem>
 </Tabs>
