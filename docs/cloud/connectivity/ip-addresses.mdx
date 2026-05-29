@@ -71,7 +71,7 @@ When Stable IPs are enabled on a Namespace:
 
 - The Namespace endpoint (`<namespace>.<account>.tmprl.cloud`) resolves to IP addresses from a published list of Stable IPs.
   - The list is grouped by cloud region. The Namespace endpoint will resolve to an IP from the group for the Namespace's active region.
-- Workers and Temporal Clients connecting via the Namespace endpoint will connect to these stable IP addresses
+- Workers and Temporal Clients connecting via the Namespace endpoint will connect to these stable IP addresses.
 - Regional endpoints continue to work but resolve to dynamic IP addresses
 - For replicated Namespaces, the Stable IP corresponds to the Namespace's active region. During failover to a different region, DNS updates to point to a Stable IP in the new active region.
 
