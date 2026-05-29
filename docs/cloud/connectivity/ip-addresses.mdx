@@ -34,7 +34,7 @@ If you need to limit outbound access from your client network, we recommend usin
 
 Do not allowlist specific IP addresses you see Temporal Cloud services using at a point in time, as your Workers will not connect to Temporal Cloud when those IPs change.
 
-If you need to allowlist a stable set of IP addresses for your Namespace, enable [Stable IPs](#stable-ip-addresses).
+If you need to allowlist a Stable set of IP addresses for your Namespace, enable [Stable IPs](#stable-ip-addresses).
 
 :::
 
@@ -89,7 +89,12 @@ You can manage Connectivity Rules through the Cloud Ops API, Terraform provider,
 
 To enable Stable IPs:
 
-1. Create a public Connectivity Rule with Stable IPs enabled (for example, `tcld connectivity-rule create --connectivity-type public --enable-stable-ips`). Only one public Connectivity Rule exists per account, so if you already have one, update or recreate it with Stable IPs enabled.
+1. Create a public Connectivity Rule with Stable IPs enabled. Only one public Connectivity Rule exists per account, so if you already have one, update or recreate it with Stable IPs enabled. For example:
+
+```
+tcld connectivity-rule create --connectivity-type public --enable-stable-ips
+```
+
 2. Attach the rule to your Namespace with `tcld namespace set-connectivity-rules` (or the equivalent Cloud Ops API or Terraform call).
 3. Retrieve the list of Stable IPs from the [public API](/cloud/connectivity/ip-addresses#how-to-view-stable-ip-ranges).
 4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
