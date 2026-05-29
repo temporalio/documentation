@@ -32,7 +32,7 @@ For triggering a Workflow Execution at a specific one-time future point rather t
 
 :::
 
-### Action {/* #action */}
+### Action
 
 The Action of a Schedule is where the Workflow Execution properties are established, such as Workflow Type, Task Queue, parameters, and timeouts.
 
@@ -44,7 +44,7 @@ Workflow Executions started by a Schedule have the following additional properti
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
   The value is the Schedule Id.
 
-### Spec {/* #spec */}
+### Spec
 
 The Schedule Spec defines when the Action should be taken.
 Unless many Schedules have Actions scheduled at the same time, Actions should generally start within 1 second of the specified time.
@@ -90,7 +90,7 @@ The `comment` field is optional and can be used to include a free-form descripti
 No matter which form you supply, calendar and interval specs are converted to canonical representations.
 What you see when you "describe" or "list" a Schedule might not look exactly like what you entered, but it has the same meaning.
 
-#### Phase offset {/* #phase-offset */}
+#### Phase offset
 
 By default, intervals align to the Unix epoch (January 1, 1970 at midnight UTC), so without a phase offset, a 7-day interval would fire every Thursday at whatever time midnight UTC equates to in your local time, which may not be convenient for your use case.
 
@@ -142,7 +142,7 @@ phase offset = 1718816400 % 864000 = 320400
 
 So you will set your Schedule interval to `864000s` (10 days) and phase to `320400s` and you get exactly every 10 days at 5pm UTC.
 
-#### Other Spec features {/* #other-spec-features */}
+#### Other Spec features
 
 **Multiple intervals/calendar expressions:** A Spec can have combinations of multiple intervals and/or calendar expressions to define a specific Schedule.
 
@@ -163,7 +163,7 @@ The time zone definition is loaded on the Temporal Server Worker Service from ei
 For more operational control, embed the contents of the time zone database file in the Schedule Spec itself.
 (Note: this isn't currently exposed in the Temporal CLI or the web UI.)
 
-### Pause {/* #pause */}
+### Pause
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
@@ -171,22 +171,22 @@ However, you can still force manual actions by using the [temporal schedule trig
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 
-### Backfill {/* #backfill */}
+### Backfill
 
 A Schedule can be Backfilled.
 When a Schedule is Backfilled, all the Actions that would have been taken over a specified time period are taken now (in parallel if the `AllowAll` [Overlap Policy](#overlap-policy) is used; sequentially if `BufferAll` is used).
 You might use this to fill in runs from a time period when the Schedule was paused due to an external condition that's now resolved, or a period before the Schedule was created.
 
-### Limit number of Actions {/* #limit-number-of-actions */}
+### Limit number of Actions
 
 A Schedule can be limited to a certain number of scheduled Actions (that is, not trigger immediately).
 After that it will act as if it were paused.
 
-### Policies {/* #policies */}
+### Policies
 
 A Schedule supports a set of Policies that enable customizing behavior.
 
-#### Overlap Policy {/* #overlap-policy */}
+#### Overlap Policy
 
 The Overlap Policy controls what happens when it is time to start a Workflow Execution but a previously started Workflow Execution is still running.
 The following options are available:
@@ -203,7 +203,7 @@ The following options are available:
 - `AllowAll` Starts any number of concurrent Workflow Executions.
   With this policy (and only this policy), more than one Workflow Execution, started by the Schedule, can run simultaneously.
 
-#### Catchup Window {/* #catchup-window */}
+#### Catchup Window
 
 The Temporal Service might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
@@ -211,14 +211,14 @@ The default is one year, meaning Actions will be taken unless over one year late
 If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
 (But you can always [Backfill](#backfill).)
 
-#### Pause-on-failure {/* #pause-on-failure */}
+#### Pause-on-failure
 
 If this policy is set, a Workflow Execution started by a Schedule that ends with a failure or timeout (but not Cancellation or Termination) causes the Schedule to automatically pause.
 
 Note that with the `AllowAll` Overlap Policy, this pause might not apply to the next Workflow Execution, because the next Workflow Execution might have started before the failed one finished.
 It applies only to Workflow Executions that were scheduled to start after the failed one finished.
 
-### Last completion result {/* #last-completion-result */}
+### Last completion result
 
 A Workflow started by a Schedule can obtain the completion result from the most recent successful run.
 (How you do this depends on the SDK you're using.)
@@ -261,11 +261,11 @@ This limitation may be lifted in the future.
 
 :::
 
-### Last failure {/* #last-failure */}
+### Last failure
 
 A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
 
-### Limitations {/* #limitations */}
+### Limitations
 
 Internally, a Schedule is implemented as a Workflow.
 If you're using Elasticsearch, these Workflow Executions are hidden from normal views.

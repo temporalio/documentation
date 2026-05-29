@@ -37,7 +37,7 @@ Code snippets in this guide are taken from the
 [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin). Refer to the
 samples for the complete code.
 
-## Prerequisites {/* #prerequisites */}
+## Prerequisites
 
 - This guide assumes you are already familiar with LangGraph. If you aren't, refer to the
   [LangGraph documentation](https://langchain-ai.github.io/langgraph/) for more details.
@@ -47,7 +47,7 @@ samples for the complete code.
   [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave the
   Temporal development server running if you want to test your code locally.
 
-## Install the plugin {/* #install-the-plugin */}
+## Install the plugin
 
 Install the Temporal Python SDK with LangGraph support (requires `temporalio` 1.27.0 or later):
 
@@ -70,11 +70,11 @@ available from Python 3.11 onward.
 
 :::
 
-## Graph API {/* #graph-api */}
+## Graph API
 
 The Graph API uses `StateGraph` to define nodes and edges declaratively.
 
-### Define a graph and Workflow {/* #define-a-graph-and-workflow */}
+### Define a graph and Workflow
 
 Build a `StateGraph`, then retrieve it inside your Workflow with the `graph()` helper:
 
@@ -113,7 +113,7 @@ class HelloWorldWorkflow:
         return await graph("hello-world").compile().ainvoke(query)
 ```
 
-### Configure the Worker {/* #configure-the-worker */}
+### Configure the Worker
 
 Create a `LangGraphPlugin` with your graphs and pass it to the Worker:
 
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Set Activity options {/* #set-activity-options */}
+### Set Activity options
 
 Pass Activity options as node `metadata` when calling `add_node`. Every node must include `"execute_in"` set to either
 `"activity"` or `"workflow"`; the plugin raises an error if it's missing.
@@ -170,7 +170,7 @@ do. Use Temporal's `RetryPolicy` via the node's `metadata` (Graph API) or `activ
 
 :::
 
-### Shared defaults {/* #shared-defaults */}
+### Shared defaults
 
 To apply the same Activity options across every node and task, pass `default_activity_options` to `LangGraphPlugin`.
 Per-node `metadata` (Graph API) and per-task `activity_options` (Functional API) override these defaults key by key:
@@ -187,12 +187,12 @@ plugin = LangGraphPlugin(
 
 To mitigate potential determinism bugs, `execute_in` cannot be set in `default_activity_options` — you must set it on each node or task individually.  See [Activity vs. Workflow execution](#activity-vs-workflow-execution).
 
-## Functional API {/* #functional-api */}
+## Functional API
 
 The Functional API uses `@entrypoint` and `@task` decorators, letting you orchestrate tasks with native Python
 control flow (`while`, `if/else`, `for`) rather than declaring nodes and edges.
 
-### Define tasks and a Workflow {/* #define-tasks-and-a-workflow */}
+### Define tasks and a Workflow
 
 ```python
 from datetime import timedelta
@@ -248,7 +248,7 @@ class ReactAgentWorkflow:
         return await entrypoint("react-agent").ainvoke(query)
 ```
 
-### Configure the Worker with the Functional API {/* #configure-the-worker-with-the-functional-api */}
+### Configure the Worker with the Functional API
 
 ```python
 from temporalio.contrib.langgraph import LangGraphPlugin
@@ -267,7 +267,7 @@ worker = Worker(
 )
 ```
 
-## Checkpointer {/* #checkpointer */}
+## Checkpointer
 
 If your LangGraph code requires a checkpointer (for example, if you're using interrupts), use `InMemorySaver`. Temporal
 handles durability, so third-party checkpointers (like PostgreSQL or Redis) are not needed.
@@ -280,7 +280,7 @@ g = graph("my-graph").compile(
 )
 ```
 
-## Runtime context {/* #runtime-context */}
+## Runtime context
 
 LangGraph's run-scoped context (`context_schema`) is reconstructed on the Activity side, so nodes and tasks can read
 from `runtime.context`:
@@ -308,7 +308,7 @@ await g.ainvoke({...}, context=Context(user_id="alice"))
 Your `context` object must be serializable by the configured Temporal payload converter, since it crosses the Activity
 boundary.
 
-## Continue-as-new {/* #continue-as-new */}
+## Continue-as-new
 
 Long-running graphs can hit Temporal's per-Event history size limit. Use Temporal's
 [continue-as-new](/develop/python/workflows/continue-as-new) to start a fresh execution while preserving the results of nodes
@@ -331,13 +331,13 @@ class LongRunningWorkflow:
         workflow.continue_as_new(args=[state, cache()])
 ```
 
-## Tracing {/* #tracing */}
+## Tracing
 
 For tracing your LangGraph Workflows and Activities, we recommend the
 [Temporal LangSmith plugin](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith). It
 composes with `LangGraphPlugin` — pass both plugins to your Worker.
 
-## Stores are not supported {/* #stores-are-not-supported */}
+## Stores are not supported
 
 LangGraph's `Store` (for example, `InMemoryStore` passed via `graph.compile(store=...)` or `@entrypoint(store=...)`)
 isn't accessible inside Activity-wrapped nodes: the Store holds live state that can't cross the Activity boundary, and
@@ -347,7 +347,7 @@ and `runtime.store` is `None` inside nodes.
 Use Workflow state for per-run memory, or an external database (Postgres, Redis, etc.) configured on each worker if you
 need shared memory across runs.
 
-## Activity vs. Workflow execution {/* #activity-vs-workflow-execution */}
+## Activity vs. Workflow execution
 
 Every graph node and `@task` must specify `execute_in` — set it to `"activity"` to run as a Temporal Activity, or
 `"workflow"` to run directly inside the Workflow. The plugin raises an error if you forget to set it.
@@ -356,7 +356,7 @@ Every graph node and `@task` must specify `execute_in` — set it to `"activity"
 
 Understanding when to use each mode is important for correctness and durability.
 
-### When to use an Activity {/* #when-to-use-an-activity */}
+### When to use an Activity
 
 Use `execute_in: "activity"` when a node does any of the following:
 
@@ -369,7 +369,7 @@ Use `execute_in: "activity"` when a node does any of the following:
 - **Calls `interrupt()`** — LangGraph's `interrupt()` is supported in Activity nodes. The plugin serializes the
   interrupt and propagates it back to the Workflow for human-in-the-loop patterns.
 
-### When to run in the Workflow {/* #when-to-run-in-the-workflow */}
+### When to run in the Workflow
 
 Use `execute_in: "workflow"` when a node:
 
@@ -387,7 +387,7 @@ non-determinism errors on replay.
 
 :::
 
-### Where LangGraph primitives run {/* #where-langgraph-primitives-run */}
+### Where LangGraph primitives run
 
 Not all LangGraph primitives are node functions. Some run in the Workflow context regardless of the `execute_in` setting:
 
@@ -417,7 +417,7 @@ g.add_conditional_edges("agent", should_continue)
 
 :::
 
-### Syntax {/* #syntax */}
+### Syntax
 
 ```python
 # Graph API
@@ -430,7 +430,7 @@ plugin = LangGraphPlugin(
 )
 ```
 
-### Example: subgraph orchestration {/* #example-subgraph-orchestration */}
+### Example: subgraph orchestration
 
 A common pattern is a parent node that runs in the Workflow and dispatches to a child graph whose nodes run as
 Activities:
@@ -446,7 +446,7 @@ parent.add_edge(START, "parent_node")
 plugin = LangGraphPlugin(graphs={"parent": parent, "child": child})
 ```
 
-## Human-in-the-loop {/* #human-in-the-loop */}
+## Human-in-the-loop
 
 LangGraph's `interrupt()` works with Temporal signals and queries to support human-in-the-loop patterns:
 
@@ -458,7 +458,7 @@ LangGraph's `interrupt()` works with Temporal signals and queries to support hum
 See the [human-in-the-loop samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin/graph_api/human_in_the_loop) for
 complete working examples using both Graph and Functional APIs.
 
-## Samples {/* #samples */}
+## Samples
 
 The [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin)
 demonstrate all supported patterns across both APIs.

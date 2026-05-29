@@ -33,7 +33,7 @@ Normally, this would require a lock or [mutex](https://en.wikipedia.org/wiki/Loc
 
 Although Temporal Workflows run Asynchronously in Go, there is a control in place that ensures only one thread can access at a time.
 
-## How multithreading works {/* #how-multithreading-works */}
+## How multithreading works
 
 Temporal's Go SDK contains a deterministic runner to control the thread execution.
 This deterministic runner will decide which Workflow thread to run in the right order, and one at a time.
@@ -46,6 +46,6 @@ For a complex example, refer to the [Go Particle Swarm Operation Sample](https:/
 
 For an example using Signals, refer to the [Go Await Signal Sample](https://github.com/temporalio/samples-go/tree/main/await-signals)
 
-## Static analysis with the workflowcheck tool {/* #static-analysis-with-the-workflowcheck-tool */}
+## Static analysis with the workflowcheck tool
 
 The Temporal Go SDK also provides a command line tool called [`workflowcheck`](https://github.com/temporalio/sdk-go/blob/master/contrib/tools/workflowcheck/README.md) to statically analyze Workflow Definitions. This can help eliminate potential instances of non-determinism.

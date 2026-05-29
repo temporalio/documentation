@@ -118,31 +118,31 @@ tags:
   - Temporal CLI
 ---
 
-## active-cluster {/* #active-cluster */}
+## active-cluster
 
 Active cluster name.
 
-## activity-id {/* #activity-id */}
+## activity-id
 
 Identifies the Activity Execution.
 
-## activity-jitter {/* #activity-jitter */}
+## activity-jitter
 
 If set, the Activity will start at a random time within the specified jitter duration.
 
-## activity-type {/* #activity-type */}
+## activity-type
 
 Command is applied to all running activities of this type.
 
-## address {/* #address */}
+## address
 
 The host and port (formatted as host:port) for the Temporal Frontend Service.
 
-## api-key {/* #api-key */}
+## api-key
 
 API key for request.
 
-## archived {/* #archived */}
+## archived
 
 List archived Workflow Executions.
 
@@ -152,44 +152,44 @@ Caution: `--archived` is experimental.
 
 :::
 
-## build-id {/* #build-id */}
+## build-id
 
 Identifies the build to retrieve reachability information for. Can be specified multiple times.
 
-## calendar {/* #calendar */}
+## calendar
 
 Calendar specification in JSON `({"dayOfWeek":"Fri","hour":"17","minute":"5"})` or as a Cron string
 `("30 2 \* \* 5" or "@daily")`.
 
-## catchup-window {/* #catchup-window */}
+## catchup-window
 
 Maximum allowed catch-up time if server is down.
 
-## cluster {/* #cluster */}
+## cluster
 
 Cluster name.
 
-## codec-auth {/* #codec-auth */}
+## codec-auth
 
 Sets the authorization header on requests to the Codec Server.
 
-## codec-endpoint {/* #codec-endpoint */}
+## codec-endpoint
 
 Endpoint for a remote Codec Server.
 
-## color {/* #color */}
+## color
 
 When to use color: auto, always, never. (default: auto)
 
-## command-timeout {/* #command-timeout */}
+## command-timeout
 
 The command execution timeout. 0s means no timeout.
 
-## concurrency {/* #concurrency */}
+## concurrency
 
 Request concurrency.
 
-## cron {/* #cron */}
+## cron
 
 The Cron schedule can be formatted like the following:
 
@@ -203,133 +203,133 @@ The Cron schedule can be formatted like the following:
 * * * * *
 ```
 
-## data {/* #data */}
+## data
 
 Namespace data in a key=value format.
 
 Values must be in JSON format.
 
-## db-filename {/* #db-filename */}
+## db-filename
 
 File in which to persist Temporal state. By default, Workflows are lost when the process dies.
 
-## depth {/* #depth */}
+## depth
 
 The number of Child Workflows to fetch and expand. Use `-1` to fetch Child Workflows at any depth.
 
-## description {/* #description */}
+## description
 
 Namespace description or Nexus Endpoint description. You may use Markdown formatting in the Nexus Endpoint description.
 
-## description-file {/* #description-file */}
+## description-file
 
 Path to the Nexus Endpoint description file. The contents of the description file may use Markdown formatting.
 
-## detail {/* #detail */}
+## detail
 
 A provided reason for failing an Activity.
 
-## dry-run {/* #dry-run */}
+## dry-run
 
 Simulate reset without resetting any Workflow Executions.
 
-## dynamic-config-value {/* #dynamic-config-value */}
+## dynamic-config-value
 
 Dynamic config value, formatted as `KEY=JSON_VALUE`. String values require quotation marks.
 
-## email {/* #email */}
+## email
 
 Owner email.
 
-## enable-connection {/* #enable-connection */}
+## enable-connection
 
 Enable cross-cluster connection.
 
-## end-time {/* #end-time */}
+## end-time
 
 Backfill end time.
 
-## env {/* #env */}
+## env
 
 Name of the environment to read environment variables from.
 
-## env-file {/* #env-file */}
+## env-file
 
 Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
 
-## event-id {/* #event-id */}
+## event-id
 
 The Event Id for any Event after WorkflowTaskStarted you want to reset to (exclusive). It can be WorkflowTaskCompleted,
 WorkflowTaskFailed or others.
 
-## exclude-file {/* #exclude-file */}
+## exclude-file
 
 Input file that specifies Workflow Executions to exclude from resetting.
 
-## execution-timeout {/* #execution-timeout */}
+## execution-timeout
 
 Timeout (in seconds) for a [Workflow Execution](/workflow-execution), including retries and `ContinueAsNew` tasks.
 
-## existing-compatible-build-id {/* #existing-compatible-build-id */}
+## existing-compatible-build-id
 
 A Build Id that already exists in the version sets known by the Task Queue. New Build Ids are stored in the version set
 containing this Id, making them compatible with the versions in that set.
 
-## fields {/* #fields */}
+## fields
 
 Customize fields to print. Set to 'long' to automatically print more of main fields.
 
-## first-execution-run-id {/* #first-execution-run-id */}
+## first-execution-run-id
 
 Run update on the last execution in the chain that started with this Run Id.
 
-## fold {/* #fold */}
+## fold
 
 Statuses for which Child Workflows will be folded in (this will reduce the number of information fetched and displayed).
 Case-insensitive and ignored if `--no-fold` is supplied.
 
-## follow {/* #follow */}
+## follow
 
 Follow the progress of a Workflow Execution.
 
-## frontend-address {/* #frontend-address */}
+## frontend-address
 
 Frontend address of the remote Cluster.
 
-## global {/* #global */}
+## global
 
 Flag to indicate whether a Namespace is a Global Namespace.
 
-## grpc-meta {/* #grpc-meta */}
+## grpc-meta
 
 Contains gRPC metadata to send with requests (format: `key=value`). Values must be in a valid JSON format.
 
-## headless {/* #headless */}
+## headless
 
 Disable the Web UI.
 
-## heartbeat-timeout {/* #heartbeat-timeout */}
+## heartbeat-timeout
 
 Maximum permitted time between successful Worker Heartbeats.
 
-## history-archival-state {/* #history-archival-state */}
+## history-archival-state
 
 Sets the history archival state. Valid values are "disabled" and "enabled".
 
-## history-uri {/* #history-uri */}
+## history-uri
 
 Optionally specify history archival URI (cannot be changed after first time archival is enabled).
 
-## id-reuse-policy {/* #id-reuse-policy */}
+## id-reuse-policy
 
 Allows the same Workflow Id to be used in a new Workflow Execution. Options: AllowDuplicate, AllowDuplicateFailedOnly,
 RejectDuplicate, TerminateIfRunning.
 
-## identity {/* #identity */}
+## identity
 
 Specify operator's identity.
 
-## input {/* #input */}
+## input
 
 Use the `--input` command option to include data in the command.
 
@@ -343,146 +343,146 @@ string as a parameter:
 temporal workflow start --input '"+1 555-555-5555"'
 ```
 
-## input-file {/* #input-file */}
+## input-file
 
 Passes optional input for the Workflow from a JSON file. If there are multiple JSON files, concatenate them and separate
 by space or newline. Input from the command line will overwrite file input.
 
-## input-parallelism {/* #input-parallelism */}
+## input-parallelism
 
 Number of goroutines to run in parallel. Each goroutine processes one line for every second.
 
-## input-separator {/* #input-separator */}
+## input-separator
 
 Separator for the input file. The default is a tab (`\t`).
 
-## interval {/* #interval */}
+## interval
 
 Interval duration, such as 90m, or 90m/13m to include phase offset.
 
-## ip {/* #ip */}
+## ip
 
 IPv4 address to bind the frontend service to. (default: 127.0.0.1)
 
-## jitter {/* #jitter */}
+## jitter
 
 Jitter duration.
 
-## job-id {/* #job-id */}
+## job-id
 
 Batch Job Id.
 
-## keep-paused {/* #keep-paused */}
+## keep-paused
 
 If this flag is provided and Activity was paused, it will stay paused after reset.
 
-## limit {/* #limit */}
+## limit
 
 Number of items to print on a page.
 
-## log-format {/* #log-format */}
+## log-format
 
 Set the log formatting. Options: ["json", "pretty"].
 
-## log-level {/* #log-level */}
+## log-level
 
 Set the log level. Options: ["debug" "info" "warn" "error" "fatal"].
 
-## match-all {/* #match-all */}
+## match-all
 
 If set, all currently running activities will be unpaused.
 
-## max-field-length {/* #max-field-length */}
+## max-field-length
 
 Maximum length for each attribute field.
 
-## max-sets {/* #max-sets */}
+## max-sets
 
 Limits how many compatible sets will be returned. Specify 1 to return only the current default major version set. 0
 returns all sets.
 
-## memo {/* #memo */}
+## memo
 
 Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
 
-## memo-file {/* #memo-file */}
+## memo-file
 
 Set a memo from a file. Each line should follow the format key=value. Use valid JSON formats for value.
 
-## metrics-port {/* #metrics-port */}
+## metrics-port
 
 Port for `/metrics`. Enabled by default with a randomly assigned port.
 
-## name {/* #name */}
+## name
 
 Frontend address of the remote Cluster or the Endpoint name.
 
-## namespace {/* #namespace */}
+## namespace
 
 Identifies a Namespace in the Temporal Workflow.
 
-## namespace-id {/* #namespace-id */}
+## namespace-id
 
 Namespace Id.
 
-## no-fold {/* #no-fold */}
+## no-fold
 
 Disable folding. All Child Workflows within the set depth will be fetched and displayed.
 
-## no-json-shorthand-payloads {/* #no-json-shorthand-payloads */}
+## no-json-shorthand-payloads
 
 Raw payload output, even if the JSON option was used.
 
-## no-pager {/* #no-pager */}
+## no-pager
 
 Disables the interactive pager.
 
-## non-deterministic {/* #non-deterministic */}
+## non-deterministic
 
 Reset Workflow Execution only if its last Event is `WorkflowTaskFailed` with a nondeterminism error.
 
-## notes {/* #notes */}
+## notes
 
 Initial value of notes field.
 
-## output {/* #output */}
+## output
 
 Format of output. Options: table, json, card.
 
-## overlap-policy {/* #overlap-policy */}
+## overlap-policy
 
 Overlap policy. Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
 
-## pager {/* #pager */}
+## pager
 
 Sets the pager for the Temporal CLI to use. Options are less, more, and favoritePager.
 
-## pause {/* #pause */}
+## pause
 
 Pauses the Schedule.
 
-## pause-on-failure {/* #pause-on-failure */}
+## pause-on-failure
 
 Pause schedule after any Workflow failure.
 
-## port {/* #port */}
+## port
 
 Port for the frontend gRPC service.
 
-## promote-global {/* #promote-global */}
+## promote-global
 
 Promote local Namespace to Global Namespace.
 
-## query {/* #query */}
+## query
 
 Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset. For more information, refer to
 the [`temporal workflow list`](/cli/workflow#list) command.
 
-## raw {/* #raw */}
+## raw
 
 Print raw data in a JSON format. For scripting, we recommend using this option instead of `-o json`.
 
-## reachability-type {/* #reachability-type */}
+## reachability-type
 
 Specify how you'd like to filter the reachability of Build IDs. The following are valid choices:
 
@@ -492,126 +492,126 @@ Specify how you'd like to filter the reachability of Build IDs. The following ar
 
 Build IDs that are reachable by new Workflows are always reported.
 
-## reapply-type {/* #reapply-type */}
+## reapply-type
 
 Event types to reapply after the reset point. Options: Signal, None.
 
-## reason {/* #reason */}
+## reason
 
 Reason for the operation.
 
-## reject-condition {/* #reject-condition */}
+## reject-condition
 
 Optional flag for rejecting Queries based on Workflow state. Valid values are "not_open" and "not_completed_cleanly".
 
-## remaining-actions {/* #remaining-actions */}
+## remaining-actions
 
 Total number of actions allowed.
 
-## reset-attempts {/* #reset-attempts */}
+## reset-attempts
 
 Providing this flag will reset the number of attempts.
 
-## reset-heartbeat {/* #reset-heartbeat */}
+## reset-heartbeat
 
 Providing this flag will reset the heartbeat details.
 
-## reset-points {/* #reset-points */}
+## reset-points
 
 Only show Workflow Events that are eligible for reset.
 
-## result {/* #result */}
+## result
 
 Set the result value of Activity completion.
 
-## retention {/* #retention */}
+## retention
 
 Workflow Execution retention.
 
-## retry-backoff-coefficient {/* #retry-backoff-coefficient */}
+## retry-backoff-coefficient
 
 Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the
 coefficient. Must be 1 or larger.
 
-## retry-initial-interval {/* #retry-initial-interval */}
+## retry-initial-interval
 
 Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries.
 
-## retry-maximum-attempts {/* #retry-maximum-attempts */}
+## retry-maximum-attempts
 
 Maximum number of attempts. When exceeded the retries stop even if not expired yet. 1 disables retries. 0 means
 unlimited (up to the timeouts).
 
-## retry-maximum-interval {/* #retry-maximum-interval */}
+## retry-maximum-interval
 
 Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase.
 Default is 100x of the initial interval.
 
-## run-id {/* #run-id */}
+## run-id
 
 Identifies the current Workflow Run.
 
-## run-timeout {/* #run-timeout */}
+## run-timeout
 
 Timeout (in seconds) of a single Workflow run.
 
-## schedule-id {/* #schedule-id */}
+## schedule-id
 
 Schedule Id.
 
-## schedule-to-close-timeout {/* #schedule-to-close-timeout */}
+## schedule-to-close-timeout
 
 Indicates how long the caller is willing to wait for an Activity completion. Limits how long retries will be attempted.
 
-## schedule-to-start-timeout {/* #schedule-to-start-timeout */}
+## schedule-to-start-timeout
 
 Limits time an Activity Task can stay in a task queue before a Worker picks it up. This timeout is always non retryable,
 as all a retry would achieve is to put it back into the same queue. Defaults to `schedule_to_close_timeout` or workflow
 execution timeout if not specified.
 
-## search-attribute {/* #search-attribute */}
+## search-attribute
 
 Set Search Attribute on a Schedule (formatted as `key=value`). Use valid JSON formats for value.
 
-## set-as-default {/* #set-as-default */}
+## set-as-default
 
 When set, establishes the compatible set being targeted as the default for the Task Queue.
 
 If a different set is the current default, the targeted set replaces it.
 
-## skip-base-is-not-current {/* #skip-base-is-not-current */}
+## skip-base-is-not-current
 
 Skip a Workflow Execution if the base Workflow Run is not the current Workflow Run.
 
-## skip-current-open {/* #skip-current-open */}
+## skip-current-open
 
 Skip a Workflow Execution if the current Run is open for the same Workflow Id as the base Run.
 
-## sqlite-pragma {/* #sqlite-pragma */}
+## sqlite-pragma
 
 Specify sqlite pragma statements in pragma=value format. Pragma options: ["journal_mode" "synchronous"].
 
-## start-delay {/* #start-delay */}
+## start-delay
 
 Specify a delay before the workflow starts.
 
-## start-time {/* #start-time */}
+## start-time
 
 Backfill start time.
 
-## start-to-close-timeout {/* #start-to-close-timeout */}
+## start-to-close-timeout
 
 Maximum time an Activity is allowed to execute after being picked up by a Worker. This Timeout is always retryable.
 
-## target-namespace {/* #target-namespace */}
+## target-namespace
 
 Namespace in which a handler Worker will poll for Nexus tasks.
 
-## target-task-queue {/* #target-task-queue */}
+## target-task-queue
 
 Task Queue in which a handler Worker will poll for Nexus tasks.
 
-## target-url {/* #target-url */}
+## target-url
 
 An external Nexus Endpoint where Nexus requests are forwarded to. May be used as an alternative to `--target-namespace`
 and `--target-task-queue`.
@@ -622,110 +622,110 @@ Caution: `--target-url` is experimental.
 
 :::
 
-## task-queue {/* #task-queue */}
+## task-queue
 
 Task Queue.
 
-## task-queue-type {/* #task-queue-type */}
+## task-queue-type
 
 Task Queue type, which can be either Workflow or Activity. The default type is Workflow.
 
-## task-timeout {/* #task-timeout */}
+## task-timeout
 
 Start-to-close timeout for a Workflow Task (in seconds).
 
-## time-format {/* #time-format */}
+## time-format
 
 Format time as: relative, iso, raw.
 
-## time-zone {/* #time-zone */}
+## time-zone
 
 Time zone (IANA name).
 
-## tls {/* #tls */}
+## tls
 
 Enable TLS encryption without additional options such as mTLS or client certificates.
 
-## tls-ca-data {/* #tls-ca-data */}
+## tls-ca-data
 
 Data for server CA certificate. Can't be used with --tls-ca-path.
 
-## tls-ca-path {/* #tls-ca-path */}
+## tls-ca-path
 
 Path to server CA certificate.
 
-## tls-cert-data {/* #tls-cert-data */}
+## tls-cert-data
 
 Data for x509 certificate. Can't be used with --tls-cert-path.
 
-## tls-cert-path {/* #tls-cert-path */}
+## tls-cert-path
 
 Path to x509 certificate.
 
-## tls-disable-host-verification {/* #tls-disable-host-verification */}
+## tls-disable-host-verification
 
 Disables TLS host name verification.
 
-## tls-key-data {/* #tls-key-data */}
+## tls-key-data
 
 Private certificate key data. Can't be used with --tls-key-path.
 
-## tls-key-path {/* #tls-key-path */}
+## tls-key-path
 
 Path to private certificate key.
 
-## tls-server-name {/* #tls-server-name */}
+## tls-server-name
 
 Overrides the target TLS server name.
 
-## type {/* #type */}
+## type
 
 Search attribute type. Options: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
 
-## ui-asset-path {/* #ui-asset-path */}
+## ui-asset-path
 
 UI Custom Assets path.
 
-## ui-codec-endpoint {/* #ui-codec-endpoint */}
+## ui-codec-endpoint
 
 UI Remote data converter HTTP endpoint.
 
-## ui-ip {/* #ui-ip */}
+## ui-ip
 
 IPv4 address to bind the Web UI to.
 
-## ui-port {/* #ui-port */}
+## ui-port
 
 Port for the Web UI. Default: `--port` + 1000 (for example, 4000).
 
-## unpause {/* #unpause */}
+## unpause
 
 Unpauses the Schedule.
 
-## unset-description {/* #unset-description */}
+## unset-description
 
 Unset the description.
 
-## verbose {/* #verbose */}
+## verbose
 
 Print applied Namespace changes.
 
-## visibility-archival-state {/* #visibility-archival-state */}
+## visibility-archival-state
 
 Visibility Archival state. Valid values: "disabled", "enabled".
 
-## visibility-uri {/* #visibility-uri */}
+## visibility-uri
 
 Specify URI for Visibility Archival. This cannot be changed after Archival is enabled.
 
-## workflow-id {/* #workflow-id */}
+## workflow-id
 
 Workflow Id.
 
-## workflow-type {/* #workflow-type */}
+## workflow-type
 
 Workflow type name.
 
-## yes {/* #yes */}
+## yes
 
 Confirm all prompts.

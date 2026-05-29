@@ -27,7 +27,7 @@ For production workloads, deploy Temporal as a service using [MySQL, PostgreSQL,
 
 :::
 
-## Reference implementation {/* #reference-implementation */}
+## Reference implementation
 
 The recommended way to run an embedded Temporal server is to use the Temporal CLI's dev server implementation as a reference.
 The CLI's [devserver package](https://github.com/temporalio/cli/tree/main/internal/devserver) provides a complete implementation that handles:
@@ -39,7 +39,7 @@ The CLI's [devserver package](https://github.com/temporalio/cli/tree/main/intern
 
 You can study and adapt this implementation for your own embedded use case.
 
-## Basic server API {/* #basic-server-api */}
+## Basic server API
 
 The core API for embedding Temporal is `temporal.NewServer()`:
 
@@ -69,7 +69,7 @@ The challenge is building the `config.Config` struct correctly, especially for S
 2. **Namespace creation** - Namespaces can be pre-created via `sqliteschema.CreateNamespaces()`
 3. **Service configuration** - All four services (frontend, history, matching, worker) need proper port configuration
 
-## Configuration from file {/* #configuration-from-file */}
+## Configuration from file
 
 For non-SQLite databases, you can load configuration from a YAML file:
 
@@ -96,7 +96,7 @@ cfg, err := config.Load(
 )
 ```
 
-## Server options reference {/* #server-options-reference */}
+## Server options reference
 
 The `temporal.NewServer()` function accepts options to customize the server.
 See [Server Options Reference](/references/server-options) for the complete list.
@@ -114,7 +114,7 @@ Key options include:
 | `WithDynamicConfigClient(dynamicconfig.Client)` | Runtime configuration |
 | `InterruptOn(chan)` | Channel for graceful shutdown |
 
-## SQLite limitations {/* #sqlite-limitations */}
+## SQLite limitations
 
 SQLite is intended for testing and development only:
 
@@ -125,7 +125,7 @@ SQLite is intended for testing and development only:
 
 For production, use MySQL, PostgreSQL, or Cassandra with a properly scaled multi-node deployment.
 
-## Examples {/* #examples */}
+## Examples
 
 For complete working examples, see:
 
@@ -136,7 +136,7 @@ For complete working examples, see:
   - [TLS](https://github.com/temporalio/samples-server/tree/main/tls) - TLS configuration for secure communication
   - [Docker Compose](https://github.com/temporalio/samples-server/tree/main/compose) - Database configurations (PostgreSQL, MySQL, Cassandra)
 
-## Related {/* #related */}
+## Related
 
 - [Server Options Reference](/references/server-options)
 - [Deployment](/self-hosted-guide/deployment)

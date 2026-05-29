@@ -25,7 +25,7 @@ A Namespace is a unit of isolation within the [Temporal Platform](/temporal#temp
 [Task Queues](/task-queue) and [Workflow Executions](/workflow-execution) belong to a Namespace.
 When a Workflow Execution is spawned, it does so within a specific Namespace.
 
-## Usage {/* #usage */}
+## Usage
 
 - **Workflow ID uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
@@ -36,7 +36,7 @@ When a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Multi-tenancy**: A single Namespace is still multi-tenant.
   Multiple applications or teams can share a Namespace, but must coordinate on Workflow ID and Task Queue naming to avoid conflicts.
 
-## Namespace operations {/* #namespace-operations */}
+## Namespace operations
 
 For how to create and manage Namespaces:
 

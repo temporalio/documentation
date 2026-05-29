@@ -51,7 +51,7 @@ sample.
 
 All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
 
-## Interceptor examples {/* #interceptor-examples */}
+## Interceptor examples
 
 **Log start and completion of Activities**
 
@@ -112,12 +112,12 @@ export class NexusOperationLogInterceptor implements NexusInboundCallsIntercepto
 
 Registering an interceptor means providing it to the SDK so Temporal can invoke it when matching Client or Worker calls occur. Once registered, it runs in the call path and can observe or modify request and response data.
 
-### Register via a Plugin {/* #register-via-a-plugin */}
+### Register via a Plugin
 
 If you're building a reusable library or want to bundle interceptors with other primitives, you can register them
 through a [Plugin](/develop/plugins-guide#interceptors).
 
-### Activity and client interceptors registration {/* #activity-and-client-interceptors-registration */}
+### Activity and client interceptors registration
 
 - Activity interceptors are registered on Worker creation by passing an array of
   [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory)
@@ -127,7 +127,7 @@ through a [Plugin](/develop/plugins-guide#interceptors).
   [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor) via
   [ClientOptions.interceptors](https://typescript.temporal.io/api/interfaces/client.ClientOptions#interceptors).
 
-### Workflow interceptors registration {/* #workflow-interceptors-registration */}
+### Workflow interceptors registration
 
 Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate. To
 register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and
@@ -160,7 +160,7 @@ const worker = await Worker.create({
 });
 ```
 
-### Nexus interceptor registration {/* #nexus-interceptor-registration */}
+### Nexus interceptor registration
 
 Nexus interceptors are registered on Worker creation via
 [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).

@@ -52,9 +52,9 @@ In the case that you are using multiple certificates signed by the same CA, and 
 
 One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can leverage Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](https://docs.temporal.io/cloud/certificates#control-authorization) of the documentation. 
 
-## Best practices {/* #best-practices */}
+## Best practices
 
-### Establish clear guidelines on authentication methods {/* #establish-clear-guidelines-on-authentication-methods */}
+### Establish clear guidelines on authentication methods
 
 Teams should standardize on either [mTLS certificates](https://docs.temporal.io/cloud/certificates) or
 [API keys](https://docs.temporal.io/cloud/api-keys) for the following operations:
@@ -72,7 +72,7 @@ support API key authentication. Unlike API keys tied to users or service account
 not tied to Temporal Cloud RBAC identities. Namespace access is based on CA trust, with optional
 [Certificate Filters](/cloud/certificates#manage-certificate-filters) to narrow access by Common Name.
 
-### Default operating model for service accounts and API keys {/* #default-operating-model-for-service-accounts-and-api-keys */}
+### Default operating model for service accounts and API keys
 
 For most organizations, use the following defaults:
 
@@ -84,7 +84,7 @@ For most organizations, use the following defaults:
 This approach gives you cleaner ownership, easier rotation, and better auditability than sharing a single machine
 identity across multiple services.
 
-### Use access boundaries that match your Namespace boundaries {/* #use-access-boundaries-that-match-your-namespace-boundaries */}
+### Use access boundaries that match your Namespace boundaries
 
 The way you partition Namespaces should usually match the way you partition machine identities.
 
@@ -98,7 +98,7 @@ The way you partition Namespaces should usually match the way you partition mach
 For more on topology tradeoffs, see [Namespace best practices](/best-practices/managing-namespace) and
 [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns).
 
-### Rotate credentials without downtime {/* #rotate-credentials-without-downtime */}
+### Rotate credentials without downtime
 
 Use the following sequence when rotating credentials:
 
@@ -108,7 +108,7 @@ Use the following sequence when rotating credentials:
 4. Validate connectivity and normal Workflow execution using the new credential.
 5. Remove the old credential only after all clients and Workers have switched.
 
-### Use Certificate Filters to restrict access when using shared CAs (e.g., `dev` vs `prod`) {/* #use-certificate-filters-to-restrict-access-when-using-shared-cas-eg-dev-vs-prod */}
+### Use Certificate Filters to restrict access when using shared CAs (e.g., `dev` vs `prod`)
 
 Certificate Filters are an additional way of validating using the client certificate presented during client authentication. Give certificates a common name that matches the namespace. This is not a requirement.   
 

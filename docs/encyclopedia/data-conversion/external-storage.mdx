@@ -38,7 +38,7 @@ For SDK-specific usage guides, see:
 - [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
 - [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
 
-## Why use External Storage {/* #why-use-external-storage */}
+## Why use External Storage
 
 The Temporal Service enforces a maximum per-payload size. The default and recommended limit is 2 MB. Self-hosted users
 can [configure this limit](/self-hosted-guide/defaults), but it is fixed at 2 MB on Temporal Cloud. Payloads that exceed
@@ -100,7 +100,7 @@ payload from external storage before returning it to your Workflow or Client.
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
 
-## Storage drivers {/* #storage-drivers */}
+## Storage drivers
 
 A storage driver connects External Storage to a backing store. Each driver provides two operations:
 
@@ -115,7 +115,7 @@ Temporal SDKs include built-in drivers for common storage systems like Amazon S3
 drivers and use a selector function to route payloads to different drivers based on size, type, or other criteria such
 as hot and cold storage tiers.
 
-### Custom storage drivers {/* #custom-storage-drivers */}
+### Custom storage drivers
 
 If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific
 examples, see:
@@ -123,7 +123,7 @@ examples, see:
 - [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
 
-## Key configuration settings {/* #key-configuration-settings */}
+## Key configuration settings
 
 Configure External Storage on the Data Converter. The key settings are:
 
@@ -159,7 +159,7 @@ External Storage stores payloads in a single storage backend. If that backend be
 retrieve payloads. To protect against regional or provider failures, implement your drivers in a way that takes
 advantage of your storage provider's redundancy features, such as cross-region replication and multi-region routing.
 
-### S3 Multi-Region Access Points {/* #s3-multi-region-access-points */}
+### S3 Multi-Region Access Points
 
 The built-in S3 storage driver supports
 [S3 Multi-Region Access Points (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/) as the bucket
@@ -173,7 +173,7 @@ For setup instructions, see
 in the AWS documentation. After creating the MRAP, configure the External Storage S3 driver to use the MRAP ARN in place
 of the bucket name.
 
-### Replication tradeoffs {/* #replication-tradeoffs */}
+### Replication tradeoffs
 
 Cross-region replication introduces eventual consistency. After a write, a read in another region may temporarily miss
 the object. To mitigate:

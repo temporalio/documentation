@@ -64,7 +64,7 @@ For smaller images and/or more secure deployments, it is also possible to use `-
 `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the
 following caveats.
 
-### Using `node:slim` images {/* #using-nodeslim-images */}
+### Using `node:slim` images
 
 `node:slim` images do not contain some of the common packages found in regular images. This results in significantly
 smaller images.
@@ -89,7 +89,7 @@ RUN apt-get update \
 Failure to install this dependency results in a `[TransportError: transport error]` runtime error, because the
 certificates cannot be verified.
 
-### Using `distroless/nodejs` images {/* #using-distrolessnodejs-images */}
+### Using `distroless/nodejs` images
 
 `distroless/nodejs` images include only the files that are strictly required to execute `node`. This results in even
 smaller images (approximately half the size of `node:slim` images). It also significantly reduces the surface of
@@ -124,7 +124,7 @@ WORKDIR /app
 CMD ["node", "build/worker.js"]
 ```
 
-### Properly configure Node.js memory in Docker {/* #properly-configure-nodejs-memory-in-docker */}
+### Properly configure Node.js memory in Docker
 
 By default, `node` configures its maximum old-gen memory to 25% of the _physical memory_ of the machine on which it is
 executing, with a maximum of 4 GB. This is likely inappropriate when running Node.js in a Docker environment and can
@@ -139,7 +139,7 @@ adjustment to find the most appropriate value based on your specific application
 In practice, it is generally easier to provide this argument through the
 [`NODE_OPTIONS` environment variable](https://nodejs.org/api/cli.html#node_optionsoptions).
 
-### Do not use Alpine {/* #do-not-use-alpine */}
+### Do not use Alpine
 
 Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. If you receive errors
 like the following, it's probably because you are using Alpine.
@@ -271,7 +271,7 @@ You might want to programmatically shut down Workers (with
 [Worker.shutdown()](https://typescript.temporal.io/api/classes/worker.Worker#shutdown)) in integration tests or when
 automating a fleet of Workers.
 
-### Worker states {/* #worker-states */}
+### Worker states
 
 At any time, you can Query Worker state with
 [Worker.getState()](https://typescript.temporal.io/api/classes/worker.Worker#getstate). A Worker is always in one of

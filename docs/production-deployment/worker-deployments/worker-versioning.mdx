@@ -136,7 +136,7 @@ rainbow deployments of your Workers if you're using Kubernetes.
 If you cannot yet support blue-green or rainbow style deployments, use [patching](/patching) as a fallback while you
 work toward a versioned deployment model.
 
-## Configuring a Worker for Versioning {/* #configuring-a-worker-for-versioning */}
+## Configuring a Worker for Versioning
 
 You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning. There are
 three new parameters, with different names depending on the language:
@@ -283,7 +283,7 @@ CaN boundary without patching. See [Upgrading on Continue-as-New](#upgrade-on-co
 
 :::
 
-### Default Versioning Behavior Considerations {/* #default-versioning-behavior-considerations */}
+### Default Versioning Behavior Considerations
 
 If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
 Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
@@ -314,7 +314,7 @@ You also want to make sure you understand how your Activities are going to work 
 Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
-## Rolling out changes with the CLI {/* #rolling-out-changes-with-the-cli */}
+## Rolling out changes with the CLI
 
 Next, deploy your Worker with the additional configuration parameters. Before making any Workflow revisions, you can use
 the `temporal` CLI to check which of your Worker versions are currently polling:
@@ -360,7 +360,7 @@ Versioning Info:
   OverrideBehavior       Unspecified
 ```
 
-## Marking a Workflow Type as Pinned {/* #marking-a-workflow-type-as-pinned */}
+## Marking a Workflow Type as Pinned
 
 You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. This will cause it
 to remain on its original deployed version:
@@ -444,7 +444,7 @@ end
 </SdkTabs.Ruby>
 </SdkTabs>
 
-## Moving a pinned Workflow {/* #moving-a-pinned-workflow */}
+## Moving a pinned Workflow
 
 Sometimes you'll need to manually move a set of pinned Workflows off of a version that has a bug to a version with the
 fix.
@@ -488,7 +488,7 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
-## Migrating a Workflow from Pinned to Auto-Upgrade {/* #migrating-a-workflow-from-pinned-to-auto-upgrade */}
+## Migrating a Workflow from Pinned to Auto-Upgrade
 
 There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your
 Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
@@ -617,7 +617,7 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
 
 :::
 
-## Sunsetting an old Deployment Version {/* #sunsetting-an-old-deployment-version */}
+## Sunsetting an old Deployment Version
 
 A Worker Deployment Version moves through the following states:
 
@@ -667,7 +667,7 @@ Task Queues:
 If you have implemented [Queries](/sending-messages#sending-queries) on closed pinned Workflows, you may need to keep
 some Workers running to handle them.
 
-### Adding a pre-deployment test {/* #adding-a-pre-deployment-test */}
+### Adding a pre-deployment test
 
 Before deploying a new Workflow revision, you can test it with synthetic traffic.
 
@@ -756,7 +756,7 @@ handle = env.client.start_workflow(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-## Garbage collection {/* #garbage-collection */}
+## Garbage collection
 
 Worker Deployments are never garbage collected, but _Worker Deployment Versions_ (often referred to as Versions, Worker
 Versions, Deployment Versions) are.

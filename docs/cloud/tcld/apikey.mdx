@@ -25,7 +25,7 @@ Alias: `ak`
 - [tcld apikey disable](#disable)
 - [tcld apikey enable](#enable)
 
-## create {/* #create */}
+## create
 
 The `tcld apikey create` command creates an API Key in Temporal Cloud.
 
@@ -33,7 +33,7 @@ The `tcld apikey create` command creates an API Key in Temporal Cloud.
 
 The following options control the behavior of the command.
 
-#### --name {/* #--name */}
+#### --name
 
 _Required modifier_
 
@@ -47,7 +47,7 @@ Alias: `-n`
 tcld apikey create --name <name>
 ```
 
-#### --description {/* #--description */}
+#### --description
 
 Specify a description for the API Key.
 
@@ -59,7 +59,7 @@ Alias: `-desc`
 tcld apikey create --name <name> --description "Your API Key"
 ```
 
-#### --duration {/* #--duration */}
+#### --duration
 
 Specify the duration from now when the API Key will expire.
 This will be ignored if the expiry flag is set.
@@ -74,7 +74,7 @@ Alias: `-d`
 tcld apikey create --name <name> --duration 24h
 ```
 
-#### --expiry {/* #--expiry */}
+#### --expiry
 
 Specify the absolute timestamp (RFC3339) when the API Key will expire.
 
@@ -88,7 +88,7 @@ Alias: `-e`
 tcld apikey create --name <name> --expiry '2023-11-28T09:23:24-08:00'
 ```
 
-#### --request-id {/* #--request-id */}
+#### --request-id
 
 Specify a request-id for the asynchronous operation.
 If not set, the server will assign one.
@@ -101,7 +101,7 @@ Alias: `-r`
 tcld apikey create --name <name> --request-id <request_id>
 ```
 
-## get {/* #get */}
+## get
 
 The `tcld apikey get` command retrieves the details of a specified API Key in Temporal Cloud.
 
@@ -109,7 +109,7 @@ The `tcld apikey get` command retrieves the details of a specified API Key in Te
 
 The following option controls the behavior of the command.
 
-#### --id {/* #--id */}
+#### --id
 
 _Required modifier_
 
@@ -123,7 +123,7 @@ Alias: `-i`
 tcld apikey get --id <apikey_id>
 ```
 
-## list {/* #list */}
+## list
 
 The `tcld apikey list` command lists all API Keys in Temporal Cloud.
 
@@ -139,7 +139,7 @@ Alias: `l`
 tcld apikey list
 ```
 
-## delete {/* #delete */}
+## delete
 
 The `tcld apikey delete` command deletes an API Key in Temporal Cloud.
 
@@ -147,7 +147,7 @@ The `tcld apikey delete` command deletes an API Key in Temporal Cloud.
 
 The following options control the behavior of the command.
 
-#### --id {/* #--id-1 */}
+#### --id
 
 _Required modifier_
 
@@ -161,7 +161,7 @@ Alias: `-i`
 tcld apikey delete --id <apikey_id>
 ```
 
-#### --resource-version {/* #--resource-version */}
+#### --resource-version
 
 Specify the resource-version (etag) to update from.
 If not set, the CLI will use the latest.
@@ -174,7 +174,7 @@ Alias: `-v`
 tcld apikey delete --id <apikey_id> --resource-version <version>
 ```
 
-#### --request-id {/* #--request-id-1 */}
+#### --request-id
 
 Specify a request-id for the asynchronous operation.
 If not set, the server will assign one.
@@ -187,7 +187,7 @@ Alias: `-r`
 tcld apikey delete --id <apikey_id> --request-id <request_id>
 ```
 
-## disable {/* #disable */}
+## disable
 
 The `tcld apikey disable` command disables an API Key in Temporal Cloud.
 
@@ -195,7 +195,7 @@ The `tcld apikey disable` command disables an API Key in Temporal Cloud.
 
 The following options control the behavior of the command.
 
-#### --id {/* #--id-2 */}
+#### --id
 
 _Required modifier_
 
@@ -209,7 +209,7 @@ Alias: `-i`
 tcld apikey disable --id <apikey_id>
 ```
 
-#### --resource-version {/* #--resource-version-1 */}
+#### --resource-version
 
 Specify the resource-version (etag) to update from. If not set, the CLI will use the latest.
 
@@ -221,7 +221,7 @@ Alias: `-v`
 tcld apikey disable --id <apikey_id> --resource-version <version>
 ```
 
-#### --request-id {/* #--request-id-2 */}
+#### --request-id
 
 Specify a request-id for the asynchronous operation. If not set, the server will assign one.
 
@@ -233,7 +233,7 @@ Alias: `-r`
 tcld apikey disable --id <apikey_id> --request-id <request_id>
 ```
 
-## enable {/* #enable */}
+## enable
 
 The `tcld apikey enable` command enables a disabled API Key in Temporal Cloud.
 
@@ -241,7 +241,7 @@ The `tcld apikey enable` command enables a disabled API Key in Temporal Cloud.
 
 The following options control the behavior of the command.
 
-#### --id {/* #--id-3 */}
+#### --id
 
 _Required modifier_
 
@@ -255,7 +255,7 @@ Alias: `-i`
 tcld apikey enable --id <apikey_id>
 ```
 
-#### --resource-version {/* #--resource-version-2 */}
+#### --resource-version
 
 Specify the resource-version (etag) to update from.
 If not set, the CLI will use the latest.
@@ -268,7 +268,7 @@ Alias: `-v`
 tcld apikey enable --id <apikey_id> --resource-version <version>
 ```
 
-#### --request-id {/* #--request-id-3 */}
+#### --request-id
 
 Specify a request-id for the asynchronous operation.
 If not set, the server will assign one.

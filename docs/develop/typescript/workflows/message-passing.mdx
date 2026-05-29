@@ -486,7 +486,7 @@ After updating the code to use `async`, your Update handler can schedule an Acti
 Although an `async` Signal handler can also execute an Activity, using an Update handler allows the client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
-### Add wait conditions to block {/* #add-wait-conditions-to-block */}
+### Add wait conditions to block
 
 Sometimes, `async` Signal or Update handlers need to meet certain conditions before they should continue.
 You can use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) to prevent the code from proceeding until a condition is true.
@@ -499,7 +499,7 @@ Here are three important use cases for `workflow.condition`:
 - Waiting in a handler until it is appropriate to continue.
 - Waiting in the main Workflow until all active handlers have finished.
 
-#### Wait for a Signal or Update to arrive {/* #wait-for-a-signal-or-update-to-arrive */}
+#### Wait for a Signal or Update to arrive
 
 It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
 
@@ -519,7 +519,7 @@ export async function greetingWorkflow(): Promise<string> {
 }
 ```
 
-#### Use wait conditions in handlers {/* #use-wait-conditions-in-handlers */}
+#### Use wait conditions in handlers
 
 It's common to use a Workflow wait condition in a handler.
 For example, suppose your Workflow has a mutable variable `readyForUpdateToExecute` that indicates whether your Update handler should be allowed to start executing.

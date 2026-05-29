@@ -37,13 +37,13 @@ There are two primary Versioning methods that you can use:
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths.
 - [Versioning with Patching](#php-sdk-patching-api). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
-## Worker Versioning {/* #worker-versioning */}
+## Worker Versioning
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
 ## Versioning with Patching {/* #php-sdk-patching-api */}
 
-### Patching with GetVersion {/* #patching-with-getversion */}
+### Patching with GetVersion
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -160,7 +160,7 @@ After all the Workflow Executions for version 1 have left retention, you can rem
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
-### Workflow cutovers {/* #workflow-cutovers */}
+### Workflow cutovers
 
 To understand why Patching is useful, it's helpful to demonstrate cutting over an entire Workflow.
 

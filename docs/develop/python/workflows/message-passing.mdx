@@ -454,7 +454,7 @@ After updating the code to use a `async def`, your Update handler can schedule a
 Although an `async def` Signal handler can also execute an Activity, using an Update handler allows the Client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
-### Add wait conditions to block {/* #add-wait-conditions-to-block */}
+### Add wait conditions to block
 
 Sometimes, `async def` Signal or Update handlers need to meet certain conditions before they should continue.
 You can use [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) to prevent the code from proceeding until a condition is true.
@@ -467,7 +467,7 @@ Here are three important use cases for `workflow.wait_condition`:
 - Wait in a handler until it's appropriate to continue.
 - Wait in the main Workflow until all active handlers have finished.
 
-#### Wait for a Signal or Update to arrive {/* #wait-for-a-signal-or-update-to-arrive */}
+#### Wait for a Signal or Update to arrive
 
 It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
 
@@ -538,7 +538,7 @@ async def my_update(self) -> None:
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
-### Use `@workflow.init` to operate on Workflow input before any handler executes {/* #use-workflowinit-to-operate-on-workflow-input-before-any-handler-executes */}
+### Use `@workflow.init` to operate on Workflow input before any handler executes
 
 Normally, your Workflow `__init__` method won't have any parameters.
 However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/workflows/basics#workflow-parameters) as your `@workflow.run` method.

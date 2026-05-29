@@ -23,7 +23,7 @@ Web UI open source repos:
 - [temporalio/ui](https://github.com/temporalio/ui)
 - [temporalio/ui-server](https://github.com/temporalio/ui-server)
 
-## Namespaces {/* #namespaces */}
+## Namespaces
 
 All Namespaces in your self-hosted Temporal Service or Temporal Cloud account are listed under **Namespaces** in the
 left section of the window. You can also switch Namespaces from the Workflows view by selecting from the Namespace
@@ -31,7 +31,7 @@ switcher at the top right corner of the window. After you select a Namespace, th
 for that Namespace. In Temporal Cloud, users can access only the Namespaces that they have been granted access to. For
 details, see [Namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions).
 
-## Workflows {/* #workflows */}
+## Workflows
 
 The main Workflows page displays a table of all Workflow Executions within the retention period.
 
@@ -61,7 +61,7 @@ complex filters every time, you can save them once and apply them with a single 
 Saved Views are stored locally in your browser and are available to you whenever you use the Temporal Web UI in this
 browser. Each user will have their own private collection.
 
-#### Apply a Saved View {/* #apply-a-saved-view */}
+#### Apply a Saved View
 
 By default, The Workflows page has several default Saved Views. You can also create your own Saved Views.
 
@@ -69,7 +69,7 @@ Click the name of a Saved View in the list to display the corresponding Workflow
 
 The Workflow List page will refresh with the results of the Saved View.
 
-#### Create a Saved View {/* #create-a-saved-view */}
+#### Create a Saved View
 
 You can create a new Saved View from the Workflows page.
 
@@ -82,7 +82,7 @@ You can create a new Saved View from the Workflows page.
 You can create up to 20 Saved Views. When you reach this limit, you'll need to delete some Saved Views before you can
 save new ones.
 
-#### Make Temporary Changes to a Saved View query {/* #make-temporary-changes-to-a-saved-view-query */}
+#### Make Temporary Changes to a Saved View query
 
 You can modify a Saved View temporarily without changing the saved criteria.
 
@@ -96,7 +96,7 @@ You can modify a Saved View temporarily without changing the saved criteria.
    - Click Edit, modify the name, and click Create New, which will create a new Saved View with your new settings and a
      new name.
 
-#### Rename a Saved View Query {/* #rename-a-saved-view-query */}
+#### Rename a Saved View Query
 
 You can rename an existing Saved View from the Workflows page.
 
@@ -106,7 +106,7 @@ You can rename an existing Saved View from the Workflows page.
 1. Click Save to apply your changes and rename the existing Saved View, or click Create Copy to create a new Saved View
    with the new name.
 
-#### Deleting Saved Views {/* #deleting-saved-views */}
+#### Deleting Saved Views
 
 You can delete a Saved View from the Workflows page, because it is no longer useful, or to create room for new Saved
 Views.
@@ -122,7 +122,7 @@ you will need to recreate it.
 
 :::
 
-#### Share a Saved View {/* #share-a-saved-view */}
+#### Share a Saved View
 
 You can share a Saved View as a URL.
 
@@ -163,7 +163,7 @@ temporal server start-dev \
 
 To turn off the feature for a Namespace, set `numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute` to 0.
 
-## History {/* #history */}
+## History
 
 A Workflow Execution History is a view of the [Events](/workflow-execution/event#event) and Event fields within the
 Workflow Execution. Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event
@@ -191,45 +191,45 @@ The History tab has the following views:
 - Compact: A logical grouping of Activities, Signals and Timers.
 - JSON: The full JSON code for the workflow.
 
-### Download Event History {/* #download-event-history */}
+### Download Event History
 
 The entire Workflow Execution Event History, in JSON format, can be downloaded from this section.
 
-### Workflow Actions {/* #workflow-actions */}
+### Workflow Actions
 
 Workflow Executions can request a Cancellation, send a Signal or Update, or Reset and Terminate directly from the UI.
 Start a new Workflow Execution with pre-filled values with the Start Workflow Like This One button.
 
-### Relationships {/* #relationships */}
+### Relationships
 
 Displays the full hierarchy of a Workflow Execution with all parent and child nodes displayed in a tree.
 
-### Workers {/* #workers */}
+### Workers
 
 Displays the Workers currently polling on the Workflow Task Queue with a count. If no Workers are polling, an error
 displays.
 
-### Pending Activities {/* #pending-activities */}
+### Pending Activities
 
 Displays a summary of recently active and/or pending Activity Executions. Clicking a pending Activity directs the user
 to the Pending Activities tab to view details.
 
-### Call Stack {/* #call-stack */}
+### Call Stack
 
 The screen shows the captured result from the [\_\_stack_trace](/sending-messages#stack-trace-query) Query. The Query is
 performed when the tab is selected. It works only if a Worker is running and available to return the call stack. The
 call stack shows each location where Workflow code is waiting.
 
-### Queries {/* #queries */}
+### Queries
 
 Lists all Queries sent to the Workflow Execution.
 
-### Metadata {/* #metadata */}
+### Metadata
 
 Displays User Metadata including static Workflow Summary and Details and dynamic Current Details. Lists all Events with
 User Metadata data to give you a human-readable log of what's happening in your Workflow.
 
-## Schedules {/* #schedules */}
+## Schedules
 
 On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/schedule)
 created on the selected Namespace.
@@ -267,7 +267,7 @@ To read more about Schedules, explore these links:
   <RelatedReadItem path="/develop/dotnet/workflows/schedules" text="Schedules using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Settings {/* #settings */}
+### Settings
 
 On Temporal Cloud, **Settings** is visible only to Account Owner and Global Admin
 [roles](/cloud/manage-access/roles-and-permissions#account-level-roles).
@@ -278,7 +278,7 @@ Click **Settings** to see and manage the list of users in your account and to se
 On a self-hosted Temporal Service, manage your users, metrics, and logging in your
 [server configuration](/references/configuration).
 
-### Archive {/* #archive */}
+### Archive
 
 On a self-hosted Temporal Service, Archive shows [Archived](/temporal-service/archival) data of your Workflow Executions
 on the Namespace.
@@ -288,7 +288,7 @@ To see data in your self-hosted Temporal Service, you must have
 
 For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
 
-### Codec Server {/* #codec-server */}
+### Codec Server
 
 The Web UI can use a [Codec Server](/codec-server) with a custom Data Converter to decode inputs and return values. For
 details, see [Securing your data](/production-deployment/data-encryption).

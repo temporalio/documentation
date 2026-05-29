@@ -172,7 +172,7 @@ func GetSessionInfo(ctx Context) *SessionInfo
 The Session Context also stores some Session metadata, which can be retrieved by the `GetSessionInfo()` API.
 If the Context passed in doesn't contain any Session metadata, this API will return a `nil` pointer.
 
-### Recreate Session {/* #recreate-session */}
+### Recreate Session
 
 For long-running Sessions, you may want to use the `ContinueAsNew` feature to split the Workflow into multiple runs when all Activities need to be executed by the same Worker.
 The `RecreateSession()` API is designed for such a use case.

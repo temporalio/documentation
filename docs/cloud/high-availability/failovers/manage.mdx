@@ -131,7 +131,7 @@ on-call team is automatically paged to intervene and force the failover to compl
 
 Failback behavior depends on whether the failover was automatic or manually triggered.
 
-### After a Temporal-managed failover {/* #after-a-temporal-managed-failover */}
+### After a Temporal-managed failover
 
 After a Temporal-managed failover, Temporal Cloud automatically fails back to the original region once the region is
 healthy. No action is required from you. Follow [Temporal's status page](https://status.temporal.io) for updates on the
@@ -149,7 +149,7 @@ If you prefer to manage failback yourself, you have two options:
   treat the new region as your primary for as long as it's healthy. Temporal-managed automatic failovers remain enabled,
   so Temporal will still protect you if the new region has an outage.
 
-### After a user-triggered failover {/* #after-a-user-triggered-failover */}
+### After a user-triggered failover
 
 If you triggered a failover yourself during an outage (instead of relying on a Temporal-managed failover), Temporal will
 _not_ automatically fail back for you. You must [trigger a failover](#trigger-failover) back to the original region when
@@ -157,7 +157,7 @@ it is healthy. Monitor [Temporal's status page](https://status.temporal.io) for 
 
 Automatic failback is only available after Temporal-managed (automatic) failovers.
 
-### How to check whether your Namespace will be automatically failed back {/* #how-to-check-whether-your-namespace-will-be-automatically-failed-back */}
+### How to check whether your Namespace will be automatically failed back
 
 If you are not sure whether your Namespace will be automatically failed back, check the list of failovers in the
 Temporal Cloud Web UI on your Namespace's detail page:

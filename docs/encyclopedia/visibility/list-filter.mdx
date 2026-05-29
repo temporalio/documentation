@@ -29,7 +29,7 @@ A single [Namespace](/namespaces) scopes each List Filter.
 
 A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/self-hosted-guide/visibility#elasticsearch) and 1 µs for [SQL databases](/self-hosted-guide/visibility).
 
-### Supported operators {/* #supported-operators */}
+### Supported operators
 
 List Filters support the following operators:
 
@@ -49,11 +49,11 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 :::
 
-### Partial string match {/* #partial-string-match */}
+### Partial string match
 
 There are different options for partial string matching when the type of the Search Attribute is [Text](#text) versus [Keyword](#keyword).
 
-#### Text {/* #text */}
+#### Text
 
 `Text` Search Attributes support word-level search.
 Both stored values and query strings are analyzed by the [Elasticsearch standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html), and the `=` operator returns a result if any query token matches any indexed token.
@@ -114,7 +114,7 @@ Broader tokenizer and matching improvements for `Text` Search Attributes are bei
 
 :::
 
-#### Keyword {/* #keyword */}
+#### Keyword
 
 For Search Attributes of type `Keyword` like `WorkflowId`, perform partial string matching using STARTS_WITH for prefixes and BETWEEN for suffixes.
 
@@ -162,7 +162,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, perform partial strin
 
 :::
 
-### Efficient API usage {/* #efficient-api-usage */}
+### Efficient API usage
 
 If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
 
@@ -171,7 +171,7 @@ Beginning with Temporal Server v1.20, you can employ the `CountWorkflow` API to 
 To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
 Continue until the page token becomes `null`/`nil`.
 
-#### List Filter examples {/* #list-filter-examples */}
+#### List Filter examples
 
 Here are examples of List Filters set with the [Temporal CLI](/cli/workflow#list):
 
@@ -223,7 +223,7 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
-### Search Attribute aliasing {/* #search-attribute-aliasing */}
+### Search Attribute aliasing
 
 Temporal prefixes most [default Search Attributes](./search-attributes.mdx#default-search-attribute) with `Temporal` to avoid naming conflicts with custom Search Attributes.
 To make it easier to reference default Search Attributes in List Filters, Temporal supports aliasing, which lets you use the non-prefixed name of a default Search Attribute. However, if you choose to define a custom Search Attribute with the same name as the non-prefixed alias of a default Search Attribute, your custom Search Attribute overrides the alias.
@@ -244,7 +244,7 @@ WorkflowVersioningBehavior = 'pinned'
 TemporalWorkflowVersioningBehavior = 'pinned'
 ```
 
-#### Alias resolution with custom Search Attributes {/* #alias-resolution-with-custom-search-attributes */}
+#### Alias resolution with custom Search Attributes
 
 When resolving a Search Attribute in a List Filter, Temporal Server checks for matches in the following order:
 

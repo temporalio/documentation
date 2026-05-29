@@ -18,7 +18,7 @@ An example development.yaml file can be found in the [temporalio/ui-server repo]
 
 Multiple configuration files can be created for configuring specific areas of the UI, such as Auth or TLS.
 
-## auth {/* #auth */}
+## auth
 
 Configures authorization for the Temporal Server.
 Settings apply when Auth is enabled.
@@ -40,7 +40,7 @@ auth:
       - email
 ```
 
-## batchActionsDisabled {/* #batchactionsdisabled */}
+## batchActionsDisabled
 
 Prevents the execution of Batch actions.
 
@@ -48,7 +48,7 @@ Prevents the execution of Batch actions.
 batchActionsDisabled: false
 ```
 
-## cloudUi {/* #cloudui */}
+## cloudUi
 
 Enables the Cloud UI.
 
@@ -56,7 +56,7 @@ Enables the Cloud UI.
 cloudUi: false
 ```
 
-## codec {/* #codec */}
+## codec
 
 Codec Server configuration.
 
@@ -68,7 +68,7 @@ codec:
   decodeEventHistoryDownload: false
 ```
 
-## cors {/* #cors */}
+## cors
 
 The name of the `cors` field stands for Cross-Origin Resource Sharing.
 Use this field to provide a list of domains that are authorized to access the UI Server APIs.
@@ -80,7 +80,7 @@ cors:
     - http://localhost:3000 # used at development by https://github.com/temporalio/ui
 ```
 
-## defaultNamespace {/* #defaultnamespace */}
+## defaultNamespace
 
 The default Namespace that the UI loads data for.
 Defaults to `default`.
@@ -89,7 +89,7 @@ Defaults to `default`.
 defaultNamespace: default
 ```
 
-## disableWriteActions {/* #disablewriteactions */}
+## disableWriteActions
 
 Prevents the user from executing Workflow Actions on the Web UI.
 
@@ -104,7 +104,7 @@ disableWriteActions: false
 Setting this variable to `true` disables all Workflow Actions on the Web UI.
 :::
 
-## enableUi {/* #enableui */}
+## enableUi
 
 Enables the browser UI.
 This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-environment-variables#temporal_ui_enabled) environment variable.
@@ -114,7 +114,7 @@ If disabled—that is, set to `false`—the UI server APIs remain available.
 enableUi: true
 ```
 
-## feedbackUrl {/* #feedbackurl */}
+## feedbackUrl
 
 The URL to direct users to when they click on the Feedback button in the UI.
 If not specified, it defaults to the UI's GitHub Issue page.
@@ -123,7 +123,7 @@ If not specified, it defaults to the UI's GitHub Issue page.
 feedbackUrl: https://github.com/temporalio/ui/issues/new/choose
 ```
 
-## forwardHeaders {/* #forwardheaders */}
+## forwardHeaders
 
 Configures headers for forwarding.
 
@@ -132,7 +132,7 @@ forwardHeaders:
   -
 ```
 
-## hideLogs {/* #hidelogs */}
+## hideLogs
 
 If enabled, disables any server logs from being printed to the console.
 
@@ -140,7 +140,7 @@ If enabled, disables any server logs from being printed to the console.
 hideLogs: true
 ```
 
-## hideWorkflowQueryErrors {/* #hideworkflowqueryerrors */}
+## hideWorkflowQueryErrors
 
 Hides any errors resulting from a Query to the Workflow.
 
@@ -148,7 +148,7 @@ Hides any errors resulting from a Query to the Workflow.
 hideWorkflowQueryErrors: false
 ```
 
-## notifyOnNewVersion {/* #notifyonnewversion */}
+## notifyOnNewVersion
 
 When enabled—that is, when set to `true`—a notification appears in the UI when a newer version of the [Temporal Server](/temporal-service/temporal-server) is available.
 
@@ -156,7 +156,7 @@ When enabled—that is, when set to `true`—a notification appears in the UI wh
 notifyOnNewVersion: true
 ```
 
-## port {/* #port */}
+## port
 
 The port used by the Temporal Web UI Server and any APIs.
 
@@ -164,7 +164,7 @@ The port used by the Temporal Web UI Server and any APIs.
 port: 8080
 ```
 
-## publicPath {/* #publicpath */}
+## publicPath
 
 The path used by the Temporal Web UI Server and any APIs.
 
@@ -172,7 +172,7 @@ The path used by the Temporal Web UI Server and any APIs.
 publicPath: ''
 ```
 
-## refreshInterval {/* #refreshinterval */}
+## refreshInterval
 
 How often the configuration UI Server reads the configuration file for new values.
 Currently, only [tls](#tls) configuration values are propagated during a refresh.
@@ -181,7 +181,7 @@ Currently, only [tls](#tls) configuration values are propagated during a refresh
 refreshInterval: 1m
 ```
 
-## showTemporalSystemNamespace {/* #showtemporalsystemnamespace */}
+## showTemporalSystemNamespace
 
 When enabled—that is, when set to `true`—the Temporal System Namespace becomes visible in the UI.
 The Temporal System Namespace lists Workflow Executions used by the Temporal Platform.
@@ -190,7 +190,7 @@ The Temporal System Namespace lists Workflow Executions used by the Temporal Pla
 showTemporalSystemNamespace: false
 ```
 
-## temporalGrpcAddress {/* #temporalgrpcaddress */}
+## temporalGrpcAddress
 
 The frontend address for the Temporal Cluster.
 
@@ -200,7 +200,7 @@ The default address is localhost (127.0.0.1:7233).
 temporalGrpcAddress: default
 ```
 
-## tls {/* #tls */}
+## tls
 
 Transport Layer Security (TLS) configuration for the Temporal Server.
 Settings apply when TLS is enabled.
@@ -217,7 +217,7 @@ tls:
   serverName: tls-server
 ```
 
-## workflowCancelDisabled {/* #workflowcanceldisabled */}
+## workflowCancelDisabled
 
 Prevents the user from canceling Workflow Executions from the Web UI.
 
@@ -225,7 +225,7 @@ Prevents the user from canceling Workflow Executions from the Web UI.
 workflowCancelDisabled: false
 ```
 
-## workflowResetDisabled {/* #workflowresetdisabled */}
+## workflowResetDisabled
 
 Prevents the user from resetting Workflows from the Web UI.
 
@@ -233,7 +233,7 @@ Prevents the user from resetting Workflows from the Web UI.
 workflowResetDisabled: false
 ```
 
-## workflowSignalDisabled {/* #workflowsignaldisabled */}
+## workflowSignalDisabled
 
 Prevents the user from signaling Workflow Executions from the Web UI.
 
@@ -241,7 +241,7 @@ Prevents the user from signaling Workflow Executions from the Web UI.
 workflowSignalDisabled: false
 ```
 
-## workflowTerminateDisabled {/* #workflowterminatedisabled */}
+## workflowTerminateDisabled
 
 Prevents the user from terminating Workflow Executions from the Web UI.
 

@@ -29,7 +29,7 @@ Setting dynamic configuration is optional.
 Change these values only if you need to override the default values to achieve better performance on your Temporal Cluster.
 Also, ensure that you test your changes before setting these in production.
 
-## Format {/* #format */}
+## Format
 
 To override the default dynamic configuration values, specify your custom values and constraints for the dynamic configuration keys that you want to change in a YAML configuration file.
 Use the following format when creating your dynamic configuration file.
@@ -62,7 +62,7 @@ testGetMapPropertyKey:
           key5: 2.0
 ```
 
-### Constraints {/* #constraints */}
+### Constraints
 
 You can define constraints on some dynamic configuration keys to set specific values that apply on a Namespace or Task Queue level.
 Not defining constraints on a dynamic configuration key sets the values across the Cluster.
@@ -127,7 +127,7 @@ Not defining constraints on a dynamic configuration key sets the values across t
 
 For more examples on how dynamic configuration is set, see [samples-server](https://github.com/temporalio/samples-server/blob/main/tls/config/dynamicconfig/development.yaml).
 
-## Commonly used dynamic configuration keys {/* #commonly-used-dynamic-configuration-keys */}
+## Commonly used dynamic configuration keys
 
 The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Cluster.
 
@@ -137,7 +137,7 @@ If you choose to update these values for your Temporal Cluster, ensure that you 
 All values listed here are for Temporal server v1.21.
 Check [server release notes](https://github.com/temporalio/temporal/releases) to verify any potential breaking changes when upgrading your versions.
 
-### Service-level RPS limits {/* #service-level-rps-limits */}
+### Service-level RPS limits
 
 The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Cluster.
 
@@ -159,7 +159,7 @@ Exceeding these limits results in `ResourceExhaustedError`.
 | `matching.numTaskqueueReadPartitions`  | Int  | Number of read partitions for a Task Queue. Must be set with `matching.numTaskqueueWritePartitions`.                                                                                                                                                 | 4             |
 | `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue.                                                                                                                                                                                                         | 4             |
 
-### QPS limits for Persistence store {/* #qps-limits-for-persistence-store */}
+### QPS limits for Persistence store
 
 The Queries Per Second (QPS) dynamic configuration keys set the maximum number of queries a service can make per second to the Persistence store.
 
@@ -185,7 +185,7 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 | `system.visibilityPersistenceMaxReadQPS`  | Int  | Maximum number queries per second that Visibility database can receive for read operations.                                                                                                                                                             | 9000          |
 | `system.visibilityPersistenceMaxWriteQPS` | Int  | Maximum number of queries per second that Visibility database can receive for write operations.                                                                                                                                                         | 9000          |
 
-### Activity and Workflow default policy setting {/* #activity-and-workflow-default-policy-setting */}
+### Activity and Workflow default policy setting
 
 You can define default values for Activity and Workflow [Retry Policies](/encyclopedia/retry-policies) at the Cluster level with the following dynamic configuration keys.
 
@@ -194,7 +194,7 @@ You can define default values for Activity and Workflow [Retry Policies](/encycl
 | `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code.    | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
 | `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields. | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
 
-### Size limit settings {/* #size-limit-settings */}
+### Size limit settings
 
 The Persistence store in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
@@ -219,7 +219,7 @@ For details on platform limits, see the [Temporal Platform limits sheet](/self-h
 | `limit.numPendingChildExecutions.error` | Int  | Maximum number of pending Child Workflows that a Workflow Execution can have before the `StartChildWorkflowExecution` commands fail with an error.                                                                                              | 2000                     |
 | `frontend.visibilityMaxPageSize`        | Int  | Maximum number of Workflow Executions shown from the ListWorkflowExecutions API in one page.                                                                                                                                                    | 1000                     |
 
-### Secondary visibility settings {/* #secondary-visibility-settings */}
+### Secondary visibility settings
 
 Secondary visibility configuration keys enable Dual Visibility on your Temporal Cluster.
 This can be useful when migrating a Visibility database or creating a backup Visibility store.
@@ -229,7 +229,7 @@ This can be useful when migrating a Visibility database or creating a backup Vis
 | `system.enableReadFromSecondaryVisibility` | Boolean | Enables reading from the [secondary visibility store](/dual-visibility), and can be set per Namespace. Allowed values are `true` or `false`.                                                                                                                                                                                                                                                                         | `false`       |
 | `system.secondaryVisibilityWritingMode`    |         | Enables writing Visibility data to the secondary Visibility store and can be set per Namespace. Setting this value to `on` disables write operations to the primary Visibility store. Allowed values:<br /> `off`: Enables writing to primary Visibility store only. <br /> `on`: Enables writing to secondary Visibility store only.<br /> `dual`: Enables writing to both primary and secondary Visibility stores. | `off`         |
 
-### Server version check settings {/* #server-version-check-settings */}
+### Server version check settings
 
 The Temporal server reports the server version and the version of the SDK that it is connected to in order to determine if the Web UI should show a banner that states a new version is available to install. This can be disabled by defining the following value or by setting the `TEMPORAL_VERSION_CHECK_DISABLED` environment variable to `1`.
 
@@ -237,7 +237,7 @@ The Temporal server reports the server version and the version of the SDK that i
 | ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `frontend.enableServerVersionCheck` | Boolean | Enables the Temporal server to report version information about the current server and SDK. Allowed values are `true` or `false`. | `true`        |
 
-### Nexus settings {/* #nexus-settings */}
+### Nexus settings
 
 Settings related to the management of Nexus.
 

@@ -47,7 +47,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `workflow` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## cancel {/* #cancel */}
+## cancel
 
 Canceling a running Workflow Execution records a
 `WorkflowExecutionCancelRequested` event in the Event History. The Service
@@ -84,7 +84,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## count {/* #count */}
+## count
 
 Show a count of Workflow Executions, regardless of execution state (running,
 terminated, etc). Use `--query` to select a subset of Workflow Executions:
@@ -103,7 +103,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
-## delete {/* #delete */}
+## delete
 
 Delete a Workflow Executions and its Event History:
 
@@ -130,7 +130,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## describe {/* #describe */}
+## describe
 
 Display information about a specific Workflow Execution:
 
@@ -156,7 +156,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## execute {/* #execute */}
+## execute
 
 Establish a new Workflow Execution and direct its progress to stdout. The
 command blocks and returns when the Workflow Execution completes. If your
@@ -203,7 +203,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--type` | Yes | **string** Workflow Type name. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## execute-update-with-start {/* #execute-update-with-start */}
+## execute-update-with-start
 
 Send a message to a Workflow Execution to invoke an Update handler, and wait for
 the update to complete. If the Workflow Execution is not running, then a new workflow
@@ -258,7 +258,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--update-name` | Yes | **string** Update name. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## fix-history-json {/* #fix-history-json */}
+## fix-history-json
 
 Reserialize an Event History JSON file:
 
@@ -275,7 +275,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--source`, `-s` | Yes | **string** Path to the original file. |
 | `--target`, `-t` | No | **string** Path to the results file. When omitted, output is sent to stdout. |
 
-## list {/* #list */}
+## list
 
 List Workflow Executions. The optional `--query` limits the output to
 Workflows matching a Query:
@@ -304,7 +304,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--page-size` | No | **int** Maximum number of Workflow Executions to fetch at a time from the server. |
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
-## metadata {/* #metadata */}
+## metadata
 
 Issue a Query for and display user-set metadata like summary and
 details for a specific Workflow Execution:
@@ -323,7 +323,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## pause {/* #pause */}
+## pause
 
 Pause a Workflow Execution.
 Note: This is an experimental feature and may change in the future.
@@ -336,7 +336,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## query {/* #query */}
+## query
 
 Send a Query to a Workflow Execution by Workflow ID to retrieve its state.
 This synchronous operation exposes the internal state of a running Workflow
@@ -364,7 +364,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## reset {/* #reset */}
+## reset
 
 Reset a Workflow Execution so it can resume from a point in its Event History
 without losing its progress up to that point:
@@ -389,7 +389,7 @@ BuildId. Do not use Workflow IDs, run IDs, or event IDs with this command.
 Visit https://docs.temporal.io/visibility to read more about Search
 Attributes and Query creation.
 
-### with-workflow-update-options {/* #with-workflow-update-options */}
+### with-workflow-update-options
 
 Run Workflow Update Options atomically after the Workflow is reset.
 Workflows selected by the reset command are forwarded onto the subcommand.
@@ -402,7 +402,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
 | `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
 
-## result {/* #result */}
+## result
 
 Wait for and print the result of a Workflow Execution:
 
@@ -418,7 +418,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## show {/* #show */}
+## show
 
 Show a Workflow Execution's Event History.
 When using JSON output (`--output json`), you may pass the results to an SDK
@@ -440,7 +440,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## signal {/* #signal */}
+## signal
 
 Send an asynchronous notification (Signal) to a running Workflow Execution by
 its Workflow ID. The Signal is written to the History. When you include
@@ -473,7 +473,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## signal-with-start {/* #signal-with-start */}
+## signal-with-start
 
 Send an asynchronous notification (Signal) to a Workflow Execution.
 If the Workflow Execution is not running or is not found, it starts the
@@ -522,7 +522,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--type` | Yes | **string** Workflow Type name. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## stack {/* #stack */}
+## stack
 
 Perform a Query on a Workflow Execution using a `__stack_trace`-type Query.
 Display a stack trace of the threads and routines currently in use by the
@@ -541,7 +541,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## start {/* #start */}
+## start
 
 Start a new Workflow Execution. Returns the Workflow- and Run-IDs:
 
@@ -581,7 +581,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--type` | Yes | **string** Workflow Type name. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## start-update-with-start {/* #start-update-with-start */}
+## start-update-with-start
 
 Send a message to a Workflow Execution to invoke an Update handler, and wait for
 the update to be accepted or rejected. If the Workflow Execution is not running,
@@ -638,7 +638,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--update-wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
-## terminate {/* #terminate */}
+## terminate
 
 Terminate a Workflow Execution:
 
@@ -677,7 +677,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm termination. Can only be used with --query. |
 
-## trace {/* #trace */}
+## trace
 
 Display the progress of a Workflow Execution and its child workflows with a
 real-time trace. This view helps you understand how Workflows are proceeding:
@@ -698,7 +698,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## unpause {/* #unpause */}
+## unpause
 
 Unpause a previously paused Workflow Execution.
 Note: This is an experimental feature and may change in the future.
@@ -711,12 +711,12 @@ Use the following options to change the behavior of this command. You can also u
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## update {/* #update */}
+## update
 
 An Update is a synchronous call to a Workflow Execution that can change its
 state, control its flow, and return a result.
 
-### describe {/* #describe-1 */}
+### describe
 
 Given a Workflow Execution and an Update ID, return information about its current status, including
 a result if it has finished.
@@ -735,7 +735,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-### execute {/* #execute-1 */}
+### execute
 
 Send a message to a Workflow Execution to invoke an Update handler, and wait for
 the update to complete or fail. You can also use this to wait for an existing
@@ -763,7 +763,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-### result {/* #result-1 */}
+### result
 
 Given a Workflow Execution and an Update ID, wait for the Update to complete or fail and
 print the result.
@@ -782,7 +782,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-### start {/* #start-1 */}
+### start
 
 Send a message to a Workflow Execution to invoke an Update handler, and wait for
 the update to be accepted or rejected. You can subsequently wait for the update
@@ -812,7 +812,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is  required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
-## update-options {/* #update-options */}
+## update-options
 
 Modify properties of Workflow Executions:
 
@@ -869,7 +869,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
-## Global Flags {/* #global-flags */}
+## Global Flags
 
 The following options can be used with any command.
 

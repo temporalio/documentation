@@ -25,7 +25,7 @@ Your code runs in your environment.
 Temporal Cloud never sees your application logic or sensitive data.
 The platform stores encrypted Workflow state and orchestrates execution, while your Workers execute business logic wherever you deploy them.
 
-## How Temporal Cloud works {/* #how-temporal-cloud-works */}
+## How Temporal Cloud works
 
 Temporal Cloud operates as the control plane for your distributed applications:
 
@@ -36,9 +36,9 @@ Temporal Cloud operates as the control plane for your distributed applications:
 This separation means Temporal Cloud scales independently of your application.
 You control compute resources for your Workers; Temporal handles the orchestration layer.
 
-## Architecture {/* #architecture */}
+## Architecture
 
-### Cell-based infrastructure {/* #cell-based-infrastructure */}
+### Cell-based infrastructure
 
 Temporal Cloud uses a cell-based architecture to achieve isolation and scalability.
 Each cell is a self-contained deployment unit with its own:
@@ -54,7 +54,7 @@ Cells act as failure domains.
 If infrastructure within a cell experiences issues, only Namespaces in that cell are affected.
 This design limits blast radius and enables independent scaling.
 
-### Data plane and control plane {/* #data-plane-and-control-plane */}
+### Data plane and control plane
 
 **Data plane**: Where your Workflows execute. Each cell processes Workflow operations, persists state, and manages task queues. The data plane is optimized for low latency and high throughput.
 
@@ -66,7 +66,7 @@ This design limits blast radius and enables independent scaling.
 
 The control plane uses Temporal itself (durable execution) to orchestrate these operations reliably.
 
-### Multi-cloud availability {/* #multi-cloud-availability */}
+### Multi-cloud availability
 
 Temporal Cloud runs on both AWS and GCP:
 
@@ -78,7 +78,7 @@ For disaster recovery, you can replicate across regions within a cloud provider 
 
 See [Service regions](/cloud/regions) for the complete list of available regions.
 
-## Built-in reliability {/* #built-in-reliability */}
+## Built-in reliability
 
 Every Temporal Cloud Namespace includes baseline high availability:
 
@@ -86,7 +86,7 @@ Every Temporal Cloud Namespace includes baseline high availability:
 - **Automatic failover**: If one zone becomes unavailable, operations continue on the remaining zones
 - **99.9% SLA**: Contractual uptime guarantee for standard Namespaces
 
-### High Availability features {/* #high-availability-features */}
+### High Availability features
 
 For workloads requiring stronger guarantees, Temporal Cloud offers three replication options:
 
@@ -104,51 +104,51 @@ High Availability Namespaces include:
 
 See [High Availability](/cloud/high-availability) for configuration details.
 
-## Security model {/* #security-model */}
+## Security model
 
 Temporal Cloud implements defense-in-depth security:
 
-### Your code stays with you {/* #your-code-stays-with-you */}
+### Your code stays with you
 
 Temporal Cloud never executes your application code.
 Workers run in your environment, connecting to Temporal Cloud over encrypted channels.
 You control access to your compute resources and secrets.
 
-### Client-side encryption {/* #client-side-encryption */}
+### Client-side encryption
 
 The [Data Converter](/dataconversion) lets you encrypt payloads before they leave your Workers.
 Temporal Cloud stores ciphertext—if the service were compromised, your data remains encrypted.
 Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data in the Web UI without sharing keys.
 
-### Network isolation {/* #network-isolation */}
+### Network isolation
 
 - **mTLS authentication**: Per-Namespace certificate-based authentication for gRPC endpoints
 - **API key authentication**: Alternative to certificates for simpler key management
 - **Private connectivity**: AWS PrivateLink and GCP Private Service Connect for traffic that never traverses the public internet
 
-### Compliance {/* #compliance */}
+### Compliance
 
 Temporal Technologies maintains SOC 2 Type 2 certification and complies with GDPR and HIPAA regulations.
 Audit logs capture all API operations and can be exported to your security monitoring systems.
 
 See [Security model](/cloud/security) for complete details.
 
-## Consumption-based pricing {/* #consumption-based-pricing */}
+## Consumption-based pricing
 
 Temporal Cloud charges based on what you use:
 
-### Actions {/* #actions */}
+### Actions
 
 The primary billing unit.
 Actions are billable operations like starting Workflows, sending Signals, recording Heartbeats, and completing Activities.
 Pricing starts at $50 per million Actions with volume discounts as you scale.
 
-### Storage {/* #storage */}
+### Storage
 
 - **Active Storage**: Event History for running Workflows
 - **Retained Storage**: Event History for completed Workflows (configurable retention period up to 90 days)
 
-### Plans {/* #plans */}
+### Plans
 
 Four tiers—Essentials, Business, Enterprise, and Mission Critical—with increasing support levels, included Actions/Storage, and features like SAML and SCIM.
 The Essentials plan starts at $100/month.
@@ -157,29 +157,29 @@ Self-serve signup and plan management available at [cloud.temporal.io](https://c
 
 See [Pricing](/cloud/pricing) for detailed rates and examples.
 
-## Portability {/* #portability */}
+## Portability
 
 Temporal Cloud runs the same Temporal Server as the open-source distribution.
 This means:
 
-### Zero code changes {/* #zero-code-changes */}
+### Zero code changes
 
 Applications built for self-hosted Temporal work on Temporal Cloud without modification.
 Update your connection configuration to point at your Cloud Namespace—that's it.
 
-### Zero-downtime migration {/* #zero-downtime-migration */}
+### Zero-downtime migration
 
 [Automated migration](/cloud/migrate/automated) uses Workflow replication to move running Workflows from self-hosted to Cloud (or between Cloud regions) without interruption.
 No Workflow restarts, no data loss, no downtime.
 
 [Manual migration](/cloud/migrate/manual) works by updating Clients and Workers to use new Namespace endpoints while existing Workflows complete naturally.
 
-### Bidirectional {/* #bidirectional */}
+### Bidirectional
 
 Move workloads from self-hosted to Cloud, Cloud to self-hosted, or between Cloud regions and providers.
 The same migration tooling works in any direction.
 
-## Self-serve operations {/* #self-serve-operations */}
+## Self-serve operations
 
 Temporal Cloud is designed for self-service:
 
@@ -190,7 +190,7 @@ Temporal Cloud is designed for self-service:
 
 No support tickets required for standard operations.
 
-## Getting started {/* #getting-started */}
+## Getting started
 
 1. [Sign up for Temporal Cloud](https://temporal.io/get-cloud)
 2. [Create your first Namespace](/cloud/namespaces)

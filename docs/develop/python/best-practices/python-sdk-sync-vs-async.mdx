@@ -36,7 +36,7 @@ your application may fail in sporadic and unexpected ways. Which one you should
 use depends on your use case. This section provides guidance to help you choose
 the best approach.
 
-## The Python Asynchronous Event Loop and Blocking Calls {/* #the-python-asynchronous-event-loop-and-blocking-calls */}
+## The Python Asynchronous Event Loop and Blocking Calls
 
 First, let's look at how async event loops work in Python. The Python async
 event loop runs in a thread and executes all tasks in its thread. When any
@@ -67,7 +67,7 @@ asynchronous Activity would lead to blocking your event loop. If you want to mak
 an HTTP call from within an asynchronous Activity, you should use an async-safe HTTP library
 such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
-## Python SDK Worker Execution Architecture {/* #python-sdk-worker-execution-architecture */}
+## Python SDK Worker Execution Architecture
 
 Python workers have the following components for executing code:
 
@@ -77,12 +77,12 @@ Python workers have the following components for executing code:
 
 > See Also: [docs for](https://python.temporal.io/temporalio.worker.Worker.html#__init__) `worker.__init__()`
 
-### Activities {/* #activities */}
+### Activities
 
 - Async Activities and the temporal worker SDK code both run the default asyncio event loop or whatever event loop you give the Worker.
 - Synchronous Activities run in the `activity_executor`.
 
-### Workflows {/* #workflows */}
+### Workflows
 
 Since Workflow Tasks have the following three properties, they're run in threads.
 
@@ -97,19 +97,19 @@ Each Workflow gets its own “Workflow event loop,” which is deterministic, an
 The Workflow event loop doesn't constantly loop -- it just gets cycled through during a Workflow Task to make as much progress as possible on all of its futures.
 When it can no longer make progress on any of its futures, then the Workflow Task is complete.
 
-### Number of CPU cores {/* #number-of-cpu-cores */}
+### Number of CPU cores
 
 The only ways to use more than one core in a python Worker (considering Python's GIL) are:
 
 - Run more than one Worker Process.
 - Run the synchronous Activities in a process pool executor, but a thread pool executor is recommended.
 
-### A Worker infrastructure option: Separate Activity and Workflow Workers {/* #a-worker-infrastructure-option-separate-activity-and-workflow-workers */}
+### A Worker infrastructure option: Separate Activity and Workflow Workers
 
 To reduce the risk of event loops or executors getting blocked,
 some users choose to deploy separate Workers for Workflow Tasks and Activity Tasks.
 
-## Activity Definition {/* #activity-definition */}
+## Activity Definition
 
 **By default, Activities should be synchronous rather than asynchronous**.
 You should only make an Activity asynchronous if you are
@@ -133,7 +133,7 @@ which helps because:
 > See Also:
 > ["Types of Activities" section of Python SDK README](https://github.com/temporalio/sdk-python#types-of-activities)
 
-## How to implement Synchronous Activities {/* #how-to-implement-synchronous-activities */}
+## How to implement Synchronous Activities
 
 The following code is a synchronous Activity Definition.
 It takes a name (`str`) as input and returns a
@@ -189,7 +189,7 @@ Whether to implement Activities as class methods or functions is a design
 choice left up to the developer when cross-activity state isn't needed. Both are
 equally valid implementations.
 
-### How to run Synchronous Activities on a Worker {/* #how-to-run-synchronous-activities-on-a-worker */}
+### How to run Synchronous Activities on a Worker
 
 When running synchronous Activities, the Worker
 needs to have an `activity_executor`. Temporal
@@ -204,7 +204,7 @@ with ThreadPoolExecutor(max_workers=42) as executor:
     )
 ```
 
-## How to Implement Asynchronous Activities {/* #how-to-implement-asynchronous-activities */}
+## How to Implement Asynchronous Activities
 
 The following code is an implementation of the preceding Activity, but as an
 asynchronous Activity Definition.
@@ -259,7 +259,7 @@ class TranslateActivities:
             return translation
 ```
 
-### How to run synchronous code from an asynchronous activity {/* #how-to-run-synchronous-code-from-an-asynchronous-activity */}
+### How to run synchronous code from an asynchronous activity
 
 If your Activity is asynchronous and you don't want to change it to synchronous,
 but you need to run blocking code inside it,
@@ -269,7 +269,7 @@ in an asynchronous function:
 - [`loop.run_in_executor()`](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor), which is also mentioned in the ["running blocking code" section of the "developing with asyncio" guide](https://docs.python.org/3/library/asyncio-dev.html#running-blocking-code)
 - [`asyncio.to_thread()`](https://docs.python.org/3/library/asyncio-task.html#running-in-threads)
 
-## When Should You Use Async Activities {/* #when-should-you-use-async-activities */}
+## When Should You Use Async Activities
 
 Asynchronous Activities have many advantages, such as potential speed up of execution.
 However, as discussed above, making unsafe calls within the async event loop

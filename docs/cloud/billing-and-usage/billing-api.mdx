@@ -40,35 +40,35 @@ For complete request and response schemas, refer to the Schema below.
 
 Billing report generation is **asynchronous**. You initiate report creation, then poll for completion.
 
-## Report data limitations {/* #report-data-limitations */}
+## Report data limitations
 
 For public preview, reports can be generated with hourly, daily and monthly granularities, each of which have their own data ranges.
 - Hourly: Current billing month and previous billing month
 - Daily: Current billing month and previous two billing months
 - Monthly: Current billing month and previous eleven billing months
 
-## Allowed date ranges {/* #allowed-date-ranges */}
+## Allowed date ranges
 
 Date ranges must use billing-month boundaries (MM/YYYY). 
 Requests may include the current billing month. 
 The data in finalized reports includes usage up to `current_time` \- 24 hours (rounded down to the granularity level).
 
-## Rate limits and concurrency {/* #rate-limits-and-concurrency */}
+## Rate limits and concurrency
 
 Rate limits apply to API usage. 
 
-### Per-account concurrency {/* #per-account-concurrency */}
+### Per-account concurrency
 
 Within a single account:
 
 - Only one billing report per account is generated at a time  
 - Additional requests are accepted but queued  
 
-### Report Generation Latency {/* #report-generation-latency */}
+### Report Generation Latency
 
 Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
 
-## Best practices {/* #best-practices */}
+## Best practices
 
 Provide an idempotency key (`async_operation_id`) when retrying requests.  
 
@@ -78,7 +78,7 @@ Download reports immediately after generation (URLs expire).
 
 Avoid frequent generation of large overlapping ranges in the current billing period.
 
-## Billing report schema {/* #billing-report-schema */}
+## Billing report schema
 
 Billing reports are delivered in CSV format.
 
@@ -114,7 +114,7 @@ Each row represents a charge record.
 | SKUMeter | The functionality being metered or measured by a particular SKU in a charge | Actions |
 | Tags | Provider and customer defined tags associated with resources | `{"$tmprl_project":["project-id"],"namespace-tag-key":["namespace-tag-value"]}` |
 
-## Generate a report {/* #generate-a-report */}
+## Generate a report
 
 To generate a report, follow these steps:
 
@@ -123,7 +123,7 @@ To generate a report, follow these steps:
 1. When the report state becomes `BILLING_REPORT_STATE_GENERATED`, retrieve the download URL  
 1. Download the report before the URL expires
 
-### Key identifiers {/* #key-identifiers */}
+### Key identifiers
 
 | Identifier | Purpose |
 | ----- | ----- |

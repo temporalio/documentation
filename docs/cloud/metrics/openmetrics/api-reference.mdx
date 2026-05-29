@@ -26,17 +26,17 @@ import { CaptionedImage } from '@site/src/components';
 The Temporal Cloud OpenMetrics API provides actionable operational metrics about your Temporal Cloud deployment. This is a scrapable HTTP API that returns metrics in OpenMetrics format, suitable for ingestion by Prometheus-compatible monitoring systems.
 
 
-## Available Metrics Reference {/* #available-metrics-reference */}
+## Available Metrics Reference
 
 Metrics descriptions are also available programmatically via the `/v1/descriptors` endpoint. You can see the Metrics Reference for a list of available metrics.
 
-## Authentication {/* #authentication */}
+## Authentication
 
 Temporal uses API keys for integrating with the OpenMetrics endpoint. Applications must be authorized and authenticated before they can access metrics from Temporal Cloud.
 
 An API key is owned by a Service Account and inherits the permissions granted to the owner.
 
-### Creating API Keys {/* #creating-api-keys */}
+### Creating API Keys
 
 API keys can be created using the [Temporal Cloud UI](https://cloud.temporal.io):
 
@@ -50,7 +50,7 @@ See the [docs](https://docs.temporal.io/cloud/api-keys#serviceaccount-api-keys) 
 
 :::
 
-### Using API Keys {/* #using-api-keys */}
+### Using API Keys
 
 All API requests must be made over HTTPS. Calls made over plain HTTP will fail. API requests without authentication will also fail.
 
@@ -58,15 +58,15 @@ All API requests must be made over HTTPS. Calls made over plain HTTP will fail. 
 curl -H "Authorization: Bearer <API_KEY>" https://metrics.temporal.io/v1/metrics
 ```
 
-## Object Model {/* #object-model */}
+## Object Model
 
 The object model for the Metrics API follows the [OpenMetrics](https://openmetrics.io/) standard.
 
-### Metrics {/* #metrics */}
+### Metrics
 
 A metric is a numeric attribute measured at a specific point in time, labeled with contextual metadata gathered at the point of instrumentation.
 
-### Metric Types {/* #metric-types */}
+### Metric Types
 
 All Temporal Cloud metrics are exposed as *gauges* in OpenMetrics format, but represent different measurement types:
 
@@ -75,7 +75,7 @@ All Temporal Cloud metrics are exposed as *gauges* in OpenMetrics format, but re
 
 The list of metrics and their labels are available via the [List Descriptors](/cloud/metrics/openmetrics/api-reference#list-metric-descriptors) endpoint or in the [Metrics Reference](/cloud/metrics/openmetrics/metrics-reference).
 
-### Labels {/* #labels */}
+### Labels
 
 A label is a key-value attribute associated with a metric data point. Labels can be used to filter or aggregate metrics.
 
@@ -89,13 +89,13 @@ Common labels include:
 
 Each metric has its own set of applicable labels. See the Metrics Reference for complete details.
 
-### Metric Family {/* #metric-family */}
+### Metric Family
 
 A [Metric Family](https://github.com/prometheus/OpenMetrics/blob/main/specification/OpenMetrics.md#metricfamily) may have zero or more metrics.  The set of metrics returned will vary based on actual system activity.  Metrics only appear in a Metric Family if they were reported during the aggregation window.
 
-## Client Considerations {/* #client-considerations */}
+## Client Considerations
 
-### Rate Limiting {/* #rate-limiting */}
+### Rate Limiting
 
 To protect the stability of the API and keep it available to all users, Temporal employs multiple safeguards.
 
@@ -105,7 +105,7 @@ When a rate limit is breached, an HTTP `429 Too Many Requests` error is returned
 | ----- | ----- |
 | `Retry-After` | The time in seconds until the rate limit window resets |
 
-#### Rate Limit Scopes {/* #rate-limit-scopes */}
+#### Rate Limit Scopes
 :::note
 Rate limit scopes are subject to change.
 
@@ -115,7 +115,7 @@ Rate limit scopes are subject to change.
 | ----- | ----- |
 | Account | 180 requests per hour |
 
-### Response Completeness {/* #response-completeness */}
+### Response Completeness
 
 The `X-Completeness` header indicates whether the response contains all available data:
 
@@ -123,19 +123,19 @@ The `X-Completeness` header indicates whether the response contains all availabl
 * `limited`: Response truncated due to size limits (30k metric data points max). Use namespace or metric filtering to reduce the response size.
 * `unknown`: Completeness cannot be determined (possibly due to regional issues or timeouts). Clients are encouraged to retry.
 
-### Retry Logic {/* #retry-logic */}
+### Retry Logic
 
 Implement retry logic in your client to gracefully handle transient API failures. Use exponential backoff with jitter to avoid retry storms with reasonable retry intervals to avoid reaching rate limits.
 
-### Data Latency {/* #data-latency */}
+### Data Latency
 
 Metric data points are available for query within 3 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
 
-### Scrape window {/* #scrape-window */}
+### Scrape window
 
 The endpoint exposes only the most recently completed one-minute aggregation window. Each scrape returns a snapshot of that window—there is no query interface for historical data. To retain historical metrics, configure your monitoring system to store what it scrapes.
 
-## Endpoints {/* #endpoints */}
+## Endpoints
 
 :::info
 
@@ -143,24 +143,36 @@ All endpoints are served from: `metrics.temporal.io`
 
 :::
 
-### Get Metrics {/* #get-metrics */}
+### Get Metrics
 
 `GET /v1/metrics`
 
 Returns metrics in OpenMetrics format suitable for scraping by Prometheus-compatible systems.
 
-#### Timestamp Offset {/* #timestamp-offset */}
+#### Timestamp Offset
 
 To account for metric data latency, this endpoint returns metrics from the current timestamp minus a fixed offset.  The current offset is 3 minutes rounded down to the start of the minute. To accommodate this offset, the timestamps in the response should be honored when importing the metrics. For example, in Prometheus this can be controlled using the `honor\_timestamps` flag.
 
-#### Query Parameters {/* #query-parameters */}
+#### Query Parameters
 
 | Parameter | Type | Description |
 | ----- | ----- | ----- |
 | `namespaces` | string array | Filter to specific Namespaces. Supports wildcards (e.g., `production-*`) |
 | `metrics` | string array | Filter to specific metrics |
 
-#### Response Headers {/* #response-headers */}
+Array parameters use repeated keys. To pass multiple values, repeat the parameter name once per value:
+
+```shell
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders
+```
+
+The `namespaces` and `metrics` parameters can be combined, and each may be repeated independently:
+
+```shell
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders&metrics=temporal_cloud_v1_workflow_success_count&metrics=temporal_cloud_v1_approximate_backlog_count
+```
+
+#### Response Headers
 
 | Header | Description |
 | ----- | ----- |
@@ -190,20 +202,20 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace="production",temp
 
 :::
 
-#### Summary of Best Practices {/* #summary-of-best-practices */}
+#### Summary of Best Practices
 
 * *Honor timestamps*: Set `honor_timestamps: true` in Prometheus  
 * *Scrape interval*: Use 30s. Intervals longer than 60s may skip datapoints because metrics update once per minute.  
 * *Timeout*: Set scrape timeout to 10 seconds for large responses  
 * *Filtering*: Use query parameters to reduce response size
 
-### List Metric Descriptors {/* #list-metric-descriptors */}
+### List Metric Descriptors
 
 `GET /v1/descriptors`
 
 Lists all metric descriptors including metadata, data types, and available dimensions (a.k.a. labels).
 
-#### Query Parameters {/* #query-parameters-1 */}
+#### Query Parameters
 
 | Parameter | Type | Description |
 | ----- | ----- | ----- |
@@ -247,7 +259,7 @@ Response:
 
 :::
 
-## Managing High Cardinality {/* #managing-high-cardinality */}
+## Managing High Cardinality
 
 :::caution
 
@@ -255,7 +267,7 @@ High-cardinality labels like `temporal_task_queue` and `temporal_workflow_type` 
 
 :::
 
-### Cardinality Estimation {/* #cardinality-estimation */}
+### Cardinality Estimation
 
 To estimate your metric cardinality and see if this is an issue:
 
@@ -279,13 +291,16 @@ Example:
 
 If the cardinality is too high or you are hitting API limits, consider the following strategies.
 
-### Filtering at Scrape Time {/* #filtering-at-scrape-time */}
+### Filtering at Scrape Time
 
 You can isolate only the metrics/namespaces you need.  For example, the following shows examples of filtering by modifying the `metrics_path.`
 
 ```shell
 # Only specific namespaces matching the wildcard pattern
 /v1/metrics?namespaces=production-*
+
+# Multiple namespaces
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders
 
 # Only specific metrics
 /v1/metrics?metrics=temporal_cloud_v1_workflow_success_count
@@ -314,9 +329,9 @@ scrape_configs:
 :::
 
 
-### Label Management {/* #label-management */}
+### Label Management
 
-#### Prometheus {/* #prometheus */}
+#### Prometheus
 
 If using Prometheus, you can configure it to drop metrics with a specific label or even rename specific label values to reduce the cardinality.
 
@@ -337,7 +352,7 @@ metric_relabel_configs:
   action: labeldrop
 ```
 
-#### OpenTelemetry Collector {/* #opentelemetry-collector */}
+#### OpenTelemetry Collector
 
 To accomplish the same as Prometheus, a filter can be used in the collector along with any other processors.
 
@@ -352,7 +367,7 @@ processors:
           - Label("temporal_task_queue") == nil or IsMatch(Label("temporal_task_queue"), "^(critical-queue|payment-queue)$")
 ```
 
-### Monitoring Cardinality {/* #monitoring-cardinality */}
+### Monitoring Cardinality
 
 Cardinality can be monitored using this PromQL query.
 
@@ -364,7 +379,7 @@ count({__name__=~"temporal_cloud_v1_.*"})
 count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 ```
 
-## API Limits {/* #api-limits */}
+## API Limits
 
 | Limit | Impact | Mitigation |
 | ----- | ----- | ----- |

@@ -31,7 +31,7 @@ Future pricing may apply to high-volume usage that exceeds standard [limits](/cl
 
 Temporal Cloud's [OpenMetrics](https://openmetrics.io/) endpoint provides operational metrics for your Temporal Cloud workloads in industry-standard Prometheus format, enabling comprehensive monitoring across Namespaces, Workflows, and Task Queues with your existing observability stack.
 
-## Quickstart {/* #quickstart */}
+## Quickstart
 
 Stream metrics from Temporal Cloud into your observability tool in about 5 minutes.
 
@@ -76,27 +76,27 @@ Stream metrics from Temporal Cloud into your observability tool in about 5 minut
 
 Metrics begin populating in your tool within a few minutes.
 
-## Quick Links {/* #quick-links */}
+## Quick Links
 * [Integrations](/cloud/metrics/openmetrics/metrics-integrations) - Get started exporting metrics with common integrations
 * [API Documentation](/cloud/metrics/openmetrics/api-reference) - Endpoint specification and advanced configuration
 * [Metrics Reference](/cloud/metrics/openmetrics/metrics-reference) - Complete catalog of all metrics with descriptions and labels
 * [Migration Guide](/cloud/metrics/openmetrics/migration-guide) - Transition from the deprecated Prometheus query endpoint to OpenMetrics
 
-## Overview {/* #overview */}
+## Overview
 Temporal Cloud OpenMetrics exposes 50+ metrics covering workflow lifecycles, task queue operations, service performance, and system limits. All metrics are aggregated over one-minute windows and available for scraping within three minutes. Each scrape returns only the most recently completed one-minute window—configure your monitoring system to retain what it scrapes.
 
 * [Set up authentication and scraping](/cloud/metrics/openmetrics/api-reference#authentication) with the API documentation. 
 * Browse the [complete metrics catalog](/cloud/metrics/openmetrics/metrics-reference) for descriptions and labels. 
 * Teams using the query endpoint should review the [migration guide](/cloud/metrics/openmetrics/migration-guide).
 
-## API key authentication {/* #api-key-authentication */}
+## API key authentication
 Create a Service Account with the "Metrics Read-Only" role and generate an API key. See the [Quickstart](#quickstart) above for step-by-step instructions. API keys work with standard HTTPS, with no certificate rotation or distribution required.
 
-## Global endpoint {/* #global-endpoint */}
+## Global endpoint
 This is a single endpoint at `metrics.temporal.io` which serves all metrics across your entire account with API key authentication and standard HTTPS.
 
-## Namespace and metric filtering {/* #namespace-and-metric-filtering */}
+## Namespace and metric filtering
 You can use query parameters to enable selective scraping to manage data volume and costs, which support wildcards for flexible namespace selection and specific metric filtering.
 
-## Dashboard templates {/* #dashboard-templates */}
+## Dashboard templates
 Production-ready [Grafana dashboards](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) provide immediate visibility with pre-built queries and visualizations.

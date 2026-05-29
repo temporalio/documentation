@@ -26,7 +26,7 @@ Alias: `ug`
 - [tcld user-group remove-users](#remove-users)
 - [tcld user-group set-access](#set-access)
 
-## add-users {/* #add-users */}
+## add-users
 
 The `tcld user-group add-users` command adds users to the specified user group in Temporal Cloud.
 You must set `--group-id` to specify the group to add users to.
@@ -35,17 +35,17 @@ Alias: `au`
 
 The following flags control the behavior of the command.
 
-#### --group-id (-id) {/* #--group-id--id */}
+#### --group-id (-id)
 
 Specify the ID of the group to add users to.
 
-#### --user-email (-e) {/* #--user-email--e */}
+#### --user-email (-e)
 
 Specify the email of the user to add. This flag can be specified multiple times to add
 multiple users in one command
 
 
-## create {/* #create */}
+## create
 
 Creates a user group.
 
@@ -53,20 +53,20 @@ Alias: `c`
 
 The following flags control the behavior of the command.
 
-#### --display-name {/* #--display-name */}
+#### --display-name
 
 The display name of the group.
 
-#### --account-role {/* #--account-role */}
+#### --account-role
 
 The account role that the group should have. One of `admin`, `read`, `developer`, `owner`, `financeadmin`, `none`.
 
-#### --namespace-role (-nr) {/* #--namespace-role--nr */}
+#### --namespace-role (-nr)
 
 Specifies a namespace role that the group should have. Can be repeated multiple times to add
 multiple namespace roles to the group. Value is the form of `<namespaceid>-<role>` where the namespace ID is the full ID of the namespace and role is one of `admin`, `read`, or `write`. Example: `mynamespace.abc123-read` adds the read role for the `mynamespace.abc123` namespace.
 
-## delete {/* #delete */}
+## delete
 
 Deletes the user group.
 
@@ -74,11 +74,11 @@ Alias: `d`
 
 The following flags control the behavior of the command.
 
-#### --group-id (-id) {/* #--group-id--id-1 */}
+#### --group-id (-id)
 
 Specify the ID of the group to delete.
 
-## get {/* #get */}
+## get
 
 Gets the user group details.
 
@@ -86,11 +86,11 @@ Alias: `g`
 
 The following flags control the behavior of the command.
 
-#### --group-id (-id) {/* #--group-id--id-2 */}
+#### --group-id (-id)
 
 Specify the ID of the group to list.
 
-## list {/* #list */}
+## list
 
 List the user groups in your Temporal Cloud account.
 
@@ -98,15 +98,15 @@ Alias: `l`
 
 The following flags control the behavior of the command.
 
-#### --page-size (-s) {/* #--page-size--s */}
+#### --page-size (-s)
 
 The number of groups to list per page. Defaults to 10.
 
-#### --page-token (-p) {/* #--page-token--p */}
+#### --page-token (-p)
 
 The page token used when paginating through result pages.
 
-## list-members {/* #list-members */}
+## list-members
 
 Lists all of the members of a group.
 
@@ -114,11 +114,11 @@ Alias: `lm`
 
 The following flags control the behavior of the command.
 
-#### --group-id (-id) {/* #--group-id--id-3 */}
+#### --group-id (-id)
 
 Specify the ID of the group to list.
 
-## remove-users {/* #remove-users */}
+## remove-users
 
 Removes one or more users as members of the group.
 
@@ -126,38 +126,38 @@ Alias: `ru`
 
 The following flags control the behavior of the command.
 
-#### --group-id (-id) {/* #--group-id--id-4 */}
+#### --group-id (-id)
 
 Specify the ID of the group to remove users from.
 
-#### --user-email (-e) {/* #--user-email--e-1 */}
+#### --user-email (-e)
 
 The email address of the user to remove from the group. This flag can be specified multiple times in order to remove multiple users with one command.
 
-## set-access {/* #set-access */}
+## set-access
 
 This command sets the access roles that for a group. It follows the same conventions as the [create](#create) command by specifying an optional account role and 0 or more namespace roles.
 
 Alias: `sa`
 
-#### --group-id (-id) {/* #--group-id--id-5 */}
+#### --group-id (-id)
 
 Specify the ID of the group to set access.
 
-#### --account-role {/* #--account-role-1 */}
+#### --account-role
 
 The account role that the group should have. One of `admin`, `read`, `developer`, `owner`, `financeadmin`, `none`.
 
-#### --namespace-role (-nr) {/* #--namespace-role--nr-1 */}
+#### --namespace-role (-nr)
 
 Specifies a namespace role that the group should have. Can be repeated multiple times to add
 multiple namespace roles to the group. Value is the form of `<namespaceid>-<role>` where the namespace ID is the full ID of the namespace and role is one of `admin`, `read`, or `write`. Example: `mynamespace.abc123-read` adds the read role for the `mynamespace.abc123` namespace.
 
-#### --append (-a) {/* #--append--a */}
+#### --append (-a)
 
 Will append namespace roles instead of replacing all existing roles already assigned. This allows namespace roles to be added without knowing what roles are already assigned to the group.
 
-#### --remove (-r) {/* #--remove--r */}
+#### --remove (-r)
 
 Will remove the given namespace roles instead of replacing all existing roles already assigned. This allows namespace roles to be removed without knowing what roles are already assigned to the group.
 

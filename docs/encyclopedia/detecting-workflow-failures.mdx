@@ -108,7 +108,7 @@ This timeout is primarily available to recognize whether a Worker has gone down 
 The main reason for increasing the default value is to accommodate a Workflow Execution that has an extensive Workflow Execution History, requiring more than 10 seconds for the Worker to load.
 It's worth mentioning that although you can extend the timeout up to the maximum value of 120 seconds, it's not recommended to move beyond the default value.
 
-## Detecting Workflow Task Failures {/* #detecting-workflow-task-failures */}
+## Detecting Workflow Task Failures
 
 Use the `TemporalReportedProblems` Search Attribute to detect Workflows with failed Workflow Tasks. 
 A failed Workflow Task does not cause the Workflow to fail. Some Tasks within a Workflow may be intended to fail.

@@ -45,7 +45,7 @@ The `tctl workflow` commands enable [Workflow Execution](/workflow-execution) op
 - [tctl workflow start](#start)
 - [tctl workflow terminate](#terminate)
 
-## cancel {/* #cancel */}
+## cancel
 
 The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflow-execution).
 
@@ -59,7 +59,7 @@ See also [`tctl workflow terminate --query`](#terminate).
 
 The following modifiers control the behavior of the command.
 
-### --workflow_id {/* #--workflow_id */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -71,7 +71,7 @@ Alias: `-w`
 tctl workflow cancel --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -83,7 +83,7 @@ Alias: `-r`
 tctl workflow cancel --run_id <id>
 ```
 
-## count {/* #count */}
+## count
 
 The `tctl workflow count` command counts [Workflow Executions](/workflow-execution).
 This command requires Elasticsearch to be enabled.
@@ -92,7 +92,7 @@ This command requires Elasticsearch to be enabled.
 
 The following modifier controls the behavior of the command.
 
-### --query {/* #--query */}
+### --query
 
 _Required modifier_
 
@@ -108,7 +108,7 @@ To count all open [Workflow Executions](/workflow-execution):
 tctl workflow count --query 'ExecutionStatus="Running"'
 ```
 
-## describe {/* #describe */}
+## describe
 
 The `tctl workflow describe` command shows information about a [Workflow Execution](/workflow-execution).
 This information can be used to locate a failed Workflow Execution, for example.
@@ -120,7 +120,7 @@ To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](#d
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-### --workflow_id {/* #--workflow_id-1 */}
+### --workflow_id
 
 **This is a required modifier.**
 
@@ -134,7 +134,7 @@ Alias: `-w`
 tctl workflow describe --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-1 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 If a Run Id is not provided, the command will show the latest Workflow Execution of that Workflow Id.
@@ -147,7 +147,7 @@ Alias: `-r`
 tctl workflow describe --run_id <id>
 ```
 
-### --print_raw {/* #--print_raw */}
+### --print_raw
 
 Print properties exactly as they are stored.
 
@@ -157,7 +157,7 @@ Print properties exactly as they are stored.
 tctl workflow describe --print_raw
 ```
 
-### --reset_points_only {/* #--reset_points_only */}
+### --reset_points_only
 
 Show only events that are eligible for reset.
 If successful, the command returns the Run Id of all deployments, and the times at which the Events were created.
@@ -168,7 +168,7 @@ If successful, the command returns the Run Id of all deployments, and the times 
 tctl workflow describe --reset_points_only
 ```
 
-## describeid {/* #describeid */}
+## describeid
 
 The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflow-execution) for the specified [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and optional [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -178,7 +178,7 @@ This command is a shortcut for `tctl workflow describe --workflow_id <workflowid
 
 The following modifiers control the behavior of the command.
 
-### --print_raw {/* #--print_raw-1 */}
+### --print_raw
 
 Print properties exactly as they are stored.
 
@@ -188,7 +188,7 @@ Print properties exactly as they are stored.
 tctl workflow describeid <workflow_id> <id> --print_raw
 ```
 
-### --reset_points_only {/* #--reset_points_only-1 */}
+### --reset_points_only
 
 Show only events that are eligible for reset.
 
@@ -198,7 +198,7 @@ Show only events that are eligible for reset.
 tctl workflow describeid <workflow_id> --reset_points_only
 ```
 
-## list {/* #list */}
+## list
 
 The `tctl workflow list` command lists open or closed [Workflow Executions](/workflow-execution).
 
@@ -214,7 +214,7 @@ See also [`tctl workflow listall`](#listall), [`tctl workflow listarchived`](#li
 
 The following modifiers control the behavior of the command.
 
-### --print_raw_time {/* #--print_raw_time */}
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -224,7 +224,7 @@ Print the raw timestamp.
 tctl workflow list --print_raw_time
 ```
 
-### --print_datetime {/* #--print_datetime */}
+### --print_datetime
 
 Print the timestamp.
 
@@ -234,7 +234,7 @@ Print the timestamp.
 tctl workflow list --print_datetime
 ```
 
-### --print_memo {/* #--print_memo */}
+### --print_memo
 
 Print a memo.
 
@@ -244,7 +244,7 @@ Print a memo.
 tctl workflow list --print_memo
 ```
 
-### --print_search_attr {/* #--print_search_attr */}
+### --print_search_attr
 
 Print the [Search Attributes](/search-attribute).
 
@@ -254,7 +254,7 @@ Print the [Search Attributes](/search-attribute).
 tctl workflow list --print_search_attr
 ```
 
-### --print_full {/* #--print_full */}
+### --print_full
 
 Print the full message without table formatting.
 
@@ -264,7 +264,7 @@ Print the full message without table formatting.
 tctl workflow list --print_full
 ```
 
-### --print_json {/* #--print_json */}
+### --print_json
 
 Print the raw JSON objects.
 
@@ -274,7 +274,7 @@ Print the raw JSON objects.
 tctl workflow list --print_json
 ```
 
-### --open {/* #--open */}
+### --open
 
 List open [Workflow Executions](/workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
@@ -285,7 +285,7 @@ List open [Workflow Executions](/workflow-execution).
 tctl workflow list --open
 ```
 
-### --earliest_time {/* #--earliest_time */}
+### --earliest_time
 
 Specify the earliest start time to list.
 Supported format are as follows:
@@ -315,7 +315,7 @@ To specify 15 minutes before the current time:
 tctl workflow list --earliest-time '15minute'
 ```
 
-### --latest_time {/* #--latest_time */}
+### --latest_time
 
 Specify the latest start time to list.
 Supported formats are as follows:
@@ -345,7 +345,7 @@ To specify 10s before the current time:
 tctl workflow list --latest_time '10second'
 ```
 
-### --workflow_id {/* #--workflow_id-2 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -357,7 +357,7 @@ Alias: `-w`
 tctl workflow list --workflow_id <id>
 ```
 
-### --workflow_type {/* #--workflow_type */}
+### --workflow_type
 
 Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 
@@ -367,7 +367,7 @@ Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 tctl workflow list --workflow_type <name>
 ```
 
-### --status {/* #--status */}
+### --status
 
 Specify the status of a [Workflow Execution](/workflow-execution).
 Supported values are as follows:
@@ -385,7 +385,7 @@ Supported values are as follows:
 tctl workflow list --status <value>
 ```
 
-### --query {/* #--query-1 */}
+### --query
 
 **How to list and filter Workflow Executions with a [List Filter](/list-filter) using tctl.**
 
@@ -430,7 +430,7 @@ tctl workflow list \
   --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
 ```
 
-### --more {/* #--more */}
+### --more
 
 List more than one page.
 (By default, the `tctl workflow list` command lists one page of results.)
@@ -441,7 +441,7 @@ List more than one page.
 tctl workflow list --more
 ```
 
-### --pagesize {/* #--pagesize */}
+### --pagesize
 
 Specify the maximum number of [Workflow Executions](/workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
@@ -452,7 +452,7 @@ Specify the maximum number of [Workflow Executions](/workflow-execution) to list
 tctl workflow list --pagesize <value>
 ```
 
-## listall {/* #listall */}
+## listall
 
 The `tctl workflow listall` command lists all open or closed [Workflow Executions](/workflow-execution).
 
@@ -465,7 +465,7 @@ See also [`tctl workflow list`](#list), [`tctl workflow listarchived`](#listarch
 
 The following modifiers control the behavior of the command.
 
-###`--print_raw_time {/* #--print_raw_time-1 */}
+###`--print_raw_time
 
 Print the raw timestamp.
 
@@ -475,7 +475,7 @@ Print the raw timestamp.
 tctl workflow listall --print_raw_time
 ```
 
-### --print_datetime {/* #--print_datetime-1 */}
+### --print_datetime
 
 Print the timestamp.
 
@@ -485,7 +485,7 @@ Print the timestamp.
 tctl workflow listall --print_datetime
 ```
 
-### --print_memo {/* #--print_memo-1 */}
+### --print_memo
 
 Print a memo.
 
@@ -495,7 +495,7 @@ Print a memo.
 tctl workflow listall --print_memo
 ```
 
-### --print_search_attr {/* #--print_search_attr-1 */}
+### --print_search_attr
 
 Print the [Search Attributes](/search-attribute).
 
@@ -505,7 +505,7 @@ Print the [Search Attributes](/search-attribute).
 tctl workflow listall --print_search_attr
 ```
 
-### `--print_full` {/* #--print_full-1 */}
+### `--print_full`
 
 Print the full message without table formatting.
 
@@ -515,7 +515,7 @@ Print the full message without table formatting.
 tctl workflow listall --print_full
 ```
 
-### --print_json {/* #--print_json-1 */}
+### --print_json
 
 Print the raw JSON objects.
 
@@ -525,7 +525,7 @@ Print the raw JSON objects.
 tctl workflow listall --print_json
 ```
 
-### --open {/* #--open-1 */}
+### --open
 
 List open [Workflow Executions](/workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
@@ -536,7 +536,7 @@ List open [Workflow Executions](/workflow-execution).
 tctl workflow listall --open
 ```
 
-### --earliest_time {/* #--earliest_time-1 */}
+### --earliest_time
 
 Specify the earliest start time to list. Supported format are as follows:
 
@@ -565,7 +565,7 @@ To specify 15 minutes before the current time:
 tctl workflow listall --earliest-time '15minute'
 ```
 
-### --latest_time {/* #--latest_time-1 */}
+### --latest_time
 
 Specify the latest start time to list. Supported formats are as follows:
 
@@ -596,7 +596,7 @@ To specify 10 seconds before the current time:
 tctl workflow listall --latest-time '10second'
 ```
 
-### --workflow_id {/* #--workflow_id-3 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -608,7 +608,7 @@ Alias: `-w`
 tctl workflow listall --workflow_id <id>
 ```
 
-### --workflow_type {/* #--workflow_type-1 */}
+### --workflow_type
 
 Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 
@@ -618,7 +618,7 @@ Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 tctl workflow listall --workflow_type <name>
 ```
 
-### --status {/* #--status-1 */}
+### --status
 
 Specify the status of a [Workflow Execution](/workflow-execution).
 Supported values are as follows:
@@ -636,7 +636,7 @@ Supported values are as follows:
 tctl workflow listall --status <value>
 ```
 
-### --query {/* #--query-2 */}
+### --query
 
 Specify an SQL-like query of [Search Attributes](/search-attribute).
 
@@ -650,7 +650,7 @@ Alias: `-q`
 tctl workflow listall --query <value>
 ```
 
-## listarchived {/* #listarchived */}
+## listarchived
 
 The `tctl workflow listarchived` command lists archived [Workflow Executions](/workflow-execution).
 
@@ -665,7 +665,7 @@ See also [`tctl workflow list`](#list), [`tctl workflow listall`](#listall), and
 
 The following modifiers control the behavior of the command.
 
-### --print_raw_time {/* #--print_raw_time-2 */}
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -675,7 +675,7 @@ Print the raw timestamp.
 tctl workflow listarchived --print_raw_time
 ```
 
-### --print_datetime {/* #--print_datetime-2 */}
+### --print_datetime
 
 Print the timestamp.
 
@@ -685,7 +685,7 @@ Print the timestamp.
 tctl workflow listarchived --print_datetime
 ```
 
-### --print_memo {/* #--print_memo-2 */}
+### --print_memo
 
 Print a memo.
 
@@ -695,7 +695,7 @@ Print a memo.
 tctl workflow listarchived --print_memo
 ```
 
-### --print_search_attr {/* #--print_search_attr-2 */}
+### --print_search_attr
 
 Print the [Search Attributes](/search-attribute).
 
@@ -705,7 +705,7 @@ Print the [Search Attributes](/search-attribute).
 tctl workflow listarchived --print_search_attr
 ```
 
-### --print_full {/* #--print_full-2 */}
+### --print_full
 
 Print the full message without table formatting.
 
@@ -715,7 +715,7 @@ Print the full message without table formatting.
 tctl workflow listarchived --print_full
 ```
 
-### --print_json {/* #--print_json-2 */}
+### --print_json
 
 Print the raw JSON objects.
 
@@ -725,7 +725,7 @@ Print the raw JSON objects.
 tctl workflow listarchived --print_json
 ```
 
-### --query {/* #--query-3 */}
+### --query
 
 Specify an SQL-like query of [Search Attributes](/search-attribute).
 
@@ -739,7 +739,7 @@ Alias: `-q`
 tctl workflow listarchived --query <value>
 ```
 
-### --pagesize {/* #--pagesize-1 */}
+### --pagesize
 
 Specify the maximum number of [Workflow Executions](/workflow-execution) to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
@@ -750,7 +750,7 @@ Specify the maximum number of [Workflow Executions](/workflow-execution) to list
 tctl workflow listarchived --pagesize <value>
 ```
 
-### --all {/* #--all */}
+### --all
 
 List all pages.
 
@@ -760,7 +760,7 @@ List all pages.
 tctl workflow listarchived --all
 ```
 
-## observe {/* #observe */}
+## observe
 
 The `tctl workflow observe` command shows the progress of the [Event History](/workflow-execution/event#event-history) of a [Workflow Execution](/workflow-execution).
 
@@ -772,7 +772,7 @@ Alias: `o`
 
 The following modifiers control the behavior of the command.
 
-### --workflow_id {/* #--workflow_id-4 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -784,7 +784,7 @@ Alias: `-w`
 tctl workflow observe --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-2 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -796,7 +796,7 @@ Alias: `-r`
 tctl workflow observe --run_id <id>
 ```
 
-### --show_detail {/* #--show_detail */}
+### --show_detail
 
 Show event details.
 
@@ -806,7 +806,7 @@ Show event details.
 tctl workflow observe --show_detail
 ```
 
-### --max_field_length {/* #--max_field_length */}
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 0.
@@ -817,7 +817,7 @@ The default value is 0.
 tctl workflow observe --max_field_length <length>
 ```
 
-## observeid {/* #observeid */}
+## observeid
 
 The `tctl workflow observeid` command shows the progress of the [Event History](/workflow-execution/event#event-history) of a [Workflow Execution](/workflow-execution) for the specified [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and optional [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -827,7 +827,7 @@ This command is a shortcut for `tctl workflow observe --workflow_id <workflowid>
 
 The following modifiers control the behavior of the command.
 
-### --show_detail {/* #--show_detail-1 */}
+### --show_detail
 
 Show event details.
 
@@ -837,7 +837,7 @@ Show event details.
 tctl workflow observeid --show_detail
 ```
 
-### --max_field_length {/* #--max_field_length-1 */}
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 0.
@@ -848,7 +848,7 @@ The default value is 0.
 tctl workflow observeid --max_field_length <length>
 ```
 
-## query {/* #query */}
+## query
 
 Alias: `q`
 
@@ -880,7 +880,7 @@ Queries are written as follows:
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-### --workflow_id {/* #--workflow_id-5 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id). **This modifier is required.**
 
@@ -892,7 +892,7 @@ Alias: `-w`
 tctl workflow query --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-3 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -904,7 +904,7 @@ Alias: `-r`
 tctl workflow query --run_id <id>
 ```
 
-### --query_type {/* #--query_type */}
+### --query_type
 
 Specify the type of Query to run.
 
@@ -914,7 +914,7 @@ Specify the type of Query to run.
 tctl workflow query --query_type <value>
 ```
 
-### --input {/* #--input */}
+### --input
 
 Pass input for the Query.
 Input must be in JSON format.
@@ -928,7 +928,7 @@ Alias: `-i`
 tctl workflow query --input <json>
 ```
 
-### --input_file {/* #--input_file */}
+### --input_file
 
 Pass input for the Query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -940,7 +940,7 @@ Input from the command line overwrites input from the file.
 tctl workflow query --input_file <filename>
 ```
 
-### --query_reject_condition {/* #--query_reject_condition */}
+### --query_reject_condition
 
 Reject Queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
@@ -951,7 +951,7 @@ Valid values are `not_open` and `not_completed_cleanly`.
 tctl workflow query --query_reject_condition <value>
 ```
 
-## reset {/* #reset */}
+## reset
 
 The `tctl workflow reset` command resets a [Workflow Execution](/workflow-execution) by either [`eventId`](#--event_id)or [`resetType`](#--reset_type).
 
@@ -963,7 +963,7 @@ To run multiple Reset operations at once, see [`tctl workflow reset-batch`](#res
 
 The following modifiers control the behavior of the command.
 
-### --workflow_id {/* #--workflow_id-6 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -975,7 +975,7 @@ Alias: `-w`
 tctl workflow reset --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-4 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -987,7 +987,7 @@ Alias: `-r`
 tctl workflow reset --run_id <id>
 ```
 
-### --event_id {/* #--event_id */}
+### --event_id
 
 Specify the `eventId` of any event after `WorkflowTaskStarted` to which you want to reset.
 Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTaskTimeout`.
@@ -998,7 +998,7 @@ Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTas
 tctl workflow reset --event_id <id>
 ```
 
-### --reason {/* #--reason */}
+### --reason
 
 Specify a reason for resetting the [Workflow Execution](/workflow-execution).
 
@@ -1008,7 +1008,7 @@ Specify a reason for resetting the [Workflow Execution](/workflow-execution).
 tctl workflow reset --reason <string>
 ```
 
-### --reset_type {/* #--reset_type */}
+### --reset_type
 
 Specify the event type to which you want to reset.
 
@@ -1025,7 +1025,7 @@ Specify the event type to which you want to reset.
 tctl workflow reset --reset_type <value>
 ```
 
-### --reset_reapply_type {/* #--reset_reapply_type */}
+### --reset_reapply_type
 
 Specify the types of events to reapply after the reset point.
 Valid values are `All`, `Signal`, and `None`. The default is `All`.
@@ -1036,7 +1036,7 @@ Valid values are `All`, `Signal`, and `None`. The default is `All`.
 tctl workflow reset --reset_reapply_type <value>
 ```
 
-### --reset_bad_binary_checksum {/* #--reset_bad_binary_checksum */}
+### --reset_bad_binary_checksum
 
 Specify the binary checksum when using `--reset_type BadBinary`.
 
@@ -1046,7 +1046,7 @@ Specify the binary checksum when using `--reset_type BadBinary`.
 tctl workflow reset --reset_bad_binary_checksum <value>
 ```
 
-## reset-batch {/* #reset-batch */}
+## reset-batch
 
 The `tctl workflow reset-batch` command resets a batch of [Workflow Executions](/workflow-execution) by [`resetType`](#--reset_type).
 
@@ -1058,7 +1058,7 @@ To reset individual Workflows, see [`tctl workflow reset`](#reset).
 
 The following modifiers control the behavior of the command.
 
-### --input_file {/* #--input_file-1 */}
+### --input_file
 
 Provide an input file that specifies [Workflow Execution](/workflow-execution) to reset.
 
@@ -1071,7 +1071,7 @@ If a Run Id is not specified, the current Run Id is used.
 tctl workflow reset-batch --input_file <filename>
 ```
 
-### --query {/* #--query-4 */}
+### --query
 
 Specify an SQL-like query of [Search Attributes](/search-attribute) describing the [Workflow Executions](/workflow-execution) to reset.
 
@@ -1083,7 +1083,7 @@ Alias: `-q`
 tctl workflow reset-batch --query <value>
 ```
 
-### --exclude_file {/* #--exclude_file */}
+### --exclude_file
 
 Provide an input file that specifies [Workflow Executions](/workflow-execution) to exclude from resetting.
 
@@ -1095,7 +1095,7 @@ Each line contains one [Workflow Id](/workflow-execution/workflowid-runid#workfl
 tctl workflow reset-batch --exclude_file <filename>
 ```
 
-### --input_separator {/* #--input_separator */}
+### --input_separator
 
 Specify the separator for the input file.
 The default is a tab (`\t`).
@@ -1106,7 +1106,7 @@ The default is a tab (`\t`).
 tctl workflow reset-batch --input_separator <string>
 ```
 
-### --reason {/* #--reason-1 */}
+### --reason
 
 Specify a reason for resetting the [Workflow Executions](/workflow-execution).
 
@@ -1116,7 +1116,7 @@ Specify a reason for resetting the [Workflow Executions](/workflow-execution).
 tctl workflow reset-batch --reason <string>
 ```
 
-### --input_parallism {/* #--input_parallism */}
+### --input_parallism
 
 Specify the number of goroutines to run in parallel.
 Each goroutine processes one line for every second.
@@ -1128,7 +1128,7 @@ The default is 1.
 tctl workflow reset-batch --input_parallism <value>
 ```
 
-### --skip_current_open {/* #--skip_current_open */}
+### --skip_current_open
 
 Indicate that a [Workflow Execution](/workflow-execution) should be skipped if the current Run is open for the same [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)as the base Run.
 
@@ -1138,7 +1138,7 @@ Indicate that a [Workflow Execution](/workflow-execution) should be skipped if t
 tctl workflow reset-batch --skip_current_open
 ```
 
-### --skip_base_is_not_current {/* #--skip_base_is_not_current */}
+### --skip_base_is_not_current
 
 Indicate that a [Workflow Execution](/workflow-execution) should be skipped if the base Run is not the current Run.
 
@@ -1148,7 +1148,7 @@ Indicate that a [Workflow Execution](/workflow-execution) should be skipped if t
 tctl workflow reset-batch --skip_base_is_not_current
 ```
 
-### --only_non_deterministic {/* #--only_non_deterministic */}
+### --only_non_deterministic
 
 Indicate that a [Workflow Execution](/workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a nondeterminism error.
 
@@ -1158,7 +1158,7 @@ Indicate that a [Workflow Execution](/workflow-execution) should be reset only i
 tctl workflow reset-batch --only_non_deterministic
 ```
 
-### --dry_run {/* #--dry_run */}
+### --dry_run
 
 Simulate use of the `tctl workflow reset-batch` command without resetting any [Workflow Executions](/workflow-execution).
 Output is logged to `stdout`.
@@ -1169,7 +1169,7 @@ Output is logged to `stdout`.
 tctl workflow reset-batch --dry_run
 ```
 
-### --reset_type {/* #--reset_type-1 */}
+### --reset_type
 
 Specify the event type to which you want to reset.
 
@@ -1186,7 +1186,7 @@ Specify the event type to which you want to reset.
 tctl workflow reset-batch --reset_type <value>
 ```
 
-### --reset_bad_binary_checksum {/* #--reset_bad_binary_checksum-1 */}
+### --reset_bad_binary_checksum
 
 Specify the binary checksum when using `--reset_type BadBinary`.
 
@@ -1196,7 +1196,7 @@ Specify the binary checksum when using `--reset_type BadBinary`.
 tctl workflow reset-batch --reset_bad_binary_checksum <value>
 ```
 
-## run {/* #run */}
+## run
 
 The `tctl workflow run` command starts a new [Workflow Execution](/workflow-execution) and can show the progress of a Workflow Execution.
 The command is entered in the following format:
@@ -1217,7 +1217,7 @@ This command doesn't finish until the Workflow completes.
 
 The following modifiers control the behavior of the command.
 
-### --taskqueue {/* #--taskqueue */}
+### --taskqueue
 
 Specify a [Task Queue](/task-queue).
 
@@ -1229,7 +1229,7 @@ Alias: `--t`
 tctl workflow run --taskqueue <name>
 ```
 
-### --workflow_id {/* #--workflow_id-7 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -1241,7 +1241,7 @@ Alias: `-w`
 tctl workflow run --workflow_id <id>
 ```
 
-### --workflow_type {/* #--workflow_type-2 */}
+### --workflow_type
 
 Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 
@@ -1251,7 +1251,7 @@ Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 tctl workflow run --workflow_type <name>
 ```
 
-### --execution_timeout {/* #--execution_timeout */}
+### --execution_timeout
 
 Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflow-execution) in seconds.
 The default value is 0.
@@ -1262,7 +1262,7 @@ The default value is 0.
 tctl workflow run --execution_timeout <seconds>
 ```
 
-### --workflow_task_timeout {/* #--workflow_task_timeout */}
+### --workflow_task_timeout
 
 Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
 The default value is 10.
@@ -1273,7 +1273,7 @@ The default value is 10.
 tctl workflow run --workflow_task_timeout <seconds>
 ```
 
-### --cron {/* #--cron */}
+### --cron
 
 Specify a [Cron Schedule](/cron-job#cron-schedules).
 
@@ -1283,7 +1283,7 @@ Specify a [Cron Schedule](/cron-job#cron-schedules).
 tctl workflow run --cron <string>
 ```
 
-### --workflowidreusepolicy {/* #--workflowidreusepolicy */}
+### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)is allowed for use in new [Workflow Execution](/workflow-execution).
@@ -1302,7 +1302,7 @@ tctl workflow run --workflowidreusepolicy AllowDuplicateFailedOnly
 tctl workflow run --workflowidreusepolicy RejectDuplicate
 ```
 
-### --input {/* #--input-1 */}
+### --input
 
 Pass input for the Workflow.
 Input must be in JSON format.
@@ -1316,7 +1316,7 @@ Alias: `-i`
 tctl workflow run --input <json>
 ```
 
-### --input_file {/* #--input_file-2 */}
+### --input_file
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -1328,7 +1328,7 @@ Input from the command line overwrites input from the file.
 tctl workflow run --input_file <filename>
 ```
 
-### --memo_key {/* #--memo_key */}
+### --memo_key
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.
@@ -1339,7 +1339,7 @@ For multiple keys, concatenate them and use spaces as separators.
 tctl workflow run --memo_key <key>
 ```
 
-### --memo {/* #--memo */}
+### --memo
 
 Pass a memo.
 A memo is information in JSON format that can be shown when the Workflow is listed.
@@ -1352,7 +1352,7 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow run --memo <json>
 ```
 
-### --memo_file {/* #--memo_file */}
+### --memo_file
 
 Pass information for a memo from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -1364,7 +1364,7 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow run --memo_file <filename>
 ```
 
-### --search_attr_key {/* #--search_attr_key */}
+### --search_attr_key
 
 Specify a [Search Attribute](/search-attribute) key.
 For multiple keys, concatenate them and use pipes (`|`) as separators.
@@ -1377,7 +1377,7 @@ To list valid keys, use the `tctl cluster get-search-attributes` command.
 tctl workflow run --search_attr_key <key>
 ```
 
-### --search_attr_value {/* #--search_attr_value */}
+### --search_attr_value
 
 Specify a [Search Attribute](/search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
@@ -1391,7 +1391,7 @@ To list valid keys and value types, use the `tctl cluster get-search-attributes`
 tctl workflow run --search_attr_value <value>
 ```
 
-### --show_detail {/* #--show_detail-2 */}
+### --show_detail
 
 Get event details.
 
@@ -1401,7 +1401,7 @@ Get event details.
 tctl workflow run --show_detail
 ```
 
-### --max_field_length {/* #--max_field_length-2 */}
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 0.
@@ -1412,7 +1412,7 @@ The default value is 0.
 tctl workflow run --max_field_length <length>
 ```
 
-## scan {/* #scan */}
+## scan
 
 The `tctl workflow scan` command lists [Workflow Executions](/workflow-execution).
 It is faster than the `tctl workflow listall` command, but the results are not sorted.
@@ -1426,7 +1426,7 @@ See also [`tctl workflow list`](#list), [`tctl workflow listall`](#listall), and
 
 The following modifiers control the behavior of the command.
 
-### --print_raw_time {/* #--print_raw_time-3 */}
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -1436,7 +1436,7 @@ Print the raw timestamp.
 tctl workflow scan --print_raw_time
 ```
 
-### --print_datetime {/* #--print_datetime-3 */}
+### --print_datetime
 
 Print the timestamp.
 
@@ -1446,7 +1446,7 @@ Print the timestamp.
 tctl workflow scan --print_datetime
 ```
 
-### --print_memo {/* #--print_memo-3 */}
+### --print_memo
 
 Print a memo.
 
@@ -1456,7 +1456,7 @@ Print a memo.
 tctl workflow scan --print_memo
 ```
 
-### --print_search_attr {/* #--print_search_attr-3 */}
+### --print_search_attr
 
 Print the [Search Attributes](/search-attribute).
 
@@ -1466,7 +1466,7 @@ Print the [Search Attributes](/search-attribute).
 tctl workflow scan --print_search_attr
 ```
 
-### --print_full {/* #--print_full-3 */}
+### --print_full
 
 Print the full message without table formatting.
 
@@ -1476,7 +1476,7 @@ Print the full message without table formatting.
 tctl workflow scan --print_full
 ```
 
-### --print_json {/* #--print_json-3 */}
+### --print_json
 
 Print the raw JSON objects.
 
@@ -1486,7 +1486,7 @@ Print the raw JSON objects.
 tctl workflow scan --print_json
 ```
 
-### --pagesize {/* #--pagesize-2 */}
+### --pagesize
 
 Specify the maximum number of [Workflow Execution](/workflow-execution) to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
@@ -1497,7 +1497,7 @@ Specify the maximum number of [Workflow Execution](/workflow-execution) to list 
 tctl workflow scan --pagesize <value>
 ```
 
-### --query {/* #--query-5 */}
+### --query
 
 Specify an SQL-like query of [Search Attributes](/search-attribute).
 
@@ -1509,7 +1509,7 @@ Alias: `-q`
 tctl workflow scan --query <value>
 ```
 
-## show {/* #show */}
+## show
 
 The `tctl workflow show` command shows the [Event History](/workflow-execution/event#event-history) for the specified [Workflow Execution](/workflow-execution).
 
@@ -1519,7 +1519,7 @@ See also [`tctl workflow showid`](#showid).
 
 The following modifiers control the behavior of the command.
 
-### --workflow_id {/* #--workflow_id-8 */}
+### --workflow_id
 
 Show the History of a [Workflow Execution](/workflow-execution) by specifying a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -1531,7 +1531,7 @@ Alias: `-w`
 tctl workflow show --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-5 */}
+### --run_id
 
 Show the History of a [Workflow Execution](/workflow-execution) by specifying a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -1543,7 +1543,7 @@ Alias: `-r`
 tctl workflow show --run_id <id>
 ```
 
-### --print_datetime {/* #--print_datetime-4 */}
+### --print_datetime
 
 Print the timestamp.
 
@@ -1553,7 +1553,7 @@ Print the timestamp.
 tctl workflow show --print_datetime
 ```
 
-### --print_raw_time {/* #--print_raw_time-4 */}
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -1563,7 +1563,7 @@ Print the raw timestamp.
 tctl workflow show --print_raw_time
 ```
 
-### --output_filename {/* #--output_filename */}
+### --output_filename
 
 Serialize an event to a file.
 
@@ -1573,7 +1573,7 @@ Serialize an event to a file.
 tctl workflow show --output_filename <filename>
 ```
 
-### --print_full {/* #--print_full-4 */}
+### --print_full
 
 Print full event details.
 
@@ -1583,7 +1583,7 @@ Print full event details.
 tctl workflow show --print_full
 ```
 
-### --print_event_version {/* #--print_event_version */}
+### --print_event_version
 
 Print the event version.
 
@@ -1593,7 +1593,7 @@ Print the event version.
 tctl workflow show --print_event_version
 ```
 
-### --event_id {/* #--event_id-1 */}
+### --event_id
 
 Print the details of a specified event.
 The default value is 0.
@@ -1604,7 +1604,7 @@ The default value is 0.
 tctl workflow show --event_id <id>
 ```
 
-### --max_field_length {/* #--max_field_length-3 */}
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 500.
@@ -1615,7 +1615,7 @@ The default value is 500.
 tctl workflow show --max_field_length <length>
 ```
 
-### --reset_points_only {/* #--reset_points_only-2 */}
+### --reset_points_only
 
 Show only events that are eligible for reset.
 
@@ -1625,7 +1625,7 @@ Show only events that are eligible for reset.
 tctl workflow show --reset_points_only
 ```
 
-## showid {/* #showid */}
+## showid
 
 The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and optional [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -1666,7 +1666,7 @@ Example output:
 
 The following modifiers control the behavior of the command.
 
-### --print_datetime {/* #--print_datetime-5 */}
+### --print_datetime
 
 Print the timestamp.
 
@@ -1676,7 +1676,7 @@ Print the timestamp.
 tctl workflow showid <workflow_id> --print_datetime
 ```
 
-### --print_raw_time {/* #--print_raw_time-5 */}
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -1686,7 +1686,7 @@ Print the raw timestamp.
 tctl workflow showid <workflow_id> --print_raw_time
 ```
 
-### --output_filename {/* #--output_filename-1 */}
+### --output_filename
 
 Serialize an event to a file.
 
@@ -1696,7 +1696,7 @@ Serialize an event to a file.
 tctl workflow showid <workflow_id> --output_filename <filename>
 ```
 
-### --print_full {/* #--print_full-5 */}
+### --print_full
 
 Print full event details.
 
@@ -1706,7 +1706,7 @@ Print full event details.
 tctl workflow showid <workflow_id> --print_full
 ```
 
-### --print_event_version {/* #--print_event_version-1 */}
+### --print_event_version
 
 Print the event version.
 
@@ -1716,7 +1716,7 @@ Print the event version.
 tctl workflow showid <workflow_id> --print_event_version
 ```
 
-### --event_id {/* #--event_id-2 */}
+### --event_id
 
 Print the details of a specified event.
 The default value is 0.
@@ -1727,7 +1727,7 @@ The default value is 0.
 tctl workflow showid <workflow_id> --event_id <id>
 ```
 
-### --max_field_length {/* #--max_field_length-4 */}
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 500.
@@ -1738,7 +1738,7 @@ The default value is 500.
 tctl workflow showid <workflow_id> --max_field_length <length>
 ```
 
-### --reset_points_only {/* #--reset_points_only-3 */}
+### --reset_points_only
 
 Show only events that are eligible for reset.
 
@@ -1748,7 +1748,7 @@ Show only events that are eligible for reset.
 tctl workflow showid <workflow_id> --reset_points_only
 ```
 
-## signal {/* #signal */}
+## signal
 
 The `tctl workflow signal` command [Signals](/sending-messages#sending-signals) a [Workflow Execution](/workflow-execution).
 
@@ -1837,7 +1837,7 @@ tctl workflow signal --query <query> <modifiers>
 The following modifiers control the behavior of the command.
 Make sure to include required modifiers in all command executions.
 
-### --workflow_id {/* #--workflow_id-9 */}
+### --workflow_id
 
 Specify a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id). **This modifier is required.**
 
@@ -1849,7 +1849,7 @@ Alias: `-w`
 tctl workflow signal --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-6 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -1861,7 +1861,7 @@ Alias: `-r`
 tctl workflow signal --run_id <id>
 ```
 
-### --name {/* #--name */}
+### --name
 
 Specify the name of a [Signal](/sending-messages#sending-signals).
 
@@ -1871,7 +1871,7 @@ Specify the name of a [Signal](/sending-messages#sending-signals).
 tctl workflow signal --query <query> --name <name>
 ```
 
-### --input {/* #--input-2 */}
+### --input
 
 Pass input for the [Signal](/sending-messages#sending-signals).
 Input must be in JSON format.
@@ -1884,7 +1884,7 @@ Alias: `-i`
 tctl workflow signal --query <query> --input <json>
 ```
 
-### --input_file {/* #--input_file-3 */}
+### --input_file
 
 Pass input for the [Signal](/sending-messages#sending-signals) from a JSON file.
 
@@ -1894,7 +1894,7 @@ Pass input for the [Signal](/sending-messages#sending-signals) from a JSON file.
 tctl workflow signal --query <query> --input_file <filename>
 ```
 
-## stack {/* #stack */}
+## stack
 
 The `tctl workflow stack` command queries [Workflow Execution](/workflow-execution) with `__stack_trace` as the query type.
 
@@ -1904,7 +1904,7 @@ This command can be used to locate errors and blocks in a [Workflow Definition](
 
 The following modifiers control the behavior of the command.
 
-### --workflow_id {/* #--workflow_id-10 */}
+### --workflow_id
 
 **This is a required modifier.**
 
@@ -1918,7 +1918,7 @@ Alias: `-w`
 tctl workflow stack --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-7 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -1930,7 +1930,7 @@ Alias: `-r`
 tctl workflow stack --run_id <id>
 ```
 
-### --input {/* #--input-3 */}
+### --input
 
 Pass input for the query.
 Input must be in JSON format.
@@ -1944,7 +1944,7 @@ Alias: `-i`
 tctl workflow stack --input <json>
 ```
 
-### --input_file {/* #--input_file-4 */}
+### --input_file
 
 Pass input for the query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -1956,7 +1956,7 @@ Input from the command line overwrites input from the file.
 tctl workflow stack --input_file <filename>
 ```
 
-### --query_reject_condition {/* #--query_reject_condition-1 */}
+### --query_reject_condition
 
 Reject queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
@@ -1967,7 +1967,7 @@ Valid values are `not_open` and `not_completed_cleanly`.
 tctl workflow stack --query_reject_condition <value>
 ```
 
-## start {/* #start */}
+## start
 
 The `tctl workflow start` command starts a new [Workflow Execution](/workflow-execution).
 Unlike `run`, this command returns the Workflow Id and Run Id immediately after starting the Workflow.
@@ -1977,7 +1977,7 @@ Unlike `run`, this command returns the Workflow Id and Run Id immediately after 
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-### --taskqueue {/* #--taskqueue-1 */}
+### --taskqueue
 
 Specify a [Task Queue](/task-queue).
 
@@ -1989,7 +1989,7 @@ Alias: `--t`
 tctl workflow start --taskqueue <name>
 ```
 
-### --workflow_id {/* #--workflow_id-11 */}
+### --workflow_id
 
 **This is a required modifier.**
 
@@ -2012,7 +2012,7 @@ Temporal recommends using a business id rather than the client-generated UUID.
 tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 ```
 
-### --workflow_type {/* #--workflow_type-3 */}
+### --workflow_type
 
 Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 
@@ -2022,7 +2022,7 @@ Specify the name of a [Workflow Type](/workflow-definition#workflow-type).
 tctl workflow start --workflow_type <name>
 ```
 
-### --execution_timeout {/* #--execution_timeout-1 */}
+### --execution_timeout
 
 Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflow-execution) in seconds.
 The default value is 0.
@@ -2033,7 +2033,7 @@ The default value is 0.
 tctl workflow start --execution_timeout <seconds>
 ```
 
-### --workflow_task_timeout {/* #--workflow_task_timeout-1 */}
+### --workflow_task_timeout
 
 Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
 The default value is 10.
@@ -2044,7 +2044,7 @@ The default value is 10.
 tctl workflow start --workflow_task_timeout <seconds>
 ```
 
-### --cron {/* #--cron-1 */}
+### --cron
 
 Specify a [Cron Schedule](/cron-job#cron-schedules).
 
@@ -2054,7 +2054,7 @@ Specify a [Cron Schedule](/cron-job#cron-schedules).
 tctl workflow start --cron <string>
 ```
 
-### --workflowidreusepolicy {/* #--workflowidreusepolicy-1 */}
+### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)is allowed for use in new [Workflow Execution](/workflow-execution).
@@ -2079,7 +2079,7 @@ Multiple Workflows with the same Id cannot be run at the same time
 
 :::
 
-### --input {/* #--input-4 */}
+### --input
 
 Pass input for the Workflow.
 Input must be in JSON format.
@@ -2094,7 +2094,7 @@ Alias: `-i`
 tctl workflow start --input <json>
 ```
 
-### --input_file {/* #--input_file-5 */}
+### --input_file
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -2106,7 +2106,7 @@ Input from the command line overwrites input from the file.
 tctl workflow start --input_file <filename>
 ```
 
-### --memo_key {/* #--memo_key-1 */}
+### --memo_key
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.
@@ -2117,7 +2117,7 @@ For multiple keys, concatenate them and use spaces as separators.
 tctl workflow start --memo_key <key>
 ```
 
-### --memo {/* #--memo-1 */}
+### --memo
 
 Pass information for a [memo](/workflow-execution#memo) from a JSON file.
 
@@ -2139,7 +2139,7 @@ tctl workflow start \
   -memo '<value>'
 ```
 
-### --memo_file {/* #--memo_file-1 */}
+### --memo_file
 
 Pass information for a memo from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -2151,7 +2151,7 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow start --memo_file <filename>
 ```
 
-### --search_attr_key {/* #--search_attr_key-1 */}
+### --search_attr_key
 
 Specify a [Search Attribute](/search-attribute) name.
 For multiple names, concatenate them and use pipes (`|`) as separators.
@@ -2164,7 +2164,7 @@ To list valid Search Attributes, use the `tctl cluster get-search-attributes` co
 tctl workflow start --search_attr_key <key>
 ```
 
-### --search_attr_value {/* #--search_attr_value-1 */}
+### --search_attr_value
 
 Specify a [Search Attribute](/search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
@@ -2178,7 +2178,7 @@ To list valid Search Attributes and value types, use the `tctl cluster get-searc
 tctl workflow start --search_attr_value <value>
 ```
 
-## terminate {/* #terminate */}
+## terminate
 
 The `tctl workflow terminate` command terminates a [Workflow Execution](/workflow-execution).
 
@@ -2191,7 +2191,7 @@ See also [`tctl workflow cancel`](#cancel).
 
 The following modifiers control the behavior of the command.
 
-### --workflow_id {/* #--workflow_id-12 */}
+### --workflow_id
 
 _Required modifier_
 
@@ -2205,7 +2205,7 @@ Alias: `-w`
 tctl workflow terminate --workflow_id <id>
 ```
 
-### --run_id {/* #--run_id-8 */}
+### --run_id
 
 Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
@@ -2219,7 +2219,7 @@ Alias: `-r`
 tctl workflow terminate --run_id <id>
 ```
 
-### --reason {/* #--reason-2 */}
+### --reason
 
 Specify a reason for terminating the [Workflow Execution](/workflow-execution).
 

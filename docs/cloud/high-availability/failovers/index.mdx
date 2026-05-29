@@ -29,7 +29,7 @@ failover, Temporal automatically fails back to the original region once it is he
 [opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). See
 [Failbacks](/cloud/high-availability/failovers/manage#failbacks) for details.
 
-## Automatic failover {/* #automatic-failover */}
+## Automatic failover
 
 Temporal Cloud offers managed outage detection and failover to all Namespaces that use High Availability.
 Temporal-managed failovers, also known as "automatic failovers," keep your Namespace available without manual
@@ -48,7 +48,7 @@ moving the Namespace back to its original region.
 To opt out of Temporal-managed failovers and their RTO, you can
 [disable automated failovers](/cloud/high-availability/failovers/manage#disabling-temporal-initiated).
 
-### Conditions that trigger an automatic failover {/* #conditions-that-trigger-an-automatic-failover */}
+### Conditions that trigger an automatic failover
 
 While the failover operation itself usually completes in seconds, the bulk of the Recovery Time in an outage is spent
 detecting the disruption and deciding to trigger a failover. See [The failover process](#failover-process) for a
@@ -76,7 +76,7 @@ exhaustive list, and it may change over time.
 - The average latency of calls from Temporal Cloud's services in the cell to its persistence layer.
 - The percentage of calls to the persistence layer that returned errors related to persistence health.
 
-## Manual failover {/* #manual-failover */}
+## Manual failover
 
 You can also [manually trigger a failover](/cloud/high-availability/failovers/manage#trigger-failover) based on your own
 monitoring or for failover testing.
@@ -126,7 +126,7 @@ After any failover, whether triggered by you or by Temporal, an event appears in
 
 After a Temporal-managed failover, Temporal automatically fails back to the original region once the region is healthy, unless you [opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). After a user-triggered failover, the Namespace stays in the replica region until a user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for details.
 
-## Split-brain scenario {/* #split-brain-scenario */}
+## Split-brain scenario
 
 At any time, only the primary or the replica should be active. However, if a network partition separates the two
 regions, the regions cannot communicate with each other. If you promote the replica to active during a network

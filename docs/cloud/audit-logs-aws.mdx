@@ -33,7 +33,7 @@ You can use [this AWS CloudFormation template](https://temporal-auditlogs-config
 Be aware that Kinesis has a rate limit of 1,000 messages per second and quotas for both the number of records written and the size of the records.
 For more information, see [Why is my Kinesis data stream throttling?](https://aws.amazon.com/premiumsupport/knowledge-center/kinesis-data-stream-throttling/)
 
-### Create an Audit Log sink {/* #create-an-audit-log-sink */}
+### Create an Audit Log sink
 
 1. In the Temporal Cloud UI, select **Settings**.
 1. On the **Settings** page, select **Audit Logs**.
@@ -78,7 +78,7 @@ For an example, see [Example of consuming an Audit Log](#example-of-consuming-an
 
 :::
 
-### Example of consuming an Audit Log {/* #example-of-consuming-an-audit-log */}
+### Example of consuming an Audit Log
 
 The following Go code is an example of consuming Audit Logs from a Kinesis stream and delivering them to an S3 bucket.
 

@@ -141,7 +141,7 @@ and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
 
 The following sections describe the replay-safe APIs available in the sandbox.
 
-#### Logging {/* #logging */}
+#### Logging
 
 Use [`log`](https://typescript.temporal.io/api/namespaces/workflow#log) from `@temporalio/workflow` instead of `console.log`. The SDK logger automatically suppresses messages during replay to avoid duplicates:
 
@@ -156,7 +156,7 @@ export async function myWorkflow(name: string): Promise<string> {
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/platform/observability#logging).
 
-#### Random numbers and UUIDs {/* #random-numbers-and-uuids */}
+#### Random numbers and UUIDs
 
 `Math.random()` is replaced by a deterministic version in the sandbox, so you can use it directly. It produces the same sequence of values on replay. UUID libraries that rely on `Math.random()` (such as the `uuid` package) are also safe to use. Avoid `crypto.randomUUID()`, which is not available in the sandbox:
 
@@ -168,7 +168,7 @@ const value = Math.random();
 const id = uuid4();
 ```
 
-#### Current time {/* #current-time */}
+#### Current time
 
 `Date.now()` and `new Date()` are replaced by deterministic versions that return the time of the last Workflow Task completion. The value only advances when you `await` something (like `sleep()`):
 
@@ -187,7 +187,7 @@ for (let x = 0; x < 10; ++x) {
 }
 ```
 
-#### Detecting replay (advanced) {/* #detecting-replay-advanced */}
+#### Detecting replay (advanced)
 
 Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/typescript/workers/interceptors).
 :::caution

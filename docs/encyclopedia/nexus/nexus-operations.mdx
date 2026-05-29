@@ -70,7 +70,7 @@ The Machinery ensures [at-least-once](#at-least-once-execution-semantics-and-ide
     title="Nexus Overview"
 />
 
-### Synchronous Operation lifecycle {/* #synchronous-operation-lifecycle */}
+### Synchronous Operation lifecycle
 
 Synchronous Operations must complete within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout), as measured from the caller's Nexus Machinery.
 
@@ -151,7 +151,7 @@ Repeated sync handler failures can trip the [circuit breaker](#circuit-breaking)
     title="Nexus Operations with Arbitrary Code"
 />
 
-### System interactions {/* #system-interactions */}
+### System interactions
 
 Nexus uses the same queue-based Worker architecture as the rest of Temporal.
 Workers interact with their Namespace gRPC endpoint. Nexus Machinery on both sides handles cross-Namespace communication.
@@ -311,7 +311,7 @@ Pending Nexus Operations: 1
 
 ## Execution semantics {/* #execution-semantics */}
 
-### At-least-once execution semantics and idempotency {/* #at-least-once-execution-semantics-and-idempotency */}
+### At-least-once execution semantics and idempotency
 
 The Nexus Machinery provides reliable execution with at-least-once execution semantics for a Nexus Operation, until the caller's [Schedule-to-Close timeout](#schedule-to-close-timeout) is exceeded, at which time the overall Nexus Operation times out.
 The Machinery retries on handler timeouts or retryable errors, so a handler may be invoked multiple times for the same Operation.
@@ -319,17 +319,17 @@ The Machinery retries on handler timeouts or retryable errors, so a handler may 
 Nexus Operation handlers should be idempotent, similar to Activities.
 Not strictly required in all cases, but highly recommended.
 
-### Exactly-once execution semantics {/* #exactly-once-execution-semantics */}
+### Exactly-once execution semantics
 
 To upgrade to exactly-once, back your Operation with a Workflow that uses a WorkflowIDReusePolicy of RejectDuplicates.
 This allows only one Workflow Execution per Workflow ID within a Namespace for the Retention Period.
 
-## Cancelation {/* #cancelation */}
+## Cancelation
 
 Cancelling a caller Workflow automatically propagates to all pending Nexus Operations and their underlying handler Workflows.
 A canceled handler Workflow reports a [Canceled Failure](/references/failures#cancelled-failure) to the caller.
 
-## Termination {/* #termination */}
+## Termination
 
 Terminating a caller Workflow abandons all pending Nexus Operations. Unlike cancellation, no cancel request is sent to the 
 handler Namespace, so handler Workflows continue running indefinitely, consuming resources until they time out or are manually 

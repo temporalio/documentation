@@ -22,7 +22,7 @@ Start with [Understanding Temporal](/evaluate/understanding-temporal#durable-exe
 
 Before starting any load testing in Temporal Cloud, we recommend connecting with your Temporal Account team and our Developer Success Engineering team.
 
-## Guiding principles {/* #guiding-principles */}
+## Guiding principles
 
 Before diving into specific experiments, keep these principles in mind:
 
@@ -32,13 +32,13 @@ Before diving into specific experiments, keep these principles in mind:
 - **Build observability before you break things**: Ensure metrics, logs, and visibility tools are in place before injecting failures.
 - **Testing is a continual process**: Testing is never finished. Testing is a practice.
 
-## Worker testing {/* #worker-testing */}
+## Worker testing
 
 **Relevant best practices**: [Worker deployment and performance](/best-practices/worker), appropriate timeouts, managing Worker shutdown, idempotency
 
 - [Worker shutdown](/encyclopedia/workers/worker-shutdown)
 
-### Kill all Workers, then restart them {/* #kill-all-workers-then-restart-them */}
+### Kill all Workers, then restart them
 
 **What to test**
 
@@ -70,7 +70,7 @@ Depending on execution environment:
 - Workflow failures
 - Workflow backlog growth and drain time
 
-### Frequent Worker restart {/* #frequent-worker-restart */}
+### Frequent Worker restart
 
 **What to test**
 
@@ -95,9 +95,9 @@ Periodically restart a fixed or random percentage (e.g. 20-30%) of your Worker f
 - Workflow failures
 - Workflow backlog growth and drain time
 
-## Load testing {/* #load-testing */}
+## Load testing
 
-### Pre-load test setup: expectations for success {/* #pre-load-test-setup-expectations-for-success */}
+### Pre-load test setup: expectations for success
 
 1. Have SDK metrics accessible (not just the Cloud metrics)
 2. Understand and predict what you should see from these metrics:
@@ -110,7 +110,7 @@ Periodically restart a fixed or random percentage (e.g. 20-30%) of your Worker f
 4. Automate how you run the load test so you can start and stop it at will. How will you clear Workflow Executions that are just temporary?
 5. What does "success" look like for this test? Be specific with metrics and numbers stated in business terms.
 
-### Validate downstream load capacity {/* #validate-downstream-load-capacity */}
+### Validate downstream load capacity
 
 **Relevant best practices**: Idempotent Activities, bounded retries, appropriate timeouts and retry policies, understand behavior when limits are reached
 
@@ -137,7 +137,7 @@ Start Workflows at a rate to surpass throughput limits. Example: [temporal-ratel
 - Correctness and consistency of data (ensuring Activity idempotency holds under duress)
 - Worker CPU/memory utilization
 
-### Validate rate limiting behavior {/* #validate-rate-limiting-behavior */}
+### Validate rate limiting behavior
 
 **Relevant best practices**: [Manage Namespace capacity limits](/best-practices/managing-aps-limits), understand behavior when limits are reached
 
@@ -165,13 +165,13 @@ Validates behavior of Cloud service under high load: "In Temporal Cloud, the eff
 - Workflow success rates
 - Workflow latency rates
 
-## Failover and availability {/* #failover-and-availability */}
+## Failover and availability
 
 **Relevant best practices**: Use [High Availability features](/cloud/high-availability) for critical workloads.
 
 - [High Availability monitoring](/cloud/high-availability/monitoring)
 
-### Test region failover {/* #test-region-failover */}
+### Test region failover
 
 **What to test**
 
@@ -194,9 +194,9 @@ Execute a manual failover per the [manual failovers documentation](/cloud/high-a
 - Workflow Task reassignments
 - Human-in-the-loop recovery steps
 
-## Dependency and downstream testing {/* #dependency-and-downstream-testing */}
+## Dependency and downstream testing
 
-### Break the things your Workflows call {/* #break-the-things-your-workflows-call */}
+### Break the things your Workflows call
 
 **What to test**
 
@@ -226,9 +226,9 @@ Intentionally break or degrade downstream dependencies used by Activities:
 - Infinite retries without circuit breaking
 - Using Workflow logic to "wait out" broken dependencies
 
-## Deployment and code-level testing {/* #deployment-and-code-level-testing */}
+## Deployment and code-level testing
 
-### Deploy a Workflow change with versioning {/* #deploy-a-workflow-change-with-versioning */}
+### Deploy a Workflow change with versioning
 
 **Relevant best practices**: Implement a versioning strategy.
 
@@ -251,7 +251,7 @@ Intentionally break or degrade downstream dependencies used by Activities:
 - Workflow Task failure reasons
 - Effectiveness of versioning and patching patterns
 
-### Deploy a version that causes NDEs, then recover {/* #deploy-a-version-that-causes-ndes-then-recover */}
+### Deploy a version that causes NDEs, then recover
 
 **Relevant best practices**: Implement a versioning strategy.
 
@@ -276,7 +276,7 @@ Intentionally break or degrade downstream dependencies used by Activities:
 - Backlog growth and drain time
 - Effectiveness of versioning and patching patterns
 
-## Network-level testing {/* #network-level-testing */}
+## Network-level testing
 
 The scenarios below are most relevant if your infrastructure introduces network boundaries (such as firewalls, VPNs, or network policies) between Workers and the Temporal service, or if you need to verify application behavior during prolonged disconnections.
 
@@ -285,7 +285,7 @@ The scenarios below are most relevant if your infrastructure introduces network 
 - [Activity timeouts](https://temporal.io/blog/activity-timeouts)
 - [Idempotency and durable execution](https://temporal.io/blog/idempotency-and-durable-execution)
 
-### Remove network connectivity to a Namespace {/* #remove-network-connectivity-to-a-namespace */}
+### Remove network connectivity to a Namespace
 
 **What to test**
 
@@ -316,7 +316,7 @@ Temporarily block all network access between Workers and the Temporal service fo
 - Activity failures, classifications (retryable vs non-retryable)
 - Worker CPU usage during reconnect storms
 
-## Observability checklist {/* #observability-checklist */}
+## Observability checklist
 
 Before (and during) testing, ensure visibility into:
 
@@ -329,11 +329,11 @@ Before (and during) testing, ensure visibility into:
 - gRPC error codes
 - Retry behavior
 
-## Game day runbook {/* #game-day-runbook */}
+## Game day runbook
 
 Use this checklist when running tests during a scheduled game day or real incident simulation.
 
-### Before you start {/* #before-you-start */}
+### Before you start
 
 - Make sure people know you're testing and what scenarios you're trying
   - Let the teams that support the APIs you're calling know you're testing
@@ -344,27 +344,27 @@ Use this checklist when running tests during a scheduled game day or real incide
 - Known-good deployment artifact available
 - Rollback and scale controls verified
 
-### During testing {/* #during-testing */}
+### During testing
 
 - Introduce *one variable at a time*
 - Record start/stop times of each experiment
 - Capture screenshots or logs of unexpected behavior
 - Track backlog growth and drain rate
 
-### Recovery validation {/* #recovery-validation */}
+### Recovery validation
 
 - Workflows resume without manual intervention
 - No permanent Workflow Task failures (unless intentional)
 - Activity retries behave as expected
 - Backlogs drain in predictable time
 
-### After action review {/* #after-action-review */}
+### After action review
 
 - Identify unclear alerts or missing metrics/alerts
 - Update retry, timeout, or versioning policies
 - Document surprises and operational debt
 
-## Summary {/* #summary */}
+## Summary
 
 Pre-production testing with Temporal is about more than proving durability - it's about proving *operability under stress*.
 You want to go through the exercise and know what to do before you go to production and have to do it for real.

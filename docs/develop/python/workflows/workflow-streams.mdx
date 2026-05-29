@@ -46,7 +46,7 @@ The API may change before general availability.
 - History-size cost and tuning: [Architecture](#architecture).
 - Long-running streams that need Continue-As-New: [Continue-As-New](#continue-as-new).
 
-## Choose where to host the stream {/* #choose-where-to-host-the-stream */}
+## Choose where to host the stream
 
 A `WorkflowStream` is hosted inside a Workflow, so the first design choice is whether one Workflow handles both the work and the stream, or whether a separate Workflow exists only to host the stream. The choice is mostly about lifecycle.
 
@@ -56,7 +56,7 @@ A `WorkflowStream` is hosted inside a Workflow, so the first design choice is wh
 
 Whichever shape you pick, the Workflow ID is the address subscribers use to attach. Multiple subscribers can attach to the same ID concurrently, which is the normal case for a UI with multiple browser tabs. Use distinct Workflow IDs for unrelated streams rather than packing them into one Workflow.
 
-## Enable streaming on a Workflow {/* #enable-streaming-on-a-workflow */}
+## Enable streaming on a Workflow
 
 The library ships with the Temporal Python SDK; import it from `temporalio.contrib.workflow_streams`. Enable streaming by constructing a `WorkflowStream` from your Workflow's `@workflow.init` method. (If you've only seen `@workflow.run` before, think of `@workflow.init` as the Workflow's constructor: it runs once when the Workflow is created, before any Signals or Updates can be delivered.) Construction must happen there because the stream's handlers have to be registered before the first publish Signal arrives; doing it from `@workflow.run` raises `RuntimeError` and would miss any publishes that arrived before the run body started executing.
 
@@ -83,7 +83,7 @@ Constructing `WorkflowStream` creates the in-memory event log and dynamically re
 
 If your Workflow uses Continue-As-New, see [Continue-As-New](#continue-as-new) below for how to carry stream state across runs so subscribers see no gap.
 
-## Publish from a Workflow {/* #publish-from-a-workflow */}
+## Publish from a Workflow
 
 Bind a topic name to its event type once via `self.stream.topic("name", type=Type)`, then call `publish()` on the returned handle to append events. The handle records the per-stream binding from topic name to value type so call sites don't have to repeat the type on every publish, and so subscribers reading the same handle decode to the matching type.
 
@@ -123,7 +123,7 @@ class OrderWorkflow:
 
 The `type=` argument is optional and defaults to `Any`. Pass it when you want the binding recorded so re-binding the same name to an unequal type raises, or so subscribers can pick up the type from the same handle.
 
-## Publish from a client {/* #publish-from-a-client */}
+## Publish from a client
 
 Any process that has a Temporal `Client` and the target Workflow ID can publish to that Workflow's stream by constructing a `WorkflowStreamClient`. This is the general pattern and covers HTTP backends, starters, one-off scripts, other Workflows' Activities, and standalone Activities. Construct one with `WorkflowStreamClient.create(client, workflow_id)`, then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let the async context manager flush on exit.
 
@@ -199,7 +199,7 @@ async with client:
 
 If your application needs to bound this (to cap memory, to keep the stream close to real time, or to apply a policy when the publisher overruns the network), apply that policy upstream of `publish()`. The choice (block, drop, error, sample) is application-specific, and Workflow Streams does not pick one for you.
 
-## Subscribe {/* #subscribe */}
+## Subscribe
 
 Subscribing uses the same client construction as publishing: `WorkflowStreamClient.create(client, workflow_id)` from any process that has a Temporal `Client`, or `from_within_activity()` inside an Activity. Subscribing from an Activity is less common in practice, so the general client case is the primary example below.
 
@@ -228,7 +228,7 @@ async def watch_order(order_id: str) -> None:
 
 The iterator handles re-polling, pagination when a poll response hits the ~1 MB cap, and Workflow-side log truncation transparently. Callers don't need to wrap the iterator for the common cases. Two edge cases are worth knowing: an RPC timeout where Continue-As-New cannot be followed ends the iterator silently (no exception raised), and a validator rejection during a CAN handoff can surface as a `WorkflowUpdateFailedError`. See the [API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html) for details.
 
-### Heterogeneous topics {/* #heterogeneous-topics */}
+### Heterogeneous topics
 
 A topic handle binds one name to one type, so it only fits a single-type subscription. To consume multiple topics whose payload types differ, call `client.subscribe()` directly with a list of names (or `subscribe([])` for every topic) and pass `result_type=temporalio.common.RawValue` so each item arrives as the underlying `Payload` wrapped in a `RawValue`. Dispatch on `item.topic` and decode the wrapped payload with the client's payload converter:
 
@@ -359,19 +359,19 @@ workflow.continue_as_new(
 
 The carried `WorkflowStreamState` includes the entire in-memory log of the previous run, so streams that carry large items can hit Temporal's per-payload size limit at the rollover. (Individual publish Signals and subscribe Update responses can also exceed the limit, but the carried state is the most acute case because it accumulates the full log window.) Offload the bytes via [External Storage](/external-storage) so each item is a small reference rather than the full payload, and combine that with `truncate()` to keep the carried log itself small.
 
-## Tuning {/* #tuning */}
+## Tuning
 
 The most important question when tuning is: how often do you want to update your UI? That answer drives the trade-off between user-perceived latency and the number of history events your Workflow accumulates. The library defaults assume a slow-moving UI; LLM token streaming and other interactive cases need lower latency, which means tuning.
 
 The trade-off is direct. Each batched publish is one Signal, and each subscriber poll is one Update. Each Signal and each Update accumulates against the Workflow's history. A more responsive UI means more messages and more history per second; messages drive workload (and on metered deployments, billing), while history accumulates against Temporal's per-run limits. For long-running streams, plan a [Continue-As-New](#continue-as-new) policy from the start.
 
-### Settings that matter most {/* #settings-that-matter-most */}
+### Settings that matter most
 
 - **`batch_interval`** (default 2 seconds). Maximum time between automatic flushes from the client. Lower it to make the stream feel live; raise it to amortize Signal cost. For an LLM token stream feeding a chat UI, 200 ms is a good starting point: the user perceives it as live, and a 30-second response generates roughly 150 publish Signals rather than several hundred. Below 100 ms the per-Signal RPC overhead starts to dominate.
 
 For per-publish overrides where one specific event needs lower latency than the batch interval (for example, the first delta of a response so the user sees something fast, or punctuated events like `RETRY` and `STATUS_CHANGE`), pass `force_flush=True` on that publish. Don't make this the default mode: per-token `force_flush=True` on a 500-token completion produces 500 publish Signals, which is meaningful but tractable; per-character `force_flush=True` is not.
 
-### Other settings {/* #other-settings */}
+### Other settings
 
 You usually do not need to touch these, but they are available when the basic settings are not enough:
 
@@ -382,7 +382,7 @@ You usually do not need to touch these, but they are available when the basic se
 
 The last two settings are related. Keep `max_retry_duration < publisher_ttl` so a long-running retry cannot outlast its dedup record and produce a duplicate when it finally succeeds. If you tune one, tune the other. See [Delivery semantics](#delivery-semantics) for the full failure model.
 
-## Delivery semantics {/* #delivery-semantics */}
+## Delivery semantics
 
 **Exactly-once at the execution layer.** Each `(publisher_id, sequence)` batch lands in the Workflow's event log at most once, even if the publisher's underlying Signal is retried by the SDK or the network. Once an event is in the log, every subscriber that polls past its offset will see it, and deduplicate state is carried across Continue-As-New so a retried publish that arrives after a rollover still lands at most once.
 
@@ -405,7 +405,7 @@ Two limits on the deduplication window are worth understanding:
 
 **The two limits must satisfy `max_retry_duration < publisher_ttl`.** If a publisher's retry window exceeds the dedup retention, the dedup state for that publisher can age out (at the next Continue-As-New) before the retry lands. A retry that arrives after its dedup record has been pruned is treated as a fresh publish, and if the original delivery had also succeeded, the same logical batch lands twice. The defaults (10 minutes < 15 minutes) satisfy this; if you tune one, tune the other to preserve the relationship.
 
-## Architecture {/* #architecture */}
+## Architecture
 
 The user-facing API hides three pieces of machinery worth understanding when you tune throughput, debug delivery, or reason about history size.
 
@@ -424,7 +424,7 @@ A subscriber whose offset falls below the new base after a `truncate()` is silen
 
 This dedup applies at the Signal layer, not the Activity layer. An *Activity retry* is a different concept from a *publish retry*: when Temporal retries the Activity, the retried execution constructs a new `WorkflowStreamClient` with its own client id, so from the stream's perspective every attempt is a fresh publisher whose batches will not deduplicate against the prior attempt's. That is why retried-attempt events appear in the stream alongside the successful attempt's output.
 
-### Gotchas {/* #gotchas */}
+### Gotchas
 
 A few details worth knowing about, mostly relevant if you're writing custom message handlers or pushing the library to its limits.
 
@@ -559,7 +559,7 @@ A few choices in this shape are deliberate:
 - Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `close` event, so the Workflow can return as soon as the subscriber confirms. The `wait_condition` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
 - `force_flush=True` is used only on the first delta and on the `RETRY` sentinel, where latency matters. Subsequent deltas batch at the 200 ms `batch_interval`; per-delta `force_flush=True` would generate one Signal per token (see [Tuning](#tuning) for the trade-off).
 
-## See also {/* #see-also */}
+## See also
 
 - [Workflow Streams samples (samples-python)](https://github.com/temporalio/samples-python/tree/main/workflow_streams): four runnable scenarios covering basic publish/subscribe, reconnecting subscribers, external publishers, and bounded logs.
 - [`temporalio.contrib.workflow_streams` API reference](https://python.temporal.io/temporalio.contrib.workflow_streams.html).

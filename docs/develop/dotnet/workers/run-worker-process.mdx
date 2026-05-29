@@ -11,7 +11,7 @@ tags:
   - Worker
 ---
 
-## Run Worker Process {/* #run-worker-process */}
+## Run Worker Process
 
 **How to create and run a Worker Process using the Temporal .NET SDK**
 
@@ -75,7 +75,7 @@ All Workers listening to the same Task Queue name must be registered to handle t
 If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
 However, the failure of the Task does not cause the associated Workflow Execution to fail.
 
-### Worker Processes with host builder and dependency injection {/* #worker-processes-with-host-builder-and-dependency-injection */}
+### Worker Processes with host builder and dependency injection
 
 The [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) extension exists for .NET developers to support HostBuilder and Dependency Injection approaches.
 

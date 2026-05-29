@@ -96,7 +96,7 @@ The following alerts build on the above to dive deeper into specific potential c
 
 ## Detect Task Backlog {/* #detect-task-backlog */}
 
-### Symptoms of high Task backlog {/* #symptoms-of-high-task-backlog */}
+### Symptoms of high Task backlog
 
 If the Task backlog is too high, you will find that tasks are waiting to find Workers to run on. This can cause a delay in
 Workflow execution. Detecting a growing Task backlog is possible by watching the Schedule To Start latency, sync match rate, and approximate backlog count.
@@ -109,7 +109,7 @@ Metrics to monitor:
 - **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_sync_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_sync_count)
 - **Temporal Cloud metric**: [temporal_cloud_v1_approximate_backlog_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count)
 
-### Schedule To Start latency {/* #schedule-to-start-latency */}
+### Schedule To Start latency
 
 The Schedule To Start metric represents how long Tasks are staying unprocessed in the Task Queues.
 It is the time between when a Task is enqueued and when it is started by a Worker.
@@ -121,7 +121,7 @@ If your Sync Match Rate is low, you can contact Temporal Cloud support.
 
 The schedule_to_start_latency SDK metric for both [Workflow Executions](/references/sdk-metrics#workflow_task_schedule_to_start_latency) and [Activity Executions](/references/sdk-metrics#activity_schedule_to_start_latency) should have alerts.
 
-#### Prometheus query samples {/* #prometheus-query-samples */}
+#### Prometheus query samples
 
 **Workflow Task Latency, 99th percentile**
 
@@ -170,7 +170,7 @@ An async match is when a Task cannot be matched to the Sticky Queue for a Worker
 temporal_cloud_v1_poll_success_sync_count / temporal_cloud_v1_poll_success_count = N
 ```
 
-#### Prometheus query samples {/* #prometheus-query-samples-1 */}
+#### Prometheus query samples
 
 **sync_match_rate query**
 
@@ -192,7 +192,7 @@ The Sync Match Rate should be at least >95%, but preferably >99%.
 
 Once you have detected the condition of a high Task backlog, consider the scenarios below to take action.
 
-#### High Schedule To Start latency and high sync match rate {/* #high-schedule-to-start-latency-and-high-sync-match-rate */}
+#### High Schedule To Start latency and high sync match rate
 
 There are three typical causes for this:
 
@@ -207,7 +207,7 @@ Consider
 - Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load)
 - Doing some combination of these
 
-#### High Schedule To Start latency and low sync match rate {/* #high-schedule-to-start-latency-and-low-sync-match-rate */}
+#### High Schedule To Start latency and low sync match rate
 
 Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations.
 
@@ -322,7 +322,7 @@ If this is set too low, the Worker will not be able to keep up processing Tasks.
 
 The `temporal_worker_task_slots_available` metric should always be >0.
 
-#### Prometheus query samples {/* #prometheus-query-samples-2 */}
+#### Prometheus query samples
 
 **Over Time**
 
@@ -361,7 +361,7 @@ If you see a high eviction count, verify there are no other inefficiencies in yo
 If you see the cache size metric exceed the `WorkflowCacheSize`, increase this value if your Worker resources can accommodate it or provision more Workers.
 Finally, take time to review [the Worker performance guide](/develop/worker-performance) and see if it addresses other potential cache issues.
 
-#### Prometheus query samples {/* #prometheus-query-samples-3 */}
+#### Prometheus query samples
 
 **Sticky Cache Size**
 
@@ -401,7 +401,7 @@ _Available since Go SDK v1.41.0_
 Set the `WorkerHeartbeatInterval` field on [`client.Options`](https://pkg.go.dev/go.temporal.io/sdk/client#Options) to adjust the heartbeat interval.
 Set it to a negative value to disable heartbeating.
 
-#### Enable host resource reporting {/* #enable-host-resource-reporting */}
+#### Enable host resource reporting
 
 By default, the Go SDK reports `0` for CPU and memory usage in Worker heartbeats.
 Set `SysInfoProvider` on [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) to enable host resource reporting.

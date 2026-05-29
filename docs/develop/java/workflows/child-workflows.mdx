@@ -28,7 +28,7 @@ The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionsta
 In Java, you must explicitly call `Workflow.getWorkflowExecution(child)` to get a `Promise`, then call `.get()` on that Promise to wait for this Event.
 See the [Parent Close Policy](#parent-close-policy) section below for a complete example.
 
-### Async Child Workflows {/* #async-child-workflows */}
+### Async Child Workflows
 
 The first call to the Child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
 Similar to Activities, invoking Child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`.

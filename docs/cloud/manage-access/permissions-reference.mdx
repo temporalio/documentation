@@ -28,7 +28,7 @@ supports the following account-level roles:
 - Finance Admin
 - Read-Only
 
-### Cloud Ops API permissions {/* #cloud-ops-api-permissions */}
+### Cloud Ops API permissions
 
 This table provides API-level details for permissions granted through account-level roles. These permissions are
 configured per user.
@@ -117,7 +117,7 @@ configured per user.
 > **Note:** Access to external observability endpoints (metrics and metric descriptors) is controlled separately and is
 > not tied to the standard account-level role hierarchy. */}
 
-## Namespace-level permissions {/* #namespace-level-permissions */}
+## Namespace-level permissions
 
 Namespace-level permissions are granted to users and service accounts by assigning them a Namespace-level permission.
 Temporal Cloud supports the following Namespace-level permissions:
@@ -129,7 +129,7 @@ Temporal Cloud supports the following Namespace-level permissions:
 Users with the Global Admin and Account Owner roles automatically have Namespace Admin permissions on all Namespaces in
 the account.
 
-### Cloud Ops API permissions {/* #cloud-ops-api-permissions-1 */}
+### Cloud Ops API permissions
 
 This table provides API-level details for permissions granted through Namespace-level permissions. These permissions are
 configured per Namespace per user.
@@ -154,7 +154,7 @@ configured per Namespace per user.
 | [UpdateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bspec.name%7D)        |      |       |        ✔        |
 | [ValidateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sink-validate)      |      |       |        ✔        |
 
-### Workflow-level permissions {/* #workflow-level-permissions */}
+### Workflow-level permissions
 
 This table provides API-level details for Workflow-level Data Plane permissions granted through Namespace-level
 permissions. These permissions are configured per Namespace per user.
@@ -268,12 +268,12 @@ permissions. These permissions are configured per Namespace per user.
 | Initiate Namespace failover                                   |      |       |        ✔        |
 | Convert single-region Namespace to multi-region               |      |       |        ✔        | */}
 
-## Additional authorization behaviors {/* #additional-authorization-behaviors */}
+## Additional authorization behaviors
 
 Some APIs are granted to all account-level roles but enforce additional authorization rules at runtime. The action group
 grants access to call the API, but the scope of what the caller can interact with depends on their role.
 
-### API key authorization behavior {/* #api-key-authorization-behavior */}
+### API key authorization behavior
 
 All roles can create and manage their **own** API keys. An API key inherits the permissions of its owner — it cannot
 grant access beyond what the owning user or service account already has.
@@ -285,7 +285,7 @@ grant access beyond what the owning user or service account already has.
 
 **Affected APIs:** CreateApiKey, GetApiKey, GetApiKeys, UpdateApiKey, DeleteApiKey
 
-### Service account authorization behavior {/* #service-account-authorization-behavior */}
+### Service account authorization behavior
 
 All roles can list service accounts within their account. However, the ability to create, update, and delete service
 accounts depends on the scope of the service account and the caller's role.

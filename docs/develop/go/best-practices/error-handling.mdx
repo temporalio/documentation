@@ -76,7 +76,7 @@ if err != nil {
 }
 ```
 
-### Panics and deferred functions {/* #panics-and-deferred-functions */}
+### Panics and deferred functions
 
 In Go, [`defer` schedules cleanup functions and `recover()` catches panics](https://go.dev/blog/defer-panic-and-recover) to prevent them from crashing the program.
 This doesn't work the same way in Temporal Workflow code — you cannot `recover()` from a panic inside a `defer`.

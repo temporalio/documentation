@@ -43,7 +43,7 @@ The Temporal Go SDK provides a test framework to facilitate testing Workflow imp
 
 This framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
 
-## Test setup {/* #test-setup */}
+## Test setup
 
 To run unit tests, we first define a test suite struct that absorbs both the basic suite functionality from [testify](https://pkg.go.dev/github.com/stretchr/testify/suite) via `suite.Suite` and the suite functionality from the Temporal test framework via `testsuite.WorkflowTestSuite`.
 
@@ -92,7 +92,7 @@ func TestUnitTestSuite(t *testing.T) {
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-## Mock and override Activities {/* #mock-and-override-activities */}
+## Mock and override Activities
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation. Additionally, we want to inject Activity errors during our test runs. The test framework provides two mechanisms that support these scenarios: Activity mocking and Activity overriding. Both of these mechanisms allow you to change the behavior of Activities invoked by your Workflow without the need to modify the actual Workflow code.
 
@@ -161,7 +161,7 @@ When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in y
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
-## Mock and override Nexus operations {/* #mock-and-override-nexus-operations */}
+## Mock and override Nexus operations
 
 Mocking Nexus operations lets you test a Workflow that executes Nexus operations without needing a
 Nexus handler to run the actual Nexus operation. You can mock the Nexus operation or override its
@@ -312,7 +312,7 @@ Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked
 After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowCompleted()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
 If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
 
-### Query tests {/* #query-tests */}
+### Query tests
 
 `TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
 For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
@@ -400,13 +400,13 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 Set up the time-skipping test framework in the SDK of your choice.
 
-{/* #### Skip time automatically {#automatic-method} */}
+{/* #### Skip time automatically {/* #automatic-method */} */}
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
-{/* #### Skip time manually {#manual-method} */}
+{/* #### Skip time manually {/* #manual-method */} */}
 
 Skip time manually in the SDK of your choice.
 

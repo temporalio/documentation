@@ -572,7 +572,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
 :::
 
-### Add wait conditions to block {/* #add-wait-conditions-to-block */}
+### Add wait conditions to block
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
 You can use a wait condition ([`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await)) to set a function that prevents the code from proceeding until the condition returns `true`.
@@ -586,7 +586,7 @@ Here are two important use cases for `Workflow::await()`:
 The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
 This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method (see [`Workflow::async()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_async).
 
-### Use wait conditions in handlers {/* #use-wait-conditions-in-handlers */}
+### Use wait conditions in handlers
 
 It's common to use a Workflow wait condition to wait until a handler should start.
 You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `true`.
@@ -643,7 +643,7 @@ public function myUpdate()
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
-### Use `#[WorkflowInit]` to operate on Workflow input before any handler executes {/* #use-workflowinit-to-operate-on-workflow-input-before-any-handler-executes */}
+### Use `#[WorkflowInit]` to operate on Workflow input before any handler executes
 
 Normally, your Workflows constructor won't have any parameters.
 However, if you use the `#[WorkflowInit]` attribute on your constructor, you can give it the same [Workflow parameters](/develop/php/workflows/basics#workflow-parameters) as your `#[WorkflowMethod]`.

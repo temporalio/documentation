@@ -83,7 +83,7 @@ Here are several common patterns for write operations, Signal and Update handler
 - Finishing handlers before the Workflow completes
 - Ensuring your messages are processed exactly once
 
-#### Synchronous handlers {/* #synchronous-handlers */}
+#### Synchronous handlers
 
 Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
 
@@ -91,7 +91,7 @@ Synchronous handlers don’t kick off any long-running operations or otherwise b
 
 A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
 
-#### Running asynchronous tasks {/* #running-asynchronous-tasks */}
+#### Running asynchronous tasks
 
 Sometimes, you need your message handler to wait for long-running operations such as executing an Activity. When this happens, the handler will yield control back to [the loop](#message-handler-concurrency). This means that your handlers can have race conditions if you’re not careful.
 You can guard your handlers with concurrency primitives like mutexes or semaphores, but you should use versions of these primitives provided for Workflows in most languages. See the links below for examples of how to use them in your SDK.
@@ -125,7 +125,7 @@ In addition to these application-level identifiers, both Signals and Updates aut
 
 See the links below for examples of handling idempotency and Continue-As-New in your SDK.
 
-#### Authoring message handler patterns {/* #authoring-message-handler-patterns */}
+#### Authoring message handler patterns
 
 See examples of the above patterns.
 
@@ -174,14 +174,14 @@ When throwing an exception in a message handler, you should decide whether to ma
 The following content applies in every SDK except the Go SDK. See below.
 :::
 
-#### Exceptions in Signals {/* #exceptions-in-signals */}
+#### Exceptions in Signals
 
 In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
 Similarly, allowing a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure) will cause the entire Workflow to fail.
 Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
 If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change.
 
-#### Exceptions in Updates {/* #exceptions-in-updates */}
+#### Exceptions in Updates
 
 Doing any of the following will fail the Update and cause the client to receive the error:
 
@@ -193,7 +193,7 @@ Unlike with Signals, the Workflow will keep going in these cases.
 
 If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online. Note that this will cause a delay for clients waiting for an Update result.
 
-#### Errors and panics in message handlers in the Go SDK {/* #errors-and-panics-in-message-handlers-in-the-go-sdk */}
+#### Errors and panics in message handlers in the Go SDK
 
 In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they cause a [Workflow Task Failure](/references/failures#workflow-task-failures).
 

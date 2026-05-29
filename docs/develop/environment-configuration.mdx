@@ -24,7 +24,7 @@ For a list of all available configuration settings, their corresponding environm
 refer to [Temporal Client Environment Configuration Reference](../references/client-environment-configuration).
 
 
-## Configuration methods {/* #configuration-methods */}
+## Configuration methods
 
 You can configure your client using a TOML file, environment variables, or a combination of both. The configuration is
 loaded with a specific order of precedence:
@@ -39,7 +39,7 @@ loaded with a specific order of precedence:
       - macOS: `$HOME/Library/Application Support/temporalio/temporal.toml`
       - Windows: `%AppData%\temporalio\temporal.toml`
 
-## TOML file configuration {/* #toml-file-configuration */}
+## TOML file configuration
 
 You can use configuration profiles to maintain separate configurations within a single file for different environments.
 The Temporal client uses the `default` profile unless you specify another via the `TEMPORAL_PROFILE` environment
@@ -93,7 +93,7 @@ MIIPrivateKeyDataHere...
 -----END PRIVATE KEY-----"""
 ```
 
-## CLI integration {/* #cli-integration */}
+## CLI integration
 
 The Temporal CLI tool includes `temporal config` commands that allow you to read and write to the TOML configuration
 file. This provides a convenient way to manage your connection profiles without manually editing the file. Refer to
@@ -151,7 +151,7 @@ temporal --profile prod config set --prop grpc_meta.service-version --value "v1.
   </TabItem>
 </Tabs>
 
-## Load configuration profile and environment variables {/* #load-configuration-profile-and-environment-variables */}
+## Load configuration profile and environment variables
 
 If you don't specify a profile, the SDKs load the `default` profile and the environment variables. If you haven't set
 `TEMPORAL_CONFIG_FILE`, the SDKs will look for the configuration file in the default location. Refer to
@@ -439,7 +439,7 @@ public class LoadFromFile {
   </SdkTabs.Java>
 </SdkTabs>
 
-## Load configuration from a custom path {/* #load-configuration-from-a-custom-path */}
+## Load configuration from a custom path
 
 To load configuration from a non-standard file location without relying on the `TEMPORAL_CONFIG_FILE` environment
 variable, you can use a function from the `temporalio.envconfig` package. The specific method you need to call depends

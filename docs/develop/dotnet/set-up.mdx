@@ -144,7 +144,7 @@ Build the solution:
   </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
+## Run Hello World: Test Your Installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
@@ -177,9 +177,9 @@ TemporalioHelloWorld/
 
 </details>
 
-### 1. Create the Activity and Workflow {/* #1-create-the-activity-and-workflow */}
+### 1. Create the Activity and Workflow 
 
-#### Create an Activity file (MyActivities.cs) in the Workflow project: {/* #create-an-activity-file-myactivitiescs-in-the-workflow-project */}
+#### Create an Activity file (MyActivities.cs) in the Workflow project:
 
 ```csharp
 namespace MyNamespace;
@@ -198,7 +198,7 @@ public class MyActivities
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
 If an Activity fails, Temporal automatically retries it based on your configuration.
 
-#### Create a Workflow file (SayHelloWorkflow.cs) in the Workflow project: {/* #create-a-workflow-file-sayhelloworkflowcs-in-the-workflow-project */}
+#### Create a Workflow file (SayHelloWorkflow.cs) in the Workflow project: 
 
 ```csharp
 namespace MyNamespace;
@@ -229,11 +229,11 @@ Temporal Workflows are resilient.
 They can run and keep running for years, even if the underlying infrastructure fails.
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-### 2. Create the Worker {/* #2-create-the-worker */}
+### 2. Create the Worker 
 
 With your Activity and Workflow defined, you need a Worker to execute them.
 
-#### Create a Worker file (Program.cs) in the Worker project: {/* #create-a-worker-file-programcs-in-the-worker-project */}
+#### Create a Worker file (Program.cs) in the Worker project:
 
 ```csharp
 using MyNamespace;
@@ -288,12 +288,12 @@ Once the Worker dequeues the Workflow or Activity task from the Task Queue, it t
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-### 3. Execute the Workflow {/* #3-execute-the-workflow */}
+### 3. Execute the Workflow 
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 This final step will validate that everything is working correctly. 
 
-#### Create a Client file (Program.cs) in the Client project: {/* #create-a-client-file-programcs-in-the-client-project */}
+#### Create a Client file (Program.cs) in the Client project: 
 
 ```csharp
 using MyNamespace;
@@ -317,7 +317,7 @@ While the Worker is still running, run the Workflow:
 dotnet run --project Client/Client.csproj
 ```
 
-### Verify Success {/* #verify-success */}
+### Verify Success
 
 If everything is working correctly, you should see:
 

@@ -65,7 +65,7 @@ installed, we will execute a Workflow that will output "Hello, Temporal".
 </>
 }>
 
-## Installation {/* #installation */}
+## Installation
 
 This step sets up a new Ruby project using Bundler and installs the Temporal Ruby SDK.
 
@@ -120,7 +120,7 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 </>
 }>
 
-## Install Temporal CLI {/* #install-temporal-cli */}
+## Install Temporal CLI
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
@@ -147,7 +147,7 @@ temporal server start-dev --ui-port 8080
 </>
 }>
 
-## Start the development server {/* #start-the-development-server */}
+## Start the development server
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
@@ -165,7 +165,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
+## Run Hello World: Test Your Installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -177,7 +177,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity {/* #1-create-the-activity */}
+### 1. Create the Activity
 
 Create an Activity file (say_hello_activity.rb):
 
@@ -192,7 +192,7 @@ class SayHelloActivity < Temporalio::Activity::Definition
 end
 ```
 
-### 2. Create the Workflow {/* #2-create-the-workflow */}
+### 2. Create the Workflow
 
 Create a Workflow file (say_hello_workflow.rb):
 
@@ -211,7 +211,7 @@ class SayHelloWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-### 3. Create and Run the Worker {/* #3-create-and-run-the-worker */}
+### 3. Create and Run the Worker
 
 With your Activity and Workflow defined, you need a Worker to execute them. Workers are a crucial part of your Temporal
 application as they're what actually execute the tasks defined in your Workflows and Activities. For more information on
@@ -248,7 +248,7 @@ Run the Worker:
 ruby worker.rb
 ```
 
-### 4. Execute the Workflow {/* #4-execute-the-workflow */}
+### 4. Execute the Workflow
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
@@ -277,7 +277,7 @@ Then run:
 ruby starter.rb
 ```
 
-### Verify Success {/* #verify-success */}
+### Verify Success
 
 If everything is working correctly, you should see:
 

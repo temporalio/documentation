@@ -79,7 +79,7 @@ $worker = $factory->newWorker('your-task-queue', WorkerOptions::new()
 );
 ```
 
-### Default Logger {/* #default-logger */}
+### Default Logger
 
 By default, PHP SDK uses a [`StderrLogger`](https://php.temporal.io/classes/Temporal-Worker-Logger-StderrLogger.html) that outputs log messages to the standard error stream.
 These messages are automatically captured by RoadRunner and incorporated into its logging system with the INFO level, ensuring proper log collection in both development and production environments.

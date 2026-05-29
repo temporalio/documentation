@@ -88,7 +88,7 @@ Use Continue-as-New when your Workflow might encounter degraded performance or [
 
 Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New. Call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
 
-## How to test Continue-as-New using the Rust SDK {/* #how-to-test-continue-as-new-using-the-rust-sdk */}
+## How to test Continue-as-New using the Rust SDK
 
 Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive. Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
 

@@ -25,7 +25,7 @@ For example, it is also possible to use the [OpenTelemetry Collector](https://te
 
 This configuration assumes that you have [Docker](https://www.docker.com/) installed and are running a [Temporal dev server](https://temporal.io/setup/start-development-server) via the CLI. 
 
-## Prometheus {/* #prometheus */}
+## Prometheus
 
 This section discusses exporting metrics from Temporal SDKs, and setting up Prometheus to collect metrics on Temporal Service, Temporal Client, and Temporal Worker performance.
 
@@ -88,7 +88,7 @@ Refer to the [Temporal Cluster configuration reference](/references/configuratio
 You should now have both Prometheus and a Temporal Service running locally, with Temporal providing Service metrics to Prometheus.
 Next, you'll want to configure SDK metrics as well.
 
-### SDK metrics setup {/* #sdk-metrics-setup */}
+### SDK metrics setup
 
 SDK metrics are emitted by Temporal Workers and other Clients, and must be configured in your application code.
 The Metrics section in the Observability guide details how to create hooks for all supported SDKs:
@@ -113,7 +113,7 @@ Some of these may require you to set different metrics port numbers based on the
 Follow the instructions from each of the samples to run Workflows and begin emitting metrics.
 This will allow you to populate a dashboard in the next section and understand how to further customize Temporal observability for your needs.
 
-### Verifying Prometheus configuration {/* #verifying-prometheus-configuration */}
+### Verifying Prometheus configuration
 
 Once your Workflows are running and emitting metrics, you can visit [http://localhost:9090/targets](http://localhost:9090/targets) on your local Prometheus instance to verify that it is able to scrape the provided endpoints.
 
@@ -125,7 +125,7 @@ If you are not pushing data to exactly 3 metrics endpoints, your environment may
 
 Next, you can visit the [local Prometheus query endpoint](http://localhost:9090/query) to manually run [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) queries on your exported metrics, or proceed to the next section to configure Grafana to generate dashboards from those metrics.
 
-## Grafana {/* #grafana */}
+## Grafana
 
 With [Prometheus](#prometheus) configured, deploy Grafana as a metrics frontend, and configure it to use Prometheus as a data source.
 
@@ -159,7 +159,7 @@ In this example, Grafana is set to pull metrics from Prometheus at the port 9090
 
 Now, you'll just need to add some of our provided dashboards for visualizing Temporal metrics.
 
-### Dashboard setup {/* #dashboard-setup */}
+### Dashboard setup
 
 We provide community-driven Grafana dashboards that can be used for monitoring Temporal Server and SDK metrics in a [dashboards](https://github.com/temporalio/dashboards/) repo.
 Follow the instructions in that repo's README to import the dashboards to Grafana.
@@ -210,7 +210,7 @@ service {
   }
 ```
 
-## Installing via Helm Chart {/* #installing-via-helm-chart */}
+## Installing via Helm Chart
 
 If you are installing and running Temporal via [Helm chart](https://github.com/temporalio/helm-charts), you can also [provide additional parameters](https://github.com/temporalio/helm-charts?tab=readme-ov-file#exploring-metrics-via-grafana) to populate and explore a Grafana dashboard out of the box.
 

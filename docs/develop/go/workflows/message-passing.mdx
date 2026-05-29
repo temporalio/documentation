@@ -622,7 +622,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-## Troubleshooting {/* #troubleshooting */}
+## Troubleshooting
 
 See [Exceptions in message handlers](/handling-messages#exceptions) for a non–Go-specific discussion of this topic.
 
@@ -635,7 +635,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 Unlike Signals, for Queries and Updates, the Client waits for a response from the Worker.
 If an issue occurs during the handler execution by the Worker, the Client may receive an exception.
 
-### Problems when sending an Update {/* #problems-when-sending-an-update */}
+### Problems when sending an Update
 
 - **There is no Workflow Worker polling the Task Queue**
 
@@ -667,7 +667,7 @@ If an issue occurs during the handler execution by the Worker, the Client may re
 
   - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
-### Problems when sending a Query {/* #problems-when-sending-a-query */}
+### Problems when sending a Query
 
 - **There is no Workflow Worker polling the Task Queue**
 

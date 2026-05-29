@@ -39,7 +39,7 @@ Metrics can be scraped by systems like Prometheus, and graphs can be created usi
 
 Metrics in Ruby are configured on the `metrics` argument of the `telemetry` argument when creating a global `Temporalio::Runtime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
-## Set a Prometheus endpoint {/* #set-a-prometheus-endpoint */}
+## Set a Prometheus endpoint
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
@@ -55,7 +55,7 @@ Temporalio::Runtime.default = Temporalio::Runtime.new(
 )
 ```
 
-### Custom metric handling {/* #custom-metric-handling */}
+### Custom metric handling
 
 Instead of Prometheus or OpenTelemetry, an instance of `Temporalio::Runtime::MetricBuffer` can be provided as a `buffer` argument to the `MetricsOptions`.
 `retrieve_updates` can then be periodically called on the buffer to get metric updates.

@@ -38,7 +38,7 @@ Resources:
   the Terraform documentation in Hashi's
   [registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs).
 
-### Prerequisites {/* #prerequisites */}
+### Prerequisites
 
 To use the Terraform provider, you'll need the following:
 
@@ -54,7 +54,7 @@ managed by Temporal Technologies.
 
 :::
 
-## Setup {/* #setup */}
+## Setup
 
 Generate an [API Key](https://docs.temporal.io/cloud/api-keys#generate-an-api-key) to authenticate Terraform operations
 with your Temporal Cloud account or a Service Account. Then, either use an environment variable or pass the API Key into
@@ -101,7 +101,7 @@ Or, pass it in manually in your .tf file using the provider code block
 provider "temporalcloud" { api_key = "my-temporalcloud-api-key" }
 ```
 
-## Manage Temporal Cloud Namespaces with Terraform {/* #manage-temporal-cloud-namespaces-with-terraform */}
+## Manage Temporal Cloud Namespaces with Terraform
 
 Terraform is a great way to automate the management of Temporal Namespaces. It doesn't matter whether you want
 management to be centralized within a platform team or federated to different product teams. The provider allows you to
@@ -280,7 +280,7 @@ on subsequent Terraform operations.
 
 :::
 
-## Manage Temporal Cloud Nexus Endpoints with Terraform {/* #manage-temporal-cloud-nexus-endpoints-with-terraform */}
+## Manage Temporal Cloud Nexus Endpoints with Terraform
 
 Terraform provides a great way to automate the management of [Nexus Endpoints](/nexus/endpoints). The provider allows
 you to import, create, update, and delete Nexus Endpoints with Terraform.
@@ -538,7 +538,7 @@ on subsequent Terraform operations.
 
 :::
 
-## Manage Temporal Cloud Users with Terraform {/* #manage-temporal-cloud-users-with-terraform */}
+## Manage Temporal Cloud Users with Terraform
 
 Manage Temporal Cloud Users with the same process you use to manage Namespaces with Terraform. The following examples
 create, update, delete, and import Temporal Cloud Users with `terraform apply` commands on the Terraform configuration
@@ -700,7 +700,7 @@ using the `terraform import` command.
 
 The User is now a part of the Terraform state and all changes to the User should be managed by Terraform.
 
-## Manage Temporal Cloud Service Accounts with Terraform {/* #manage-temporal-cloud-service-accounts-with-terraform */}
+## Manage Temporal Cloud Service Accounts with Terraform
 
 The process and steps to managing a Service Account with Terraform are very similar to managing a User with Terraform
 with a few small differences:
@@ -712,7 +712,7 @@ with a few small differences:
 Everything else about managing Services Accounts with Terraform follows the same process, guidance, and limitations of
 managing Users with Terraform.
 
-## Manage Temporal Cloud API Keys with Terraform {/* #manage-temporal-cloud-api-keys-with-terraform */}
+## Manage Temporal Cloud API Keys with Terraform
 
 You can manage your own, personal API Keys and Service Account API Keys with Terraform. The process and steps to
 managing an API Key with Terraform are very similar to managing other resources with Terraform. You can create, delete,
@@ -844,7 +844,7 @@ you can't access it using import.
 
 Instead, Temporal recommends creating a new API Key using Terraform directly.
 
-## Data Sources - Regions and Namespaces {/* #data-sources---regions-and-namespaces */}
+## Data Sources - Regions and Namespaces
 
 The Terraform provider also supports 2 data sources that provide you access to the available Regions and Namespaces in
 your Temporal Cloud account.
@@ -866,7 +866,7 @@ output "regions" {
 }
 ```
 
-## Community Involvement {/* #community-involvement */}
+## Community Involvement
 
 Do you have feedback about the provider? Want to report a bug or request a feature? We'd love to hear from you.
 

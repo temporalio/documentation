@@ -34,7 +34,7 @@ The Vercel AI SDK Integration is in Public Preview. Refer to the
 
 :::
 
-## Prerequisites {/* #prerequisites */}
+## Prerequisites
 
 - This guide assumes you are already familiar with the Vercel AI SDK. If you aren't, refer to the
   [Vercel AI SDK documentation](https://ai-sdk.dev/) for more details.
@@ -45,7 +45,7 @@ The Vercel AI SDK Integration is in Public Preview. Refer to the
   [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript) guide. When you are
   done, leave the Temporal Development Server running if you want to test your code locally.
 
-## Configure Workers to use the AI SDK {/* #configure-workers-to-use-the-ai-sdk */}
+## Configure Workers to use the AI SDK
 
 Workers are the compute layer of a Temporal Application. They are responsible for executing the code that defines your
 [Workflows](/glossary#workflow) and [Activities](/glossary#activity). Before you can execute a Workflow or Activity with
@@ -108,7 +108,7 @@ Follow the steps below to configure your Worker.
 
 See the full example at [ai-sdk samples](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk).
 
-## Develop a Simple Haiku Agent {/* #develop-a-simple-haiku-agent */}
+## Develop a Simple Haiku Agent
 
 To help you get started, you can develop a simple Haiku Agent that generates haikus based on a prompt.
 
@@ -149,7 +149,7 @@ export async function haikuAgent(prompt: string): Promise<string> {
 With only two line changes, you have added Durable Execution to your agent. Your agent now gets automatic retries,
 timeouts, and the ability to run for extended periods without losing state if the process crashes.
 
-## Provide your durable agent with tools {/* #provide-your-durable-agent-with-tools */}
+## Provide your durable agent with tools
 
 The Vercel AI SDK lets you provide tools to your agents, and when the model calls them, they execute in the Workflow.
 Since tool functions run in Workflow context, they must follow Workflow rules. That means they must call Activities or
@@ -206,7 +206,7 @@ export async function toolsAgent(question: string): Promise<string> {
 }
 ```
 
-## Integrate with Model Context Protocol (MCP) servers {/* #integrate-with-model-context-protocol-mcp-servers */}
+## Integrate with Model Context Protocol (MCP) servers
 
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open standard that lets AI applications connect
 to external tools and data sources. Calls to MCP servers, being calls to external APIs, are non-deterministic and would

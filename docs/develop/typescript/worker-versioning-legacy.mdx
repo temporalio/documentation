@@ -25,7 +25,7 @@ See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/do
 A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
 To use Worker Versioning, you need to pass a Build ID to your Typescript Worker and opt in to Worker Versioning.
 
-### Assign a Build ID to your Worker and opt in to Worker Versioning {/* #assign-a-build-id-to-your-worker-and-opt-in-to-worker-versioning */}
+### Assign a Build ID to your Worker and opt in to Worker Versioning
 
 You should understand assignment rules before completing this step.
 See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
@@ -49,7 +49,7 @@ Importantly, when you start this Worker, it won't receive any tasks until you se
 
 :::
 
-### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows {/* #specify-versions-for-activities-child-workflows-and-continue-as-new-workflows */}
+### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
 
 :::caution
 
@@ -74,7 +74,7 @@ const { echo } = proxyActivities<typeof activities>({
 // ...
 ```
 
-### Tell the Task Queue about your Worker's Build ID (Deprecated) {/* #tell-the-task-queue-about-your-workers-build-id-deprecated */}
+### Tell the Task Queue about your Worker's Build ID (Deprecated)
 
 :::caution
 

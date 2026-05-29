@@ -21,7 +21,7 @@ This guide provides a comprehensive overview of Temporal Workflows and covers th
 - [Dynamic Handler](/dynamic-handler)
 - [Cron Job](/cron-job)
 
-## Intro to Workflows {/* #intro-to-workflows */}
+## Intro to Workflows
 
 Conceptually, a workflow defines a sequence of steps. With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
 
@@ -37,7 +37,7 @@ Temporal Workflows are resilient. They can run—and keep running—for years, e
 
 Each Workflow Execution emits a series of **Commands** and processes a sequence of **Events**, which are recorded in an **Event History**.
 
-### How Workflow replay works {/* #how-workflow-replay-works */}
+### How Workflow replay works
 
 When a Workflow [yields](https://en.wikipedia.org/wiki/Yield_(multithreading)) or encounters an error, the goal of Temporal is to bring the Workflow back to the exact same state it was in before the pause occurred. To make that possible, Temporal keeps the Event History. This is a complete, ordered log of everything that has already happened in a Workflow.
 
@@ -50,7 +50,7 @@ The Event History could look like this for example:
 
 This history is the source of truth for everything that happens in the Workflow.
 
-#### Resuming a Workflow {/* #resuming-a-workflow */}
+#### Resuming a Workflow
 
 When it's time to continue the Workflow, Temporal doesn't restore memory from a snapshot. It starts the Workflow code from the beginning, replays the Event History step by step, and uses that history to guide the code back to the exact state as before. So the Workflow code is re-run, but uses the recorded events instead of redoing work. Although Temporal doesn't always have to start from the beginning if the state is cached.
 

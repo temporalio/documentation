@@ -62,7 +62,7 @@ Each Temporal SDK targets a specific programming language.
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
-### Third-party SDKs {/* #third-party-sdks */}
+### Third-party SDKs
 
 The following third-party SDKs exist but are not officially supported by Temporal:
 
@@ -75,7 +75,7 @@ The following third-party SDKs exist but are not officially supported by Tempora
 
 Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
 
-### Development pattern {/* #development-pattern */}
+### Development pattern
 
 By abstracting complexities and streamlining boilerplate code, developers can craft straightforward code that directly aligns with their business logic, enhancing code readability and bolstering developer productivity.
 
@@ -130,7 +130,7 @@ func LoanApplicationWorkflow {
 }
 ```
 
-### Replays {/* #replays */}
+### Replays
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
 
@@ -159,7 +159,7 @@ Temporal SDKs offer developers the following:
 
 Let's break down each one.
 
-### Temporal Client {/* #temporal-client */}
+### Temporal Client
 
 A Temporal Client acts as the bridge for communication between your applications and the Temporal Service.
 The Client performs key functions that facilitate the execution of, management of, and communication with Workflows.
@@ -225,7 +225,7 @@ Developers can then use the Client as the main entry point for interacting with 
 Using that Client, developers may for example start or Signal Workflows, Query a Workflow's state, etc.
 We can see in the example above how the developer has used `ExecuteWorkflow` API to start a Workflow.
 
-### APIs to Develop Workflows {/* #apis-to-develop-workflows */}
+### APIs to Develop Workflows
 
 Workflows are defined as code: either a function or an object method, depending on the language.
 
@@ -322,7 +322,7 @@ The level of abstraction that APIs offer enables the developer to focus on busin
 
 Additionally, the state of the Workflow is automatically persisted so if a failure does occur, it resumes right where it left off.
 
-### APIs to create and manage Worker Processes {/* #apis-to-create-and-manage-worker-processes */}
+### APIs to create and manage Worker Processes
 
 Workers are responsible for executing Workflow and Activity code (application code). The SDK provides APIs for configuring and starting Workers, enabling developers to control how the code is executed.
 Workers are horizontally scalable, often run with systems like Kubernetes, and configured according to the application's needs.
@@ -362,7 +362,7 @@ func main() {
 
 The Worker polls on the specified Task Queue, processing those Tasks, and reporting the results back to the Temporal Service. They execute both the Workflows and Activities, and the SDK ensures that they perform these tasks efficiently and reliably.
 
-### APIs to customize Activity Execution behavior {/* #apis-to-customize-activity-execution-behavior */}
+### APIs to customize Activity Execution behavior
 
 Activities in Temporal are individual units of work that often represent non-deterministic parts of the code logic, such as querying a database or calling an external service. The SDK provides APIs to customize the behavior of an Activity Execution.
 

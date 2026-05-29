@@ -54,14 +54,14 @@ You can use this Job ID in the `tctl batch describe` command, which describes th
 You can also use the Job ID to terminate the batch job itself.
 Terminating a batch job does not roll back the operations already performed by the batch job.
 
-### tctl batch commands {/* #tctl-batch-commands */}
+### tctl batch commands
 
 - [tctl batch describe](#describe)
 - [tctl batch list](#list)
 - [tctl batch start](#start)
 - [tctl batch terminate](#terminate)
 
-## start {/* #start */}
+## start
 
 The `tctl batch start` command starts a batch job.
 
@@ -69,7 +69,7 @@ The `tctl batch start` command starts a batch job.
 
 The following modifiers control the behavior of the command.
 
-### `--query` {/* #--query */}
+### `--query`
 
 _Required modifier_
 
@@ -85,7 +85,7 @@ Alias: `-q`
 tctl batch start --query <value>
 ```
 
-### `--reason` {/* #--reason */}
+### `--reason`
 
 Specify a reason for running this batch job.
 
@@ -95,7 +95,7 @@ Specify a reason for running this batch job.
 tctl batch start --query <value> --reason <string>
 ```
 
-### `--batch_type` {/* #--batch_type */}
+### `--batch_type`
 
 Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
 
@@ -105,7 +105,7 @@ Specify the operation that this batch job performs. The supported operations are
 tctl batch start --query <value> --batch_type <operation>
 ```
 
-### `--signal_name` {/* #--signal_name */}
+### `--signal_name`
 
 Specify the name of a [Signal](/sending-messages#sending-signals). This modifier is required when `--batch_type` is `signal`.
 
@@ -115,7 +115,7 @@ Specify the name of a [Signal](/sending-messages#sending-signals). This modifier
 tctl batch start --query <value> --batch_type signal --signal_name <name>
 ```
 
-### `--input` {/* #--input */}
+### `--input`
 
 Pass input for the [Signal](/sending-messages#sending-signals). Input must be in JSON format.
 
@@ -127,7 +127,7 @@ Alias: `-i`
 tctl batch start --query <value> --input <json>
 ```
 
-### `--rps` {/* #--rps */}
+### `--rps`
 
 Specify RPS of processing. The default value is 50.
 
@@ -137,7 +137,7 @@ Specify RPS of processing. The default value is 50.
 tctl batch start --query <value> --rps <value>
 ```
 
-### `--yes` {/* #--yes */}
+### `--yes`
 
 Disable the confirmation prompt.
 
@@ -149,7 +149,7 @@ Alias: `y`
 tctl batch start --query <value> --yes
 ```
 
-## list {/* #list */}
+## list
 
 The `tctl batch list` command lists all batch jobs.
 
@@ -163,7 +163,7 @@ The `tctl batch list` command lists all batch jobs.
 
 The following modifier controls the behavior of the command.
 
-### --pagesize {/* #--pagesize */}
+### --pagesize
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
 
@@ -173,7 +173,7 @@ Specify the maximum number of batch jobs to list on a page. The default value is
 tctl batch list --pagesize <value>
 ```
 
-## describe {/* #describe */}
+## describe
 
 The `tctl batch describe` command describes the progress of a batch job.
 
@@ -187,7 +187,7 @@ The `tctl batch describe` command describes the progress of a batch job.
 
 The following modifier controls the behavior of the command.
 
-### --job_id {/* #--job_id */}
+### --job_id
 
 _Required modifier_
 
@@ -199,7 +199,7 @@ Specify the job ID of a batch job.
 tctl batch describe --job_id <id>
 ```
 
-## terminate {/* #terminate */}
+## terminate
 
 The `tctl batch terminate` command terminates a batch job.
 
@@ -213,7 +213,7 @@ The `tctl batch terminate` command terminates a batch job.
 
 The following modifiers control the behavior of the command.
 
-### `--job_id` {/* #--job_id-1 */}
+### `--job_id`
 
 _Required modifier_
 
@@ -225,7 +225,7 @@ Specify the job ID of a batch job.
 tctl batch terminate --job_id <id>
 ```
 
-### `--reason` {/* #--reason-1 */}
+### `--reason`
 
 Specify a reason for terminating this batch job.
 

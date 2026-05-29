@@ -56,7 +56,7 @@ Activities follow an at-least-once execution model.
 If a Worker executes an Activity successfully but crashes before notifying the Temporal Service, the Activity will be retried.
 Without idempotence, this could cause duplicate charges in payment processing or create duplicate resources in infrastructure provisioning.
 
-### Use idempotency keys {/* #use-idempotency-keys */}
+### Use idempotency keys
 
 Most external services support idempotency keys—unique identifiers that prevent duplicate operations.
 When the service receives a request with a key it has already processed, it returns the original result instead of performing the operation again.
@@ -82,7 +82,7 @@ async def process_payment(amount: float, account: str):
 
 This value remains constant across Activity retries but is unique among all Workflow Executions.
 
-### Design Activities to be atomic {/* #design-activities-to-be-atomic */}
+### Design Activities to be atomic
 
 Activities are atomic—they either complete successfully or not.
 If an Activity performs multiple steps and the last step fails, the entire Activity is retried.
@@ -145,7 +145,7 @@ The `ActivityError` provides context including:
 
 The behavior depends on what exception you raise:
 
-### Fail a Workflow Execution {/* #fail-a-workflow-execution */}
+### Fail a Workflow Execution
 
 To deliberately fail a Workflow Execution, raise an `ApplicationError`:
 
@@ -180,7 +180,7 @@ This can be useful for deliberately failing a Workflow due to bad input data, ra
 This puts the Workflow Execution in "Failed" state with no automatic retries.
 Use this for permanent failures where retrying won't help—like the customer being too far away.
 
-### Trigger a Workflow Task retry {/* #trigger-a-workflow-task-retry */}
+### Trigger a Workflow Task retry
 
 Raising any other Python exception (like `ValueError` or `TypeError`) causes a Workflow Task failure, which retries automatically:
 
@@ -297,7 +297,7 @@ Retry Policy attributes:
 - **`maximum_attempts`**: Maximum retry attempts (default: unlimited)
 - **`non_retryable_error_types`**: Error types that shouldn't retry (default: empty)
 
-### Match your Retry Policy to failure types {/* #match-your-retry-policy-to-failure-types */}
+### Match your Retry Policy to failure types
 
 **For transient failures** (brief network issues): Use the defaults or a low `initial_interval` and `backoff_coefficient`.
 
@@ -305,7 +305,7 @@ Retry Policy attributes:
 
 **For cost-sensitive APIs**: Set `maximum_attempts` to limit retries (rare—usually prefer timeouts).
 
-### Use different policies for different Activities {/* #use-different-policies-for-different-activities */}
+### Use different policies for different Activities
 
 You can use different Retry Policies for different Activities, or even multiple policies for the same Activity:
 
@@ -337,7 +337,7 @@ await workflow.execute_activity(
 )
 ```
 
-### Don't use Workflow Retry Policies {/* #dont-use-workflow-retry-policies */}
+### Don't use Workflow Retry Policies
 
 Unlike Activities, Workflows don't retry by default, and you usually shouldn't add a Retry Policy.
 Workflows are deterministic and not designed for failure-prone operations.
@@ -430,7 +430,7 @@ class CheckoutWorkflow:
 When an Activity raises an `ApplicationError`, Temporal checks if its `type` is in `non_retryable_error_types`.
 If it matches, the Activity fails immediately without retries.
 
-### When to use each approach {/* #when-to-use-each-approach */}
+### When to use each approach
 
 **`non_retryable=True` in the Activity**: Use when the Activity implementer knows the error is permanently unrecoverable.
 This enforces the constraint for all callers.
@@ -536,7 +536,7 @@ Use the provided exception types to ensure:
 - Compatibility with the Temporal Service
 - Proper serialization via Protocol Buffers
 
-### Common failure types {/* #common-failure-types */}
+### Common failure types
 
 **`ApplicationError`**: Raised by your code to indicate application-specific failures.
 This is the only Temporal exception you should raise manually.
@@ -559,7 +559,7 @@ You can catch and ignore this to continue execution despite cancellation.
 
 **`ServerError`**: Used for exceptions from the Temporal Service itself (like database failures).
 
-### Workflow Task vs Workflow Execution failures {/* #workflow-task-vs-workflow-execution-failures */}
+### Workflow Task vs Workflow Execution failures
 
 **Workflow Task failures** occur when Workflow code raises a non-Temporal exception (like `ValueError`, `TypeError`, or non-determinism errors).
 These retry automatically, letting you fix bugs and redeploy without losing Workflow state.
@@ -578,7 +578,7 @@ if distance.kilometers > MAX_DELIVERY_DISTANCE:
     )
 ```
 
-### Protecting sensitive information {/* #protecting-sensitive-information */}
+### Protecting sensitive information
 
 The default Failure Converter copies exception messages and stack traces as plain text visible in the Web UI.
 If your exceptions might contain sensitive information, configure a custom Failure Converter to encrypt this data.

@@ -148,7 +148,7 @@ var handle = myClient.GetWorkflowHandle("my-workflow-id");
 await handle.CancelAsync();
 ```
 
-#### How to request Cancellation of an Activity {/* #how-to-request-cancellation-of-an-activity */}
+#### How to request Cancellation of an Activity
 
 By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation token
 is used by activities by default. To issue a cancellation explicitly, a new cancellation token can be created.

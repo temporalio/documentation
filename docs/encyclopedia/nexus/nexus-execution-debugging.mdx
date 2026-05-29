@@ -24,7 +24,7 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 
 Nexus supports end-to-end execution debugging across caller Workflows, Nexus Operations, and handler Workflows - even across [multi-level calls](/nexus#multi-level-calls) spanning multiple Namespaces.
 
-## Bi-directional linking {/* #bi-directional-linking */}
+## Bi-directional linking
 
 Bidirectional links connect Nexus Operation events in the caller's Event History to corresponding events in the handler's Event History.
 They are automatically wired by SDK builder functions like New-Workflow-Run-Operation, enabling click-through navigation across Namespaces, regions, and clouds in the Temporal UI.
@@ -38,7 +38,7 @@ They are automatically wired by SDK builder functions like New-Workflow-Run-Oper
 - **Forward**: From a caller's Nexus Operation event to the handler's Workflow.
 - **Backward**: From the handler's Workflow back to the caller's Nexus Operation event.
 
-## Pending Operations {/* #pending-operations */}
+## Pending Operations
 
 Pending Nexus Operations are displayed in the UI on the Workflow details page and can be listed from the CLI using the `temporal workflow describe` command.
 
@@ -72,7 +72,7 @@ Pending Nexus Operations: 1
 [Retryable errors](/nexus/error-handling#errors-in-nexus-handlers) surface in the Pending Operation.
 Non-retryable errors resolve the Operation with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout), or [Canceled](/references/events#nexusoperationcanceled) event.
 
-## Pending Callbacks {/* #pending-callbacks */}
+## Pending Callbacks
 
 Nexus completion callbacks are sent from the handler's Namespace to the caller's Namespace for asynchronous Operations.
 These can be viewed in the UI or from the CLI using the `temporal workflow describe` command.
@@ -99,7 +99,7 @@ Callbacks: 1
   RegistrationTime  32 minutes ago
 ```
 
-## Tracing {/* #tracing */}
+## Tracing
 
 Temporal integrates with [OpenTelemetry](https://opentelemetry.io/) and [OpenTracing](https://opentracing.io/) to visualize call graphs across Activities, Nexus Operations, and Child Workflows.
 Enable tracing by installing an interceptor on the Client or Worker:

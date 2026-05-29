@@ -26,11 +26,11 @@ to set up External Storage with Amazon S3 and how to implement a custom storage 
 
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
-## Store and retrieve large payloads with Amazon S3 {/* #store-and-retrieve-large-payloads-with-amazon-s3 */}
+## Store and retrieve large payloads with Amazon S3
 
 The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
-### Prerequisites {/* #prerequisites */}
+### Prerequisites
 
 - An Amazon S3 bucket that you have read and write access to. Refer to
   [lifecycle management](/external-storage#lifecycle) to ensure that your payloads remain available for the entire
@@ -38,7 +38,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
   [Durable External Storage](/external-storage#durable-external-storage).
 - Install the `aioboto3` extra: `python -m pip install "temporalio[aioboto3]"`
 
-### Procedure {/* #procedure */}
+### Procedure
 
 1. Create an S3 client using `aioboto3` and pass it to the `S3StorageDriver`. The driver uses your standard AWS
    credentials from the environment (environment variables, IAM role, or AWS config file):
@@ -89,7 +89,7 @@ The S3 driver includes diagnostic metadata, such as the AWS region, in error mes
 failures. For a complete working example that includes a Worker, Codec Server, and S3 driver, see the
 [External Storage sample](https://github.com/temporalio/samples-python/tree/main/external_storage).
 
-## Implement a custom storage driver {/* #implement-a-custom-storage-driver */}
+## Implement a custom storage driver
 
 If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
 Store payloads durably so that they survive process crashes and remain available for debugging and auditing after the
@@ -151,7 +151,7 @@ class LocalDiskStorageDriver(StorageDriver):
 
 The following sections walk through the key parts of the driver implementation.
 
-### 1. Extend the StorageDriver class {/* #1-extend-the-storagedriver-class */}
+### 1. Extend the StorageDriver class
 
 A custom driver extends the `StorageDriver` abstract class and implements three methods:
 
@@ -162,7 +162,7 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
   key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
 
-### 2. Store payloads {/* #2-store-payloads */}
+### 2. Store payloads
 
 In `store()`, convert each Payload protobuf message to bytes with `payload.SerializeToString()` and write the bytes to
 your storage system. The application data has already been serialized by the
@@ -175,13 +175,13 @@ provides identity information (namespace, Workflow ID, or Activity ID) depending
 your storage keys to include this information so that you can identify which Workflow owns each payload. Within that
 scope, content-addressable keys (such as a SHA-256 hash of the payload bytes) can help deduplicate identical payloads.
 
-### 3. Retrieve payloads {/* #3-retrieve-payloads */}
+### 3. Retrieve payloads
 
 In `retrieve()`, download the bytes using the claim data, then reconstruct the Payload protobuf message with
 `payload.ParseFromString(data)`. The Payload Converter handles deserializing the application data after the driver
 returns the payload.
 
-### 4. Configure the Data Converter {/* #4-configure-the-data-converter */}
+### 4. Configure the Data Converter
 
 Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker.
 You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
@@ -198,7 +198,7 @@ data_converter = dataclasses.replace(
 ```
 <!--SNIPEND-->
 
-## Configure payload size threshold {/* #configure-payload-size-threshold */}
+## Configure payload size threshold
 
 You can configure the payload size threshold that triggers external storage. By default, payloads larger than 256 KiB
 are offloaded to external storage. You can adjust this with the `payload_size_threshold` parameter, or set it to 0 to
@@ -217,7 +217,7 @@ data_converter = dataclasses.replace(
 ```
 <!--SNIPEND-->
 
-## Use multiple storage drivers {/* #use-multiple-storage-drivers */}
+## Use multiple storage drivers
 
 When you register multiple drivers, you must provide a `driver_selector` function that chooses which driver stores each
 payload. Any driver in the list that is not selected for storing is still available for retrieval, which is useful when
@@ -248,7 +248,7 @@ ExternalStorage(
 ```
 <!--SNIPEND-->
 
-## Multi-region durability {/* #multi-region-durability */}
+## Multi-region durability
 
 To make your S3-backed External Storage tolerant of regional failures, configure the AWS side with
 [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) and an

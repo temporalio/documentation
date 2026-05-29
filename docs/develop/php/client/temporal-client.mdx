@@ -334,7 +334,7 @@ Long blocks can quickly exhaust the pool of available workers and lead to applic
 
 This section introduces features and configuration examples of the PHP SDK when working with the Temporal Client API.
 
-### Connection {/* #connection */}
+### Connection
 
 gRPC connections in the PHP SDK are lazy by default, meaning they are not established until the first call.
 To force establishing the connection to the Temporal Service, you can call the [`ConnectionInterface::connect()`](https://php.temporal.io/classes/Temporal-Client-GRPC-Connection-ConnectionInterface.html#method_connect) or [`ServiceClient::getServerCapabilities()`](https://php.temporal.io/classes/Temporal-Client-GRPC-ServiceClientInterface.html#method_getServerCapabilities) method.

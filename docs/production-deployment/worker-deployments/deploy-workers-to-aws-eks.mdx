@@ -40,7 +40,7 @@ The specifics will vary depending on your deployment.
 
 :::
 
-## Before you begin {/* #before-you-begin */}
+## Before you begin
 
 To get started deploying your Workers to EKS, you’ll need:
 
@@ -53,7 +53,7 @@ To get started deploying your Workers to EKS, you’ll need:
 - [`docker`](https://www.docker.com/get-started/)
 - The [`kubectl`](https://kubernetes.io/docs/reference/kubectl/) command line tool, configured with your deployed EKS cluster
 
-## Write your Worker code {/* #write-your-worker-code */}
+## Write your Worker code
 
 In Temporal applications, business logic lives within your main Workflow code.
 Your Worker code runs separately, and is responsible for executing your Workflows and Activities.
@@ -125,7 +125,7 @@ if __name__ == "__main__":
   asyncio.run(main())
 ```
 
-## Containerize the Worker for Kubernetes {/* #containerize-the-worker-for-kubernetes */}
+## Containerize the Worker for Kubernetes
 
 You need to containerize your Worker code to run it with Kubernetes.
 Here is a sample Python Dockerfile, complete with the Temporal Python SDK installed:
@@ -163,7 +163,7 @@ docker buildx build \
     -t your-app .
 ```
 
-## Publish the Worker Image to Amazon ECR {/* #publish-the-worker-image-to-amazon-ecr */}
+## Publish the Worker Image to Amazon ECR
 
 After building the Docker image, you’re ready to publish it to Amazon ECR.
 Make sure that you’re authenticated with AWS, and that you’ve set your `AWS_REGION` and `AWS_ACCOUNT_ID` environment variables:
@@ -190,7 +190,7 @@ docker tag your-app $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/your-app:l
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/your-app:latest
 ```
 
-## Deploy the Workers to EKS {/* #deploy-the-workers-to-eks */}
+## Deploy the Workers to EKS
 
 With your Worker containerized, you’re ready to deploy it to EKS. Create a namespace in your EKS cluster. You’ll use the namespace to run your Temporal Workers:
 
@@ -294,7 +294,7 @@ kubectl apply -f deployment.yaml \
     --namespace example-namespace
 ```
 
-## Verify that the Workers are Connected {/* #verify-that-the-workers-are-connected */}
+## Verify that the Workers are Connected
 
 After deploying your Workers to EKS, confirm that they have connected to Temporal Cloud.
 Retrieve the pod listing for the Kubernetes/EKS namespace that you created:

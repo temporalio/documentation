@@ -33,7 +33,7 @@ For an in-depth guide covering everything from why you need High Availability to
 
 :::
 
-## Built-in reliability {/* #built-in-reliability */}
+## Built-in reliability
 
 Even without High Availability features, Temporal Cloud provides robust reliability and a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)) guarantee against service errors.
 
@@ -55,7 +55,7 @@ High Availability features extend Temporal Cloud's replication across regions an
 | **Multi&#8209;region&nbsp;Replication** | Namespace is replicated across two cloud regions           |
 | **Multi&#8209;cloud&nbsp;Replication**  | Namespace is replicated across different cloud providers   |
 
-### Key features {/* #key-features */}
+### Key features
 
 - **Real-time replication** — Temporal replicates your Namespace across distant regions or cloud providers with no performance impact to your Workers or Workflows.
 - **Automatic failover with 20-minute RTO** — Temporal manages failover with a 20-minute [RTO](/cloud/rpo-rto). You can also [trigger failover](/cloud/high-availability/failovers) manually at any time, for example for testing.
@@ -74,7 +74,7 @@ You can't enable both Multi-region Replication and Multi-cloud Replication on th
 
 :::
 
-### Multi-cloud Replication {/* #multi-cloud-replication */}
+### Multi-cloud Replication
 
 Multi-cloud Replication spreads a Namespace across entirely different cloud providers, keeping your Namespace running even during a cloud-wide outage.
 If a provider outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
@@ -93,18 +93,18 @@ Using physically separated regions improves the fault tolerance of your applicat
 
 :::
 
-## Service levels and recovery objectives {/* #service-levels-and-recovery-objectives */}
+## Service levels and recovery objectives
 
 Namespaces using High Availability have a 99.99% [uptime SLA](/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
 
 - [Service Level Agreement (SLA)](/cloud/sla)
 - [Recovery Point Objective (RPO) and Recovery Time Objective (RTO)](/cloud/rpo-rto)
 
-## Failover {/* #failover */}
+## Failover
 
 High Availability Namespaces can automatically or manually [fail over](/cloud/high-availability/failovers) to the replica if the primary is unavailable or unhealthy.
 
-## Target workloads {/* #target-workloads */}
+## Target workloads
 
 High Availability Namespaces are a great solution for Workloads where an outage would cause:
 
@@ -114,15 +114,15 @@ High Availability Namespaces are a great solution for Workloads where an outage 
 
 These are often major concerns for financial services, e-commerce, gaming, global SaaS platforms, bookings & reservations, delivery & shipping, and order management.
 
-## Same-region Replication {/* #same-region-replication */}
+## Same-region Replication
 
 In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
 This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
 
-## Related considerations {/* #related-considerations */}
+## Related considerations
 
-### External Storage {/* #external-storage */}
+### External Storage
 
 If your Workflows use [External Storage](/external-storage) to offload large payloads, durability of the external store
 is a separate concern from Namespace replication. 

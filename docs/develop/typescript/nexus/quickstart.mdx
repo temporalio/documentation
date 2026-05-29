@@ -36,7 +36,7 @@ To evaluate whether Nexus fits your use case, see the [evaluation guide](/evalua
 **Prerequisites:** Complete the [TypeScript SDK Quickstart](/develop/typescript/set-up-your-local-typescript) first.
 You should have `activities.ts`, `workflows.ts`, `worker.ts`, and `client.ts` from that guide.
 
-## What you'll build {/* #what-youll-build */}
+## What you'll build
 
 You have `example` running in the `default` Namespace.
 By the end of this guide:
@@ -65,7 +65,7 @@ export const sayHelloService = nexus.service('say-hello', {
 </>
 }>
 
-## 1. Define the Nexus Service {/* #1-define-the-nexus-service */}
+## 1. Define the Nexus Service
 
 Create a file called `service.ts` that defines the Nexus Service contract.
 
@@ -104,7 +104,7 @@ export const sayHelloHandler = nexus.serviceHandler(sayHelloService, {
 </>
 }>
 
-## 2. Define the Nexus Operation handlers {/* #2-define-the-nexus-operation-handlers */}
+## 2. Define the Nexus Operation handlers
 
 Create a file called `handler.ts` that implements the Nexus Operation handler.
 
@@ -151,7 +151,7 @@ run().catch((err) => {
 </>
 }>
 
-## 3. Register the Nexus Service handler in a Worker {/* #3-register-the-nexus-service-handler-in-a-worker */}
+## 3. Register the Nexus Service handler in a Worker
 
 Update your existing `worker.ts` to register the Nexus Service Handler.
 
@@ -195,7 +195,7 @@ export async function callerWorkflow(name: string): Promise<string> {
 </>
 }>
 
-## 4. Develop the caller Workflow {/* #4-develop-the-caller-workflow */}
+## 4. Develop the caller Workflow
 
 Update your existing `workflows.ts` file with a Workflow which invokes the Nexus Operation.
 
@@ -225,7 +225,7 @@ temporal operator namespace create --namespace my-caller-namespace
 </>
 }>
 
-## 5. Create the caller Namespace and Nexus Endpoint {/* #5-create-the-caller-namespace-and-nexus-endpoint */}
+## 5. Create the caller Namespace and Nexus Endpoint
 
 Before running the application, create a caller Namespace and a Nexus Endpoint to route requests from the caller to the handler.
 The handler uses the `default` Namespace that was created when you started the dev server.
@@ -292,7 +292,7 @@ main().catch((err) => {
 </>
 }>
 
-## 6. Run and Verify {/* #6-run-and-verify */}
+## 6. Run and Verify
 
 Create a file called `caller-starter.ts` to start the caller Worker and execute the Workflow.
 
@@ -325,7 +325,7 @@ You should see `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOpe
 </SetupStep>
 </SetupSteps>
 
-## Next Steps {/* #next-steps */}
+## Next Steps
 
 Now that you have a working Nexus Service, here are some resources to deepen your understanding:
 

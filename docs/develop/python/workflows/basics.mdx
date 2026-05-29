@@ -181,7 +181,7 @@ _deterministic_.
 
 The SDK provides replay-safe alternatives for common needs:
 
-#### Logging {/* #logging */}
+#### Logging
 
 Use [`workflow.logger`](https://python.temporal.io/temporalio.workflow.html#logger) instead of `print()` or the standard `logging` module.
 The SDK logger automatically suppresses log messages during replay to avoid duplicates:
@@ -197,7 +197,7 @@ class MyWorkflow:
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/python/platform/observability#logging).
 
-#### Random numbers and UUIDs {/* #random-numbers-and-uuids */}
+#### Random numbers and UUIDs
 
 Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#random) to get a deterministic `random.Random` instance seeded per Workflow Execution. Never use `random.random()` or other `random` module functions directly.
 For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
@@ -212,7 +212,7 @@ import random
 value = random.randint(1, 100)
 ```
 
-#### Current time {/* #current-time */}
+#### Current time
 
 Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) instead of `datetime.now()` or `time.time()`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
 
@@ -220,7 +220,7 @@ Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) 
 current_time = workflow.now()
 ```
 
-#### Detecting replay (advanced) {/* #detecting-replay-advanced */}
+#### Detecting replay (advanced)
 
 Use [`workflow.unsafe.is_replaying`](https://python.temporal.io/temporalio.workflow.html#is_replaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/python/workers/interceptors).
 :::caution

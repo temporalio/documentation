@@ -60,7 +60,7 @@ The authentication process follows this pathway:
 For guidance on which identities should own API keys, when to use Namespace-scoped Service Accounts, and how to align
 API keys with your Namespace topology, see [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
 
-### API key use cases {/* #api-key-use-cases */}
+### API key use cases
 
 API keys are used for the following scenarios:
 
@@ -71,7 +71,7 @@ API keys are used for the following scenarios:
 - _**Namespace authentication**_: API keys serve as an authentication mechanism for executing and managing Workflows via
   the SDK and Temporal CLI, offering an alternative to mTLS-based authentication.
 
-### API key supported tooling {/* #api-key-supported-tooling */}
+### API key supported tooling
 
 Use API keys to authenticate with:
 
@@ -81,7 +81,7 @@ Use API keys to authenticate with:
 - [The Cloud Operations API](/cloud/operation-api.mdx)
 - [Temporalʼs Terraform provider](/cloud/terraform-provider)
 
-### API key permissions {/* #api-key-permissions */}
+### API key permissions
 
 API keys support both users and Service Accounts. Here are the differences in their permissions:
 
@@ -91,7 +91,7 @@ API keys support both users and Service Accounts. Here are the differences in th
 - Namespace Admins can create, delete, and update access to API keys for the Namespace-scoped Service Accounts they
   administer.
 
-### API key prerequisites {/* #api-key-prerequisites */}
+### API key prerequisites
 
 Check these setup details before using API keys:
 
@@ -129,7 +129,7 @@ is created and configured.
 Manage your personal API keys with the Temporal Cloud UI or `tcld`. These sections show you how to generate, manage, and
 remove API keys for a user.
 
-### Generate an API key {/* #generate-an-api-key */}
+### Generate an API key
 
 Create API keys using one of the following methods:
 
@@ -139,7 +139,7 @@ Create API keys using one of the following methods:
 
 :::
 
-#### Generate API keys with the Temporal Cloud UI {/* #generate-api-keys-with-the-temporal-cloud-ui */}
+#### Generate API keys with the Temporal Cloud UI
 
 [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your
 [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys). Then select **Create API key** and provide the
@@ -151,7 +151,7 @@ following information:
 
 Finish by selecting **Generate API Key**.
 
-#### Generate API keys with tcld {/* #generate-api-keys-with-tcld */}
+#### Generate API keys with tcld
 
 To generate an API key, log into your account and issue the following command:
 
@@ -165,11 +165,11 @@ tcld apikey create \
 
 Duration specifies the time until the API key expires, for example: "30d", "4d12h", etc.
 
-### Enable or Disable an API key {/* #enable-or-disable-an-api-key */}
+### Enable or Disable an API key
 
 You can enable or disable API keys. When disabled, an API key cannot authenticate with Temporal Cloud.
 
-#### Manage API key state with the Temporal Cloud UI {/* #manage-api-key-state-with-the-temporal-cloud-ui */}
+#### Manage API key state with the Temporal Cloud UI
 
 Follow these steps:
 
@@ -178,7 +178,7 @@ Follow these steps:
 1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Enable** or **Disable**.
 
-#### Manage API Key State with tcld {/* #manage-api-key-state-with-tcld */}
+#### Manage API Key State with tcld
 
 To manage an API key, log into your account and use one of the following commands to enable or disable it:
 
@@ -188,7 +188,7 @@ tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
 
-### Delete an API key {/* #delete-an-api-key */}
+### Delete an API key
 
 Deleting an API key stops it from authenticating with Temporal Cloud.
 
@@ -199,7 +199,7 @@ This can affect long-running Workflows that outlast the API key's lifetime.
 
 :::
 
-#### Delete API keys with the Temporal Cloud UI {/* #delete-api-keys-with-the-temporal-cloud-ui */}
+#### Delete API keys with the Temporal Cloud UI
 
 Follow these steps to remove API keys:
 
@@ -208,7 +208,7 @@ Follow these steps to remove API keys:
 1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Delete**.
 
-#### Delete API keys with tcld {/* #delete-api-keys-with-tcld */}
+#### Delete API keys with tcld
 
 To delete an API key, log into your account and issue the following:
 
@@ -217,7 +217,7 @@ tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
-### Rotate an API key {/* #rotate-an-api-key */}
+### Rotate an API key
 
 Temporal API keys automatically expire based on the specified expiration time. Follow these steps to rotate API keys:
 
@@ -236,7 +236,7 @@ Namespace Admins can manage and generate API keys for the Namespace-scoped Servi
 
 This is different for non-admin users, who manage and generate their own API keys.
 
-### Generate an API Key for a Service Account {/* #generate-an-api-key-for-a-service-account */}
+### Generate an API Key for a Service Account
 
 Create API keys for Service Accounts using one of the following methods:
 
@@ -246,7 +246,7 @@ Create API keys for Service Accounts using one of the following methods:
 
 :::
 
-#### Generate API Keys with the Temporal Cloud UI {/* #generate-api-keys-with-the-temporal-cloud-ui-1 */}
+#### Generate API Keys with the Temporal Cloud UI
 
 [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI. Global Administrators or Account Owners can go to
 [Settings → API Keys](https://cloud.temporal.io/settings/api-keys). Namespace Admins can go to
@@ -260,7 +260,7 @@ provide the following information:
 
 Finish by selecting **Generate API Key**.
 
-#### Generate API keys with tcld {/* #generate-api-keys-with-tcld-1 */}
+#### Generate API keys with tcld
 
 To create an API key for a Service Account, use `tcld apikey create` with the `--service-account-id` flag:
 
@@ -272,12 +272,12 @@ tcld apikey create \
     --service-account-id <service-account-id>
 ```
 
-### Enable or Disable an API key {/* #enable-or-disable-an-api-key-1 */}
+### Enable or Disable an API key
 
 Global Administrators and Account Owners can manage API key access for any user in their account using the Temporal
 Cloud UI or `tcld`.
 
-#### Manage keys with Temporal Cloud UI {/* #manage-keys-with-temporal-cloud-ui */}
+#### Manage keys with Temporal Cloud UI
 
 Follow these steps:
 
@@ -288,7 +288,7 @@ Follow these steps:
    action. There may be a delay after changing the status. Once successful, the updated API key status will be shown in
    the row.
 
-#### Manage keys with tcld {/* #manage-keys-with-tcld */}
+#### Manage keys with tcld
 
 Use the `tcld apikey disable` or `tcld apikey enable` command to disable or enable an API key:
 
@@ -300,14 +300,14 @@ tcld apikey enable --id <api-key-id>
 
 This command is the same for users and Service Accounts.
 
-### Delete an API key for a Service Account {/* #delete-an-api-key-for-a-service-account */}
+### Delete an API key for a Service Account
 
 Global Administrators and Account Owners can delete API keys for any user or Service Account in their account using the
 Temporal Cloud UI or `tcld`. Deleting a key removes its ability to authenticate with Temporal Cloud. If you delete an
 API key used by a Worker to run a Workflow, that Worker will fail to connect to Temporal server unless you rotate the
 API key with a new one.
 
-#### Delete a Service Account API key with Temporal Cloud UI {/* #delete-a-service-account-api-key-with-temporal-cloud-ui */}
+#### Delete a Service Account API key with Temporal Cloud UI
 
 Follow these steps:
 
@@ -316,7 +316,7 @@ Follow these steps:
    delay after deleting the API key.
 1. Once successful, the updated API key status will be reflected in the row.
 
-#### Delete a Service Account API key with tcld {/* #delete-a-service-account-api-key-with-tcld */}
+#### Delete a Service Account API key with tcld
 
 Use the `tcld apikey delete` command to delete an API key. The process for deleting an API key is the same for a user or
 Service Account.
@@ -326,7 +326,7 @@ tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
-### Rotate a Service Account API key {/* #rotate-a-service-account-api-key */}
+### Rotate a Service Account API key
 
 Temporal API keys automatically expire based on the specified expiration time. Follow these steps to rotate API keys:
 
@@ -365,7 +365,7 @@ Authenticate with Temporal Cloud using API keys with the following clients:
 - [The Cloud Operations API](/cloud/operation-api.mdx)
 - [Temporal’s Terraform Provider](/cloud/terraform-provider)
 
-### Temporal CLI {/* #temporal-cli */}
+### Temporal CLI
 
 To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable in
 your shell (recommended). The CLI automatically picks up the `TEMPORAL_API_KEY` environment variable from your shell.
@@ -394,7 +394,7 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 :::
 
-### SDKs {/* #sdks */}
+### SDKs
 
 To use your API key with a Temporal SDK, see the instructions in each SDK section.
 
@@ -408,7 +408,7 @@ To use your API key with a Temporal SDK, see the instructions in each SDK sectio
 
 [How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud)
 
-### tcld {/* #tcld */}
+### tcld
 
 To use an API key with `tcld`, choose one of these methods:
 
@@ -421,13 +421,13 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 :::
 
-### Cloud Ops API {/* #cloud-ops-api */}
+### Cloud Ops API
 
 To use an API key with the [Cloud Ops API](/ops), securely pass the API key in your API client. For a complete example,
 see
 [Cloud Samples in Go](https://github.com/temporalio/cloud-samples-go/blob/1dd4254b6ed1937e361005c0144410e72b8a5542/client/api/apikey.go).
 
-### Terraform Provider {/* #terraform-provider */}
+### Terraform Provider
 
 To use an API key with the [Temporal Terraform Provider](/cloud/terraform-provider), pass the API
 key as a provider argument.

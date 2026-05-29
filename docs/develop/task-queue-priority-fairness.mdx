@@ -23,7 +23,7 @@ Fairness prevents one set of Tasks from blocking others within the same priority
 
 You can use Priority and Fairness individually or combine them to express Fairness within a Priority level.
 
-## Task Queue Priority {/* #task-queue-priority */}
+## Task Queue Priority
 
 **Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a Task Queue. Each priority level acts as a sub-queue that separates Tasks so that high priority Tasks can cut in front of low priority Tasks.
 
@@ -32,13 +32,13 @@ You can use Priority and Fairness individually or combine them to express Fairne
   alt="Flowchart of how Priority dispatches Tasks from highest to lowest priority queue"
 />
 
-### When to use Priority {/* #when-to-use-priority */}
+### When to use Priority
 
 If you need a way to specify the order your Tasks execute in, you can use Priority to manage that. Priority lets you differentiate between your Tasks, like batch and real-time Tasks, so that you can use a single pool of Workers for efficient resource allocation, while ensuring real-time Tasks are processed ahead of batch Tasks.
 
 You can also use this as a way to run urgent Tasks immediately and override others. For example, if you are running an e-commerce platform, you may want to process payment related Tasks before less time-sensitive Tasks like internal inventory management.
 
-### How to use Priority {/* #how-to-use-priority */}
+### How to use Priority
 
 Priority is enabled by default in both Temporal Cloud and self-hosted Temporal. To disable Priority in self-hosted Temporal, set the [dynamic config](/temporal-service/configuration#dynamic-configuration) `matching.useNewMatcher` to `false` on a Task Queue, Namespace, or globally.
 
@@ -210,7 +210,7 @@ await Workflow.ExecuteChildWorkflowAsync(
 </SdkTabs.DotNet>
 </SdkTabs>
 
-## Task Queue Fairness {/* #task-queue-fairness */}
+## Task Queue Fairness
 
 Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and _fairness weights_ within a Task Queue.
 
@@ -218,7 +218,7 @@ Each fairness key creates its own "virtual queue", allowing you to organize Task
 
 By default, each fairness key is weighted equally in the round-robin, with a _fairness weight_ of 1.0. This behavior can be customized by assigning a different fairness weight to a key. For example, Tasks belonging to a fairness key with a weight of 2.0 will be dispatched twice as often as keys with the default weight.
 
-### When to use Fairness {/* #when-to-use-fairness */}
+### When to use Fairness
 
 Fairness is intended to address common situations like:
 
@@ -238,7 +238,7 @@ prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness,
 fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others. In this case,
 _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are executed "fairly".
 
-### How to use Fairness {/* #how-to-use-fairness */}
+### How to use Fairness
 
 Fairness is available for both self-hosted Temporal instances and Temporal Cloud.
 
@@ -515,7 +515,7 @@ There should only be one fairness weight assigned to each fairness key within a 
 
 :::
 
-### Choosing between Priority, Fairness, and both {/* #choosing-between-priority-fairness-and-both */}
+### Choosing between Priority, Fairness, and both
 
 - **Priority alone** when you need strict priority ordering - for example, separating real-time Tasks from batch Tasks.
 - **Fairness alone** when you need tier or tenant isolation so no group is starved, but you don't need to preempt any group ahead of another.
@@ -534,7 +534,7 @@ These rules apply within a Task Queue partition. See [Limitations of Fairness](#
   alt="Flowchart of how Priority and Fairness combine: poller checks priority levels in order, then within each level Fairness selects a virtual queue weighted by fairness weight"
 />
 
-### Inheritance {/* #inheritance */}
+### Inheritance
 
 Each field of Priority (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently.
 
@@ -559,7 +559,7 @@ Each field of Priority (`priority_key`, `fairness_key`, `fairness_weight`) is re
 
 Continue-As-New inherits from the current execution unless explicit values are passed.
 
-### Enabling or disabling Fairness with an active backlog {/* #enabling-or-disabling-fairness-with-an-active-backlog */}
+### Enabling or disabling Fairness with an active backlog
 
 When Fairness is enabled on a Namespace, Task Queues in the Namespace begin honoring fairness keys on Tasks for dispatch ordering. Existing queued Tasks are dispatched first, in their original priority + FIFO order. Fairness keys on Tasks already in the backlog do not retroactively affect their dispatch order.
 
@@ -567,7 +567,7 @@ When Fairness is disabled on a Namespace, Task Queues in the Namespace stop hono
 
 In both directions, the existing backlog is dispatched before any new Tasks queued under the new mode. New Tasks dispatch only after the backlog fully drains. Tasks are not lost in either transition.
 
-### Set rate limits at the Task Queue level {/* #set-rate-limits-at-the-task-queue-level */}
+### Set rate limits at the Task Queue level
 
 Within a Task Queue, you can set dispatch rate limits for the whole queue using `queue-rps-limit` and for each fairness key using `fairness-key-rps-limit-default`.
 
@@ -591,7 +591,7 @@ temporal task-queue config set \
 - Since the dispatch rate for each key should be proportional to its weight, if any key is hitting the per-key limit, then nearly all of them are. The way it works is if the next Task to be dispatched hits the per-key limit, then dispatch will wait until it can go.
 - Usually there isn't actually any blocking, but there can be when the fairness weight for a key is changed between when a Task is scheduled and when it's dispatched. If the fairness weight for a key is lowered, for example, the new lower per-key rate limit will be respected. Since those Tasks were originally scheduled with the higher rate, they will block other Tasks as they're dispatched. This limitation will be improved in the future.
 
-### Fairness weight overrides {/* #fairness-weight-overrides */}
+### Fairness weight overrides
 
 You can override the weights of up to 1000 keys through the config API. When an override is set for a key, the weight attached to the Task, through Workflow or Activity priority metadata, will be ignored, and the overridden weight will be used instead.
 
@@ -610,7 +610,7 @@ temporal task-queue config set \
 
 To unset a single key's override, pass `key=default`. To clear all overrides on the Task Queue, use `--fairness-key-weight-clear-all`.
 
-### Limitations of Fairness {/* #limitations-of-fairness */}
+### Limitations of Fairness
 
 - There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
 - Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfere with fairness. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.

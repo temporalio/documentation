@@ -31,12 +31,12 @@ Here are some common use cases for plugins:
 - Adding reliable built-in functionality such as LLM calls, messaging systems, and payments infrastructure
 - Encryption or compliance middleware
 
-## How to build a Plugin {/* #how-to-build-a-plugin */}
+## How to build a Plugin
 
 The recommended way to start building plugins is with a `SimplePlugin`. This abstraction will tackle the vast majority
 of plugins people want to write.
 
-### Example Plugins {/* #example-plugins */}
+### Example Plugins
 
 If you prefer to learn by getting hands-on with code, check out some existing plugins.
 
@@ -48,7 +48,7 @@ If you prefer to learn by getting hands-on with code, check out some existing pl
 - Temporal's TypeScript SDK ships with an
   [OpenTelemetry Plugin](https://github.com/temporalio/sdk-typescript/blob/main/packages/interceptors-opentelemetry/src/plugin.ts)
 
-## What you can provide to users in a plugin {/* #what-you-can-provide-to-users-in-a-plugin */}
+## What you can provide to users in a plugin
 
 There are a number of features you can give your users with a plugin. Here's a short list of some of the things you can
 do.
@@ -61,7 +61,7 @@ do.
 - [Interceptors](#interceptors)
 - [Context Propagators](#context-propagators)
 
-### Built-in Activity {/* #built-in-activity */}
+### Built-in Activity
 
 You can provide built-in Activities in a Plugin for users to call from their Workflows. Check out the
 [Activities](/activities) page for more details on how they work.
@@ -69,7 +69,7 @@ You can provide built-in Activities in a Plugin for users to call from their Wor
 Refer to the [best practices for creating Activities](/activity-definition#best-practices-for-defining-activities) when
 you are making Activity plugins.
 
-#### Timeouts and retry policies {/* #timeouts-and-retry-policies */}
+#### Timeouts and retry policies
 
 Temporal's Activity retry mechanism gives applications the benefits of Durable Execution. See the
 [Activity retry policy explanation](/activity-definition#activity-retry-policy) for more details.
@@ -184,7 +184,7 @@ plugin = Temporalio::SimplePlugin.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-### Workflow-friendly libraries {/* #workflow-friendly-libraries */}
+### Workflow-friendly libraries
 
 You can provide a library for use within a Workflow if you'd like to abstract away some Temporal-specific details for
 your users. Your library will call elements you include in your Plugin such as Activities, Child Workflows, Signals,
@@ -215,7 +215,7 @@ Users use Workflows for:
 - Interactivity via [message-passing](/evaluate/development-production-features/workflow-message-passing)
 - Tracing and observability
 
-#### Making changes to your library {/* #making-changes-to-your-library */}
+#### Making changes to your library
 
 Your users may want to keep their Workflows running across deployments of their Worker code. If their deployment
 includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new
@@ -225,12 +225,12 @@ version was deployed. This can be due to
 See [testing](#testing-your-plugin) to see how to test for this. And, if you make substantive changes, you need to use
 [patching](/patching).
 
-#### Example of a Workflow library that uses a Plugin in Python {/* #example-of-a-workflow-library-that-uses-a-plugin-in-python */}
+#### Example of a Workflow library that uses a Plugin in Python
 
 - [Implementation of the `OpenAIAgentsPlugin`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents)
 - [Example of replay testing](https://github.com/temporalio/sdk-python/blob/main/tests/contrib/openai_agents/test_openai_replay.py)
 
-### Built-in Workflows {/* #built-in-workflows */}
+### Built-in Workflows
 
 You can provide a built-in Workflow in a `SimplePlugin`. It’s callable as a Child Workflow or standalone. When you want
 to provide a piece of functionality that's more complex than an Activity, you can:
@@ -351,7 +351,7 @@ plugin = Temporalio::SimplePlugin.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-### Built-in Nexus Operations {/* #built-in-nexus-operations */}
+### Built-in Nexus Operations
 
 Nexus calls are used from Workflows similar to Activities and you can learn more about [Temporal Nexus](/nexus). Like Activities, Nexus operation inputs and return values must be serializable.
 
@@ -524,7 +524,7 @@ SimplePlugin nexusPlugin = new SimplePlugin(
   </SdkTabs.DotNet>
 </SdkTabs>
 
-### Custom Data Converters {/* #custom-data-converters */}
+### Custom Data Converters
 
 A [custom Data Converter](/default-custom-data-converters#custom-data-converter) can alter data formats or provide compression or encryption.
 
@@ -644,7 +644,7 @@ plugin = Temporalio::SimplePlugin.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-### Interceptors {/* #interceptors */}
+### Interceptors
 
 Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/workers/interceptors) for the details of implementing them. They're used to:
 
@@ -835,11 +835,11 @@ func createContextPropagatorPlugin() (*temporal.SimplePlugin, error) {
   </SdkTabs.Go>
 </SdkTabs>
 
-### Special considerations for different languages {/* #special-considerations-for-different-languages */}
+### Special considerations for different languages
 
 Each of the SDKs has nuances you should be aware of so you can account for it in your code.
 
-#### Python {/* #python */}
+#### Python
 
 You can choose to [run your Workflows in a sandbox in Python](/develop/python/best-practices/python-sdk-sandbox). This lets you run
 Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who
@@ -865,7 +865,7 @@ plugin = SimplePlugin("organization.PluginName", workflow_runner=workflow_runner
 ```
 {/* SNIPEND */}
 
-#### TypeScript {/* #typescript */}
+#### TypeScript
 
 TypeScript bundles cannot provide built-in Workflows because the TypeScript SDK bundles all Workflow code from a single
 module. Plugin users must import and re-export any Plugin-provided Workflows from their own Workflow module so the
@@ -898,11 +898,11 @@ To test your Plugin, you'll write a normal Temporal Workflow tests, having inclu
 Two special concerns are versioning tests, for when you're making changes to your plugin, and testing unwanted side
 effects.
 
-### Versioning tests {/* #versioning-tests */}
+### Versioning tests
 
 When you make changes to your plugin after it has already shipped to users, we recommend that you set up [replay testing](/develop/python/best-practices/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
 
-### Side effects tests {/* #side-effects-tests */}
+### Side effects tests
 
 Your Plugin should cater to Workflows resuming in different processes than the ones they started on and then replaying
 from the beginning, which can happen, for example, after an intermittent failure.

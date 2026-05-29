@@ -33,13 +33,13 @@ Configure your local development environment to get started developing with Temp
   </>
 }>
 
-## Install PHP {/* #install-php */}
+## Install PHP
 
 Make sure you have PHP installed.
 
 **If you don't have PHP:** Visit the official website to [download and install](https://www.php.net/downloads.php) it.
 
-### GRPC extension {/* #grpc-extension */}
+### GRPC extension
 
 GRPC extension is required to work with RoadRunner application server.
 
@@ -75,7 +75,7 @@ composer init --name="myproject/quickstart" -n
 </>
 }>
 
-## Create a Project {/* #create-a-project */}
+## Create a Project
 
 Now that you have PHP installed, create a project to manage your dependencies and build your Temporal application.
 
@@ -105,7 +105,7 @@ composer dump-autoload
 </>
 }>
 
-## Add Temporal PHP SDK and Configure Autoloading {/* #add-temporal-php-sdk-and-configure-autoloading */}
+## Add Temporal PHP SDK and Configure Autoloading
 
 Install the Temporal SDK, then add PSR-4 autoloading to your `composer.json` so PHP can find your Workflow and Activity
 classes.
@@ -152,7 +152,7 @@ autoloader.
 </>
 }>
 
-## Install RoadRunner application server {/* #install-roadrunner-application-server */}
+## Install RoadRunner application server
 
 Install [RoadRunner application server](https://github.com/roadrunner-server/roadrunner). It starts and manages your PHP
 processes that run Temporal Workers, and connects them to the Temporal Service over gRPC.
@@ -219,7 +219,7 @@ Create a simple configuration file named `.rr.yaml` with the following content:
 </>
 }>
 
-## Install Temporal CLI and start the development server {/* #install-temporal-cli-and-start-the-development-server */}
+## Install Temporal CLI and start the development server
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
 [Temporal CLI](https://docs.temporal.io/cli).
@@ -251,7 +251,7 @@ Choose your operating system to install Temporal CLI:
 </>
 }>
 
-### DLoad package manager {/* #dload-package-manager */}
+### DLoad package manager
 
 Consider using DLoad to delegate all installation and updating processes to the package manager.
 
@@ -274,7 +274,7 @@ temporal server start-dev --ui-port 8080
 </>
 }>
 
-## Start the development server {/* #start-the-development-server */}
+## Start the development server
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
@@ -291,7 +291,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 
 </SetupStep>
 </SetupSteps>
-## Run Hello World: Test Your Installation {/* #run-hello-world-test-your-installation */}
+## Run Hello World: Test Your Installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -303,7 +303,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity {/* #1-create-the-activity */}
+### 1. Create the Activity
 
 Create an Activity file (`src/GreetingActivity.php`):
 
@@ -335,7 +335,7 @@ You define Activities in PHP as classes annotated with the `Temporal\Activity\Ac
 
 Each method used in workflow classes should be annotated with `Temporal\Activity\ActivityMethod`.
 
-### 2. Create the Workflow {/* #2-create-the-workflow */}
+### 2. Create the Workflow
 
 Create a Workflow file (`src/SayHelloWorkflow.php`):
 
@@ -367,7 +367,7 @@ class SayHelloWorkflow
 }
 ```
 
-### 3. Create a Worker file {/* #3-create-a-worker-file */}
+### 3. Create a Worker file
 
 Create a Worker file (`worker.php`, under project root directory):
 
@@ -392,7 +392,7 @@ $worker->registerActivity(\App\GreetingActivity::class);
 $factory->run();
 ```
 
-#### Run the Worker {/* #run-the-worker */}
+#### Run the Worker
 
 Previously, we created a Worker that executes Workflow and Activity tasks.
 
@@ -410,7 +410,7 @@ Workers are a crucial part of your Temporal application as they're what actually
 Workflows and Activities. For more information on Workers, see
 [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-### 5. Execute the Workflow {/* #5-execute-the-workflow */}
+### 5. Execute the Workflow
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
@@ -444,7 +444,7 @@ While your Worker is still running, open a new terminal and run:
 php client.php
 ```
 
-### Verify Success {/* #verify-success */}
+### Verify Success
 
 If everything is working correctly, you should see:
 

@@ -22,7 +22,7 @@ The Temporal Worker Controller makes it simple and safe to deploy Temporal Worke
 
 If you run versioned Workers on Kubernetes, the Worker Controller is the recommended way to manage rollouts and autoscaling together.
 
-### Why adopt the Worker Controller? {/* #why-adopt-the-worker-controller */}
+### Why adopt the Worker Controller?
 
 The traditional approach to revising Temporal Workflows is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
 Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running Workflows.
@@ -40,7 +40,7 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 - [**Worker Deployment Version**](/worker-versioning#deployment-versions): A Worker Deployment Version represents an iteration of a Worker Deployment. Each Deployment Version consists of Workers that share the same code build and environment. When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 - **Deployment**: A Kubernetes Deployment resource. A Deployment is "versioned" if it is running versioned Temporal workers/pollers.
 
-### Features {/* #features */}
+### Features
 
 - Registration of new Temporal Worker Deployment Versions
 - Creation of versioned Deployment resources (that manage the Pods that run your Temporal pollers)
@@ -51,7 +51,7 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 
 Refer to the [Temporal Worker Controller repo](https://github.com/temporalio/temporal-worker-controller/) for usage details.
 
-## Autoscaling versioned Workers {/* #autoscaling-versioned-workers */}
+## Autoscaling versioned Workers
 
 The Worker Controller can manage autoscaling for versioned Worker Deployments without forcing you to choose between
 safe rollout behavior and elastic capacity.
@@ -70,7 +70,7 @@ including:
 - slot utilization and other Worker-specific metrics
 - custom metrics surfaced through Prometheus or another Kubernetes metrics adapter
 
-### TemporalWorkerOwnedResource {/* #temporalworkerownedresource */}
+### TemporalWorkerOwnedResource
 
 To attach autoscaling or other Kubernetes resources to each Worker Deployment Version, use a
 `TemporalWorkerOwnedResource` (TWOR).
@@ -85,7 +85,7 @@ active Worker Deployment Version. This is useful for resources such as:
 The Worker Controller manages these resources alongside the versioned Deployments it creates, so they are updated and
 cleaned up as versions roll forward and drain.
 
-### Why use this instead of KEDA? {/* #why-use-this-instead-of-keda */}
+### Why use this instead of KEDA?
 
 If you are already using the Worker Controller for Worker Versioning, use the Worker Controller for autoscaling as
 well. This keeps rollout management and scaling attached to the same versioned Kubernetes Deployments.
@@ -93,7 +93,7 @@ well. This keeps rollout management and scaling attached to the same versioned K
 KEDA can still be a valid option for non-versioned or legacy worker deployments. However, for versioned Workers, the
 Worker Controller is the preferred path because it keeps autoscaling aligned with Worker Deployment Versions.
 
-## Configuring Worker Lifecycles {/* #configuring-worker-lifecycles */}
+## Configuring Worker Lifecycles
 
 To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
 
@@ -117,7 +117,7 @@ As older pinned Workflows finish executing and deprecated deployment versions be
 When you use autoscaling with the Worker Controller, each active Worker Deployment Version can scale independently while
 it is serving traffic. This allows older versions to drain safely while newer versions scale based on live demand.
 
-## Running the Temporal Worker Controller {/* #running-the-temporal-worker-controller */}
+## Running the Temporal Worker Controller
 
 You can install the Temporal Worker Controller using our Helm chart:
 

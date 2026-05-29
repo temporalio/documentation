@@ -24,7 +24,7 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 Nexus Operations can return errors for a caller Workflow to handle.
 Errors from an asynchronous Operation's underlying Workflow propagate back to the caller.
 
-## Errors in Nexus handlers {/* #errors-in-nexus-handlers */}
+## Errors in Nexus handlers
 
 Nexus handlers may return [different error types](/references/failures#nexus-errors).
 By default, handler errors are retryable unless they are:
@@ -45,7 +45,7 @@ See [errors in Nexus Operations](/references/failures#errors-in-nexus-operations
 
 :::
 
-## Nexus error handling in caller Workflows {/* #nexus-error-handling-in-caller-workflows */}
+## Nexus error handling in caller Workflows
 
 When a Nexus Operation fails, the caller receives a Nexus Operation Failure containing the operation name, token, and failure reason.
 The cause field indicates the type of error (for example, Application Error or Canceled Error).

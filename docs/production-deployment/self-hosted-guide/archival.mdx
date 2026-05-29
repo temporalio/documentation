@@ -199,7 +199,7 @@ To archive data with a given provider, using the [Archival](/temporal-service/ar
 corresponding Archiver component installed. The platform does not limit you to the existing providers. To use a provider
 that is not currently supported, you can create your own Archiver.
 
-#### Create a new package {/* #create-a-new-package */}
+#### Create a new package
 
 The first step is to create a new package for your implementation in
 [/common/archiver](https://github.com/temporalio/temporal/tree/main/common/archiver). Create a directory in the archiver
@@ -217,7 +217,7 @@ temporal/common/archiver
       - visibilityArchiver_test.go  -- Unit tests for VisibilityArchiver
 ```
 
-#### Archiver interfaces {/* #archiver-interfaces */}
+#### Archiver interfaces
 
 Next, define objects that implement the
 [HistoryArchiver](https://github.com/temporalio/temporal/blob/main/common/archiver/interface.go#L80) and the
@@ -225,20 +225,20 @@ Next, define objects that implement the
 
 The objects should live in `historyArchiver.go` and `visibilityArchiver.go`, respectively.
 
-#### Update provider {/* #update-provider */}
+#### Update provider
 
 Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the
 [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/main/common/archiver/provider/provider.go)
 file so that it knows how to create an instance of your archiver.
 
-#### Add configs {/* #add-configs */}
+#### Add configs
 
 Add configs for your archiver to the `config/development.yaml` file and then modify the
 [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/main/common/config/config.go#L376) and
 [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/main/common/config/config.go#L393) structs in
 `/common/common/config.go` accordingly.
 
-#### Custom archiver FAQ {/* #custom-archiver-faq */}
+#### Custom archiver FAQ
 
 **If my custom Archive method can automatically be retried by the caller, how can I record and access progress between
 retries?**

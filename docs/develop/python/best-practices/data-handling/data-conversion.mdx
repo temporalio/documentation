@@ -17,7 +17,7 @@ A `Payload` is a binary form with metadata that Temporal uses to transport data.
 By default, Temporal uses a `DefaultPayloadConverter` that handles `None`, `bytes`, protobuf messages, and anything JSON-serializable.
 You only need a custom Payload Converter when your application uses types that aren't natively supported.
 
-## Default supported types {/* #default-supported-types */}
+## Default supported types
 
 The default Data Converter supports converting multiple types including:
 
@@ -40,7 +40,7 @@ Classes with generics may not have the generics properly resolved.
 The current implementation does not have generic type resolution.
 Users should use concrete types.
 
-## Use Pydantic models {/* #use-pydantic-models */}
+## Use Pydantic models
 
 To use Pydantic model instances, install Pydantic and set the Pydantic Data Converter when creating Client instances:
 
@@ -69,14 +69,14 @@ If you aren't yet able to upgrade from Pydantic v1, see https://github.com/tempo
 
 `datetime.date`, `datetime.time`, and `datetime.datetime` can only be used with the Pydantic Data Converter.
 
-## How the default converter works {/* #how-the-default-converter-works */}
+## How the default converter works
 
 The default converter is a `CompositePayloadConverter` that tries each encoding converter in order until one handles the value.
 Upon serialization, each `EncodingPayloadConverter` is used in order until one succeeds.
 
 Payload Converters can be customized independently of a Payload Codec.
 
-## Custom Payload Converters {/* #custom-payload-converters */}
+## Custom Payload Converters
 
 To handle custom data types, create a new `EncodingPayloadConverter`.
 For example, to support `IPv4Address` types:
@@ -114,7 +114,7 @@ my_data_converter = dataclasses.replace(
 )
 ```
 
-### Customize the JSON converter for custom types {/* #customize-the-json-converter-for-custom-types */}
+### Customize the JSON converter for custom types
 
 If you need your custom type to work in lists, unions, and other collections, customize the existing JSON converter instead of adding a new encoding converter.
 The JSON converter is the last in the list, so it handles any otherwise unknown type.

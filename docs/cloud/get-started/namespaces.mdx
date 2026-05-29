@@ -185,7 +185,7 @@ By default, each account starts with 10 Namespaces. This limit increases automat
 
 :::
 
-### Information needed to create a Namespace {/* #information-needed-to-create-a-namespace */}
+### Information needed to create a Namespace
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
@@ -203,7 +203,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 <TabItem value="namespace-webui" label="Web UI">
 
-### Create a Namespace using Temporal Cloud UI {/* #create-a-namespace-using-temporal-cloud-ui */}
+### Create a Namespace using Temporal Cloud UI
 
 1. Gather the information listed earlier in
    [Information needed to create a Namespace](#information-needed-to-create-a-namespace).
@@ -271,7 +271,18 @@ There are two types of gRPC endpoints for accessing a Namespace in Temporal Clou
     - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region. This can be useful in advanced [High Availability](/cloud/high-availability) setups where you want explicit control over which region handles requests.
     - When using mTLS to authenticate, the Temporal Client must set the `server_name` property to `<namespace endpoint value>` in its request to the value of the Namespace endpoint. This tells the client to expect a different SNI header during the TLS handshake, since the request to the regional endpoint is redirected to the specific Namespace.
 
-### Configuring a Temporal Client with API keys or mTLS {/* #configuring-a-temporal-client-with-api-keys-or-mtls */}
+:::caution Do not take dependencies on Temporal Cloud endpoint DNS resolution
+
+In general, the IP addresses that Temporal Cloud endpoints resolve to are subject to change without notice. Do not configure Workers, Temporal Clients, or firewalls against the specific IPs you observe for an endpoint at a point in time.
+
+Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
+
+1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the [Stable IPs](/cloud/connectivity/ip-addresses) for the Namespace's active region.
+2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves to a regional intermediary (`<provider>-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone or GCP private DNS zone to point at your VPC Endpoint. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for setup details.
+
+:::
+
+### Configuring a Temporal Client with API keys or mTLS
 
 To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
   [Cloud Ops API](/ops), and [Terraform](/cloud/terraform-provider), see
@@ -280,28 +291,29 @@ To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop)
 To use mTLS to connect with the [Temporal CLI](/cli) and [Client SDK](/develop), see
   [Configure Clients to use Client certificates](/cloud/certificates#configure-clients-to-use-client-certificates).
 
-### Accessing the Temporal Web UI {/* #accessing-the-temporal-web-ui */}
+### Accessing the Temporal Web UI
 
 For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 `https://cloud.temporal.io/namespaces/<namespace>.<account>`. For example:
 `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
-### Accessing Namespaces with Encryption and Private Connectivity {/* #accessing-namespaces-with-encryption-and-private-connectivity */}
+### Accessing Namespaces with Encryption and Private Connectivity
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
 
 For enhanced protection:
 - Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.
-- In your own networking architecture, set up an allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the
-  Cloud Provider region in which your Namespace is located:
-  - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
-  - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
+- Set up your allow list for outgoing network requests from your Clients and Workers. You have two options:
+  - Use Temporal Cloud's [stable IPs configuration](/cloud/connectivity/ip-addresses) to get non-changing IP addresses for your Namespace endpoint, which you can then allowlist in your firewall rules.
+  - Allowlist the entire Cloud Provider IP address ranges for the region in which your Namespace is located:
+    - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
+    - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
 
 ## How to manage Namespaces in Temporal Cloud {/* #manage-namespaces */}
 
 {/* How to manage Namespaces in Temporal Cloud using Temporal Cloud UI */}
 
-### Manage Namespaces in Temporal Cloud using Temporal Cloud UI {/* #manage-namespaces-in-temporal-cloud-using-temporal-cloud-ui */}
+### Manage Namespaces in Temporal Cloud using Temporal Cloud UI
 
 To list Namespaces:
 
@@ -331,7 +343,7 @@ After you make changes, select **Save** in the top-right or bottom-left portion 
 
 {/* How to manage Namespaces in Temporal Cloud using tcld */}
 
-### Manage Namespaces in Temporal Cloud using tcld {/* #manage-namespaces-in-temporal-cloud-using-tcld */}
+### Manage Namespaces in Temporal Cloud using tcld
 
 To list Namespaces and get information about them, use the following [tcld](/cloud/tcld/) commands:
 
@@ -354,7 +366,7 @@ Namespace.
 
 :::
 
-### Delete a Namespace using Temporal Cloud UI {/* #delete-a-namespace-using-temporal-cloud-ui */}
+### Delete a Namespace using Temporal Cloud UI
 
 1. Go to the Temporal Cloud UI and log in.
 1. On the left side of the window, select **Namespaces**.
@@ -373,7 +385,7 @@ reflects the policy in effect when the Workflow Execution was closed.
 
 For further questions or concerns, contact [Support](https://docs.temporal.io/cloud/support#support-ticket).
 
-### Delete a Namespace using tcld {/* #delete-a-namespace-using-tcld */}
+### Delete a Namespace using tcld
 
 See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
 
@@ -409,7 +421,7 @@ tcld namespace lifecycle set \
 Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize,
 track, and manage namespaces more easily.
 
-### Tag Structure and Limits {/* #tag-structure-and-limits */}
+### Tag Structure and Limits
 
 - Each namespace can have a maximum of 10 tags
 - Each key must be unique for a given namespace (e.g., a namespace cannot have both `team:foo` and `team:bar` tags)
@@ -420,22 +432,22 @@ track, and manage namespaces more easily.
 - Tags will not change the behavior of the tagged resource
 - There is a soft limit of 1000 unique tag keys per account
 
-### Permissions {/* #permissions */}
+### Permissions
 
 - Only [**Account Admins** and **Account Owners**](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and edit tags
 - All users with access to a namespace can view its tags
 
-### tcld {/* #tcld */}
+### tcld
 
 See the [tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
 
-### Terraform {/* #terraform */}
+### Terraform
 
 See the
 [Terraform provider](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/docs/resources/namespace_tags.md)
 for details.
 
-### Web UI {/* #web-ui */}
+### Web UI
 
 Tags can be viewed and managed through the Temporal Cloud web interface. When viewing a namespace, you'll see tags
 displayed and can add, edit, or remove them if you have the appropriate permissions.

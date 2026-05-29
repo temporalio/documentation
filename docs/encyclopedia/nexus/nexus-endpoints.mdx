@@ -31,7 +31,7 @@ Multiple Endpoints can target different Task Queues in the same Namespace.
 
 The Endpoint description field supports markdown for documenting available Operations, contact information, or schema links.
 
-## Reverse proxy for Nexus Services, not a general purpose proxy {/* #reverse-proxy-for-nexus-services-not-a-general-purpose-proxy */}
+## Reverse proxy for Nexus Services, not a general purpose proxy
 A Nexus Endpoint acts as a reverse proxy for a single Nexus Service, routing requests to one target Namespace and Task Queue.
 
 Unlike general-purpose proxies, it does not route to multiple backends. Instead, it provides a secure, managed connection to a specific upstream target, which can be in any region or cloud.
@@ -39,6 +39,6 @@ The [EndpointSpec](https://github.com/temporalio/api/blob/2a5b3951e71565e28628ed
 
 - **Worker**: Route to a target Namespace and Task Queue.
 
-## Deploying a Nexus Endpoint {/* #deploying-a-nexus-endpoint */}
+## Deploying a Nexus Endpoint
 
 Adding an Endpoint to the [Nexus Registry](/nexus/registry) deploys it immediately. The Endpoint is available at runtime as soon as it's registered.

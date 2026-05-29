@@ -66,7 +66,7 @@ If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Exe
     title="Parent and Child Workflow Execution entity relationship with Continue As New"
     />
 
-## When to use Child Workflows {/* #when-to-use-child-workflows */}
+## When to use Child Workflows
 
 There is no reason to use Child Workflows just for code organization.
 You can use object oriented structure and other code organization techniques to deal with complexities.
@@ -75,13 +75,13 @@ It is simpler than multiple asynchronously communicating Workflows.
 
 However, there are several valid reasons for using Child Workflows.
 
-### Create a separate service {/* #create-a-separate-service */}
+### Create a separate service
 
 Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
 As all Workflow Executions, they can communicate only via asynchronous [Signals](/sending-messages#sending-signals).
 
-### Partition problems into smaller chunks {/* #partition-problems-into-smaller-chunks */}
+### Partition problems into smaller chunks
 
 An individual Workflow Execution has an [Event History](/workflow-execution/event#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
 
@@ -95,19 +95,19 @@ In general, however, Child Workflow Executions result in more overall Events rec
 Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
 Therefore, we recommend starting with a single Workflow implementation that uses Activities until there is a clear need for Child Workflows.
 
-### Represent a single resource {/* #represent-a-single-resource */}
+### Represent a single resource
 
 As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
 It can be used to manage the resource using its ID to guarantee uniqueness.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host (hostname being a Workflow ID) and use them to ensure that all operations on the host are serialized.
 
-### Periodic logic execution {/* #periodic-logic-execution */}
+### Periodic logic execution
 
 A Child Workflow can be used to execute some periodic logic without overwhelming the Parent Workflow Event History.
 In this scenario, the Parent Workflow starts a Child Workflow which executes periodic logic calling [Continue-As-New](/workflow-execution/continue-as-new) as many times as needed, then completes.
 From the Parent point of view, it is just a single Child Workflow invocation.
 
-### Child Workflow versus an Activity {/* #child-workflow-versus-an-activity */}
+### Child Workflow versus an Activity
 
 Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
 Here are some important differences:

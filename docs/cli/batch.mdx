@@ -22,7 +22,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `batch` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## describe {/* #describe */}
+## describe
 
 Show the progress of an ongoing batch job. Pass a valid job ID to display its
 information:
@@ -38,7 +38,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--job-id` | Yes | **string** Batch job ID. |
 
-## list {/* #list */}
+## list
 
 Return a list of batch jobs on the Service or within a single Namespace. For
 example, list the batch jobs for "YourNamespace":
@@ -54,7 +54,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--limit` | No | **int** Maximum number of batch jobs to display. |
 
-## terminate {/* #terminate */}
+## terminate
 
 Terminate a batch job with the provided job ID. You must provide a reason for
 the termination. The Service stores this explanation as metadata for the
@@ -73,7 +73,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--job-id` | Yes | **string** Job ID to terminate. |
 | `--reason` | Yes | **string** Reason for terminating the batch job. |
 
-## Global Flags {/* #global-flags */}
+## Global Flags
 
 The following options can be used with any command.
 

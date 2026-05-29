@@ -53,7 +53,7 @@ A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Ve
 
 An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
-### Activity behavior across versions {/* #activity-behavior-across-versions */}
+### Activity behavior across versions
 
 There are a few scenarios to consider for your Activities when you're handling your Worker Deployment versions.
 
@@ -72,7 +72,7 @@ Since Independent Activities aren't part of a Workflow's version, they can run i
 - The Independent Activity is in an unversioned Task Queue.
 - The Independent Activity is in a separate Worker Deployment that has its own Workflows, but other Workflows reuse the Activity from other Worker Deployments.
 
-## Versioning Definitions {/* #versioning-definitions */}
+## Versioning Definitions
 
 - **Current Worker Deployment Version**: The version where Workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing or in case you need to roll back. If no current version is specified, the default is unversioned.
 - **Ramping Worker Deployment Version**: The version where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and Auto-Upgrade Workflows will go to the Current Version.
@@ -91,7 +91,7 @@ A Worker Deployment Version moves through the following states:
 
 When Workflows start new runs (e.g. by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
 
-### Ways Workflows Start New Runs {/* #ways-workflows-start-new-runs */}
+### Ways Workflows Start New Runs
 
 A Workflow can start a new run through:
 
@@ -100,16 +100,16 @@ A Workflow can start a new run through:
 - Retrying per its [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies)
 - Starting another iteration of a [Cron Job](https://docs.temporal.io/cron-job) (superseded by [Schedules](https://docs.temporal.io/schedule))
 
-### Inheritance Rules Overview {/* #inheritance-rules-overview */}
+### Inheritance Rules Overview
 
 Auto-upgrade Workflows never inherit versions.
 By default, Pinned workflows will pass their version to any Pinned children.
 
 This section provides more detail on specific inheritance scenarios.
 
-### Inheritance by Scenario {/* #inheritance-by-scenario */}
+### Inheritance by Scenario
 
-#### Child Workflows {/* #child-workflows */}
+#### Child Workflows
 
 **When Parent is Pinned:**
 
@@ -124,7 +124,7 @@ This section provides more detail on specific inheritance scenarios.
 - Child inherits no initial Versioning Behavior
 - Child starts on the Current Version of its Worker Deployment like all new Workflow executions
 
-#### Continue-As-New {/* #continue-as-new */}
+#### Continue-As-New
 
 **When Original Workflow is Pinned:**
 
@@ -135,7 +135,7 @@ This section provides more detail on specific inheritance scenarios.
 
 - No version inheritance occurs
 
-#### Retries {/* #retries */}
+#### Retries
 
 **Inheritance Conditions (all must be met):**
 
@@ -147,11 +147,11 @@ This section provides more detail on specific inheritance scenarios.
 
 - No version inheritance occurs
 
-#### Cron Jobs {/* #cron-jobs */}
+#### Cron Jobs
 
 - **Never inherit** versioning behavior or version
 
-### Versioning Override Inheritance {/* #versioning-override-inheritance */}
+### Versioning Override Inheritance
 
 - Children, crons, retries, and continue-as-new inherit the source run's override **if**:
   - The override is pinned, **AND**

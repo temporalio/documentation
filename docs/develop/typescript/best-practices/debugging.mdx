@@ -40,14 +40,14 @@ Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted S
 
 {/* The following was ported from \docs-src\typescript\troubleshooting.md */}
 
-### Two locations to watch {/* #two-locations-to-watch */}
+### Two locations to watch
 
 - Workflow Errors are reflected in Temporal Web.
 - Worker errors and logs are reflected in the terminal.
 
 If something isn't behaving the way you expect, make sure to check both locations for helpful error messages.
 
-### Stale Workflows {/* #stale-workflows */}
+### Stale Workflows
 
 If you are developing Workflows and finding that code isn't executing as expected, the first place to look is whether old Workflows are still running.
 
@@ -58,7 +58,7 @@ If those old Workflows have the same name and are on the same Task Queue, Tempor
 
 Stale Workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run. If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
 
-### Workflow/Activity registration errors {/* #workflowactivity-registration-errors */}
+### Workflow/Activity registration errors
 
 **If your Workflows or Activities are not imported or spelled correctly**, here are some errors we've seen:
 
@@ -91,7 +91,7 @@ Temporal Workflow Bundles need to [export a set of methods that fit the compiled
 We do offer a `bundleWorkflowCode` method to assist you with this, though it uses our Webpack settings.
 For more information, see the [Register types](/develop/typescript/workers/run-worker-process#register-types) section.
 
-### Webpack errors {/* #webpack-errors */}
+### Webpack errors
 
 The TypeScript SDK's Worker bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
@@ -184,11 +184,11 @@ export async function yourWorkflow(): Promise<string> {
 
 </details>
 
-### Works in Dev but not in Prod {/* #works-in-dev-but-not-in-prod */}
+### Works in Dev but not in Prod
 
 The two main sources of dev-prod discrepancies are in bundling and connecting.
 
-#### Production bundling {/* #production-bundling */}
+#### Production bundling
 
 You may experience your Client sending stripped names as the Workflow "Type" when scheduling a Workflow.
 Webpack can change the Workflow's function name to something shorter.
@@ -257,7 +257,7 @@ See the [esbuild docs](https://esbuild.github.io/api/#keep-names) for more infor
 </TabItem>
 </Tabs>
 
-#### Connecting to Temporal Server {/* #connecting-to-temporal-server */}
+#### Connecting to Temporal Server
 
 If you are trying to connect in production and getting this:
 
@@ -268,7 +268,7 @@ If you are trying to connect in production and getting this:
 It is a sign that something is wrong with your Cert/Key pair.
 Log it out and make sure it is an exact match with what is expected (often, the issue can be whitespace when injecting from your production secrets management environment).
 
-### Resetting Workflows to deal with logical bugs {/* #resetting-workflows-to-deal-with-logical-bugs */}
+### Resetting Workflows to deal with logical bugs
 
 You can "rewind time" using the Temporal CLI, resetting Event History to some previous point in time. You can read the Temporal CLI docs on:
 
@@ -279,7 +279,7 @@ If you need to reset programmatically, the TS SDK does not have any high level A
 
 Resetting should only be used to deal with serious logical bugs in your code: it's not for handling transient failures, like a downstream service being unreachable. It should not be used in the course of normal application flows.
 
-### gRPC call timeouts (context deadline exceeded) {/* #grpc-call-timeouts-context-deadline-exceeded */}
+### gRPC call timeouts (context deadline exceeded)
 
 The opaque `context deadline exceeded` error comes from `gRPC`:
 

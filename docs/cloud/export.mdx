@@ -135,11 +135,11 @@ To use Workflow History Export, you must have:
 
 ## Configure Workflow History Export {/* #configure */}
 
-### AWS {/* #aws */}
+### AWS
 
 [AWS S3 Export Configuration](/cloud/export/aws-export-s3)
 
-### GCP {/* #gcp */}
+### GCP
 
 [GCP GCS Export Configuration](/cloud/export/gcp-export-gcs)
 
@@ -182,11 +182,11 @@ is the time the export uploads to object storage, not the Workflow completion ti
 4. **Email**:
    - Emails are sent to `Namespace Administrator`, `Account Owner`, and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (such as Object Store permissions issue).
 
-## Working with exported files {/* #working-with-exported-files */}
+## Working with exported files
 
 Use the proto schema defined [here](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) to deserialize exported files.
 
-### Using exported files in analytics {/* #using-exported-files-in-analytics */}
+### Using exported files in analytics
 
 It can be useful to convert protos to another format to perform analytics on the data. To convert protos to parquet, follow 
 [the example Python Workflow](https://github.com/temporalio/samples-python/tree/main/cloud_export_to_parquet). Note that this example Workflow:
@@ -196,7 +196,7 @@ It can be useful to convert protos to another format to perform analytics on the
 
 ## Export and High Availability Namespaces {/* #export-ha */}
 
-### Export Region Persistence {/* #export-region-persistence */}
+### Export Region Persistence
 
 When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the specific region where it was initially set up. The export configuration does not automatically failover with the Namespace.
 
@@ -205,7 +205,7 @@ When Export is configured for a [High Availability](/cloud/high-availability) Na
 - The export process is independent of Namespace failover events
 - Export does not fail over automatically because we prioritize data completeness and consistency over real-time availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent exports during a failover.
 
-### Failover Scenarios {/* #failover-scenarios */}
+### Failover Scenarios
 
 **Namespace Failover with Healthy Primary Region**: When a Namespace fails over to a secondary region but the primary region remains healthy (including its blob storage), the export job continues to operate from the primary region. It does not automatically switch to export data from the secondary region.
 

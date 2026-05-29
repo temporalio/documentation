@@ -39,13 +39,13 @@ There are two primary Versioning methods that you can use:
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths.
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
-## Worker Versioning {/* #worker-versioning */}
+## Worker Versioning
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
 ## Versioning with Patching {/* #patching */}
 
-### Adding a patch {/* #adding-a-patch */}
+### Adding a patch
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -175,7 +175,7 @@ public class MyWorkflow
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
-### Detailed Overview of the Patched Function {/* #detailed-overview-of-the-patched-function */}
+### Detailed Overview of the Patched Function
 
 This video provides an overview of how the `patched()` function works:
 
@@ -191,7 +191,7 @@ This video provides an overview of how the `patched()` function works:
 <br/>
 For a more in-depth explanation, refer to the [Patching](/patching) Encyclopedia entry.
 
-### Workflow cutovers {/* #workflow-cutovers */}
+### Workflow cutovers
 
 To understand why Patching is useful, it's helpful to demonstrate cutting over an entire Workflow.
 
@@ -227,6 +227,6 @@ using var worker = new TemporalWorker(
 
 The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow. This can become impractical over time. This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching.
 
-### Testing a Workflow for replay safety {/* #testing-a-workflow-for-replay-safety */}
+### Testing a Workflow for replay safety
 
 To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/dotnet/best-practices/testing-suite#replay).

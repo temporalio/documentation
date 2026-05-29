@@ -94,11 +94,11 @@ impl GreetingWorkflow {
 ```
 
 
-### Specify Child Workflow options {/* #specify-child-workflow-options */}
+### Specify Child Workflow options
 
 Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/0.2.0/temporalio_sdk/struct.ChildWorkflowOptions.html) to customize Child Workflow behavior.
 
-### Execute multiple Child Workflows in parallel {/* #execute-multiple-child-workflows-in-parallel */}
+### Execute multiple Child Workflows in parallel
 
 You can start multiple Child Workflows and wait for all of them:
 
@@ -159,7 +159,7 @@ let es_greeting_child = ctx.child_workflow(
 ).await?;
 ```
 
-### Parent Close Policy Options {/* #parent-close-policy-options */}
+### Parent Close Policy Options
 
 - `Terminate` (default) - The Child Workflow will be terminated immediately when the parent closes
 - `Abandon` - The Child Workflow will continue running even if the parent closes

@@ -46,7 +46,7 @@ For a complete list of metrics capable of being emitted, see the [SDK metrics re
 
 Metrics in .NET are configured on the `Metrics` property of the `Telemetry` property on the `TemporalRuntime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
-### Set a Prometheus endpoint {/* #set-a-prometheus-endpoint */}
+### Set a Prometheus endpoint
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
@@ -61,7 +61,7 @@ var runtime = new TemporalRuntime(new()
 var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = runtime });
 ```
 
-### Set a custom metric meter {/* #set-a-custom-metric-meter */}
+### Set a custom metric meter
 
 A custom metric meter can be set on the telemetry options to handle metrics programmatically.
 The [Temporalio.Extensions.DiagnosticSource](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.DiagnosticSource) extension provides a custom metric meter implementation that sends all metrics to a [System.Diagnostics.Metrics.Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) instance.

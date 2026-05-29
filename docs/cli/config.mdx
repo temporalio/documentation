@@ -24,7 +24,7 @@ This file is generated from https://github.com/temporalio/cli/blob/main/internal
 
 This page provides a reference for the `temporal` CLI `config` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
-## delete {/* #delete */}
+## delete
 
 Remove a property within a profile.
 
@@ -39,7 +39,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--prop`, `-p` | Yes | **string** Specific property to delete. If unset, deletes entire profile. |
 
-## delete-profile {/* #delete-profile */}
+## delete-profile
 
 Remove a full profile entirely. The `--profile` must be set explicitly.
 
@@ -50,7 +50,7 @@ temporal config delete-profile \
 
 Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
-## get {/* #get */}
+## get
 
 Display specific properties or the entire profile.
 
@@ -71,7 +71,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--prop`, `-p` | No | **string** Specific property to get. |
 
-## list {/* #list */}
+## list
 
 List profile names in the config file.
 
@@ -81,7 +81,7 @@ temporal config list
 
 Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
-## set {/* #set */}
+## set
 
 Assign a value to a property and store it in the config file:
 
@@ -98,7 +98,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--prop`, `-p` | Yes | **string** Property name. |
 | `--value`, `-v` | Yes | **string** Property value. |
 
-## Global Flags {/* #global-flags */}
+## Global Flags
 
 The following options can be used with any command.
 

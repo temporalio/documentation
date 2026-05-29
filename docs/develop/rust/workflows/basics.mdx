@@ -180,7 +180,7 @@ Workflow logic is constrained by [deterministic execution requirements](/workflo
 
 Workflow code must be deterministic because the Temporal Server may replay your Workflow to reconstruct its state. This means:
 
-### Don't use nondeterministic functions {/* #dont-use-nondeterministic-functions */}
+### Don't use nondeterministic functions
 
 - No direct system time access - use `ctx.workflow_time()` instead of `SystemTime::now()`
 - No random number generation - use `ctx.random_seed()` instead
@@ -193,7 +193,7 @@ Instead, use the deterministic wrappers provided in `temporalio_sdk::workflows`:
     - `join!` — deterministic join for a fixed number of futures
     - `join_all` — deterministic join for a dynamic collection of futures
 
-### Use Workflow-safe primitives {/* #use-workflow-safe-primitives */}
+### Use Workflow-safe primitives
 
 The Rust SDK provides:
 

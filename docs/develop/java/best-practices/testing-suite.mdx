@@ -47,7 +47,7 @@ easily test long-running Workflows in seconds, without having to change your Wor
 You can use the provided `TestWorkflowEnvironment` with a Java unit testing framework of your choice,
 such as JUnit.
 
-### Setup testing dependency {/* #setup-testing-dependency */}
+### Setup testing dependency
 
 To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing)
 as a dependency to your project:
@@ -71,7 +71,7 @@ testImplementation ("io.temporal:temporal-testing:1.17.0")
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
-### Sample unit tests {/* #sample-unit-tests */}
+### Sample unit tests
 
 The following code implements unit tests for the `HelloActivity` sample:
 
@@ -171,7 +171,7 @@ public class HelloActivityTest {
 }
 ```
 
-### Testing with JUnit4 {/* #testing-with-junit4 */}
+### Testing with JUnit4
 
 For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the
 creation and shutdown of Workflow Workers in your tests.
@@ -207,7 +207,7 @@ public class HelloActivityJUnit4Test {
 }
 ```
 
-### Testing with JUnit5 {/* #testing-with-junit5 */}
+### Testing with JUnit5
 
 For Junit5 tests, Temporal also provides the TestWorkflowExtension helper class.
 This class can be used to simplify the Temporal test environment setup as well as Workflow Worker startup and shutdowns.
@@ -300,7 +300,7 @@ With that in place, you can then mock a Nexus endpoint exactly like any other wo
 
 The following are samples derived from [the test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller) to demonstrate this.
 
-#### Mocking Nexus handlers with JUnit4 {/* #mocking-nexus-handlers-with-junit4 */}
+#### Mocking Nexus handlers with JUnit4
 {/* SNIPSTART java-nexus-sample-junit4-mock */}
 [core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java)
 ```java
@@ -340,7 +340,7 @@ public class CallerWorkflowMockTest {
 ```
 <!--SNIPEND-->
 
-#### Mocking Nexus handlers with JUnit5 {/* #mocking-nexus-handlers-with-junit5 */}
+#### Mocking Nexus handlers with JUnit5
 {/* SNIPSTART java-nexus-sample-junit5-mock */}
 [core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java)
 ```java
@@ -381,7 +381,7 @@ This is useful if you just want to test the calling logic but can't easily mock 
 The code will just mock the implementation of the SampleNexusService class with the handler methods, but will need those methods stubbed in for the testing framework.
 Those methods can be directly mocked with static return values, or else they can return an instance variable which each unit test can modify to return a desired value.
 
-#### Mocking the Nexus Service with JUnit4 {/* #mocking-the-nexus-service-with-junit4 */}
+#### Mocking the Nexus Service with JUnit4
 {/* SNIPSTART java-nexus-service-sample-junit4-mock */}
 [core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java)
 ```java
@@ -444,7 +444,7 @@ public class NexusServiceMockTest {
 ```
 <!--SNIPEND-->
 
-#### Mocking the Nexus Service with JUnit5 {/* #mocking-the-nexus-service-with-junit5 */}
+#### Mocking the Nexus Service with JUnit5
 {/* SNIPSTART java-nexus-service-sample-junit5-mock */}
 [core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java)
 ```java
@@ -530,13 +530,13 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 Set up the time-skipping test framework in the SDK of your choice.
 
-{/* #### Skip time automatically {#automatic-method} */}
+{/* #### Skip time automatically {/* #automatic-method */} */}
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities or Nexus Operation handlers are running. Nexus Operation handlers timeout after 10 seconds and time skipping is allowed while waiting for retries.
 
-{/* #### Skip time manually {#manual-method} */}
+{/* #### Skip time manually {/* #manual-method */} */}
 
 Skip time manually in the SDK of your choice.
 

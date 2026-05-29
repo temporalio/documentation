@@ -48,7 +48,7 @@ Registering an interceptor means supplying an interceptor instance to the SDK so
 Client or Worker calls occur. Once registered, the interceptor runs as part of the call path and can observe or modify
 request and response data.
 
-### Register on the Client {/* #register-on-the-client */}
+### Register on the Client 
 
 Pass interceptors in the `Interceptors` property of [`TemporalClientConnectOptions`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClientConnectOptions.html). Client interceptors modify outbound calls such
 as starting and signaling Workflows. One example is [setting up tracing](/develop/dotnet/platform/observability) to see your call graph of a Workflow.
@@ -68,11 +68,11 @@ var client = await TemporalClient.ConnectAsync(new()
 The `Interceptors` list can contain multiple interceptors.
 The default behavior for interceptors is to form a chain. A method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
 
-### Register via a Plugin {/* #register-via-a-plugin */}
+### Register via a Plugin
 
 If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
 
-### Register on the Worker only {/* #register-on-the-worker-only */}
+### Register on the Worker only 
 
 If your interceptor doesn't affect the Client, you can pass interceptors in the `Interceptors` argument of `TemporalWorkerOptions`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
@@ -89,11 +89,11 @@ using var worker = new TemporalWorker(
 );
 ```
 
-## How to implement Interceptors {/* #how-to-implement-interceptors */}
+## How to implement Interceptors
 
 Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
 
-### Implementing Client call Interceptors {/* #implementing-client-call-interceptors */}
+### Implementing Client call Interceptors
 
 To modify outbound Client calls, define a class implementing [`IClientInterceptor`](https://dotnet.temporal.io/api/Temporalio.Client.Interceptors.IClientInterceptor.html). Implement `InterceptClient()` to return a [`ClientOutboundInterceptor`](https://dotnet.temporal.io/api/Temporalio.Client.Interceptors.ClientOutboundInterceptor.html), overriding the outbound Client calls you want to modify. `IClientInterceptor.InterceptClient` receives the next `ClientOutboundInterceptor` in the chain and returns the created interceptor.
 
@@ -150,7 +150,7 @@ During execution, when the SDK encounters an Inbound Activity call, it will look
 The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
 At the end of the chain the SDK will call the "real" SDK method.
 
-### Implementing Worker call Interceptors {/* #implementing-worker-call-interceptors */}
+### Implementing Worker call Interceptors
 
 To modify inbound Workflow and Activity calls, define a class implementing [`IWorkerInterceptor`](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.IWorkerInterceptor.html). It provides `InterceptActivity()`, `InterceptWorkflow()`, and `InterceptNexusOperation()` methods for Activity, Workflow, and Nexus interception.
 

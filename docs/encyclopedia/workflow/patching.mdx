@@ -21,11 +21,11 @@ A Patch defines a logical branch in a Workflow for a specific change, similar to
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 When you want to make substantive code changes that may affect existing Workflow executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
 
-### Detailed Description of the `patched()` Function {/* #detailed-description-of-the-patched-function */}
+### Detailed Description of the `patched()` Function
 
 This applies to the `patched()` function in the Python, .NET, and Ruby SDKs.
 
-#### Behavior When Not Replaying {/* #behavior-when-not-replaying */}
+#### Behavior When Not Replaying
 
 If the execution is not replaying, when it encounters a call to `patched()`, it first checks the event history.
 
@@ -35,7 +35,7 @@ If the execution is not replaying, when it encounters a call to `patched()`, it 
 
 There is a caveat to this behavior, which we will cover below.
 
-#### Behavior When Replaying With Marker Before-Or-At Current Location {/* #behavior-when-replaying-with-marker-before-or-at-current-location */}
+#### Behavior When Replaying With Marker Before-Or-At Current Location
 
 If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place (which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
 
@@ -45,13 +45,13 @@ If the code has a call to `patched()`, and the event history has a marker with t
 
 This is also similar to the behavior of the non-replay case, and also happens in a given patch ID's subsequent blocks.
 
-#### Behavior When Replaying With Marker After Current Location {/* #behavior-when-replaying-with-marker-after-current-location */}
+#### Behavior When Replaying With Marker After Current Location
 
 If the Event History's Marker Event is after the current execution point, that means the new patch is too early.
 The execution will encounter the new patch before the original.
 The execution will attempt to write the marker to the replay event history, but it will throw a non-deterministic exception because the replay and original event histories don't match.
 
-#### Behavior When Replaying With No Marker For that Patch ID {/* #behavior-when-replaying-with-no-marker-for-that-patch-id */}
+#### Behavior When Replaying With No Marker For that Patch ID
 
 During a Replay, if there is no marker for a given patch ID, the execution will return `false` and will not add a marker to the event history. In addition, all future calls to `patched()` with that ID will return `false` -- even after it is done replaying and is running new code.
 
@@ -61,7 +61,7 @@ If the marker doesn't exist, it will be added, and if the marker already exists,
 However, this behavior doesn't occur if there was already a call to `patched()` with that ID in the replay code, but not in the event history.
 In this situation, the function won't return `true`.
 
-#### A Summary of the Two Potentially Unexpected Behaviors {/* #a-summary-of-the-two-potentially-unexpected-behaviors */}
+#### A Summary of the Two Potentially Unexpected Behaviors
 
 Recapping the potentially unexpected behaviors that may occur during a Replay:
 
@@ -73,7 +73,7 @@ This behavior occurs because:
 
 If the execution hits a call to `patched()` with an ID that doesn't exist in the history, then not only will it return `false` in that occurence, but it will also return `false` if the execution surpasses the Replay threshold and is running new code.
 
-#### Implications of the Behaviors {/* #implications-of-the-behaviors */}
+#### Implications of the Behaviors
 
 If you deploy new code while Workflows are executing, any Workflows that were in the middle of executing will Replay up to the point they were at when the Worker was shut down.
 When they do this Replay, they will not follow the `patched()` branches in the code.
@@ -90,7 +90,7 @@ But if there's new code in the future, and there was no code earlier in the body
 Note that this behavior means that the Workflow _does not always run the newest code_.
 It only does that if not replaying or if replay is surpassed and there hasn't been a call to `patched()` (with that ID) throughout the replay.
 
-#### Recommendations {/* #recommendations */}
+#### Recommendations
 
 Based on this behavior and the implications, when patching in new code, always put the newest code at the top of an if-patched-block.
 

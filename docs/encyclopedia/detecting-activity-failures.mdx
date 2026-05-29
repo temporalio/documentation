@@ -203,7 +203,7 @@ If an [Activity Task Execution](/tasks#activity-task-execution) times out due to
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
-### Throttling {/* #throttling */}
+### Throttling
 
 Heartbeats may not always be sent to the Temporal Service—they may be throttled by the Worker.
 The throttle interval is the smaller of the following:
@@ -226,7 +226,7 @@ Throttling allows the Worker to reduce network traffic and load on the Temporal 
 Throttling does not apply to the final Heartbeat message in the case of Activity Failure.
 If an Activity fails just after recording progress information in a Heartbeat message, that progress information will be available during the next retry attempt, provided that the Worker itself did not crash before delivering it to the Temporal Service.
 
-### Which Activities should Heartbeat? {/* #which-activities-should-heartbeat */}
+### Which Activities should Heartbeat?
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress?"
 For short-term operations, progress updates are not a requirement.

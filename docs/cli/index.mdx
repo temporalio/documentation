@@ -35,7 +35,7 @@ commands. For details, see [CLI release notes](https://github.com/temporalio/cli
 
 The Temporal CLI is available on macOS, Windows, and Linux, or as a Docker image.
 
-### macOS {/* #macos */}
+### macOS
 
 Choose one of the following install methods to install the Temporal CLI on macOS:
 
@@ -56,7 +56,7 @@ brew install temporal
 
   3. Add the Temporal CLI binary to your PATH.
 
-### Linux {/* #linux */}
+### Linux
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
@@ -71,7 +71,7 @@ Choose one of the following install methods to install the Temporal CLI on Linux
 
   3. Add the `temporal` binary to your PATH.
 
-### Windows {/* #windows */}
+### Windows
 
 Choose one of the following methods to install the Temporal CLI on Windows:
 
@@ -86,7 +86,7 @@ Choose one of the following methods to install the Temporal CLI on Windows:
 
   3. Add the `temporal.exe` binary to your PATH.
 
-### Docker {/* #docker */}
+### Docker
 
 The Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be
 run directly:
@@ -146,7 +146,7 @@ temporal server start-dev --help
 
 Enable auto-completion using the following commands.
 
-### zsh auto-completion {/* #zsh-auto-completion */}
+### zsh auto-completion
 
 1. Add the following line to your `~/.zshrc` startup script:
 
@@ -160,7 +160,7 @@ Enable auto-completion using the following commands.
    source ~/.zshrc
    ```
 
-### Bash auto-completion {/* #bash-auto-completion */}
+### Bash auto-completion
 
 1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your
    `~/.bashrc`.
@@ -185,7 +185,7 @@ shell for `temporal` auto-completion to work.
 
 :::
 
-### Fish auto-completion {/* #fish-auto-completion */}
+### Fish auto-completion
 
 1. Create the Fish custom completions directory if it does not already exist:
 
@@ -206,7 +206,7 @@ shell for `temporal` auto-completion to work.
    source ~/.config/fish/completions/temporal.fish
    ```
 
-## Command set {/* #command-set */}
+## Command set
 
 - [temporal activity](/cli/activity/)
 - [temporal batch](/cli/batch/)
@@ -217,11 +217,11 @@ shell for `temporal` auto-completion to work.
 - [temporal task-queue](/cli/task-queue/)
 - [temporal workflow](/cli/workflow/)
 
-## Configuration {/* #configuration */}
+## Configuration
 
 The following information provides important configuration details.
 
-### Namespace registration {/* #namespace-registration */}
+### Namespace registration
 
 Namespaces are pre-registered at startup for immediate use. Customize pre-registered Namespaces with the following
 command:
@@ -236,7 +236,7 @@ Register Namespaces with `namespace create`:
 temporal operator namespace create --namespace foo
 ```
 
-### Enable or disable Temporal UI {/* #enable-or-disable-temporal-ui */}
+### Enable or disable Temporal UI
 
 By default, the Temporal UI is enabled when running the development server using the Temporal CLI. To disable the UI,
 use the `--headless` modifier:
@@ -245,7 +245,7 @@ use the `--headless` modifier:
 temporal server start-dev --headless
 ```
 
-### Dynamic configuration {/* #dynamic-configuration */}
+### Dynamic configuration
 
 Advanced Temporal CLI configuration requires a dynamic configuration file.
 
@@ -258,7 +258,7 @@ temporal server start-dev --dynamic-config-value system.forceSearchAttributesCac
 
 This setting makes created Search Attributes immediately available.
 
-## Environment variables {/* #environment-variables */}
+## Environment variables
 
 The following table describes the environment variables you can set for the Temporal CLI.
 
@@ -292,12 +292,12 @@ The Temporal CLI lets you create and modify TOML configuration files to store yo
 settings. Refer to [Environment Configuration](../develop/environment-configuration#cli-integration) for more
 information.
 
-## Proxy support {/* #proxy-support */}
+## Proxy support
 
 The Temporal CLI provides support for users who are operating behind a proxy. This feature ensures seamless
 communication even in network-restricted environments.
 
-#### Setting up proxy support {/* #setting-up-proxy-support */}
+#### Setting up proxy support
 
 If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy. You can
 achieve this by setting the `HTTPS_PROXY` environment variable.
@@ -328,7 +328,7 @@ documentation.
 
 The following are some of the more common operations you can perform with the Temporal CLI.
 
-### Start a Workflow {/* #start-a-workflow */}
+### Start a Workflow
 
 In another terminal, use the following commands to interact with the Server. The following command starts a Workflow:
 
@@ -450,7 +450,7 @@ To see the full range of Workflow-related commands, run `temporal workflow` or s
 
 For a full list of available commands, run `temporal` without arguments or see [Available commands](#command-set).
 
-### Customize your environment variables {/* #customize-your-environment-variables */}
+### Customize your environment variables
 
 To communicate with a different Server, like a production Namespace on Temporal Cloud:
 

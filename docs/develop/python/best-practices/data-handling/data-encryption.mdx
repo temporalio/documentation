@@ -18,7 +18,7 @@ Unlike Payload Converters, codecs run outside the Workflow sandbox, so they can 
 
 The most common use case is encryption: encrypting payloads before they reach the Temporal Service so that sensitive data is never stored in plaintext.
 
-## PayloadCodec interface {/* #payloadcodec-interface */}
+## PayloadCodec interface
 
 Implement a `PayloadCodec` with `encode()` and `decode()` methods.
 These should loop through all of a Workflow's payloads, perform your marshaling, compression, or encryption steps in order, and set an `"encoding"` metadata field.
@@ -53,7 +53,7 @@ class EncryptionCodec(PayloadCodec):
         return ret
 ```
 
-## Configure the codec on the Data Converter {/* #configure-the-codec-on-the-data-converter */}
+## Configure the codec on the Data Converter
 
 Add a `data_converter` parameter to your `Client.connect()` options that overrides the default converter with your Payload Codec:
 
@@ -70,7 +70,7 @@ client = await Client.connect(
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-python/tree/main/encryption) sample.
 
-## Codec Server {/* #codec-server */}
+## Codec Server
 
 A Codec Server is an HTTP server that runs your `PayloadCodec` remotely, so that the Temporal Web UI and CLI can decode encrypted payloads for display.
 

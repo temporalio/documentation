@@ -167,7 +167,7 @@ During the **shutdown** phase, the Worker stops polling, waits for in-flight Tas
 hooks (for example, OpenTelemetry telemetry flushes). Shutdown begins before the invocation deadline so the Worker can
 exit cleanly before the compute provider forcibly terminates the execution environment.
 
-### Tuning for long-running Activities {/* #tuning-for-long-running-activities */}
+### Tuning for long-running Activities
 
 If your Worker handles long-running Activities, set these three values together:
 
@@ -257,7 +257,7 @@ invoke the function.
 Compute providers are only needed for Serverless Workers. Traditional long-lived Workers do not require a compute
 provider because the Worker process manages its own lifecycle.
 
-### Supported providers {/* #supported-providers */}
+### Supported providers
 
 | Provider   | Description                                                                   |
 | ---------- | ----------------------------------------------------------------------------- |

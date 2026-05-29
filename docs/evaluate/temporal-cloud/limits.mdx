@@ -32,17 +32,17 @@ Every limit applies at a specific scope (level of the application):
 - At the [Nexus endpoint level](#nexus-endpoint-level)
 - Within the [programming model](#programming-model-level) itself
 
-## Account level {/* #account-level */}
+## Account level
 
 The following limits apply at the Temporal Cloud Account level (per account).
 
-### Users {/* #users */}
+### Users
 
 - Scope: Account
 - Default limit: 300 users
 - How to increase: [Contact support](/cloud/support#support-ticket) 
 
-### Namespaces {/* #namespaces */}
+### Namespaces
 
 - Scope: Account
 - Default limit: 10 namespaces
@@ -50,11 +50,11 @@ The following limits apply at the Temporal Cloud Account level (per account).
   - Automatically increased as you start creating namespaces
   - [Contact support](/cloud/support#support-ticket) for large-scale needs
 
-## Namespace level {/* #namespace-level */}
+## Namespace level
 
 The following limits apply at the Namespace level.
 
-### Actions per second {/* #actions-per-second */}
+### Actions per second
 
 - Scope: Namespace
 - Default limit: 500 actions per second (APS)
@@ -66,7 +66,7 @@ The following limits apply at the Namespace level.
 
 See the [Actions page](/cloud/actions) for the list of actions. 
 
-### Requests per second {/* #requests-per-second */}
+### Requests per second
 
 - Scope: Namespace
 - Default limit: 2000 requests per second (RPS)
@@ -77,7 +77,7 @@ See the [Actions page](/cloud/actions) for the list of actions.
 
 See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
 
-### Operations per second {/* #operations-per-second */}
+### Operations per second
 
 - Scope: Namespace
 - Default limit: 4000 operations per second (OPS)
@@ -88,7 +88,7 @@ See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
 
 See the [operations list](/references/operation-list) for the list of operations.
 
-### Throttling behavior {/* #throttling-behavior */}
+### Throttling behavior
 
 When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests. Here's what happens:
 
@@ -102,7 +102,7 @@ When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests.
 - Set up [Cloud metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when throttling occurs and when you approach your limits.
 - Consider [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) if you have predictable spikes or need guaranteed throughput.
 
-### Schedules rate limit {/* #schedules-rate-limit */}
+### Schedules rate limit
 
 - Scope: Namespace
 - Default limit: 10 schedule requests per second (RPS)
@@ -113,7 +113,7 @@ Every Temporal SDK supports jittering, which adds small random delays to Schedul
 Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
 This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
 
-### Visibility API Rate Limit {/* #visibility-api-rate-limit */}
+### Visibility API Rate Limit
 
 - Scope: Namespace
 - Default limit: 30 Visibility API calls per second
@@ -135,18 +135,18 @@ For the target Namespace of a Nexus Endpoint, even though there are no Action re
 
 :::
 
-### Certificates {/* #certificates */}
+### Certificates
 
 Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whichever is reached first.
 
-### Concurrent Task pollers {/* #concurrent-task-pollers */}
+### Concurrent Task pollers
 
 Temporal Cloud limits each Namespace to 20,000 Activity pollers and 20,000 Workflow Task pollers concurrently. 
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
 
-### Default Retention Period {/* #default-retention-period */}
+### Default Retention Period
 
 The [Retention Period](/temporal-service/temporal-server#retention-period) is set per Namespace.
 
@@ -167,13 +167,13 @@ This is configurable in the Temporal Web UI.
 
 You can set the Retention Period between 1 and 90 days.
 
-### Batch jobs {/* #batch-jobs */}
+### Batch jobs
 
 A Namespace can have just one [Batch job](/cli/batch) running at a time.
 
 Each batch job operates on a maximum of 50 Workflow Executions per second.
 
-### Number of Custom Search Attributes {/* #number-of-custom-search-attributes */}
+### Number of Custom Search Attributes
 
 There is a limit to the number of custom Search Attributes per attribute type per Namespace:
 
@@ -187,7 +187,7 @@ There is a limit to the number of custom Search Attributes per attribute type pe
 | KeywordList           | 5     |
 | Text                  | 5     |
 
-### Custom Search Attribute names {/* #custom-search-attribute-names */}
+### Custom Search Attribute names
 
 When creating custom Search Attributes in Temporal Cloud, the attribute names must adhere to the following constraints:
 
@@ -196,29 +196,29 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/search-attribute#custom-search-attribute).
 
-## Nexus Endpoint level {/* #nexus-endpoint-level */}
+## Nexus Endpoint level
 
-### Nexus Endpoints limits {/* #nexus-endpoints-limits */}
+### Nexus Endpoints limits
 
 By default, each account is provisioned with 100 Nexus Endpoints.
 You can request further increases beyond the initial 100 Endpoint limit by [opening a support ticket](/cloud/support#support-ticket).
 
-## Programming model level {/* #programming-model-level */}
+## Programming model level
 
 The following limits apply at the programming model level.
 See also: [Self-hosted Temporal Service defaults](/self-hosted-guide/defaults).
 
-### Identifier length limit {/* #identifier-length-limit */}
+### Identifier length limit
 
 Identifiers, such as Workflow Id, Workflow Type, and Task Queue names, are limited to a maximum length of 1,000 bytes.
 Note that Unicode characters may use multiple bytes.
 
-### Per message gRPC limit {/* #per-message-grpc-limit */}
+### Per message gRPC limit
 
 Each gRPC message received has a limit of 4 MB.
 This limit applies to all gRPC endpoints across the Temporal Platform.
 
-### Event History transaction size limit {/* #event-history-transaction-size-limit */}
+### Event History transaction size limit
 
 An Event History transaction encompasses a set of operations such as initiating a new Workflow, scheduling an Activity, processing a Signal, or starting a Child Workflow.
 These operations create Events that are then logged in the Event History.
@@ -227,7 +227,7 @@ The transaction size limit restricts the total size of Events that can be accomm
 The size limit for any given [Event History](/workflow-execution/event#event-history) transaction is 4 MB.
 This limit is non-configurable for Temporal Cloud.
 
-### Transaction Payload size limit {/* #transaction-payload-size-limit */}
+### Transaction Payload size limit
 
 Blob size limit for Payloads, including Workflow context and each Workflow and Activity argument and return value:
   - The max payload for a single request is 2 MB.
@@ -237,7 +237,7 @@ This limit is non-configurable for Temporal Cloud.
 
 The [BlobSizeLimitError guide](/troubleshooting/blob-size-limit-error) provides solutions for handling large payloads.
 
-### Per Workflow Execution concurrency limits {/* #per-workflow-execution-concurrency-limits */}
+### Per Workflow Execution concurrency limits
 
 If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional [Commands](/workflow-execution#command) of that type will fail to be applied to that Workflow Execution:
 
@@ -249,16 +249,16 @@ If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflow
 For optimal performance, limit concurrent operations to 500 or fewer.
 This reduces Workflow's Event History size and decreases the loading time in the Web UI.
 
-### Per Workflow Execution Signal limit {/* #per-workflow-execution-signal-limit */}
+### Per Workflow Execution Signal limit
 
 A single Workflow Execution may receive up to 10,000 Signals.
 After that limit is reached, no more Signals will be processed for that Workflow Execution.
 
-### Per Workflow Execution Update limits {/* #per-workflow-execution-update-limits */}
+### Per Workflow Execution Update limits
 
 A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 total Updates in History.
 
-### Workflow Execution Event History limits {/* #workflow-execution-event-history-limits */}
+### Workflow Execution Event History limits
 
 As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
 It warns you after 10,240 Events or 10 MB.
@@ -302,11 +302,11 @@ For enhanced security, you may sign completion callbacks with a single-use token
 
 While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not extend beyond 60 days and capped by the server to 60 days.
 
-### Timer duration limit {/* #timer-duration-limit */}
+### Timer duration limit
 
 Timers have a maximum duration of 100 years in Temporal Cloud.
 
-## Worker Versioning level {/* #worker-versioning-level */}
+## Worker Versioning level
 
 ### Max Worker deployments limits {/* #max-worker-deployments-limits */}
 

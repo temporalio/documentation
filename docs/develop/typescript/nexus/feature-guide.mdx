@@ -154,7 +154,7 @@ The `@temporalio/nexus` package provides utilities to help create Nexus Operatio
 - `getClient()` - Get a Temporal Client connected using the same `NativeConnection` as the present Temporal Worker.
   It can be used to implement synchronous handlers backed by Temporal primitives such as Signals and Queries.
 
-### Develop a Synchronous Nexus Operation handler {/* #develop-a-synchronous-nexus-operation-handler */}
+### Develop a Synchronous Nexus Operation handler
 
 Simple RPC handlers can be implemented as synchronous Nexus Operation handlers, which is defined in TypeScript as a simple async function. {/* sync operation vs async func is very confusing in this context */}
 Use `getClient()` from `@temporalio/nexus` to get the Temporal Client for signaling, querying, and listing Workflows.
@@ -183,7 +183,7 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 ```
 <!--SNIPEND-->
 
-### Use the Temporal Client for Signals, Queries, and Updates {/* #use-the-temporal-client-for-signals-queries-and-updates */}
+### Use the Temporal Client for Signals, Queries, and Updates
 
 A common pattern is to use the Temporal Client from within a sync handler to Signal, Query, or Update a Workflow.
 You can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
@@ -223,7 +223,7 @@ export const nexusGreetingServiceHandler = nexus.serviceHandler(nexusGreetingSer
 There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging/src/callerpattern) and [on-demand pattern](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging/src/ondemandpattern).
 The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
 
-### Develop an Asynchronous Nexus Operation handler to start a Workflow {/* #develop-an-asynchronous-nexus-operation-handler-to-start-a-workflow */}
+### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use `@temporalio/nexus`'s `WorkflowRunOperationHandler` helper class to easily expose a Temporal Workflow as a Nexus Operation.
 Note that even though a Nexus operation can only take one input parameter, if you need to pass
@@ -272,7 +272,7 @@ In general, the ID should be passed in the Operation input as part of the Nexus 
 
 :::
 
-### Register your Nexus Service handler in a Worker {/* #register-your-nexus-service-handler-in-a-worker */}
+### Register your Nexus Service handler in a Worker
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register your Nexus Service handler in a Worker.
 
@@ -328,7 +328,7 @@ export async function helloCallerWorkflow(name: string, language: LanguageCode):
 
 <!--SNIPEND-->
 
-### Register the caller Workflow in a Worker and start the caller Workflow {/* #register-the-caller-workflow-in-a-worker-and-start-the-caller-workflow */}
+### Register the caller Workflow in a Worker and start the caller Workflow
 
 This Workflow can be registered with a Worker and started using `client.startWorkflow()` or `client.executeWorkflow()`, as usual.
 Refer to the [complete TypeScript sample](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello) for reference.
@@ -367,7 +367,7 @@ To ensure cancellations are delivered, wait for all pending operations to finish
 This section assumes you are already familiar with how to connect a Worker to Temporal Cloud.
 The `tcld` CLI is used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
 
-### Install the latest `tcld` CLI and generate certificates {/* #install-the-latest-tcld-cli-and-generate-certificates */}
+### Install the latest `tcld` CLI and generate certificates
 
 To install the latest version of the `tcld` CLI, run the following command (on macOS):
 
@@ -383,7 +383,7 @@ tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key 
 
 These certificates will be valid for one year.
 
-### Create caller and handler Namespaces {/* #create-caller-and-handler-namespaces */}
+### Create caller and handler Namespaces
 
 Before deploying to Temporal Cloud, ensure that the appropriate Namespaces are created for both the caller and handler.
 If you already have these Namespaces, you don't need to do this.
@@ -408,7 +408,7 @@ tcld namespace create \
 
 Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/namespaces](https://cloud.temporal.io/namespaces).
 
-### Create a Nexus Endpoint to route requests from caller to handler {/* #create-a-nexus-endpoint-to-route-requests-from-caller-to-handler */}
+### Create a Nexus Endpoint to route requests from caller to handler
 
 To create a Nexus Endpoint you must have a Developer account role or higher, and have NamespaceAdmin permission on the `--target-namespace`.
 
@@ -425,9 +425,9 @@ The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespa
 
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
 
-## Observability {/* #observability */}
+## Observability
 
-### Web UI {/* #web-ui */}
+### Web UI
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller's Event history:
 
@@ -437,7 +437,7 @@ An asynchronous Nexus Operation will surface in the caller Workflow as follows, 
 
 <CaptionedImage src="/img/cloud/nexus/go-sdk-observability-async.png" title="Observability Async" />
 
-### Temporal CLI {/* #temporal-cli */}
+### Temporal CLI
 
 Use the `workflow describe` command to show pending Nexus Operations in the caller Workflow and any attached callbacks on the handler Workflow:
 
@@ -468,7 +468,7 @@ For **synchronous Nexus Operations** the following are reported in the caller's 
 
 :::
 
-### OpenTelemetry {/* #opentelemetry */}
+### OpenTelemetry
 
 The `@temporalio/interceptors-opentelemetry` package supports Nexus Operations, providing automatic trace context propagation across Nexus boundaries from the caller Workflow to the handler.
 
@@ -498,7 +498,7 @@ See the [interceptors-opentelemetry sample](https://github.com/temporalio/sample
 
 For custom interceptor logic beyond tracing (e.g., logging, authorization), see [Nexus interceptor registration](/develop/typescript/workers/interceptors#nexus-interceptor-registration).
 
-## Learn more {/* #learn-more */}
+## Learn more
 
 - Read the high-level description of the [Temporal Nexus feature](/evaluate/nexus) and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
 - Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4) and [Encyclopedia](/nexus).

@@ -283,7 +283,7 @@ let supported_languages = wf_handle.query(
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution. However, you can only send Signals to Workflow Executions that haven’t closed.
 
-#### From a Client {/* #from-a-client */}
+#### From a Client
 
 ```rust
 wf_handle.signal(
@@ -295,7 +295,7 @@ wf_handle.signal(
 
 - The call returns when the server accepts the Signal; it does not wait for the Signal to be delivered to the Workflow Execution.
 
-#### From a Workflow {/* #from-a-workflow */}
+#### From a Workflow
 
 ```rust
 let signal_res = ctx
@@ -343,7 +343,7 @@ let previous_language = wf_handle.execute_update(
 ).await?;
 ```
 
-#### Update-With-Start {/* #update-with-start */}
+#### Update-With-Start
 
 You can also send `start_update` to receive an `UpdateHandle` as soon as the Update is accepted.
 
@@ -458,7 +458,7 @@ async fn set_language_activity(
 }
 ```
 
-### Add wait conditions to block {/* #add-wait-conditions-to-block */}
+### Add wait conditions to block
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue. You can use `ctx.wait_condition` to prevent the code from proceeding until a condition is true. You specify the condition by passing a function that returns a boolean and you can optionally set a timeout. This is an important feature that helps you control your handler logic.
 
@@ -482,7 +482,7 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 }
 ```
 
-### Ensure handlers finish before completion {/* #ensure-handlers-finish-before-completion */}
+### Ensure handlers finish before completion
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes. When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
 

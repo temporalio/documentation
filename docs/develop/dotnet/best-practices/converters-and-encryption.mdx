@@ -91,7 +91,7 @@ var myClient = await TemporalClient.ConnectAsync(new("localhost:7233")
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption) sample.
 
-### Using a Codec Server {/* #using-a-codec-server */}
+### Using a Codec Server
 
 A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
 The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
@@ -99,7 +99,7 @@ You create, operate, and manage access to your Codec Server in your own environm
 The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
 
-## Payload conversion {/* #payload-conversion */}
+## Payload conversion
 
 Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 

@@ -25,7 +25,7 @@ Our Client and Worker SDKs use the gRPC API. The API reference is located here:
 
 [`api-docs.temporal.io`](https://api-docs.temporal.io/)
 
-## Use with code {/* #use-with-code */}
+## Use with code
 
 Usually you interact with the API via high-level methods like `client.workflow.start()`. However, Client SDKs also
 expose the underlying gRPC services. For instance, the TypeScript SDK has:
@@ -42,7 +42,7 @@ If you're not using an SDK Client (rare), you can generate gRPC client stubs by:
 - Cloning [`temporalio/api`](https://github.com/temporalio/api) (repo with the protobuf files)
 - Generating code in [your language](https://grpc.io/docs/languages/)
 
-## Use manually {/* #use-manually */}
+## Use manually
 
 To query the API manually via command line or a GUI, first:
 
@@ -54,7 +54,7 @@ git clone https://github.com/temporalio/api.git
 cd api
 ```
 
-### With command line {/* #with-command-line */}
+### With command line
 
 Install [`evans`](https://github.com/ktr0731/evans#installation).
 
@@ -72,7 +72,7 @@ evans --proto temporal/api/workflowservice/v1/service.proto --host devrel.a2dd6.
 Once inside the evans prompt, you can run commands like `help`, `show service` to list available methods, and
 `call ListWorkflowExecutions`.
 
-### With a GUI {/* #with-a-gui */}
+### With a GUI
 
 - Install [BloomRPC](https://github.com/bloomrpc/bloomrpc#installation).
 - Open the app

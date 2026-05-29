@@ -34,7 +34,7 @@ Workflow, show Event History, and Signal Workflow).
 - [How to install tctl](#install)
 - [Environment variables for tctl](#environment-variables)
 
-## tctl commands {/* #tctl-commands */}
+## tctl commands
 
 - [tctl activity](/tctl-v1/activity/)
 - [tctl admin](/tctl-v1/admin/)
@@ -72,39 +72,39 @@ To see help for [tctl](/tctl-v1) commands, enter the following commands.
 | `tctl workflow -h`  | Display help for [Workflow](/workflows) operations     |
 | `tctl taskqueue -h` | Display help for [Task Queue](/task-queue) operations  |
 
-## Global modifiers {/* #global-modifiers */}
+## Global modifiers
 
 You can supply the values for many of these modifiers by setting [environment variables](#environment-variables) instead of including the modifiers in a tctl command.
 
-### --address {/* #--address */}
+### --address
 
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
-### --auto_confirm {/* #--auto_confirm */}
+### --auto_confirm
 
 Automatically confirm all prompts.
 
-### --context_timeout {/* #--context_timeout */}
+### --context_timeout
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
 
-### --data_converter_plugin {/* #--data_converter_plugin */}
+### --data_converter_plugin
 
 Specify the name of the executable for a custom Data Converter plugin.
 
-### --headers_provider_plugin {/* #--headers_provider_plugin */}
+### --headers_provider_plugin
 
 Specify the name of the executable for a headers provider plugin.
 
-### --help {/* #--help */}
+### --help
 
 Display help for tctl in the CLI.
 
 Alias: `-h`
 
-### --namespace {/* #--namespace */}
+### --namespace
 
 Specify a Namespace.
 By using this modifier, you don't need to specify a `--namespace` modifier for a sub-command.
@@ -112,95 +112,95 @@ The default Namespace is `default`.
 
 Alias: `--n`
 
-### --tls_ca_path {/* #--tls_ca_path */}
+### --tls_ca_path
 
 Specify the path to a server Certificate Authority (CA) certificate file.
 
-### --tls_cert_path {/* #--tls_cert_path */}
+### --tls_cert_path
 
 Specify the path to a public X.509 certificate file for mutual TLS authentication.
 If you use this modifier, you must also use the `--tls_key_path` modifier.
 
-### --tls_disable_host_verification {/* #--tls_disable_host_verification */}
+### --tls_disable_host_verification
 
 Disable verification of the server certificate (and thus host verification).
 
-### --tls_key_path {/* #--tls_key_path */}
+### --tls_key_path
 
 Specify the path to a private key file for mutual TLS authentication.
 If you use this modifier, you must also use the `--tls_cert_path` modifier.
 
-### --tls_server_name {/* #--tls_server_name */}
+### --tls_server_name
 
 Specify an override for the name of the target server that is used for TLS host verification.
 The name must be one of the DNS names listed in the server TLS certificate.
 Specifying this modifier also enables host verification.
 
-### --version {/* #--version */}
+### --version
 
 Display the version of tctl in the CLI.
 
-### --codec_endpoint {/* #--codec_endpoint */}
+### --codec_endpoint
 
 The URL and port number for a Codec Server.
 
-## Environment variables {/* #environment-variables */}
+## Environment variables
 
 Setting environment variables for repeated parameters can shorten tctl commands.
 
-### TEMPORAL_CLI_ADDRESS {/* #temporal_cli_address */}
+### TEMPORAL_CLI_ADDRESS
 
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
-### TEMPORAL_CLI_AUTHORIZATION_TOKEN {/* #temporal_cli_authorization_token */}
+### TEMPORAL_CLI_AUTHORIZATION_TOKEN
 
 Specify a token to be used by the HTTP Basic Authorization plugin.
 
 {/* TODO: Add link to "Securing tctl" page or its equivalent when it exists. */}
 
-### TEMPORAL_CLI_AUTH {/* #temporal_cli_auth */}
+### TEMPORAL_CLI_AUTH
 
 Specify the authorization header to be set for a gRPC request.
 
-### TEMPORAL_CLI_NAMESPACE {/* #temporal_cli_namespace */}
+### TEMPORAL_CLI_NAMESPACE
 
 Specify a Namespace.
 By setting this variable, you don't need to specify a `--namespace` modifier in a tctl command.
 The default Namespace is `default`.
 
-### TEMPORAL_CLI_PLUGIN_DATA_CONVERTER {/* #temporal_cli_plugin_data_converter */}
+### TEMPORAL_CLI_PLUGIN_DATA_CONVERTER
 
 Specify the name of the executable for a custom Data Converter plugin.
 
-### TEMPORAL_CLI_PLUGIN_HEADERS_PROVIDER {/* #temporal_cli_plugin_headers_provider */}
+### TEMPORAL_CLI_PLUGIN_HEADERS_PROVIDER
 
 Specify the name of the executable for a headers provider plugin.
 
-### TEMPORAL_CLI_TLS_CA {/* #temporal_cli_tls_ca */}
+### TEMPORAL_CLI_TLS_CA
 
 Specify the path to a server Certificate Authority (CA) certificate file.
 
-### TEMPORAL_CLI_TLS_CERT {/* #temporal_cli_tls_cert */}
+### TEMPORAL_CLI_TLS_CERT
 
 Specify the path to a public X.509 certificate file for mutual TLS authentication.
 
-### TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION {/* #temporal_cli_tls_disable_host_verification */}
+### TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION
 
 Set to disable verification of the server certificate (and thus host verification).
 
-### TEMPORAL_CLI_TLS_KEY {/* #temporal_cli_tls_key */}
+### TEMPORAL_CLI_TLS_KEY
 
 Specify the path to a private key file for mutual TLS authentication.
 If you set this variable, you must also set the `TEMPORAL_CLI_TLS_CERT` variable.
 
-### TEMPORAL_CLI_TLS_SERVER_NAME {/* #temporal_cli_tls_server_name */}
+### TEMPORAL_CLI_TLS_SERVER_NAME
 
 Specify an override for the name of the target server that is used for TLS host verification.
 The name must be one of the DNS names listed in the server TLS certificate.
 Setting this variable also enables host verification.
 
-### TEMPORAL_CONTEXT_TIMEOUT {/* #temporal_context_timeout */}
+### TEMPORAL_CONTEXT_TIMEOUT
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.

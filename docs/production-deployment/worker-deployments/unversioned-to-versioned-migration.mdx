@@ -17,13 +17,13 @@ tags:
 
 This guide will help you implement Worker Versioning when the Temporal Worker Controller isn't used. If you are using the Temporal Worker Controller, follow [this guide](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/migration-to-versioned.md).
 
-## Prerequisites {/* #prerequisites */}
+## Prerequisites
 
 - Unversioned Temporal Workers currently running in production
 - Temporal CLI >= 1.5.0
 - Workers that connect to Temporal with Namespace and Task Queue configuration
 
-## Key steps {/* #key-steps */}
+## Key steps
 
 - Ensure your versioned Worker code is backward-compatible with existing Workflow histories.
 - Deploy the versioned Worker. It won't receive Tasks until you activate it.
@@ -32,7 +32,7 @@ This guide will help you implement Worker Versioning when the Temporal Worker Co
 - Keep unversioned Workers running during the transition period.
 - Test thoroughly in a non-production environment before migrating production Workers.
 
-### Step 1: Update your Worker code {/* #step-1-update-your-worker-code */}
+### Step 1: Update your Worker code
 
 Update your Worker initialization to include versioning configuration.
 
@@ -70,7 +70,7 @@ Your versioned Worker code must be fully backward-compatible with existing unver
 
 :::
 
-### Step 2: Deploy your versioned Worker {/* #step-2-deploy-your-versioned-worker */}
+### Step 2: Deploy your versioned Worker
 
 Deploy your versioned Worker alongside your existing unversioned Workers. The versioned Worker will begin polling but **won't receive any Tasks** until you explicitly activate it via the CLI.
 
@@ -80,7 +80,7 @@ You can verify it's polling by inspecting the Worker Deployment:
 temporal worker deployment describe --name "YourDeploymentName"
 ```
 
-### Step 3: Gradually ramp traffic (optional, but recommended) {/* #step-3-gradually-ramp-traffic-optional-but-recommended */}
+### Step 3: Gradually ramp traffic (optional, but recommended)
 
 Instead of cutting over all at once, ramp a small percentage of new Workflow executions to the versioned Worker first:
 
@@ -109,7 +109,7 @@ Versioning Info:
 
 Increase the ramp percentage incrementally as you test and see that your Workflows are behaving as expected.
 
-### Step 4: Set the versioned Worker as Current {/* #step-4-set-the-versioned-worker-as-current */}
+### Step 4: Set the versioned Worker as Current
 
 Once validated, promote the versioned Worker to receive 100% of new Workflow executions:
 
@@ -125,7 +125,7 @@ Once a Current version is set, **unversioned Workers** will no longer receive an
 
 :::
 
-### Step 5: Migrate unversioned in-flight Workflows {/* #step-5-migrate-unversioned-in-flight-workflows */}
+### Step 5: Migrate unversioned in-flight Workflows
 
 After setting the Current version, unversioned in-flight Workflows aren't dropped. On their next Task execution, they will automatically be routed to the versioned Worker. Once they are queued up on a versioned Worker, they will become either *Pinned* or *AutoUpgrade* depending on the Workflow's versioning behavior annotation.
 
@@ -143,7 +143,7 @@ temporal workflow signal \
 
 Once signaled, those Workflows will execute a Workflow Task and be routed to the Current versioned Worker. Keep your unversioned Workers running until all in-flight Workflows have migrated over.
 
-### Step 6: Scale down and clean up unversioned Workers {/* #step-6-scale-down-and-clean-up-unversioned-workers */}
+### Step 6: Scale down and clean up unversioned Workers
 
 Once you confirm that all Workflows are handled by versioned Workers, shut down
 your old unversioned Worker deployments.
