@@ -19,8 +19,9 @@ description:
 ---
 
 Temporal's integration with [Strands Agents](https://strandsagents.com/) gives your Strands agents durable execution,
-automatic retries, and timeouts via the Temporal platform. The plugin routes Strands model invocations, tool calls, MCP
-tool calls, and hooks through Temporal Activities, so every step the agent takes is recorded in workflow history.
+automatic retries, and timeouts via the Temporal platform. The plugin routes model invocations, tool calls, MCP tool
+calls, and hooks through Temporal Activities, so every step the agent takes is recorded in Workflow history and can
+survive crashes, restarts, and infrastructure failures.
 
 :::info
 
@@ -35,13 +36,13 @@ samples for the complete code.
 
 ## Prerequisites
 
-- This guide assumes you are already familiar with Strands Agents. If you aren't, refer to the
+- This guide assumes you are already familiar with Strands Agents. If you are not, refer to the
   [Strands Agents documentation](https://strandsagents.com/) for more details.
-- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+- If you are new to Temporal, read [Understanding Temporal](/evaluate/understanding-temporal) or take
   the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
-- Ensure you have set up your local development environment by following the
-  [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave
-  the Temporal development server running if you want to test your code locally.
+- Set up your local development environment by following the
+  [Set up your local development environment](/develop/python/set-up-your-local-python) guide. Leave the Temporal
+  development server running if you want to test your code locally.
 
 ## Install the plugin
 
@@ -57,9 +58,13 @@ or with pip:
 pip install "temporalio[strands-agents]"
 ```
 
-## Quickstart
+## Run a Strands agent with durable execution
 
-Define a Workflow that holds a `TemporalAgent`, then register `StrandsPlugin` on the Worker:
+The following example runs a Strands agent inside a Temporal Workflow. Model calls execute as Temporal Activities, which
+means they get automatic retries, timeouts, and durable execution. If the Worker process crashes mid-conversation,
+Temporal replays the Workflow and resumes from the last completed Activity.
+
+Define a Workflow that creates a `TemporalAgent` and invokes it with a prompt:
 
 ```python
 import asyncio
@@ -97,7 +102,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Start the Workflow from a client:
+Start the Workflow from a separate client script:
 
 ```python
 import asyncio
@@ -124,17 +129,19 @@ if __name__ == "__main__":
 
 :::warning
 
-Inside a Workflow, always call `agent.invoke_async(message)` — not `agent(message)`. The synchronous form spawns a
+Inside a Workflow, always call `agent.invoke_async(message)`, not `agent(message)`. The synchronous form spawns a
 worker thread, which the Workflow sandbox blocks.
 
 :::
 
-## Models
+## Choose and configure models
 
-`StrandsPlugin(models=...)` takes a mapping of `name → factory`. Each factory is called lazily on first use (on the
-Worker, outside the Workflow sandbox) and the constructed model is cached for the Worker's lifetime. If `models` is
-omitted, the plugin registers a single `BedrockModel()` factory under the name `"bedrock"`, matching Strands' own
-implicit default. Select a model per agent with `TemporalAgent(model="name", ...)`:
+By default, `StrandsPlugin` registers a single `BedrockModel()` factory under the name `"bedrock"`, matching Strands'
+own default. To use a different model, or to give different agents access to different models, pass a `models` mapping
+to `StrandsPlugin` when you create the Worker.
+
+Each entry maps a name to a factory function. The factory is called lazily on first use and the constructed model is
+cached for the Worker's lifetime. Select a model per agent with `TemporalAgent(model="name", ...)`:
 
 ```python
 from strands.models.anthropic import AnthropicModel
@@ -160,20 +167,19 @@ Worker(..., plugins=[StrandsPlugin(models={
 })])
 ```
 
-Each `TemporalAgent` carries its own Activity options (timeouts, retry policy, task queue, streaming topic) and
-dispatches to the shared model Activity, which resolves the model name against the registered factories at runtime. A
-name not present in `models` raises `ValueError` inside the Activity.
+A model name not present in the `models` mapping raises `ValueError` inside the Activity.
 
-## Tools
+## Run non-deterministic tools as Activities
 
-Wrap non-deterministic tools as Temporal Activities, register them with the Worker, and pass them to the agent through
-`workflow.activity_as_tool`:
+Strands tools that perform I/O, access external services, or produce non-deterministic results need to run as Temporal
+Activities rather than inline in the Workflow. Wrap each tool in an `@activity.defn` function, register the Activities
+on the Worker, and pass them to the agent using `activity_as_tool`:
 
 ```python
 from strands_tools import shell
 from temporalio import activity
 from temporalio.contrib.strands import StrandsPlugin, TemporalAgent
-from temporalio.contrib.strands import workflow as strands_workflow
+from temporalio.contrib.strands.workflow import activity_as_tool
 
 
 @activity.defn
@@ -190,8 +196,8 @@ async def shell_activity(command: str) -> dict:
 agent = TemporalAgent(
     start_to_close_timeout=timedelta(seconds=60),
     tools=[
-        strands_workflow.activity_as_tool(fetch_user, start_to_close_timeout=timedelta(seconds=30)),
-        strands_workflow.activity_as_tool(shell_activity, start_to_close_timeout=timedelta(seconds=15)),
+        activity_as_tool(fetch_user, start_to_close_timeout=timedelta(seconds=30)),
+        activity_as_tool(shell_activity, start_to_close_timeout=timedelta(seconds=15)),
     ],
 )
 
@@ -203,15 +209,17 @@ Worker(
 )
 ```
 
-If you're using built-in `strands_tools`, wrap them in a thin async function decorated with `@activity.defn` so they
+If you are using built-in `strands_tools`, wrap them in a thin async function decorated with `@activity.defn` so they
 run as Temporal Activities.
 
-## Hooks
+## React to agent lifecycle events
 
-Strands' [hook system](https://strandsagents.com/) lets you subscribe callbacks to events in the agent lifecycle —
-invocation start and end, model call before and after, tool call before and after, and message added. Pass
-`hooks=[MyHookProvider()]` to `TemporalAgent`; single-agent hook events fire in Workflow context, so deterministic
-callbacks just work:
+Strands' [hook system](https://strandsagents.com/) lets you subscribe callbacks to events in the agent lifecycle, such
+as invocation start/end, model call before/after, tool call before/after, and message added. Use hooks to add logging,
+metrics, or custom logic at each stage.
+
+Pass `hooks=[MyHookProvider()]` to `TemporalAgent`. Hook callbacks fire in Workflow context, so deterministic callbacks
+work without any extra setup:
 
 ```python
 from strands.hooks import HookProvider, HookRegistry
@@ -233,11 +241,13 @@ agent = TemporalAgent(start_to_close_timeout=timedelta(seconds=60), hooks=[Audit
 :::warning
 
 Hook callbacks run in Workflow context, so they must be
-[deterministic](/develop/python/workflows/basics#workflow-logic-requirements) — no `time.time()`, `uuid.uuid4()`, or
-I/O. For callbacks that need I/O (audit logging, metrics, alerting), use `workflow.activity_as_hook()` to dispatch the
-work as a Temporal Activity:
+[deterministic](/develop/python/workflows/basics#workflow-logic-requirements). Do not use `time.time()`, `uuid.uuid4()`,
+or I/O inside hook callbacks.
 
 :::
+
+For callbacks that need I/O (audit logging, metrics, alerting), use `activity_as_hook` to dispatch the work as a
+Temporal Activity:
 
 ```python
 from temporalio import activity
@@ -246,7 +256,6 @@ from temporalio.contrib.strands.workflow import activity_as_hook
 
 @activity.defn
 async def persist_tool_call(tool_name: str) -> None:
-    # I/O safely in an activity.
     ...
 
 
@@ -262,20 +271,22 @@ class AuditHook(HookProvider):
         )
 ```
 
-`activity_input` extracts serializable values from the event to pass as the Activity's input. Use a dataclass or
-Pydantic model for multiple values. This is needed because hook events hold references to the `Agent`, `AgentTool`
-instances, and other objects that don't cross the Activity boundary.
+The `activity_input` parameter extracts serializable values from the event to pass as the Activity's input. Use a
+dataclass or Pydantic model for multiple values. This is needed because hook events hold references to `Agent`,
+`AgentTool` instances, and other objects that cannot cross the Activity boundary.
 
-## Human-in-the-loop interrupts
+## Add human approval gates
 
-Strands offers two human-in-the-loop surfaces; both work with the plugin. In each case, `agent.invoke_async()` returns
-`AgentResult(stop_reason="interrupt", interrupts=[...])` instead of raising. Pair this with a Signal handler that
-supplies responses, then resume by calling `agent.invoke_async(responses)`.
+Some agent actions, such as deleting resources or sending messages, may require human approval before proceeding. Strands
+offers two ways to interrupt an agent and wait for a response. Both work with the plugin.
 
-### Hook-based interrupts
+In each case, `agent.invoke_async()` returns `AgentResult(stop_reason="interrupt", interrupts=[...])` instead of
+raising. Pair this with a Signal handler that supplies responses, then resume by calling `agent.invoke_async(responses)`.
 
-A hook on an interruptible event (for example, `BeforeToolCallEvent`) can pause the agent by calling
-`event.interrupt(name, reason=...)`. The hook runs in Workflow context, so it must be deterministic — no I/O.
+### Interrupt from a hook
+
+A hook on an interruptible event such as `BeforeToolCallEvent` can pause the agent by calling
+`event.interrupt(name, reason=...)`. The hook runs in Workflow context, so it must be deterministic.
 
 ```python
 from strands.hooks import HookProvider, HookRegistry
@@ -317,10 +328,10 @@ class MyWorkflow:
         return str(result)
 ```
 
-### Tool-body interrupts
+### Interrupt from a tool
 
 A `@strands.tool` function can raise `InterruptException(Interrupt(...))` directly. The agent stops with the interrupt,
-and the Workflow handles the resume the same way as for hooks:
+and the Workflow handles the resume the same way:
 
 ```python
 from strands import tool
@@ -334,8 +345,8 @@ def delete_thing(name: str) -> str:
     )
 ```
 
-The same works from an `activity_as_tool`-wrapped Activity. The plugin's failure converter preserves the `Interrupt`
-payload across the Activity boundary, so `AgentResult.interrupts` is populated just like the in-Workflow case:
+The same approach works from an `activity_as_tool`-wrapped Activity. The plugin's failure converter preserves the
+`Interrupt` payload across the Activity boundary, so `AgentResult.interrupts` is populated the same way:
 
 ```python
 from strands.interrupt import Interrupt, InterruptException
@@ -365,8 +376,8 @@ class MyWorkflow:
 :::warning
 
 Activity-tool interrupts rely on the plugin's failure converter, which is installed via the client's data converter.
-Attach `StrandsPlugin` to the **client** (not just the Worker) for them to work — Workers built from that client pick
-up the plugin automatically:
+Attach `StrandsPlugin` to the **client** (not just the Worker) for Activity-tool interrupts to work. Workers built from
+that client pick up the plugin automatically:
 
 ```python
 client = await Client.connect("localhost:7233", plugins=[StrandsPlugin()])
@@ -375,10 +386,10 @@ Worker(client, task_queue="strands", workflows=[MyWorkflow], activities=[delete_
 
 :::
 
-## Structured output
+## Return structured data from an agent
 
-Like Strands' `Agent`, `TemporalAgent` supports structured output with `structured_output_model`. The plugin defaults
-to the [`pydantic_data_converter`](/develop/python/data-handling/data-conversion), so Pydantic types
+To have the agent return a typed object instead of free-form text, pass a `structured_output_model` to `TemporalAgent`.
+The plugin defaults to the [`pydantic_data_converter`](/develop/python/data-handling/data-conversion), so Pydantic types
 serialize cleanly across the Activity and Workflow boundary:
 
 ```python
@@ -404,11 +415,14 @@ class MyWorkflow:
         return result.structured_output
 ```
 
-## Streaming
+## Stream agent output to clients
 
-To forward model chunks to external consumers, pass `streaming_topic="..."` to `TemporalAgent` and host a
-`WorkflowStream` on the Workflow. Each `StreamEvent` is published on the named topic from inside the model Activity;
-subscribers read via `WorkflowStreamClient`. Chunks are batched on `streaming_batch_interval` (default 100ms):
+For long-running agent calls, you may want to forward model output chunks to an external consumer as they arrive rather
+than waiting for the full response.
+
+Pass `streaming_topic="..."` to `TemporalAgent` and host a `WorkflowStream` on the Workflow. Each `StreamEvent` is
+published from inside the model Activity. Subscribers read events through `WorkflowStreamClient`. Chunks are batched on
+`streaming_batch_interval` (default 100 ms):
 
 ```python
 from temporalio.contrib.workflow_streams import WorkflowStream, WorkflowStreamClient
@@ -432,12 +446,14 @@ async for item in WorkflowStreamClient.create(client, workflow_id).subscribe(
     print(item.data)
 ```
 
-## MCP
+## Connect to MCP servers
 
-`StrandsPlugin(mcp_clients=...)` takes a mapping of `name → MCPClient factory`, mirroring the `models=` pattern. The
-plugin registers a per-server `{name}-call-tool` Activity and connects at Worker startup to enumerate tools.
-Workflow-side, `TemporalMCPClient(server="name")` is a pure handle: it references the server by name and carries the
-per-call Activity options.
+If your agent needs access to tools provided by an [MCP](https://modelcontextprotocol.io/) server, configure the MCP
+clients on the Worker and reference them by name in the Workflow.
+
+`StrandsPlugin(mcp_clients=...)` takes a mapping of `name` to `MCPClient` factory, mirroring the `models` pattern. The
+plugin registers a per-server Activity and connects at Worker startup to enumerate available tools. In the Workflow,
+`TemporalMCPClient(server="name")` is a handle that references the server by name and carries per-call Activity options:
 
 ```python
 from datetime import timedelta
@@ -480,16 +496,16 @@ Each factory returns a fully configured `MCPClient`, so you can pass options lik
 :::note
 
 The plugin connects to each MCP server once at Worker startup to enumerate tools. The schema is frozen for the
-Worker's lifetime; restart Workers to pick up MCP-server changes. If a server is unavailable at startup, the Worker
+Worker's lifetime. Restart Workers to pick up MCP server changes. If a server is unavailable at startup, the Worker
 fails to start.
 
 :::
 
-## Retries
+## Configure retries
 
-`TemporalAgent` disables Strands' built-in `ModelRetryStrategy` so retries are handled exclusively by Temporal.
-Configure retries via `retry_policy` on `TemporalAgent`, and on the Activity options accepted by
-`workflow.activity_as_tool`, `workflow.activity_as_hook`, and `TemporalMCPClient`:
+`TemporalAgent` disables Strands' built-in `ModelRetryStrategy` so that retries are handled exclusively by Temporal.
+Configure retries with `retry_policy` on `TemporalAgent` for model calls, and on the Activity options accepted by
+`activity_as_tool`, `activity_as_hook`, and `TemporalMCPClient` for their respective calls:
 
 ```python
 from temporalio.common import RetryPolicy
@@ -501,14 +517,15 @@ TemporalAgent(
 )
 ```
 
-Passing `retry_strategy=...` to `TemporalAgent(...)` raises `ValueError`; remove the argument (or pass
-`retry_strategy=None`) and put the retry config on the Activity options instead.
+Passing `retry_strategy=...` to `TemporalAgent(...)` raises `ValueError`. Remove the argument (or pass
+`retry_strategy=None`) and use `retry_policy` instead.
 
-## Continue-as-new
+## Handle long-running chat sessions
 
-A chat-style Workflow accumulates message history with every turn and eventually hits Temporal's per-Workflow history
-limit. Use [continue-as-new](/develop/python/workflows/continue-as-new) to start a fresh execution while carrying
-`agent.messages` forward as input:
+A chat-style Workflow accumulates message history with every turn. Over a long session, the Workflow's event history can
+grow large enough to hit Temporal's per-Workflow history limit. To avoid this, use
+[Continue-as-New](/develop/python/workflows/continue-as-new) to start a fresh Workflow execution while carrying the
+agent's message history forward as input:
 
 ```python
 from dataclasses import dataclass, field
@@ -551,12 +568,11 @@ class ChatWorkflow:
                 workflow.continue_as_new(ChatInput(messages=agent.messages))
 ```
 
-## Observability
+## Add tracing with OpenTelemetry
 
-`StrandsPlugin` composes cleanly with the [OpenTelemetry plugin](/develop/python/platform/observability#tracing). Register
-`OpenTelemetryPlugin` on the client (Workers built from that client pick it up automatically) and `StrandsPlugin` on
-the Worker. You'll get OTel spans around the model, tool, and MCP Activities the plugin schedules, plus any spans
-Strands itself emits inside `invoke_async`:
+To get distributed traces across model, tool, and MCP Activities, combine `StrandsPlugin` with the
+[OpenTelemetry plugin](/develop/python/platform/observability#tracing). Register `OpenTelemetryPlugin` on the client and
+`StrandsPlugin` on the Worker. Workers built from that client pick up the OpenTelemetry plugin automatically:
 
 ```python
 import opentelemetry.trace
@@ -580,11 +596,11 @@ Worker(
 
 Set the tracer provider before connecting the client.
 
-## Snapshots
+## Snapshots are not supported
 
 `TemporalAgent.take_snapshot()` and `TemporalAgent.load_snapshot()` raise `NotImplementedError`. Temporal's event
-history already persists Workflow state durably at a finer granularity than Strands snapshots, so calling either
-inside a Workflow is redundant.
+history already persists Workflow state durably at a finer granularity than Strands snapshots, so snapshots are
+redundant inside a Workflow.
 
 ## Samples
 
