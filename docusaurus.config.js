@@ -454,9 +454,16 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    markdown: {
+      mdx1Compat: {
+        // Required for snipsync HTML comment markers (<!--SNIPSTART-->, <!--SNIPEND-->)
+        comments: true,
+        admonitions: true,
+      },
+    },
     future: {
       v4: true,
-      experimental_faster: true,
+      faster: true,
     },
   };
 

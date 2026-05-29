@@ -11,7 +11,7 @@ tags:
   - Activity
 ---
 
-## Start an Activity Execution {#activity-execution}
+## Start an Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a
 [Workflow Definition](/workflow-definition). The call to spawn an Activity Execution generates the
@@ -48,7 +48,7 @@ impl GreetingWorkflow {
 }
 ```
 
-### Set the required Activity Timeouts {#required-timeout}
+### Set the required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several timeout parameters. You need to set at least one of these:
 
@@ -86,7 +86,7 @@ impl GreetingWorkflow {
 }
 ```
 
-### Get the results of an Activity Execution {#get-activity-results}
+### Get the results of an Activity Execution {/* #get-activity-results */}
 
 Spawning an [Activity Execution](/activity-execution) generates a [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and returns a `Future` to the Workflow.
 

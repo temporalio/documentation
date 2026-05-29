@@ -152,7 +152,7 @@ Persistent non-zero values are unexpected and indicate a hot resource. Use the `
 
 Resource exhaustion is distinct from rate limiting against your account limits. For workloads that are throttled because they exceed their provisioned capacity, see [Monitoring Trends Against Limits](#rps-aps-rate-limits). Limits-driven throttling slows or stalls a workload, so it is generally the more important signal to monitor.
 
-## Monitoring Trends Against Limits {#rps-aps-rate-limits}
+## Monitoring Trends Against Limits {/* #rps-aps-rate-limits */}
 
 Tracking trends against your account limits is the most important throttling signal to monitor. Unlike [Resource Exhaustion](#detecting-resource-exhaustion), which usually self-heals through retries, hitting a limit slows or stalls progress until the workload backs off or your capacity is increased.
 

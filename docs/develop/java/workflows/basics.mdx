@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a Workflow {#develop-workflows}
+## How to develop a Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -54,7 +54,7 @@ Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to ot
 
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 
-## Workflow interface inheritance {#interface-inheritance}
+## Workflow interface inheritance {/* #interface-inheritance */}
 
 Workflow interfaces can form inheritance hierarchies.
 It may be useful for creating reusable components across multiple
@@ -137,7 +137,7 @@ This registration will fail with:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-## Define Workflow parameters {#workflow-parameters}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -161,7 +161,7 @@ public interface YourWorkflow {
 }
 ```
 
-## Define Workflow return parameters {#workflow-return-values}
+## Define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -177,7 +177,7 @@ Related references:
 - [Data Converter](/dataconversion)
 - [Java DataConverter reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-## Customize your Workflow Type {#workflow-type}
+## Customize your Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that is referred to as the Workflow name.
 
@@ -209,7 +209,7 @@ In the following example, the Workflow Type is set to `your-workflow`.
 
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
 
-## Workflow logic requirements {#workflow-logic-requirements}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
