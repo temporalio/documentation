@@ -41,7 +41,7 @@ In general, do not take dependencies on what Temporal Cloud endpoints resolve to
 Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
 
 1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the fixed IP ranges for the Namespace's active region, so it is safe to allowlist these IP ranges in a firewall. See [Stable IP addresses](#stable-ip-addresses).
-2. **High Availability features with Private Connectivity.** When High Availability and Private Connectivity Rules are both enabled on a Namespace, the Namespace Endpoint is guaranteed to resolve via CNAME to `<provider>-<region>.region.tmprl.cloud` for the active region. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for recommendations to configure private DNS. Note: Do not attach a public connectivity rule with Stable IPs to the Namespace, as that supercedes this behavior.
+2. **High Availability features with Private Connectivity.** When High Availability and Private Connectivity Rules are both enabled on a Namespace, the Namespace Endpoint is guaranteed to resolve via CNAME to `<provider>-<region>.region.tmprl.cloud` for the active region. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for recommendations to configure private DNS. Note: Do not attach a public connectivity rule with Stable IPs to the Namespace, as that supersedes this behavior.
 
 For all other connectivity patterns, treat the resolved IP as temporary and use one of the two approaches above, or allowlist the entire cloud provider IP range.
 
