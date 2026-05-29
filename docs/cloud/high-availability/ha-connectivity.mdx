@@ -103,6 +103,12 @@ For private connectivity, your job is to make sure that:
 - Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
 - Ensure network connectivity between the two regions.
 
+:::warning Do not attach a Stable IPs public Connectivity Rule
+
+If you attach a public [Connectivity Rule with Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) to a Namespace, the Namespace Endpoint resolves to a public Stable IP instead of to `<provider>-<region>.region.tmprl.cloud`. Stable IPs DNS behavior supersedes the regional DNS behavior described here, so the Namespace Endpoint's DNS resolution will not work in the way the Private Hosted Zone needs. To keep HA + Private Connectivity working, do not attach a Stable IPs public Connectivity Rule to that Namespace.
+
+:::
+
 ## Single-cloud HA on AWS PrivateLink
 
 ### How Namespace DNS records work with PrivateLink

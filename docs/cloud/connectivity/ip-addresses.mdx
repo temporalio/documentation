@@ -28,13 +28,9 @@ By default, Temporal Cloud resources use dynamic IP addresses that may change at
 
 If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink or GCP Private Services Connect](/cloud/connectivity#private-network-connectivity-for-namespaces). Alternatively, you can enable [Stable IPs](#stable-ip-addresses) for your Namespace.
 
-:::warning Do not allowlist default dynamic IP addresses
+:::warning Do not rely on default dynamic public IP addresses
 
-**By default, Temporal Cloud IPs are not static and may change without notice.**
-
-Do not allowlist specific IP addresses you see Temporal Cloud services using at a point in time, as your Workers will not connect to Temporal Cloud when those IPs change.
-
-If you need to allowlist a Stable set of IP addresses for your Namespace, enable [Stable IPs](#stable-ip-addresses).
+By default, Temporal Cloud IPs are not static and may change without notice. If you need fixed, public IP addresses for your Namespace without using [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces), enable [Stable IPs](#stable-ip-addresses) for Namespace Endpoints.
 
 :::
 
@@ -44,8 +40,8 @@ In general, do not take dependencies on what Temporal Cloud endpoints resolve to
 
 Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
 
-1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the Stable IPs for the Namespace's active region. The set of Stable IPs is published and changes only on a managed schedule, so it is safe to allowlist them in a firewall. See [Stable IP addresses](#stable-ip-addresses) below.
-2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves via CNAME to the regional intermediary `<provider>-<region>.region.tmprl.cloud` for the active region. You can override that record in a Route 53 private hosted zone or GCP private DNS zone to direct traffic to your VPC Endpoint, and Temporal Cloud updates the CNAME on failover so the override stays correct. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for the full setup.
+1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the fixed IP ranges for the Namespace's active region, so it is safe to allowlist these IP ranges in a firewall. See [Stable IP addresses](#stable-ip-addresses).
+2. **High Availability features with Private Connectivity.** When High Availability and Private Connectivity Rules are both enabled on a Namespace, the Namespace Endpoint is guaranteed to resolve via CNAME to `<provider>-<region>.region.tmprl.cloud` for the active region. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for recommendations to configure private DNS. Note: Do not attach a public connectivity rule with Stable IPs to the Namespace, as that supercedes this behavior.
 
 For all other connectivity patterns, treat the resolved IP as temporary and use one of the two approaches above, or allowlist the entire cloud provider IP range.
 
@@ -78,6 +74,12 @@ When Stable IPs are enabled on a Namespace:
 :::note
 
 Stable IPs apply only to Namespace traffic, sometimes called the "data plane." The Temporal Cloud management plane, observability endpoints, and Web UI do not have stable public IP addresses.
+
+:::
+
+:::warning Stable IPs supersedes HA + Private Connectivity DNS
+
+If you attach a public Connectivity Rule with Stable IPs to a Namespace that is also configured for [High Availability with Private Connectivity](/cloud/high-availability/ha-connectivity), the Namespace Endpoint resolves to a public Stable IP instead of to `<provider>-<region>.region.tmprl.cloud`. Stable IPs DNS behavior supersedes the regional DNS behavior that HA + Private Connectivity relies on, so the Namespace Endpoint's DNS resolution will not work in the way the Private Hosted Zone needs. Do not attach a Stable IPs public Connectivity Rule to a Namespace where you want HA + Private Connectivity to keep routing traffic over PrivateLink / PSC.
 
 :::
 
