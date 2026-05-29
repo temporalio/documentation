@@ -41,6 +41,12 @@ The type of connectivity, currently only support 'private' and 'public'.
 
 Alias: `ct`
 
+#### --enable-stable-ips
+
+Enable Stable IPs on a public Connectivity Rule. When set, Namespaces attached to this rule resolve their Namespace endpoint to a published, fixed set of IP addresses that you can allowlist in your firewall. Only valid with `--connectivity-type public`. See [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) for details.
+
+Alias: `esi`
+
 #### --gcp-project-id
 
 The GCP project ID of the connection, required if the cloud provider is 'gcp'.
