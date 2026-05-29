@@ -94,7 +94,7 @@ This encrypts only Nexus traffic with a dedicated key, without sharing Namespace
 When calling `ExecuteOperation` with a non-string operation (for example, an operation definition or reference), the wrapper changes the input type and `ExecuteOperation` fails type-checking:
 
 ```
-cannot assign argument of type "converter.NexusOperation" to type "…EchoInput"
+cannot assign argument of type "<WrapperType>" to type "<ActualInputType>"
 ```
 
 This approach only works when the operation is passed as a string name.
