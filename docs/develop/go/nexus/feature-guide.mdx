@@ -97,11 +97,10 @@ The default data converter encodes payloads in the following order: Null, Byte a
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses native Go types.
 
-<!--SNIPSTART samples-go-nexus-service {"selectedLines": ["2-13"]}-->
+<!--SNIPSTART samples-go-nexus-service {"selectedLines": ["8-18"]}-->
 [nexus/service/api.go](https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go)
 ```go
 // ...
-
 const HelloServiceName = "my-hello-service"
 
 // Echo operation
@@ -207,9 +206,9 @@ See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperationName, HelloHandlerWorkflow, func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 	return client.StartWorkflowOptions{
 		// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
-		// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
-		// the operation, this ID is guaranteed to be stable across retries of this operation.
-		ID: options.RequestID,
+		// For this example, use a business ID derived from the greeting input so repeated operations
+		// for the same name and language resolve to the same workflow.
+		ID: service.HelloWorkflowID(input),
 		// Task queue defaults to the task queue this operation is handled on.
 	}, nil
 })
@@ -242,9 +241,9 @@ var HelloOperation = temporalnexus.MustNewWorkflowRunOperationWithOptions(tempor
 			options,
 			client.StartWorkflowOptions{
 				// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
-				// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
-				// the operation, this ID is guaranteed to be stable across retries of this operation.
-				ID: options.RequestID,
+				// For this example, use a business ID derived from the greeting input so repeated operations
+				// for the same name and language resolve to the same workflow.
+				ID: service.HelloWorkflowID(input),
 			},
 			HelloHandlerWorkflow,
 			input.Name,

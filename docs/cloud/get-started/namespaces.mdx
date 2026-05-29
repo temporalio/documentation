@@ -271,6 +271,17 @@ There are two types of gRPC endpoints for accessing a Namespace in Temporal Clou
     - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region. This can be useful in advanced [High Availability](/cloud/high-availability) setups where you want explicit control over which region handles requests.
     - When using mTLS to authenticate, the Temporal Client must set the `server_name` property to `<namespace endpoint value>` in its request to the value of the Namespace endpoint. This tells the client to expect a different SNI header during the TLS handshake, since the request to the regional endpoint is redirected to the specific Namespace.
 
+:::caution Do not take dependencies on Temporal Cloud endpoint DNS resolution
+
+In general, the IP addresses that Temporal Cloud endpoints resolve to are subject to change without notice. Do not configure Workers, Temporal Clients, or firewalls against the specific IPs you observe for an endpoint at a point in time.
+
+Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
+
+1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the [Stable IPs](/cloud/connectivity/ip-addresses) for the Namespace's active region.
+2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves to a regional intermediary (`<provider>-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone or GCP private DNS zone to point at your VPC Endpoint. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for setup details.
+
+:::
+
 ### Configuring a Temporal Client with API keys or mTLS
 
 To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
@@ -292,10 +303,11 @@ To ensure the security of your data, all traffic to and from your Namespace is e
 
 For enhanced protection:
 - Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.
-- In your own networking architecture, set up an allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the
-  Cloud Provider region in which your Namespace is located:
-  - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
-  - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
+- Set up your allow list for outgoing network requests from your Clients and Workers. You have two options:
+  - Use Temporal Cloud's [stable IPs configuration](/cloud/connectivity/ip-addresses) to get non-changing IP addresses for your Namespace endpoint, which you can then allowlist in your firewall rules.
+  - Allowlist the entire Cloud Provider IP address ranges for the region in which your Namespace is located:
+    - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
+    - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
 
 ## How to manage Namespaces in Temporal Cloud {#manage-namespaces}
 
