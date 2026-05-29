@@ -27,7 +27,7 @@ Temporal Cloud supports private connectivity to Namespaces via AWS PrivateLink o
 
 Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of how you choose to connect.
 
-For information about IP address stability and allowlisting, see [IP addresses](/cloud/connectivity/ip-addresses).
+For information about IP address stability and allowlisting, see [IP addresses](/cloud/connectivity/ip-addresses). If your security team requires allowlisting specific IP addresses for firewall rules, Temporal Cloud also offers a [Stable IPs configuration option](/cloud/connectivity/ip-addresses) that provides non-changing IP addresses for your Namespace endpoint.
 
 ### Required steps
 
@@ -81,7 +81,11 @@ Each Connectivity Rule specifies either generic public (internet) access or a sp
 | AWS PrivateLink | **Optional.** Add one only if you want to enforce private-only access (block internet traffic to that Namespace). | AWS PrivateLink connections become usable as soon as the VPC endpoint is `Available`. Adding a Connectivity Rule restricts access; it does not establish it. |
 | GCP Private Service Connect | **Required.** The PSC endpoint stays in `Pending` until a matching Connectivity Rule is created. | The Connectivity Rule is what tells Temporal Cloud to accept the PSC connection. |
 
-A public Connectivity Rule takes no parameters.
+A public Connectivity Rule has one optional parameter:
+
+- `enable-stable-ips`: When set, Namespaces attached to this rule resolve their Namespace endpoint to a published, fixed set of IP addresses you can allowlist in your firewall. See [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) for details.
+
+Only one public Connectivity Rule is allowed per account (see [Permissions and limits](#permissions-and-limits) below). If you already have a public Connectivity Rule and want to turn on Stable IPs, update the existing rule rather than creating a new one — attempting to create a second public rule returns an error.
 
 An AWS PrivateLink (PL) private Connectivity Rule requires:
 
@@ -130,6 +134,12 @@ Create public connectivity rule (you only need to do this once ever in your acco
 
 ```bash
 tcld connectivity-rule create --connectivity-type public
+```
+
+Create a public Connectivity Rule with [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) enabled:
+
+```bash
+tcld connectivity-rule create --connectivity-type public --enable-stable-ips
 ```
 
 The `cr` alias works the same way:
