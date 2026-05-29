@@ -335,7 +335,7 @@ IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, 
 To connect to a Namespace with Stable IPs enabled:
 
 1. **Use the Namespace endpoint**: Configure Workers and Temporal Clients to use the Namespace endpoint format: `<namespace>.<account>.tmprl.cloud:7233`
-2. **Do not use Regional endpoints**: Regional endpoints (`<region>.<cloud>.api.temporal.io`) will route to the Namespace but resolve to dynamic IP addresses
+2. **Do not use Regional endpoints**: Regional endpoints (`<region>.<cloud>.api.temporal.io`) will route to the Namespace but resolve to dynamic IP addresses.
 3. **Do not use PrivateLink**: PrivateLink endpoints do not resolve to Stable IPs. To use Stable IPs, connect over public endpoints.
 
 Stable IPs work with both mTLS certificate-based authentication and API key authentication.
