@@ -63,7 +63,7 @@
     "@vercel/functions": "^3.5.1",
     "algoliasearch": "^5.40.0",
     "chart.js": "^4.4.1",
-    "clsx": "^1.1.1",
+    "clsx": "^2.1.1",
     "comlink": "^4.4.2",
     "concurrently": "^8.2.2",
     "docusaurus-plugin-llms": "^0.2.0",
