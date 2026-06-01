@@ -17,7 +17,7 @@ tags:
 description: Run Strands Agents AI workflows with durable execution using the Temporal Python SDK and Strands plugin.
 ---
 
-Temporal's integration with [Strands Agents](https://strandsagents.com/) is a [Plugin](/develop/python/plugins) that
+Temporal's integration with [Strands Agents](https://strandsagents.com/) is a [Plugin](/develop/plugins-guide) that
 gives your Strands agents [Durable Execution](/temporal#durable-execution) via the Temporal platform. The plugin routes
 model invocations, tool calls, MCP tool calls, and hooks through Temporal Activities, so every step the agent takes is
 recorded in Workflow history and can survive crashes, restarts, and infrastructure failures.
@@ -73,7 +73,9 @@ Create a Workflow that holds a `TemporalAgent` and invokes it with a prompt. The
 maximum time each model call Activity can run:
 
 <!--SNIPSTART python-strands-hello-world-workflow-->
+
 [strands_plugin/hello_world/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/hello_world/workflow.py)
+
 ```py
 from datetime import timedelta
 
@@ -91,6 +93,7 @@ class HelloWorldWorkflow:
         result = await self.agent.invoke_async(prompt)
         return str(result)
 ```
+
 <!--SNIPEND-->
 
 :::caution
@@ -106,7 +109,9 @@ Create a Worker that registers the Workflow and the `StrandsPlugin`. The plugin 
 that handle model calls:
 
 <!--SNIPSTART python-strands-hello-world-worker-->
+
 [strands_plugin/hello_world/run_worker.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/hello_world/run_worker.py)
+
 ```py
 import asyncio
 import os
@@ -137,6 +142,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 <!--SNIPEND-->
 
 **3. Run the Workflow**
@@ -145,7 +151,9 @@ Start the Workflow from a separate client script. This example sends the prompt 
 and prints the agent's response:
 
 <!--SNIPSTART python-strands-hello-world-run-workflow-->
+
 [strands_plugin/hello_world/run_workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/hello_world/run_workflow.py)
+
 ```py
 import asyncio
 import os
@@ -171,6 +179,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 <!--SNIPEND-->
 
 ## Build the agent
@@ -224,7 +233,9 @@ on the Worker, and pass them to the agent using `activity_as_tool`.
 Define an Activity for the tool:
 
 <!--SNIPSTART python-strands-tools-activity-->
+
 [strands_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/tools/workflow.py)
+
 ```py
 @activity.defn
 async def fetch_weather(city: str) -> dict:
@@ -235,12 +246,15 @@ async def fetch_weather(city: str) -> dict:
         "conditions": "sunny",
     }
 ```
+
 <!--SNIPEND-->
 
 Pass the Activity to the agent in the Workflow using `activity_as_tool`:
 
 <!--SNIPSTART python-strands-tools-workflow-->
+
 [strands_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/tools/workflow.py)
+
 ```py
 @workflow.defn
 class ToolsWorkflow:
@@ -265,12 +279,15 @@ class ToolsWorkflow:
         result = await self.agent.invoke_async(prompt)
         return str(result)
 ```
+
 <!--SNIPEND-->
 
 Register the Activity functions on the Worker:
 
 <!--SNIPSTART python-strands-tools-worker-->
+
 [strands_plugin/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/tools/run_worker.py)
+
 ```py
 import asyncio
 import os
@@ -306,6 +323,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 <!--SNIPEND-->
 
 If you are using built-in `strands_tools`, wrap them in a thin async function decorated with `@activity.defn` so they
@@ -321,21 +339,26 @@ Pass `hooks=[MyHookProvider()]` to `TemporalAgent`. Hook callbacks fire in Workf
 work without any extra setup.
 
 For callbacks that need I/O (audit logging, metrics, alerting), use `activity_as_hook` to dispatch the work as a
-Temporal Activity. The following example shows both patterns in one `HookProvider`. The `_record` callback runs
-in Workflow context (deterministic), while `persist_tool_call` runs as an Activity (I/O-safe):
+Temporal Activity. The following example shows both patterns in one `HookProvider`. The `_record` callback runs in
+Workflow context (deterministic), while `persist_tool_call` runs as an Activity (I/O-safe):
 
 <!--SNIPSTART python-strands-hooks-activity-->
+
 [strands_plugin/hooks/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/hooks/workflow.py)
+
 ```py
 @activity.defn
 async def persist_tool_call(tool_name: str) -> None:
     # In production, write to a database / S3 / your audit pipeline.
     activity.logger.info(f"audit: tool {tool_name} completed")
 ```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART python-strands-hooks-provider-->
+
 [strands_plugin/hooks/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/hooks/workflow.py)
+
 ```py
 class AuditHook(HookProvider):
     def __init__(self) -> None:
@@ -355,6 +378,7 @@ class AuditHook(HookProvider):
     def _record(self, event: AfterToolCallEvent) -> None:
         self.fired.append(event.tool_use["name"])
 ```
+
 <!--SNIPEND-->
 
 :::warning
@@ -381,7 +405,9 @@ plugin registers a per-server Activity and connects at Worker startup to enumera
 Define the Workflow with a `TemporalMCPClient`:
 
 <!--SNIPSTART python-strands-mcp-workflow-->
+
 [strands_plugin/mcp/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/mcp/workflow.py)
+
 ```py
 from datetime import timedelta
 
@@ -406,12 +432,15 @@ class MCPWorkflow:
         result = await self.agent.invoke_async(prompt)
         return str(result)
 ```
+
 <!--SNIPEND-->
 
 Register the MCP client factory on the Worker:
 
 <!--SNIPSTART python-strands-mcp-worker {"selectedLines": ["6-10", "17-25", "28-41"]}-->
+
 [strands_plugin/mcp/run_worker.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/mcp/run_worker.py)
+
 ```py
 # ...
 from mcp import StdioServerParameters, stdio_client
@@ -445,6 +474,7 @@ async def main() -> None:
     print("Worker started. Ctrl+C to exit.")
     await worker.run()
 ```
+
 <!--SNIPEND-->
 
 Each factory returns a fully configured `MCPClient`, so you can pass options like `tool_filters`, `prefix`,
@@ -479,7 +509,9 @@ A hook on an interruptible event such as `BeforeToolCallEvent` can pause the age
 Define the approval hook:
 
 <!--SNIPSTART python-strands-human-in-the-loop-hook-->
+
 [strands_plugin/human_in_the_loop/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/human_in_the_loop/workflow.py)
+
 ```py
 class ApprovalHook(HookProvider):
     def register_hooks(self, registry: HookRegistry, **kwargs: object) -> None:
@@ -495,12 +527,15 @@ class ApprovalHook(HookProvider):
         if approval != "approve":
             event.cancel_tool = "denied"
 ```
+
 <!--SNIPEND-->
 
 The Workflow waits for a Signal carrying the approval response, then resumes the agent:
 
 <!--SNIPSTART python-strands-human-in-the-loop-workflow-->
+
 [strands_plugin/human_in_the_loop/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/human_in_the_loop/workflow.py)
+
 ```py
 @workflow.defn
 class HumanInTheLoopWorkflow:
@@ -538,6 +573,7 @@ class HumanInTheLoopWorkflow:
             result = await self.agent.invoke_async(responses)
         return str(result)
 ```
+
 <!--SNIPEND-->
 
 #### Interrupt from a tool
@@ -563,7 +599,9 @@ The same approach works from an `activity_as_tool`-wrapped Activity. The plugin'
 Define the Activity that raises the interrupt:
 
 <!--SNIPSTART python-strands-activity-interrupt-activity-->
+
 [strands_plugin/activity_interrupt/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/activity_interrupt/workflow.py)
+
 ```py
 @activity.defn
 async def delete_thing(name: str) -> str:
@@ -578,6 +616,7 @@ async def delete_thing(name: str) -> str:
         )
     return f"deleted {name}"
 ```
+
 <!--SNIPEND-->
 
 :::warning
@@ -587,7 +626,9 @@ Attach `StrandsPlugin` to the **client** (not just the Worker) for Activity-tool
 that client pick up the plugin automatically:
 
 <!--SNIPSTART python-strands-activity-interrupt-worker-->
+
 [strands_plugin/activity_interrupt/run_worker.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/activity_interrupt/run_worker.py)
+
 ```py
 import asyncio
 import os
@@ -623,6 +664,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 <!--SNIPEND-->
 
 :::
@@ -634,7 +676,9 @@ The plugin defaults to the [`pydantic_data_converter`](/develop/python/data-hand
 serialize cleanly across the Activity and Workflow boundary:
 
 <!--SNIPSTART python-strands-structured-output-workflow-->
+
 [strands_plugin/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/structured_output/workflow.py)
+
 ```py
 from datetime import timedelta
 
@@ -663,6 +707,7 @@ class StructuredOutputWorkflow:
         assert isinstance(result.structured_output, PersonInfo)
         return result.structured_output
 ```
+
 <!--SNIPEND-->
 
 ### Stream agent output to clients
@@ -677,7 +722,9 @@ published from inside the model Activity. Subscribers read events through `Workf
 Define the Workflow with a `WorkflowStream` and a streaming topic:
 
 <!--SNIPSTART python-strands-streaming-workflow-->
+
 [strands_plugin/streaming/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/streaming/workflow.py)
+
 ```py
 from datetime import timedelta
 
@@ -700,12 +747,15 @@ class StreamingWorkflow:
         result = await self.agent.invoke_async(prompt)
         return str(result)
 ```
+
 <!--SNIPEND-->
 
 Subscribe to the stream from a client:
 
 <!--SNIPSTART python-strands-streaming-client-->
+
 [strands_plugin/streaming/run_workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/streaming/run_workflow.py)
+
 ```py
 import asyncio
 import os
@@ -755,6 +805,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 <!--SNIPEND-->
 
 ## Run in production
@@ -787,13 +838,15 @@ grow large enough to hit Temporal's per-Workflow history limit. To avoid this, u
 [Continue-as-New](/develop/python/workflows/continue-as-new) to start a fresh Workflow execution while carrying the
 agent's message history forward as input.
 
-In this example, each user turn arrives as a Workflow [Update](/develop/python/workflows/message-passing#updates), so the caller gets
-the agent's reply back from the same call. The `run` method creates the agent, then waits until either the chat ends
-or Temporal suggests continue-as-new. When it does, the Workflow drains any in-flight updates and starts a fresh
-execution with the agent's accumulated messages:
+In this example, each user turn arrives as a Workflow [Update](/develop/python/workflows/message-passing#updates), so
+the caller gets the agent's reply back from the same call. The `run` method creates the agent, then waits until either
+the chat ends or Temporal suggests continue-as-new. When it does, the Workflow drains any in-flight updates and starts a
+fresh execution with the agent's accumulated messages:
 
 <!--SNIPSTART python-strands-continue-as-new-workflow-->
+
 [strands_plugin/continue_as_new/workflow.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/continue_as_new/workflow.py)
+
 ```py
 import asyncio
 from dataclasses import dataclass, field
@@ -848,6 +901,7 @@ class ChatWorkflow:
         if not self._done:
             workflow.continue_as_new(ChatInput(messages=self._agent.messages))
 ```
+
 <!--SNIPEND-->
 
 ### Add tracing with OpenTelemetry
