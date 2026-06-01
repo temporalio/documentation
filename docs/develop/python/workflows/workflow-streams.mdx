@@ -374,7 +374,7 @@ There are a few details to note if you're writing custom message handlers or tes
     A handler that observes state set by stream initialization in that same activation can see pre-publish state. The fix is to make the handler `async def` and `await` once before reading state. `asyncio.sleep(0)` is a no-op yield that suffices and adds no history events. Don't substitute `workflow.sleep(0)`, which records a timer event. Once the first activation completes, the handler is permanent and the race doesn't recur.
 - **Type bindings aren't shared across publishers.** Each `WorkflowStream` and each `WorkflowStreamClient` records topic types only for its own instance. If two publishers bind the same topic name to different types, the mismatch is not caught at publish, and the subscriber gets a decode error when it processes events from the mismatched publisher.
 
-## Example: Stream LLM output {#stream-llm-output}
+## Example: Stream LLM output {/* #stream-llm-output */}
 
 The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive. The Workflow starts the Activity and waits for the consumer to acknowledge end-of-stream. The consumer subscribes, accumulates the deltas, and clears its accumulated state on `RETRY` before continuing. The shape works for a terminal client, a desktop UI, or a Server-Sent Events (SSE) endpoint forwarding to a browser. Anything that holds the displayed state calls `render()` to display it.
 

@@ -50,7 +50,7 @@ This page covers the following:
 - [Tuning](#tuning)
 - [Continue-As-New](#continue-as-new)
 
-## What are Workflow Streams? {#what-are-workflow-streams}
+## What are Workflow Streams? {/* #what-are-workflow-streams */}
 
 A Workflow Stream is a durable event channel hosted inside a Workflow. Publishers append events to topics on the stream.
 Subscribers attach to the Workflow by its Workflow Id, optionally filter by topic, and consume events by long-polling.
@@ -76,7 +76,7 @@ publishers and subscribers per Workflow, not thousands.
   />
 </RelatedReadContainer>
 
-## How Workflow Streams works {#how-it-works}
+## How Workflow Streams works
 
 The stream lives inside a Workflow, not on a separate broker.
 A Workflow creates the stream by constructing a `WorkflowStream` object, which sets up an in-memory, append-only event
@@ -217,7 +217,7 @@ Every batch carries a unique identifier (the client's Id paired with a monotonic
 
 This dedup applies at the Signal layer, not the Activity layer. An *Activity retry* is a different concept from a *publish retry*. When Temporal retries the Activity, the retried execution constructs a new Workflow Stream client with its own client Id, so from the stream's perspective every attempt is a fresh publisher whose batches will not deduplicate against the prior attempt's. That is why retried-attempt events appear in the stream alongside the successful attempt's output.
 
-## Choose where to host the stream {#choose-where-to-host}
+## Choose where to host the stream
 
 A `WorkflowStream` is hosted inside a Workflow, so the first design choice is whether to use a Workflow that handles both the work and the stream or use a dedicated Workflow for the stream.
 
@@ -233,7 +233,7 @@ strategy.
 
 Use distinct Workflow Ids for unrelated streams rather than packing them into one Workflow.
 
-## Closing the stream {#closing-the-stream}
+## Closing the stream
 
 A subscriber's iterator doesn't know when the publisher is done. End-of-stream is an application-level concern. Without
 coordination, a subscriber keeps polling until the Workflow reaches a terminal state.
@@ -270,7 +270,7 @@ The subscribe iterator exits cleanly when the Workflow reaches `COMPLETED`, `FAI
 `TIMED_OUT`, but doesn't distinguish among them. If your application needs to know which, describe the Workflow handle
 after the loop returns to inspect the status.
 
-## Delivery semantics {#delivery-semantics}
+## Delivery semantics
 
 ### Exactly-once publishing
 
@@ -319,7 +319,7 @@ These two settings must satisfy **max retry duration < publisher TTL**. If a pub
 retention, the dedup state can age out before the retry lands. A retry that arrives after its dedup record has been
 pruned is treated as a fresh publish, producing a duplicate. If you tune one, tune the other to keep the relationship between them.
 
-## Tuning {#tuning}
+## Tuning
 
 The most important question when tuning is: how often do you want to update your UI? That answer drives the trade-off
 between user-perceived latency and the number of history events your Workflow accumulates.
@@ -346,7 +346,7 @@ completion produces 500 publish Signals, which is meaningful but tractable. Per-
 | **max batch size** | unbounded | Caps the number of items per batch. Without this, only batch interval bounds batch size. A hot publisher can accumulate enough items that the resulting Signal exceeds Temporal's per-message gRPC payload limit. For large items, offload via [External Storage](/external-storage) so each item is a small reference. |
 | **poll cooldown**  | 100 ms    | Minimum interval between subscriber polls. Skipped only when a poll response was capped at the 1 MB limit and more items remain.                                                                                  |
 
-## Continue-As-New {#continue-as-new}
+## Continue-As-New
 
 If your Workflow runs for minutes and finishes (a single chat completion, an order pipeline, a one-shot agent), you can
 skip this section. Continue-As-New becomes relevant for streams that run for hours or accumulate thousands of events,

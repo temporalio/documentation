@@ -231,7 +231,7 @@ for await (const item of stream.subscribe(['status', 'progress'])) {
 
 A single iterator over multiple topics also avoids the cancellation race that two concurrent subscribers would create. The raw `Payload` is also the right shape when you want to forward the bytes through to another system without decoding them.
 
-### Closing the stream {#closing-the-stream}
+### Closing the stream
 
 A subscriber's `for await` doesn't know when the publisher is done. How you [close a stream](/workflow-streams#closing-the-stream) depends on what the application needs. As one example, a common pattern combines two pieces:
 
@@ -278,7 +278,7 @@ The full pattern is wired into the [Stream LLM output](#stream-llm-output) examp
 
 You can [inspect the terminal status](/workflow-streams#inspecting-terminal-status). `subscribe()` exits cleanly when the Workflow reaches `COMPLETED`, `FAILED`, `CANCELLED`, `TERMINATED`, or `TIMED_OUT`, but doesn't distinguish among them. If your application needs to know which (to display success or failure to the user, log the outcome, or decide whether to retry), call `await temporalClient.workflow.getHandle(workflowId).describe()` after the loop returns to inspect the Workflow's status.
 
-## Continue-As-New {#continue-as-new}
+## Continue-As-New
 
 [Continue-As-New](/workflow-streams#continue-as-new) following requires the client retained from `WorkflowStreamClient.create()` or `fromWithinActivity()`. Clients constructed directly from a single `WorkflowHandle` can't re-target the new run.
 
@@ -361,7 +361,7 @@ There are a few details to note if you're writing custom message handlers or tes
 - **Custom payload converters.** A `WorkflowStreamClient` created via `WorkflowStreamClient.create(client, ...)` picks up the client's configured payload converter. Subscribers decode through the same converter. The Workflow-side always uses `defaultPayloadConverter`. If you ship a custom converter, make sure both sides agree or use types the default converter handles.
 - **Cross-realm `Uint8Array` for binary publishes.** Hand-publishing a `Uint8Array` from Workflow code uses a dedicated code path that constructs a `binary/plain` Payload directly, because the sandbox's `TextEncoder` returns a host-realm `Uint8Array` that fails `instanceof` checks against the sandbox's own globals. You generally don't need to think about this, but if you bypass the workflow-side handle and construct payloads manually, use the Workflow-side `WorkflowStream` API rather than building payloads by hand.
 
-## Example: Stream LLM output {#stream-llm-output}
+## Example: Stream LLM output {/* #stream-llm-output */}
 
 The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive. The Workflow kicks off the Activity and waits for the consumer to acknowledge end-of-stream. The consumer subscribes, accumulates the deltas, and clears its accumulated state on `RETRY` before continuing. The shape works for a terminal client, a desktop UI, or a Server-Sent Events (SSE) endpoint forwarding to a browser. Anything that holds the displayed state calls `render()` to display it.
 
