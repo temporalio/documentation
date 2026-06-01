@@ -646,7 +646,9 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/typescript/workers/serverless-workers/index',
                   },
-                  items: ['develop/typescript/workers/serverless-workers/aws-lambda'],
+                  items: [
+                    'develop/typescript/workers/serverless-workers/aws-lambda'
+                  ],
                 },
               ],
             },
@@ -658,7 +660,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/client/index',
               },
-              items: ['develop/typescript/client/temporal-client', 'develop/typescript/client/namespaces'],
+              items: [
+                'develop/typescript/client/temporal-client',
+                'develop/typescript/client/namespaces'
+              ],
             },
             {
               type: 'category',
@@ -668,7 +673,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/nexus/index',
               },
-              items: ['develop/typescript/nexus/quickstart', 'develop/typescript/nexus/feature-guide'],
+              items: [
+                'develop/typescript/nexus/quickstart',
+                'develop/typescript/nexus/feature-guide'
+              ],
             },
             {
               type: 'category',
@@ -678,7 +686,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/platform/index',
               },
-              items: ['develop/typescript/platform/observability', 'develop/typescript/platform/enriching-ui'],
+              items: [
+                'develop/typescript/platform/observability',
+                'develop/typescript/platform/enriching-ui'
+              ],
             },
             {
               type: 'category',
@@ -703,7 +714,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/integrations/index',
               },
-              items: ['develop/typescript/integrations/ai-sdk'],
+              items: [
+                'develop/typescript/integrations/ai-sdk'
+              ],
             },
           ],
         },
@@ -777,7 +790,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/client/index',
               },
-              items: ['develop/dotnet/client/temporal-client'],
+              items: [
+                'develop/dotnet/client/temporal-client'
+              ],
             },
             {
               type: 'category',
@@ -787,7 +802,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/nexus/index',
               },
-              items: ['develop/dotnet/nexus/quickstart', 'develop/dotnet/nexus/feature-guide'],
+              items: [
+                'develop/dotnet/nexus/quickstart',
+                'develop/dotnet/nexus/feature-guide'
+              ],
             },
             {
               type: 'category',
@@ -797,7 +815,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/platform/index',
               },
-              items: ['develop/dotnet/platform/observability', 'develop/dotnet/platform/enriching-ui'],
+              items: [
+                'develop/dotnet/platform/observability',
+                'develop/dotnet/platform/enriching-ui'
+              ],
             },
             {
               type: 'category',
@@ -873,7 +894,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/workers/index',
               },
-              items: ['develop/ruby/workers/run-worker-process'],
+              items: [
+                'develop/ruby/workers/run-worker-process'
+              ],
             },
             {
               type: 'category',
@@ -883,7 +906,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/client/index',
               },
-              items: ['develop/ruby/client/temporal-client'],
+              items: [
+                'develop/ruby/client/temporal-client'
+              ],
             },
             {
               type: 'category',
@@ -893,7 +918,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/platform/index',
               },
-              items: ['develop/ruby/platform/observability', 'develop/ruby/platform/enriching-ui'],
+              items: [
+                'develop/ruby/platform/observability',
+                'develop/ruby/platform/enriching-ui'
+              ],
             },
             {
               type: 'category',
@@ -903,7 +931,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/integrations/index',
               },
-              items: ['develop/ruby/integrations/rails-integration'],
+              items: [
+                'develop/ruby/integrations/rails-integration'
+              ],
             },
             {
               type: 'category',
@@ -972,7 +1002,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/rust/workers/index',
               },
-              items: ['develop/rust/workers/worker-process'],
+              items: [
+                'develop/rust/workers/worker-process'
+              ],
             },
             {
               type: 'category',
@@ -982,7 +1014,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/rust/client/index',
               },
-              items: ['develop/rust/client/temporal-client'],
+              items: [
+                'develop/rust/client/temporal-client'
+              ],
             },
             {
               type: 'category',
@@ -992,7 +1026,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/rust/nexus/index',
               },
-              items: ['develop/rust/nexus/feature-guide'],
+              items: [
+                'develop/rust/nexus/feature-guide'
+              ],
             },
           ],
         },
@@ -1023,7 +1059,11 @@ module.exports = {
             type: 'doc',
             id: 'cloud/get-started/index',
           },
-          items: ['cloud/get-started/namespaces', 'cloud/get-started/api-keys', 'cloud/get-started/certificates'],
+          items: [
+            'cloud/get-started/namespaces',
+            'cloud/get-started/api-keys',
+            'cloud/get-started/certificates'
+          ],
         },
         {
           type: 'category',
@@ -1075,7 +1115,11 @@ module.exports = {
                 type: 'doc',
                 id: 'cloud/metrics/promql',
               },
-              items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
+              items: [
+                'cloud/metrics/general-setup',
+                'cloud/metrics/reference',
+                'cloud/metrics/prometheus-grafana'
+              ],
             },
             'cloud/metrics/sdk-metrics-setup',
           ],
@@ -1159,7 +1203,11 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: [
+            'cloud/migrate/automated',
+            'cloud/migrate/manual',
+            'cloud/migrate/migrate-within-cloud'
+          ],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
@@ -1175,7 +1223,10 @@ module.exports = {
             type: 'doc',
             id: 'cloud/export',
           },
-          items: ['cloud/aws-export-s3', 'cloud/gcp-export-gcs'],
+          items: [
+            'cloud/aws-export-s3',
+            'cloud/gcp-export-gcs'
+          ],
         },
         {
           type: 'category',
