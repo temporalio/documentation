@@ -33,14 +33,14 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 **Compatible testing frameworks**
 
 The .NET SDK is compatible with any testing framework and does not have a specific recommendation.
 Most .NET SDK samples use [xUnit](https://xunit.net/).
 
-## Testing Workflows {#testing-workflows}
+## Testing Workflows {/* #testing-workflows */}
 
 **How to test Workflow Definitions using the Temporal .NET SDK**
 
@@ -246,7 +246,7 @@ When testing Workflows, often you don't want to actually run the Activities.
 Activities are just methods with the `[Activity]` attribute.
 Simply write different/empty/fake/asserting ones and pass those to the Worker to have different activities called during the test.
 
-## Testing Activities {#test-activities}
+## Testing Activities {/* #test-activities */}
 
 **How to test Activity Definitions using the Temporal .NET SDK**
 
@@ -263,7 +263,7 @@ The following important members are available on the environment to affect the a
 - `WorkerShutdownTokenSource` - Token source for issuing Worker shutdown.
 - `PayloadConverter` - Defaulted to default payload converter.
 
-## Replay test {#replay}
+## Replay test {/* #replay */}
 
 **How to do a Replay test using the Temporal .NET SDK**
 

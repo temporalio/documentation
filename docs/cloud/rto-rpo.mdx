@@ -74,7 +74,7 @@ Availability, Temporal uses the backup to restore as much data as feasible.
 The following sections explain each type of outage in more detail, including the blast radius, Temporal Cloud features
 that mitigate the outage, and whether the outage is included in the SLA calculation.
 
-### Availability Zone outage {#availability-zone-outage}
+### Availability Zone outage {/* #availability-zone-outage */}
 
 An
 [Availability Zone](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones)
@@ -125,7 +125,7 @@ When using Temporal Cloud (no additional features required):
 - **Zero RPO.** Writes to Workflow state are synchronously replicated across all three AZs before being acknowledged
   back to the Client, so an AZ failure cannot cause data loss.
 
-### Cell outage {#cell-outage}
+### Cell outage {/* #cell-outage */}
 
 Temporal Cloud runs on a
 [cell architecture](https://docs.aws.amazon.com/wellarchitected/latest/reducing-scope-of-impact-with-cell-based-architecture/what-is-a-cell-based-architecture.html).
@@ -159,7 +159,7 @@ When using Same-region Replication, Multi-region Replication, or Multi-cloud Rep
 Even though the RPO target is under 1 minute, data is virtually never "lost" thanks to Temporal's built-in Recovery and
 Conflict Resolution process, which reconciles state between the active and replica when the outage is over.
 
-### Cloud Region outage {#cloud-region-outage}
+### Cloud Region outage {/* #cloud-region-outage */}
 
 A cloud region as a whole can become degraded, with effects that span beyond any single cell or Availability Zone.
 
@@ -193,7 +193,7 @@ When using Multi-region Replication or Multi-cloud Replication for Temporal-mana
 Even though the RPO target is under 1 minute, data is virtually never "lost" thanks to Temporal's built-in Recovery and
 Conflict Resolution process, which reconciles state between the active and replica when a failover occurs.
 
-### Cloud-wide outage {#cloud-wide-outage}
+### Cloud-wide outage {/* #cloud-wide-outage */}
 
 On rare occasions, an issue affects two or more regions of a single cloud provider at once. Any simultaneous outage of
 two or more regions in the same cloud provider is treated as a cloud-wide outage.
@@ -228,12 +228,12 @@ When using Multi-cloud Replication for Temporal-managed failover:
 Even though the RPO target is under 1 minute, data is virtually never "lost" thanks to Temporal's built-in Recovery and
 Conflict Resolution process, which reconciles state between the active and replica when a failover occurs.
 
-## How RTO and RPO are measured {#how-rto-and-rpo-are-measured}
+## How RTO and RPO are measured {/* #how-rto-and-rpo-are-measured */}
 
 Temporal Cloud achieves its RTO and RPO targets through [High Availability](/cloud/high-availability) replication. The
 following sections explain how each metric is measured and what factors can affect them.
 
-### RPO {#how-rpo-is-measured}
+### RPO {/* #how-rpo-is-measured */}
 
 Unlike a traditional database where data within the recovery point window may be permanently lost, Temporal Cloud
 durably persists all acknowledged data. After an outage resolves, Temporal's Recovery and Conflict Resolution process
@@ -252,7 +252,7 @@ Temporal provides a
 Namespace. This metric approximates the recovery point the Namespace would achieve in a worst-case failure at that
 moment. Temporal recommends monitoring the replication lag and alerting if it rises above 1 minute.
 
-### RTO {#how-rto-is-measured}
+### RTO {/* #how-rto-is-measured */}
 
 The Recovery Time for a given incident is measured from the moment the incident begins to cause abnormal Namespace
 operation — for example, when unavailability or error rates rise above an acceptable level — to the moment the Namespace

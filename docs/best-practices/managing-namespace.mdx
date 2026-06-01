@@ -178,7 +178,7 @@ Use [Nexus](/nexus) where possible instead of sharing Temporal primitives across
 
 ## Production Safeguards
 
-### Use an Authorizer (open source only) {#authorizer}
+### Use an Authorizer (open source only) {/* #authorizer */}
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -186,15 +186,15 @@ If an Authorizer is not set, Temporal uses the `nopAuthority` authorizer that un
 
 On Temporal Cloud, [role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) provide namespace-level authorization without custom configuration.
 
-### Enable deletion protection (Temporal Cloud only) {#deletion-protection}
+### Enable deletion protection (Temporal Cloud only) {/* #deletion-protection */}
 
 [Enable deletion protection](/cloud/namespaces#delete-protection) for production Namespaces to prevent accidental deletion.
 
-### Enable High Availability (Temporal Cloud only) {#high-availability}
+### Enable High Availability (Temporal Cloud only) {/* #high-availability */}
 
 For business-critical use cases with strict uptime requirements, enable [High Availability features](/cloud/high-availability) for a [99.99% contractual SLA](/cloud/high-availability#high-availability-features).
 
-### Use Infrastructure as Code (Temporal Cloud only) {#terraform}
+### Use Infrastructure as Code (Temporal Cloud only) {/* #terraform */}
 
 Use the [Temporal Cloud Terraform provider](/cloud/terraform-provider) to manage Namespaces.
 If Terraform isn't suitable, scripting against the [Cloud Ops API](/ops) or [tcld](/cloud/tcld) is a good alternative.
@@ -209,7 +209,7 @@ This is separate from [Temporal Cloud deletion protection](/cloud/namespaces#del
 
 **Reference**: [Example Terraform configuration](https://github.com/kawofong/temporal-terraform)
 
-## Tagging (Temporal Cloud only) {#tagging}
+## Tagging (Temporal Cloud only) {/* #tagging */}
 
 [Tags](/cloud/namespaces#tag-a-namespace) are key-value metadata pairs that help organize, track, and manage Namespaces.
 
