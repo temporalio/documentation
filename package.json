@@ -83,7 +83,7 @@
     "uuid": "^14.0.0",
     "wait-on": "^7.2.0",
     "webpack-font-preload-plugin": "^1.5.0",
-    "yaml": "^2.8.1"
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
