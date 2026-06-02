@@ -760,7 +760,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/integrations/index',
               },
-              items: ['develop/typescript/integrations/ai-sdk'],
+              items: ['develop/typescript/integrations/ai-sdk', 'develop/typescript/integrations/strands-agents'],
             },
           ],
         },
