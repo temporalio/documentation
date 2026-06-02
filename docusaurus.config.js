@@ -346,6 +346,15 @@ module.exports = async function createConfigAsync() {
         };
       },
       [
+        './plugins/cloud-region-counts',
+        {
+          regionFiles: {
+            aws: 'docs/cloud/references/regions/awsregions.md',
+            gcp: 'docs/cloud/references/regions/gcpregions.md',
+          },
+        },
+      ],
+      [
         'docusaurus-pushfeedback',
         {
           project: '6c1ptrxbky',
@@ -378,14 +387,30 @@ module.exports = async function createConfigAsync() {
         },
       ],
       [
+        require.resolve('./plugins/markdown-pages'),
+        {
+          docsDir: 'docs',
+        },
+      ],
+      [
         'docusaurus-plugin-llms',
         {
           // Generate both llms.txt (index) and llms-full.txt (complete content)
           generateLLMsTxt: true,
           generateLLMsFullTxt: true,
+          generateMarkdownFiles: false,
 
           // Exclude imported markdown partials that should not be published as standalone LLM docs.
           ignoreFiles: ['docs/cloud/references/regions/private-service.md', 'docs/cloud/references/regions/gcpregions.md'],
+
+          // Tell agents how to fetch individual pages as raw markdown
+          rootContent:
+            'This file contains links to documentation sections following the llmstxt.org standard.\n\n' +
+            '## Fetching individual pages\n\n' +
+            'To fetch any page as raw Markdown, append `.md` to its URL path. ' +
+            'For example, `https://docs.temporal.io/encyclopedia.md` returns the raw Markdown source for the Encyclopedia page.\n\n' +
+            'Some pages (interactive demos, landing pages) are not available as Markdown. ' +
+            'Requesting `.md` for those pages returns a short explanation instead.',
 
           // Clean up content for better LLM consumption
           excludeImports: true,
@@ -429,9 +454,18 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    markdown: {
+      mdx1Compat: {
+        // Required for snipsync HTML comment markers (<!--SNIPSTART-->, <!--SNIPEND-->)
+        comments: true,
+        admonitions: true,
+      },
+      mermaid: true,
+    },
+    themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      experimental_faster: true,
+      faster: true,
     },
   };
 

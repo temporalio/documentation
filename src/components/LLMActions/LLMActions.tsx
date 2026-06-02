@@ -37,7 +37,7 @@ export default function LLMActions() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { metadata } = useDoc();
+  const { metadata, frontMatter } = useDoc();
   const { editUrl, slug } = metadata;
 
   // Try to get raw URL from editUrl first, then fall back to slug-based construction
@@ -78,7 +78,7 @@ export default function LLMActions() {
     }
   }, [rawUrl]);
 
-  if (!rawUrl) {
+  if (!rawUrl || frontMatter.llm_exclude) {
     return null;
   }
 

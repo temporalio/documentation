@@ -71,3 +71,14 @@
   - `aws-ap-south-2`
   - `aws-ap-southeast-1`
   - `aws-ap-southeast-2`
+
+### Asia Pacific - Jakarta (`asia-southeast2`)
+
+- **Cloud API Code**: `gcp-asia-southeast2`
+- **Regional Endpoint**: `gcp-asia-southeast2.region.tmprl.cloud`
+- **Private Service Connect Service Attachment URI**: `projects/prod-bsbyrfwqqq885qkcr3s43y524/regions/asia-southeast2/serviceAttachments/pl-c3ayi`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - None
+- **Multi-Cloud Replication**:
+  - None

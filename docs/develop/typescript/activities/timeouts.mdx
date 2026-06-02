@@ -25,7 +25,7 @@ This page shows how to do the following:
 - [Heartbeat an Activity](#activity-heartbeats)
 - [Activity Heartbeat Timeout](#activity-heartbeat-timeout)
 
-## Activity Timeouts {#activity-timeouts}
+## Activity Timeouts {/* #activity-timeouts */}
 
 **How to set Activity Timeouts using the Temporal TypeScript SDK**
 
@@ -53,7 +53,7 @@ const { myActivity } = proxyActivities<typeof activities>({
 });
 ```
 
-## Activity Retry Policy {#activity-retries}
+## Activity Retry Policy {/* #activity-retries */}
 
 **How to set an Activity Retry Policy using the Temporal TypeScript SDK**
 
@@ -73,7 +73,7 @@ const { myActivity } = proxyActivities<typeof activities>({
 });
 ```
 
-## Activity next Retry delay {#activity-next-retry-delay}
+## Activity next Retry delay {/* #activity-next-retry-delay */}
 
 **How to override the next Retry delay following an Activity failure using the Temporal TypeScript SDK**
 
@@ -89,7 +89,7 @@ throw ApplicationFailure.create({
 });
 ```
 
-## Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {/* #activity-heartbeats */}
 
 **How to Heartbeat an Activity using the Temporal TypeScript SDK**
 
@@ -147,7 +147,7 @@ export async function myActivity(): Promise<void> {
 }
 ```
 
-## Activity Heartbeat Timeout {#activity-heartbeat-timeout}
+## Activity Heartbeat Timeout {/* #activity-heartbeat-timeout */}
 
 **How to set a Heartbeat Timeout using the Temporal TypeScript SDK**
 

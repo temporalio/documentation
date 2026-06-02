@@ -182,7 +182,7 @@ For more details on configuring Grafana dashboards, see the [Grafana Dashboards 
 From here, you can configure Grafana [Alerts](https://grafana.com/docs/grafana/latest/alerting/) for any monitored parameters, add custom metrics to your Temporal SDK code, and use these observability features to help scale your Temporal deployment.
 Refer to the [Cluster metrics](/references/cluster-metrics) and [SDK metrics](/references/sdk-metrics) reference for more.
 
-## Configuring Temporal Service health checks {#health-checks}
+## Configuring Temporal Service health checks {/* #health-checks */}
 
 The [Frontend Service](/temporal-service/temporal-server#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
 
@@ -214,7 +214,7 @@ service {
 
 If you are installing and running Temporal via [Helm chart](https://github.com/temporalio/helm-charts), you can also [provide additional parameters](https://github.com/temporalio/helm-charts?tab=readme-ov-file#exploring-metrics-via-grafana) to populate and explore a Grafana dashboard out of the box.
 
-## Datadog {#datadog}
+## Datadog {/* #datadog */}
 
 Datadog has a Temporal integration for collecting Temporal Service metrics.
 Once you've [configured Prometheus](#prometheus), you can configure the [Datadog Agent](https://docs.datadoghq.com/integrations/temporal/).

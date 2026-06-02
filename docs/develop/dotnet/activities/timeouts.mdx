@@ -17,7 +17,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Activity Timeouts {#activity-timeouts}
+## Activity Timeouts {/* #activity-timeouts */}
 
 Each Activity Timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -43,7 +43,7 @@ return await Workflow.ExecuteActivityAsync(
     new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
 ```
 
-### Set an Activity Retry Policy {#activity-retries}
+### Set an Activity Retry Policy {/* #activity-retries */}
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -61,7 +61,7 @@ return await Workflow.ExecuteActivityAsync(
     });
 ```
 
-### Override the Retry interval with `nextRetryDelay` {#next-retry-delay}
+### Override the Retry interval with `nextRetryDelay` {/* #next-retry-delay */}
 
 When you throw an [Application Failure](/references/failures#application-failure) and assign the `nextRetryDelay` field, its value replaces and overrides the Retry interval defined in the active Retry Policy.
 
@@ -78,7 +78,7 @@ throw new ApplicationFailureException(
     nextRetryDelay: TimeSpan.FromSeconds(3 * attempt));
 ```
 
-## Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {/* #activity-heartbeats */}
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
@@ -112,7 +112,7 @@ public async Task MyActivityAsync()
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
 If an Activity calls `Heartbeat(123, 456)` and then fails and is retried, `HeartbeatDetails` on the `ActivityInfo` returns an collection containing `123` and `456` on the next Run.
 
-### Set a Heartbeat Timeout {#heartbeat-timeout}
+### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

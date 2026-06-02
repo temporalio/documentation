@@ -45,7 +45,7 @@ This page shows how to:
 - [Implement rollback logic with the Saga pattern](#implement-saga-pattern)
 - [Understand Temporal's failure types](#understand-failure-types)
 
-## Make Activities idempotent {#make-activities-idempotent}
+## Make Activities idempotent {/* #make-activities-idempotent */}
 
 **How to make Activities idempotent using the Temporal Python SDK**
 
@@ -95,7 +95,7 @@ Consider this Activity:
 If step 3 fails, all three steps execute again on retry.
 You might split this into three separate Activities so only the failed step retries, but balance this against having a larger Event History with more Activity Executions.
 
-## Raise exceptions from Activities {#raise-exceptions-from-activities}
+## Raise exceptions from Activities {/* #raise-exceptions-from-activities */}
 
 **How to raise exceptions from Activities using the Temporal Python SDK**
 
@@ -139,7 +139,7 @@ The `ActivityError` provides context including:
 - Number of retry attempts
 - Original cause (the [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html) you raised, or `TimeoutError`, [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html), etc.)
 
-## Raise exceptions from Workflows {#raise-exceptions-from-workflows}
+## Raise exceptions from Workflows {/* #raise-exceptions-from-workflows */}
 
 **How to raise exceptions from Workflows using the Temporal Python SDK**
 
@@ -193,7 +193,7 @@ This is intentional.
 Regular Python exceptions are treated as bugs that can be fixed with a code deployment, not business logic failures.
 The Workflow Task retries indefinitely, letting you fix the bug and redeploy without losing Workflow state.
 
-## Handle exceptions in Workflows {#handle-exceptions-in-workflows}
+## Handle exceptions in Workflows {/* #handle-exceptions-in-workflows */}
 
 **How to handle exceptions in Workflows using the Temporal Python SDK**
 
@@ -257,7 +257,7 @@ Common Temporal exceptions you can catch in Workflows:
 
 If these exceptions propagate unhandled, the Workflow Execution fails (or enters "Canceled" state for `CancelledError`).
 
-## Configure custom Retry Policies {#configure-custom-retry-policies}
+## Configure custom Retry Policies {/* #configure-custom-retry-policies */}
 
 **How to configure custom Retry Policies using the Temporal Python SDK**
 
@@ -345,7 +345,7 @@ A Workflow failure typically indicates a code bug or bad input data—retrying t
 
 If you need retry logic for specific Workflow operations, implement it in your Workflow code rather than using a Workflow Retry Policy.
 
-## Mark specific errors as non-retryable {#mark-errors-as-non-retryable}
+## Mark specific errors as non-retryable {/* #mark-errors-as-non-retryable */}
 
 **How to mark specific errors as non-retryable using the Temporal Python SDK**
 
@@ -389,7 +389,7 @@ Use non-retryable errors for:
 **Use this sparingly.**
 In most cases, it's better to let the Retry Policy handle when to stop retrying based on time or attempts.
 
-## Specify non-retryable error types {#specify-non-retryable-error-types}
+## Specify non-retryable error types {/* #specify-non-retryable-error-types */}
 
 **How to specify non-retryable error types in Retry Policies using the Temporal Python SDK**
 
@@ -438,7 +438,7 @@ This enforces the constraint for all callers.
 **`non_retryable_error_types` in the Retry Policy**: Use when the caller wants to decide which errors are unrecoverable based on their business logic.
 This lets different Workflows make different decisions about the same Activity.
 
-## Implement rollback logic with the Saga pattern {#implement-saga-pattern}
+## Implement rollback logic with the Saga pattern {/* #implement-saga-pattern */}
 
 **How to implement the Saga pattern using the Temporal Python SDK**
 
@@ -525,7 +525,7 @@ Key points:
 - Handle compensation failures gracefully (they might fail too)
 - Temporal manages all state and retry logic, making Saga implementation straightforward
 
-## Understand Temporal's failure types {#understand-failure-types}
+## Understand Temporal's failure types {/* #understand-failure-types */}
 
 Temporal uses specialized exception types to represent different failure scenarios.
 All exceptions inherit from [`TemporalError`](https://python.temporal.io/temporalio.exceptions.TemporalError.html).

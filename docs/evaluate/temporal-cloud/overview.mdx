@@ -16,6 +16,8 @@ tags:
   - Temporal Cloud
 ---
 
+import CloudRegionCount from '@site/src/components/elements/CloudRegionCount';
+
 Temporal Cloud is a fully managed durable execution platform.
 It handles the complexity of running Temporal at scale—persistence, replication, upgrades, and availability—so you can focus on building applications.
 
@@ -68,8 +70,8 @@ The control plane uses Temporal itself (durable execution) to orchestrate these 
 
 Temporal Cloud runs on both AWS and GCP:
 
-- **14 AWS regions** spanning North America, Europe, Asia Pacific, and South America
-- **5 GCP regions** in North America, Europe, and Asia Pacific
+- <strong><CloudRegionCount provider="aws" /> AWS regions</strong> spanning North America, Europe, Asia Pacific, and South America
+- <strong><CloudRegionCount provider="gcp" /> GCP regions</strong> in North America, Europe, and Asia Pacific
 
 You can create Namespaces in any supported region.
 For disaster recovery, you can replicate across regions within a cloud provider or across cloud providers entirely.

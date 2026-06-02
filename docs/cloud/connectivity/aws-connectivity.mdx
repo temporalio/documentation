@@ -200,7 +200,7 @@ For Namespaces with [High Availability features](/cloud/high-availability), you 
 
 The complete guidance — including single-cloud (AWS-only) HA, multi-cloud HA (AWS PrivateLink + GCP Private Service Connect), and a recommended failover-testing plan — lives on a single page: [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 
-## Direct VPCE targeting without per-Namespace DNS {#direct-vpce}
+## Direct VPCE targeting without per-Namespace DNS {/* #direct-vpce */}
 
 For single-region Namespaces, you can avoid creating DNS records for each Namespace by pointing Workers directly at the VPC Endpoint and overriding the TLS Server Name Indicator (SNI):
 
