@@ -460,7 +460,9 @@ module.exports = async function createConfigAsync() {
         comments: true,
         admonitions: true,
       },
+      mermaid: true,
     },
+    themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
       faster: true,
