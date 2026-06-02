@@ -53,7 +53,7 @@ This documentation uses source code from
 
 :::
 
-## Execute a Standalone Nexus Operation {#execute-operation}
+## Execute a Standalone Nexus Operation {/* #execute-operation */}
 
 To execute a Standalone Nexus Operation, first create a
 [`NexusClient`](https://pkg.go.dev/go.temporal.io/sdk/client#NexusClient) using `client.NewNexusClient()`, bound to a
@@ -88,7 +88,7 @@ To run the starter (in a separate terminal from the Worker):
 go run nexus-standalone-operations/starter/main.go
 ```
 
-## Get the result of a Standalone Nexus Operation {#get-operation-result}
+## Get the result of a Standalone Nexus Operation {/* #get-operation-result */}
 
 Use `NexusOperationHandle.Get()` to block until the Operation completes and retrieve its result. This works for both
 synchronous and asynchronous (Workflow-backed) Operations.
@@ -105,7 +105,7 @@ log.Println("Operation result:", result.Message)
 If the Operation completed successfully, the result is deserialized into the provided pointer. If the Operation failed,
 the failure is returned as an error.
 
-## List Standalone Nexus Operations {#list-operations}
+## List Standalone Nexus Operations {/* #list-operations */}
 
 Use [`client.ListNexusOperations()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to list Standalone Nexus
 Operation Executions that match a [List Filter](/list-filter) query. The result contains an iterator that yields
@@ -133,7 +133,7 @@ for metadata, err := range resp.Results {
 The `Query` field accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
 
-## Count Standalone Nexus Operations {#count-operations}
+## Count Standalone Nexus Operations {/* #count-operations */}
 
 Use [`client.CountNexusOperations()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to count Standalone Nexus
 Operation Executions that match a [List Filter](/list-filter) query.
@@ -151,7 +151,7 @@ if err != nil {
 log.Println("Total Nexus operations:", resp.Count)
 ```
 
-## Run Standalone Nexus Operations with Temporal Cloud {#run-standalone-nexus-operations-temporal-cloud}
+## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
 
 The code samples on this page use `envconfig.MustLoadDefaultClientOptions()`, so the same code
 works against Temporal Cloud — just configure the connection via environment variables or a TOML
