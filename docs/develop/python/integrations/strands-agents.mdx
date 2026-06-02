@@ -381,7 +381,7 @@ class AuditHook(HookProvider):
 
 <!--SNIPEND-->
 
-:::warning
+:::caution
 
 Hook callbacks run in Workflow context, so they must be
 [deterministic](/develop/python/workflows/basics#workflow-logic-requirements). Do not use `time.time()`, `uuid.uuid4()`,
@@ -480,7 +480,7 @@ async def main() -> None:
 Each factory returns a fully configured `MCPClient`, so you can pass options like `tool_filters`, `prefix`,
 `elicitation_callback`, or `tasks_config` to it.
 
-:::note
+:::info
 
 The plugin connects to each MCP server once at Worker startup to enumerate tools. The schema is frozen for the Worker's
 lifetime. Restart Workers to pick up MCP server changes. If a server is unavailable at startup, the Worker fails to
@@ -619,11 +619,14 @@ async def delete_thing(name: str) -> str:
 
 <!--SNIPEND-->
 
-:::warning
+:::caution
 
 Activity-tool interrupts rely on the plugin's failure converter, which is installed via the client's data converter.
-Attach `StrandsPlugin` to the **client** (not just the Worker) for Activity-tool interrupts to work. Workers built from
-that client pick up the plugin automatically:
+Attach `StrandsPlugin` to the **client** (not just the Worker) for Activity-tool interrupts to work.
+
+:::
+
+Workers built from that client pick up the plugin automatically:
 
 <!--SNIPSTART python-strands-activity-interrupt-worker-->
 
@@ -666,8 +669,6 @@ if __name__ == "__main__":
 ```
 
 <!--SNIPEND-->
-
-:::
 
 ### Return structured data from an agent
 
