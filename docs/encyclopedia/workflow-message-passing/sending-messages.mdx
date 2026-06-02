@@ -38,7 +38,7 @@ This section will help you write clients that send messages to Workflows which i
 - [Sending Updates](#sending-updates)
 - [Sending Queries](#sending-queries)
 
-### Sending Signals {#sending-signals}
+### Sending Signals {/* #sending-signals */}
 
 You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
 
@@ -54,6 +54,8 @@ You can also Signal-With-Start to lazily initialize a Workflow while sending a S
     <RelatedReadItem path="/develop/python/workflows/message-passing#send-signal-from-client" text="Send Signals with the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/message-passing#send-signal-from-client" text="Send Signals with the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/message-passing#send-signal-from-client" text="Send Signals with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/ruby/workflows/message-passing#signals" text="Send Signals with the Ruby SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/message-passing#signals" text="Send Signals with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 #### Send a Signal from one Workflow to another
@@ -65,9 +67,11 @@ You can also Signal-With-Start to lazily initialize a Workflow while sending a S
     <RelatedReadItem path="/develop/python/workflows/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/ruby/workflows/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Ruby SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/message-passing#from-a-workflow" text="Send Signals from Workflows with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-#### Signal-With-Start {#signal-with-start}
+#### Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start is a great tool for lazily initializing Workflows. When you send this operation, if there is a running Workflow Execution with the given Workflow Id, it will be Signaled. Otherwise, a new Workflow Execution starts and is immediately sent the Signal.
 
@@ -78,9 +82,11 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
     <RelatedReadItem path="/develop/python/workflows/message-passing#signal-with-start" text="Signal-With-Start using the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/message-passing#signal-with-start" text="Signal-With-Start using the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/message-passing#signal-with-start" text="Signal-With-Start using the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/ruby/workflows/message-passing#signal-with-start" text="Signal-With-Start using the Ruby SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/message-passing#signal-with-start" text="Signal-With-Start using the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Sending Updates {#sending-updates}
+### Sending Updates {/* #sending-updates */}
 
 :::note
 
@@ -120,9 +126,11 @@ Use [Update Validators](/handling-messages#update-validators) and [Update IDs](/
     <RelatedReadItem path="/develop/python/workflows/message-passing#send-update-from-client" text="Send Updates in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/message-passing#send-update-from-client" text="Send Updates in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/ruby/workflows/message-passing#send-update-from-client" text="Send Updates in Ruby" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/message-passing#send-update-from-client" text="Send Updates in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-#### Update-With-Start {#update-with-start}
+#### Update-With-Start {/* #update-with-start */}
 
 :::tip
 
@@ -168,9 +176,11 @@ The SDKs will retry the Update-With-Start request, but there is no guarantee tha
     <RelatedReadItem path="/develop/python/workflows/message-passing#update-with-start" text="Update-With-Start with the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/message-passing#update-with-start" text="Update-With-Start with the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/message-passing#update-with-start" text="Update-With-Start with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/ruby/workflows/message-passing#update-with-start" text="Update-With-Start with the Ruby SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/message-passing#update-with-start" text="Update-With-Start with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Sending Queries {#sending-queries}
+### Sending Queries {/* #sending-queries */}
 
 Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution--even if this Workflow has Completed. This call is synchronous and will call into the corresponding Query handler.
 You can also send a built-in "Stack Trace Query" for debugging.
@@ -183,9 +193,11 @@ You can also send a built-in "Stack Trace Query" for debugging.
     <RelatedReadItem path="/develop/python/workflows/message-passing#send-query" text="Send a Query with the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/message-passing#send-query" text="Send a Query with the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/message-passing#send-query" text="Send a Query with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/ruby/workflows/message-passing#send-query" text="Send a Query with the Ruby SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/message-passing#send-query" text="Send a Query with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-#### Stack Trace Query {#stack-trace-query}
+#### Stack Trace Query {/* #stack-trace-query */}
 
 In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.

@@ -315,13 +315,6 @@ data integrity and prevent costly errors.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Isolation Domain](/cloud/high-availability)
-
-An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents
-them from spreading to other parts of the system, providing redundancy and fault tolerance.
-
-<!-- _Tags: [term](/tags/term)_ -->
-
 #### [List Filter](/list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
@@ -549,7 +542,7 @@ A Run Id is a globally unique, platform-level identifier for a Workflow Executio
 
 #### [Same-region Replication](/cloud/high-availability/enable)
 
-Same-region Replication replicates Workflows and metadata to an isolation domain within the same region as the primary
+Same-region Replication replicates Workflows and metadata to a separate cell within the same region as the primary
 Namespace. It provides a reliable failover mechanism while maintaining deployment simplicity.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
@@ -656,7 +649,7 @@ A Temporal Application is a set of Workflow Executions.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal CLI](/cli) {#cli}
+#### [Temporal CLI](/cli) {/* #cli */}
 
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 

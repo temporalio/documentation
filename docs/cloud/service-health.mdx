@@ -146,12 +146,15 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 
 ## Detecting Resource Exhaustion
 
-The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` is the primary indicator for Cloud-side throttling, signaling system limits
-are exceeded and `ResourceExhausted` gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized.
+Resource exhaustion happens when a single resource (a Namespace, Task Queue, or Workflow ID) receives a burst of operations larger than that resource can absorb in the moment. The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` increments and `ResourceExhausted` gRPC errors are returned to the client. SDKs retry these errors gracefully, so workflow progress is rarely impacted.
 
-Persistent non-zero values of this metric are unexpected.
+Persistent non-zero values are unexpected and indicate a hot resource. Use the `operation` label to identify which RPC is hitting the burst limit. For example, `StartWorkflowExecution` increments here when the same Workflow ID is started more than once per second.
 
-## Monitoring Trends Against Limits {#rps-aps-rate-limits}
+Resource exhaustion is distinct from rate limiting against your account limits. For workloads that are throttled because they exceed their provisioned capacity, see [Monitoring Trends Against Limits](#rps-aps-rate-limits). Limits-driven throttling slows or stalls a workload, so it is generally the more important signal to monitor.
+
+## Monitoring Trends Against Limits {/* #rps-aps-rate-limits */}
+
+Tracking trends against your account limits is the most important throttling signal to monitor. Unlike [Resource Exhaustion](#detecting-resource-exhaustion), which usually self-heals through retries, hitting a limit slows or stalls progress until the workload backs off or your capacity is increased.
 
 The set of [limit metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) provide a time series of values for limits. Use these
 metrics with their corresponding count metrics to monitor general trends against limits and set alerts when limits are exceeded. Use the corresponding throttle metrics

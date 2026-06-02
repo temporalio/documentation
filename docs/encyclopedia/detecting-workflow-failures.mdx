@@ -27,7 +27,7 @@ If you need to perform an action inside your Workflow after a specific period of
 - [Workflow Run Timeout](#workflow-run-timeout)
 - [Workflow Task Timeout](#workflow-task-timeout)
 
-## Workflow Execution Timeout {#workflow-execution-timeout}
+## Workflow Execution Timeout {/* #workflow-execution-timeout */}
 
 **What is a Workflow Execution Timeout in Temporal?**
 
@@ -40,6 +40,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
     <RelatedReadItem path="/develop/python/workflows/timeouts" text="Set a Workflow Execution Timeout using the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/timeouts" text="Set a Workflow Execution Timeout using the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/timeouts" text="Set a Workflow Execution Timeout using the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/timeouts" text="Set a Workflow Execution Timeout using the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 <CaptionedImage
@@ -51,7 +52,7 @@ If this timeout is reached, the Workflow Execution changes to a Timed Out status
 This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
 This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/cron-job) after a certain amount of time has passed.
 
-## Workflow Run Timeout {#workflow-run-timeout}
+## Workflow Run Timeout {/* #workflow-run-timeout */}
 
 **What is a Workflow Run Timeout in Temporal?**
 
@@ -68,6 +69,7 @@ A Workflow Run Timeout restricts the maximum duration of a single Workflow Run. 
     <RelatedReadItem path="/develop/python/workflows/timeouts" text="Set a Workflow Run Timeout using the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/timeouts" text="Set a Workflow Run Timeout using the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/timeouts" text="Set a Workflow Timeout using the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/timeouts" text="Set a Workflow Timeout using the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 <CaptionedImage
@@ -79,7 +81,7 @@ This timeout is most commonly used to limit the execution time of a single [Temp
 
 If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out.
 
-## Workflow Task Timeout {#workflow-task-timeout}
+## Workflow Task Timeout {/* #workflow-task-timeout */}
 
 **What is a Workflow Task Timeout in Temporal?**
 
@@ -94,6 +96,7 @@ This Timeout is primarily available to recognize whether a Worker has gone down 
     <RelatedReadItem path="/develop/python/workflows/timeouts" text="Set a Workflow Task Timeout using the Python SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/workflows/timeouts" text="Set a Workflow Task Timeout using the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/workflows/timeouts" text="Set a Workflow Task Timeout using the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/rust/workflows/timeouts" text="Set a Workflow Task Timeout using the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 <CaptionedImage

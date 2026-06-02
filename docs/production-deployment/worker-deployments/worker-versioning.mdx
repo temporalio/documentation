@@ -61,8 +61,6 @@ Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and s
 
 :::note
 
-Worker Versioning is currently available in Public Preview.
-
 Minimum versions:
 
 - Go SDK version [v1.35.0](https://github.com/temporalio/sdk-go/releases/tag/v1.35.0)
@@ -71,7 +69,6 @@ Minimum versions:
 - Typescript [v1.12](https://github.com/temporalio/sdk-typescript/releases/tag/v1.12.0)
 - .NET [v1.7.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.7.0)
 - Ruby [v0.5.0](https://github.com/temporalio/sdk-ruby/releases/tag/v0.5.0)
-- Other SDKs: coming soon!
 
 Self-hosted users:
 
@@ -81,7 +78,7 @@ Self-hosted users:
 
 :::
 
-## Getting Started with Worker Versioning {#definition}
+## Getting Started with Worker Versioning {/* #definition */}
 
 To get started with Worker Versioning, you should understand some concepts around versioning and deployments.
 
@@ -112,7 +109,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the
   version it will move to next.
 
-## Setting up your deployment system {#deployment-systems}
+## Setting up your deployment system {/* #deployment-systems */}
 
 If you haven't already, you'll want to pick a container deployment solution for your Workers.
 
@@ -255,11 +252,11 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-## Choosing a Versioning Behavior {#choosing-behavior}
+## Choosing a Versioning Behavior {/* #choosing-behavior */}
 
 The right versioning behavior depends on how long your Workflows run relative to your deployment frequency.
 
-### Decision guide {#decision-guide}
+### Decision guide {/* #decision-guide */}
 
 | Workflow Duration                        | Uses Continue-as-New? | Recommended Behavior                                     | Patching Required? |
 | ---------------------------------------- | --------------------- | -------------------------------------------------------- | ------------------ |
@@ -268,7 +265,7 @@ The right versioning behavior depends on how long your Workflows run relative to
 | **Long** (weeks to years)                | Yes                   | `PINNED` + [upgrade on CaN](#upgrade-on-continue-as-new) | Never              |
 | **Long** (weeks to years)                | No                    | `AUTO_UPGRADE` + patching                                | Yes                |
 
-### Examples by Workflow type {#behavior-examples}
+### Examples by Workflow type {/* #behavior-examples */}
 
 | Workflow Type        | Duration     | Recommended Behavior       | Notes                               |
 | -------------------- | ------------ | -------------------------- | ----------------------------------- |
@@ -314,7 +311,7 @@ Unspecified.
 :::
 
 You also want to make sure you understand how your Activities are going to work across different Worker Deployment
-Versions. Refer to the [Worker Versioning Activity behavior docs](#choosing-behavior)
+Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
 ## Rolling out changes with the CLI
@@ -530,7 +527,7 @@ When you change the behavior to Auto-Upgrade, the Workflow will resume work on t
 
 :::
 
-## Upgrading on Continue-as-New {#upgrade-on-continue-as-new}
+## Upgrading on Continue-as-New {/* #upgrade-on-continue-as-new */}
 
 Long-running Workflows that use [Continue-as-New](/workflow-execution/continue-as-new) can upgrade to newer Worker
 Deployment Versions at Continue-as-New boundaries without requiring patching.
@@ -547,7 +544,7 @@ This feature is in Public Preview as an experimental SDK-level option.
 
 :::
 
-### How it works {#upgrade-on-can-how-it-works}
+### How it works {/* #upgrade-on-can-how-it-works */}
 
 By default, Pinned Workflows stay on their original Worker Deployment Version even when they Continue-as-New. With the
 upgrade option enabled:
@@ -556,7 +553,7 @@ upgrade option enabled:
 2. The Temporal Server tells the workflow when a new [Target Version](/worker-versioning#versioning-definitions) becomes available
 3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the [Target Version](/worker-versioning#versioning-definitions)
 
-### Checking for new versions {#checking-for-new-versions}
+### Checking for new versions {/* #checking-for-new-versions */}
 
 When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
 `target_worker_deployment_version_changed`:
@@ -607,7 +604,7 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
 }
 ```
 
-### Limitations {#upgrade-on-can-limitations}
+### Limitations {/* #upgrade-on-can-limitations */}
 
 :::caution Current Limitations
 

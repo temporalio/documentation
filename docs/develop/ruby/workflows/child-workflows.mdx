@@ -23,14 +23,14 @@ This page shows how to do the following:
 - [Start a Child Workflow Execution](#child-workflows) using the Ruby SDK
 - [Set a Parent Close Policy](#parent-close-policy) using the Ruby SDK
 
-## Start a Child Workflow Execution {#child-workflows}
+## Start a Child Workflow Execution {/* #child-workflows */}
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
 
-Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
-After that, Child Workflow Executions may be abandoned using the _Abandon_ [Parent Close Policy](/parent-close-policy) set in the Child Workflow Options.
+The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
+In Ruby, calling `start_child_workflow` or `execute_child_workflow` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call returns.
 
 To spawn a Child Workflow Execution in Ruby, use the `execute_child_workflow` method which starts the Child Workflow and waits for completion or
 use the `start_child_workflow` method to start a Child Workflow and return its handle.
@@ -46,7 +46,7 @@ This is useful if you want to do something after it has only started, or to get 
 Temporalio::Workflow.execute_child_workflow(MyChildWorkflow, 'my-workflow-arg')
 ```
 
-## Set a Parent Close Policy {#parent-close-policy}
+## Set a Parent Close Policy {/* #parent-close-policy */}
 
 A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

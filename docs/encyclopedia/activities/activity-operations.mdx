@@ -52,7 +52,7 @@ gRPC API - not for programmatic use in Workflow or Activity code.
 | [Reset](#reset)                   | Clears retry state (attempts, backoff) and schedules a new execution.            | [`temporal activity reset`](/cli/command-reference/activity#reset)                   |
 | [Update Options](#update-options) | Changes timeouts, Retry Policy, or Task Queue without restarting the Activity.   | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
 
-## Pause {#pause}
+## Pause {/* #pause */}
 
 Pause stops the Temporal Service from scheduling new retries of an [Activity Execution](/activity-execution).
 
@@ -127,7 +127,7 @@ but they must be Unpaused separately.
   there's no `--query` flag. To pause multiple Activities, issue separate commands for each Activity ID.
 - **No Namespace-wide query for Paused Activities.** You must know the Workflow Id. See [Observability](#observability).
 
-## Unpause {#unpause}
+## Unpause {/* #unpause */}
 
 Unpause resumes a Paused Activity Execution.
 
@@ -176,7 +176,7 @@ including `--reset-attempts` and `--reset-heartbeats` to clear state on resume.
   when you Unpause, it continues to completion. The Temporal Service doesn't schedule a concurrent execution. If the
   in-flight execution fails, the next retry proceeds normally.
 
-## Reset {#reset}
+## Reset {/* #reset */}
 
 Reset clears an Activity's retry state and schedules a fresh execution.
 
@@ -259,7 +259,7 @@ handle these cases differently, for example saving partial progress on Reset whi
 - **Bulk Reset can overwhelm downstream services.** When using `--query` to Reset Activities across many Workflows, use
   `--jitter` to stagger the restart times.
 
-## Update Options {#update-options}
+## Update Options {/* #update-options */}
 
 Update Options changes an Activity's runtime configuration without restarting it.
 
@@ -314,7 +314,7 @@ options, including Retry Policy, Task Queue, and bulk mode via `--query`.
 
 - **Update Options is CLI and gRPC only.** It's not available in the UI.
 
-## Observability {#observability}
+## Observability {/* #observability */}
 
 Activity Operations have a limited audit trail because they are not recorded in a Workflow's Event History. However, you
 can use the CLI and the UI to check Activity state and find Paused Activities for running Workflows.
@@ -331,7 +331,7 @@ The `TemporalPauseInfo` [Search Attribute](/search-attribute) is filterable with
 
 There's no Namespace-wide query to find all Paused Activities across Workflows. You must know the Workflow Id.
 
-### Audit trail {#audit-trail}
+### Audit trail {/* #audit-trail */}
 
 Activity Operations don't produce Event History events. There is no record of a Pause, Reset, or option change in the
 Workflow's [Event History](/workflow-execution/event#event-history). Nothing that reads the Event History - Workflow

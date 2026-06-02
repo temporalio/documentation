@@ -17,11 +17,11 @@ import { CaptionedImage } from '@site/src/components';
 
 The Debugging section of the Temporal TypeScript SDK developer's guide covers tools for debugging and how to troubleshoot common issues.
 
-## How to debug in a development environment {#debug-in-a-development-environment}
+## How to debug in a development environment {/* #debug-in-a-development-environment */}
 
 In addition to the normal development tools of logging and a debugger, you can also see what's happening in your Workflow by using the [Web UI](/web-ui) or [Temporal CLI](/cli).
 
-## How to debug in a production environment {#debug-in-a-production-environment}
+## How to debug in a production environment {/* #debug-in-a-production-environment */}
 
 You can debug production Workflows using:
 
@@ -36,7 +36,7 @@ For information on setting up SDK metrics, see [Metrics](/develop/typescript/pla
 
 Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
 
-## How to troubleshoot common issues in the TypeScript SDK {#troubleshoot-common-issues}
+## How to troubleshoot common issues in the TypeScript SDK {/* #troubleshoot-common-issues */}
 
 {/* The following was ported from \docs-src\typescript\troubleshooting.md */}
 
@@ -51,16 +51,12 @@ If something isn't behaving the way you expect, make sure to check both location
 
 If you are developing Workflows and finding that code isn't executing as expected, the first place to look is whether old Workflows are still running.
 
-If those old Workflows have the same name and are on the same task queue, Temporal will try to continue executing them on your new code by design.
-You may get errors that make no sense to you because
+If those old Workflows have the same name and are on the same Task Queue, Temporal will try to continue executing them on your new code by design. You may get errors that make no sense to you because:
 
-- Temporal is trying to execute old Workflow code that no longer exists in your codebase, or
-- your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
+- Temporal is trying to execute old Workflow code that no longer exists in your codebase.
+- Your new Client code is expecting Temporal to execute old Workflow/Activity code it doesn't yet know about.
 
-The biggest sign that this is happening is if you notice Temporal is acting non-deterministically: running the same Workflow twice gets different results.
-
-Stale workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run.
-If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
+Stale Workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run. If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
 
 ### Workflow/Activity registration errors
 
@@ -155,7 +151,7 @@ export async function yourWorkflow(): Promise<string> {
 
 This is invalid because activity implementations should not be directly referenced by Workflow code.
 Activities are used by Workflows in order to make network calls and read from the filesystem, operations which are non-deterministic by nature because they rely on external state.
-Temporal records Activity results in the Workflow history and in case your Workflow is replayed, completed Activities will not be rerun, instead their recorded result will be delivered to the Workflow.
+Temporal records Activity results in the Event history and in case your Workflow is replayed, completed Activities will not be rerun, instead their recorded result will be delivered to the Workflow.
 
 You'll typically see an error in this form in the Webpack output:
 
@@ -274,7 +270,7 @@ Log it out and make sure it is an exact match with what is expected (often, the 
 
 ### Resetting Workflows to deal with logical bugs
 
-You can "rewind time" using the Temporal CLI, resetting Workflow History to some previous point in time. You can read the Temporal CLI docs on:
+You can "rewind time" using the Temporal CLI, resetting Event History to some previous point in time. You can read the Temporal CLI docs on:
 
 - [Restarting and resetting Workflows by ID](/cli)
 - [Resetting all Workflows by binary checksum identifier](/cli)

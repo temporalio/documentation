@@ -67,7 +67,7 @@ workflow.SideEffect(func(ctx workflow.Context) interface{} {
 
 On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
 
-## Mutable Side Effects {#mutable-side-effects}
+## Mutable Side Effects {/* #mutable-side-effects */}
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
 
@@ -78,7 +78,7 @@ Mutable Side Effects execute the provided function once, and then it looks up th
 
 :::note
 
-During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Workflow History; whereas Mutable Side Effects only records a new Marker on the Workflow History if the value for the Side Effect ID changes or is set the first time.
+During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Event History; whereas Mutable Side Effects only records a new Marker on the Event History if the value for the Side Effect ID changes or is set the first time.
 
 During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
 

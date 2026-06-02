@@ -62,7 +62,6 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | `temporal_activity_type` | Activity metrics | The activity type name |
 | `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment name |
 | `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
-| `worker_version` | `temporal_cloud_v1_approximate_backlog_count` | **Deprecated.** The legacy Worker Build ID from the pre-Worker-Deployments versioning API. Use `temporal_worker_deployment_name` and `temporal_worker_build_id` instead |
 
 For example, to include `temporal_activity_type` in your scrape results:
 
@@ -94,7 +93,7 @@ gRPC requests received per second.
 
 #### temporal\_cloud\_v1\_service\_request\_throttled\_count
 
-gRPC requests throttled per second.
+gRPC requests throttled per second. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) for guidance on setting alert thresholds against the corresponding limit metric.
 
 | Label | Description |
 | ----- | ----- |
@@ -124,7 +123,9 @@ The number of pollers that are actively long polling for a task. Use this to tra
 
 #### temporal\_cloud\_v1\_resource\_exhausted\_error\_count
 
-Resource exhaustion errors per second. This metric does not include throttling due to Namespace limits.
+Resource exhaustion errors per second, incremented when a single resource receives a burst larger than it can absorb. SDKs retry these errors gracefully. This metric does not include throttling due to Namespace limits - see [`temporal_cloud_v1_total_action_throttled_count`](#temporal_cloud_v1_total_action_throttled_count) and related throttle metrics for rate limiting against account limits.
+
+See [Detecting Resource Exhaustion](/cloud/service-health#detecting-resource-exhaustion) for guidance on investigating non-zero values.
 
 | Label | Description |
 | ----- | ----- |
@@ -518,6 +519,15 @@ These metrics could have high cardinality depending on number of task queues pre
 
 The approximate number of tasks pending in a task queue. Started Activities are not included in the count as they have been dequeued from the task queue.
 
+:::note Known accuracy limitations
+This metric is approximate.
+It can overcount because invalid or expired Tasks, like from cancelled, terminated, completed, or timed out Workflows, remain in the count until they reach the head of the queue and are processed and discarded.
+
+It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes. The Task Queue is unloaded from memory.
+Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
+See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
+:::
+
 | Label | Description |
 | ----- | ----- |
 | `temporal_task_queue` | The task queue name |
@@ -525,7 +535,6 @@ The approximate number of tasks pending in a task queue. Started Activities are 
 | `task_priority` | The task priority |
 | `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
 | `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
-| `worker_version` | **Deprecated.** The legacy Worker Build ID (opt-in). Use `temporal_worker_deployment_name` and `temporal_worker_build_id` instead |
 
 **Type**: Value
 
@@ -624,7 +633,7 @@ This metric could have high cardinality depending on number of action types and 
 
 #### temporal\_cloud\_v1\_total\_action\_throttled\_count
 
-The total number of actions throttled per second.
+The total number of actions throttled per second. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) for guidance on setting alert thresholds against the corresponding limit metric.
 
 **Type**: Rate
 
@@ -642,7 +651,7 @@ Operations performed per second.
 
 #### temporal\_cloud\_v1\_operations\_throttled\_count
 
-Operations throttled due to rate limits per second.
+Operations throttled due to rate limits per second. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) for guidance on setting alert thresholds against the corresponding limit metric.
 
 | Label | Description |
 | ----- | ----- |

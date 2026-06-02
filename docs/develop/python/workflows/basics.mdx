@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Develop a basic Workflow {#develop-workflows}
+## Develop a basic Workflow {/* #develop-workflows */}
 
 **How to develop a basic Workflow using the Temporal Python SDK.**
 
@@ -47,7 +47,7 @@ class YourWorkflow:
         )
 ```
 
-### Define Workflow parameters {#workflow-parameters}
+### Define Workflow parameters {/* #workflow-parameters */}
 
 **How to define Workflow parameters using the Temporal Python SDK.**
 
@@ -77,7 +77,7 @@ class YourParams:
     name: str
 ```
 
-### Define Workflow return parameters {#workflow-return-values}
+### Define Workflow return parameters {/* #workflow-return-values */}
 
 **How to define Workflow return parameters using the Temporal Python SDK.**
 
@@ -121,7 +121,7 @@ class YourWorkflow:
         )
 ```
 
-### Customize your Workflow Type {#workflow-type}
+### Customize your Workflow Type {/* #workflow-type */}
 
 **How to customize your Workflow Type using the Temporal Python SDK.**
 
@@ -158,12 +158,12 @@ class YourWorkflow:
         )
 ```
 
-### Develop Workflow logic {#workflow-logic-requirements}
+### Develop Workflow logic {/* #workflow-logic-requirements */}
 
 **How to develop Workflow logic using the Temporal Python SDK.**
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
-Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a
+Each Temporal SDK provides a
 set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
 Workflow code must be deterministic because the Temporal Server may [replay](/develop/python/best-practices/testing-suite#replay) your Workflow to reconstruct its state. This means:

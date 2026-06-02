@@ -22,9 +22,7 @@ description: Execute Activities independently without a Workflow using the Tempo
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Python SDK support for [Standalone Activities](/standalone-activity) is at
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-All APIs are experimental and may be subject to backwards-incompatible changes.
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
@@ -54,7 +52,7 @@ This documentation uses source code from the [hello_standalone_activity](https:/
 
 :::
 
-## Get Started with Standalone Activities {#get-started}
+## Get Started with Standalone Activities {/* #get-started */}
 
 Prerequisites:
 
@@ -74,47 +72,26 @@ Prerequisites:
   uv add temporalio
   ```
 
-- **Temporal CLI** (Pre-release version with Standalone Activity support)
+- **Temporal CLI** v1.7.0 or higher
 
-  Download for your platform:
+  Install with Homebrew:
 
-  ```bash title="macOS (Apple Silicon)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_arm64.tar.gz | tar xz
+  ```bash
+  brew install temporal
   ```
 
-  ```bash title="macOS (Intel)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_darwin_amd64.tar.gz | tar xz
-  ```
-
-  ```bash title="Linux (arm64)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_arm64.tar.gz | tar xz
-  ```
-
-  ```bash title="Linux (amd64)"
-  curl -L https://github.com/temporalio/cli/releases/download/v1.6.2-standalone-activity/temporal_cli_1.6.2-standalone-activity_linux_amd64.tar.gz | tar xz
-  ```
+  Or see the [Temporal CLI install guide](/cli#install) for other platforms.
 
   Verify the installation:
 
   ```bash
-  ./temporal --version
-  # temporal version 1.6.2-standalone-activity (Server 1.31.0-151.2, UI 2.47.2)
+  temporal --version
   ```
-
-  Move the binary to your PATH or run it from the current directory as `./temporal`.
-
-  :::warning
-
-  If you see `Standalone activity is disabled` when running commands, you are using the standard
-  Temporal CLI instead of the pre-release version above. The standard `brew install temporal` or
-  `brew upgrade temporal` does not include Standalone Activity support during Pre-release.
-
-  :::
 
 Start the Temporal development server:
 
 ```bash
-./temporal server start-dev
+temporal server start-dev
 ```
 
 This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
@@ -157,7 +134,7 @@ hello_standalone_activity/
 └── count_activities.py
 ```
 
-## Write an Activity Function {#write-activity}
+## Write an Activity Function {/* #write-activity */}
 
 An Activity in the Temporal Python SDK is just a normal function with the `@activity.defn`
 decorator. It can optionally be an `async def`. The way you write a Standalone Activity is identical
@@ -185,7 +162,7 @@ def compose_greeting(input: ComposeGreetingInput) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-## Run a Worker with the Activity registered {#run-worker}
+## Run a Worker with the Activity registered {/* #run-worker */}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
@@ -232,7 +209,7 @@ uv run hello_standalone_activity/worker.py
 
 Leave this terminal running - the Worker needs to stay up to process activities.
 
-## Execute a Standalone Activity {#execute-activity}
+## Execute a Standalone Activity {/* #execute-activity */}
 
 Use
 [`client.execute_activity()`](https://python.temporal.io/temporalio.client.Client.html#execute_activity)
@@ -284,7 +261,7 @@ uv run hello_standalone_activity/execute_activity.py
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity execute \
+temporal activity execute \
   --type compose_greeting \
   --activity-id my-standalone-activity-id \
   --task-queue my-standalone-activity-task-queue \
@@ -293,7 +270,7 @@ Or use the Temporal CLI:
 ```
 
 
-## Start a Standalone Activity without waiting for the result {#start-activity}
+## Start a Standalone Activity without waiting for the result {/* #start-activity */}
 
 Starting a Standalone Activity means sending a request to the Temporal Server to durably enqueue
 your Activity job, without waiting for it to be executed by your Worker.
@@ -321,7 +298,7 @@ uv run hello_standalone_activity/start_activity.py
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity start \
+temporal activity start \
   --type compose_greeting \
   --activity-id my-standalone-activity-id \
   --task-queue my-standalone-activity-task-queue \
@@ -329,7 +306,7 @@ Or use the Temporal CLI:
   --input '{"greeting": "Hello", "name": "World"}'
 ```
 
-## Get a handle to an existing Standalone Activity {#get-activity-handle}
+## Get a handle to an existing Standalone Activity {/* #get-activity-handle */}
 
 You can also use `client.get_activity_handle()` to create a handle to a previously started Standalone Activity:
 
@@ -342,7 +319,7 @@ activity_handle = client.get_activity_handle(
 
 You can now use the handle to wait for the result, describe, cancel, or terminate the Activity.
 
-## Wait for the result of a Standalone Activity {#get-activity-result}
+## Wait for the result of a Standalone Activity {/* #get-activity-result */}
 
 Under the hood, calling `client.execute_activity()` is the same as calling
 [`client.start_activity()`](https://python.temporal.io/temporalio.client.Client.html#start_activity)
@@ -356,10 +333,10 @@ activity_result = await activity_handle.result()
 Or use the Temporal CLI to wait for a result by Activity ID:
 
 ```bash
-./temporal activity result --activity-id my-standalone-activity-id
+temporal activity result --activity-id my-standalone-activity-id
 ```
 
-## List Standalone Activities {#list-activities}
+## List Standalone Activities {/* #list-activities */}
 
 Use
 [`client.list_activities()`](https://python.temporal.io/temporalio.client.Client.html#list_activities)
@@ -405,14 +382,14 @@ uv run hello_standalone_activity/list_activities.py
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity list
+temporal activity list
 ```
 
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
 Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status = 'Running'".
 
 
-## Count Standalone Activities {#count-activities}
+## Count Standalone Activities {/* #count-activities */}
 
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query. This returns the total
@@ -456,10 +433,10 @@ uv run hello_standalone_activity/count_activities.py
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity count
+temporal activity count
 ```
 
-## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
+## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
 The code samples on this page use `ClientConfig.load_client_connect_config()`, so the same code
 works against Temporal Cloud - just configure the connection via environment variables or a TOML

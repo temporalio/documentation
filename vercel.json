@@ -4,6 +4,17 @@
   "github": {
     "silent": true
   },
+  "headers": [
+    {
+      "source": "/(.*)\\.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/cli/activity",
@@ -58,6 +69,11 @@
     {
       "source": "/cli/workflow",
       "destination": "/cli/command-reference/workflow",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/serverless-workers-demo",
+      "destination": "/evaluate/serverless-workers/demo",
       "permanent": true
     },
     {
@@ -2000,11 +2016,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/typescript/converters-and-encryption",
-      "destination": "/develop/typescript/best-practices/converters-and-encryption",
-      "permanent": true
-    },
-    {
       "source": "/develop/typescript/debugging",
       "destination": "/develop/typescript/best-practices/debugging",
       "permanent": true
@@ -2087,6 +2098,11 @@
     {
       "source": "/develop/typescript/versioning",
       "destination": "/develop/typescript/workflows/versioning",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/workers/cloud-worker",
+      "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
       "permanent": true
     }
   ]

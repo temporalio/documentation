@@ -27,7 +27,7 @@ Temporal Clients use messages to read Workflow state and control execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
 This page introduces these features for the Temporal .NET SDK.
 
-## Write message handlers {#writing-message-handlers}
+## Write message handlers {/* #writing-message-handlers */}
 
 :::info
 The code that follows is part of a [working solution](https://github.com/temporalio/samples-dotnet/tree/main/src/MessagePassing).
@@ -39,7 +39,7 @@ Follow these guidelines when writing your message handlers:
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
 - Prefer data classes to multiple input parameters. Data class parameters allow you to add fields without changing the calling signature. Keep in mind that serialization and deserialization can fail with the default data converter if the new field does not have a default value.
 
-### Query handlers {#queries}
+### Query handlers {/* #queries */}
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution.
 Define as a method:
@@ -98,7 +98,7 @@ public class GreetingWorkflow
 - A Query handler must not modify Workflow state.
 - You can't perform async blocking operations such as executing an Activity in a Query handler.
 
-### Signal handlers {#signals}
+### Signal handlers {/* #signals */}
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
@@ -130,7 +130,7 @@ public class GreetingWorkflow
   This allows you to use Activities, Child Workflows, durable [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Signal and Update handlers.
 
-### Update handlers and validators {#updates}
+### Update handlers and validators {/* #updates */}
 
 An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
 It can change the Workflow state, control its flow, and return a result.
@@ -196,7 +196,7 @@ public class GreetingWorkflow
   This allows you to use Activities, Child Workflows, durable [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Update and Signal handlers.
 
-## Send messages {#send-messages}
+## Send messages {/* #send-messages */}
 
 To send Queries, Signals, or Updates you call methods on a [`WorkflowHandle`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html) object.
 To obtain the WorkflowStub, you can:
@@ -223,7 +223,7 @@ To check the argument types required when sending messages -- and the return typ
 
 :::
 
-### Send a Query {#send-query}
+### Send a Query {/* #send-query */}
 
 Call a Query method with [`WorkflowHandle.QueryAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_QueryAsync__1_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowQueryOptions_):
 
@@ -239,12 +239,12 @@ var supportedLanguages = await workflowHandle.QueryAsync(wf => wf.GetLanguages(n
 
 - A Worker must be online and polling the Task Queue to process a Query.
 
-### Send a Signal {#send-signal}
+### Send a Signal {/* #send-signal */}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
 However, you can only send Signals to Workflow Executions that haven’t closed.
 
-#### Send a Signal from a Client {#send-signal-from-client}
+#### Send a Signal from a Client {/* #send-signal-from-client */}
 
 Use [`WorkflowHandle.SignalAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_SignalAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowSignalOptions_) from Client code to send a Signal:
 
@@ -256,7 +256,7 @@ await workflowHandle.SignalAsync(wf => wf.ApproveAsync(new("MyUser")));
 
 - The [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Workflow's Event History.
 
-#### Send a Signal from a Workflow {#send-signal-from-workflow}
+#### Send a Signal from a Workflow {/* #send-signal-from-workflow */}
 
 A Workflow can send a Signal to another Workflow, known as an _External Signal_.
 In this case you need to obtain a Workflow handle for the external Workflow.
@@ -283,7 +283,7 @@ When an External Signal is sent:
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
-#### Signal-With-Start {#signal-with-start}
+#### Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
 If there's a Workflow running with the given Workflow Id, it will be signaled.
@@ -297,14 +297,14 @@ options.SignalWithStart((GreetingWorkflow wf) => wf.SubmitGreetingAsync("User Si
 await client.StartWorkflowAsync((GreetingWorkflow wf) => wf.RunAsync(), options);
 ```
 
-### Send an Update {#send-update-from-client}
+### Send an Update {/* #send-update-from-client */}
 
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
 If you need a response as soon as the Server receives the request, use a Signal instead.
-Also note that you can't send Updates to other Workflow Executions.
+You can't send Updates directly from one Workflow to another. If you need to send Updates across Workflows, like to Child Workflows, use an Activity.
 
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
@@ -339,7 +339,7 @@ To send an Update to a Workflow Execution, you can:
 
   For more details, see the "Async handlers" section.
 
-#### Update-with-Start {#update-with-start}
+#### Update-with-Start {/* #update-with-start */}
 
 :::tip
 
@@ -416,7 +416,7 @@ Use non-type safe overloads of these APIs:
 
 :::
 
-## Message handler patterns {#message-handler-patterns}
+## Message handler patterns {/* #message-handler-patterns */}
 
 This section covers common write operations, such as Signal and Update handlers.
 It doesn't apply to pure read operations, like Queries or Update Validators.
@@ -427,7 +427,7 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 
 :::
 
-### Add async handlers to use `await` {#async-handlers}
+### Add async handlers to use `await` {/* #async-handlers */}
 
 Signal and Update handlers can be asynchronous as well as blocking.
 Using asynchronous calls allows you to `await` Activities, Child Workflows, [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) wait conditions, etc.
@@ -510,7 +510,7 @@ After updating the code for asynchronous calls, your Update handler can schedule
 Although an async Signal handler can initiate similar network tasks, using an Update handler allows the Client to receive a result or error once the Activity completes.
 This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
-### Add wait conditions to block {#block-with-wait}
+### Add wait conditions to block {/* #block-with-wait */}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
 Using a wait condition with [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) sets a function that prevents the code from proceeding until the condition returns `true`.
@@ -524,7 +524,7 @@ Here are two important use cases for `Workflow.WaitConditionAsync`:
 The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
 This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method, and so forth.
 
-#### Use wait conditions in handlers {#wait-in-handlers}
+#### Use wait conditions in handlers {/* #wait-in-handlers */}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
 Using a wait condition with [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) sets a function that prevents the code from proceeding until the condition returns `true`.
@@ -544,7 +544,7 @@ public async Task<string> MyUpdateAsync(UpdateInput updateInput)
 
 Remember: Handlers can execute before the main Workflow method starts.
 
-#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+#### Ensure your handlers finish before the Workflow completes {/* #wait-for-message-handlers */}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
@@ -622,7 +622,7 @@ public class WorkflowInitWorkflow
 }
 ```
 
-### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
+### Use locks to prevent concurrent handler execution {/* #control-handler-concurrency */}
 
 Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
@@ -686,7 +686,7 @@ public class MyWorkflow
 For additional concurrency options, you can use [`Workflows.Semaphore`](https://dotnet.temporal.io/api/Temporalio.Workflows.Semaphore.html).
 Semaphores manage access to shared resources and coordinate the order in which threads or processes execute.
 
-## Message handler troubleshooting {#message-handler-troubleshooting}
+## Message handler troubleshooting {/* #message-handler-troubleshooting */}
 
 When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
 
@@ -698,7 +698,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 
 See [Exceptions in message handlers](/handling-messages#exceptions) for a non–.NET-specific discussion of this topic.
 
-### Problems when sending a Signal {#signal-problems}
+### Problems when sending a Signal {/* #signal-problems */}
 
 When using Signal, the only exception that will result from your requests during its execution is `RpcException`.
 All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
@@ -706,7 +706,7 @@ All handlers may experience additional exceptions during the initial (pre-Worker
 For Queries and Updates, the Client waits for a response from the Worker.
 If an issue occurs during the handler Execution by the Worker, the Client may receive an exception.
 
-### Problems when sending an Update {#update-problems}
+### Problems when sending an Update {/* #update-problems */}
 
 When working with Updates, you may encounter these errors:
 
@@ -746,7 +746,7 @@ When working with Updates, you may encounter these errors:
 
   - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
-### Problems when sending a Query {#query-problems}
+### Problems when sending a Query {/* #query-problems */}
 
 When working with Queries, you may encounter these errors:
 
@@ -761,7 +761,7 @@ When working with Queries, you may encounter these errors:
 - **The handler caused the Workflow Task to fail.**
   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
-## Dynamic Handler {#dynamic-handler}
+## Dynamic Handler {/* #dynamic-handler */}
 
 Temporal supports Dynamic Queries, Signals, Updates, Workflows, and Activities.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
@@ -781,7 +781,7 @@ They are meant to handle edge cases and act as a catch-all, not as the main way 
 
 :::
 
-### Set a Dynamic Query {#set-a-dynamic-query}
+### Set a Dynamic Query {/* #set-a-dynamic-query */}
 
 A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
 A Query can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowQuery]` attribute.
@@ -799,7 +799,7 @@ public string DynamicQueryAsync(string queryName, IRawValue[] args)
 }
 ```
 
-### Set a Dynamic Signal {#set-a-dynamic-signal}
+### Set a Dynamic Signal {/* #set-a-dynamic-signal */}
 
 A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
 A Signal can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowSignal]` attribute.
@@ -817,7 +817,7 @@ public async Task DynamicSignalAsync(string signalName, IRawValue[] args)
 }
 ```
 
-### Set a Dynamic Update {#set-a-dynamic-update}
+### Set a Dynamic Update {/* #set-a-dynamic-update */}
 
 A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime if no other Update with the same input is registered.
 An Update can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowUpdate]` attribute.

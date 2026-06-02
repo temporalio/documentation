@@ -59,10 +59,10 @@ However, excessive Activity retries often indicate underlying issues like timeou
 Detect Activity retry frequency and if high, consider increasing retry intervals or Activity timeouts before failures occur.
 See [Spooky Stories: Chilling Temporal Anti-Patterns](https://temporal.io/blog/spooky-stories-chilling-temporal-anti-patterns-part-2#2-hiding-behind-the-chainsaws) for guidance on retry defaults and patterns.
 
-### Large payloads in Workflow History
+### Large payloads in Event History
 
 Passing multi-megabyte payloads through Workflows when external storage (S3, blob storage) is more appropriate.
-Use [compression](/troubleshooting/blob-size-limit-error#why-does-this-error-occur) or the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) for large data.
+Use [compression](/troubleshooting/blob-size-limit-error#payload-size-limit) or the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) for large data.
 
 ### Over-optimization at the expense of observability
 
@@ -241,11 +241,11 @@ See [Namespace retention documentation](/temporal-service/temporal-server#retent
 
 #### Workflow export
 
-Temporal Cloud supports exporting Workflow Histories to external storage for compliance while maintaining shorter retention periods.
+Temporal Cloud supports exporting Event Histories to external storage for compliance while maintaining shorter retention periods.
 Note that Workflow export costs one Action per export.
 
 See the [Workflow History export documentation](/cloud/export) for more details.
-Alternatively, if you are looking to do analysis on closed Workflow Executions, [review this blog post to learn how to gain insights from exported Workflow Histories](https://temporal.io/blog/get-insights-from-workflow-histories-export-on-temporal-cloud).
+Alternatively, if you are looking to do analysis on closed Workflow Executions, [review this blog post to learn how to gain insights from exported Event Histories](https://temporal.io/blog/get-insights-from-workflow-histories-export-on-temporal-cloud).
 
 ## Validation
 
@@ -265,7 +265,7 @@ Alternatively, if you are looking to do analysis on closed Workflow Executions, 
 ### Tools
 
 - Temporal Cloud Usage dashboard for Actions and Storage metrics
-- Workflow History for per-Workflow billable Actions estimates
+- Event History for per-Workflow billable Actions estimates
 - Export metrics to observability platforms (Datadog, Grafana, etc.) for custom monitoring
 
 ## When to get help

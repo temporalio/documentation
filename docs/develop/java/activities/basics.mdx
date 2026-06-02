@@ -54,7 +54,7 @@ An Activity implementation is a Java class that implements an Activity annotated
   }
 ```
 
-## Define Activity parameters {#activity-parameters}
+## Define Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -108,7 +108,7 @@ The `execute` method in the dynamic Activity interface implementation takes in `
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
 
-## Define Activity return values {#activity-return-values}
+## Define Activity return values {/* #activity-return-values */}
 
 All data returned from an Activity must be serializable.
 
@@ -122,7 +122,7 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 - [Data Converter](/dataconversion)
 - Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-## Customize your Activity Type {#activity-type}
+## Customize your Activity Type {/* #activity-type */}
 
 Each Activity has a Type, which may also be referred to as the Activity 'name'.
 This name appears in the Workflow Execution Event History in the Summary tab for each Activity Task.

@@ -411,7 +411,7 @@ T = 2: task A is loaded.
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
 
-## How to set up Multi-Cluster Replication {#set-up-multi-cluster-replication}
+## How to set up Multi-Cluster Replication {/* #set-up-multi-cluster-replication */}
 
 The [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
