@@ -22,6 +22,30 @@ function filePathToUrlPath(filePath) {
   return urlPath;
 }
 
+function extractSlugFromContent(content) {
+  const match = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!match) return null;
+  const slugMatch = match[1].match(/^slug:\s*(.+)$/m);
+  return slugMatch ? slugMatch[1].trim() : null;
+}
+
+function getFileContentAtRef(filePath, ref) {
+  try {
+    return execSync(`git show ${ref}:${filePath}`, { encoding: 'utf8' });
+  } catch {
+    return null;
+  }
+}
+
+function resolveOldUrl(filePath, mergeBase) {
+  const content = getFileContentAtRef(filePath, mergeBase);
+  if (content) {
+    const slug = extractSlugFromContent(content);
+    if (slug) return slug;
+  }
+  return filePathToUrlPath(filePath);
+}
+
 function getMovedOrDeletedDocFiles() {
   const mergeBase = execSync(`git merge-base HEAD ${BASE_SHA}`, {
     encoding: 'utf8',
@@ -45,7 +69,8 @@ function getMovedOrDeletedDocFiles() {
     }
   }
 
-  return results.filter((r) => /\.(mdx|md)$/.test(r.oldPath));
+  const files = results.filter((r) => /\.(mdx|md)$/.test(r.oldPath));
+  return { files, mergeBase };
 }
 
 function vercelPatternToRegex(pattern) {
@@ -83,7 +108,7 @@ function findMatchingRedirect(urlPath, redirects) {
 }
 
 function main() {
-  const movedFiles = getMovedOrDeletedDocFiles();
+  const { files: movedFiles, mergeBase } = getMovedOrDeletedDocFiles();
 
   if (movedFiles.length === 0) {
     console.log('No docs pages were moved or deleted. Nothing to check.');
@@ -94,10 +119,11 @@ function main() {
   const missing = [];
 
   for (const file of movedFiles) {
-    const oldUrl = filePathToUrlPath(file.oldPath);
+    const oldUrl = resolveOldUrl(file.oldPath, mergeBase);
     const match = findMatchingRedirect(oldUrl, redirects);
 
     if (!match) {
+      file.oldUrl = oldUrl;
       missing.push(file);
     }
   }
@@ -111,12 +137,13 @@ function main() {
 
   console.error('Missing redirects for moved/deleted pages:\n');
   for (const file of missing) {
-    const oldUrl = filePathToUrlPath(file.oldPath);
     if (file.type === 'renamed') {
-      const newUrl = filePathToUrlPath(file.newPath);
-      console.error(`  ${oldUrl} -> ${newUrl} (renamed, no redirect found)`);
+      const newUrl = resolveOldUrl(file.newPath, 'HEAD');
+      console.error(
+        `  ${file.oldUrl} -> ${newUrl} (renamed, no redirect found)`,
+      );
     } else {
-      console.error(`  ${oldUrl} (deleted, no redirect found)`);
+      console.error(`  ${file.oldUrl} (deleted, no redirect found)`);
     }
   }
 
