@@ -18,7 +18,7 @@ This page discusses the following:
 - [Task Routing](#task-routing)
 - [Worker Sessions](#worker-session)
 
-## What is Task Routing? {#task-routing}
+## What is Task Routing? {/* #task-routing */}
 
 Task Routing is simply when a Task Queue is paired with one or more Workers, primarily for Activity Task Executions.
 
@@ -97,7 +97,7 @@ If you have a new backward-incompatible Activity Definition, start by using a di
 Alternatively, you can use [Worker Versioning](/worker-versioning), which lets you tag Workers with a version and route Workflow and Activity Tasks to specific versions without requiring separate Task Queues.
 Worker Versioning supports both Pinned Workflows (which complete on a single Worker Deployment Version) and Auto-Upgrade Workflows (which automatically move to the latest version).
 
-## What is a Worker Session? {#worker-session}
+## What is a Worker Session? {/* #worker-session */}
 
 A Worker Session is a feature provided by some SDKs that provides a straightforward API for [Task Routing](#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and Worker failure detection.

@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Develop a Workflow {#develop-workflow}
+## Develop a Workflow {/* #develop-workflow */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -42,7 +42,7 @@ Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
 
-## Workflow logic requirements {#workflow-logic-requirements}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow.
 
@@ -141,7 +141,7 @@ dotnet_diagnostic.CS1998.severity = none
 dotnet_diagnostic.VSTHRD105.severity = none
 ```
 
-### Customize Workflow Type {#workflow-type}
+### Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
 

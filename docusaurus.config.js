@@ -346,6 +346,15 @@ module.exports = async function createConfigAsync() {
         };
       },
       [
+        './plugins/cloud-region-counts',
+        {
+          regionFiles: {
+            aws: 'docs/cloud/references/regions/awsregions.md',
+            gcp: 'docs/cloud/references/regions/gcpregions.md',
+          },
+        },
+      ],
+      [
         'docusaurus-pushfeedback',
         {
           project: '6c1ptrxbky',
@@ -445,9 +454,18 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    markdown: {
+      mdx1Compat: {
+        // Required for snipsync HTML comment markers (<!--SNIPSTART-->, <!--SNIPEND-->)
+        comments: true,
+        admonitions: true,
+      },
+      mermaid: true,
+    },
+    themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      experimental_faster: true,
+      faster: true,
     },
   };
 

@@ -48,7 +48,7 @@ Activity Operations aren't available as SDK client methods. They're operational 
 | [Reset](#reset) | Clears retry state (attempts, backoff) and schedules a new execution. | [`temporal activity reset`](/cli/activity#reset) |
 | [Update Options](#update-options) | Changes timeouts, Retry Policy, or Task Queue without restarting the Activity. | [`temporal activity update-options`](/cli/activity#update-options) |
 
-## Pause {#pause}
+## Pause {/* #pause */}
 
 Pause stops the Temporal Service from scheduling new retries of an [Activity Execution](/activity-execution).
 
@@ -109,7 +109,7 @@ Your Activity code may need to handle these cases differently, for example relea
 - **Pause operates on individual Activities by ID within a single Workflow.** Unlike Unpause, Reset, and Update Options, there's no `--query` flag. To pause multiple Activities, issue separate commands for each Activity ID.
 - **No Namespace-wide query for Paused Activities.** You must know the Workflow Id. See [Observability](#observability).
 
-## Unpause {#unpause}
+## Unpause {/* #unpause */}
 
 Unpause resumes a Paused Activity Execution.
 
@@ -145,7 +145,7 @@ See the [CLI reference for `temporal activity unpause`](/cli/activity#unpause) f
 - **A Paused Activity can time out before you Unpause it.** The [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) isn't stopped or extended while Paused. Use [`update-options`](#update-options) to extend the timeout before Unpausing if needed.
 - **Unpause doesn't interrupt or duplicate an in-flight execution.** If an Activity without Heartbeat is still running when you Unpause, it continues to completion. The Temporal Service doesn't schedule a concurrent execution. If the in-flight execution fails, the next retry proceeds normally.
 
-## Reset {#reset}
+## Reset {/* #reset */}
 
 Reset clears an Activity's retry state and schedules a fresh execution.
 
@@ -206,7 +206,7 @@ Your Activity code may need to handle these cases differently, for example savin
 - **`--restore-original-options` restores the Activity's original configuration.** It reverts timeouts, Retry Policy, and Task Queue to the values from when the Activity was first scheduled.
 - **Bulk Reset can overwhelm downstream services.** When using `--query` to Reset Activities across many Workflows, use `--jitter` to stagger the restart times.
 
-## Update Options {#update-options}
+## Update Options {/* #update-options */}
 
 Update Options changes an Activity's runtime configuration without restarting it.
 
@@ -250,7 +250,7 @@ See the [CLI reference for `temporal activity update-options`](/cli/activity#upd
 
 - **Update Options is CLI and gRPC only.** It's not available in the UI.
 
-## Observability {#observability}
+## Observability {/* #observability */}
 
 Activity Operations have a limited audit trail because they are not recorded in a Workflow's Event History. However, you can use the CLI and the UI to check Activity state and find Paused Activities for running Workflows.
 
@@ -266,7 +266,7 @@ The `TemporalPauseInfo` [Search Attribute](/search-attribute) is filterable with
 There's no Namespace-wide query to find all Paused Activities across Workflows.
 You must know the Workflow Id.
 
-### Audit trail {#audit-trail}
+### Audit trail {/* #audit-trail */}
 
 Activity Operations don't produce Event History events.
 There is no record of a Pause, Reset, or option change in the Workflow's [Event History](/workflow-execution/event#event-history).

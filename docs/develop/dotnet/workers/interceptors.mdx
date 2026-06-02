@@ -1,0 +1,227 @@
+---
+id: interceptors
+title: Interceptors - .NET SDK
+sidebar_label: Interceptors
+description:
+  Implement Interceptors in the Temporal .NET SDK to manage inbound and outbound SDK calls, enhance tracing, and add
+  authorization to your Workflows and Activities.
+toc_max_heading_level: 3
+keywords:
+  - interceptors
+tags:
+  - Interceptors
+  - .NET SDK
+  - Temporal SDKs
+---
+
+Interceptors are SDK hooks that let you intercept inbound and outbound Temporal calls. You use them to apply shared
+behavior across many calls, such as tracing and authorization, before calls reach the application code and after they return.
+This is similar to middleware in other frameworks, like [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware).
+
+There are two main types of interceptors: inbound and outbound.
+
+* Outbound interceptors wrap network calls, running before they reach the network and after they return.
+* Inbound interceptors run after the network hop, wrapping application code and running before it starts and after it returns.
+
+Concretely, there are five categories of inbound and outbound calls that you can modify in this way:
+
+| | [Outbound Client](https://dotnet.temporal.io/api/Temporalio.Client.Interceptors.ClientOutboundInterceptor.html) | [Inbound Workflow](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.WorkflowInboundInterceptor.html) | [Outbound Workflow](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.WorkflowOutboundInterceptor.html) | [Inbound Activity](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.ActivityInboundInterceptor.html) | [Outbound Activity](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.ActivityOutboundInterceptor.html) |
+| --- | --- | --- | --- | --- | --- |
+| **Description** | Wraps calls from your application to the Temporal Client to start a Workflow or send [Messages](/encyclopedia/workflow-message-passing/) to it | Wraps calls arriving into a [Workflow Execution](/workflow-execution), such as executing the Workflow, handling [Messages](/encyclopedia/workflow-message-passing/) | Wraps calls a [Workflow](/workflow-definition) makes to the SDK, such as scheduling [Activities](/activities), starting [Child Workflows](/child-workflows), and invoking [Nexus Operations](/nexus) | Wraps calls arriving into an [Activity Execution](/activity-execution) | Wraps calls an [Activity](/activities) makes to the SDK, such as sending [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) and reading Activity info |
+| **Runs on** | Client | Worker (Workflow sandbox) | Worker (Workflow sandbox) | Worker (Activity context) | Worker (Activity context) |
+| **Example methods** | `StartWorkflowAsync()`, `WorkflowHandle.SignalAsync()`, `ListWorkflowsAsync()` | `ExecuteWorkflowAsync()`, `WorkflowHandle.QueryAsync()`, `WorkflowHandle.SignalAsync ()`, `WorkflowHandle.ExecuteUpdateAsync()` | `StartActivityAsync()`, `StartChildWorkflowAsync()`, `ChildWorkflowHandle.SignalAsync()`, `StartNexusOperationAsync()` | `ExecuteActivityAsync()` | `Info()`, `Heartbeat()` |
+
+:::warning Workflow interceptors and replay
+
+Workflow inbound and outbound interceptor methods also execute during [replay](/develop/dotnet/best-practices/testing-suite#replay). Use replay-safe APIs for logging, randomness, and time in these interceptors.
+See [Develop Workflow logic](/develop/dotnet/workflows/basics#workflow-logic-requirements) for details.
+
+If you want to write generic code shared by all inbound Workflow call handlers but want to skip read-only operations, check [`Workflow.Unsafe.IsReplaying`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.Unsafe.html#Temporalio_Workflows_Workflow_Unsafe_IsReplaying).
+
+Activity and Client interceptors are not affected by replay.
+
+:::
+
+## Register an Interceptor {/* #register */}
+
+Registering an interceptor means supplying an interceptor instance to the SDK so Temporal can invoke it when matching
+Client or Worker calls occur. Once registered, the interceptor runs as part of the call path and can observe or modify
+request and response data.
+
+### Register on the Client 
+
+Pass interceptors in the `Interceptors` property of [`TemporalClientConnectOptions`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClientConnectOptions.html). Client interceptors modify outbound calls such
+as starting and signaling Workflows. One example is [setting up tracing](/develop/dotnet/platform/observability) to see your call graph of a Workflow.
+
+```csharp
+using Temporalio.Extensions.OpenTelemetry;
+
+var interceptor = new TracingInterceptor();
+
+var client = await TemporalClient.ConnectAsync(new()
+{
+    TargetHost = "localhost:7233",
+    Interceptors = [interceptor],
+});
+```
+
+The `Interceptors` list can contain multiple interceptors.
+The default behavior for interceptors is to form a chain. A method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
+
+### Register via a Plugin
+
+If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
+
+### Register on the Worker only 
+
+If your interceptor doesn't affect the Client, you can pass interceptors in the `Interceptors` argument of `TemporalWorkerOptions`.
+Worker interceptors modify inbound and outbound Workflow and Activity calls.
+
+```csharp
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        Interceptors = [interceptor]
+    }
+    .AddActivity(activities.SayHello)
+    .AddWorkflow<SayHelloWorkflow>()
+);
+```
+
+## How to implement Interceptors
+
+Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
+
+### Implementing Client call Interceptors
+
+To modify outbound Client calls, define a class implementing [`IClientInterceptor`](https://dotnet.temporal.io/api/Temporalio.Client.Interceptors.IClientInterceptor.html). Implement `InterceptClient()` to return a [`ClientOutboundInterceptor`](https://dotnet.temporal.io/api/Temporalio.Client.Interceptors.ClientOutboundInterceptor.html), overriding the outbound Client calls you want to modify. `IClientInterceptor.InterceptClient` receives the next `ClientOutboundInterceptor` in the chain and returns the created interceptor.
+
+This example implements an Interceptor on outbound Client calls that sets a certain key in the outbound `headers` field.
+A User ID is context-propagated by being sent in a header field with outbound requests:
+
+```csharp
+using Google.Protobuf;
+using Temporalio.Api.Common.V1;
+using Temporalio.Client;
+using Temporalio.Client.Interceptors;
+
+public static class UserContext
+{
+    private static readonly AsyncLocal<string?> CurrentUser = new();
+
+    public static string? UserId
+    {
+        get => CurrentUser.Value;
+        set => CurrentUser.Value = value;
+    }
+}
+
+public class ContextPropagationInterceptor : IClientInterceptor
+{
+    public ClientOutboundInterceptor InterceptClient(
+        ClientOutboundInterceptor nextInterceptor) =>
+        new ContextPropagationClientOutboundInterceptor(nextInterceptor);
+}
+
+public class ContextPropagationClientOutboundInterceptor(
+    ClientOutboundInterceptor next)
+    : ClientOutboundInterceptor(next)
+{
+    public override Task<WorkflowHandle<TWorkflow, TResult>>
+        StartWorkflowAsync<TWorkflow, TResult>(StartWorkflowInput input)
+    {
+        var headers = input.Headers ?? new Dictionary<string, Payload>();
+        headers["user-id"] = new Payload
+        {
+            Metadata = { ["encoding"] = ByteString.CopyFromUtf8("plain/text") },
+            Data = ByteString.CopyFromUtf8(UserContext.UserId),
+        };
+
+        return base.StartWorkflowAsync<TWorkflow, TResult>(input with { Headers = headers });
+    }
+}
+```
+
+You can then [register](#register) this interceptor in your client/starter code.
+
+Your interceptor classes don't need to implement every method. The default implementation is always to pass the data on to the next method in the interceptor chain.
+During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
+The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
+At the end of the chain the SDK will call the "real" SDK method.
+
+### Implementing Worker call Interceptors
+
+To modify inbound Workflow and Activity calls, define a class implementing [`IWorkerInterceptor`](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.IWorkerInterceptor.html). It provides `InterceptActivity()`, `InterceptWorkflow()`, and `InterceptNexusOperation()` methods for Activity, Workflow, and Nexus interception.
+
+This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) and Schedule-To-Close latency.
+Notice how the interceptor wraps the call. It records Schedule-To-Start before `ExecuteActivityAsync`, then records Schedule-To-Close after it completes:
+
+```csharp
+using Temporalio.Activities;
+using Temporalio.Worker;
+using Temporalio.Worker.Interceptors;
+
+public class SimpleWorkerInterceptor : IWorkerInterceptor
+{
+    public ActivityInboundInterceptor InterceptActivity(
+        ActivityInboundInterceptor nextInterceptor) =>
+        new ActivityMetricsInterceptor(nextInterceptor);
+
+    public WorkflowInboundInterceptor InterceptWorkflow(
+        WorkflowInboundInterceptor nextInterceptor) =>
+        nextInterceptor;
+
+    public NexusOperationInboundInterceptor InterceptNexusOperation(
+        NexusOperationInboundInterceptor nextInterceptor) =>
+        nextInterceptor;
+}
+
+public class ActivityMetricsInterceptor(ActivityInboundInterceptor next)
+    : ActivityInboundInterceptor(next)
+{
+    public override async Task<object?> ExecuteActivityAsync(
+        ExecuteActivityInput input)
+    {
+        var info = ActivityExecutionContext.Current.Info;
+        var started = DateTimeOffset.UtcNow;
+
+        // Before the activity executes
+        var scheduleToStart =
+            started - info.CurrentAttemptScheduledTime;
+
+        Console.WriteLine(
+            $"Schedule-To-Start latency: {scheduleToStart}");
+
+        // Execute the activity
+        var result = await base.ExecuteActivityAsync(input);
+
+        // After the activity completes
+        var scheduleToClose =
+            DateTimeOffset.UtcNow - info.CurrentAttemptScheduledTime;
+
+        Console.WriteLine(
+            $"Schedule-To-Close latency: {scheduleToClose}");
+
+        return result;
+    }
+}
+```
+
+Register it on the Worker:
+
+```csharp
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        Interceptors = new IWorkerInterceptor[]
+        {
+            new SimpleWorkerInterceptor(),
+        },
+    }
+    .AddActivity(activities.SayHello)
+    .AddWorkflow<SayHelloWorkflow>());
+
+await worker.ExecuteAsync();
+```

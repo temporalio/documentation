@@ -14,7 +14,7 @@ tags:
 This page covers long-lived Workers that you host and run as persistent processes.
 For Workers that run on serverless compute like AWS Lambda, see [Serverless Workers](/develop/go/workers/serverless-workers).
 
-## Create and run a Worker {#develop-worker}
+## Create and run a Worker {/* #develop-worker */}
 
 Create a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) and passing:
 
@@ -67,12 +67,12 @@ gow run worker/main.go
 
 :::
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 To run a Worker against Temporal Cloud, configure the client connection with your Namespace address and authentication credentials.
 See [Connect to Temporal Cloud](/develop/go/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
 
-## Register Workflows and Activities {#register-types}
+## Register Workflows and Activities {/* #register-types */}
 
 All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
 If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
@@ -89,7 +89,7 @@ w.RegisterActivity(&MyActivities{})
 To customize the registered name or other options, use `RegisterWorkflowWithOptions()` or `RegisterActivityWithOptions()`.
 See [`workflow.RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) and [`activity.RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions).
 
-## Worker options {#worker-options}
+## Worker options {/* #worker-options */}
 
 Pass a [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) struct to `worker.New()` to configure concurrency limits, pollers, timeouts, and other Worker behavior.
 An empty struct uses defaults that work for most cases.

@@ -824,6 +824,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/interceptors',
               ]
             },
             {
@@ -1201,7 +1202,18 @@ module.exports = {
           items: [
             'cloud/high-availability/enable',
             'cloud/high-availability/monitoring',
-            'cloud/high-availability/failovers',
+            {
+              type: 'category',
+              label: 'Failovers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/high-availability/failovers/failovers',
+              },
+              items: [
+                'cloud/high-availability/failovers/manage-failovers',
+              ],
+            },
             'cloud/high-availability/ha-connectivity',
           ],
         },
