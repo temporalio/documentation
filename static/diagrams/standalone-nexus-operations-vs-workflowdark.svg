@@ -85,11 +85,11 @@
   <line x1="835" y1="450" x2="835" y2="495" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow-dark)"/>
 
   <!-- ============================================================ -->
-  <!-- Shared: Nexus Service & Worker Deployment (green = key insight) -->
+  <!-- Shared: Temporal Nexus Service & Worker Deployment (slate = shared) -->
   <!-- ============================================================ -->
-  <rect x="220" y="500" width="700" height="55" rx="12" ry="12" fill="#22c55e"/>
+  <rect x="220" y="500" width="700" height="55" rx="12" ry="12" fill="#64748b"/>
   <text x="570" y="521" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">
-    <tspan x="570" dy="0">Nexus Service, Operation Handlers</tspan>
+    <tspan x="570" dy="0">Temporal Nexus Service, Operation Handlers</tspan>
     <tspan x="570" dy="1.3em">&amp; Worker Deployment</tspan>
   </text>
 
@@ -115,7 +115,9 @@
   <text x="40" y="704" fill="#e5e7eb" font-size="13">Standalone Nexus Operation</text>
   <rect x="240" y="690" width="18" height="18" rx="8" ry="8" fill="#3b82f6"/>
   <text x="265" y="704" fill="#e5e7eb" font-size="13">Workflow &amp; Nexus Operation Steps</text>
-  <rect x="500" y="690" width="18" height="18" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
-  <text x="525" y="704" fill="#e5e7eb" font-size="13">Description</text>
+  <rect x="510" y="690" width="18" height="18" rx="8" ry="8" fill="#64748b"/>
+  <text x="535" y="704" fill="#e5e7eb" font-size="13">Shared infrastructure</text>
+  <rect x="700" y="690" width="18" height="18" rx="0" ry="0" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+  <text x="725" y="704" fill="#e5e7eb" font-size="13">Description</text>
 
 </svg>

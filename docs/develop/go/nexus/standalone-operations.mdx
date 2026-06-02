@@ -28,9 +28,10 @@ All APIs are experimental and may be subject to backwards-incompatible changes.
 
 :::
 
-Standalone Nexus Operations let you run Nexus Operation Executions independently, without being orchestrated by a
-Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using `workflow.NewNexusClient()`, you
-execute a Standalone Nexus Operation directly from a Nexus Client created using `client.NewNexusClient()`.
+[Standalone Nexus Operations](/standalone-nexus-operation) let you run Nexus Operation Executions independently, without
+being orchestrated by a Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using
+`workflow.NewNexusClient()`, you execute a Standalone Nexus Operation directly from a Nexus Client created using
+`client.NewNexusClient()`.
 
 Standalone Nexus Operations use the same Nexus Service contract, Operation handlers, and Worker setup as
 Workflow-driven Operations — only the execution path differs. See the [Nexus feature guide](/develop/go/nexus/feature-guide) for details on
