@@ -22,11 +22,16 @@ function filePathToUrlPath(filePath) {
   return urlPath;
 }
 
-function extractSlugFromContent(content) {
+function extractFrontMatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return null;
-  const slugMatch = match[1].match(/^slug:\s*(.+)$/m);
-  return slugMatch ? slugMatch[1].trim() : null;
+  if (!match) return {};
+  const block = match[1];
+  const result = {};
+  for (const field of ['slug', 'id']) {
+    const m = block.match(new RegExp(`^${field}:\\s*(.+)$`, 'm'));
+    if (m) result[field] = m[1].trim();
+  }
+  return result;
 }
 
 function getFileContentAtRef(filePath, ref) {
@@ -40,12 +45,19 @@ function getFileContentAtRef(filePath, ref) {
 function resolveOldUrl(filePath, ref) {
   const content = getFileContentAtRef(filePath, ref);
   if (content) {
-    const slug = extractSlugFromContent(content);
-    if (slug) {
-      if (slug.startsWith('/')) return slug;
-      // Relative slug: resolve against the doc's directory path
+    const fm = extractFrontMatter(content);
+
+    // slug takes highest precedence
+    if (fm.slug) {
+      if (fm.slug.startsWith('/')) return fm.slug;
       const dirUrl = filePathToUrlPath(filePath).replace(/\/[^/]*$/, '');
-      return `${dirUrl}/${slug}`;
+      return `${dirUrl}/${fm.slug}`;
+    }
+
+    // id replaces the filename segment in the URL
+    if (fm.id) {
+      const dirUrl = filePathToUrlPath(filePath).replace(/\/[^/]*$/, '');
+      return `${dirUrl}/${fm.id}`;
     }
   }
   return filePathToUrlPath(filePath);
