@@ -199,7 +199,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey=\{"your": "value"\}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -247,7 +247,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey=\{"your": "value"\}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -513,7 +513,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey=\{"your": "value"\}'. Can be passed multiple times. |
 | `--signal-input` | No | **string[]** Signal input value. Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input-file. Can be passed multiple times to pass multiple arguments. |
 | `--signal-input-base64` | No | **bool** Assume signal inputs are base64-encoded and attempt to decode them. |
 | `--signal-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input. Can be passed multiple times to pass multiple arguments. |
@@ -577,7 +577,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey=\{"your": "value"\}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -626,7 +626,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey=\{"your": "value"\}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -696,7 +696,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--concurrency` | No | **int** Number of Event Histories to fetch at a time. |
+| `--concurrency` | No | **int** Number of Workflow Histories to fetch at a time. |
 | `--depth` | No | **int** Set depth for your Child Workflow fetches. Pass -1 to fetch child workflows at any depth. |
 | `--fold` | No | **string[]** Fold away Child Workflows with the specified statuses. Case-insensitive. Ignored if --no-fold supplied. Available values: running, completed, failed, canceled, terminated, timedout, continueasnew. Can be passed multiple times. |
 | `--no-fold` | No | **bool** Disable folding. Fetch and display Child Workflows within the set depth. |
