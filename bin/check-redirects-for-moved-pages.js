@@ -37,11 +37,16 @@ function getFileContentAtRef(filePath, ref) {
   }
 }
 
-function resolveOldUrl(filePath, mergeBase) {
-  const content = getFileContentAtRef(filePath, mergeBase);
+function resolveOldUrl(filePath, ref) {
+  const content = getFileContentAtRef(filePath, ref);
   if (content) {
     const slug = extractSlugFromContent(content);
-    if (slug) return slug;
+    if (slug) {
+      if (slug.startsWith('/')) return slug;
+      // Relative slug: resolve against the doc's directory path
+      const dirUrl = filePathToUrlPath(filePath).replace(/\/[^/]*$/, '');
+      return `${dirUrl}/${slug}`;
+    }
   }
   return filePathToUrlPath(filePath);
 }
