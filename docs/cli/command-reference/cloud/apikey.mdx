@@ -25,7 +25,7 @@ The token is printed once on creation and cannot be retrieved again.
 Example:
 
 ```
-cloud apikey create-for-me --display-name "My Key"
+temporal cloud apikey create-for-me --display-name "My Key"
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -40,7 +40,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--expiry-duration` | No | **duration** Expiry duration relative to now (e.g. 30d, 24h, 90m). Supports days (d), hours (h), minutes (m), and seconds (s). Mutually exclusive with --expiry-time. |
 | `--expiry-time` | No | **timestamp** Expiry time for the API key in RFC3339 format (e.g. 2025-12-31T00:00:00Z). Mutually exclusive with --expiry-duration. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## create-for-service-account
@@ -51,7 +51,7 @@ The token is printed once on creation and cannot be retrieved again.
 Example:
 
 ```
-cloud apikey create-for-service-account --service-account-id my-sa-id --display-name "My Key"
+temporal cloud apikey create-for-service-account --service-account-id my-sa-id --display-name "My Key"
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -66,7 +66,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--expiry-duration` | No | **duration** Expiry duration relative to now (e.g. 30d, 24h, 90m). Supports days (d), hours (h), minutes (m), and seconds (s). Mutually exclusive with --expiry-time. |
 | `--expiry-time` | No | **timestamp** Expiry time for the API key in RFC3339 format (e.g. 2025-12-31T00:00:00Z). Mutually exclusive with --expiry-duration. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--service-account-id` | Yes | **string** The ID of the service account to create the API key for. |
 
@@ -77,7 +77,7 @@ Delete a Temporal Cloud API key. This action is irreversible.
 Example:
 
 ```
-cloud apikey delete --key-id my-key-id
+temporal cloud apikey delete --key-id my-key-id
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -89,7 +89,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key-id` | Yes | **string** The ID of the API key to delete. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -100,7 +100,7 @@ Disable a Temporal Cloud API key. Disabled keys cannot be used for authenticatio
 Example:
 
 ```
-cloud apikey disable --key-id my-key-id
+temporal cloud apikey disable --key-id my-key-id
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -112,7 +112,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key-id` | Yes | **string** The ID of the API key to disable. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -128,7 +128,7 @@ back to 'vi' if not set.
 Example:
 
 ```
-cloud apikey edit --key-id my-key-id
+temporal cloud apikey edit --key-id my-key-id
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -140,7 +140,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key-id` | Yes | **string** The ID of the API key to edit. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
@@ -152,7 +152,7 @@ Enable a previously disabled Temporal Cloud API key.
 Example:
 
 ```
-cloud apikey enable --key-id my-key-id
+temporal cloud apikey enable --key-id my-key-id
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -164,7 +164,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key-id` | Yes | **string** The ID of the API key to enable. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -175,7 +175,7 @@ Retrieve the configuration and status of a Temporal Cloud API key.
 Example:
 
 ```
-cloud apikey get --key-id my-key-id
+temporal cloud apikey get --key-id my-key-id
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -194,9 +194,9 @@ At most one filter may be specified.
 Example:
 
 ```
-cloud apikey list
-cloud apikey list --user-id my-user-id
-cloud apikey list --service-account-id my-sa-id
+temporal cloud apikey list
+temporal cloud apikey list --user-id my-user-id
+temporal cloud apikey list --service-account-id my-sa-id
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -219,8 +219,8 @@ Only flags that are explicitly provided are changed.
 Example:
 
 ```
-cloud apikey update --key-id my-key-id --display-name "New Name"
-cloud apikey update --key-id my-key-id --disabled=true
+temporal cloud apikey update --key-id my-key-id --display-name "New Name"
+temporal cloud apikey update --key-id my-key-id --disabled=true
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -235,7 +235,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--display-name` | No | **string** New display name for the API key. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key-id` | Yes | **string** The ID of the API key to update. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -249,5 +249,5 @@ The following options can be used with any command.
 | `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl-test.cloud:443` |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
 

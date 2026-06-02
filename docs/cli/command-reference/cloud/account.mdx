@@ -20,7 +20,7 @@ This page provides a reference for the `temporal cloud account` commands. The fl
 
 Commands for working with account audit logs.
 
-### audit-log get
+### audit-log list
 
 Returns a paginated list of audit logs for the account, optionally filtered by time range.
 
@@ -59,7 +59,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the audit log sink to delete. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -79,7 +79,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the audit log sink to disable. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -99,7 +99,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the audit log sink to enable. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -132,7 +132,7 @@ stream identified by the destination URI.
 Example:
   temporal cloud account audit-log sink kinesis create \
     --name my-sink \
-    --role-name arn:aws:iam::123456789012:role/MyRole \
+    --role-name MyRole \
     --destination-uri arn:aws:kinesis:us-east-1:123456789012:stream/MyStream \
     --region us-east-1
 
@@ -146,20 +146,20 @@ Use the following options to change the behavior of this command. You can also u
 | `--destination-uri` | Yes | **string** ARN of the Kinesis stream to deliver audit log events to. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** Name of the audit log sink. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string** AWS region where the Kinesis stream is located (e.g. us-east-1). |
-| `--role-name` | Yes | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
+| `--role-name` | Yes | **string** Name of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ##### audit-log sink kinesis update
 
 Update an existing Kinesis audit log sink. Only the flags you provide are changed;
-omitted string flags retain their current values. 
+omitted string flags retain their current values.
 
 Example:
   temporal cloud account audit-log sink kinesis update \
     --name my-sink \
-    --role-name arn:aws:iam::123456789012:role/NewRole
+    --role-name NewRole
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
@@ -171,10 +171,10 @@ Use the following options to change the behavior of this command. You can also u
 | `--destination-uri` | No | **string** ARN of the Kinesis stream to deliver audit log events to. If omitted, the current value is kept. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** Name of the audit log sink to update. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | No | **string** AWS region where the Kinesis stream is located (e.g. us-east-1). If omitted, the current value is kept. |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--role-name` | No | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. If omitted, the current value is kept. |
+| `--role-name` | No | **string** Name of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. If omitted, the current value is kept. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ##### audit-log sink kinesis validate
@@ -186,7 +186,7 @@ before creating or updating the sink.
 Example:
   temporal cloud account audit-log sink kinesis validate \
     --name my-sink \
-    --role-name arn:aws:iam::123456789012:role/MyRole \
+    --role-name MyRole \
     --destination-uri arn:aws:kinesis:us-east-1:123456789012:stream/MyStream \
     --region us-east-1
 
@@ -197,7 +197,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--destination-uri` | Yes | **string** ARN of the Kinesis stream to deliver audit log events to. |
 | `--region` | Yes | **string** AWS region where the Kinesis stream is located (e.g. us-east-1). |
-| `--role-name` | Yes | **string** ARN of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
+| `--role-name` | Yes | **string** Name of the IAM role that Temporal Cloud assumes to write to the Kinesis stream. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 #### audit-log sink list
@@ -230,9 +230,8 @@ Example:
 ```
 temporal cloud account audit-log sink pubsub create \
   --name my-sink \
-  --service-account-id my-sa \
-  --topic-name my-topic \
-  --gcp-project-id my-project
+  --service-account-email my-sa@my-project.iam.gserviceaccount.com \
+  --topic-name my-topic
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -242,12 +241,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--gcp-project-id` | Yes | **string** The GCP project ID of the PubSub topic and service account. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the audit log sink. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-| `--service-account-id` | Yes | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
+| `--service-account-email` | Yes | **string** The email of the GCP service account that Temporal Cloud impersonates for writing records to the customer's PubSub topic (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
 | `--topic-name` | Yes | **string** The destination PubSub topic name where audit logs will be sent. |
 
 ##### audit-log sink pubsub update
@@ -259,9 +257,8 @@ Example:
 ```
 temporal cloud account audit-log sink pubsub update \
   --name my-sink \
-  --service-account-id new-sa \
-  --topic-name new-topic \
-  --gcp-project-id new-project
+  --service-account-email new-sa@new-project.iam.gserviceaccount.com \
+  --topic-name new-topic
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -271,13 +268,12 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--gcp-project-id` | No | **string** The GCP project ID of the PubSub topic and service account. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the audit log sink to update. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-| `--service-account-id` | No | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
+| `--service-account-email` | No | **string** The email of the GCP service account that Temporal Cloud impersonates for writing records to the customer's PubSub topic (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
 | `--topic-name` | No | **string** The destination PubSub topic name where audit logs will be sent. |
 
 ##### audit-log sink pubsub validate
@@ -289,9 +285,8 @@ Example:
 ```
 temporal cloud account audit-log sink pubsub validate \
   --name my-sink \
-  --service-account-id my-sa \
-  --topic-name my-topic \
-  --gcp-project-id my-project
+  --service-account-email my-sa@my-project.iam.gserviceaccount.com \
+  --topic-name my-topic
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -299,10 +294,79 @@ Use the following options to change the behavior of this command. You can also u
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--gcp-project-id` | Yes | **string** The GCP project ID of the PubSub topic and service account. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-| `--service-account-id` | Yes | **string** The GCP service account ID that Temporal Cloud impersonates for writing records to the customer's PubSub topic. |
+| `--service-account-email` | Yes | **string** The email of the GCP service account that Temporal Cloud impersonates for writing records to the customer's PubSub topic (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
 | `--topic-name` | Yes | **string** The destination PubSub topic name where audit logs will be sent. |
+
+## metrics
+
+Commands for managing the Temporal Cloud account metrics configuration.
+
+### metrics cert-ca
+
+Commands for managing the CA certificates used to authenticate clients
+accessing the Temporal Cloud account metrics endpoint.
+
+#### metrics cert-ca create
+
+Add a CA certificate to the list of accepted client CA certificates for
+the Temporal Cloud account metrics endpoint.
+
+Example:
+  temporal cloud account metrics cert-ca create --ca-certificate-file /path/to/cert.pem
+  temporal cloud account metrics cert-ca create --ca-certificate <base64-encoded-cert>
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--ca-certificate` | No | **string** Base64-encoded CA certificate for mTLS authentication. Mutually exclusive with --ca-certificate-file. |
+| `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### metrics cert-ca delete
+
+Remove a CA certificate from the list of accepted client CA certificates for
+the Temporal Cloud account metrics endpoint.
+
+Example:
+  temporal cloud account metrics cert-ca delete --ca-certificate-file /path/to/cert.pem
+  temporal cloud account metrics cert-ca delete --ca-certificate <base64-encoded-cert>
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--ca-certificate` | No | **string** Base64-encoded CA certificate for mTLS authentication. Mutually exclusive with --ca-certificate-file. |
+| `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### metrics cert-ca list
+
+List the CA certificates accepted for authenticating clients accessing
+the Temporal Cloud account metrics endpoint.
+
+Example:
+  temporal cloud account metrics cert-ca list
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## Global Flags
 
@@ -314,5 +378,5 @@ The following options can be used with any command.
 | `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl-test.cloud:443` |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
 

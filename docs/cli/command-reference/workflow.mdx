@@ -105,7 +105,7 @@ Use the following options to change the behavior of this command. You can also u
 
 ## delete
 
-Delete a Workflow Executions and its Event History:
+Delete a Workflow Execution and its Event History:
 
 ```
 temporal workflow delete \
@@ -114,6 +114,11 @@ temporal workflow delete \
 
 The removal executes asynchronously. If the Execution is Running, the Service
 terminates it before deletion.
+
+WARNING: Deleting Workflow Executions in a global Namespace removes them from
+all replicas. Requests sent to a passive cluster are forwarded to the active
+cluster by default; to target the passive cluster directly, specify
+`--grpc-meta xdc-redirection=false`.
 
 Visit https://docs.temporal.io/visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
@@ -194,7 +199,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -242,7 +247,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -436,6 +441,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--detailed` | No | **bool** Display events as detailed sections instead of table. Does not apply to JSON output. |
 | `--follow`, `-f` | No | **bool** Follow the Workflow Execution progress in real time. Does not apply to JSON output. |
+| `--reverse` | No | **bool** Fetch Event History newest-event-first. Cannot be combined with --follow. |
 | `--run-id`, `-r` | No | **string** Run ID. |
 | `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
@@ -507,7 +513,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
 | `--signal-input` | No | **string[]** Signal input value. Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input-file. Can be passed multiple times to pass multiple arguments. |
 | `--signal-input-base64` | No | **bool** Assume signal inputs are base64-encoded and attempt to decode them. |
 | `--signal-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input. Can be passed multiple times to pass multiple arguments. |
@@ -571,7 +577,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -620,7 +626,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
 | `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
 | `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: 'YourKey={"your": "value"}'. Can be passed multiple times. |
 | `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
 | `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
@@ -883,19 +889,19 @@ The following options can be used with any command.
 | `--codec-header` | No | **string[]** HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. |  |
 | `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
 | `--command-timeout` | No | **duration** The command execution timeout. 0s means no timeout. |  |
-| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. _(Experimental)_ |  |
-| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. _(Experimental)_ |  |
-| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. _(Experimental)_ |  |
+| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. |  |
+| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. |  |
+| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. |  |
 | `--env` | No | **string** Active environment name (`ENV`). | `default` |
 | `--env-file` | No | **string** Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`. |  |
 | `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
 | `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
 | `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
-| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `info` |
+| `--log-level` | No | **string-enum** Log level. Default is "never" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `never` |
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
-| `--profile` | No | **string** Profile to use for config file. _(Experimental)_ |  |
+| `--profile` | No | **string** Profile to use for config file. |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
 | `--tls` | No | **bool** Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable. |  |
 | `--tls-ca-data` | No | **string** Data for server CA certificate. Can't be used with --tls-ca-path. |  |

@@ -27,13 +27,13 @@ by prefixing the path with '@'.
 Example with inline JSON:
 
 ```
-cloud namespace apply --spec '{"name": "namespace-name", "region": "us-west-2", "retention_days": 7}'
+temporal cloud namespace apply --spec '{"name": "namespace-name", "region": "us-west-2", "retention_days": 7}'
 ```
 
 Example with file path:
 
 ```
-cloud namespace apply --spec @namespace-spec.json
+temporal cloud namespace apply --spec @namespace-spec.json
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -48,6 +48,64 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--spec` | Yes | **string** Namespace configuration in JSON format. Provide inline JSON directly, or use '@path/to/file.json' to load from a file. |
 | `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
+
+## capacity
+
+Commands for managing the capacity of Temporal Cloud namespaces.
+
+Capacity controls whether a namespace runs in on-demand mode or
+provisioned mode (with a fixed TRU allocation).
+
+### capacity get
+
+Retrieve capacity information for a Temporal Cloud namespace, including
+the current mode (on-demand or provisioned), mode options, and recent usage stats.
+
+Example:
+
+```
+temporal cloud namespace capacity get --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### capacity update
+
+Update the capacity of a Temporal Cloud namespace. Choose either on-demand
+mode or provisioned mode (with a fixed TRU allocation).
+
+Example (switch to on-demand):
+
+```
+temporal cloud namespace capacity update --namespace my-namespace.my-account --capacity-mode on_demand
+```
+
+Example (switch to provisioned with 4 TRUs):
+
+```
+temporal cloud namespace capacity update --namespace my-namespace.my-account --capacity-mode provisioned --capacity-value 4
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--capacity-mode` | Yes | **string-enum** Capacity mode for the namespace. Must be either 'on_demand' or 'provisioned'. Accepted values: on_demand, provisioned. |
+| `--capacity-value` | No | **float** The provisioned capacity in Temporal Resource Units (TRUs). Required and must be greater than 0 when --capacity-mode is 'provisioned'. Ignored when --capacity-mode is 'on_demand'. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## cert-ca
 
@@ -64,13 +122,13 @@ Specify either --ca-certificate-file or --ca-certificate, but not both.
 Example with file:
 
 ```
-cloud namespace cert-ca create --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
+temporal cloud namespace cert-ca create --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
 ```
 
 Example with base64 encoded data:
 
 ```
-cloud namespace cert-ca create --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
+temporal cloud namespace cert-ca create --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -84,7 +142,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -99,13 +157,13 @@ Specify either --ca-certificate-file or --ca-certificate, but not both.
 Example with file:
 
 ```
-cloud namespace cert-ca delete --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
+temporal cloud namespace cert-ca delete --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
 ```
 
 Example with base64 encoded data:
 
 ```
-cloud namespace cert-ca delete --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
+temporal cloud namespace cert-ca delete --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -119,7 +177,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -131,7 +189,7 @@ namespace. These certificates are used for client authentication.
 Example:
 
 ```
-cloud namespace cert-ca list --namespace my-namespace.my-account
+temporal cloud namespace cert-ca list --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -166,7 +224,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--organization` | No | **string** The organization (O) field from the certificate's distinguished name. |
 | `--organizational-unit` | No | **string** The organizational unit (OU) field from the certificate's distinguished name. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
@@ -188,7 +246,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--organization` | No | **string** The organization (O) field from the certificate's distinguished name. |
 | `--organizational-unit` | No | **string** The organizational unit (OU) field from the certificate's distinguished name. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
@@ -218,7 +276,7 @@ Delete the codec server configuration from a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace codec delete --namespace my-namespace.my-account
+temporal cloud namespace codec delete --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -230,7 +288,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -241,7 +299,7 @@ Retrieve the current codec server configuration for a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace codec get --namespace my-namespace.my-account
+temporal cloud namespace codec get --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -259,7 +317,7 @@ Set the codec server configuration for a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace codec set --namespace my-namespace.my-account --endpoint https://my-codec.example.com
+temporal cloud namespace codec set --namespace my-namespace.my-account --endpoint https://my-codec.example.com
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -276,8 +334,83 @@ Use the following options to change the behavior of this command. You can also u
 | `--include-cross-origin-credentials` | No | **bool** Whether to include cross-origin credentials in requests to the codec server. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--pass-access-token` | No | **bool** Whether to pass the user access token to the codec server endpoint. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## connectivity
+
+Commands for attaching and detaching connectivity rules on a Temporal Cloud
+namespace. Use 'cloud connectivity' to manage the rules themselves.
+
+### connectivity attach
+
+Attach an existing connectivity rule to a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace connectivity attach \
+  --namespace my-namespace.my-account \
+  --connectivity-rule-id <rule-id>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--connectivity-rule-id` | Yes | **string[]** The ID of a connectivity rule to attach. Repeat to attach multiple. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### connectivity detach
+
+Detach a connectivity rule from a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace connectivity detach \
+  --namespace my-namespace.my-account \
+  --connectivity-rule-id <rule-id>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--connectivity-rule-id` | Yes | **string[]** The ID of a connectivity rule to detach. Repeat to detach multiple. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### connectivity list
+
+List all connectivity rules currently attached to a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace connectivity list --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## create
@@ -290,7 +423,7 @@ using a full JSON specification, use 'namespace apply' instead.
 Example:
 
 ```
-cloud namespace create --name my-namespace --region aws-us-east-1 --retention-days 30
+temporal cloud namespace create --name my-namespace --region aws-us-east-1 --retention-days 30
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -312,7 +445,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--enable-delete-protection` | No | **bool** Prevent accidental deletion of this namespace. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name`, `-n` | Yes | **string** The name for the new namespace (becomes part of the namespace ID). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string[]** Cloud region where the namespace will be hosted. Repeat to specify multiple regions for High Availability (e.g. --region aws-us-east-1 --region aws-us-west-2). |
 | `--retention-days` | No | **int** Number of days to retain closed workflow history. If not specified, the server default applies. |
 | `--search-attribute` | No | **string[]** Custom search attribute as 'name=Type' (e.g. --search-attribute myAttr=Keyword). Valid types: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. Repeat to add multiple. |
@@ -327,7 +460,7 @@ history within the namespace.
 Example:
 
 ```
-cloud namespace delete --namespace my-namespace.my-account
+temporal cloud namespace delete --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -354,7 +487,7 @@ back to 'vi' if not set.
 Example:
 
 ```
-cloud namespace edit --namespace my-namespace.my-account
+temporal cloud namespace edit --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -383,7 +516,7 @@ Delete a workflow history export sink from a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace export delete --namespace my-namespace.my-account --sink-name my-sink
+temporal cloud namespace export delete --namespace my-namespace.my-account --sink-name my-sink
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -395,7 +528,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
@@ -408,7 +541,7 @@ The sink configuration is preserved and can be re-enabled later.
 Example:
 
 ```
-cloud namespace export disable --namespace my-namespace.my-account --sink-name my-sink
+temporal cloud namespace export disable --namespace my-namespace.my-account --sink-name my-sink
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -420,7 +553,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
@@ -432,7 +565,7 @@ Enable a previously disabled workflow history export sink for a Temporal Cloud n
 Example:
 
 ```
-cloud namespace export enable --namespace my-namespace.my-account --sink-name my-sink
+temporal cloud namespace export enable --namespace my-namespace.my-account --sink-name my-sink
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -444,7 +577,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
@@ -461,9 +594,9 @@ The sink is created in the enabled state.
 Example:
 
 ```
-cloud namespace export gcs create --namespace my-namespace.my-account --sink-name my-sink \
-  --sa-id my-service-account@my-project.iam.gserviceaccount.com \
-  --bucket-name my-bucket --gcp-project-id my-project --region us-central1
+temporal cloud namespace export gcs create --namespace my-namespace.my-account --sink-name my-sink \
+  --service-account-email my-service-account@my-project.iam.gserviceaccount.com \
+  --bucket-name my-bucket --region us-central1
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -474,26 +607,25 @@ Use the following options to change the behavior of this command. You can also u
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--bucket-name` | Yes | **string** The name of the destination GCS bucket. |
-| `--gcp-project-id` | Yes | **string** The GCP project ID associated with the bucket and service account. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string** The GCS bucket region. |
-| `--sa-id` | Yes | **string** The customer service account ID that Temporal Cloud impersonates for writing to GCS. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--service-account-email` | Yes | **string** The email of the customer service account that Temporal Cloud impersonates for writing to GCS (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
 #### export gcs update
 
 Update the configuration of an existing GCS workflow history export sink.
-The enabled/disabled state is preserved.
+Only the flags you provide are changed; omitted flags keep their current
+values. The enabled/disabled state and region are also preserved.
 
-Example:
+Example (rotate service account only):
 
 ```
-cloud namespace export gcs update --namespace my-namespace.my-account --sink-name my-sink \
-  --sa-id my-service-account@my-project.iam.gserviceaccount.com \
-  --bucket-name my-bucket --gcp-project-id my-project --region us-central1
+temporal cloud namespace export gcs update --namespace my-namespace.my-account --sink-name my-sink \
+  --service-account-email my-new-service-account@my-project.iam.gserviceaccount.com
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -503,15 +635,13 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--bucket-name` | Yes | **string** The name of the destination GCS bucket. |
-| `--gcp-project-id` | Yes | **string** The GCP project ID associated with the bucket and service account. |
+| `--bucket-name` | No | **string** The name of the destination GCS bucket. If omitted, the current value is kept. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
-| `--region` | Yes | **string** The GCS bucket region. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--sa-id` | Yes | **string** The customer service account ID that Temporal Cloud impersonates for writing to GCS. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--service-account-email` | No | **string** The email of the customer service account that Temporal Cloud impersonates for writing to GCS (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. If omitted, the current value is kept. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
 #### export gcs validate
@@ -522,9 +652,9 @@ A successful response means the configuration is valid.
 Example:
 
 ```
-cloud namespace export gcs validate --namespace my-namespace.my-account --sink-name my-sink \
-  --sa-id my-service-account@my-project.iam.gserviceaccount.com \
-  --bucket-name my-bucket --gcp-project-id my-project --region us-central1
+temporal cloud namespace export gcs validate --namespace my-namespace.my-account --sink-name my-sink \
+  --service-account-email my-service-account@my-project.iam.gserviceaccount.com \
+  --bucket-name my-bucket --region us-central1
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -533,11 +663,10 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--bucket-name` | Yes | **string** The name of the destination GCS bucket. |
-| `--gcp-project-id` | Yes | **string** The GCP project ID associated with the bucket and service account. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--region` | Yes | **string** The GCS bucket region. |
-| `--sa-id` | Yes | **string** The customer service account ID that Temporal Cloud impersonates for writing to GCS. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--service-account-email` | Yes | **string** The email of the customer service account that Temporal Cloud impersonates for writing to GCS (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
 ### export get
@@ -548,7 +677,7 @@ Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace export get --namespace my-namespace.my-account --sink-name my-sink
+temporal cloud namespace export get --namespace my-namespace.my-account --sink-name my-sink
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -567,7 +696,7 @@ List all workflow history export sinks configured for a Temporal Cloud namespace
 Example:
 
 ```
-cloud namespace export list --namespace my-namespace.my-account
+temporal cloud namespace export list --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -590,9 +719,9 @@ The sink is created in the enabled state.
 Example:
 
 ```
-cloud namespace export s3 create --namespace my-namespace.my-account --sink-name my-sink \
-  --role-name arn:aws:iam::123456789012:role/my-role --bucket-name my-bucket \
-  --region us-east-1 --aws-account-id 123456789012
+temporal cloud namespace export s3 create --namespace my-namespace.my-account --sink-name my-sink \
+  --role-arn arn:aws:iam::123456789012:role/my-role --bucket-name my-bucket \
+  --region us-east-1
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -602,28 +731,27 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--aws-account-id` | Yes | **string** The AWS account ID associated with the bucket and role. |
 | `--bucket-name` | Yes | **string** The name of the destination S3 bucket. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--kms-arn` | No | **string** The AWS KMS key ARN for server-side encryption of exported data. Optional. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string** The AWS region where the S3 bucket is located. |
-| `--role-name` | Yes | **string** The IAM role ARN that Temporal Cloud assumes for writing to S3. |
+| `--role-arn` | Yes | **string** The IAM role ARN that Temporal Cloud assumes for writing to S3 (e.g. arn:aws:iam::123456789012:role/my-role). The role name and AWS account ID are parsed from this ARN. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
 #### export s3 update
 
 Update the configuration of an existing S3 workflow history export sink.
-The enabled/disabled state is preserved.
+Only the flags you provide are changed; omitted flags keep their current
+values. The enabled/disabled state and region are also preserved.
 
-Example:
+Example (rotate IAM role only):
 
 ```
-cloud namespace export s3 update --namespace my-namespace.my-account --sink-name my-sink \
-  --role-name arn:aws:iam::123456789012:role/my-new-role --bucket-name my-bucket \
-  --region us-east-1 --aws-account-id 123456789012
+temporal cloud namespace export s3 update --namespace my-namespace.my-account --sink-name my-sink \
+  --role-arn arn:aws:iam::123456789012:role/my-new-role
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -633,15 +761,13 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--aws-account-id` | Yes | **string** The AWS account ID associated with the bucket and role. |
-| `--bucket-name` | Yes | **string** The name of the destination S3 bucket. |
+| `--bucket-name` | No | **string** The name of the destination S3 bucket. If omitted, the current value is kept. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--kms-arn` | No | **string** The AWS KMS key ARN for server-side encryption of exported data. Optional. |
+| `--kms-arn` | No | **string** The AWS KMS key ARN for server-side encryption of exported data. If omitted, the current value is kept. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
-| `--region` | Yes | **string** The AWS region where the S3 bucket is located. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--role-name` | Yes | **string** The IAM role ARN that Temporal Cloud assumes for writing to S3. |
+| `--role-arn` | No | **string** The IAM role ARN that Temporal Cloud assumes for writing to S3 (e.g. arn:aws:iam::123456789012:role/my-role). The role name and AWS account ID are parsed from this ARN. If omitted, the current value is kept. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
@@ -653,9 +779,9 @@ A successful response means the configuration is valid.
 Example:
 
 ```
-cloud namespace export s3 validate --namespace my-namespace.my-account --sink-name my-sink \
-  --role-name arn:aws:iam::123456789012:role/my-role --bucket-name my-bucket \
-  --region us-east-1 --aws-account-id 123456789012
+temporal cloud namespace export s3 validate --namespace my-namespace.my-account --sink-name my-sink \
+  --role-arn arn:aws:iam::123456789012:role/my-role --bucket-name my-bucket \
+  --region us-east-1
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -663,12 +789,11 @@ Use the following options to change the behavior of this command. You can also u
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--aws-account-id` | Yes | **string** The AWS account ID associated with the bucket and role. |
 | `--bucket-name` | Yes | **string** The name of the destination S3 bucket. |
 | `--kms-arn` | No | **string** The AWS KMS key ARN for server-side encryption of exported data. Optional. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--region` | Yes | **string** The AWS region where the S3 bucket is located. |
-| `--role-name` | Yes | **string** The IAM role ARN that Temporal Cloud assumes for writing to S3. |
+| `--role-arn` | Yes | **string** The IAM role ARN that Temporal Cloud assumes for writing to S3 (e.g. arn:aws:iam::123456789012:role/my-role). The role name and AWS account ID are parsed from this ARN. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
@@ -682,7 +807,7 @@ certificate information.
 Example:
 
 ```
-cloud namespace get --namespace my-namespace.my-account
+temporal cloud namespace get --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -708,7 +833,7 @@ The target region must already be a replica region of the namespace.
 Example:
 
 ```
-cloud namespace ha failover --namespace my-namespace.my-account --region aws-us-west-2
+temporal cloud namespace ha failover --namespace my-namespace.my-account --region aws-us-west-2
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -720,19 +845,19 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string** The target region to failover to (e.g., aws-us-west-2). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ### ha get
 
 Retrieve the current High Availability configuration for a Temporal Cloud namespace.
-Shows the active region and whether managed failover is enabled.
+Shows the active region, whether managed failover is enabled, and whether passive poller forwarding is enabled.
 
 Example:
 
 ```
-cloud namespace ha get --namespace my-namespace.my-account
+temporal cloud namespace ha get --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -755,7 +880,7 @@ as a passive replica and can later be used for failover.
 Example:
 
 ```
-cloud namespace ha region add --namespace my-namespace.my-account --region aws-us-west-2
+temporal cloud namespace ha region add --namespace my-namespace.my-account --region aws-us-west-2
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -767,7 +892,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string** The region ID to add as a replica (e.g., aws-us-west-2). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
@@ -780,7 +905,7 @@ cooldown period applies before the same region can be re-added.
 Example:
 
 ```
-cloud namespace ha region delete --namespace my-namespace.my-account --region aws-us-west-2
+temporal cloud namespace ha region delete --namespace my-namespace.my-account --region aws-us-west-2
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -792,7 +917,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string** The region ID to remove (e.g., aws-us-west-2). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
@@ -804,7 +929,7 @@ List all regions and their states for a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace ha region list --namespace my-namespace.my-account
+temporal cloud namespace ha region list --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -819,11 +944,12 @@ Use the following options to change the behavior of this command. You can also u
 
 Update the High Availability configuration for a Temporal Cloud namespace.
 Use --disable-auto-failover to toggle Temporal-managed automatic failover.
+Use --disable-passive-poller-forwarding to toggle passive poller forwarding.
 
 Example:
 
 ```
-cloud namespace ha update --namespace my-namespace.my-account --disable-auto-failover true
+temporal cloud namespace ha update --namespace my-namespace.my-account --disable-auto-failover true --disable-passive-poller-forwarding false
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -833,10 +959,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--disable-auto-failover` | Yes | **bool** Set to true to disable Temporal-managed automatic failover for the namespace. Set to false to re-enable automatic failover. |
+| `--disable-auto-failover` | No | **bool** Set to true to disable Temporal-managed automatic failover for the namespace. Set to false to re-enable automatic failover. |
+| `--disable-passive-poller-forwarding` | No | **bool** Set to true to disable passive poller forwarding for the namespace. Set to false to re-enable passive poller forwarding. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -855,7 +982,7 @@ Lifecycle settings include delete protection status.
 Example:
 
 ```
-cloud namespace lifecycle get --namespace my-namespace.my-account
+temporal cloud namespace lifecycle get --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -874,7 +1001,7 @@ Lifecycle settings include delete protection to prevent accidental deletion.
 Example:
 
 ```
-cloud namespace lifecycle set --namespace my-namespace.my-account --enable-delete-protection true
+temporal cloud namespace lifecycle set --namespace my-namespace.my-account --enable-delete-protection true
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -899,7 +1026,7 @@ authentication credentials.
 Example:
 
 ```
-cloud namespace list
+temporal cloud namespace list
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -927,7 +1054,7 @@ The retention period defines how long closed workflow history data are stored.
 Example:
 
 ```
-cloud namespace retention get --namespace my-namespace.my-account
+temporal cloud namespace retention get --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -946,7 +1073,7 @@ retention period defines how long closed workflow history data are stored.
 Example:
 
 ```
-cloud namespace retention set --namespace my-namespace.my-account --retention-days 14
+temporal cloud namespace retention set --namespace my-namespace.my-account --retention-days 14
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -958,7 +1085,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--retention-days` | Yes | **int** New retention period in days for closed workflow history data. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
@@ -975,7 +1102,7 @@ Create a new custom search attribute for a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace search-attribute create --namespace my-namespace.my-account --name MyField --type Keyword
+temporal cloud namespace search-attribute create --namespace my-namespace.my-account --name MyField --type Keyword
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -988,7 +1115,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the search attribute to create. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--type` | Yes | **string** The type of the search attribute. Valid values: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. |
@@ -1000,7 +1127,7 @@ List all custom search attributes configured for a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace search-attribute list --namespace my-namespace.my-account
+temporal cloud namespace search-attribute list --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -1019,7 +1146,7 @@ This operation preserves all existing data associated with the search attribute.
 Example:
 
 ```
-cloud namespace search-attribute rename --namespace my-namespace.my-account --existing-name OldField --new-name NewField
+temporal cloud namespace search-attribute rename --namespace my-namespace.my-account --existing-name OldField --new-name NewField
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -1033,7 +1160,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--new-name` | Yes | **string** The new name for the search attribute. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -1051,7 +1178,7 @@ the specified key already exists.
 Example:
 
 ```
-cloud namespace tag create --namespace my-namespace.my-account --key environment --value production
+temporal cloud namespace tag create --namespace my-namespace.my-account --key environment --value production
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -1064,7 +1191,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key` | Yes | **string** The tag key. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--value` | Yes | **string** The tag value. |
 
@@ -1075,7 +1202,7 @@ Delete a tag from a Temporal Cloud namespace by its key.
 Example:
 
 ```
-cloud namespace tag delete --namespace my-namespace.my-account --key environment
+temporal cloud namespace tag delete --namespace my-namespace.my-account --key environment
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -1088,7 +1215,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key` | Yes | **string** The tag key to delete. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ### tag list
@@ -1098,7 +1225,7 @@ List all tags configured for a Temporal Cloud namespace.
 Example:
 
 ```
-cloud namespace tag list --namespace my-namespace.my-account
+temporal cloud namespace tag list --namespace my-namespace.my-account
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -1117,7 +1244,7 @@ Fails if the specified tag key does not exist.
 Example:
 
 ```
-cloud namespace tag update --namespace my-namespace.my-account --key environment --value staging
+temporal cloud namespace tag update --namespace my-namespace.my-account --key environment --value staging
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -1130,7 +1257,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--key` | Yes | **string** The tag key to update. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--value` | Yes | **string** The new value for the tag. |
 
@@ -1144,5 +1271,5 @@ The following options can be used with any command.
 | `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl-test.cloud:443` |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
 
