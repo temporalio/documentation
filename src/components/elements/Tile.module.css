@@ -66,6 +66,9 @@ color: inherit;
 
 .body {
 color: var(--ifm-color-emphasis-700);
+display: flex;
+flex-direction: column;
+flex: 1 1 auto;
 }
 
 
@@ -73,12 +76,26 @@ color: var(--ifm-color-emphasis-700);
 margin: 0.25rem 0 0 0;
 }
 
+.meta {
+margin-top: auto;
+padding-top: 0.9rem;
+display: flex;
+flex-direction: column;
+gap: 0.35rem;
+}
+
+.lastUpdated {
+margin: 0;
+font-size: 0.875rem;
+color: var(--ifm-color-emphasis-600);
+}
+
 
 .tags {
 display: flex;
 flex-wrap: wrap;
 gap: 0.5rem;
-margin-top: 0.75rem;
+margin-top: 0;
 padding: 0;
 list-style: none;
 }
@@ -86,24 +103,4 @@ list-style: none;
 
 .tag {
 font-size: 0.75rem;
-}
-
-
-.footer {
-margin-top: auto;
-}
-
-
-.cta {
-display: inline-flex;
-align-items: center;
-gap: 0.375rem;
-font-weight: 500;
-transition: color 0.18s ease;
-}
-
-
-.arrow {
-transform: translateX(0);
-transition: transform 0.18s ease;
 }

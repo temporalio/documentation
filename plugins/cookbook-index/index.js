@@ -67,6 +67,19 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
       }
 
       const item = { id, title, description, tags, permalink, source };
+
+      if (typeof data.last_updated !== 'undefined') {
+        item.last_updated = data.last_updated;
+      }
+      if (typeof data.last_updated_at !== 'undefined') {
+        item.last_updated_at = data.last_updated_at;
+      }
+      if (typeof data.last_updated_label === 'string') {
+        item.last_updated_label = data.last_updated_label;
+      }
+      if (typeof data.formatted_last_updated === 'string') {
+        item.formatted_last_updated = data.formatted_last_updated;
+      }
       if (typeof priority === 'number') {
         item.priority = priority;
       }

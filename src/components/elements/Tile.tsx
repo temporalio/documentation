@@ -5,6 +5,7 @@ import styles from "./Tile.module.css";
 export type TileProps = {
   title: string;
   description: string;
+  lastUpdatedLabel?: string;
   tags?: string[]; // collected, may be used later
   href?: string; // clickable card when present
   icon?: React.ReactNode; // emoji or SVG
@@ -12,7 +13,16 @@ export type TileProps = {
   headingLevel?: "h2" | "h3";
 };
 
-export default function Tile({ title, description, tags = [], href, icon, className, headingLevel = "h3" }: TileProps) {
+export default function Tile({
+  title,
+  description,
+  lastUpdatedLabel,
+  tags = [],
+  href,
+  icon,
+  className,
+  headingLevel = "h3",
+}: TileProps) {
   const isLink = typeof href === "string" && href.length > 0;
   const Container: React.ElementType = isLink ? Link : "div";
   const containerProps = isLink ? { to: href, href } : {};
@@ -36,32 +46,21 @@ export default function Tile({ title, description, tags = [], href, icon, classN
       </div>
       <div className={clsx("card__body", styles.body)}>
         <p className={styles.description}>{description}</p>
-        {tags.length > 0 && (
-          <ul className={styles.tags} aria-label="labels">
-            {tags.map((t) => (
-              <li key={t} className={clsx("badge badge--secondary", styles.tag)}>
-                {t.toUpperCase()}
-              </li>
-            ))}
-          </ul>
+        {(tags.length > 0 || lastUpdatedLabel) && (
+          <div className={styles.meta}>
+            {tags.length > 0 && (
+              <ul className={styles.tags} aria-label="labels">
+                {tags.map((t) => (
+                  <li key={t} className={clsx("badge badge--secondary", styles.tag)}>
+                    {t.toUpperCase()}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {lastUpdatedLabel && <p className={styles.lastUpdated}>Updated {lastUpdatedLabel}</p>}
+          </div>
         )}
       </div>
-      {href && (
-        <div className={clsx("card__footer", styles.footer)}>
-          <span className={styles.cta}>
-            Learn more
-            <svg className={styles.arrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M5 12h14M13 5l7 7-7 7"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </div>
-      )}
     </Container>
   );
 }
