@@ -6,8 +6,6 @@ on:
       - opened
       - synchronize
       - reopened
-    paths:
-      - 'docs/**'
 
 permissions:
   contents: read
