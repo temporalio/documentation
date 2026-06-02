@@ -33,9 +33,17 @@ After creating the PrivateLink endpoint, configure your clients to use it throug
 
 ## Requirements
 
-Your AWS PrivateLink endpoint must be in the same region as your Temporal Cloud namespace. If using [replication for High Availability](/cloud/high-availability), the PL connection must be in the same region as one of the replicas.
+* Your AWS PrivateLink (PL) endpoint must be in the same region as your Temporal Cloud Namespace. If the Namespace is using [replication for High Availability](/cloud/high-availability), the PL connection must be in the same region as one of the replicas.
+  See [cross-region PrivateLink connectivity](#cross-region-privatelink) to access the Namespace from a different region.
+* Your Private DNS must be configured to direct Worker / Client traffic to your VPC Endpoint, as described below.
+* If the Worker / Client is not using the Namespace Endpoint, it may need to set the `server_name` config to the Namespace Endpoint string, as described below.
 
-AWS Cross Region endpoints are not supported.
+### Cross-region PrivateLink Connectivity {#cross-region-privatelink}
+
+Temporal Cloud does **not** support [cross-region connectivity for AWS PrivateLink](https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-cross-region-connectivity-for-aws-privatelink/) out of the box. However, if you need to reach Temporal Cloud privately from a different region than your Namespace, you can route traffic to your VPC Endpoint in the Namespace's region using [AWS's native cross-region networking features]((https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/centralized-access-to-vpc-private-endpoints.html#cross-region-endpoint-access)). 
+
+
+When using High Availability on Temporal Cloud, it's best practice to have two VPC Endpoints, one in each of the Namespace's regions, to ensure at least one VPC Endpoint is accessible during a regional outage.
 
 ## Creating an AWS PrivateLink connection
 
@@ -58,7 +66,7 @@ Individual Namespaces do not use separate services.
 
 :::
 
-<JsonTable filename="/json/privatelink_aws.json" />
+<JsonTable filename="/json/privatelink_services_aws.json" />
 
 7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
 
@@ -111,7 +119,7 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 | Endpoint type      | PHZ domain format                  | Example                                |
 | ------------------ | ---------------------------------- | -------------------------------------- |
 | Namespace endpoint | `<namespace-id>.tmprl.cloud`       | `payments.abcde.tmprl.cloud`           |
-| Regional endpoint  | `<cloud>-<region>.region.tmprl.cloud` | `aws-ap-northeast-2.region.tmprl.cloud` |
+| Regional endpoint  | `<region>.<cloud>.api.temporal.io` | `ap-northeast-2.aws.api.temporal.io` |
 
 ### Step-by-step instructions
 
@@ -203,12 +211,14 @@ For single-region Namespaces, you can avoid creating DNS records for each Namesp
 
 With this approach, new Namespaces do not require new DNS records.
 
-:::warning Not compatible with High Availability Namespaces
+:::caution Extra care needed for Namespaces with High Availability
 
-This approach does not work for Namespaces with High Availability features.
-HA Namespaces rely on Temporal's public DNS CNAME records to route traffic to the active region during failover.
-If you bypass DNS, your Workers cannot follow the CNAME to the new region.
-For HA Namespaces, use [private DNS](#configuring-private-dns-for-aws-privatelink) instead.
+Direct VPCE targeting bypasses the Temporal-managed DNS CNAME that normally routes a Namespace to its active region, so each Worker is pinned to whichever VPC Endpoint you configure. To keep both regions reachable, you must run Workers in each region and configure them with **different endpoints**:
+
+- Workers in the primary region: the local VPC Endpoint for that region (e.g., `vpce-...-us-east-1.vpce.amazonaws.com:7233`).
+- Workers in the replica region: the local VPC Endpoint for that region (e.g., `vpce-...-us-west-2.vpce.amazonaws.com:7233`).
+
+All Workers require the same SNI override — the Namespace Endpoint value (e.g., `my-namespace.my-account.tmprl.cloud`).
 
 :::
 

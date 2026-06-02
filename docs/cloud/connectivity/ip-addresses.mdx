@@ -341,6 +341,11 @@ IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, 
 
 :::
 
+:::note Don't depend on DNS resolution behavior
+
+Take a dependency on Temporal's published endpoints (the hostnames themselves), not on what they resolve to. The underlying IP addresses, CNAME chains, and resolution behavior can change at any time without notice. The **only** exception is the Namespace Endpoint for a Namespace with [High Availability features](/cloud/high-availability), which deterministically CNAMEs to its active region's regional record — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for details.
+
+:::
 ### How to connect using Stable IPs
 
 To connect to a Namespace with Stable IPs enabled:
