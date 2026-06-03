@@ -53,9 +53,9 @@ function getTheme(type, overrides = {}) {
 export default function ReleaseNoteHeader({
   // type can be "prerelease", "publicPreview", or "generalAvailability"
   type = "generalAvailability",
-  // If there is anything specific to say about the release, it can be passed here. It can also be a link if href is provided.
-  text,
-  // If text is a link, this is where the link can be passed.
+  // If there is anything specific to say about the release, it can be passed as a child to the component. It can also be a link if href is provided.
+  children,
+  // If child is a link, this is where the link can be passed.
   href,
   // These are the supported languages for the release. If provided, icons for these languages will be shown.
   languages = [],
@@ -81,7 +81,6 @@ export default function ReleaseNoteHeader({
       data-release-type={type}
     >
       <div className={styles.accent} aria-hidden="true" />
-
       <div className={styles.content}>
         <div className={styles.meta}>
           <span className={styles.pill}>
@@ -90,26 +89,26 @@ export default function ReleaseNoteHeader({
             </a>
           </span>
         </div>
-        <div className={styles.supportedLanguages}>
-          <p className={styles.text}>Supported languages:</p>
-          {languages.length > 0 && (
-              <ul className={styles.languages} aria-label="Supported languages">
-                {languages.map((language) => (
-                    <li key={language} className={styles.language}>
-                      <SdkSvg name={LANGUAGE_TO_SDK_SVG[language]} />
-                    </li>
-                  )
-                )}
-              </ul>
-            )}
-        </div>
+        {languages.length > 0 && (
+          <div className={styles.supportedLanguages}>
+            <p className={styles.text}>Supported languages:</p>
+                <ul className={styles.languages} aria-label="Supported languages">
+                  {languages.map((language) => (
+                      <li key={language} className={styles.language}>
+                        <SdkSvg name={LANGUAGE_TO_SDK_SVG[language]} />
+                      </li>
+                    )
+                  )}
+                </ul>
+          </div>
+        )}
         <p className={styles.text}>
           {href ? (
             <a href={href} className={styles.link}>
-              {text}
+              {children}
             </a>
           ) : (
-            text
+            children
           )}
         </p>
       </div>

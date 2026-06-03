@@ -66,6 +66,10 @@
   margin: 0.35rem 0 0;
 }
 
+.text > p {
+  margin: unset;
+}
+
 .headerRow {
   display: flex;
   justify-content: space-between;
