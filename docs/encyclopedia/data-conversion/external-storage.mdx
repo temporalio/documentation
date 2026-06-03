@@ -102,9 +102,6 @@ before upload to your store.
 
 ## Choose a storage system {/* #choose-storage */}
 
-Start with an object store such as Amazon S3, Google Cloud Storage, or Azure Blob Storage unless you have a specific
-reason to use a different system, such as lower latency or existing infrastructure constraints.
-
 A production storage system should meet the following requirements:
 
 - Store payload data durably and retain it for the full Workflow lifetime plus the Namespace retention period. See
@@ -115,11 +112,13 @@ A production storage system should meet the following requirements:
 - Meet your latency and throughput requirements under realistic load.
 - Provide appropriate controls for authentication, encryption, monitoring, and backup.
 
-Examples:
+Start with an object store such as Amazon S3, Google Cloud Storage, or Azure Blob Storage unless you have a specific
+reason to use a different system, such as lower latency or existing infrastructure constraints.
 
-- **Amazon S3, Google Cloud Storage, Azure Blob Storage:** Default choice for durable payload storage. We provide a
-  first-party S3 storage driver for the [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) and [Python](/develop/python/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) SDKs.
-- **Redis:** Suitable when configured for durability (such as with AOF persistence), not as an evicting cache.
+| Default choice | Amazon S3, Google Cloud Storage, Azure Blob Storage. Durable object stores designed for arbitrary blob sizes. We provide a first-party S3 driver for the [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) and [Python](/develop/python/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) SDKs. |
+|---|---|
+| **Use-case specific** | Google Cloud Bigtable, Redis, and similar low-latency stores. Must be configured for durability, and payloads must fit within the store's size constraints. |
+| **Development only** | Local disk. Not durable or accessible across Workers. |
 
 ## Storage drivers
 
