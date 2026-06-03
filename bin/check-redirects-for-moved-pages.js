@@ -5,12 +5,6 @@ const fs = require('fs');
 const path = require('path');
 
 const VERCEL_JSON = path.join(process.cwd(), 'vercel.json');
-const BASE_SHA = process.env.BASE_SHA;
-
-if (!BASE_SHA) {
-  console.error('BASE_SHA environment variable is required.');
-  process.exit(1);
-}
 
 function filePathToUrlPath(filePath) {
   let urlPath = filePath
@@ -63,8 +57,8 @@ function resolveOldUrl(filePath, ref) {
   return filePathToUrlPath(filePath);
 }
 
-function getMovedOrDeletedDocFiles() {
-  const mergeBase = execSync(`git merge-base HEAD ${BASE_SHA}`, {
+function getMovedOrDeletedDocFiles(baseSha) {
+  const mergeBase = execSync(`git merge-base HEAD ${baseSha}`, {
     encoding: 'utf8',
   }).trim();
 
@@ -125,7 +119,13 @@ function findMatchingRedirect(urlPath, redirects) {
 }
 
 function main() {
-  const { files: movedFiles, mergeBase } = getMovedOrDeletedDocFiles();
+  const BASE_SHA = process.env.BASE_SHA;
+  if (!BASE_SHA) {
+    console.error('BASE_SHA environment variable is required.');
+    process.exit(1);
+  }
+
+  const { files: movedFiles, mergeBase } = getMovedOrDeletedDocFiles(BASE_SHA);
 
   if (movedFiles.length === 0) {
     console.log('No docs pages were moved or deleted. Nothing to check.');
@@ -170,4 +170,15 @@ function main() {
   process.exit(1);
 }
 
-main();
+module.exports = {
+  filePathToUrlPath,
+  extractFrontMatter,
+  resolveOldUrl,
+  vercelPatternToRegex,
+  findMatchingRedirect,
+  loadRedirects,
+};
+
+if (require.main === module) {
+  main();
+}
