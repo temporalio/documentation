@@ -767,9 +767,9 @@ end
 
 :::caution Current Limitations
 
-- **Lazy moving only:** Workflows must be invoked by executing a step to receive the Target-Version-Changed information.
-  Sleeping Workflows won't be proactively get the Target-Version-Changed information. If you have idle workflows that you
-  want to wake up so that they can check `GetTargetWorkerDeploymentVersionChanged`, you can send them a Signal.
+- **Lazy moving only:** Workflows must execute a step to receive the target-version-changed information. Sleeping
+  Workflows won't proactively get it. If you have idle Workflows that you want to wake up so they can check the
+  target-version-changed flag, you can send them a Signal.
 - **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input provided by the
   previous version's workflow definition is compatible with the new version's workflow definition. If incompatible, the
   new run may fail on its first Workflow Task.
