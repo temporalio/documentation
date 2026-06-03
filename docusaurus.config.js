@@ -144,7 +144,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/master/README.md',
+                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
               },
             ],
           },

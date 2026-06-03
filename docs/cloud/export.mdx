@@ -2,7 +2,9 @@
 id: export
 title: Workflow History Export
 sidebar_label: Workflow History Export
-description: Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to an object storage for compliance and analytics. Configure via Cloud UI or tcld.
+description:
+  Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to an object storage for
+  compliance and analytics. Configure via Cloud UI or tcld.
 slug: /cloud/export
 toc_max_heading_level: 4
 keywords:
@@ -17,26 +19,29 @@ tags:
   - Export Workflow History
 ---
 
-Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3 or GCP GCS), enabling:
+Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage
+(AWS S3 or GCP GCS), enabling:
 
-- Compliance and audit trails of complete Event History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto)
+- Compliance and audit trails of complete Event History data in
+  [proto format](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto)
 - Analytics on Event History when ingested to the data platform of your choice
 
-Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a Self-Hosted Temporal Server. 
-Archival is not supported in Temporal Cloud.
+Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a
+Self-Hosted Temporal Server. Archival is not supported in Temporal Cloud.
 
-Exports run hourly, beginning 10 minutes after the hour. 
-Allow up to 24 hours for a closed Workflow to appear in the exported file.
-Delivery is guaranteed at least once.
+Exports run hourly, beginning 10 minutes after the hour. Allow up to 24 hours for a closed Workflow to appear in the
+exported file. Delivery is guaranteed at least once.
 
 ## What's in the exported data {/* #exported-data */}
 
-Each exported file contains one or more complete Workflow Execution histories serialized as protocol buffers using the [`WorkflowExecutions`](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) proto.
+Each exported file contains one or more complete Workflow Execution histories serialized as protocol buffers using the
+[`WorkflowExecutions`](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) proto.
 
 Each history is an ordered sequence of events that records everything that happened during a Workflow Execution:
 
 - **Workflow configuration** - Input data, timeouts, Task Queue, retry policies, search attributes, and memo
-- **Activity lifecycle** - Each Activity scheduled, started, completed, or failed/timed out, including inputs and results
+- **Activity lifecycle** - Each Activity scheduled, started, completed, or failed/timed out, including inputs and
+  results
 - **Timers** - Timer starts and fires
 - **Signals and Updates** - External Signals received and Update requests handled
 - **Child Workflows** - Child Workflow starts and completions
@@ -44,11 +49,12 @@ Each history is an ordered sequence of events that records everything that happe
 
 Search attributes in the export use your **user-defined names** (for example, `customerId`), not internal column names.
 
-The export format is **protobuf binary**.
-You must deserialize using the [proto schema](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) before the data is human-readable.
+The export format is **protobuf binary**. You must deserialize using the
+[proto schema](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) before the data is
+human-readable.
 
-The following is a simplified JSON representation of what one Workflow Execution looks like after deserialization.
-This example shows a Workflow that started, ran one Activity, and completed:
+The following is a simplified JSON representation of what one Workflow Execution looks like after deserialization. This
+example shows a Workflow that started, ran one Activity, and completed:
 
 ```json
 {
@@ -123,8 +129,8 @@ This example shows a Workflow that started, ran one Activity, and completed:
 }
 ```
 
-The outer `items` array can contain multiple Workflow Executions per file.
-Only the key fields are shown above. Actual events include additional fields like `version`, `taskId`, and `workerVersion`.
+The outer `items` array can contain multiple Workflow Executions per file. Only the key fields are shown above. Actual
+events include additional fields like `version`, `taskId`, and `workerVersion`.
 
 ## Prerequisites {/* #prerequisites */}
 
@@ -145,68 +151,85 @@ To use Workflow History Export, you must have:
 
 ## Verify export setup {/* #verify */}
 
-From the Export configuration page, select **Verify**.
-This validates that Temporal can successfully write a test file to your object storage.
+From the Export configuration page, select **Verify**. This validates that Temporal can successfully write a test file
+to your object storage.
 
-If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the object store.
+If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the object
+store.
 
 ## Monitor export progress {/* #monitor */}
 
 After Export has been configured, you can check that it's still working in several ways:
 
 1. **Object Storage**:
-
-   - File Delivery: After the initial hour of setting up, inspect your object storage.
-     You should see the exported Event History files.
+   - File Delivery: After the initial hour of setting up, inspect your object storage. You should see the exported Event
+     History files.
    - Directory Structure: Your exported files will adhere to the following naming convention and path:
 
    ```bash
    //[bucket-name]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Day]/[Hour]/[Minute]/
    ```
-The exported file name will include a randomly generated ID. The time recorded in the directory structure
-is the time the export uploads to object storage, not the Workflow completion time.
+
+   The exported file name will include a randomly generated ID. The time recorded in the directory structure is the time
+   the export uploads to object storage, not the Workflow completion time.
 
 2. **Temporal Cloud Web UI**:
-
    - Export UI:
-
-      - Last Successful Export: This displays the timestamp of the most recent successful export.
-      - Last Status Check: This reflects the timestamp of the latest internal Workflow healthcheck.
+     - Last Successful Export: This displays the timestamp of the most recent successful export.
+     - Last Status Check: This reflects the timestamp of the latest internal Workflow healthcheck.
 
    - Usage Dashboard:
-      - Actions from the Export Job are included in the [Usage Dashboard](/cloud/actions-usage).
+     - Actions from the Export Job are included in the [Usage Dashboard](/cloud/actions-usage).
 
 3. **Metrics**:
-   - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric `temporal_cloud_v1_total_action_count` with the label `is_background="true"`.
+   - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric
+     `temporal_cloud_v1_total_action_count` with the label `is_background="true"`.
 
 4. **Email**:
-   - Emails are sent to `Namespace Administrator`, `Account Owner`, and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (such as Object Store permissions issue).
+   - Emails are sent to `Namespace Administrator`, `Account Owner`, and `Global Administrator` roles when a Workflow
+     History Export job fails due to a user related error (such as Object Store permissions issue).
 
 ## Working with exported files
 
-Use the proto schema defined [here](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) to deserialize exported files.
+Use the proto schema defined [here](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) to
+deserialize exported files.
 
 ### Using exported files in analytics
 
-It can be useful to convert protos to another format to perform analytics on the data. To convert protos to parquet, follow 
-[the example Python Workflow](https://github.com/temporalio/samples-python/tree/main/cloud_export_to_parquet). Note that this example Workflow:
-* Transforms the nested proto structure into a flat, tabular format.
-* Each row in the table represents a single history event from a Workflow. To preserve their relationship post-conversion, the `workflowID` and `runID` is included in every row.
-* If you have enabled the codec server, the payload field is encrypted. This field may contain characters that are not recognized when loaded into a database so the payload field is excluded in this example.
+It can be useful to convert protos to another format to perform analytics on the data. To convert protos to parquet,
+follow [the example Python Workflow](https://github.com/temporalio/samples-python/tree/main/cloud_export_to_parquet).
+Note that this example Workflow:
+
+- Transforms the nested proto structure into a flat, tabular format.
+- Each row in the table represents a single history event from a Workflow. To preserve their relationship
+  post-conversion, the `workflowID` and `runID` is included in every row.
+- If you have enabled the codec server, the payload field is encrypted. This field may contain characters that are not
+  recognized when loaded into a database so the payload field is excluded in this example.
 
 ## Export and High Availability Namespaces {/* #export-ha */}
 
 ### Export Region Persistence
 
-When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the specific region where it was initially set up. The export configuration does not automatically failover with the Namespace.
+When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the
+specific region where it was initially set up. The export configuration does not automatically failover with the
+Namespace.
 
-- If Export is configured in Region A, it will continue to export from Region A's storage even after a Namespace failover to Region B
+- If Export is configured in Region A, it will continue to export from Region A's storage even after a Namespace
+  failover to Region B
 - Exports always read from and write to the same region where they were originally configured
 - The export process is independent of Namespace failover events
-- Export does not fail over automatically because we prioritize data completeness and consistency over real-time availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent exports during a failover.
+- Export does not fail over automatically because we prioritize data completeness and consistency over real-time
+  availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent
+  exports during a failover.
 
 ### Failover Scenarios
 
-**Namespace Failover with Healthy Primary Region**: When a Namespace fails over to a secondary region but the primary region remains healthy (including its blob storage), the export job continues to operate from the primary region. It does not automatically switch to export data from the secondary region.
+**Namespace Failover with Healthy Primary Region**: When a Namespace fails over to a secondary region but the primary
+region remains healthy (including its blob storage), the export job continues to operate from the primary region. It
+does not automatically switch to export data from the secondary region.
 
-**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including S3/GCS storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export will resume and include any Workflow histories that occurred during the outage. There may be delays in export processing, but the complete dataset will eventually be available. It does not automatically switch to export data from the secondary region.
+**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including
+S3/GCS storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export
+will resume and include any Workflow histories that occurred during the outage. There may be delays in export
+processing, but the complete dataset will eventually be available. It does not automatically switch to export data from
+the secondary region.

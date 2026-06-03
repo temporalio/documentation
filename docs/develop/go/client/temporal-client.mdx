@@ -207,6 +207,7 @@ variables or a configuration file, and then override specific options in code.
 
 {/* SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} */}
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
+
 ```go
 package main
 
@@ -234,6 +235,7 @@ func main() {
 // ...
 }
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -250,9 +252,10 @@ local development instance:
   - If you are using an API key, provide the API key value.
   - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
 - Your _Namespace and Account ID_ combination, which follows the format `<namespace_id>.<account_id>`.
-- The recommended _endpoint_ is the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
-  This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
-  See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
+- The recommended _endpoint_ is the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This endpoint
+  works for all Namespaces and automatically directs traffic to the active region for Namespaces with
+  [High Availability](/cloud/high-availability). See [accessing Namespaces](/cloud/namespaces#access-namespaces) for
+  more information on endpoint options.
 
 You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
 
@@ -360,7 +363,8 @@ Ensure these environment variables exist in your environment before running your
 
 Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
 `MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
-environment variables and their default values, refer to [Environment Configuration](/references/client-environment-configuration).
+environment variables and their default values, refer to
+[Environment Configuration](/references/client-environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
 specified in those variables. If you have defined a configuration file at either the default location
@@ -553,8 +557,8 @@ you must supply a Task Queue that will be used for the Tasks (one that a Worker 
 language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
-within another Workflow Execution, use either the [Child Workflow](/develop/go/workflows/child-workflows) or External Workflow
-APIs.
+within another Workflow Execution, use either the [Child Workflow](/develop/go/workflows/child-workflows) or External
+Workflow APIs.
 
 See the [Customize Workflow Type](/develop/go/workflows/basics#customize-workflow-type) section to see how to customize
 the name of the Workflow Type.
@@ -881,7 +885,7 @@ if err != nil {
 }
 ```
 
-[Sample](https://github.com/temporalio/samples-go/tree/master/cron)
+[Sample](https://github.com/temporalio/samples-go/tree/main/cron)
 
 #### Memo
 
