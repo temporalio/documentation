@@ -361,7 +361,7 @@ Different hostnames are used for different parts of the service.
 
 Temporal Cloud supports [AWS PrivateLink](https://aws.amazon.com/privatelink/) connections to the Control Plane, which allows access from applications running in VPCs that cannot egress to the public internet. Temporal Cloud does **not** support restricting an account so that private connectivity is the sole connectivity method to the Control Plane; the Control Plane is always accessible via public internet.
 
-Control plane access is always securely authenticated via [API keys](/cloud/api-keys#overview) or JWT tokens, regardless of how you choose to connect.
+Control Plane access is always securely authenticated via [API keys](/cloud/api-keys#overview) or JWT tokens, regardless of how you choose to connect.
 
 To set up a PrivateLink connection to the Temporal Cloud Control Plane, follow [these instructions](/cloud/connectivity/aws-connectivity), but use the Control Plane endpoint information below:
 
@@ -369,7 +369,7 @@ To set up a PrivateLink connection to the Temporal Cloud Control Plane, follow [
 | ---------------------- | ----------- | --------------------------------------------------------- |
 | `saas-api.tmprl.cloud` | `us-west-2` | `com.amazonaws.vpce.us-west-2.vpce-svc-0c57a5930b6f6be0e` |
 
-The control plane PrivateLink endpoint includes a [private DNS name](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), which lets your clients use the PrivateLink connection without having to set up private DNS or having to override client configuration. To use the DNS name, make sure your VPC has the `Enable DNS hostnames` and `Enable DNS support` options enabled. If you cannot use the DNS name, you can also manually [set up private DNS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) or [override the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
+The Control Plane PrivateLink endpoint includes a [private DNS name](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), which lets your clients use the PrivateLink connection without having to set up private DNS or having to override client configuration. To use the DNS name, make sure your VPC has the `Enable DNS hostnames` and `Enable DNS support` options enabled. If you cannot use the DNS name, you can also manually [set up private DNS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) or [override the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
 :::caution Finish client setup to programmatically access Temporal Cloud Control Plane over PrivateLink
 
