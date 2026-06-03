@@ -17,12 +17,6 @@ tags:
   - Concepts
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 There are two common patterns for building and deploying [Nexus Services](/nexus/services): 
 - **[Collocated pattern](#collocated-pattern)**: Runs on the same Workers as your existing Workflows and Activities. Use by default.
 - **[Router pattern](#router-queue-pattern)**: Separates Nexus routing from Workflow execution. A dedicated Nexus Worker on a “router” Task Queue routes Operations to Workflows on other Task Queues. 
