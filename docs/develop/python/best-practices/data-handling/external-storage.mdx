@@ -26,6 +26,30 @@ to set up External Storage with Amazon S3 and how to implement a custom storage 
 
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
+## Choose a storage system
+
+External Storage systems should behave like durable blob storage for opaque serialized Temporal `Payload` bytes. Start
+with an object/blob store such as Amazon S3, Google Cloud Storage, or Azure Blob Storage unless you have a specific
+reason to use another storage system, such as lower hot-path latency or existing platform constraints.
+
+A production storage system should:
+
+- Store payload bytes durably and retain them for the full Workflow retention and debugging window.
+- Be reachable from every Client, Worker, and Codec Server that may encode or decode payloads.
+- Support your expected payload sizes, or use a driver that chunks and reassembles payloads.
+- Provide reliable read-after-write behavior after a claim is written to Event History.
+- Meet your latency and throughput requirements under realistic load.
+- Have appropriate production controls for auth, encryption, monitoring, backup/restore, cleanup, and regional or
+  disaster recovery needs.
+
+Examples include:
+
+- **Amazon S3, Google Cloud Storage, and Azure Blob Storage:** default fit for general durable blob storage.
+- **Google Cloud Bigtable:** can be reasonable for low-latency reads in Google Cloud if payloads fit Bigtable size and
+  schema constraints. It is not the default choice for arbitrary large blobs.
+- **Redis:** only reasonable when configured as durable storage, not as an evicting cache.
+- **Local disk or in-memory storage:** development and testing only.
+
 ## Store and retrieve large payloads with Amazon S3
 
 The Python SDK includes an S3 storage driver. Follow these steps to set it up:
@@ -85,12 +109,18 @@ worker = Worker(
 
 ## Implement a custom storage driver
 
-If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
+If you need a storage system other than what the built-in drivers allow, you can implement your own storage driver.
 Store payloads durably so that they survive process crashes and remain available for debugging and auditing after the
 Workflow completes. Refer to [lifecycle management](/external-storage#lifecycle) for retention requirements.
 
+For a more complete custom-driver example, see the
+[Redis External Storage sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis). It shows
+reusable driver code, claim generation, client abstraction, and tests. Redis is not the default recommended storage
+system for External Storage; use it only when configured as durable storage rather than as an evicting cache.
+
 The following example shows a custom driver that uses local disk as the backing store. This example is for local
-development and testing only. In production, use a durable storage system that is accessible to all Workers:
+development and testing only. Do not use local disk for production External Storage. In production, use a durable
+storage system that is accessible to all Clients, Workers, and Codec Servers that may retrieve payloads:
 
 <!--SNIPSTART python-custom-storage-driver-->
 [features/snippets/external_storage/custom_driver/custom_storage_driver.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.py)
@@ -213,14 +243,14 @@ data_converter = dataclasses.replace(
 
 When you register multiple drivers, you must provide a `driver_selector` function that chooses which driver stores each
 payload. Any driver in the list that is not selected for storing is still available for retrieval, which is useful when
-migrating between storage backends. Return `None` from the selector to keep a specific payload inline in Event History.
+migrating between storage systems. Return `None` from the selector to keep a specific payload inline in Event History.
 
 Multiple drivers are useful in scenarios such as:
 
 - Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the
   one you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads.
   The old driver remains available for retrieving existing claims.
-- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For
+- Multi-cloud storage. Route payloads to different storage systems based on your cloud environment. For
   example, use S3 for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the
   appropriate driver based on the runtime environment.
 

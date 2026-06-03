@@ -1,5 +1,7 @@
 Temporal's
 APIs
+Bigtable
+Codec
 Temporal Application
 application
 extract
