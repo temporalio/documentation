@@ -732,6 +732,35 @@ public class ContinueAsNewWithVersionUpgrade
 ```
 
 </SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+class ContinueAsNewWithVersionUpgrade < Temporalio::Workflow::Definition
+  workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
+
+  def execute(attempt)
+    return 'v1.0' if attempt.positive?
+
+    # target_worker_deployment_version_changed? is refreshed after each Workflow Task completes.
+    # In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+    # timer; you could check the flag periodically, or before accepting Updates, starting
+    # Activities, or starting child Workflows.
+    loop do
+      Temporalio::Workflow.sleep(0.01)
+      next unless Temporalio::Workflow.target_worker_deployment_version_changed?
+
+      # Set initial_versioning_behavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+      # behavior and uses the Target Version of its Worker Deployment.
+      raise Temporalio::Workflow::ContinueAsNewError.new(
+        attempt + 1,
+        initial_versioning_behavior: Temporalio::ContinueAsNewVersioningBehavior::AUTO_UPGRADE
+      )
+    end
+  end
+end
+```
+
+</SdkTabs.Ruby>
 </SdkTabs>
 
 ### Limitations {/* #upgrade-on-can-limitations */}
