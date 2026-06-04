@@ -15,9 +15,13 @@
   border: 1px solid var(--ifm-color-emphasis-300);
   background: transparent;
   color: var(--ifm-color-emphasis-700);
+  font-family: inherit;
   font-size: 0.8rem;
   font-weight: 500;
+  line-height: 1.5;
+  box-sizing: border-box;
   cursor: pointer;
+  text-decoration: none;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
@@ -25,6 +29,7 @@
   background: var(--ifm-color-emphasis-100);
   border-color: var(--ifm-color-emphasis-400);
   color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
 }
 
 .actionButton:focus-visible {
@@ -41,6 +46,13 @@
   width: 1em;
   height: 1em;
   flex-shrink: 0;
+}
+
+.externalIcon {
+  width: 0.7em;
+  height: 0.7em;
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 /* Dark mode adjustments */

@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDoc } from '@docusaurus/plugin-content-docs/client';
-import { FaRegCopy, FaCheck, FaMarkdown } from 'react-icons/fa';
+import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt } from 'react-icons/fa';
+import { SiOpenai, SiClaude } from 'react-icons/si';
 import styles from './LLMActions.module.css';
 
 /**
@@ -36,9 +37,20 @@ function buildRawUrlFromSlug(slug: string): string {
 export default function LLMActions() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pageUrl, setPageUrl] = useState('');
 
   const { metadata, frontMatter } = useDoc();
   const { editUrl, slug } = metadata;
+
+  // window is not available during SSR, so capture the page URL on the client.
+  useEffect(() => {
+    setPageUrl(window.location.href);
+  }, []);
+
+  // Prefilled prompts that point the assistant at this page.
+  const prompt = `Read ${pageUrl} and answer questions about the content.`;
+  const chatGptUrl = `https://chatgpt.com/?prompt=${encodeURIComponent(prompt)}`;
+  const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
 
   // Try to get raw URL from editUrl first, then fall back to slug-based construction
   let rawUrl = editUrl ? getGitHubRawUrl(editUrl) : null;
@@ -109,6 +121,32 @@ export default function LLMActions() {
         <FaMarkdown className={styles.icon} />
         View as Markdown
       </button>
+      <a
+        className={styles.actionButton}
+        href={chatGptUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Open this page in ChatGPT"
+        data-analytics-id="open-in-chatgpt"
+        data-analytics-action="click"
+      >
+        <SiOpenai className={styles.icon} />
+        Open in ChatGPT
+        <FaExternalLinkAlt className={styles.externalIcon} />
+      </a>
+      <a
+        className={styles.actionButton}
+        href={claudeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Open this page in Claude"
+        data-analytics-id="open-in-claude"
+        data-analytics-action="click"
+      >
+        <SiClaude className={styles.icon} />
+        Open in Claude
+        <FaExternalLinkAlt className={styles.externalIcon} />
+      </a>
     </div>
   );
 }
