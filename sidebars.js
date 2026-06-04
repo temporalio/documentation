@@ -1173,7 +1173,6 @@ module.exports = {
                 'cli/command-reference/cloud/apikey',
                 'cli/command-reference/cloud/async-operation',
                 'cli/command-reference/cloud/connectivity',
-                'cli/command-reference/cloud/custom-role',
                 'cli/command-reference/cloud/login',
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
