@@ -691,7 +691,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--concurrency` | No | **int** Number of Event Histories to fetch at a time. |
+| `--concurrency` | No | **int** Number of Workflow Histories to fetch at a time. |
 | `--depth` | No | **int** Set depth for your Child Workflow fetches. Pass -1 to fetch child workflows at any depth. |
 | `--fold` | No | **string[]** Fold away Child Workflows with the specified statuses. Case-insensitive. Ignored if --no-fold supplied. Available values: running, completed, failed, canceled, terminated, timedout, continueasnew. Can be passed multiple times. |
 | `--no-fold` | No | **bool** Disable folding. Fetch and display Child Workflows within the set depth. |
