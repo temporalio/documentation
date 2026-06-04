@@ -49,7 +49,7 @@ This page focuses on the client-side APIs that are unique to Standalone Nexus Op
 :::note
 
 This documentation uses source code from
-[nexus-standalone-operations](https://github.com/temporalio/samples-go/tree/main/nexus-standalone-operations).
+[nexus-standalone-operations](https://github.com/temporalio/samples-python/tree/main/nexus-standalone-operations).
 
 :::
 
@@ -129,7 +129,7 @@ The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
 
 ## Count Standalone Nexus Operations {/* #count-operations */}
 
-Use [`client.count_nexus_operations()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to count Standalone Nexus
+Use [`client.count_nexus_operations()`](https://python.temporal.io/temporalio.client.Client.html#count_nexus_operations) to count Standalone Nexus
 Operation Executions that match a [List Filter](/list-filter) query.
 
 Note that `count_nexus_operations` is called on the base `client.Client`, not on the `NexusClient`.
