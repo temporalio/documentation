@@ -71,7 +71,6 @@ export default function LLMActions() {
         throw new Error(`Failed to fetch: ${response.status}`);
       }
       const markdown = await response.text();
-      const pageUrl = window.location.href;
       const content = `Source: ${pageUrl}\n\n${markdown}`;
 
       await navigator.clipboard.writeText(content);
@@ -82,7 +81,7 @@ export default function LLMActions() {
     } finally {
       setLoading(false);
     }
-  }, [rawUrl]);
+  }, [rawUrl, pageUrl]);
 
   const handleViewMarkdown = useCallback(() => {
     if (rawUrl) {
