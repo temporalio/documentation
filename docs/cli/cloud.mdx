@@ -34,8 +34,11 @@ to the [Access control](/cloud/manage-access) page for more details.
 ## Connect to Temporal Cloud
 
 To connect the CLI to Temporal Cloud, provide the Temporal service address, Namespace name, and credentials. Temporal
-Cloud supports three credential types: OAuth tokens obtained through the `temporal cloud login` interactive login
-command, API keys, and mTLS certificates.
+Cloud supports three credential types:
+
+- OAuth tokens obtained through the `temporal cloud login` interactive login command
+- API keys
+- mTLS certificates
 
 ### Interactive login
 
@@ -47,7 +50,15 @@ temporal cloud login --profile prod
 ```
 
 Complete the interactive login process in your browser. After login, your OAuth token is stored in the specified
-configuration profile. Run commands against Temporal Cloud by specifying the profile, address, and Namespace:
+configuration profile.
+
+To confirm your login, run the `temporal cloud whoami` command:
+
+```bash
+temporal cloud whoami
+```
+
+Run commands against Temporal Cloud by specifying the profile, address, and Namespace:
 
 ```bash
 temporal workflow list --profile prod  \
