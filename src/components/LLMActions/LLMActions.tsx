@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDoc } from '@docusaurus/plugin-content-docs/client';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt } from 'react-icons/fa';
 import { SiOpenai, SiClaude } from 'react-icons/si';
 import styles from './LLMActions.module.css';
@@ -37,15 +38,14 @@ function buildRawUrlFromSlug(slug: string): string {
 export default function LLMActions() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pageUrl, setPageUrl] = useState('');
 
   const { metadata, frontMatter } = useDoc();
-  const { editUrl, slug } = metadata;
+  const { editUrl, slug, permalink } = metadata;
+  const { siteConfig } = useDocusaurusContext();
 
-  // window is not available during SSR, so capture the page URL on the client.
-  useEffect(() => {
-    setPageUrl(window.location.href);
-  }, []);
+  // Canonical, absolute page URL derived from Docusaurus config + permalink.
+  // Available during SSR and the first render, so the prompts are always valid.
+  const pageUrl = `${siteConfig.url}${permalink}`;
 
   // Prefilled prompts that point the assistant at this page.
   const prompt = `Read ${pageUrl} and answer questions about the content.`;
