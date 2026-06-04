@@ -75,7 +75,7 @@ For small changes like fixing typos, you can edit files directly on GitHub.
     Once approved, your change goes live! 🎉
 
 
-Maintainers and contributors to this project are expected to conduct themselves in a respectful way. See the [CNCF Community Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md) as a reference.
+Maintainers and contributors to this project are expected to conduct themselves in a respectful way. See the [CNCF Community Code of Conduct](https://github.com/cncf/foundation/blob/main/code-of-conduct.md) as a reference.
 
 This repository and its contents are open-source; individual and commercial use are permitted.
 
