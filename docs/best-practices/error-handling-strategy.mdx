@@ -77,7 +77,18 @@ Use this when the Activity implementer knows that the error can never be resolve
 This lets different Workflows make different decisions about the same Activity.
 Use this when the decision depends on the caller's business logic.
 
-Use non-retryable errors sparingly.
+### Preserve retryability when wrapping errors
+
+When an Activity returns an error, the SDK checks the **outermost** error type to determine retryability.
+If you catch a non-retryable Application Failure and re-throw it wrapped in a generic language error, the `non_retryable` flag is lost and the Activity will be retried.
+
+To add context to an error while preserving its retry behavior, wrap it in another Application Failure with the same `non_retryable` flag.
+Do not wrap Application Failures in generic language errors.
+
+For a detailed explanation of how the SDK-to-server chain works, see [The outermost error type determines retryability](/encyclopedia/application-failures#outermost-error-type).
+
+### Use non-retryable errors sparingly
+
 In most cases, let the Retry Policy handle retry limits through timeouts and maximum attempts.
 Reserve `non_retryable` for cases where retrying is guaranteed to be futile.
 

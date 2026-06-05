@@ -144,6 +144,27 @@ A failed Child Workflow delivers a Child Workflow Failure to the parent Workflow
 If a Temporal failure propagates unhandled through Workflow code, it fails the Workflow Execution.
 The exception is Cancelled Failure, which puts the Workflow in "Cancelled" state instead of "Failed".
 
+### The outermost error type determines retryability {#outermost-error-type}
+
+When an Activity returns an error, the SDK inspects the **outermost** error to decide how to represent the failure to the Temporal Service.
+The SDK performs a type check on the outermost error and converts it to a Protocol Buffer [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure) message.
+If the outermost error is an Application Failure, the SDK preserves its `non_retryable` flag and `type` field in the resulting `ApplicationFailureInfo` proto.
+If the outermost error is any other type, the SDK falls back to creating a default, **retryable** `ApplicationFailureInfo`.
+
+The Temporal Service only inspects the **top-level** `failure_info` on the Failure proto when making retry decisions.
+The original error is preserved in the `cause` chain, but the Service does not look at `cause` to determine retryability.
+
+This means that wrapping an Application Failure in a generic language error silently loses the `non_retryable` flag.
+If an Activity throws a non-retryable Application Failure, but your code catches it and re-throws it wrapped in a standard error, the Activity will be retried despite the original intent.
+
+:::caution Wrapping errors can lose retryability flags
+If you need to add context to an error, wrap it in another Application Failure that preserves the `non_retryable` flag.
+Do not wrap Application Failures in generic language errors (such as `Error` in TypeScript, `Exception` in Python, or `fmt.Errorf` in Go), as this causes the SDK to treat the error as a new, retryable failure.
+:::
+
+This behavior is consistent across all SDKs (Go, Java, TypeScript, Python, and .NET).
+For language-specific examples and correct wrapping patterns, see the error handling guide for your SDK.
+
 ## Failures in Event History {#event-history}
 
 Failures are recorded in Event History, which provides a detailed record for debugging.
