@@ -215,8 +215,8 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, specify a value from 1 to 90 days. When choosing this value, consider your needs for Event
    History versus the cost of maintaining that Event History. Typically, a development Namespace has a short retention
-   period and a production Namespace has a longer retention period. (If you need to change this value later, contact
-   [Temporal Support](/cloud/support#support-ticket).)
+   period and a production Namespace has a longer retention period. The retention period of a namespace can be changed
+   in the Temporal Cloud UI under the namespace's Settings tab or by using the Temporal CLI.
 1. Select your authentication method: [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
 1. If using mTLS authentication, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint. You may

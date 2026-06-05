@@ -27,7 +27,7 @@ The platform stores encrypted Workflow state and orchestrates execution, while y
 
 ## How Temporal Cloud works
 
-Temporal Cloud operates as the control plane for your distributed applications:
+Temporal Cloud operates as the Control Plane for your distributed applications:
 
 1. **Your environment**: You run Workers that execute your Workflow and Activity code. These can be deployed anywhere—Kubernetes, VMs, serverless, on-premises.
 2. **Temporal Cloud**: Manages Workflow state, Event History, task queuing, and scheduling. All data is encrypted in transit and at rest.
@@ -58,7 +58,7 @@ This design limits blast radius and enables independent scaling.
 
 **Data plane**: Where your Workflows execute. Each cell processes Workflow operations, persists state, and manages task queues. The data plane is optimized for low latency and high throughput.
 
-**Control plane**: Manages provisioning, configuration, and lifecycle operations. When you create a Namespace, the control plane:
+**Control plane**: Manages provisioning, configuration, and lifecycle operations. When you create a Namespace, the Control Plane:
 1. Selects an appropriate cell in your chosen region
 2. Provisions database resources and roles
 3. Generates and deploys mTLS certificates
