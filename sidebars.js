@@ -565,6 +565,7 @@ module.exports = {
               items: [
                 'develop/python/nexus/quickstart',
                 'develop/python/nexus/feature-guide',
+                'develop/python/nexus/standalone-operations',
               ],
             },
             {
@@ -722,7 +723,8 @@ module.exports = {
               },
               items: [
                 'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide'
+                'develop/typescript/nexus/feature-guide',
+                'develop/typescript/nexus/standalone-operations',
               ],
             },
             {
