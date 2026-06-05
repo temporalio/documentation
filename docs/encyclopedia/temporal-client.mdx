@@ -1,0 +1,194 @@
+---
+id: temporal-client
+title: What is a Temporal Client?
+sidebar_label: Temporal Client
+description: A Temporal Client acts as the bridge for communication between your applications and the Temporal Service, enabling you to start Workflow Executions, send Signals and Queries, and retrieve results.
+slug: /temporal-client
+toc_max_heading_level: 4
+keywords:
+  - client
+  - explanation
+  - temporal client
+  - term
+tags:
+  - Concepts
+  - Temporal SDKs
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
+
+A Temporal Client allows you to communicate with the [Temporal Service](/temporal-service).
+Communication with a Temporal Service lets you perform actions such as starting [Workflow Executions](/workflow-execution), sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results of a Workflow Execution, and providing Activity Task Tokens.
+When [Standalone Activities](/standalone-activity) are supported and enabled, a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
+
+
+## Code examples {/* #code-examples */}
+
+The following examples show how to connect a Temporal Client to a local development Temporal Service and start a Workflow Execution.
+
+<Tabs groupId="sdk-language" queryString>
+<TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"documentation-samples-go/yourapp"
+
+	"go.temporal.io/sdk/client"
+)
+
+func main() {
+	// Create a Temporal Client to communicate with the Temporal Cluster.
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create Temporal Client", err)
+	}
+	defer temporalClient.Close()
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Create an instance that connects to a Temporal Service running on the local
+// machine, using the default port (7233)
+WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
+
+// Initialize the Temporal Client
+// This application uses the Client to communicate with the local Temporal Service
+WorkflowClient client = WorkflowClient.newInstance(serviceStub);
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+using System;
+using System.Threading.Tasks;
+using Temporalio.Client;
+
+var client = await TemporalClient.ConnectAsync(new TemporalClientConnectOptions
+{
+    TargetHost = "localhost:7233",
+    Namespace  = "default",
+});
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$workflowClient = WorkflowClient::create($serviceClient);
+
+// Use $workflowClient to work with Workflows ...
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import asyncio
+from temporalio.client import Client
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+</TabItem>
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+client = Temporalio::Client.connect('localhost:7233', 'default')
+```
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let runtime = CoreRuntime::new_assume_tokio(
+        RuntimeOptions::builder()
+            .telemetry_options(TelemetryOptions::builder().build())
+            .build()?,
+    )?;
+    let (conn_opts, client_opts) =
+        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default())?;
+    let connection = Connection::connect(conn_opts).await?;
+    let client = Client::new(connection, client_opts)?;
+}
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```ts
+import { Connection, Client } from '@temporalio/client';
+
+async function run() {
+  const connection = await Connection.connect();
+
+  // your code goes here
+
+  const client = new Client({ connection });
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+</TabItem>
+</Tabs>
+
+## SDK guides {/* #sdk-guides */}
+
+<div style={{display:'flex',flexDirection:'column',gap:'12px',marginTop:'1rem'}}>
+  {[
+    { name: 'goLangBlock',      href: '/develop/go/client/temporal-client',         label: 'Temporal Client - Go' },
+    { name: 'javaBlock',        href: '/develop/java/client/temporal-client',        label: 'Temporal Client - Java' },
+    { name: 'dotnetBlock',      href: '/develop/dotnet/client/temporal-client',      label: 'Temporal Client - .NET' },
+    { name: 'phpBlock',         href: '/develop/php/client/temporal-client',         label: 'Temporal Client - PHP' },
+    { name: 'pythonBlock',      href: '/develop/python/client/temporal-client',      label: 'Temporal Client - Python' },
+    { name: 'rubyBlock',        href: '/develop/ruby/client/temporal-client',        label: 'Temporal Client - Ruby' },
+    { name: 'rustBlock',        href: '/develop/rust/client/temporal-client',        label: 'Temporal Client - Rust' },
+    { name: 'typeScriptBlock',  href: '/develop/typescript/client/temporal-client',  label: 'Temporal Client - TypeScript' },
+  ].map(({ name, href, label }) => (
+    <a key={name} href={href} style={{display:'flex',alignItems:'center',gap:'10px',textDecoration:'none'}}>
+      <span style={{width:'24px',height:'24px',flexShrink:0,overflow:'hidden',display:'block',position:'relative'}}>
+        <span style={{position:'absolute',top:0,left:0,transform:'scale(0.6)',transformOrigin:'top left'}}>
+          <SdkSvg name={name} />
+        </span>
+      </span>
+      <span>{label}</span>
+    </a>
+  ))}
+</div>
