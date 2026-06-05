@@ -360,8 +360,13 @@ Temporal needs permission to invoke your Lambda function. The Temporal server as
 call `lambda:InvokeFunction`. The trust policy on the role includes an External ID condition to prevent
 [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
-Deploy the following CloudFormation template to create the invocation role and its permissions.
-[Download the template](/files/temporal-cloud-serverless-worker-role.yaml).
+The Temporal Cloud UI provides pre-filled CloudFormation and Terraform templates on the **Create Worker Deployment**
+page. You can also create the role manually using the templates below.
+
+<Tabs>
+<TabItem value="cloudformation" label="CloudFormation">
+
+[Download the CloudFormation template](/files/temporal-cloud-serverless-worker-role.yaml).
 
 | Parameter              | Description                                                                                                                                                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -491,8 +496,54 @@ aws cloudformation create-stack \
 After the stack finishes creating, retrieve the IAM role ARN from the stack outputs:
 
 ```bash
-aws cloudformation describe-stacks --stack-name <STACK_NAME> --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' --output text --region <AWS_REGION>
+aws cloudformation describe-stacks \
+  --stack-name <STACK_NAME> \
+  --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' \
+  --output text \
+  --region <AWS_REGION>
 ```
+
+</TabItem>
+<TabItem value="terraform" label="Terraform">
+
+Use the [Temporal Terraform module](https://github.com/temporalio/terraform-modules/tree/main/modules/serverless-workers/aws/lambda) to create the invocation role.
+
+| Variable                      | Description                                                                                                                                                                                                        | Required |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `external_id`                 | A string you choose to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Can be any value. Use the same value when creating the Worker Deployment Version. | Yes      |
+| `temporal_cloud_principals`   | List of Temporal Cloud AWS IAM role ARNs permitted to assume this role. Provided by Temporal Cloud during account setup.                                                                                           | Yes      |
+| `lambda_function_arns`        | List of Lambda function ARNs that Temporal Cloud is permitted to invoke.                                                                                                                                           | Yes      |
+| `role_name`                   | Name of the IAM role to create. Defaults to `Temporal-Cloud-Serverless-Worker`.                                                                                                                                    | No       |
+
+Add the module to your Terraform configuration:
+
+```hcl
+module "serverless_worker_lambda" {
+  source = "github.com/temporalio/terraform-modules//modules/serverless-workers/aws/lambda"
+
+  external_id               = "<EXTERNAL_ID>"
+  temporal_cloud_principals = ["<PROVIDED_BY_TEMPORAL_CLOUD>"]
+
+  lambda_function_arns = [
+    "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:<FUNCTION_NAME>",
+  ]
+}
+```
+
+Apply the configuration:
+
+```bash
+terraform init && terraform apply
+```
+
+After the apply completes, retrieve the IAM role ARN from the outputs:
+
+```bash
+terraform output role_arn
+```
+
+</TabItem>
+</Tabs>
 
 Use this role ARN in your Worker Deployment Version's compute configuration.
 
