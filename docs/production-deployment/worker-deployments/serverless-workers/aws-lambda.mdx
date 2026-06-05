@@ -511,7 +511,7 @@ Use the [Temporal Terraform module](https://github.com/temporalio/terraform-modu
 | Variable                      | Description                                                                                                                                                                                                        | Required |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
 | `external_id`                 | A string you choose to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Can be any value. Use the same value when creating the Worker Deployment Version. | Yes      |
-| `temporal_cloud_principals`   | List of Temporal Cloud AWS IAM role ARNs permitted to assume this role. Provided by Temporal Cloud during account setup.                                                                                           | Yes      |
+| `temporal_cloud_principals`   | Temporal Cloud AWS IAM role ARNs permitted to assume this role. Use the values shown in the example below.                                                                                                         | Yes      |
 | `lambda_function_arns`        | List of Lambda function ARNs that Temporal Cloud is permitted to invoke.                                                                                                                                           | Yes      |
 | `role_name`                   | Name of the IAM role to create. Defaults to `Temporal-Cloud-Serverless-Worker`.                                                                                                                                    | No       |
 
@@ -521,11 +521,18 @@ Add the module to your Terraform configuration:
 module "serverless_worker_lambda" {
   source = "github.com/temporalio/terraform-modules//modules/serverless-workers/aws/lambda"
 
-  external_id               = "<EXTERNAL_ID>"
-  temporal_cloud_principals = ["<PROVIDED_BY_TEMPORAL_CLOUD>"]
+  external_id = "<EXTERNAL_ID>"
+
+  temporal_cloud_principals = [
+    "arn:aws:iam::902542641901:role/wci-lambda-invoke",
+    "arn:aws:iam::160190466495:role/wci-lambda-invoke",
+    "arn:aws:iam::819232936619:role/wci-lambda-invoke",
+    "arn:aws:iam::829909441867:role/wci-lambda-invoke",
+    "arn:aws:iam::354116250941:role/wci-lambda-invoke",
+  ]
 
   lambda_function_arns = [
-    "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:<FUNCTION_NAME>",
+    "arn:aws:lambda:<AWS_REGION>:<ACCOUNT_ID>:function:<FUNCTION_NAME>",
   ]
 }
 ```
