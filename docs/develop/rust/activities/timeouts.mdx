@@ -17,7 +17,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Set Activity timeouts {#activity-timeouts}
+## Set Activity timeouts {/* #activity-timeouts */}
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -45,7 +45,7 @@ let greeting = ctx.start_activity(
 );
 ````
 
-### Set an Activity Retry Policy {#activity-retries}
+### Set an Activity Retry Policy {/* #activity-retries */}
 
 A Retry Policy works together with timeouts to provide fine-grained control over Activity failure handling. Activities automatically use a default [Retry Policy](/encyclopedia/retry-policies) unless you provide a custom one.
 
@@ -68,7 +68,7 @@ let language = ctx.start_activity(
     );
 ```
 
-### Override the retry interval with `explicit_delay` {#next-retry-delay}
+### Override the retry interval with `explicit_delay` {/* #next-retry-delay */}
 
 To override the next retry interval set by the current policy, return a failure from an Activity with a custom next retry delay. That value replaces the interval the Retry Policy would otherwise use for the next retry attempt. This is useful when retry timing depends on runtime state such as the current attempt number.
 
@@ -99,7 +99,7 @@ impl TestGreetActivities {
 }
 ```
 
-## Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {/* #activity-heartbeats */}
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a signal from the [Worker Process](/workers#worker-process) executing the Activity to the [Temporal Service](/temporal-service). Each heartbeat tells the service that the [Activity Execution](/activity-execution) is still making progress and that the Worker has not crashed. If the service does not receive a heartbeat within the configured [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), the Activity can time out and be retried according to its Retry Policy.
 
@@ -121,7 +121,7 @@ pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, Activit
 }
 ```
 
-### Set a Heartbeat Timeout {#heartbeat-timeout}
+### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works together with Activity heartbeats and sets the maximum time allowed between heartbeats. Configure it as part of the Activity options when scheduling the Activity.
 

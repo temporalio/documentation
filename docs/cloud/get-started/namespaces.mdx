@@ -36,7 +36,7 @@ identifiers, and gRPC endpoints in Temporal Cloud.
 - [Delete a Namespace](#delete-a-namespace)
 - [Tag a Namespace](#tag-a-namespace)
 
-## What is a Cloud Namespace Name? {#temporal-cloud-namespace-name}
+## What is a Cloud Namespace Name? {/* #temporal-cloud-namespace-name */}
 
 A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud. Each Namespace
 Name, such as `accounting-production`, is unique within the scope of a customer's account. It cannot be changed after
@@ -59,7 +59,7 @@ For example: `accounting-production.123de`
 The full Namespace ID is shown in the Namespace list in the Temporal Cloud UI and in the output of `tcld namespace list`. See [Cloud Namespace ID](#temporal-cloud-namespace-id) for details.
 :::
 
-## What is a Temporal Cloud Account ID? {#temporal-cloud-account-id}
+## What is a Temporal Cloud Account ID? {/* #temporal-cloud-account-id */}
 
 A Temporal Cloud Account ID is a unique customer identifier assigned by Temporal Technologies. Each Id is a short string
 of numbers and letters like `f45a2`, at least five characters long. This account identifier is part of every Namespace ID
@@ -135,7 +135,7 @@ utility at a command line interface (CLI). Follow these steps.
 
 </Tabs>
 
-## What is a Cloud Namespace Id? {#temporal-cloud-namespace-id}
+## What is a Cloud Namespace Id? {/* #temporal-cloud-namespace-id */}
 
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud. A Namespace Id is
 formed by concatenating the following:
@@ -147,7 +147,7 @@ formed by concatenating the following:
 For example, for the Account ID `123de` and Namespace Name `accounting-production`, the Namespace Id is
 `accounting-production.123de`.
 
-## What is a Cloud gRPC Endpoint? {#temporal-cloud-grpc-endpoint}
+## What is a Cloud gRPC Endpoint? {/* #temporal-cloud-grpc-endpoint */}
 
 Temporal Clients communicate between application code and a Temporal Server by sending and receiving messages via the
 gRPC protocol. gRPC is a Remote Procedure Call framework featuring low latency and high performance. gRPC provides
@@ -167,7 +167,7 @@ A gRPC endpoint appears on the detail page for each Cloud Namespace. Follow thes
 See [How to access a Namespace in Temporal Cloud](/cloud/namespaces/#access-namespaces) for more information on
 different gRPC endpoint types and how to access them.
 
-## How to create a Namespace in Temporal Cloud {#create-a-namespace}
+## How to create a Namespace in Temporal Cloud {/* #create-a-namespace */}
 
 :::info
 
@@ -215,8 +215,8 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, specify a value from 1 to 90 days. When choosing this value, consider your needs for Event
    History versus the cost of maintaining that Event History. Typically, a development Namespace has a short retention
-   period and a production Namespace has a longer retention period. (If you need to change this value later, contact
-   [Temporal Support](/cloud/support#support-ticket).)
+   period and a production Namespace has a longer retention period. The retention period of a namespace can be changed
+   in the Temporal Cloud UI under the namespace's Settings tab or by using the Temporal CLI.
 1. Select your authentication method: [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
 1. If using mTLS authentication, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint. You may
@@ -234,7 +234,7 @@ See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command referen
 
 </Tabs>
 
-## What are some Namespace best practices? {#best-practices}
+## What are some Namespace best practices? {/* #best-practices */}
 
 For guidance on how many Namespaces to create, how to split workloads across services or domains, and when to isolate
 tenants or teams, see [Namespace best practices](/best-practices/managing-namespace).
@@ -242,7 +242,7 @@ tenants or teams, see [Namespace best practices](/best-practices/managing-namesp
 This page focuses on Temporal Cloud namespace mechanics such as naming rules, provisioning, authentication, tagging, and
 accessing Namespace endpoints.
 
-## How to access a Namespace in Temporal Cloud {#access-namespaces}
+## How to access a Namespace in Temporal Cloud {/* #access-namespaces */}
 
 {/* How to access a Namespace in Temporal Cloud */}
 
@@ -271,6 +271,17 @@ There are two types of gRPC endpoints for accessing a Namespace in Temporal Clou
     - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region. This can be useful in advanced [High Availability](/cloud/high-availability) setups where you want explicit control over which region handles requests.
     - When using mTLS to authenticate, the Temporal Client must set the `server_name` property to `<namespace endpoint value>` in its request to the value of the Namespace endpoint. This tells the client to expect a different SNI header during the TLS handshake, since the request to the regional endpoint is redirected to the specific Namespace.
 
+:::caution Do not take dependencies on Temporal Cloud endpoint DNS resolution
+
+In general, the IP addresses that Temporal Cloud endpoints resolve to are subject to change without notice. Do not configure Workers, Temporal Clients, or firewalls against the specific IPs you observe for an endpoint at a point in time.
+
+Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
+
+1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the [Stable IPs](/cloud/connectivity/ip-addresses) for the Namespace's active region.
+2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves to a regional intermediary (`<provider>-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone or GCP private DNS zone to point at your VPC Endpoint. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for setup details.
+
+:::
+
 ### Configuring a Temporal Client with API keys or mTLS
 
 To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
@@ -292,12 +303,13 @@ To ensure the security of your data, all traffic to and from your Namespace is e
 
 For enhanced protection:
 - Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.
-- In your own networking architecture, set up an allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the
-  Cloud Provider region in which your Namespace is located:
-  - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
-  - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
+- Set up your allow list for outgoing network requests from your Clients and Workers. You have two options:
+  - Use Temporal Cloud's [stable IPs configuration](/cloud/connectivity/ip-addresses) to get non-changing IP addresses for your Namespace endpoint, which you can then allowlist in your firewall rules.
+  - Allowlist the entire Cloud Provider IP address ranges for the region in which your Namespace is located:
+    - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
+    - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
 
-## How to manage Namespaces in Temporal Cloud {#manage-namespaces}
+## How to manage Namespaces in Temporal Cloud {/* #manage-namespaces */}
 
 {/* How to manage Namespaces in Temporal Cloud using Temporal Cloud UI */}
 
@@ -345,7 +357,7 @@ To manage certificate filters, use the [tcld namespace certificate-filters](/clo
 commands. For more information, see
 [How to manage certificate filters in Temporal Cloud](/cloud/certificates#manage-certificate-filters).
 
-## How to delete a Namespace in Temporal Cloud {#delete-a-namespace}
+## How to delete a Namespace in Temporal Cloud {/* #delete-a-namespace */}
 
 :::info
 
@@ -377,7 +389,7 @@ For further questions or concerns, contact [Support](https://docs.temporal.io/cl
 
 See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
 
-### Namespace deletion protection {#delete-protection}
+### Namespace deletion protection {/* #delete-protection */}
 
 To prevent accidental Namespace deletion, Temporal Cloud provides a protection feature. When you enable Deletion
 Protection for your production environment Namespace, you ensure that critical data won't be deleted unintentionally.
@@ -404,7 +416,7 @@ tcld namespace lifecycle set \
     --enable-delete-protection <Boolean>
 ```
 
-## How to tag a Namespace in Temporal Cloud {#tag-a-namespace}
+## How to tag a Namespace in Temporal Cloud {/* #tag-a-namespace */}
 
 Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize,
 track, and manage namespaces more easily.

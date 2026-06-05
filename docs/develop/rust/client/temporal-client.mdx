@@ -38,7 +38,7 @@ This page shows how to do the following using the Rust SDK and Temporal Client:
 
 A Temporal Client can't be created and used inside Workflow code. However, using a Temporal Client inside an Activity is acceptable when you need to communicate with the Temporal Service.
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 In Rust, create a client by establishing a `Connection` and then constructing a `Client`.
 You can provide connection options directly in code or load them from environment variables.
@@ -187,7 +187,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an API key or mTLS. Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured local development instance:
 
@@ -335,7 +335,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 </Tabs>
 
-## Start a Workflow Execution {#start-workflow-execution}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
 To start a Workflow Execution, supply:
 
@@ -359,7 +359,7 @@ let handle = client.start_workflow(
 ).await?;
 ```
 
-### Set a Workflow's Task Queue {#set-task-queue}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
 In most cases, the Task Queue is a required Workflow option.
 
@@ -379,7 +379,7 @@ let handle = client
     ).await?;
 ```
 
-### Set a Workflow Id {#workflow-id}
+### Set a Workflow Id {/* #workflow-id */}
 
 You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
@@ -399,7 +399,7 @@ let handle = client
     ).await?;
 ```
 
-## Get the results of a Workflow Execution {#get-workflow-results}
+## Get the results of a Workflow Execution {/* #get-workflow-results */}
 
 If starting a Workflow succeeds, you get a Workflow handle.
 You can use that handle to wait for the result, describe the Workflow, or interact with it through Signals, Queries, and Updates.

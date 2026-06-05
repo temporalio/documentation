@@ -51,7 +51,7 @@ Terminating a Workflow forcefully stops Workflow Execution. This action resemble
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
 Workflow is stuck and cannot be canceled normally.
 
-## Cancellation {#cancellation}
+## Cancellation {/* #cancellation */}
 
 To give a Workflow and its Activities the ability to be cancelled, do the following:
 
@@ -60,7 +60,7 @@ To give a Workflow and its Activities the ability to be cancelled, do the follow
 - Listen for and handle a Cancellation request within an Activity.
 - Send a Cancellation request from a Temporal Client.
 
-### Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+### Handle Cancellation in Workflow {/* #handle-cancellation-in-workflow */}
 
 Workflow Definitions can be written to respond to cancellation requests. It is common for an Activity to be run on
 Cancellation to perform cleanup.
@@ -110,7 +110,7 @@ public async Task RunAsync()
 }
 ```
 
-### Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+### Handle Cancellation in an Activity {/* #handle-cancellation-in-an-activity */}
 
 Ensure that the Activity is [Heartbeating](/develop/dotnet/activities/timeouts#activity-heartbeats) to receive the
 Cancellation request and stop execution. Also make sure that the
@@ -134,7 +134,7 @@ public async Task MyActivityAsync()
 }
 ```
 
-### Request Cancellation {#request-cancellation}
+### Request Cancellation {/* #request-cancellation */}
 
 Use `CancelAsync` on the `WorkflowHandle` to cancel a Workflow Execution.
 
@@ -183,7 +183,7 @@ public async Task RunAsync()
 }
 ```
 
-## Termination {#termination}
+## Termination {/* #termination */}
 
 To Terminate a Workflow Execution in .NET, use the
 [TerminateAsync()](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_TerminateAsync_System_String_Temporalio_Client_WorkflowTerminateOptions_)
@@ -201,7 +201,7 @@ await handle.TerminateAsync();
 Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the
 UI when that happens.
 
-## Reset a Workflow Execution {#reset}
+## Reset a Workflow Execution {/* #reset */}
 
 Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
 point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other

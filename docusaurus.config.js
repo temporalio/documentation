@@ -136,7 +136,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/temporalio',
+                href: 'https://x.com/temporalio',
               },
               {
                 label: 'YouTube',
@@ -144,7 +144,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/master/README.md',
+                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
               },
             ],
           },
@@ -157,10 +157,6 @@ module.exports = async function createConfigAsync() {
               {
                 label: 'Meetups',
                 href: 'https://temporal.io/community#events',
-              },
-              {
-                label: 'Workshops',
-                href: 'https://temporal.io/community#workshops',
               },
               {
                 label: 'Support forum',
@@ -184,7 +180,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Use cases',
-                href: 'https://temporal.io/use-cases',
+                href: 'https://temporal.io/in-use',
               },
               {
                 label: 'Newsletter signup',
@@ -200,11 +196,11 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Privacy policy',
-                to: 'https://temporal.io/global-privacy-policy',
+                href: 'https://temporal.io/global-privacy-policy',
               },
               {
                 label: 'Terms of service',
-                href: 'https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf',
+                href: 'https://temporal.io/terms-of-service',
               },
               {
                 label: "We're hiring",
@@ -346,6 +342,15 @@ module.exports = async function createConfigAsync() {
         };
       },
       [
+        './plugins/cloud-region-counts',
+        {
+          regionFiles: {
+            aws: 'docs/cloud/references/regions/awsregions.md',
+            gcp: 'docs/cloud/references/regions/gcpregions.md',
+          },
+        },
+      ],
+      [
         'docusaurus-pushfeedback',
         {
           project: '6c1ptrxbky',
@@ -445,9 +450,18 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    markdown: {
+      mdx1Compat: {
+        // Required for snipsync HTML comment markers (<!--SNIPSTART-->, <!--SNIPEND-->)
+        comments: true,
+        admonitions: true,
+      },
+      mermaid: true,
+    },
+    themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      experimental_faster: true,
+      faster: true,
     },
   };
 

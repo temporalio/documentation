@@ -43,7 +43,7 @@ manually and when deploying through
 [helm charts](https://github.com/temporalio/helm-charts/blob/main/charts/temporal/templates/server-configmap.yaml). It
 can be enabled in the server [configuration](https://github.com/temporalio/temporal/blob/main/config/development.yaml).
 
-### Set up Archival {#set-up-archival}
+### Set up Archival {/* #set-up-archival */}
 
 To set up [Archival](/temporal-service/archival), decide the following:
 
@@ -58,7 +58,7 @@ Take the following steps to set up Archival:
 2. [Configure Archival options](#configure-archival-options).
 3. [Create an Archiving Namespace](#create-an-archiving-namespace).
 
-#### Choose an Archival provider {#choose-an-archival-provider}
+#### Choose an Archival provider {/* #choose-an-archival-provider */}
 
 Temporal directly supports several providers:
 
@@ -77,7 +77,7 @@ Temporal directly supports several providers:
 
 Save the provider URI so you can pass it when you create a Namespace with Archival enabled.
 
-#### Configure Archival options {#configure-archival-options}
+#### Configure Archival options {/* #configure-archival-options */}
 
 Configure Archival in
 [`config/development.yaml`](https://github.com/temporalio/temporal/blob/main/config/development.yaml#L93):
@@ -139,7 +139,7 @@ The following table shows the available configuration options and their accepted
 
 Additional resources: [Temporal Service configuration reference](/references/configuration).
 
-#### Create an Archiving Namespace {#create-an-archiving-namespace}
+#### Create an Archiving Namespace {/* #create-an-archiving-namespace */}
 
 Although Archival is configured at the Temporal Service level, it operates independently within each Namespace. If you
 don't specify an Archival URI during Namespace creation, the Namespace uses `namespaceDefaults.archival.history.URI`
@@ -151,7 +151,7 @@ Archival is supported in [Global Namespaces](/global-namespace) (Namespaces that
 is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before
 archiving, a history check is done to see what has been previously archived.
 
-#### Test your Archival setup {#test-your-archival-setup}
+#### Test your Archival setup {/* #test-your-archival-setup */}
 
 To test Archival locally, start by running a Temporal server:
 
@@ -178,11 +178,11 @@ Setting the retention period to 0 results in the error _A valid retention period
 :::
 
 Next, run a sample Workflow such as the
-[helloworld temporal sample](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld).
+[helloworld temporal sample](https://github.com/temporalio/samples-go/tree/main/helloworld).
 
 When the Workflow Execution closes, Temporal schedules archival processing.
 
-#### Retrieve archived history {#retrieve-archived-history}
+#### Retrieve archived history {/* #retrieve-archived-history */}
 
 You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log
 output and running the following command:
@@ -193,7 +193,7 @@ output and running the following command:
 ./temporal workflow show --workflow-id="my-workflow-id" --run-id="my-run-id" --namespace="my-namespace"
 ```
 
-### Create a custom Archiver {#custom-archiver}
+### Create a custom Archiver {/* #custom-archiver */}
 
 To archive data with a given provider, using the [Archival](/temporal-service/archival) feature, Temporal must have a
 corresponding Archiver component installed. The platform does not limit you to the existing providers. To use a provider
