@@ -89,7 +89,6 @@
 }
 
 .sdkRust {
-  border: 1px solid #a52c00;
 
   &:hover {
     .backgroundPath {
@@ -98,7 +97,6 @@
   }
 
   .backgroundPath {
-    fill: #a52c00;
     transition: opacity 0.3s ease;
   }
 }
