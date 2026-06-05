@@ -28,7 +28,7 @@ Temporal Ruby SDK support for [Standalone Activities](/standalone-activity) is a
 
 Standalone Activities are Activities that run independently, without being orchestrated by a
 Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
-Activity directly from a [`Temporalio::Client`](https://github.com/temporalio/sdk-ruby).
+Activity directly from a [`Temporalio::Client`](https://ruby.temporal.io/Temporalio/Client.html).
 
 The way you write the Activity and register it with a Worker is identical to [Workflow
 Activities](/develop/ruby/activities/basics). The only difference is that you execute a Standalone
@@ -93,7 +93,7 @@ It uses an in-memory database, so do not use it for real use cases.
 :::info Temporal Cloud
 
 All code samples on this page use
-[`Temporalio::EnvConfig::ClientConfig.load_client_connect_options`](https://github.com/temporalio/sdk-ruby)
+[`Temporalio::EnvConfig::ClientConfig.load_client_connect_options`](https://ruby.temporal.io/Temporalio/EnvConfig/ClientConfig.html#load_client_connect_options-class_method)
 to configure the Temporal Client connection. It responds to [environment
 variables](/references/client-environment-configuration) and [TOML configuration
 files](/references/client-environment-configuration), so the same code works against a local dev
@@ -130,7 +130,7 @@ standalone_activity/
 
 ## Define your Activity {/* #define-activity */}
 
-An Activity in the Temporal Ruby SDK is a subclass of `Temporalio::Activity::Definition` that
+An Activity in the Temporal Ruby SDK is a subclass of [`Temporalio::Activity::Definition`](https://ruby.temporal.io/Temporalio/Activity/Definition.html) that
 implements an `execute` method. The way you define a Standalone Activity is identical to how you
 define an Activity orchestrated by a Workflow. In fact, the same Activity can be executed both as a
 Standalone Activity and as a Workflow Activity.
@@ -154,7 +154,7 @@ end
 ## Run a Worker with the Activity registered {/* #run-worker */}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
-you create a `Temporalio::Worker`, register the Activity class, and call `worker.run`. The Worker
+you create a [`Temporalio::Worker`](https://ruby.temporal.io/Temporalio/Worker.html), register the Activity class, and call `worker.run`. The Worker
 doesn't need to know whether the Activity will be invoked from a Workflow or as a Standalone
 Activity. See [How to run a Worker](/develop/ruby/workers/run-worker-process) for more details on
 Worker setup and configuration options.
@@ -188,7 +188,7 @@ Leave this terminal running — the Worker needs to stay up to process activitie
 
 ## Execute a Standalone Activity {/* #execute-activity */}
 
-Use [`Temporalio::Client#execute_activity`](https://github.com/temporalio/sdk-ruby) to execute a
+Use [`Temporalio::Client#execute_activity`](https://ruby.temporal.io/Temporalio/Client.html#execute_activity-instance_method) to execute a
 Standalone Activity and block until it completes. Call this from your application code, not from
 inside a Workflow Definition. This durably enqueues your Standalone Activity in the Temporal Server,
 waits for it to be executed on your Worker, and then returns the result.
@@ -206,7 +206,7 @@ result = client.execute_activity(
 puts "Activity result: #{result}"
 ```
 
-The first argument is the Activity to run. It can be the `Activity::Definition` subclass, an
+The first argument is the Activity to run. It can be the [`Activity::Definition`](https://ruby.temporal.io/Temporalio/Activity/Definition.html) subclass, an
 instance of one, or a string/symbol name. Positional arguments after it are passed to the Activity's
 `execute` method. The call requires `id`, `task_queue`, and at least one of `start_to_close_timeout`
 or `schedule_to_close_timeout`.
@@ -238,7 +238,7 @@ temporal activity execute \
 Starting a Standalone Activity means sending a request to the Temporal Server to durably enqueue
 your Activity job, without waiting for it to be executed by your Worker.
 
-Use [`Temporalio::Client#start_activity`](https://github.com/temporalio/sdk-ruby) to start a
+Use [`Temporalio::Client#start_activity`](https://ruby.temporal.io/Temporalio/Client.html#start_activity-instance_method) to start a
 Standalone Activity and get a handle without waiting for the result:
 
 [start_activity.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/start_activity.rb)
@@ -278,7 +278,7 @@ temporal activity start \
 
 ## Get a handle to an existing Standalone Activity {/* #get-activity-handle */}
 
-Use `client.activity_handle` to create a handle to a previously started Standalone Activity:
+Use [`Temporalio::Client#activity_handle`](https://ruby.temporal.io/Temporalio/Client.html#activity_handle-instance_method) to create an [`ActivityHandle`](https://ruby.temporal.io/Temporalio/Client/ActivityHandle.html) for a previously started Standalone Activity:
 
 ```ruby
 handle = client.activity_handle('standalone-activity-id')
@@ -313,9 +313,9 @@ temporal activity result --activity-id standalone-activity-id
 
 ## List Standalone Activities {/* #list-activities */}
 
-Use [`Temporalio::Client#list_activities`](https://github.com/temporalio/sdk-ruby) to list
+Use [`Temporalio::Client#list_activities`](https://ruby.temporal.io/Temporalio/Client.html#list_activities-instance_method) to list
 Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is an
-`Enumerator` of `ActivityExecution` values that fetches pages from the server on demand as the
+`Enumerator` of [`ActivityExecution`](https://ruby.temporal.io/Temporalio/Client/ActivityExecution.html) values that fetches pages from the server on demand as the
 enumerator is consumed.
 
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not
@@ -346,7 +346,7 @@ Visibility](/visibility). For example, `ActivityType = 'ComposeGreeting' AND Sta
 
 ## Count Standalone Activities {/* #count-activities */}
 
-Use [`Temporalio::Client#count_activities`](https://github.com/temporalio/sdk-ruby) to count
+Use [`Temporalio::Client#count_activities`](https://ruby.temporal.io/Temporalio/Client.html#count_activities-instance_method) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query. This returns the
 total count of executions (running, completed, failed, etc.) — not the number of queued tasks. It
 works the same way as counting Workflow Executions.
@@ -375,7 +375,7 @@ temporal activity count
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
-The code samples on this page use `Temporalio::EnvConfig::ClientConfig.load_client_connect_options`,
+The code samples on this page use [`Temporalio::EnvConfig::ClientConfig.load_client_connect_options`](https://ruby.temporal.io/Temporalio/EnvConfig/ClientConfig.html#load_client_connect_options-class_method),
 so the same code works against Temporal Cloud — just configure the connection via environment
 variables or a TOML profile. No code changes are needed.
 
