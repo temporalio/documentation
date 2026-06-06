@@ -22,7 +22,7 @@ Worker crashes, network interruptions, and infrastructure outages are all recove
 But some failures require your application to detect and respond to them.
 Understanding which failures Temporal handles and which ones your application must handle is fundamental to building reliable Temporal applications.
 
-## Platform failures vs application failures {#platform-vs-application}
+## Platform failures vs application failures {/* #platform-vs-application */}
 
 Failures fall into two categories based on where they are detected and mitigated: platform failures and application failures.
 
@@ -48,7 +48,7 @@ For example, if a payment step fails after inventory has already been reserved, 
 
 For guidance on categorizing failures and deciding how to handle them, see [Error handling strategy](/best-practices/error-handling-strategy).
 
-## How Temporal represents failures {#failure-representation}
+## How Temporal represents failures {/* #failure-representation */}
 
 All failures in Temporal are represented as a Failure in the API.
 Each SDK exposes failures using the conventions of its language: what is called a Failure in one SDK might be called an Error or Exception in another.
@@ -102,7 +102,7 @@ This text is accessible in the Web UI and through the CLI.
 If your errors might contain sensitive information, you can encrypt the message and stack trace by configuring a custom Failure Converter with a codec.
 See [Failure Converter](/failure-converter) for details.
 
-## Workflow Task failures vs Workflow Execution failures {#task-vs-execution}
+## Workflow Task failures vs Workflow Execution failures {/* #task-vs-execution */}
 
 When an error occurs in Workflow code, it produces one of two outcomes depending on the error type: a Workflow Task failure or a Workflow Execution failure.
 Understanding the difference is important because they have very different implications.
@@ -129,7 +129,7 @@ No more attempts are made to progress the execution.
 
 Use Workflow Execution failures for permanent business logic failures where retrying the same code with the same input will not produce a different result.
 
-## How errors propagate {#error-propagation}
+## How errors propagate {/* #error-propagation */}
 
 When an Activity fails, Temporal wraps the error in an Activity Failure before delivering it to the Workflow.
 The Activity Failure provides context about the failure, including the Activity Type, the number of retry attempts, and the original cause.
@@ -144,7 +144,7 @@ A failed Child Workflow delivers a Child Workflow Failure to the parent Workflow
 If a Temporal failure propagates unhandled through Workflow code, it fails the Workflow Execution.
 The exception is Cancelled Failure, which puts the Workflow in "Cancelled" state instead of "Failed".
 
-### The outermost error type determines retryability {#outermost-error-type}
+### The outermost error type determines retryability {/* #outermost-error-type */}
 
 When an Activity returns an error, the SDK inspects the **outermost** error to decide how to represent the failure to the Temporal Service.
 The SDK performs a type check on the outermost error and converts it to a Protocol Buffer [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure) message.
@@ -165,7 +165,7 @@ Do not wrap Application Failures in generic language errors (such as `Error` in 
 This behavior is consistent across all SDKs (Go, Java, TypeScript, Python, and .NET).
 For language-specific examples and correct wrapping patterns, see the error handling guide for your SDK.
 
-## Failures in Event History {#event-history}
+## Failures in Event History {/* #event-history */}
 
 Failures are recorded in Event History, which provides a detailed record for debugging.
 
