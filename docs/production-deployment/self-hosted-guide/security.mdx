@@ -358,7 +358,8 @@ type TokenProvider interface {
 `GetToken` is called on every outbound cross-cluster RPC.
 `rpcAddress` is the receiver cluster's `host:port`. Providers commonly use this value as the JWT's `aud` claim to scope each token to a specific receiver.
 
-The Temporal Service does not cache the returned token; implementations are responsible for caching and refresh.
+The Temporal Service does not cache the returned token.
+Implementations are responsible for caching and refresh.
 A provider that fetches tokens from an external service must cache internally, otherwise every outbound RPC triggers a network round-trip to that service.
 OAuth 2.0 client libraries typically handle this caching, and a `TokenProvider` can often be a thin wrapper around one.
 
