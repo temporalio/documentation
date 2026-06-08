@@ -119,7 +119,7 @@ If you attach a public [Connectivity Rule with Stable IPs](/cloud/connectivity/i
 
 :::
 
-## How to enable HA on a Namespace using Private Connectivity: changing private DNS overrides from single-region to multi-region {#how-to-enable-ha-on-a-namespace-using-private-connectivity}
+## How to enable HA on a Namespace using Private Connectivity: changing private DNS overrides from single-region to multi-region {/* #how-to-enable-ha-on-a-namespace-using-private-connectivity */}
 
 If you are turning on [High Availability features](/cloud/high-availability/enable) on a Namespace that already uses AWS PrivateLink or GCP Private Service Connect, the existing private DNS setup almost certainly needs to change before failover will work.
 
@@ -149,7 +149,7 @@ Adding the regional records first (step 2) and removing the Namespace-endpoint r
 
 :::
 
-## How to migrate to another Temporal Cloud Region when using Private Connectivity {#how-to-migrate-regions-with-private-connectivity}
+## How to migrate to another Temporal Cloud Region when using Private Connectivity {/* #how-to-migrate-regions-with-private-connectivity */}
 
 To move a Namespace to a new Temporal Cloud Region while keeping Private Connectivity in place, the recommended pattern is to use a **separate private hosted zone in each region**, each overriding the Namespace Endpoint to point at that region's own VPC Endpoint. Because a PHZ is scoped only to the VPCs it is associated with, Workers in each region resolve the Namespace Endpoint to their local VPC Endpoint and traffic stays in-region throughout the move.
 
