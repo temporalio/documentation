@@ -358,6 +358,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -612,6 +613,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -756,6 +758,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -971,6 +974,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',

@@ -1,4 +1,5 @@
 // Website components
+export { default as IntegrationsGrid } from './IntegrationsGrid';
 export { default as RetrySimulator } from './elements/RetrySimulator';
 export { default as HomePageHero } from './elements/HomePageHero';
 export { SdkLogos } from './elements/SdkLogos';
