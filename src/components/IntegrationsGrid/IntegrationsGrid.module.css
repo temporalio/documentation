@@ -1,5 +1,5 @@
 .container {
-  --ig-pill-gradient: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
+  --ig-pill-gradient: linear-gradient(255deg, #444ce7 0%, #8b46d4 100%);
   --ig-pill-text-active: #fff;
 
   display: flex;
@@ -9,15 +9,15 @@
 
 :global([data-theme="light"]) .container {
   --ig-search-bg: #fff;
-  --ig-search-border: rgba(15, 23, 42, 0.15);
+  --ig-search-border: rgba(15, 23, 42, 0.25);
   --ig-search-text: #1e293b;
   --ig-search-placeholder: #94a3b8;
   --ig-focus-color: #444ce7;
   --ig-focus-shadow: 0 0 0 3px rgba(68, 76, 231, 0.15);
   --ig-pill-text: #475569;
-  --ig-pill-border: rgba(15, 23, 42, 0.15);
+  --ig-pill-border: rgba(15, 23, 42, 0.25);
   --ig-card-bg: #fff;
-  --ig-card-border: rgba(15, 23, 42, 0.08);
+  --ig-card-border: rgba(15, 23, 42, 0.15);
   --ig-card-hover: 0 4px 24px rgba(68, 76, 231, 0.18), 0 0 0 1px rgba(68, 76, 231, 0.12);
   --ig-badge-bg: #f1f5f9;
   --ig-badge-text: #475569;
@@ -26,18 +26,18 @@
 
 :global([data-theme="dark"]) .container {
   --ig-search-bg: #1a1a1a;
-  --ig-search-border: rgba(148, 163, 184, 0.25);
+  --ig-search-border: rgba(148, 163, 184, 0.35);
   --ig-search-text: #f1f5f9;
   --ig-search-placeholder: #64748b;
   --ig-focus-color: #7c6aef;
   --ig-focus-shadow: 0 0 0 3px rgba(124, 106, 239, 0.25);
-  --ig-pill-text: #94a3b8;
-  --ig-pill-border: rgba(148, 163, 184, 0.25);
+  --ig-pill-text: #cbd5e1;
+  --ig-pill-border: rgba(148, 163, 184, 0.35);
   --ig-card-bg: #1a1a1a;
-  --ig-card-border: rgba(148, 163, 184, 0.32);
+  --ig-card-border: rgba(148, 163, 184, 0.4);
   --ig-card-hover: 0 0 24px rgba(130, 90, 255, 0.25), 0 0 0 1px rgba(130, 90, 255, 0.2);
   --ig-badge-bg: rgba(148, 163, 184, 0.15);
-  --ig-badge-text: #94a3b8;
+  --ig-badge-text: #cbd5e1;
   --ig-muted: #64748b;
 }
 
@@ -197,7 +197,7 @@
 }
 
 .externalIcon {
-  opacity: 0.45;
+  opacity: 0.6;
   flex-shrink: 0;
 }
 
