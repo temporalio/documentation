@@ -10,6 +10,11 @@ const ALL_CATEGORIES = Array.from(
   new Set(integrations.map((i) => i.category)),
 ).sort();
 
+const FILTER_GROUPS = [
+  { label: "SDK", key: "sdks" as const, options: ALL_SDKS },
+  { label: "Tag", key: "categories" as const, options: ALL_CATEGORIES },
+];
+
 type FilterState = {
   sdks: SDK[];
   categories: string[];
@@ -89,7 +94,9 @@ type IntegrationsGridProps = {
   defaultSdks?: SDK[];
 };
 
-export default function IntegrationsGrid({ defaultSdks = [] }: IntegrationsGridProps) {
+export default function IntegrationsGrid({
+  defaultSdks = [],
+}: IntegrationsGridProps) {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<FilterState>({
     sdks: defaultSdks,
@@ -134,47 +141,27 @@ export default function IntegrationsGrid({ defaultSdks = [] }: IntegrationsGridP
       </div>
 
       <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <span className={styles.filterLabel}>SDK</span>
-          {ALL_SDKS.map((sdk) => (
-            <button
-              key={sdk}
-              type="button"
-              className={clsx(
-                styles.pill,
-                filters.sdks.includes(sdk) && styles.pillActive,
-              )}
-              onClick={() =>
-                setFilters((f) => ({ ...f, sdks: toggleIn(f.sdks, sdk) }))
-              }
-              aria-pressed={filters.sdks.includes(sdk)}
-            >
-              {sdk}
-            </button>
-          ))}
-        </div>
-        <div className={styles.filterGroup}>
-          <span className={styles.filterLabel}>Tag</span>
-          {ALL_CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              className={clsx(
-                styles.pill,
-                filters.categories.includes(cat) && styles.pillActive,
-              )}
-              onClick={() =>
-                setFilters((f) => ({
-                  ...f,
-                  categories: toggleIn(f.categories, cat),
-                }))
-              }
-              aria-pressed={filters.categories.includes(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        {FILTER_GROUPS.map(({ label, key, options }) => (
+          <div key={key} className={styles.filterGroup}>
+            <span className={styles.filterLabel}>{label}</span>
+            {options.map((value) => (
+              <button
+                key={value}
+                type="button"
+                className={clsx(
+                  styles.pill,
+                  filters[key].includes(value) && styles.pillActive,
+                )}
+                onClick={() =>
+                  setFilters((f) => ({ ...f, [key]: toggleIn(f[key], value) }))
+                }
+                aria-pressed={filters[key].includes(value)}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
+        ))}
       </div>
 
       {filtered.length > 0 ? (
