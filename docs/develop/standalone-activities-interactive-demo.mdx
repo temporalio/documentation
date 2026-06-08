@@ -25,7 +25,7 @@ Standalone Activities require Temporal CLI v1.7.0 or higher and Temporal Server 
 :::
 
 Standalone Activities let you run a single Activity straight from your application without
-writing a Workflow. Your code calls the Temporal Client, the Server durably enqueues the request
+writing a Workflow. Your code uses the Temporal Client to send the request to the Server, the Server durably enqueues the request
 for a Worker to pick up, and the result comes back through a handle that your code can wait on or
 check later.
 
