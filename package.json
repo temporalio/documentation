@@ -76,7 +76,7 @@
     "react-icons": "^5.5.0",
     "react-instantsearch": "^7.33.0",
     "react-markdown": "^10.1.0",
-    "react-player": "^2.6.0",
+    "react-player": "^3.4.0",
     "rehype-katex": "7",
     "remark-math": "6",
     "snipsync": "^1.12.0",
