@@ -80,11 +80,11 @@ function IntegrationCard({ item }: { item: Integration }) {
           {item.name}
           {external && <ExternalLinkIcon />}
         </h3>
-        <div className={styles.sdkIcons}>
-          {item.sdks.map((sdk) => (
-            <SdkSvg key={sdk} name={SDK_BLOCK_NAMES[sdk]} />
-          ))}
-        </div>
+        {item.sdk && (
+          <div className={styles.sdkIcons}>
+            <SdkSvg name={SDK_BLOCK_NAMES[item.sdk]} />
+          </div>
+        )}
       </div>
       <p className={styles.cardDescription}>{item.description}</p>
       <div className={styles.cardMeta}>
@@ -121,8 +121,7 @@ export default function IntegrationsGrid({
           if (!searchable.includes(q)) return false;
         }
         if (filters.sdks.length > 0) {
-          if (!item.sdks.some((sdk) => filters.sdks.includes(sdk)))
-            return false;
+          if (!item.sdk || !filters.sdks.includes(item.sdk)) return false;
         }
         if (filters.categories.length > 0) {
           if (!filters.categories.includes(item.category)) return false;
@@ -175,7 +174,7 @@ export default function IntegrationsGrid({
       {filtered.length > 0 ? (
         <div className={styles.grid}>
           {filtered.map((item) => (
-            <IntegrationCard key={`${item.name}-${item.sdks[0]}`} item={item} />
+            <IntegrationCard key={`${item.name}-${item.sdk ?? ''}`} item={item} />
           ))}
         </div>
       ) : (
