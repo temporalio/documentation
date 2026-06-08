@@ -3,12 +3,11 @@ import styles from './sdk-svg.module.css';
 import { useSvgTitle } from './useSvgTitle';
 
 const TypeScriptBlock = ({ title }) => {
-  const { titleId, titleElement } = useSvgTitle(title);
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
 
   return (
     <svg
-      role="img"
-      aria-labelledby={titleId}
+      {...svgA11yProps}
       className={styles.sdkTypeScript}
       fill="none"
       height="40"

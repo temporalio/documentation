@@ -3,12 +3,11 @@ import styles from './sdk-svg.module.css';
 import { useSvgTitle } from './useSvgTitle';
 
 const DotnetBlock = ({ title }) => {
-  const { titleId, titleElement } = useSvgTitle(title);
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
 
   return (
     <svg 
-      role="img"
-      aria-labelledby={titleId}
+      {...svgA11yProps}
       height="40"
       width="40"
       className={styles.sdkDotNet}

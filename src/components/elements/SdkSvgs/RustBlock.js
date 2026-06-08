@@ -3,12 +3,11 @@ import styles from './sdk-svg.module.css';
 import { useSvgTitle } from './useSvgTitle';
 
 const RustBlock = ({ title }) => {
-  const { titleId, titleElement } = useSvgTitle(title);
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
 
   return (
     <svg
-      role="img"
-      aria-labelledby={titleId}
+      {...svgA11yProps}
       className={styles.sdkRust}
       fill="none"
       height="40"

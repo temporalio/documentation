@@ -35,7 +35,7 @@ const SdkSvg = ({ name, title }) => {
 
 SdkSvg.propTypes = {
   name: Props.string.isRequired,
-  title: Props.string,
+  title: Props.string.isRequired,
 };
 
 export default SdkSvg;
