@@ -3,14 +3,18 @@
   --integrations-search-border: rgba(15, 23, 42, 0.15);
   --integrations-search-text: #1e293b;
   --integrations-search-placeholder: #94a3b8;
+  --integrations-search-focus-border: #444ce7;
+  --integrations-search-focus-shadow: 0 0 0 3px rgba(68, 76, 231, 0.15);
   --integrations-pill-bg: transparent;
-  --integrations-pill-bg-active: #1e293b;
+  --integrations-pill-gradient: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
   --integrations-pill-text: #475569;
   --integrations-pill-text-active: #fff;
   --integrations-pill-border: rgba(15, 23, 42, 0.15);
+  --integrations-pill-hover-border: #444ce7;
   --integrations-card-bg: #fff;
   --integrations-card-border: rgba(15, 23, 42, 0.08);
-  --integrations-card-shadow-hover: 0 20px 40px rgba(15, 23, 42, 0.16);
+  --integrations-card-shadow-hover: 0 4px 24px rgba(68, 76, 231, 0.18), 0 0 0 1px rgba(68, 76, 231, 0.12);
+  --integrations-card-focus-outline: #444ce7;
   --integrations-badge-bg: #f1f5f9;
   --integrations-badge-text: #475569;
   --integrations-empty-text: #64748b;
@@ -21,14 +25,18 @@
   --integrations-search-border: rgba(148, 163, 184, 0.25);
   --integrations-search-text: #f1f5f9;
   --integrations-search-placeholder: #64748b;
+  --integrations-search-focus-border: #7c6aef;
+  --integrations-search-focus-shadow: 0 0 0 3px rgba(124, 106, 239, 0.25);
   --integrations-pill-bg: transparent;
-  --integrations-pill-bg-active: #e2e8f0;
+  --integrations-pill-gradient: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
   --integrations-pill-text: #94a3b8;
-  --integrations-pill-text-active: #0f172a;
+  --integrations-pill-text-active: #fff;
   --integrations-pill-border: rgba(148, 163, 184, 0.25);
+  --integrations-pill-hover-border: #7c6aef;
   --integrations-card-bg: #1a1a1a;
   --integrations-card-border: rgba(148, 163, 184, 0.32);
-  --integrations-card-shadow-hover: 0 0 20px rgba(255, 255, 255, 0.15);
+  --integrations-card-shadow-hover: 0 0 24px rgba(130, 90, 255, 0.25), 0 0 0 1px rgba(130, 90, 255, 0.2);
+  --integrations-card-focus-outline: #7c6aef;
   --integrations-badge-bg: rgba(148, 163, 184, 0.15);
   --integrations-badge-text: #94a3b8;
   --integrations-empty-text: #64748b;
@@ -62,12 +70,13 @@
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.75rem;
   font-size: 1rem;
-  border: 1px solid var(--integrations-search-border);
+  border: none;
   border-radius: 0;
+  box-shadow: inset 0 0 0 1px var(--integrations-search-border);
   background: var(--integrations-search-bg);
   color: var(--integrations-search-text);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 .searchInput::placeholder {
@@ -75,8 +84,7 @@
 }
 
 .searchInput:focus {
-  border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  box-shadow: inset 0 0 0 1px var(--integrations-search-focus-border), var(--integrations-search-focus-shadow);
 }
 
 /* Filters */
@@ -92,6 +100,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
+  max-width: 100%;
 }
 
 .filterLabel {
@@ -109,8 +118,9 @@
   padding: 0.375rem 0.875rem;
   font-size: 0.85rem;
   font-weight: 500;
-  border: 1px solid var(--integrations-pill-border);
+  border: none;
   border-radius: 0;
+  box-shadow: inset 0 0 0 1px var(--integrations-pill-border);
   background: var(--integrations-pill-bg);
   color: var(--integrations-pill-text);
   cursor: pointer;
@@ -119,13 +129,13 @@
 }
 
 .pill:hover {
-  border-color: var(--integrations-pill-bg-active);
+  box-shadow: inset 0 0 0 1px var(--integrations-pill-hover-border);
 }
 
 .pillActive {
-  background: var(--integrations-pill-bg-active);
+  background: var(--integrations-pill-gradient);
   color: var(--integrations-pill-text-active);
-  border-color: var(--integrations-pill-bg-active);
+  box-shadow: none;
 }
 
 /* Grid */
@@ -143,20 +153,21 @@
   flex-direction: column;
   padding: 1.25rem;
   background: var(--integrations-card-bg);
-  border: 1px solid var(--integrations-card-border);
+  border: none;
   border-radius: 0;
+  box-shadow: inset 0 0 0 1px var(--integrations-card-border);
   text-decoration: none;
   color: inherit;
   transition: box-shadow 0.28s ease 70ms;
 }
 
 .card:hover {
-  box-shadow: var(--integrations-card-shadow-hover);
+  box-shadow: inset 0 0 0 1px var(--integrations-card-border), var(--integrations-card-shadow-hover);
   text-decoration: none;
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--ifm-color-primary);
+  outline: 2px solid var(--integrations-card-focus-outline);
   outline-offset: 2px;
 }
 
