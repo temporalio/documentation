@@ -87,7 +87,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "^1.60.0",
     "@types/node": "^24.5.1",
     "@types/yaml": "^1.9.7",
     "dprint": "^0.54.0",
