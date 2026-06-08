@@ -326,6 +326,7 @@ module.exports = {
               items: [
                 'develop/java/nexus/quickstart',
                 'develop/java/nexus/feature-guide',
+                'develop/java/nexus/standalone-operations',
               ],
             },
             {
