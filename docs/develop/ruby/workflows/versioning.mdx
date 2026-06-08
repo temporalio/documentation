@@ -14,7 +14,7 @@ keywords:
   - version
   - versioning
   - workflow completion
-  - workflow history
+  - event history
   - workflow transition
 tags:
   - Workflows
@@ -38,13 +38,13 @@ There are two primary Versioning methods that you can use:
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
-## Versioning with Patching {#ruby-sdk-patching-api}
+## Versioning with Patching {/* #ruby-sdk-patching-api */}
 
 ### Adding a patch
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
-When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
+When you want to make substantive code changes that may affect existing Workflow Executions, create a patch.
 
 Suppose you have an initial Workflow that runs `PrePatchActivity`:
 
@@ -88,7 +88,7 @@ Patching is a three-step process:
 
 ### Patching in new code
 
-Using `patched` inserts a marker into the Workflow History.
+Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case `my-patch`).
 This ensures you can safely deploy new code paths alongside the original branch.
 
@@ -112,15 +112,15 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-### Deprecating patches {#deprecated-patches}
+### Deprecating patches {/* #deprecated-patches */}
 
 After ensuring that all Workflows started with `v1` code have left retention, you can [deprecate the patch](https://ruby.temporal.io/Temporalio/Workflow.html#deprecate_patch-class_method).
 
 Once your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
-The `deprecate_patch()` function works similarly to the `patched()` function by recording a marker in the Workflow history.
+The `deprecate_patch()` function works similarly to the `patched()` function by recording a marker in the Event history.
 This marker does not fail replay when Workflow code does not emit it.
-Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow history.
+Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Event history.
 
 ```ruby
 class MyWorkflow < Temporalio::Workflow::Definition
@@ -136,7 +136,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-### Removing a patch {#deploy-new-code}
+### Removing a patch {/* #deploy-new-code */}
 
 Once the pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 

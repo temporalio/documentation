@@ -617,7 +617,12 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/integrations/index',
               },
-              items: ['develop/python/integrations/braintrust'],
+              items: [
+                'develop/python/integrations/braintrust',
+                'develop/python/integrations/langgraph',
+                'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
+              ],
             },
           ],
         },
@@ -819,6 +824,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/interceptors',
               ]
             },
             {
@@ -1196,7 +1202,18 @@ module.exports = {
           items: [
             'cloud/high-availability/enable',
             'cloud/high-availability/monitoring',
-            'cloud/high-availability/failovers',
+            {
+              type: 'category',
+              label: 'Failovers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/high-availability/failovers/failovers',
+              },
+              items: [
+                'cloud/high-availability/failovers/manage-failovers',
+              ],
+            },
             'cloud/high-availability/ha-connectivity',
           ],
         },
@@ -1326,6 +1343,7 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            'production-deployment/worker-deployments/unversioned-to-versioned-migration',
             {
               type: 'category',
               label: 'Serverless Workers',

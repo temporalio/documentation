@@ -16,6 +16,8 @@ tags:
   - Temporal Cloud
 ---
 
+import CloudRegionCount from '@site/src/components/elements/CloudRegionCount';
+
 Temporal Cloud is a fully managed durable execution platform.
 It handles the complexity of running Temporal at scale—persistence, replication, upgrades, and availability—so you can focus on building applications.
 
@@ -25,7 +27,7 @@ The platform stores encrypted Workflow state and orchestrates execution, while y
 
 ## How Temporal Cloud works
 
-Temporal Cloud operates as the control plane for your distributed applications:
+Temporal Cloud operates as the Control Plane for your distributed applications:
 
 1. **Your environment**: You run Workers that execute your Workflow and Activity code. These can be deployed anywhere—Kubernetes, VMs, serverless, on-premises.
 2. **Temporal Cloud**: Manages Workflow state, Event History, task queuing, and scheduling. All data is encrypted in transit and at rest.
@@ -56,7 +58,7 @@ This design limits blast radius and enables independent scaling.
 
 **Data plane**: Where your Workflows execute. Each cell processes Workflow operations, persists state, and manages task queues. The data plane is optimized for low latency and high throughput.
 
-**Control plane**: Manages provisioning, configuration, and lifecycle operations. When you create a Namespace, the control plane:
+**Control plane**: Manages provisioning, configuration, and lifecycle operations. When you create a Namespace, the Control Plane:
 1. Selects an appropriate cell in your chosen region
 2. Provisions database resources and roles
 3. Generates and deploys mTLS certificates
@@ -68,8 +70,8 @@ The control plane uses Temporal itself (durable execution) to orchestrate these 
 
 Temporal Cloud runs on both AWS and GCP:
 
-- **14 AWS regions** spanning North America, Europe, Asia Pacific, and South America
-- **5 GCP regions** in North America, Europe, and Asia Pacific
+- <strong><CloudRegionCount provider="aws" /> AWS regions</strong> spanning North America, Europe, Asia Pacific, and South America
+- <strong><CloudRegionCount provider="gcp" /> GCP regions</strong> in North America, Europe, and Asia Pacific
 
 You can create Namespaces in any supported region.
 For disaster recovery, you can replicate across regions within a cloud provider or across cloud providers entirely.

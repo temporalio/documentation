@@ -10,7 +10,7 @@ tags:
   - Worker
 ---
 
-## Run a Worker Process {#run-a-dev-worker}
+## Run a Worker Process {/* #run-a-dev-worker */}
 
 The [Worker Process](/workers#worker-process) is where Workflow and Activity code executes. A Worker polls a specific [Task Queue](/task-queue), processes Tasks from that queue, and reports results back to the Temporal Service.
 
@@ -55,7 +55,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Register types {#register-types}
+### Register types {/* #register-types */}
 
 All Workers polling the same Task Queue name must be registered to handle the exact same Workflow Types and Activity Types. If a Worker receives a Task for a type it does not know how to execute, that Task fails, but the Workflow Execution itself does not necessarily fail.
 

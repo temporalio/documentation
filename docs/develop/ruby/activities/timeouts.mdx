@@ -17,7 +17,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Activity timeouts {#activity-timeouts}
+## Activity timeouts {/* #activity-timeouts */}
 
 Each Activity Timeout controls a different aspect of how long an Activity Execution can take:
 
@@ -35,7 +35,7 @@ Temporalio::Workflow.execute_activity(
 )
 ```
 
-### Activity Retry Policy {#activity-retries}
+### Activity Retry Policy {/* #activity-retries */}
 
 By default, Activities use a system Retry Policy.
 You can override it by specifying a custom Retry Policy.
@@ -51,7 +51,7 @@ Temporalio::Workflow.execute_activity(
 )
 ```
 
-### Override the retry interval with `next_retry_delay` {#next-retry-delay}
+### Override the retry interval with `next_retry_delay` {/* #next-retry-delay */}
 
 If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
 
@@ -63,7 +63,7 @@ raise Temporalio::Error::ApplicationError.new(
 )
 ```
 
-## Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {/* #activity-heartbeats */}
 
 A Heartbeat is a periodic signal from the Worker to the Temporal Service indicating the Activity is still alive and making progress.
 
@@ -86,7 +86,7 @@ class MyActivity < Temporalio::Activity::Definition
 end
 ```
 
-### Heartbeat Timeout {#heartbeat-timeout}
+### Heartbeat Timeout {/* #heartbeat-timeout */}
 
 The Heartbeat Timeout sets the maximum duration between Heartbeats before the Temporal Service considers the Activity failed.
 

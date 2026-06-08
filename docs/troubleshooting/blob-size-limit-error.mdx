@@ -39,7 +39,7 @@ include:
 - `CompleteWorkflowExecutionCommandAttributes.Result exceeds size limit`
 - `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
 
-### Error behavior {#payload-error-behavior}
+### Error behavior {/* #payload-error-behavior */}
 
 The behavior when a payload exceeds the size limit depends on the SDK version.
 
@@ -71,8 +71,8 @@ Workflow is not terminated and remains open, so you can deploy a fix and allow t
 
    :::tip Support, stability, and dependency info
 
-   External Storage is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-   All APIs are experimental and may be subject to backwards-incompatible changes. Join the
+   External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+   APIs and configuration may change before General Availability. Join the
    [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for
    help.
 
@@ -99,7 +99,7 @@ The error message depends on which operation carried the oversized gRPC message 
 - `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`
 - `ScheduleToCloseTimeout` (Activities only, see [error behavior](#grpc-error-behavior) below)
 
-### Error behavior {#grpc-error-behavior}
+### Error behavior {/* #grpc-error-behavior */}
 
 The behavior when a gRPC message exceeds the size limit depends on the SDK version.
 

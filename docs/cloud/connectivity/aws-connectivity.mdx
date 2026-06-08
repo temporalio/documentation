@@ -108,10 +108,18 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Endpoint type      | PHZ domain format                  | Example                                |
-| ------------------ | ---------------------------------- | -------------------------------------- |
-| Namespace endpoint | `<namespace-id>.tmprl.cloud`       | `payments.abcde.tmprl.cloud`           |
-| Regional endpoint  | `<cloud>-<region>.region.tmprl.cloud` | `aws-ap-northeast-2.region.tmprl.cloud` |
+| Endpoint type      | PHZ domain format                     | Example                                 | Use when |
+| ------------------ | ------------------------------------- | --------------------------------------- | -------- |
+| Namespace endpoint | `<namespace-id>.tmprl.cloud`          | `payments.abcde.tmprl.cloud`            | **Single-region Namespaces only.** Simplest pattern — one record per Namespace. Do not use this for [High Availability](/cloud/high-availability/ha-connectivity) Namespaces: the override short-circuits Temporal's regional CNAME chain and failover stops working. |
+| Regional endpoint  | `<cloud>-<region>.region.tmprl.cloud` | `aws-ap-northeast-2.region.tmprl.cloud` | **Single-region or HA Namespaces.** One record per Temporal Cloud region, reused by every Namespace active or replicated in that region. **Required for HA Namespaces** — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity). |
+
+:::warning HA Namespaces require the regional override
+
+For Namespaces with [High Availability](/cloud/high-availability/ha-connectivity), use the regional-endpoint PHZ pattern only. The Namespace-endpoint override is read out of the PHZ before public DNS, so the regional CNAME that Temporal Cloud rewrites on failover is never followed and Workers stay pinned to the old region. If you're switching an existing single-region private Namespace to HA, see [How to enable HA on a Namespace using Private Connectivity](/cloud/high-availability/ha-connectivity#how-to-enable-ha-on-a-namespace-using-private-connectivity) for the PHZ migration steps.
+
+:::
+
+The step-by-step below walks through the **Namespace endpoint** pattern, which is the simpler single-region case. For HA, follow the [HA Connectivity guide](/cloud/high-availability/ha-connectivity) instead, which uses the same Route 53 mechanics but on the regional records.
 
 ### Step-by-step instructions
 
@@ -192,7 +200,7 @@ For Namespaces with [High Availability features](/cloud/high-availability), you 
 
 The complete guidance — including single-cloud (AWS-only) HA, multi-cloud HA (AWS PrivateLink + GCP Private Service Connect), and a recommended failover-testing plan — lives on a single page: [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 
-## Direct VPCE targeting without per-Namespace DNS {#direct-vpce}
+## Direct VPCE targeting without per-Namespace DNS {/* #direct-vpce */}
 
 For single-region Namespaces, you can avoid creating DNS records for each Namespace by pointing Workers directly at the VPC Endpoint and overriding the TLS Server Name Indicator (SNI):
 

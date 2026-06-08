@@ -17,7 +17,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Set Activity timeouts {#activity-timeouts}
+## Set Activity timeouts {/* #activity-timeouts */}
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -56,7 +56,7 @@ Available timeouts are:
         )
 ```
 
-### Set an Activity Retry Policy {#activity-retries}
+### Set an Activity Retry Policy {/* #activity-retries */}
 
 **How to set an Activity Retry Policy using the Temporal Python SDK**
 
@@ -91,7 +91,7 @@ from temporalio.common import RetryPolicy
         )
 ```
 
-### Override the retry interval with `next_retry_delay` {#next-retry-delay}
+### Override the retry interval with `next_retry_delay` {/* #next-retry-delay */}
 
 To override the next retry interval set by the current policy, pass `next_retry_delay` when raising an [ApplicationError](/references/failures#application-failure) in an Activity.
 This value replaces and overrides whatever the retry interval would normally be on the retry policy.
@@ -117,7 +117,7 @@ async def my_activity(input: MyActivityInput):
         ) from e
 ```
 
-## Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {/* #activity-heartbeats */}
 
 **How to Heartbeat an Activity using the Temporal Python SDK**
 
@@ -144,7 +144,7 @@ async def your_activity_definition() -> str:
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
 If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
 
-#### Set a Heartbeat Timeout {#heartbeat-timeout}
+#### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 **How to set a Heartbeat Timeout using the Temporal Python SDK**
 

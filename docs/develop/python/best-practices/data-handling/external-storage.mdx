@@ -11,10 +11,10 @@ tags:
 description: Offload large payloads to external storage using the claim check pattern in the Python SDK.
 ---
 
-:::info Release, stability, and dependency info 
+:::info Release, stability, and dependency info
 
-External Storage is in [Pre-Release](/evaluate/development-production-features/release-stages#pre-release). APIs and
-configuration may change before the stable release. Join the
+External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs
+and configuration may change before General Availability. Join the
 [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 
 :::
@@ -32,8 +32,10 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 ### Prerequisites
 
-- An Amazon S3 bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
-  to ensure that your payloads remain available for the entire lifetime of the Workflow.
+- An Amazon S3 bucket that you have read and write access to. Refer to
+  [lifecycle management](/external-storage#lifecycle) to ensure that your payloads remain available for the entire
+  lifetime of the Workflow. For multi-region durability, see
+  [Durable External Storage](/external-storage#durable-external-storage).
 - Install the `aioboto3` extra: `python -m pip install "temporalio[aioboto3]"`
 
 ### Procedure
@@ -41,7 +43,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 1. Create an S3 client using `aioboto3` and pass it to the `S3StorageDriver`. The driver uses your standard AWS
    credentials from the environment (environment variables, IAM role, or AWS config file):
 
-   <!--SNIPSTART python-s3-driver-create-->
+      <!--SNIPSTART python-s3-driver-create-->
 [features/snippets/external_storage/s3_setup/s3_driver_create.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.py)
 ```py
 session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
@@ -55,7 +57,7 @@ async with session.client("s3") as s3_client:
 
 2. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
-   <!--SNIPSTART python-s3-external-storage-setup-->
+      <!--SNIPSTART python-s3-external-storage-setup-->
 [features/snippets/external_storage/s3_setup/s3_external_storage_setup.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.py)
 ```py
 data_converter = dataclasses.replace(
@@ -76,21 +78,25 @@ worker = Worker(
 ```
    <!--SNIPEND-->
 
-   By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
-   `payload_size_threshold` parameter, even setting it to 0 to externalize all payloads regardless of size. Refer to
-   [Configure payload size threshold](#configure-payload-size-threshold) for more information.
+By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
+`payload_size_threshold` parameter, even setting it to 0 to externalize all payloads regardless of size. Refer to
+[Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
-   All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
-   business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
+All Workflows and Activities running on the Worker use the storage driver automatically without changes to your business
+logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
+
+The S3 driver includes diagnostic metadata, such as the AWS region, in error messages to help troubleshoot storage
+failures. For a complete working example that includes a Worker, Codec Server, and S3 driver, see the
+[External Storage sample](https://github.com/temporalio/samples-python/tree/main/external_storage).
 
 ## Implement a custom storage driver
 
 If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
-Store payloads durably so that they survive process crashes and remain available for debugging and auditing after the
-Workflow completes. Refer to [lifecycle management](/external-storage#lifecycle) for retention requirements.
+Refer to [Choose a storage system](/external-storage#choose-storage) for guidance on selecting a backing store and [Lifecycle management](/external-storage#lifecycle) for retention requirements.
 
 The following example shows a custom driver that uses local disk as the backing store. This example is for local
-development and testing only. In production, use a durable storage system that is accessible to all Workers:
+development and testing only. In production, use a durable storage system that is accessible to all Workers.
+For example, see the [Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis).
 
 <!--SNIPSTART python-custom-storage-driver-->
 [features/snippets/external_storage/custom_driver/custom_storage_driver.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.py)
@@ -150,7 +156,8 @@ The following sections walk through the key parts of the driver implementation.
 A custom driver extends the `StorageDriver` abstract class and implements three methods:
 
 - `name()` returns a unique string that identifies the driver. The SDK stores this name in the claim check reference so
-  it can route retrieval requests to the correct driver. Changing the name after payloads have been stored breaks retrieval.
+  it can route retrieval requests to the correct driver. Changing the name after payloads have been stored breaks
+  retrieval.
 - `store()` receives a list of payloads and returns one `StorageDriverClaim` per payload. A claim is a set of string
   key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
@@ -158,9 +165,10 @@ A custom driver extends the `StorageDriver` abstract class and implements three 
 ### 2. Store payloads
 
 In `store()`, convert each Payload protobuf message to bytes with `payload.SerializeToString()` and write the bytes to
-your storage system. The application data has already been serialized by the [Payload Converter](/develop/python/data-handling/data-conversion) 
-and [Payload Codec](/develop/python/data-handling/data-encryption) before it reaches the driver.
-See the [data conversion pipeline](/external-storage#data-pipeline) for more details.
+your storage system. The application data has already been serialized by the
+[Payload Converter](/develop/python/data-handling/data-conversion) and
+[Payload Codec](/develop/python/data-handling/data-encryption) before it reaches the driver. See the
+[data conversion pipeline](/external-storage#data-pipeline) for more details.
 
 Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `context.target`
 provides identity information (namespace, Workflow ID, or Activity ID) depending on the operation. Consider structuring
@@ -175,7 +183,7 @@ returns the payload.
 
 ### 4. Configure the Data Converter
 
-Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker. 
+Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker.
 You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
 <!--SNIPSTART python-custom-driver-data-converter-->
@@ -217,12 +225,12 @@ migrating between storage backends. Return `None` from the selector to keep a sp
 
 Multiple drivers are useful in scenarios such as:
 
-- Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the
-  one you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads.
-  The old driver remains available for retrieving existing claims.
-- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For
-  example, use S3 for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the
-  appropriate driver based on the runtime environment.
+- Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the one
+  you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads. The old
+  driver remains available for retrieving existing claims.
+- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For example, use S3
+  for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the appropriate driver
+  based on the runtime environment.
 
 The following example registers two drivers but always selects `preferred_driver` for new payloads. The `legacy_driver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
@@ -239,3 +247,25 @@ ExternalStorage(
 )
 ```
 <!--SNIPEND-->
+
+## Multi-region durability
+
+To make your S3-backed External Storage tolerant of regional failures, configure the AWS side with
+[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) and an
+[S3 Multi-Region Access Point (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/), then point the
+driver at the MRAP ARN instead of a bucket name. See
+[Durable External Storage](/external-storage#durable-external-storage) for the full pattern and trade-offs.
+
+In code, the only change is the value you pass as `bucket`:
+
+```py
+session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
+async with session.client("s3") as s3_client:
+    driver = S3StorageDriver(
+        client=new_aioboto3_client(s3_client),
+        bucket="arn:aws:s3::123456789012:accesspoint/mfzwi23gnjvgw.mrap",
+    )
+```
+
+`aioboto3` (via `botocore`) automatically uses [SigV4A](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html)
+signing when the bucket value is an MRAP ARN. Make sure your `botocore` version is recent enough to support SigV4A.
