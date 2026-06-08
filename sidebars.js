@@ -574,6 +574,7 @@ module.exports = {
                 'develop/python/integrations/braintrust',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
               ],
             },
           ],
