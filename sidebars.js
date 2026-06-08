@@ -1242,7 +1242,7 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud', 'cloud/migrate/estimate-actions'],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',

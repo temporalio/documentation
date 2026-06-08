@@ -448,44 +448,8 @@ Enabling this configuration will require a restart of your history pods.
 
 ## How to gather self-hosted metrics
 
-Temporal Server (version > 1.17) provides an [action](/cloud/pricing#action) metric. You may use Grafana to capture and
-display this metric. Use this [sample](https://github.com/temporalio/dashboards/blob/master/server/server-general.json)
-dashboard as a reference. To determine actions per second (APS) you may use the following promql queries.
-
-`sum (rate(action{service_name="frontend"}[1m]))`
-
-`sum (rate(action{service_name="frontend"}[1m]))  by (exported_namespace)`
-
-The first query will calculate total APS. The second will isolate the metric per Namespace.
-
-For Datadog, the following widget will calculate actions per second:
-
-```
-{
-    "title": "Average Actions per Second",
-    "type": "query_value",
-    "requests": [
-        {
-            "formulas": [
-                {
-                    "formula": "query1"
-                }
-            ],
-            "queries": [
-                {
-                    "name": "query1",
-                    "data_source": "metrics",
-                    "query": "sum:io.temporal.server.action.count{$server-name}.as_rate()",
-                    "aggregator": "avg"
-                }
-            ],
-            "response_format": "scalar"
-        }
-    ],
-    "autoscale": true,
-    "precision": 2
-}
-```
+To collect peak Actions per second (APS), fixed-range Action counts, and representative Workflow Action estimates from
+your self-hosted Temporal Service, see [Estimate Actions for migration](/cloud/migrate/estimate-actions).
 
 ## Frequently asked questions
 
