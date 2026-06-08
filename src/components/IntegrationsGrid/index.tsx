@@ -2,9 +2,17 @@ import { useState, useMemo } from "react";
 import Link from "@docusaurus/Link";
 import clsx from "clsx";
 import integrations, { type SDK, type Integration } from "./integrations-data";
+import SdkSvg from "../elements/SdkSvgs/SdkSvg";
 import styles from "./IntegrationsGrid.module.css";
 
 const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript"];
+
+const SDK_BLOCK_NAMES: Record<SDK, string> = {
+  Java: "javaBlock",
+  Python: "pythonBlock",
+  Ruby: "rubyBlock",
+  TypeScript: "typeScriptBlock",
+};
 
 const ALL_CATEGORIES = Array.from(
   new Set(integrations.map((i) => i.category)),
@@ -72,15 +80,15 @@ function IntegrationCard({ item }: { item: Integration }) {
           {item.name}
           {external && <ExternalLinkIcon />}
         </h3>
+        <div className={styles.sdkIcons}>
+          {item.sdks.map((sdk) => (
+            <SdkSvg key={sdk} name={SDK_BLOCK_NAMES[sdk]} />
+          ))}
+        </div>
       </div>
       <p className={styles.cardDescription}>{item.description}</p>
       <div className={styles.cardMeta}>
         <span className={styles.badge}>{item.category}</span>
-        {item.sdks.map((sdk) => (
-          <span key={sdk} className={styles.badge}>
-            {sdk}
-          </span>
-        ))}
       </div>
     </Link>
   );
@@ -167,7 +175,7 @@ export default function IntegrationsGrid({
       {filtered.length > 0 ? (
         <div className={styles.grid}>
           {filtered.map((item) => (
-            <IntegrationCard key={item.name} item={item} />
+            <IntegrationCard key={`${item.name}-${item.sdks[0]}`} item={item} />
           ))}
         </div>
       ) : (

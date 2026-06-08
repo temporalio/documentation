@@ -22,8 +22,16 @@ const integrations: Integration[] = [
     description:
       "Monitor and evaluate AI application performance with Braintrust observability.",
     category: "Observability",
-    sdks: ["Python", "TypeScript"],
+    sdks: ["Python"],
     href: "/develop/python/integrations/braintrust",
+  },
+  {
+    name: "Braintrust",
+    description:
+      "Monitor and evaluate AI application performance with Braintrust observability.",
+    category: "Observability",
+    sdks: ["TypeScript"],
+    href: "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#typescript",
   },
   {
     name: "Google ADK",

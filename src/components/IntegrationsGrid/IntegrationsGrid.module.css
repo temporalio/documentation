@@ -179,6 +179,23 @@
   gap: 0.375rem;
 }
 
+.sdkIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+}
+
+.sdkIcons svg {
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+
+.sdkIcons svg:hover path {
+  opacity: 1;
+}
+
 .externalIcon {
   opacity: 0.45;
   flex-shrink: 0;
