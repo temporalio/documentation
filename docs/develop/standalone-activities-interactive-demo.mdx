@@ -64,7 +64,7 @@ Policy you configure.
 | Orchestrated by | A Workflow Definition | Your application code (via the Temporal Client) |
 | Started with | SDK-specific (for example, `workflow.ExecuteActivity()` in Go) | SDK-specific (for example, `client.ExecuteActivity()` in Go, `client.StartActivityAsync()` in .NET) |
 | Retry policy | Set in `ActivityOptions` inside your Workflow | Set in `StartActivityOptions` when calling the client |
-| Visibility | Shown in the Workflow's Event History | Shown in the Activity list and count views |
+| Visibility | Shown in the Workflow's Event History | Shown in the Standalone Activity list and count views |
 | Use case | Multi-step orchestration with multiple Activities | Single, independent jobs like sending an email or processing a webhook |
 
 The Activity function and Worker registration are **identical** for both approaches, and only the
