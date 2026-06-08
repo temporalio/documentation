@@ -1,9 +1,14 @@
 import React from 'react';
 import styles from './sdk-svg.module.css';
+import { useSvgTitle } from './useSvgTitle';
 
-const DotnetBlock = () => {
+const DotnetBlock = ({ title }) => {
+  const { titleId, titleElement } = useSvgTitle(title);
+
   return (
-    <svg
+    <svg 
+      role="img"
+      aria-labelledby={titleId}
       height="40"
       width="40"
       className={styles.sdkDotNet}
@@ -11,6 +16,7 @@ const DotnetBlock = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {titleElement}
       <clipPath id="a">
         <path d="m9 15h23v9h-23z" />
       </clipPath>

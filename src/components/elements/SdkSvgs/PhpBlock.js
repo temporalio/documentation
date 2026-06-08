@@ -1,9 +1,14 @@
 import React from 'react';
 import styles from './sdk-svg.module.css';
+import { useSvgTitle } from './useSvgTitle';
 
-const PhpBlock = () => {
+const PhpBlock = ({ title }) => {
+  const { titleId, titleElement } = useSvgTitle(title);
+
   return (
     <svg
+      role="img"
+      aria-labelledby={titleId}
       className={styles.sdkPhp}
       fill="none"
       height="40"
@@ -11,6 +16,7 @@ const PhpBlock = () => {
       width="40"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {titleElement}
       <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="20.5626" x2="20.5626" y1="13.8195" y2="26.1808">
         <stop offset="0" stopColor="#111827" />
         <stop offset="1" stopColor="#141414" />
