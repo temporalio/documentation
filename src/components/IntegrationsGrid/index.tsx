@@ -6,7 +6,7 @@ import SdkSvg from "../elements/SdkSvgs/SdkSvg";
 import styles from "./IntegrationsGrid.module.css";
 
 const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript"];
-const LANGUAGE_AGNOSTIC = "Language agnostic";
+const LANGUAGE_AGNOSTIC = "Language-agnostic";
 type SdkFilter = SDK | typeof LANGUAGE_AGNOSTIC;
 const ALL_SDK_FILTERS: SdkFilter[] = [...ALL_SDKS, LANGUAGE_AGNOSTIC];
 
