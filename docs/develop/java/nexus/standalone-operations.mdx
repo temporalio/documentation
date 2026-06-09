@@ -76,11 +76,11 @@ NexusServiceClient<GreetingNexusService> greetingClient =
 GreetingOutput greeting =
     greetingClient.execute(
         GreetingNexusService::greet,
-        new GreetingInput("World"),
         StartNexusOperationOptions.newBuilder()
             .setId("greet-" + UUID.randomUUID())
             .setScheduleToCloseTimeout(Duration.ofSeconds(10))
-            .build());
+            .build(),
+        new GreetingInput("World"));
 ```
 
 `executeAsync()` is the same but returns a `CompletableFuture` instead of blocking.
@@ -88,7 +88,7 @@ GreetingOutput greeting =
 ```java
 CompletableFuture<GreetingOutput> future =
     greetingClient.executeAsync(
-        GreetingNexusService::greet, new GreetingInput("World"), options);
+        GreetingNexusService::greet, options, new GreetingInput("World"));
 GreetingOutput greeting = future.get();
 ```
 
@@ -108,7 +108,7 @@ both synchronous and asynchronous Operations.
 // Start an operation and get a NexusOperationHandle.
 NexusOperationHandle<GreetingOutput> handle =
     greetingClient.start(
-        GreetingNexusService::startGreeting, new GreetingInput("World"), options);
+        GreetingNexusService::startGreeting, options, new GreetingInput("World"));
 
 // Block until the operation completes and retrieve its result.
 GreetingOutput greeting = handle.getResult();
