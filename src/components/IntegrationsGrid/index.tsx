@@ -6,6 +6,9 @@ import SdkSvg from "../elements/SdkSvgs/SdkSvg";
 import styles from "./IntegrationsGrid.module.css";
 
 const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript"];
+const LANGUAGE_AGNOSTIC = "Language agnostic";
+type SdkFilter = SDK | typeof LANGUAGE_AGNOSTIC;
+const ALL_SDK_FILTERS: SdkFilter[] = [...ALL_SDKS, LANGUAGE_AGNOSTIC];
 
 const SDK_BLOCK_NAMES: Record<SDK, string> = {
   Java: "javaBlock",
@@ -14,18 +17,18 @@ const SDK_BLOCK_NAMES: Record<SDK, string> = {
   TypeScript: "typeScriptBlock",
 };
 
-const ALL_CATEGORIES = Array.from(
-  new Set(integrations.map((i) => i.category)),
+const ALL_TAGS = Array.from(
+  new Set(integrations.flatMap((i) => i.tags)),
 ).sort();
 
 const FILTER_GROUPS = [
-  { label: "SDK", key: "sdks" as const, options: ALL_SDKS },
-  { label: "Tag", key: "categories" as const, options: ALL_CATEGORIES },
+  { label: "SDK", key: "sdks" as const, options: ALL_SDK_FILTERS as string[] },
+  { label: "Tag", key: "tags" as const, options: ALL_TAGS },
 ];
 
 type FilterState = {
-  sdks: SDK[];
-  categories: string[];
+  sdks: SdkFilter[];
+  tags: string[];
 };
 
 function isExternal(href: string): boolean {
@@ -88,7 +91,9 @@ function IntegrationCard({ item }: { item: Integration }) {
       </div>
       <p className={styles.cardDescription}>{item.description}</p>
       <div className={styles.cardMeta}>
-        <span className={styles.badge}>{item.category}</span>
+        {item.tags.map((tag) => (
+          <span key={tag} className={styles.badge}>{tag}</span>
+        ))}
       </div>
     </Link>
   );
@@ -108,7 +113,7 @@ export default function IntegrationsGrid({
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<FilterState>({
     sdks: defaultSdks,
-    categories: [],
+    tags: [],
   });
 
   const filtered = useMemo(() => {
@@ -117,14 +122,18 @@ export default function IntegrationsGrid({
       .filter((item) => {
         if (q) {
           const searchable =
-            `${item.name} ${item.description} ${item.category}`.toLowerCase();
+            `${item.name} ${item.description} ${item.tags.join(" ")}`.toLowerCase();
           if (!searchable.includes(q)) return false;
         }
         if (filters.sdks.length > 0) {
-          if (!item.sdk || !filters.sdks.includes(item.sdk)) return false;
+          const wantsAgnostic = filters.sdks.includes(LANGUAGE_AGNOSTIC);
+          const sdkFilters = filters.sdks.filter((s): s is SDK => s !== LANGUAGE_AGNOSTIC);
+          const matchesSdk = item.sdk && sdkFilters.includes(item.sdk);
+          const matchesAgnostic = wantsAgnostic && !item.sdk;
+          if (!matchesSdk && !matchesAgnostic) return false;
         }
-        if (filters.categories.length > 0) {
-          if (!filters.categories.includes(item.category)) return false;
+        if (filters.tags.length > 0) {
+          if (!filters.tags.some((t) => item.tags.includes(t))) return false;
         }
         return true;
       })
