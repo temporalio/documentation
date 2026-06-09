@@ -93,11 +93,13 @@ MIIPrivateKeyDataHere...
 -----END PRIVATE KEY-----"""
 ```
 
+The [`temporal cloud login`](/cli/cloud#interactive-login) command also writes to this file. When you run `temporal cloud login --profile prod`, the OAuth token is stored in the specified profile automatically. Subsequent commands that use that profile read the token from the TOML file to authenticate with Temporal Cloud.
+
 ## CLI integration
 
 The Temporal CLI tool includes `temporal config` commands that allow you to read and write to the TOML configuration
 file. This provides a convenient way to manage your connection profiles without manually editing the file. Refer to
-[Temporal CLI Reference - `temporal config`](../cli/config.mdx) for more details.
+[Temporal CLI Reference - `temporal config`](../cli/command-reference/config.mdx) for more details.
 
 - `temporal config get <property>`: Reads a specific value from the current profile.
 - `temporal config set <property> <value>`: Sets a property in the current profile.
