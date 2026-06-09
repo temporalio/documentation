@@ -33,6 +33,12 @@ See [failover scenarios](/cloud/export#failover-scenarios) for details.
 
 [Using High Availability features affects pricing](/cloud/pricing#high-availability-features).
 
+:::info Using AWS PrivateLink or GCP Private Service Connect?
+
+If the Namespace uses Private Connectivity, the steps below need additional DNS and VPC Endpoint work. Follow [How to migrate to another Temporal Cloud Region when using Private Connectivity](/cloud/high-availability/ha-connectivity#how-to-migrate-regions-with-private-connectivity) instead of (or alongside) the public steps below.
+
+:::
+
 ## Steps to migrate
 
 1. Add a Namespace replica in the region you want to migrate to. See [regions](/cloud/regions) for a list of available regions and supported multi-region and multi-cloud configurations.
