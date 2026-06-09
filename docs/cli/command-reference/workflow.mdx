@@ -105,7 +105,7 @@ Use the following options to change the behavior of this command. You can also u
 
 ## delete
 
-Delete a Workflow Executions and its Event History:
+Delete a Workflow Execution and its Event History:
 
 ```
 temporal workflow delete \
@@ -114,6 +114,11 @@ temporal workflow delete \
 
 The removal executes asynchronously. If the Execution is Running, the Service
 terminates it before deletion.
+
+WARNING: Deleting Workflow Executions in a global Namespace removes them from
+all replicas. Requests sent to a passive cluster are forwarded to the active
+cluster by default; to target the passive cluster directly, specify
+`--grpc-meta xdc-redirection=false`.
 
 Visit https://docs.temporal.io/visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
@@ -691,7 +696,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--concurrency` | No | **int** Number of Event Histories to fetch at a time. |
+| `--concurrency` | No | **int** Number of Workflow Histories to fetch at a time. |
 | `--depth` | No | **int** Set depth for your Child Workflow fetches. Pass -1 to fetch child workflows at any depth. |
 | `--fold` | No | **string[]** Fold away Child Workflows with the specified statuses. Case-insensitive. Ignored if --no-fold supplied. Available values: running, completed, failed, canceled, terminated, timedout, continueasnew. Can be passed multiple times. |
 | `--no-fold` | No | **bool** Disable folding. Fetch and display Child Workflows within the set depth. |
