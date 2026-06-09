@@ -539,7 +539,12 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/integrations/index',
               },
-              items: ['develop/python/integrations/braintrust'],
+              items: [
+                'develop/python/integrations/braintrust',
+                'develop/python/integrations/langgraph',
+                'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
+              ],
             },
           ],
         },

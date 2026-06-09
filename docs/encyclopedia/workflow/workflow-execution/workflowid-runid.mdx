@@ -42,7 +42,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 ### Which operations lead to non-determinism issues? {/* #run-id-non-determinism */}
 
-An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](/workflow-execution#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
+An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](/workflow-execution#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/main/temporal/api/history/v1/message.proto).
 
 Each operation creates a new Workflow Execution inside a chain run and saves its information as `first_execution_run_id`.
 Thus, the Run Id is updated during each operation on a Workflow Execution.
@@ -64,7 +64,7 @@ Because of this behavior, you shouldn't rely on the current Run Id in your code 
 
 For more information, see the following link.
 
-- [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82)
+- [`message.proto`](https://github.com/temporalio/api/blob/main/temporal/api/history/v1/message.proto#L75-L82)
 
 ## What is a Workflow Id? {/* #workflow-id */}
 
