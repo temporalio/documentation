@@ -167,6 +167,7 @@ Note:
 
 Storing a list of values in any single-value Search Attribute type — for example, multiple strings in a **Keyword** or **Text** attribute, or multiple integers in an **Int** attribute — is deprecated.
 **KeywordList** is the only type designed to store a list of values.
+
 New namespaces on Temporal Cloud are already blocked from using this pattern. Existing Namespaces that rely on it will need to migrate before Sep. 30, 2026. After that date, Workflow Executions with invalid Search Attribute values will fail. 
 This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
 
