@@ -268,6 +268,17 @@ permissions. These permissions are configured per Namespace per user.
 | Initiate Namespace failover                                   |      |       |        ✔        |
 | Convert single-region Namespace to multi-region               |      |       |        ✔        | */}
 
+## Custom Role permissions reference {#custom-role-permissions}
+
+The following tables list the permission action strings available when defining [Custom Roles](/cloud/manage-access/custom-roles).
+Use these strings in the `actions` field of a Custom Role permission grant.
+
+Not all Cloud Ops API operations can be assigned to a Custom Role. For details on which operations are excluded and why, see [Available permissions](/cloud/manage-access/custom-roles#available-permissions).
+
+import CustomRolePermissionsTable from './_custom_role_permissions_table.mdx';
+
+<CustomRolePermissionsTable />
+
 ## Additional authorization behaviors
 
 Some APIs are granted to all account-level roles but enforce additional authorization rules at runtime. The action group
