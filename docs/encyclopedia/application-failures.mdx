@@ -54,12 +54,16 @@ All failures in Temporal are represented as a Failure in the API.
 Each SDK exposes failures using the conventions of its language: what is called a Failure in one SDK might be called an Error or Exception in another.
 
 Most SDKs have a base class that other failure types extend.
-This provides a common interface and shared behavior across different failure types:
+This provides a common interface and shared behavior across different failure types.
+For example:
 
 - TypeScript: [TemporalFailure](https://typescript.temporal.io/api/classes/common.TemporalFailure)
 - Java: [TemporalFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TemporalFailure.html)
 - Python: [FailureError](https://python.temporal.io/temporalio.exceptions.FailureError.html)
+- PHP: [TemporalFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-TemporalFailure.html)
 - Go: Uses specific error types rather than a base class
+
+For the complete list of failure types and their SDK-specific classes, see [Failures reference](/references/failures).
 
 Temporal categorizes failures into several types:
 
@@ -76,8 +80,6 @@ Temporal categorizes failures into several types:
 Do not extend the base failure class or any of its children in your code.
 The provided classes are designed to work with Temporal's serialization mechanism, which converts failures to Protocol Buffer messages for communication across process and language boundaries.
 Custom subclasses can break this serialization and lead to unexpected behavior.
-
-For a complete reference of all failure types and their SDK-specific classes, see [Failures reference](/references/failures).
 
 ### Application Failure
 
@@ -107,27 +109,18 @@ See [Failure Converter](/failure-converter) for details.
 When an error occurs in Workflow code, it produces one of two outcomes depending on the error type: a Workflow Task failure or a Workflow Execution failure.
 Understanding the difference is important because they have very different implications.
 
-### Workflow Task failures
-
-A Workflow Task failure occurs when the Workflow code throws an error that does not extend the Temporal base failure class.
-This includes language-level errors (null reference, division by zero, type errors) and non-determinism errors.
-
-Workflow Task failures are treated as transient problems, typically bugs that can be fixed with a code deployment.
-Temporal retries them automatically, giving you the opportunity to fix the code and redeploy without losing the state of existing Workflow Executions.
+|  | Workflow Task failure | Workflow Execution failure |
+| :--- | :--- | :--- |
+| **Caused by** | Non-Temporal errors (null reference, division by zero, type errors, non-determinism errors) | Temporal failures thrown by your code, such as Application Failure |
+| **Retried?** | Yes, automatically | No |
+| **Workflow state** | Preserved. You can fix the bug and redeploy without losing progress. | "Failed" state permanently. No more attempts are made. |
+| **Typical cause** | A bug in the Workflow code | A permanent business logic failure where retrying with the same input will not help |
 
 When a Workflow Task failure is retried:
 
 1. The Worker removes the Workflow Execution from its cache.
 2. The Temporal Service schedules a new Workflow Task on the original Task Queue.
 3. A Worker picks up the Task and replays the Workflow Execution from Event History to restore the correct state before continuing.
-
-### Workflow Execution failures
-
-A Workflow Execution failure occurs when the Workflow code throws a Temporal failure, such as an Application Failure.
-This puts the Workflow Execution into the "Failed" state permanently.
-No more attempts are made to progress the execution.
-
-Use Workflow Execution failures for permanent business logic failures where retrying the same code with the same input will not produce a different result.
 
 ## How errors propagate {/* #error-propagation */}
 

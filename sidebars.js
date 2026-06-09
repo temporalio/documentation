@@ -1516,7 +1516,6 @@ module.exports = {
           },
           items: [
             'encyclopedia/application-failures',
-            'encyclopedia/detecting-application-failures',
             'encyclopedia/detecting-activity-failures',
             'encyclopedia/detecting-workflow-failures',
             'encyclopedia/retry-policies',
