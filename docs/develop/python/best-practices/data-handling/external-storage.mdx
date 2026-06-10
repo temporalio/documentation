@@ -92,11 +92,11 @@ failures. For a complete working example that includes a Worker, Codec Server, a
 ## Implement a custom storage driver
 
 If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
-Store payloads durably so that they survive process crashes and remain available for debugging and auditing after the
-Workflow completes. Refer to [lifecycle management](/external-storage#lifecycle) for retention requirements.
+Refer to [Choose a storage system](/external-storage#choose-storage) for guidance on selecting a backing store and [Lifecycle management](/external-storage#lifecycle) for retention requirements.
 
 The following example shows a custom driver that uses local disk as the backing store. This example is for local
-development and testing only. In production, use a durable storage system that is accessible to all Workers:
+development and testing only. In production, use a durable storage system that is accessible to all Workers.
+For example, see the [Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis).
 
 <!--SNIPSTART python-custom-storage-driver-->
 [features/snippets/external_storage/custom_driver/custom_storage_driver.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.py)
