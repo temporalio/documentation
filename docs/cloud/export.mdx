@@ -179,6 +179,12 @@ is the time the export uploads to object storage, not the Workflow completion ti
 3. **Email**:
    - Emails are sent to `Namespace Administrator`, `Account Owner`, and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (such as Object Store permissions issue).
 
+:::note
+
+An export configuration that fails for 7 consecutive days is automatically disabled.
+
+:::
+
 ## Working with exported files
 
 Use the proto schema defined [here](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) to deserialize exported files.
