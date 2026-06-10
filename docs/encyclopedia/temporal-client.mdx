@@ -18,8 +18,15 @@ tags:
 import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
 
 A Temporal Client allows you to communicate with the [Temporal Service](/temporal-service).
-Communication with a Temporal Service lets you perform actions such as starting [Workflow Executions](/workflow-execution), sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results of a Workflow Execution, and providing Activity Task Tokens.
-When [Standalone Activities](/standalone-activity) are supported and enabled, a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
+
+The most common operations that a Temporal Client allows you to perform are the following:
+- Start a Workflow Execution
+- Get the result of Workflow Execution
+- List Workflow Executions
+- Query a Workflow Execution
+- Signal a Workflow Execution
+
+For [Standalone Activities](/standalone-activity), a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
 
 ## SDK guides {/* #sdk-guides */}
 
