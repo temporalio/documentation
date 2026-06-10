@@ -62,7 +62,7 @@ Enumerate the Schedules in the alerting Namespace:
 temporal schedule list --namespace <your-namespace>
 ```
 
-[`ListSchedules`](/cli/schedule#list) returns Schedule Ids and summary information. It does not return per-Schedule miss counters, so use it only to produce the set of Schedule Ids to inspect.
+[`ListSchedules`](/cli/command-reference/schedule#list) returns Schedule Ids and summary information. It does not return per-Schedule miss counters, so use it only to produce the set of Schedule Ids to inspect.
 
 ### 2. Describe each Schedule
 
@@ -74,7 +74,7 @@ temporal schedule describe \
   --namespace <your-namespace>
 ```
 
-[`DescribeSchedule`](/cli/schedule#describe) returns full Schedule state, including the `info` block with cumulative counters. The relevant fields:
+[`DescribeSchedule`](/cli/command-reference/schedule#describe) returns full Schedule state, including the `info` block with cumulative counters. The relevant fields:
 
 | Field | Meaning |
 |-------|---------|
@@ -114,6 +114,6 @@ Once you have identified the Schedule with a non-zero `missedCatchupWindow`, use
 
 - [Schedule concept](/schedule)
 - [Catchup Window](/schedule#catchup-window)
-- [Temporal CLI schedule reference](/cli/schedule)
+- [Temporal CLI schedule reference](/cli/command-reference/schedule)
 - [Temporal Cloud OpenMetrics metrics reference](/cloud/metrics/openmetrics/metrics-reference)
 - [Self-hosted cluster metrics reference](/references/cluster-metrics)

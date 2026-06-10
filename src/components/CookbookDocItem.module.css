@@ -33,7 +33,7 @@
 
 .lastUpdated {
   margin: 0 0 var(--ifm-spacing-sm, 0.75rem);
-  color: #465A78;
+  color: var(--last-updated-color);
   font-size: 0.95rem;
 }
 
