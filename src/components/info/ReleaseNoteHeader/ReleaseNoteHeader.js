@@ -22,13 +22,6 @@ export const BASE_RELEASE_STAGES = {
     borderColor: "var(--release-public-preview-border)",
     textColor: "var(--release-public-preview-text)",
   },
-  generalAvailability: {
-    label: "General Availability",
-    descriptionLink: "/evaluate/development-production-features/release-stages#general-availability",
-    backgroundColor: "var(--release-ga-bg)",
-    borderColor: "var(--release-ga-border)",
-    textColor: "var(--release-ga-text)",
-  },
 };
 
 const LANGUAGE_TO_SDK_SVG = {
@@ -43,12 +36,12 @@ const LANGUAGE_TO_SDK_SVG = {
 }
 
 function getResolvedType({ featureName, type }) {
-  return FEATURE_RELEASE_TYPES[featureName] || type || "generalAvailability";
+  return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
 }
 
 function getTheme(type, overrides = {}) {
   return {
-    ...(BASE_RELEASE_STAGES[type] || BASE_RELEASE_STAGES.generalAvailability),
+    ...(BASE_RELEASE_STAGES[type] || BASE_RELEASE_STAGES.publicPreview),
     ...Object.fromEntries(
       Object.entries(overrides).filter(([, value]) => value !== undefined)
     ),
@@ -56,12 +49,12 @@ function getTheme(type, overrides = {}) {
 }
 
 export default function ReleaseNoteHeader({
-  // type can be "prerelease", "publicPreview", or "generalAvailability"
-  type = "generalAvailability",
+  // type can be "prerelease" or "publicPreview"
+  type = "publicPreview",
   // name of the feature being released
   featureName,
   // If there is anything specific to say about the release, it can be passed as a child to the component. It can also be a link if href is provided.
-  children,
+  children = "APIs and configuration may change before the stable release.",
   // If child is a link, this is where the link can be passed.
   href,
   // These are the supported languages for the release. If provided, icons for these languages will be shown.
