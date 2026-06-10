@@ -19,7 +19,7 @@
     {
       "source": "/encyclopedia/detecting-application-failures",
       "destination": "/encyclopedia/failures-and-error-handling",
-      "permenant": true
+      "permanent": true
     },
     {
       "source": "/cli/activity",
