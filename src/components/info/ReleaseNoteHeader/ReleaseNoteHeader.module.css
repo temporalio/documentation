@@ -38,7 +38,6 @@
   margin: 0 0 1.5rem;
   padding: 1rem;
   border: 1px solid var(--release-note-border);
-  border-radius: 0.75rem;
   background: var(--release-note-background);
   color: var(--release-note-text);
 }

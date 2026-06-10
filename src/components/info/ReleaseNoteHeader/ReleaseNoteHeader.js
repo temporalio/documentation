@@ -5,8 +5,9 @@ import clsx from "clsx";
 import { LANGUAGE_ICONS } from "../constants";
 import SdkSvg from '../../elements/SdkSvgs/SdkSvg';
 import styles from "./ReleaseNoteHeader.module.css";
+import { FEATURE_RELEASE_TYPES } from "../../../constants/featureReleaseTypes";
 
-export const RELEASE_TYPES = {
+export const BASE_RELEASE_STAGES = {
   prerelease: {
     label: "Pre-release",
     descriptionLink: "/evaluate/development-production-features/release-stages#pre-release",
@@ -41,9 +42,13 @@ const LANGUAGE_TO_SDK_SVG = {
   "TypeScript": "typeScriptBlock",
 }
 
+function getResolvedType({ featureName, type }) {
+  return FEATURE_RELEASE_TYPES[featureName] || type || "generalAvailability";
+}
+
 function getTheme(type, overrides = {}) {
   return {
-    ...(RELEASE_TYPES[type] || RELEASE_TYPES.generalAvailability),
+    ...(BASE_RELEASE_STAGES[type] || BASE_RELEASE_STAGES.generalAvailability),
     ...Object.fromEntries(
       Object.entries(overrides).filter(([, value]) => value !== undefined)
     ),
@@ -53,6 +58,8 @@ function getTheme(type, overrides = {}) {
 export default function ReleaseNoteHeader({
   // type can be "prerelease", "publicPreview", or "generalAvailability"
   type = "generalAvailability",
+  // name of the feature being released
+  featureName,
   // If there is anything specific to say about the release, it can be passed as a child to the component. It can also be a link if href is provided.
   children,
   // If child is a link, this is where the link can be passed.
@@ -62,7 +69,8 @@ export default function ReleaseNoteHeader({
   // If you want to override the default label for the release type, you can pass it here. This is useful for cases like "generalAvailability" where you might want to just say "Stable".
   label,
 }) {
-  const theme = getTheme(type);
+  const resolvedType = getResolvedType({ featureName, type });
+  const theme = getTheme(resolvedType);
 
   const releaseLabel = label || theme.label;
 
