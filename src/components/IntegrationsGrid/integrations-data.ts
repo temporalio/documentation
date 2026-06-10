@@ -102,6 +102,14 @@ const integrations: Integration[] = [
     href: "https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md",
   },
   {
+    name: "OpenBox",
+    description:
+      "Add governance and observability guardrails to AI-powered Temporal Workflows with OpenBox.",
+    tags: ["Governance", "Observability"],
+    sdk: "Python",
+    href: "https://docs.openbox.ai/getting-started/temporal",
+  },
+  {
     name: "Prometheus + Grafana",
     description:
       "Scrape Temporal Cloud metrics with self-hosted Prometheus and visualize with Grafana dashboards.",

@@ -10,24 +10,24 @@ import RubyBlock from './RubyBlock';
 import RustBlock from './RustBlock';
 import TypeScriptBlock from './TypeScriptBlock';
 
-const SdkSvg = ({ name }) => {
+const SdkSvg = ({ name, title }) => {
   switch (name) {
     case 'dotnetBlock':
-      return <DotnetBlock />;
+      return <DotnetBlock title={title} />;
     case 'goLangBlock':
-      return <GoLangBlock />;
+      return <GoLangBlock title={title} />;
     case 'javaBlock':
-      return <JavaBlock />;
+      return <JavaBlock title={title} />;
     case 'phpBlock':
-      return <PhpBlock />;
+      return <PhpBlock title={title} />;
     case 'pythonBlock':
-      return <PythonBlock />;
+      return <PythonBlock title={title} />;
     case 'rubyBlock':
-      return <RubyBlock />;
+      return <RubyBlock title={title} />;
     case 'rustBlock':
-      return <RustBlock />;
+      return <RustBlock title={title} />;
     case 'typeScriptBlock':
-      return <TypeScriptBlock />;
+      return <TypeScriptBlock title={title} />;
     default:
       return null;
   }
@@ -35,6 +35,7 @@ const SdkSvg = ({ name }) => {
 
 SdkSvg.propTypes = {
   name: Props.string.isRequired,
+  title: Props.string.isRequired,
 };
 
 export default SdkSvg;
