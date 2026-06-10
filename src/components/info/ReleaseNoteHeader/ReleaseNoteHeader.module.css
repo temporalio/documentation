@@ -8,11 +8,6 @@
   --release-public-preview-bg: #eff6ff;
   --release-public-preview-border: #8b5cf6;
   --release-public-preview-text: #111827;
-
-  /* General Availability */
-  --release-ga-bg: #f5f3ff;
-  --release-ga-border: #3b82f6;
-  --release-ga-text: #111827;
 }
 
 [data-theme="dark"] {
@@ -25,11 +20,6 @@
   --release-public-preview-bg: #2e1065;
   --release-public-preview-border: #a78bfa;
   --release-public-preview-text: #e6f6e6;
-
-  /* General Availability */
-  --release-ga-bg: #172554;
-  --release-ga-border: #60a5fa;
-  --release-ga-text: #e6f6e6;
 }
 
 .releaseNoteHeader {
