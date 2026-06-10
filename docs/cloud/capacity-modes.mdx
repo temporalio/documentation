@@ -97,7 +97,7 @@ Actions that are external to the core Temporal service do not contribute to your
 * Capacity Related Actions
 :::
 
-## On-Demand Capacity {#on-demand-capacity}
+## On-Demand Capacity {/* #on-demand-capacity */}
 
 Using On-Demand Capacity, your rate limit grows automatically along with your usage. 
 
@@ -131,19 +131,13 @@ This means that your default limit would be 800 APS.
 
 ![Usage graph showing increasing APS usage for one month, with occasional spikes, and a rising APS limit](/img/cloud/provisioned-capacity/usage_graph.png)
 
-## Provisioned Capacity {#provisioned-capacity}
-
-:::tip Support, stability, and dependency info
-
-Provisioned Capacity is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+## Provisioned Capacity {/* #provisioned-capacity */}
 
 Provisioned Capacity provides an alternative to On-Demand Capacity by allowing you to control the limits on your Namespace based on your specific need.
 
 |               | Actions Per Second | Requests Per Second | Operations Per Second|
 |---------------|--------------------|---------------------|----------------------|
-| TRU           | 500                | 2000                | 4000                 |
+| TRU           | 500                | 1500                | 4000                 |
 
 Customers can set 2, 3, 4, 6, 8, 10, 12 TRUs, subject to availability. TRUs can be adjusted hourly.
 

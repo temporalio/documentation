@@ -19,7 +19,7 @@ tags:
   - Temporal Cloud
 ---
 
-Audit Logs is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud control plane.
+Audit Logs is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud Control Plane.
 
 Audit Logs answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
@@ -33,7 +33,7 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 
 :::
 
-## Which events are supported by Audit Logs? {#supported-events}
+## Which events are supported by Audit Logs? {/* #supported-events */}
 
 - Account
   - `ChangeAccountPlanType`: Change Account Plan Type
@@ -83,13 +83,7 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 
 :::info DEPRECATION NOTICE
 
-The following fields are deprecated and are planned for removal on or after April 1 2026. 
-
-- `user_email`.  This field is duplicated by `principal.name` for principals of type `user`. Other principal types do not have associated emails.
-- `level`.  This field is duplicated by `status`.
-- `caller_ip_address`.  This field is replaced by `x_forwarded_for`.
-- `details`.  This field is replaced by `raw_details` that includes request details.
-- `category`.  This field is no longer used.
+The `request_id` field is deprecated and is planned for removal on or after November 1 2026. Use `async_operation_id` instead.
 
 :::
 
@@ -97,20 +91,16 @@ Audit Logs use the following JSON format:
 
 ```json
 {
-  "operation":  // Operation that was performed
-  "principal": // Information about who initiated the operation
-  "details":  // DEPRECATED, see raw_details
-  "raw_details": // details about the request
-  "user_email":  // DEPRECATED, use principal.user where applicable
-  "x_forwarded_for": // the IP address making the call
-  "caller_ip_address": // DEPRECATED, use x_forwarded_for
-  "category":  // DEPRECATED, no longer used
-  "emit_time": // Time the operation was recorded
-  "level": // DEPRECATED, use status
-  "log_id": // Unique ID of the log entry
-  "request_id": // Optional async request id set by the user when sending a request
-  "status": // Status, such as OK or ERROR
-  "version": // Version of the log entry
+  "operation":          // Operation that was performed
+  "principal":          // Information about who initiated the operation
+  "raw_details":        // Details about the request
+  "x_forwarded_for":    // The IP address(es) making the call
+  "emit_time":          // Time the operation was recorded
+  "log_id":             // Unique ID of the log entry
+  "async_operation_id": // Optional async operation id set by the user when sending a request
+  "request_id":         // DEPRECATED, use async_operation_id
+  "status":             // Status, such as OK or ERROR
+  "version":            // Version of the log entry
 }
 ```
 
@@ -166,14 +156,14 @@ Temporal provides the caller IP address in that format to allow customers to ide
 ]
 ```
 
-## How to configure an Audit Log Integration {#configure-audit-logs}
+## How to configure an Audit Log Integration {/* #configure-audit-logs */}
 
 Audit Logs can be configured in AWS Kinesis or GCP Pub/Sub.
 
 - [AWS Kinesis Instructions](/cloud/audit-logs-aws)
 - [GCP Pub/Sub Instructions](/cloud/audit-logs-gcp)
 
-## How to troubleshoot Audit Log sink {#troubleshoot-audit-logs}
+## How to troubleshoot Audit Log sink {/* #troubleshoot-audit-logs */}
 
 The Audit Logs page of the Temporal Cloud UI provides the current status of an Audit Log Integration.
 
@@ -189,7 +179,7 @@ To retrieve logs up to the past 30 days, you will need to file a request.
 If you experience an issue with an Audit Log sink, we can provide the missing audit information.
 Open a support ticket to request assistance.
 
-## How to delete an Audit Log sink {#delete-an-audit-log-sink}
+## How to delete an Audit Log sink {/* #delete-an-audit-log-sink */}
 
 To delete an Audit Log sink, follow these steps:
 
@@ -201,7 +191,7 @@ To delete an Audit Log sink, follow these steps:
 After you confirm the deletion, the Audit Log Sink is removed from your account and logs stop flowing to your stream.
 
 
-## View an Audit Log {#view-an-audit-log}
+## View an Audit Log {/* #view-an-audit-log */}
 
 An Audit Log can be viewed in the Temporal Cloud UI.
 1. In the Temporal Cloud UI, select **Settings**.
@@ -209,7 +199,7 @@ An Audit Log can be viewed in the Temporal Cloud UI.
 
 Up to 1000 events can be downloaded from the Audit Log UI to a local file.
 
-## Access an Audit Log via API {#audit-log-api}
+## Access an Audit Log via API {/* #audit-log-api */}
 
 An Audit Log can be accessed using the [Temporal Cloud Ops API](/ops). Use the API to access
 an Audit Log if you wish to make dashboards for viewing an Audit Log outside of Temporal Cloud.

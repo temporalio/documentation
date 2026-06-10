@@ -23,13 +23,23 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
+:::danger PromQL endpoint deprecated
+
+The PromQL endpoint and its `temporal_cloud_v0_*` metrics were deprecated on April 2, 2026 and are no longer accepting new users.
+The PromQL endpoint will be disabled for all users on **October 5, 2026**.
+
+New users should set up the [OpenMetrics endpoint](/cloud/metrics/openmetrics) instead.
+Existing users should follow the [migration guide](/cloud/metrics/openmetrics/migration-guide) to transition to the OpenMetrics endpoint.
+
+:::
+
 You will learn how to do the following:
 
 - [Configure an endpoint using the UI](#configure-via-ui)
 - [Configure an endpoint using tcld](#configure-via-cli-tcld)
 - [Query for metrics with a PromQL endpoint](#query-promql)
 
-## Configure using the UI {#configure-via-ui}
+## Configure using the UI {/* #configure-via-ui */}
 
 **How to configure a metrics endpoint using Temporal Cloud UI**
 
@@ -88,7 +98,7 @@ $ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/
 }
 ```
 
-## Configure endpoint using tcld {#configure-via-cli-tcld}
+## Configure endpoint using tcld {/* #configure-via-cli-tcld */}
 
 **How to configure a metrics endpoint using the tcld CLI.**
 
@@ -100,7 +110,7 @@ To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/
 
 For more information, see [tcld account metrics command](/cloud/tcld/account#metrics).
 
-## Query for metrics with a PromQL endpoint {#query-promql}
+## Query for metrics with a PromQL endpoint {/* #query-promql */}
 
 Temporal Cloud emits metrics in a Prometheus-supported format.
 Prometheus is an open-source toolkit for alerting and monitoring.

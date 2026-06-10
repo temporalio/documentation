@@ -42,6 +42,8 @@ If you prefer to learn by getting hands-on with code, check out some existing pl
 
 - Temporal's Python SDK ships with an
   [OpenAI Agents SDK](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents) plugin
+- Temporal's Python SDK ships with a
+  [LangGraph](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langgraph) plugin
 - [Temporal client and Worker plugin for Pydantic AI](https://github.com/pydantic/pydantic-ai/blob/757d40932ebb8ef00f25cc469ff44e9b267b1aa3/pydantic_ai_slim/pydantic_ai/durable_exec/temporal/__init__.py#L83)
 - Temporal's TypeScript SDK ships with an
   [OpenTelemetry Plugin](https://github.com/temporalio/sdk-typescript/blob/main/packages/interceptors-opentelemetry/src/plugin.ts)
@@ -644,8 +646,7 @@ plugin = Temporalio::SimplePlugin.new(
 
 ### Interceptors
 
-Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You
-can [learn more about interceptors](/develop/python/interceptors) for the details of implementing them. They're used to:
+Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/workers/interceptors) for the details of implementing them. They're used to:
 
 - Create side effects such as logging and tracing.
 - Modify arguments, such as adding headers for authorization or tracing propagation.
@@ -813,7 +814,7 @@ plugin = Temporalio::SimplePlugin.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-### Context Propagators {#context-propagators}
+### Context Propagators {/* #context-propagators */}
 
 Context propagators pass custom key-value data (such as tracing IDs, tenant IDs, or auth tokens) across Workflow, Activity, and Child Workflow boundaries via Temporal headers. See [Context Propagation](/encyclopedia/context-propagation) for details on how they work.
 
@@ -840,7 +841,7 @@ Each of the SDKs has nuances you should be aware of so you can account for it in
 
 #### Python
 
-You can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run
+You can choose to [run your Workflows in a sandbox in Python](/develop/python/best-practices/python-sdk-sandbox). This lets you run
 Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who
 use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
@@ -890,7 +891,7 @@ const worker = await Worker.create({
 ```
 {/* SNIPEND */}
 
-## Testing your Plugin {#testing-your-plugin}
+## Testing your Plugin {/* #testing-your-plugin */}
 
 To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client.
 
@@ -899,9 +900,7 @@ effects.
 
 ### Versioning tests
 
-When you make changes to your plugin after it has already shipped to users, we recommend that you set up
-[replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing
-non-determinism errors for your users.
+When you make changes to your plugin after it has already shipped to users, we recommend that you set up [replay testing](/develop/python/best-practices/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
 
 ### Side effects tests
 
@@ -979,6 +978,9 @@ worker = Temporalio::Worker.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-Check for duplicate side effects or other types of failures.
+Inside this replay regime, you should test for duplicate side effects or other types of failures. When testing for duplicate side effects, it may not be sufficient to simply have a counter that increments once per effect, as activities may be retried. Instead, consider these patterns:
+
+- count `ActivityTaskScheduled` events of the expected activity type in event history (one per intended call, independent of retries), 
+- or accumulate activity IDs in a concurrency-safe set and assert on its size (different scheduled activities get different IDs; retries of the same scheduled activity share one).
 
 It's harder to test against side effects to global variables, so this practice is best avoided entirely.

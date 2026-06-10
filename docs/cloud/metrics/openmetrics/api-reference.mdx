@@ -25,11 +25,6 @@ import { CaptionedImage } from '@site/src/components';
 
 The Temporal Cloud OpenMetrics API provides actionable operational metrics about your Temporal Cloud deployment. This is a scrapable HTTP API that returns metrics in OpenMetrics format, suitable for ingestion by Prometheus-compatible monitoring systems.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 ## Available Metrics Reference
 
@@ -134,7 +129,11 @@ Implement retry logic in your client to gracefully handle transient API failures
 
 ### Data Latency
 
-Metric data points are available for query within 2 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
+Metric data points are available for query within 3 minutes of their origination. This is in line with the freshest metrics [available from any major service provider](https://docs.datadoghq.com/integrations/guide/cloud-metric-delay/). This latency should be accounted for when setting up monitoring alerts.
+
+### Scrape window
+
+The endpoint exposes only the most recently completed one-minute aggregation window. Each scrape returns a snapshot of that window—there is no query interface for historical data. To retain historical metrics, configure your monitoring system to store what it scrapes.
 
 ## Endpoints
 
@@ -152,7 +151,7 @@ Returns metrics in OpenMetrics format suitable for scraping by Prometheus-compat
 
 #### Timestamp Offset
 
-To account for metric data latency, this endpoint returns metrics from the current timestamp minus a fixed offset.  The current offset is 2 minutes rounded down to the start of the minute. To accommodate this offset, the timestamps in the response should be honored when importing the metrics. For example, in Prometheus this can be controlled using the `honor\_timestamps` flag.
+To account for metric data latency, this endpoint returns metrics from the current timestamp minus a fixed offset.  The current offset is 3 minutes rounded down to the start of the minute. To accommodate this offset, the timestamps in the response should be honored when importing the metrics. For example, in Prometheus this can be controlled using the `honor\_timestamps` flag.
 
 #### Query Parameters
 
@@ -160,6 +159,18 @@ To account for metric data latency, this endpoint returns metrics from the curre
 | ----- | ----- | ----- |
 | `namespaces` | string array | Filter to specific Namespaces. Supports wildcards (e.g., `production-*`) |
 | `metrics` | string array | Filter to specific metrics |
+
+Array parameters use repeated keys. To pass multiple values, repeat the parameter name once per value:
+
+```shell
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders
+```
+
+The `namespaces` and `metrics` parameters can be combined, and each may be repeated independently:
+
+```shell
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders&metrics=temporal_cloud_v1_workflow_success_count&metrics=temporal_cloud_v1_approximate_backlog_count
+```
 
 #### Response Headers
 
@@ -194,7 +205,7 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace="production",temp
 #### Summary of Best Practices
 
 * *Honor timestamps*: Set `honor_timestamps: true` in Prometheus  
-* *Scrape interval*: Use 30 or 60 second intervals  
+* *Scrape interval*: Use 30s. Intervals longer than 60s may skip datapoints because metrics update once per minute.  
 * *Timeout*: Set scrape timeout to 10 seconds for large responses  
 * *Filtering*: Use query parameters to reduce response size
 
@@ -288,6 +299,9 @@ You can isolate only the metrics/namespaces you need.  For example, the followin
 # Only specific namespaces matching the wildcard pattern
 /v1/metrics?namespaces=production-*
 
+# Multiple namespaces
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders
+
 # Only specific metrics
 /v1/metrics?metrics=temporal_cloud_v1_workflow_success_count
 
@@ -370,4 +384,4 @@ count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 | Limit | Impact | Mitigation |
 | ----- | ----- | ----- |
 | 30k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
-| 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set appropriate scrape interval of 30-60s |
+| 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set scrape interval to 30s |

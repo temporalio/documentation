@@ -1,25 +1,37 @@
 ---
 id: index
-title: AI integrations
-sidebar_label: AI integrations
+title: Integrations
+sidebar_label: Integrations
 toc_max_heading_level: 2
 keywords:
   - integrations
+  - ai frameworks
+  - agent frameworks
   - ai frameworks
   - agent frameworks
 tags:
   - Integrations
   - AI Frameworks
   - Agent Frameworks
+  - AI Frameworks
+  - Agent Frameworks
 description: Integrations with other tools and services.
 ---
 
-The following AI framework integrations are available for the Temporal Python SDK:
+The following integrations are available between the Temporal Python SDK and third-party AI frameworks and tooling:
 
-| Framework | SDK docs | Integration guide |
-| --- | --- | --- |
-| Braintrust | [braintrust.dev](https://braintrust.dev/docs) | [Guide](./braintrust.mdx) |
-| Pydantic AI | [ai.pydantic.dev](https://ai.pydantic.dev/) | [Guide](https://ai.pydantic.dev/durable_execution/temporal/) |
-| OpenAI Agents SDK | [openai.github.io](https://openai.github.io/openai-agents-python/) | [Guide](https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md) |
+| Framework         | Tags            | SDK docs                                                           | Integration guide                                                                                      |
+| ----------------- | --------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Braintrust        | Observability   | [braintrust.dev](https://braintrust.dev/docs)                      | [Guide](./braintrust.mdx)                                                                              |
+| Google ADK        | Agent framework | [adk.dev](https://adk.dev/)                                        | [Guide](https://adk.dev/integrations/temporal/)                                                        |
+| LangGraph         | Agent framework | [langchain-ai.github.io](https://langchain-ai.github.io/langgraph/)            | [Guide](./langgraph.mdx)                                                                               |
+| LangSmith         | Observability   | [smith.langchain.com](https://docs.smith.langchain.com/)           | [Guide](./langsmith.mdx)                                                                               |
+| OpenAI Agents SDK | Agent framework | [openai.github.io](https://openai.github.io/openai-agents-python/) | [Guide](https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md) |
+| OpenBox           | Governance, Observability | [docs.openbox.ai](https://docs.openbox.ai/) | [Guide](https://docs.openbox.ai/getting-started/temporal)                                |
+| Parseable         | Observability   | [parseable.com](https://www.parseable.com/docs)                    | [Guide](https://github.com/parseablehq/temporal-plugin-python/blob/main/INTEGRATION.MD)                |
+| Pydantic AI       | Agent framework | [ai.pydantic.dev](https://ai.pydantic.dev/)                        | [Guide](https://ai.pydantic.dev/durable_execution/temporal/)                                           |
+| Strands Agents    | Agent framework | [strandsagents.com](https://strandsagents.com/)                    | [Guide](./strands-agents.mdx)                                                                          |
+| Tenuo             | Governance      | [tenuo.ai](https://tenuo.ai/docs)                                  | [Guide](https://tenuo.ai/temporal)                                                                     |
 
-These integrations are built on the Temporal Python SDK's [Plugin system](/develop/plugins-guide), which you can also use to build your own integrations.
+These integrations are built on the Temporal Python SDK's [Plugin system](/develop/plugins-guide), which you can also
+use to build your own integrations.

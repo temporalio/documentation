@@ -1,9 +1,13 @@
 import React from 'react';
 import styles from './sdk-svg.module.css';
+import { useSvgTitle } from './useSvgTitle';
 
-const GoLangBlock = () => {
+const GoLangBlock = ({ title }) => {
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
+
   return (
-    <svg
+    <svg 
+      {...svgA11yProps}
       className={styles.sdkGoLang}
       fill="none"
       height="40"
@@ -11,6 +15,7 @@ const GoLangBlock = () => {
       width="40"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {titleElement}
       <path d="m0 0h40v40h-40z" className={styles.backgroundPath} />
       <g fill="#f8fafc">
         <path d="m8.03762 18.4852c-.05258 0-.06573-.0266-.03944-.0666l.27607-.3594c.02629-.04.09202-.0666.1446-.0666h4.69305c.0526 0 .0658.0399.0395.0799l-.2235.3461c-.0263.04-.092.0799-.1315.0799z" />
