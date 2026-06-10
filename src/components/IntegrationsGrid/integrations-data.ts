@@ -110,6 +110,22 @@ const integrations: Integration[] = [
     href: "https://docs.openbox.ai/getting-started/temporal",
   },
   {
+    name: "Parseable",
+    description:
+      "Stream Temporal Workflow logs to Parseable for observability and analysis.",
+    tags: ["Observability"],
+    sdk: "Python",
+    href: "https://github.com/parseablehq/temporal-plugin-python/blob/main/INTEGRATION.MD",
+  },
+  {
+    name: "Parseable",
+    description:
+      "Stream Temporal Workflow logs to Parseable for observability and analysis.",
+    tags: ["Observability"],
+    sdk: "TypeScript",
+    href: "https://github.com/parseablehq/temporal-plugin/blob/main/INTEGRATION.md",
+  },
+  {
     name: "Prometheus + Grafana",
     description:
       "Scrape Temporal Cloud metrics with self-hosted Prometheus and visualize with Grafana dashboards.",
