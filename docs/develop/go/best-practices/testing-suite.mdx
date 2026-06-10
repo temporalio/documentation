@@ -92,6 +92,18 @@ func TestUnitTestSuite(t *testing.T) {
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
+### Run an Activity {/* #run-an-activity */}
+
+If an Activity references its context, you need to mock that context when testing in isolation.
+
+### Listen to Heartbeats {/* #listen-to-heartbeats */}
+
+When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
+
+### Cancel an Activity {/* #cancel-an-activity */}
+
+If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
+
 ## Mock and override Activities
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation. Additionally, we want to inject Activity errors during our test runs. The test framework provides two mechanisms that support these scenarios: Activity mocking and Activity overriding. Both of these mechanisms allow you to change the behavior of Activities invoked by your Workflow without the need to modify the actual Workflow code.
@@ -148,18 +160,6 @@ The framework will execute this function whenever the Activity is invoked and pa
 Additionally, the framework will validate that the signature of the "mock" function matches the signature of the original Activity function.
 
 Since this can be an entire function, there is no limitation as to what we can do here. In this example, we assert that the `value` param has the same content as the value param we passed to the Workflow.
-
-### Run an Activity {/* #run-an-activity */}
-
-If an Activity references its context, you need to mock that context when testing in isolation.
-
-### Listen to Heartbeats {/* #listen-to-heartbeats */}
-
-When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
-
-### Cancel an Activity {/* #cancel-an-activity */}
-
-If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
 ## Mock and override Nexus operations
 
