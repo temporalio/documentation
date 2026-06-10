@@ -33,6 +33,7 @@ Try the demo below to walk through the full flow, tweak the retry and timeout se
 the SDK code and CLI command update as you go.
 
 import { StandaloneActivityDemo } from '@site/src/components';
+import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
 
 <StandaloneActivityDemo />
 
@@ -40,7 +41,8 @@ import { StandaloneActivityDemo } from '@site/src/components';
 
 ## How it works
 
-When you call `client.ExecuteActivity()` (or the equivalent in your SDK), the following happens:
+When you call `client.execute_activity()` (or the equivalent in your applicable SDK) from your
+application, the following happens:
 
 1. **Connect**: Your application opens a connection to the Temporal Server using a Temporal Client
    configured with your namespace and credentials.
@@ -62,7 +64,7 @@ Policy you configure.
 | | Workflow Activity | Standalone Activity |
 |---|---|---|
 | Orchestrated by | A Workflow Definition | Your application code (via the Temporal Client) |
-| Started with | SDK-specific (for example, `workflow.ExecuteActivity()` in Go) | SDK-specific (for example, `client.ExecuteActivity()` in Go, `client.StartActivityAsync()` in .NET) |
+| Started with | `workflow.execute_activity()` (or the equivalent in your applicable SDK) from inside a Workflow Definition | `client.execute_activity()` (or the equivalent in your applicable SDK) from your application code |
 | Retry policy | Set in `ActivityOptions` inside your Workflow | Set in `StartActivityOptions` when calling the client |
 | Visibility | Shown in the Workflow's Event History | Shown in the Standalone Activity list and count views |
 | Use case | Multi-step orchestration with multiple Activities | Single, independent jobs like sending an email or processing a webhook |
@@ -76,8 +78,21 @@ execution path that triggers the Activity differs between them.
 
 For complete API reference and advanced usage, see the SDK-specific guides:
 
-- [Standalone Activities with the Go SDK](/develop/go/activities/standalone-activities)
-- [Standalone Activities with the Java SDK](/develop/java/activities/standalone-activities)
-- [Standalone Activities with the Python SDK](/develop/python/activities/standalone-activities)
-- [Standalone Activities with the TypeScript SDK](/develop/typescript/activities/standalone-activities)
-- [Standalone Activities with the .NET SDK](/develop/dotnet/activities/standalone-activities)
+<div style={{display:'flex',flexDirection:'column',gap:'12px',marginTop:'1rem'}}>
+  {[
+    { name: 'goLangBlock',     href: '/develop/go/activities/standalone-activities',         label: 'Standalone Activities - Go' },
+    { name: 'javaBlock',       href: '/develop/java/activities/standalone-activities',       label: 'Standalone Activities - Java' },
+    { name: 'pythonBlock',     href: '/develop/python/activities/standalone-activities',     label: 'Standalone Activities - Python' },
+    { name: 'typeScriptBlock', href: '/develop/typescript/activities/standalone-activities', label: 'Standalone Activities - TypeScript' },
+    { name: 'dotnetBlock',     href: '/develop/dotnet/activities/standalone-activities',     label: 'Standalone Activities - .NET' },
+  ].map(({ name, href, label }) => (
+    <a key={name} href={href} style={{display:'flex',alignItems:'center',gap:'10px',textDecoration:'none'}}>
+      <span style={{width:'24px',height:'24px',flexShrink:0,overflow:'hidden',display:'block',position:'relative'}}>
+        <span style={{position:'absolute',top:0,left:0,transform:'scale(0.6)',transformOrigin:'top left'}}>
+          <SdkSvg name={name} />
+        </span>
+      </span>
+      <span>{label}</span>
+    </a>
+  ))}
+</div>

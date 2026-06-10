@@ -123,10 +123,10 @@ function generateCliCode(language, config) {
 // Constants
 // ---------------------------------------------------------------------------
 
+// Only Python is enabled in the live demo for now. Re-add Go, .NET, or other
+// SDKs to this list to expose their tabs; the generators below already handle them.
 const LANGUAGES = [
-  { id: 'go', label: 'Go' },
   { id: 'python', label: 'Python' },
-  { id: 'dotnet', label: '.NET' },
 ];
 
 const FLOW_NODES = [
@@ -155,7 +155,7 @@ const DEFAULT_CONFIG = {
 // ---------------------------------------------------------------------------
 
 export default function StandaloneActivityDemo() {
-  const [language, setLanguage] = useState('go');
+  const [language, setLanguage] = useState('python');
   const [config, setConfig] = useState({ ...DEFAULT_CONFIG });
 
   const [sim, setSim] = useState({
@@ -365,18 +365,20 @@ export default function StandaloneActivityDemo() {
 
   return (
     <div className={styles.demo}>
-      {/* Language tabs */}
-      <div className={styles.languageTabs}>
-        {LANGUAGES.map(({ id, label }) => (
-          <button
-            key={id}
-            className={`${styles.langTab} ${language === id ? styles.langTabActive : ''}`}
-            onClick={() => setLanguage(id)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      {/* Language tabs (hidden when only one language is enabled) */}
+      {LANGUAGES.length > 1 && (
+        <div className={styles.languageTabs}>
+          {LANGUAGES.map(({ id, label }) => (
+            <button
+              key={id}
+              className={`${styles.langTab} ${language === id ? styles.langTabActive : ''}`}
+              onClick={() => setLanguage(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className={styles.columns}>
         {/* ── Left column: configure + code ── */}
