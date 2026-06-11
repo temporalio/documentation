@@ -122,6 +122,11 @@
   line-height: 1.4;
 }
 
+.simNoteError {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.18);
+}
+
 /* ── Execute button ─────────────────────────────────────────────────────── */
 
 .executeBtn {

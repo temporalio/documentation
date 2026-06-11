@@ -57,7 +57,7 @@ err = handle.Get(ctx, &result)
         : '';
     return `${retryImport}result = await client.execute_activity(
     compose_greeting,
-    args=[ComposeGreetingInput("${GREETING}", "${name}")],
+    "${name}",
     id="${activityId}",
     task_queue="${taskQueue}",
     ${timeoutField}${retryPolicy}
@@ -105,7 +105,7 @@ function generateCliCode(language, config) {
     inputFlag = `--input '"${name}"'`;
   } else if (language === 'python') {
     activityType = 'compose_greeting';
-    inputFlag = `--input '{"greeting": "${GREETING}", "name": "${name}"}'`;
+    inputFlag = `--input '"${name}"'`;
   } else {
     activityType = 'ComposeGreeting';
     inputFlag = `--input '{"Greeting": "${GREETING}", "Name": "${name}"}'`;
@@ -145,6 +145,7 @@ const DEFAULT_CONFIG = {
   name: 'World',
   timeout: 10,
   timeoutType: 'start_to_close',
+  attemptDuration: 1,
   simulateFailures: false,
   failCount: 1,
   maxRetries: 2,
@@ -219,10 +220,53 @@ export default function StandaloneActivityDemo() {
       log: [],
       status: 'running',
       result: null,
+      failureKind: null,
     });
 
     (async () => {
       let attempt = 1;
+      // Virtual elapsed seconds inside the Activity lifecycle. Each attempt adds
+      // attemptDuration seconds, each retry backoff adds RETRY_BACKOFF_SECONDS.
+      // Used to enforce the Schedule-to-Close timeout, which caps the full lifecycle.
+      let virtualElapsed = 0;
+      const RETRY_BACKOFF_SECONDS = 1;
+
+      // Terminate the run with a ScheduleToCloseTimeout failure and stop retrying.
+      const failWithScheduleToCloseTimeout = async () => {
+        const reason = `ScheduleToCloseTimeout (lifecycle duration ${virtualElapsed}s exceeds ScheduleToCloseTimeout ${config.timeout}s)`;
+        update(
+          ['completed', 'completed', 'pending', 'failed', 'pending'],
+          `[Attempt ${attempt}] Activity terminated: ${reason}`,
+          'error'
+        );
+        await sleep(350);
+        if (isCancelled()) return;
+        logEntries.push({
+          time: elapsed(),
+          msg: 'Activity terminated by ScheduleToCloseTimeout. No more retries.',
+          type: 'error',
+        });
+        setSim((prev) => ({
+          ...prev,
+          running: false,
+          status: 'failed',
+          failureKind: 'schedule_to_close',
+          log: [...logEntries],
+        }));
+        setHistory((prev) =>
+          [
+            {
+              activityId: config.activityId,
+              status: 'Failed',
+              duration: `${((Date.now() - startTime) / 1000).toFixed(1)}s`,
+              attempts: attempt,
+              result: '—',
+              timestamp: new Date().toLocaleTimeString(),
+            },
+            ...prev,
+          ].slice(0, 10)
+        );
+      };
 
       // ── Step 0: connect ──────────────────────────────────────────────────
       update(
@@ -264,14 +308,33 @@ export default function StandaloneActivityDemo() {
         await sleep(750);
         if (isCancelled()) return;
 
+        // Account for the time this attempt spent running inside the Worker.
+        virtualElapsed += config.attemptDuration;
+
+        // Schedule-to-Close caps the entire lifecycle. If the cumulative time has
+        // crossed it, the Activity is terminated with no further retries.
+        if (
+          config.timeoutType === 'schedule_to_close' &&
+          virtualElapsed > config.timeout
+        ) {
+          await failWithScheduleToCloseTimeout();
+          return;
+        }
+
+        const isStartToCloseExceeded =
+          config.timeoutType === 'start_to_close' && config.attemptDuration > config.timeout;
         const shouldFail = config.simulateFailures && attempt <= config.failCount;
+        const isFailing = isStartToCloseExceeded || shouldFail;
+        const failureReason = isStartToCloseExceeded
+          ? `StartToCloseTimeout (attempt duration ${config.attemptDuration}s exceeds StartToCloseTimeout ${config.timeout}s)`
+          : 'ApplicationError';
         const maxAttempts = config.maxRetries + 1;
 
-        if (shouldFail) {
+        if (isFailing) {
           const retriesLeft = maxAttempts - attempt;
           update(
             ['completed', 'completed', 'pending', 'failed', 'pending'],
-            `[Attempt ${attempt}/${maxAttempts}] Activity failed: ApplicationError`,
+            `[Attempt ${attempt}/${maxAttempts}] Activity failed: ${failureReason}`,
             'error'
           );
           await sleep(350);
@@ -287,6 +350,7 @@ export default function StandaloneActivityDemo() {
               ...prev,
               running: false,
               status: 'failed',
+              failureKind: 'exhausted',
               log: [...logEntries],
             }));
             setHistory((prev) =>
@@ -306,11 +370,21 @@ export default function StandaloneActivityDemo() {
           }
 
           addLog(
-            `Scheduling retry in 1s… (${retriesLeft} retry attempt${retriesLeft > 1 ? 's' : ''} remaining)`,
+            `Scheduling retry in ${RETRY_BACKOFF_SECONDS}s… (${retriesLeft} retry attempt${retriesLeft > 1 ? 's' : ''} remaining)`,
             'warn'
           );
           await sleep(1000);
           if (isCancelled()) return;
+
+          // The backoff also counts against the Schedule-to-Close budget.
+          virtualElapsed += RETRY_BACKOFF_SECONDS;
+          if (
+            config.timeoutType === 'schedule_to_close' &&
+            virtualElapsed > config.timeout
+          ) {
+            await failWithScheduleToCloseTimeout();
+            return;
+          }
 
           attempt++;
           continue; // jump back to worker poll
@@ -356,9 +430,10 @@ export default function StandaloneActivityDemo() {
 
   const codeLanguage = language === 'dotnet' ? 'csharp' : language;
 
+  const failureNoteIsError = config.simulateFailures && config.failCount > config.maxRetries;
   const failureNote =
     config.simulateFailures
-      ? config.failCount > config.maxRetries
+      ? failureNoteIsError
         ? `All ${config.maxRetries + 1} attempt(s) will fail because failCount exceeds maxRetries.`
         : `Activity will fail ${config.failCount} time(s), then succeed on attempt ${config.failCount + 1}.`
       : null;
@@ -420,6 +495,14 @@ export default function StandaloneActivityDemo() {
                   <option value="schedule_to_close">Schedule-to-Close</option>
                 </select>
               </div>
+              <ConfigField
+                label="Attempt Duration (seconds)"
+                value={config.attemptDuration}
+                type="number"
+                min={0}
+                max={300}
+                onChange={(v) => updateConfig('attemptDuration', Number(v))}
+              />
             </div>
           </section>
 
@@ -458,7 +541,11 @@ export default function StandaloneActivityDemo() {
                 </>
               )}
             </div>
-            {failureNote && <p className={styles.simNote}>{failureNote}</p>}
+            {failureNote && (
+              <p className={`${styles.simNote} ${failureNoteIsError ? styles.simNoteError : ''}`}>
+                {failureNote}
+              </p>
+            )}
           </section>
 
           <section className={styles.section}>
@@ -552,7 +639,9 @@ export default function StandaloneActivityDemo() {
             )}
             {sim.status === 'failed' && (
               <div className={styles.resultFailed}>
-                Activity failed after exhausting all retry attempts
+                {sim.failureKind === 'schedule_to_close'
+                  ? 'Activity terminated by ScheduleToCloseTimeout (lifecycle exceeded)'
+                  : 'Activity failed after exhausting all retry attempts'}
               </div>
             )}
           </section>
