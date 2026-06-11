@@ -15,7 +15,7 @@ export default function Overview({ onNext }) {
       <p className={styles.lead}>
         The core idea of Task Queue Priority and Fairness is that when tasks from different workloads
         compete for the same Workers, Priority controls which ones get picked first, and Fairness
-        ensures no single tenant can run away with all the capacity.
+        ensures no single tenant can block others by using all the resources.
       </p>
 
       <div className={styles.featureGrid}>
