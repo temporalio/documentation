@@ -39,6 +39,14 @@ module.exports = {
             'evaluate/development-production-features/job-queue',
             {
               type: 'category',
+              label: 'Serverless Workers',
+              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
+              items: [
+                'evaluate/development-production-features/serverless-workers/demo',
+              ],
+            },
+            {
+              type: 'category',
               label: 'Product release stages',
               collapsed: true,
               link: {
@@ -149,6 +157,18 @@ module.exports = {
               items: [
                 'develop/go/workers/run-worker-process',
                 'develop/go/workers/sessions',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/go/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/go/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ],
             },
             {
@@ -159,7 +179,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/client/index',
               },
-              items: ['develop/go/client/temporal-client', 'develop/go/client/namespaces'],
+              items: [
+                'develop/go/client/temporal-client',
+                'develop/go/client/namespaces'
+              ],
             },
             {
               type: 'category',
@@ -169,7 +192,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/nexus/index',
               },
-              items: ['develop/go/nexus/quickstart', 'develop/go/nexus/feature-guide'],
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+              ],
             },
             {
               type: 'category',
@@ -179,7 +205,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/platform/index',
               },
-              items: ['develop/go/platform/observability', 'develop/go/platform/enriching-ui'],
+              items: [
+                'develop/go/platform/observability',
+                'develop/go/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -255,6 +284,7 @@ module.exports = {
               items: [
                 'develop/java/activities/basics',
                 'develop/java/activities/execution',
+                'develop/java/activities/standalone-activities',
                 'develop/java/activities/timeouts',
                 'develop/java/activities/asynchronous-activity',
                 'develop/java/activities/benign-exceptions',
@@ -268,7 +298,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/workers/index',
               },
-              items: ['develop/java/workers/run-worker-process'],
+              items: [
+                'develop/java/workers/run-worker-process',
+              ],
             },
             {
               type: 'category',
@@ -278,7 +310,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/client/index',
               },
-              items: ['develop/java/client/temporal-client', 'develop/java/client/namespaces'],
+              items: [
+                'develop/java/client/temporal-client',
+                'develop/java/client/namespaces',
+              ],
             },
             {
               type: 'category',
@@ -288,7 +323,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/nexus/index',
               },
-              items: ['develop/java/nexus/quickstart', 'develop/java/nexus/feature-guide'],
+              items: [
+                'develop/java/nexus/quickstart',
+                'develop/java/nexus/feature-guide',
+              ],
             },
             {
               type: 'category',
@@ -298,7 +336,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/platform/index',
               },
-              items: ['develop/java/platform/observability', 'develop/java/platform/enriching-ui'],
+              items: [
+                'develop/java/platform/observability',
+                'develop/java/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -323,7 +364,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/integrations/index',
               },
-              items: ['develop/java/integrations/spring-boot'],
+              items: [
+                'develop/java/integrations/spring-boot',
+                'develop/java/integrations/spring-ai',
+              ],
             },
           ],
         },
@@ -356,7 +400,7 @@ module.exports = {
                 'develop/php/workflows/timers',
                 'develop/php/workflows/side-effects',
                 'develop/php/workflows/versioning',
-              ],
+              ]
             },
             {
               type: 'category',
@@ -371,7 +415,7 @@ module.exports = {
                 'develop/php/activities/execution',
                 'develop/php/activities/timeouts',
                 'develop/php/activities/asynchronous-activity',
-              ],
+              ]
             },
             {
               type: 'category',
@@ -381,7 +425,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/workers/index',
               },
-              items: ['develop/php/workers/run-worker-process'],
+              items: [
+                'develop/php/workers/run-worker-process',
+              ]
             },
             {
               type: 'category',
@@ -391,7 +437,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/client/index',
               },
-              items: ['develop/php/client/temporal-client'],
+              items: [                
+                'develop/php/client/temporal-client',
+              ],
             },
             {
               type: 'category',
@@ -401,7 +449,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/platform/index',
               },
-              items: ['develop/php/platform/observability', 'develop/php/platform/enriching-ui'],
+              items: [
+                'develop/php/platform/observability',
+                'develop/php/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -411,7 +462,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/best-practices/index',
               },
-              items: ['develop/php/best-practices/testing-suite', 'develop/php/best-practices/debugging'],
+              items: [
+                'develop/php/best-practices/testing-suite',
+                'develop/php/best-practices/debugging'
+              ]
             },
           ],
         },
@@ -443,7 +497,8 @@ module.exports = {
                 'develop/python/workflows/schedules',
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
-              ],
+                'develop/python/workflows/workflow-streams',
+              ]
             },
             {
               type: 'category',
@@ -470,7 +525,22 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/workers/index',
               },
-              items: ['develop/python/workers/run-worker-process', 'develop/python/workers/interceptors'],
+              items: [
+                'develop/python/workers/run-worker-process',
+                'develop/python/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/python/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/python/workers/serverless-workers/aws-lambda',
+                  ],
+                },
+              ],
             },
             {
               type: 'category',
@@ -480,7 +550,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/client/index',
               },
-              items: ['develop/python/client/temporal-client'],
+              items: [
+                'develop/python/client/temporal-client',
+              ],
             },
             {
               type: 'category',
@@ -490,7 +562,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/nexus/index',
               },
-              items: ['develop/python/nexus/quickstart', 'develop/python/nexus/feature-guide'],
+              items: [
+                'develop/python/nexus/quickstart',
+                'develop/python/nexus/feature-guide',
+              ],
             },
             {
               type: 'category',
@@ -500,7 +575,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/platform/index',
               },
-              items: ['develop/python/platform/observability', 'develop/python/platform/enriching-ui'],
+              items: [
+                'develop/python/platform/observability',
+                'develop/python/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -592,6 +670,7 @@ module.exports = {
               items: [
                 'develop/typescript/activities/basics',
                 'develop/typescript/activities/execution',
+                'develop/typescript/activities/standalone-activities',
                 'develop/typescript/activities/timeouts',
                 'develop/typescript/activities/asynchronous-activity',
                 'develop/typescript/activities/benign-exceptions',
@@ -605,7 +684,22 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/workers/index',
               },
-              items: ['develop/typescript/workers/run-worker-process', 'develop/typescript/workers/interceptors'],
+              items: [
+                'develop/typescript/workers/run-worker-process',
+                'develop/typescript/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/typescript/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/typescript/workers/serverless-workers/aws-lambda',
+                  ],
+                },
+              ],
             },
             {
               type: 'category',
@@ -615,7 +709,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/client/index',
               },
-              items: ['develop/typescript/client/temporal-client', 'develop/typescript/client/namespaces'],
+              items: [
+                'develop/typescript/client/temporal-client',
+                'develop/typescript/client/namespaces'
+              ],
             },
             {
               type: 'category',
@@ -625,7 +722,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/nexus/index',
               },
-              items: ['develop/typescript/nexus/quickstart', 'develop/typescript/nexus/feature-guide'],
+              items: [
+                'develop/typescript/nexus/quickstart',
+                'develop/typescript/nexus/feature-guide'
+              ],
             },
             {
               type: 'category',
@@ -635,7 +735,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/typescript/platform/index',
               },
-              items: ['develop/typescript/platform/observability', 'develop/typescript/platform/enriching-ui'],
+              items: [
+                'develop/typescript/platform/observability',
+                'develop/typescript/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -694,7 +797,7 @@ module.exports = {
                 'develop/dotnet/workflows/timers',
                 'develop/dotnet/workflows/dynamic-workflow',
                 'develop/dotnet/workflows/versioning',
-              ],
+              ]
             },
             {
               type: 'category',
@@ -712,7 +815,7 @@ module.exports = {
                 'develop/dotnet/activities/dynamic-activity',
                 'develop/dotnet/activities/benign-exceptions',
                 'develop/dotnet/activities/standalone-activities',
-              ],
+              ]
             },
             {
               type: 'category',
@@ -722,7 +825,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/workers/index',
               },
-              items: ['develop/dotnet/workers/run-worker-process'],
+              items: [
+                'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/interceptors',
+              ]
             },
             {
               type: 'category',
@@ -732,7 +838,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/client/index',
               },
-              items: ['develop/dotnet/client/temporal-client'],
+              items: [
+                'develop/dotnet/client/temporal-client',
+              ],
             },
             {
               type: 'category',
@@ -742,7 +850,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/nexus/index',
               },
-              items: ['develop/dotnet/nexus/quickstart', 'develop/dotnet/nexus/feature-guide'],
+              items: [
+                'develop/dotnet/nexus/quickstart',
+                'develop/dotnet/nexus/feature-guide',
+              ],
             },
             {
               type: 'category',
@@ -752,7 +863,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/dotnet/platform/index',
               },
-              items: ['develop/dotnet/platform/observability', 'develop/dotnet/platform/enriching-ui'],
+              items: [
+                'develop/dotnet/platform/observability',
+                'develop/dotnet/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -767,7 +881,7 @@ module.exports = {
                 'develop/dotnet/best-practices/testing-suite',
                 'develop/dotnet/best-practices/debugging',
                 'develop/dotnet/best-practices/converters-and-encryption',
-              ],
+              ]
             },
           ],
         },
@@ -801,7 +915,7 @@ module.exports = {
                 'develop/ruby/workflows/futures',
                 'develop/ruby/workflows/dynamic-workflow',
                 'develop/ruby/workflows/versioning',
-              ],
+              ]
             },
             {
               type: 'category',
@@ -814,11 +928,12 @@ module.exports = {
               items: [
                 'develop/ruby/activities/basics',
                 'develop/ruby/activities/execution',
+                'develop/ruby/activities/standalone-activities',
                 'develop/ruby/activities/timeouts',
                 'develop/ruby/activities/asynchronous-activity',
                 'develop/ruby/activities/dynamic-activity',
                 'develop/ruby/activities/benign-exceptions',
-              ],
+              ]
             },
             {
               type: 'category',
@@ -828,7 +943,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/workers/index',
               },
-              items: ['develop/ruby/workers/run-worker-process'],
+              items: [
+                'develop/ruby/workers/run-worker-process',
+              ]
             },
             {
               type: 'category',
@@ -838,7 +955,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/client/index',
               },
-              items: ['develop/ruby/client/temporal-client'],
+              items: [
+                'develop/ruby/client/temporal-client',
+              ],
             },
             {
               type: 'category',
@@ -848,7 +967,10 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/platform/index',
               },
-              items: ['develop/ruby/platform/observability', 'develop/ruby/platform/enriching-ui'],
+              items: [
+                'develop/ruby/platform/observability',
+                'develop/ruby/platform/enriching-ui',
+              ],
             },
             {
               type: 'category',
@@ -859,7 +981,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/ruby/integrations/index',
               },
-              items: ['develop/ruby/integrations/rails-integration'],
+              items: [
+                'develop/ruby/integrations/rails-integration',
+              ],
             },
             {
               type: 'category',
@@ -874,11 +998,88 @@ module.exports = {
                 'develop/ruby/best-practices/testing-suite',
                 'develop/ruby/best-practices/debugging',
                 'develop/ruby/best-practices/converters-and-encryption',
-              ],
+              ]
             },
           ],
         },
-        'develop/run-a-development-server',
+        {
+          type: 'category',
+          label: 'Rust SDK',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/rust/index',
+          },
+          items: [
+            'develop/rust/quickstart',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/workflows/index',
+              },
+              items: [
+                'develop/rust/workflows/basics',
+                'develop/rust/workflows/child-workflows',
+                'develop/rust/workflows/continue-as-new',
+                'develop/rust/workflows/message-passing',
+                'develop/rust/workflows/cancellation',
+                'develop/rust/workflows/timers',
+                'develop/rust/workflows/timeouts',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/activities/index',
+              },
+              items: [
+                'develop/rust/activities/basics',
+                'develop/rust/activities/execution',
+                'develop/rust/activities/timeouts',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/workers/index',
+              },
+              items: [
+                'develop/rust/workers/worker-process',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/client/index',
+              },
+              items: [
+                'develop/rust/client/temporal-client',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Nexus',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/rust/nexus/index',
+              },
+              items: ['develop/rust/nexus/feature-guide'],
+            },
+          ],
+        },
         'develop/environment-configuration',
         'develop/activity-retry-simulator',
         'develop/worker-performance',
@@ -1045,7 +1246,7 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud', 'cloud/migrate/estimate-actions'],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
@@ -1146,6 +1347,20 @@ module.exports = {
             'production-deployment/worker-deployments/worker-versioning',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
+            'production-deployment/worker-deployments/unversioned-to-versioned-migration',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/serverless-workers/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
+                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
+              ],
+            },
           ],
         },
         'production-deployment/data-encryption',
@@ -1213,6 +1428,7 @@ module.exports = {
         id: 'references/index',
       },
       items: [
+        'references/api-reference',
         'references/cluster-metrics',
         'references/commands',
         'references/configuration',
@@ -1241,6 +1457,8 @@ module.exports = {
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
+        'troubleshooting/schedule-missed-actions',
+        'troubleshooting/serverless-workers',
       ],
     },
     {
@@ -1274,6 +1492,7 @@ module.exports = {
       items: [
         'encyclopedia/temporal',
         'encyclopedia/temporal-sdks',
+        'encyclopedia/temporal-client',
         {
           type: 'category',
           label: 'Workflows',
@@ -1352,6 +1571,7 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
+            'encyclopedia/workers/serverless-workers',
           ],
         },
         {
