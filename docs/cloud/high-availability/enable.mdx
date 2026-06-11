@@ -137,7 +137,7 @@ Client APIs (Start, Signal, Cancel, Terminate, Query, and the equivalent Activit
 
 Same-region replicas are not affected by this setting.
 
-To deploy Worker fleets in both regions that stay idle in the passive region until failover, see [Active / Hot](/cloud/high-availability/deployment-models#active-hot).
+To deploy Worker fleets in both regions that stay idle in the passive region until failover, see [Active / Passive (Hot)](/cloud/high-availability/deployment-models#active-hot).
 
 :::info
 
@@ -154,10 +154,10 @@ Use the [`temporal cloud namespace ha update`](/cli/command-reference/cloud/name
 ```bash
 temporal cloud namespace ha update \
     --namespace <namespace>.<account> \
-    --passive-poller-forwarding disable
+    --passive-poller-forwarding disabled
 ```
 
-Set the flag to `enable` to re-enable forwarding.
+Set the flag to `enabled` to re-enable forwarding.
 
 ### Set the forwarding behavior with the Cloud Ops API {/* #set-forwarding-curl */}
 
