@@ -1076,7 +1076,18 @@ module.exports = {
             },
           ],
         },
-        'develop/environment-configuration',
+        {
+          type: 'category',
+          label: 'Environment configuration',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/environment-configuration',
+          },
+          items: [
+            'references/client-environment-configuration',
+          ],
+        },
         'develop/activity-retry-simulator',
         'develop/worker-performance',
         'develop/worker-tuning-reference',
