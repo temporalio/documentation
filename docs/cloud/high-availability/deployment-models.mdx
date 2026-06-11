@@ -3,7 +3,7 @@ id: deployment-models
 title: Deployment models for High Availability
 sidebar_label: Deployment models for High Availability
 slug: /cloud/high-availability/deployment-models
-description: Choose a Worker deployment model — Active / Passive, Active / Active, or Dual Active — for a Namespace with Temporal Cloud High Availability features, and understand how the rest of the architecture fails over with it.
+description: Choose a Worker deployment model — Active / Passive (Cold), Active / Passive (Hot), or Active / Active — for a Namespace with Temporal Cloud High Availability features, and understand how the rest of the architecture fails over with it.
 tags:
   - Temporal Cloud
   - High Availability
@@ -20,7 +20,7 @@ keywords:
 A Namespace with [High Availability features](/cloud/high-availability) fails over the Temporal Service automatically, but it does not move the rest of the architecture.
 On failover, Temporal Cloud promotes the replica to active and reroutes the [Namespace Endpoint](/cloud/namespaces#access-namespaces). Workers, Workflow starters, Codec Servers, and the external systems that Workflows depend on each need their own failover story.
 
-A critical piece of the [Recovery Time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment model**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
+A critical piece of the [recovery time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment model**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
 This page describes common patterns for deploying Workers and how the rest of the architecture fits into an overall High Availability strategy.
 
 ## Terminology {/* #terminology */}
@@ -53,8 +53,14 @@ The [Worker deployment patterns](#worker-deployment-patterns) below note when ea
 
 ## Worker deployment patterns {/* #worker-deployment-patterns */}
 
-The models trade off three things: **Recovery Time** after an outage, **steady-state cost**, and **operational complexity**.
-None is one-size-fits-all. Start with Active / Passive and move toward the others only when Recovery Time or latency requirements call for it.
+This page covers three main patterns — **Active / Passive (Cold)**, **Active / Passive (Hot)**, and **Active / Active** — plus a rarely needed **Dual Active** variant.
+They trade off **recovery time** after an outage, **steady-state cost**, and **operational complexity**.
+
+:::tip Temporal's recommendation
+
+Start with **Active / Passive (Cold)**. It is the easiest to set up, the easiest to reason about, and the lowest cost. Move to another pattern only when business requirements warrant it.
+
+:::
 
 The diagrams below use a shared visual language:
 
@@ -63,15 +69,9 @@ The diagrams below use a shared visual language:
 - A purple fill marks application-owned systems (Workers, databases, queues).
 - A red tint marks the region that is **down** during a failover.
 
-### Active / Passive (recommended) {/* #active-passive */}
+### Active / Passive (Cold) {/* #active-cold */}
 
-In an Active / Passive model, Workers are active in only one region at a time. This is the most common model and the recommended starting point.
-
-It assumes the surrounding stack is also single-region-active at any moment: traffic routing, databases, and queues are all active in one region and fail over to the secondary region together with the Workers. There is no need to reason about two regions mutating the same external state at once.
-
-Active / Passive has two flavors that trade cost against Recovery Time.
-
-#### Active / Cold (most common) {/* #active-cold */}
+_Also known as Active / Cold Standby, Active / Cold, or simply Active / Passive. Recommended and simplest._
 
 Workers run **only in the primary region**. The secondary region holds the passive replica but runs none of the application's Workers.
 
@@ -128,17 +128,26 @@ flowchart LR
 ```
 
 On failover, the Namespace is active in the secondary region immediately, but the Workers there start from nothing, a "cold" start.
-Recovery Time includes container or VM startup, image pulls, and application warm-up before throughput returns to normal.
+Recovery time includes container or VM startup, image pulls, and application warm-up before throughput returns to normal.
 
 **Benefits**
 
+- **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the model pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
 - Simplest model to operate; in steady state it resembles a single-region deployment.
 - Lowest steady-state cost: a single Worker fleet.
 
 **Tradeoffs**
 
-- Highest Recovery Time of the models here, gated by Worker startup in the secondary region.
+- Highest recovery time of the models here, gated by Worker startup in the secondary region.
 - Depends on tested automation to bring up the secondary-region fleet quickly.
+
+**Recommendations and important constraints**
+
+- **Use the Namespace Endpoint.** Connect Workers through the Namespace Endpoint rather than a Regional Endpoint. If an error affects only the Namespace and the primary region's Workers stay healthy, the Namespace Endpoint follows the failover and those Workers reach the new active region cross-region. With private connectivity, the Workers need a network route to the cross-region VPC Endpoint. The alternative is to fail over the Workers and all of their dependencies whenever the Namespace fails over, so that no request crosses regions.
+- **Route Workers to the active region's Codec Server and proxy.** There are two common approaches:
+   1. Put DNS or a load balancer in front of the Codec Server and proxy address, and update it on failover to point at the new region's instances.
+   2. Pass each Worker the Codec Server and proxy address for its own region as configuration, so a Worker always uses the service local to it. This is common in Kubernetes or with service discovery.
+- **Single-region processing is the operator's responsibility.** To run Workers in only one region at a time, scale them down in the primary region before scaling them up in the secondary region. To enforce single-region processing within Temporal, use the [Active / Passive (Hot)](#active-hot) pattern instead.
 
 **Component behavior**
 
@@ -147,7 +156,9 @@ Recovery Time includes container or VM startup, image pulls, and application war
 - **Codec Servers and proxies** — run alongside the active Workers; scaled up in the secondary region as part of a failover.
 - **External databases and queues** — single-region-active; fail over to the secondary region alongside the Workers.
 
-#### Active / Hot {/* #active-hot */}
+### Active / Passive (Hot) {/* #active-hot */}
+
+_Also known as Active / Hot Standby or Active / Hot._
 
 Workers are deployed in **both regions**, but only the active region processes Workflows. The secondary-region Workers stay connected and warm, yet idle.
 
@@ -208,17 +219,21 @@ flowchart LR
   style P fill:#ED360E14,stroke:#ED360E
 ```
 
-Failover is near-instant: the Namespace failover and the Worker "failover" happen together and automatically, with no DNS wait and no cold start. The previously idle fleet begins processing the moment the secondary region becomes active, so this model achieves the lowest Recovery Time.
+Failover is near-instant: the Namespace failover and the Worker "failover" happen together and automatically, with no DNS wait and no cold start. The previously idle fleet begins processing the moment the secondary region becomes active, so this model achieves the lowest recovery time.
 
 **Benefits**
 
-- Lowest Recovery Time: the secondary-region Workers are already connected and warm.
+- **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the model pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
+- Lowest recovery time: the secondary-region Workers are already connected and warm.
 - Low steady-state latency: Tasks are processed only in the active region, with no cross-region forwarding.
 
 **Tradeoffs**
 
 - Highest steady-state cost: idle Worker capacity runs in the secondary region at all times.
-- Requires Regional Endpoints or VPC Endpoints and the `disablePassivePollerForwarding` setting. Using the Namespace Endpoint by mistake routes the standby Workers to the active region and defeats the pattern.
+
+**Recommendations and important constraints**
+
+- Connect each Worker fleet through its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) and [disable forwarding](/cloud/high-availability/enable#change-forwarding-behavior) for Worker polls. Using the Namespace Endpoint by mistake routes the standby Workers to the active region and defeats the pattern.
 
 **Component behavior**
 
@@ -227,15 +242,9 @@ Failover is near-instant: the Namespace failover and the Worker "failover" happe
 - **Codec Servers and proxies** — run in both regions continuously, not just after a failover.
 - **External databases and queues** — typically single-region-active; fail over alongside the active Workers.
 
-:::tip Disabling forwarding
-
-To stop forwarding Worker polls to the active region, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
-
-:::
-
 ### Active / Active {/* #active-active */}
 
-In this model, Workers run in **both regions and process Workflows at the same time**, with forwarding left enabled (the default).
+Workers run in **both regions and process Workflows at the same time**, with forwarding left enabled (the default).
 
 A Temporal Cloud Namespace is not "active/active" in the database sense; it still has a single active replica in one region.
 Because the passive replica transparently forwards requests to and from the active region, a Worker fleet in either region can process Workflows. The secondary fleet's polls are forwarded across regions to the active replica.
@@ -297,18 +306,22 @@ flowchart LR
   style P fill:#ED360E14,stroke:#ED360E
 ```
 
-This is a practical way to reach a low Recovery Time at balanced cost. Roughly half the fleet runs in each region, and capacity is added to the surviving region during an outage to reach full throughput.
-Unlike Active / Cold, Workflows keep processing in the surviving region while capacity scales up, so there is no cold-start gap.
+This is a practical way to reach a low recovery time at balanced cost. Roughly half the fleet runs in each region, and capacity is added to the surviving region during an outage to reach full throughput.
+Unlike Active / Passive (Cold), Workflows keep processing in the surviving region while capacity scales up, so there is no cold-start gap.
 
 **Benefits**
 
-- Low Recovery Time: the surviving region keeps processing while capacity scales up.
+- Low recovery time: the surviving region keeps processing while capacity scales up.
 - Balanced cost: roughly half the fleet runs in each region during normal operation.
 
 **Tradeoffs**
 
 - The secondary region pays cross-region latency, because its polls are forwarded to the active replica. This can be a problem for latency-sensitive Workflows.
 - Synchronizing external systems is harder, because Workers are active in both regions at once.
+
+**Recommendations and important constraints**
+
+- Keep forwarding enabled (the default) so the secondary-region Workers' polls reach the active replica. Do not set `disablePassivePollerForwarding`.
 
 **Component behavior**
 
@@ -319,7 +332,7 @@ Unlike Active / Cold, Workflows keep processing in the surviving region while ca
 
 ### Dual Active (Multi-Active) {/* #dual-active */}
 
-Some architectures need low-latency or region-bound data in *each* region at once. This can be achieved with **two Namespaces whose active and passive regions overlap**: each region holds one Namespace's active replica and the other Namespace's passive replica.
+Beyond the three main patterns, some architectures need low-latency or region-bound data in *each* region at once. This can be achieved with **two Namespaces whose active and passive regions overlap**: each region holds one Namespace's active replica and the other Namespace's passive replica.
 
 **Steady state**
 
@@ -396,11 +409,11 @@ Workloads on Temporal rarely need this. It pays off only when a workload is *bot
 
 ## Choose a deployment model {/* #choose */}
 
-| Model | Recovery Time | Steady-state cost | Best when |
+| Model | Recovery time | Steady-state cost | Best when |
 | --- | --- | --- | --- |
-| **Active / Cold** | Highest (cold start in secondary) | Lowest (one fleet) | Adopting High Availability with the simplest operating model. |
-| **Active / Hot** | Lowest (warm, no DNS wait) | Higher (idle fleet) | The lowest Recovery Time is required and the data plane is pinned to one region at a time. |
-| **Active / Active** | Low (surviving region keeps processing) | Higher (two live fleets) | Low Recovery Time at balanced cost, where the secondary region can tolerate cross-region latency. |
+| **Active / Passive (Cold)** | Highest (cold start in secondary) | Lowest (one fleet) | Adopting High Availability with the simplest operating model. |
+| **Active / Passive (Hot)** | Lowest (warm, no DNS wait) | Higher (idle fleet) | The lowest recovery time is required and the data plane is pinned to one region at a time. |
+| **Active / Active** | Low (surviving region keeps processing) | Higher (two live fleets) | Low recovery time at balanced cost, where the secondary region can tolerate cross-region latency. |
 | **Dual Active** | Low (per Namespace) | Highest (two fleets, two Namespaces) | Low-latency, region-bound data is genuinely required in each region. Rare. |
 
 ## The rest of the architecture {/* #rest-of-architecture */}
@@ -408,7 +421,7 @@ Workloads on Temporal rarely need this. It pays off only when a workload is *bot
 The Worker model sets the pattern; the supporting pieces follow it.
 
 - **Workflow starters and Clients.** Deploy these with the same regional pattern as the Workers, since a starter or Client often shares the same in-region dependencies (databases, queues, upstream services) and should fail over alongside them. Point Clients at the Namespace Endpoint so they follow the active region automatically with no configuration change on failover, and use a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) only when a Client must be pinned to a region.
-- **Codec Servers and proxies.** Anything in the connection path between Workers and Temporal Cloud must be reachable from every region where Workers connect. In Active / Cold, scale them up in the secondary region as part of a failover; in the hot and active/active models, run them in both regions at all times.
+- **Codec Servers and proxies.** Anything in the connection path between Workers and Temporal Cloud must be reachable from every region where Workers connect. In Active / Passive (Cold), scale them up in the secondary region as part of a failover; in the Active / Passive (Hot) and Active / Active models, run them in both regions at all times.
 - **External databases and queues.** These remain the application's responsibility, and the right approach depends on the Worker model: a single-region-active datastore pairs naturally with Active / Passive, while running Workers active in both regions raises consistency questions that must be designed for. Detailed guidance is out of scope for this page.
 
 ## Related {/* #related */}
@@ -417,7 +430,7 @@ To add a replica and turn on High Availability features, see [Enable and manage 
 
 To choose between the Namespace Endpoint and Regional Endpoints and to set up private connectivity, see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 
-To stop forwarding Worker polls to the active region for the Active / Hot model, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+To stop forwarding Worker polls to the active region for the Active / Passive (Hot) model, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
 
 To trigger and manage failovers, see [Failovers](/cloud/high-availability/failovers).
 
