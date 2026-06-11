@@ -195,6 +195,7 @@ module.exports = {
               items: [
                 'develop/go/nexus/quickstart',
                 'develop/go/nexus/feature-guide',
+                'develop/go/nexus/standalone-operations',
               ],
             },
             {
@@ -564,6 +565,7 @@ module.exports = {
               items: [
                 'develop/python/nexus/quickstart',
                 'develop/python/nexus/feature-guide',
+                'develop/python/nexus/standalone-operations',
               ],
             },
             {
@@ -722,7 +724,8 @@ module.exports = {
               },
               items: [
                 'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide'
+                'develop/typescript/nexus/feature-guide',
+                'develop/typescript/nexus/standalone-operations',
               ],
             },
             {
@@ -1662,6 +1665,7 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
+            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
