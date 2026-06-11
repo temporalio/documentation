@@ -144,14 +144,6 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 - [temporal\_cloud\_v1\_replication\_lag\_p95](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
 - [temporal\_cloud\_v1\_replication\_lag\_p50](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
 
-## Detecting Resource Exhaustion
-
-Resource exhaustion happens when a single resource (a Namespace, Task Queue, or Workflow ID) receives a burst of operations larger than that resource can absorb in the moment. The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` increments and `ResourceExhausted` gRPC errors are returned to the client. SDKs retry these errors gracefully, so workflow progress is rarely impacted.
-
-Persistent non-zero values are unexpected and indicate a hot resource. Use the `operation` label to identify which RPC is hitting the burst limit. For example, `StartWorkflowExecution` increments here when the same Workflow ID is started more than once per second.
-
-Resource exhaustion is distinct from rate limiting against your account limits. For workloads that are throttled because they exceed their provisioned capacity, see [Monitoring Trends Against Limits](#rps-aps-rate-limits). Limits-driven throttling slows or stalls a workload, so it is generally the more important signal to monitor.
-
 ## Monitoring Trends Against Limits {/* #rps-aps-rate-limits */}
 
 Tracking trends against your account limits is the most important throttling signal to monitor. Unlike [Resource Exhaustion](#detecting-resource-exhaustion), which usually self-heals through retries, hitting a limit slows or stalls progress until the workload backs off or your capacity is increased.
@@ -187,3 +179,34 @@ When setting alerts against limits, consider if your workload is spiky or sensit
 for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_cloud_v1_action_limit`. If your workload is not sensitive, consider an alert at 90% of this threshold
 or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
 Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.
+
+## Detecting Resource Exhaustion
+
+Resource exhaustion happens when a single resource (a Namespace, Task Queue, or Workflow ID) receives a burst of operations larger than that resource can absorb in the moment. The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` increments and `ResourceExhausted` gRPC errors are returned to the client. SDKs retry these errors gracefully, so workflow progress is rarely impacted.
+
+Persistent non-zero values are unexpected and indicate a hot resource. Use the `operation` label to identify which RPC is hitting the burst limit. For example, `StartWorkflowExecution` increments here when the same Workflow ID is started more than once per second.
+
+Resource exhaustion is distinct from rate limiting against your account limits. For workloads that are throttled because they exceed their provisioned capacity, see [Monitoring Trends Against Limits](#rps-aps-rate-limits). Limits-driven throttling slows or stalls a workload, so it is generally the more important signal to monitor.
+
+### Workflow lock contention (BusyWorkflow)
+
+The most common cause of resource exhaustion is Workflow lock contention. Every operation that mutates a single Workflow Execution (starting it, sending a Signal, etc.) is serialized under a per-Workflow lock. When operations reach one Execution faster than that lock can be acquired, the Service rejects the excess with a `ResourceExhausted` error. In Service logs this appears as `Workflow is busy.`
+
+This is contention on a single Execution, not an account limit. Increasing your Actions, Requests, or Operations per second limits does not resolve it.
+
+To confirm lock contention:
+
+1. Rule out account-limit throttling first. If the throttle metrics described in [Monitoring Trends Against Limits](#rps-aps-rate-limits) are elevated, address that throttling first.
+2. If you are within your limits but `temporal_cloud_v1_resource_exhausted_error_count` is still non-zero, break it down by the `operation` label. Lock contention concentrates on operations that target individual executions.
+3. Match the operation to the guidance below.
+
+| `operation` | What it indicates | What to do |
+| ----------- | ----------------- | ---------- |
+| `StartWorkflowExecution`, `SignalWithStartWorkflowExecution` | The same Workflow ID was started again within a short de-duplication window (about one second). The first start succeeded; the duplicate was rejected. | Usually safe to ignore. Do not aggressively retry. There may be a client path firing the duplicate start. |
+| `SignalWorkflowExecution` | Too high of a rate of Signals to one execution. | Batch or coalesce Signals (for example, one Signal per N events), shard work across more executions, or buffer Signals and drain them in the main Workflow loop. |
+| `UpdateWorkflowExecution` | More than the per-execution in-flight Update limit (10) are outstanding. | Cap concurrent in-flight Updates on the client, then back off and retry. |
+| `RecordActivityTaskHeartbeat` | Too many Activities are heartbeating to the same execution. | Increase the heartbeat timeout and interval, and reduce the number of Activities heartbeating into one execution concurrently. |
+| `RespondWorkflowTaskCompleted` | A single Workflow schedules a large batch of Activities or Child Workflows in parallel, each taking the lock. | Limit concurrent operations to 500 or fewer per execution. Process the batch in smaller groups using a sliding-window or plain batching pattern instead of scheduling everything at once. |
+| `QueryWorkflow` | Too many concurrent Queries against one execution, or a side effect of repeated Workflow Task retries. | Reduce concurrent Queries to that execution. If it correlates with Workflow Task failures or timeouts, resolve those first. |
+
+At low, brief rates this error is benign because clients retry it and no progress is lost. Investigate when the rate is sustained or correlates with rising latency on the affected operations. For the per-execution limits referenced above, see [Per Workflow Execution concurrency limits](/cloud/limits#per-workflow-execution-concurrency-limits).
