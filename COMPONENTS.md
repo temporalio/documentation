@@ -26,6 +26,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
 - [Using ZoomingImage](#using-zoomingimage)
+- [Using ReleaseNoteHeader](#using-release-note-header)
 
 ## Finding Components
 
@@ -458,3 +459,59 @@ Usage:
 ```
 
 Images are normally stored in the '/static' folder in `img` or `diagrams`.
+
+## Using ReleaseNoteHeader
+
+Role: To provide a consistent component for adding, updating, and removing release stages on different features.
+
+Usage:
+
+In `/src/constants`, update the [`featureReleaseTypes.js`](./src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
+
+Example: `serverlessWorkers: "prerelease"`
+
+Then on the pages you want it to show, add this to the top of the content, right below the frontmatter. The `featureName` prop is how you share the release stages you add to `featureReleaseTypes.js` across pages.
+
+```js
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader
+  featureName="nexus"
+/>
+```
+
+Or you can choose one of these variations.
+
+Use the `type` prop to set a specific type if the release stage is only for one page.
+```js
+<ReleaseNoteHeader
+  type="publicPreview"
+/>
+```
+
+Add `children` for more detailed messaging.
+```js
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+```
+
+Show the supported languages by using the `languages` prop.
+```js
+<ReleaseNoteHeader
+  type="prerelease"
+  languages={["Go", "TypeScript", "Java", ".NET", "Python"]}
+/>
+```
+
+Use the `href` prop to make the `children` content a link.
+```js
+<ReleaseNoteHeader
+  featureName="serverlessWorkers"
+  href="https://temporal.io/pages/serverless-workers-updates"
+>
+  Sign up for updates to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+```
