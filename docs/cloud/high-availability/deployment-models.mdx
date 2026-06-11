@@ -18,23 +18,25 @@ keywords:
 ---
 
 A Namespace with [High Availability features](/cloud/high-availability) fails over the Temporal Service for you, but it can't move the rest of your architecture.
-On failover, Temporal Cloud promotes the replica to active and reroutes your [Namespace Endpoint](/cloud/namespaces#access-namespaces) — but your Workers, Workflow starters, Codec Servers, and the external systems your Workflows depend on each need their own region story.
+On failover, Temporal Cloud promotes the replica to active and reroutes your [Namespace Endpoint](/cloud/namespaces#access-namespaces) — but your Workers, Workflow starters, Codec Servers, and the external systems your Workflows depend on each need their own failover story.
 
-The biggest factor in your real-world [Recovery Time](/cloud/rpo-rto) is your **Worker deployment model**: where your Worker fleets run and which region processes Workflows at any given moment.
-This page describes the common models and how the rest of your architecture fits around each one.
-
-A useful property to keep in mind: **Workers don't need to run in the same region as the active replica.** A Worker fleet in one region can poll a Namespace that is active in another, because the Namespace Endpoint routes to whichever region is currently active. You decide where compute runs; Temporal Cloud routes to the active replica.
+A critical piece of the [Recovery Time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment model**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
+This page describes common patterns for deploying Workers and how the rest of your architecture fits into an overall High Availability strategy.
 
 ## Terminology {/* #terminology */}
 
-This page uses two terms for the regions of an HA Namespace:
+This page uses two terms for the regions of a Namespace with High Availability:
 
-- **Primary region** — the region you prefer to run active in during normal operation.
-- **Secondary region** — the other region in the Namespace. It holds the passive replica during normal operation and becomes active after a failover.
+- **Primary region** — the region where the Namespace is active during normal operation, also called the "preferred region."
+- **Secondary region** — the region the Namespace fails over to. It holds a replica and is passive during normal operation.
 
-A Temporal Cloud HA Namespace has exactly **one active replica at a time**, in one region.
-The other region holds a passive replica that receives replicated state asynchronously.
-This is true for every model below — including the ones that present an "active/active" face to the rest of your stack.
+:::info
+
+**Namespaces are always active / passive, but can support an Active / Active pattern.** A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state. However, Temporal Cloud Namespaces can still fit into a broader "Active / Active" strategy, as described below.
+
+:::
+
+A useful property to keep in mind: **Workers don't need to run in the same region as the active replica.** A Worker fleet in one region can poll a Namespace that is active in another.
 
 ## What needs a failover story {/* #what-needs-a-failover-story */}
 
