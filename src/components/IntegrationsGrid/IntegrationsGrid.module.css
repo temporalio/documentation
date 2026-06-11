@@ -115,7 +115,7 @@
   background: transparent;
   color: var(--ig-pill-text);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
   user-select: none;
 }
 
@@ -148,7 +148,7 @@
   border-radius: 0;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -190,10 +190,6 @@
   width: 22px;
   height: 22px;
   pointer-events: none;
-}
-
-.sdkIcons svg:hover path {
-  opacity: 1;
 }
 
 .externalIcon {
