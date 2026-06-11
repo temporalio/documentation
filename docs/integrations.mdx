@@ -1,17 +1,21 @@
 ---
-id: index
+id: integrations
 title: Integrations
 sidebar_label: Integrations
+slug: /integrations
 toc_max_heading_level: 2
 keywords:
   - integrations
   - ai frameworks
   - agent frameworks
+  - observability
+  - metrics
 tags:
   - Integrations
   - AI Frameworks
   - Agent Frameworks
-description: Integrations with other tools and services.
+  - Observability
+description: Browse all integrations available for Temporal.
 llm_exclude:
   This page renders an interactive grid component. For a machine-readable list of integrations and their metadata, see
   [integrations-data.ts](https://github.com/temporalio/documentation/blob/main/src/components/IntegrationsGrid/integrations-data.ts).
@@ -19,8 +23,7 @@ llm_exclude:
 
 import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
 
-The following integrations are available for the Temporal Python SDK.
-These integrations are built on the Temporal Python SDK's [Plugin system](/develop/plugins-guide), which you can also
-use to build your own integrations.
+Browse integrations for Temporal SDKs and Temporal Cloud.
+Filter by SDK, tag, or search to find what you need.
 
-<IntegrationsGrid defaultSdks={["Python"]} />
+<IntegrationsGrid />
