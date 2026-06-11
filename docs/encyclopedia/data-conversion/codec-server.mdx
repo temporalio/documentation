@@ -179,6 +179,18 @@ Temporal Cloud, verify against the
 token comes from whatever auth provider you have [configured for the Web UI](/references/web-ui-configuration#auth).
 This approach requires less setup but reuses the same token across the Temporal UI and the Codec Server.
 
+:::note
+
+If you have a step in your process for token validation to ensure access isn't granted to the wrong token, you can validate the `audience` claim with:
+
+```bash
+"aud": [
+  "https://saas-api.tmprl.cloud"
+]
+```
+
+:::
+
 ### Namespace-level authorization
 
 Authentication identifies the caller, but does not confirm the caller is authorized to decode payloads for a specific
