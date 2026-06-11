@@ -32,7 +32,7 @@ The server itself never adds encryption over Payloads.
 Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
 When working with sensitive data, you should always implement Payload encryption.
 
-## Custom Payload Codec {#custom-payload-codec}
+## Custom Payload Codec {/* #custom-payload-codec */}
 
 Custom Data Converters can change the default Temporal Data Conversion behavior by adding hooks, sending payloads to external storage, or performing different encoding steps.
 If you only need to change the encoding performed on your payloads -- by adding compression or encryption -- you can override the default Data Converter to use a new `PayloadCodec`.
@@ -82,7 +82,7 @@ my_client = Temporalio::Client.connect(
 
 - Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
 - Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster.
-  Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
+  Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/command-reference/workflow#show) command or when browsing the Web UI to view output.
 
 <!-- TODO: For reference, see the [Encryption](https://github.com/temporalio/samples-ruby/tree/main/encryption) sample. -->
 
@@ -94,11 +94,11 @@ You create, operate, and manage access to your Codec Server in your own environm
 The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
 
-## Payload conversion {#custom-payload-converter}
+## Payload conversion {/* #custom-payload-converter */}
 
 Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
-### Conversion sequence {#conversion-sequence}
+### Conversion sequence {/* #conversion-sequence */}
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
@@ -112,7 +112,7 @@ Temporal's Converter architecture looks like this:
     title="Temporal converter architecture"
 />
 
-### Supported Data Types {#supported-data-types}
+### Supported Data Types {/* #supported-data-types */}
 
 Data converters are used to convert raw Temporal payloads to/from actual Ruby types.
 A custom data converter can be set via the `data_converter` keyword argument when creating a client. Data converters are a combination of payload converters, payload codecs, and failure converters.
@@ -142,7 +142,7 @@ Also many Ruby ORMs do many lazy things and therefore provide unclear serializat
 Instead, consider having models specific for workflows/activities and translate to/from existing models as needed.
 See the next section on how to do this with ActiveModel objects.
 
-#### ActiveModel {#active-model}
+#### ActiveModel {/* #active-model */}
 
 By default, ActiveModel objects do not natively support the `JSON` module.
 A mixin can be created to add this support for ActiveModel, for example:

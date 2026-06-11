@@ -32,7 +32,7 @@ The server itself never adds encryption over Payloads.
 Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
 When working with sensitive data, you should always implement Payload encryption.
 
-## Custom Payload Codec in Java {#custom-payload-codec}
+## Custom Payload Codec in Java {/* #custom-payload-codec */}
 
 Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html) to set a custom Data Converter.
 
@@ -159,7 +159,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 ```
 
 - Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
-- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
+- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/command-reference/workflow#show) command or when browsing the Web UI to view output.
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads) sample.
 
@@ -173,7 +173,7 @@ Refer to the [Codec Server](/production-deployment/data-encryption) documentatio
 
 For reference, see the [Codec server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder) sample.
 
-## Using custom Payload conversion {#custom-payload-conversion}
+## Using custom Payload conversion {/* #custom-payload-conversion */}
 
 Temporal SDKs provide a [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 

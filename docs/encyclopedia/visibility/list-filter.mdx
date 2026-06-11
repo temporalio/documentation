@@ -18,7 +18,7 @@ tags:
 
 This page discusses [List Filter](#list-filter).
 
-## What is a List Filter? {#list-filter}
+## What is a List Filter? {/* #list-filter */}
 
 The [Visibility](/temporal-service/visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
@@ -61,7 +61,7 @@ Both stored values and query strings are analyzed by the [Elasticsearch standard
 If you need exact matching on identifiers, UUIDs, or other structured strings, use `Keyword` instead.
 See [Choose a string type](/search-attribute#choose-a-string-type).
 
-##### Tokenization {#text-tokenization}
+##### Tokenization {/* #text-tokenization */}
 
 The standard analyzer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) to split values into tokens.
 All tokens are lowercased by the analyzer's lowercase filter.
@@ -81,7 +81,7 @@ The following characters do **not** split when they appear between two letters o
 Dots and colons between digits also stay connected (`v1.2.3` → one token).
 However, a dot or colon between a digit and a letter does split: `v1.ProcessOrder` → `v1`, `processorder`.
 
-##### Search matching {#text-search-matching}
+##### Search matching {/* #text-search-matching */}
 
 The `=` operator on `Text` Search Attributes uses **OR matching**: the query string is tokenized using the same rules as above, and a result is returned if **any** query token matches **any** indexed token.
 
@@ -173,7 +173,7 @@ Continue until the page token becomes `null`/`nil`.
 
 #### List Filter examples
 
-Here are examples of List Filters set with the [Temporal CLI](/cli/workflow#list):
+Here are examples of List Filters set with the [Temporal CLI](/cli/command-reference/workflow#list):
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")

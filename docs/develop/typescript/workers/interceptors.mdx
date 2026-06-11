@@ -2,7 +2,7 @@
 id: interceptors
 title: Manage Interceptors - TypeScript SDK
 sidebar_label: Interceptors
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - interceptors
 tags:
@@ -25,7 +25,7 @@ There are two main types of interceptors--inbound and outbound.
 
 Those further break down into concrete Interceptor types--see below.
 
-## How to implement interceptors in TypeScript {#interceptors}
+## How to implement interceptors in TypeScript {/* #interceptors */}
 
 Interceptors run as a chain.  Each interceptor wraps the entire inner call: your code runs before the call, invokes `next` to execute the rest of the chain, and then runs after the call completes. This means you can inspect or modify both the `input` and the result, handle errors, and perform side effects at either stage.
 
@@ -108,7 +108,7 @@ export class NexusOperationLogInterceptor implements NexusInboundCallsIntercepto
 }
 ```
 
-## Register an Interceptor {#register-interceptor}
+## Register an Interceptor {/* #register-interceptor */}
 
 Registering an interceptor means providing it to the SDK so Temporal can invoke it when matching Client or Worker calls occur. Once registered, it runs in the call path and can observe or modify request and response data.
 

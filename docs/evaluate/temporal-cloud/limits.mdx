@@ -121,7 +121,7 @@ This approach uniformly distributes the scheduled Workflow Execution launches th
 
 All read calls are subject to the Visibility API rate limit.
 
-### Nexus Rate Limit {#nexus-rate-limits}
+### Nexus Rate Limit {/* #nexus-rate-limits */}
 
 Nexus requests (such as starting a Nexus Operation or sending a Nexus completion callback) are counted as part of the overall Namespace RPS limit.
 If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace.
@@ -169,7 +169,7 @@ You can set the Retention Period between 1 and 90 days.
 
 ### Batch jobs
 
-A Namespace can have just one [Batch job](/cli/batch) running at a time.
+A Namespace can have just one [Batch job](/cli/command-reference/batch) running at a time.
 
 Each batch job operates on a maximum of 50 Workflow Executions per second.
 
@@ -268,7 +268,7 @@ This limit is non-configurable for Temporal Cloud.
 
 Read more about [Temporal Workflow Execution limits](/workflow-execution/limits) on the [Temporal Workflow](/workflows) documentation page.
 
-### Per Workflow Callback limits {#per-workflow-callback-limits}
+### Per Workflow Callback limits {/* #per-workflow-callback-limits */}
 
 A single Workflow Execution can have a maximum of 2000 total Callbacks.
 
@@ -276,13 +276,13 @@ These limits may be exceeded when [multiple Nexus callers attach to the same han
 
 See the Nexus Encyclopedia entry for [additional details](/workflow-execution/limits#workflow-execution-callback-limits).
 
-### Per Workflow Nexus Operation limits {#per-workflow-nexus-operation-limits}
+### Per Workflow Nexus Operation limits {/* #per-workflow-nexus-operation-limits */}
 
 A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations.
 
 See the Nexus Encyclopedia entry for [additional details](/workflow-execution/limits#workflow-execution-nexus-operation-limits).
 
-### Nexus Operation request timeout {#nexus-operation-request-timeout}
+### Nexus Operation request timeout {/* #nexus-operation-request-timeout */}
 
 Less than 10 seconds is the maximum duration for a Nexus handler to process a single Nexus start or cancel request.
 
@@ -293,7 +293,7 @@ This includes fully processing a synchronous Nexus operation and starting an asy
 If a Nexus handler doesn’t process a start or cancel request within 10 seconds, it will receive a context deadline exceeded error, and the caller will retry, with an exponential backoff, for the ScheduleToClose duration for the overall Nexus Operation.
 This has a default and maximum as defined below in [Nexus Operation duration limits](/cloud/limits#nexus-operation-duration-limits).
 
-### Nexus Operation duration limits {#nexus-operation-duration-limits}
+### Nexus Operation duration limits {/* #nexus-operation-duration-limits */}
 
 Each Nexus Operation has a maximum ScheduleToClose duration of 60 days.
 This is most applicable to asynchronous Nexus Operations completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace.
@@ -308,14 +308,14 @@ Timers have a maximum duration of 100 years in Temporal Cloud.
 
 ## Worker Versioning level
 
-### Max Worker deployments limits {#max-worker-deployments-limits}
+### Max Worker deployments limits {/* #max-worker-deployments-limits */}
 
 The maximum number of Worker deployments that the server allows to be registered in a single Namespace. Defaults to 100.
 
-### Max versions in deployment limits {#max-versions-in-deployment-limits}
+### Max versions in deployment limits {/* #max-versions-in-deployment-limits */}
 
 The maximum number of versions that the server allows to be registered in a single Worker deployments at a given time. Note that unused versions will be deleted by the system automatically when this limit is reached. Defaults to 100.
 
-### Max Task Queues In Deployment Version limits {#max-task-queues-in-deployment-version-limits}
+### Max Task Queues In Deployment Version limits {/* #max-task-queues-in-deployment-version-limits */}
 
 The maximum number of Task Queues that the server allows to be registered in a single Worker Deployment Version. Defaults to 100.

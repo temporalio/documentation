@@ -250,7 +250,7 @@ A single iterator over multiple topics also avoids the cancellation race that tw
 
 Omitting `result_type` entirely or passing `result_type=None` decodes each item with the converter's default rules. For the stock JSON converter, that means a Python primitive, `dict`, or `list`. This works for fully homogeneous streams, but not for the dispatch-by-topic pattern above, where each topic has its own concrete dataclass.
 
-### Closing the stream {#closing-the-stream}
+### Closing the stream {/* #closing-the-stream */}
 
 A subscriber's `async for` does not know when the publisher is done. End-of-stream is an application-level concern; Workflow Streams does not impose a marker. Without coordination, a subscriber will keep polling until the Workflow reaches a terminal state, and a Workflow that returns immediately after its last publish can lose that publish's poll round-trip in the gap.
 
@@ -296,7 +296,7 @@ The timeout is still required because the subscriber may not be attached, or may
 
 **Inspecting terminal status.** `subscribe()` exits cleanly when the Workflow reaches `COMPLETED`, `FAILED`, `CANCELED`, `TERMINATED`, or `TIMED_OUT`, but does not distinguish among them. If your application needs to know which (to display success or failure to the user, log the outcome, or decide whether to retry), call `await temporal_client.get_workflow_handle(workflow_id).describe()` after the loop returns to inspect the Workflow's status.
 
-## Continue-As-New {#continue-as-new}
+## Continue-As-New {/* #continue-as-new */}
 
 If your Workflow runs for minutes and finishes (a single chat completion, an order pipeline, a one-shot agent), you can skip this section. Continue-As-New becomes relevant for streams that run for hours or accumulate thousands of events, where you need to roll the run over to keep history bounded.
 
@@ -432,7 +432,7 @@ A few details worth knowing about, mostly relevant if you're writing custom mess
 - **Custom handlers reading stream state on the first activation.** `WorkflowStream` registers its publish-Signal handler dynamically from `__init__`, so on the very first activation a publish Signal can be queued before class-level `@workflow.signal` or `@workflow.update` handlers have run. A handler that observes state set by stream initialization in that same activation can see pre-publish state. The fix is to make the handler `async def` and `await` once before reading state. `asyncio.sleep(0)` is a no-op yield that suffices and adds no history events. (Don't substitute `workflow.sleep(0)`, which records a timer event.) Once the first activation completes, the handler is permanent and the race does not recur.
 - **Type bindings aren't shared across publishers.** Each `WorkflowStream` and each `WorkflowStreamClient` records topic types only for its own instance. If two publishers bind the same topic name to different types, the mismatch is not caught at publish, and the subscriber gets a decode error when it processes events from the mismatched publisher.
 
-## Application: Stream LLM output {#stream-llm-output}
+## Application: Stream LLM output {/* #stream-llm-output */}
 
 The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive; the Workflow kicks off the Activity and waits for the consumer to acknowledge end-of-stream; the consumer subscribes, accumulates the deltas, and clears its accumulated state on `RETRY` before continuing. The shape works for a terminal client, a desktop UI, or a Server-Sent Events (SSE) endpoint forwarding to a browser; whatever holds the displayed state calls `render()` to display it.
 

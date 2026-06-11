@@ -29,7 +29,7 @@ This page discusses the following:
 - [Worker Service](#worker-service)
 - [Retention Period](#retention-period)
 
-## What is the Temporal Server? {#temporal-server}
+## What is the Temporal Server? {/* #temporal-server */}
 
 The Temporal Server consists of four independently scalable services:
 
@@ -76,9 +76,9 @@ We offer maintenance support of **major** versions for at least 12 months after 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
 (For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
 
-## What is a Frontend Service? {#frontend-service}
+## What is a Frontend Service? {/* #frontend-service */}
 
-The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
 <CaptionedImage
@@ -107,7 +107,7 @@ The Frontend Service talks to the Matching Service, History Service, Worker Serv
 
 Ports are configurable in the Temporal Service configuration.
 
-## What is a History Service? {#history-service}
+## What is a History Service? {/* #history-service */}
 
 The History Service is responsible for persisting Workflow Execution state to the Event History.
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
@@ -131,7 +131,7 @@ The History Service talks to the Matching Service and the database.
 
 Ports are configurable in the Temporal Service configuration.
 
-### What is a History Shard? {#history-shard}
+### What is a History Shard? {/* #history-shard */}
 
 A History Shard is an important unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
 
@@ -161,7 +161,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
   (Relies on the experimental Multi-Cluster feature.)
 - Internal Visibility Task Queue: Pushes data to the [Advanced Visibility](/visibility#advanced-visibility) index.
 
-## What is a Matching Service? {#matching-service}
+## What is a Matching Service? {/* #matching-service */}
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/task-queue) for Task dispatching.
 
@@ -180,7 +180,7 @@ It talks to the Frontend Service, History Service, and the database.
 
 Ports are configurable in the Temporal Service configuration.
 
-## What is a Worker Service? {#worker-service}
+## What is a Worker Service? {/* #worker-service */}
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
@@ -203,11 +203,11 @@ It talks to the Frontend Service.
 
 Ports are configurable in the Temporal Service configuration.
 
-## What is a Retention Period? {#retention-period}
+## What is a Retention Period? {/* #retention-period */}
 
 Retention Period is the duration for which the Temporal Service stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
-- [How to set the Retention Period for a Namespace](/cli/operator#create)
+- [How to set the Retention Period for a Namespace](/cli/command-reference/operator#create)
 - [How to set the Retention Period for a Namespace using the Go SDK](/develop/go/client/namespaces)
 - [How to set the Retention Period for a Namespace using the Java SDK](/develop/java/client/namespaces)
 
@@ -220,10 +220,10 @@ On Temporal Service version 1.18 and later, the maximum Retention Period value f
 On Temporal Service versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
-If you don't set the Retention Period value when using the [`temporal operator namespace create`](/cli/operator#create) command, it defaults to 3 days.
+If you don't set the Retention Period value when using the [`temporal operator namespace create`](/cli/command-reference/operator#create) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
 
-When changing the Retention Period (with [`temporal operator namespace update`](/cli/operator#update) or the `UpdateNamespace` API), the new duration applies to Workflow Executions that close after the change is saved.
+When changing the Retention Period (with [`temporal operator namespace update`](/cli/command-reference/operator#update) or the `UpdateNamespace` API), the new duration applies to Workflow Executions that close after the change is saved.
 
 :::info
 
@@ -233,5 +233,5 @@ Changing the Retention Period does NOT affect existing closed Workflow Execution
 
 ### Manual cleanup of closed Workflow Executions
 
-For cases where you need to remove closed Workflow Executions before their retention timer expires, you can use [`temporal workflow delete`](/cli/workflow#delete) or the `DeleteWorkflowExecution` command.
+For cases where you need to remove closed Workflow Executions before their retention timer expires, you can use [`temporal workflow delete`](/cli/command-reference/workflow#delete) or the `DeleteWorkflowExecution` command.
 This is particularly useful along with reducing the Retention Period to clean up previously closed Workflow Executions to reduce storage costs.

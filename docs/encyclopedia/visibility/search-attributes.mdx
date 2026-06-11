@@ -23,7 +23,7 @@ This page discusses the following:
 - [Default Search Attributes](#default-search-attribute)
 - [Custom Search Attributes](#custom-search-attribute)
 
-## What is a Search Attribute? {#search-attribute}
+## What is a Search Attribute? {/* #search-attribute */}
 
 A Search Attribute is an indexed field used in a [List Filter](/list-filter) to filter a list of [Workflow Executions](/workflow-execution) that have the Search Attribute in their metadata.
 
@@ -56,7 +56,7 @@ For business logic in which you need to get information about a Workflow Executi
 If your business logic requires high throughput or low latency, store and fetch the data through Activities.
 You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
-### Default Search Attributes {#default-search-attribute}
+### Default Search Attributes {/* #default-search-attribute */}
 
 :::caution
 The `BinaryChecksums` and `BuildIds` Search Attributes are deprecated. They will stop being propagated for new Workflows starting in Temporal Server 1.32 and will be fully removed from query support in Temporal Server 1.34.
@@ -125,7 +125,7 @@ You can use the default Search Attributes in a List Filter, such as in the Tempo
 - With advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
   For example: `temporal workflow list --query "WorkflowType = 'main.YourWorkflowDefinition' and ExecutionStatus != 'Running' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
 
-### Custom Search Attributes {#custom-search-attribute}
+### Custom Search Attributes {/* #custom-search-attribute */}
 
 You can [create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes) with unique key names that are relevant to your business needs.
 
@@ -142,7 +142,7 @@ However, if using any of the [supported SQL databases](/self-hosted-guide/visibi
 
 See [custom Search Attributes limits](/search-attribute#custom-search-attribute-limits) for limits on the number and size of custom Search Attributes you can create.
 
-#### Supported types {#supported-types}
+#### Supported types {/* #supported-types */}
 
 Custom Search Attributes must be one of the following types:
 
@@ -165,19 +165,26 @@ Note:
 
 :::warning List-of-values deprecation for non-list types
 
-Storing a list of values in a non-list Search Attribute type (such as multiple strings in a **Keyword** attribute) is deprecated.  
+Storing a list of values in any single-value Search Attribute type — for example, multiple strings in a **Keyword** or **Text** attribute, or multiple integers in an **Int** attribute — is deprecated.
+**KeywordList** is the only type designed to store a list of values.
+
 New namespaces on Temporal Cloud are already blocked from using this pattern. Existing Namespaces that rely on it will need to migrate before Sep. 30, 2026. After that date, Workflow Executions with invalid Search Attribute values will fail. 
 This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
 
-If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
-If you are storing lists in **Int** attributes, consider either migrating to **KeywordList** (storing integers as strings, with string-based comparison only) or splitting into multiple individual **Int** attributes.
+To migrate, choose the path that matches the type you store today:
+
+- **Keyword:** Migrate to **KeywordList**.
+- **Int:** Either migrate to **KeywordList** (store integers as strings, with string-based comparison only) or split the list into multiple individual **Int** attributes.
+- **Text:** Concatenate the list values into a single space-delimited string (for example, store `["wf-1", "wf-2"]` as `"wf-1 wf-2"`).
+  Because **Text** tokenizes values into words, a filter such as `SourceWorkflowIds = 'wf-1'` still matches.
+  If you only need exact matching rather than word-level search, migrate to **KeywordList** instead.
 
 
 :::
 
 - The **Text** type cannot be used in the "Order By" clause.
 
-#### Choose a string type {#choose-a-string-type}
+#### Choose a string type {/* #choose-a-string-type */}
 
 Temporal offers three string-based Search Attribute types.
 The right choice depends on what you store and how you need to search for it.
@@ -203,7 +210,7 @@ Broader tokenizer and exact-matching improvements for `Text` Search Attributes a
 
 :::
 
-#### Custom Search Attributes limits {#custom-search-attribute-limits}
+#### Custom Search Attributes limits {/* #custom-search-attribute-limits */}
 
 {/* TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) */}
 
@@ -244,7 +251,7 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 
 For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attributes) guide.
 
-### Usage {#usage}
+### Usage {/* #usage */}
 
 Search Attributes available in your Visibility store can be used with Workflow Executions for the Temporal Service.
 To actually have results from the use of a [List Filter](/list-filter), Search Attributes must be added to a Workflow Execution as metadata.

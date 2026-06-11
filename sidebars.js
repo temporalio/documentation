@@ -621,6 +621,7 @@ module.exports = {
                 'develop/python/integrations/braintrust',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
               ],
             },
           ],
@@ -823,6 +824,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/interceptors',
               ]
             },
             {
@@ -1200,7 +1202,18 @@ module.exports = {
           items: [
             'cloud/high-availability/enable',
             'cloud/high-availability/monitoring',
-            'cloud/high-availability/failovers',
+            {
+              type: 'category',
+              label: 'Failovers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/high-availability/failovers/failovers',
+              },
+              items: [
+                'cloud/high-availability/failovers/manage-failovers',
+              ],
+            },
             'cloud/high-availability/ha-connectivity',
           ],
         },
@@ -1359,16 +1372,47 @@ module.exports = {
       },
       items: [
         'cli/setup-cli',
-        'cli/activity',
-        'cli/batch',
-        'cli/config',
-        'cli/env',
-        'cli/operator',
-        'cli/schedule',
-        'cli/server',
-        'cli/task-queue',
-        'cli/worker',
-        'cli/workflow',
+        'cli/cloud',
+        'cli/cli-basics',
+        {
+          type: 'category',
+          label: 'Command reference',
+          collapsed: true,
+          link: { type: 'doc', id: 'cli/command-reference/index' },
+          items: [
+            'cli/command-reference/activity',
+            'cli/command-reference/batch',
+            {
+              type: 'category',
+              label: 'cloud',
+              collapsed: true,
+              link: { type: 'doc', id: 'cli/command-reference/cloud/index' },
+              items: [
+                'cli/command-reference/cloud/account',
+                'cli/command-reference/cloud/apikey',
+                'cli/command-reference/cloud/async-operation',
+                'cli/command-reference/cloud/connectivity',
+                'cli/command-reference/cloud/login',
+                'cli/command-reference/cloud/logout',
+                'cli/command-reference/cloud/namespace',
+                'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/region',
+                'cli/command-reference/cloud/service-account',
+                'cli/command-reference/cloud/user',
+                'cli/command-reference/cloud/user-group',
+                'cli/command-reference/cloud/whoami',
+              ],
+            },
+            'cli/command-reference/config',
+            'cli/command-reference/env',
+            'cli/command-reference/operator',
+            'cli/command-reference/schedule',
+            'cli/command-reference/server',
+            'cli/command-reference/task-queue',
+            'cli/command-reference/worker',
+            'cli/command-reference/workflow',
+          ],
+        },
       ],
     },
     {
@@ -1444,6 +1488,7 @@ module.exports = {
       items: [
         'encyclopedia/temporal',
         'encyclopedia/temporal-sdks',
+        'encyclopedia/temporal-client',
         {
           type: 'category',
           label: 'Workflows',

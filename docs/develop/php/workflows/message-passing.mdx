@@ -22,14 +22,14 @@ tags:
 description: Develop with Signals, Queries, and Updates in Temporal Workflows. Define, handle, and send Signals or Queries, and validate updates from a Temporal Client.
 ---
 
-## How to develop with Signals {#signals}
+## How to develop with Signals {/* #signals */}
 
 A [Signal](/sending-messages#sending-signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-### How to define a Signal {#define-signal}
+### How to define a Signal {/* #define-signal */}
 
 A Signal has a name and can have arguments.
 
@@ -83,7 +83,7 @@ If name is not specified the short name of the Workflow interface is used.
 
 In the preceding code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
-### How to handle a Signal {#handle-signal}
+### How to handle a Signal {/* #handle-signal */}
 
 Workflows listen for Signals by the Signal's name.
 
@@ -115,7 +115,7 @@ class YourWorkflow
 In the preceding example, the Workflow updates the protected value.
 The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
 
-### How to send a Signal from a Temporal Client {#send-signal-from-client}
+### How to send a Signal from a Temporal Client {/* #send-signal-from-client */}
 
 When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
@@ -144,7 +144,7 @@ $workflow->setValue(true);
 
 See [Handle Signal](#handle-signal) for details on how to handle Signals in a Workflow.
 
-### How to send a Signal from a Workflow {#send-signal-from-workflow}
+### How to send a Signal from a Workflow {/* #send-signal-from-workflow */}
 
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
@@ -175,7 +175,7 @@ $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workfl
 $workflow->setValue(true);
 ```
 
-### How to Signal-With-Start {#signal-with-start}
+### How to Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start is used from the Client.
 It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
@@ -197,11 +197,11 @@ $run = $workflowClient->startWithSignal(
 );
 ```
 
-## How to develop with Queries {#queries}
+## How to develop with Queries {/* #queries */}
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
-### How to define a Query {#define-query}
+### How to define a Query {/* #define-query */}
 
 A Query has a name and can have arguments.
 
@@ -255,7 +255,7 @@ If name is not specified the short name of the Workflow interface is used.
 
 In the preceding code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
-### How to handle a Query {#handle-query}
+### How to handle a Query {/* #handle-query */}
 
 Queries are handled by your Workflow.
 
@@ -350,15 +350,15 @@ sleep(60);
 var_dump($workflow->getCurrentState());
 ```
 
-### How to send a Query {#send-query}
+### How to send a Query {/* #send-query */}
 
 Queries are sent from a Temporal Client.
 
-## How to develop with Updates {#updates}
+## How to develop with Updates {/* #updates */}
 
 An [Update](/sending-messages#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
-### Define Update {#define-update}
+### Define Update {/* #define-update */}
 
 **How to define an Update using the PHP SDK.**
 
@@ -377,7 +377,7 @@ The [`#[UpdateMethod]`](https://php.temporal.io/classes/Temporal-Workflow-Update
 public function myUpdate(string $value);
 ```
 
-### Handle Update {#handle-updates}
+### Handle Update {/* #handle-updates */}
 
 **How to handle Updates in a Workflow using the PHP SDK.**
 
@@ -428,7 +428,7 @@ Workflow::registerUpdate(
 );
 ```
 
-### Validate Update {#validate-an-update}
+### Validate Update {/* #validate-an-update */}
 
 **How to validate Updates in a Workflow using the PHP SDK.**
 
@@ -448,7 +448,7 @@ interface GreetingWorkflow {
 }
 ```
 
-### Send Update from a Client {#send-update-from-client}
+### Send Update from a Client {/* #send-update-from-client */}
 
 **How to send an Update to a Workflow Execution from a Temporal Client using the PHP SDK.**
 
@@ -500,7 +500,7 @@ $resultUuid = $stub->startUpdate(
  )->getResult();
 ```
 
-#### Update-With-Start {#update-with-start}
+#### Update-With-Start {/* #update-with-start */}
 
 [Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
@@ -562,7 +562,7 @@ assert($handle->hasResult() === true);
 $price = $handle->getResult();
 ```
 
-## Message handler patterns {#message-handler-patterns}
+## Message handler patterns {/* #message-handler-patterns */}
 
 This section covers common write operations, such as Signal and Update handlers.
 It doesn't apply to pure read operations, like Queries or Update Validators.
@@ -609,7 +609,7 @@ The `Workflow::await` method waits until your condition is met:
 
 Remember: Handlers can execute before the main Workflow method starts.
 
-### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+### Ensure your handlers finish before the Workflow completes {/* #wait-for-message-handlers */}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
@@ -698,7 +698,7 @@ Make sure to set this flag to `true` to enable the correct behavior.
 
 :::
 
-### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
+### Use `Mutex` to prevent concurrent handler execution {/* #control-handler-concurrency */}
 
 Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
@@ -765,7 +765,7 @@ class MyWorkflow
     }
 ```
 
-## Message handler troubleshooting {#message-handler-troubleshooting}
+## Message handler troubleshooting {/* #message-handler-troubleshooting */}
 
 When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
 
@@ -782,7 +782,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 
 See [Exceptions in message handlers](/handling-messages#exceptions) for a non–PHP-specific discussion of this topic.
 
-### Problems when sending a Signal {#signal-problems}
+### Problems when sending a Signal {/* #signal-problems */}
 
 When using Signal, the only exception that will result from your requests during its execution is `ServiceClientException`.
 All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
@@ -790,7 +790,7 @@ All handlers may experience additional exceptions during the initial (pre-Worker
 For Queries and Updates, the client waits for a response from the Worker.
 If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
 
-### Problems when sending an Update {#update-problems}
+### Problems when sending an Update {/* #update-problems */}
 
 When working with Updates, you may encounter these errors:
 
@@ -828,7 +828,7 @@ These might include:
 
   - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
-### Problems when sending a Query {#query-problems}
+### Problems when sending a Query {/* #query-problems */}
 
 When working with Queries, you may encounter these errors:
 
@@ -843,7 +843,7 @@ When working with Queries, you may encounter these errors:
 - **The handler caused the Workflow Task to fail.**
   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
-## Dynamic components {#dynamic-handler}
+## Dynamic components {/* #dynamic-handler */}
 
 Temporal supports Dynamic Queries, Signals, and Updates.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
@@ -863,7 +863,7 @@ They are meant to handle edge cases and act as a catch-all, not as the main way 
 
 :::
 
-### How to set a Dynamic Query {#set-a-dynamic-query}
+### How to set a Dynamic Query {/* #set-a-dynamic-query */}
 
 A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
 Use [`Workflow::registerDynamicQuery()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicQuery) to set a dynamic Query handler.
@@ -880,7 +880,7 @@ Workflow::registerDynamicQuery(function (string $name, ValuesInterface $argument
 });
 ```
 
-### How to set a Dynamic Signal {#set-a-dynamic-signal}
+### How to set a Dynamic Signal {/* #set-a-dynamic-signal */}
 
 A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
 Use [`Workflow::registerDynamicSignal()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicSignal) to set a dynamic Signal handler.
@@ -897,7 +897,7 @@ Workflow::registerDynamicSignal(function (string $name, ValuesInterface $argumen
  });
 ```
 
-### How to set a Dynamic Update {#set-a-dynamic-update}
+### How to set a Dynamic Update {/* #set-a-dynamic-update */}
 
 A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime if no other Update with the same input is registered.
 Use [`Workflow::registerDynamicUpdate()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicUpdate) to set a dynamic Update handler.
