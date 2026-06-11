@@ -195,7 +195,7 @@ Add a new entry to the `integrations` array with the following shape:
 | --- | --- | --- | --- |
 | `name` | `string` | Yes | Display name of the integration. |
 | `description` | `string` | Yes | One-sentence summary shown on the card. |
-| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
+| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
 | `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
 | `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/braintrust`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
 

@@ -21,7 +21,7 @@ const integrations: Integration[] = [
     name: "Braintrust",
     description:
       "Monitor and evaluate AI application performance with Braintrust observability.",
-    tags: ["Observability"],
+    tags: ["Agent observability"],
     sdk: "Python",
     href: "/develop/python/integrations/braintrust",
   },
@@ -29,7 +29,7 @@ const integrations: Integration[] = [
     name: "Braintrust",
     description:
       "Monitor and evaluate AI application performance with Braintrust observability.",
-    tags: ["Observability"],
+    tags: ["Agent observability"],
     sdk: "TypeScript",
     href: "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#typescript",
   },
@@ -74,7 +74,7 @@ const integrations: Integration[] = [
     name: "LangSmith",
     description:
       "Trace and debug LLM calls in Temporal Workflows with LangSmith.",
-    tags: ["Observability"],
+    tags: ["Agent observability"],
     sdk: "Python",
     href: "/develop/python/integrations/langsmith",
   },
@@ -105,7 +105,7 @@ const integrations: Integration[] = [
     name: "OpenBox",
     description:
       "Add governance and observability guardrails to AI-powered Temporal Workflows with OpenBox.",
-    tags: ["Governance", "Observability"],
+    tags: ["Governance", "Agent observability"],
     sdk: "Python",
     href: "https://docs.openbox.ai/getting-started/temporal",
   },
