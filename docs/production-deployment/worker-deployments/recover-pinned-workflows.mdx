@@ -128,7 +128,7 @@ For Workflows still retrying without state corruption, you may need to use the [
 Temporal exposes two recovery primitives, both available through the CLI or directly through the Worker Versioning APIs (see [Moving a pinned Workflow](/production-deployment/worker-deployments/worker-versioning#moving-a-pinned-workflow)):
 
 - **Versioning Override** — forces the next retried Workflow Task to execute on a different pinned Version. Use [`temporal workflow update-options`](/cli/command-reference/workflow#update-options).
-- **Reset-with-Move** — atomically resets a Workflow's Event History and applies a Versioning Override. Use [`temporal workflow reset with-workflow-update-options`](/cli/workflow#with-workflow-update-options).
+- **Reset-with-Move** — atomically resets a Workflow's Event History and applies a Versioning Override. Use [`temporal workflow reset with-workflow-update-options`](/cli/command-reference/workflow#with-workflow-update-options).
 
 Both commands accept a `--query` argument for batch operations.
 
