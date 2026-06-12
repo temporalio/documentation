@@ -94,21 +94,184 @@ This behavior allows you to test the Activity in isolation by calling it directl
 
 ### Run an Activity {/* #run-an-activity */}
 
-If an Activity references its context, you need to mock that context when testing in isolation.
+If an Activity references its context, you need to mock that context when testing in isolation. You can do that by using [`NewTestActivityEnvironment`](https://pkg.go.dev/go.temporal.io/sdk@v1.44.1/internal#WorkflowTestSuite.NewTestActivityEnvironment) from the [`WorkflowTestSuite`](https://pkg.go.dev/go.temporal.io/sdk@v1.44.1/internal#WorkflowTestSuite).
+
+```go
+package greeting
+
+import (
+    "testing"
+
+    "github.com/stretchr/testify/suite"
+    "go.temporal.io/sdk/testsuite"
+)
+
+type ActivityTestSuite struct {
+    suite.Suite
+    testsuite.WorkflowTestSuite
+}
+
+func TestActivityTestSuite(t *testing.T) {
+    suite.Run(t, new(ActivityTestSuite))
+}
+
+func (s *ActivityTestSuite) TestGreet() {
+    env := s.NewTestActivityEnvironment()
+    env.RegisterActivity(Greet)
+
+    result, err := env.ExecuteActivity(Greet, "Temporal")
+
+    s.NoError(err)
+
+    var greeting string
+    s.NoError(result.Get(&greeting))
+    s.Equal("Hello Temporal!", greeting)
+}
+```
 
 ### Listen to Heartbeats {/* #listen-to-heartbeats */}
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
+```go
+func (s *ActivityTestSuite) Test_HeatbeatActivity() {
+    testSuite := &testsuite.WorkflowTestSuite{}
+    env := testSuite.NewTestActivityEnvironment()
+
+    env.RegisterActivity(Greet)
+    var heartBeatCount int
+    env.SetOnActivityHeartbeatListener(func(activityInfo *activity.Info, details converter.EncodedValues) {
+        var val string
+        err := details.Get(&val)
+        s.NoError(err)
+        s.Equal("status-report-to-workflow", val)
+        heartBeatCount++
+    })
+
+    _, err := env.ExecuteActivity(Greet, "Temporal")
+    s.NoError(err)
+    s.Equal(1, heartBeatCount)
+}
+```
+
 ### Cancel an Activity {/* #cancel-an-activity */}
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
-## Mock and override Activities
+```go
+func (s *UnitTestSuite) Test_CancelActivity() {
+	testSuite := &testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestActivityEnvironment()
+	ctx, cancl := context.WithCancel(context.Background())
+	env.SetWorkerOptions(worker.Options{
+		BackgroundActivityContext: ctx,
+	})
+	env.RegisterActivity(Greet)
 
-When running unit tests on Workflows, we want to test the Workflow logic in isolation. Additionally, we want to inject Activity errors during our test runs. The test framework provides two mechanisms that support these scenarios: Activity mocking and Activity overriding. Both of these mechanisms allow you to change the behavior of Activities invoked by your Workflow without the need to modify the actual Workflow code.
+	go func() {
+		// Cancel the activity after 5s
+		time.Sleep(5 * time.Second)
+		cancl()
+	}()
+	_, err := env.ExecuteActivity(Greet, "Temporal")
+	// Expect the activity to return a cancled error
+	s.Error(err)
+}
+```
 
-Let's take a look at a test that simulates a test that fails via the "Activity mocking" mechanism.
+## Testing Workflows {/* #test-workflows */}
+
+When running unit tests on Workflows, we want to test the Workflow logic in isolation.
+The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results.
+
+```go
+func (s *UnitTestSuite) Test_SimpleWorkflow_Success() {
+    s.env.ExecuteWorkflow(SimpleWorkflow, "test_success")
+
+    s.True(s.env.IsWorkflowCompleted())
+    s.NoError(s.env.GetWorkflowError())
+}
+```
+
+Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process. The first parameter of `s.env.ExecuteWorkflow(...)` contains the Workflow functions, and any subsequent parameters contain values for custom input parameters declared by the Workflow.
+
+> Note that unless the Activity invocations are mocked or Activity implementation replaced (see [Activity mocking and overriding](#mock-and-override-activities)), the test environment will execute the actual Activity code including any calls to outside services.
+
+After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowCompleted()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
+If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
+
+### Query tests
+
+`TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
+For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
+
+```go
+func ProgressWorkflow(ctx workflow.Context, percent int) error {
+    logger := workflow.GetLogger(ctx)
+
+    err := workflow.SetQueryHandler(ctx, "getProgress", func(input []byte) (int, error) {
+        return percent, nil
+    })
+    if err != nil {
+        logger.Info("SetQueryHandler failed.", "Error", err)
+        return err
+    }
+
+    for percent = 0; percent<100; percent++ {
+        // Important! Use `workflow.Sleep()`, not `time.Sleep()`, because Temporal's
+        // test environment doesn't stub out `time.Sleep()`.
+        workflow.Sleep(ctx, time.Second*1)
+    }
+
+    return nil
+}
+```
+
+This Workflow tracks the current progress of a task in percentage terms, and increments the percentage by 1 every second.
+Below is how you would write a test case that queries this Workflow.
+Note that you should always query the Workflow either after `ExecuteWorkflow()` is done or in a `RegisterDelayedCallback()` callback, otherwise you'll get a `runtime error` panic.
+
+```go
+func (s *UnitTestSuite) Test_ProgressWorkflow() {
+    value := 0
+
+    // After 10 seconds plus padding, progress should be 10.
+    // Note that `RegisterDelayedCallback()` doesn't actually make your test wait for 10 seconds!
+    // Temporal's test framework advances time internally, so this test should take < 1 second.
+    s.env.RegisterDelayedCallback(func() {
+        res, err := s.env.QueryWorkflow("getProgress")
+        s.NoError(err)
+        err = res.Get(&value)
+        s.NoError(err)
+        s.Equal(10, value)
+    }, time.Second*10+time.Millisecond*1)
+
+    s.env.ExecuteWorkflow(ProgressWorkflow, 0)
+
+    s.True(s.env.IsWorkflowCompleted())
+
+    // Once the workflow is completed, progress should always be 100
+    res, err := s.env.QueryWorkflow("getProgress")
+    s.NoError(err)
+    err = res.Get(&value)
+    s.NoError(err)
+    s.Equal(value, 100)
+}
+```
+
+:::note
+
+`RegisterDelayedCallback` can also be used to send [Signals](/sending-messages#sending-signals).
+When using "Signal-With-Start", set the delay to `0`.
+:::
+
+### How to mock Activities {/* #mock-activities */}
+
+When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker to test the Workflow logic in isolation.
+
+Additionally, you can inject Activity errors during your test runs. The test framework provides two mechanisms that support these scenarios: Activity mocking and Activity overriding. Both of these mechanisms allow you to change the behavior of Activities invoked by your Workflow without the need to modify the actual Workflow code.
+
+Let's take a look at a test that simulates a test that fails via the Activity mocking.
 
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
@@ -161,7 +324,7 @@ Additionally, the framework will validate that the signature of the "mock" funct
 
 Since this can be an entire function, there is no limitation as to what we can do here. In this example, we assert that the `value` param has the same content as the value param we passed to the Workflow.
 
-## Mock and override Nexus operations
+### How to mock Nexus operations
 
 Mocking Nexus operations lets you test a Workflow that executes Nexus operations without needing a
 Nexus handler to run the actual Nexus operation. You can mock the Nexus operation or override its
@@ -290,98 +453,6 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
     s.NoError(s.env.GetWorkflowError())
 }
 ```
-
-## Testing Workflows {/* #test-workflows */}
-
-When running unit tests on Workflows, we want to test the Workflow logic in isolation.
-The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results.
-
-```go
-func (s *UnitTestSuite) Test_SimpleWorkflow_Success() {
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_success")
-
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
-}
-```
-
-Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process. The first parameter of `s.env.ExecuteWorkflow(...)` contains the Workflow functions, and any subsequent parameters contain values for custom input parameters declared by the Workflow.
-
-> Note that unless the Activity invocations are mocked or Activity implementation replaced (see [Activity mocking and overriding](#mock-and-override-activities)), the test environment will execute the actual Activity code including any calls to outside services.
-
-After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowCompleted()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
-If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
-
-### Query tests
-
-`TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
-For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
-
-```go
-func ProgressWorkflow(ctx workflow.Context, percent int) error {
-    logger := workflow.GetLogger(ctx)
-
-    err := workflow.SetQueryHandler(ctx, "getProgress", func(input []byte) (int, error) {
-        return percent, nil
-    })
-    if err != nil {
-        logger.Info("SetQueryHandler failed.", "Error", err)
-        return err
-    }
-
-    for percent = 0; percent<100; percent++ {
-        // Important! Use `workflow.Sleep()`, not `time.Sleep()`, because Temporal's
-        // test environment doesn't stub out `time.Sleep()`.
-        workflow.Sleep(ctx, time.Second*1)
-    }
-
-    return nil
-}
-```
-
-This Workflow tracks the current progress of a task in percentage terms, and increments the percentage by 1 every second.
-Below is how you would write a test case that queries this Workflow.
-Note that you should always query the Workflow either after `ExecuteWorkflow()` is done or in a `RegisterDelayedCallback()` callback, otherwise you'll get a `runtime error` panic.
-
-```go
-func (s *UnitTestSuite) Test_ProgressWorkflow() {
-    value := 0
-
-    // After 10 seconds plus padding, progress should be 10.
-    // Note that `RegisterDelayedCallback()` doesn't actually make your test wait for 10 seconds!
-    // Temporal's test framework advances time internally, so this test should take < 1 second.
-    s.env.RegisterDelayedCallback(func() {
-        res, err := s.env.QueryWorkflow("getProgress")
-        s.NoError(err)
-        err = res.Get(&value)
-        s.NoError(err)
-        s.Equal(10, value)
-    }, time.Second*10+time.Millisecond*1)
-
-    s.env.ExecuteWorkflow(ProgressWorkflow, 0)
-
-    s.True(s.env.IsWorkflowCompleted())
-
-    // Once the workflow is completed, progress should always be 100
-    res, err := s.env.QueryWorkflow("getProgress")
-    s.NoError(err)
-    err = res.Get(&value)
-    s.NoError(err)
-    s.Equal(value, 100)
-}
-```
-
-:::note
-
-`RegisterDelayedCallback` can also be used to send [Signals](/sending-messages#sending-signals).
-When using "Signal-With-Start", set the delay to `0`.
-:::
-
-### How to mock Activities {/* #mock-activities */}
-
-Mock the Activity invocation when unit testing your Workflows.
-
-When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
 ### How to skip time {/* #skip-time */}
 
