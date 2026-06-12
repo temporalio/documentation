@@ -4,38 +4,6 @@
   font-family: var(--ifm-font-family-base);
 }
 
-/* ── Language tabs ──────────────────────────────────────────────────────── */
-
-.languageTabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-  border-bottom: 2px solid var(--ifm-color-emphasis-200);
-  padding-bottom: 10px;
-}
-
-.langTab {
-  padding: 5px 18px;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 0;
-  background: var(--ifm-background-color);
-  color: var(--ifm-font-color-base);
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.langTab:hover {
-  background: var(--ifm-color-emphasis-100);
-}
-
-.langTabActive {
-  background: var(--ifm-color-primary);
-  color: #fff;
-  border-color: var(--ifm-color-primary);
-}
-
 /* ── Two-column layout ──────────────────────────────────────────────────── */
 
 .columns {

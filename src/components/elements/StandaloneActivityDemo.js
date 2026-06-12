@@ -8,54 +8,22 @@ import styles from './standalone-activity-demo.module.css';
 
 const GREETING = 'Hello';
 
-function generateSdkCode(language, config) {
+function generateSdkCode(config) {
   const { activityId, taskQueue, name, timeout, timeoutType, simulateFailures, maxRetries } = config;
   const expectedResult = `${GREETING}, ${name}!`;
-
-  if (language === 'go') {
-    const timeoutField =
-      timeoutType === 'start_to_close'
-        ? `StartToCloseTimeout:    ${timeout} * time.Second,`
-        : `ScheduleToCloseTimeout: ${timeout} * time.Second,`;
-    const retryImport =
-      simulateFailures && maxRetries > 0
-        ? '// import "go.temporal.io/sdk/temporal"\n'
-        : '';
-    const retryPolicy =
-      simulateFailures && maxRetries > 0
-        ? `\n\tRetryPolicy: &temporal.RetryPolicy{\n\t\tMaximumAttempts: ${maxRetries + 1},\n\t},`
-        : '';
-    return `${retryImport}activityOptions := client.StartActivityOptions{
-\tID:        "${activityId}",
-\tTaskQueue: "${taskQueue}",
-\t${timeoutField}${retryPolicy}
-}
-
-handle, err := c.ExecuteActivity(ctx, activityOptions,
-\thelloworld.Activity, "${name}")
-if err != nil {
-\tlog.Fatalln("Unable to execute activity", err)
-}
-
-var result string
-err = handle.Get(ctx, &result)
-// result: "${expectedResult}"`;
-  }
-
-  if (language === 'python') {
-    const timeoutField =
-      timeoutType === 'start_to_close'
-        ? `start_to_close_timeout=timedelta(seconds=${timeout}),`
-        : `schedule_to_close_timeout=timedelta(seconds=${timeout}),`;
-    const retryImport =
-      simulateFailures && maxRetries > 0
-        ? '# from temporalio.common import RetryPolicy\n'
-        : '';
-    const retryPolicy =
-      simulateFailures && maxRetries > 0
-        ? `\n    retry_policy=RetryPolicy(\n        maximum_attempts=${maxRetries + 1},\n    ),`
-        : '';
-    return `${retryImport}result = await client.execute_activity(
+  const timeoutField =
+    timeoutType === 'start_to_close'
+      ? `start_to_close_timeout=timedelta(seconds=${timeout}),`
+      : `schedule_to_close_timeout=timedelta(seconds=${timeout}),`;
+  const retryImport =
+    simulateFailures && maxRetries > 0
+      ? '# from temporalio.common import RetryPolicy\n'
+      : '';
+  const retryPolicy =
+    simulateFailures && maxRetries > 0
+      ? `\n    retry_policy=RetryPolicy(\n        maximum_attempts=${maxRetries + 1},\n    ),`
+      : '';
+  return `${retryImport}result = await client.execute_activity(
     compose_greeting,
     "${name}",
     id="${activityId}",
@@ -63,71 +31,25 @@ err = handle.Get(ctx, &result)
     ${timeoutField}${retryPolicy}
 )
 # result: "${expectedResult}"`;
-  }
-
-  if (language === 'dotnet') {
-    const timeoutField =
-      timeoutType === 'start_to_close'
-        ? `StartToCloseTimeout = TimeSpan.FromSeconds(${timeout}),`
-        : `ScheduleToCloseTimeout = TimeSpan.FromSeconds(${timeout}),`;
-    const retryImport =
-      simulateFailures && maxRetries > 0
-        ? '// using Temporalio.Common;\n'
-        : '';
-    const retryPolicy =
-      simulateFailures && maxRetries > 0
-        ? `\n        RetryPolicy = new() { MaximumAttempts = ${maxRetries + 1} },`
-        : '';
-    return `${retryImport}var result = await client.ExecuteActivityAsync(
-    () => MyActivities.ComposeGreetingAsync(
-        new ComposeGreetingInput("${GREETING}", "${name}")),
-    new("${activityId}", "${taskQueue}")
-    {
-        ${timeoutField}${retryPolicy}
-    });
-// result: "${expectedResult}"`;
-  }
-
-  return '';
 }
 
-function generateCliCode(language, config) {
+function generateCliCode(config) {
   const { activityId, taskQueue, name, timeout, timeoutType } = config;
   const timeoutFlag =
     timeoutType === 'start_to_close'
       ? `--start-to-close-timeout ${timeout}s`
       : `--schedule-to-close-timeout ${timeout}s`;
-
-  let activityType;
-  let inputFlag;
-  if (language === 'go') {
-    activityType = 'Activity';
-    inputFlag = `--input '"${name}"'`;
-  } else if (language === 'python') {
-    activityType = 'compose_greeting';
-    inputFlag = `--input '"${name}"'`;
-  } else {
-    activityType = 'ComposeGreeting';
-    inputFlag = `--input '{"Greeting": "${GREETING}", "Name": "${name}"}'`;
-  }
-
   return `temporal activity execute \\
-  --type ${activityType} \\
+  --type compose_greeting \\
   --activity-id ${activityId} \\
   --task-queue ${taskQueue} \\
   ${timeoutFlag} \\
-  ${inputFlag}`;
+  --input '"${name}"'`;
 }
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-// Only Python is enabled in the live demo for now. Re-add Go, .NET, or other
-// SDKs to this list to expose their tabs; the generators below already handle them.
-const LANGUAGES = [
-  { id: 'python', label: 'Python' },
-];
 
 const FLOW_NODES = [
   { label: 'Client', sub: 'Your App' },
@@ -156,7 +78,6 @@ const DEFAULT_CONFIG = {
 // ---------------------------------------------------------------------------
 
 export default function StandaloneActivityDemo() {
-  const [language, setLanguage] = useState('python');
   const [config, setConfig] = useState({ ...DEFAULT_CONFIG });
 
   const [sim, setSim] = useState({
@@ -428,8 +349,6 @@ export default function StandaloneActivityDemo() {
     })();
   }, [config]);
 
-  const codeLanguage = language === 'dotnet' ? 'csharp' : language;
-
   const failureNoteIsError = config.simulateFailures && config.failCount > config.maxRetries;
   const failureNote =
     config.simulateFailures
@@ -440,21 +359,6 @@ export default function StandaloneActivityDemo() {
 
   return (
     <div className={styles.demo}>
-      {/* Language tabs (hidden when only one language is enabled) */}
-      {LANGUAGES.length > 1 && (
-        <div className={styles.languageTabs}>
-          {LANGUAGES.map(({ id, label }) => (
-            <button
-              key={id}
-              className={`${styles.langTab} ${language === id ? styles.langTabActive : ''}`}
-              onClick={() => setLanguage(id)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
       <div className={styles.columns}>
         {/* ── Left column: configure + code ── */}
         <div className={styles.leftCol}>
@@ -550,12 +454,12 @@ export default function StandaloneActivityDemo() {
 
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>SDK Code</h3>
-            <CodeBlock language={codeLanguage}>{generateSdkCode(language, config)}</CodeBlock>
+            <CodeBlock language="python">{generateSdkCode(config)}</CodeBlock>
           </section>
 
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>CLI Command</h3>
-            <CodeBlock language="bash">{generateCliCode(language, config)}</CodeBlock>
+            <CodeBlock language="bash">{generateCliCode(config)}</CodeBlock>
           </section>
         </div>
 
