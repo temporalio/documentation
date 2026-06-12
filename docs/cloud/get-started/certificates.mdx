@@ -94,6 +94,7 @@ An end-entity (leaf) certificate _must_ meet the following criteria:
 - The key usage must include Digital Signature.
 - The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication. SHA-1
   and MD5 cannot be used.
+- The certificate needs the `extendedKeyUsage` set to `clientAuth` or it needs to be omitted.
 
 ## How to issue root CA and end-entity certificates {/* #issue-certificates */}
 
