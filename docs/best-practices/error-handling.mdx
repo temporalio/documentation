@@ -1,0 +1,132 @@
+---
+id: error-handling
+title: Error handling
+sidebar_label: Error handling
+description:
+  Learn how to categorize failures, decide when to use non-retryable errors, and implement compensation patterns in
+  Temporal applications.
+toc_max_heading_level: 4
+keywords:
+  - error handling
+  - non-retryable errors
+  - saga pattern
+  - compensation
+  - rollback
+  - idempotence
+  - failure types
+tags:
+  - Best Practices
+  - Failures
+  - Error Handling
+---
+
+Temporal automatically retries failed Activities and recovers from infrastructure failures through
+[Durable Execution](/evaluate/why-temporal). But not all failures should be retried. This page covers how to categorize
+failures, when to mark errors as non-retryable, and how to handle failures that retries cannot resolve.
+
+For background on how Temporal represents and propagates failures, see
+[Application failures](/encyclopedia/application-failures).
+
+## Categorize failures {/* #categorize-failures */}
+
+When an operation fails, the appropriate response depends on the nature of the failure. Failures fall into three
+categories based on whether retrying can resolve them.
+
+### Transient failures
+
+A transient failure is a one-off event that resolves on its own without intervention. For example, a Worker happens to
+make a network request at the exact moment an administrator replaces a network cable. The cause is unlikely to affect
+future requests.
+
+Transient failures are resolved by retrying the operation shortly after the failure. Temporal's default
+[Retry Policy](/encyclopedia/retry-policies) handles transient failures automatically.
+
+### Intermittent failures
+
+An intermittent failure is one that recurs but resolves over time. For example, a service that uses rate limiting will
+reject requests once the threshold is reached, but will accept requests again after the rate limiter resets.
+
+Intermittent failures require retries spaced out over a longer period. Configure your
+[Retry Policy](/encyclopedia/retry-policies) with an appropriate `backoffCoefficient` and `maximumInterval` to avoid
+overwhelming the failing service.
+
+### Permanent failures
+
+A permanent failure is one that will recur indefinitely until the cause is fixed. For example, a request that fails due
+to an invalid email address will continue to fail no matter how many times the operation retries. The only resolution is
+to correct the email address.
+
+Permanent failures cannot be resolved through retries. They require different input data, a code fix, or some external
+intervention. Mark these errors as [non-retryable](#non-retryable-errors) to fail fast instead of consuming resources on
+retries that will not succeed.
+
+## Mark permanent errors as non-retryable {/* #non-retryable-errors */}
+
+When your code detects a permanent failure, mark the error as non-retryable to prevent unnecessary retry attempts. For
+background on what Application Failures are and how the `non_retryable` flag works, see
+[Application Failure](/encyclopedia/application-failures#failure-representation).
+
+Use non-retryable errors for situations like:
+
+- **Invalid input data**: A malformed email address, a negative payment amount, or a missing required field.
+- **Business rule violations**: A customer outside the service area, an order exceeding credit limits, or an expired
+  promotion code.
+- **Authorization failures**: The caller does not have permission to perform the operation.
+- **Data validation errors**: A referenced record does not exist, or data fails integrity checks.
+
+There are two ways to mark errors as non-retryable:
+
+**In the Activity (implementer decides):** Set the `non_retryable` flag when throwing an
+[Application Failure](/encyclopedia/application-failures#failure-representation). This enforces the constraint for all
+callers. Use this when the Activity implementer knows that the error can never be resolved through retries.
+
+**In the Retry Policy (caller decides):** Add the error type to the Retry Policy's list of
+[non-retryable error types](/encyclopedia/retry-policies#non-retryable-errors). This lets different Workflows make
+different decisions about the same Activity. Use this when the decision depends on the caller's business logic.
+
+### Preserve retryability when wrapping errors
+
+When an Activity returns an error, the SDK checks the **outermost** error type to determine retryability. If you catch a
+non-retryable Application Failure and re-throw it wrapped in a generic language error, the `non_retryable` flag is lost
+and the Activity will be retried.
+
+To add context to an error while preserving its retry behavior, wrap it in another Application Failure with the same
+`non_retryable` flag. Do not wrap Application Failures in generic language errors.
+
+For a detailed explanation of how the SDK-to-server chain works, see
+[The outermost error type determines retryability](/encyclopedia/application-failures#outermost-error-type).
+
+### Use non-retryable errors sparingly
+
+In most cases, let the Retry Policy handle retry limits through [timeouts](/encyclopedia/detecting-activity-failures)
+and maximum attempts. Reserve `non_retryable` for cases where retrying is guaranteed to be futile.
+
+For SDK-specific syntax and code examples, see the error handling guide for your language:
+
+- [Python](/develop/python/best-practices/error-handling)
+- [Go](/develop/go/best-practices/error-handling)
+- [.NET](/develop/dotnet/best-practices/error-handling)
+- [Ruby](/develop/ruby/best-practices/error-handling)
+
+## Design Activities for idempotence {/* #idempotence */}
+
+Activities may execute more than once due to retries, so design them to be
+[idempotent](/activity-definition#idempotency): producing the same result whether executed once or multiple times.
+
+This is especially important because of an edge case in distributed systems. A Worker can execute an Activity, complete
+it, and then crash before reporting the result to the Temporal Service. The Activity is retried even though it
+completed, because the Service has no record of the completion.
+
+Use idempotency keys to prevent duplicate operations. Combine the Workflow Run ID and Activity ID for a value that is
+consistent across retries but unique across Workflow Executions.
+
+## Implement compensation with the Saga pattern {/* #saga-pattern */}
+
+When a multi-step process fails partway through, previous steps may need to be undone. The
+[Saga pattern](/evaluate/use-cases-design-patterns#saga) coordinates a sequence of operations where each step has a
+compensating action that reverses its effects. If any step fails, the compensating actions for previously completed
+steps execute in reverse order.
+
+For SDK-specific implementations with working code examples, see:
+
+- [Python Saga pattern](/develop/python/best-practices/error-handling#implement-saga-pattern)

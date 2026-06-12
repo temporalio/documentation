@@ -111,8 +111,9 @@ that case, Namespaces in the region may be impacted, including those using
 :::info
 
 When an AZ fails, Temporal may also trigger a failover on Namespaces that have High Availability enabled, as a
-precaution in case the outage scope expands. You can opt out of this behavior by
-[disabling automatic failovers](/cloud/high-availability/enable#automatic-failovers) on the Namespace.
+precaution in case the outage scope expands. For Multi-region and Multi-cloud Replication, you can opt out of this
+behavior by [disabling automatic failovers](/cloud/high-availability/enable#automatic-failovers) on the Namespace.
+Same-region Replication Namespaces always fail over automatically and cannot opt out.
 
 :::
 
