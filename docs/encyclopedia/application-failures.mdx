@@ -162,7 +162,7 @@ If you need to add context to an error, wrap it in another Application Failure t
 Do not wrap Application Failures in generic language errors (such as `Error` in TypeScript, `Exception` in Python, or `fmt.Errorf` in Go), as this causes the SDK to treat the error as a new, retryable failure.
 :::
 
-This behavior is consistent across all SDKs (Go, Java, TypeScript, Python, and .NET).
+This behavior is consistent across all SDKs (Go, Java, TypeScript, Python, .NET, Ruby, and Rust).
 For language-specific examples and correct wrapping patterns, see the error handling guide for your SDK.
 
 ## Failures in Event History {/* #event-history */}
@@ -184,7 +184,7 @@ You can view pending Activity Executions in the Web UI's Pending Activities sect
 ### Workflow Execution failures
 
 An Activity failure does not directly cause a Workflow Execution failure.
-If an Activity fails and the error is not handled in the Workflow code (or is intentionally re-raised), the Workflow Execution fails.
+If an Activity fails and the error propagates out of the Workflow function without being caught (or is caught and intentionally re-raised as an Application Failure), the Workflow Execution fails.
 
 When a Workflow Execution fails, the Temporal Service adds a `WorkflowExecutionFailed` Event.
 If the failure was caused by an unhandled Activity error, the `activityFailureInfo` is attached to that Event.
