@@ -150,6 +150,14 @@
   background: var(--ifm-color-primary-dark);
 }
 
+:global(html[data-theme='dark']) .executeBtn {
+  background: #2563eb;
+}
+
+:global(html[data-theme='dark']) .executeBtn:hover:not(.executeBtnDisabled) {
+  background: #1d4ed8;
+}
+
 .executeBtnDisabled {
   opacity: 0.65;
   cursor: not-allowed;

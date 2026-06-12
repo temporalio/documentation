@@ -2,7 +2,7 @@
 id: standalone-activities-interactive-demo
 title: Standalone Activities Demo
 sidebar_label: Standalone Activities
-toc_max_heading_level: 3
+hide_table_of_contents: true
 keywords:
   - standalone activity
   - interactive demo
@@ -55,10 +55,6 @@ application, the following happens:
 5. **Return**: The Server stores the result and returns it to the original caller through the
    `ActivityHandle` that was created when the Activity was scheduled.
 
-Because the Server durably persists the Activity, it survives Worker restarts and network
-interruptions. If the Activity fails, the Server automatically retries it according to the Retry
-Policy you configure.
-
 ### Standalone vs Workflow Activities
 
 | | Workflow Activity | Standalone Activity |
@@ -70,7 +66,8 @@ Policy you configure.
 | Use case | Multi-step orchestration with multiple Activities | Single, independent jobs like sending an email or processing a webhook |
 
 The Activity function and Worker registration are **identical** for both approaches, and only the
-execution path that triggers the Activity differs between them.
+execution path that triggers the Activity differs between them. If the Activity fails, the Server
+automatically retries it according to the Retry Policy you configure.
 
 ---
 
