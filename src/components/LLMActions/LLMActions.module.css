@@ -79,9 +79,11 @@
   top: 100%;
   left: 0;
   z-index: 100;
+  /* Pull up 1px so the menu's top border merges with the split button's
+     bottom border into a single continuous line instead of doubling up. */
+  margin-top: -1px;
   background: var(--ifm-background-color);
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-top: none;
   min-width: 190px;
 }
 
