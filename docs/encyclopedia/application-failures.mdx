@@ -162,7 +162,7 @@ If you need to add context to an error, wrap it in another Application Failure t
 Do not wrap Application Failures in generic language errors (such as `Error` in TypeScript, `Exception` in Python, or `fmt.Errorf` in Go), as this causes the SDK to treat the error as a new, retryable failure.
 :::
 
-This behavior is consistent across all SDKs (Go, Java, TypeScript, Python, .NET, Ruby, and Rust).
+This behavior is consistent across all Temporal SDKs.
 For language-specific examples and correct wrapping patterns, see the error handling guide for your SDK.
 
 ## Failures in Event History {/* #event-history */}
