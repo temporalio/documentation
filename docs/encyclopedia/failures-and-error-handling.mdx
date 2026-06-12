@@ -1,0 +1,30 @@
+---
+id: failures-and-error-handling
+title: Failures and error handling
+sidebar_label: Failures and error handling
+description: Learn how Temporal represents and handles failures, from platform-level retries to application-level error handling strategies.
+toc_max_heading_level: 4
+keywords:
+  - failures
+  - errors
+  - error handling
+  - application failures
+  - timeouts
+  - retry policies
+tags:
+  - Concepts
+  - Failures
+---
+
+Temporal provides Durable Execution, which guarantees that your application runs to completion despite infrastructure issues, network problems, and Worker crashes.
+However, not all failures are handled automatically by the platform.
+Understanding the difference between platform-level and application-level failures is key to building reliable Temporal applications.
+
+This section covers:
+
+- **[Application failures](/encyclopedia/application-failures)**: What application failures are, how Temporal represents them, and how they propagate through your code.
+- **[Detecting Activity failures](/encyclopedia/detecting-activity-failures)**: How to use timeouts and Heartbeats to detect when Activities fail or become unresponsive.
+- **[Detecting Workflow failures](/encyclopedia/detecting-workflow-failures)**: How Workflow-level timeouts work and when they apply.
+- **[Retry Policies](/encyclopedia/retry-policies)**: How to configure automatic retry behavior for Activities and Workflows.
+
+For prescriptive guidance on building an error handling strategy, see [Error handling](/best-practices/error-handling).

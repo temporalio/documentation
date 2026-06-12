@@ -17,6 +17,11 @@
   ],
   "redirects": [
     {
+      "source": "/encyclopedia/detecting-application-failures",
+      "destination": "/encyclopedia/failures-and-error-handling",
+      "permanent": true
+    },
+    {
       "source": "/develop/integrations",
       "destination": "/integrations",
       "permanent": true
