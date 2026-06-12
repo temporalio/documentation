@@ -24,6 +24,10 @@ import TabItem from '@theme/TabItem';
 
 You can trigger a failover manually using the Temporal Cloud Web UI, the tcld CLI, or the Cloud Ops API.
 
+Manual failovers apply only to Multi-region and Multi-cloud Replication. A
+[Same-region Replication](/cloud/high-availability#same-region-replication) Namespace fails over automatically between
+cells and cannot be failed over manually.
+
 :::warning Check your replication lag
 
 Always check the <ToolTipTerm term="replication lag" /> before initiating a failover. A forced failover when there is a
@@ -196,6 +200,10 @@ Temporal recommends regular failover testing for mission-critical applications i
 non-emergency conditions, you verify that your application continues to function even when parts of the infrastructure
 fail.
 
+Because failover testing relies on manually triggering a failover, it applies to Multi-region and Multi-cloud
+Replication. A [Same-region Replication](/cloud/high-availability#same-region-replication) Namespace fails over
+automatically between cells and cannot be failed over manually for testing.
+
 :::tip
 
 If this is your first time performing a failover test, run it with a test-specific Namespace and application. Practice
@@ -208,8 +216,7 @@ runs help ensure the process runs smoothly during real incidents in production.
 Failover testing (also known as "<ToolTipTerm term="trigger testing" />") can:
 
 - **Validate replicated deployments:** In multi-region setups, failover testing ensures your application can run from
-  another region when the primary region experiences outages. In Same-region Replication setups, failover testing works
-  with a separate cell within the same region.
+  another region when the primary region experiences outages.
 
 - **Assess replication lag:** In multi-region deployments, monitoring
   [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) between regions

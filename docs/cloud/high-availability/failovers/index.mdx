@@ -93,6 +93,12 @@ is warranted are:
   takes effect, and the later one is a no-op. A user-triggered failover does not conflict with Temporal's automatic
   failover.
 
+:::note Same-region Replication
+
+Manual failovers apply only to Multi-region and Multi-cloud Replication. A [Same-region Replication](/cloud/high-availability#same-region-replication) Namespace fails over automatically between cells and cannot be failed over manually or have its automatic failovers disabled.
+
+:::
+
 ## The failover process {/* #failover-process */}
 
 The failover process is the same whether it is triggered automatically by Temporal or manually by a user.
