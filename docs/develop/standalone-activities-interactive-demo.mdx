@@ -12,17 +12,15 @@ tags:
 description: An interactive overview of Temporal Standalone Activities.
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { StandaloneActivityDemo, ReleaseNoteHeader } from '@site/src/components';
+import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
 
-[Standalone Activities](/standalone-activity) are available as a
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview) feature
-in the Go, Python, and .NET SDKs, and as a
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature in the
-Java and TypeScript SDKs.
-
-Standalone Activities require Temporal CLI v1.7.0 or higher and Temporal Server v1.31.0 or higher.
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
+>
+  Available in [Temporal Cloud](/standalone-activity#temporal-cloud-support) and in the [Temporal CLI](/standalone-activity#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher. Java SDK support is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+</ReleaseNoteHeader>
 
 Standalone Activities let you run a single Activity straight from your application without
 writing a Workflow. Your code uses the Temporal Client to send the request to the Server, the Server durably enqueues the request
@@ -31,9 +29,6 @@ check later.
 
 Try the demo below to walk through the full flow, tweak the retry and timeout settings, and watch
 the SDK code and CLI command update as you go.
-
-import { StandaloneActivityDemo } from '@site/src/components';
-import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
 
 <StandaloneActivityDemo />
 
