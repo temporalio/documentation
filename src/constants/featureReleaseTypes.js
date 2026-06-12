@@ -1,6 +1,6 @@
 export const FEATURE_RELEASE_TYPES = {
   cloudCli: "prerelease",
-  standaloneActivity: "prerelease",
+  standaloneActivity: "publicPreview",
   nexus: "publicPreview",
   workflowStreams: "publicPreview",
   serverlessWorkers: "prerelease",
