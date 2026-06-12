@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDoc } from '@docusaurus/plugin-content-docs/client';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { SiOpenai, SiClaude } from 'react-icons/si';
 import styles from './LLMActions.module.css';
 
@@ -38,21 +38,18 @@ function buildRawUrlFromSlug(slug: string): string {
 export default function LLMActions() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { metadata, frontMatter } = useDoc();
   const { editUrl, slug, permalink } = metadata;
   const { siteConfig } = useDocusaurusContext();
 
-  // Canonical, absolute page URL derived from Docusaurus config + permalink.
-  // Available during SSR and the first render, so the prompts are always valid.
   const pageUrl = `${siteConfig.url}${permalink}`;
-
-  // Prefilled prompts that point the assistant at this page.
   const prompt = `Read ${pageUrl} and answer questions about the content.`;
   const chatGptUrl = `https://chatgpt.com/?prompt=${encodeURIComponent(prompt)}`;
   const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
 
-  // Try to get raw URL from editUrl first, then fall back to slug-based construction
   let rawUrl = editUrl ? getGitHubRawUrl(editUrl) : null;
   if (!rawUrl && slug) {
     rawUrl = buildRawUrlFromSlug(slug);
@@ -65,6 +62,7 @@ export default function LLMActions() {
     }
 
     setLoading(true);
+    setOpen(false);
     try {
       const response = await fetch(rawUrl);
       if (!response.ok) {
@@ -87,65 +85,110 @@ export default function LLMActions() {
     if (rawUrl) {
       window.open(rawUrl, '_blank', 'noopener,noreferrer');
     }
+    setOpen(false);
   }, [rawUrl]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
 
   if (!rawUrl || frontMatter.llm_exclude) {
     return null;
   }
 
   return (
-    <div className={styles.container} data-analytics-component="llm-actions">
-      <button
-        className={styles.actionButton}
-        onClick={handleCopyForLLM}
-        disabled={loading}
-        title="Copy page markdown for use with LLMs"
-        data-analytics-id="copy-for-llm"
-        data-analytics-action="click"
-      >
-        {copied ? (
-          <FaCheck className={styles.icon} />
-        ) : (
-          <FaRegCopy className={styles.icon} />
-        )}
-        {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy for LLM'}
-      </button>
-      <button
-        className={styles.actionButton}
-        onClick={handleViewMarkdown}
-        title="View raw markdown in new tab"
-        data-analytics-id="view-as-markdown"
-        data-analytics-action="click"
-      >
-        <FaMarkdown className={styles.icon} />
-        View as Markdown
-      </button>
-      <a
-        className={styles.actionButton}
-        href={chatGptUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Open this page in ChatGPT"
-        data-analytics-id="open-in-chatgpt"
-        data-analytics-action="click"
-      >
-        <SiOpenai className={styles.icon} />
-        Open in ChatGPT
-        <FaExternalLinkAlt className={styles.externalIcon} />
-      </a>
-      <a
-        className={styles.actionButton}
-        href={claudeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Open this page in Claude"
-        data-analytics-id="open-in-claude"
-        data-analytics-action="click"
-      >
-        <SiClaude className={styles.icon} />
-        Open in Claude
-        <FaExternalLinkAlt className={styles.externalIcon} />
-      </a>
+    <div className={styles.container} ref={containerRef} data-analytics-component="llm-actions">
+      <div className={styles.splitButton}>
+        <button
+          className={styles.copyButton}
+          onClick={handleCopyForLLM}
+          disabled={loading}
+          title="Copy page markdown for use with LLMs"
+          data-analytics-id="copy-for-llm"
+          data-analytics-action="click"
+        >
+          {copied ? (
+            <FaCheck className={styles.icon} />
+          ) : (
+            <FaRegCopy className={styles.icon} />
+          )}
+          {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy'}
+        </button>
+        <button
+          className={styles.chevronButton}
+          onClick={() => setOpen((v) => !v)}
+          aria-haspopup="true"
+          aria-expanded={open}
+          title="More options"
+          data-analytics-id="llm-actions-toggle"
+          data-analytics-action="click"
+        >
+          {open ? (
+            <FaChevronUp className={styles.chevronIcon} />
+          ) : (
+            <FaChevronDown className={styles.chevronIcon} />
+          )}
+        </button>
+      </div>
+
+      {open && (
+        <div className={styles.dropdown}>
+          <button
+            className={styles.dropdownItem}
+            onClick={handleCopyForLLM}
+            disabled={loading}
+            data-analytics-id="copy-for-llm-dropdown"
+            data-analytics-action="click"
+          >
+            <FaRegCopy className={styles.icon} />
+            <span>Copy for LLM</span>
+          </button>
+          <button
+            className={styles.dropdownItem}
+            onClick={handleViewMarkdown}
+            data-analytics-id="view-as-markdown-dropdown"
+            data-analytics-action="click"
+          >
+            <FaMarkdown className={styles.icon} />
+            <span>View as Markdown</span>
+            <FaExternalLinkAlt className={styles.externalIcon} />
+          </button>
+          <a
+            className={styles.dropdownItem}
+            href={chatGptUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            data-analytics-id="open-in-chatgpt-dropdown"
+            data-analytics-action="click"
+          >
+            <SiOpenai className={styles.icon} />
+            <span>Open in ChatGPT</span>
+            <FaExternalLinkAlt className={styles.externalIcon} />
+          </a>
+          <a
+            className={styles.dropdownItem}
+            href={claudeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            data-analytics-id="open-in-claude-dropdown"
+            data-analytics-action="click"
+          >
+            <SiClaude className={styles.icon} />
+            <span>Open in Claude</span>
+            <FaExternalLinkAlt className={styles.externalIcon} />
+          </a>
+        </div>
+      )}
     </div>
   );
 }
