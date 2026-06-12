@@ -3,7 +3,7 @@ id: index
 title: High Availability
 sidebar_label: High Availability
 slug: /cloud/high-availability
-description: Temporal Cloud's Namespace with High Availability features offers automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
   - Temporal Cloud
   - Production
@@ -59,7 +59,7 @@ High Availability features extend Temporal Cloud's replication across regions an
 
 - **Real-time replication** — Temporal replicates your Namespace across distant regions or cloud providers with no performance impact to your Workers or Workflows.
 - **Automatic failover with 20-minute RTO** — Temporal manages failover with a 20-minute [RTO](/cloud/rpo-rto). You can also [trigger failover](/cloud/high-availability/failovers) manually at any time, for example for testing.
-- **Transparent DNS routing** — On failover, DNS reroutes your [Namespace Endpoint](/cloud/namespaces#access-namespaces) to the active region. Requests that reach the replica are forwarded to the active region automatically.
+- **Transparent DNS routing** — On failover, DNS reroutes your [Namespace Endpoint](/cloud/namespaces#access-namespaces) to the active region. [Requests that reach the replica are forwarded to the active region automatically](#request-forwarding).
 - **Sub-1-minute RPO** — In a failover during an outage, the [Recovery Point Objective](/cloud/rpo-rto) is under one minute.
 - **Real-time lag monitoring** — Monitor your Namespace's replication lag in real time to understand your current RPO.
 - **Conflict resolution** — If the two regions are not fully in sync at the time of failover, Temporal's conflict resolution process reconciles discrepancies and ensures data integrity.
@@ -93,6 +93,18 @@ Using physically separated regions improves the fault tolerance of your applicat
 
 :::
 
+## Request forwarding {/* #request-forwarding */}
+
+A Namespace with High Availability features replicates across two regions, with one replica active and one passive at any moment. The active replica accepts reads and writes; the passive replica receives replicated state asynchronously and stands ready for failover.
+
+When a request reaches the passive replica — for example, through the passive region's Regional Endpoint — Temporal Cloud forwards the request transparently to the active replica and the response back to the Worker. This allows Workers and Clients to connect to the passive region during healthy times, and when an outage hits, start processing Workflows immediately after a failover.
+
+Forwarding adds a cross-region hop, so requests that travel through the passive replica complete with higher average latency than requests that reach the active replica directly.
+
+To route Workers to the passive region's replica, see [How requests reach the replica](/cloud/high-availability/ha-connectivity#how-requests-reach-the-replica).
+
+To disable passive region replica forwarding, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+
 ## Service levels and recovery objectives
 
 Namespaces using High Availability have a 99.99% [uptime SLA](/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
@@ -119,6 +131,8 @@ These are often major concerns for financial services, e-commerce, gaming, globa
 In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
 This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
+
+Failovers between cells are always managed automatically by Temporal. Unlike Multi-region and Multi-cloud Replication, you cannot disable automatic failovers and you cannot trigger a manual failover for a Same-region Replication Namespace. See [Failovers](/cloud/high-availability/failovers) for details.
 
 ## Related considerations
 

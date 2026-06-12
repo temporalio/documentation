@@ -64,6 +64,7 @@ html[data-theme='dark']:root {
   --feedback-button-light-bg-color: #0d0d0d; /* floating button background */
   --feedback-button-light-text-color: #e8e8e8; /* floating button text */
   --feedback-button-light-icon-color: #e8e8e8; /* floating button icon */
+  --last-updated-color: #6280ad;
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -95,6 +96,7 @@ html[data-theme='light']:root {
   --alert--competency-background: #a8fcff;
   --alert--copycode-background: #e0cdfa;
   --alert--info-background: #ebeded;
+  --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
   --ifm-toc-link-color: var(--ifm-color-primary-dark);
@@ -1372,4 +1374,13 @@ code {
   margin: 0;
   padding: 0;
   width: 40px;
+}
+
+/* Hide integration sidebar children unless the current page is one of them */
+.sidebar-integrations > .menu__list > .menu__list-item {
+  display: none;
+}
+
+.sidebar-integrations > .menu__list > .menu__list-item:has(.menu__link--active) {
+  display: block;
 }

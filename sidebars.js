@@ -358,6 +358,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -612,6 +613,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -621,6 +623,7 @@ module.exports = {
                 'develop/python/integrations/braintrust',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
               ],
             },
           ],
@@ -755,6 +758,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -924,6 +928,7 @@ module.exports = {
               items: [
                 'develop/ruby/activities/basics',
                 'develop/ruby/activities/execution',
+                'develop/ruby/activities/standalone-activities',
                 'develop/ruby/activities/timeouts',
                 'develop/ruby/activities/asynchronous-activity',
                 'develop/ruby/activities/dynamic-activity',
@@ -970,6 +975,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -1079,7 +1085,6 @@ module.exports = {
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
-        'develop/integrations',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
       ],
@@ -1241,7 +1246,7 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud', 'cloud/migrate/estimate-actions'],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
@@ -1371,16 +1376,47 @@ module.exports = {
       },
       items: [
         'cli/setup-cli',
-        'cli/activity',
-        'cli/batch',
-        'cli/config',
-        'cli/env',
-        'cli/operator',
-        'cli/schedule',
-        'cli/server',
-        'cli/task-queue',
-        'cli/worker',
-        'cli/workflow',
+        'cli/cloud',
+        'cli/cli-basics',
+        {
+          type: 'category',
+          label: 'Command reference',
+          collapsed: true,
+          link: { type: 'doc', id: 'cli/command-reference/index' },
+          items: [
+            'cli/command-reference/activity',
+            'cli/command-reference/batch',
+            {
+              type: 'category',
+              label: 'cloud',
+              collapsed: true,
+              link: { type: 'doc', id: 'cli/command-reference/cloud/index' },
+              items: [
+                'cli/command-reference/cloud/account',
+                'cli/command-reference/cloud/apikey',
+                'cli/command-reference/cloud/async-operation',
+                'cli/command-reference/cloud/connectivity',
+                'cli/command-reference/cloud/login',
+                'cli/command-reference/cloud/logout',
+                'cli/command-reference/cloud/namespace',
+                'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/region',
+                'cli/command-reference/cloud/service-account',
+                'cli/command-reference/cloud/user',
+                'cli/command-reference/cloud/user-group',
+                'cli/command-reference/cloud/whoami',
+              ],
+            },
+            'cli/command-reference/config',
+            'cli/command-reference/env',
+            'cli/command-reference/operator',
+            'cli/command-reference/schedule',
+            'cli/command-reference/server',
+            'cli/command-reference/task-queue',
+            'cli/command-reference/worker',
+            'cli/command-reference/workflow',
+          ],
+        },
       ],
     },
     {
@@ -1441,6 +1477,7 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/error-handling',
         'best-practices/cost-optimization',
         'best-practices/knowledge-hub',
       ],
@@ -1456,6 +1493,7 @@ module.exports = {
       items: [
         'encyclopedia/temporal',
         'encyclopedia/temporal-sdks',
+        'encyclopedia/temporal-client',
         {
           type: 'category',
           label: 'Workflows',
@@ -1506,13 +1544,14 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Detecting application failures',
+          label: 'Failures and error handling',
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'encyclopedia/detecting-application-failures',
+            id: 'encyclopedia/failures-and-error-handling',
           },
           items: [
+            'encyclopedia/application-failures',
             'encyclopedia/detecting-activity-failures',
             'encyclopedia/detecting-workflow-failures',
             'encyclopedia/retry-policies',
@@ -1673,6 +1712,7 @@ module.exports = {
         'web-ui',
       ],
     },
+    'integrations',
     'glossary',
     'with-ai',
     // {

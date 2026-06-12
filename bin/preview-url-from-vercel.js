@@ -9,6 +9,7 @@ function branchToSlug(branchName) {
   return branchName
     .toLowerCase()
     .replace(/_/g, '')
+    .replace(/\+/g, '')
     .replace(/[^a-z0-9]/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-/, '')

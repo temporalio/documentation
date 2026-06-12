@@ -12,22 +12,14 @@ tags:
   - Java SDK
   - Temporal SDKs
   - Integrations
+llm_exclude:
+  This page renders an interactive grid component. For a machine-readable list of integrations and their metadata, see
+  [integrations-data.ts](https://github.com/temporalio/documentation/blob/main/src/components/IntegrationsGrid/integrations-data.ts).
 ---
 
-import * as Components from '@site/src/components';
+import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
 
-![Java SDK Banner](/img/assets/banner-java-temporal.png)
-
-## Framework integrations
-
-- [Spring Boot](/develop/java/integrations/spring-boot-integration)
-
-## AI integrations
-
-The following AI framework integrations are available for the Temporal Java SDK:
-
-| Framework | SDK docs | Integration guide |
-| --- | --- | --- |
-| Spring AI | [docs.spring.io/spring-ai](https://docs.spring.io/spring-ai/reference/) | [Guide](/develop/java/integrations/spring-ai) |
-
+The following integrations are available for the Temporal Java SDK.
 These integrations are built on the Temporal Java SDK's [Plugin system](/develop/plugins-guide), which you can also use to build your own integrations.
+
+<IntegrationsGrid defaultSdks={["Java"]} />

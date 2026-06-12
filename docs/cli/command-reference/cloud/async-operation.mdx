@@ -1,0 +1,73 @@
+---
+id: async-operation
+title: Temporal CLI cloud async-operation command reference
+sidebar_label: async-operation
+description: Async Operation Commands
+toc_max_heading_level: 4
+keywords:
+  - async-operation
+  - async
+  - operation
+tags:
+  - async-operations
+---
+
+import { ReleaseNoteHeader } from "@site/src/components";
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
+
+<ReleaseNoteHeader featureName="cloudCli" />
+
+This page provides a reference for the `temporal cloud async-operation` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
+## await
+
+Wait for a Temporal Cloud async operation to reach a terminal state.
+Polls the operation status until it completes, fails, or is cancelled.
+
+Example:
+
+```
+temporal cloud async-operation await --async-operation-id my-op-id
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async-operation-id` | Yes | **string** The ID of the async operation to wait for. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). Default is 1s. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## get
+
+Retrieve the status and details of a Temporal Cloud async operation.
+
+Example:
+
+```
+temporal cloud async-operation get --async-operation-id my-op-id
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async-operation-id` | Yes | **string** The ID of the async operation to retrieve. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |  |
+| `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
+| `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
+| `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+

@@ -13,7 +13,7 @@ tags:
   - Workflows
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 This page discusses the following:
 
@@ -125,15 +125,11 @@ A Side Effect does not re-execute upon replay, but instead returns the recorded 
 Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
 If there is any chance that the code provided to the Side Effect could fail, use an Activity.
 
-## What is a Principal Attribution? {/* #principal-attribution */}
+## What is Principal Attribution? {/* #principal-attribution */}
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Principal Attribution is currently available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
-
-:::
+<ReleaseNoteHeader type="prerelease">
+  Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
+</ReleaseNoteHeader>
 
 Principal Attribution for Workflow Executions is a server-derived set of non-spoofable `Principal` fields for Event history events.
 
