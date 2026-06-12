@@ -1,9 +1,9 @@
 ---
-id: deployment-models
-title: Deployment models for High Availability
-sidebar_label: Deployment models for High Availability
-slug: /cloud/high-availability/deployment-models
-description: Choose a Worker deployment model — Active / Passive (Cold), Active / Passive (Hot), or Active / Active — for a Namespace with Temporal Cloud High Availability features, and understand how the rest of the architecture fails over with it.
+id: deployment-patterns
+title: Deployment patterns for High Availability
+sidebar_label: Deployment patterns for High Availability
+slug: /cloud/high-availability/deployment-patterns
+description: Choose a Worker deployment pattern — Active / Passive (Cold), Active / Passive (Hot), or Active / Active — for a Namespace with Temporal Cloud High Availability features, and understand how the rest of the architecture fails over with it.
 tags:
   - Temporal Cloud
   - High Availability
@@ -17,22 +17,35 @@ keywords:
   - temporal cloud
 ---
 
-A Namespace with [High Availability features](/cloud/high-availability) fails over the Temporal Service automatically, but it does not move the rest of the architecture.
-On failover, Temporal Cloud promotes the replica to active and reroutes the [Namespace Endpoint](/cloud/namespaces#access-namespaces). Workers, Workflow starters, Codec Servers, and the external systems that Workflows depend on each need their own failover story.
+When an outage strikes, a Namespace with [High Availability](/cloud/high-availability) fails over to another region automatically, but it does not move the rest of the architecture.
+Workers, Workflow starters, Codec Servers, databases, and the external systems that Workflows depend on each need their own failover story.
 
-A critical piece of the [recovery time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment model**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
-This page describes common patterns for deploying Workers and how the rest of the architecture fits into an overall High Availability strategy.
+A critical piece of the [recovery time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment pattern**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
+This page describes common patterns for deploying Workers and the rest of the architecture to achieve an overall High Availability strategy.
 
 ## Terminology {/* #terminology */}
 
-This page uses two terms for the regions of a Namespace with High Availability:
+This page presumes familiarity with [High Availability for Temporal Cloud Namespaces](/cloud/high-availability), including replicas, active and passive regions, replication, and failover.
+
+It uses two terms for the regions of a Namespace with High Availability:
 
 - **Primary region** — the region where the Namespace is active during normal operation, also called the "preferred region."
 - **Secondary region** — the region the Namespace fails over to. It holds a replica and is passive during normal operation.
 
+It also uses these names for the Worker deployment patterns, each detailed in [Worker deployment patterns](#worker-deployment-patterns):
+
+- **Active / Passive** — Workflows process in one region at a time. It has two variants:
+  - **[Active / Cold](#active-cold)** — Workers run in one region at a time and Workflows process in one region, both the user's responsibility to enforce. After a failover, Workers start in the secondary region.
+  - **[Active / Hot](#active-hot)** — Workers run in both regions, but the system guarantees Workflows process in only the active region.
+- **[Active / Active](#active-active)** — Workers run in both regions, and Workflows process in both regions at the same time.
+
 :::info
 
-**Namespaces are always active / passive, but can support an Active / Active pattern.** A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state. However, Temporal Cloud Namespaces can still fit into a broader "Active / Active" strategy, as described below.
+**Namespaces are always Active / Passive, but can support an Active / Active pattern.** 
+
+A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state.
+
+However, since both regions can serve requests and Worker polls, Temporal Cloud Namespaces can still fit into a broader "Active / Active" strategy, as described below.
 
 :::
 
@@ -56,11 +69,13 @@ The [Worker deployment patterns](#worker-deployment-patterns) below note when ea
 This page covers three main patterns — **Active / Passive (Cold)**, **Active / Passive (Hot)**, and **Active / Active** — plus a rarely needed **Dual Active** variant.
 They trade off **recovery time** after an outage, **steady-state cost**, and **operational complexity**.
 
-:::tip Temporal's recommendation
+Temporal recommends starting with **Active / Passive (Cold)** and shifting to another pattern when business requirements warrant it.
 
-Start with **Active / Passive (Cold)**. It is the easiest to set up, the easiest to reason about, and the lowest cost. Move to another pattern only when business requirements warrant it.
-
-:::
+| Pattern | Best for | Major benefits | Major tradeoffs |
+| --- | --- | --- | --- |
+| **[Active / Passive (Cold)](#active-cold)** | Easy initial deployment | Acts like a single region; no special setup required | Failing over Workers is the user's responsibility |
+| **[Active / Passive (Hot)](#active-hot)** | Low RTO with strict single-region behavior | Fast Worker failover; guaranteed to act like a single region | More configuration and higher cost for the Worker fleet |
+| **[Active / Active](#active-active)** | Low RTO with Workers active in multiple regions | Fast Worker failover; uses Worker fleet capacity (no idle standby) | Cross-region requests add Workflow latency |
 
 The diagrams below use a shared visual language:
 
@@ -78,7 +93,7 @@ Workers run **only in the primary region**. The secondary region holds the passi
 **Steady state**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
@@ -89,21 +104,23 @@ flowchart LR
     direction TB
     W1["Workers<br/>processing"]:::wactive
     DB1["External DB / queue"]:::ext
-    R1["Namespace replica<br/>ACTIVE"]:::tcloud
+    R1["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   subgraph S["SECONDARY REGION"]
     direction TB
-    R2["Namespace replica<br/>passive"]:::tpassive
+    DB2["External DB / queue"]:::ext
+    R2["Namespace replica<br/><samp>PASSIVE</samp>"]:::tpassive
   end
   W1 --> R1
   W1 <--> DB1
+  DB1 <-->|replication (if needed)| DB2
   R1 -. replicates .-> R2
 ```
 
 **Failover**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
@@ -119,8 +136,8 @@ flowchart LR
   subgraph S["SECONDARY REGION"]
     direction TB
     W2["Workers<br/>cold start"]:::wnew
-    DB2["External DB / queue<br/>promoted"]:::ext
-    R2["Namespace replica<br/>ACTIVE"]:::tcloud
+    DB2["External DB / queue<br/><samp>PROMOTED (if needed)</samp>"]:::ext
+    R2["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   W2 --> R2
   W2 <--> DB2
@@ -132,13 +149,13 @@ Recovery time includes container or VM startup, image pulls, and application war
 
 **Benefits**
 
-- **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the model pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
-- Simplest model to operate; in steady state it resembles a single-region deployment.
+- **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the pattern pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
+- Simplest pattern to operate; in steady state it resembles a single-region deployment.
 - Lowest steady-state cost: a single Worker fleet.
 
 **Tradeoffs**
 
-- Highest recovery time of the models here, gated by Worker startup in the secondary region.
+- Highest recovery time of the patterns here, gated by Worker startup in the secondary region.
 - Depends on tested automation to bring up the secondary-region fleet quickly.
 
 **Recommendations and important constraints**
@@ -168,7 +185,7 @@ With forwarding disabled, polls that reach the passive replica are not sent to t
 **Steady state**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
@@ -179,13 +196,13 @@ flowchart LR
     direction TB
     W1["Workers<br/>processing"]:::wactive
     DB1["External DB / queue"]:::ext
-    R1["Namespace replica<br/>ACTIVE"]:::tcloud
+    R1["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   subgraph S["SECONDARY REGION"]
     direction TB
     W2["Workers<br/>connected, idle"]:::widle
     DB2["External DB / queue<br/>standby"]:::ext
-    R2["Namespace replica<br/>passive"]:::tpassive
+    R2["Namespace replica<br/><samp>PASSIVE</samp>"]:::tpassive
   end
   W1 --> R1
   W1 <--> DB1
@@ -197,7 +214,7 @@ flowchart LR
 **Failover**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
@@ -211,19 +228,19 @@ flowchart LR
   subgraph S["SECONDARY REGION"]
     direction TB
     W2["Workers<br/>now processing"]:::wactive
-    DB2["External DB / queue<br/>promoted"]:::ext
-    R2["Namespace replica<br/>ACTIVE"]:::tcloud
+    DB2["External DB / queue<br/><samp>PROMOTED (if needed)</samp>"]:::ext
+    R2["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   W2 --> R2
   W2 <--> DB2
   style P fill:#ED360E14,stroke:#ED360E
 ```
 
-Failover is near-instant: the Namespace failover and the Worker "failover" happen together and automatically, with no DNS wait and no cold start. The previously idle fleet begins processing the moment the secondary region becomes active, so this model achieves the lowest recovery time.
+Failover is near-instant: the Namespace failover and the Worker "failover" happen together and automatically, with no DNS wait and no cold start. The previously idle fleet begins processing the moment the secondary region becomes active, so this pattern achieves the lowest recovery time.
 
 **Benefits**
 
-- **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the model pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
+- **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the pattern pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
 - Lowest recovery time: the secondary-region Workers are already connected and warm.
 - Low steady-state latency: Tasks are processed only in the active region, with no cross-region forwarding.
 
@@ -252,7 +269,7 @@ Because the passive replica transparently forwards requests to and from the acti
 **Steady state**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
@@ -262,13 +279,13 @@ flowchart LR
     direction TB
     W1["Workers<br/>processing"]:::wactive
     DB1["External DB / queue"]:::ext
-    R1["Namespace replica<br/>ACTIVE"]:::tcloud
+    R1["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   subgraph S["SECONDARY REGION"]
     direction TB
     W2["Workers<br/>processing"]:::wactive
     DB2["External DB / queue"]:::ext
-    R2["Namespace replica<br/>passive"]:::tpassive
+    R2["Namespace replica<br/><samp>PASSIVE</samp>"]:::tpassive
   end
   W1 --> R1
   W1 <--> DB1
@@ -281,7 +298,7 @@ flowchart LR
 **Failover**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
@@ -298,7 +315,7 @@ flowchart LR
     W2["Workers<br/>keep processing"]:::wactive
     W3["Workers<br/>scaled up"]:::wnew
     DB2["External DB / queue"]:::ext
-    R2["Namespace replica<br/>ACTIVE"]:::tcloud
+    R2["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   W2 --> R2
   W3 --> R2
@@ -337,7 +354,7 @@ Beyond the three main patterns, some architectures need low-latency or region-bo
 **Steady state**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
@@ -345,14 +362,14 @@ flowchart LR
   subgraph R1["REGION 1"]
     direction TB
     WA["App A Workers"]:::wactive
-    NAa["Namespace A<br/>ACTIVE"]:::tcloud
-    NBp["Namespace B<br/>passive"]:::tpassive
+    NAa["Namespace A<br/><samp>ACTIVE</samp>"]:::tcloud
+    NBp["Namespace B<br/><samp>PASSIVE</samp>"]:::tpassive
   end
   subgraph R2["REGION 2"]
     direction TB
     WB["App B Workers"]:::wactive
-    NBa["Namespace B<br/>ACTIVE"]:::tcloud
-    NAp["Namespace A<br/>passive"]:::tpassive
+    NBa["Namespace B<br/><samp>ACTIVE</samp>"]:::tcloud
+    NAp["Namespace A<br/><samp>PASSIVE</samp>"]:::tpassive
   end
   WA --> NAa
   WB --> NBa
@@ -363,7 +380,7 @@ flowchart LR
 **Failover (Region 1 outage)**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'"Noto Sans Mono", ui-monospace, monospace'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
 flowchart LR
   classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
   classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
@@ -378,8 +395,8 @@ flowchart LR
     direction TB
     WB["App B Workers"]:::wactive
     WA2["App A Workers<br/>brought up"]:::wnew
-    NBa["Namespace B<br/>ACTIVE"]:::tcloud
-    NAa2["Namespace A<br/>ACTIVE"]:::tcloud
+    NBa["Namespace B<br/><samp>ACTIVE</samp>"]:::tcloud
+    NAa2["Namespace A<br/><samp>ACTIVE</samp>"]:::tcloud
   end
   WB --> NBa
   WA2 --> NAa2
@@ -398,7 +415,7 @@ Workloads on Temporal rarely need this. It pays off only when a workload is *bot
 **Tradeoffs**
 
 - Highest cost and operational complexity: two Worker fleets and two Namespaces.
-- Rarely justified. Temporal recommends modeling each Namespace as an **independent Active / Passive deployment**, with its own Worker pools and failover procedures, rather than coupling them.
+- Rarely justified. Temporal recommends treating each Namespace as an **independent Active / Passive deployment**, with its own Worker pools and failover procedures, rather than coupling them.
 
 **Component behavior**
 
@@ -407,22 +424,22 @@ Workloads on Temporal rarely need this. It pays off only when a workload is *bot
 - **Codec Servers and proxies** — run in both regions, for both Namespaces.
 - **External databases and queues** — region-bound per application; each fails over with its Namespace.
 
-## Choose a deployment model {/* #choose */}
+## Choose a deployment pattern {/* #choose */}
 
-| Model | Recovery time | Steady-state cost | Best when |
+| Pattern | Recovery time | Steady-state cost | Best when |
 | --- | --- | --- | --- |
-| **Active / Passive (Cold)** | Highest (cold start in secondary) | Lowest (one fleet) | Adopting High Availability with the simplest operating model. |
+| **Active / Passive (Cold)** | Highest (cold start in secondary) | Lowest (one fleet) | Adopting High Availability with the simplest operations. |
 | **Active / Passive (Hot)** | Lowest (warm, no DNS wait) | Higher (idle fleet) | The lowest recovery time is required and the data plane is pinned to one region at a time. |
 | **Active / Active** | Low (surviving region keeps processing) | Higher (two live fleets) | Low recovery time at balanced cost, where the secondary region can tolerate cross-region latency. |
 | **Dual Active** | Low (per Namespace) | Highest (two fleets, two Namespaces) | Low-latency, region-bound data is genuinely required in each region. Rare. |
 
 ## The rest of the architecture {/* #rest-of-architecture */}
 
-The Worker model sets the pattern; the supporting pieces follow it.
+The Worker deployment pattern sets the approach; the supporting pieces follow it.
 
 - **Workflow starters and Clients.** Deploy these with the same regional pattern as the Workers, since a starter or Client often shares the same in-region dependencies (databases, queues, upstream services) and should fail over alongside them. Point Clients at the Namespace Endpoint so they follow the active region automatically with no configuration change on failover, and use a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) only when a Client must be pinned to a region.
-- **Codec Servers and proxies.** Anything in the connection path between Workers and Temporal Cloud must be reachable from every region where Workers connect. In Active / Passive (Cold), scale them up in the secondary region as part of a failover; in the Active / Passive (Hot) and Active / Active models, run them in both regions at all times.
-- **External databases and queues.** These remain the application's responsibility, and the right approach depends on the Worker model: a single-region-active datastore pairs naturally with Active / Passive, while running Workers active in both regions raises consistency questions that must be designed for. Detailed guidance is out of scope for this page.
+- **Codec Servers and proxies.** Anything in the connection path between Workers and Temporal Cloud must be reachable from every region where Workers connect. In Active / Passive (Cold), scale them up in the secondary region as part of a failover; in the Active / Passive (Hot) and Active / Active patterns, run them in both regions at all times.
+- **External databases and queues.** These remain the application's responsibility, and the right approach depends on the Worker deployment pattern: a single-region-active datastore pairs naturally with Active / Passive, while running Workers active in both regions raises consistency questions that must be designed for. Detailed guidance is out of scope for this page.
 
 ## Related {/* #related */}
 
@@ -430,8 +447,8 @@ To add a replica and turn on High Availability features, see [Enable and manage 
 
 To choose between the Namespace Endpoint and Regional Endpoints and to set up private connectivity, see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 
-To stop forwarding Worker polls to the active region for the Active / Passive (Hot) model, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+To stop forwarding Worker polls to the active region for the Active / Passive (Hot) pattern, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
 
 To trigger and manage failovers, see [Failovers](/cloud/high-availability/failovers).
 
-To understand the recovery objectives each model is measured against, see [RPO and RTO](/cloud/rpo-rto).
+To understand the recovery objectives each pattern is measured against, see [RPO and RTO](/cloud/rpo-rto).
