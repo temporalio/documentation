@@ -22,6 +22,11 @@
       "permanent": true
     },
     {
+      "source": "/develop/integrations",
+      "destination": "/integrations",
+      "permanent": true
+    },
+    {
       "source": "/cli/activity",
       "destination": "/cli/command-reference/activity",
       "permanent": true

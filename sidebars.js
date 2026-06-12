@@ -358,6 +358,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -612,6 +613,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -756,6 +758,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -925,6 +928,7 @@ module.exports = {
               items: [
                 'develop/ruby/activities/basics',
                 'develop/ruby/activities/execution',
+                'develop/ruby/activities/standalone-activities',
                 'develop/ruby/activities/timeouts',
                 'develop/ruby/activities/asynchronous-activity',
                 'develop/ruby/activities/dynamic-activity',
@@ -971,6 +975,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -1080,7 +1085,6 @@ module.exports = {
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
-        'develop/integrations',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
       ],
@@ -1242,7 +1246,7 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud', 'cloud/migrate/estimate-actions'],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
@@ -1708,6 +1712,7 @@ module.exports = {
         'web-ui',
       ],
     },
+    'integrations',
     'glossary',
     'with-ai',
     // {

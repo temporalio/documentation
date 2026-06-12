@@ -2,24 +2,14 @@ import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import { v4 as uuidv4 } from "uuid";
+
+import { LANGUAGE_ICONS } from "../constants";
 import styles from "./RelatedRead.module.css";
 
 const archetypeClasses = {
   encyclopedia: "archetype-tag-encyclopedia-article",
   "feature-guide": "archetype-tag-feature-guide",
   "feature-summary": "archetype-tag-feature-summary",
-};
-
-const languageIcons = {
-  Go: "/img/sdks/svgs/golang.svg",
-  Java: "/img/sdks/svgs/java.svg",
-  PHP: "/img/sdks/svgs/php.svg",
-  Python: "/img/sdks/svgs/python.svg",
-  TypeScript: "/img/sdks/svgs/typescript.svg",
-  ".NET": "/img/sdks/svgs/dotnet.svg",
-  Ruby: "/img/sdks/svgs/ruby.svg",
-  Rust: "/img/sdks/svgs/rust.svg",
-  "Temporal CLI": "/img/assets/terminal.svg",
 };
 
 const encyclopediaIcon = "/img/assets/link-preview-icon.svg";
@@ -29,9 +19,9 @@ function getTagClass(tag) {
 }
 
 function getLanguageIcon(text) {
-  for (const lang in languageIcons) {
+  for (const lang in LANGUAGE_ICONS) {
     if (text.includes(lang)) {
-      return languageIcons[lang];
+      return LANGUAGE_ICONS[lang];
     }
   }
   return null;
