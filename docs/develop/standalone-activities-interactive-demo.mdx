@@ -47,8 +47,8 @@ application, the following happens:
    execute it.
 4. **Execute**: The Worker runs your Activity function with the provided arguments and reports the
    outcome back to the Server.
-5. **Return**: The Server stores the result and returns it to the original caller through the
-   `ActivityHandle` that was created when the Activity was scheduled.
+5. **Return**: The Server stores the result and returns it to the original caller, either directly
+   or via a handle, depending on which SDK method you use.
 
 ### Standalone vs Workflow Activities
 
@@ -56,7 +56,7 @@ application, the following happens:
 |---|---|---|
 | Orchestrated by | A Workflow Definition | Your application code (via the Temporal Client) |
 | Started with | `workflow.execute_activity()` (or the equivalent in your applicable SDK) from inside a Workflow Definition | `client.execute_activity()` (or the equivalent in your applicable SDK) from your application code |
-| Retry policy | Set in `ActivityOptions` inside your Workflow | Set in `StartActivityOptions` when calling the client |
+| Retry policy | Set when calling the Activity from inside a Workflow | Set when calling the Activity from your application |
 | Visibility | Shown in the Workflow's Event History | Shown in the Standalone Activity list and count views |
 | Use case | Multi-step orchestration with multiple Activities | Single, independent jobs like sending an email or processing a webhook |
 
