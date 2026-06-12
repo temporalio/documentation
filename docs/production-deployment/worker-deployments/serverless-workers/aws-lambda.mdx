@@ -23,11 +23,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-  APIs are experimental and may be subject to backwards-incompatible changes.
-  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
-</ReleaseNoteHeader>
+<ReleaseNoteHeader featureName="serverlessWorkers" />
 
 This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
 
@@ -44,15 +40,17 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - The AWS-specific steps in this guide require the [`aws` CLI](https://aws.amazon.com/cli/) installed and configured
   with your AWS credentials. You may use other tools to perform the steps, such as the AWS Console or the AWS SDKs.
 
-- The [Go SDK](/develop/go), [Python SDK](/develop/python), or [TypeScript SDK](/develop/typescript), depending on which
-  language you are using. Use the tabs to select your language and the rest of the page will update accordingly.
+- The [Go SDK](/develop/go), [Python SDK](/develop/python), [TypeScript SDK](/develop/typescript),
+  [Java SDK](/develop/java), or [.NET SDK](/develop/dotnet), depending on which language you are using.
+  Use the tabs to select your language and the rest of the page will update accordingly.
 
   :::tip
 
   If you are exploring the Serverless Worker feature and don't have a Workflow ready, you can use a sample from
   the [Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker),
-  [Python Lambda Worker sample](https://github.com/temporalio/samples-python/tree/main/lambda_worker), or
-  [TypeScript Lambda Worker sample](https://github.com/temporalio/samples-typescript/tree/main/lambda-worker).
+  [Python Lambda Worker sample](https://github.com/temporalio/samples-python/tree/main/lambda_worker),
+  [TypeScript Lambda Worker sample](https://github.com/temporalio/samples-typescript/tree/main/lambda-worker),
+  or [.NET Lambda Worker sample](https://github.com/temporalio/samples-dotnet/tree/main/src/LambdaWorker).
 
   :::
 
@@ -176,6 +174,92 @@ For details on configuration options, Lambda-tuned defaults, and observability, 
 [Serverless Workers - TypeScript SDK](/develop/typescript/workers/serverless-workers/aws-lambda).
 
 </SdkTabs.TypeScript>
+<SdkTabs.Java>
+
+Use the Java SDK's `temporal-aws-lambda` contrib module.
+
+```java
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import io.temporal.aws.lambda.LambdaWorker;
+import io.temporal.common.WorkerDeploymentVersion;
+
+public final class Handler implements RequestHandler<Object, Void> {
+  private static final RequestHandler<Object, Void> WORKER =
+      LambdaWorker.run(
+          new WorkerDeploymentVersion("my-app", "build-1"),
+          options ->
+              options
+                  .setTaskQueue("my-task-queue")
+                  .registerWorkflowImplementationTypes(MyWorkflowImpl.class)
+                  .registerActivitiesImplementations(new MyActivitiesImpl()));
+
+  @Override
+  public Void handleRequest(Object input, Context context) {
+    return WORKER.handleRequest(input, context);
+  }
+}
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or
+`Pinned`. Set it per-Workflow at registration time, or set a Worker-level default with `DefaultVersioningBehavior` in
+`DeploymentOptions`.
+
+For details on configuration options, Lambda-tuned defaults, and the invocation lifecycle, see
+[Serverless Workers - Java SDK](/develop/java/workers/serverless-workers/aws-lambda).
+
+</SdkTabs.Java>
+<SdkTabs.DotNet>
+
+Use the `Temporalio.Extensions.Aws.Lambda` NuGet package.
+
+```csharp
+using Amazon.Lambda.Core;
+using Temporalio.Common;
+using Temporalio.Extensions.Aws.Lambda;
+
+public class Function
+{
+    private static readonly Func<object?, ILambdaContext, Task> WorkerHandler =
+        TemporalLambdaWorker.CreateHandler(
+            new WorkerDeploymentVersion("my-app", "build-1"),
+            config =>
+            {
+                config.WorkerOptions.TaskQueue = "my-task-queue";
+                config.WorkerOptions.AddWorkflow<MyWorkflow>();
+                config.WorkerOptions.AddActivity(MyActivities.MyActivityAsync);
+            });
+
+    public Task HandlerAsync(object? input, ILambdaContext context) =>
+        WorkerHandler(input, context);
+}
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or
+`Pinned`. Set it per-Workflow with the `[Workflow]` attribute, or set a Worker-level default with
+`DefaultVersioningBehavior` in `DeploymentOptions`.
+
+```csharp
+using Temporalio.Common;
+using Temporalio.Workflows;
+
+[Workflow(VersioningBehavior = VersioningBehavior.Pinned)]
+public class MyWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(string input)
+    {
+        return await Workflow.ExecuteActivityAsync(
+            () => MyActivities.MyActivityAsync(input),
+            new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+    }
+}
+```
+
+For details on configuration options, Lambda-tuned defaults, and observability, see
+[Serverless Workers - .NET SDK](/develop/dotnet/workers/serverless-workers/aws-lambda).
+
+</SdkTabs.DotNet>
 </SdkTabs>
 
 ## 2. Deploy Lambda function {/* #deploy-lambda-function */}
@@ -237,6 +321,39 @@ zip -r function.zip lib/ node_modules/ workflow-bundle.js
 ```
 
 </SdkTabs.TypeScript>
+<SdkTabs.Java>
+
+Build a fat JAR (uber-jar) with all dependencies using your build tool (Gradle or Maven). For example, with Gradle's
+Shadow plugin:
+
+```bash
+./gradlew shadowJar
+```
+
+Package the JAR into a zip file:
+
+```bash
+cp build/libs/my-worker-all.jar function.jar
+zip function.zip function.jar
+```
+
+</SdkTabs.Java>
+<SdkTabs.DotNet>
+
+Publish a self-contained deployment for the Lambda runtime:
+
+```bash
+dotnet publish -c Release -r linux-x64 --self-contained true \
+  -o ./publish
+```
+
+Package the published output into a zip file:
+
+```bash
+cd publish && zip -r ../function.zip . && cd ..
+```
+
+</SdkTabs.DotNet>
 </SdkTabs>
 
 ### ii. Deploy Lambda function {/* #deploy-lambda-function-step */}
@@ -307,6 +424,49 @@ aws lambda create-function \
 | `--handler`       | Entry point in `module.export` format. Must point to the handler exported by `runWorker`. |
 
 </SdkTabs.TypeScript>
+<SdkTabs.Java>
+
+```bash
+aws lambda create-function \
+  --function-name my-temporal-worker \
+  --runtime java21 \
+  --handler com.example.Handler \
+  --role <EXECUTION_ROLE_ARN> \
+  --zip-file fileb://function.zip \
+  --timeout 600 \
+  --memory-size 512 \
+  --environment '{"Variables":{"TEMPORAL_ADDRESS":"<your-temporal-address>:7233","TEMPORAL_NAMESPACE":"<your-namespace>","TEMPORAL_API_KEY":"<your-api-key>"}}'
+```
+
+| Parameter         | Description                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `--function-name` | Name of the Lambda function.                                                                                                   |
+| `--runtime`       | Lambda runtime. Use `java21` or another supported Java version.                                                                |
+| `--handler`       | Fully qualified class name of your `RequestHandler` implementation.                                                            |
+| `--memory-size`   | Java Workers typically need more memory than other runtimes. Start with `512` and adjust based on CloudWatch memory metrics.    |
+
+</SdkTabs.Java>
+<SdkTabs.DotNet>
+
+```bash
+aws lambda create-function \
+  --function-name my-temporal-worker \
+  --runtime dotnet8 \
+  --handler MyAssembly::MyNamespace.Function::HandlerAsync \
+  --role <EXECUTION_ROLE_ARN> \
+  --zip-file fileb://function.zip \
+  --timeout 600 \
+  --memory-size 256 \
+  --environment '{"Variables":{"TEMPORAL_ADDRESS":"<your-temporal-address>:7233","TEMPORAL_NAMESPACE":"<your-namespace>","TEMPORAL_API_KEY":"<your-api-key>"}}'
+```
+
+| Parameter         | Description                                                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `--function-name` | Name of the Lambda function.                                                                                           |
+| `--runtime`       | Lambda runtime. Use `dotnet8` or another supported .NET version.                                                       |
+| `--handler`       | Entry point in `Assembly::Namespace.Class::Method` format. Must point to the method that calls the worker handler.     |
+
+</SdkTabs.DotNet>
 </SdkTabs>
 
 The following parameters apply to all SDKs:
