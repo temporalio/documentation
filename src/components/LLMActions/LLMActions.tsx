@@ -143,18 +143,8 @@ export default function LLMActions() {
         <div className={styles.dropdown}>
           <button
             className={styles.dropdownItem}
-            onClick={handleCopyForLLM}
-            disabled={loading}
-            data-analytics-id="copy-for-llm-dropdown"
-            data-analytics-action="click"
-          >
-            <FaRegCopy className={styles.icon} />
-            <span>Copy for LLM</span>
-          </button>
-          <button
-            className={styles.dropdownItem}
             onClick={handleViewMarkdown}
-            data-analytics-id="view-as-markdown-dropdown"
+            data-analytics-id="view-as-markdown"
             data-analytics-action="click"
           >
             <FaMarkdown className={styles.icon} />
@@ -167,7 +157,7 @@ export default function LLMActions() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
-            data-analytics-id="open-in-chatgpt-dropdown"
+            data-analytics-id="open-in-chatgpt"
             data-analytics-action="click"
           >
             <SiOpenai className={styles.icon} />
@@ -180,7 +170,7 @@ export default function LLMActions() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
-            data-analytics-id="open-in-claude-dropdown"
+            data-analytics-id="open-in-claude"
             data-analytics-action="click"
           >
             <SiClaude className={styles.icon} />
