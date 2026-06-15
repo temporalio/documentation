@@ -1,3 +1,7 @@
+// ⚠️  LLM MARKDOWN PIPELINE: the generated .md output renders this table via
+// scripts/component-handlers/data-tables.mjs, which reads the same JSON file
+// (the `filename` prop). If you change the data shape or filename convention
+// here, update that handler too. See MARKDOWN_PIPELINE.md.
 import React, { useState, useEffect } from 'react';
 
 const JsonTable = ({ filename }) => {
