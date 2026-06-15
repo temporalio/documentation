@@ -23,34 +23,6 @@ Workers, Workflow starters, Codec Servers, databases, and the external systems t
 A critical piece of the [recovery time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment pattern**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
 This page describes common patterns for deploying Workers and the rest of the architecture to achieve an overall High Availability strategy.
 
-## Terminology {/* #terminology */}
-
-This page presumes familiarity with [High Availability for Temporal Cloud Namespaces](/cloud/high-availability), including replicas, active and passive regions, replication, and failover.
-
-It uses two terms for the regions of a Namespace with High Availability:
-
-- **Primary region** — the region where the Namespace is active during normal operation, also called the "preferred region."
-- **Secondary region** — the region the Namespace fails over to. It holds a replica and is passive during normal operation.
-
-It also uses these names for the Worker deployment patterns, each detailed in [Worker deployment patterns](#worker-deployment-patterns):
-
-- **Active / Passive** — Workflows process in one region at a time. It has two variants:
-  - **[Active / Cold](#active-cold)** — Workers run in one region at a time and Workflows process in one region, both the user's responsibility to enforce. After a failover, Workers start in the secondary region.
-  - **[Active / Hot](#active-hot)** — Workers run in both regions, but the system guarantees Workflows process in only the active region.
-- **[Active / Active](#active-active)** — Workers run in both regions, and Workflows process in both regions at the same time.
-
-:::info
-
-**Namespaces are always Active / Passive, but can support an Active / Active pattern.** 
-
-A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state.
-
-However, since both regions can serve requests and Worker polls, Temporal Cloud Namespaces can still fit into a broader "Active / Active" strategy, as described below.
-
-:::
-
-A useful property to keep in mind: **Workers don't need to run in the same region as the active replica.** A Worker fleet in one region can poll a Namespace that is active in another.
-
 ## What needs a failover story {/* #what-needs-a-failover-story */}
 
 Beyond the Namespace itself, these components live in the application environment and must be planned for:
@@ -62,27 +34,251 @@ Beyond the Namespace itself, these components live in the application environmen
 - **External databases and queues** — the systems that Activities read and write.
 
 Some systems must be active wherever Workers are running (for example, Codec Servers), while others might follow a different failover sequence (for example, external databases).
-The [Worker deployment patterns](#worker-deployment-patterns) below note when each piece needs to be running ahead of time versus scaled up after a failover.
+Because the right choice for each of these usually depends on where Workers run, **this page focuses on Worker deployment patterns**.
 
 ## Worker deployment patterns {/* #worker-deployment-patterns */}
 
 This page covers three main patterns — **Active / Passive (Cold)**, **Active / Passive (Hot)**, and **Active / Active** — plus a rarely needed **Dual Active** variant.
-They trade off **recovery time** after an outage, **steady-state cost**, and **operational complexity**.
+They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**, and differ in where the Workers run and where Workflows process:
 
-Temporal recommends starting with **Active / Passive (Cold)** and shifting to another pattern when business requirements warrant it.
+- **Active / Passive** — Workflows process in one region at a time. It has two variants:
+  - **[Active / Cold](#active-cold)** — Workers run in one region at a time and Workflows process in one region, both the user's responsibility to enforce. After a failover, Workers start in the secondary region.
+  - **[Active / Hot](#active-hot)** — Workers run in both regions, but the system guarantees Workflows process in only the active region.
+- **[Active / Active](#active-active)** — Workers run in both regions, and Workflows process in both regions at the same time.
+
+:::tip
+
+To learn more about High Availability for Temporal Cloud Namespaces — including replicas, active and passive regions, replication, and failover — see [High Availability for Temporal Cloud Namespaces](/cloud/high-availability).
+
+:::
+
+These patterns work across two cloud regions, which could be in the same cloud provider or different cloud providers:
+
+- **Primary region** — the region where the Namespace is active during normal operation, also called the "preferred region."
+- **Secondary region** — the region the Namespace fails over to. It holds a replica and is passive during normal operation.
+
+**Benefits and tradeoffs at a glance**
 
 | Pattern | Best for | Major benefits | Major tradeoffs |
 | --- | --- | --- | --- |
 | **[Active / Passive (Cold)](#active-cold)** | Easy initial deployment | Acts like a single region; no special setup required | Failing over Workers is the user's responsibility |
 | **[Active / Passive (Hot)](#active-hot)** | Low RTO with strict single-region behavior | Fast Worker failover; guaranteed to act like a single region | More configuration and higher cost for the Worker fleet |
-| **[Active / Active](#active-active)** | Low RTO with Workers active in multiple regions | Fast Worker failover; uses Worker fleet capacity (no idle standby) | Cross-region requests add Workflow latency |
+| **[Active / Active](#active-active)** | Low RTO with Workers active in multiple regions | Fast Worker failover; uses Worker fleet capacity (no standby Workers) | Cross-region requests add Workflow latency |
 
-The diagrams below use a shared visual language:
+**Active / Passive (Cold): normal operation and failover**
 
-- A green border marks the **active** Temporal Cloud replica and the Workers processing against it.
-- A muted dashed border marks the **passive** replica; a gold dashed border marks **idle** standby Workers.
-- A purple fill marks application-owned systems (Workers, databases, queues).
-- A red tint marks the region that is **down** during a failover.
+```mermaid
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef empty fill:transparent,stroke:#9aa4b2,stroke-width:1px,stroke-dasharray:4 3,color:#9aa4b2;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph CPRIM["<b>Primary</b>"]
+      subgraph CWP["Worker Pool"]
+        CW1["<b>Worker</b>"]:::worker
+        CW2["<b>Worker</b>"]:::worker
+        CW3["<b>Worker</b>"]:::worker
+      end
+      CNS["<b>Namespace</b>"]:::ns
+      CWP <-->|Workflows| CNS
+    end
+    subgraph CSEC["<b>Secondary</b>"]
+      CR["<b>Replica</b>"]:::ns
+      subgraph CWP2["Worker Pool"]
+        CE["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]:::empty
+      end
+      CR ~~~ CWP2
+    end
+    CNS --> CR
+    class CPRIM,CSEC region
+    class CWP,CWP2 pool
+```
+
+```mermaid
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph FPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph FPP["Worker Pool"]
+        FPW1["Unavailable"]:::down
+      end
+      FPN["<b>Namespace</b>"]:::down
+      FPP ~~~ FPN
+    end
+    subgraph FSEC["<b>Secondary</b>"]
+      FSN["<b>Namespace</b><br>(Active)"]:::ns
+      subgraph FSP["Worker Pool"]
+        FSW1["<b>Worker</b><br/>Cold start"]:::worker
+        FSW2["<b>Worker</b><br/>Cold start"]:::worker
+        FSW3["<b>Worker</b><br/>Cold start"]:::worker
+      end
+      FSN <-->|Workflows| FSP
+    end
+    FPN -->|"Failover"| FSN
+    class FPRIM regiondown
+    class FSEC region
+    class FPP,FSP pool
+```
+
+**Active / Passive (Hot): normal operation and failover**
+
+```mermaid
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph HPRIM["<b>Primary</b>"]
+      subgraph HWP["Worker Pool"]
+        HW1["<b>Worker</b><br/>Active"]:::worker
+        HW2["<b>Worker</b><br/>Active"]:::worker
+        HW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      HNS["<b>Namespace</b>"]:::ns
+      HWP <-->|Workflows| HNS
+    end
+    subgraph HSEC["<b>Secondary</b>"]
+      HR["<b>Replica</b>"]:::ns
+      subgraph HWP2["Worker Pool"]
+        HS1["<b>Worker</b><br/>Standby"]:::worker
+        HS2["<b>Worker</b><br/>Standby"]:::worker
+        HS3["<b>Worker</b><br/>Standby"]:::worker
+      end
+      HR <-->|"Connected"| HWP2
+    end
+    HNS --> HR
+    class HPRIM,HSEC region
+    class HWP,HWP2 pool
+```
+
+```mermaid
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph HFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph HFPP["Worker Pool"]
+        HFPW1["Unavailable"]:::down
+      end
+      HFPN["<b>Namespace</b>"]:::down
+      HFPP ~~~ HFPN
+    end
+    subgraph HFSEC["<b>Secondary</b>"]
+      HFSN["<b>Namespace</b><br>(Active)"]:::ns
+      subgraph HFSP["Worker Pool"]
+        HFSW1["<b>Worker</b><br/>Active"]:::worker
+        HFSW2["<b>Worker</b><br/>Active"]:::worker
+        HFSW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      HFSN <-->|Workflows| HFSP
+    end
+    HFPN -->|"Failover"| HFSN
+    class HFPRIM regiondown
+    class HFSEC region
+    class HFPP,HFSP pool
+```
+
+**Active / Active: normal operation and failover**
+
+```mermaid
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph APRIM["<b>Primary</b>"]
+      subgraph AWP["Worker Pool"]
+        AW1["<b>Worker</b><br/>Active"]:::worker
+        AW2["<b>Worker</b><br/>Active"]:::worker
+      end
+      ANS["<b>Namespace</b>"]:::ns
+      AWP <-->|Workflows| ANS
+    end
+    subgraph ASEC["<b>Secondary</b>"]
+      AR["<b>Replica</b>"]:::ns
+      subgraph AWP2["Worker Pool"]
+        AS1["<b>Worker</b><br/>Active"]:::worker
+        AS2["<b>Worker</b><br/>Active"]:::worker
+      end
+      AR <-->|Workflows| AWP2
+    end
+    ANS --> AR
+    class APRIM,ASEC region
+    class AWP,AWP2 pool
+```
+
+```mermaid
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph AFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph AFPP["Worker Pool"]
+        AFPW1["Unavailable"]:::down
+      end
+      AFPN["<b>Namespace</b>"]:::down
+      AFPP ~~~ AFPN
+    end
+    subgraph AFSEC["<b>Secondary</b>"]
+      AFSN["<b>Namespace</b><br>(Active)"]:::ns
+      subgraph AFSP["Worker Pool"]
+        AFSW1["<b>Worker</b><br/>Active"]:::worker
+        AFSW2["<b>Worker</b><br/>Active"]:::worker
+        AFSW3["<b>Worker</b><br/>Scaled up<br/>(as needed)"]:::workerhollow
+      end
+      AFSN <-->|Workflows| AFSP
+    end
+    AFPN -->|"Failover"| AFSN
+    class AFPRIM regiondown
+    class AFSEC region
+    class AFPP,AFSP pool
+```
+
+:::info
+
+**Namespaces are always Active / Passive, but can support an Active / Active pattern.** 
+
+A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state.
+
+However, since both regions can serve requests and Worker polls, **Workers don't need to run in the same region as the active replica**, and Temporal Cloud Namespaces can still fit into a broader "Active / Active" strategy, as described below.
+
+:::
 
 ### Active / Passive (Cold) {/* #active-cold */}
 
@@ -90,58 +286,79 @@ _Also known as Active / Cold Standby, Active / Cold, or simply Active / Passive.
 
 Workers run **only in the primary region**. The secondary region holds the passive replica but runs none of the application's Workers.
 
-**Steady state**
-
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef wnew fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px,stroke-dasharray:5 3;
-  classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-  subgraph P["PRIMARY REGION"]
-    direction TB
-    W1["Workers<br/>processing"]:::wactive
-    DB1["External DB / queue"]:::ext
-    R1["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  subgraph S["SECONDARY REGION"]
-    direction TB
-    DB2["External DB / queue"]:::ext
-    R2["Namespace replica<br/><samp>PASSIVE</samp>"]:::tpassive
-  end
-  W1 --> R1
-  W1 <--> DB1
-  DB1 <-->|replication (if needed)| DB2
-  R1 -. replicates .-> R2
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef empty fill:transparent,stroke:#9aa4b2,stroke-width:1px,stroke-dasharray:4 3,color:#9aa4b2;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DCNPRI["<b>Primary</b>"]
+      subgraph DCNWP["Worker Pool"]
+        DCNW1["<b>Worker</b>"]:::worker
+        DCNW2["<b>Worker</b>"]:::worker
+        DCNW3["<b>Worker</b>"]:::worker
+      end
+      DCNNS["<b>Namespace</b>"]:::ns
+      DCNDB[("<b>External DB / queue</b>")]:::ext
+      DCNWP <-->|Workflows| DCNNS
+      DCNWP <--> DCNDB
+    end
+    subgraph DCNSEC["<b>Secondary</b>"]
+      DCNR["<b>Replica</b>"]:::ns
+      DCNDB2[("<b>External DB / queue</b>")]:::ext
+      subgraph DCNWP2["Worker Pool"]
+        DCNE["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]:::empty
+      end
+      DCNR ~~~ DCNWP2
+    end
+    DCNNS -. replicates .-> DCNR
+    DCNDB <-.->|"replication (if needed)"| DCNDB2
+    class DCNPRI,DCNSEC region
+    class DCNWP,DCNWP2 pool
 ```
 
-**Failover**
-
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef wnew fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px,stroke-dasharray:5 3;
-  classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-  classDef down fill:#ED360E22,stroke:#ED360E,stroke-width:1px,stroke-dasharray:2 2;
-  subgraph P["PRIMARY REGION — OUTAGE"]
-    direction TB
-    W1["Workers<br/>unavailable"]:::down
-    DB1["External DB / queue"]:::down
-    R1["Namespace replica"]:::down
-  end
-  subgraph S["SECONDARY REGION"]
-    direction TB
-    W2["Workers<br/>cold start"]:::wnew
-    DB2["External DB / queue<br/><samp>PROMOTED (if needed)</samp>"]:::ext
-    R2["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  W2 --> R2
-  W2 <--> DB2
-  style P fill:#ED360E14,stroke:#ED360E
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DCFPRI["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph DCFWP["Worker Pool"]
+        DCFW1["Unavailable"]:::down
+      end
+      DCFNS["<b>Namespace</b>"]:::down
+      DCFDB[("<b>External DB / queue</b>")]:::down
+      DCFWP ~~~ DCFNS
+    end
+    subgraph DCFSEC["<b>Secondary</b>"]
+      DCFN["<b>Namespace</b><br/>(Active)"]:::ns
+      subgraph DCFSP["Worker Pool"]
+        DCFSW1["<b>Worker</b><br/>Cold start"]:::worker
+        DCFSW2["<b>Worker</b><br/>Cold start"]:::worker
+        DCFSW3["<b>Worker</b><br/>Cold start"]:::worker
+      end
+      DCFDB2[("<b>External DB / queue</b><br/>Promoted (if needed)")]:::ext
+      DCFN <-->|Workflows| DCFSP
+      DCFSP <--> DCFDB2
+    end
+    DCFNS -->|"Failover"| DCFN
+    class DCFPRI regiondown
+    class DCFSEC region
+    class DCFWP,DCFSP pool
 ```
 
 On failover, the Namespace is active in the secondary region immediately, but the Workers there start from nothing, a "cold" start.
@@ -150,8 +367,8 @@ Recovery time includes container or VM startup, image pulls, and application war
 **Benefits**
 
 - **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the pattern pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
-- Simplest pattern to operate; in steady state it resembles a single-region deployment.
-- Lowest steady-state cost: a single Worker fleet.
+- Simplest pattern to operate; during normal operation it resembles a single-region deployment.
+- Lowest cost during normal operation: a single Worker fleet.
 
 **Tradeoffs**
 
@@ -177,76 +394,97 @@ Recovery time includes container or VM startup, image pulls, and application war
 
 _Also known as Active / Hot Standby or Active / Hot._
 
-Workers are deployed in **both regions**, but only the active region processes Workflows. The secondary-region Workers stay connected and warm, yet idle.
+Workers are deployed in **both regions**, but only the active region processes Workflows. The secondary-region Workers stay connected and warm, yet on standby.
 
 This is achieved by disabling forwarding for Worker polls and connecting each fleet to its local replica through a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) or [VPC Endpoint](/cloud/high-availability/ha-connectivity).
-With forwarding disabled, polls that reach the passive replica are not sent to the active region, so the idle fleet does no work and adds no cross-region overhead.
-
-**Steady state**
+With forwarding disabled, polls that reach the passive replica are not sent to the active region, so the standby fleet does no work and adds no cross-region overhead.
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef widle fill:#7C3AED18,stroke:#FECB2F,stroke-width:1px,stroke-dasharray:4 3;
-  classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-  subgraph P["PRIMARY REGION"]
-    direction TB
-    W1["Workers<br/>processing"]:::wactive
-    DB1["External DB / queue"]:::ext
-    R1["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  subgraph S["SECONDARY REGION"]
-    direction TB
-    W2["Workers<br/>connected, idle"]:::widle
-    DB2["External DB / queue<br/>standby"]:::ext
-    R2["Namespace replica<br/><samp>PASSIVE</samp>"]:::tpassive
-  end
-  W1 --> R1
-  W1 <--> DB1
-  W2 -. idle .-> R2
-  W2 <--> DB2
-  R1 -. replicates .-> R2
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DHNPRI["<b>Primary</b>"]
+      subgraph DHNWP["Worker Pool"]
+        DHNW1["<b>Worker</b><br/>Active"]:::worker
+        DHNW2["<b>Worker</b><br/>Active"]:::worker
+        DHNW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      DHNNS["<b>Namespace</b>"]:::ns
+      DHNDB[("<b>External DB / queue</b>")]:::ext
+      DHNWP <-->|Workflows| DHNNS
+      DHNWP <--> DHNDB
+    end
+    subgraph DHNSEC["<b>Secondary</b>"]
+      DHNR["<b>Replica</b>"]:::ns
+      subgraph DHNWP2["Worker Pool"]
+        DHNSW1["<b>Worker</b><br/>Standby"]:::worker
+        DHNSW2["<b>Worker</b><br/>Standby"]:::worker
+        DHNSW3["<b>Worker</b><br/>Standby"]:::worker
+      end
+      DHNDB2[("<b>External DB / queue</b><br/>Standby")]:::ext
+      DHNR <-->|"Connected"| DHNWP2
+      DHNWP2 <--> DHNDB2
+    end
+    DHNNS -. replicates .-> DHNR
+    class DHNPRI,DHNSEC region
+    class DHNWP,DHNWP2 pool
 ```
-
-**Failover**
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-  classDef down fill:#ED360E22,stroke:#ED360E,stroke-width:1px,stroke-dasharray:2 2;
-  subgraph P["PRIMARY REGION — OUTAGE"]
-    direction TB
-    W1["Workers"]:::down
-    R1["Namespace replica"]:::down
-  end
-  subgraph S["SECONDARY REGION"]
-    direction TB
-    W2["Workers<br/>now processing"]:::wactive
-    DB2["External DB / queue<br/><samp>PROMOTED (if needed)</samp>"]:::ext
-    R2["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  W2 --> R2
-  W2 <--> DB2
-  style P fill:#ED360E14,stroke:#ED360E
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DHFPRI["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph DHFWP["Worker Pool"]
+        DHFW1["Unavailable"]:::down
+      end
+      DHFNS["<b>Namespace</b>"]:::down
+      DHFWP ~~~ DHFNS
+    end
+    subgraph DHFSEC["<b>Secondary</b>"]
+      DHFN["<b>Namespace</b><br/>(Active)"]:::ns
+      subgraph DHFSP["Worker Pool"]
+        DHFSW1["<b>Worker</b><br/>Active"]:::worker
+        DHFSW2["<b>Worker</b><br/>Active"]:::worker
+        DHFSW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      DHFDB2[("<b>External DB / queue</b><br/>Promoted (if needed)")]:::ext
+      DHFN <-->|Workflows| DHFSP
+      DHFSP <--> DHFDB2
+    end
+    DHFNS -->|"Failover"| DHFN
+    class DHFPRI regiondown
+    class DHFSEC region
+    class DHFWP,DHFSP pool
 ```
 
-Failover is near-instant: the Namespace failover and the Worker "failover" happen together and automatically, with no DNS wait and no cold start. The previously idle fleet begins processing the moment the secondary region becomes active, so this pattern achieves the lowest recovery time.
+Failover is near-instant: the Namespace failover and the Worker "failover" happen together and automatically, with no DNS wait and no cold start. The previously standby fleet begins processing the moment the secondary region becomes active, so this pattern achieves the lowest recovery time.
 
 **Benefits**
 
 - **Easy to reason about.** Only one region is active at a time, so traffic routing and interactions with external systems (such as databases and queues) are simpler to understand, and the pattern pairs naturally with other active / passive systems. Active / Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
 - Lowest recovery time: the secondary-region Workers are already connected and warm.
-- Low steady-state latency: Tasks are processed only in the active region, with no cross-region forwarding.
+- Low latency during normal operation: Tasks are processed only in the active region, with no cross-region forwarding.
 
 **Tradeoffs**
 
-- Highest steady-state cost: idle Worker capacity runs in the secondary region at all times.
+- Highest cost during normal operation: standby Worker capacity runs in the secondary region at all times.
 
 **Recommendations and important constraints**
 
@@ -266,61 +504,79 @@ Workers run in **both regions and process Workflows at the same time**, with for
 A Temporal Cloud Namespace is not "active/active" in the database sense; it still has a single active replica in one region.
 Because the passive replica transparently forwards requests to and from the active region, a Worker fleet in either region can process Workflows. The secondary fleet's polls are forwarded across regions to the active replica.
 
-**Steady state**
-
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-  subgraph P["PRIMARY REGION"]
-    direction TB
-    W1["Workers<br/>processing"]:::wactive
-    DB1["External DB / queue"]:::ext
-    R1["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  subgraph S["SECONDARY REGION"]
-    direction TB
-    W2["Workers<br/>processing"]:::wactive
-    DB2["External DB / queue"]:::ext
-    R2["Namespace replica<br/><samp>PASSIVE</samp>"]:::tpassive
-  end
-  W1 --> R1
-  W1 <--> DB1
-  W2 --> R2
-  R2 ==>|forwards polls| R1
-  W2 <--> DB2
-  R1 -. replicates .-> R2
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DANPRI["<b>Primary</b>"]
+      subgraph DANWP["Worker Pool"]
+        DANW1["<b>Worker</b><br/>Active"]:::worker
+        DANW2["<b>Worker</b><br/>Active"]:::worker
+      end
+      DANNS["<b>Namespace</b>"]:::ns
+      DANDB[("<b>External DB / queue</b>")]:::ext
+      DANWP <-->|Workflows| DANNS
+      DANWP <--> DANDB
+    end
+    subgraph DANSEC["<b>Secondary</b>"]
+      DANR["<b>Replica</b>"]:::ns
+      subgraph DANWP2["Worker Pool"]
+        DANS1["<b>Worker</b><br/>Active"]:::worker
+        DANS2["<b>Worker</b><br/>Active"]:::worker
+      end
+      DANDB2[("<b>External DB / queue</b>")]:::ext
+      DANWP2 <-->|Workflows| DANR
+      DANWP2 <--> DANDB2
+    end
+    DANNS -. replicates .-> DANR
+    DANR ==>|"forwards polls"| DANNS
+    class DANPRI,DANSEC region
+    class DANWP,DANWP2 pool
 ```
 
-**Failover**
-
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef wnew fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px,stroke-dasharray:5 3;
-  classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-  classDef down fill:#ED360E22,stroke:#ED360E,stroke-width:1px,stroke-dasharray:2 2;
-  subgraph P["PRIMARY REGION — OUTAGE"]
-    direction TB
-    W1["Workers"]:::down
-    R1["Namespace replica"]:::down
-  end
-  subgraph S["SECONDARY REGION"]
-    direction TB
-    W2["Workers<br/>keep processing"]:::wactive
-    W3["Workers<br/>scaled up"]:::wnew
-    DB2["External DB / queue"]:::ext
-    R2["Namespace replica<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  W2 --> R2
-  W3 --> R2
-  W2 <--> DB2
-  style P fill:#ED360E14,stroke:#ED360E
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DAFPRI["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph DAFWP["Worker Pool"]
+        DAFW1["Unavailable"]:::down
+      end
+      DAFNS["<b>Namespace</b>"]:::down
+      DAFWP ~~~ DAFNS
+    end
+    subgraph DAFSEC["<b>Secondary</b>"]
+      DAFN["<b>Namespace</b><br/>(Active)"]:::ns
+      subgraph DAFSP["Worker Pool"]
+        DAFSW1["<b>Worker</b><br/>Active"]:::worker
+        DAFSW2["<b>Worker</b><br/>Active"]:::worker
+        DAFSW3["<b>Worker</b><br/>Scaled up<br/>(as needed)"]:::workerhollow
+      end
+      DAFDB2[("<b>External DB / queue</b>")]:::ext
+      DAFN <-->|Workflows| DAFSP
+      DAFSP <--> DAFDB2
+    end
+    DAFNS -->|"Failover"| DAFN
+    class DAFPRI regiondown
+    class DAFSEC region
+    class DAFWP,DAFSP pool
 ```
 
 This is a practical way to reach a low recovery time at balanced cost. Roughly half the fleet runs in each region, and capacity is added to the surviving region during an outage to reach full throughput.
@@ -351,56 +607,78 @@ Unlike Active / Passive (Cold), Workflows keep processing in the surviving regio
 
 Beyond the three main patterns, some architectures need low-latency or region-bound data in *each* region at once. This can be achieved with **two Namespaces whose active and passive regions overlap**: each region holds one Namespace's active replica and the other Namespace's passive replica.
 
-**Steady state**
-
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef tpassive fill:#59FDA012,stroke:#7C8FB1,stroke-width:1px,stroke-dasharray:4 3;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  subgraph R1["REGION 1"]
-    direction TB
-    WA["App A Workers"]:::wactive
-    NAa["Namespace A<br/><samp>ACTIVE</samp>"]:::tcloud
-    NBp["Namespace B<br/><samp>PASSIVE</samp>"]:::tpassive
-  end
-  subgraph R2["REGION 2"]
-    direction TB
-    WB["App B Workers"]:::wactive
-    NBa["Namespace B<br/><samp>ACTIVE</samp>"]:::tcloud
-    NAp["Namespace A<br/><samp>PASSIVE</samp>"]:::tpassive
-  end
-  WA --> NAa
-  WB --> NBa
-  NAa -. replicates .-> NAp
-  NBa -. replicates .-> NBp
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DUNR1["<b>Region 1</b>"]
+      subgraph DUNWPA["App A Worker Pool"]
+        DUNA1["<b>Worker</b><br/>Active"]:::worker
+        DUNA2["<b>Worker</b><br/>Active"]:::worker
+      end
+      DUNNAa["<b>Namespace A</b>"]:::ns
+      DUNNBp["<b>Namespace B</b><br/>Replica"]:::ns
+      DUNWPA <-->|Workflows| DUNNAa
+    end
+    subgraph DUNR2["<b>Region 2</b>"]
+      subgraph DUNWPB["App B Worker Pool"]
+        DUNB1["<b>Worker</b><br/>Active"]:::worker
+        DUNB2["<b>Worker</b><br/>Active"]:::worker
+      end
+      DUNNBa["<b>Namespace B</b>"]:::ns
+      DUNNAp["<b>Namespace A</b><br/>Replica"]:::ns
+      DUNWPB <-->|Workflows| DUNNBa
+    end
+    DUNNAa -. replicates .-> DUNNAp
+    DUNNBa -. replicates .-> DUNNBp
+    class DUNR1,DUNR2 region
+    class DUNWPA,DUNWPB pool
 ```
 
-**Failover (Region 1 outage)**
-
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':45,'rankSpacing':70,'curve':'basis'}}}%%
+---
+title: After failover (Region 1 outage)
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-  classDef tcloud fill:#59FDA024,stroke:#59FDA0,stroke-width:2px;
-  classDef wactive fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px;
-  classDef wnew fill:#7C3AED22,stroke:#59FDA0,stroke-width:2px,stroke-dasharray:5 3;
-  classDef down fill:#ED360E22,stroke:#ED360E,stroke-width:1px,stroke-dasharray:2 2;
-  subgraph R1["REGION 1 — OUTAGE"]
-    direction TB
-    WA["App A Workers"]:::down
-    NAa["Namespace A"]:::down
-  end
-  subgraph R2["REGION 2"]
-    direction TB
-    WB["App B Workers"]:::wactive
-    WA2["App A Workers<br/>brought up"]:::wnew
-    NBa["Namespace B<br/><samp>ACTIVE</samp>"]:::tcloud
-    NAa2["Namespace A<br/><samp>ACTIVE</samp>"]:::tcloud
-  end
-  WB --> NBa
-  WA2 --> NAa2
-  style R1 fill:#ED360E14,stroke:#ED360E
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph DUFR1["<b>Region 1</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph DUFWPA["App A Worker Pool"]
+        DUFA1["Unavailable"]:::down
+      end
+      DUFNAa["<b>Namespace A</b>"]:::down
+      DUFWPA ~~~ DUFNAa
+    end
+    subgraph DUFR2["<b>Region 2</b>"]
+      subgraph DUFWPB["App B Worker Pool"]
+        DUFB1["<b>Worker</b><br/>Active"]:::worker
+        DUFB2["<b>Worker</b><br/>Active"]:::worker
+      end
+      subgraph DUFWPA2["App A Worker Pool"]
+        DUFA2a["<b>Worker</b><br/>Brought up"]:::workerhollow
+        DUFA2b["<b>Worker</b><br/>Brought up"]:::workerhollow
+      end
+      DUFNBa["<b>Namespace B</b><br/>(Active)"]:::ns
+      DUFNAa2["<b>Namespace A</b><br/>(Active)"]:::ns
+      DUFWPB <-->|Workflows| DUFNBa
+      DUFWPA2 <-->|Workflows| DUFNAa2
+    end
+    DUFNAa -->|"Failover"| DUFNAa2
+    class DUFR1 regiondown
+    class DUFR2 region
+    class DUFWPA,DUFWPB,DUFWPA2 pool
 ```
 
 Each Namespace serves low-latency requests or a regionally-bound database in its own active region, and fails over to the other region during an outage. The same idea extends across more than two regions. Each Namespace fails over independently, following the Active / Passive sequence.
@@ -426,10 +704,10 @@ Workloads on Temporal rarely need this. It pays off only when a workload is *bot
 
 ## Choose a deployment pattern {/* #choose */}
 
-| Pattern | Recovery time | Steady-state cost | Best when |
+| Pattern | Recovery time | Normal-operation cost | Best when |
 | --- | --- | --- | --- |
 | **Active / Passive (Cold)** | Highest (cold start in secondary) | Lowest (one fleet) | Adopting High Availability with the simplest operations. |
-| **Active / Passive (Hot)** | Lowest (warm, no DNS wait) | Higher (idle fleet) | The lowest recovery time is required and the data plane is pinned to one region at a time. |
+| **Active / Passive (Hot)** | Lowest (warm, no DNS wait) | Higher (standby fleet) | The lowest recovery time is required and the data plane is pinned to one region at a time. |
 | **Active / Active** | Low (surviving region keeps processing) | Higher (two live fleets) | Low recovery time at balanced cost, where the secondary region can tolerate cross-region latency. |
 | **Dual Active** | Low (per Namespace) | Highest (two fleets, two Namespaces) | Low-latency, region-bound data is genuinely required in each region. Rare. |
 
