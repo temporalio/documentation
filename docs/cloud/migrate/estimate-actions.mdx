@@ -1,0 +1,112 @@
+---
+id: estimate-actions
+title: Estimate Actions for migration
+sidebar_label: Estimate Actions
+description: Estimate Temporal Cloud Actions and Actions per second from a self-hosted Temporal Service before migrating to Temporal Cloud.
+toc_max_heading_level: 4
+keywords:
+  - migration
+  - temporal cloud
+  - actions
+  - self-hosted
+tags:
+  - Temporal Service
+  - Temporal Cloud
+  - Self-hosting
+  - Production
+---
+
+Before you migrate from a self-hosted Temporal Service to Temporal Cloud, you can measure your current Action usage to help predict your Cloud usage and costs.
+
+Use server metrics to estimate Actions per second (APS) and peak load.
+Use representative Workflow Execution Histories to understand how many Actions a typical Workflow Execution creates.
+Estimate storage separately from Actions.
+
+For details about which operations count as Actions in Temporal Cloud, see [Temporal Cloud Actions](/cloud/actions).
+
+## Choose an estimation method
+
+Use one or more of the following methods depending on what you need to estimate.
+
+| Method | Use it to estimate | Notes |
+| --- | --- | --- |
+| Self-hosted server metrics | APS, peak APS, and Action counts over a fixed time range | Best for sizing Namespace limits and understanding usage patterns. |
+| Workflow Execution History samples | Actions per representative Workflow Execution | Best for understanding workload shape by Workflow Type. Some [Actions do not appear](/cloud/actions) in Event History. |
+| Storage estimates | Event History storage | Storage is [priced separately](/cloud/pricing#pricing-model) from Actions. |
+
+## Estimate APS from self-hosted server metrics
+
+Temporal Server versions later than 1.17 provide an `action` metric.
+Use this metric to estimate Actions per second from a self-hosted Temporal Service.
+
+Temporal Server versions 1.22.3 and later provide an `action` metric that more closely reflects current Temporal Cloud Action pricing, including Local Activity metering.
+For Temporal Server versions from 1.17 through 1.22.2, use the `action` metric to understand server load, but do not treat it as a precise billable Action estimate.
+
+To calculate total APS, use the following PromQL query:
+
+```promql
+sum(rate(action{service_name="frontend"}[1m]))
+```
+
+To calculate APS by Namespace, use the following PromQL query:
+
+```promql
+sum(rate(action{service_name="frontend"}[1m])) by (exported_namespace)
+```
+
+Depending on your metrics exporter setup, the Namespace label might be `namespace` instead of `exported_namespace`.
+
+For a Grafana dashboard example, see the [`server-general.json`](https://github.com/temporalio/dashboards/blob/master/server/server-general.json) dashboard in the Temporal dashboards repository.
+
+For Datadog, use a query like the following to calculate Actions per second:
+
+```text
+sum:io.temporal.server.action.count{$server-name}.as_rate()
+```
+
+## Estimate Action counts over a fixed time range
+
+To estimate total Actions during a fixed time range, use `increase()` over the range you want to measure.
+
+For example, to estimate total Actions over 30 days, use the following PromQL query:
+
+```promql
+sum(increase(action{service_name="frontend"}[30d]))
+```
+
+To estimate Actions for one Namespace, add the Namespace label:
+
+```promql
+sum(increase(action{service_name="frontend", exported_namespace="default"}[30d]))
+```
+
+When you run fixed-range queries in Grafana, set the end of the dashboard time window to the end of the date range that you want to measure.
+For example, to measure Actions for the 30-day period ending March 31, set the dashboard end time to March 31.
+
+## Estimate Actions from Workflow Execution Histories
+
+You can estimate Actions per Workflow Execution by counting billable events in representative Workflow Execution Histories.
+This method is useful when you need to understand how much Action usage a Workflow Type creates.
+
+1. Choose representative Workflow Executions for each Workflow Type.
+2. Download the Event History for each Workflow Execution from the Web UI or API.
+3. Count the events that map to Temporal Cloud Actions.
+   For the list of Action types and corresponding History Event types, see [Temporal Cloud Actions](/cloud/actions).
+4. Multiply the Action count by the expected number of Workflow Executions in the period you want to estimate.
+
+This method produces an estimate.
+Some Actions do not appear directly in Event History, including Queries and some Activity Heartbeat Actions.
+If you use Global Namespaces, account for the additional Action and storage cost.
+Estimate storage separately from Workflow Action counts.
+
+## Estimate storage separately
+
+Temporal Cloud storage is priced separately from Actions.
+To estimate storage, collect the following information:
+
+- Event History size for representative Workflow Executions.
+- Retention Period for closed Workflow Executions.
+- Duration for open Workflow Executions.
+- Expected number of Workflow Executions.
+
+For current storage pricing, see [Temporal Cloud pricing](/cloud/pricing).

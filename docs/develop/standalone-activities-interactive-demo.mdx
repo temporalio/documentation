@@ -1,0 +1,90 @@
+---
+id: standalone-activities-interactive-demo
+title: Standalone Activities Demo
+sidebar_label: Standalone Activities
+hide_table_of_contents: true
+keywords:
+  - standalone activity
+  - interactive demo
+tags:
+  - Standalone Activities
+  - Temporal SDKs
+description: An interactive overview of Temporal Standalone Activities.
+---
+
+import { StandaloneActivityDemo, ReleaseNoteHeader } from '@site/src/components';
+import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
+
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
+>
+  Available in [Temporal Cloud](/standalone-activity#temporal-cloud-support) and in the [Temporal CLI](/standalone-activity#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher. Java SDK support is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+</ReleaseNoteHeader>
+
+Standalone Activities let you run a single Activity straight from your application without
+writing a Workflow. Your code uses the Temporal Client to send the request to the Server, the Server durably enqueues the request
+for a Worker to pick up, and the result comes back through a handle that your code can wait on or
+check later.
+
+Try the demo below to walk through the full flow, tweak the retry and timeout settings, and watch
+the SDK code and CLI command update as you go.
+
+<StandaloneActivityDemo />
+
+---
+
+## How it works
+
+When you call `client.execute_activity()` (or the equivalent in your applicable SDK) from your
+application, the following happens:
+
+1. **Connect**: Your application opens a connection to the Temporal Server using a Temporal Client
+   configured with your namespace and credentials.
+2. **Schedule**: The Server durably persists the Activity Task on the specified Task Queue so that
+   the request survives Worker restarts and network interruptions.
+3. **Poll**: A Worker that is polling that Task Queue picks up the Activity Task and prepares to
+   execute it.
+4. **Execute**: The Worker runs your Activity function with the provided arguments and reports the
+   outcome back to the Server.
+5. **Return**: The Server stores the result and returns it to the original caller, either directly
+   or via a handle, depending on which SDK method you use.
+
+### Standalone vs Workflow Activities
+
+| | Workflow Activity | Standalone Activity |
+|---|---|---|
+| Orchestrated by | A Workflow Definition | Your application code (via the Temporal Client) |
+| Started with | `workflow.execute_activity()` (or the equivalent in your applicable SDK) from inside a Workflow Definition | `client.execute_activity()` (or the equivalent in your applicable SDK) from your application code |
+| Retry policy | Set when calling the Activity from inside a Workflow | Set when calling the Activity from your application |
+| Visibility | Shown in the Workflow's Event History | Shown in the Standalone Activity list and count views |
+| Use case | Multi-step orchestration with multiple Activities | Single, independent jobs like sending an email or processing a webhook |
+
+The Activity function and Worker registration are **identical** for both approaches, and only the
+execution path that triggers the Activity differs between them. If the Activity fails, the Server
+automatically retries it according to the Retry Policy you configure.
+
+---
+
+## Next steps
+
+For complete API reference and advanced usage, see the SDK-specific guides:
+
+<div style={{display:'flex',flexDirection:'column',gap:'12px',marginTop:'1rem'}}>
+  {[
+    { name: 'goLangBlock',     href: '/develop/go/activities/standalone-activities',         label: 'Standalone Activities - Go' },
+    { name: 'javaBlock',       href: '/develop/java/activities/standalone-activities',       label: 'Standalone Activities - Java' },
+    { name: 'pythonBlock',     href: '/develop/python/activities/standalone-activities',     label: 'Standalone Activities - Python' },
+    { name: 'typeScriptBlock', href: '/develop/typescript/activities/standalone-activities', label: 'Standalone Activities - TypeScript' },
+    { name: 'dotnetBlock',     href: '/develop/dotnet/activities/standalone-activities',     label: 'Standalone Activities - .NET' },
+  ].map(({ name, href, label }) => (
+    <a key={name} href={href} style={{display:'flex',alignItems:'center',gap:'10px',textDecoration:'none'}}>
+      <span style={{width:'24px',height:'24px',flexShrink:0,overflow:'hidden',display:'block',position:'relative'}}>
+        <span style={{position:'absolute',top:0,left:0,transform:'scale(0.6)',transformOrigin:'top left'}}>
+          <SdkSvg name={name} />
+        </span>
+      </span>
+      <span>{label}</span>
+    </a>
+  ))}
+</div>

@@ -1375,3 +1375,12 @@ code {
   padding: 0;
   width: 40px;
 }
+
+/* Hide integration sidebar children unless the current page is one of them */
+.sidebar-integrations > .menu__list > .menu__list-item {
+  display: none;
+}
+
+.sidebar-integrations > .menu__list > .menu__list-item:has(.menu__link--active) {
+  display: block;
+}
