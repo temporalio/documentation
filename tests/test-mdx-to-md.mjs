@@ -603,12 +603,26 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
 
-test("self-closing ReleaseNoteHeader with unknown/no type emits no label but keeps body", () => {
+test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
   const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
+  assertContains(markdown, "> **Pre-release**");
   assertContains(markdown, "Command reference content.");
-  assertNotContains(markdown, "> ****"); // no empty label
   assertNotContains(markdown, "ReleaseNoteHeader");
+});
+
+test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
+  const input = `<ReleaseNoteHeader featureName="standaloneActivity">\nAvailable in preview.\n</ReleaseNoteHeader>`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, "Available in preview.");
+  assertNotContains(markdown, "> ****");
+});
+
+test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
+  const input = `<ReleaseNoteHeader featureName="serverlessWorkers" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> **Pre-release**");
 });
 
 // ---------------------------------------------------------------------------

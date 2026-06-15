@@ -34,6 +34,7 @@ import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
 import { homePageHeroToMarkdown } from "./component-handlers/home-page-hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
+import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 
@@ -103,7 +104,8 @@ const COMPONENTS_BY_STRATEGY = (strategy) =>
 const STRIP_BLOCK_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-block");
 const STRIP_TAG_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-tag");
 
-// Availability labels for ReleaseNoteHeader `type` prop values.
+// Availability labels for ReleaseNoteHeader resolved `type` values.
+// Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
 const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
@@ -111,6 +113,19 @@ const RELEASE_NOTE_LABELS = {
   ga: "Generally Available",
   deprecated: "Deprecated",
 };
+
+/** Mirrors ReleaseNoteHeader.getResolvedType — featureName lookup, then type, then default. */
+function resolveReleaseNoteType(featureName, type) {
+  return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
+}
+
+function releaseNoteLabelFromType(resolvedType) {
+  return (
+    RELEASE_NOTE_LABELS[resolvedType] ||
+    RELEASE_NOTE_LABELS[resolvedType.toLowerCase()] ||
+    resolvedType
+  );
+}
 
 // SdkTabs sub-component name → display label.
 const SDK_TAB_LABELS = {
@@ -853,8 +868,11 @@ export function transformMdx(mdxContent, options = {}) {
         i++;
         tag += " " + lines[i].trim();
       }
-      const type = extractProp(tag, "type") || "";
-      releaseNoteLabel = RELEASE_NOTE_LABELS[type] || RELEASE_NOTE_LABELS[type.toLowerCase()] || type;
+      const featureName = extractProp(tag, "featureName") || "";
+      const type = extractProp(tag, "type");
+      const labelOverride = extractProp(tag, "label");
+      const resolvedType = resolveReleaseNoteType(featureName, type);
+      releaseNoteLabel = labelOverride || releaseNoteLabelFromType(resolvedType);
       const langsMatch = tag.match(/languages=\{(\[[^\]]*\])\}/);
       if (langsMatch) {
         const langs = [...langsMatch[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]);
