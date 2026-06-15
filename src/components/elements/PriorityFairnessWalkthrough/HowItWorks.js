@@ -8,7 +8,7 @@ const STEPS = [
   },
   {
     title: 'Priority tier is selected first',
-    body: 'Temporal finds the lowest priorityKey among all waiting tasks. Every task at priority 1 will be dispatched before any task at priority 2 moves, and so on. Tasks at the same level compete under Fairness rules.',
+    body: 'Temporal finds the lowest `priorityKey` among all waiting tasks. Every task at priority 1 will be dispatched before any task at priority 2 moves, and so on. Tasks at the same level compete under Fairness rules.',
   },
   {
     title: 'Fairness distributes capacity within the tier',
