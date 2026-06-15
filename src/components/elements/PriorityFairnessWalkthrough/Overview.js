@@ -13,7 +13,7 @@ export default function Overview({ onNext }) {
   return (
     <div className={styles.section}>
       <p className={styles.lead}>
-        The core idea of Task Queue Priority and Fairness is that when tasks from different workloads
+        The core idea of [Task Queue Priority and Fairness](/develop/task-queue-priority-fairness) is that when tasks from different workloads
         compete for the same Workers, Priority controls which ones get picked first, and Fairness
         ensures no single tenant can block others by using all the resources.
       </p>

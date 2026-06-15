@@ -295,19 +295,52 @@
 }
 
 /* ── SDK section ───────────────────────────────────────── */
-.sdkGroup {
-  margin-bottom: 2.5rem;
+.sdkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
 }
 
-.sdkGroupTitle {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.sdkCard {
+  background: var(--pfw-card-bg);
+  border: 1px solid var(--pfw-card-border);
+  border-radius: 0;
+  padding: 1.5rem;
+  transition: border-color 0.2s;
+}
+
+.sdkCard:hover {
+  border-color: var(--pfw-nav-active);
+}
+
+.sdkCardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--ifm-font-color-base);
+}
+
+.sdkCardDesc {
+  font-size: 0.875rem;
+  line-height: 1.6;
   color: var(--pfw-muted);
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--pfw-border);
+  margin: 0 0 1rem;
+}
+
+.sdkCardLink {
+  display: inline-flex;
+  align-items: center;
+  color: var(--pfw-nav-active);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.sdkCardLink:hover {
+  color: var(--pfw-nav-hover);
+  text-decoration: none;
 }
 
 /* ── Next button ───────────────────────────────────────── */

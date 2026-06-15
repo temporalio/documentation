@@ -20,7 +20,7 @@ const STEPS = [
   },
   {
     title: 'Priority and Fairness are per Task Queue',
-    body: 'The rules apply independently per Task Queue. Workers on the same Task Queue share the same dispatch ordering. Workers on separate Task Queues are unaffected by each other.',
+    body: 'The rules apply independently per [Task Queue](/encyclopedia/workers/task-queues). Workers on the same Task Queue share the same dispatch ordering. Workers on separate Task Queues are unaffected by each other.',
   },
 ];
 
