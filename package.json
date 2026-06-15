@@ -66,7 +66,7 @@
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
-    "concurrently": "^9.2.1",
+    "concurrently": "^10.0.1",
     "docusaurus-plugin-llms": "^0.2.0",
     "docusaurus-pushfeedback": "^1.0.3",
     "js-yaml": "^4.1.1",
