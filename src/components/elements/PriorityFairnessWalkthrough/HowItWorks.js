@@ -12,7 +12,7 @@ const STEPS = [
   },
   {
     title: 'Fairness distributes capacity within the tier',
-    body: 'Within a priority tier, Temporal tracks how many tasks each fairnessKey has received relative to its fairnessWeight. The key that is furthest behind its expected share gets the next dispatch. This prevents any single tenant from consuming disproportionate capacity, even if they have a deep backlog.',
+    body: 'Within a priority tier, Temporal tracks how many tasks each `fairnessKey` has received relative to its `fairnessWeight`. The key that is furthest behind its expected share gets the next dispatch. This prevents any single tenant from consuming disproportionate capacity, even if they have a deep backlog.',
   },
   {
     title: 'No fairnessKey means strict FIFO within the tier',
