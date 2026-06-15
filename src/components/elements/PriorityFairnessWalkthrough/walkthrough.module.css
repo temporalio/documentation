@@ -321,12 +321,6 @@
   color: var(--ifm-font-color-base);
 }
 
-.sdkCardDesc {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--pfw-muted);
-  margin: 0 0 1rem;
-}
 
 .sdkCardLink {
   display: inline-flex;
