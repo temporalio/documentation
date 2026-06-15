@@ -33,6 +33,7 @@
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
 import { homePageHeroToMarkdown } from "./component-handlers/home-page-hero.mjs";
+import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 
@@ -77,8 +78,8 @@ export const COMPONENT_REGISTRY = {
   CardList: "strip-block",
   LandingCard: "strip-block",
   ThemedImage: "strip-block",
-  PatternCards: "strip-block",
-  QuickstartCards: "strip-block",
+  PatternCards: "cards",
+  QuickstartCards: "cards",
   SdkLogos: "strip-block",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
@@ -352,8 +353,13 @@ export function transformMdx(mdxContent, options = {}) {
   const outputLines = [];
 
   // Write frontmatter title/description as a clean markdown header block.
+  // Track the emitted H1 so we can drop a duplicate `# Title` in the body
+  // (Docusaurus dedupes this when rendering; authors sometimes repeat the title
+  // as the first body heading). Only the first exact match is suppressed.
+  let emittedH1 = null;
   if (frontmatter.title) {
-    outputLines.push(`# ${frontmatter.title}`);
+    emittedH1 = `# ${frontmatter.title}`;
+    outputLines.push(emittedH1);
     if (frontmatter.description && frontmatter.description !== frontmatter.title) {
       outputLines.push("");
       outputLines.push(`> ${frontmatter.description}`);
@@ -856,6 +862,23 @@ export function transformMdx(mdxContent, options = {}) {
       } else {
         releaseNoteLangs = "";
       }
+
+      // Self-closing form (<ReleaseNoteHeader ... />) has no children: emit the
+      // availability note (if there's a recognizable label) and stay in NORMAL.
+      // Do NOT enter RELEASE_NOTE state, or we'd swallow the rest of the page
+      // waiting for a </ReleaseNoteHeader> that never comes.
+      if (/\/>\s*$/.test(tag)) {
+        if (releaseNoteLabel) {
+          let note = `> **${releaseNoteLabel}**`;
+          if (releaseNoteLangs) note += ` — ${releaseNoteLangs}`;
+          outputLines.push(note);
+          outputLines.push("");
+        }
+        releaseNoteLabel = null;
+        releaseNoteLangs = "";
+        continue;
+      }
+
       releaseNoteLines = [];
       state = State.RELEASE_NOTE;
       continue;
@@ -973,6 +996,21 @@ export function transformMdx(mdxContent, options = {}) {
       const md = integrationsGridToMarkdown(defaultSdks, { projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
+      continue;
+    }
+
+    // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
+    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += "\n" + lines[i];
+      }
+      const items = parseCardItems(tag);
+      if (items.length > 0) {
+        outputLines.push(cardsToMarkdown(items));
+        outputLines.push("");
+      }
       continue;
     }
 
@@ -1107,6 +1145,18 @@ export function transformMdx(mdxContent, options = {}) {
         warnings.push(`[${sourceFile}] Unknown close component: </${compName}>`);
       }
       continue;
+    }
+
+    // ------------------------------------------------------------------
+    // Drop a body H1 that duplicates the frontmatter title (first match only).
+    // Code-fence lines are handled earlier, so `#` comments in code are safe.
+    // ------------------------------------------------------------------
+    if (emittedH1 && state === State.NORMAL) {
+      const cleanHeading = line.replace(/\s*\{#[^}]+\}\s*$/, "").trimEnd();
+      if (cleanHeading === emittedH1) {
+        emittedH1 = null;
+        continue;
+      }
     }
 
     // ------------------------------------------------------------------

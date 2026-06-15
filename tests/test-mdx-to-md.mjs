@@ -25,6 +25,7 @@ import {
   selectIntegrations,
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
+import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -232,6 +233,29 @@ test("emits description blockquote when different from title", () => {
     `---\ntitle: Page\ndescription: A longer description\n---\n\nBody`
   );
   assertContains(markdown, "> A longer description");
+});
+
+test("drops a body H1 that duplicates the frontmatter title", () => {
+  const { markdown } = transformMdx(
+    `---\ntitle: API reference\n---\n\n# API reference\n\nBody text.`
+  );
+  const h1s = markdown.split("\n").filter((l) => /^# /.test(l));
+  assertEqual(h1s.length, 1, "expected exactly one H1");
+  assertContains(markdown, "Body text.");
+});
+
+test("dedupes a duplicate title H1 even with a {#anchor} suffix", () => {
+  const { markdown } = transformMdx(
+    `---\ntitle: Overview\n---\n\n# Overview {#overview}\n\nBody.`
+  );
+  const h1s = markdown.split("\n").filter((l) => /^# /.test(l));
+  assertEqual(h1s.length, 1, "expected exactly one H1");
+});
+
+test("keeps a body H1 that differs from the title", () => {
+  const { markdown } = transformMdx(`---\ntitle: Page\n---\n\n# Different Heading\n\nBody.`);
+  const h1s = markdown.split("\n").filter((l) => /^# /.test(l));
+  assertEqual(h1s.length, 2, "different H1 should be preserved");
 });
 
 // ---------------------------------------------------------------------------
@@ -568,6 +592,25 @@ test("ReleaseNoteHeader maps prerelease type", () => {
   assertContains(markdown, "> **Pre-release**");
 });
 
+test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
+  // Regression: <ReleaseNoteHeader ... /> has no close tag; the body must survive.
+  const input = `<ReleaseNoteHeader\n  type="publicPreview"\n/>\n\nReal page content here.\n\n## A heading\n\nMore content.`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, "Real page content here.");
+  assertContains(markdown, "## A heading");
+  assertContains(markdown, "More content.");
+  assertNotContains(markdown, "ReleaseNoteHeader");
+});
+
+test("self-closing ReleaseNoteHeader with unknown/no type emits no label but keeps body", () => {
+  const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "Command reference content.");
+  assertNotContains(markdown, "> ****"); // no empty label
+  assertNotContains(markdown, "ReleaseNoteHeader");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — CallToAction
 // ---------------------------------------------------------------------------
@@ -712,6 +755,38 @@ test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", 
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: cards handler (QuickstartCards / PatternCards)
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/cards");
+
+test("parseCardItems extracts href/title/description from an items prop", () => {
+  const tag = `<QuickstartCards items={[\n  { href: "/a", title: "Go", description: "Run Go." },\n  { href: "/b", title: "Java", description: "Run Java." },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 2, "expected 2 items");
+  assert(items[0].title === "Go" && items[0].href === "/a", "first item parsed");
+  assert(items[1].description === "Run Java.", "description parsed");
+});
+
+test("cardsToMarkdown renders a link list with descriptions", () => {
+  const md = cardsToMarkdown([{ href: "/a", title: "Go", description: "Run Go." }]);
+  assertContains(md, "- [Go](/a): Run Go.");
+});
+
+test("transformMdx renders QuickstartCards items as a list", () => {
+  const input = `<QuickstartCards items={[\n  { href: "/develop/go", title: "Go", description: "Install the Go SDK." },\n]} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "QuickstartCards");
+  assertContains(markdown, "- [Go](/develop/go): Install the Go SDK.");
+});
+
+test("transformMdx renders PatternCards items as a list", () => {
+  const input = `<PatternCards items={[\n  { href: "https://x", title: "Company Security", description: "Learn more." },\n]} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "PatternCards");
+  assertContains(markdown, "- [Company Security](https://x): Learn more.");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: HomePageHero handler
 // ---------------------------------------------------------------------------
 console.log("\n📦 component-handlers/home-page-hero");
@@ -828,7 +903,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "home-page-hero", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "home-page-hero", "cards", "strip-tag", "strip-block", "details", "summary",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(

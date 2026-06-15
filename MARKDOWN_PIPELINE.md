@@ -70,6 +70,7 @@ docusaurus-plugin-llms ───────────────────
 | `scripts/component-handlers/data-tables.mjs` | Handler for `<JsonTable>` — resolves a `static/json/*.json` file into a Markdown table. |
 | `scripts/component-handlers/integrations.mjs` | Handler for `<IntegrationsGrid>` — reads `src/components/IntegrationsGrid/integrations-data.json`, filters by the `defaultSdks` prop, and emits a Markdown list. |
 | `scripts/component-handlers/home-page-hero.mjs` | Handler for `<HomePageHero>` — emits the homepage hero's headline, intro, and link cards. Content is mirrored from the component (no shared data file). |
+| `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
 | `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `COMPONENT_REGISTRY.md` at the repo root. |
 | `src/components/LLMActions/LLMActions.tsx` | On-page actions (Copy, View as Markdown, Open in ChatGPT/Claude). Points at the generated `/<path>.md` (not the raw MDX). |
 | `tests/` | Zero-framework test suites. Fixtures in `fixtures/docs/`, golden snapshots in `tests/snapshots/`. |
@@ -110,7 +111,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `CaptionedImage`, `EnlargeImage`, `ZoomingImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
 | `PhotoCarousel` | `photo-carousel` | One `![caption](url)` per entry in the `images`/`captions` arrays |
 | `CallToAction` | `call-to-action` | `- [h3 title](href): p description` |
-| `ReleaseNoteHeader` | `release-note-header` | `> **Public Preview** — Go, Java…` availability note + body blockquote |
+| `ReleaseNoteHeader` | `release-note-header` | `> **Public Preview** — Go, Java…` availability note + body blockquote. The self-closing form (`<ReleaseNoteHeader … />`) emits just the note and leaves the page body intact. |
 | `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
 | `RelatedReadList` | `related-read` | Link list from the `readList` prop |
 | `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
@@ -118,8 +119,9 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
 | `HomePageHero` | `home-page-hero` | Homepage hero's headline, intro paragraphs, and link cards (content mirrored from the component) |
+| `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
 | `ZoomPanPinch`, `DiscoverableDisclosure` | `transparent` | Wrapper stripped; inner content passed through |
-| `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `PatternCards`, `QuickstartCards`, `SdkLogos`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
+| `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `SdkLogos`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
 | `DL`, `DT`, `DD`, `DefinitionList` | `strip-tag` | Tags stripped, text content kept |
 | `details` / `summary` | `details` / `summary` | `<summary>` becomes a heading; body expanded inline |
 
