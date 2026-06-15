@@ -1,5 +1,4 @@
 {
-  "public": true,
   "trailingSlash": false,
   "github": {
     "silent": true
