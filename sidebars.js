@@ -1712,6 +1712,19 @@ module.exports = {
         'web-ui',
       ],
     },
+    {
+      type: 'category',
+      label: 'Guides',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
+      items: [
+        'guides/entity-pattern-loyalty-points',
+        'guides/saga-pattern',
+      ],
+    },
     'integrations',
     'glossary',
     'with-ai',
