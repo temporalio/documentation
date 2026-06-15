@@ -34,7 +34,7 @@ export default function Overview({ onNext }) {
             <strong className={styles.featureCardTitle}>Priority</strong>
           </div>
           <p className={styles.featureCardBody}>
-            Every task carries a <code>priorityKey</code> from <code>1</code> (critical) to{' '}
+            Every task carries a <code>priorityKey</code> from <code>1</code> (highest priority) to{' '}
             <code>5</code> (batch), with <code>3</code> as the default. When a Worker polls, it
             always picks the lowest-numbered task first regardless of arrival time. This lets you
             share a single Worker pool across very different workloads and guarantee that
