@@ -1723,6 +1723,10 @@ module.exports = {
       items: [
         'guides/entity-pattern-loyalty-points',
         'guides/saga-pattern',
+      label: 'Interactive Demos',
+      collapsed: true,
+      items: [
+        'develop/standalone-activities-interactive-demo',
       ],
     },
     'integrations',
