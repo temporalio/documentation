@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "node ./bin/sync-ai-cookbook.js",
-    "build": "docusaurus build",
+    "build": "node --max-old-space-size=7168 ./node_modules/@docusaurus/core/bin/docusaurus.mjs build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
