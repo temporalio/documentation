@@ -18,6 +18,8 @@ description:
   Add LLM observability and prompt management to Python Workflows using the Temporal Python SDK and Braintrust.
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
 Temporal's integration with [Braintrust](https://braintrust.dev) gives you full observability into your AI agent
 Workflows—tracing every LLM call, managing prompts without code deploys, and tracking costs across models.
 
@@ -28,13 +30,7 @@ iterate on prompts in a UI, and measure whether changes improve outcomes.
 The integration connects these capabilities with minimal code changes. Every Workflow and Activity becomes a span in
 Braintrust, and every LLM call is traced with inputs, outputs, tokens, and latency.
 
-:::info
-
-The Temporal Python SDK integration with Braintrust is currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
-[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
-
-:::
+<ReleaseNoteHeader type="publicPreview" />
 
 All code snippets in this guide are taken from the
 [deep research sample](https://github.com/braintrustdata/braintrust-cookbook/blob/main/examples/TemporalDeepResearch/TemporalDeepResearch.mdx). Refer to the sample for the
