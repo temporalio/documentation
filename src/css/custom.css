@@ -1375,3 +1375,20 @@ code {
   padding: 0;
   width: 40px;
 }
+
+/* Hide integration sidebar children and caret unless a child page is active */
+.sidebar-integrations > .menu__list > .menu__list-item {
+  display: none;
+}
+
+.sidebar-integrations > .menu__list > .menu__list-item:has(.menu__link--active) {
+  display: block;
+}
+
+.sidebar-integrations > .menu__list-item-collapsible > .menu__caret {
+  display: none;
+}
+
+.sidebar-integrations:has(.menu__list > .menu__list-item .menu__link--active) > .menu__list-item-collapsible > .menu__caret {
+  display: flex;
+}

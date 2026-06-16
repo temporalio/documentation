@@ -19,19 +19,20 @@ tags:
 description: Stream events from a Workflow to subscribers using the Temporal Python SDK Workflow Streams contrib module.
 ---
 
-Use [Workflow Streams](/workflow-streams) when you want outside observers to follow the progress of a Workflow and its Activities: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, or reporting intermediate results from a data job.
+import { ReleaseNoteHeader } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+<ReleaseNoteHeader
+  featureName="workflowStreams"
+/>
 
-The `temporalio.contrib.workflow_streams` module is currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
-[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
+**Workflow Streams** is a Temporal Python SDK `contrib` library that gives a Workflow a durable, offset-addressed event channel built on Temporal's basic message primitives: Signals, Updates, and Queries.
+It batch-publishes events to amortize per-Signal cost, deduplicates batches for exactly-once delivery to the log, supports topic filtering, and carries state across Continue-As-New for long-running streams.
 
-The API may change before general availability.
+Use Workflow Streams when you want outside observers to follow the progress of a Workflow and its Activities: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, or reporting intermediate results from a data job. It is not suited to ultra-low-latency cases like real-time voice, and it targets modest fan-out: tens of publishers and subscribers per Workflow, not thousands.
 
-:::
+The Workflow hosts the event log. Publishers append events — the Workflow itself, Activities, or external processes via `WorkflowStreamClient`. Subscribers attach to the Workflow ID, optionally filter by **topic** (a string label set when publishing; topics are implicit and created on first publish), and consume events by long-polling from an offset they store.
 
-This page covers:
+**Looking for...**
 
 - [Enabling streaming on a Workflow](#enable-streaming-on-a-workflow)
 - [Publishing from a Workflow](#publish-from-a-workflow)

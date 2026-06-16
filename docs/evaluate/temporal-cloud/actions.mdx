@@ -45,7 +45,7 @@ Actions that occur during [Workflow Replay](/workflow-execution#replay) do not c
 happens only on the Worker side to reconstruct Workflow state from Event History and does not generate new server-side
 operations.
 
-Billable Actions are visible in the [OpenMetrics endpoint](https://metrics.temporal.io),
+Billable Actions are visible in the [OpenMetrics endpoint](/cloud/metrics/openmetrics),
 [Event History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards,
 and the [Billing API](/cloud/billing-api). Action types and categories can help estimate usage, identify specific Action
 types that are driving usage, optimize workflows by tracking usage spikes, and troubleshoot errors. For example:
