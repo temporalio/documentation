@@ -179,7 +179,8 @@ function buildTable(permissions) {
 async function main() {
   let permissionsData;
 
-  const localPath = process.argv[2];
+  const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+  const localPath = args[0];
   if (localPath) {
     const raw = fs.readFileSync(localPath, "utf-8");
     permissionsData = JSON.parse(raw);
