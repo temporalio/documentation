@@ -198,7 +198,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_Success() {
 
 Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process. The first parameter of `s.env.ExecuteWorkflow(...)` contains the Workflow functions, and any subsequent parameters contain values for custom input parameters declared by the Workflow.
 
-> Note that unless the Activity invocations are mocked or Activity implementation replaced (see [Activity mocking and overriding](#mock-and-override-activities)), the test environment will execute the actual Activity code including any calls to outside services.
+> Note that unless the Activity invocations are mocked or Activity implementation replaced (see [Activity mocking and overriding](#mock-activities)), the test environment will execute the actual Activity code including any calls to outside services.
 
 After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowCompleted()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
 If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
