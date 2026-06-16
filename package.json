@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^24.5.1",
+    "@types/node": "^25.9.1",
     "@types/yaml": "^1.9.7",
     "dprint": "^0.54.0",
     "eslint": "^9.8.0",
