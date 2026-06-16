@@ -4,6 +4,7 @@ export { default as StandaloneActivityDemo } from './elements/StandaloneActivity
 export { default as HomePageHero } from './elements/HomePageHero';
 export { SdkLogos } from './elements/SdkLogos';
 export { SdkLogosAsBlocks } from './elements/SdkLogosAsBlocks';
+export { SdkGuideLinks } from './elements/SdkGuideLinks';
 export { default as PhotoCarousel } from './elements/PhotoCarousel';
 export { default as SdkTabs } from './elements/SdkTabs';
 export { default as ServerlessWorkerDemo } from './elements/ServerlessWorkerDemo';
