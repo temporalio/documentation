@@ -151,6 +151,27 @@ the handler pointing back — so a future change to one prompts updating the oth
 transformed generically (e.g. `Tabs`, `CallToAction`) have no separate source of truth and don't
 need this.
 
+### Known limitation: content/logic duplicated between components and handlers (follow-up)
+
+A few handlers currently re-express something that also lives in the React component, which
+means two places to keep in sync. This is a known issue to be addressed in a follow-up; the
+cross-reference comments above are an interim guard, not the fix.
+
+- **`HomePageHero` — duplicated content.** `scripts/component-handlers/home-page-hero.mjs` holds
+  its own copy of the homepage hero's text (headline, intro paragraphs, action/community cards),
+  duplicating `src/components/elements/HomePageHero.js`. The intended fix is to move that content
+  into the page's source of truth — `docs/index.mdx` — and reduce the component to presentation
+  (content via props/children), so the hero-specific handler can be removed entirely.
+- **`IntegrationsGrid` — duplicated logic.** The data is already shared
+  (`integrations-data.json`), but the default-view filter/sort in
+  `scripts/component-handlers/integrations.mjs` (`selectIntegrations`) mirrors the filtering in
+  `src/components/IntegrationsGrid/index.tsx`. The intended fix is to extract that filtering into
+  a shared, framework-agnostic module that both import (the pattern already used by
+  `src/constants/featureReleaseTypes.js`).
+
+Not affected: `JsonTable` (shared JSON data; only the render *format* differs) and
+`QuickstartCards`/`PatternCards` (content lives in the MDX `items` prop — a single source).
+
 ## Testing
 
 ```bash
