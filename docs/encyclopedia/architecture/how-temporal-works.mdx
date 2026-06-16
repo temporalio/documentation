@@ -18,37 +18,41 @@ tags:
 
 import { TemporalArchitectureSimulator } from '@site/src/components';
 
-To understand the internal mechanics of Temporal, it helps to follow what happens when you start a Workflow or schedule tasks.
+In a Temporal application, the [Client](/temporal-architecture#client-application), [Server](/temporal-architecture#the-temporal-server), and [Worker](/temporal-architecture#worker-service) are three separate parts that talk to each other and each one has a clear purpose. To understand the internal mechanics of Temporal, it helps to follow what happens when you start a Workflow or schedule [Tasks](/tasks#task).
 
-Here is the relationship between the Client, Server, and Worker.
+## Relationship between the Client, Server, and Worker
 
-In a Temporal application, the Client, Server, and Worker are three separate parts that talk to each other and each one has a clear purpose.
+### Server
 
-The Temporal Server (which includes the Temporal Service or Cluster) is a group of backend services that together form the core Temporal system. It exposes a Frontend Service, which is the network API that everything else connects to, and backend services like the History Service, which keeps the full Event History and state for each Workflow Execution, and the Matching Service, which manages Task Queues that hold pending work items for Workers.
+The [Temporal Server](/temporal-architecture#the-temporal-server) is a group of backend services that together form the core Temporal system. It exposes a [Frontend Service](/temporal-architecture#frontend-service), which is the network API that everything else connects to, and [backend services](/temporal-architecture#temporal-service-backend) like the [History Service](/temporal-architecture#history-service), which keeps the full Event History and state for each Workflow Execution, and the [Matching Service](/temporal-architecture#matching-service), which manages [Task Queues](/task-queue) that hold pending work items for [Workers](/workers#worker).
 
-All of this state is written to a database, so the Server can remember what has happened even if processes or machines fail. You can run the Server yourself (self‑hosted cluster) or use Temporal Cloud, which is the same kind of service but operated for you.
+All of this state is written to a database, so the Server can remember what has happened even if processes or machines fail. You can run the Server yourself (self‑hosted cluster) or use [Temporal Cloud](/cloud), which is the same kind of service but operated for you.
 
-A Client is a library object from a Temporal SDK (for example Go, Java, TypeScript, Python, or .NET) that your application code uses to talk to the Temporal Server's Frontend. It opens a network connection (using gRPC) to the Server and sends requests like "start this Workflow with these inputs", "cancel this Workflow", "send this Signal to a running Workflow", "run this Query on a Workflow", or "get the result of this Workflow".
+### Client
 
-The Client does not run Workflow or Activity code; it only sends and receives these control requests. This is important because it gives your existing services, CLIs, or UIs a simple and consistent way to interact with Temporal without knowing anything about how Tasks, Task Queues, or Workflow histories are implemented inside the Server.
+A [Temporal Client](/temporal-architecture#client-application) is a library object from a [Temporal SDK](/develop) that your application code uses to talk to the [Temporal Server's Frontend](/temporal-architecture#frontend-service). It opens a network connection (using gRPC) to the Server and sends requests like "start this Workflow with these inputs", "cancel this Workflow", "send this Signal to a running Workflow", "run this Query on a Workflow", or "get the result of this Workflow".
 
-A Worker is a long‑running process that you run on your own machines, built with a Temporal SDK, and it is the part that actually executes your Workflow and Activity code. The Worker connects to the Server and polls Task Queues managed by the Matching Service to ask "do you have work for me?".
+The Client does not run Workflow or Activity code; it only sends and receives these control requests. This is important because it gives your existing services, CLIs, or UIs a simple and consistent way to interact with Temporal without knowing anything about how Tasks, Task Queues, or Event histories are implemented inside the Server.
+
+## Worker
+
+A [Worker](/temporal-architecture#worker-service) is a long‑running process that you run on your own machines, built with a Temporal SDK, and it is the part that actually executes your Workflow and Activity code. The Worker connects to the Server and polls Task Queues managed by the Matching Service to ask "do you have work for me?".
 
 When it receives a Workflow Task, it replays the Workflow's event history and runs your Workflow code until it either completes or reaches a point where it must wait (for example, waiting for an Activity or a Timer). It then sends Commands back to the Server that describe what should happen next, such as "schedule this Activity" or "start this Timer".
 
-When it receives an Activity Task, it calls your Activity function or method and then sends the outcome (success or failure and any additional result data) back to the Server, which records this as Events in the Workflow's history. Temporal explicitly does not run your Workflow or Activity code inside the Server; that code only runs in Workers, which are under your control.
+When it receives an Activity Task, it calls your Activity function or method and then sends the outcome (success or failure and any additional result data) back to the Server, which records this as Events in the Event history. Temporal explicitly does not run your Workflow or Activity code inside the Server; that code only runs in Workers, which are under your control.
 
-Putting this together in plain terms: your application uses a Client to tell the Server what Workflows to run and how to interact with them:
-
-The Server records all state and creates Workflow and Activity Tasks in Task Queues. Workers poll those queues, run your Workflow and Activity code, and send back Commands and results. The Server uses this information to update each Workflow's durable history so that any Client can later read the current status or the final result, and execution can safely continue even if individual Worker processes or machines fail.
+The Server records all state and creates Workflow and Activity Tasks in Task Queues. Workers poll those queues, run your Workflow and Activity code, and send back Commands and results. The Server uses this information to update the [Event history](/workflow-execution/event) so that any Client can later read the current status or the final result, and execution can safely continue (or replay) even if individual Worker processes or machines fail.
 
 This is the heart of how durable execution works.
 
-<TemporalArchitectureSimulator />
-
-## Optional: Example of the End-to-End Lifecycle of a Workflow or Activity
+## Example of the End-to-End Lifecycle of a Workflow or Activity
 
 Here's a fifteen step process involving the end to end lifecycle of a Workflow and Activity. 
+
+### Interactive demo
+
+<TemporalArchitectureSimulator />
 
 ### Workflow lifecycle
 
