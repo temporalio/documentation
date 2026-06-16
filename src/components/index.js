@@ -1,5 +1,6 @@
 // Website components
 export { default as RetrySimulator } from './elements/RetrySimulator';
+export { default as StandaloneActivityDemo } from './elements/StandaloneActivityDemo';
 export { default as HomePageHero } from './elements/HomePageHero';
 export { SdkLogos } from './elements/SdkLogos';
 export { SdkLogosAsBlocks } from './elements/SdkLogosAsBlocks';
@@ -19,8 +20,9 @@ export { default as ZoomingImage } from './images/ZoomingImage';
 // Information components
 export { default as DiscoverableDisclosure } from './info/DiscoverableDisclosure';
 export { default as ToolTipTerm } from './info/ToolTipTerm';
-export { RelatedReadContainer, RelatedReadItem } from './info/RelatedRead';
-export { default as RelatedReadList } from './info/RelatedReadList';
+export { RelatedReadContainer, RelatedReadItem } from './info/RelatedRead/RelatedRead';
+export { default as RelatedReadList } from './info/RelatedRead/RelatedReadList';
+export { default as ReleaseNoteHeader } from './info/ReleaseNoteHeader/ReleaseNoteHeader';
 
 // Extra export
 export { default } from './elements/SdkTabs';

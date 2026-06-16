@@ -75,6 +75,24 @@ Consider a Namespace replicated across `us-east-1` (initially active) and `us-we
 The Namespace Endpoint moves with the active region via an updated CNAME — no Client changes required.
 The Regional Endpoints do not change their targets on failover: each continues to route to the replica that lives in its region.
 
+## How requests reach the replica {/* #how-requests-reach-the-replica */}
+
+A request can reach the passive replica in three ways:
+
+- **Through the passive region's Regional Endpoint.** A [Regional Endpoint](#regional-endpoint) is pinned to its region, so the Regional Endpoint of the region that currently holds the passive replica connects to the passive replica.
+- **Through a PrivateLink or Private Service Connect endpoint in the passive region.** A VPC Endpoint or PSC endpoint in the passive region routes to the passive replica.
+- **Through the Namespace Endpoint during a failover.** When a Namespace fails over, two things happen in parallel:
+  1. The replica becomes active, and the former active becomes a replica.
+  2. The Namespace Endpoint changes to point at the replica's region, and the Worker re-resolves the Namespace Endpoint to connect to the new active region via DNS.
+
+  If #1 completes before #2, a Worker that was connected to the former active before the failover will stay connected to it even after it becomes the replica. The Worker will change to point at the new active when the DNS changes propagate and the Client re-resolves DNS (typically 30 seconds, though up to 5 minutes, bounded by Temporal Cloud's maximum connection lifetime).
+
+By default, Temporal Cloud transparently forwards any request that reaches the passive replica to the active region, and the response back.
+
+To learn what forwarding does, see [Request forwarding](/cloud/high-availability/#request-forwarding).
+
+To stop forwarding Worker polls on a Namespace, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+
 ## How to use PrivateLink with High Availability features
 
 :::tip
