@@ -4,9 +4,9 @@ import SdkSvg from './SdkSvgs/SdkSvg';
 import styles from './sdk-guide-links.module.css';
 
 const DEFAULT_SDKS = [
-  { name: 'goLangBlock',     sdk: 'go',         label: 'Go' },
-  { name: 'javaBlock',       sdk: 'java',        label: 'Java' },
   { name: 'dotnetBlock',     sdk: 'dotnet',      label: '.NET' },
+  { name: 'goLangBlock',     sdk: 'go',          label: 'Go' },
+  { name: 'javaBlock',       sdk: 'java',        label: 'Java' },
   { name: 'phpBlock',        sdk: 'php',         label: 'PHP' },
   { name: 'pythonBlock',     sdk: 'python',      label: 'Python' },
   { name: 'rubyBlock',       sdk: 'ruby',        label: 'Ruby' },
@@ -28,7 +28,7 @@ const DEFAULT_SDKS = [
  * Note: `path` and `filter` are ignored when `links` is provided:
  *   <SdkGuideLinks links={[{ name: 'goLangBlock', href: '/some/path', label: 'Go' }]} />
  */
-export const SdkGuideLinks = ({ path, links, filter }) => {
+export const SdkGuideLinks = ({ path, links, filter, title }) => {
   if (!links && !path) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn('[SdkGuideLinks] Either `path` or `links` prop is required.');
@@ -43,7 +43,7 @@ export const SdkGuideLinks = ({ path, links, filter }) => {
         .map(({ name, sdk, label }) => ({
           name,
           href: `/develop/${sdk}/${path}`,
-          label,
+          label: title ? `${title} - ${label}` : label,
         }));
 
   return (
