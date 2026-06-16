@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "node ./bin/sync-ai-cookbook.js",
-    "build": "docusaurus build",
+    "build": "node --max-old-space-size=7168 ./node_modules/@docusaurus/core/bin/docusaurus.mjs build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
@@ -82,7 +82,7 @@
     "snipsync": "^1.12.0",
     "tar-fs": "^3.1.2",
     "uuid": "^14.0.0",
-    "wait-on": "^7.2.0",
+    "wait-on": "^9.0.10",
     "webpack-font-preload-plugin": "^1.5.0",
     "yaml": "^2.9.0"
   },
