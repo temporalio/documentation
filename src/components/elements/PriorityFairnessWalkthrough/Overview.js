@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import styles from './walkthrough.module.css';
 
 const PILLS = [
@@ -13,9 +14,11 @@ export default function Overview({ onNext }) {
   return (
     <div className={styles.section}>
       <p className={styles.lead}>
-        The core idea of <a href="/develop/task-queue-priority-fairness">Task Queue Priority and Fairness</a> is that when tasks from different workloads
-        compete for the same Workers, Priority controls which ones get picked first, and Fairness
-        ensures no single tenant can block others by using all the resources.
+        The core idea of{' '}
+        <Link to="/develop/task-queue-priority-fairness">Task Queue Priority and Fairness</Link>{' '}
+        is that when tasks from different workloads compete for the same Workers, Priority controls 
+        which ones get picked first, and Fairness ensures no single tenant can block others by using 
+        all the resources.
       </p>
 
       <div className={styles.featureGrid}>

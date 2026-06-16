@@ -1,8 +1,3 @@
-/*
- * PriorityFairnessWalkthrough.module.css
- * Adapted from NexusDemo CSS vars for light/dark mode support.
- */
-
 /* ── Per-theme accent vars ─────────────────────────────── */
 :global([data-theme='dark']) {
   --pfw-surface: #1a1a2e;
@@ -341,7 +336,7 @@
 .nextBtn {
   margin-top: 2rem;
   display: inline-block;
-  background: var(--pfw-uv);
+  background: var(--ifm-color-primary);
   color: #fff;
   border: none;
   padding: 10px 22px;
@@ -350,9 +345,17 @@
   cursor: pointer;
   border-radius: 0;
   font-family: var(--ifm-font-family-base);
-  transition: opacity 0.15s;
+  transition: background-color 0.15s;
 }
 
 .nextBtn:hover {
-  opacity: 0.85;
+  background: var(--ifm-color-primary-dark);
+}
+
+:global(html[data-theme='dark']) .nextBtn {
+  background: #2563eb;
+}
+
+:global(html[data-theme='dark']) .nextBtn:hover {
+  background: #1d4ed8;
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import styles from './walkthrough.module.css';
 
 const FEATURE_LINKS = [
@@ -19,9 +20,9 @@ export default function SDK() {
         {FEATURE_LINKS.map((feature) => (
           <div key={feature.name} className={styles.sdkCard}>
             <h4 className={styles.sdkCardTitle}>{feature.name}</h4>
-            <a href={feature.link} className={styles.sdkCardLink}>
+            <Link to={feature.link} className={styles.sdkCardLink}>
               View examples →
-            </a>
+            </Link>
           </div>
         ))}
       </div>
