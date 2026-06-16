@@ -16,9 +16,9 @@ tags:
   - Architecture
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { EnlargeImage } from '@site/src/components';
 
-Before reading this, it would be helpful to read Understanding Temporal as it assumes knowledge of the following introductory concepts: Workflow, Activity, Worker, Task Queues, and Event History.
+Before reading this, it would be helpful to read [Understanding Temporal](/evaluate/understanding-temporal) as it assumes knowledge of the following introductory concepts: Workflow, Activity, Worker, Task Queues, and Event History.
 
 Temporal is a tool that abstracts away a lot of difficulty for anyone managing applications that need to be resilient to failures. This guide provides you with a high level overview of how Temporal works under the hood.
 
@@ -33,6 +33,11 @@ As part of the Temporal Platform, we also have the Temporal Service, which runs 
 ## Overall architecture diagram
 
 To understand how Temporal works, you can start at the high level architecture view. This shows how all of the different layers interact with each other. Then you can take a deep dive into each layer.
+
+<EnlargeImage
+  src="/img/encyclopedia/architecture/overall_architecture.png"
+  alt="Overview of the Temporal architecture"
+/>
 
 ## Client application
 
@@ -88,7 +93,7 @@ When a Workflow Task or Activity needs to be done, the matching service finds an
 
 #### Worker Service
 
-The Worker Service is where all of the background functionality that keeps the Temporal Service running smoothly is handled. It takes care of all the internal/system Workflows that Temporal needs like maintenance jobs, cleanup, replication, archival, and visibility indexing. You won't need to directly interact with this layer because it's different from your application Workers. The Worker Service handles Temporal's own operational tasks, like archiving old Workflow histories or running scheduled maintenance.
+The Worker Service is where all of the background functionality that keeps the Temporal Service running smoothly is handled. It takes care of all the internal/system Workflows that Temporal needs like maintenance jobs, cleanup, replication, archival, and visibility indexing. You won't need to directly interact with this layer because it's different from your application Workers. The Worker Service handles Temporal's own operational tasks, like archiving old Event histories or running scheduled maintenance.
 
 #### Persistence Layer
 
