@@ -4,7 +4,6 @@ import SdkSvg from './SdkSvgs/SdkSvg';
 import styles from './sdk-guide-links.module.css';
 
 const DEFAULT_SDKS = [
-  { name: 'dotnetBlock',     sdk: 'dotnet',      label: '.NET' },
   { name: 'goLangBlock',     sdk: 'go',          label: 'Go' },
   { name: 'javaBlock',       sdk: 'java',        label: 'Java' },
   { name: 'phpBlock',        sdk: 'php',         label: 'PHP' },
@@ -12,6 +11,7 @@ const DEFAULT_SDKS = [
   { name: 'rubyBlock',       sdk: 'ruby',        label: 'Ruby' },
   { name: 'rustBlock',       sdk: 'rust',        label: 'Rust' },
   { name: 'typeScriptBlock', sdk: 'typescript',  label: 'TypeScript' },
+  { name: 'dotnetBlock',     sdk: 'dotnet',      label: '.NET' },
 ];
 
 /**
