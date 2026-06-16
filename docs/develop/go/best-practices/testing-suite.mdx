@@ -139,6 +139,7 @@ func (s *ActivityTestSuite) Test_HeatbeatActivity() {
     env := testSuite.NewTestActivityEnvironment()
 
     env.RegisterActivity(Greet)
+
     var heartBeatCount int
     env.SetOnActivityHeartbeatListener(func(activityInfo *activity.Info, details converter.EncodedValues) {
         var val string
@@ -160,22 +161,24 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 
 ```go
 func (s *UnitTestSuite) Test_CancelActivity() {
-	testSuite := &testsuite.WorkflowTestSuite{}
-	env := testSuite.NewTestActivityEnvironment()
-	ctx, cancl := context.WithCancel(context.Background())
-	env.SetWorkerOptions(worker.Options{
-		BackgroundActivityContext: ctx,
-	})
-	env.RegisterActivity(Greet)
+    testSuite := &testsuite.WorkflowTestSuite{}
+    env := testSuite.NewTestActivityEnvironment()
 
-	go func() {
-		// Cancel the activity after 5s
-		time.Sleep(5 * time.Second)
-		cancl()
-	}()
-	_, err := env.ExecuteActivity(Greet, "Temporal")
-	// Expect the activity to return a cancled error
-	s.Error(err)
+    ctx, cancl := context.WithCancel(context.Background())
+
+    env.SetWorkerOptions(worker.Options{
+        BackgroundActivityContext: ctx,
+    })
+    env.RegisterActivity(Greet)
+
+    go func() {
+        // Cancel the activity after 5s
+        time.Sleep(5 * time.Second)
+        cancl()
+    }()
+    _, err := env.ExecuteActivity(Greet, "Temporal")
+    // Expect the activity to return a cancled error
+    s.Error(err)
 }
 ```
 
@@ -252,8 +255,11 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 
     // Once the workflow is completed, progress should always be 100
     res, err := s.env.QueryWorkflow("getProgress")
+    
     s.NoError(err)
+
     err = res.Get(&value)
+    
     s.NoError(err)
     s.Equal(value, 100)
 }
@@ -283,6 +289,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
 
     err := s.env.GetWorkflowError()
     s.Error(err)
+    
     var applicationErr *temporal.ApplicationError
     s.True(errors.As(err, &applicationErr))
     s.Equal("SimpleActivityFailure", applicationErr.Error())
