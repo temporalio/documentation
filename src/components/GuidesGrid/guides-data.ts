@@ -10,7 +10,7 @@ export type Guide = {
 
 const guides: Guide[] = [
   {
-    name: "Entity Workflow",
+    name: "Customer loyalty program",
     description:
       "How to run a customer loyalty program with the entity pattern and durable workflows.",
     tags: ["Entity Pattern"],
@@ -19,9 +19,9 @@ const guides: Guide[] = [
   },
 
   {
-    name: "Saga Pattern",
+    name: "Recover without restart",
     description:
-      "How to recover business processes without restarting.",
+      "Build business processes that pause on errors and recover without restarting.",
     tags: ["Saga Pattern"],
     sdk: "TypeScript",
     href: "/guides/saga-pattern",
