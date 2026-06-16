@@ -17,17 +17,14 @@ tags:
 description: Run Strands Agents AI workflows with durable execution using the Temporal Python SDK and Strands plugin.
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
 Temporal's integration with [Strands Agents](https://strandsagents.com/) is an [SDK Plugin](/develop/plugins-guide) that
 gives your Strands agents [Durable Execution](/temporal#durable-execution) via the Temporal platform. The plugin routes
 model invocations, tool calls, MCP tool calls, and hooks through Temporal Activities, so every step your agent takes is
 recorded in Workflow history and can survive crashes, restarts, and infrastructure failures.
 
-:::info
-
-The Temporal Python SDK integration with Strands Agents is currently at an experimental release stage. The API may
-change in future versions.
-
-:::
+<ReleaseNoteHeader type="publicPreview" />
 
 Code snippets in this guide are taken from the
 [Strands Agents plugin samples](https://github.com/temporalio/samples-python/tree/main/strands_plugin). Refer to the
