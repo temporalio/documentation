@@ -5,7 +5,7 @@ import guides, { type SDK, type Guide } from "./guides-data";
 import SdkSvg from "../elements/SdkSvgs/SdkSvg";
 import styles from "./GuidesGrid.module.css";
 
-const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript"];
+const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript", "Go"];
 const LANGUAGE_AGNOSTIC = "Language-agnostic";
 type SdkFilter = SDK | typeof LANGUAGE_AGNOSTIC;
 const ALL_SDK_FILTERS: SdkFilter[] = [...ALL_SDKS, LANGUAGE_AGNOSTIC];
@@ -15,6 +15,7 @@ const SDK_BLOCK_NAMES: Record<SDK, string> = {
   Python: "pythonBlock",
   Ruby: "rubyBlock",
   TypeScript: "typeScriptBlock",
+  Go: "goBlock",
 };
 
 const ALL_TAGS = Array.from(
