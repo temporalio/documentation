@@ -1,0 +1,197 @@
+---
+id: workflow-pause
+title: Workflow Pause
+sidebar_label: Workflow Pause
+description: Pause and Unpause a Workflow Execution to stop new progress without terminating the Workflow or losing state.
+slug: /workflow-pause
+toc_max_heading_level: 4
+keywords:
+  - workflow
+  - workflow pause
+  - pause
+  - unpause
+  - operations
+tags:
+  - Concepts
+  - Workflows
+---
+
+This page discusses the following:
+
+- [Pause](#pause)
+- [Unpause](#unpause)
+- [Observability](#observability)
+- [What Workflow Pause is not](#what-workflow-pause-is-not)
+- [Important considerations](#important-considerations)
+- [Limitations](#limitations)
+
+Workflow Pause is an operational control that stops a specific [Workflow Execution](/workflow-execution) from making new
+progress until it is Unpaused.
+
+Use Workflow Pause when you need to hold a Workflow in place during an incident, investigation, or dependency outage
+without terminating the Workflow Execution or losing Workflow state.
+
+You can Pause and Unpause Workflow Executions through the [CLI](/cli/command-reference/workflow), the UI, or directly
+through the gRPC API.
+
+:::note Pre-release
+
+Workflow Pause is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release). In Temporal
+Cloud, Pre-release access is invite-only; contact your Temporal account team or
+[open a support ticket](/cloud/support#support-ticket). For self-hosted Temporal, Workflow Pause requires Temporal
+Server v1.30.0+ with `frontend.WorkflowPauseEnabled` enabled. The Temporal CLI requires v1.6.0+. Self-hosted UI support
+requires v2.47.2+.
+
+:::
+
+## Operations summary
+
+| Operation         | What it does                                         | CLI                                                                  |
+| ----------------- | ---------------------------------------------------- | -------------------------------------------------------------------- |
+| [Pause](#pause)   | Stops a Workflow Execution from making new progress. | [`temporal workflow pause`](/cli/command-reference/workflow#pause)   |
+| [Unpause](#unpause) | Resumes a Paused Workflow Execution.                 | [`temporal workflow unpause`](/cli/command-reference/workflow#unpause) |
+
+## Pause {/* #pause */}
+
+Pause stops a Workflow Execution from making new progress until it is Unpaused.
+
+### When to Pause
+
+- A downstream dependency is unhealthy, and you want to stop the Workflow from continuing until the dependency recovers.
+- You need time to inspect or fix an issue before the Workflow schedules more work.
+- You're rolling out a Worker change and want to hold specific Workflow Executions until the deploy is complete.
+- You want to prevent a Workflow from continuing without terminating it or losing its current state.
+
+### What happens when you Pause a Workflow
+
+- **No new Workflow Tasks are dispatched.** Workflow code doesn't make progress while the Workflow is Paused.
+- **No new Activity Tasks are dispatched.** Activity retries and newly scheduled Activity Tasks don't start while the
+  Workflow is Paused.
+- **In-flight Activity attempts aren't interrupted.** Activity attempts that are already running can complete, fail,
+  time out, and Heartbeat normally.
+- **Activity completion, failure, and timeout events can be recorded.** Workflow code doesn't process those events until
+  the Workflow is Unpaused.
+- **Signals are accepted and recorded.** Signal handlers run after the Workflow is Unpaused.
+- **Timers keep advancing.** Timers that fire while Paused are processed by Workflow code after the Workflow is
+  Unpaused.
+- **Updates and Queries are rejected.**
+- **Cancel requests are recorded.** Cancellation takes effect after the Workflow is Unpaused.
+- **Terminate requests still terminate the Workflow immediately.**
+- **Pause is recorded in Event History.** The Event includes the identity, reason, and request ID.
+
+### CLI usage
+
+```bash
+temporal workflow pause \
+  --workflow-id YourWorkflowId \
+  --reason "Pausing while downstream service recovers"
+```
+
+See the [CLI reference for `temporal workflow pause`](/cli/command-reference/workflow#pause) for all options.
+
+## Unpause {/* #unpause */}
+
+Unpause resumes a Paused Workflow Execution.
+
+### When to Unpause
+
+- The dependency or service that caused the Pause has recovered.
+- Investigation is complete and the Workflow can continue.
+- A deploy or configuration change is complete.
+- You're ready for queued Signals, recorded cancellation, or blocked work to proceed.
+
+### What happens when you Unpause a Workflow
+
+- **Workflow Tasks and Activity Tasks can be dispatched again.**
+- **Signals received and timers that fired while Paused are processed by the Workflow.**
+- **Pending Activity retries can proceed unless the Activity itself is Paused.**
+- **The Workflow continues from its existing state.**
+- **Unpause is recorded in Event History.** The Event includes the identity, reason, and request ID.
+
+### CLI usage
+
+```bash
+temporal workflow unpause \
+  --workflow-id YourWorkflowId \
+  --reason "Downstream service recovered"
+```
+
+See the [CLI reference for `temporal workflow unpause`](/cli/command-reference/workflow#unpause) for all options.
+
+## Observability
+
+Paused Workflow Executions have `ExecutionStatus="Paused"`.
+
+You can find Paused Workflow Executions with a [List Filter](/list-filter):
+
+```sql
+ExecutionStatus = "Paused"
+```
+
+You can also inspect a Workflow Execution with:
+
+```bash
+temporal workflow describe \
+  --workflow-id YourWorkflowId
+```
+
+Pause and Unpause are recorded in [Event History](/workflow-execution/event#event-history) with the identity, reason, and
+request ID.
+
+## What Workflow Pause is not
+
+- Workflow Pause isn't Activity Pause. To interrupt a Heartbeating Activity attempt, use
+  [Activity Pause](/activity-operations#pause).
+- Workflow Pause isn't bulk Workflow Pause. It applies to one Workflow Execution at a time.
+- Workflow Pause doesn't pause [Schedules](/schedule), Task Queues, or Namespaces.
+- Workflow Pause isn't an auto-pause policy. Operators must Pause and Unpause manually through an operational interface.
+
+## Important considerations
+
+### Scope
+
+- Workflow Pause applies to a single Workflow Execution.
+- It doesn't pause [Child Workflows](/child-workflows), Schedules, Task Queues, or Namespaces.
+
+### Timeouts and in-flight work
+
+- Workflow Pause doesn't stop time from passing. Workflow Execution timeouts, Workflow Run timeouts, Activity timeouts,
+  and Timer deadlines continue to advance.
+- Activity attempts that are already running aren't interrupted. They can complete, fail, Heartbeat, or time out while
+  the Workflow is Paused.
+
+### Messages and lifecycle operations
+
+- Signals are accepted while Paused and processed after the Workflow is Unpaused.
+- Updates and Queries are rejected while Paused.
+- Cancel requests are recorded while Paused, but cancellation takes effect after the Workflow is Unpaused.
+- [Terminate](/evaluate/development-production-features/interrupt-a-workflow) requests still terminate the Workflow
+  immediately.
+- Resetting a Paused Workflow terminates the current Run and starts a new Run from the selected reset point.
+
+### Schedules, cron, and operation timing
+
+- A Paused Run is still considered active for [Schedule](/schedule) overlap policy decisions.
+- For [Cron Workflows](/cron-job), Pause affects the current Run. Missed cron intervals are not backfilled.
+- Pause and Unpause aren't a transactional boundary. Work can make progress while the Workflow is Unpaused.
+
+## Limitations
+
+- Workflow Pause is in Pre-release and may change before Public Preview or General Availability.
+- Workflow Pause must be enabled before it can be used.
+- Workflow Pause applies to a single Workflow Execution. Bulk Workflow Pause is not supported.
+- Auto-pause policies are not supported.
+- Workflow Pause is an operational control. It isn't intended to be called from Workflow code.
+- There is no indicator that all in-flight Activity attempts have completed after a Workflow is Paused.
+
+## Interaction with Activity Operations
+
+Workflow Pause and [Activity Operations](/activity-operations) are separate controls.
+
+Workflow Pause stops progress for a Workflow Execution. Activity Operations act on a specific Activity Execution.
+
+If a Workflow is Paused, Activity retries in that Workflow are blocked. If an individual Activity is also Paused, both
+the Workflow and the Activity must be Unpaused before that Activity can proceed.
+
+Workflow Pause doesn't interrupt Activity attempts that are already running. To interrupt a Heartbeating Activity
+attempt, use [Activity Pause](/activity-operations#pause).
