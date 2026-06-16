@@ -1,5 +1,4 @@
 {
-  "public": true,
   "trailingSlash": false,
   "github": {
     "silent": true
@@ -16,6 +15,16 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/encyclopedia/detecting-application-failures",
+      "destination": "/encyclopedia/failures-and-error-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/integrations",
+      "destination": "/integrations",
+      "permanent": true
+    },
     {
       "source": "/cli/activity",
       "destination": "/cli/command-reference/activity",

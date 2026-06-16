@@ -246,6 +246,12 @@ If using API key authentication with the `--api-key` flag, you must add it direc
 
 To restore the default behavior, unselect the option in the Web UI or change `true` to `false` in the CLI command.
 
+:::note Automatic failovers are always enabled for Same-region Replication
+
+This setting applies only to Multi-region and Multi-cloud Replication. You cannot disable automatic failovers for a [Same-region Replication](/cloud/high-availability#same-region-replication) Namespace, because same-region failovers between cells are always managed by Temporal.
+
+:::
+
 ## Disable High Availability (remove a replica) {/* #disable */}
 
 To disable High Availability features on a Namespace, remove the replica from that Namespace. Removing a replica

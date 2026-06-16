@@ -136,6 +136,8 @@ In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
 This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
 
+Failovers between cells are always managed automatically by Temporal. Unlike Multi-region and Multi-cloud Replication, you cannot disable automatic failovers and you cannot trigger a manual failover for a Same-region Replication Namespace. See [Failovers](/cloud/high-availability/failovers) for details.
+
 ## Related considerations
 
 ### External Storage

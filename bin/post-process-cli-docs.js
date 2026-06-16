@@ -4,11 +4,12 @@
 //
 // - Regenerates the command-reference index to list top-level commands
 //   (not individual cloud subcommands).
-// - Injects a pre-release admonition into cloud CLI reference pages.
+// - Injects a ReleaseNoteHeader component into cloud CLI reference pages.
 // - Removes pages for unreleased features.
 //
 // Run after copying gen-docs output into docs/cli/command-reference/.
-// When the cloud CLI reaches GA, remove the admonition block below.
+// When the cloud CLI reaches GA, remove the ReleaseNoteHeader injection below
+// and the "cloudCli" entry from src/constants/featureReleaseTypes.js.
 // When a feature ships, remove it from EXCLUDED_PAGES.
 
 const fs = require("fs");
@@ -24,12 +25,9 @@ const CMD_REF_DIR = path.join(
 
 const CLOUD_DIR = path.join(CMD_REF_DIR, "cloud");
 
-const ADMONITION = `:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+const IMPORT_LINE = `import { ReleaseNoteHeader } from '@site/src/components';`;
 
-The \`temporal cloud\` CLI extension is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-Commands and options may change before the stable release.
-
-:::`;
+const COMPONENT_BLOCK = `<ReleaseNoteHeader featureName="cloudCli" />`;
 
 const EXCLUDED_PAGES = ["custom-role.mdx"];
 
@@ -92,7 +90,7 @@ fs.writeFileSync(path.join(CMD_REF_DIR, "index.mdx"), indexLines.join("\n"));
 console.log(`[post-process] regenerated command-reference index with ${topLevelCommands.length} entries`);
 
 // ---------------------------------------------------------------------------
-// 3. Inject admonition into each cloud page
+// 3. Inject ReleaseNoteHeader into each cloud page
 // ---------------------------------------------------------------------------
 const cloudFiles = fs.readdirSync(CLOUD_DIR).filter((f) => f.endsWith(".mdx"));
 let count = 0;
@@ -101,8 +99,8 @@ for (const file of cloudFiles) {
   const filePath = path.join(CLOUD_DIR, file);
   const content = fs.readFileSync(filePath, "utf-8");
 
-  // Skip if admonition already present
-  if (content.includes("SUPPORT, STABILITY, and DEPENDENCY INFO")) {
+  // Skip if component already present
+  if (content.includes("ReleaseNoteHeader")) {
     continue;
   }
 
@@ -110,19 +108,49 @@ for (const file of cloudFiles) {
   const marker = "*/}\n\n";
   const markerIndex = content.indexOf(marker);
   if (markerIndex === -1) {
-    console.warn(`[post-process] no marker found in cloud/${file}, skipping`);
+    // For index.mdx and other non-generated pages, insert after frontmatter
+    const fmEnd = content.indexOf("---", 3);
+    if (fmEnd === -1) {
+      console.warn(`[post-process] no insertion point found in cloud/${file}, skipping`);
+      continue;
+    }
+    const insertAt = fmEnd + 4; // after "---\n"
+    const updated =
+      content.slice(0, insertAt) +
+      "\n" +
+      IMPORT_LINE +
+      "\n\n" +
+      COMPONENT_BLOCK +
+      "\n\n" +
+      content.slice(insertAt);
+
+    fs.writeFileSync(filePath, updated);
+    count++;
     continue;
   }
 
-  const insertAt = markerIndex + marker.length;
+  // Insert import after frontmatter
+  const fmEnd = content.indexOf("---", 3);
+  const afterFm = fmEnd + 4; // after "---\n"
+  const withImport =
+    content.slice(0, afterFm) +
+    "\n" +
+    IMPORT_LINE +
+    "\n" +
+    content.slice(afterFm);
+
+  // Recalculate marker position after import insertion
+  const newMarkerIndex = withImport.indexOf(marker);
+  const newInsertAt = newMarkerIndex + marker.length;
+
   const updated =
-    content.slice(0, insertAt) +
-    ADMONITION +
+    withImport.slice(0, newInsertAt) +
+    COMPONENT_BLOCK +
     "\n\n" +
-    content.slice(insertAt);
+    withImport.slice(newInsertAt);
 
   fs.writeFileSync(filePath, updated);
   count++;
 }
 
-console.log(`[post-process] injected pre-release admonition into ${count} cloud page(s)`);
+console.log(`[post-process] injected ReleaseNoteHeader into ${count} cloud page(s)`);
