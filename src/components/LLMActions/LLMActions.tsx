@@ -5,36 +5,6 @@ import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt, FaChevronDown, FaChe
 import { SiOpenai, SiClaude } from 'react-icons/si';
 import styles from './LLMActions.module.css';
 
-/**
- * Converts GitHub edit URL to raw content URL
- * e.g., https://github.com/org/repo/edit/main/docs/file.md
- * becomes https://raw.githubusercontent.com/org/repo/main/docs/file.md
- */
-function getGitHubRawUrl(editUrl: string): string | null {
-  try {
-    const match = editUrl.match(/github\.com\/([^/]+)\/([^/]+)\/edit\/([^/]+)\/(.+)/);
-    if (match) {
-      const [, owner, repo, branch, path] = match;
-      // Fix double docs/docs issue in path
-      const fixedPath = path.replace(/^docs\/docs\//, 'docs/');
-      return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${fixedPath}`;
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Build raw GitHub URL from slug/permalink for this specific repo
- */
-function buildRawUrlFromSlug(slug: string): string {
-  // Remove leading slash and convert to file path
-  const path = slug.replace(/^\//, '');
-  // Try index.mdx first for directory-style URLs
-  return `https://raw.githubusercontent.com/temporalio/documentation/main/docs/${path}/index.mdx`;
-}
-
 export default function LLMActions() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,29 +12,28 @@ export default function LLMActions() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { metadata, frontMatter } = useDoc();
-  const { editUrl, slug, permalink } = metadata;
+  const { permalink } = metadata;
   const { siteConfig } = useDocusaurusContext();
 
   const pageUrl = `${siteConfig.url}${permalink}`;
-  const prompt = `Read ${pageUrl} and answer questions about the content.`;
+
+  // Clean Markdown is generated for every page at <permalink>.md by the
+  // markdown-pages plugin (see MARKDOWN_PIPELINE.md). These actions point at
+  // that build output rather than the raw MDX source.
+  // NOTE: the .md files only exist after `yarn build`; under `yarn start` (dev
+  // server) these requests will 404. Verify locally with `yarn build && yarn serve`.
+  const mdPath = `${permalink.replace(/\/$/, '')}.md`;
+  const mdUrl = `${siteConfig.url}${mdPath}`;
+
+  const prompt = `Read ${mdUrl} and answer questions about the content.`;
   const chatGptUrl = `https://chatgpt.com/?prompt=${encodeURIComponent(prompt)}`;
   const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
 
-  let rawUrl = editUrl ? getGitHubRawUrl(editUrl) : null;
-  if (!rawUrl && slug) {
-    rawUrl = buildRawUrlFromSlug(slug);
-  }
-
   const handleCopyForLLM = useCallback(async () => {
-    if (!rawUrl) {
-      console.error('No raw URL available');
-      return;
-    }
-
     setLoading(true);
     setOpen(false);
     try {
-      const response = await fetch(rawUrl);
+      const response = await fetch(mdPath);
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.status}`);
       }
@@ -79,14 +48,12 @@ export default function LLMActions() {
     } finally {
       setLoading(false);
     }
-  }, [rawUrl, pageUrl]);
+  }, [mdPath, pageUrl]);
 
   const handleViewMarkdown = useCallback(() => {
-    if (rawUrl) {
-      window.open(rawUrl, '_blank', 'noopener,noreferrer');
-    }
+    window.open(mdPath, '_blank', 'noopener,noreferrer');
     setOpen(false);
-  }, [rawUrl]);
+  }, [mdPath]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -100,7 +67,7 @@ export default function LLMActions() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [open]);
 
-  if (!rawUrl || frontMatter.llm_exclude) {
+  if (!permalink || frontMatter.llm_exclude) {
     return null;
   }
 
