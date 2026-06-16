@@ -35,22 +35,24 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Add the `temporal-aws-lambda` dependency alongside the Temporal SDK.
 Create a Lambda handler class that delegates to `LambdaWorker.run`.
 
+<!--SNIPSTART java-lambda-worker-->
+[lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java)
 ```java
+package io.temporal.samples.lambdaworker;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.temporal.aws.lambda.LambdaWorker;
 import io.temporal.common.WorkerDeploymentVersion;
-import io.temporal.workflow.Workflow;
 
-public final class Handler implements RequestHandler<Object, Void> {
+/** AWS Lambda entry point for the Temporal worker. */
+public class LambdaFunction implements RequestHandler<Object, Void> {
+
   private static final RequestHandler<Object, Void> WORKER =
       LambdaWorker.run(
-          new WorkerDeploymentVersion("my-app", "build-1"),
-          options ->
-              options
-                  .setTaskQueue("serverless-task-queue-1")
-                  .registerWorkflowImplementationTypes(SampleWorkflowImpl.class)
-                  .registerActivitiesImplementations(new SampleActivitiesImpl()));
+          new WorkerDeploymentVersion(
+              LambdaWorkerSample.deploymentName(), LambdaWorkerSample.buildId()),
+          LambdaWorkerSample::configure);
 
   @Override
   public Void handleRequest(Object input, Context context) {
@@ -58,6 +60,7 @@ public final class Handler implements RequestHandler<Object, Void> {
   }
 }
 ```
+<!--SNIPEND-->
 
 `LambdaWorker.run` takes a `WorkerDeploymentVersion` and a configure callback, and returns a `RequestHandler`.
 Assign the handler to a static field so it is created once during Lambda cold start and reused across invocations.
@@ -65,11 +68,45 @@ Assign the handler to a static field so it is created once during Lambda cold st
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or `Pinned`.
-Set it per-Workflow at registration time, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
+Set it per-Workflow with the `@WorkflowVersioningBehavior` annotation on the Workflow method, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 
-The configure callback exposes the same registration methods as a standard Worker: `registerWorkflowImplementationTypes`, `registerActivitiesImplementations`, and `registerDynamicWorkflowImplementationType`.
+<!--SNIPSTART java-lambda-worker-workflow-->
+[lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java)
+```java
+package io.temporal.samples.lambdaworker;
 
-If you need to assemble options outside the callback, call `LambdaWorkerOptions.fromEnvironment()`, mutate the returned options, and pass them to `LambdaWorker.newHandler(...)`.
+import io.temporal.activity.ActivityOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowVersioningBehavior;
+import java.time.Duration;
+import org.slf4j.Logger;
+
+/** Workflow implementation that executes a greeting Activity. */
+public class SampleWorkflowImpl implements SampleWorkflow {
+
+  private static final Logger logger = Workflow.getLogger(SampleWorkflowImpl.class);
+
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(10)).build());
+
+  @Override
+  @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+  public String getGreeting(String name) {
+    logger.info("SampleWorkflow started for {}", name);
+    String result = activities.createGreeting(name);
+    logger.info("SampleWorkflow completed with {}", result);
+    return result;
+  }
+}
+```
+<!--SNIPEND-->
+
+The configure callback receives a `LambdaWorkerOptions.Builder` with the same registration methods as a standard Worker: `registerWorkflowImplementationTypes`, `registerActivitiesImplementations`, and `registerDynamicWorkflowImplementationType`.
+
+If you need to assemble options outside the callback, call `LambdaWorkerOptions.newBuilderFromEnvironment()`, configure the builder, and pass the built options to `LambdaWorker.newHandler(...)`.
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -126,6 +163,8 @@ The underlying metrics and traces are the same ones the Java SDK emits in any en
 For general observability concepts and the full list of available metrics, see [Observability - Java SDK](/develop/java/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
 ```java
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.temporal.aws.lambda.LambdaWorker;
 import io.temporal.aws.lambda.OtelLambdaWorker;
 import io.temporal.common.WorkerDeploymentVersion;
@@ -134,12 +173,11 @@ public final class Handler implements RequestHandler<Object, Void> {
   private static final RequestHandler<Object, Void> WORKER =
       LambdaWorker.run(
           new WorkerDeploymentVersion("my-app", "build-1"),
-          options -> {
-            OtelLambdaWorker.configure(options);
-            options
-                .setTaskQueue("serverless-task-queue-1")
-                .registerWorkflowImplementationTypes(SampleWorkflowImpl.class)
-                .registerActivitiesImplementations(new SampleActivitiesImpl());
+          builder -> {
+            OtelLambdaWorker.configure(builder);
+            builder.setTaskQueue("serverless-task-queue-1");
+            builder.registerWorkflowImplementationTypes(SampleWorkflowImpl.class);
+            builder.registerActivitiesImplementations(new SampleActivitiesImpl());
           });
 
   @Override
@@ -160,41 +198,44 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-```yaml
+<!--SNIPSTART java-lambda-worker-otel-collector-config-->
+[lambda-worker/otel-collector-config.yaml.sample](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/otel-collector-config.yaml.sample)
+```sample
 receivers:
-    otlp:
-        protocols:
-            grpc:
-                endpoint: "localhost:4317"
-            http:
-                endpoint: "localhost:4318"
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "localhost:4317"
+      http:
+        endpoint: "localhost:4318"
 
 exporters:
-    debug:
-    awsxray:
-        region: us-west-2
-    awsemf:
-        namespace: TemporalWorkerMetrics
-        log_group_name: /aws/lambda/<your-function-name>
-        region: us-west-2
-        dimension_rollup_option: NoDimensionRollup
-        resource_to_telemetry_conversion:
-            enabled: true
+  debug:
+  awsxray:
+    region: us-west-2
+  awsemf:
+    namespace: TemporalWorkerMetrics
+    log_group_name: /aws/lambda/<your-function-name>
+    region: us-west-2
+    dimension_rollup_option: NoDimensionRollup
+    resource_to_telemetry_conversion:
+      enabled: true
 
 service:
-    pipelines:
-        traces:
-            receivers: [otlp]
-            exporters: [awsxray, debug]
-        metrics:
-            receivers: [otlp]
-            exporters: [awsemf]
-    telemetry:
-        logs:
-            level: debug
-        metrics:
-            address: localhost:8888
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [awsxray, debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [awsemf]
+  telemetry:
+    logs:
+      level: debug
+    metrics:
+      address: localhost:8888
 ```
+<!--SNIPEND-->
 
 Set the following environment variable on the Lambda function to point the Collector at the bundled config:
 

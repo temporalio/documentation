@@ -22,8 +22,10 @@ origins:
     repo: samples-ruby
   - owner: temporalio
     repo: samples-dotnet
+    ref: ea/aws-lambda
   - owner: temporalio
     repo: samples-java
+    ref: ea/aws-lambda
   - owner: temporalio
     repo: features
   - owner: temporalio

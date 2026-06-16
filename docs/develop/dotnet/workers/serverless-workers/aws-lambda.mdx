@@ -72,7 +72,12 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 Set it per-Workflow with the `[Workflow]` attribute, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 The default versioning behavior is `AutoUpgrade`.
 
-```csharp
+<!--SNIPSTART dotnet-lambda-worker-workflow-->
+[src/LambdaWorker/SampleWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/SampleWorkflow.workflow.cs)
+```cs
+namespace TemporalioSamples.LambdaWorker;
+
+using Microsoft.Extensions.Logging;
 using Temporalio.Common;
 using Temporalio.Workflows;
 
@@ -82,12 +87,16 @@ public class SampleWorkflow
     [WorkflowRun]
     public async Task<string> RunAsync(string name)
     {
-        return await Workflow.ExecuteActivityAsync(
-            () => SampleActivities.HelloActivityAsync(name),
+        Workflow.Logger.LogInformation("SampleWorkflow started with name: {Name}", name);
+        var result = await Workflow.ExecuteActivityAsync(
+            () => Activities.HelloActivity(name),
             new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+        Workflow.Logger.LogInformation("SampleWorkflow completed with result: {Result}", result);
+        return result;
     }
 }
 ```
+<!--SNIPEND-->
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -166,29 +175,36 @@ dotnet add package Temporalio.Extensions.Aws.Lambda.OpenTelemetry
 
 Call `LambdaWorkerOpenTelemetry.ApplyDefaults` in the configure callback:
 
-```csharp
+<!--SNIPSTART dotnet-lambda-worker-->
+[src/LambdaWorker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/Function.cs)
+```cs
+namespace TemporalioSamples.LambdaWorker;
+
 using Amazon.Lambda.Core;
 using Temporalio.Common;
 using Temporalio.Extensions.Aws.Lambda;
 using Temporalio.Extensions.Aws.Lambda.OpenTelemetry;
 
-public class Function
+public class LambdaFunction
 {
     private static readonly Func<object?, ILambdaContext, Task> WorkerHandler =
         TemporalLambdaWorker.CreateHandler(
-            new WorkerDeploymentVersion("my-app", "build-1"),
-            config =>
-            {
-                LambdaWorkerOpenTelemetry.ApplyDefaults(config);
-                config.WorkerOptions.TaskQueue = "serverless-task-queue-1";
-                config.WorkerOptions.AddWorkflow<SampleWorkflow>();
-                config.WorkerOptions.AddActivity(SampleActivities.HelloActivityAsync);
-            });
+            new WorkerDeploymentVersion(
+                LambdaWorkerSample.DeploymentName,
+                LambdaWorkerSample.BuildId),
+            Configure);
 
-    public Task HandlerAsync(object? input, ILambdaContext context) =>
+    public Task HandlerAsync(Stream input, ILambdaContext context) =>
         WorkerHandler(input, context);
+
+    private static void Configure(LambdaWorkerConfig config)
+    {
+        LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
+        LambdaWorkerOpenTelemetry.ApplyDefaults(config);
+    }
 }
 ```
+<!--SNIPEND-->
 
 `ApplyDefaults` configures Temporal tracing with `TracingInterceptor`, creates an OTLP trace exporter and tracer provider, configures Core SDK OTLP metrics, uses AWS X-Ray-compatible trace IDs, and registers a per-invocation shutdown hook that force-flushes traces.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
@@ -216,7 +232,9 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-```yaml
+<!--SNIPSTART dotnet-lambda-worker-otel-collector-config-->
+[src/LambdaWorker/otel-collector-config.yaml.sample](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/otel-collector-config.yaml.sample)
+```sample
 receivers:
     otlp:
         protocols:
@@ -228,11 +246,11 @@ receivers:
 exporters:
     debug:
     awsxray:
-        region: us-west-2
+        region: ${env:AWS_REGION}
     awsemf:
         namespace: TemporalWorkerMetrics
-        log_group_name: /aws/lambda/<your-function-name>
-        region: us-west-2
+        log_group_name: /aws/lambda/${env:AWS_LAMBDA_FUNCTION_NAME}
+        region: ${env:AWS_REGION}
         dimension_rollup_option: NoDimensionRollup
         resource_to_telemetry_conversion:
             enabled: true
@@ -251,6 +269,7 @@ service:
         metrics:
             address: localhost:8888
 ```
+<!--SNIPEND-->
 
 Set the following environment variable on the Lambda function to point the Collector at the bundled config:
 

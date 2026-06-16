@@ -50,6 +50,7 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
   the [Go Lambda Worker sample](https://github.com/temporalio/samples-go/tree/main/lambda-worker),
   [Python Lambda Worker sample](https://github.com/temporalio/samples-python/tree/main/lambda_worker),
   [TypeScript Lambda Worker sample](https://github.com/temporalio/samples-typescript/tree/main/lambda-worker),
+  [Java Lambda Worker sample](https://github.com/temporalio/samples-java/tree/main/lambda-worker),
   or [.NET Lambda Worker sample](https://github.com/temporalio/samples-dotnet/tree/main/src/LambdaWorker).
 
   :::
@@ -188,11 +189,11 @@ public final class Handler implements RequestHandler<Object, Void> {
   private static final RequestHandler<Object, Void> WORKER =
       LambdaWorker.run(
           new WorkerDeploymentVersion("my-app", "build-1"),
-          options ->
-              options
-                  .setTaskQueue("my-task-queue")
-                  .registerWorkflowImplementationTypes(MyWorkflowImpl.class)
-                  .registerActivitiesImplementations(new MyActivitiesImpl()));
+          builder -> {
+            builder.setTaskQueue("my-task-queue");
+            builder.registerWorkflowImplementationTypes(MyWorkflowImpl.class);
+            builder.registerActivitiesImplementations(new MyActivitiesImpl());
+          });
 
   @Override
   public Void handleRequest(Object input, Context context) {
