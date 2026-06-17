@@ -164,7 +164,7 @@ func (s *UnitTestSuite) Test_CancelActivity() {
     testSuite := &testsuite.WorkflowTestSuite{}
     env := testSuite.NewTestActivityEnvironment()
 
-    ctx, cancl := context.WithCancel(context.Background())
+    ctx, cancel := context.WithCancel(context.Background())
 
     env.SetWorkerOptions(worker.Options{
         BackgroundActivityContext: ctx,
