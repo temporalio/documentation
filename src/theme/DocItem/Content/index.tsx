@@ -7,6 +7,7 @@ import MDXContent from '@theme/MDXContent';
 import type { Props } from '@theme/DocItem/Content';
 
 import LLMActions from '@site/src/components/LLMActions/LLMActions';
+import MarkdownAlternateLink from '@site/src/components/LLMActions/MarkdownAlternateLink'; //Leaving this out for this release, until I get get a baseline on markdown requests
 import styles from './styles.module.css';
 
 /**
@@ -28,6 +29,7 @@ export default function DocItemContent({ children }: Props): JSX.Element {
 
   return (
     <div className={clsx(ThemeClassNames.docs.docMarkdown, 'markdown')}>
+      <MarkdownAlternateLink />
       {syntheticTitle && (
         <header className={styles.header}>
           <Heading as="h1">{syntheticTitle}</Heading>

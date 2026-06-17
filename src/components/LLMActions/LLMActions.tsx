@@ -4,6 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { SiOpenai, SiClaude } from 'react-icons/si';
 import styles from './LLMActions.module.css';
+import { getMarkdownPath } from './markdownPath';
 
 export default function LLMActions() {
   const [copied, setCopied] = useState(false);
@@ -22,7 +23,7 @@ export default function LLMActions() {
   // that build output rather than the raw MDX source.
   // NOTE: the .md files only exist after `yarn build`; under `yarn start` (dev
   // server) these requests will 404. Verify locally with `yarn build && yarn serve`.
-  const mdPath = `${permalink.replace(/\/$/, '')}.md`;
+  const mdPath = getMarkdownPath(permalink);
   const mdUrl = `${siteConfig.url}${mdPath}`;
 
   const prompt = `Read ${mdUrl} and answer questions about the content.`;
