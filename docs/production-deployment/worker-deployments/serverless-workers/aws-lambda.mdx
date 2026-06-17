@@ -466,6 +466,7 @@ aws lambda create-function \
 | `--function-name` | Name of the Lambda function.                                                                                           |
 | `--runtime`       | Lambda runtime. Use `dotnet8` or another supported .NET version.                                                       |
 | `--handler`       | Entry point in `Assembly::Namespace.Class::Method` format. Must point to the method that calls the worker handler.     |
+| `SSL_CERT_FILE`   | Required. The .NET Lambda runtime sets a default certificate path that the Temporal SDK cannot read. This overrides it with the system CA bundle so TLS connections work. |
 
 </SdkTabs.DotNet>
 </SdkTabs>
