@@ -341,10 +341,10 @@ zip function.zip function.jar
 </SdkTabs.Java>
 <SdkTabs.DotNet>
 
-Publish a self-contained deployment for the Lambda runtime:
+Publish for the Lambda runtime:
 
 ```bash
-dotnet publish -c Release -r linux-x64 --self-contained true \
+dotnet publish -c Release -r linux-x64 --self-contained false \
   -o ./publish
 ```
 
@@ -458,7 +458,7 @@ aws lambda create-function \
   --zip-file fileb://function.zip \
   --timeout 600 \
   --memory-size 256 \
-  --environment '{"Variables":{"TEMPORAL_ADDRESS":"<your-temporal-address>:7233","TEMPORAL_NAMESPACE":"<your-namespace>","TEMPORAL_API_KEY":"<your-api-key>"}}'
+  --environment '{"Variables":{"TEMPORAL_ADDRESS":"<your-temporal-address>:7233","TEMPORAL_NAMESPACE":"<your-namespace>","TEMPORAL_API_KEY":"<your-api-key>","SSL_CERT_FILE":"/etc/pki/tls/certs/ca-bundle.crt"}}'
 ```
 
 | Parameter         | Description                                                                                                            |
