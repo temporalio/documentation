@@ -15,9 +15,6 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader
-  type="publicPreview"
-/>
 
 The Temporal Cloud Billing API provides Namespace-level cost attribution through on-demand billing reports. 
 Reports are delivered in CSV format and can be accessed via API or downloaded directly for use in FinOps tooling and cost management platforms.  
@@ -67,6 +64,11 @@ Within a single account:
 ### Report Generation Latency
 
 Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
+
+###Multiple Accounts under One Billable Entity
+
+To preserve account isolation, Billing API requests originating from a Temporal Account that is linked to others for billing purposes will only receive billing data associated with that Temporal Account. Support/Platform charges will be associated with the First (ie oldest) Temporal Account associated with the billable entity. 
+
 
 ## Best practices
 
