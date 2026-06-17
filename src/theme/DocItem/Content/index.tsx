@@ -7,7 +7,7 @@ import MDXContent from '@theme/MDXContent';
 import type { Props } from '@theme/DocItem/Content';
 
 import LLMActions from '@site/src/components/LLMActions/LLMActions';
-import MarkdownAlternateLink from '@site/src/components/LLMActions/MarkdownAlternateLink'; //Leaving this out for this release, until I get get a baseline on markdown requests
+import MarkdownAlternateLink from '@site/src/components/LLMActions/MarkdownAlternateLink';
 import styles from './styles.module.css';
 
 /**
