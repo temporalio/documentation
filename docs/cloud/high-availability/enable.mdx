@@ -1,9 +1,9 @@
 ---
 id: enable
-title: Enable High Availability
-sidebar_label: Enable High Availability
+title: Enable and manage High Availability
+sidebar_label: Enable and manage High Availability
 slug: /cloud/high-availability/enable
-description: Get started with HA features
+description: Add a replica to a Namespace to enable High Availability, then manage forwarding behavior and automatic failover settings.
 ---
 
 import { ToolTipTerm } from '@site/src/components';
@@ -126,6 +126,129 @@ Follow these steps to change the replica location:
 2. [Add a new replica](#upgrade) to your Namespace.
 
 You will receive an email alert once your Namespace is ready for use.
+
+## Change the forwarding behavior {/* #change-forwarding-behavior */}
+
+Requests that reach the passive replica can be [forwarded](/cloud/high-availability/#request-forwarding) to the active region, and responses sent back to the Worker or Client. The `disablePassivePollerForwarding` Namespace setting controls this behavior for Worker poll traffic.
+
+With `disablePassivePollerForwarding` enabled, Worker polls that reach a passive replica are not forwarded, and these Workers do not execute Workflows or Activities. Workers connected to such a passive replica receive a `NamespaceNotActive` error on poll requests. These Workers stay connected and will start executing Workflows and Activities if the replica becomes active.
+
+Client APIs (Start, Signal, Cancel, Terminate, Query, and the equivalent Activity APIs) are forwarded to the active region regardless of this setting, with responses sent back to the Client.
+
+Same-region replicas are not affected by this setting.
+
+:::info
+
+To see which endpoints route to which replica, see [How requests reach the replica](/cloud/high-availability/ha-connectivity#how-requests-reach-the-replica).
+
+:::
+
+`disablePassivePollerForwarding` can be set through the [Cloud Ops API](/ops), the [cloud-api SDK](https://github.com/temporalio/cloud-sdk-go), or the [`temporal cloud` CLI extension](/cli/cloud). Use one of the recipes below.
+
+### Set the forwarding behavior with the `temporal cloud` CLI {/* #set-forwarding-cli */}
+
+Use the [`temporal cloud namespace ha update`](/cli/command-reference/cloud/namespace#ha-update) command:
+
+```bash
+temporal cloud namespace ha update \
+    --namespace <namespace>.<account> \
+    --disable-passive-poller-forwarding true
+```
+
+Set the flag to `false` to re-enable forwarding.
+
+### Set the forwarding behavior with the Cloud Ops API {/* #set-forwarding-curl */}
+
+This recipe uses `curl` against the Cloud Ops API. Because `UpdateNamespace` replaces the entire Namespace spec, it fetches the current spec, merges in the new value, and posts it back with the current `resourceVersion`. The `jq` filter preserves any other High Availability fields you have set (such as `disableManagedFailover`).
+
+Set the Cloud Ops API key and Namespace ID. The Namespace ID is in `<namespace>.<account>` format (the full identifier shown in the Cloud Web UI):
+
+```bash
+export TEMPORAL_CLOUD_OPS_API_KEY='<your-api-key>'
+export NS='<namespace>.<account>'
+```
+
+Fetch the current spec:
+
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY" > /tmp/ns.json
+```
+
+Build the update payload. Set the value to `true` to disable forwarding, or `false` to restore the default:
+
+```bash
+jq --arg rv "$(jq -r '.namespace.resourceVersion' /tmp/ns.json)" '{
+  spec: (.namespace.spec
+    | .highAvailability = ((.highAvailability // {}) + {disablePassivePollerForwarding: true})),
+  resourceVersion: $rv
+}' /tmp/ns.json > /tmp/ns-update.json
+```
+
+Post the update. The response contains an `asyncOperation` ID; the change is complete when `GET /cloud/operations/<id>` reports a terminal state.
+
+```bash
+curl -sS -X POST "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d @/tmp/ns-update.json
+```
+
+Verify the current value:
+
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY" \
+  | jq '.namespace.spec.highAvailability.disablePassivePollerForwarding'
+```
+
+A result of `null` means the field has never been set, which is equivalent to `false` — proto3 JSON omits default-`false` values from responses.
+
+## Enable or disable automatic failovers {/* #automatic-failovers */}
+
+When a Temporal Cloud Namespace has a replica in a different region or cloud, Temporal Cloud automatically fails over the Namespace to its replica in the event of an outage. _This is the recommended and default option._
+
+If you prefer to disable automatic failovers and handle your own failovers, follow these instructions:
+
+:::warning Disabling automatic failovers voids Temporal's RTO
+
+With automatic failovers disabled, Temporal Cloud cannot fail your Namespace over to its replica during an outage. You take responsibility for detecting outages and [triggering a failover](/cloud/high-availability/failovers/manage#trigger-failover) yourself. Temporal's [20-minute RTO](/cloud/rpo-rto) does not apply while this setting is disabled.
+
+:::
+
+<Tabs>
+
+<TabItem value="webui" label="Web UI">
+
+1. Navigate to the Namespace detail page in Temporal Cloud.
+1. Choose the "Disable Temporal-initiated failovers" option.
+
+</TabItem>
+
+<TabItem value="tcldcli" label="tcld">
+
+To disable automatic failovers, run the following command in your terminal:
+
+```
+tcld namespace update-high-availability \
+    --namespace <namespace_id>.<account_id> \
+    --disable-auto-failover=true
+```
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before
+`namespace update-high-availability`.
+
+</TabItem>
+
+</Tabs>
+
+To restore the default behavior, unselect the option in the Web UI or change `true` to `false` in the CLI command.
+
+:::note Automatic failovers are always enabled for Same-region Replication
+
+This setting applies only to Multi-region and Multi-cloud Replication. You cannot disable automatic failovers for a [Same-region Replication](/cloud/high-availability#same-region-replication) Namespace, because same-region failovers between cells are always managed by Temporal.
+
+:::
 
 ## Disable High Availability (remove a replica) {/* #disable */}
 

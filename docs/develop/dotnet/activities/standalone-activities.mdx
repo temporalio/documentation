@@ -19,12 +19,11 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal .NET SDK.
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal .NET SDK support for [Standalone Activities](/standalone-activity) is at
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+/>
 
 Standalone Activities are Activities that run independently, without being orchestrated by a
 Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
@@ -69,7 +68,7 @@ Prerequisites:
   brew install temporal
   ```
 
-  Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+  Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
   Verify the installation:
 
@@ -449,7 +448,7 @@ export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
 Set these environment variables with values from your Temporal Cloud API key settings:
 
 ```
-export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
 export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
