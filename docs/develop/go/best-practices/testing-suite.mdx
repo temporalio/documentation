@@ -39,9 +39,7 @@ Because the test server supports skipping time, use the test server for both end
 
 ## Test frameworks {/* #test-frameworks */}
 
-The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
-
-This framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
+The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations. This framework is suited for implementing unit tests as well as functional tests of the Workflow logic.
 
 ## Test setup
 
@@ -92,9 +90,24 @@ func TestUnitTestSuite(t *testing.T) {
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
+Here's an example of a simple Activity that will be referenced in the sections below:
+
+```go
+package greeting
+
+import (
+	"context"
+	"fmt"
+)
+
+func Greet(ctx context.Context, name string) (string, error) {
+	return fmt.Sprintf("Hello %s", name), nil
+}
+```
+
 ### Run an Activity {/* #run-an-activity */}
 
-If an Activity references its context, you need to mock that context when testing in isolation. You can do that by using [`NewTestActivityEnvironment`](https://pkg.go.dev/go.temporal.io/sdk@v1.44.1/internal#WorkflowTestSuite.NewTestActivityEnvironment) from the [`WorkflowTestSuite`](https://pkg.go.dev/go.temporal.io/sdk@v1.44.1/internal#WorkflowTestSuite).
+If an Activity references its context, you need to mock that context when testing in isolation. You can do that by using [`NewTestActivityEnvironment`](https://pkg.go.dev/go.temporal.io/sdk/testsuite#TestActivityEnvironment) from the [`WorkflowTestSuite`](https://pkg.go.dev/go.temporal.io/sdk/testsuite#WorkflowTestSuite).
 
 ```go
 package greeting
@@ -171,12 +184,19 @@ func (s *UnitTestSuite) Test_CancelActivity() {
     })
     env.RegisterActivity(Greet)
 
+    done := make(chan struct{})
+
     go func() {
+        defer close(done)
         // Cancel the activity after 5s
         time.Sleep(5 * time.Second)
-        cancl()
+        cancel()
     }()
+
     _, err := env.ExecuteActivity(Greet, "Temporal")
+
+    <-done
+    
     // Expect the activity to return a cancled error
     s.Error(err)
 }
@@ -508,9 +528,9 @@ func TestWorkflow_AutoTimeSkipping(t *testing.T) {
 
 #### Skip time manually {/* #manual-method */}
 
-In addition to automatic skipping, you can manually control time progression in the Go test environment.
+By default, this test suite uses a mock Workflow clock which automatically moves forward to fire the next Timer when the Workflow is blocked. In addition to automatic skipping, you can manually control time progression in the Go test environment.
 
-Use `env.RegisterDelayedCallback()` to explicitly move time forward. This is useful when you want fine-grained control over when Timers fire.
+Use `env.RegisterDelayedCallback()` to create a new Timer with a specified `delayDuration` using the mock Workflow clock. When the Timer fires, the callback will be called. This is useful when you want fine-grained control over when Timers fire.
 
 Example:
 
