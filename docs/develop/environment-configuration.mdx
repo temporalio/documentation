@@ -125,7 +125,7 @@ temporal config set --prop address --value "localhost:7233"
 temporal config set --prop namespace --value "default"
 
 # Configure a Temporal Cloud profile that authenticates with an API key
-temporal --profile prod config set --prop address --value "<region>.<cloud_provider>.api.temporal.io:7233"
+temporal --profile prod config set --prop address --value "<namespace_id>.<account_id>.tmprl.cloud:7233"
 temporal --profile prod config set --prop namespace --value "<namespace_id>.<account_id>"
 temporal --profile prod config set --prop api_key --value "<your-api-key>"
 ```
@@ -137,7 +137,7 @@ This example shows how to set up a more advanced Temporal Cloud profile with TLS
 
 ```bash
 # Base API key properties (replace the placeholders)
-temporal --profile prod config set --prop address --value "<region>.<cloud_provider>.api.temporal.io:7233"
+temporal --profile prod config set --prop address --value "<namespace_id>.<account_id>.tmprl.cloud:7233"
 temporal --profile prod config set --prop namespace --value "<namespace_id>.<account_id>"
 temporal --profile prod config set --prop api_key --value "<your-api-key>"
 
