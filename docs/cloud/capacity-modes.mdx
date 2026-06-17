@@ -174,6 +174,12 @@ Provisioned Capacity works well when you’re aware of specific increases in loa
 Depending on your usage patterns and your system monitoring, you can use Provisioned Capacity to quickly remedy rate limiting without contacting support.
 You can also automate changes in capacity if you have a known event or a recurring usage pattern that produces predictable usage spikes. 
 
+### Monitoring provisioned capacity utilization
+
+Because provisioned capacity is reserved by the hour whether or not you use it, it is worth tracking how much of it you actually consume.
+Sustained usage well below your provisioned limit can mean you are paying for capacity you are not using, since each TRU beyond the first carries a minimum hourly charge (see [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing)).
+For the metrics to watch and how to alert on utilization, see [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
+
 ## Setting Capacity Modes
 Capacity Modes and TRUs can be set via the Temporal Cloud UI, CLI, or API. 
 Capacity modes can be set and adjusted by Global Admin and Namespace Admin. 
