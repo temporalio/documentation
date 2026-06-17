@@ -62,7 +62,6 @@ func OrderWorkflow(ctx workflow.Context, input OrderInput) error {
 		return err
 	}
 	// ... rest of the workflow
-	_ = stream
 	return nil
 }
 ```
@@ -510,7 +509,6 @@ func ChatWorkflow(ctx workflow.Context, input ChatInput) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	_ = stream
 
 	subscriberDone := false
 	ackCh := workflow.GetSignalChannel(ctx, "subscriber-acknowledged-terminator")
