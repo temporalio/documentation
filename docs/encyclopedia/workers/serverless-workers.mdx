@@ -241,7 +241,69 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 | Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes.                          |
 | Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.                              |
 | Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                   |
-| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. |
+| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. See [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers). |
+
+## Worker Versioning with Serverless Workers {/* #worker-versioning-with-serverless-workers */}
+
+Serverless Workers require [Worker Versioning](/worker-versioning), and the compute provider must invoke a stable,
+immutable build for each Worker Deployment Version. With AWS Lambda, this means aligning two versioning systems:
+
+- **Temporal Worker Deployment Versions** — identified by deployment name and Build ID. Each Workflow runs against a
+  specific Worker Deployment Version (Pinned) or moves between them on routing changes (Auto-Upgrade).
+- **AWS Lambda function versions** — immutable numbered snapshots of your Lambda function code (`1`, `2`, `3`, ...).
+
+A Worker Deployment Version is an immutable build identifier. For production workloads, keep the Lambda function code
+it invokes immutable as well: map each Worker Deployment Version to exactly one Lambda function version, and configure
+the compute provider with the qualified
+[versioned ARN](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) for that Lambda version (for
+example, `arn:aws:lambda:us-east-1:123:function:my-worker:5`).
+
+```mermaid
+flowchart LR
+    subgraph Temporal["Temporal · Worker Deployment 'my-app'"]
+        direction TB
+        b1["Build ID: v1"]
+        b2["Build ID: v2"]
+        b3["Build ID: v3<br/>(Current)"]
+    end
+    subgraph AWS["AWS Lambda · my-temporal-worker"]
+        direction TB
+        l1["Lambda version 1<br/><code>function:my-temporal-worker:1</code>"]
+        l2["Lambda version 2<br/><code>function:my-temporal-worker:2</code>"]
+        l3["Lambda version 3<br/><code>function:my-temporal-worker:3</code>"]
+    end
+    b1 -- qualified ARN --> l1
+    b2 -- qualified ARN --> l2
+    b3 -- qualified ARN --> l3
+```
+
+:::tip Use a qualified versioned ARN in production
+
+An unqualified ARN (no version suffix, such as `arn:aws:lambda:us-east-1:123:function:my-worker`) points at `$LATEST`,
+which changes whenever you redeploy the Lambda. Workflows created against an older Build ID are then invoked against
+newer code, so every code change must remain replay-compatible under standard [patching](/patching) rules — even for
+Workflows you annotated as Pinned. In effect, an unqualified ARN gives up the "Pinned doesn't need patching" guarantee
+and pushes the replay-safety burden onto your team for every Lambda redeploy.
+
+For development, testing, or non-critical workloads where this discipline is acceptable, an unqualified ARN is fine and
+lets you iterate without publishing a new Lambda function version each time. For production, use a qualified versioned
+ARN so that Pinned Workflows remain truly pinned to the code they started against.
+
+:::
+
+### How the Versioning Behavior changes rollout {/* #rollout-by-behavior */}
+
+The choice of Pinned or Auto-Upgrade controls how *Workflows* move between Worker Deployment Versions in Temporal. It
+does not change how a Worker Deployment Version targets Lambda — both behaviors use a versioned ARN that points at one
+immutable Lambda function version.
+
+| Versioning Behavior | What changes when you roll out new code                                                                                                                                                                                                |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pinned**          | Publish a new Lambda function version, then create a new Worker Deployment Version that points at it. Existing Workflows continue invoking their original Lambda function version until they complete.                                |
+| **Auto-Upgrade**    | Publish a new Lambda function version, create a new Worker Deployment Version that points at it, then move the Current Version. Existing Workflows move to the new Worker Deployment Version (and its new Lambda version) at Workflow Task boundaries. |
+
+For step-by-step instructions on publishing Lambda versions and configuring the compute provider with a versioned ARN,
+see [Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version).
 
 ## Compute providers {/* #compute-providers */}
 
@@ -253,7 +315,7 @@ For example, an AWS Lambda compute provider includes the Lambda function ARN and
 invoke the function.
 
 Compute providers are only needed for Serverless Workers. Traditional long-lived Workers do not require a compute
-provider because the Worker process manages its own lifecycle.
+provider because the Worker process lifecycle is not managed by the Temporal server. 
 
 ### Supported providers
 
