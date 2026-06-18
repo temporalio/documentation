@@ -102,7 +102,7 @@ WorkflowStreamClient.create(client, workflowId)
 
 Then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let `await using` flush on scope exit.
 
-When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state — see [Delivery semantics](/workflow-streams#delivery-semantics).
+When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [Delivery semantics](/workflow-streams#delivery-semantics).
 
 ```typescript
 import { Client } from '@temporalio/client';
@@ -269,7 +269,7 @@ There are two ways to provide that overlap.
     // ... do work and publish events ...
 
     await condition(() => subscriberDone, '30 seconds');
-    // Returns true if the ack arrived, false on timeout — either way, fall through.
+    // Returns true if the ack arrived, false on timeout. Either way, fall through.
     return result;
   }
   ```
@@ -490,7 +490,7 @@ export async function streamChat(chatId: string): Promise<string> {
 
 A few choices in this shape are deliberate:
 
-- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream — see [Publish from a client](#publish-from-a-client) for why.
+- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream. See [Publish from a client](#publish-from-a-client) for why.
 - The Activity publishes a `RETRY` event when `Context.current().info.attempt > 1`. This lets the UI respond appropriately to the failure, typically by clearing accumulated deltas before the next attempt's deltas arrive (see [Delivery semantics](/workflow-streams#delivery-semantics)).
 - Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `close` event, so the Workflow can return as soon as the subscriber confirms. The `condition` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
 - `{ forceFlush: true }` is used only on the first delta and on the `RETRY` sentinel, where latency matters. Subsequent deltas batch at the 200 ms `batchInterval`; per-delta `forceFlush: true` would generate one Signal per token (see [Tuning](/workflow-streams#tuning) for the trade-off).

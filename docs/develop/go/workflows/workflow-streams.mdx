@@ -28,18 +28,7 @@ It batch-publishes events to amortize per-Signal cost, deduplicates batches for 
 
 Use [Workflow Streams](/workflow-streams) when you want outside observers to follow the progress of a Workflow and its Activities: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, or reporting intermediate results from a data job. It is not suited to ultra-low-latency cases like real-time voice, and it targets modest fan-out: tens of publishers and subscribers per Workflow, not thousands.
 
-The Workflow hosts the event log. Publishers append events — the Workflow itself, Activities, or external processes via `Client`. Subscribers attach to the Workflow Id, optionally filter by **topic** (a string label set when publishing; topics are implicit and created on first publish), and consume events by long-polling from an offset they store.
-
-**Looking for...**
-
-- [Enabling streaming on a Workflow](#enable-streaming-on-a-workflow)
-- [Publishing from a Workflow](#publish-from-a-workflow)
-- [Publishing from a client](#publish-from-a-client)
-- [Subscribing to a stream](#subscribe)
-- [Continue-As-New](#continue-as-new)
-- [Deduplication window settings](#deduplication-window)
-- [Best practices](#best-practices)
-- [An example of streaming LLM output](#stream-llm-output)
+The Workflow hosts the event log. Publishers append events: the Workflow itself, Activities, or external processes via `Client`. Subscribers attach to the Workflow Id, optionally filter by **topic** (a string label set when publishing; topics are implicit and created on first publish), and consume events by long-polling from an offset they store.
 
 ## Enable streaming on a Workflow
 
@@ -129,7 +118,7 @@ workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{})
 
 Then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and `defer client.Close(ctx)` to flush on scope exit.
 
-When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state — see [Delivery semantics](/workflow-streams#delivery-semantics).
+When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [Delivery semantics](/workflow-streams#delivery-semantics).
 
 ```go
 import (
@@ -333,7 +322,7 @@ There are two ways to provide that overlap.
 
   	// ... do work and publish events ...
 
-  	// Returns true if the ack arrived, false on timeout — either way, fall through.
+  	// Returns true if the ack arrived, false on timeout. Either way, fall through.
   	_, _ = workflow.AwaitWithTimeout(ctx, 30*time.Second, func() bool { return subscriberDone })
   	return result, nil
   }
@@ -586,7 +575,7 @@ func StreamChat(ctx context.Context, temporalClient client.Client, chatID string
 
 A few choices in this shape are deliberate:
 
-- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream — see [Publish from a client](#publish-from-a-client) for why.
+- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream. See [Publish from a client](#publish-from-a-client) for why.
 - The Activity publishes a `RETRY` event when `activity.GetInfo(ctx).Attempt > 1`. This lets the UI respond appropriately to the failure, typically by clearing accumulated deltas before the next attempt's deltas arrive (see [Delivery semantics](/workflow-streams#delivery-semantics)).
 - Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `close` event, so the Workflow can return as soon as the subscriber confirms. The `AwaitWithTimeout` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
 - `forceFlush` is `true` only on the first delta and on the `RETRY` sentinel, where latency matters. Subsequent deltas batch at the 200 ms `BatchInterval`; per-delta `forceFlush` would generate one Signal per token (see [Tuning](/workflow-streams#tuning) for the trade-off).
