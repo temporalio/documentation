@@ -204,7 +204,14 @@ The UI can display up to 100 Custom Roles.
 
 A single principal (such as a user) can be assigned up to 10 Custom Roles.
 
-A Custom Role can be applied to up to 20 specific resources (such as a Namespace). Note that applying a Custom Role to ALL resources is still supported even if there are more than 20.
+A Custom Role can contain up 20 permissions. Each permission is a pair of
+- A list of resource IDs of a single type (e.g., specific Namespace IDs)
+- A list of actions that apply to those resources (e.g., cloud.namespace.get, cloud.namespace.update)
+For example, 
+- 1 permission: Namespaces [ns-prod, ns-staging] with actions [cloud.namespace.get, cloud.namespace.update] 
+- 2 permissions: Namespace [ns-prod] with action [cloud.namespace.get]; Namespace [ns-staging] with action [cloud.namespace.update] defined separately.
+
+There is no limit on the number of resource IDs or actions within a single permission pair. Applying a permission to all resources of a type counts as one permission regardless of how many resources exist in your account.
 
 ## Nexus Endpoint level
 
