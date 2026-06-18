@@ -46,9 +46,9 @@ This page covers the following:
 - [How Workflow Streams works](#how-workflow-streams-works)
 - [Choose where to host the stream](#choose-where-to-host-the-stream)
 - [Closing the stream](#closing-the-stream)
-- [Delivery semantics](#delivery-semantics)
+- [How events are delivered](#how-events-are-delivered)
 - [Tuning](#tuning)
-- [Continue-As-New](#continue-as-new)
+- [Stream from long-running Workflows](#stream-from-long-running-workflows)
 
 ## What are Workflow Streams? {/* #what-are-workflow-streams */}
 
@@ -113,7 +113,7 @@ the flusher; it doesn't wait for delivery.
 
 Each client has a unique publisher Id and a monotonic sequence number. Every batch is tagged with this pair so that a
 Signal retried by the SDK or the network deduplicates to a single landing in the log. See
-[Delivery semantics](#delivery-semantics) for the full guarantee.
+[How events are delivered](#how-events-are-delivered) for the full guarantee.
 
 <RelatedReadContainer>
   <RelatedReadItem
@@ -204,7 +204,7 @@ Two mechanisms bound the growth of the in-memory log:
   doesn't remove publish Signals already recorded in Workflow history. A subscriber whose offset falls below the new
   base after truncation is silently advanced to the current base.
 - **Continue-As-New** starts a fresh Workflow history. This is the only way to shrink history. See
-  [Continue-As-New](#continue-as-new).
+  [Stream from long-running Workflows](#stream-from-long-running-workflows).
 
 ### Architecture
 
@@ -290,7 +290,9 @@ The subscribe iterator exits cleanly when the Workflow reaches `COMPLETED`, `FAI
 `TIMED_OUT`, but doesn't distinguish among them. If your application needs to know which, describe the Workflow handle
 after the loop returns to inspect the status.
 
-## Delivery semantics
+## How events are delivered
+
+Workflow Streams provides exactly-once publishing, total ordering within a publisher, and transparent handling of Activity retries. This section covers each guarantee and the failure modes to be aware of.
 
 ### Exactly-once publishing
 
@@ -345,8 +347,7 @@ The most important question when tuning is: how often do you want to update your
 between user-perceived latency and the number of history events your Workflow accumulates.
 
 Each batched publish is one Signal and each subscriber poll is one Update. Each Signal and each Update counts against
-the Workflow's history. A more responsive UI means more messages and more history per second. For long-running streams,
-plan a [Continue-As-New](#continue-as-new) policy from the start.
+the Workflow's history. A more responsive UI means more messages and more history per second. To plan for long-running streams, refer to [Stream from long-running Workflows](#stream-from-long-running-workflows) for details on how to use [Continue-As-New](/encyclopedia/workflow/workflow-execution/continue-as-new) to avoid performance degradation from large event histories.
 
 ### Batch interval
 
@@ -366,11 +367,11 @@ completion produces 500 publish Signals, which is meaningful but tractable. Per-
 | **max batch size** | unbounded | Caps the number of items per batch. Without this, only batch interval bounds batch size. A hot publisher can accumulate enough items that the resulting Signal exceeds Temporal's per-message gRPC payload limit. For large items, offload via [External Storage](/external-storage) so each item is a small reference. |
 | **poll cooldown**  | 100 ms    | Minimum interval between subscriber polls. Skipped only when a poll response was capped at the 1 MB limit and more items remain.                                                                                  |
 
-## Continue-As-New
+## Stream from long-running Workflows
 
 If your Workflow runs for minutes and finishes (a single chat completion, an order pipeline, a one-shot agent), you can
-skip this section. Continue-As-New becomes relevant for streams that run for hours or accumulate thousands of events,
-where you need to roll the Workflow over to keep history bounded.
+skip this section. Long-running streams that run for hours or accumulate thousands of events need to periodically roll
+over via Continue-As-New to keep history bounded.
 
 Subscribers automatically follow Continue-As-New chains. Workflow Ids are stable across Continue-As-New, so the
 subscriber fetches a fresh handle for the same Workflow Id and continues polling from its carried offset.
@@ -390,17 +391,17 @@ storage so each item is a small reference, and use truncation to drop entries th
 <RelatedReadContainer>
   <RelatedReadItem
     path="/develop/python/workflows/workflow-streams#continue-as-new"
-    text="Continue-As-New with the Python SDK"
+    text="Long-running streams with the Python SDK"
     archetype="feature-guide"
   />
   <RelatedReadItem
     path="/develop/typescript/workflows/workflow-streams#continue-as-new"
-    text="Continue-As-New with the TypeScript SDK"
+    text="Long-running streams with the TypeScript SDK"
     archetype="feature-guide"
   />
   <RelatedReadItem
     path="/develop/go/workflows/workflow-streams#continue-as-new"
-    text="Continue-As-New with the Go SDK"
+    text="Long-running streams with the Go SDK"
     archetype="feature-guide"
   />
 </RelatedReadContainer>
