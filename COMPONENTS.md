@@ -26,6 +26,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
 - [Using ZoomingImage](#using-zoomingimage)
+- [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using ReleaseNoteHeader](#using-release-note-header)
 
 ## Finding Components
@@ -459,6 +460,65 @@ Usage:
 ```
 
 Images are normally stored in the '/static' folder in `img` or `diagrams`.
+
+## Using SdkGuideLinks
+
+Role: Render a vertical list of SDK guide links, each with a colored block icon and label, linking readers to the relevant SDK-specific page.
+
+How to import:
+
+```
+import { SdkGuideLinks } from '@site/src/components';
+```
+
+### Standard usage
+
+Pass a `path` prop and the component generates links for all eight SDKs automatically.
+The path is appended to `/develop/<sdk>/`, so you only need the portion after the SDK segment.
+
+```
+<SdkGuideLinks path="client/temporal-client" />
+```
+
+This produces links to `/develop/go/client/temporal-client`, `/develop/java/client/temporal-client`, and so on for all supported SDKs.
+
+### Filtering to specific SDKs
+
+Use the `filter` prop to show only a subset of SDKs.
+Pass an array of SDK identifiers.
+
+```
+<SdkGuideLinks path="client/temporal-client" filter={['go', 'java', 'python']} />
+```
+
+Valid SDK identifiers: `go`, `java`, `dotnet`, `php`, `python`, `ruby`, `rust`, `typescript`.
+
+### Custom links
+
+When SDK guide pages do not follow the standard `/develop/<sdk>/<path>` pattern, pass explicit links with the `links` prop.
+The `path` and `filter` props are ignored when `links` is provided.
+
+```
+<SdkGuideLinks links={[
+  { name: 'goLangBlock',     href: '/develop/go/custom/path',         label: 'Go' },
+  { name: 'pythonBlock',     href: '/develop/python/custom/path',     label: 'Python' },
+  { name: 'typeScriptBlock', href: '/develop/typescript/custom/path', label: 'TypeScript' },
+]} />
+```
+
+Valid `name` values for the block icons: `goLangBlock`, `javaBlock`, `dotnetBlock`, `phpBlock`, `pythonBlock`, `rubyBlock`, `rustBlock`, `typeScriptBlock`.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | `string` | Yes, unless `links` is provided | Path segment appended to `/develop/<sdk>/` for each SDK link. |
+| `filter` | `string[]` | No | Limits generated links to the specified SDK identifiers. Only applies when using `path`. |
+| `links` | `object[]` | Yes, unless `path` is provided | Explicit list of links. Each item requires `name`, `href`, and `label`. Overrides `path` and `filter`. |
+
+### Where the component is used
+
+- `/temporal-client` — links to the Temporal Client feature guide for each SDK
 
 ## Using ReleaseNoteHeader
 
