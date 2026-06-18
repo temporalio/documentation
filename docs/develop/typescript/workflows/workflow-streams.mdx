@@ -19,17 +19,11 @@ tags:
 description: Stream events from a Workflow to subscribers using the Temporal TypeScript SDK Workflow Streams contrib module.
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="workflowStreams" />
+
 [Workflow Streams](/workflow-streams) adds a durable event channel to a Workflow, letting outside observers follow its progress in real time. This page walks through enabling a stream, publishing events from Workflows and Activities, subscribing to a stream, and keeping a stream running across long-lived Workflows.
-
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-The `@temporalio/workflow-streams` module is currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
-[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
-
-The API may change before general availability.
-
-:::
 
 ## Enable streaming on a Workflow
 
