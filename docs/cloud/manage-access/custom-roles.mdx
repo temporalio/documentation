@@ -75,18 +75,10 @@ Most of the Control Plane operations listed in the API references ([HTTP](https:
 [GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/)) can be assigned to a Custom Role. 
 For the operations that are supported by Custom Roles, see [this table](manage-access/permissions-reference#custom-role-permissions)
 
-The following operations are not yet available to Custom Roles:
-
-- Creating an API key or a service account. These operations are part of the pre-defined roles (admin or above) and cannot be assigned to other less-privileged roles.
-- Operations that require additional role and permission validation, such as Create a Nexus Endpoint.
-- Separating or splitting operations that are part of [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/{namespace}).
-
 ## Create Custom Roles
 
 <Tabs groupID="create-custom-roles">
   <TabItem value="cloud-ui" label="Cloud UI">
-
-<!-- TBD: The UI is subject to change -->
 
 To create a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the Settings page.
 
@@ -151,7 +143,7 @@ The following constraints apply to the request:
     - A description is optional, with a maximum of 256 characters
 - **Permissions constraints:**
     - At least one permission is required
-   - A Custom Role can contain up to 20 permissions, see [Custom Roles limits](/cloud/limits#custom-role-limits).
+   - A Custom Role can contain up to 20 permissions. See [Custom Roles limits](/cloud/limits#custom-role-limits).
 
 **Permission Structure**
 
