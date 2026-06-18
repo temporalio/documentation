@@ -324,19 +324,14 @@ zip -r function.zip lib/ node_modules/ workflow-bundle.js
 </SdkTabs.TypeScript>
 <SdkTabs.Java>
 
-Build a fat JAR (uber-jar) with all dependencies using your build tool (Gradle or Maven). For example, with Gradle's
-Shadow plugin:
+Build your Lambda function with all dependencies bundled.
+For example, with Gradle's Shadow plugin:
 
 ```bash
 ./gradlew shadowJar
 ```
 
-Package the JAR into a zip file:
-
-```bash
-cp build/libs/my-worker-all.jar function.jar
-zip function.zip function.jar
-```
+The shadow JAR is a valid zip archive and can be uploaded directly to Lambda.
 
 </SdkTabs.Java>
 <SdkTabs.DotNet>
@@ -430,21 +425,22 @@ aws lambda create-function \
 ```bash
 aws lambda create-function \
   --function-name my-temporal-worker \
-  --runtime java21 \
-  --handler com.example.Handler \
+  --runtime java17 \
+  --handler io.temporal.samples.lambdaworker.LambdaFunction::handleRequest \
   --role <EXECUTION_ROLE_ARN> \
-  --zip-file fileb://function.zip \
-  --timeout 600 \
-  --memory-size 512 \
+  --zip-file fileb://build/libs/my-worker-all.jar \
+  --timeout 90 \
+  --memory-size 1024 \
   --environment '{"Variables":{"TEMPORAL_ADDRESS":"<your-temporal-address>:7233","TEMPORAL_NAMESPACE":"<your-namespace>","TEMPORAL_API_KEY":"<your-api-key>"}}'
 ```
 
 | Parameter         | Description                                                                                                                    |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `--function-name` | Name of the Lambda function.                                                                                                   |
-| `--runtime`       | Lambda runtime. Use `java21` or another supported Java version.                                                                |
-| `--handler`       | Fully qualified class name of your `RequestHandler` implementation.                                                            |
-| `--memory-size`   | Java Workers typically need more memory than other runtimes. Start with `512` and adjust based on CloudWatch memory metrics.    |
+| `--runtime`       | Lambda runtime. Use `java17` or another supported Java version.                                                                |
+| `--handler`       | Fully qualified class name of your `RequestHandler` implementation, with `::handleRequest`.                                    |
+| `--zip-file`      | Path to the shadow JAR. Shadow JARs are valid zip archives and can be uploaded directly.                                       |
+| `--memory-size`   | Java Workers typically need more memory than other runtimes. Start with `1024` and adjust based on CloudWatch memory metrics.   |
 
 </SdkTabs.Java>
 <SdkTabs.DotNet>

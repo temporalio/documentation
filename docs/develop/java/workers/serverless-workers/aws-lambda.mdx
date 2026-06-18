@@ -28,12 +28,13 @@ Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when
 Each invocation starts a Worker, polls for Tasks, then gracefully shuts down before a configurable invocation deadline.
 You register Workflows and Activities the same way you would with a standard Worker.
 
-For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
 
 ## Create and run a Worker in Lambda {/* #create-and-run */}
 
-Add the `temporal-aws-lambda` dependency alongside the Temporal SDK.
-Create a Lambda handler class that delegates to `LambdaWorker.run`.
+Create a class that implements AWS Lambda's `RequestHandler` interface and delegates to `LambdaWorker.run` in a static field.
+Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
+Assign the handler to a static field so it is created once during Lambda cold start and reused across invocations.
 
 <!--SNIPSTART java-lambda-worker {"highlightedLines": "11-15"}-->
 [lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java)
@@ -61,9 +62,6 @@ public class LambdaFunction implements RequestHandler<Object, Void> {
 }
 ```
 <!--SNIPEND-->
-
-`LambdaWorker.run` takes a `WorkerDeploymentVersion` and a configure callback, and returns a `RequestHandler`.
-Assign the handler to a static field so it is created once during Lambda cold start and reused across invocations.
 
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
@@ -104,7 +102,7 @@ public class SampleWorkflowImpl implements SampleWorkflow {
 ```
 <!--SNIPEND-->
 
-The configure callback receives a `LambdaWorkerOptions.Builder` with the same registration methods as a standard Worker: `registerWorkflowImplementationTypes`, `registerActivitiesImplementations`, and `registerDynamicWorkflowImplementationType`.
+The configure callback receives a `LambdaWorkerOptions.Builder` with the same [registration methods as a standard Worker](/develop/java/workers/run-worker-process#register-types): `registerWorkflowImplementationTypes`, `registerActivitiesImplementations`, and `registerDynamicWorkflowImplementationType`.
 
 If you need to assemble options outside the callback, call `LambdaWorkerOptions.newBuilderFromEnvironment()`, configure the builder, and pass the built options to `LambdaWorker.newHandler(...)`.
 
@@ -140,8 +138,6 @@ These differ from standard Worker defaults to avoid overcommitting resources in 
 | `MaxWorkflowThreadCount` | 30 |
 | `GracefulShutdownTimeout` | 5 seconds |
 | `ShutdownDeadlineBuffer` | 7 seconds |
-
-Eager Activities are not supported. Lambda invocations don't maintain persistent connections.
 
 `ShutdownDeadlineBuffer` is specific to the `temporal-aws-lambda` module.
 It controls the full shutdown window reserved at the end of the Lambda invocation, including graceful shutdown time, shutdown hooks, and service stub cleanup.
@@ -187,7 +183,7 @@ public final class Handler implements RequestHandler<Object, Void> {
 }
 ```
 
-`OtelLambdaWorker.configure` creates an OpenTelemetry SDK with OTLP metric and trace exporters, uses AWS X-Ray-compatible trace ID generation, installs an OpenTelemetry-backed metrics scope, and registers per-invocation flush hooks.
+`OtelLambdaWorker.configure` configures OpenTelemetry with OTLP trace and metric exporters, uses AWS X-Ray-compatible trace ID generation, installs an OpenTelemetry-backed metrics scope, and registers per-invocation flush hooks.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 The endpoint can be overridden with the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
 
