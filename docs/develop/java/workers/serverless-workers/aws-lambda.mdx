@@ -35,9 +35,9 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Add the `temporal-aws-lambda` dependency alongside the Temporal SDK.
 Create a Lambda handler class that delegates to `LambdaWorker.run`.
 
-<!--SNIPSTART java-lambda-worker-->
+<!--SNIPSTART java-lambda-worker {"highlightedLines": "11-15"}-->
 [lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java)
-```java
+```java {11-15}
 package io.temporal.samples.lambdaworker;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -70,9 +70,9 @@ Worker Deployment Versioning is always enabled for Serverless Workers.
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or `Pinned`.
 Set it per-Workflow with the `@WorkflowVersioningBehavior` annotation on the Workflow method, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 
-<!--SNIPSTART java-lambda-worker-workflow-->
+<!--SNIPSTART java-lambda-worker-workflow {"highlightedLines": "21"}-->
 [lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java)
-```java
+```java {21}
 package io.temporal.samples.lambdaworker;
 
 import io.temporal.activity.ActivityOptions;
@@ -112,7 +112,7 @@ If you need to assemble options outside the callback, call `LambdaWorkerOptions.
 
 The `temporal-aws-lambda` module automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-The config file is resolved in order:
+Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
 
 1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
 2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).

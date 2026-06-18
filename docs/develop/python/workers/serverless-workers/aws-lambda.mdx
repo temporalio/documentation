@@ -86,7 +86,7 @@ class MyWorkflow:
 
 The `lambda_worker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-The config file is resolved in order:
+Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
 
 1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
 2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
@@ -134,7 +134,7 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Python SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-<!--SNIPSTART python-lambda-worker-->
+<!--SNIPSTART python-lambda-worker {"highlightedLines": "4, 12"}-->
 [lambda_worker/lambda_function.py](https://github.com/temporalio/samples-python/blob/lambda-worker/lambda_worker/lambda_function.py)
 ```py
 from activities import hello_activity

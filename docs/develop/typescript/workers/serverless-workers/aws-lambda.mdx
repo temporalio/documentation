@@ -35,9 +35,9 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `runWorker` function to create a Lambda handler that runs a Temporal Worker.
 Pass a deployment version and a configure callback that sets up your Workflows and Activities.
 
-<!--SNIPSTART typescript-lambda-worker {"selectedLines": ["1", "3-11", "13"]}-->
+<!--SNIPSTART typescript-lambda-worker {"selectedLines": ["1", "3-11", "13"], "highlightedLines": "6"}-->
 [lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/src/index.ts)
-```ts
+```ts {6}
 import { runWorker } from '@temporalio/lambda-worker';
 // ...
 import * as activities from './activities';
@@ -82,7 +82,7 @@ Then reference the bundle in your handler with `workflowBundle: { codePath: requ
 
 The `@temporalio/lambda-worker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-The config file is resolved in order:
+Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
 
 1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
 2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
@@ -127,9 +127,9 @@ With this enabled, the Worker emits SDK metrics and distributed traces for Workf
 The underlying metrics and traces are the same ones the TypeScript SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - TypeScript SDK](/develop/typescript/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-<!--SNIPSTART typescript-lambda-worker-->
+<!--SNIPSTART typescript-lambda-worker {"highlightedLines": "2, 12"}-->
 [lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/src/index.ts)
-```ts
+```ts {2, 12}
 import { runWorker } from '@temporalio/lambda-worker';
 import { applyDefaults } from '@temporalio/lambda-worker/otel';
 import * as activities from './activities';
