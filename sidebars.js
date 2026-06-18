@@ -124,6 +124,7 @@ module.exports = {
                 'develop/go/workflows/side-effects',
                 'develop/go/workflows/dynamic-workflow',
                 'develop/go/workflows/versioning',
+                'develop/go/workflows/workflow-streams',
               ],
             },
             {
