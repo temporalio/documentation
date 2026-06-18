@@ -359,8 +359,10 @@ The headline use case fits the publish/subscribe shapes documented above. An Act
 
 If your Activity can retry, the consumer side has to account for it. A retried attempt is a fresh publisher, so its output appears in the stream alongside the output from the previous attempt. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern. See [How events are delivered](/workflow-streams#how-events-are-delivered) for the precise guarantees.
 
+<Tabs>
+<TabItem value="activity" label="activities.ts">
+
 ```typescript
-// activities.ts
 import { Context } from '@temporalio/activity';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
 import OpenAI from 'openai';
@@ -412,8 +414,10 @@ export async function streamCompletion(prompt: string): Promise<string> {
 }
 ```
 
+</TabItem>
+<TabItem value="workflow" label="workflows.ts">
+
 ```typescript
-// workflows.ts
 import { condition, defineSignal, executeActivity, setHandler } from '@temporalio/workflow';
 import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
 import type * as activities from './activities';
@@ -443,8 +447,10 @@ export async function chatWorkflow(input: ChatInput): Promise<string> {
 }
 ```
 
+</TabItem>
+<TabItem value="consumer" label="consumer.ts">
+
 ```typescript
-// consumer.ts: accumulates the model's output and resets on retry
 import { Client } from '@temporalio/client';
 import { defaultPayloadConverter } from '@temporalio/common';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
@@ -479,6 +485,9 @@ export async function streamChat(chatId: string): Promise<string> {
   return output.join('');
 }
 ```
+
+</TabItem>
+</Tabs>
 
 A few choices in this shape are deliberate:
 

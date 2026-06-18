@@ -363,8 +363,10 @@ The headline use case fits the publish/subscribe shapes documented above. An Act
 
 If your Activity can retry, the consumer side has to account for it. A retried attempt is a fresh publisher, so its output appears in the stream alongside the output from the previous attempt. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern. See [How events are delivered](/workflow-streams#how-events-are-delivered) for the precise guarantees.
 
+<Tabs>
+<TabItem value="activity" label="activity.py">
+
 ```python
-# activity.py
 from openai import AsyncOpenAI
 
 
@@ -412,8 +414,10 @@ async def stream_completion(prompt: str) -> str:
     return "".join(full)
 ```
 
+</TabItem>
+<TabItem value="workflow" label="workflow.py">
+
 ```python
-# workflow.py
 @workflow.defn
 class ChatWorkflow:
     @workflow.init
@@ -445,8 +449,10 @@ class ChatWorkflow:
         return result
 ```
 
+</TabItem>
+<TabItem value="consumer" label="consumer.py">
+
 ```python
-# consumer.py: accumulates the model's output and resets on retry
 async def stream_chat(chat_id: str) -> str:
     # Subscribe-only; no `async with` needed because the flusher only runs for publishers.
     stream = WorkflowStreamClient.create(temporal_client, workflow_id=chat_id)
@@ -476,6 +482,9 @@ async def stream_chat(chat_id: str) -> str:
 
     return "".join(output)
 ```
+
+</TabItem>
+</Tabs>
 
 A few choices in this shape are deliberate:
 

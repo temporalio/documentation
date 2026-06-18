@@ -414,8 +414,10 @@ The headline use case fits the publish/subscribe shapes documented above. An Act
 
 If your Activity can retry, the consumer side has to account for it. A retried attempt is a fresh publisher, so its output appears in the stream alongside the output from the previous attempt. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern. See [How events are delivered](/workflow-streams#how-events-are-delivered) for the precise guarantees.
 
+<Tabs>
+<TabItem value="activity" label="activity.go">
+
 ```go
-// activity.go
 package main
 
 import (
@@ -470,8 +472,10 @@ func StreamCompletion(ctx context.Context, prompt string) (string, error) {
 }
 ```
 
+</TabItem>
+<TabItem value="workflow" label="workflow.go">
+
 ```go
-// workflow.go
 package main
 
 import (
@@ -514,8 +518,10 @@ func ChatWorkflow(ctx workflow.Context, input ChatInput) (string, error) {
 }
 ```
 
+</TabItem>
+<TabItem value="consumer" label="consumer.go">
+
 ```go
-// consumer.go: accumulates the model's output and resets on retry
 package main
 
 import (
@@ -565,6 +571,9 @@ func StreamChat(ctx context.Context, temporalClient client.Client, chatID string
 	return strings.Join(output, ""), nil
 }
 ```
+
+</TabItem>
+</Tabs>
 
 A few choices in this shape are deliberate:
 
