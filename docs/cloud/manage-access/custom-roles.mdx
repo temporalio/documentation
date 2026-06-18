@@ -73,7 +73,7 @@ You also cannot replace a pre-defined role with a custom role.
 
 Most of the Control Plane operations listed in the API references ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction),
 [GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/)) can be assigned to a Custom Role. 
-For the operations that are supported by Custom Roles, you will see the naming specification available next to each API call description.
+For the operations that are supported by Custom Roles, see [this table](manage-access/permissions-reference#custom-role-permissions)
 
 The following operations are not yet available to Custom Roles:
 
@@ -151,7 +151,7 @@ The following constraints apply to the request:
     - A description is optional, with a maximum of 256 characters
 - **Permissions constraints:**
     - At least one permission is required
-    - You can assign up to 25 permissions per role (account default, may vary) 
+   - A Custom Role can contain up to 20 permissions, see [Custom Roles limits](/cloud/limits#custom-role-limits).
 
 **Permission Structure**
 
@@ -211,11 +211,12 @@ The permissions are assigned in an array, with the action `cloud.namespace.get` 
   }
 ```
 
-For more information about the `CustomRole` and `CustomRoleSpec` definitions, see the [Schema Registry](https://buf.build/temporalio/cloud-api/docs/f22f274c493a4c9b931514dca6ffcf44:temporal.api.cloud.identity.v1#temporal.api.cloud.identity.v1.CustomRole).
+For more information about the `Custom Role` and `CustomRoleSpec` definitions, see the [HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles) and/or [GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/) API reference doc. 
   </TabItem>
   <TabItem value="terraform" label="Terraform">
 
-Instructions to come.
+For more detailed examples on how to manage Custom Roles via Terraform, see the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/custom_role) for usage guidance.
+
 
   </TabItem>
   <TabItem value="cloud-cli" label="Cloud CLI">
@@ -312,12 +313,15 @@ When finished, click Update Custom Role.
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
 
-Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.UpdateCustomRoleRequest) to modify the Custom Role.
+Use the UpdateCustomRole API ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles/{roleId}), [GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/#updatecustomrole))to modify the Custom Role. 
 
   </TabItem>
   <TabItem value="terraform" label="Terraform">
 
-Instructions to come.
+To update a Custom Role, modify the `temporalcloud_custom_role` resource in your Terraform configuration and run `terraform apply`. 
+Updating a Custom Role replaces the full permissions list. Include all permissions you want to retain. Any permission omitted from the update will be removed.
+
+For more details see the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/custom_role).
 
   </TabItem>
   <TabItem value="cloud-cli" label="Cloud CLI">
@@ -347,12 +351,17 @@ A pop-up notification will let you know that the Custom Role has been deleted.
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
 
-Use the [`UpdateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.DeleteCustomRoleRequest) to delete the Custom Role:
+Use the DeleteCustomRole API ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/DELETE/cloud/custom-roles/{roleId}), [GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/#deletecustomrole))to delete the Custom Role.
 
   </TabItem>
   <TabItem value="terraform" label="Terraform">
 
-Instructions to come.
+To delete a Custom Role, remove the `temporalcloud_custom_role` resource block from your Terraform configuration and run `terraform apply`. You can also target a specific resource:
+
+Deleting a Custom Role permanently removes it and automatically revokes it from all principals it was assigned to. This action cannot be undone.
+
+For more details see the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/custom_role).
+
 
   </TabItem>
   <TabItem value="cloud-cli" label="Cloud CLI">
