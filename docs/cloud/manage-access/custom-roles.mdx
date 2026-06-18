@@ -69,11 +69,35 @@ You also cannot replace a pre-defined role with a custom role.
 
 :::
 
+## Delegating Custom Roles
+
+Custom role administration defaults to the Account Owner, but can be delegated.
+Account Owners are the primary principals that can manage Custom Roles (that is, they can create, list, update, delete, or assign a Custom Role).
+
+Account Owners can delegate Custom Role administration to other roles such as Global Admin, but this comes with risk.
+If the Account Owner creates a Custom Role that includes the ability to create, update, or assign Custom Roles, and assigns 
+that role to any other principal, such as Global Admin or Developer, users with that new role can create or modify roles with otehr operations and assign them to themselves or others.
+
+:::warning Use caution when delegating Custom Role operations
+
+By default, only the Account Owner can create or assign Custom Roles.
+The Account Owner can create roles that have permission to create, modify, or assign roles.
+If the Account Owner assigns these roles to another user, that user will have the ability to create or modify roles.
+This leads to privilege escalation risk where a user would have the ability to assign themselves or others to a role with any operations, even ones they're not approved for.
+
+:::
+
+The following operations present risk when delegated:
+
+- `cloud.customrole.create`
+- `cloud.customrole.update`
+- `cloud.customrole.assign`
+
 ## Available permissions
 
 Most of the Control Plane operations listed in the API references ([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction),
 [GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/)) can be assigned to a Custom Role. 
-For the operations that are supported by Custom Roles, see [this table](/cloud/manage-access/permissions-reference#custom-role-permissions)
+For the operations that are supported by Custom Roles, see [this table](/cloud/manage-access/permissions-reference#custom-role-permissions).
 
 ## Create Custom Roles
 
