@@ -17,6 +17,8 @@
 | `cloud.billingreport.create` | [CreateBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/billing-reports) | Account |
 | `cloud.billingreport.get` | [GetBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/billing-reports/%7BbillingReportId%7D) | Account |
 | `cloud.connectivityrule.list` | [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules) | Account, Project |
+| `cloud.customrole.create` | CreateCustomRole | Account |
+| `cloud.customrole.list` | GetCustomRoles | Account |
 | `cloud.migration.abort` | AbortMigration | Account |
 | `cloud.migration.confirm` | ConfirmMigration | Account |
 | `cloud.migration.get` | GetMigration | Account |
@@ -102,4 +104,12 @@
 | ---------- | ------------- | ------------- |
 | `cloud.connectivityrule.delete` | [DeleteConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/DELETE/cloud/connectivity-rules/%7BconnectivityRuleId%7D) | Connectivity Rule |
 | `cloud.connectivityrule.get` | [GetConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D) | Connectivity Rule |
+
+### Custom Role permissions
+
+| Permission | Cloud Ops API | Resource type |
+| ---------- | ------------- | ------------- |
+| `cloud.customrole.delete` | DeleteCustomRole | Custom Role |
+| `cloud.customrole.get` | GetCustomRole | Custom Role |
+| `cloud.customrole.update` | UpdateCustomRole | Custom Role |
 
