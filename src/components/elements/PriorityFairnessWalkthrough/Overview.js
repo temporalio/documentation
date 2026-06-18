@@ -37,7 +37,7 @@ export default function Overview({ onNext }) {
             <strong className={styles.featureCardTitle}>Priority</strong>
           </div>
           <p className={styles.featureCardBody}>
-            Every task carries a <code>priorityKey</code> from <code>1</code> (highest priority) to{' '}
+            Every task carries a priority key from <code>1</code> (highest priority) to{' '}
             <code>5</code> (lowest priority), with <code>3</code> as the default. When a Worker polls, it
             always picks the highest priority (`1`) Task first regardless of arrival time. This lets you
             share a single Worker pool across very different workloads and guarantee that
@@ -65,7 +65,7 @@ export default function Overview({ onNext }) {
           <p className={styles.featureCardBody}>
             Without Fairness, tasks at the same priority dispatch strictly FIFO, so a backlog-heavy
             tenant can block everyone else at that level indefinitely. Fairness groups tasks by{' '}
-            <code>fairnessKey</code> and dispatches proportionally by <code>fairnessWeight</code>. A
+            fairness key and dispatches proportionally by fairness weight. A
             key with weight <code>5</code> gets roughly 5x more dispatches than a key with weight{' '}
             <code>1</code>, but no key is ever completely locked out.
           </p>

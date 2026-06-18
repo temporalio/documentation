@@ -11,7 +11,7 @@ export default function SDK() {
   return (
     <div className={styles.section}>
       <p className={styles.lead}>
-        Set <code>priorityKey</code>, <code>fairnessKey</code>, or both when starting Workflows or
+        Set a priority key, fairness key, or both when starting Workflows or
         scheduling Activities. Priority and Fairness are enabled by default - no configuration
         required for Temporal Cloud or self-hosted clusters running Temporal 1.26+.
       </p>

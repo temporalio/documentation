@@ -8,15 +8,15 @@ const STEPS = [
   },
   {
     title: 'Priority tier is selected first',
-    body: 'Temporal finds the lowest `priorityKey` among all waiting tasks. Every task at priority 1 will be dispatched before any task at priority 2 moves, and so on. Tasks at the same level compete under Fairness rules.',
+    body: 'Temporal finds the lowest priority key among all waiting tasks. Every task at priority 1 will be dispatched before any task at priority 2 moves, and so on. Tasks at the same level compete under Fairness rules.',
   },
   {
     title: 'Fairness distributes capacity within the tier',
-    body: 'Within a priority tier, Temporal tracks how many tasks each `fairnessKey` has received relative to its `fairnessWeight`. The key that is furthest behind its expected share gets the next dispatch. This prevents any single tenant from consuming disproportionate capacity, even if they have a deep backlog.',
+    body: 'Within a priority tier, Temporal tracks how many tasks each fairness key has received relative to its fairness weight. The key that is furthest behind its expected share gets the next dispatch. This prevents any single tenant from consuming disproportionate capacity, even if they have a deep backlog.',
   },
   {
-    title: 'No fairnessKey means strict FIFO within the tier',
-    body: 'If you set priorityKey but omit fairnessKey, tasks at the same priority level are dispatched in arrival order. Fairness only applies when at least one task in the tier carries a fairnessKey.',
+    title: 'No fairness key means strict FIFO within the tier',
+    body: 'If you set a priority key but omit a fairness key, tasks at the same priority level are dispatched in arrival order. Fairness only applies when at least one task in the tier carries a fairness key.',
   },
   {
     title: 'Priority and Fairness are per Task Queue',
