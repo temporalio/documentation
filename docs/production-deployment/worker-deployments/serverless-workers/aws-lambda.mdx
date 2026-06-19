@@ -331,7 +331,7 @@ For example, with Gradle's Shadow plugin:
 ./gradlew shadowJar
 ```
 
-The shadow JAR is a valid zip archive and can be uploaded directly to Lambda.
+The shadow JAR is in `build/libs/` and is a valid zip archive that can be uploaded directly to Lambda.
 
 </SdkTabs.Java>
 <SdkTabs.DotNet>
@@ -428,7 +428,7 @@ aws lambda create-function \
   --runtime java17 \
   --handler io.temporal.samples.lambdaworker.LambdaFunction::handleRequest \
   --role <EXECUTION_ROLE_ARN> \
-  --zip-file fileb://build/libs/my-worker-all.jar \
+  --zip-file fileb://build/libs/<my-worker>-all.jar \
   --timeout 90 \
   --memory-size 1024 \
   --environment '{"Variables":{"TEMPORAL_ADDRESS":"<your-temporal-address>:7233","TEMPORAL_NAMESPACE":"<your-namespace>","TEMPORAL_API_KEY":"<your-api-key>"}}'
@@ -439,7 +439,7 @@ aws lambda create-function \
 | `--function-name` | Name of the Lambda function.                                                                                                   |
 | `--runtime`       | Lambda runtime. Use `java17` or another supported Java version.                                                                |
 | `--handler`       | Fully qualified class name of your `RequestHandler` implementation, with `::handleRequest`.                                    |
-| `--zip-file`      | Path to the shadow JAR. Shadow JARs are valid zip archives and can be uploaded directly.                                       |
+| `--zip-file`      | Path to the shadow JAR in `build/libs/`. The filename follows the pattern `<name>-<version>-all.jar` from your `build.gradle`. Shadow JARs are valid zip archives and can be uploaded directly. |
 | `--memory-size`   | Java Workers typically need more memory than other runtimes. Start with `1024` and adjust based on CloudWatch memory metrics.   |
 
 </SdkTabs.Java>
