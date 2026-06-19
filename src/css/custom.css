@@ -1231,6 +1231,24 @@ code {
   color: var(--ifm-color-primary);
 }
 
+.pattern-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.pattern-card-header img {
+  width: 48px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.pattern-card-header h3 {
+  margin: 0;
+}
+
 .pattern-content h3 {
   font-size: 1.25rem;
   font-weight: 500;
@@ -1258,6 +1276,126 @@ code {
   .pattern-content h3 {
     font-size: 1.1rem;
   }
+}
+
+/*
+ * Theme-aware semantic colors for Design Patterns mermaid diagrams.
+ * Diagrams register semantic classes (classDef <name> ...) and these variables
+ * are applied to the nodes below, so colors adapt automatically to light/dark mode.
+ */
+:root {
+  --dp-mermaid-success-bg: #d8f5dd;
+  --dp-mermaid-success-border: #2e9e4f;
+  --dp-mermaid-success-text: #14361f;
+  --dp-mermaid-compensation-bg: #fcd9e2;
+  --dp-mermaid-compensation-border: #d6457f;
+  --dp-mermaid-compensation-text: #3f1020;
+  --dp-mermaid-wait-bg: #ffe8c2;
+  --dp-mermaid-wait-border: #e0941f;
+  --dp-mermaid-wait-text: #3d2906;
+  --dp-mermaid-complete-bg: #d7e2ff;
+  --dp-mermaid-complete-border: #3f63e0;
+  --dp-mermaid-complete-text: #11214f;
+  --dp-mermaid-fail-bg: #ffd7dc;
+  --dp-mermaid-fail-border: #d83a3a;
+  --dp-mermaid-fail-text: #470f13;
+  --dp-mermaid-highlight-bg: #fff1c2;
+  --dp-mermaid-highlight-border: #d6a90f;
+  --dp-mermaid-highlight-text: #3b3107;
+}
+
+[data-theme='dark'] {
+  --dp-mermaid-success-bg: #173a27;
+  --dp-mermaid-success-border: #43c46a;
+  --dp-mermaid-success-text: #c5f3cf;
+  --dp-mermaid-compensation-bg: #3a1c2a;
+  --dp-mermaid-compensation-border: #f06ba8;
+  --dp-mermaid-compensation-text: #fbd2e2;
+  --dp-mermaid-wait-bg: #3a2c14;
+  --dp-mermaid-wait-border: #f0b02e;
+  --dp-mermaid-wait-text: #f8e3b6;
+  --dp-mermaid-complete-bg: #182a52;
+  --dp-mermaid-complete-border: #6f8cff;
+  --dp-mermaid-complete-text: #d3deff;
+  --dp-mermaid-fail-bg: #3a1a1e;
+  --dp-mermaid-fail-border: #f0595c;
+  --dp-mermaid-fail-text: #f8cccf;
+  --dp-mermaid-highlight-bg: #3a3414;
+  --dp-mermaid-highlight-border: #f3cb29;
+  --dp-mermaid-highlight-text: #f7edab;
+}
+
+/*
+ * Mermaid classDef cannot use var() in its values, so diagrams only register
+ * semantic classes (classDef <name> ...) and the actual colors are applied here.
+ * !important is required to beat Mermaid's theme-generated node styles.
+ */
+.docusaurus-mermaid-container g.node.success rect,
+.docusaurus-mermaid-container g.node.success polygon,
+.docusaurus-mermaid-container g.node.success path,
+.docusaurus-mermaid-container g.node.success circle {
+  fill: var(--dp-mermaid-success-bg) !important;
+  stroke: var(--dp-mermaid-success-border) !important;
+}
+.docusaurus-mermaid-container g.node.compensation rect,
+.docusaurus-mermaid-container g.node.compensation polygon,
+.docusaurus-mermaid-container g.node.compensation path,
+.docusaurus-mermaid-container g.node.compensation circle {
+  fill: var(--dp-mermaid-compensation-bg) !important;
+  stroke: var(--dp-mermaid-compensation-border) !important;
+}
+.docusaurus-mermaid-container g.node.wait rect,
+.docusaurus-mermaid-container g.node.wait polygon,
+.docusaurus-mermaid-container g.node.wait path,
+.docusaurus-mermaid-container g.node.wait circle {
+  fill: var(--dp-mermaid-wait-bg) !important;
+  stroke: var(--dp-mermaid-wait-border) !important;
+}
+.docusaurus-mermaid-container g.node.complete rect,
+.docusaurus-mermaid-container g.node.complete polygon,
+.docusaurus-mermaid-container g.node.complete path,
+.docusaurus-mermaid-container g.node.complete circle {
+  fill: var(--dp-mermaid-complete-bg) !important;
+  stroke: var(--dp-mermaid-complete-border) !important;
+}
+.docusaurus-mermaid-container g.node.fail rect,
+.docusaurus-mermaid-container g.node.fail polygon,
+.docusaurus-mermaid-container g.node.fail path,
+.docusaurus-mermaid-container g.node.fail circle {
+  fill: var(--dp-mermaid-fail-bg) !important;
+  stroke: var(--dp-mermaid-fail-border) !important;
+}
+.docusaurus-mermaid-container g.node.highlight rect,
+.docusaurus-mermaid-container g.node.highlight polygon,
+.docusaurus-mermaid-container g.node.highlight path,
+.docusaurus-mermaid-container g.node.highlight circle {
+  fill: var(--dp-mermaid-highlight-bg) !important;
+  stroke: var(--dp-mermaid-highlight-border) !important;
+}
+
+.docusaurus-mermaid-container g.node.success .nodeLabel,
+.docusaurus-mermaid-container g.node.success .nodeLabel p {
+  color: var(--dp-mermaid-success-text) !important;
+}
+.docusaurus-mermaid-container g.node.compensation .nodeLabel,
+.docusaurus-mermaid-container g.node.compensation .nodeLabel p {
+  color: var(--dp-mermaid-compensation-text) !important;
+}
+.docusaurus-mermaid-container g.node.wait .nodeLabel,
+.docusaurus-mermaid-container g.node.wait .nodeLabel p {
+  color: var(--dp-mermaid-wait-text) !important;
+}
+.docusaurus-mermaid-container g.node.complete .nodeLabel,
+.docusaurus-mermaid-container g.node.complete .nodeLabel p {
+  color: var(--dp-mermaid-complete-text) !important;
+}
+.docusaurus-mermaid-container g.node.fail .nodeLabel,
+.docusaurus-mermaid-container g.node.fail .nodeLabel p {
+  color: var(--dp-mermaid-fail-text) !important;
+}
+.docusaurus-mermaid-container g.node.highlight .nodeLabel,
+.docusaurus-mermaid-container g.node.highlight .nodeLabel p {
+  color: var(--dp-mermaid-highlight-text) !important;
 }
 
 /* Ask AI Navbar Button */

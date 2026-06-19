@@ -1,0 +1,43 @@
+---
+id: external-interaction-patterns
+title: External interaction patterns
+sidebar_label: Overview
+description: Patterns for waiting on or interacting with systems and actors outside the Workflow, including external APIs, human decisions, and scheduled delays.
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Patterns for waiting on or interacting with systems and actors outside the Workflow, including external APIs, human decisions, and scheduled delays.
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/polling",
+    icon: "polling-icon.png",
+    title: "Polling External Services",
+    description: "Strategies for polling external resources with varying frequencies: frequent, infrequent, and periodic patterns.",
+  },
+  {
+    href: "/design-patterns/long-running-activity",
+    icon: "long-running-activity-icon.png",
+    title: "Long-Running Activity",
+    description: "Long-running Activities report progress via heartbeats and enable resumption after failures with cancellation support.",
+  },
+  {
+    href: "/design-patterns/approval",
+    icon: "approval-icon.png",
+    title: "Approval",
+    description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.",
+  },
+  {
+    href: "/design-patterns/delayed-start",
+    icon: "delayed-start-icon.png",
+    title: "Delayed Start",
+    description: "Creates Workflows immediately but defers execution until a specified delay expires. Fits one-time scheduled operations and grace periods.",
+  },
+  {
+    href: "/design-patterns/delayed-callback",
+    icon: "webhooks-icon.png",
+    title: "Webhooks",
+    description: "Three patterns for durable webhook integration: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete activities asynchronously via task tokens.",
+  },
+]} />

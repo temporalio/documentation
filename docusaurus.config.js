@@ -138,6 +138,12 @@ module.exports = async function createConfigAsync() {
             position: 'left',
           },
           {
+            label: 'Design Patterns',
+            to: '/design-patterns',
+            activeBasePath: 'design-patterns',
+            position: 'left',
+          },
+          {
             label: 'Code Exchange',
             href: 'https://temporal.io/code-exchange',
             position: 'left',

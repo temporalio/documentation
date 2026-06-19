@@ -1,0 +1,25 @@
+---
+id: workflow-messaging-patterns
+title: Workflow messaging patterns
+sidebar_label: Overview
+description: Patterns for sending data into running Workflows and receiving responses or triggering behavior changes.
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Patterns for sending data into running Workflows and receiving responses or triggering behavior changes.
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/signal-with-start",
+    icon: "signal-with-start-icon.png",
+    title: "Signal with Start",
+    description: "Starts a Workflow when Signaling it if it does not already exist. If already running, it receives the Signal directly.",
+  },
+  {
+    href: "/design-patterns/request-response-via-updates",
+    icon: "request-response-icon.png",
+    title: "Request-Response via Updates",
+    description: "Synchronous request-response with validation. Updates modify state and return results directly.",
+  },
+]} />
