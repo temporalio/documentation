@@ -33,6 +33,9 @@ It offers a flexible way to automate and manage your Temporal Workflows, ensurin
 5. **Eliminate External Dependencies:**
    Schedules remove the need to integrate external scheduling systems.
 
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and can affect future scheduled starts through the Schedule's [Overlap Policy](/schedule#overlap-policy).
+For policy-specific behavior, see [Interaction with Workflow Pause](/schedule#workflow-pause).
+
 Jump straight to a Temporal SDK feature guide.
 
 <RelatedReadContainer>

@@ -19,6 +19,10 @@ This page shows how to do the following:
 - [How to use Start Delay](#start-delay)
 - [How to use Temporal Cron Jobs](#temporal-cron-jobs)
 
+For recurring automation, Temporal recommends [Schedules](/schedule) instead of Cron Jobs.
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and can affect future scheduled starts through the Schedule's [Overlap Policy](/schedule#overlap-policy).
+See [Interaction with Workflow Pause](/schedule#workflow-pause) for details.
+
 ## How to use Start Delay {/* #start-delay */}
 
 Use the Workflow [Start Delay](/workflow-execution/timers-delays) functionality if you need to delay the execution of the Workflow without the need for regular launches.

@@ -13,6 +13,8 @@ tags:
 
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
 This page discusses [Schedule](#schedule).
 
 ## What is a Schedule? {/* #schedule */}
@@ -22,6 +24,7 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 
 - [How to enable Schedules](#limitations)
 - [How to operate Schedules using the Temporal CLI](/cli/command-reference/schedule)
+- [How Workflow Pause interacts with Schedules](#workflow-pause)
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -171,11 +174,39 @@ However, you can still force manual actions by using the [temporal schedule trig
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 
+Pausing a Schedule is different from pausing a Workflow Execution.
+Schedule Pause stops the Schedule from taking future Actions, but it doesn't pause or otherwise affect any Workflow Executions that the Schedule already started.
+
+### Interaction with Workflow Pause {/* #workflow-pause */}
+
+<ReleaseNoteHeader type="prerelease">
+  Workflow Pause is in Pre-release. APIs and behavior may change before the stable release.
+</ReleaseNoteHeader>
+
+[Workflow Pause](/cli/command-reference/workflow#pause) pauses a specific Workflow Execution.
+If that Workflow Execution was started by a Schedule, the Schedule itself stays active unless you also pause the Schedule.
+
+A Paused Workflow Execution is still an open Workflow Execution.
+For a Schedule, that means the Paused Workflow Execution counts as the currently running execution when the Schedule evaluates its [Overlap Policy](#overlap-policy).
+This affects regularly scheduled Actions, manual triggers, and Backfills:
+
+- With `Skip`, each new scheduled Action is skipped while the previous scheduled Workflow Execution remains Paused.
+- With `BufferOne`, one Action can wait behind the Paused Workflow Execution. Additional Actions are skipped while the buffer is full.
+- With `BufferAll`, every matching Action is buffered and won't start until the Paused Workflow Execution closes.
+- With `AllowAll`, new Workflow Executions can start even while the earlier Workflow Execution is Paused.
+- With `CancelOther`, the Schedule requests cancellation of the Paused Workflow Execution and starts the next Workflow Execution only after the canceled Workflow Execution closes. If the Paused Workflow Execution can't process cancellation until it is unpaused, the next start still waits.
+- With `TerminateOther`, the Schedule terminates the Paused Workflow Execution and starts the next Workflow Execution immediately.
+
+If you pause a Workflow Execution for investigation and don't want the Schedule to skip or buffer future Actions, pause the Schedule too.
+When you're ready to resume the automation, unpause the Workflow Execution and then unpause the Schedule.
+If Actions were skipped while the Workflow Execution was Paused, use [Backfill](#backfill) to run them intentionally with the Overlap Policy you want.
+
 ### Backfill
 
 A Schedule can be Backfilled.
 When a Schedule is Backfilled, all the Actions that would have been taken over a specified time period are taken now (in parallel if the `AllowAll` [Overlap Policy](#overlap-policy) is used; sequentially if `BufferAll` is used).
 You might use this to fill in runs from a time period when the Schedule was paused due to an external condition that's now resolved, or a period before the Schedule was created.
+Backfilled Actions are still subject to the Overlap Policy, so a Paused Workflow Execution can cause Backfilled Actions to skip, buffer, or wait unless you choose a policy that allows or replaces overlap.
 
 ### Limit number of Actions
 
@@ -189,6 +220,7 @@ A Schedule supports a set of Policies that enable customizing behavior.
 #### Overlap Policy
 
 The Overlap Policy controls what happens when it is time to start a Workflow Execution but a previously started Workflow Execution is still running.
+A [Paused Workflow Execution](#workflow-pause) is still running for the purposes of the Overlap Policy.
 The following options are available:
 
 - `Skip`: **Default**.
