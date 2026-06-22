@@ -37,11 +37,9 @@ export default function Overview({ onNext }) {
             <strong className={styles.featureCardTitle}>Priority</strong>
           </div>
           <p className={styles.featureCardBody}>
-            Every task carries a priority key from <code>1</code> (highest priority) to{' '}
-            <code>5</code> (lowest priority), with <code>3</code> as the default. When a Worker polls, it
-            always picks the highest priority (`1`) Task first regardless of arrival time. This lets you
-            share a single Worker pool across very different workloads and guarantee that
-            time-sensitive work never waits behind low-urgency jobs.
+            Tasks carry a priority key from 1 (highest) to 5 (lowest), defaulting to 3.
+            Higher-priority tasks are always dispatched before lower-priority ones; within the same
+            priority level, tasks are dispatched in arrival order (FIFO).
           </p>
         </div>
 
@@ -63,11 +61,10 @@ export default function Overview({ onNext }) {
             <strong className={styles.featureCardTitle}>Fairness</strong>
           </div>
           <p className={styles.featureCardBody}>
-            Without Fairness, tasks at the same priority dispatch strictly FIFO, so a backlog-heavy
-            tenant can block everyone else at that level indefinitely. Fairness groups tasks by{' '}
-            fairness key and dispatches proportionally by fairness weight. A
-            key with weight <code>5</code> gets roughly 5x more dispatches than a key with weight{' '}
-            <code>1</code>, but no key is ever completely locked out.
+            Without Fairness, tasks at the same priority dispatch in FIFO order, so a backlog-heavy
+            tenant can hog Worker capacity and delay everyone else at that level. Fairness groups
+            tasks by a fairness key and dispatches them proportionally by fairness weight. A key with
+            weight 2.0 is dispatched twice as often as a key with the default weight of 1.0.
           </p>
         </div>
       </div>
