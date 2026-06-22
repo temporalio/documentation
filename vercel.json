@@ -16,6 +16,16 @@
   ],
   "redirects": [
     {
+      "source": "/cloud/disaster-recovery",
+      "destination": "/cloud/high-availability",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/multi-region-failover",
+      "destination": "/cloud/high-availability/deployment-patterns",
+      "permanent": true
+    },
+    {
       "source": "/encyclopedia/detecting-application-failures",
       "destination": "/encyclopedia/failures-and-error-handling",
       "permanent": true

@@ -12,6 +12,8 @@ You can enable [High Availability](/cloud/high-availability) features for a new 
 replica. When you add a replica, Temporal Cloud begins asynchronously replicating ongoing and existing Workflow
 Executions.
 
+Adding a replica fails the Namespace over automatically; to plan how your Workers fail over with it, see [Worker deployment patterns for high availability and disaster recovery](/cloud/high-availability/deployment-patterns).
+
  The replica region must be on the same continent as the primary region. Because of that, not all replication options are available in all Temporal Cloud regions. See the [Service regions](/cloud/regions) page for the supported replica regions for each active region.
 
 Using private network connectivity with a HA namespace requires extra setup. See
