@@ -6,53 +6,53 @@ const supportedTech = [
     name: 'goLangBlock',
     link: '/develop/go',
     image: '/img/sdks/svgs/golang-block.svg',
-    alt: 'Go lang logo',
+    alt: 'Go lang',
     className: 'sdkGoLang',
   },
   {
     name: 'javaBlock',
     link: '/develop/java',
     image: '/img/sdks/svgs/java-block.svg',
-    alt: 'Java logo',
+    alt: 'Java',
     className: 'sdkJava',
   },
   {
     name: 'phpBlock',
     link: '/develop/php',
     image: '/img/sdks/svgs/php-block.svg',
-    alt: 'php logo',
+    alt: 'PHP',
     className: 'sdkPhp',
   },
   {
     name: 'pythonBlock',
     link: '/develop/python',
     image: '/img/sdks/svgs/python-block.svg',
-    alt: 'Python logo',
+    alt: 'Python',
     className: 'sdkPython',
   },
   {
     name: 'rubyBlock',
     link: '/develop/ruby',
-    alt: 'Ruby logo',
+    alt: 'Ruby',
     className: 'sdkRuby',
   },
   {
     name: 'typeScriptBlock',
     link: '/develop/typescript',
     image: '/img/sdks/svgs/typescript-block.svg',
-    alt: 'TypeScript logo',
+    alt: 'TypeScript',
     className: 'sdkTypeScript',
   },
   {
     name: 'dotnetBlock',
     link: '/develop/dotnet',
-    alt: '.Net logo',
+    alt: '.NET',
     className: 'sdkDotNet',
   },
   {
     name: 'rustBlock',
     link: '/develop/rust',
-    alt: 'Rust logo',
+    alt: 'Rust',
     className: 'sdkRust',
   },
 ];
@@ -62,7 +62,7 @@ const displayTechListItems = () => {
     return (
       <li className={'sdk-logo'} key={tech.alt}>
         <a href={tech.link}>
-          <SdkSvg name={tech.name} className={tech.className} />
+          <SdkSvg name={tech.name} className={tech.className} title={tech.alt} />
         </a>
       </li>
     );

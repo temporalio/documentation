@@ -99,7 +99,7 @@ See [STYLE.md](./STYLE.md) for style guidance.
 
 You can preview how your changes will appear on the website locally on your machine.
 
-**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 20.0.0).**
+**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 24.0.0).**
 
 Run `yarn` to install the site dependencies.
 

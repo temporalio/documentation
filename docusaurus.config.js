@@ -15,14 +15,6 @@ module.exports = async function createConfigAsync() {
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     headTags: [
-      {
-        tagName: 'link',
-        attributes: {
-          rel: 'preload',
-          href: 'https://iq.temporal.io',
-          as: 'document',
-        },
-      },
     ],
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
@@ -284,6 +276,7 @@ module.exports = async function createConfigAsync() {
             changefreq: 'daily',
             priority: 0.5,
             filename: 'sitemap.xml',
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
           },
         },
       ],

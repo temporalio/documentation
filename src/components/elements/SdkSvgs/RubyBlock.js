@@ -1,9 +1,13 @@
 import React from 'react';
 import styles from './sdk-svg.module.css';
+import { useSvgTitle } from './useSvgTitle';
 
-const RubyBlock = () => {
+const RubyBlock = ({ title }) => {
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
+
   return (
     <svg
+      {...svgA11yProps}
       className={styles.sdkRuby}
       fill="none"
       height="40"
@@ -11,6 +15,7 @@ const RubyBlock = () => {
       width="40"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {titleElement}
       <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="20" x2="20" y1="10" y2="29.4286">
         <stop offset="0" stopColor="#111827" />
         <stop offset="1" stopColor="#141414" />
