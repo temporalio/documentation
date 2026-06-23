@@ -852,6 +852,7 @@ module.exports = {
               items: [
                 'develop/dotnet/nexus/quickstart',
                 'develop/dotnet/nexus/feature-guide',
+                'develop/dotnet/nexus/standalone-operations',
               ],
             },
             {
