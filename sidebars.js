@@ -41,9 +41,7 @@ module.exports = {
               type: 'category',
               label: 'Serverless Workers',
               link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
-              items: [
-                'evaluate/development-production-features/serverless-workers/demo',
-              ],
+              items: ['evaluate/development-production-features/serverless-workers/demo'],
             },
             {
               type: 'category',
@@ -126,6 +124,7 @@ module.exports = {
                 'develop/go/workflows/side-effects',
                 'develop/go/workflows/dynamic-workflow',
                 'develop/go/workflows/versioning',
+                'develop/go/workflows/workflow-streams',
               ],
             },
             {
@@ -165,9 +164,7 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/go/workers/serverless-workers/index',
                   },
-                  items: [
-                    'develop/go/workers/serverless-workers/aws-lambda',
-                  ],
+                  items: ['develop/go/workers/serverless-workers/aws-lambda'],
                 },
               ],
             },
@@ -179,10 +176,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/client/index',
               },
-              items: [
-                'develop/go/client/temporal-client',
-                'develop/go/client/namespaces'
-              ],
+              items: ['develop/go/client/temporal-client', 'develop/go/client/namespaces'],
             },
             {
               type: 'category',
@@ -192,10 +186,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/nexus/index',
               },
-              items: [
-                'develop/go/nexus/quickstart',
-                'develop/go/nexus/feature-guide',
-              ],
+              items: ['develop/go/nexus/quickstart', 'develop/go/nexus/feature-guide'],
             },
             {
               type: 'category',
@@ -205,10 +196,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/platform/index',
               },
-              items: [
-                'develop/go/platform/observability',
-                'develop/go/platform/enriching-ui',
-              ],
+              items: ['develop/go/platform/observability', 'develop/go/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -298,9 +286,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/workers/index',
               },
-              items: [
-                'develop/java/workers/run-worker-process',
-              ],
+              items: ['develop/java/workers/run-worker-process'],
             },
             {
               type: 'category',
@@ -310,10 +296,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/client/index',
               },
-              items: [
-                'develop/java/client/temporal-client',
-                'develop/java/client/namespaces',
-              ],
+              items: ['develop/java/client/temporal-client', 'develop/java/client/namespaces'],
             },
             {
               type: 'category',
@@ -323,10 +306,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/nexus/index',
               },
-              items: [
-                'develop/java/nexus/quickstart',
-                'develop/java/nexus/feature-guide',
-              ],
+              items: ['develop/java/nexus/quickstart', 'develop/java/nexus/feature-guide'],
             },
             {
               type: 'category',
@@ -336,10 +316,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/platform/index',
               },
-              items: [
-                'develop/java/platform/observability',
-                'develop/java/platform/enriching-ui',
-              ],
+              items: ['develop/java/platform/observability', 'develop/java/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -358,15 +335,13 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
                 id: 'develop/java/integrations/index',
               },
-              items: [
-                'develop/java/integrations/spring-boot',
-                'develop/java/integrations/spring-ai',
-              ],
+              items: ['develop/java/integrations/spring-boot', 'develop/java/integrations/spring-ai'],
             },
           ],
         },
@@ -399,7 +374,7 @@ module.exports = {
                 'develop/php/workflows/timers',
                 'develop/php/workflows/side-effects',
                 'develop/php/workflows/versioning',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -414,7 +389,7 @@ module.exports = {
                 'develop/php/activities/execution',
                 'develop/php/activities/timeouts',
                 'develop/php/activities/asynchronous-activity',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -424,9 +399,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/workers/index',
               },
-              items: [
-                'develop/php/workers/run-worker-process',
-              ]
+              items: ['develop/php/workers/run-worker-process'],
             },
             {
               type: 'category',
@@ -436,9 +409,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/client/index',
               },
-              items: [                
-                'develop/php/client/temporal-client',
-              ],
+              items: ['develop/php/client/temporal-client'],
             },
             {
               type: 'category',
@@ -448,10 +419,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/platform/index',
               },
-              items: [
-                'develop/php/platform/observability',
-                'develop/php/platform/enriching-ui',
-              ],
+              items: ['develop/php/platform/observability', 'develop/php/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -461,10 +429,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/best-practices/index',
               },
-              items: [
-                'develop/php/best-practices/testing-suite',
-                'develop/php/best-practices/debugging'
-              ]
+              items: ['develop/php/best-practices/testing-suite', 'develop/php/best-practices/debugging'],
             },
           ],
         },
@@ -497,7 +462,7 @@ module.exports = {
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
                 'develop/python/workflows/workflow-streams',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -535,9 +500,7 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/python/workers/serverless-workers/index',
                   },
-                  items: [
-                    'develop/python/workers/serverless-workers/aws-lambda',
-                  ],
+                  items: ['develop/python/workers/serverless-workers/aws-lambda'],
                 },
               ],
             },
@@ -549,9 +512,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/client/index',
               },
-              items: [
-                'develop/python/client/temporal-client',
-              ],
+              items: ['develop/python/client/temporal-client'],
             },
             {
               type: 'category',
@@ -561,10 +522,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/nexus/index',
               },
-              items: [
-                'develop/python/nexus/quickstart',
-                'develop/python/nexus/feature-guide',
-              ],
+              items: ['develop/python/nexus/quickstart', 'develop/python/nexus/feature-guide'],
             },
             {
               type: 'category',
@@ -574,10 +532,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/platform/index',
               },
-              items: [
-                'develop/python/platform/observability',
-                'develop/python/platform/enriching-ui',
-              ],
+              items: ['develop/python/platform/observability', 'develop/python/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -612,6 +567,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -621,6 +577,7 @@ module.exports = {
                 'develop/python/integrations/braintrust',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
               ],
             },
           ],
@@ -654,6 +611,7 @@ module.exports = {
                 'develop/typescript/workflows/schedules',
                 'develop/typescript/workflows/timers',
                 'develop/typescript/workflows/versioning',
+                'develop/typescript/workflows/workflow-streams',
               ],
             },
             {
@@ -693,7 +651,7 @@ module.exports = {
                     id: 'develop/typescript/workers/serverless-workers/index',
                   },
                   items: [
-                    'develop/typescript/workers/serverless-workers/aws-lambda',
+                    'develop/typescript/workers/serverless-workers/aws-lambda'
                   ],
                 },
               ],
@@ -734,7 +692,7 @@ module.exports = {
               },
               items: [
                 'develop/typescript/platform/observability',
-                'develop/typescript/platform/enriching-ui',
+                'develop/typescript/platform/enriching-ui'
               ],
             },
             {
@@ -755,12 +713,16 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
                 id: 'develop/typescript/integrations/index',
               },
-              items: ['develop/typescript/integrations/ai-sdk', 'develop/typescript/integrations/strands-agents'],
+              items: [
+                'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/strands-agents'
+              ],
             },
           ],
         },
@@ -793,7 +755,7 @@ module.exports = {
                 'develop/dotnet/workflows/timers',
                 'develop/dotnet/workflows/dynamic-workflow',
                 'develop/dotnet/workflows/versioning',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -811,7 +773,7 @@ module.exports = {
                 'develop/dotnet/activities/dynamic-activity',
                 'develop/dotnet/activities/benign-exceptions',
                 'develop/dotnet/activities/standalone-activities',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -835,7 +797,7 @@ module.exports = {
                 id: 'develop/dotnet/client/index',
               },
               items: [
-                'develop/dotnet/client/temporal-client',
+                'develop/dotnet/client/temporal-client'
               ],
             },
             {
@@ -848,7 +810,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/nexus/quickstart',
-                'develop/dotnet/nexus/feature-guide',
+                'develop/dotnet/nexus/feature-guide'
               ],
             },
             {
@@ -861,7 +823,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/platform/observability',
-                'develop/dotnet/platform/enriching-ui',
+                'develop/dotnet/platform/enriching-ui'
               ],
             },
             {
@@ -877,7 +839,7 @@ module.exports = {
                 'develop/dotnet/best-practices/testing-suite',
                 'develop/dotnet/best-practices/debugging',
                 'develop/dotnet/best-practices/converters-and-encryption',
-              ]
+              ],
             },
           ],
         },
@@ -911,7 +873,7 @@ module.exports = {
                 'develop/ruby/workflows/futures',
                 'develop/ruby/workflows/dynamic-workflow',
                 'develop/ruby/workflows/versioning',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -924,11 +886,12 @@ module.exports = {
               items: [
                 'develop/ruby/activities/basics',
                 'develop/ruby/activities/execution',
+                'develop/ruby/activities/standalone-activities',
                 'develop/ruby/activities/timeouts',
                 'develop/ruby/activities/asynchronous-activity',
                 'develop/ruby/activities/dynamic-activity',
                 'develop/ruby/activities/benign-exceptions',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -939,8 +902,8 @@ module.exports = {
                 id: 'develop/ruby/workers/index',
               },
               items: [
-                'develop/ruby/workers/run-worker-process',
-              ]
+                'develop/ruby/workers/run-worker-process'
+              ],
             },
             {
               type: 'category',
@@ -951,7 +914,7 @@ module.exports = {
                 id: 'develop/ruby/client/index',
               },
               items: [
-                'develop/ruby/client/temporal-client',
+                'develop/ruby/client/temporal-client'
               ],
             },
             {
@@ -964,19 +927,20 @@ module.exports = {
               },
               items: [
                 'develop/ruby/platform/observability',
-                'develop/ruby/platform/enriching-ui',
+                'develop/ruby/platform/enriching-ui'
               ],
             },
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
                 id: 'develop/ruby/integrations/index',
               },
               items: [
-                'develop/ruby/integrations/rails-integration',
+                'develop/ruby/integrations/rails-integration'
               ],
             },
             {
@@ -992,7 +956,7 @@ module.exports = {
                 'develop/ruby/best-practices/testing-suite',
                 'develop/ruby/best-practices/debugging',
                 'develop/ruby/best-practices/converters-and-encryption',
-              ]
+              ],
             },
           ],
         },
@@ -1047,7 +1011,7 @@ module.exports = {
                 id: 'develop/rust/workers/index',
               },
               items: [
-                'develop/rust/workers/worker-process',
+                'develop/rust/workers/worker-process'
               ],
             },
             {
@@ -1059,7 +1023,7 @@ module.exports = {
                 id: 'develop/rust/client/index',
               },
               items: [
-                'develop/rust/client/temporal-client',
+                'develop/rust/client/temporal-client'
               ],
             },
             {
@@ -1070,7 +1034,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/rust/nexus/index',
               },
-              items: ['develop/rust/nexus/feature-guide'],
+              items: [
+                'develop/rust/nexus/feature-guide'
+              ],
             },
           ],
         },
@@ -1079,7 +1045,6 @@ module.exports = {
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
-        'develop/integrations',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
       ],
@@ -1104,7 +1069,7 @@ module.exports = {
           items: [
             'cloud/get-started/namespaces',
             'cloud/get-started/api-keys',
-            'cloud/get-started/certificates',
+            'cloud/get-started/certificates'
           ],
         },
         {
@@ -1157,7 +1122,11 @@ module.exports = {
                 type: 'doc',
                 id: 'cloud/metrics/promql',
               },
-              items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
+              items: [
+                'cloud/metrics/general-setup',
+                'cloud/metrics/reference',
+                'cloud/metrics/prometheus-grafana'
+              ],
             },
             'cloud/metrics/sdk-metrics-setup',
           ],
@@ -1241,7 +1210,12 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: [
+            'cloud/migrate/automated',
+            'cloud/migrate/manual',
+            'cloud/migrate/migrate-within-cloud',
+            'cloud/migrate/estimate-actions',
+          ],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
@@ -1257,7 +1231,10 @@ module.exports = {
             type: 'doc',
             id: 'cloud/export',
           },
-          items: ['cloud/aws-export-s3', 'cloud/gcp-export-gcs'],
+          items: [
+            'cloud/aws-export-s3',
+            'cloud/gcp-export-gcs'
+          ],
         },
         {
           type: 'category',
@@ -1371,16 +1348,47 @@ module.exports = {
       },
       items: [
         'cli/setup-cli',
-        'cli/activity',
-        'cli/batch',
-        'cli/config',
-        'cli/env',
-        'cli/operator',
-        'cli/schedule',
-        'cli/server',
-        'cli/task-queue',
-        'cli/worker',
-        'cli/workflow',
+        'cli/cloud',
+        'cli/cli-basics',
+        {
+          type: 'category',
+          label: 'Command reference',
+          collapsed: true,
+          link: { type: 'doc', id: 'cli/command-reference/index' },
+          items: [
+            'cli/command-reference/activity',
+            'cli/command-reference/batch',
+            {
+              type: 'category',
+              label: 'cloud',
+              collapsed: true,
+              link: { type: 'doc', id: 'cli/command-reference/cloud/index' },
+              items: [
+                'cli/command-reference/cloud/account',
+                'cli/command-reference/cloud/apikey',
+                'cli/command-reference/cloud/async-operation',
+                'cli/command-reference/cloud/connectivity',
+                'cli/command-reference/cloud/login',
+                'cli/command-reference/cloud/logout',
+                'cli/command-reference/cloud/namespace',
+                'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/region',
+                'cli/command-reference/cloud/service-account',
+                'cli/command-reference/cloud/user',
+                'cli/command-reference/cloud/user-group',
+                'cli/command-reference/cloud/whoami',
+              ],
+            },
+            'cli/command-reference/config',
+            'cli/command-reference/env',
+            'cli/command-reference/operator',
+            'cli/command-reference/schedule',
+            'cli/command-reference/server',
+            'cli/command-reference/task-queue',
+            'cli/command-reference/worker',
+            'cli/command-reference/workflow',
+          ],
+        },
       ],
     },
     {
@@ -1441,6 +1449,7 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/error-handling',
         'best-practices/cost-optimization',
         'best-practices/knowledge-hub',
       ],
@@ -1456,6 +1465,7 @@ module.exports = {
       items: [
         'encyclopedia/temporal',
         'encyclopedia/temporal-sdks',
+        'encyclopedia/temporal-client',
         {
           type: 'category',
           label: 'Workflows',
@@ -1506,13 +1516,14 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Detecting application failures',
+          label: 'Failures and error handling',
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'encyclopedia/detecting-application-failures',
+            id: 'encyclopedia/failures-and-error-handling',
           },
           items: [
+            'encyclopedia/application-failures',
             'encyclopedia/detecting-activity-failures',
             'encyclopedia/detecting-workflow-failures',
             'encyclopedia/retry-policies',
@@ -1564,6 +1575,7 @@ module.exports = {
           items: [
             'encyclopedia/workflow-message-passing/sending-messages',
             'encyclopedia/workflow-message-passing/handling-messages',
+            'encyclopedia/workflow-message-passing/workflow-streams',
           ],
         },
         {
@@ -1673,6 +1685,15 @@ module.exports = {
         'web-ui',
       ],
     },
+    {
+      type: 'category',
+      label: 'Interactive Demos',
+      collapsed: true,
+      items: [
+        'develop/standalone-activities-interactive-demo',
+      ],
+    },
+    'integrations',
     'glossary',
     'with-ai',
     // {

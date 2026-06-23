@@ -100,6 +100,26 @@ payload from external storage before returning it to your Workflow or Client.
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
 
+## Choose a storage system {/* #choose-storage */}
+
+A production storage system should meet the following requirements:
+
+- Store payload data durably and retain it for the full Workflow lifetime plus the Namespace retention period. See
+  [Lifecycle management](#lifecycle) for details.
+- Be reachable from every Client, Worker, and Codec Server that encodes or decodes payloads.
+- Support your expected payload sizes.
+- Return consistent data immediately after a write completes.
+- Meet your latency and throughput requirements under realistic load.
+- Provide appropriate controls for authentication, encryption, monitoring, and backup.
+
+Start with an object store such as Amazon S3, Google Cloud Storage, or Azure Blob Storage unless you have a specific
+reason to use a different system, such as lower latency or existing infrastructure constraints.
+
+- **Amazon S3, Google Cloud Storage, Azure Blob Storage:** Default choice for durable payload storage. We provide a
+  first-party S3 storage driver for the [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) and [Python](/develop/python/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) SDKs.
+- **Google Cloud Bigtable:** Low-latency reads on Google Cloud, but payloads must fit within Bigtable's cell and row size limits.
+- **Redis:** Suitable when configured for durability (such as with AOF persistence), not as an evicting cache. Refer to the [Python Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis) for an example implementation. 
+
 ## Storage drivers
 
 A storage driver connects External Storage to a backing store. Each driver provides two operations:
@@ -122,6 +142,9 @@ examples, see:
 
 - [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
+
+For example, see the
+[Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis).
 
 ## Key configuration settings
 

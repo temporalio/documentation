@@ -75,7 +75,7 @@ For small changes like fixing typos, you can edit files directly on GitHub.
     Once approved, your change goes live! 🎉
 
 
-Maintainers and contributors to this project are expected to conduct themselves in a respectful way. See the [CNCF Community Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md) as a reference.
+Maintainers and contributors to this project are expected to conduct themselves in a respectful way. See the [CNCF Community Code of Conduct](https://github.com/cncf/foundation/blob/main/code-of-conduct.md) as a reference.
 
 This repository and its contents are open-source; individual and commercial use are permitted.
 
@@ -99,7 +99,7 @@ See [STYLE.md](./STYLE.md) for style guidance.
 
 You can preview how your changes will appear on the website locally on your machine.
 
-**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 20.0.0).**
+**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 24.0.0).**
 
 Run `yarn` to install the site dependencies.
 

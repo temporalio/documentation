@@ -15,14 +15,6 @@ module.exports = async function createConfigAsync() {
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     headTags: [
-      {
-        tagName: 'link',
-        attributes: {
-          rel: 'preload',
-          href: 'https://iq.temporal.io',
-          as: 'document',
-        },
-      },
     ],
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
@@ -136,7 +128,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/temporalio',
+                href: 'https://x.com/temporalio',
               },
               {
                 label: 'YouTube',
@@ -144,7 +136,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/master/README.md',
+                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
               },
             ],
           },
@@ -157,10 +149,6 @@ module.exports = async function createConfigAsync() {
               {
                 label: 'Meetups',
                 href: 'https://temporal.io/community#events',
-              },
-              {
-                label: 'Workshops',
-                href: 'https://temporal.io/community#workshops',
               },
               {
                 label: 'Support forum',
@@ -184,7 +172,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Use cases',
-                href: 'https://temporal.io/use-cases',
+                href: 'https://temporal.io/in-use',
               },
               {
                 label: 'Newsletter signup',
@@ -200,11 +188,11 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Privacy policy',
-                to: 'https://temporal.io/global-privacy-policy',
+                href: 'https://temporal.io/global-privacy-policy',
               },
               {
                 label: 'Terms of service',
-                href: 'https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf',
+                href: 'https://temporal.io/terms-of-service',
               },
               {
                 label: "We're hiring",
@@ -288,6 +276,7 @@ module.exports = async function createConfigAsync() {
             changefreq: 'daily',
             priority: 0.5,
             filename: 'sitemap.xml',
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
           },
         },
       ],

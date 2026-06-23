@@ -19,18 +19,15 @@ tags:
 description: Build durable AI agents in Java with the Temporal Spring AI integration.
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
 [Spring AI](https://docs.spring.io/spring-ai/reference/) is an agent framework for Java applications — chat clients, tool calling, vector stores, embeddings, and MCP servers, all wired through Spring Boot. 
 
 The [Temporal Spring AI integration](https://central.sonatype.com/artifact/io.temporal/temporal-spring-ai) makes Spring AI agents durable: model calls run through Temporal Activities recorded in Event history, and tools are dispatched per their type so each kind lands in the right place in Workflow execution — Activity stubs and Nexus stubs as durable operations, `@SideEffectTool` classes wrapped in `Workflow.sideEffect`, and plain tools running directly in Workflow code. Agents retry on failure and replay deterministically without changing how you write Spring AI code.
 
 The integration is built on the Temporal Java SDK's [Plugin system](/develop/plugins-guide) and is distributed as the `io.temporal:temporal-spring-ai` module alongside the existing [Spring Boot integration](/develop/java/integrations/spring-boot-integration).
 
-:::info
-
-The Spring AI Integration is in Public Preview. Refer to the
-[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
-
-:::
+<ReleaseNoteHeader type="publicPreview" />
 
 ## Prerequisites
 

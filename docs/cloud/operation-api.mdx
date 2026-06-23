@@ -2,7 +2,7 @@
 id: operation-api
 title: Cloud Ops API
 sidebar_label: Cloud Ops API
-description: The Temporal Cloud Operations API (Cloud Ops) allows programmatic management of Temporal Cloud control plane resources.
+description: The Temporal Cloud Operations API (Cloud Ops) allows programmatic management of Temporal Cloud Control Plane resources.
 slug: /ops
 toc_max_heading_level: 4
 keywords:
@@ -12,13 +12,13 @@ tags:
   - Temporal Cloud
 ---
 
-:::tip Support, stability, and dependency info
+import { ReleaseNoteHeader } from '@site/src/components';
 
-The Temporal Cloud Operations API is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+<ReleaseNoteHeader
+  type="publicPreview"
+/>
 
-:::
-
-The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, public [HTTP API](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction) and [gRPC API](https://github.com/temporalio/cloud-api/tree/main) for programmatically managing Temporal Cloud control plane resources, including [Namespaces](/cloud/namespaces), [Users](/cloud/users), [Service Accounts](/cloud/service-accounts), [API keys](/cloud/api-keys), and others. The Temporal Cloud [Terraform Provider](/cloud/terraform-provider), [tcld CLI](/cloud/tcld), and Web UI all use the Cloud Ops API.
+The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, public [HTTP API](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction) and [gRPC API](https://github.com/temporalio/cloud-api/tree/main) for programmatically managing Temporal Cloud Control Plane resources, including [Namespaces](/cloud/namespaces), [Users](/cloud/users), [Service Accounts](/cloud/service-accounts), [API keys](/cloud/api-keys), and others. The Temporal Cloud [Terraform Provider](/cloud/terraform-provider), [tcld CLI](/cloud/tcld), and Web UI all use the Cloud Ops API.
 
 ## Develop applications with the Cloud Ops API
 
@@ -151,7 +151,7 @@ The Temporal Cloud Operations API implements rate limiting to ensure system stab
 
 **Total rate limit: 160 requests per second (RPS)**
 
-This limit applies to all requests made to the Temporal Cloud control plane by any client (tcld, UI, Cloud Ops API) or identity type (user, service account) within your account. The total account throughput cannot exceed the limit regardless of the number of users or service accounts making requests.
+This limit applies to all requests made to the Temporal Cloud Control Plane by any client (tcld, UI, Cloud Ops API) or identity type (user, service account) within your account. The total account throughput cannot exceed the limit regardless of the number of users or service accounts making requests.
 
 ### Per-identity rate limits
 
@@ -169,7 +169,7 @@ This limits the number of concurrent asynchronous operations that can be in-flig
 
 ### Important considerations
 
-- Rate limits are enforced across all Temporal Cloud control plane operations
+- Rate limits are enforced across all Temporal Cloud Control Plane operations
 - Multiple clients used by the same identity (user or service account) share the same rate limit
 - Authentication method (SSO, API keys) does not affect rate limiting
 - These limits help ensure system stability and prevent any single account or identity from overwhelming the service
