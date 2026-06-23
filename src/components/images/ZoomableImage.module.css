@@ -1,0 +1,66 @@
+/* Match the default Docusaurus img: Docusaurus adds intrinsic width/height
+   attributes to markdown images, so height must be auto for them to scale
+   proportionally when constrained by max-width. */
+.image {
+  height: auto;
+}
+
+.zoomable {
+  cursor: zoom-in;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(4px);
+  z-index: calc(var(--ifm-z-index-fixed) + 10);
+  cursor: zoom-out;
+  animation: zoomableFadeIn 0.15s ease-out;
+}
+
+.modalImage {
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  cursor: zoom-out;
+}
+
+.close {
+  position: fixed;
+  top: 16px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  line-height: 1;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.close:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+@keyframes zoomableFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
