@@ -79,6 +79,26 @@ reliability, retries, and observability of Nexus, but without paying the cost of
 - Visibility — list and count Standalone Nexus Operation Executions using [List Filter](/list-filter) queries
 - Dual use — execute the same Operation from a Workflow or standalone with no handler code changes
 
+## Migrate a single-Operation caller Workflow to a Standalone Nexus Operation {#migrate-from-caller-workflow}
+
+A common pattern is a caller Workflow whose only purpose is to invoke a single Nexus Operation.
+When that's all the Workflow does, you can drop the caller Workflow entirely and call the
+Operation as a Standalone Nexus Operation. The handler Namespace's Service contract, Operation
+handlers, and Workers do not change — only the caller side does.
+
+
+Considerations when migrating:
+
+- If the caller Workflow does more than one Operation call, or has business logic between calls,
+  keep the Workflow. Standalone Nexus Operations are only a fit when a single top-level Operation
+  is all the Workflow did.
+- Pick a stable Operation ID if you previously relied on Workflow ID reuse semantics for
+  deduplication.
+- Update Visibility queries that filtered by caller Workflow attributes.
+
+For SDK-specific syntax, see the per-SDK guide — for example
+[Go: Standalone Nexus Operations](/develop/go/nexus/standalone-operations).
+
 ## Observability {/* #observability */}
 
 You can use [List Filters](/list-filter) to query Standalone Nexus Operation Executions by Endpoint,
@@ -93,6 +113,30 @@ queued tasks.
 Standalone Nexus Operations are at Pre-release. APIs are experimental and may be subject to
 backwards-incompatible changes.
 
+
+## Temporal CLI support
+
+Standalone Nexus Operations require [Temporal CLI](/cli) and Temporal Server versions that include
+the `temporal nexus operation` command family. All commands are Experimental.
+
+Install with Homebrew:
+
+```bash
+brew install temporal
+```
+
+Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+
+Verify the installation:
+
+```bash
+temporal --version
+```
+
+The `temporal nexus operation` subcommand supports Standalone Nexus Operations with commands
+including: `start`, `execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
+The Nexus Endpoint must already exist on the server — create it with
+[`temporal operator nexus endpoint create`](/cli/operator#nexus-endpoint-create).
 
 ## Temporal Cloud support
 
