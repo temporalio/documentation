@@ -362,7 +362,7 @@ one-to-one mapping between Lambda function version and Build ID. This applies to
 Workflows move between Worker Deployment Versions in Temporal, not how a Worker Deployment Version targets Lambda.
 
 Roll back by reverting the Temporal Current Version with
-[`temporal worker deployment set-current-version`](/cli/worker#set-current-version). The previous Worker Deployment
+[`temporal worker deployment set-current-version`](/cli/command-reference/worker#set-current-version). The previous Worker Deployment
 Version still points at its original Lambda function version and is ready to receive routing again.
 
 :::tip Use a qualified versioned ARN in production
