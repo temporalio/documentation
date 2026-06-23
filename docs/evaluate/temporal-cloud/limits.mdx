@@ -237,6 +237,14 @@ This limit is non-configurable for Temporal Cloud.
 
 The [BlobSizeLimitError guide](/troubleshooting/blob-size-limit-error) provides solutions for handling large payloads.
 
+:::note
+
+The 2 MB limit is the maximum size for a single request, not a sustained-throughput target.
+Sustained, high-volume use of large payloads can degrade Namespace performance, and Temporal reserves the right to rate limit such traffic to protect the service.
+For workloads that regularly produce large payloads, offload them to [External Storage](/external-storage) and keep inline payloads small.
+
+:::
+
 ### Per Workflow Execution concurrency limits
 
 If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional [Commands](/workflow-execution#command) of that type will fail to be applied to that Workflow Execution:

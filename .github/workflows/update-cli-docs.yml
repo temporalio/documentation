@@ -36,7 +36,7 @@ jobs:
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
 
       - name: Checkout docs repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
@@ -44,7 +44,7 @@ jobs:
           ref: main
 
       - name: Checkout CLI repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           path: cli
           ref: ${{ github.event.inputs.cli_release_tag }}
@@ -59,7 +59,7 @@ jobs:
           go-version: '1.26'
 
       - name: Checkout cloud-cli repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.3
         with:
           path: cloud-cli
           submodules: recursive
