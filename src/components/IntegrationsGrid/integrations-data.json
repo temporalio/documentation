@@ -190,6 +190,15 @@
     "href": "/develop/python/integrations/strands-agents"
   },
   {
+    "name": "Strands Agents",
+    "description": "Orchestrate AWS Strands Agents with durable Temporal Workflows.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "TypeScript",
+    "href": "/develop/typescript/integrations/strands-agents"
+  },
+  {
     "name": "Tenuo",
     "description": "Add governance and compliance guardrails to AI-powered Temporal Workflows.",
     "tags": [
