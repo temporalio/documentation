@@ -1,7 +1,7 @@
 ---
 id: detecting-activity-failures
 title: Detecting Activity failures
-sidebar_label: Activities
+sidebar_label: Detecting Activity failures
 description: Understand Activity Execution timeouts in Temporal; Schedule-To-Start, Start-To-Close, Schedule-To-Close, and Activity Heartbeats, for effective Workflow management.
 toc_max_heading_level: 4
 keywords:
@@ -24,7 +24,7 @@ A Workflow can detect different kinds of Activity Execution failures through the
 - [Schedule-To-Close Timeout](#schedule-to-close-timeout)
 - [Activity Heartbeats](#activity-heartbeat)
 
-## Schedule-To-Start Timeout {#schedule-to-start-timeout}
+## Schedule-To-Start Timeout {/* #schedule-to-start-timeout */}
 
 **What is a Schedule-To-Start Timeout in Temporal?**
 
@@ -73,7 +73,7 @@ We do not recommend using this timeout unless you know what you are doing.
 
 In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_latency` metric to know when Workers slow down picking up Activity Tasks, instead of setting this timeout.
 
-## Start-To-Close Timeout {#start-to-close-timeout}
+## Start-To-Close Timeout {/* #start-to-close-timeout */}
 
 **What is a Start-To-Close Timeout in Temporal?**
 
@@ -126,7 +126,7 @@ If this timeout is reached, the following actions occur:
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
-## Schedule-To-Close Timeout {#schedule-to-close-timeout}
+## Schedule-To-Close Timeout {/* #schedule-to-close-timeout */}
 
 **What is a Schedule-To-Close Timeout in Temporal?**
 
@@ -166,7 +166,7 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 :::
 
-## Activity Heartbeat {#activity-heartbeat}
+## Activity Heartbeat {/* #activity-heartbeat */}
 
 **What is an Activity Heartbeat in Temporal?**
 
@@ -250,7 +250,7 @@ And the following scenarios are not suitable for Heartbeating:
 - Making a quick API call.
 - Reading a small file from disk.
 
-### Heartbeat Timeout {#heartbeat-timeout}
+### Heartbeat Timeout {/* #heartbeat-timeout */}
 
 **What is a Heartbeat Timeout in Temporal?**
 

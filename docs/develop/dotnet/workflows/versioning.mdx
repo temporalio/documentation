@@ -43,13 +43,13 @@ There are two primary Versioning methods that you can use:
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
-## Versioning with Patching {#patching}
+## Versioning with Patching {/* #patching */}
 
 ### Adding a patch
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
-When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
+When you want to make substantive code changes that may affect existing Workflow Executions, create a patch.
 
 Suppose you have an initial Workflow version called `PrePatchActivity`:
 
@@ -96,7 +96,7 @@ Patching is a three step process:
 2. Remove the old code and apply [DeprecatePatch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
 3. Once all old Workflows have left retention, remove `DeprecatePatch`.
 
-### Patching in new code {#using-patched-for-workflow-history-markers}
+### Patching in new code {/* #using-patched-for-workflow-history-markers */}
 
 Using `Patched` inserts a marker into the Event History.
 
@@ -127,7 +127,7 @@ public class MyWorkflow
 }
 ```
 
-### Deprecating patches {#deprecated-patches}
+### Deprecating patches {/* #deprecated-patches */}
 
 After all Workflows started with `PrePatchActivity` code have left retention, you can [deprecate the patch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
 
@@ -152,7 +152,7 @@ public class MyWorkflow
 }
 ```
 
-### Removing a patch {#deploy-postpatchactivity}
+### Removing a patch {/* #deploy-postpatchactivity */}
 
 You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier have left retention, based on the previously mentioned assertion.
 

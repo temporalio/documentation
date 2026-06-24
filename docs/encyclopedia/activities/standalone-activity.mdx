@@ -17,16 +17,18 @@ tags:
 ---
 
 import ThemedImage from '@theme/ThemedImage';
+import { ReleaseNoteHeader } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Standalone Activities are available as a [Public Preview](/evaluate/development-production-features/release-stages#public-preview) feature in [Temporal Cloud](#temporal-cloud-support) and in the [Temporal CLI](#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher.
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
+>
+  Available in [Temporal Cloud](#temporal-cloud-support) and in the [Temporal CLI](#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher. Java SDK support is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+</ReleaseNoteHeader>
 
 See [limitations](#public-preview-limitations) below.
 
-## What is a Standalone Activity? {#standalone-activity}
+## What is a Standalone Activity? {/* #standalone-activity */}
 
 If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to
 execute a single Activity, use a Standalone Activity.
@@ -64,6 +66,7 @@ Pick your SDK and follow the quickstart:
 - [Python SDK - Standalone Activities quickstart and code sample](/develop/python/activities/standalone-activities)
 - [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities)
 - [Java SDK - Standalone Activities quickstart and code sample](/develop/java/activities/standalone-activities)
+- [Ruby SDK - Standalone Activities quickstart and code sample](/develop/ruby/activities/standalone-activities)
 - [TypeScript SDK - Standalone Activities quickstart and code sample](/develop/typescript/activities/standalone-activities)
 
 :::
@@ -90,7 +93,7 @@ webhook, syncing data, or executing a single function reliably with built-in ret
 - Activity metrics - including counts for success, failure, timeout, and cancel
 - Dual use - execute Activities within a Workflow or standalone with no Worker code changes
 
-## Observability {#observability}
+## Observability {/* #observability */}
 
 All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
 to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
@@ -120,7 +123,7 @@ Install with Homebrew:
 brew install temporal
 ```
 
-Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
 Verify the installation:
 

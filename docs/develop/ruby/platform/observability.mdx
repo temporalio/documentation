@@ -29,7 +29,7 @@ This page covers capabilities related to viewing the state of the application, i
 The observability guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
 This includes viewing [Workflow Executions](/workflow-execution) tracked by the [Temporal Platform](/temporal#temporal-platform), as well as inspecting state at any point during execution.
 
-## Emit metrics {#metrics}
+## Emit metrics {/* #metrics */}
 
 Each Temporal SDK can optionally emit metrics from either the Client or Worker process.
 Metrics can be scraped by systems like Prometheus, and graphs can be created using tools like Grafana.
@@ -60,7 +60,7 @@ Temporalio::Runtime.default = Temporalio::Runtime.new(
 Instead of Prometheus or OpenTelemetry, an instance of `Temporalio::Runtime::MetricBuffer` can be provided as a `buffer` argument to the `MetricsOptions`.
 `retrieve_updates` can then be periodically called on the buffer to get metric updates.
 
-## Setup Tracing {#tracing}
+## Setup Tracing {/* #tracing */}
 
 Tracing enables observability into the sequence of calls across your application, including Workflows and Activities.
 
@@ -84,7 +84,7 @@ my_client = Temporalio::Client.connect(
 When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
 Spans are created and serialized through the server to give one trace for a Workflow Execution.
 
-## Log from a Workflow {#logging}
+## Log from a Workflow {/* #logging */}
 
 Logging enables you to capture and persist important execution details from your Workflow and Activity code.
 
@@ -124,11 +124,11 @@ There's also one for use in activities that appends Activity details to every lo
 Temporalio::Activity::Context.current.logger.info("Some log #{some_value}")
 ```
 
-## Use Visibility APIs {#visibility}
+## Use Visibility APIs {/* #visibility */}
 
 Visibility refers to Temporal features for listing, filtering, and inspecting Workflow Executions.
 
-### Use Search Attributes {#search-attributes}
+### Use Search Attributes {/* #search-attributes */}
 
 - [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime`, and `ExecutionStatus` are automatically indexed.
 - [Custom Search Attributes](/search-attribute#custom-search-attribute) let you store domain-specific metadata for Workflows.
@@ -155,10 +155,10 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `describe` on a `WorkflowHandle`.
   - In the Workflow by looking at `Temporalio::Workflow.search_attributes`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
-  - [In the Temporal CLI](/cli/operator#list-2)
+  - [In the Temporal CLI](/cli/command-reference/operator#list-2)
   - In code by calling `list_workflows`.
 
-### List Workflow Executions {#list-workflow-executions}
+### List Workflow Executions {/* #list-workflow-executions */}
 
 Use the [list_workflows](https://ruby.temporal.io/Temporalio/Client.html#list_workflows-instance_method) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
 The result is a lazy enumerator/enumerable.
@@ -169,7 +169,7 @@ my_client.list_workflows("WorkflowType='GreetingWorkflow'").each do |wf|
 end
 ```
 
-### Set Custom Search Attributes {#custom-search-attributes}
+### Set Custom Search Attributes {/* #custom-search-attributes */}
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -193,7 +193,7 @@ handle = my_client.start_workflow(
 )
 ```
 
-### Upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes {/* #upsert-search-attributes */}
 
 You can upsert Search Attributes to add, update, or remove Search Attributes from within Workflow code.
 

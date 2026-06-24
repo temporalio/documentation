@@ -30,13 +30,13 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
 
       - name: Checkout docs repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
@@ -44,7 +44,7 @@ jobs:
           ref: main
 
       - name: Checkout CLI repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           path: cli
           ref: ${{ github.event.inputs.cli_release_tag }}
@@ -56,11 +56,22 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
         with:
-          go-version: '1.22'
+          go-version: '1.26'
+
+      - name: Checkout cloud-cli repo
+        uses: actions/checkout@v6.0.3
+        with:
+          path: cloud-cli
+          submodules: recursive
+          persist-credentials: true
+          token: ${{ steps.generate_token.outputs.token }}
+          repository: temporalio/cloud-cli
 
       - name: Generate CLI docs
         working-directory: cli
-        run: go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
+        run: |
+          go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
+          go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -subdir cloud
 
       - name: Publish generated docs to documentation repo
         env:
@@ -78,7 +89,9 @@ jobs:
 
           branch_name="update-cli-docs-$CLI_RELEASE_TAG"
           git checkout -b "$branch_name"
-          cp ../cli/dist/docs/*.mdx docs/cli/
+          rm -rf docs/cli/command-reference
+          mkdir -p docs/cli/command-reference
+          cp -r ../cli/dist/docs/* docs/cli/command-reference/
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push origin "$branch_name"

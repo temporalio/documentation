@@ -26,12 +26,12 @@ This page defines some of the underlying concepts used in [Worker Versioning](/p
 - [Versioning Statuses](#versioning-statuses)
 - [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
 
-## Worker Deployments {#deployments}
+## Worker Deployments {/* #deployments */}
 
 A Worker Deployment is a logical service that groups similar Workers together for unified management.
 Each Deployment has a name (such as your service name) and supports versioning through a series of Worker Deployment Versions.
 
-## Worker Deployment Versions {#deployment-versions}
+## Worker Deployment Versions {/* #deployment-versions */}
 
 A Worker Deployment Version represents an iteration of a Worker Deployment.
 Each Deployment Version is identified by a deployment name and a Build ID.
@@ -39,17 +39,17 @@ The deployment name groups related Workers across versions, and the Build ID ide
 Each Deployment Version consists of Workers that share the same code build and environment.
 When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 
-## Versioning Behaviors {#versioning-behaviors}
+## Versioning Behaviors {/* #versioning-behaviors */}
 
 You can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade, in your Workflow configuration using an SDK or the CLI.
 
 To learn more about implementing Worker Versioning, see our [Worker Versioning in production](production-deployment/worker-deployments/worker-versioning) page.
 
-### Pinned Workflows {#pinned}
+### Pinned Workflows {/* #pinned */}
 
-A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](/cli/workflow#update-options).
+A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](/cli/command-reference/workflow#update-options).
 
-### Auto-Upgrade Workflows {#auto-upgrade}
+### Auto-Upgrade Workflows {/* #auto-upgrade */}
 
 An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
@@ -78,7 +78,7 @@ Since Independent Activities aren't part of a Workflow's version, they can run i
 - **Ramping Worker Deployment Version**: The version where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and Auto-Upgrade Workflows will go to the Current Version.
 - **Target Worker Deployment Version**: The version your Workflow will upgrade to next. This could be the Deployment's Current Version or the Ramping Version. For example, if an Auto-Upgrade Workflow was running on Version A, the Current Version is B, and there is a 5% ramp to C, there is a 95% chance that its Target Version is B and 5% that it's C. Workflow ID determines whether the workflow falls into the 95% group or the 5% group.
 
-## Versioning Statuses {#versioning-statuses}
+## Versioning Statuses {/* #versioning-statuses */}
 
 A Worker Deployment Version moves through the following states:
 
@@ -87,7 +87,7 @@ A Worker Deployment Version moves through the following states:
 3. **Draining**: The version has open pinned Workflows running on it, but stopped being Current or Ramping, usually because a newer version has been deployed. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated only periodically.
 4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed. Closed Workflows may still re-run some code paths if they are [Queried](https://docs.temporal.io/sending-messages#sending-queries) within their [Retention Period](https://docs.temporal.io/temporal-service/temporal-server#retention-period) and Workers with that version are still polling.
 
-## Continue-as-new, Child Workflow, and Retry Semantics {#inheritance-semantics}
+## Continue-as-new, Child Workflow, and Retry Semantics {/* #inheritance-semantics */}
 
 When Workflows start new runs (e.g. by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
 

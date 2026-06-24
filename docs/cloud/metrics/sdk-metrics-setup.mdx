@@ -43,7 +43,7 @@ Ensure Prometheus and Grafana are installed.
 - [TypeScript](/develop/typescript/client/temporal-client#connect-to-temporal-cloud)
 - [.NET](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud)
 
-## Expose a metrics endpoint {#sdk-metrics-setup}
+## Expose a metrics endpoint {/* #sdk-metrics-setup */}
 
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 Each language development guide has details on how to set this up.
@@ -65,7 +65,7 @@ For working examples of how to configure metrics in each SDK, see the metrics sa
 Some examples use OpenTelemtry to instrument metrics. It is useful to use a
 [Prometheus exporter with OpenTelemetry](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/prometheusexporter) to expose metrics for scraping.
 
-## Configure Prometheus {#prometheus-configuration}
+## Configure Prometheus {/* #prometheus-configuration */}
 
 For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in your application code.
 
@@ -95,7 +95,7 @@ See the [Prometheus documentation](https://prometheus.io/docs/introduction/first
 To check whether Prometheus is receiving metrics from your SDK target, go to [http://localhost:9090](http://localhost:9090) and navigate to **Status&nbsp;> Targets**.
 The status of your target endpoint defined in your configuration appears here.
 
-## Add an SDK metrics data source in Grafana {#grafana-data-source-configuration}
+## Add an SDK metrics data source in Grafana {/* #grafana-data-source-configuration */}
 
 Depending on how you use Grafana, you can either install and run it locally, run it as a Docker container, or log in to Grafana Cloud to set up your data sources.
 
@@ -119,7 +119,7 @@ Verify your Prometheus configuration and restart Prometheus.
 If you're running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
 See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Service](/self-hosted-guide/monitoring#grafana) article.
 
-## Set up Grafana dashboards {#grafana-dashboards-setup}
+## Set up Grafana dashboards {/* #grafana-dashboards-setup */}
 
 To set up SDK metrics dashboards in Grafana, you can use the UI or configure them directly in your Grafana deployment.
 

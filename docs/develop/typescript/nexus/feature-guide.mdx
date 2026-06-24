@@ -14,13 +14,11 @@ tags:
   - TypeScript SDK
 ---
 
-import { CaptionedImage } from "@site/src/components";
+import { CaptionedImage, ReleaseNoteHeader } from "@site/src/components";
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal TypeScript SDK support for Nexus is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseNoteHeader
+  featureName="nexus"
+/>
 
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
@@ -44,7 +42,7 @@ This documentation uses source code derived from the [TypeScript Nexus sample](h
 
 :::
 
-## Run the Temporal Development Server with Nexus enabled {#run-the-temporal-nexus-development-server}
+## Run the Temporal Development Server with Nexus enabled {/* #run-the-temporal-nexus-development-server */}
 
 Prerequisites:
 
@@ -61,7 +59,7 @@ This command automatically starts the Temporal development server with the Web U
 
 The Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233), and the Temporal Server should now be available for client connections on `localhost:7233`.
 
-## Create caller and handler Namespaces {#create-caller-handler-namespaces}
+## Create caller and handler Namespaces {/* #create-caller-handler-namespaces */}
 
 Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
 
@@ -73,7 +71,7 @@ temporal operator namespace create --namespace my-caller-namespace
 For this example, `my-target-namespace` will contain the Nexus Operation handler, and you will use a Workflow in `my-caller-namespace` to call that Operation handler.
 We use different namespaces to demonstrate cross-Namespace Nexus calls.
 
-## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
+## Create a Nexus Endpoint to route requests from caller to handler {/* #create-nexus-endpoint */}
 
 After establishing caller and handler Namespaces, the next step is to create a Nexus Endpoint to route requests.
 
@@ -86,7 +84,7 @@ temporal operator nexus endpoint create \
 
 You can also use the Web UI to create the Namespaces and Nexus endpoint.
 
-## Define the Nexus Service contract {#define-nexus-service-contract}
+## Define the Nexus Service contract {/* #define-nexus-service-contract */}
 
 Defining a clear contract for the Nexus Service is crucial for smooth communication.
 
@@ -139,7 +137,7 @@ export type LanguageCode = 'en' | 'fr' | 'de' | 'es' | 'tr';
 ```
 <!--SNIPEND-->
 
-## Develop a Nexus Service handler and Operation handlers {#develop-nexus-service-operation-handlers}
+## Develop a Nexus Service handler and Operation handlers {/* #develop-nexus-service-operation-handlers */}
 
 A Nexus Service handler is defined using the `nexus-rpc`'s [`serviceHandler`](https://nexus-rpc.github.io/sdk-typescript/functions/serviceHandler.html) function. {/* Added */}
 Nexus Service handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
@@ -295,7 +293,7 @@ import { helloServiceHandler } from './handler';
 ```
 <!--SNIPEND-->
 
-## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
+## Develop a caller Workflow that uses the Nexus Service {/* #develop-caller-workflow-nexus-service */}
 
 To execute a Nexus Operation from a Workflow, import the necessary service definition types, then use `@temporalio/workflow`'s `createNexusServiceClient` to create a Nexus client for that service.
 You will need to provide the Nexus Endpoint name, which you registered previously in [Create a Nexus Endpoint to route requests from caller to handler](#create-nexus-endpoint).
@@ -336,7 +334,7 @@ Refer to the [complete TypeScript sample](https://github.com/temporalio/samples-
 - [nexus-hello/src/caller/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/caller/worker.ts) shows how to register the caller Workflow in a Worker and run the Worker.
 - [nexus-hello/src/starter.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/starter.ts) shows how to use a Temporal Client to execute the sample caller Workflow.
 
-## Exceptions in Nexus operations {#exceptions-in-nexus-operations}
+## Exceptions in Nexus operations {/* #exceptions-in-nexus-operations */}
 
 Temporal provides general guidance on [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
 In TypeScript, there are three Nexus-specific exception classes:
@@ -345,7 +343,7 @@ In TypeScript, there are three Nexus-specific exception classes:
 - `nexus-rpc`'s [`HandlerError`](https://nexus-rpc.github.io/sdk-typescript/classes/HandlerError.html): you can throw this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-typescript/types/HandlerErrorType.html). The error will be marked as either retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
 - `@temporalio/nexus`'s [`NexusOperationFailure`](https://typescript.temporal.io/api/classes/common.NexusOperationFailure): this is the error thrown inside a Workflow when a Nexus operation fails for any reason. Use the `cause` attribute on the exception to access the cause chain.
 
-## Canceling a Nexus Operation {#canceling-a-nexus-operation}
+## Canceling a Nexus Operation {/* #canceling-a-nexus-operation */}
 
 Nexus Operations, just like other cancellable APIs provided by the `@temporalio/workflow` package, execute within Cancellation Scopes.
 Requesting cancellation of a Cancellation Scope results in requesting cancellation for all cancellable operations owned by that scope.
@@ -362,7 +360,7 @@ Once the caller Workflow completes, the caller's Nexus Machinery will not make a
 It's okay to leave operations running in some use cases.
 To ensure cancellations are delivered, wait for all pending operations to finish before exiting the Workflow.
 
-## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
+## Make Nexus calls across Namespaces in Temporal Cloud {/* #nexus-calls-across-namespaces-temporal-cloud */}
 
 This section assumes you are already familiar with how to connect a Worker to Temporal Cloud.
 The `tcld` CLI is used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.

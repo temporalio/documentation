@@ -18,15 +18,15 @@ This page shows how to do the following:
 - [Change the maximum concurrent Sessions of a Worker](#max-concurrent-sessions)
 - [Create a Worker Session](#create-a-session)
 
-:::tip Support, stability, and dependency info
+:::tip
 
-- This feature is currently available only in the Go SDK.
+This feature is currently available only in the Go SDK.
 
 :::
 
 A Worker Session is a feature that provides a straightforward API for [Task Routing](/task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 
-## Enable Worker Sessions {#enable-sessions}
+## Enable Worker Sessions {/* #enable-sessions */}
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
@@ -54,7 +54,7 @@ func main() {
 }
 ```
 
-### Change the maximum concurrent Sessions of a Worker. {#max-concurrent-sessions}
+### Change the maximum concurrent Sessions of a Worker. {/* #max-concurrent-sessions */}
 
 You can adjust the maximum concurrent Sessions of a Worker.
 
@@ -84,7 +84,7 @@ func main() {
 // ...
 ```
 
-## Create a Worker Session {#create-a-session}
+## Create a Worker Session {/* #create-a-session */}
 
 Within the Workflow code use the Workflow APIs to create a Session with whichever Worker picks up the first Activity Task.
 
@@ -155,7 +155,7 @@ func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFPara
 }
 ```
 
-## Additional Session usage information {#session-metadata}
+## Additional Session usage information {/* #session-metadata */}
 
 ```go
 type SessionInfo struct {
@@ -190,7 +190,7 @@ token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
 
 **Is there a complete example?**
 
-Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
+Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/main/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
 
 **What happens to my Activity if the Worker dies?**
 

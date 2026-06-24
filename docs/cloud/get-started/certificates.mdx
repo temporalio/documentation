@@ -45,7 +45,7 @@ To update certificates, see
 
 All certificates used by Temporal Cloud must meet the following requirements.
 
-## Requirements for CA certificates in Temporal Cloud {#certificate-requirements}
+## Requirements for CA certificates in Temporal Cloud {/* #certificate-requirements */}
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
@@ -94,8 +94,9 @@ An end-entity (leaf) certificate _must_ meet the following criteria:
 - The key usage must include Digital Signature.
 - The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication. SHA-1
   and MD5 cannot be used.
+- The certificate needs the `extendedKeyUsage` set to `clientAuth` or it needs to be omitted.
 
-## How to issue root CA and end-entity certificates {#issue-certificates}
+## How to issue root CA and end-entity certificates {/* #issue-certificates */}
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA
 certificates that are configured for the specified Namespace.
@@ -237,7 +238,7 @@ Follow the instructions to [upload the CA certificate](/cloud/certificates#updat
 and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity
 certificate.
 
-## How to control authorization for Temporal Cloud Namespaces {#control-authorization}
+## How to control authorization for Temporal Cloud Namespaces {/* #control-authorization */}
 
 We recommend that an end-entity certificate be scoped to a specific Namespace to enforce the principle of least
 privilege. Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
@@ -254,7 +255,7 @@ trusted authority for access to your Namespaces.
 
 [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
 
-## How to receive notifications about certificate expiration {#expiration-notifications}
+## How to receive notifications about certificate expiration {/* #expiration-notifications */}
 
 To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate
 expires.
@@ -320,7 +321,7 @@ stricter controls, such as:
 - Rotating certificates regularly as a preventive measure
 - [Audit logs on a regular schedule](https://docs.temporal.io/cloud/audit-logs)
 
-## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
+## How to add, update, and remove certificates in a Temporal Cloud Namespace {/* #manage-certificates */}
 
 :::note
 
@@ -399,7 +400,7 @@ Updating certificates using the following strategy allows for a zero-downtime ro
 
 1. Run the `tcld namespace accepted-client-ca set` command again with the updated CA certificate bundle file.
 
-## How to manage certificate filters in Temporal Cloud {#manage-certificate-filters}
+## How to manage certificate filters in Temporal Cloud {/* #manage-certificate-filters */}
 
 To limit access to specific [end-entity certificates](#end-entity-certificates), create certificate filters. Each filter
 contains values for one or more of the following fields:
@@ -479,7 +480,7 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 To view the current certificate filters, use the
 [tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
 
-## Configure clients to use client certificates {#configure-clients-to-use-client-certificates}
+## Configure clients to use client certificates {/* #configure-clients-to-use-client-certificates */}
 
 - [Go SDK](/develop/go/client/temporal-client#connect-to-temporal-cloud)
 - [Java SDK](/develop/java/client/temporal-client#connect-to-temporal-cloud)
@@ -488,7 +489,7 @@ To view the current certificate filters, use the
 - [TypeScript SDK](/develop/typescript/client/temporal-client#connect-to-temporal-cloud)
 - [.NET SDK](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud)
 
-### Configure Temporal CLI {#configure-temporal-cli}
+### Configure Temporal CLI {/* #configure-temporal-cli */}
 
 To connect to a Temporal Namespace using the Temporal CLI and certificate authentication, specify your credentials and
 the TLS server name:
@@ -501,4 +502,5 @@ temporal <command> <subcommand> \
     --tls-server-name <Override for target TLS server name>
 ```
 
-For more information on Temporal CLI environment variables, see [Environment variables](/cli#environment-variables).
+For more information on Temporal CLI environment variables, see
+[Environment variables](/cli/setup-cli#environment-variables).

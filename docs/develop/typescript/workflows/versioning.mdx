@@ -37,13 +37,13 @@ There are two primary Versioning methods that you can use:
 Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/typescript/worker-versioning-legacy) docs if needed. 
 :::
 
-## Versioning with Patching {#patching}
+## Versioning with Patching {/* #patching */}
 
 ### Adding a patch
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
-When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
+When you want to make substantive code changes that may affect existing Workflow Executions, create a patch.
 
 Suppose you have an initial Workflow that runs `activityA`:
 
@@ -97,7 +97,7 @@ export async function myWorkflow(): Promise<void> {
 }
 ```
 
-### Deprecating patches {#deprecated-patches}
+### Deprecating patches {/* #deprecated-patches */}
 
 After ensuring that all Workflows started with `v1` code have left retention, you can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
 
@@ -116,7 +116,7 @@ export async function myWorkflow(): Promise<void> {
 }
 ```
 
-### Removing a patch {#deploy-new-code}
+### Removing a patch {/* #deploy-new-code */}
 
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecatePatch()` calls:
 

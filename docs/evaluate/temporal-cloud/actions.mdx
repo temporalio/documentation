@@ -45,7 +45,7 @@ Actions that occur during [Workflow Replay](/workflow-execution#replay) do not c
 happens only on the Worker side to reconstruct Workflow state from Event History and does not generate new server-side
 operations.
 
-Billable Actions are visible in the [OpenMetrics endpoint](https://metrics.temporal.io),
+Billable Actions are visible in the [OpenMetrics endpoint](/cloud/metrics/openmetrics),
 [Event History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards,
 and the [Billing API](/cloud/billing-api). Action types and categories can help estimate usage, identify specific Action
 types that are driving usage, optimize workflows by tracking usage spikes, and troubleshoot errors. For example:
@@ -62,7 +62,7 @@ detailed _estimates_. For example, [History Event Types](https://docs.temporal.i
 for transparency, but do not always have a simple 1:1 relationship with Action Types. The Categories, Action types, and
 available endpoints are listed in the following sections:
 
-## Workflow {#workflow}
+## Workflow {/* #workflow */}
 
 - **Workflow started**
   - Occurs via client start, [Continue-As-New](/workflow-execution/continue-as-new), [Child Workflow](/child-workflows)
@@ -104,7 +104,7 @@ available endpoints are listed in the following sections:
 | Reset Workflow                      | `reset_workflow`                    | `EVENT_TYPE_WORKFLOW_TASK_FAILED` Note: When `cause == WORKFLOW_TASK_FAILED_CAUSE_RESET_WORKFLOW`                                                                                                           |
 | Record Workflow Heartbeat           | `record_workflow_heartbeat`         | N/A                                                                                                                                                                                                         |
 
-## Activity {#activity}
+## Activity {/* #activity */}
 
 - **Activity started or retried**. Occurs each time an Activity is started or retried.
 - **Local Activity started**. All [Local Activities](/local-activity) associated with one Workflow Task count as a
@@ -131,7 +131,7 @@ available endpoints are listed in the following sections:
 | Record Standalone Activity Heartbeat       | `record_standalone_activity_heartbeat`       | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | Record Standalone Activity Heartbeat By ID | `record_standalone_activity_heartbeat_by_id` | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
-## Timer {#timer}
+## Timer {/* #timer */}
 
 - **Timer started**. Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as
   `AwaitWithTimeout` in Go or `condition` in TypeScript.
@@ -140,7 +140,7 @@ available endpoints are listed in the following sections:
 | ----------- | ------------- | -------------------------- |
 | Start Timer | `start_timer` | `EVENT_TYPE_TIMER_STARTED` |
 
-## Signal {#signal}
+## Signal {/* #signal */}
 
 - **Signal sent**. An Action occurs for every [Signal](https://docs.temporal.io/sending-messages#sending-signals),
   whether sent from a Client or from a Workflow. Also, one total action occurs for any
@@ -153,7 +153,7 @@ available endpoints are listed in the following sections:
 | Signal External Workflow   | `signal_external_workflow`   | `EVENT_TYPE_SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED` (signaler event history) `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` (signaled Event history) Note: The UI shows a billable action only in the signaled Event history, not in the signaler Event history. |
 | Signal Workflow With Start | `signal_workflow_with_start` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` followed by `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` if the workflow didn’t exist, or only `EVENT_TYPE_WORKFLOW_EXECUTION_SIGNALED` if the Workflow existed.                                                                         |
 
-## Query {#query}
+## Query {/* #query */}
 
 - **Query received by Worker**. An Action occurs for every
   [Query](https://docs.temporal.io/sending-messages#sending-queries), including viewing the call stack in the Temporal
@@ -164,7 +164,7 @@ available endpoints are listed in the following sections:
 | -------------- | ---------------- | ------------------ |
 | Query Workflow | `query_workflow` | N/A                |
 
-## Update {#update}
+## Update {/* #update */}
 
 - **Update received by Worker**.
   - Occurs for every successful [Update](https://docs.temporal.io/sending-messages#sending-updates) and every
@@ -178,7 +178,7 @@ available endpoints are listed in the following sections:
 | Accept Workflow Update | `accept_workflow_update` | `EVENT_TYPE_WORKFLOW_EXECUTION_UPDATE_ACCEPTED`                                               |
 | Reject Workflow Update | `reject_workflow_update` | `EVENT_TYPE_WORKFLOW_EXECUTION_UPDATE_REJECTED` Note: this event is never written to history. |
 
-## Schedule {#schedule}
+## Schedule {/* #schedule */}
 
 [Schedules](/schedule) allows you to schedule a Workflow to start at a particular time. Each execution of a Schedule
 accrues three actions:
@@ -195,7 +195,7 @@ accrues three actions:
 | Delete Schedule   | `delete_schedule`   | N/A                                                                                                                                                                              |
 | Schedule Workflow | `schedule_workflow` | `EVENT_TYPE_WORKFLOW_EXECUTION_STARTED` Note: `event.WorkflowExecutionStartedEventAttributes.indexedFields.TemporalScheduledById` tells if a Workflow was started by a Schedule. |
 
-## Temporal Nexus {#nexus}
+## Temporal Nexus {/* #nexus */}
 
 - For [Nexus Operation scheduled](/references/events#nexusoperationscheduled), the caller Workflow starting a Nexus
   Operation results in one Action on the caller Namespace.
@@ -211,7 +211,7 @@ accrues three actions:
 | Schedule Nexus Operation             | `schedule_nexus_operation`             | `EVENT_TYPE_NEXUS_OPERATION_SCHEDULED`        |
 | Request Nexus Operation Cancellation | `request_nexus_operation_cancellation` | `EVENT_TYPE_NEXUS_OPERATION_CANCEL_REQUESTED` |
 
-## Export {#export}
+## Export {/* #export */}
 
 [Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your
 choice.
@@ -223,7 +223,7 @@ choice.
 | ----------------------- | ----------- | ------------------ |
 | Export Workflow History | N/A         | N/A                |
 
-## Fairness {#fairness}
+## Fairness {/* #fairness */}
 
 For each hour a Namespace has the [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) feature enabled,
 an additional `0.1` Action is charged per Action in the Namespace.
@@ -234,7 +234,7 @@ an additional `0.1` Action is charged per Action in the Namespace.
 | --------------- | ----------- | ------------------ |
 | Enable Fairness | N/A         | N/A                |
 
-## Capacity {#capacity}
+## Capacity {/* #capacity */}
 
 - For Namespace Capacity Temporal Resource Units (TRUs), Actions are generated up to the included hourly allocation for
   TRUs in any hour where TRUs are set and actual usage falls beneath the included hourly Action allocation.

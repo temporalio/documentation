@@ -31,7 +31,7 @@ This page shows you how to do the following using the .NET SDK with the Temporal
 A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
 Temporal Client inside an Activity to communicate with a Temporal Service.
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 Use
 [`TemporalClient.ConnectAsync`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClient.html#Temporalio_Client_TemporalClient_ConnectAsync_Temporalio_Client_TemporalClientConnectOptions_)
@@ -41,7 +41,7 @@ configuration. You can provide these options directly in code, or load them from
 configuration file for secure, repeatable configuration.
 
 When you’re running a Temporal Service locally (such as with the
-[Temporal CLI dev server](https://docs.temporal.io/cli/server#start-dev)), the required options are minimal. If you
+[Temporal CLI dev server](https://docs.temporal.io/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
 <Tabs groupId="connect-options-dotnet" defaultValue="config-file" >
@@ -251,7 +251,7 @@ namespace TemporalioSamples.Manual
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -462,7 +462,7 @@ myClient.Connection.ApiKey = myKeyUpdated;
 
 </Tabs>
 
-## Start a Workflow {#start-workflow}
+## Start a Workflow {/* #start-workflow */}
 
 **How to start a Workflow using the Temporal .NET SDK**
 
@@ -486,7 +486,7 @@ var result = await client.ExecuteWorkflowAsync(
 Console.WriteLine("Result: {0}", result);
 ```
 
-## Get Workflow results {#get-workflow-results}
+## Get Workflow results {/* #get-workflow-results */}
 
 **How to get the results of a Workflow Execution using the Temporal .NET SDK**
 

@@ -19,17 +19,15 @@ tags:
   - AWS Lambda
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release) and available to select Temporal Cloud customers.
-To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-APIs are experimental and may be subject to backwards-incompatible changes.
-[Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
-
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
 
 This page walks through the Serverless Worker invocation flow and helps you identify where a failure is occurring.
 
@@ -46,7 +44,7 @@ When a Serverless Worker invocation works correctly, the following sequence happ
 
 Start by determining whether the Lambda function is being invoked at all, then narrow down from there.
 
-## Is the Lambda function being invoked? {#is-lambda-invoked}
+## Is the Lambda function being invoked? {/* #is-lambda-invoked */}
 
 Check the Lambda function's CloudWatch metrics or invocation logs.
 
@@ -59,11 +57,11 @@ If there are no invocations, continue to [Lambda is not being invoked](#lambda-n
 If the Lambda is being invoked but Workflows are not progressing, skip to
 [Lambda is invoked but Tasks are not completing](#lambda-invoked-not-completing).
 
-## Lambda is not being invoked {#lambda-not-invoked}
+## Lambda is not being invoked {/* #lambda-not-invoked */}
 
 Work through the following checks in order.
 
-### Validate the connection to Lambda {#validate-connection}
+### Validate the connection to Lambda {/* #validate-connection */}
 
 Start by verifying that Temporal can reach the Lambda function. Go to **Workers > Deployments > select your
 deployment**, open the **Actions** menu on the version, and click **Validate Connection**. A successful validation
@@ -83,7 +81,7 @@ registers the Worker Deployment Version and binds the Task Queue on the server, 
 To fix the issue, create or update the Worker Deployment Version with the compute provider flags as described in the
 [deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version).
 
-### Check that the version is set as current {#check-version-current}
+### Check that the version is set as current {/* #check-version-current */}
 
 The Worker Deployment Version must be set as the current version for new Tasks to route to it. If you created the
 version through the CLI, you need to
@@ -91,7 +89,7 @@ version through the CLI, you need to
 
 You can verify the current version with `temporal worker deployment describe`.
 
-### Check that the WCI is detecting Tasks {#check-wci-detecting-tasks}
+### Check that the WCI is detecting Tasks {/* #check-wci-detecting-tasks */}
 
 If the connection validates successfully but the Lambda is still not being invoked, the
 [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) may not be detecting Tasks on the
@@ -120,12 +118,12 @@ the execution result and any errors directly, making it easier to identify confi
 CloudWatch logs. Once the Lambda runs successfully and the Worker connects to Temporal, the Task Queue binding is
 established.
 
-## Lambda is invoked but Tasks are not completing {#lambda-invoked-not-completing}
+## Lambda is invoked but Tasks are not completing {/* #lambda-invoked-not-completing */}
 
 If CloudWatch shows Lambda invocations but Workflows are not progressing, the problem is in the Worker's execution
 within the Lambda function.
 
-### Check Lambda execution logs {#check-execution-logs}
+### Check Lambda execution logs {/* #check-execution-logs */}
 
 Check CloudWatch logs for errors during Worker startup. In the AWS Console, go to **CloudWatch > Log groups >
 /aws/lambda/your-function-name** and look for recent error messages.
@@ -139,7 +137,7 @@ Common errors include:
 - **TLS errors**: The TLS certificate or key is missing, expired, or does not match the Namespace.
 - **Authentication errors**: The API key is invalid or does not have access to the Namespace.
 
-### Check for Lambda timeout {#check-lambda-timeout}
+### Check for Lambda timeout {/* #check-lambda-timeout */}
 
 If the Lambda function reaches its configured timeout before the Worker finishes processing, AWS terminates the
 invocation.
@@ -151,7 +149,7 @@ For long-running Activities, increase the Lambda timeout and the Worker's shutdo
 [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities) for guidance on how these
 values relate.
 
-### Check that the deployment name and build ID match {#check-deployment-match}
+### Check that the deployment name and build ID match {/* #check-deployment-match */}
 
 If CloudWatch shows rapid, repeated invocations with no Workflow progress, the deployment name or build ID in the Worker
 code may not match the Worker Deployment Version configuration.

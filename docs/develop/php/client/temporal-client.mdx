@@ -24,7 +24,7 @@ This page shows how to do the following:
 - [Start a Workflow Execution](#start-workflow-execution)
 - [Advanced connection options](#advanced-connection-options)
 
-## How to connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
+## How to connect a Temporal Client to a Temporal Service {/* #connect-to-a-dev-cluster */}
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
@@ -44,7 +44,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/command-reference/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to `127.0.0.1:7233`.
 
 In the PHP SDK, different client classes are responsible for different functional areas.
@@ -71,7 +71,7 @@ $workflowClient = WorkflowClient::create($serviceClient);
 
 See the [Advanced connection options](#advanced-connection-options) section for more information on configuring the connection.
 
-## How to connect a Temporal Client to a Temporal Cloud {#connect-to-temporal-cloud}
+## How to connect a Temporal Client to a Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -129,7 +129,7 @@ $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
     ->withAuthKey('your-api-key');
 ```
 
-## How to start a Workflow Execution {#start-workflow-execution}
+## How to start a Workflow Execution {/* #start-workflow-execution */}
 
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
@@ -255,7 +255,7 @@ var_dump($run->getResult(timeout: 10));
 
 You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/workflows/schedules#temporal-cron-jobs).
 
-### How to set a Workflow's Task Queue {#set-task-queue}
+### How to set a Workflow's Task Queue {/* #set-task-queue */}
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 When developing in PHP, the Task Queue name defaults to `"default"`.
@@ -280,7 +280,7 @@ $stub = $workflowClient->newWorkflowStub(
 );
 ```
 
-### How to set a Workflow Id {#workflow-id}
+### How to set a Workflow Id {/* #workflow-id */}
 
 Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
@@ -294,7 +294,7 @@ $stub = $workflowClient->newWorkflowStub(
 );
 ```
 
-### How to get the results of a Workflow Execution {#get-workflow-results}
+### How to get the results of a Workflow Execution {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -327,7 +327,7 @@ Note that you can specify a timeout for the `getResult()` method in seconds.
 If the Workflow does not complete within the specified time, a `TimeoutException` will be thrown.
 See how to limit all RPC calls in the [RPC timeout](#configure-rpc-timeout) section.
 
-## Advanced connection options {#advanced-connection-options}
+## Advanced connection options {/* #advanced-connection-options */}
 
 In PHP, it is common practice to work with resources in blocking mode.
 Long blocks can quickly exhaust the pool of available workers and lead to application failure.
@@ -349,7 +349,7 @@ $serviceClient->getServerCapabilities();
 
 If, for some reason, the established connection is broken, the SDK will automatically attempt to restore it, taking into account the configured retry policy.
 
-### Retry policy {#configure-rpc-retry-policy}
+### Retry policy {/* #configure-rpc-retry-policy */}
 
 Whenever the client fails to connect to the server, an error with a status code is generated.
 If the status code is `UNKNOWN`, `UNAVAILABLE`, or `RESOURCE_EXHAUSTED`, the client will make another connection attempt.
@@ -375,7 +375,7 @@ $workflowClient = WorkflowClient::create($serviceClient)
     );
 ```
 
-### RPC timeout {#configure-rpc-timeout}
+### RPC timeout {/* #configure-rpc-timeout */}
 
 When the client calls the service's RPC, there is no default time limit for waiting for a response. This can result in the code call `$result = $workflowHandle->getResult();` blocking the PHP worker until the Workflow completes. In some cases, this is not the desired behavior, and there may be a need to set a reasonable timeout for waiting for the RPC to complete.
 

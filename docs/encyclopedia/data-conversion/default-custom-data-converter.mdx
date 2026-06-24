@@ -26,7 +26,7 @@ This page discusses the following:
 - [Default Data Converter](#default-data-converter)
 - [Custom Data Converter](#custom-data-converter)
 
-## What is a default Data Converter? {#default-data-converter}
+## What is a default Data Converter? {/* #default-data-converter */}
 
 Each Temporal SDK includes and uses a default Data Converter.
 The default Data Converter converts objects to bytes using a series of Payload Converters and supports binary, Protobufs, and JSON formats.
@@ -47,7 +47,7 @@ For example:
 The default Data Converter serializes objects based on their root type, rather than nested types.
 The JSON serializers of some SDKs cannot process lists with Protobuf children objects without implementing a [custom Data Converter](#custom-data-converter).
 
-## What is a custom Data Converter? {#custom-data-converter}
+## What is a custom Data Converter? {/* #custom-data-converter */}
 
 A custom Data Converter extends the default Data Converter with custom logic for [Payload](/dataconversion#payload) conversion or encoding.
 

@@ -27,14 +27,14 @@ This page shows how to do the following:
   - [Update a Scheduled Workflow](#update-a-scheduled-workflow)
 - [Use Start Delay](#start-delay)
 
-## Schedule a Workflow {#schedule-a-workflow}
+## Schedule a Workflow {/* #schedule-a-workflow */}
 
 Scheduling Workflows is a crucial aspect of automation.
 By scheduling a Workflow, you can automate repetitive tasks, reduce manual intervention, and ensure timely execution.
 
 Use the following actions to manage Scheduled Workflows.
 
-### Create a Scheduled Workflow {#create-a-workflow}
+### Create a Scheduled Workflow {/* #create-a-workflow */}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
@@ -69,7 +69,7 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 :::
 
-### Backfill a Scheduled Workflow {#backfill-a-scheduled-workflow}
+### Backfill a Scheduled Workflow {/* #backfill-a-scheduled-workflow */}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
 
@@ -88,7 +88,7 @@ handle.backfill(
 )
 ```
 
-### Delete a Scheduled Workflow {#delete-a-scheduled-workflow}
+### Delete a Scheduled Workflow {/* #delete-a-scheduled-workflow */}
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
@@ -99,7 +99,7 @@ handle = my_client.schedule_handle('my-schedule-id')
 handle.delete
 ```
 
-### Describe a Scheduled Workflow {#describe-a-scheduled-workflow}
+### Describe a Scheduled Workflow {/* #describe-a-scheduled-workflow */}
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
 
@@ -111,7 +111,7 @@ desc = handle.describe
 puts "Schedule info: #{desc.info}"
 ```
 
-### List a Scheduled Workflow {#list-a-scheduled-workflow}
+### List a Scheduled Workflow {/* #list-a-scheduled-workflow */}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -125,7 +125,7 @@ my_client.list_schedules.each do |sched|
 end
 ```
 
-### Pause a Scheduled Workflow {#pause-a-scheduled-workflow}
+### Pause a Scheduled Workflow {/* #pause-a-scheduled-workflow */}
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
 
@@ -137,7 +137,7 @@ handle = my_client.schedule_handle('my-schedule-id')
 handle.pause(note: 'Pausing the schedule for now')
 ```
 
-### Trigger a Scheduled Workflow {#trigger-a-scheduled-workflow}
+### Trigger a Scheduled Workflow {/* #trigger-a-scheduled-workflow */}
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
@@ -148,7 +148,7 @@ handle = my_client.schedule_handle('my-schedule-id')
 handle.trigger
 ```
 
-### Update a Scheduled Workflow {#update-a-scheduled-workflow}
+### Update a Scheduled Workflow {/* #update-a-scheduled-workflow */}
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
 
@@ -172,7 +172,7 @@ handle.update do |input|
 end
 ```
 
-## Use Start Delay {#start-delay}
+## Use Start Delay {/* #start-delay */}
 
 Use the `start_delay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
 

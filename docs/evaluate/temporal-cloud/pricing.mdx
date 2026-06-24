@@ -35,12 +35,12 @@ For more exact estimates, please reach out to [our team](https://pages.temporal.
 Billing and cost information is available directly in the Temporal Cloud UI.
 For more information, visit the [Billing](/cloud/billing) page.
 
-## Temporal Cloud pricing model {#pricing-model}
+## Temporal Cloud pricing model {/* #pricing-model */}
 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
 Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Temporal Cloud Plan](#base_plans) that includes [Support](/cloud/support#support).
 
-### Temporal Cloud Plans {#base_plans}
+### Temporal Cloud Plans {/* #base_plans */}
 
 **How plans work**
 
@@ -71,7 +71,7 @@ Active and Retained Storage allocations are translated into GBh at a rate of 1GB
 
 :::
 
-### Actions {#action}
+### Actions {/* #action */}
 
 **What are Temporal Actions?**
 
@@ -81,7 +81,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of Actions.
 
-### Storage {#storage}
+### Storage {/* #storage */}
 
 **How Workflow Storage works**
 
@@ -98,7 +98,7 @@ Under this framework, a Workflow Execution has only two states, open (Active Sto
 
 Storage costs are measured in gigabyte-hours (GBh).
 
-### Pricing options {#pricing-options}
+### Pricing options {/* #pricing-options */}
 
 **How to Pay for Temporal Cloud**
 
@@ -110,14 +110,14 @@ Both models meter and bill for three primary components: [Actions](#action), [St
 - With Commitments, you pre-purchase your Temporal Cloud spend with Temporal Credits.
   Temporal Credits pay for your Temporal Cloud consumption, including Temporal Cloud Plan charges.
 
-## Pay-As-You-Go {#payg}
+## Pay-As-You-Go {/* #payg */}
 
 **How does Pay-As-You-Go pricing work?**
 
 Pay-As-You-Go pricing is based on consumption.
 This section explains how you're billed each calendar month and gives examples.
 
-### Action pricing {#payg-action-pricing}
+### Action pricing {/* #payg-action-pricing */}
 
 Actions pricing starts at &#36;50 per million Actions (&#36;0.00005 per Action).
 You gain progressive volume discounts as you scale.
@@ -145,7 +145,7 @@ Actions
 $250 (First Tier) + $225 (Second Tier) + $50 (Third Tier) = $525
 ```
 
-### Storage pricing {#payg-storage-pricing}
+### Storage pricing {/* #payg-storage-pricing */}
 
 Most accounts’ storage needs are met by our Temporal Cloud Plans.
 For additional storage within a calendar month, you are billed for Active and Retained Storage as follows:
@@ -157,7 +157,7 @@ For additional storage within a calendar month, you are billed for Active and Re
 :::tip Storage costs are also affected by Temporal System Workflows that back features such as:
 
 - [Schedules](https://docs.temporal.io/schedule): Each Scheduled Workflow contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from Scheduled Workflows.
-- [Batch jobs](https://docs.temporal.io/cli/batch): Batch Workflow executions also consume storage.
+- [Batch jobs](https://docs.temporal.io/cli/command-reference/batch): Batch Workflow executions also consume storage.
 
 These Workflow executions contribute to overall active and retained storage consumption.
 
@@ -191,7 +191,7 @@ If you are signed up for Essentials, with &#36;3,000 of monthly spend, your bill
 Greater of $100 or 5% ⨉ $3,000 = $150, so $150.
 ```
 
-## Commitment Pricing {#commitment-pricing}
+## Commitment Pricing {/* #commitment-pricing */}
 
 **Commitments with Temporal Credits**
 
@@ -256,11 +256,11 @@ Beginning credit balance of 72,000 - 5800 credits used = 66,200, Temporal Credit
 
 If you have additional questions about credits and volume-based pricing, please contact [sales](mailto:sales@temporal.io) or, if you're already a Temporal Cloud customer, reach out to your dedicated account executive.
 
-## Other pricing {#other-pricing}
+## Other pricing {/* #other-pricing */}
 
 Temporal Cloud has additional pricing for other elements of the platform.
 
-### Capacity Modes {#capacity-modes-pricing}
+### Capacity Modes {/* #capacity-modes-pricing */}
 
 **What are Capacity Modes?** 
 
@@ -307,7 +307,7 @@ To avoid being charged for provisioned capacity it is advised to "return" capaci
 
 
 
-### High Availability feature pricing {#high-availability-features}
+### High Availability feature pricing {/* #high-availability-features */}
 
 **How does the pricing for High Availability (HA) features work?**
 
@@ -335,7 +335,7 @@ When upgrading an existing Namespace, some points to consider:
 - Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a replica.
 - Temporal charges for Replicated Storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new replica.
 
-### Fairness pricing {#fairness-pricing}
+### Fairness pricing {/* #fairness-pricing */}
 
 **How does pricing for Fairness work?**
 
@@ -363,7 +363,7 @@ If each queue generates 5,000 Actions in a given hour (10,000 total), Fairness A
 |---------------|----------------------------|---------------------------------|-------------------------|-----------------|----------------------|
 | 2:00–3:00 PM  | 5,000                      | 5,000                           | 10,000                  | +1,000          | 11,000               |
 
-### SCIM and SSO via SAML pricing {#sso-and-saml}
+### SCIM and SSO via SAML pricing {/* #sso-and-saml */}
 
 **What costs are associated with SSO/SAML use?**
 
@@ -374,7 +374,7 @@ Single sign-on (SSO) integration using SAML is included for all customers on the
 To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan or an add-on for the Business plan (+$500/month in addition to the Business plan).
 Please note that you must configure SSO via SAML to use SCIM.
 
-### Use case cost estimates {#pricing-estimates}
+### Use case cost estimates {/* #pricing-estimates */}
 
 Temporal Cloud uses a consumption-based pricing model based primarily on [Actions](#action) and [Storage](#storage).
 Each workload is different.
@@ -392,7 +392,7 @@ Our team is always happy to [help you estimate costs](https://pages.temporal.io/
 | Large         | < &#36;15K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
 | Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
 
-## Billing Questions FAQs {#pricing-faq}
+## Billing Questions FAQs {/* #pricing-faq */}
 
 **What payment methods does Temporal accept?**
 

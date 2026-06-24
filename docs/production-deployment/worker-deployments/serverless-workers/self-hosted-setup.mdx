@@ -19,12 +19,11 @@ tags:
   - Self-hosted
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-APIs are experimental and may be subject to backwards-incompatible changes.
-
-:::
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
 
 Serverless Workers require Temporal Service v1.31.0 or later.
 
@@ -40,14 +39,14 @@ Once setup is complete, follow the
 [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to deploy your
 Worker.
 
-## Ensure Lambda can reach the Temporal Service {#ensure-network-reachability}
+## Ensure Lambda can reach the Temporal Service {/* #ensure-network-reachability */}
 
 The [Temporal Service frontend](/temporal-service/temporal-server#frontend-service) must be reachable from the Lambda execution
 environment. How to achieve this depends on your network setup. If the Temporal Service runs on a private network, you
 may need [VPC access for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), VPC peering, or a
 similar mechanism to allow the Lambda function to connect to the Temporal frontend.
 
-## Enable the Worker Controller Instance {#enable-worker-controller}
+## Enable the Worker Controller Instance {/* #enable-worker-controller */}
 
 [WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute
 providers. It is disabled by default and must be enabled through
@@ -80,7 +79,7 @@ workercontroller.enabled:
 
 The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
 
-## Configure AWS credentials {#configure-aws-credentials}
+## Configure AWS credentials {/* #configure-aws-credentials */}
 
 The Temporal Service needs AWS credentials to assume an IAM role that invokes Lambda functions. How you provide
 credentials depends on where the Temporal Service runs.
@@ -101,7 +100,7 @@ AWS_REGION=<region>
 These credentials must belong to an IAM user or role that has `sts:AssumeRole` permission for the Lambda invocation
 role.
 
-## Create the Lambda invocation role {#create-invocation-role}
+## Create the Lambda invocation role {/* #create-invocation-role */}
 
 Temporal invokes Lambda functions by assuming an IAM role in your AWS account. This role needs `lambda:GetFunction` and
 `lambda:InvokeFunction` permission on your Worker Lambda functions, and a trust policy that allows the Temporal server's
@@ -224,7 +223,7 @@ aws cloudformation describe-stacks \
 
 Use this role ARN when creating the Worker Deployment Version.
 
-## Next steps {#next-steps}
+## Next steps {/* #next-steps */}
 
 Follow the [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda) to
 write your Worker code, deploy it to Lambda, and create a Worker Deployment Version with the IAM role from the previous

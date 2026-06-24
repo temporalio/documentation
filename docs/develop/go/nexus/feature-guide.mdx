@@ -18,12 +18,6 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Go SDK support for Nexus is [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
-
-:::
-
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 This page shows how to do the following:
@@ -43,7 +37,7 @@ This documentation uses source code derived from the [Go Nexus sample](https://g
 
 :::
 
-## Run the Temporal Development Server with Nexus enabled {#run-the-temporal-nexus-development-server}
+## Run the Temporal Development Server with Nexus enabled {/* #run-the-temporal-nexus-development-server */}
 
 Prerequisites:
 
@@ -61,7 +55,7 @@ This command automatically starts the Temporal development server with the Web U
 
 The Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233), and the Temporal Server should now be available for client connections on `localhost:7233`.
 
-## Create caller and handler Namespaces {#create-caller-handler-namespaces}
+## Create caller and handler Namespaces {/* #create-caller-handler-namespaces */}
 
 Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
 
@@ -73,7 +67,7 @@ temporal operator namespace create --namespace my-caller-namespace
 `my-target-namespace` will contain the Nexus Operation handler, and we will use a Workflow in `my-caller-namespace` to call that Operation handler.
 We use different namespaces to demonstrate cross-Namespace Nexus calls.
 
-## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
+## Create a Nexus Endpoint to route requests from caller to handler {/* #create-nexus-endpoint */}
 
 After establishing caller and handler Namespaces, the next step is to create a Nexus Endpoint to route requests.
 
@@ -86,7 +80,7 @@ temporal operator nexus endpoint create \
 
 You can also use the Web UI to create the Namespaces and Nexus endpoint.
 
-## Define the Nexus Service contract {#define-nexus-service-contract}
+## Define the Nexus Service contract {/* #define-nexus-service-contract */}
 
 Defining a clear contract for the Nexus Service is crucial for smooth communication.
 
@@ -115,7 +109,7 @@ type EchoOutput EchoInput
 ```
 <!--SNIPEND-->
 
-## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
+## Develop a Nexus Service and Operation handlers {/* #develop-nexus-service-operation-handlers */}
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
@@ -310,7 +304,7 @@ func main() {
 ```
 <!--SNIPEND-->
 
-## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
+## Develop a caller Workflow that uses the Nexus Service {/* #develop-caller-workflow-nexus-service */}
 
 Import the Service API package that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
 
@@ -509,7 +503,7 @@ func runWorkflow(c client.Client, workflow interface{}, args ...interface{}) {
 ```
 <!--SNIPEND-->
 
-## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
+## Make Nexus calls across Namespaces with a development Server {/* #nexus-calls-across-namespaces-dev-server */}
 
 Follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter.
 
@@ -554,7 +548,7 @@ This will result in:
 2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
 ```
 
-### Canceling a Nexus Operation {#canceling-a-nexus-operation}
+### Canceling a Nexus Operation {/* #canceling-a-nexus-operation */}
 
 To cancel a Nexus Operation from within a Workflow, create a Go context using the `workflow.WithCancel` API.
 This returns a new context and a function that, when called, cancels the context and any SDK method that was passed this context.
@@ -570,7 +564,7 @@ To ensure cancelations are delivered, wait for all pending operations to finish 
 
 See the [Nexus cancelation sample](https://github.com/temporalio/samples-go/tree/main/nexus-cancelation) for reference.
 
-## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
+## Make Nexus calls across Namespaces in Temporal Cloud {/* #nexus-calls-across-namespaces-temporal-cloud */}
 
 This section assumes you are already familiar with [how to connect a Worker to Temporal Cloud](/develop/go/client/temporal-client#connect-to-temporal-cloud).
 The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
@@ -685,7 +679,7 @@ Run the handler Worker:
 cd handler
 
 go run ./worker \
-  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -target-host <your-target-namespace.account>.tmprl.cloud:7233 \
   -namespace <your-target-namespace.account> \
   -api-key <your-api-key>
 ```
@@ -696,7 +690,7 @@ Run the caller Worker:
 cd caller
 
 go run ./worker \
-  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
   -namespace <your-caller-namespace.account> \
   -api-key <your-api-key>
 ```
@@ -707,7 +701,7 @@ go run ./worker \
 cd caller
 
 go run ./starter \
-  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
   -namespace <your-caller-namespace.account> \
   -api-key <your-api-key>
 ```

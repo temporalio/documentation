@@ -19,21 +19,19 @@ tags:
 ---
 
 import SdkTabs from '@site/src/components/elements/SdkTabs';
+import { ReleaseNoteHeader } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+
 This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release) and available to select Temporal Cloud customers.
-To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-APIs are experimental and may be subject to backwards-incompatible changes.
-[Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
-
-:::
-
-## Prerequisites {#prerequisites}
+## Prerequisites {/* #prerequisites */}
 
 - A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
   Namespace's cloud provider must match the serverless compute provider.
@@ -58,7 +56,7 @@ APIs are experimental and may be subject to backwards-incompatible changes.
 
   :::
 
-## 1. Write Worker code {#write-worker-code}
+## 1. Write Worker code {/* #write-worker-code */}
 
 Write a Worker that runs inside a Lambda function. The Worker handles the per-invocation lifecycle: connecting to
 Temporal, polling for tasks, and gracefully shutting down before the invocation deadline.
@@ -180,11 +178,11 @@ For details on configuration options, Lambda-tuned defaults, and observability, 
 </SdkTabs.TypeScript>
 </SdkTabs>
 
-## 2. Deploy Lambda function {#deploy-lambda-function}
+## 2. Deploy Lambda function {/* #deploy-lambda-function */}
 
 Build your Worker for the Lambda runtime, package it as a zip, and deploy it to AWS Lambda.
 
-### i. Build and package {#build-and-package}
+### i. Build and package {/* #build-and-package */}
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -241,7 +239,7 @@ zip -r function.zip lib/ node_modules/ workflow-bundle.js
 </SdkTabs.TypeScript>
 </SdkTabs>
 
-### ii. Deploy Lambda function {#deploy-lambda-function-step}
+### ii. Deploy Lambda function {/* #deploy-lambda-function-step */}
 
 Replace the placeholder values and run the following command to create the Lambda function in your AWS environment.
 
@@ -350,7 +348,7 @@ Version.
 
 :::
 
-## 3. Configure IAM for Temporal invocation (Cloud only) {#configure-iam}
+## 3. Configure IAM for Temporal invocation (Cloud only) {/* #configure-iam */}
 
 This section applies to Temporal Cloud. For self-hosted Temporal Service deployments, see
 [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#create-invocation-role)
@@ -496,7 +494,7 @@ aws cloudformation describe-stacks --stack-name <STACK_NAME> --query 'Stacks[0].
 
 Use this role ARN in your Worker Deployment Version's compute configuration.
 
-## 4. Create Worker Deployment Version {#create-worker-deployment-version}
+## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute
 provider that points to your Lambda function. The compute configuration tells Temporal how to invoke your Worker: the
@@ -565,7 +563,7 @@ To verify that Temporal can reach your Lambda function, go to **Workers** > **De
 open the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can assume the IAM
 role and invoke the function.
 
-## 5. Set version as current {#set-current-version}
+## 5. Set version as current {/* #set-current-version */}
 
 If you created the version through the Temporal UI, the version is already current and you can skip this step.
 
@@ -578,7 +576,7 @@ temporal worker deployment set-current-version \
   --build-id build-1
 ```
 
-## 6. Verify deployment {#verify-deployment}
+## 6. Verify deployment {/* #verify-deployment */}
 
 Start a Workflow on the same Task Queue to confirm that Temporal invokes your Lambda Worker.
 

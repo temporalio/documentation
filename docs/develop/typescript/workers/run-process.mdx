@@ -11,7 +11,7 @@ tags:
   - Worker
 ---
 
-## How to run Worker Processes {#run-a-dev-worker}
+## How to run Worker Processes {/* #run-a-dev-worker */}
 
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
@@ -29,7 +29,7 @@ perfectly sufficient. For more information, see the [Worker tuning guide](/devel
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and
 Activity Executions, respectively.
 
-## How to run a Worker on Docker in TypeScript {#run-a-worker-on-docker}
+## How to run a Worker on Docker in TypeScript {/* #run-a-worker-on-docker */}
 
 :::note
 
@@ -154,7 +154,7 @@ Or like this:
 Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
 ```
 
-## How to run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
+## How to run a Temporal Cloud Worker {/* #run-a-temporal-cloud-worker */}
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that
 include the following:
@@ -170,7 +170,7 @@ For more information about managing and generating client certificates for Tempo
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-### How to register types {#register-types}
+### How to register types {/* #register-types */}
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and
 Activity Types.
@@ -249,7 +249,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-## How to shut down a Worker and track its state {#shut-down-a-worker}
+## How to shut down a Worker and track its state {/* #shut-down-a-worker */}
 
 Workers shut down if they receive any of the Signals enumerated in
 [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`,

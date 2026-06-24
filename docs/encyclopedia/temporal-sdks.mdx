@@ -30,7 +30,7 @@ SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
 The SDK's internal implementation, working in collaboration with the Temporal Service, steps through that code, guaranteeing execution progression during application runtime.
 
-## Temporal Applications {#temporal-application}
+## Temporal Applications {/* #temporal-application */}
 
 A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/workflow-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
 Developers create Temporal Applications using an [official Temporal SDK](#official-sdks).
@@ -46,7 +46,7 @@ Additionally, a Temporal Workflow Execution is both resumable and recoverable, a
 
 Hence, a Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
 
-## Official SDKs {#official-sdks}
+## Official SDKs {/* #official-sdks */}
 
 **What are the officially supported SDKs?**
 
@@ -71,7 +71,7 @@ The following third-party SDKs exist but are not officially supported by Tempora
 - [Clojure](https://github.com/manetu/temporal-clojure-sdk) from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
 
-## Why use a Temporal SDK? {#why-use-an-sdk}
+## Why use a Temporal SDK? {/* #why-use-an-sdk */}
 
 Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
 
@@ -143,7 +143,7 @@ This capability stems from the SDK's ability to persist each step the program ta
 
 {/* - [Developing for Durable Execution using the Go SDK](/develop/go/durable-execution) */}
 
-## Temporal SDKs major components {#major-components}
+## Temporal SDKs major components {/* #major-components */}
 
 **What are the major components of Temporal SDKs?**
 
@@ -411,7 +411,7 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 }
 ```
 
-## The SDK and Temporal Service relationship {#sdk-and-cluster-relationship}
+## The SDK and Temporal Service relationship {/* #sdk-and-cluster-relationship */}
 
 **How do the Temporal SDKs work with the Temporal Service?**
 

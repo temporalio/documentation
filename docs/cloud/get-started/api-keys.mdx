@@ -34,7 +34,7 @@ Temporal Cloud API keys offer industry-standard identity-based authentication fo
 - [Troubleshoot your API key use](#troubleshooting)
 - [API keys: Frequently Asked Questions](#faqs)
 
-## API key overview {#overview}
+## API key overview {/* #overview */}
 
 Each Temporal Cloud API key is a unique identity linked to role-based access control (RBAC) settings to ensure secure
 and appropriate access.
@@ -46,7 +46,7 @@ The authentication process follows this pathway:
   title="API key (authentication) → Identity (user or Service Account) → RBAC (authorization)"
 />
 
-## API key best practices {#best-practices}
+## API key best practices {/* #best-practices */}
 
 - **Keep it secret; keep it safe**: Treat your API key like a password. Do not expose it in client-side code, public
   repositories, or other easily accessible locations.
@@ -100,7 +100,7 @@ Check these setup details before using API keys:
 - Have access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI
   ([tcld](https://docs.temporal.io/cloud/tcld/)) to create an API key.
 
-## Global Administrator and Account Owner API key management {#manage-api-keys}
+## Global Administrator and Account Owner API key management {/* #manage-api-keys */}
 
 Global Administrators and Account Owners can monitor, manage, disable, and delete API keys for any user or Service
 Account within their account. To manage your account’s API keys:
@@ -124,7 +124,7 @@ is created and configured.
 
 :::
 
-## User API key management {#user-api-keys}
+## User API key management {/* #user-api-keys */}
 
 Manage your personal API keys with the Temporal Cloud UI or `tcld`. These sections show you how to generate, manage, and
 remove API keys for a user.
@@ -229,7 +229,7 @@ Temporal API keys automatically expire based on the specified expiration time. F
 For a broader machine-identity rotation strategy across API keys and Service Accounts, see
 [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
 
-## Manage API keys for Service Accounts {#serviceaccount-api-keys}
+## Manage API keys for Service Accounts {/* #serviceaccount-api-keys */}
 
 Global Administrators and Account Owners can manage and generate API keys for _all_ Service Accounts in their account.
 Namespace Admins can manage and generate API keys for the Namespace-scoped Service Accounts they administer.
@@ -344,7 +344,7 @@ Workflow access secure.
 
 :::
 
-## API keys for Namespace authentication {#namespace-authentication}
+## API keys for Namespace authentication {/* #namespace-authentication */}
 
 Create a Namespace with API key authentication as an alternative to mTLS-based authentication by selecting "Allow API
 key authentication" during setup.
@@ -355,7 +355,7 @@ directs traffic to the active region, so Workers and Clients don't need to chang
 
 See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
-## Use API keys to authenticate {#using-apikeys}
+## Use API keys to authenticate {/* #using-apikeys */}
 
 Authenticate with Temporal Cloud using API keys with the following clients:
 
@@ -372,11 +372,11 @@ your shell (recommended). The CLI automatically picks up the `TEMPORAL_API_KEY` 
 
 In addition to the API key, the following client options are required:
 
-- `--address`: Provide the Namespace's gRPC endpoint from the Namespace UI's gRPC endpoint box.
-  - For API key connections, use the format `<region>.<cloud_provider>.api.temporal.io:7233`.
+- `--address`: Provide `<namespace>.<account_id>.tmprl.cloud:7233` using your Namespace's info.
+  - This can be copied from the Namespace UI's "Connect" box. 
   - You can set the address using an environment variable.
-- `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
-  - Use the format `<namespace_id>.<account_id>`.
+- `--namespace`: Provide `<namespace>.<account_id>` using your Namespace's info.
+  - This can be copied from the top of the Namespace UI.
   - This can be set using an environment variable.
 
 For example, to connect to Temporal Cloud from the CLI using an environment variable for the API key:
@@ -384,8 +384,8 @@ For example, to connect to Temporal Cloud from the CLI using an environment vari
 ```bash
 export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
-    --address <endpoint> \
-    --namespace <namespace_id>.<account_id>
+    --address <namespace>.<account_id>.tmprl.cloud:7233 \
+    --namespace <namespace>.<account_id>
 ```
 
 :::tip ENVIRONMENT VARIABLES
@@ -432,11 +432,11 @@ see
 To use an API key with the [Temporal Terraform Provider](/cloud/terraform-provider), pass the API
 key as a provider argument.
 
-## Troubleshoot your API key use {#troubleshooting}
+## Troubleshoot your API key use {/* #troubleshooting */}
 
 **Invalid API key errors**: Check that you copied the key correctly and that it hasn't been revoked or expired.
 
-## API keys: Frequently Asked Questions {#faqs}
+## API keys: Frequently Asked Questions {/* #faqs */}
 
 **Q: Can I issue and use multiple API keys for the same account?**
 

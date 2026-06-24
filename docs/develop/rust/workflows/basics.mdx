@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a Workflow {#develop-workflows}
+## How to develop a Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -50,11 +50,11 @@ impl GreetingWorkflow {
 
 The `#[workflow]` macro marks the struct as a Workflow. The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
 
-### Workflow struct {#workflow-struct}
+### Workflow struct {/* #workflow-struct */}
 
 The Workflow struct holds the state of your Workflow Execution. This state is persisted and recovered during replays. All fields in a Workflow struct should be serializable.
 
-### Workflow initialization {#init-method}
+### Workflow initialization {/* #init-method */}
 
 The `#[init]` method is optional and is called when the Workflow first starts. It receives the initial Workflow input parameters and initializes the Workflow struct:
 
@@ -71,7 +71,7 @@ fn new(_ctx: &WorkflowContextView, name: String, age: u32) -> Self {
 
 The `#[init]` method receives a `WorkflowContextView`, which provides read-only access to Workflow execution information.
 
-### Run method {#run-method}
+### Run method {/* #run-method */}
 
 The `#[run]` method is required and contains the main Workflow logic. It:
 
@@ -94,7 +94,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 }
 ```
 
-## Define Workflow parameters {#workflow-parameters}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that structs are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
 
@@ -135,7 +135,7 @@ impl ProcessingWorkflow {
 
 All Workflow input should be serializable by `serde`.
 
-## Define Workflow return parameters {#workflow-return-values}
+## Define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
@@ -154,7 +154,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult
 }
 ```
 
-## Customize your Workflow Type {#workflow-type}
+## Customize your Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that is referred to as the Workflow name. By default, the Workflow type is the name of the Workflow struct. You can customize it by providing a `name` parameter to the `#[workflow]` macro:
 
@@ -174,7 +174,7 @@ pub struct GreetingWorkflow {
 }
 ```
 
-## Workflow logic requirements {#workflow-logic-requirements}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). For non-deterministic operations like API calls, and database queries, use [Activities](/develop/rust/activities/basics).
 
@@ -229,7 +229,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 }
 ```
 
-## Access Workflow State {#workflow-state}
+## Access Workflow State {/* #workflow-state */}
 
 Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access to your Workflow state:
 
@@ -248,7 +248,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 
 In synchronous [`Signal`](/develop/rust/workflows/message-passing#signals) and [`Update`](/develop/rust/workflows/message-passing#updates) handlers, you can mutate state directly via `&mut self`.
 
-## Workflow return types {#return-types}
+## Workflow return types {/* #return-types */}
 
 The `#[run]` method must return `WorkflowResult<T>`. This is a type alias for `Result<T, WorkflowTermination>`. 
 

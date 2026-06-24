@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Develop a Workflow {#develop-workflow}
+## Develop a Workflow {/* #develop-workflow */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -36,7 +36,7 @@ end
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that hashes or objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 
-### Workflow Logic Requirements {#workflow-logic-requirements}
+### Workflow Logic Requirements {/* #workflow-logic-requirements */}
 
 Temporal Workflows [must be deterministic](https://docs.temporal.io/workflows#deterministic-constraints), which includes
 Ruby workflows. This means there are several things workflows cannot do such as:
@@ -52,7 +52,7 @@ To prevent illegal workflow calls, a call tracer is put on the workflow thread t
 calls are made.
 Which calls are illegal is configurable in the worker options.
 
-### Customize Workflow Type {#workflow-type}
+### Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
 

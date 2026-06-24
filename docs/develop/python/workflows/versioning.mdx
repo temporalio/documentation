@@ -48,13 +48,13 @@ Support for the experimental Worker Versioning method before 2025 will be remove
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
-## Versioning with Patching {#patching}
+## Versioning with Patching {/* #patching */}
 
 ### Adding a patch
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
-When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
+When you want to make substantive code changes that may affect existing Workflow Executions, create a patch.
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
@@ -120,7 +120,7 @@ Patching is a three-step process:
 3. Once there are no longer any open Workflow Executions of the previous version of the code, remove `deprecate_patch()`.
    Let's walk through this process in sequence.
 
-### Patching in new code {#using-patched-for-workflow-history-markers}
+### Patching in new code {/* #using-patched-for-workflow-history-markers */}
 
 Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`).
@@ -151,7 +151,7 @@ class MyWorkflow:
             )
 ```
 
-### Deprecating patches {#deprecated-patches}
+### Deprecating patches {/* #deprecated-patches */}
 
 After ensuring that all Workflows started with `pre_patch_activity` code have left retention, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 
@@ -179,7 +179,7 @@ class MyWorkflow:
         )
 ```
 
-### Removing a patch {#deploy-new-code}
+### Removing a patch {/* #deploy-new-code */}
 
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 

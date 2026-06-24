@@ -1,7 +1,7 @@
 ---
 id: detecting-workflow-failures
 title: Detecting Workflow failures
-sidebar_label: Workflows
+sidebar_label: Detecting Workflow failures
 description: Learn about Workflow Execution Timeout, Workflow Run Timeout, and Workflow Task Timeout in Temporal. Maximize Workflow efficiency and manage durations effectively.
 toc_max_heading_level: 4
 keywords:
@@ -27,7 +27,7 @@ If you need to perform an action inside your Workflow after a specific period of
 - [Workflow Run Timeout](#workflow-run-timeout)
 - [Workflow Task Timeout](#workflow-task-timeout)
 
-## Workflow Execution Timeout {#workflow-execution-timeout}
+## Workflow Execution Timeout {/* #workflow-execution-timeout */}
 
 **What is a Workflow Execution Timeout in Temporal?**
 
@@ -52,7 +52,7 @@ If this timeout is reached, the Workflow Execution changes to a Timed Out status
 This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
 This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/cron-job) after a certain amount of time has passed.
 
-## Workflow Run Timeout {#workflow-run-timeout}
+## Workflow Run Timeout {/* #workflow-run-timeout */}
 
 **What is a Workflow Run Timeout in Temporal?**
 
@@ -81,7 +81,7 @@ This timeout is most commonly used to limit the execution time of a single [Temp
 
 If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out.
 
-## Workflow Task Timeout {#workflow-task-timeout}
+## Workflow Task Timeout {/* #workflow-task-timeout */}
 
 **What is a Workflow Task Timeout in Temporal?**
 

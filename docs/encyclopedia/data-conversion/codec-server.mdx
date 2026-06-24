@@ -79,7 +79,7 @@ form.
 Your Codec Server should use the same Payload Codec implementation as your Workers to ensure consistent encoding and
 decoding.
 
-## Codec Server with External Storage {#external-storage}
+## Codec Server with External Storage {/* #external-storage */}
 
 When your Workers and Clients use [External Storage](/external-storage), your storage drivers replace some payloads in
 the Event History with small references that point to data in an external store like Amazon S3. The Temporal Service and
@@ -178,6 +178,18 @@ Temporal Cloud, verify against the
 [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json). On a self-hosted Temporal Service, the
 token comes from whatever auth provider you have [configured for the Web UI](/references/web-ui-configuration#auth).
 This approach requires less setup but reuses the same token across the Temporal UI and the Codec Server.
+
+:::note
+
+If you have a step in your process for token validation to ensure access isn't granted to the wrong token, you can validate the `audience` claim with:
+
+```bash
+"aud": [
+  "https://saas-api.tmprl.cloud"
+]
+```
+
+:::
 
 ### Namespace-level authorization
 

@@ -19,12 +19,11 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal .NET SDK.
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal .NET SDK support for [Standalone Activities](/standalone-activity) is at
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+/>
 
 Standalone Activities are Activities that run independently, without being orchestrated by a
 Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
@@ -53,7 +52,7 @@ This documentation uses source code from the [StandaloneActivity](https://github
 
 :::
 
-## Get Started with Standalone Activities {#get-started}
+## Get Started with Standalone Activities {/* #get-started */}
 
 Prerequisites:
 
@@ -69,7 +68,7 @@ Prerequisites:
   brew install temporal
   ```
 
-  Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+  Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
   Verify the installation:
 
@@ -121,7 +120,7 @@ src/StandaloneActivity/
 └── TemporalioSamples.StandaloneActivity.csproj
 ```
 
-## Define your Activity {#define-activity}
+## Define your Activity {/* #define-activity */}
 
 An Activity in the Temporal .NET SDK is a method decorated with the `[Activity]` attribute. The way
 you write a Standalone Activity is identical to how you write an Activity orchestrated by a Workflow.
@@ -144,7 +143,7 @@ public static class MyActivities
 public record ComposeGreetingInput(string Greeting, string Name);
 ```
 
-## Run a Worker with the Activity registered {#run-worker}
+## Run a Worker with the Activity registered {/* #run-worker */}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
@@ -194,7 +193,7 @@ dotnet run --project src/StandaloneActivity worker
 
 Leave this terminal running - the Worker needs to stay up to process activities.
 
-## Execute a Standalone Activity {#execute-activity}
+## Execute a Standalone Activity {/* #execute-activity */}
 
 Use
 [`client.ExecuteActivityAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClientExtensions.html)
@@ -269,7 +268,7 @@ temporal activity execute \
   --input '{"Greeting": "Hello", "Name": "World"}'
 ```
 
-## Start a Standalone Activity without waiting for the result {#start-activity}
+## Start a Standalone Activity without waiting for the result {/* #start-activity */}
 
 Use
 [`client.StartActivityAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html)
@@ -316,7 +315,7 @@ temporal activity start \
   --input '{"Greeting": "Hello", "Name": "World"}'
 ```
 
-## Get a handle to an existing Standalone Activity {#get-activity-handle}
+## Get a handle to an existing Standalone Activity {/* #get-activity-handle */}
 
 Use `client.GetActivityHandle()` to create a handle to a previously started Standalone Activity:
 
@@ -330,7 +329,7 @@ var typedHandle = client.GetActivityHandle<string>("my-activity-id", runId: "the
 
 You can use the handle to wait for the result, describe, cancel, or terminate the Activity.
 
-## Wait for the result of a Standalone Activity {#get-activity-result}
+## Wait for the result of a Standalone Activity {/* #get-activity-result */}
 
 Under the hood, calling `client.ExecuteActivityAsync()` is the same as calling
 `client.StartActivityAsync()` to durably enqueue the Standalone Activity, and then calling
@@ -346,7 +345,7 @@ Or use the Temporal CLI to wait for a result by Activity ID:
 temporal activity result --activity-id my-standalone-activity-id
 ```
 
-## List Standalone Activities {#list-activities}
+## List Standalone Activities {/* #list-activities */}
 
 Use
 [`client.ListActivitiesAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html)
@@ -388,7 +387,7 @@ temporal activity list
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
 Visibility](/visibility). For example, `"ActivityType = 'ComposeGreeting' AND Status = 'Running'"`.
 
-## Count Standalone Activities {#count-activities}
+## Count Standalone Activities {/* #count-activities */}
 
 Use
 [`client.CountActivitiesAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html)
@@ -423,7 +422,7 @@ Or use the Temporal CLI:
 temporal activity count
 ```
 
-## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
+## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
 The code samples on this page use `ClientEnvConfig.LoadClientConnectOptions()`, so the same code
 works against Temporal Cloud - just configure the connection via environment variables or a TOML
@@ -449,7 +448,7 @@ export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
 Set these environment variables with values from your Temporal Cloud API key settings:
 
 ```
-export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
 export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```

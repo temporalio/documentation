@@ -16,7 +16,7 @@ import { CaptionedImage } from '@site/src/components';
 
 This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#set-task-queue) and [Task Ordering](#task-ordering).
 
-## What is a Task Queue? {#task-queue}
+## What is a Task Queue? {/* #task-queue */}
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](/tasks).
 There are three types of Task Queues: Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
@@ -72,13 +72,13 @@ When Workers don't have a registered Workflow, Activity, Nexus Operation, or dyn
 - "Not Found" Workflow Tasks and Activity Tasks are treated as _retryable_ errors.
 - "Not Found" Nexus Operation handlers are _non-retryable_ and must be manually retried from the caller Workflow.
 
-#### Where to set Task Queues {#set-task-queue}
+#### Where to set Task Queues {/* #set-task-queue */}
 
 There are five places where the name of the Task Queue can be set by the developer.
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-   - [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
+   - [How to start a Workflow Execution using the Temporal CLI](/cli/command-reference/workflow#start)
    - [How to start a Workflow Execution using the Go SDK](/develop/go/client/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the Java SDK](/develop/java/client/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the PHP SDK](/develop/php/client/temporal-client#start-workflow-execution)

@@ -14,7 +14,7 @@ tags:
 description: Start and manage Child Workflow Executions using Temporal's Child Workflow API, including setting Parent Close Policy, handling Events, and advanced Child Workflow options.
 ---
 
-## How to start a Child Workflow Execution {#child-workflows}
+## How to start a Child Workflow Execution {/* #child-workflows */}
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -91,7 +91,7 @@ Two advanced options are unique to Child Workflows:
 If you need to cancel a Child Workflow Execution, use [cancellation scopes](/develop/typescript/workflows/cancellation-scopes).
 A Child Workflow Execution is automatically cancelled when its containing scope is cancelled.
 
-### How to set a Parent Close Policy {#parent-close-policy}
+### How to set a Parent Close Policy {/* #parent-close-policy */}
 
 A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

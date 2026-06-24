@@ -23,14 +23,14 @@ This page answers the following questions for Rust developers:
 - [How to Continue-As-New?](#how)
 - [When is it right to Continue-as-New?](#when)
 
-## What is Continue-As-New? {#what}
+## What is Continue-As-New? {/* #what */}
 
 [Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow execution close successfully and creates a new Workflow execution. You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
 
 The new Workflow execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
 It also receives your Workflow's usual parameters.
 
-## How to Continue-As-New using the Rust SDK {#how}
+## How to Continue-As-New using the Rust SDK {/* #how */}
 
 First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
 This state is typically passed as a parameter or stored in the Workflow struct.
@@ -82,7 +82,7 @@ impl GreetingWorkflow {
 
 The `WorkflowTermination::continue_as_new()` method accepts the input to pass to the next Workflow run.
 
-## When is it right to Continue-as-New using the Rust SDK? {#when}
+## When is it right to Continue-as-New using the Rust SDK? {/* #when */}
 
 Use Continue-as-New when your Workflow might encounter degraded performance or [Event History Limits](/workflow-execution/event#event-history).
 
@@ -141,7 +141,7 @@ impl GreetingWorkflow {
 }
 ```
 
-## Best practices {#best-practices}
+## Best practices {/* #best-practices */}
 
 1. Pass all necessary state: When continuing as new, include all state the next run needs.
 2. Use meaningful iteration markers: Include iteration numbers or timestamps to track progress.

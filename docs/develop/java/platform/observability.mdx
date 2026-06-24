@@ -37,7 +37,7 @@ This section covers features related to viewing the state of the application, in
 - [Log from a Workflow](#logging)
 - [Visibility APIs](#visibility)
 
-## Emit metrics {#metrics}
+## Emit metrics {/* #metrics */}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -72,7 +72,7 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/637c2e66fd2dab43d9f3f39e5fd9c55e4f3884f0/core/src/main/java/io/temporal/samples/metrics).
 For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://docs.micrometer.io/micrometer/reference/implementations/prometheus.html#_configuring) documentation.
 
-## Set up tracing {#tracing}
+## Set up tracing {/* #tracing */}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
 
@@ -128,7 +128,7 @@ This map is special as it will normalize all keys to lowercase.
 Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
 Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscontextpropagation).
 
-## Log from a Workflow {#logging}
+## Log from a Workflow {/* #logging */}
 
 Logging enables you to record critical information during code execution.
 Loggers create an audit trail and capture information about your Workflow's operation.
@@ -156,17 +156,17 @@ private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class
 
 Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
 
-### How to provide a custom logger {#custom-logger}
+### How to provide a custom logger {/* #custom-logger */}
 
 Use a custom logger for logging.
 
 To set a custom logger, supply your own logging implementation and configuration details the same way you would in any other Java application.
 
-## Visibility APIs {#visibility}
+## Visibility APIs {/* #visibility */}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
-### How to use Search Attributes {#search-attributes}
+### How to use Search Attributes {/* #search-attributes */}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -187,10 +187,10 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
-  - [In the Temporal CLI](/cli/workflow#list).
+  - [In the Temporal CLI](/cli/command-reference/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
-### How to set custom Search Attributes {#custom-search-attributes}
+### How to set custom Search Attributes {/* #custom-search-attributes */}
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -229,7 +229,7 @@ Each `SearchAttribute` object represents a custom attribute name, and the value 
 In this example `isOrderFailed` is set as a Search Attribute. This attribute is
 useful for querying Workflows based on the success/failure of customer orders.
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+### How to upsert Search Attributes {/* #upsert-search-attributes */}
 
 Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertTypedSearchAttributes(io.temporal.common.SearchAttributeUpdate...)).
 This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
@@ -255,7 +255,7 @@ This method is particularly useful for Workflows whose attributes need to change
   }
 ```
 
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
 To remove a Search Attribute that was previously set, set it to an empty Map.
 

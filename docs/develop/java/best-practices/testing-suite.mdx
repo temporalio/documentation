@@ -37,7 +37,7 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.
 The test framework provides a `TestWorkflowEnvironment` class which includes an in-memory implementation
@@ -239,7 +239,7 @@ public class HelloActivityJUnit5Test {
 
 You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
 
-## Test Activities {#test-activities}
+## Test Activities {/* #test-activities */}
 
 Mocking isolates code undergoing testing so the focus remains on the code, and not on external dependencies or other state. You can test Activities using a mocked Activity environment.
 
@@ -254,12 +254,12 @@ For example, you can test an Activity for:
 - Exceptions thrown when checking for the result of the Activity Execution.
 - Activity's return values. Check that the return value matches the expected value.
 
-### Run an Activity {#run-an-activity}
+### Run an Activity {/* #run-an-activity */}
 
 During isolation testing, if an Activity references its context, you'll need to mock that context.
 Mocked information stands in for the context, allowing you to focus your testing on the Activity's code.
 
-### Listen to Heartbeats {#listen-to-heartbeats}
+### Listen to Heartbeats {/* #listen-to-heartbeats */}
 
 Activities usually issue periodic Heartbeats, a feature that broadcasts recurring proof-of-life updates.
 Each ping shows that an Activity is making progress and the Worker hasn't crashed.
@@ -269,20 +269,20 @@ When testing Activities that support Heartbeats, make sure you can see those Hea
 Provide appropriate test coverage.
 This enables you to verify both the Heartbeat's content and behavior.
 
-### Cancel an Activity {#cancel-an-activity}
+### Cancel an Activity {/* #cancel-an-activity */}
 
 Activity cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
 
-## Testing Workflows {#test-workflows}
+## Testing Workflows {/* #test-workflows */}
 
-### How to mock Activities {#mock-activities}
+### How to mock Activities {/* #mock-activities */}
 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 For more details on mocking activities, see [sample unit tests](#sample-unit-tests).
 
-### How to mock Nexus Operations {#mock-nexus-operations}
+### How to mock Nexus Operations {/* #mock-nexus-operations */}
 
 When integration testing Workflows with a Worker, you can mock Nexus operations by providing mock Nexus Service handlers to the Worker.
 Alternatively, you could just mock the Nexus service itself.
@@ -513,7 +513,7 @@ public class NexusServiceJunit5Test {
 ```
 <!--SNIPEND-->
 
-### How to skip time {#skip-time}
+### How to skip time {/* #skip-time */}
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -526,21 +526,21 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Set up time skipping {#setting-up}
+#### Set up time skipping {/* #setting-up */}
 
 Set up the time-skipping test framework in the SDK of your choice.
 
-{/* #### Skip time automatically {#automatic-method} */}
+{/* #### Skip time automatically {/* #automatic-method */} */}
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities or Nexus Operation handlers are running. Nexus Operation handlers timeout after 10 seconds and time skipping is allowed while waiting for retries.
 
-{/* #### Skip time manually {#manual-method} */}
+{/* #### Skip time manually {/* #manual-method */} */}
 
 Skip time manually in the SDK of your choice.
 
-## How to Replay a Workflow Execution {#replay}
+## How to Replay a Workflow Execution {/* #replay */}
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

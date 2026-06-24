@@ -24,7 +24,7 @@ This page shows the following:
 - How to send a Cancellation request from a Temporal Client.
 - Heartbeating after a Cancellation.
 
-## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+## Handle Cancellation in Workflow {/* #handle-cancellation-in-workflow */}
 
 Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the
 `workflow.NewDisconnectedContext` API. In the Workflow Definition, there is a special Activity that handles clean up
@@ -77,7 +77,7 @@ func YourWorkflow(ctx workflow.Context) error {
 ```
 <!--SNIPEND-->
 
-## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+## Handle Cancellation in an Activity {/* #handle-cancellation-in-an-activity */}
 
 **How to handle a Cancellation in an Activity in Go.**
 
@@ -110,7 +110,7 @@ func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 // ...
 ```
 
-## Request Cancellation {#request-cancellation}
+## Request Cancellation {/* #request-cancellation */}
 
 **How to request Cancellation of a Workflow and Activities in Go.**
 
@@ -148,7 +148,7 @@ When you call `activity.RecordHeartbeat` after Cancellation has occurred, a
 `WARN RecordActivityHeartbeat with error Error context canceled` message will be logged, and a `context canceled` error
 will be returned from the call. However, the Heartbeat **has** still been sent.
 
-## Reset a Workflow Execution {#reset}
+## Reset a Workflow Execution {/* #reset */}
 
 Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
 point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other

@@ -13,7 +13,7 @@ tags:
 
 This page discusses [Sticky Execution](#sticky-execution).
 
-## What is a Sticky Execution? {#sticky-execution}
+## What is a Sticky Execution? {/* #sticky-execution */}
 
 Workers cache the state of the Workflow they execute.
 To make this caching more effective, Temporal employs a performance optimization known as "Sticky Execution", which directs Workflow Tasks to the same Worker that previously processed tasks for a specific Workflow Execution.

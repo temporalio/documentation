@@ -23,12 +23,12 @@ This page discusses the following:
 - [Worker Identity](#worker-identity)
 - [Worker Process](#worker-process)
 
-## What is a Worker? {#worker}
+## What is a Worker? {/* #worker */}
 
 In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](/workers#worker-entity).
 Temporal documentation aims to be explicit and differentiate between them.
 
-## What is a Worker Program? {#worker-program}
+## What is a Worker Program? {/* #worker-program */}
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
@@ -46,7 +46,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 :::
 
-## What is a Worker Entity? {#worker-entity}
+## What is a Worker Entity? {/* #worker-entity */}
 
 A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
 
@@ -67,7 +67,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 - [How to tune Workers](/develop/worker-performance)
 - [Worker tuning quick reference](/develop/worker-tuning-reference) - SDK defaults and metrics
 
-## What is a Worker Identity? {#worker-identity}
+## What is a Worker Identity? {/* #worker-identity */}
 
 Workers have an associated identifier that helps identify the specific Worker instance.
 By default, Temporal SDKs set a Worker Identity to `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
@@ -98,7 +98,7 @@ Here are some approaches:
 - **Ensure uniqueness**: Make sure that the Worker Identity is unique within your system to avoid ambiguity when debugging issues.
 - **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and easily readable to facilitate quick identification and troubleshooting.
 
-## What is a Worker Process? {#worker-process}
+## What is a Worker Process? {/* #worker-process */}
 
 <CaptionedImage
     src="/diagrams/worker-and-server-component.svg"

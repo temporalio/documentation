@@ -19,7 +19,7 @@ tags:
 
 Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3 or GCP GCS), enabling:
 
-- Compliance and audit trails of complete Event History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto)
+- Compliance and audit trails of complete Event History data in [proto format](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto)
 - Analytics on Event History when ingested to the data platform of your choice
 
 Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a Self-Hosted Temporal Server. 
@@ -29,9 +29,9 @@ Exports run hourly, beginning 10 minutes after the hour.
 Allow up to 24 hours for a closed Workflow to appear in the exported file.
 Delivery is guaranteed at least once.
 
-## What's in the exported data {#exported-data}
+## What's in the exported data {/* #exported-data */}
 
-Each exported file contains one or more complete Workflow Execution histories serialized as protocol buffers using the [`WorkflowExecutions`](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) proto.
+Each exported file contains one or more complete Workflow Execution histories serialized as protocol buffers using the [`WorkflowExecutions`](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) proto.
 
 Each history is an ordered sequence of events that records everything that happened during a Workflow Execution:
 
@@ -45,7 +45,7 @@ Each history is an ordered sequence of events that records everything that happe
 Search attributes in the export use your **user-defined names** (for example, `customerId`), not internal column names.
 
 The export format is **protobuf binary**.
-You must deserialize using the [proto schema](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) before the data is human-readable.
+You must deserialize using the [proto schema](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) before the data is human-readable.
 
 The following is a simplified JSON representation of what one Workflow Execution looks like after deserialization.
 This example shows a Workflow that started, ran one Activity, and completed:
@@ -126,14 +126,14 @@ This example shows a Workflow that started, ran one Activity, and completed:
 The outer `items` array can contain multiple Workflow Executions per file.
 Only the key fields are shown above. Actual events include additional fields like `version`, `taskId`, and `workerVersion`.
 
-## Prerequisites {#prerequisites}
+## Prerequisites {/* #prerequisites */}
 
 To use Workflow History Export, you must have:
 
 1. A cloud account in the cloud provider where your Namespace is hosted.
 2. An object storage bucket available to receive the exported History.
 
-## Configure Workflow History Export {#configure}
+## Configure Workflow History Export {/* #configure */}
 
 ### AWS
 
@@ -143,14 +143,14 @@ To use Workflow History Export, you must have:
 
 [GCP GCS Export Configuration](/cloud/export/gcp-export-gcs)
 
-## Verify export setup {#verify}
+## Verify export setup {/* #verify */}
 
 From the Export configuration page, select **Verify**.
 This validates that Temporal can successfully write a test file to your object storage.
 
 If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the object store.
 
-## Monitor export progress {#monitor}
+## Monitor export progress {/* #monitor */}
 
 After Export has been configured, you can check that it's still working in several ways:
 
@@ -176,15 +176,18 @@ is the time the export uploads to object storage, not the Workflow completion ti
    - Usage Dashboard:
       - Actions from the Export Job are included in the [Usage Dashboard](/cloud/actions-usage).
 
-3. **Metrics**:
-   - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric `temporal_cloud_v1_total_action_count` with the label `is_background="true"`.
-
-4. **Email**:
+3. **Email**:
    - Emails are sent to `Namespace Administrator`, `Account Owner`, and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (such as Object Store permissions issue).
+
+:::note
+
+An export configuration that fails for 7 consecutive days is automatically disabled.
+
+:::
 
 ## Working with exported files
 
-Use the proto schema defined [here](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) to deserialize exported files.
+Use the proto schema defined [here](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto) to deserialize exported files.
 
 ### Using exported files in analytics
 
@@ -194,7 +197,7 @@ It can be useful to convert protos to another format to perform analytics on the
 * Each row in the table represents a single history event from a Workflow. To preserve their relationship post-conversion, the `workflowID` and `runID` is included in every row.
 * If you have enabled the codec server, the payload field is encrypted. This field may contain characters that are not recognized when loaded into a database so the payload field is excluded in this example.
 
-## Export and High Availability Namespaces {#export-ha}
+## Export and High Availability Namespaces {/* #export-ha */}
 
 ### Export Region Persistence
 

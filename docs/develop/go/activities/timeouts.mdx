@@ -18,7 +18,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to set Activity timeouts {#activity-timeouts}
+## How to set Activity timeouts {/* #activity-timeouts */}
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -53,7 +53,7 @@ if err != nil {
 }
 ```
 
-### Set a custom Activity Retry Policy {#activity-retries}
+### Set a custom Activity Retry Policy {/* #activity-retries */}
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -94,7 +94,7 @@ if err != nil {
 }
 ```
 
-### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
+### Overriding the retry interval with Next Retry Delay {/* #next-retry-delay */}
 
 You may return an [Application Failure](/references/failures#application-failure) with the `NextRetryDelay` field set.
 This value will replace and override whatever the Retry interval would be on the Retry Policy.
@@ -109,7 +109,7 @@ return temporal.NewApplicationErrorWithOptions(fmt.Sprintf("Something bad happen
 })
 ```
 
-## Activity Heartbeats {#activity-heartbeats}
+## Activity Heartbeats {/* #activity-heartbeats */}
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
@@ -178,7 +178,7 @@ func SampleActivity(ctx context.Context, inputArg InputParams) error {
 }
 ```
 
-### Set a Heartbeat Timeout {#heartbeat-timeout}
+### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

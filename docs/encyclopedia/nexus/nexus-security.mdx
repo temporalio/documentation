@@ -19,16 +19,10 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 Temporal Cloud provides built-in Endpoint access controls and secure connectivity across Namespaces.
 Self-hosted deployments can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin).
 
-## Runtime access controls {#runtime-access-controls}
+## Runtime access controls {/* #runtime-access-controls */}
 
 In Temporal Cloud, each Endpoint has an access control policy: an allowlist of caller Namespaces.
 
@@ -43,7 +37,7 @@ Temporal Cloud acts as a trusted broker across Namespace boundaries.
 
 See [Configure runtime access controls](/nexus/registry#configure-runtime-access-controls).
 
-## Secure connectivity {#secure-connectivity}
+## Secure connectivity {/* #secure-connectivity */}
 
 :::info
 
@@ -59,7 +53,7 @@ Temporal Cloud secures all Nexus communication:
 - mTLS encrypts all cross-Namespace Nexus traffic (start, cancel, and completion callbacks) across cells and regions.
 - Endpoints are only accessible from within a Temporal Cloud Account through the Temporal SDK - not externally accessible.
 
-## Payload encryption and Data Converter {#payload-encryption-data-converter}
+## Payload encryption and Data Converter {/* #payload-encryption-data-converter */}
 
 Nexus uses the same Data Converter as Workflows and Activities - JSON, Proto, and binary payloads are all supported.
 If you use a Codec for encryption, it also encrypts Nexus payloads.
@@ -69,12 +63,12 @@ Payloads are encrypted by the sender (caller encrypts input, handler encrypts re
 
 Three common approaches for cross-Namespace payload encryption:
 
-### Option 1: Same encryption key {#same-encryption-key}
+### Option 1: Same encryption key {/* #same-encryption-key */}
 
 Both Namespaces share the same encryption key.
 Simplest approach - no additional configuration needed.
 
-### Option 2: Pass KMS key ID in payload metadata {#kms-key-id-metadata}
+### Option 2: Pass KMS key ID in payload metadata {/* #kms-key-id-metadata */}
 
 Each Namespace uses its own encryption key, with the KMS key ID passed in Temporal payload metadata.
 The receiver reads the key ID from metadata and decrypts using KMS IAM permissions.
@@ -84,7 +78,7 @@ The Codec Server needs KMS decrypt permissions for all relevant keys.
 
 See the [encryption sample](https://github.com/temporalio/samples-go/blob/main/encryption/data_converter.go) and the [reference-app-orders-go data converter](https://github.com/temporalio/reference-app-orders-go/blob/main/app/temporalutil/data_converter.go).
 
-### Option 3: Wrapper types for endpoint-specific encryption keys {#endpoint-specific-keys}
+### Option 3: Wrapper types for endpoint-specific encryption keys {/* #endpoint-specific-keys */}
 
 Use wrapper types (for example, `EndpointValue`) so the Data Converter selects an Endpoint-specific encryption key.
 This encrypts only Nexus traffic with a dedicated key, without sharing Namespace keys across teams.
@@ -96,7 +90,7 @@ See the [draft endpoint-based encryption sample](https://github.com/temporalio/s
 Options 1 and 2, where both sides share the same key or flow the KMS key ID in payload metadata, work with the standard Data Converter.
 Option 3 is more advanced and is intended for teams that don't want to share their Namespace encryption keys with other teams.
 
-## Nexus Registry security {#managing-nexus-endpoints}
+## Nexus Registry security {/* #managing-nexus-endpoints */}
 
 See [Nexus Registry Roles and Permissions](/nexus/registry#roles-and-permissions).
 

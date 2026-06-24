@@ -27,13 +27,13 @@ This page shows how to do the following:
 - [Start delay](#start-delay)
 - [Temporal Cron Jobs](#temporal-cron-jobs)
 
-## Scheduled Workflows {#schedule-a-workflow}
+## Scheduled Workflows {/* #schedule-a-workflow */}
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes.
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
-### Create a Schedule {#create-schedule}
+### Create a Schedule {/* #create-schedule */}
 
 Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
@@ -75,7 +75,7 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 :::
 
-### Backfill a Schedule {#backfill-schedule}
+### Backfill a Schedule {/* #backfill-schedule */}
 
 Backfilling a Schedule executes [Workflow Tasks](/tasks#workflow-task) ahead of the Schedule's specified time range.
 This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
@@ -115,7 +115,7 @@ func main() {
 // ...
 ```
 
-### Delete a Schedule {#delete-schedule}
+### Delete a Schedule {/* #delete-schedule */}
 
 Deleting a Schedule erases a Schedule.
 Deletion does not affect any Workflows started by the Schedule.
@@ -142,7 +142,7 @@ func main() {
 // ...
 ```
 
-### Describe a Schedule {#describe-schedule}
+### Describe a Schedule {/* #describe-schedule */}
 
 `Describe` retrieves information about the current Schedule configuration.
 This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
@@ -163,7 +163,7 @@ func main() {
 // ...
 ```
 
-### List Schedules {#list-schedules}
+### List Schedules {/* #list-schedules */}
 
 The `List` action returns all available Schedules and their respective Schedule IDs.
 
@@ -189,7 +189,7 @@ func main() {
 // ...
 ```
 
-### Pause a Schedule {#pause-schedule}
+### Pause a Schedule {/* #pause-schedule */}
 
 `Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
 
@@ -218,7 +218,7 @@ func main() {
 	})
 ```
 
-### Trigger a Schedule {#trigger-schedule}
+### Trigger a Schedule {/* #trigger-schedule */}
 
 Triggering a Schedule immediately executes an Action defined in that Schedule.
 By default, `trigger` is subject to the Overlap Policy.
@@ -244,7 +244,7 @@ func main() {
 // ...
 ```
 
-### Update a Schedule {#update-schedule}
+### Update a Schedule {/* #update-schedule */}
 
 Updating a Schedule changes the configuration of an existing Schedule.
 These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
@@ -274,7 +274,7 @@ func main() {
 // ...
 ```
 
-## Start Delay {#start-delay}
+## Start Delay {/* #start-delay */}
 
 Use `StartDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
 
@@ -293,7 +293,7 @@ if err != nil {
 }
 ```
 
-## Temporal Cron Jobs {#temporal-cron-jobs}
+## Temporal Cron Jobs {/* #temporal-cron-jobs */}
 
 :::caution Cron support is not recommended
 

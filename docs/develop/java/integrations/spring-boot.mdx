@@ -1,7 +1,7 @@
 ---
 id: spring-boot
 title: Spring Boot integration - Java SDK
-sidebar_label: Spring Boot integration
+sidebar_label: Spring Boot
 slug: /develop/java/integrations/spring-boot-integration
 toc_max_heading_level: 2
 keywords:
@@ -25,7 +25,7 @@ This section includes the following topics:
 - [Integrations](#integrations)
 - [Testing](#testing)
 
-## Setup Dependency {#setup-dependency}
+## Setup Dependency {/* #setup-dependency */}
 
 To start using the Temporal Spring Boot integration, you need to add [`io.temporal:temporal-spring-boot-starter`](https://search.maven.org/artifact/io.temporal/temporal-spring-boot-starter)
 as a dependency to your Spring project:
@@ -50,7 +50,7 @@ Temporal's Spring Boot integration currently supports Spring Boot 2.x, 3.x, and 
 implementation ("io.temporal:temporal-spring-boot-starter:1.31.0")
 ```
 
-## Connect {#connect}
+## Connect {/* #connect */}
 
 See the [Temporal Client documentation](/develop/java/client/temporal-client) for more information about connecting to a Temporal Service.
 
@@ -85,7 +85,7 @@ spring.temporal:
   namespace: <custom namespace> # you can specify a custom namespace that you are using
 ```
 
-## Connect to Temporal Cloud {#connect}
+## Connect to Temporal Cloud {/* #connect */}
 
 You can also connect to Temporal Cloud, using either an API key or mTLS for authentication.
 
@@ -113,7 +113,7 @@ spring.temporal:
   namespace: <namespace>
 ```
 
-## Configure Workers {#configure-workers}
+## Configure Workers {/* #configure-workers */}
 
 Temporal's Spring Boot integration supports two configuration methods for Workers: explicit configuration and auto-discovery.
 
@@ -167,11 +167,11 @@ public class MyActivityImpl implements MyActivity {
 Auto-discovered Workflow implementation classes, Activity beans, and Nexus Service beans will be registered with the configured Workers if not already registered.
 :::
 
-## Interceptors {#interceptors}
+## Interceptors {/* #interceptors */}
 
 To enable Interceptors, you can create beans by implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
 
-## Integrations {#integrations}
+## Integrations {/* #integrations */}
 
 The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem, such as metrics and tracing.
 
@@ -187,7 +187,7 @@ You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sle
 
 Alternatively, you can define a custom `io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for an OpenTracing bean in the application context.
 
-## Customization of Options {#customize-options}
+## Customization of Options {/* #customize-options */}
 
 To programmatically customize the various options that are created by the Spring Boot integration, you can create beans that implement the `io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>` interface. This will be called after the options in your properties files are applied.
 
@@ -204,7 +204,7 @@ Where `OptionsType` may be one of:
 
 `io.temporal.spring.boot.WorkflowImplementationOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkflowImplementationOptions.Builder>` if `WorkflowImplementationOptions` needs to be customized on Workflow Type.
 
-## Testing {#testing}
+## Testing {/* #testing */}
 
 The Temporal Spring Boot integration also has easy support for testing your Temporal code. Add the following to your `application.yml` to reconfigure the client to work through `io.temporal.testing.TestWorkflowEnvironment` that uses in-memory Java Test Server:
 

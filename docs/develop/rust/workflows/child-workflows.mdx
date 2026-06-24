@@ -18,7 +18,7 @@ This page shows how to do the following:
 - [Start a Child Workflow execution](#start-child-workflow)
 - [Set a Parent Close Policy](#parent-close-policy)
 
-## Start a Child Workflow execution {#start-child-workflow}
+## Start a Child Workflow execution {/* #start-child-workflow */}
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -137,7 +137,7 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<S
 
 Both child Workflows run in parallel and the parent waits for both to complete.
 
-## Parent Close Policy {#parent-close-policy}
+## Parent Close Policy {/* #parent-close-policy */}
 
 A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

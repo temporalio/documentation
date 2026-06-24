@@ -649,13 +649,13 @@ A Temporal Application is a set of Workflow Executions.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal CLI](/cli) {#cli}
+#### [Temporal CLI](/cli) {/* #cli */}
 
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 <!-- _Tags: [term](/tags/term), [cli](/tags/cli)_ -->
 
-#### [Temporal Client](/encyclopedia/temporal-sdks#temporal-client)
+#### [Temporal Client](/temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 

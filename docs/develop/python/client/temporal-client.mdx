@@ -42,7 +42,7 @@ This page shows you how to do the following using the Python SDK with the Tempor
 A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
 Temporal Client inside an Activity to communicate with a Temporal Service.
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 Use [`Client.connect`](https://python.temporal.io/temporalio.client.Client.html#connect) to create a client. Connection
 options include the Temporal Server address, Namespace, and (optionally) TLS configuration. You can provide these
@@ -51,7 +51,7 @@ options directly in code, load them from **environment variables**, or a **TOML 
 configuration file for secure, repeatable configuration.
 
 When you’re running a Temporal Service locally (such as with the
-[Temporal CLI dev server](https://docs.temporal.io/cli/server#start-dev)), the required options are minimal. If you
+[Temporal CLI dev server](https://docs.temporal.io/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
 <Tabs groupId="connect-options" defaultValue="config-file" >
@@ -249,7 +249,7 @@ if __name__ == "__main__":
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -480,7 +480,7 @@ For more information about configuring TLS to secure inter- and intra-network co
 
 </Tabs>
 
-## Start a Workflow Execution {#start-workflow-execution}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
 **How to start a Workflow Execution using the Python SDK**
 
@@ -531,7 +531,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Set a Workflow's Task Queue {#set-task-queue}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
 **How to set a Workflow's Task Queue using the Python SDK**
 
@@ -570,7 +570,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Set a Workflow Id {#workflow-id}
+### Set a Workflow Id {/* #workflow-id */}
 
 **How to set a Workflow Id using the Python SDK**
 
@@ -611,7 +611,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Get the results of a Workflow Execution {#get-workflow-results}
+### Get the results of a Workflow Execution {/* #get-workflow-results */}
 
 **How to get the results of a Workflow Execution using the Python SDK**
 
