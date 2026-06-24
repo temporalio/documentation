@@ -278,6 +278,9 @@ flowchart LR
     b3 -- qualified ARN --> l3
 ```
 
+For development or non-critical workloads, you can use an unqualified ARN to iterate without publishing a new Lambda
+function version each time.
+
 :::caution
 
 An unqualified ARN (no version suffix) points at `$LATEST`, which changes on every redeploy. Without a versioned ARN,
@@ -285,9 +288,6 @@ deploying replay-unsafe code causes non-determinism errors for in-flight Workflo
 Pinned.
 
 :::
-
-For development or non-critical workloads, you can use an unqualified ARN to iterate without publishing a new Lambda
-function version each time.
 
 ### How the Versioning Behavior changes rollout {/* #rollout-by-behavior */}
 
