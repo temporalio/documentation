@@ -679,7 +679,7 @@ Run the handler Worker:
 cd handler
 
 go run ./worker \
-  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -target-host <your-target-namespace.account>.tmprl.cloud:7233 \
   -namespace <your-target-namespace.account> \
   -api-key <your-api-key>
 ```
@@ -690,7 +690,7 @@ Run the caller Worker:
 cd caller
 
 go run ./worker \
-  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
   -namespace <your-caller-namespace.account> \
   -api-key <your-api-key>
 ```
@@ -701,7 +701,7 @@ go run ./worker \
 cd caller
 
 go run ./starter \
-  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
   -namespace <your-caller-namespace.account> \
   -api-key <your-api-key>
 ```
