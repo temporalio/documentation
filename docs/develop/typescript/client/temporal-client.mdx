@@ -33,6 +33,8 @@ Communication with a Temporal Service lets you perform actions such as starting 
 Queries to Workflow Executions, getting Workflow results, and more. You cannot initialize a Temporal Client inside a
 Workflow. However, they're commonly initialized inside an Activity to communicate with a Temporal Service.
 
+For [Standalone Activities](/standalone-activity), a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
+
 This page shows you how to do the following using the TypeScript SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
