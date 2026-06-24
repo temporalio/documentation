@@ -40,8 +40,6 @@ Activities perform a single, well-defined action, such as calling another servic
 
 **Standalone Activities**: A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/temporal-client), without using a Workflow. Use a [Workflow](/workflows) to orchestrate multiple Activities, but if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity). Standalone Activities are Temporal's job queue.
 
-Standalone Activities are Temporal's job queue. They let you use Temporal Activities as background jobs, in addition to using the same Activities as steps inside a Workflow. You write an Activity once and can run it either as a background job or as part of a multi-step Workflow.
-
 **Workers**: A Worker executes your Workflow and Activity code.
 
 **Follow one of our tutorials to [Get started](https://learn.temporal.io/getting_started/) learning how to develop Workflows and Activities and run them in Worker Processes.**
