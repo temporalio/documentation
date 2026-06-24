@@ -1,0 +1,347 @@
+---
+id: google-adk
+title: Google ADK integration
+sidebar_label: Google ADK
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - google adk
+  - gemini
+tags:
+  - Google ADK
+  - Python SDK
+  - Temporal SDKs
+description:
+  Run Google ADK agents durably inside Python Workflows using the Temporal Python SDK.
+---
+
+Temporal's Google ADK integration lets you run [Google ADK](https://google.github.io/adk-docs/) agents inside Temporal
+Workflows, so an agent keeps its place across Worker restarts, deploys, and transient failures.
+
+Temporal gives your agent code [durable execution](https://docs.temporal.io/temporal#durable-execution). The Google ADK
+gives you the agent itself: model calls, tools, multi-agent handoffs, and MCP. The integration connects the two so that
+you write an ordinary ADK agent and run it as a Workflow, without managing sessions, a database, or your own retry logic.
+
+The `GoogleAdkPlugin` is what ties them together. It runs each model call and tool call as a Temporal Activity,
+configures the payload converter that serializes ADK objects, and makes ADK's runtime deterministic so the Workflow can
+replay. You add the same plugin to your Client and your Worker, and the rest of your agent code stays standard ADK.
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader
+  type="prerelease"
+/>
+
+All code snippets in this guide are taken from the
+[Google ADK samples](https://github.com/temporalio/samples-python/tree/main/google_adk_agents). Refer to the samples for
+the complete code.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with the Google ADK. If you aren't, refer to the
+  [Google ADK documentation](https://google.github.io/adk-docs/) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave
+  the Temporal Development Server running if you want to test your code locally.
+
+## Install
+
+Install the Temporal Python SDK with the `google-adk` extra, which pulls in the `google-adk` package alongside the SDK.
+
+```bash
+uv add "temporalio[google-adk]>=1.28.0"
+```
+
+If you use pip, the equivalent is:
+
+```bash
+pip install "temporalio[google-adk]>=1.28.0"
+```
+
+## Define an agent in a Workflow
+
+Write your agent the way you normally would with the ADK. The one Temporal-specific piece is `TemporalModel`, which you
+pass in place of a model name. It runs each model call as an `invoke_model` Activity, so every turn is durable and shows
+up in Workflow history.
+
+```python
+from google.adk import Agent
+from google.adk.runners import InMemoryRunner
+from google.genai import types
+from temporalio import workflow
+from temporalio.contrib.google_adk_agents import TemporalModel
+
+
+@workflow.defn
+class HelloWorldAgentWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            name="hello_world_agent",
+            model=TemporalModel("gemini-2.5-flash"),
+            instruction="You only respond in haikus.",
+        )
+
+        runner = InMemoryRunner(agent=agent, app_name="hello_world_app")
+        session = await runner.session_service.create_session(
+            app_name="hello_world_app", user_id="user"
+        )
+
+        final_text = ""
+        async for event in runner.run_async(
+            user_id="user",
+            session_id=session.id,
+            new_message=types.Content(role="user", parts=[types.Part(text=prompt)]),
+        ):
+            if event.content and event.content.parts:
+                for part in event.content.parts:
+                    if part.text:
+                        final_text = part.text
+
+        return final_text
+```
+
+Everything other than `TemporalModel` is normal ADK. You build an `Agent`, drive it with a runner, and read the events
+it produces.
+
+## Add the plugin to your Worker and Client
+
+Build one `GoogleAdkPlugin` and pass the same instance to both the Client and the Worker. The Client side links the code
+that starts a Workflow to the Workflow itself, and the Worker side runs the agent.
+
+```python
+import asyncio
+
+from temporalio.client import Client
+from temporalio.contrib.google_adk_agents import GoogleAdkPlugin
+from temporalio.worker import Worker
+
+
+async def main():
+    plugin = GoogleAdkPlugin()
+
+    client = await Client.connect("localhost:7233", plugins=[plugin])
+
+    worker = Worker(
+        client,
+        task_queue="google-adk-agents-basic",
+        workflows=[HelloWorldAgentWorkflow],
+        plugins=[plugin],
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Model calls run as Activities on the Worker, so the Worker process is the one that needs your model provider
+credentials. The samples use Gemini, which reads its key from the `GOOGLE_API_KEY` environment variable.
+
+```bash
+export GOOGLE_API_KEY="your-api-key"
+python run_worker.py
+```
+
+The ADK supports other model providers as well, for example non-Gemini models through LiteLLM. Change the model name you
+pass to `TemporalModel` to use one.
+
+Start the Workflow the way you would start any other Temporal Workflow. Use a Client that has the plugin so the starting
+code is linked to the run.
+
+```python
+client = await Client.connect("localhost:7233", plugins=[GoogleAdkPlugin()])
+
+result = await client.execute_workflow(
+    HelloWorldAgentWorkflow.run,
+    "Tell me about recursion in programming.",
+    id="google-adk-agents-basic-workflow-id",
+    task_queue="google-adk-agents-basic",
+)
+print(f"Result: {result}")
+```
+
+## Run tools as Activities
+
+To expose a Temporal Activity as a tool the agent can call, wrap it with `activity_tool`. When the model calls the tool,
+it runs as its own Activity, so it gets its own retries and timeouts and appears in history.
+
+```python
+from datetime import timedelta
+
+from google.adk import Agent
+from temporalio import workflow
+from temporalio.contrib.google_adk_agents import TemporalModel
+from temporalio.contrib.google_adk_agents.workflow import activity_tool
+
+from .activities import get_weather
+
+
+@workflow.defn
+class WeatherAgentWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        weather_tool = activity_tool(
+            get_weather, start_to_close_timeout=timedelta(seconds=60)
+        )
+
+        agent = Agent(
+            name="weather_agent",
+            model=TemporalModel("gemini-2.5-flash"),
+            instruction="Use the get_weather tool to answer weather questions.",
+            tools=[weather_tool],
+        )
+        ...
+```
+
+`get_weather` is a plain Temporal Activity. Register it on the Worker alongside the Workflow.
+
+```python
+worker = Worker(
+    client,
+    task_queue="google-adk-agents-tools",
+    workflows=[WeatherAgentWorkflow],
+    activities=[get_weather],
+    plugins=[plugin],
+)
+```
+
+## Coordinate multiple agents
+
+The ADK's multi-agent patterns work inside a Workflow. Give each agent its own `TemporalModel`, and pass an
+`ActivityConfig` when you want to name its model turns or set per-agent timeouts. A coordinator delegates to its
+`sub_agents` using the ADK's built-in handoff, and each handoff runs durably.
+
+```python
+from datetime import timedelta
+
+from google.adk.agents import LlmAgent
+from temporalio.contrib.google_adk_agents import TemporalModel
+from temporalio.workflow import ActivityConfig
+
+researcher = LlmAgent(
+    name="researcher",
+    model=TemporalModel(
+        "gemini-2.5-flash",
+        activity_config=ActivityConfig(summary="Researcher Agent"),
+    ),
+    instruction="You are a researcher. Find information about the topic.",
+)
+
+writer = LlmAgent(
+    name="writer",
+    model=TemporalModel(
+        "gemini-2.5-flash",
+        activity_config=ActivityConfig(summary="Writer Agent"),
+    ),
+    instruction="You are a poet. Write a haiku based on the research.",
+)
+
+coordinator = LlmAgent(
+    name="coordinator",
+    model=TemporalModel(
+        "gemini-2.5-flash",
+        activity_config=ActivityConfig(
+            start_to_close_timeout=timedelta(seconds=30),
+            summary="Coordinator Agent",
+        ),
+    ),
+    instruction="You are a coordinator. Delegate to researcher then writer.",
+    sub_agents=[researcher, writer],
+)
+```
+
+The `summary` you set on each `ActivityConfig` becomes the Activity name in Workflow history, which makes it easy to see
+which agent ran and when.
+
+## Use MCP tool servers
+
+To give an agent tools from an [MCP](https://modelcontextprotocol.io/) server, use `TemporalMcpToolSet`. It runs the
+server's list-tools and call-tool operations as Activities. Connecting to an MCP server is external I/O, so the code that
+does it has to run outside the Workflow. You define a factory function for the toolset and register it with the plugin
+through a `TemporalMcpToolSetProvider`.
+
+```python
+from temporalio.contrib.google_adk_agents import (
+    GoogleAdkPlugin,
+    TemporalMcpToolSet,
+    TemporalMcpToolSetProvider,
+)
+
+# echo_toolset() builds an McpToolset over your MCP server. It runs inside an
+# Activity or a local ADK run, never inside the Workflow.
+plugin = GoogleAdkPlugin(
+    toolset_providers=[TemporalMcpToolSetProvider("echo", echo_toolset)]
+)
+```
+
+In the Workflow, give the agent a `TemporalMcpToolSet` with the same name. The `not_in_workflow_toolset` factory lets you
+run the same agent locally, outside Temporal, by connecting to the MCP server directly.
+
+```python
+agent = Agent(
+    name="echo_agent",
+    model=TemporalModel("gemini-2.5-flash"),
+    instruction="Use the echo tool to echo back the user's message.",
+    tools=[TemporalMcpToolSet("echo", not_in_workflow_toolset=echo_toolset)],
+)
+```
+
+## Stream model output
+
+`TemporalModel` can stream a model's output as it is generated, using a Workflow stream from
+`temporalio.contrib.workflow_streams`. Give the model a `streaming_topic`, host a `WorkflowStream` on the Workflow, and
+the streaming model call publishes each chunk to the topic as it arrives. A Client subscribes to the topic to read
+chunks while the Workflow is still running.
+
+:::caution
+
+Streaming is an early, experimental part of this integration and is more likely to change than the rest of the API.
+Refer to the [streaming sample](https://github.com/temporalio/samples-python/tree/main/google_adk_agents/streaming) for a
+complete, working example.
+
+:::
+
+```python
+from google.adk.agents.run_config import RunConfig, StreamingMode
+from temporalio import workflow
+from temporalio.contrib.google_adk_agents import TemporalModel
+from temporalio.contrib.workflow_streams import WorkflowStream
+
+
+@workflow.defn
+class StreamingAgentWorkflow:
+    @workflow.init
+    def __init__(self, prompt: str) -> None:
+        self.stream = WorkflowStream()
+
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        model = TemporalModel("gemini-2.5-flash", streaming_topic="responses")
+        agent = Agent(name="streaming_agent", model=model, instruction="...")
+        # Pass RunConfig(streaming_mode=StreamingMode.SSE) to run_async to stream.
+        ...
+```
+
+## Determinism
+
+You don't have to manage determinism yourself. Model calls and tool calls run as Activities, so the non-deterministic
+work happens outside the Workflow, and the plugin points the parts of the ADK runtime that would otherwise be
+non-deterministic, such as timestamps and generated session IDs, at Temporal's deterministic equivalents. As with any
+Temporal Workflow, keep your own I/O in Activities and the Workflow body stays replay-safe.
+
+## Samples
+
+The [Google ADK samples](https://github.com/temporalio/samples-python/tree/main/google_adk_agents) cover each pattern in
+a self-contained, runnable scenario:
+
+- **`basic`**: a single agent with `TemporalModel` and one model call.
+- **`tools`**: a Temporal Activity exposed as a tool with `activity_tool`.
+- **`agent_patterns`**: a coordinator agent that delegates to sub-agents.
+- **`mcp`**: MCP tools run as Activities, with a self-contained echo server.
+- **`streaming`**: token streaming with `WorkflowStream`.
+
+Each scenario has its own README with the commands to run its Worker and start its Workflow.
