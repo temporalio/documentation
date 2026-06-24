@@ -33,10 +33,10 @@ After creating the PrivateLink endpoint, configure your clients to use it throug
 
 ## Requirements
 
-* Your AWS PrivateLink (PL) endpoint must be in the same region as your Temporal Cloud Namespace. If the Namespace is using [replication for High Availability](/cloud/high-availability), the PL connection must be in the same region as one of the replicas.
+* Your AWS PrivateLink (PL) endpoint must be in the same region as your Temporal Cloud Namespace or one of its [High Availability](/cloud/high-availability) replicas.
   See [cross-region PrivateLink connectivity](#cross-region-privatelink) to access the Namespace from a different region.
 * Your Private DNS must be configured to direct Worker / Client traffic to your VPC Endpoint, as described below.
-* If the Worker / Client is not using the Namespace Endpoint, it may need to set the `server_name` config to the Namespace Endpoint string, as described below.
+* If the Worker / Client does not use the Namespace Endpoint as the connection string in its code, it may need to set the `server_name` config to the Namespace Endpoint string, as described below.
 
 ### Cross-region PrivateLink Connectivity {#cross-region-privatelink}
 
