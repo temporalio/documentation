@@ -19,7 +19,7 @@ description:
 Temporal's Google ADK integration lets you run [Google ADK](https://google.github.io/adk-docs/) agents inside Temporal
 Workflows, so an agent keeps its place across Worker restarts, deploys, and transient failures.
 
-Temporal gives your agent code [durable execution](/temporal#durable-execution). The Google ADK
+Temporal gives your agent code [Durable Execution](/temporal#durable-execution). The Google ADK
 gives you the agent itself: model calls, tools, multi-agent handoffs, and MCP. The integration connects the two so that
 you write an ordinary ADK agent and run it as a Workflow, without managing sessions, a database, or your own retry logic.
 
@@ -49,13 +49,13 @@ the complete code.
 
 ## Install
 
-Install the Temporal Python SDK (requires version 1.28.0 or later) with the `google-adk` extra, which pulls in the `google-adk` package alongside the SDK.
+Make sure you have the Temporal Python SDK (requires version 1.28.0 or later). Then install the `google-adk`:
 
 ```bash
 uv add "temporalio[google-adk]>=1.28.0"
 ```
 
-If you use pip, the equivalent is:
+If you use pip:
 
 ```bash
 pip install "temporalio[google-adk]>=1.28.0"
@@ -65,7 +65,7 @@ pip install "temporalio[google-adk]>=1.28.0"
 
 Write your agent the way you normally would with the ADK. The one Temporal-specific piece is `TemporalModel`, which you
 pass in place of a model name. It runs each model call as an `invoke_model` Activity, so every turn is durable and shows
-up in Workflow history.
+up in the Event history.
 
 ```python
 from google.adk import Agent
@@ -167,7 +167,7 @@ print(f"Result: {result}")
 ## Run tools as Activities
 
 To expose a Temporal Activity as a tool the agent can call, wrap it with `activity_tool`. When the model calls the tool,
-it runs as its own Activity, so it gets its own retries and timeouts and appears in history.
+it runs as its own Activity, so it gets its own retries and timeouts and appears in the Event history.
 
 ```python
 from datetime import timedelta
@@ -213,7 +213,7 @@ worker = Worker(
 
 The ADK's multi-agent patterns work inside a Workflow. Give each agent its own `TemporalModel`, and pass an
 `ActivityConfig` when you want to name its model turns or set per-agent timeouts. A coordinator delegates to its
-`sub_agents` using the ADK's built-in handoff, and each handoff runs durably.
+`sub_agents` using the ADK's built-in handoff.
 
 ```python
 from datetime import timedelta
@@ -254,14 +254,13 @@ coordinator = LlmAgent(
 )
 ```
 
-The `summary` you set on each `ActivityConfig` becomes the Activity name in Workflow history, which makes it easy to see
+The `summary` you set on each `ActivityConfig` becomes the Activity name in the Event history, which makes it easy to see
 which agent ran and when.
 
 ## Use MCP tool servers
 
 To give an agent tools from an [MCP](https://modelcontextprotocol.io/) server, use `TemporalMcpToolSet`. It runs the
-server's list-tools and call-tool operations as Activities. Connecting to an MCP server is external I/O, so the code that
-does it has to run outside the Workflow. You define a factory function for the toolset and register it with the plugin
+server's list-tools and call-tool operations as Activities because connecting to an MCP server is external I/O. You define a factory function for the toolset and register it with the plugin
 through a `TemporalMcpToolSetProvider`.
 
 ```python
@@ -272,7 +271,7 @@ from temporalio.contrib.google_adk_agents import (
 )
 
 # echo_toolset() builds an McpToolset over your MCP server. It runs inside an
-# Activity or a local ADK run, never inside the Workflow.
+# Activity or a local ADK run, not directly inside the Workflow.
 plugin = GoogleAdkPlugin(
     toolset_providers=[TemporalMcpToolSetProvider("echo", echo_toolset)]
 )
@@ -326,22 +325,13 @@ class StreamingAgentWorkflow:
         ...
 ```
 
-## Determinism
-
-You don't have to manage determinism yourself. Model calls and tool calls run as Activities, so the non-deterministic
-work happens outside the Workflow, and the plugin points the parts of the ADK runtime that would otherwise be
-non-deterministic, such as timestamps and generated session IDs, at Temporal's deterministic equivalents. As with any
-Temporal Workflow, keep your own I/O in Activities and the Workflow body stays replay-safe.
-
 ## Samples
 
 The [Google ADK samples](https://github.com/temporalio/samples-python/tree/main/google_adk_agents) cover each pattern in
 a self-contained, runnable scenario:
 
-- **`basic`**: a single agent with `TemporalModel` and one model call.
-- **`tools`**: a Temporal Activity exposed as a tool with `activity_tool`.
-- **`agent_patterns`**: a coordinator agent that delegates to sub-agents.
-- **`mcp`**: MCP tools run as Activities, with a self-contained echo server.
-- **`streaming`**: token streaming with `WorkflowStream`.
-
-Each scenario has its own README with the commands to run its Worker and start its Workflow.
+- [`basic`](https://github.com/temporalio/samples-python/tree/main/google_adk_agents/basic): a single agent with `TemporalModel` and one model call.
+- [`tools`](https://github.com/temporalio/samples-python/tree/main/google_adk_agents/tools): a Temporal Activity exposed as a tool with `activity_tool`.
+- [`agent_patterns`](https://github.com/temporalio/samples-python/tree/main/google_adk_agents/agent_patterns): a coordinator agent that delegates to sub-agents.
+- [`mcp`](https://github.com/temporalio/samples-python/tree/main/google_adk_agents/mcp): MCP tools run as Activities, with a self-contained echo server.
+- [`streaming`](https://github.com/temporalio/samples-python/tree/main/google_adk_agents/streaming): token streaming with `WorkflowStream`.
