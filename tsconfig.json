@@ -10,6 +10,7 @@
     "noUnusedParameters": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
 
     // Avoid redefining @site/@generated here unless you also wire webpack.
     // If you must, ensure webpack aliases match exactly.

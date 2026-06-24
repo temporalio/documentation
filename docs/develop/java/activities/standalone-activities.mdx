@@ -19,14 +19,13 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal Java SDK.
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal Java SDK support for [Standalone Activities](/standalone-activity) is at
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+<ReleaseNoteHeader
+  type="prerelease"
+/>
 
-:::
-
-Standalone Activities are Activities that run independently, without being orchestrated by a
+[Standalone Activities](/standalone-activity) are Activities that run independently, without being orchestrated by a
 Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
 Activity directly from a Temporal Client using `ActivityClient`.
 
@@ -72,7 +71,7 @@ Prerequisites:
   brew install temporal
   ```
 
-  Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+  Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
   Verify the installation:
 
@@ -434,7 +433,7 @@ export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
 Set these environment variables with values from your Temporal Cloud API key settings:
 
 ```
-export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
 export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```

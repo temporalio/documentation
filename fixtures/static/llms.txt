@@ -1,0 +1,10 @@
+# Documentation
+
+> This file indexes the documentation for LLM consumption.
+> Each entry links to the clean Markdown version of the page.
+
+## Pages
+
+- [Workflow basics - Go SDK](https://docs.temporal.io/develop/go/workflows/basics.md): This section explains Workflow basics with the Go SDK
+- [Temporal Workflow Definition](https://docs.temporal.io/encyclopedia/workflow-definition.md): A Workflow Definition in Temporal is the code that defines the constraints of a Workflow Execution.
+- [Temporal Workflow](https://docs.temporal.io/encyclopedia/workflows.md)

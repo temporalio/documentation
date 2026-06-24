@@ -169,7 +169,7 @@ You can set the Retention Period between 1 and 90 days.
 
 ### Batch jobs
 
-A Namespace can have just one [Batch job](/cli/batch) running at a time.
+A Namespace can have just one [Batch job](/cli/command-reference/batch) running at a time.
 
 Each batch job operates on a maximum of 50 Workflow Executions per second.
 
@@ -236,6 +236,14 @@ Blob size limit for Payloads, including Workflow context and each Workflow and A
 This limit is non-configurable for Temporal Cloud.
 
 The [BlobSizeLimitError guide](/troubleshooting/blob-size-limit-error) provides solutions for handling large payloads.
+
+:::note
+
+The 2 MB limit is the maximum size for a single request, not a sustained-throughput target.
+Sustained, high-volume use of large payloads can degrade Namespace performance, and Temporal reserves the right to rate limit such traffic to protect the service.
+For workloads that regularly produce large payloads, offload them to [External Storage](/external-storage) and keep inline payloads small.
+
+:::
 
 ### Per Workflow Execution concurrency limits
 
