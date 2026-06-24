@@ -2124,6 +2124,31 @@
       "permanent": true
     },
     {
+      "source": "/encyclopedia/temporal",
+      "destination": "/encyclopedia/architecture/temporal-architecture",
+      "permanent": true
+    },
+    {
+      "source": "/temporal",
+      "destination": "/encyclopedia/architecture/temporal-architecture",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/temporal-sdks",
+      "destination": "/encyclopedia/architecture/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/temporal-client",
+      "destination": "/encyclopedia/architecture/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/temporal-client",
+      "destination": "/encyclopedia/architecture/temporal-client",
+      "permanent": true
+    },
+    {
       "source": "/cloud/users",
       "destination": "/cloud/manage-access/users",
       "permanent": true
