@@ -1548,7 +1548,7 @@ module.exports = {
               type: 'category',
               label: 'Serverless Workers',
               collapsed: true,
-              link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/index' },
+              link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/autoscaling',
               ],

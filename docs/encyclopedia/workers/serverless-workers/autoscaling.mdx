@@ -37,19 +37,19 @@ because of differences in cold start latency, invocation duration limits, and pr
 
 Both compute providers use the same two signals to drive scaling decisions.
 
-### Sync match failure {#sync-match-failure}
+### Sync match failure {/* #sync-match-failure */}
 
 When a Task is submitted, the [Matching Service](/temporal-service/temporal-server#matching-service) attempts to route
 it directly to an available Worker. If no Worker is available, the sync match fails, and the Matching Service pushes a
 signal to the WCI. Because the Matching Service pushes match failures as they happen rather than the WCI polling on a
 timer, scaling is responsive.
 
-### Task Queue backlog {#task-queue-backlog}
+### Task Queue backlog {/* #task-queue-backlog */}
 
 The WCI monitors Task Queue metadata to determine whether pending Tasks exist without enough Workers to process them. If
 there are Tasks on the queue and not enough Workers, the WCI scales up.
 
-## AWS Lambda {#aws-lambda}
+## AWS Lambda {/* #aws-lambda */}
 
 The Lambda algorithm is event-driven and reactive. Sync match failure is the primary control signal, and backlog aids
 sizing.
@@ -74,7 +74,7 @@ does not need to actively remove capacity.
 Each invocation is independent. The Worker starts, creates a fresh client connection, processes multiple Tasks until near
 the execution time limit, and then shuts down gracefully. There is no shared state across invocations.
 
-## GCP Cloud Run {#cloud-run}
+## GCP Cloud Run {/* #cloud-run */}
 
 The Cloud Run algorithm is a hybrid rate-plus-backlog controller. It extends the base algorithm with a latency-first
 fast-path that reacts to sync match failures.
