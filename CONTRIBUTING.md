@@ -20,8 +20,8 @@
    git checkout -b my-documentation-contribution
    ```
 
-5. **Follow the Style Guide**  
-   Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
+5. **Understand the docs architecture and follow the style guide**  
+   Refer to [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to understand where content belongs and what form it should take. Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
 
 6. **Preview Your Changes Locally**  
    Run the following commands to preview the site locally:
