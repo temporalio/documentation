@@ -87,7 +87,7 @@ See [High Availability for Temporal Cloud Namespaces](/cloud/high-availability) 
 ## Worker deployment patterns {/* #worker-deployment-patterns */}
 
 These Worker deployment patterns are how you extend Namespace High Availability into a full disaster recovery (DR) and business continuity plan across regions.
-This page covers three main patterns — **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active** — plus a rarely needed **Dual Active** variant.
+This page covers three main patterns — **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active** — plus a rarely needed **[Regionally Sharded Namespaces](#regionally-sharded-namespaces)** variant.
 They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**, and differ in where the Workers run and where Workflows process:
 
 - **Active/Passive** (also written Active-Passive) — Workflows process in one region at a time, the "active" region. The other region is "passive" and ready for failover. This pattern has two variants:
@@ -670,128 +670,132 @@ Active/Hot Pattern: **Component behavior**
 
 Active/Active Pattern: **Normal operation**
 
-- **Workers run and process in both regions at once.** A full Worker fleet runs in each region, and both fleets process Workflows concurrently.
-- **The Namespace still has a single active replica.** A Temporal Cloud Namespace is not "active/active" in the database sense — one region holds the active replica and the other holds a passive replica. Forwarding is left enabled (the default).
-- **The passive region forwards polls to the active replica.** Because the passive replica transparently forwards requests to and from the active region, a Worker fleet in either region can process Workflows. The secondary fleet's polls cross regions to reach the active replica, which adds some latency.
-- **Roughly half the fleet runs in each region.** Total capacity is split across the two regions during steady state, with no dedicated standby fleet.
+- **Run Workers in as many regions as you want.** A Worker fleet can run in any region — the fleets don't have to match the Namespace's regions, and you don't even need Workers in the same region as the active Namespace. Spreading fleets across regions is like spreading machines across Availability Zones: if one region's fleet goes down, the others keep processing.
+- **Every fleet connects through the Namespace Endpoint.** By default, all fleets use the single Namespace Endpoint, which always routes to whichever region currently holds the active Namespace. Temporal Cloud transparently forwards any request that lands on a passive replica to the active region.
+- **The Namespace has one active replica.** A Temporal Cloud Namespace is not "active/active" in the database sense — one region holds the active replica and another holds a passive replica that receives replicated state. Workflows process wherever your Workers run, all against that one active replica.
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph DANPRI["<b>Primary</b>"]
-      DANWP["<b>Workers</b><br/>Active"]:::worker
-      DANNS["<b>Namespace</b>"]:::ns
-      DANDB[("<b>DB / queue</b>")]:::ext
-      DANCODEC["<b>Codec Server</b>"]:::ext
-      DANWP <-->|Workflows| DANNS
-      DANWP <--> DANDB
-      DANWP <--> DANCODEC
+    AANEP["<b>Namespace Endpoint</b><br/>routes to the active region"]:::endpoint
+    subgraph AAR1["<b>Region 1</b>"]
+      AAW1["<b>Workers</b>"]:::worker
+      AANS1["<b>Namespace</b><br/>(Active)"]:::ns
     end
-    subgraph DANSEC["<b>Secondary</b>"]
-      DANR["<b>Replica</b>"]:::ns
-      DANWP2["<b>Workers</b><br/>Active"]:::worker
-      DANDB2[("<b>DB / queue</b>")]:::ext
-      DANCODEC2["<b>Codec Server</b>"]:::ext
-      DANWP2 <-->|Workflows| DANR
-      DANWP2 <--> DANDB2
-      DANWP2 <--> DANCODEC2
+    subgraph AAR2["<b>Region 2</b>"]
+      AAW2["<b>Workers</b>"]:::worker
+      AANS2["<b>Replica</b>"]:::ns
     end
-    DANNS -. replicates .-> DANR
-    DANR ==>|"forwards polls"| DANNS
-    class DANPRI,DANSEC region
+    subgraph AAR3["<b>Region 3</b>"]
+      AAW3["<b>Workers</b>"]:::worker
+    end
+    AAW1 --> AANEP
+    AAW2 --> AANEP
+    AAW3 --> AANEP
+    AANEP --> AANS1
+    AANS1 -. replicates .-> AANS2
+    class AAR1,AAR2,AAR3 region
 ```
 
 Active/Active Pattern: **On failover**
 
-- **The surviving region keeps processing.** When one region fails, the other region's Workers are already active and processing, so Workflows continue running with no cold-start gap.
-- **The Namespace fails over to the surviving region.** Temporal Cloud promotes the surviving region's replica to active; its local Workers then process against it without forwarding polls across regions.
-- **Scale up capacity in the surviving region.** Each region normally runs only about half the fleet, so add capacity in the surviving region to handle the full workload at full throughput.
-- **Promote your databases and queues, if needed.** If your Workflows depend on external data, make the surviving region's copy active so the Workers there can read and write it.
+- **The Namespace fails over automatically.** Temporal Cloud promotes a passive replica in another region to active.
+- **Every Worker fleet follows automatically.** Because all fleets connect through the Namespace Endpoint, they immediately reach the new active region — no reconfiguration, no DNS changes to manage, nothing to bring up. It "just works."
+- **Surviving fleets keep processing.** Only the fleet in the failed region is affected; fleets in every other region keep running with no cold-start gap. Scale up surviving regions if needed to carry the full load.
+- **Promote your databases and queues, if needed.** If your Workflows depend on external data, make the active region's copy available to the Workers there.
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
     classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
     classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph DAFPRI["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
-      DAFWP["<b>Workers</b><br/>Unavailable"]:::down
-      DAFNS["<b>Namespace</b>"]:::down
-      DAFWP ~~~ DAFNS
+    AANEPF["<b>Namespace Endpoint</b><br/>now routes to Region 2"]:::endpoint
+    subgraph AAFR1["<b>Region 1</b> <span style='color:#ED360E'>(outage)</span>"]
+      AAFW1["<b>Workers</b><br/>Unavailable"]:::down
+      AAFNS1["<b>Namespace</b>"]:::down
+      AAFW1 ~~~ AAFNS1
     end
-    subgraph DAFSEC["<b>Secondary</b>"]
-      DAFN["<b>Namespace</b><br/>(Active)"]:::ns
-      DAFSP["<b>Workers</b><br/>Active,<br/>scaled up as needed"]:::worker
-      DAFDB2[("<b>DB / queue</b>")]:::ext
-      DAFCODEC["<b>Codec Server</b>"]:::ext
-      DAFN <-->|Workflows| DAFSP
-      DAFSP <--> DAFDB2
-      DAFSP <--> DAFCODEC
+    subgraph AAFR2["<b>Region 2</b>"]
+      AAFW2["<b>Workers</b>"]:::worker
+      AAFNS2["<b>Namespace</b><br/>(Active)"]:::ns
     end
-    DAFNS -->|"Failover"| DAFN
-    class DAFPRI regiondown
-    class DAFSEC region
+    subgraph AAFR3["<b>Region 3</b>"]
+      AAFW3["<b>Workers</b>"]:::worker
+    end
+    AAFW2 --> AANEPF
+    AAFW3 --> AANEPF
+    AANEPF --> AAFNS2
+    AAFNS1 -->|"Failover"| AAFNS2
+    class AAFR1 regiondown
+    class AAFR2,AAFR3 region
 ```
 
 Active/Active Pattern: **Benefits**
 
-- **Low overall recovery time.**
-   - The surviving region keeps processing while capacity scales up.
-- **Moderate overall architecture cost.**
-   - Roughly half the fleet runs in each region during steady state, with no dedicated standby fleet.
+- **Hands-off Worker failover.**
+   - With the Namespace Endpoint, Workers in every region follow the Namespace to the new active region automatically — there's no Worker failover step to run.
+- **Low recovery time, no standby fleet.**
+   - Surviving regions keep processing, so there's no cold start, and capacity is spread across regions instead of parked in a dedicated standby fleet.
+- **Resilient to losing a region.**
+   - Like spreading across Availability Zones, losing one region's fleet leaves the others running.
 
 Active/Active Pattern: **Tradeoffs**
 
-- The secondary region pays cross-region latency, because its polls are forwarded to the active replica. This can be a problem for latency-sensitive Workflows.
-- Synchronizing external systems is harder, because Workers are active in both regions at once.
+- Workers outside the active region reach it across regions (directly or via forwarding), which adds latency that can matter for latency-sensitive Workflows.
+- External systems are harder: Workers are active in multiple regions at once, so any databases and queues they touch need a cross-region consistency story.
 
 Active/Active Pattern: **Recommendations and important constraints**
 
-- **Keep forwarding enabled.**
-   - Leave forwarding on (the default) so the secondary-region Workers' polls reach the active replica. Do not set `disablePassivePollerForwarding`.
+- **Default to the Namespace Endpoint.**
+   - All fleets, in any region, connect through the single Namespace Endpoint. It always routes to the active region and follows failovers automatically, so every fleet keeps reaching the active Namespace with no reconfiguration — it "just works," and Workers in all regions fail over automatically. One endpoint everywhere also keeps configuration and management simple.
+- **Use a Regional Endpoint only when you need the lowest recovery time.**
+   - Connecting each fleet to its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) removes the DNS step from the connection path, which can shave time off failover for the lowest possible RTO. The tradeoffs: more setup, and a real risk of misconfiguration (such as routing a fleet to the wrong region). Reach for it only when you absolutely need low recovery time. With Regional Endpoints, keep forwarding enabled so passive-region polls still reach the active replica.
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    subgraph AAPRIM["<b>Primary</b>"]
-      AAPW["<b>Workers</b>"]:::worker
-      AAPNS["<b>Namespace</b><br/>(Active)"]:::ns
-      AAPW <-->|Workflows| AAPNS
+    subgraph REPR1["<b>Region 1</b>"]
+      REPW1["<b>Workers</b>"]:::worker
+      REPE1["<b>Regional Endpoint</b>"]:::endpoint
+      REPN1["<b>Namespace</b><br/>(Active)"]:::ns
+      REPW1 --> REPE1
+      REPE1 --> REPN1
     end
-    subgraph AASEC["<b>Secondary</b>"]
-      AASW["<b>Workers</b>"]:::worker
-      AASR["<b>Replica</b>"]:::ns
-      AASW <-->|Workflows| AASR
+    subgraph REPR2["<b>Region 2</b>"]
+      REPW2["<b>Workers</b>"]:::worker
+      REPE2["<b>Regional Endpoint</b>"]:::endpoint
+      REPN2["<b>Replica</b>"]:::ns
+      REPW2 --> REPE2
+      REPE2 --> REPN2
     end
-    AASR -.->|"forwards polls"| AAPNS
-    class AAPRIM,AASEC region
+    REPN2 -.->|"forwards polls"| REPN1
+    class REPR1,REPR2 region
 ```
 
 Active/Active Pattern: **Component behavior**
 
-- **Workers** — run and process in both regions; the secondary region's polls are forwarded to the active replica.
-- **Workflow starters and Clients** — run in both regions.
-- **Codec Servers and proxies** — run in both regions continuously.
-- **Databases and queues** — accessed from both regions; cross-region consistency must be designed for.
+- **Workers** — run and process in any number of regions; all follow the Namespace's active region.
+- **Workflow starters and Clients** — run wherever convenient and connect through the Namespace Endpoint, like the Workers.
+- **Codec Servers and proxies** — run in every region where Workers run.
+- **Databases and queues** — accessed from every Worker region; cross-region consistency must be designed for.
 
-### Dual Active (Multi-Active) {/* #dual-active */}
+### Regionally Sharded Namespaces {/* #regionally-sharded-namespaces */}
 
-Dual Active Pattern: **Normal operation**
+Regionally Sharded Namespaces: **Overview**
 
-Beyond the three main patterns, some architectures need low-latency or region-bound data in *each* region at once. This can be achieved with **two Namespaces whose active and passive regions overlap**: each region holds one Namespace's active replica and the other Namespace's passive replica.
+A few workloads are so latency-sensitive, or so tied to region-specific data, that they need Active/Active behavior in *each* region at once. You can build this by **sharding across multiple Namespaces — one Namespace active per region** — and routing each region's traffic to its local shard. Each Namespace ("shard") serves low-latency, region-bound work in its own region and replicates to another region for disaster recovery. The same idea extends to as many regions as you need.
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
@@ -800,13 +804,13 @@ flowchart TD
     classDef appB fill:#0EA5E922,stroke:#0EA5E9,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
     subgraph DUNR2["<b>Region 2</b>"]
-      DUNWPB["<b>App B Workers</b>"]:::appB
+      DUNWPB["<b>Shard B Workers</b>"]:::appB
       DUNNBa["<b>Namespace B</b>"]:::appB
       DUNNAp["<b>Namespace A</b><br/>Replica"]:::appA
       DUNWPB <-->|Workflows| DUNNBa
     end
     subgraph DUNR1["<b>Region 1</b>"]
-      DUNWPA["<b>App A Workers</b>"]:::appA
+      DUNWPA["<b>Shard A Workers</b>"]:::appA
       DUNNAa["<b>Namespace A</b>"]:::appA
       DUNNBp["<b>Namespace B</b><br/>Replica"]:::appB
       DUNWPA <-->|Workflows| DUNNAa
@@ -820,7 +824,7 @@ flowchart TD
     class DUNR1,DUNR2 region
 ```
 
-Dual Active Pattern: **On failover (Region 1 outage)**
+Regionally Sharded Namespaces: **On failover (Region 1 outage)**
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
@@ -832,15 +836,15 @@ flowchart TD
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
     classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
     subgraph DUFR2["<b>Region 2</b>"]
-      DUFWPB["<b>App B Workers</b>"]:::appB
+      DUFWPB["<b>Shard B Workers</b>"]:::appB
       DUFNBa["<b>Namespace B</b>"]:::appB
       DUFNAa2["<b>Namespace A</b><br/>(Active)"]:::appA
-      DUFWPA2["<b>App A Workers</b><br/>Hot or Cold Start"]:::appAhollow
+      DUFWPA2["<b>Shard A Workers</b><br/>Hot or Cold Start"]:::appAhollow
       DUFWPB <-->|Workflows| DUFNBa
       DUFWPA2 <-->|Workflows| DUFNAa2
     end
     subgraph DUFR1["<b>Region 1</b> <span style='color:#ED360E'>(outage)</span>"]
-      DUFWPA["<b>App A Workers</b><br/>Unavailable"]:::down
+      DUFWPA["<b>Shard A Workers</b><br/>Unavailable"]:::down
       DUFNAa["<b>Namespace A</b>"]:::down
       DUFNBp["<b>Namespace B</b><br/>Replica"]:::down
       DUFWPA ~~~ DUFNAa
@@ -853,28 +857,31 @@ flowchart TD
     class DUFR2 region
 ```
 
-Each Namespace serves low-latency requests or a regionally-bound database in its own active region, and fails over to the other region during an outage. The same idea extends across more than two regions. Each Namespace fails over independently, following the Active/Passive sequence.
+Each shard fails over independently, following the Active/Passive sequence for the Worker pattern you chose for it.
 
-Workloads on Temporal rarely need this. It pays off only when a workload is *both* extremely latency-sensitive across several same-continent regions *and* needs multi-region disaster recovery, an uncommon combination.
+Regionally Sharded Namespaces: **Choosing a pattern per shard**
 
-Dual Active Pattern: **Benefits**
+- Each shard's Workers can use **Single-region**, **[Active/Cold](#active-cold)**, or **[Active/Hot](#active-hot)**, depending on that shard's availability and recovery-time needs.
+- A shard that must survive a regional outage should use Active/Cold or Active/Hot, which get automatic Namespace failover. A shard that only needs low-latency local processing can run Single-region.
+
+Regionally Sharded Namespaces: **Benefits**
 
 - **Low-latency, region-bound data in each region.**
-   - Served from each region's active Namespace during normal operation.
-- **Independent failover.**
-   - Each Namespace fails over independently, like Active/Passive.
+   - Each shard serves its own region from a local active Namespace during normal operation, and the model extends to as many regions as you need.
+- **Per-shard control.**
+   - Each shard fails over independently and uses the Worker pattern that fits it.
 
-Dual Active Pattern: **Tradeoffs**
+Regionally Sharded Namespaces: **Tradeoffs**
 
-- Highest overall architecture cost and operational complexity: two Worker fleets and two Namespaces.
-- Rarely justified. Temporal recommends treating each Namespace as an **independent Active/Passive deployment**, with its own Worker pools and failover procedures, rather than coupling them.
+- By far the most time-consuming architecture to operate, with the highest cost and the highest risk of misconfiguration: a separate active Namespace, Worker fleet, and failover story per region.
+- **Single-region shards don't get high availability out of the box.** Unlike the Active/Passive and Active/Active patterns — where Temporal Cloud fails the Namespace over for you — failing a Single-region shard over to another region is entirely your responsibility. Use Active/Cold or Active/Hot for any shard that needs automatic failover.
 
-Dual Active Pattern: **Component behavior**
+Regionally Sharded Namespaces: **Component behavior**
 
-- **Workers** — one fleet per application, each active in its Namespace's region.
-- **Workflow starters and Clients** — run with each application's Workers.
-- **Codec Servers and proxies** — run in both regions, for both Namespaces.
-- **Databases and queues** — region-bound per application; each fails over with its Namespace.
+- **Workers** — one fleet per shard, each active in its shard's region using that shard's chosen pattern.
+- **Workflow starters and Clients** — run with each shard's Workers.
+- **Codec Servers and proxies** — run in every region that hosts an active shard.
+- **Databases and queues** — region-bound per shard; each fails over with its shard.
 
 ## The rest of the architecture {/* #rest-of-architecture */}
 
