@@ -1,3 +1,8 @@
+// Integration data lives in integrations-data.json so it can be consumed both
+// by this React component and by the LLM markdown pipeline
+// (scripts/component-handlers/integrations.mjs) without duplication.
+import integrationsData from "./integrations-data.json";
+
 export type SDK = "Java" | "Python" | "TypeScript" | "Ruby";
 
 export type Integration = {
@@ -96,10 +101,18 @@ const integrations: Integration[] = [
   {
     name: "OpenAI Agents SDK",
     description:
-      "Run OpenAI Agents with crash-proof execution using Temporal.",
+      "Run OpenAI Agents with durable execution using Temporal.",
     tags: ["Agent framework"],
     sdk: "Python",
     href: "https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md",
+  },
+  {
+    name: "OpenAI Agents SDK",
+    description:
+      "Run OpenAI Agents with durable execution using Temporal.",
+    tags: ["Agent framework"],
+    sdk: "TypeScript",
+    href: "/develop/typescript/integrations/openai-agents",
   },
   {
     name: "OpenBox",
