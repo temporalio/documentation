@@ -83,7 +83,7 @@ The following operations present privilege escalation risk when delegated:
 - `cloud.customrole.create`
 - `cloud.customrole.update`
 - `cloud.customrole.assign`
-Note: Receiving`cloud.customrole.assign` alone does not grant the ability to update a principal's access on its own. Assigning a Custom Role to a user, group, or service account also requires the relevant principal-update permission such as [update a user access](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/{userId}). Developer and Read-only predefined roles do not include those permissions. Global Admin can perform full Custom Role delegation after receiving `cloud.customrole.assign` because it has the required principal-update permissions by default.
+
 Receiving `cloud.customrole.assign` alone does not grant the ability to update a principal's access on its own.
 Assigning a Custom Role to a user, group, or service account also requires the relevant principal-update permission such
 as [update a user's access](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/{userId}).
