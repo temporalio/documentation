@@ -1,0 +1,413 @@
+---
+id: custom-roles
+title: Manage custom roles
+sidebar_label: Manage custom roles
+description:
+  Custom roles enable users to define granular permissions in Temporal Cloud. This will give you precise control over
+  who can do what within your account.
+slug: /cloud/manage-access/custom-roles
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - feature
+  - manage access
+  - custom roles
+  - how to
+tags:
+  - Temporal Cloud
+  - custom roles
+  - user management
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease" />
+
+With Custom Roles, you can define granular permissions in Temporal Cloud, giving your team precise control over who can
+perform specific actions within your account.
+
+## What are Custom Roles?
+
+Custom Roles are user-defined collections of permissions that grant access to specific Temporal Cloud resources
+([Account](/cloud/manage-access#temporal-cloud-accounts), [Namespace](/namespaces), [Nexus Endpoint](/nexus/endpoints),
+or [Connectivity Rule](/cloud/connectivity#connectivity-rules)). They allow you to define custom permission sets that
+are more granular than the predefined roles, and assign them to any principal (user, group, service account).
+
+## Why use Custom Roles?
+
+Use Custom Roles when you need more granular access control than the
+[predefined roles](/cloud/users#account-level-roles) provide. Common use cases include:
+
+- **Least-privilege access**: Grant users only the permissions they need to perform their job functions.
+- **Delegated administration**: Allow teams to manage specific Temporal Cloud resources without granting full account
+  administration privileges.
+- **Service account security**: Create narrowly scoped permissions for automation and integrations, reducing risk if
+  credentials are compromised.
+
+## Defining Custom Roles
+
+When defining a Custom Role, you select the permission actions to include and the resources each action applies to.
+Every principal must still have a predefined account role (such as Developer or Read-Only). The Custom Role is applied
+alongside the predefined role, and the effective access is the union of both. Custom Roles cannot narrow or remove
+permissions granted by the predefined role.
+
+For example, you might want users with the Account Developer role to view all Namespaces for troubleshooting, without
+allowing them to modify Namespace configuration. To do this, create a Custom Role named `NamespaceGlobalReadOnly` that
+grants:
+
+- `cloud.namespace.list`, scoped to the Cloud Account
+- `cloud.namespace.get`, scoped to all Namespace resources
+
+## Delegating Custom Roles
+
+Custom role administration defaults to the Account Owner, but can be delegated. Account Owners are the primary
+principals that can create, list, update, delete, or assign a Custom Role.
+
+Account Owners can delegate Custom Role administration to other roles such as Global Admin, but this comes with risk. If
+the Account Owner creates a Custom Role that includes the ability to create, update, or assign Custom Roles, and assigns
+that role to any other principal, such as Global Admin or Developer, users with that new role can create or modify roles
+with other operations and assign them to themselves or others.
+
+:::warning Use caution when delegating Custom Role operations
+
+Delegating Custom Role administration to another user will give that user the ability to create or modify roles. This
+leads to privilege escalation risk where a user would have the ability to assign themselves or others to a role with any
+operations, even ones they're not approved for.
+
+:::
+
+The following operations present privilege escalation risk when delegated:
+
+- `cloud.customrole.create`
+- `cloud.customrole.update`
+- `cloud.customrole.assign`
+
+Receiving `cloud.customrole.assign` alone does not grant the ability to update a principal's access on its own.
+Assigning a Custom Role to a user, group, or service account also requires the relevant principal-update permission such
+as [update a user's access](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/{userId}).
+Developer and Read-only predefined roles do not include those permissions.
+Global Admin can perform full Custom Role delegation after receiving `cloud.customrole.assign` because it has the
+required principal-update permissions by default.
+
+## Available permissions
+
+Most of the Control Plane operations listed in the API references
+([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction),
+[GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/)) can be assigned to a Custom Role. For the operations that are
+supported by Custom Roles, see
+[the Custom Role Permissions table](/cloud/manage-access/permissions-reference#custom-role-permissions-reference).
+
+## Create Custom Roles
+
+<Tabs groupID="create-custom-roles">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To create a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the
+Settings page.
+
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu to view details about an existing Custom Role, or to edit or delete that role.
+
+Click the Create Custom Role button to create a new role. On the Create Custom Role page, give the Custom Role a name,
+and optionally a description.
+
+![Creating a new custom role](/img/cloud/custom-roles/custom-roles-cloud-ui.png)
+
+In the Permissions section, you'll assign the appropriate resources and its permissions. The following resources are
+available for Custom Roles:
+
+- Account: Permissions scoped to the current account, listed by type.
+- Namespace: Permissions scoped to the selected Namespace, listed by type. You can only assign permissions to Namespaces
+  to which you have access.
+- Nexus Endpoint: Permissions scoped to the selected Nexus Endpoint, listed by type. You must have at least one Nexus
+  Endpoint enabled before you can assign Nexus Endpoint permissions to a Custom Role.
+- Connectivity Rules: Permissions scoped to the selected Connectivity Rules, listed by type.
+
+Account-level permissions apply to the current account. For each of the other resources, you'll need to first select the
+resource that you want to grant permissions for. Once you select a resource, the list of available permissions will
+appear, and you can turn them on or off as desired.
+
+At the bottom of the Account tab are permissions that relate to Custom Roles. Here, you can define whether members of
+the Custom Role you're creating will be able to create, update, or delete Custom Roles.
+
+When you're done assigning permissions to resources, click Create Custom Role at the bottom of the page.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`CreateCustomRoleRequest` API call](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CreateCustomRoleRequest)
+to create a Custom Role. The structure of the `CreateCustomRoleRequest` is defined by a JSON spec, as follows:
+
+```
+{
+  "name": "my-role-name"
+  "description": "Optional description",
+  "permissions": [
+    {
+      "resources": {
+        "resource_type": "namespace",
+        "allow_all": true
+      },
+      "actions": ["cloud.namespace.get"]
+    }
+  ]
+}
+```
+
+This example creates a Custom Role with the defined `spec`. The example shown here creates a role named `my-role-name`
+and grants the ability to get all Namespaces. The request returns a `RoleID`.
+
+The following constraints apply to the request:
+
+- **Name constraints:**
+  - A name is required, with a maximum of 64 characters
+  - The following characters are allowed: letters (a-z, A-Z), numbers (0-9), hyphens (-), underscores (\_)
+  - Names are not unique per account, meaning two different roles can share the same name
+- **Description constraints:**
+  - A description is optional, with a maximum of 256 characters
+- **Permissions constraints:**
+  - At least one permission is required
+  - A Custom Role can contain up to 20 permissions. See [Custom Roles limits](/cloud/limits#custom-role-limits).
+
+**Permission Structure**
+
+Each permission has two parts: actions and resources.
+
+- **Resource Types & Scoping Behavior**
+
+| **Resource Type**  | **Scoping Behavior**                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| account            | Account-level; no specific resource ID needed                                             |
+| Namespaces         | Scoped to specific Namespace IDs, or `allow_all: true` for all Namespaces                 |
+| Nexus endpoints    | Scoped to specific Nexus endpoint IDs, or `allow_all: true` for all Nexus endpoints       |
+| connectivity rules | Scoped to specific connectivity rule IDs, or `allow_all: true` for all connectivity rules |
+
+Resource IDs must exist in your account. Specifying an unknown resource ID will return an error.
+
+Either `allow_all: true` or `resource_ids` must be set, not both.
+
+For a list of available actions, see
+[the list of Custom Role permissions](/cloud/manage-access/permissions-reference#custom-role-permissions-reference). -
+Account-scoped actions (resource_type: "accounts") - Namespace-scoped actions (resource_type: "namespaces") - Nexus
+endpoint-scoped actions (resource_type: "nexus_endpoints") - Connectivity rule-scoped actions (resource_type:
+"connectivity_rules")
+
+The following example allows read access to specific Namespaces. The action is `cloud.namespace.get`, the resource type
+is `namespaces`, and the list of resource IDs is specified.
+
+```jsx
+{
+    "actions": ["cloud.namespace.get"],
+    "resources": {
+      "resource_type": "namespaces",
+      "resource_ids": ["my-namespace.account-id"]
+    }
+  }
+```
+
+The following example assigns multiple permissions to one Role. The permissions are assigned in an array, with the
+action `cloud.namespace.get` granted for all Namespaces, and `cloud.user.list` granted for all accounts.
+
+```jsx
+ {
+    "spec": {
+      "name": "ns-reader-user-lister",
+      "description": "Can read namespaces and list users",
+      "permissions": [
+        {
+          "actions": ["cloud.namespace.get"],
+          "resources": { "resource_type": "namespaces", "allow_all": true }
+        },
+        {
+          "actions": ["cloud.user.list"],
+          "resources": { "resource_type": "accounts", "allow_all": true }
+        }
+      ]
+    }
+  }
+```
+
+For more information about the `Custom Role` and `CustomRoleSpec` definitions, see the
+[HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles) and/or
+[GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/) API reference doc.
+
+  </TabItem>
+  <TabItem value="terraform" label="Terraform">
+
+For more detailed examples on how to manage Custom Roles via Terraform, see the
+[Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/custom_role)
+for usage guidance.
+
+  </TabItem>
+  <TabItem value="cloud-cli" label="Cloud CLI">
+The a Custom Role is defined by a JSON spec, as follows:
+
+```
+{
+  "name": "my-role-name"
+  "description": "Optional description",
+  "permissions": [
+    {
+      "resources": {
+        "resource_type": "namespace",
+        "allow_all": true
+      },
+      "actions": ["cloud.namespace.get"]
+    }
+  ]
+}
+```
+
+This example creates a Custom Role with the defined `spec`. The example shown here creates a role named `my-role-name`
+and grants the ability to get all Namespaces.
+
+Save the spec to a file (such as `role.json`) so it can be passed via `@file`.
+
+The following constraints apply to the request:
+
+- **Name constraints:**
+  - A name is required, with a maximum of 64 characters
+  - The following characters are allowed: letters (a-z, A-Z), numbers (0-9), hyphens (-), underscores (\_)
+  - Names are not unique per account, meaning two different roles can share the same name
+- **Description constraints:**
+  - A description is optional, with a maximum of 256 characters
+- **Permissions constraints:**
+  - At least one permission is required
+  - You can assign up to 25 permissions per role (account default, may vary)
+
+**Permission Structure**
+
+Each permission has two parts: actions and resources.
+
+- **Resource Types & Scoping Behavior**
+
+| **Resource Type**  | **Scoping Behavior**                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| account            | Account-level; no specific resource ID needed                                             |
+| Namespaces         | Scoped to specific Namespace IDs, or `allow_all: true` for all Namespaces                 |
+| Nexus endpoints    | Scoped to specific Nexus endpoint IDs, or `allow_all: true` for all Nexus endpoints       |
+| connectivity rules | Scoped to specific connectivity rule IDs, or `allow_all: true` for all connectivity rules |
+
+Resource IDs must exist in your account. Specifying an unknown resource ID will return an error.
+
+Either `allow_all: true` or `resource_ids` must be set, not both.
+
+For a list of available actions, see
+[the list of Custom Role permissions](/cloud/manage-access/permissions-reference#custom-role-permissions-reference). -
+Account-scoped actions (resource_type: "accounts") - Namespace-scoped actions (resource_type: "namespaces") - Nexus
+endpoint-scoped actions (resource_type: "nexus_endpoints") - Connectivity rule-scoped actions (resource_type:
+"connectivity_rules")
+
+To create a custom role:
+
+```
+temporal cloud custom-role create --spec @role.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Assigning Custom Roles to users
+
+Once you have created a Custom Role, it is available on the Identities page to assign to a user or group, the same as
+the pre-defined Temporal permissions. See
+[How to update an account-level role in Temporal Cloud](/cloud/users#update-roles) for more inforamtion.
+
+## Modifying a Custom Role
+
+<Tabs groupID="modify-custom-roles">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To modify a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the
+Settings page.
+
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu of the Custom Role you want to modify and select Edit.
+
+The Edit Custom Role page has the same options as the Create Custom Role page. You can change the Custom Role's name or
+description, or you can modify any of the current permissions assigned to that Role.
+
+When finished, click Update Custom Role.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the UpdateCustomRole API
+([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles/{roleId}),
+[GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/#updatecustomrole))to modify the Custom Role.
+
+  </TabItem>
+  <TabItem value="terraform" label="Terraform">
+
+To update a Custom Role, modify the `temporalcloud_custom_role` resource in your Terraform configuration and run
+`terraform apply`. Updating a Custom Role replaces the full permissions list. Include all permissions you want to
+retain. Any permission omitted from the update will be removed.
+
+For more details see the
+[Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/custom_role).
+
+  </TabItem>
+  <TabItem value="cloud-cli" label="Cloud CLI">
+
+To update a role spec by ID, use `update`:
+
+```
+temporal cloud custom-role update --role-id my-role-id --spec @role.json
+```
+
+You can override the resource version explicitly with `--resource-version`; otherwise the latest version is fetched and
+used.
+
+  </TabItem>
+</Tabs>
+
+## Delete a Custom Role
+
+<Tabs groupID="delete-custom-roles">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To delete a Custom Role from the Web UI, select Settings in the left sidebar, and then click the Custom Roles tab on the
+Settings page.
+
+On the Custom Roles tab, you'll see a list of the roles that have already been defined for your account, 50 to a page.
+Click the three dots menu of the Custom Role you want to delete and select Delete. A pop-up notification will let you
+know that the Custom Role has been deleted.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the DeleteCustomRole API
+([HTTP](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/DELETE/cloud/custom-roles/{roleId}),
+[GRPC](https://saas-api.tmprl.cloud/docs/grpcapi/#deletecustomrole))to delete the Custom Role.
+
+  </TabItem>
+  <TabItem value="terraform" label="Terraform">
+
+To delete a Custom Role, remove the `temporalcloud_custom_role` resource block from your Terraform configuration and run
+`terraform apply`. You can also target a specific resource:
+
+Deleting a Custom Role permanently removes it and automatically revokes it from all principals it was assigned to. This
+action cannot be undone.
+
+For more details see the
+[Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/custom_role).
+
+  </TabItem>
+  <TabItem value="cloud-cli" label="Cloud CLI">
+
+To delete a Custom Role, use `delete`:
+
+```
+temporal cloud custom-role delete --role-id my-role-id
+```
+
+  </TabItem>
+</Tabs>
+
+## Custom Roles limits
+
+For more information about the limits of Custom Roles, such as the maximum number of custom roles per Account, see
+[Custom Roles limits](/cloud/limits#custom-role-limits).
