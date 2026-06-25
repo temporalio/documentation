@@ -29,7 +29,7 @@ const IMPORT_LINE = `import { ReleaseNoteHeader } from '@site/src/components';`;
 
 const COMPONENT_BLOCK = `<ReleaseNoteHeader featureName="cloudCli" />`;
 
-const EXCLUDED_PAGES = ["custom-role.mdx"];
+const EXCLUDED_PAGES = [];
 
 // ---------------------------------------------------------------------------
 // 1. Remove excluded pages
