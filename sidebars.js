@@ -1548,7 +1548,16 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
-            'encyclopedia/workers/serverless-workers',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
+              items: [
+                'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
+              ],
+            },
           ],
         },
         {
