@@ -720,7 +720,8 @@ module.exports = {
                 id: 'develop/typescript/integrations/index',
               },
               items: [
-                'develop/typescript/integrations/ai-sdk'
+                'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/openai-agents',
               ],
             },
           ],
@@ -1081,11 +1082,12 @@ module.exports = {
           },
           items: [
             'cloud/manage-access/roles-and-permissions',
-            'cloud/get-started/users',
-            'cloud/get-started/user-groups',
-            'cloud/get-started/service-accounts',
-            'cloud/saml',
-            'cloud/scim',
+            'cloud/manage-access/users',
+            'cloud/manage-access/user-groups',
+            'cloud/manage-access/service-accounts',
+            'cloud/manage-access/custom-roles',
+            'cloud/manage-access/saml',
+            'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
           ],
         },
