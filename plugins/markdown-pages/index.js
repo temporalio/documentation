@@ -5,6 +5,7 @@ const matter = require('gray-matter');
 module.exports = function markdownPagesPlugin(context, options = {}) {
   const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
   const routeBasePath = options.routeBasePath || '/';
+  const llmsTxt = options.llmsTxt || null;
 
   function walkDir(dir) {
     if (!fs.existsSync(dir)) return [];
@@ -30,6 +31,161 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     return `${dir}/${id}`;
   }
 
+  function findSection(urlPath, sections) {
+    for (const section of sections) {
+      if (section.pages && section.pages.some(p => urlPath === p || urlPath.startsWith(p + '/'))) {
+        return section;
+      }
+    }
+    let bestMatch = null;
+    let bestLength = 0;
+    for (const section of sections) {
+      if (!section.path) continue;
+      const prefix = section.path;
+      if (
+        (urlPath === prefix || urlPath.startsWith(prefix + '/')) &&
+        prefix.length > bestLength
+      ) {
+        bestMatch = section;
+        bestLength = prefix.length;
+      }
+    }
+    return bestMatch;
+  }
+
+  function expandSections(sections, pages) {
+    const expanded = [];
+    for (const section of sections) {
+      if (section.autoDiscover) {
+        const prefix = section.autoDiscover;
+        const subdirs = new Set();
+        for (const page of pages) {
+          if (page.urlPath.startsWith(prefix + '/')) {
+            const rest = page.urlPath.slice(prefix.length + 1);
+            const subdir = rest.split('/')[0];
+            if (rest.includes('/')) {
+              subdirs.add(subdir);
+            }
+          }
+        }
+        const sorted = [...subdirs].sort();
+        for (const subdir of sorted) {
+          const sdkPath = `${prefix}/${subdir}`;
+          const indexPage = pages.find(
+            p => p.urlPath === sdkPath || p.urlPath === sdkPath + '/index'
+          );
+          const sdkTitle = indexPage ? indexPage.title : subdir;
+          expanded.push({
+            path: sdkPath,
+            title: sdkTitle,
+            description: section.description || '',
+            _autoDiscovered: true,
+            _groupTitle: section.title,
+          });
+        }
+      } else {
+        expanded.push(section);
+      }
+    }
+    return expanded;
+  }
+
+  function generateLlmsTxtFiles(outDir, pages) {
+    const { siteUrl, title, description, rootContent } = llmsTxt;
+    const sections = expandSections(llmsTxt.sections, pages);
+    const baseUrl = siteUrl.replace(/\/+$/, '');
+
+    function sectionKey(section) {
+      return section.path || section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    }
+
+    const sectionBuckets = new Map();
+    for (const section of sections) {
+      sectionBuckets.set(sectionKey(section), []);
+    }
+    const otherPages = [];
+
+    for (const page of pages) {
+      const section = findSection(page.urlPath, sections);
+      if (section) {
+        sectionBuckets.get(sectionKey(section)).push(page);
+      } else {
+        otherPages.push(page);
+      }
+    }
+
+    for (const section of sections) {
+      if (section.inline) continue;
+      const key = sectionKey(section);
+      const bucket = sectionBuckets.get(key);
+      bucket.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+      const lines = [`# ${section.title}`, '', `> ${section.description}`, ''];
+      for (const page of bucket) {
+        lines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+      }
+      lines.push('');
+      const outputPath = path.join(outDir, key, 'llms.txt');
+      fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+      fs.writeFileSync(outputPath, lines.join('\n'));
+    }
+
+    const rootLines = [`# ${title}`, '', `> ${description}`, ''];
+    if (rootContent) {
+      rootLines.push(rootContent, '');
+    }
+
+    const inlineSections = sections.filter(s => s.inline);
+    const linkedSections = sections.filter(s => !s.inline);
+
+    for (const section of inlineSections) {
+      const key = sectionKey(section);
+      const bucket = sectionBuckets.get(key);
+      bucket.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+      rootLines.push(`## ${section.title}`, '');
+      if (section.description) {
+        rootLines.push(section.description, '');
+      }
+      for (const page of bucket) {
+        rootLines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+      }
+      rootLines.push('');
+    }
+
+    if (linkedSections.length > 0) {
+      let currentGroup = null;
+      for (const section of linkedSections) {
+        const group = section._groupTitle || 'Sections';
+        if (group !== currentGroup) {
+          if (currentGroup !== null) rootLines.push('');
+          rootLines.push(`## ${group}`, '');
+          currentGroup = group;
+        }
+        const desc = section.description ? `: ${section.description}` : '';
+        rootLines.push(
+          `- [${section.title}](${baseUrl}/${sectionKey(section)}/llms.txt)${desc}`
+        );
+      }
+      rootLines.push('');
+    }
+
+    otherPages.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+    if (otherPages.length > 0) {
+      rootLines.push('## Other', '');
+      for (const page of otherPages) {
+        rootLines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+      }
+      rootLines.push('');
+    }
+
+    const rootOutputPath = path.join(outDir, 'llms.txt');
+    fs.writeFileSync(rootOutputPath, rootLines.join('\n'));
+
+    const rootSize = Buffer.byteLength(rootLines.join('\n'), 'utf8');
+    console.log(
+      `[markdown-pages] Generated root llms.txt (${rootSize} bytes) and ${sections.length} section llms.txt files`
+    );
+  }
+
   return {
     name: 'markdown-pages',
 
@@ -46,6 +202,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
       let generated = 0;
       let excluded = 0;
       let totalWarnings = 0;
+      const pages = [];
 
       for (const filePath of files) {
         const raw = fs.readFileSync(filePath, 'utf8');
@@ -69,6 +226,14 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
           fs.writeFileSync(outputPath, markdown + '\n');
           totalWarnings += warnings.length;
           generated++;
+
+          if (llmsTxt && frontmatter.title) {
+            pages.push({
+              urlPath,
+              title: frontmatter.title,
+              description: frontmatter.description || '',
+            });
+          }
         }
       }
 
@@ -76,6 +241,10 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
         `[markdown-pages] Generated ${generated} clean markdown files, ${excluded} excluded` +
           (totalWarnings ? `, ${totalWarnings} transform warnings` : '')
       );
+
+      if (llmsTxt) {
+        generateLlmsTxtFiles(outDir, pages);
+      }
     },
   };
 };

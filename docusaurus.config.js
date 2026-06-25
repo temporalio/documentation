@@ -379,13 +379,62 @@ module.exports = async function createConfigAsync() {
         require.resolve('./plugins/markdown-pages'),
         {
           docsDir: 'docs',
+          llmsTxt: {
+            siteUrl: 'https://docs.temporal.io',
+            title: 'Temporal Platform Documentation',
+            description: 'Temporal is an open-source platform for building reliable applications. Temporal delivers crash-proof execution by guaranteeing that applications resume exactly where they left off after crashes, network failures, or infrastructure outages.',
+            rootContent: '## Fetching individual pages\n\nTo fetch any page as raw Markdown, append `.md` to its URL path. For example, `https://docs.temporal.io/encyclopedia.md` returns the raw Markdown source for the Encyclopedia page.',
+            sections: [
+              {
+                title: 'Core Primitives',
+                description: 'Fundamental building blocks of the Temporal Platform.',
+                inline: true,
+                pages: [
+                  'workflows', 'workflow-definition', 'workflow-execution',
+                  'workflow-execution/continue-as-new', 'workflow-execution/event',
+                  'workflow-execution/limits', 'workflow-execution/timers-delays',
+                  'workflow-execution/workflowid-runid', 'workflow-streams',
+                  'activities', 'activity-definition', 'activity-execution', 'activity-operations',
+                  'local-activity', 'standalone-activity',
+                  'workers', 'worker-versioning', 'sticky-execution',
+                  'temporal-client', 'codec-server', 'remote-data-encoding',
+                  'child-workflows', 'namespaces', 'task-queue', 'task-queue/naming', 'task-routing', 'tasks',
+                  'schedule', 'cron-job', 'visibility', 'dual-visibility', 'search-attribute', 'list-filter',
+                  'dataconversion', 'default-custom-data-converters', 'payload-codec', 'payload-converter',
+                  'failure-converter', 'external-storage', 'key-management',
+                  'handling-messages', 'sending-messages', 'dynamic-handler',
+                  'patching', 'parent-close-policy', 'global-namespace',
+                  'nexus', 'nexus/endpoints', 'nexus/error-handling', 'nexus/execution-debugging',
+                  'nexus/metrics', 'nexus/operations', 'nexus/patterns', 'nexus/registry',
+                  'nexus/security', 'nexus/services',
+                  'serverless-workers',
+                ],
+              },
+              {
+                title: 'Concepts',
+                description: 'What Temporal is and how it works.',
+                inline: true,
+                pages: [
+                  'temporal', 'glossary',
+                ],
+              },
+              { autoDiscover: 'develop', title: 'SDK Development Guides' },
+              { path: 'cloud', title: 'Temporal Cloud', description: 'Deploy and manage Temporal Cloud' },
+              { path: 'production-deployment', title: 'Production Deployment', description: 'Deploy Temporal to production' },
+              { path: 'cli', title: 'CLI Reference', description: 'Temporal CLI command reference' },
+              { path: 'encyclopedia', title: 'Encyclopedia', description: 'Core Temporal concepts and components' },
+              { path: 'references', title: 'References', description: 'Configuration and API references' },
+              { path: 'troubleshooting', title: 'Troubleshooting', description: 'Common issues and solutions' },
+              { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
+            ],
+          },
         },
       ],
       [
         'docusaurus-plugin-llms',
         {
           // Generate both llms.txt (index) and llms-full.txt (complete content)
-          generateLLMsTxt: true,
+          generateLLMsTxt: false,
           generateLLMsFullTxt: true,
           generateMarkdownFiles: false,
 
