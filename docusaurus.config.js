@@ -232,7 +232,12 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: ['**/clusters/**', '**/ai-cookbook/**'], // do not render context content
+            exclude: [
+              '**/_*.{js,jsx,ts,tsx,md,mdx}',
+              '**/_*/**',
+              '**/clusters/**',
+              '**/ai-cookbook/**',
+            ], // partials (underscore-prefixed) + context content we don't render
             editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
             /**
              * Whether to display the author who last updated the doc.
@@ -276,6 +281,7 @@ module.exports = async function createConfigAsync() {
             changefreq: 'daily',
             priority: 0.5,
             filename: 'sitemap.xml',
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
           },
         },
       ],

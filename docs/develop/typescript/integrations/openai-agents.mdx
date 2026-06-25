@@ -1,0 +1,592 @@
+---
+id: openai-agents
+title: OpenAI Agents SDK integration
+sidebar_label: OpenAI Agents SDK integration
+toc_max_heading_level: 3
+keywords:
+  - ai
+  - agents
+  - openai
+tags:
+  - OpenAI Agents SDK
+  - TypeScript SDK
+  - Temporal SDKs
+description: Run OpenAI Agents SDK agents as durable Temporal Workflows in TypeScript, with model calls executed as Activities.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+Temporal's integration with the [OpenAI Agents SDK for JavaScript/TypeScript](https://openai.github.io/openai-agents-js/)
+lets you run agents as Temporal Workflows. Agent orchestration—the agent loop, tool selection, and handoffs—runs inside
+the Workflow, while model calls run as [Activities](/glossary#activity).
+
+Like with other types of API calls, in a [Temporal Application](/glossary#temporal-application), you make LLM calls in your Activities. This
+integration handles that for you: model calls are executed as Activities, so they retry durably and are not repeated
+during Workflow replay. Your agents survive Worker restarts and can run for extended periods without losing state.
+
+<ReleaseNoteHeader
+  type="prerelease"
+/>
+
+## Prerequisites
+
+- This guide assumes you are already familiar with the OpenAI Agents SDK. If you aren't, refer to the
+  [OpenAI Agents SDK documentation](https://openai.github.io/openai-agents-js/) for more details.
+- If you are new to Temporal, we recommend you read the [Understanding Temporal](/evaluate/understanding-temporal)
+  document or take the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course to understand the basics
+  of Temporal.
+- Ensure you have set up your local development environment by following the
+  [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript) guide. When you are
+  done, leave the Temporal Development Server running if you want to test your code locally.
+
+## Install
+
+```bash
+# Or `pnpm add`/`yarn add`
+npm install @temporalio/openai-agents @openai/agents-core @openai/agents-openai openai
+```
+
+`@openai/agents-core`, `@openai/agents-openai`, and `openai` are peer dependencies.
+
+### Import paths
+
+Most applications use two import paths: `@temporalio/openai-agents` in Worker and Client code, and
+`@temporalio/openai-agents/workflow` in Workflow code. The other subpaths are for tracing setup or manual Worker wiring.
+
+| Import path                                      | Import from      | Use for                                                     |
+| :----------------------------------------------- | :--------------- | :---------------------------------------------------------- |
+| `@temporalio/openai-agents`                      | Worker or Client | Plugin setup, MCP providers, model option types             |
+| `@temporalio/openai-agents/workflow`             | Workflow         | Runner, Workflow-safe tools, sessions, MCP handles          |
+| `@temporalio/openai-agents/otel`                 | Worker or Client | Replay-safe OpenTelemetry setup                             |
+| `@temporalio/openai-agents/workflow-interceptor` | Worker bundling  | Manual `workflowInterceptorModules` wiring without a plugin |
+
+## Create a Hello World Workflow
+
+A Temporal-backed agent needs three pieces: a Workflow that runs the agent, a Worker configured with the integration
+plugin, and a Client configured with the same plugin.
+
+### Write the Workflow
+
+Use `TemporalOpenAIRunner` instead of the upstream `Runner`. The runner runs the agent loop inside the Workflow and
+dispatches each model call to an Activity.
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { TemporalOpenAIRunner } from '@temporalio/openai-agents/workflow';
+
+export async function haikuAgentWorkflow(prompt: string): Promise<string> {
+  const agent = new Agent({
+    name: 'Assistant',
+    instructions: 'You only respond in haikus.',
+    model: 'gpt-4o-mini',
+  });
+
+  const runner = new TemporalOpenAIRunner();
+  const result = await runner.run(agent, prompt);
+  return result.finalOutput ?? '';
+}
+```
+
+`TemporalOpenAIRunner` mirrors the OpenAI Agents SDK `Runner`, with familiar options such as `maxTurns`, `context`,
+and `session`. A few differences apply for Workflow-safe execution:
+
+- `runConfig.model` must be a model name string. The Worker's `modelProvider` resolves it inside the model Activity.
+- `signal` is not supported. Use Temporal cancellation APIs, such as `CancellationScope`, to cancel Workflow work.
+- `runStreamed()` is not currently supported.
+
+### Configure the Worker
+
+Register `OpenAIAgentsPlugin` on the Worker. The plugin registers the model Activity, adds the trace-propagation
+interceptors, installs the Workflow-bundle polyfills the OpenAI Agents SDK needs, and registers any configured MCP
+server providers.
+
+```typescript
+import { OpenAIProvider } from '@openai/agents-openai';
+import { OpenAIAgentsPlugin } from '@temporalio/openai-agents';
+import { NativeConnection, Worker } from '@temporalio/worker';
+
+async function main() {
+  const connection = await NativeConnection.connect();
+  const plugin = new OpenAIAgentsPlugin({
+    modelProvider: new OpenAIProvider(),
+    modelParams: { startToCloseTimeout: '30s' },
+  });
+
+  const worker = await Worker.create({
+    connection,
+    taskQueue: 'my-task-queue',
+    workflowsPath: require.resolve('./workflows'),
+    plugins: [plugin],
+  });
+
+  await worker.run();
+}
+
+main();
+```
+
+`modelParams` controls scheduling for the model Activity—including `startToCloseTimeout`, `retry`, and
+`useLocalActivity`. See `ModelActivityOptions` for the public field list.
+
+You must ensure the Worker process has access to your model-provider credentials. Most provider SDKs read credentials
+from environment variables.
+
+### Configure the Client
+
+Register the same plugin type on the Client so model parameters and tracing options propagate to new Workflows. Attach
+one `OpenAIAgentsPlugin` instance per Client or Connection configuration.
+
+```typescript
+import { OpenAIProvider } from '@openai/agents-openai';
+import { Client, Connection } from '@temporalio/client';
+import { OpenAIAgentsPlugin } from '@temporalio/openai-agents';
+
+async function main() {
+  const connection = await Connection.connect();
+  const plugin = new OpenAIAgentsPlugin({
+    modelProvider: new OpenAIProvider(),
+  });
+
+  const client = new Client({
+    connection,
+    plugins: [plugin],
+  });
+
+  const result = await client.workflow.execute('haikuAgentWorkflow', {
+    args: ['Tell me about recursion in programming.'],
+    taskQueue: 'my-task-queue',
+    workflowId: 'haiku-workflow',
+  });
+
+  console.log(result);
+}
+
+main();
+```
+
+## Tools
+
+Inline function tools, hosted tools, Activity-backed tools, Nexus operation tools, and nested agent tools can all be
+used from a Temporal-backed agent. Any tool that performs I/O must run outside the Workflow sandbox, usually through an
+Activity or a Nexus Operation.
+
+### Activity-backed tools
+
+Use `activityAsTool` for HTTP calls, database access, file system work, or other I/O. The tool name must match a
+registered Activity.
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { activityAsTool } from '@temporalio/openai-agents/workflow';
+import type * as activities from './activities';
+
+const weatherTool = activityAsTool<typeof activities.getWeather>(
+  {
+    name: 'getWeather',
+    description: 'Get the weather for a city',
+    parameters: {
+      type: 'object',
+      properties: { location: { type: 'string' } },
+      required: ['location'],
+      additionalProperties: false,
+    },
+  },
+  {
+    startToCloseTimeout: '10s',
+    retryPolicy: { maximumAttempts: 3 },
+  }
+);
+
+const agent = new Agent({
+  name: 'WeatherAgent',
+  instructions: 'Use the getWeather tool when asked about weather.',
+  model: 'gpt-4o-mini',
+  tools: [weatherTool],
+});
+```
+
+That type parameter is only used at compile time. At runtime, the Activity is invoked by name through `proxyActivities`.
+
+### Inline and hosted tools
+
+For deterministic computation, use `tool()` from `@openai/agents-core` directly. Inline tools run in the Workflow
+sandbox and must not perform non-deterministic activities like, I/O or reading wall-clock time beyond Temporal's replacements. Hosted tools from `@openai/agents-openai`, such as `webSearchTool()`, run server-side
+through the model provider during the model Activity.
+
+```typescript
+import { Agent, tool } from '@openai/agents-core';
+import { webSearchTool } from '@openai/agents-openai';
+
+const addNumbers = tool({
+  name: 'addNumbers',
+  description: 'Add two numbers',
+  parameters: {
+    type: 'object' as const,
+    properties: { a: { type: 'number' }, b: { type: 'number' } },
+    required: ['a', 'b'] as const,
+    additionalProperties: false as const,
+  },
+  execute: async (args) => String((args as { a: number; b: number }).a + (args as { a: number; b: number }).b),
+});
+
+const agent = new Agent({
+  name: 'SearchAgent',
+  instructions: 'You have web search and arithmetic.',
+  model: 'gpt-4o-mini',
+  tools: [addNumbers, webSearchTool()],
+});
+```
+
+### Nexus operation tools
+
+Use `nexusOperationAsTool` to expose a [Nexus](https://docs.temporal.io/nexus) Operation as an agent tool. The Workflow
+starts the Operation through a Nexus client and feeds the stringified result back to the agent.
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { nexusOperationAsTool } from '@temporalio/openai-agents/workflow';
+import * as nexus from 'nexus-rpc';
+
+const weatherService = nexus.service('weather', {
+  getWeather: nexus.operation<{ location: string }, { tempC: number }>(),
+});
+
+const weatherTool = nexusOperationAsTool(
+  weatherService.operations.getWeather,
+  {
+    name: 'getWeather',
+    description: 'Get the weather for a city',
+    parameters: {
+      type: 'object',
+      properties: { location: { type: 'string' } },
+      required: ['location'],
+      additionalProperties: false,
+    },
+  },
+  { service: weatherService, endpoint: 'weather-endpoint' }
+);
+
+const agent = new Agent({
+  name: 'WeatherAgent',
+  instructions: 'Use the weather tool.',
+  model: 'gpt-4o-mini',
+  tools: [weatherTool],
+});
+```
+
+### Nested agent tools
+
+Use `agentAsTool` to expose another `Agent` as a tool while keeping nested model calls durable:
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { agentAsTool } from '@temporalio/openai-agents/workflow';
+
+const specialist = new Agent({
+  name: 'Specialist',
+  instructions: 'Answer precisely.',
+  model: 'gpt-4o-mini',
+});
+
+const triage = new Agent({
+  name: 'Triage',
+  instructions: 'Delegate specialist questions.',
+  model: 'gpt-4o-mini',
+  tools: [
+    agentAsTool(specialist, {
+      toolName: 'ask_specialist',
+      toolDescription: 'Ask the specialist agent',
+    }),
+  ],
+});
+```
+
+Nested approval interruptions are not supported. If a nested run pauses for approval, the tool invocation fails with an
+`ApplicationFailure` of type `NestedAgentInterruption`.
+
+## MCP servers
+
+The integration supports stateless and stateful [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
+servers.
+
+### Stateless MCP servers
+
+Use stateless servers when each tool call is independent. Register a provider on the Worker:
+
+```typescript
+import { MCPServerStreamableHttp } from '@openai/agents-core';
+import { OpenAIProvider } from '@openai/agents-openai';
+import { OpenAIAgentsPlugin, StatelessMCPServerProvider } from '@temporalio/openai-agents';
+
+const unitConversionMcp = new StatelessMCPServerProvider(
+  'unitConversion',
+  () => new MCPServerStreamableHttp({ name: 'unitConversion', url: 'https://mcp.example.com/unit-conversion' })
+);
+
+const plugin = new OpenAIAgentsPlugin({
+  modelProvider: new OpenAIProvider(),
+  mcpServerProviders: [unitConversionMcp],
+});
+```
+
+Reference the same provider name from Workflow code with `statelessMcpServer`:
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { statelessMcpServer, TemporalOpenAIRunner } from '@temporalio/openai-agents/workflow';
+
+export async function mcpWorkflow(query: string): Promise<string> {
+  const agent = new Agent({
+    name: 'UnitConverter',
+    instructions: 'Use unit conversion tools to answer questions.',
+    model: 'gpt-4o-mini',
+    mcpServers: [statelessMcpServer('unitConversion')],
+  });
+
+  const result = await new TemporalOpenAIRunner().run(agent, query);
+  return result.finalOutput ?? '';
+}
+```
+
+### Stateful MCP servers
+
+Use stateful servers when a persistent connection or session is required. Register the provider with a
+`NativeConnection`; the plugin starts a dedicated in-process Worker pinned to a per-run Task Queue and routes MCP
+operations to it.
+
+```typescript
+import { MCPServerStreamableHttp } from '@openai/agents-core';
+import { OpenAIProvider } from '@openai/agents-openai';
+import { OpenAIAgentsPlugin, StatefulMCPServerProvider } from '@temporalio/openai-agents';
+import { NativeConnection } from '@temporalio/worker';
+
+const connection = await NativeConnection.connect();
+const dbMcp = new StatefulMCPServerProvider(
+  'database',
+  () => new MCPServerStreamableHttp({ name: 'database', url: 'https://mcp.example.com/database' }),
+  connection
+);
+
+const plugin = new OpenAIAgentsPlugin({
+  modelProvider: new OpenAIProvider(),
+  mcpServerProviders: [dbMcp],
+});
+```
+
+In the Workflow, call `connect()` before use and `cleanup()` in a `finally` block:
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { statefulMcpServer, TemporalOpenAIRunner } from '@temporalio/openai-agents/workflow';
+
+export async function statefulMcpWorkflow(prompt: string): Promise<string> {
+  const server = statefulMcpServer('database');
+  await server.connect();
+  try {
+    const agent = new Agent({
+      name: 'DbAgent',
+      instructions: 'You have database access.',
+      model: 'gpt-4o-mini',
+      mcpServers: [server],
+    });
+    const result = await new TemporalOpenAIRunner().run(agent, prompt);
+    return result.finalOutput ?? '';
+  } finally {
+    await server.cleanup();
+  }
+}
+```
+
+Dedicated Worker startup and heartbeat failures surface as an `ApplicationFailure` whose type is exported as
+`DEDICATED_WORKER_FAILURE_TYPE`.
+
+## Sessions and human-in-the-loop
+
+Because the agent loop runs inside a Workflow, conversation history and pending approvals must be replay safe.
+
+### Replay-safe sessions
+
+Use `WorkflowSafeMemorySession` for conversation history. It replaces the upstream `MemorySession`, which is not replay
+safe because it depends on host process state.
+
+```typescript
+import { Agent } from '@openai/agents-core';
+import { TemporalOpenAIRunner, WorkflowSafeMemorySession } from '@temporalio/openai-agents/workflow';
+
+export async function chatWorkflow(prompts: string[]): Promise<string[]> {
+  const agent = new Agent({
+    name: 'ChatAgent',
+    instructions: 'Use the conversation history to answer.',
+    model: 'gpt-4o-mini',
+  });
+  const runner = new TemporalOpenAIRunner();
+  const session = new WorkflowSafeMemorySession();
+
+  const replies: string[] = [];
+  for (const prompt of prompts) {
+    const result = await runner.run(agent, prompt, { session });
+    replies.push(result.finalOutput ?? '');
+  }
+  return replies;
+}
+```
+
+Session history lives on the Workflow heap and is rebuilt by replay within a single run. It does **not** automatically
+survive `continueAsNew`—a continued run starts with an empty session. To carry history across a Continue-As-New
+boundary, capture the items and re-seed the new run's session through the constructor's `initialItems`:
+
+```typescript
+// 1. Before continuing, capture the current history:
+const items = await session.getItems();
+await continueAsNew(/* ...your Workflow args..., */ items);
+
+// 2. The continued run declares a Workflow parameter to receive those items,
+//    and re-seeds the session from them:
+const session = new WorkflowSafeMemorySession({ initialItems: items });
+```
+
+### Run state and approvals
+
+`TemporalOpenAIRunner.run` accepts a `RunState` as its second argument, matching the upstream runner. This supports
+human-approval flows that pause, wait for a Signal or Update, then Continue-As-New for as long as the approval
+takes.
+
+```typescript
+import { Agent, RunState, tool } from '@openai/agents-core';
+import { TemporalOpenAIRunner } from '@temporalio/openai-agents/workflow';
+import { condition, continueAsNew, defineSignal, setHandler } from '@temporalio/workflow';
+
+const approveSignal = defineSignal('approve');
+
+interface ApprovalInput {
+  resumeFromRunState?: string;
+}
+
+export async function approvalWorkflow(input: ApprovalInput = {}): Promise<string> {
+  const action = tool({
+    name: 'dangerousAction',
+    description: 'Perform an action that needs approval',
+    parameters: {
+      type: 'object' as const,
+      properties: { reason: { type: 'string' } },
+      required: ['reason'] as const,
+      additionalProperties: false as const,
+    },
+    needsApproval: true,
+    execute: async (args) => `did: ${(args as { reason: string }).reason}`,
+  });
+
+  const agent = new Agent({
+    name: 'Approver',
+    instructions: 'Use dangerousAction when asked.',
+    model: 'gpt-4o-mini',
+    tools: [action],
+  });
+  const runner = new TemporalOpenAIRunner();
+
+  if (input.resumeFromRunState !== undefined) {
+    const state = await RunState.fromString(agent, input.resumeFromRunState);
+    for (const interruption of state.getInterruptions()) {
+      state.approve(interruption);
+    }
+    const resumed = await runner.run(agent, state);
+    return resumed.finalOutput ?? '';
+  }
+
+  let approved = false;
+  setHandler(approveSignal, () => {
+    approved = true;
+  });
+
+  const result = await runner.run(agent, 'please act');
+  if (result.interruptions.length === 0) return result.finalOutput ?? '';
+
+  await condition(() => approved);
+  await continueAsNew<typeof approvalWorkflow>({ resumeFromRunState: result.state.toString() });
+  throw new Error('unreachable');
+}
+```
+
+The agent passed to `RunState.fromString` must define the same tool names, handoff graph, and MCP servers as the run
+that produced the serialized state.
+
+## Tracing
+
+OpenAI Agents SDK tracing works across Client, Workflow, Activity, Nexus, and MCP boundaries.
+
+### OpenAI hosted traces
+
+Enable the upstream hosted exporter before constructing the plugin, in the Worker process (not inside Workflow code):
+
+```typescript
+import { OpenAITracingExporter } from '@openai/agents-openai';
+import { addTraceProcessor, BatchTraceProcessor } from '@openai/agents-core';
+
+addTraceProcessor(new BatchTraceProcessor(new OpenAITracingExporter()));
+```
+
+:::warning
+
+We don't recommend calling `setDefaultOpenAITracingExporter()`. If you do need to call it, be aware that it overwrites
+internal state on any `OpenAIAgentsPlugin` instances you've already constructed. Set up hosted tracing with
+`addTraceProcessor` instead, as shown above.
+
+:::
+
+### OpenTelemetry
+
+If you already collect traces with OpenTelemetry, the integration can emit the agent's spans through your OpenTelemetry
+pipeline. Model calls, tools, and orchestration then land in the same backend as the rest of your application's traces,
+instead of living only in the OpenAI dashboard.
+
+To turn this on, install the optional `@opentelemetry/sdk-trace-base` peer dependency:
+
+```bash
+# Or `pnpm add`/`yarn add`
+npm install @opentelemetry/sdk-trace-base
+```
+
+Then register the tracer provider and enable OpenTelemetry instrumentation in the plugin options:
+
+```typescript
+import { trace } from '@opentelemetry/api';
+import { OpenAIProvider } from '@openai/agents-openai';
+import { OpenAIAgentsPlugin } from '@temporalio/openai-agents';
+import { createTracerProvider } from '@temporalio/openai-agents/otel';
+
+// NOTE: TracerProvider must be declared before plugin creation
+trace.setGlobalTracerProvider(createTracerProvider());
+
+const plugin = new OpenAIAgentsPlugin({
+  modelProvider: new OpenAIProvider(),
+  interceptorOptions: { useOtelInstrumentation: true },
+});
+```
+
+If you need a different provider class, configure it with `TemporalIdGenerator` and mark it with
+`markReplaySafeTracerProvider` before registering it.
+
+### Temporal orchestration spans
+
+Set `addTemporalSpans: true` to emit `temporal:*` agent-SDK spans for orchestration operations such as Workflow starts,
+Signals, Queries, Updates, Activities, child Workflows, Nexus Operations, and Continue-As-New:
+
+```typescript
+const plugin = new OpenAIAgentsPlugin({
+  modelProvider: new OpenAIProvider(),
+  interceptorOptions: { addTemporalSpans: true },
+});
+```
+
+These are agent-SDK spans, so they reach the hosted OpenAI dashboard, custom `TracingProcessor`s, and OpenTelemetry when
+enabled.
+
+## Resources
+
+- [OpenAI Agents SDK samples](https://github.com/temporalio/samples-typescript/tree/main/openai-agents) — runnable
+  examples for the patterns in this guide.
+- [`@temporalio/openai-agents` README](https://github.com/temporalio/sdk-typescript/blob/main/contrib/openai-agents/README.md)
+  — the full plugin reference, including pre-built Workflow bundles and the complete feature-support matrix.
+- [OpenAI Agents SDK for JavaScript/TypeScript](https://openai.github.io/openai-agents-js/)
+- [Temporal Plugins guide](/develop/plugins-guide) — the Plugin system this integration is built on, which you can also
+  use to build your own integrations.
