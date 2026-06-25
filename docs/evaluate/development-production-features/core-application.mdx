@@ -28,7 +28,7 @@ keywords:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
-**Workflows**, **Activities**, and **Workers** form the core parts of a Temporal Application.
+**Workflows**, **Activities**, **Standalone Activities**, and **Workers** form the core parts of a Temporal Application.
 
 **Workflows**: A Workflow defines the overall flow of the application.
 You write it in your programming language of choice using the Temporal SDK.
@@ -37,6 +37,8 @@ Conceptually, a Workflow specifies a sequence of steps and orchestrates the exec
 **Activities**: An Activity is a method or function that encapsulates business logic prone to failure (e.g., calling a service that may go down).
 The system can automatically retry these Activities upon some failures.
 Activities perform a single, well-defined action, such as calling another service, transcoding a media file, or sending an email message.
+
+**Standalone Activities**: A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/temporal-client), without using a Workflow. Use a [Workflow](/workflows) to orchestrate multiple Activities, but if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity). Standalone Activities are Temporal's job queue.
 
 **Workers**: A Worker executes your Workflow and Activity code.
 

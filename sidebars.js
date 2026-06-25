@@ -124,6 +124,7 @@ module.exports = {
                 'develop/go/workflows/side-effects',
                 'develop/go/workflows/dynamic-workflow',
                 'develop/go/workflows/versioning',
+                'develop/go/workflows/workflow-streams',
               ],
             },
             {
@@ -719,7 +720,8 @@ module.exports = {
                 id: 'develop/typescript/integrations/index',
               },
               items: [
-                'develop/typescript/integrations/ai-sdk'
+                'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/openai-agents',
               ],
             },
           ],
