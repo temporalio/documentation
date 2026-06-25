@@ -166,3 +166,84 @@ for (const file of cloudFiles) {
 }
 
 console.log(`[post-process] injected ReleaseNoteHeader into ${count} cloud page(s)`);
+
+// ---------------------------------------------------------------------------
+// 4. Update sidebars.js command-reference section
+// ---------------------------------------------------------------------------
+const SIDEBARS_PATH = path.join(__dirname, "..", "sidebars.js");
+const sidebarsContent = fs.readFileSync(SIDEBARS_PATH, "utf-8");
+
+const cloudSubcommands = fs
+  .readdirSync(CLOUD_DIR)
+  .filter((f) => f.endsWith(".mdx") && f !== "index.mdx")
+  .map((f) => f.replace(".mdx", ""))
+  .sort();
+
+const sidebarTopLevel = topLevelCommands.filter((cmd) => cmd !== "cloud");
+
+const cloudItems = cloudSubcommands
+  .map((cmd) => `                'cli/command-reference/cloud/${cmd}',`)
+  .join("\n");
+
+const topItems = sidebarTopLevel.map((cmd) => {
+  return `            'cli/command-reference/${cmd}',`;
+});
+
+const cloudCategory = [
+  "            {",
+  "              type: 'category',",
+  "              label: 'cloud',",
+  "              collapsed: true,",
+  "              link: { type: 'doc', id: 'cli/command-reference/cloud/index' },",
+  "              items: [",
+  cloudItems,
+  "              ],",
+  "            },",
+].join("\n");
+
+const allItems = [];
+for (const cmd of topLevelCommands) {
+  if (cmd === "cloud") {
+    allItems.push(cloudCategory);
+  } else {
+    allItems.push(`            'cli/command-reference/${cmd}',`);
+  }
+}
+
+const newBlock = [
+  "          link: { type: 'doc', id: 'cli/command-reference/index' },",
+  "          items: [",
+  ...allItems,
+  "          ],",
+].join("\n");
+
+const startMarker = "          link: { type: 'doc', id: 'cli/command-reference/index' },";
+const startIdx = sidebarsContent.indexOf(startMarker);
+if (startIdx === -1) {
+  console.warn("[post-process] could not find command-reference block in sidebars.js, skipping sidebar update");
+} else {
+  const itemsStart = sidebarsContent.indexOf("          items: [", startIdx);
+  let depth = 0;
+  let endIdx = -1;
+  for (let i = itemsStart; i < sidebarsContent.length; i++) {
+    if (sidebarsContent[i] === "[") depth++;
+    if (sidebarsContent[i] === "]") {
+      depth--;
+      if (depth === 0) {
+        endIdx = i + 2; // include "],\n"
+        break;
+      }
+    }
+  }
+
+  if (endIdx === -1) {
+    console.warn("[post-process] could not find end of command-reference items in sidebars.js");
+  } else {
+    const updated =
+      sidebarsContent.slice(0, startIdx) +
+      newBlock +
+      sidebarsContent.slice(endIdx);
+    fs.writeFileSync(SIDEBARS_PATH, updated);
+    console.log(`[post-process] updated sidebars.js command-reference (${topLevelCommands.length} top-level, ${cloudSubcommands.length} cloud)`);
+  }
+}
