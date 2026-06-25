@@ -51,7 +51,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://adk.dev/integrations/temporal/"
+    "href": "/develop/python/integrations/google-adk"
   },
   {
     "name": "Grafana Cloud",
