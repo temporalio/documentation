@@ -1554,7 +1554,8 @@ module.exports = {
               collapsed: true,
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
-                'encyclopedia/workers/serverless-workers/autoscaling',
+                'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],
             },
           ],
