@@ -17,12 +17,14 @@ tags:
 ---
 
 import ThemedImage from '@theme/ThemedImage';
+import { ReleaseNoteHeader } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Standalone Activities are available as a [Public Preview](/evaluate/development-production-features/release-stages#public-preview) feature in [Temporal Cloud](#temporal-cloud-support) and in the [Temporal CLI](#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher.
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
+>
+  Available in [Temporal Cloud](#temporal-cloud-support) and in Temporal Server v1.31.0 or higher (included in [Temporal CLI](#temporal-cli-support) v1.7.0 or higher).
+</ReleaseNoteHeader>
 
 See [limitations](#public-preview-limitations) below.
 
@@ -64,6 +66,7 @@ Pick your SDK and follow the quickstart:
 - [Python SDK - Standalone Activities quickstart and code sample](/develop/python/activities/standalone-activities)
 - [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities)
 - [Java SDK - Standalone Activities quickstart and code sample](/develop/java/activities/standalone-activities)
+- [Ruby SDK - Standalone Activities quickstart and code sample](/develop/ruby/activities/standalone-activities)
 - [TypeScript SDK - Standalone Activities quickstart and code sample](/develop/typescript/activities/standalone-activities)
 
 :::
@@ -120,7 +123,7 @@ Install with Homebrew:
 brew install temporal
 ```
 
-Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
 Verify the installation:
 

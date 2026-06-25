@@ -37,6 +37,8 @@ A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to 
 Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results
 of a Workflow Execution, and providing Activity Task Tokens.
 
+For [Standalone Activities](/standalone-activity), a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
+
 This page shows you how to do the following using the Go SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
@@ -67,7 +69,7 @@ Environment variable and configuration file support were added in Go SDK v1.28.0
 :::
 
 When you are running a Temporal Service locally, such as the
-[Temporal CLI](https://docs.temporal.io/cli/server#start-dev), the connection options you must provide are minimal.
+[Temporal CLI](https://docs.temporal.io/cli/command-reference/server#start-dev), the connection options you must provide are minimal.
 
 If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the
 address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service. If you don't set a

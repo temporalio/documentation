@@ -1,3 +1,7 @@
+// ⚠️  LLM MARKDOWN PIPELINE: this component's content is mirrored for the
+// generated .md output by scripts/component-handlers/home-page-hero.mjs.
+// The handler keeps its own copy of the headline/intro/cards below — when you
+// change that copy here, update the handler too. See MARKDOWN_PIPELINE.md.
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { SdkLogosAsBlocks } from './SdkLogosAsBlocks';

@@ -169,7 +169,7 @@ You can set the Retention Period between 1 and 90 days.
 
 ### Batch jobs
 
-A Namespace can have just one [Batch job](/cli/batch) running at a time.
+A Namespace can have just one [Batch job](/cli/command-reference/batch) running at a time.
 
 Each batch job operates on a maximum of 50 Workflow Executions per second.
 
@@ -195,6 +195,23 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 - Allowed characters: `[a-zA-Z0-9.,:-_\/@ ]`.
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/search-attribute#custom-search-attribute).
+
+### Custom Roles limits {/* #custom-role-limits */}
+
+Each account can create up to 25 [Custom Roles](/cloud/manage-access/custom-roles).
+
+The UI can display up to 100 Custom Roles.
+
+A single principal (such as a user) can be assigned up to 10 Custom Roles.
+
+A Custom Role can contain up 20 permissions. Each permission is a pair of
+- A list of resource IDs of a single type (e.g., specific Namespace IDs)
+- A list of actions that apply to those resources (e.g., cloud.namespace.get, cloud.namespace.update)
+For example, 
+- 1 permission: Namespaces [ns-prod, ns-staging] with actions [cloud.namespace.get, cloud.namespace.update] 
+- 2 permissions: Namespace [ns-prod] with action [cloud.namespace.get]; Namespace [ns-staging] with action [cloud.namespace.update] defined separately.
+
+There is no limit on the number of resource IDs or actions within a single permission pair. Applying a permission to all resources of a type counts as one permission regardless of how many resources exist in your account.
 
 ## Nexus Endpoint level
 
@@ -236,6 +253,14 @@ Blob size limit for Payloads, including Workflow context and each Workflow and A
 This limit is non-configurable for Temporal Cloud.
 
 The [BlobSizeLimitError guide](/troubleshooting/blob-size-limit-error) provides solutions for handling large payloads.
+
+:::note
+
+The 2 MB limit is the maximum size for a single request, not a sustained-throughput target.
+Sustained, high-volume use of large payloads can degrade Namespace performance, and Temporal reserves the right to rate limit such traffic to protect the service.
+For workloads that regularly produce large payloads, offload them to [External Storage](/external-storage) and keep inline payloads small.
+
+:::
 
 ### Per Workflow Execution concurrency limits
 

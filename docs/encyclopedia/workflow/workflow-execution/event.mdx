@@ -13,7 +13,7 @@ tags:
   - Workflows
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 This page discusses the following:
 
@@ -125,20 +125,15 @@ A Side Effect does not re-execute upon replay, but instead returns the recorded 
 Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
 If there is any chance that the code provided to the Side Effect could fail, use an Activity.
 
-## What is a Principal Attribution? {/* #principal-attribution */}
+## What is Principal Attribution? {/* #principal-attribution */}
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+<ReleaseNoteHeader type="prerelease">
+  Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
+</ReleaseNoteHeader>
 
-Principal Attribution is currently available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+Principal Attribution lets you see who triggered each event in a Workflow's Event history. For example, you can determine which user or service started a Workflow, sent a Signal, or requested cancellation.
 
-Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
-
-:::
-
-Principal Attribution for Workflow Executions is a server-derived set of non-spoofable `Principal` fields for Event history events.
-
-The `Principal` fields represent the authenticated principal responsible for a [dataplane](/cloud/overview#data-plane-and-control-plane) execution action. 
-This allows for identification of the entity that took a given action. 
+These identity fields are set by the Temporal Service itself based on the authenticated caller, so they can't be forged by client code. To populate them, you need a custom Authorizer that sets the `Principal` field on the authorization result.
 
 This is especially valuable for:
 
