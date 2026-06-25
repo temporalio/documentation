@@ -8,6 +8,7 @@ This repository contains a large chunk of the Temporal information corpus.
 
 | Resource                                   | Audience                |
 |--------------------------------------------|--------------------------|
+| [Information architecture](./INFORMATION-ARCHITECTURE.md) | For contributors and maintainers |
 | [Contact information](./CONTACT.md)        | For our open source community |
 | [Contributing guidance](./CONTRIBUTING.md) | For our open source community |
 | [License](./LICENSE.md) | For our open source community |

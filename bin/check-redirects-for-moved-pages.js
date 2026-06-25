@@ -137,6 +137,14 @@ function main() {
 
   for (const file of movedFiles) {
     const oldUrl = resolveOldUrl(file.oldPath, mergeBase);
+
+    // A rename that preserves the URL (e.g. page.mdx -> page/index.mdx)
+    // does not need a redirect.
+    if (file.type === 'renamed') {
+      const newUrl = resolveOldUrl(file.newPath, 'HEAD');
+      if (oldUrl === newUrl) continue;
+    }
+
     const match = findMatchingRedirect(oldUrl, redirects);
 
     if (!match) {
