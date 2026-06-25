@@ -1,15 +1,14 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDoc } from '@docusaurus/plugin-content-docs/client';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { FaRegCopy, FaCheck, FaMarkdown, FaExternalLinkAlt, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaRegCopy, FaCheck, FaMarkdown } from 'react-icons/fa';
 import { SiOpenai, SiClaude } from 'react-icons/si';
 import styles from './LLMActions.module.css';
+import { getMarkdownPath } from './markdownPath';
 
 export default function LLMActions() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const { metadata, frontMatter } = useDoc();
   const { permalink } = metadata;
@@ -22,7 +21,7 @@ export default function LLMActions() {
   // that build output rather than the raw MDX source.
   // NOTE: the .md files only exist after `yarn build`; under `yarn start` (dev
   // server) these requests will 404. Verify locally with `yarn build && yarn serve`.
-  const mdPath = `${permalink.replace(/\/$/, '')}.md`;
+  const mdPath = getMarkdownPath(permalink);
   const mdUrl = `${siteConfig.url}${mdPath}`;
 
   const prompt = `Read ${mdUrl} and answer questions about the content.`;
@@ -31,7 +30,6 @@ export default function LLMActions() {
 
   const handleCopyForLLM = useCallback(async () => {
     setLoading(true);
-    setOpen(false);
     try {
       const response = await fetch(mdPath);
       if (!response.ok) {
@@ -50,32 +48,15 @@ export default function LLMActions() {
     }
   }, [mdPath, pageUrl]);
 
-  const handleViewMarkdown = useCallback(() => {
-    window.open(mdPath, '_blank', 'noopener,noreferrer');
-    setOpen(false);
-  }, [mdPath]);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    if (!open) return;
-    function handleClick(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [open]);
-
   if (!permalink || frontMatter.llm_exclude) {
     return null;
   }
 
   return (
-    <div className={styles.container} ref={containerRef} data-analytics-component="llm-actions">
-      <div className={styles.splitButton}>
+    <div className={styles.container} data-analytics-component="llm-actions">
+      <div className={styles.row}>
         <button
-          className={styles.copyButton}
+          className={styles.button}
           onClick={handleCopyForLLM}
           disabled={loading}
           title="Copy page markdown for use with LLMs"
@@ -87,65 +68,49 @@ export default function LLMActions() {
           ) : (
             <FaRegCopy className={styles.icon} />
           )}
-          {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy'}
+          {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy Markdown'}
         </button>
-        <button
-          className={styles.chevronButton}
-          onClick={() => setOpen((v) => !v)}
-          aria-haspopup="true"
-          aria-expanded={open}
-          title="More options"
-          data-analytics-id="llm-actions-toggle"
+
+        <a
+          className={styles.button}
+          href={mdPath}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="View this page as Markdown"
+          data-analytics-id="view-as-markdown"
           data-analytics-action="click"
         >
-          {open ? (
-            <FaChevronUp className={styles.chevronIcon} />
-          ) : (
-            <FaChevronDown className={styles.chevronIcon} />
-          )}
-        </button>
-      </div>
+          <FaMarkdown className={styles.icon} />
+          <span>View Markdown</span>
+        </a>
 
-      {open && (
-        <div className={styles.dropdown}>
-          <button
-            className={styles.dropdownItem}
-            onClick={handleViewMarkdown}
-            data-analytics-id="view-as-markdown"
-            data-analytics-action="click"
-          >
-            <FaMarkdown className={styles.icon} />
-            <span>View as Markdown</span>
-            <FaExternalLinkAlt className={styles.externalIcon} />
-          </button>
+        <div className={styles.openIn}>
           <a
-            className={styles.dropdownItem}
+            className={styles.iconLink}
             href={chatGptUrl}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
+            title="Open in ChatGPT"
+            aria-label="Open in ChatGPT"
             data-analytics-id="open-in-chatgpt"
             data-analytics-action="click"
           >
             <SiOpenai className={styles.icon} />
-            <span>Open in ChatGPT</span>
-            <FaExternalLinkAlt className={styles.externalIcon} />
           </a>
           <a
-            className={styles.dropdownItem}
+            className={styles.iconLink}
             href={claudeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
+            title="Open in Claude"
+            aria-label="Open in Claude"
             data-analytics-id="open-in-claude"
             data-analytics-action="click"
           >
             <SiClaude className={styles.icon} />
-            <span>Open in Claude</span>
-            <FaExternalLinkAlt className={styles.externalIcon} />
           </a>
         </div>
-      )}
+      </div>
     </div>
   );
 }
