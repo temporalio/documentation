@@ -7,7 +7,19 @@
 // - Injects a ReleaseNoteHeader component into cloud CLI reference pages.
 // - Removes pages for unreleased features.
 //
-// Run after copying gen-docs output into docs/cli/command-reference/.
+// Gen-docs must be run twice because the main CLI and cloud CLI have
+// overlapping option sets (e.g. "client", "common"). Running them in a
+// single invocation causes a "duplicate option set" error.
+//
+//   1. go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml \
+//        -input cliext/option-sets.yaml -output dist/docs
+//   2. go run ./cmd/gen-docs -input <cloud-cli>/temporalcloudcli/commands.yml \
+//        -output dist/docs -subdir cloud
+//
+// Copy dist/docs/* into docs/cli/command-reference/, then run this script.
+//
+// See also: .github/workflows/update-cli-docs.yml
+//
 // When the cloud CLI reaches GA, remove the ReleaseNoteHeader injection below
 // and the "cloudCli" entry from src/constants/featureReleaseTypes.js.
 // When a feature ships, remove it from EXCLUDED_PAGES.
