@@ -50,7 +50,7 @@ The authentication process follows this pathway:
 
 - **Keep it secret; keep it safe**: Treat your API key like a password. Do not expose it in client-side code, public
   repositories, or other easily accessible locations.
-- **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.[Email notificationa](/cloud/notifications#admin-notifications) are sent at **30, 20, and 10 days before** an API key expires.
+- **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.[Email notifications](/cloud/notifications#admin-notifications) are sent at 30, 20, and 10 days before an API key expires.
 - **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding
   them into your apps. This lets you restart your Workers to refresh your rotated keys without recompiling your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly. Revoke the key immediately if you detect any
