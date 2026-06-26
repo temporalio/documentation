@@ -129,7 +129,10 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
       const key = sectionKey(section);
       const bucket = sectionBuckets.get(key);
       bucket.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
-      const lines = [`# ${section.title}`, '', `> ${section.description}`, ''];
+      const lines = [`# ${section.title}`, ''];
+      if (section.description) {
+        lines.push(`> ${section.description}`, '');
+      }
       for (const page of bucket) {
         lines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
       }
