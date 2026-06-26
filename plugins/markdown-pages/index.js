@@ -31,10 +31,17 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     return `${dir}/${id}`;
   }
 
-  function findSection(urlPath, sections) {
+  function findSection(page, sections) {
+    const urlPath = page.urlPath;
     for (const section of sections) {
-      if (section.pages && section.pages.some(p => urlPath === p || urlPath.startsWith(p + '/'))) {
+      if (section.pages && section.pages.some(p => urlPath === p)) {
         return section;
+      }
+      if (section.autoDiscoverSubsections && page.relPath) {
+        const prefix = section.autoDiscoverSubsections + '/';
+        if (page.relPath.startsWith(prefix)) {
+          return section;
+        }
       }
     }
     let bestMatch = null;
@@ -78,9 +85,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
           expanded.push({
             path: sdkPath,
             title: sdkTitle,
-            description: section.description || '',
             _autoDiscovered: true,
             _groupTitle: section.title,
+            _groupDescription: section.description || '',
           });
         }
       } else {
@@ -91,7 +98,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
   }
 
   function generateLlmsTxtFiles(outDir, pages) {
-    const { siteUrl, title, description, rootContent } = llmsTxt;
+    const { siteUrl, title, description, rootContent, excludePaths = [] } = llmsTxt;
     const sections = expandSections(llmsTxt.sections, pages);
     const baseUrl = siteUrl.replace(/\/+$/, '');
 
@@ -106,7 +113,10 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     const otherPages = [];
 
     for (const page of pages) {
-      const section = findSection(page.urlPath, sections);
+      if (excludePaths.some(p => page.urlPath === p || page.urlPath.startsWith(p + '/'))) {
+        continue;
+      }
+      const section = findSection(page, sections);
       if (section) {
         sectionBuckets.get(sectionKey(section)).push(page);
       } else {
@@ -140,15 +150,65 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     for (const section of inlineSections) {
       const key = sectionKey(section);
       const bucket = sectionBuckets.get(key);
-      bucket.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
       rootLines.push(`## ${section.title}`, '');
       if (section.description) {
         rootLines.push(section.description, '');
       }
-      for (const page of bucket) {
-        rootLines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+      if (section.autoDiscoverSubsections) {
+        const prefix = section.autoDiscoverSubsections + '/';
+        const subGroups = new Map();
+        for (const page of bucket) {
+          if (!page.relPath || !page.relPath.startsWith(prefix)) continue;
+          const rest = page.relPath.slice(prefix.length);
+          const parts = rest.split('/');
+          if (parts.length < 2) continue;
+          const subdir = parts[0];
+          if (!subGroups.has(subdir)) subGroups.set(subdir, []);
+          subGroups.get(subdir).push(page);
+        }
+        const sortedDirs = [...subGroups.keys()].sort();
+        for (const subdir of sortedDirs) {
+          const subPages = subGroups.get(subdir);
+          const normalized = subdir.replace(/-/g, '');
+          const indexPage =
+            subPages.find(p => {
+              const filename = p.relPath.split('/').pop().replace(/\.(md|mdx)$/i, '');
+              return filename === 'index' || filename === subdir;
+            }) ||
+            subPages.find(p => {
+              const filename = p.relPath.split('/').pop().replace(/\.(md|mdx)$/i, '');
+              return filename === normalized || filename.endsWith('-overview');
+            });
+          const subTitle = indexPage
+            ? (indexPage.sidebarLabel || indexPage.title)
+            : subdir;
+          subPages.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+          rootLines.push(`### ${subTitle}`, '');
+          for (const page of subPages) {
+            rootLines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+          }
+          rootLines.push('');
+        }
+        const ungrouped = bucket.filter(p => {
+          if (!p.relPath || !p.relPath.startsWith(prefix)) return true;
+          const rest = p.relPath.slice(prefix.length);
+          return rest.split('/').length < 2;
+        });
+        if (ungrouped.length > 0) {
+          ungrouped.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+          rootLines.push(`### Other`, '');
+          for (const page of ungrouped) {
+            rootLines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+          }
+          rootLines.push('');
+        }
+      } else {
+        bucket.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+        for (const page of bucket) {
+          rootLines.push(`- [${page.title}](${baseUrl}/${page.urlPath}.md)`);
+        }
+        rootLines.push('');
       }
-      rootLines.push('');
     }
 
     if (linkedSections.length > 0) {
@@ -158,6 +218,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
         if (group !== currentGroup) {
           if (currentGroup !== null) rootLines.push('');
           rootLines.push(`## ${group}`, '');
+          if (section._groupDescription) {
+            rootLines.push(section._groupDescription, '');
+          }
           currentGroup = group;
         }
         const desc = section.description ? `: ${section.description}` : '';
@@ -231,7 +294,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
             pages.push({
               urlPath,
               title: frontmatter.title,
+              sidebarLabel: frontmatter.sidebar_label || '',
               description: frontmatter.description || '',
+              relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),
             });
           }
         }
