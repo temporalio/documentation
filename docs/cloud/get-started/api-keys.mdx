@@ -50,7 +50,7 @@ The authentication process follows this pathway:
 
 - **Keep it secret; keep it safe**: Treat your API key like a password. Do not expose it in client-side code, public
   repositories, or other easily accessible locations.
-- **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
+- **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.[Email notifications](/cloud/notifications#admin-notifications) are sent at 30, 20, and 10 days before an API key expires.
 - **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding
   them into your apps. This lets you restart your Workers to refresh your rotated keys without recompiling your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly. Revoke the key immediately if you detect any
@@ -111,6 +111,8 @@ Account within their account. To manage your account’s API keys:
 Administrators can disable the creation of new API keys using the **Disable Create API Keys** button on the **API Keys**
 Settings page. Existing API keys can still be used to authenticate into Temporal Cloud normally until they are either
 disabled, deleted, or expired.
+
+Temporal Cloud automatically sends email notifications to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. For the full recipient list, see [Notifications](/cloud/notifications#admin-notifications).
 
 To disable or delete an individual API key use the vertical ellipsis menu in the API key table row.
 
@@ -219,7 +221,7 @@ tcld apikey delete --id <api-key-id>
 
 ### Rotate an API key
 
-Temporal API keys automatically expire based on the specified expiration time. Follow these steps to rotate API keys:
+Temporal API keys automatically expire based on the specified expiration time. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. Follow these steps to rotate API keys:
 
 1. Create a new key. You may reuse key names if that helps.
 1. Ensure that both the original key and new key function properly before moving to the next step.
@@ -328,7 +330,7 @@ tcld apikey delete --id <api-key-id>
 
 ### Rotate a Service Account API key
 
-Temporal API keys automatically expire based on the specified expiration time. Follow these steps to rotate API keys:
+Temporal API keys automatically expire based on the specified expiration time. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. Follow these steps to rotate API keys:
 
 1. Create a new key. You may reuse key names if that helps.
 1. Ensure that both the original key and new key function properly before moving to the next step.
@@ -448,7 +450,7 @@ A: Up to 10 non-expired keys per user and 20 non-expired keys per Service Accoun
 
 **Q: Do API keys expire?**
 
-A: Yes, API keys expire based on the specified expiration date. Temporal recommends rotating API keys periodically.
+A: Yes, API keys expire based on the specified expiration date. Temporal recommends rotating API keys periodically. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. 
 
 **Q: What's the maximum allowed expiration for an API key?**
 
