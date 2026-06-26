@@ -94,7 +94,7 @@ When a Workflow Task or Activity needs to be done, the matching service finds an
 
 The Worker Service is where all of the background functionality that keeps the Temporal Service running smoothly is handled. It takes care of all the internal/system Workflows that Temporal needs like maintenance jobs, cleanup, replication, archival, and visibility indexing. You won't need to directly interact with this layer because it's different from your application Workers. The Worker Service handles Temporal's own operational tasks, like archiving old Event histories or running scheduled maintenance.
 
-#### Persistence Layer
+#### Persistence layer
 
 You can configure the database that you want to store Workflow state, event history, and Task Queues. You can choose between Cassandra, MySQL, PostgreSQL, and SQLite. This is also where you store metadata about your Workflows and other data that needs to be recorded in order to ensure durable execution. This persistence enables recovery and replay - if anything fails, Temporal can reconstruct the exact state of a Workflow from its Event History.
 
