@@ -69,6 +69,10 @@ jobs:
 
       - name: Generate CLI docs
         working-directory: cli
+        # Gen-docs runs twice: main CLI and cloud CLI have overlapping option
+        # sets ("client", "common"), so combining them in one invocation causes
+        # a "duplicate option set" error. The second run uses -subdir to place
+        # cloud subcommands into a cloud/ subdirectory.
         run: |
           go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
           go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -subdir cloud
