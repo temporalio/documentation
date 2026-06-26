@@ -37,7 +37,7 @@ The Client does not run Workflow or Activity code; it only sends and receives th
 
 A [Worker](/encyclopedia/architecture/temporal-architecture#worker-service) is a long‑running process that you run on your own machines, built with a Temporal SDK, and it is the part that actually executes your Workflow and Activity code. The Worker connects to the Server and polls Task Queues managed by the Matching Service to ask "do you have work for me?".
 
-When it receives a Workflow Task, it replays the Workflow's event history and runs your Workflow code until it either completes or reaches a point where it must wait (for example, waiting for an Activity or a Timer). It then sends Commands back to the Server that describe what should happen next, such as "schedule this Activity" or "start this Timer".
+When it receives a Workflow Task, it replays the Workflow's Event History and runs your Workflow code until it either completes or reaches a point where it must wait (for example, waiting for an Activity or a Timer). It then sends Commands back to the Server that describe what should happen next, such as "schedule this Activity" or "start this Timer".
 
 When it receives an Activity Task, it calls your Activity function or method and then sends the outcome (success or failure and any additional result data) back to the Server, which records this as Events in the Event history. Temporal explicitly does not run your Workflow or Activity code inside the Server; that code only runs in Workers, which are under your control.
 
