@@ -38,15 +38,15 @@ To understand how Temporal works, you can start at the high level architecture v
   alt="Overview of the Temporal architecture"
 />
 
+In the wider platform, there are three kinds of clients that talk to the Temporal Server:
+
+- Temporal's [command-line interface (CLI)](/cli)
+- Temporal's web-based user interface (Web UI)
+- A [Temporal Client](#client-application) embedded into the applications you run
+
 ## Client application
 
 Temporal Clients offer a set of APIs to communicate with a Temporal Service. They are one aspect of your Temporal application and provided by a Temporal SDK. You instantiate and use it in your own application code to start and manage Workflow Executions.
-
-In the wider platform, there are three kinds of clients that talk to the Temporal Server:
-
-- Temporal's command-line interface (CLI)
-- Temporal's web-based user interface (Web UI)
-- A Temporal Client embedded into the applications you run
 
 Consider the example of an order processing system. 
 
@@ -78,9 +78,10 @@ The backend consists of several specialized services including the History, Matc
 
 #### History Service
 
-The History Service is the part of Temporal that keeps track of everything that happens in each Workflow. It writes an ordered "event history" to the database so Temporal always knows what has happened. This includes when a Workflow started, Activities ran, Signals were received, timers fired, and when it completed or failed. 
+The History Service is the part of Temporal that keeps track of everything that happens in each Workflow. It writes an ordered [Event History](/encyclopedia/event-history/) to the database so Temporal always knows what has happened. This includes when a Workflow started, Activities ran, Signals were received, timers fired, and when it completed or failed. 
 
-The Event History (every event/step of each workflow) is the key to making your application reliable and crash-proof. When an error or failure happens in your app, Temporal will recreate the state by parsing the event history and replay each step. That's why determinism and idempotency are important when you're creating your Workflows.
+The Event History (every event/step of each workflow) is the key to making your application reliable and crash-proof. When an error or failure happens in your app, Temporal will recreate the state by parsing the Event History and replay each step. TODO: PICK BACK UP HERE AND DECIDE HOW TO LINK OUT TO DETERMINISM
+That's why determinism and idempotency are important when you're creating your Workflows.
 
 The History Service is a central part of how Temporal provides Durable Execution. It persists all Workflow Execution state, including the Event History, any mutable state, and internal task queues like timers, transfers, replication, and visibility/indexing.
 
