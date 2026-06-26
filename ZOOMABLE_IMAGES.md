@@ -102,9 +102,11 @@ These already offered some form of "enlarge". Their interaction is now the unifi
 > - `namespaces.mdx` — the `ZoomingImage` there (`cloud-account-id.png`, 218px) was a tiny thumbnail; expanding it is no longer meaningful. The large `CaptionedImage`s on the same page do zoom.
 > - `sdk-metrics-setup.mdx` — imports `ZoomingImage` but never renders it; the unused import can be removed.
 
-### Newly zoomable pages (104)
+### Newly zoomable pages (44)
 
 Pages that did **not** previously have any zoom but contain raster images ≥ 800px wide, which now expand when downscaled. Grouped by area; the width shown is the page's largest image.
+
+> The 60 SDK landing pages under `/develop/**` whose only large image was the shared _1800px_ banner are **excluded**: those banners are now wrapped in `<NoZoom>` (see "Opting out" above), so they no longer zoom.
 
 #### Best practices
 
@@ -135,101 +137,35 @@ Pages that did **not** previously have any zoom but contain raster images ≥ 80
 
 - [/develop/dotnet/client/temporal-client](https://docs.temporal.io/develop/dotnet/client/temporal-client) — _max 4096px_
 - [/develop/dotnet/nexus/feature-guide](https://docs.temporal.io/develop/dotnet/nexus/feature-guide) — _max 3542px_
-- [/develop/dotnet/activities](https://docs.temporal.io/develop/dotnet/activities) — _max 1800px_
-- [/develop/dotnet/best-practices](https://docs.temporal.io/develop/dotnet/best-practices) — _max 1800px_
-- [/develop/dotnet/client](https://docs.temporal.io/develop/dotnet/client) — _max 1800px_
-- [/develop/dotnet](https://docs.temporal.io/develop/dotnet) — _max 1800px_
-- [/develop/dotnet/nexus](https://docs.temporal.io/develop/dotnet/nexus) — _max 1800px_
-- [/develop/dotnet/platform](https://docs.temporal.io/develop/dotnet/platform) — _max 1800px_
-- [/develop/dotnet/workers](https://docs.temporal.io/develop/dotnet/workers) — _max 1800px_
-- [/develop/dotnet/workflows](https://docs.temporal.io/develop/dotnet/workflows) — _max 1800px_
 - [/develop/dotnet/best-practices/converters-and-encryption](https://docs.temporal.io/develop/dotnet/best-practices/converters-and-encryption) — _max 1320px_
 
 #### Develop — go
 
 - [/develop/go/client/temporal-client](https://docs.temporal.io/develop/go/client/temporal-client) — _max 4096px_
 - [/develop/go/nexus/feature-guide](https://docs.temporal.io/develop/go/nexus/feature-guide) — _max 3542px_
-- [/develop/go/activities](https://docs.temporal.io/develop/go/activities) — _max 1800px_
-- [/develop/go/best-practices](https://docs.temporal.io/develop/go/best-practices) — _max 1800px_
-- [/develop/go/client](https://docs.temporal.io/develop/go/client) — _max 1800px_
-- [/develop/go](https://docs.temporal.io/develop/go) — _max 1800px_
-- [/develop/go/nexus](https://docs.temporal.io/develop/go/nexus) — _max 1800px_
-- [/develop/go/platform](https://docs.temporal.io/develop/go/platform) — _max 1800px_
-- [/develop/go/workers](https://docs.temporal.io/develop/go/workers) — _max 1800px_
-- [/develop/go/workflows](https://docs.temporal.io/develop/go/workflows) — _max 1800px_
 - [/develop/go/data-handling/data-conversion](https://docs.temporal.io/develop/go/data-handling/data-conversion) — _max 1320px_
 
 #### Develop — java
 
 - [/develop/java/client/temporal-client](https://docs.temporal.io/develop/java/client/temporal-client) — _max 4096px_
 - [/develop/java/nexus/feature-guide](https://docs.temporal.io/develop/java/nexus/feature-guide) — _max 3542px_
-- [/develop/java/activities](https://docs.temporal.io/develop/java/activities) — _max 1800px_
-- [/develop/java/best-practices](https://docs.temporal.io/develop/java/best-practices) — _max 1800px_
-- [/develop/java/client](https://docs.temporal.io/develop/java/client) — _max 1800px_
-- [/develop/java](https://docs.temporal.io/develop/java) — _max 1800px_
-- [/develop/java/nexus](https://docs.temporal.io/develop/java/nexus) — _max 1800px_
-- [/develop/java/platform](https://docs.temporal.io/develop/java/platform) — _max 1800px_
-- [/develop/java/workers](https://docs.temporal.io/develop/java/workers) — _max 1800px_
-- [/develop/java/workflows](https://docs.temporal.io/develop/java/workflows) — _max 1800px_
 - [/develop/java/best-practices/converters-and-encryption](https://docs.temporal.io/develop/java/best-practices/converters-and-encryption) — _max 1320px_
-
-#### Develop — php
-
-- [/develop/php/activities](https://docs.temporal.io/develop/php/activities) — _max 1800px_
-- [/develop/php/best-practices](https://docs.temporal.io/develop/php/best-practices) — _max 1800px_
-- [/develop/php/client](https://docs.temporal.io/develop/php/client) — _max 1800px_
-- [/develop/php](https://docs.temporal.io/develop/php) — _max 1800px_
-- [/develop/php/platform](https://docs.temporal.io/develop/php/platform) — _max 1800px_
-- [/develop/php/workers](https://docs.temporal.io/develop/php/workers) — _max 1800px_
-- [/develop/php/workflows](https://docs.temporal.io/develop/php/workflows) — _max 1800px_
 
 #### Develop — python
 
 - [/develop/python/client/temporal-client](https://docs.temporal.io/develop/python/client/temporal-client) — _max 4096px_
 - [/develop/python/nexus/feature-guide](https://docs.temporal.io/develop/python/nexus/feature-guide) — _max 3542px_
-- [/develop/python/activities](https://docs.temporal.io/develop/python/activities) — _max 1800px_
-- [/develop/python/best-practices](https://docs.temporal.io/develop/python/best-practices) — _max 1800px_
-- [/develop/python/client](https://docs.temporal.io/develop/python/client) — _max 1800px_
-- [/develop/python](https://docs.temporal.io/develop/python) — _max 1800px_
-- [/develop/python/nexus](https://docs.temporal.io/develop/python/nexus) — _max 1800px_
-- [/develop/python/platform](https://docs.temporal.io/develop/python/platform) — _max 1800px_
-- [/develop/python/workers](https://docs.temporal.io/develop/python/workers) — _max 1800px_
-- [/develop/python/workflows](https://docs.temporal.io/develop/python/workflows) — _max 1800px_
 
 #### Develop — ruby
 
 - [/develop/ruby/client/temporal-client](https://docs.temporal.io/develop/ruby/client/temporal-client) — _max 4096px_
-- [/develop/ruby/activities](https://docs.temporal.io/develop/ruby/activities) — _max 1800px_
-- [/develop/ruby/best-practices](https://docs.temporal.io/develop/ruby/best-practices) — _max 1800px_
-- [/develop/ruby/client](https://docs.temporal.io/develop/ruby/client) — _max 1800px_
-- [/develop/ruby](https://docs.temporal.io/develop/ruby) — _max 1800px_
-- [/develop/ruby/platform](https://docs.temporal.io/develop/ruby/platform) — _max 1800px_
-- [/develop/ruby/workers](https://docs.temporal.io/develop/ruby/workers) — _max 1800px_
-- [/develop/ruby/workflows](https://docs.temporal.io/develop/ruby/workflows) — _max 1800px_
 - [/develop/ruby/best-practices/converters-and-encryption](https://docs.temporal.io/develop/ruby/best-practices/converters-and-encryption) — _max 1320px_
-
-#### Develop — rust
-
-- [/develop/rust/activities](https://docs.temporal.io/develop/rust/activities) — _max 1800px_
-- [/develop/rust/client](https://docs.temporal.io/develop/rust/client) — _max 1800px_
-- [/develop/rust](https://docs.temporal.io/develop/rust) — _max 1800px_
-- [/develop/rust/nexus](https://docs.temporal.io/develop/rust/nexus) — _max 1800px_
-- [/develop/rust/workers](https://docs.temporal.io/develop/rust/workers) — _max 1800px_
-- [/develop/rust/workflows](https://docs.temporal.io/develop/rust/workflows) — _max 1800px_
 
 #### Develop — typescript
 
 - [/develop/typescript/client/temporal-client](https://docs.temporal.io/develop/typescript/client/temporal-client) — _max 4096px_
 - [/develop/typescript/nexus/feature-guide](https://docs.temporal.io/develop/typescript/nexus/feature-guide) — _max 3542px_
 - [/develop/typescript/best-practices/debugging](https://docs.temporal.io/develop/typescript/best-practices/debugging) — _max 2702px_
-- [/develop/typescript/activities](https://docs.temporal.io/develop/typescript/activities) — _max 1800px_
-- [/develop/typescript/best-practices](https://docs.temporal.io/develop/typescript/best-practices) — _max 1800px_
-- [/develop/typescript/client](https://docs.temporal.io/develop/typescript/client) — _max 1800px_
-- [/develop/typescript](https://docs.temporal.io/develop/typescript) — _max 1800px_
-- [/develop/typescript/nexus](https://docs.temporal.io/develop/typescript/nexus) — _max 1800px_
-- [/develop/typescript/platform](https://docs.temporal.io/develop/typescript/platform) — _max 1800px_
-- [/develop/typescript/workers](https://docs.temporal.io/develop/typescript/workers) — _max 1800px_
-- [/develop/typescript/workflows](https://docs.temporal.io/develop/typescript/workflows) — _max 1800px_
 
 #### Encyclopedia
 
