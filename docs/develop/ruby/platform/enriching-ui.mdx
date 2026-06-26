@@ -138,6 +138,16 @@ At the top of the workflow details page, you'll find the workflow-level metadata
 
 All Workflow details support standard Markdown formatting (excluding images, HTML, and scripts), allowing you to create rich, structured information displays.
 
+### Timeline
+ 
+The **Timeline** tab on the Workflow details page renders each Activity and Timer as a horizontal bar. When you set a `Summary` on an Activity or Timer, the summary text is shown directly on the bar label, making it possible to distinguish individual instances of the same Activity Type at a glance.
+  
+Labels longer than 120 characters are truncated with an ellipsis.
+  
+Setting a distinct `Summary` per Activity is especially useful for **fan-out workflows** that schedule many instances of the same Activity Type, where the Activity Type alone is not enough to tell each bar apart on the Timeline. 
+     
+Activity `Summary` support on the Timeline shipped in Temporal UI **v2.34.6** and is available on Temporal Cloud and on self-hosted UI builds at that version or later.
+
 ### Event History
 
 Individual events in the Workflow's Event History display their associated summaries when available:
