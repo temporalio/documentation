@@ -14,16 +14,36 @@ Large images in the docs are now **click-to-expand**, matching the behavior on
 
 The effect is automatic for every image in the docs. Authors do not need to do anything; whether an image is zoomable is decided at runtime by comparing the image's natural pixel width to the width it is actually displayed at.
 
+## Opting out: `<NoZoom>`
+
+Some images are decorative (e.g. the SDK banners on the `/develop` landing pages) and should never expand, even though they are downscaled. Wrap them in `<NoZoom>` to disable the click-to-expand affordance:
+
+```mdx
+<NoZoom>
+
+![.NET](/img/assets/banner-dotnet-temporal.png)
+
+</NoZoom>
+```
+
+- `<NoZoom>` is registered globally (`src/theme/MDXComponents.tsx`), so **no import is needed** in `.mdx` files. It is also exported from `src/components` for explicit use.
+- Leave blank lines around the Markdown image inside the wrapper so MDX parses it as Markdown.
+- The wrapper can contain multiple images, links, or captioned images — everything inside it renders as a plain, non-zoomable image.
+- It works by providing a React context flag that `ZoomableImage` reads (`useNoZoom()`); when set, the overflow check never marks the image zoomable, so there is no zoom cursor and no modal.
+
+All SDK banners under `docs/develop/**` are wrapped in `<NoZoom>`.
+
 ## What changed
 
 | File | Change |
 |---|---|
 | `src/components/images/ZoomableImage.tsx` *(new)* | Core component. Detects overflow and renders the modal. |
 | `src/components/images/ZoomableImage.module.css` *(new)* | Cursor, modal/backdrop, and `height: auto` styles. |
-| `src/theme/MDXComponents.tsx` | Overrides the global `img` renderer, so **every Markdown image** (`![alt](src)`) flows through `ZoomableImage`. |
+| `src/theme/MDXComponents.tsx` | Overrides the global `img` renderer, so **every Markdown image** (`![alt](src)`) flows through `ZoomableImage`; also registers `<NoZoom>` globally for opt-out. |
 | `src/components/images/CaptionedImage.js` | Refactored to delegate to `ZoomableImage` while keeping captions and dark/light support. |
 | `src/components/images/ZoomingImage.js`, `EnlargeImage.js` | Legacy components; kept working with their existing props but now open the shared modal instead of an inline toggle / new tab. |
-| `src/components/index.js` | Exports `ZoomableImage`. |
+| `src/components/images/NoZoom.tsx` *(new)* | Context wrapper that opts a subtree of images out of zoom. |
+| `src/components/index.js` | Exports `ZoomableImage` and `NoZoom`. |
 
 ### How overflow is detected
 

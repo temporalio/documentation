@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useColorMode } from '@docusaurus/theme-common';
 import clsx from 'clsx';
+import { useNoZoom } from './NoZoom';
 import styles from './ZoomableImage.module.css';
 
 type ZoomableImageProps = React.ComponentProps<'img'> & {
@@ -26,6 +27,7 @@ export default function ZoomableImage({
   ...rest
 }: ZoomableImageProps): JSX.Element {
   const { colorMode } = useColorMode();
+  const noZoom = useNoZoom();
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [isZoomable, setIsZoomable] = useState(false);
   const [naturalWidth, setNaturalWidth] = useState(0);
@@ -41,8 +43,8 @@ export default function ZoomableImage({
       return;
     }
     setNaturalWidth(img.naturalWidth);
-    setIsZoomable(img.naturalWidth > img.clientWidth + 1);
-  }, []);
+    setIsZoomable(!noZoom && img.naturalWidth > img.clientWidth + 1);
+  }, [noZoom]);
 
   useEffect(() => {
     const img = imgRef.current;
