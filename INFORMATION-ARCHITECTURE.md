@@ -172,8 +172,6 @@ These cross-cutting pages live outside any SDK folder:
 - **Cross-cutting content placement.** Pages like `safe-deployments.mdx`, `worker-performance.mdx`, and
   `worker-tuning-reference.mdx` straddle Develop and Deploy to production. `safe-deployments` in particular is about
   deployment strategy (versioning vs. patching), which reads more like production deployment guidance.
-- **Setup page naming is inconsistent.** Most SDKs use `set-up-your-local-<language>`, TypeScript uses
-  `install-typescript-sdk`, Rust uses `quickstart`.
 - **Legacy versioning files** (`worker-versioning-legacy.mdx`) live in some SDK roots (Go, Java, TypeScript) for a
   deprecated pattern. These should either be consolidated or moved to a single deprecation notice.
 - **Integrations hub page** (`develop/integrations.mdx`) only links to Java, Python, and TypeScript, even though Ruby

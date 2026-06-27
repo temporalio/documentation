@@ -1,5 +1,5 @@
 import { FaJs, FaPython, FaJava } from 'react-icons/fa';
-import { SiGo, SiDotnet, SiTypescript, SiRuby, SiPhp } from 'react-icons/si';
+import { SiGo, SiDotnet, SiTypescript, SiRuby, SiPhp, SiRust } from 'react-icons/si';
 export const LANGUAGE_TAB_GROUP = 'language';
 
 export const LANGUAGE_ICONS = {
@@ -10,6 +10,7 @@ export const LANGUAGE_ICONS = {
   php: SiPhp,
   dotnet: SiDotnet,
   rb: SiRuby,
+  rs: SiRust,
 };
 
 export const getLanguageLabel = (lang) => {
