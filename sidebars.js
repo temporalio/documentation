@@ -1012,7 +1012,7 @@ module.exports = {
                 id: 'develop/rust/workers/index',
               },
               items: [
-                'develop/rust/workers/worker-process'
+                'develop/rust/workers/run-worker-process'
               ],
             },
             {
