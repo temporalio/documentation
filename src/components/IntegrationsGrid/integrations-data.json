@@ -1,7 +1,7 @@
 [
   {
     "name": "AI SDK by Vercel",
-    "description": "Build AI-powered applications with durable execution using the Vercel AI SDK.",
+    "description": "Build AI-powered applications with Durable Execution using the Vercel AI SDK.",
     "tags": [
       "Agent framework"
     ],
@@ -51,7 +51,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "/develop/python/integrations/google-adk"
+    "href": "https://adk.dev/integrations/temporal/"
   },
   {
     "name": "Grafana Cloud",
@@ -100,12 +100,21 @@
   },
   {
     "name": "OpenAI Agents SDK",
-    "description": "Run OpenAI Agents with crash-proof execution using Temporal.",
+    "description": "Run OpenAI Agents with Durable Execution using Temporal.",
     "tags": [
       "Agent framework"
     ],
     "sdk": "Python",
     "href": "https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md"
+  },
+  {
+    "name": "OpenAI Agents SDK",
+    "description": "Run OpenAI Agents with Durable Execution using Temporal.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "TypeScript",
+    "href": "/develop/typescript/integrations/openai-agents"
   },
   {
     "name": "OpenBox",
@@ -146,7 +155,7 @@
   },
   {
     "name": "Pydantic AI",
-    "description": "Build type-safe AI agents with durable execution through Pydantic AI.",
+    "description": "Build type-safe AI agents with Durable Execution through Pydantic AI.",
     "tags": [
       "Agent framework"
     ],
@@ -197,5 +206,14 @@
     ],
     "sdk": "Python",
     "href": "https://tenuo.ai/temporal"
+  },
+  {
+    "name": "Vantage",
+    "description": "Track and analyze Temporal Cloud costs with detailed reports, filtering, and multi-account support.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://docs.vantage.sh/connecting_temporal/"
   }
 ]
