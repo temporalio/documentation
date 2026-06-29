@@ -8536,20 +8536,18 @@ inline-style-parser@0.2.7:
   resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.2.7.tgz#b1fc68bfc0313b8685745e4464e37f9376b9c909"
   integrity sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==
 
-instantsearch-ui-components@0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.27.0.tgz#c0a684509c5ca2733fe7c72d2ddf0bca949b7a12"
-  integrity sha512-N+u14ae8xtvWA3vMTjUaZqu1cof3jBbkGGUMMAq+QfA+fQSrHG1nVCXqiz72zrV+oxo8+VyxmhCb0d/M6mwgzQ==
+instantsearch-ui-components@0.30.1:
+  version "0.30.1"
+  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.30.1.tgz#76a53419493493751d2c9a7acf3552fc76c8e8ac"
+  integrity sha512-0bwxs9bKTusS0EIr2wmyltcLDkeIU5gHc6W0PDjp8VJrmBCB7ULa2qPIxpumO7B8ifp2pNoJtwpqXLup7/60DQ==
   dependencies:
     "@swc/helpers" "0.5.18"
     markdown-to-jsx "^7.7.15"
-    zod "^3.25.76 || ^4"
-    zod-to-json-schema "3.24.6"
 
-instantsearch.js@4.98.0:
-  version "4.98.0"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.98.0.tgz#4b6f438eb1ec78c2402d8a756f4826f83d3f542c"
-  integrity sha512-QGEjT5I56TmH2zmHG0NPt9Yl60EAJ3daasErB7TKMsPgNMxH+oEwW0Fqc/WkacN+ya2SZvHxMJOmNR8+sgUycw==
+instantsearch.js@4.101.1:
+  version "4.101.1"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.101.1.tgz#dbae35d25670aa0a30894c0a594fd271d7f34279"
+  integrity sha512-cSbjGQ85mSNLghcRfcryVl5tOYsNLCbmQC9g1mTJR+gFzunvirxDuQIaMdOw3Uy6RQmFt9ri8i3TVq9xLIkpzw==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@swc/helpers" "0.5.18"
@@ -8560,13 +8558,11 @@ instantsearch.js@4.98.0:
     algoliasearch-helper "3.29.1"
     hogan.js "^3.0.2"
     htm "^3.0.0"
-    instantsearch-ui-components "0.27.0"
+    instantsearch-ui-components "0.30.1"
     preact "^10.10.0"
     qs "^6.5.1"
     react ">= 0.14.0"
     search-insights "^2.17.2"
-    zod "^3.25.76 || ^4"
-    zod-to-json-schema "3.24.6"
 
 internal-slot@^1.1.0:
   version "1.1.0"
@@ -12159,27 +12155,25 @@ react-icons@^5.6.0:
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.6.0.tgz#27bcc4acbc836e762548d76041cf9b9fef4e3837"
   integrity sha512-RH93p5ki6LfOiIt0UtDyNg/cee+HLVR6cHHtW3wALfo+eOHTp8RnU2kRkI6E+H19zMIs03DyxUG/GfZMOGvmiA==
 
-react-instantsearch-core@7.33.0:
-  version "7.33.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.33.0.tgz#69a49742681ecbc847331cc63828410871b8b0c2"
-  integrity sha512-XN+dsWGW7YKTis7bn3zCwcpi0keIIsbwC75auTkPQ5ZWuE3CQwgcM/QSOW+FAWzXR7EjqFUr19zd6QIs6I1FMQ==
+react-instantsearch-core@7.35.1:
+  version "7.35.1"
+  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.35.1.tgz#82c6ac296a53727c1e366fe5af9d5e67c306d39e"
+  integrity sha512-8o9JjuFbYxjt+QPjpTRkyy3YGPf/GOGBaqWhxNkATDpZNlasTrfKHhnIprEImdKpipynDZrEnAJ7eDVb4+PHyA==
   dependencies:
     "@swc/helpers" "0.5.18"
     algoliasearch-helper "3.29.1"
-    instantsearch.js "4.98.0"
+    instantsearch.js "4.101.1"
     use-sync-external-store "^1.0.0"
-    zod "^3.25.76 || ^4"
-    zod-to-json-schema "3.24.6"
 
-react-instantsearch@^7.33.0:
-  version "7.33.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.33.0.tgz#898f5b9b7ae1edd76a8b63db19cf1be2033eaa94"
-  integrity sha512-ontL/N+mh99lfJULSp76ceYotk4R8YD50gHi8/GsQ8F1EqEowtlA3LAFDhj5QJrUPSLfbsnG7zRcXqttb+Dr2Q==
+react-instantsearch@^7.35.1:
+  version "7.35.1"
+  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.35.1.tgz#19e2c24c6d5fe3099f84d14edd0f0a688549a9ce"
+  integrity sha512-CFllvyd7qsFrzrvBACDL0keWkcAjGMsMfVvxdUde5mQqykCWzy4Q66stROVNy61E7vGA1voNRFgzEdkbVRWUIA==
   dependencies:
     "@swc/helpers" "0.5.18"
-    instantsearch-ui-components "0.27.0"
-    instantsearch.js "4.98.0"
-    react-instantsearch-core "7.33.0"
+    instantsearch-ui-components "0.30.1"
+    instantsearch.js "4.101.1"
+    react-instantsearch-core "7.35.1"
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"
@@ -14977,20 +14971,10 @@ youtube-video-element@^1.8.0:
   dependencies:
     media-played-ranges-mixin "^0.1.0"
 
-zod-to-json-schema@3.24.6:
-  version "3.24.6"
-  resolved "https://registry.npmjs.org/zod-to-json-schema/-/zod-to-json-schema-3.24.6.tgz"
-  integrity sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==
-
 zod@4.1.11:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/zod/-/zod-4.1.11.tgz#4aab62f76cfd45e6c6166519ba31b2ea019f75f5"
   integrity sha512-WPsqwxITS2tzx1bzhIKsEs19ABD5vmCVa4xBo2tq/SrV4RNZtfws1EnCWQXM6yh8bD08a1idvkB5MZSBiZsjwg==
-
-"zod@^3.25.76 || ^4":
-  version "3.25.76"
-  resolved "https://registry.npmjs.org/zod/-/zod-3.25.76.tgz"
-  integrity sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==
 
 zwitch@^2.0.0:
   version "2.0.4"
