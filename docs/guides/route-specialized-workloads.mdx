@@ -33,7 +33,7 @@ Use separate Task Queues to route Activities based on their resource requirement
 
 ## Outcomes
 
-- **Cost optimization:** GPU instances ($3/hr) only handle ML inference while standard Activities run on cost-effective CPU instances ($0.10/hr), reducing infrastructure costs by 60-80%
+- **Cost optimization:** GPU instances (\$3/hr) only handle ML inference while standard Activities run on cost-effective CPU instances (\$0.10/hr), reducing infrastructure costs by 60-80%
 - **Resource efficiency:** GPU Workers run at 2-4 concurrent activities (GPU memory constraints) while CPU Workers run at 100+ concurrent activities, maximizing hardware utilization
 - **Independent scaling:** Scale GPU Workers based on ML workload demand, high-memory Workers based on analytics load, and CPU Workers based on standard workload, without coordination
 - **Environment isolation:** ML Workers have TensorFlow/PyTorch dependencies isolated from standard Workers, preventing library conflicts and simplifying deployments

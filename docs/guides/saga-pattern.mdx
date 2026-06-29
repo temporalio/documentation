@@ -534,7 +534,7 @@ This enables an operations dashboard to display aggregate statistics and filter 
 
 Not every failure can be resolved by correcting input data.
 An OFAC match, a withdrawn offer, or a regulatory hold demands that the pipeline roll back rather than pause for a fix.
-This is where the [saga pattern](https://taonic.github.io/temporal-design-patterns/saga-pattern.html) comes in: each forward Activity that produces an external side effect — a credit bureau inquiry, an appraiser booking, a title company fee, a reserved lending slot, a funded loan — registers a compensating Activity **before** it executes.
+This is where the [saga pattern](https://temporal-design-patterns.fly.dev/saga-pattern.html) comes in: each forward Activity that produces an external side effect — a credit bureau inquiry, an appraiser booking, a title company fee, a reserved lending slot, a funded loan — registers a compensating Activity **before** it executes.
 If the forward pipeline aborts, the Workflow unwinds the registered compensations in reverse order.
 
 The pattern has three key discipline points that the implementation must honor:
