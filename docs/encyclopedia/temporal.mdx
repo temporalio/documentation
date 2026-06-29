@@ -83,6 +83,10 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 
 Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
+A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow.
+
+If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity).
+
 ## What is a Failure? {/* #failure */}
 
 [Temporal Failures](/references/failures) are representations (in the SDKs and Event History) of various types of errors that occur in the system.
