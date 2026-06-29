@@ -210,6 +210,77 @@ global:
   - `internode.client.rootCaFiles`
   - `frontend.server.clientCaFiles`
 
+### authorization
+
+The `authorization` section configures the Temporal Service's authentication.
+It selects the pluggable components that validate incoming gRPC tokens, the signing keys to trust, and the credentials this server attaches to outbound cross-cluster replication RPCs.
+
+It contains two structural subsections that mirror the direction of traffic:
+
+- [`jwtKeyProvider`](#jwtkeyprovider): Supplies the signing keys used to verify inbound JWTs.
+- [`remoteClusterAuth`](#remoteclusterauth): Controls the bearer tokens attached to outbound cross-cluster RPCs.
+
+The top-level fields select and tune the inbound plugins:
+
+- `authorizer` - _string_ - _Default:_ `""`.
+  Selects the inbound authorizer. Empty string disables authorization (the no-op authorizer permits every request); `default` enables Temporal's built-in role-based authorizer. The value is case-insensitive.
+- `claimMapper` - _string_ - _Default:_ `""`.
+  Selects the `ClaimMapper` that extracts roles from a verified token. Empty string disables claim mapping; `default` enables the built-in JWT `ClaimMapper`.
+- `audience` - _string_ - _Default:_ `""`.
+  Required `aud` claim value that inbound JWTs must contain. When empty, audience validation is skipped.
+- `authHeaderName` - _string_ - _Default:_ `authorization`.
+  gRPC metadata header from which the `ClaimMapper` reads the bearer token.
+
+See [How to secure a Temporal Service](/self-hosted-guide/security) for the conceptual model behind `ClaimMapper`, `Authorizer`, and `TokenProvider` and how the plugins fit together.
+
+A minimal example that enables JWT-based inbound auth using Temporal's defaults:
+
+```yaml
+global:
+  authorization:
+    jwtKeyProvider:
+      keySourceURIs:
+        - https://idp.example.com/.well-known/jwks.json
+      refreshInterval: 1m
+    authorizer: default
+    claimMapper: default
+    audience: temporal-frontend
+```
+
+#### jwtKeyProvider
+
+Configures the source of signing keys used by the default `ClaimMapper` to verify inbound JWTs.
+
+- `keySourceURIs` - _list of strings_.
+  URLs to fetch JWKS-formatted public keys from. The default `ClaimMapper` fetches and caches the union of keys returned by each URI.
+- `refreshInterval` - _Go duration string_ (for example `1m`, `5m`) - _Default:_ `0`.
+  How often the key set is refetched. Zero (the default) disables periodic refresh, so keys are loaded once at startup and never rotated.
+
+#### remoteClusterAuth
+
+Controls outbound bearer tokens carried on cross-cluster RPCs by a [`TokenProvider`](/self-hosted-guide/security#token-provider).
+This block has no effect unless a `TokenProvider` is also configured via [`temporal.WithTokenProvider`](/references/server-options#withtokenprovider).
+
+- `require` - _boolean_ - _Default:_ `false`.
+  When `true`, every outbound cross-cluster RPC must carry a non-empty token; the credential returns `Unauthenticated` rather than sending an empty `authorization` header.
+  The Temporal Service refuses to start when `require` is `true` but no `TokenProvider` is configured.
+
+A combined example pairing inbound JWT validation with outbound replication-stream auth on a sender cluster:
+
+```yaml
+global:
+  authorization:
+    jwtKeyProvider:
+      keySourceURIs:
+        - https://idp.example.com/.well-known/jwks.json
+      refreshInterval: 1m
+    authorizer: default
+    claimMapper: default
+    audience: temporal-frontend
+    remoteClusterAuth:
+      require: true
+```
+
 ## persistence
 
 The `persistence` section holds configuration for the data store/persistence layer.
