@@ -146,12 +146,35 @@ remains active.
 
 Namespaces with replicas rely on asynchronous event replication. Updates made to the primary may not immediately be
 reflected in the replica due to <ToolTipTerm term="replication lag" />, particularly during failovers. In the event of a
-non-graceful failover, replication lag may cause a temporary setback in Workflow progress.
+non-graceful failover, replication lag has two distinct effects, which are important to tell apart:
+
+- **A temporary setback in Workflow progress.** Operations that had already replicated remain durable in the replica.
+  Operations still in the replication backlog are reconciled when the original region recovers, so progress is set back
+  temporarily but not lost.
+- **Operations that had not yet replicated at the moment of failover.** A Workflow start, Signal, Update, or other
+  operation that the active region accepted but had not yet replicated falls within the
+  [recovery point](/cloud/rpo-rto). If the original region recovers, these operations are reconciled into the active
+  Namespace and virtually nothing is lost. If the original region is _permanently_ lost — for example, an unrecoverable
+  cell outage — operations within the recovery point window may be lost entirely. Temporal Cloud targets a recovery
+  point of under one minute for these outages.
+
+A graceful failover avoids both effects: Temporal Cloud drains the replication backlog to zero and pauses traffic before
+switching regions, so the replica holds every acknowledged operation and the Namespace achieves a recovery point of
+zero.
 
 Namespaces that are not replicated can be configured to provide _at-most-once_ semantics for Activity execution when a
 retry policy's [maximum attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0. High
 Availability Namespaces provide _at-least-once_ semantics for execution of Activities. Completed Activities _may_ be
 re-dispatched in a newly active Namespace, leading to repeated executions.
+
+The same durability boundary applies to Workflow starts and Signals: a `StartWorkflowExecution` or
+`SignalWorkflowExecution` call that returns success is durably committed in the active region, but an operation that had
+not yet replicated could be absent from the newly active region after a forced failover with permanent regional loss, as
+described above. A successful start is therefore not guaranteed to survive a permanent loss of the original region if it
+fell within the recovery point window.
+
+The [Workflow Id uniqueness guarantee](/workflow-execution/workflowid-runid) — at most one Open Workflow Execution per
+Workflow Id — is always enforced within the active Namespace, and conflict resolution preserves it across a failover.
 
 When a Workflow Execution is updated in a newly active replica following a failover, events from the previously active
 Namespace that arrive after the failover cannot be directly applied. At this point, Temporal Cloud has forked the Event
