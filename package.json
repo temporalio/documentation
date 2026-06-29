@@ -64,7 +64,7 @@
     "@mdx-js/react": "^3.0.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.1.0",
-    "@vercel/functions": "^3.6.2",
+    "@vercel/functions": "^3.7.1",
     "algoliasearch": "^5.53.0",
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
