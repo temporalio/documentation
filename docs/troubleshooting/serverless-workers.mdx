@@ -59,39 +59,32 @@ Work through the following checks in order.
 
 ### Validate the connection to Lambda {/* #validate-connection */}
 
-Start by verifying that Temporal can reach the Lambda function. Go to **Workers > Deployments > select your
-deployment**, open the **Actions** menu on the version, and click **Validate Connection**. A successful validation
-confirms that the Worker Deployment Version has a compute provider configured, that Temporal can assume the invocation
-role, and that the Lambda function can be invoked.
+Start by verifying that Temporal can reach the Lambda function. In the Temporal UI, go to **Workers > Deployments > select your
+deployment**, open the **Actions** menu on the version, and click **Validate Connection**.
 
-If validation fails, verify that the Lambda function ARN and invocation role ARN in the Worker Deployment Version
-configuration are correct. Verify the invocation role was created using the
-[CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
-and that the External ID matches the value in the Worker Deployment Version configuration.
+A successful validation confirms that the Worker Deployment Version has a compute provider configured, that Temporal can assume the invocation role, and that the Lambda function can be invoked.
 
-If the Worker Deployment Version does not have a compute provider configured, no
-[Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow exists and the Lambda is never
+Validate Connection reports one of the following failure modes:
+
+**"This version is missing compute configuration."**
+No [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow exists and the Lambda is never
 automatically invoked. A common cause is manually invoking the Lambda function before creating the Worker Deployment
-Version in the UI or CLI. When the Lambda runs, the Worker connects to Temporal and polls the Task Queue. That polling
-registers the Worker Deployment Version and binds the Task Queue on the server, but the version has no compute provider.
+Version in the UI or CLI. The Worker connects and polls, which registers the version on the server, but without a compute provider.
 To fix the issue, create or update the Worker Deployment Version with the compute provider flags as described in the
 [deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version).
 
-### Check that the version is set as current {/* #check-version-current */}
+**"Connection is invalid."**
+Temporal cannot assume the invocation role or reach the Lambda function.
+Verify that the Lambda function ARN and invocation role ARN are correct. Verify the invocation role was created using the
+[CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
+and that the External ID matches the value in the Worker Deployment Version configuration.
 
-The Worker Deployment Version must be set as the current version for new Tasks to route to it. If you created the
-version through the CLI, you need to
-[set it as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version).
+**"This Worker Deployment Version's Task Queue is not registered."**
+The Lambda invokes successfully but the Worker errors before registering its Task Queue. Check the Lambda function's CloudWatch logs for configuration or runtime errors (missing environment variables, incorrect TLS configuration, missing dependencies). The server binds a Task Queue to a Worker Deployment Version when a Worker successfully connects and polls. Without a successful poll, the binding is never created and the WCI cannot route Tasks to the version.
 
-You can verify the current version with `temporal worker deployment describe`.
+If the version was recently created, the UI may show "Task Queue is not registered yet" while the Worker is still starting up. Wait a moment and retry.
 
-### Check that the WCI is detecting Tasks {/* #check-wci-detecting-tasks */}
-
-If the connection validates successfully but the Lambda is still not being invoked, the
-[Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) may not be detecting Tasks on the
-Task Queue.
-
-Check which Task Queues are bound to the Worker Deployment Version and whether there is a backlog:
+You can also check Task Queue bindings from the CLI:
 
 ```bash
 temporal worker deployment describe-version \
@@ -101,18 +94,13 @@ temporal worker deployment describe-version \
   --report-task-queue-stats
 ```
 
-If no Task Queues are listed, the binding has not been established. The server binds a Task Queue to a Worker Deployment
-Version when a Worker with that deployment version successfully connects and polls the Task Queue.
+### Check that the version is set as current {/* #check-version-current */}
 
-A common cause is a failed first invocation. When you create a Worker Deployment Version, the WCI invokes the Lambda to
-validate the configuration. If that first invocation fails (for example, due to missing environment variables, incorrect
-TLS configuration, or missing dependencies), the Worker never connects to Temporal and never polls. Without a successful
-poll, the Task Queue binding is never created.
+The Worker Deployment Version must be set as the current version (or the ramping version) for Tasks to route to it. If you created the
+version through the CLI, you need to
+[set it as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version).
 
-To diagnose a failed first invocation, invoke the Lambda function manually from the AWS Console. The console displays
-the execution result and any errors directly, making it easier to identify configuration issues than searching through
-CloudWatch logs. Once the Lambda runs successfully and the Worker connects to Temporal, the Task Queue binding is
-established.
+You can verify the current version with `temporal worker deployment describe`.
 
 ## Lambda is invoked but Tasks are not completing {/* #lambda-invoked-not-completing */}
 
