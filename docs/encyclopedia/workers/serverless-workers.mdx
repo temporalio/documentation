@@ -20,10 +20,11 @@ tags:
 import CaptionedImage from '@site/src/components/images/CaptionedImage';
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader
-  featureName="serverlessWorkers"
->
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team. APIs are experimental and may be subject to backwards-incompatible changes. [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account
+  team. APIs are experimental and may be subject to backwards-incompatible changes. [Sign up for
+  updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public
+  Preview.
 </ReleaseNoteHeader>
 
 This page covers the following:
@@ -236,12 +237,73 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 
 ## Constraints {/* #constraints */}
 
-| Constraint        | Detail                                                                                                                                                             |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes.                          |
-| Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.                              |
-| Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                   |
-| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. |
+| Constraint        | Detail                                                                                                                                                                                                                                                          |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Activity duration | Must complete within the compute provider's invocation limit (minus shutdown deadline buffer). For AWS Lambda, the maximum is 15 minutes.                                                                                                                       |
+| Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.                                                                                                                           |
+| Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                                                                                                                |
+| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. See [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers). |
+
+## Worker Versioning with Serverless Workers {/* #worker-versioning-with-serverless-workers */}
+
+Serverless Workers require [Worker Versioning](/worker-versioning), and the compute provider must invoke a stable,
+immutable build for each Worker Deployment Version. With AWS Lambda, this means aligning two versioning systems:
+
+- **Temporal Worker Deployment Versions** — identified by deployment name and Build ID. Each Workflow runs against a
+  specific Worker Deployment Version (Pinned) or moves between them on routing changes (Auto-Upgrade).
+- **AWS Lambda function versions** — immutable numbered snapshots of your Lambda function code (`1`, `2`, `3`, ...).
+
+A Worker Deployment Version is an immutable build identifier. For production workloads, keep the Lambda function code it
+invokes immutable as well: map each Worker Deployment Version to exactly one Lambda function version, and configure the
+compute provider with the qualified
+[versioned ARN](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) for that Lambda version (for
+example, `arn:aws:lambda:us-east-1:123:function:my-worker:5`).
+
+```mermaid
+flowchart LR
+    subgraph Temporal["Temporal · Worker Deployment 'my-app'"]
+        direction TB
+        b1["Build ID: v1"]
+        b2["Build ID: v2"]
+        b3["Build ID: v3<br/>(Current)"]
+    end
+    subgraph AWS["AWS Lambda · my-temporal-worker"]
+        direction TB
+        l1["Lambda version 1<br/><code>function:my-temporal-worker:1</code>"]
+        l2["Lambda version 2<br/><code>function:my-temporal-worker:2</code>"]
+        l3["Lambda version 3<br/><code>function:my-temporal-worker:3</code>"]
+    end
+    b1 -- qualified ARN --> l1
+    b2 -- qualified ARN --> l2
+    b3 -- qualified ARN --> l3
+```
+
+For development or non-critical workloads, you can use an unqualified ARN to iterate without publishing a new Lambda
+function version each time.
+
+:::caution
+
+An unqualified ARN (no version suffix) points at `$LATEST`, which changes on every redeploy. Without a versioned ARN,
+deploying replay-unsafe code causes non-determinism errors for in-flight Workflows, even for Workflows annotated as
+Pinned.
+
+:::
+
+### How the Versioning Behavior changes rollout {/* #rollout-by-behavior */}
+
+The choice of Pinned or Auto-Upgrade controls how _Workflows_ move between Worker Deployment Versions in Temporal. It
+does not change how a Worker Deployment Version targets Lambda. Both behaviors expect a versioned ARN that points at one
+immutable Lambda function version.
+The following table shows what happens to existing Workflows when you set a new Current Version, with and without versioned Lambda ARNs.
+
+| Versioning Behavior | With versioned Lambda ARN | Without versioned Lambda ARN |
+| ------------------- | ------------------------- | ---------------------------- |
+| **Pinned**          | Existing Workflows stay on their original Lambda function version until they complete. | Existing Workflows stay on their original Worker Deployment Version, but the underlying Lambda code has already changed since `$LATEST` updated at redeploy. The new code must be replay-compatible. |
+| **Auto-Upgrade**    | Existing Workflows move to the new Worker Deployment Version and its new Lambda function version at the next Workflow Task after you move the Current Version. | The Lambda redeploy already changed the code for all versions. Setting the Current Version only changes routing, not which code runs. |
+
+For step-by-step instructions on publishing Lambda versions and configuring the compute provider with a versioned ARN,
+see
+[Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version).
 
 ## Compute providers {/* #compute-providers */}
 
@@ -253,7 +315,7 @@ For example, an AWS Lambda compute provider includes the Lambda function ARN and
 invoke the function.
 
 Compute providers are only needed for Serverless Workers. Traditional long-lived Workers do not require a compute
-provider because the Worker process manages its own lifecycle.
+provider because the Worker process lifecycle is not managed by the Temporal server.
 
 ### Supported providers
 

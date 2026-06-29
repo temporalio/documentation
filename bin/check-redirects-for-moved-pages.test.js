@@ -76,6 +76,15 @@ describe('resolveOldUrl against real repo pages', () => {
     const url = resolveOldUrl('docs/cloud/index.mdx', 'HEAD');
     assert.strictEqual(url, '/cloud');
   });
+
+  it('page-to-folder rename resolves to same URL', () => {
+    // e.g. serverless-workers.mdx -> serverless-workers/index.mdx
+    // Both should resolve to the same URL, so no redirect is needed.
+    const oldUrl = filePathToUrlPath('docs/encyclopedia/workers/serverless-workers.mdx');
+    const newUrl = filePathToUrlPath('docs/encyclopedia/workers/serverless-workers/index.mdx');
+    assert.strictEqual(oldUrl, newUrl);
+    assert.strictEqual(oldUrl, '/encyclopedia/workers/serverless-workers');
+  });
 });
 
 describe('vercelPatternToRegex', () => {
