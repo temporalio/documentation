@@ -35,21 +35,21 @@ Strong identity management in Temporal Cloud is crucial for ensuring secure acce
 
 ### Best Practices:
 
-#### 1. Enable [SAML Single Sign-on](https://docs.temporal.io/cloud/saml) (SSO) for User Access
+#### 1. Enable [SAML Single Sign-on](https://docs.temporal.io/cloud/manage-access/saml) (SSO) for User Access
 
 Integrate Temporal Cloud with your organization's identity provider via SAML 2.0 for centralized authentication. SSO allows you to enforce your corporate login policies (MFA, password complexity, etc.). When you configure SAML with Temporal Cloud, you can disable social logins (i.e. Microsoft, Google) by opening a support ticket. 
 
 #### 2. Use Least-Privilege Roles for Temporal Cloud Users
 
-Temporal Cloud provides [preconfigured account-level roles](https://docs.temporal.io/cloud/users) (Account Owner, Finance Admin, Global Admin, Developer, Read-Only) and Namespace-level permissions. Assign users the lowest level of access they need. For example, give developers access only to the Namespaces they work on, and use read-only roles for auditors or reviewers. Regularly review user roles and remove or downgrade accounts that are no longer needed
+Temporal Cloud provides [preconfigured account-level roles](https://docs.temporal.io/cloud/manage-access/users) (Account Owner, Finance Admin, Global Admin, Developer, Read-Only) and Namespace-level permissions. Assign users the lowest level of access they need. For example, give developers access only to the Namespaces they work on, and use read-only roles for auditors or reviewers. Regularly review user roles and remove or downgrade accounts that are no longer needed
 
 #### 3. Leverage SCIM or Automated User Provisioning
 
-When applicable, use [SCIM](https://docs.temporal.io/cloud/scim) or the Temporal Cloud user management API to automate adding and removing user accounts. This ensures timely removal of access when people change roles or leave the organization.
+When applicable, use [SCIM](https://docs.temporal.io/cloud/manage-access/scim) or the Temporal Cloud user management API to automate adding and removing user accounts. This ensures timely removal of access when people change roles or leave the organization.
 
 #### Use Service Accounts for Automation
 
-For non-human access (CI/CD pipelines, backend services), use [Temporal Cloud Service Accounts](https://docs.temporal.io/cloud/service-accounts) instead of shared user logins. Service Accounts are machine identities that can be granted specific permissions without ties to an individual. Create separate Service Accounts with unique API keys for different applications or microservices, and apply least privilege to each (e.g. a service account that only has access to one Namespace).
+For non-human access (CI/CD pipelines, backend services), use [Temporal Cloud Service Accounts](https://docs.temporal.io/cloud/manage-access/service-accounts) instead of shared user logins. Service Accounts are machine identities that can be granted specific permissions without ties to an individual. Create separate Service Accounts with unique API keys for different applications or microservices, and apply least privilege to each (e.g. a service account that only has access to one Namespace).
 
 ## Secure Application Authentication and API Access
 
@@ -90,7 +90,7 @@ Temporal Cloud supports private connectivity options such as [AWS PrivateLink](h
 
 #### 2. Separate environments by Namespace
 
-Use [Temporal Namespaces](https://learn.temporal.io/best_practice_guides/managing_a_namespace/#2-use-domain-service-and-environment-to-name-namespaces) to isolate workflows for different environments or teams (e.g. development, staging, production). Each Namespace is logically segregated and cannot interact with others by default, providing a security boundary. 
+Use [Temporal Namespaces](https://docs.temporal.io/best-practices/managing-namespace#naming-conventions) to isolate workflows for different environments or teams (e.g. development, staging, production). Each Namespace is logically segregated and cannot interact with others by default, providing a security boundary. 
 
 Ensure that your production Namespace uses stricter network controls (e.g. only accessible from the prod network) and that credentials for it are separate from non-prod Namespaces. This limits the impact of any compromise in a lower environment, and as workflow data is only visible to users with access to that Namespace, separating environments by Namespace also enforces data-visibility boundaries.
 
