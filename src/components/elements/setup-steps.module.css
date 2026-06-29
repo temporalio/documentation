@@ -12,6 +12,15 @@
   align-items: start;
 }
 
+/* A step with no `code` prop collapses to a single full-width column. */
+.setupStep.noCode {
+  grid-template-columns: 1fr;
+}
+
+.setupStep.noCode .content {
+  padding-right: 0;
+}
+
 .content {
   padding-right: 1rem;
 }
