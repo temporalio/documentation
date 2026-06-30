@@ -180,6 +180,27 @@ for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_c
 or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
 Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.
 
+### Provisioned capacity utilization
+
+For Namespaces in [provisioned capacity](/cloud/capacity-modes#provisioned-capacity) mode, the limit and count metrics also reveal the lower bound: how much of your reserved capacity you are actually using.
+This matters because provisioned capacity is reserved by the hour whether or not you use it.
+Each TRU beyond the first carries a minimum hourly Action charge of 360,000 Actions, which is 20% of that TRU's 500 APS, so a Namespace that runs well below its limit can accrue charges for capacity it never uses.
+See [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing) for how the minimum is calculated.
+
+Utilization is the ratio of `temporal_cloud_v1_total_action_count` to `temporal_cloud_v1_action_limit`.
+Sustained utilization well below 20% while provisioned indicates you may be paying for reserved capacity you are not using; consider alerting when the ratio stays under 20% over a sustained window, such as several hours, so you can reduce TRUs or return to on-demand mode.
+The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes provisioned-capacity panels for utilization and limits.
+
+Low utilization is not always a problem.
+If your traffic is spiky or unpredictable, you may intentionally keep capacity provisioned so it is ready the moment you need it.
+
+:::note
+
+These metrics are approximate measures of TRU capacity based on real-time TRU quotas, and do not capture the fact that TRUs are billed by the calendar hour.
+Please use [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) as the source of truth for TRU and action accounting.
+
+:::
+
 ### Why does throttling occur when count metrics stay below the limit?
 
 For spiky workloads, the throttle metric can be non-zero even though the count metric never rises above the limit. This looks contradictory, but both values are correct. They describe the workload at different time resolutions.
