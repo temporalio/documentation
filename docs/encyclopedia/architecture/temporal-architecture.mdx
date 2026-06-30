@@ -99,14 +99,6 @@ The Worker Service is where all of the background functionality that keeps the T
 
 You can configure the database that you want to store Workflow state, event history, and Task Queues. You can choose between Cassandra, MySQL, PostgreSQL, and SQLite. This is also where you store metadata about your Workflows and other data that needs to be recorded in order to ensure durable execution. This persistence enables recovery and replay - if anything fails, Temporal can reconstruct the exact state of a Workflow from its Event History.
 
-### External services 
-
-External services are anything outside of your own application code and outside Temporal itself. Examples include third‑party APIs, databases that store customer data, or messaging systems.
-
-Inside the Temporal Service, the main services (Frontend, History, Matching, and the internal Worker Service) are set up so they can be scaled independently. You can run many copies of Frontend and Matching, and the History Service spreads its work across "shards," so each part can grow based on load.
-
-Temporal can also integrate with Elasticsearch to provide advanced search and visibility capabilities for Workflow Executions. Without it, you're limited to basic filtering. Grafana can be used to enable operational dashboards and monitoring for the Temporal Service itself.
-
 ## Infrastructure
 
 This is where the code for your Workers, Workflows, Activities, Signals, Updates, and Queries get executed on your own infrastructure. This is where you can scale up the number of Workers to increase how many Workflows can run simultaneously.
