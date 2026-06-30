@@ -1,0 +1,25 @@
+name: Vale CI
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  vale:
+    name: Lint prose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: reviewdog/action-vale@v2
+        with:
+          reporter: github-pr-review
+          level: info
+          filter_mode: diff_context
+          fail_level: none
+          vale_flags: "--config=.vale-ci.ini"
