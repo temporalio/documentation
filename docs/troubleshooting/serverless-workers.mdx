@@ -66,23 +66,20 @@ A successful validation confirms that the Worker Deployment Version has a comput
 
 Validate Connection reports one of the following failure modes:
 
-**"This version is missing compute configuration."**
-No [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow exists and the Lambda is never
-automatically invoked. A common cause is manually invoking the Lambda function before creating the Worker Deployment
-Version in the UI or CLI. The Worker connects and polls, which registers the version on the server, but without a compute provider.
-To fix the issue, create or update the Worker Deployment Version with the compute provider flags as described in the
-[deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version).
+- **No compute provider configured.** No [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow exists and the Lambda is never
+  automatically invoked. A common cause is manually invoking the Lambda function before creating the Worker Deployment
+  Version in the UI or CLI. The Worker connects and polls, which registers the version on the server, but without a compute provider.
+  To fix the issue, create or update the Worker Deployment Version with the compute provider flags as described in the
+  [deploy guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version).
 
-**"Connection is invalid."**
-Temporal cannot assume the invocation role or reach the Lambda function.
-Verify that the Lambda function ARN and invocation role ARN are correct. Verify the invocation role was created using the
-[CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
-and that the External ID matches the value in the Worker Deployment Version configuration.
+- **Invalid connection.** Temporal cannot assume the invocation role or reach the Lambda function.
+  Verify that the Lambda function ARN and invocation role ARN are correct. Verify the invocation role was created using the
+  [CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
+  and that the External ID matches the value in the Worker Deployment Version configuration.
 
-**"This Worker Deployment Version's Task Queue is not registered."**
-The Lambda invokes successfully but the Worker errors before registering its Task Queue. Check the Lambda function's CloudWatch logs for configuration or runtime errors (missing environment variables, incorrect TLS configuration, missing dependencies). The server binds a Task Queue to a Worker Deployment Version when a Worker successfully connects and polls. Without a successful poll, the binding is never created and the WCI cannot route Tasks to the version.
+- **Task Queue not registered.** The Lambda invokes successfully but the Worker errors before registering its Task Queue. Check the Lambda function's CloudWatch logs for configuration or runtime errors (missing environment variables, incorrect TLS configuration, missing dependencies). The server binds a Task Queue to a Worker Deployment Version when a Worker successfully connects and polls. Without a successful poll, the binding is never created and the WCI cannot route Tasks to the version.
 
-If the version was recently created, the UI may show "Task Queue is not registered yet" while the Worker is still starting up. Wait a moment and retry.
+  If the version was recently created, the Worker may still be starting up. Wait a moment and retry.
 
 You can also check Task Queue bindings from the CLI:
 
