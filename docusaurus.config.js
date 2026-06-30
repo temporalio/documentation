@@ -385,13 +385,48 @@ module.exports = async function createConfigAsync() {
         require.resolve('./plugins/markdown-pages'),
         {
           docsDir: 'docs',
+          llmsTxt: {
+            siteUrl: 'https://docs.temporal.io',
+            title: 'Temporal Platform Documentation',
+            description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            rootContent:
+              'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
+              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
+            excludePaths: ['tctl-v1'],
+            sections: [
+              {
+                title: 'Core Primitives',
+                description: 'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
+                inline: true,
+                autoDiscoverSubsections: 'encyclopedia',
+              },
+              {
+                title: 'Concepts',
+                description: 'What Temporal is and how it works.',
+                inline: true,
+                pages: [
+                  'temporal', 'glossary',
+                ],
+              },
+              { autoDiscover: 'develop', title: 'SDK Development Guides', description: 'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.' },
+              { path: 'develop', title: 'Cross-SDK Development Guides', description: 'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).' },
+              { path: 'cloud', title: 'Temporal Cloud', description: 'Deploy and manage Temporal Cloud' },
+              { path: 'evaluate', title: 'Evaluating Temporal', description: 'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.' },
+              { path: 'production-deployment', title: 'Production Deployment', description: 'Deploy Temporal to production' },
+              { path: 'self-hosted-guide', title: 'Self-Hosted Service Guide', description: 'Deploy, configure, and operate a self-hosted Temporal Service.' },
+              { path: 'cli', title: 'CLI Reference', description: 'Temporal CLI command reference' },
+              { path: 'references', title: 'References', description: 'Configuration and API references' },
+              { path: 'troubleshooting', title: 'Troubleshooting', description: 'Common issues and solutions' },
+              { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
+            ],
+          },
         },
       ],
       [
         'docusaurus-plugin-llms',
         {
           // Generate both llms.txt (index) and llms-full.txt (complete content)
-          generateLLMsTxt: true,
+          generateLLMsTxt: false,
           generateLLMsFullTxt: true,
           generateMarkdownFiles: false,
 
