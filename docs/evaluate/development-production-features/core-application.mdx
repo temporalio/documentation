@@ -38,7 +38,7 @@ Conceptually, a Workflow specifies a sequence of steps and orchestrates the exec
 The system can automatically retry these Activities upon some failures.
 Activities perform a single, well-defined action, such as calling another service, transcoding a media file, or sending an email message.
 
-**Standalone Activities**: A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/temporal-client), without using a Workflow. Use a [Workflow](/workflows) to orchestrate multiple Activities, but if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity). Standalone Activities are Temporal's job queue.
+**Standalone Activities**: A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/encyclopedia/architecture/temporal-client), without using a Workflow. Use a [Workflow](/workflows) to orchestrate multiple Activities, but if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity). Standalone Activities are Temporal's job queue.
 
 **Workers**: A Worker executes your Workflow and Activity code.
 
