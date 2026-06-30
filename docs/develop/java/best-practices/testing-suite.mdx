@@ -58,7 +58,7 @@ as a dependency to your project:
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.17.0</version>
+    <version>1.36.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -66,65 +66,185 @@ as a dependency to your project:
 **[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
-testImplementation ("io.temporal:temporal-testing:1.17.0")
+testImplementation ("io.temporal:temporal-testing:1.36.0")
 ```
 
-Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+If you need JUnit4 or JUnit5 extensions:
 
-### Sample unit tests
-
-The following code implements unit tests for the `HelloActivity` sample:
-
-```java
-public class HelloActivityTest {
-
-    private TestWorkflowEnvironment testEnv;
-    private Worker worker;
-    private WorkflowClient client;
-
-    // Set up the test workflow environment
-    @Before
-    public void setUp() {
-        testEnv = TestWorkflowEnvironment.newInstance();
-        worker = testEnv.newWorker(TASK_QUEUE);
-        // Register your workflow implementations
-        worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-
-        client = testEnv.getWorkflowClient();
-    }
-
-    // Clean up test environment after tests are completed
-    @After
-    public void tearDown() {
-        testEnv.close();
-    }
-
-    @Test
-    public void testActivityImpl() {
-        // This uses the actual activity impl
-        worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
-
-        // Start test environment
-        testEnv.start();
-
-        // Create the workflow stub
-        GreetingWorkflow workflow =
-            client.newWorkflowStub(
-                GreetingWorkflow.class, WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build()
-            );
-
-        // Execute our workflow waiting for it to complete
-        String greeting = workflow.getGreeting("World");
-        assertEquals("Hello World!", greeting);
+```
+testImplementation("io.temporal:temporal-testing:1.36.0") {
+    capabilities {
+        requireCapability("io.temporal:temporal-testing-junit4")
+        //requireCapability("io.temporal:temporal-testing-junit5")
     }
 }
 ```
 
+Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
+
+## Test Activities {/* #test-activities */}
+
+An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
+
+Temporal provides the `TestActivityEnvironment` and `TestActivityExtension` classes for testing Activities outside the scope of a Workflow. Testing Activities is similar to testing non-Temporal Java code.
+
+For example, you can test an Activity for:
+
+- Exceptions thrown when invoking the Activity Execution.
+- Exceptions thrown when checking for the result of the Activity Execution.
+- Activity's return values. Check that the return value matches the expected value.
+
+Here's an example of an Activity that will be referenced in the sections below:
+
+```java
+package helloworkflow;
+
+import java.util.concurrent.TimeUnit;
+
+import io.temporal.activity.Activity;
+import io.temporal.activity.ActivityExecutionContext;
+import io.temporal.client.ActivityCompletionException;
+
+public class GreetActivitiesImpl implements GreetActivities {
+
+  @Override
+  public String greet(String name) {
+    ActivityExecutionContext context = Activity.getExecutionContext();
+
+    for (int i = 0; i < 5; i++) {
+      try {
+        context.heartbeat(null);
+      } catch (ActivityCompletionException e) {
+        throw e;
+      }
+      
+      sleep(1);
+    }
+
+    return "Hello " + name + "!";
+  }
+
+  private void sleep(int seconds) {
+    try {
+      Thread.sleep(TimeUnit.SECONDS.toMillis(seconds));
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new RuntimeException(e);
+    }
+  }
+}
+```
+
+### Run an Activity {/* #run-an-activity */}
+
+The following code implements unit tests for the `greet` Activity above:
+
+```java
+package helloworkflow;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+import io.temporal.testing.TestActivityEnvironment;
+
+public class GreetActivitiesTest {
+
+  @Test
+  public void testActivityImpl() {
+    TestActivityEnvironment testEnv = TestActivityEnvironment.newInstance();
+
+    testEnv.registerActivitiesImplementations(new GreetActivitiesImpl());
+
+    GreetActivities activities = testEnv.newActivityStub(GreetActivities.class);
+
+    String result = activities.greet("Temporal");
+
+    assertEquals("Hello Temporal!", result);
+  }
+}
+```
+
+### Listen to Heartbeats {/* #listen-to-heartbeats */}
+
+Activities usually issue periodic Heartbeats, a ping that shows that an Activity is making progress and the Worker hasn't crashed. Heartbeats may include details that report task progress in the event an Activity Worker crashes.
+
+When testing Activities that support Heartbeats, make sure you can see those Heartbeats in your test code.
+
+```java
+@Test
+void testActivityHeartbeat() {
+  TestActivityEnvironment env = TestActivityEnvironment.newInstance();
+
+  AtomicInteger heartbeatCount = new AtomicInteger(0);
+
+  env.setActivityHeartbeatListener(
+    Void.class,
+    heartbeat -> heartbeatCount.incrementAndGet());
+
+  env.registerActivitiesImplementations(new GreetActivitiesImpl());
+
+  GreetActivities activities = env.newActivityStub(GreetActivities.class);
+
+  String result = activities.greet("Temporal");
+
+  assertEquals("Hello Temporal!", result);
+  assertEquals(5, heartbeatCount.get());
+}
+```
+
+### Cancel an Activity {/* #cancel-an-activity */}
+
+Activity cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based Activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
+
+```java
+@Test
+void testCancelActivity() {
+  try (TestWorkflowEnvironment env = TestWorkflowEnvironment.newInstance()) {
+    Worker worker = env.newWorker(TASK_QUEUE);
+
+    worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new GreetActivitiesImpl());
+
+    env.start();
+
+    SayHelloWorkflow workflow =
+      env.getWorkflowClient()
+        .newWorkflowStub(
+            SayHelloWorkflow.class,
+            WorkflowOptions.newBuilder()
+              .setTaskQueue(TASK_QUEUE)
+              .build());
+
+    WorkflowClient.start(workflow::sayHello, "Temporal");
+
+    env.registerDelayedCallback(
+        Duration.ofSeconds(1),
+        () -> WorkflowStub.fromTyped(workflow).signal("cancelActivity"));
+
+    try {
+      WorkflowStub.fromTyped(workflow).getResult(String.class);
+      fail("Workflow should have failed because the Activity was canceled");
+    } catch (WorkflowFailedException e) {
+      assertEquals(ActivityFailure.class, e.getCause().getClass());
+
+      ActivityFailure activityFailure = (ActivityFailure) e.getCause();
+      assertEquals(CanceledFailure.class, activityFailure.getCause().getClass());
+    }
+  }
+}
+```
+
+## Testing Workflows {/* #test-workflows */}
+
+### How to mock Activities {/* #mock-activities */}
+
+When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
+
 In cases where you do not wish to execute your actual Activity or Nexus Operation implementations during
 unit testing, you can use a framework such as [Mockito](https://site.mockito.org/) to mock them.
 
-The following code implements a unit test for the `HelloActivity` sample which shows
-how activities can be mocked:
+The following code implements a unit test that shows how activities can be mocked:
 
 ```java
 public class HelloActivityTest {
@@ -173,10 +293,9 @@ public class HelloActivityTest {
 }
 ```
 
-### Testing with JUnit4
+#### Testing with JUnit4
 
-For Junit4 tests, Temporal provides the TestWorkflowRule class which simplifies the Temporal test environment setup, as well as the
-creation and shutdown of Workflow Workers in your tests.
+For JUnit4 tests, Temporal provides the `TestWorkflowRule` class which simplifies the Temporal test environment setup, as well as the creation and shutdown of Workflow Workers in your tests.
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
@@ -210,9 +329,9 @@ public class HelloActivityJUnit4Test {
 }
 ```
 
-### Testing with JUnit5
+#### Testing with JUnit5
 
-For Junit5 tests, Temporal also provides the TestWorkflowExtension helper class.
+For JUnit5 tests, Temporal also provides the `TestWorkflowExtension` helper class.
 This class can be used to simplify the Temporal test environment setup as well as Workflow Worker startup and shutdowns.
 
 To start using JUnit5 TestWorkflowExtension in your tests with [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
@@ -242,48 +361,6 @@ public class HelloActivityJUnit5Test {
 
 You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
 
-## Test Activities {/* #test-activities */}
-
-Mocking isolates code undergoing testing so the focus remains on the code, and not on external dependencies or other state. You can test Activities using a mocked Activity environment.
-
-This approach offers a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. You test the Activity in isolation, calling it directly without needing to create a Worker to run it.
-
-Temporal provides the `TestActivityEnvironment` and `TestActivityExtension` classes for testing Activities outside the scope of a Workflow. Testing
-Activities are similar to testing non-Temporal Java code.
-
-For example, you can test an Activity for:
-
-- Exceptions thrown when invoking the Activity Execution.
-- Exceptions thrown when checking for the result of the Activity Execution.
-- Activity's return values. Check that the return value matches the expected value.
-
-### Run an Activity {/* #run-an-activity */}
-
-During isolation testing, if an Activity references its context, you'll need to mock that context.
-Mocked information stands in for the context, allowing you to focus your testing on the Activity's code.
-
-### Listen to Heartbeats {/* #listen-to-heartbeats */}
-
-Activities usually issue periodic Heartbeats, a feature that broadcasts recurring proof-of-life updates.
-Each ping shows that an Activity is making progress and the Worker hasn't crashed.
-Heartbeats may include details that report task progress in the event an Activity Worker crashes.
-
-When testing Activities that support Heartbeats, make sure you can see those Heartbeats in your test code.
-Provide appropriate test coverage.
-This enables you to verify both the Heartbeat's content and behavior.
-
-### Cancel an Activity {/* #cancel-an-activity */}
-
-Activity cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
-
-## Testing Workflows {/* #test-workflows */}
-
-### How to mock Activities {/* #mock-activities */}
-
-Mock the Activity invocation when unit testing your Workflows.
-
-When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
-For more details on mocking activities, see [sample unit tests](#sample-unit-tests).
 
 ### How to mock Nexus Operations {/* #mock-nexus-operations */}
 
