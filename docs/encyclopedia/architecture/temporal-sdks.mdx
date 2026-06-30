@@ -20,15 +20,12 @@ tags:
   - Durable Execution
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, SdkGuideLinks } from '@site/src/components';
 
-Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
+Developers create Temporal applications by writing code, just like any other software.
 
-They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/temporal-service), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
+A Temporal SDK (software development kit) is the open-source library you add to your application to use Temporal. It provides everything needed to build Workflows, Activities, and other Temporal features in a specific programming language including APIs to configure a [Temporal Client](#temporal-client), develop your [Temporal Application](#temporal-application), and run horizontally scalable [Workers](/workers#worker).
 
-SDKs are more than just a development tool, however.
-The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
-The SDK's internal implementation, working in collaboration with the Temporal Service, steps through that code, guaranteeing execution progression during application runtime.
 
 ## Temporal Applications {/* #temporal-application */}
 
@@ -37,14 +34,7 @@ Developers create Temporal Applications using an [official Temporal SDK](#offici
 
 Consider that the Workflow Definition code can be executed repeatedly.
 The Temporal Platform can concurrently support millions to billions of Workflow Executions, each of which representing an invoked Workflow Definition.
-
-Additionally, a Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
-
-- Resumable: The ability of a process to resume execution after suspending on an _awaitable_.
-- Recoverable: The ability of a process to resume execution after suspending due to a _failure_.
-- Reactive: The ability of a process to respond to external events.
-
-Hence, a Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
+A Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
 
 ## Official SDKs {/* #official-sdks */}
 
@@ -52,6 +42,7 @@ Hence, a Temporal Application can run for seconds or years in the presence of ar
 
 Each Temporal SDK targets a specific programming language.
 
+<<<<<<< HEAD
 - [.NET SDK feature guides](/develop/dotnet)
 - [Go SDK feature guides](/develop/go)
 - [Java SDK feature guides](/develop/java)
@@ -60,8 +51,21 @@ Each Temporal SDK targets a specific programming language.
 - [Ruby SDK feature guides](/develop/ruby/)
 - [Rust SDK feature guides](/develop/rust)
 - [TypeScript SDK feature guides](/develop/typescript/)
+=======
+<SdkGuideLinks
+  links={[
+    { name: 'goLangBlock', href: '/develop/go', label: 'Go SDK feature guides' },
+    { name: 'javaBlock', href: '/develop/java', label: 'Java SDK feature guides' },
+    { name: 'pythonBlock', href: '/develop/python', label: 'Python SDK feature guides' },
+    { name: 'typeScriptBlock', href: '/develop/typescript', label: 'TypeScript SDK feature guides' },
+    { name: 'dotnetBlock', href: '/develop/dotnet', label: '.NET SDK feature guides' },
+    { name: 'rubyBlock', href: '/develop/ruby', label: 'Ruby SDK feature guides' },
+    { name: 'phpBlock', href: '/develop/php', label: 'PHP SDK feature guides' },
+    { name: 'rustBlock', href: '/develop/rust', label: 'Rust SDK feature guides' },
+  ]}
+/>
+>>>>>>> 3e6f8e918 (update the about the sdks page)
 
-Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
 ### Third-party SDKs
 
@@ -75,6 +79,8 @@ The following third-party SDKs exist but are not officially supported by Tempora
 ## Why use a Temporal SDK? {/* #why-use-an-sdk */}
 
 Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
+
+SDKs are more than a development toolkit. The APIs encourage a code pattern that mirrors real-world processes, and the SDK's internal implementation, working with the [Temporal Service](/temporal-service), steps through that code at runtime to guarantee execution progression.
 
 ### Development pattern
 
@@ -421,7 +427,7 @@ The Temporal Service functions more as a choreographer than a conductor. Rather 
 A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
 In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into the Workflow Execution's Event History.
 
-Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
+Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Temporal Service. In response, the Temporal Service queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
 The Temporal Service persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
