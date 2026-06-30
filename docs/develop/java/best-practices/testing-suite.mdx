@@ -109,8 +109,9 @@ public class HelloActivityTest {
 
         // Create the workflow stub
         GreetingWorkflow workflow =
-                client.newWorkflowStub(
-                        GreetingWorkflow.class, WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+            client.newWorkflowStub(
+                GreetingWorkflow.class, WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build()
+            );
 
         // Execute our workflow waiting for it to complete
         String greeting = workflow.getGreeting("World");
@@ -120,7 +121,7 @@ public class HelloActivityTest {
 ```
 
 In cases where you do not wish to execute your actual Activity or Nexus Operation implementations during
-unit testing, you can use a framework such as Mockito to mock them.
+unit testing, you can use a framework such as [Mockito](https://site.mockito.org/) to mock them.
 
 The following code implements a unit test for the `HelloActivity` sample which shows
 how activities can be mocked:
@@ -161,8 +162,9 @@ public class HelloActivityTest {
 
         // Create the workflow stub
         GreetingWorkflow workflow =
-                client.newWorkflowStub(
-                        GreetingWorkflow.class, WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+            client.newWorkflowStub(
+                GreetingWorkflow.class, WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build()
+            );
 
         // Execute our workflow waiting for it to complete
         String greeting = workflow.getGreeting("World");
@@ -184,20 +186,21 @@ We can now rewrite our above mentioned "HelloActivityTest" test class as follows
 public class HelloActivityJUnit4Test {
     @Rule
     public TestWorkflowRule testWorkflowRule =
-            TestWorkflowRule.newBuilder()
-                    .setWorkflowTypes(GreetingWorkflowImpl.class)
-                    .setActivityImplementations(new GreetingActivitiesImpl())
-                    .build();
+        TestWorkflowRule.newBuilder()
+            .setWorkflowTypes(GreetingWorkflowImpl.class)
+            .setActivityImplementations(new GreetingActivitiesImpl())
+            .build();
 
     @Test
     public void testActivityImpl() {
         // Get a workflow stub using the same task queue the worker uses.
         GreetingWorkflow workflow =
-                testWorkflowRule
-                        .getWorkflowClient()
-                        .newWorkflowStub(
-                                GreetingWorkflow.class,
-                                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
+            testWorkflowRule
+                .getWorkflowClient()
+                .newWorkflowStub(
+                    GreetingWorkflow.class,
+                    WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build()
+                );
         // Execute a workflow waiting for it to complete.
         String greeting = workflow.getGreeting("World");
         assertEquals("Hello World!", greeting);
@@ -222,14 +225,14 @@ We can now use JUnit5 and rewrite our above mentioned "HelloActivityTest" test c
 public class HelloActivityJUnit5Test {
     @RegisterExtension
     public static final TestWorkflowExtension testWorkflowExtension =
-            TestWorkflowExtension.newBuilder()
-                    .setWorkflowTypes(GreetingWorkflowImpl.class)
-                    .setActivityImplementations(new GreetingActivitiesImpl())
-                    .build();
+        TestWorkflowExtension.newBuilder()
+            .setWorkflowTypes(GreetingWorkflowImpl.class)
+            .setActivityImplementations(new GreetingActivitiesImpl())
+            .build();
 
     @Test
     public void testActivityImpl(
-            TestWorkflowEnvironment testEnv, Worker worker, GreetingWorkflow workflow) {
+        TestWorkflowEnvironment testEnv, Worker worker, GreetingWorkflow workflow) {
         // Execute a workflow waiting for it to complete.
         String greeting = workflow.getGreeting("World");
         assertEquals("Hello World!", greeting);
@@ -530,13 +533,12 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 Set up the time-skipping test framework in the SDK of your choice.
 
-{/* #### Skip time automatically {/* #automatic-method */} */}
+#### Skip time automatically {/* #automatic-method */}
 
-You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities or Nexus Operation handlers are running. Nexus Operation handlers timeout after 10 seconds and time skipping is allowed while waiting for retries.
 
-{/* #### Skip time manually {/* #manual-method */} */}
+#### Skip time manually {/* #manual-method */}
 
 Skip time manually in the SDK of your choice.
 

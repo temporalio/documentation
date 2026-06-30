@@ -20,8 +20,8 @@
    git checkout -b my-documentation-contribution
    ```
 
-5. **Follow the Style Guide**  
-   Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
+5. **Understand the docs architecture and follow the style guide**  
+   Refer to [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to understand where content belongs and what form it should take. Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
 
 6. **Preview Your Changes Locally**  
    Run the following commands to preview the site locally:
@@ -99,7 +99,7 @@ See [STYLE.md](./STYLE.md) for style guidance.
 
 You can preview how your changes will appear on the website locally on your machine.
 
-**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 20.0.0).**
+**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 24.0.0).**
 
 Run `yarn` to install the site dependencies.
 
