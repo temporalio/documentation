@@ -13,11 +13,12 @@ keywords:
 ---
 
 Temporal Cloud uses role-based access control (RBAC) to manage access to resources. Access is governed both on the
-account-level and within a Namespace. On the account-level, each access principal is assigned one account-level role. On
-the Namespace-level, each access principal can be assigned one Namespace-level permission. Some account-level roles,
-such as Account Owner and Global Admin, automatically have Namespace Admin permissions on all Namespaces in the account.
+account-level and within a Namespace. At the account-level, each access principal is assigned one [account-level role](#account-level-roles). At the Namespace-level, each access principal can be assigned one [Namespace-level permissions](#namespace-level-permissions). 
+Some account-level roles, such as Account Owner and Global Admin, automatically have Namespace Admin permissions on all Namespaces in the account. 
 
-## Account-level roles
+Each access principal, including users, groups, and Service Accounts, must have a predefined account-level role. For more granular access control, you can also use [Custom Roles](/cloud/manage-access/custom-roles) to define specific permissions for specific Temporal Cloud resources and assign them to any principal.
+
+## Account-level roles {/* #account-level-roles */}
 
 Account-level roles are assigned to access principals at the account level. They control access to account resources,
 such as:
