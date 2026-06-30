@@ -16,10 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: reviewdog/action-vale@v2
+      - uses: vale-cli/vale-action@v2.1.1
         with:
           reporter: github-pr-review
           level: info
           filter_mode: diff_context
-          fail_level: none
+          fail_on_error: false
           vale_flags: "--config=.vale-ci.ini"
