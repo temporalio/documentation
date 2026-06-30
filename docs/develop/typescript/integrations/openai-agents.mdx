@@ -530,7 +530,7 @@ export async function streamingChat(prompt: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-The streaming Activity also returns the full event list to the Workflow, which consumes that list instead of the live stream so replay stays deterministic. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
+Streaming from within the Workflow like this is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
 
 ## Tracing
 
