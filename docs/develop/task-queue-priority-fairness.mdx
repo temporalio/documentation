@@ -32,7 +32,7 @@ You can use Priority and Fairness individually or combine them to express Fairne
   alt="Flowchart of how Priority dispatches Tasks from highest to lowest priority queue"
 />
 
-Priority is enforced within a single Task Queue [partition](/task-queue#task-ordering). A Task Queue uses multiple partitions by default and spreads Tasks across them, so priority ordering is exact within a partition but only approximate across the Task Queue as a whole. When one partition carries a larger backlog than another, lower-priority Tasks on a lighter partition can dispatch ahead of higher-priority Tasks waiting on a heavier one.
+Priority is enforced within a single Task Queue [partition](/task-queue#task-ordering). A Task Queue by default uses multiple partitions and randomly distributes Tasks across them, so partitions are usually balanced and priority ordering closely approximates the Task Queue as a whole. When partitions become imbalanced, lower-priority Tasks on a lighter partition can dispatch ahead of higher-priority Tasks waiting on a heavier one.
 
 ### When to use Priority
 
