@@ -3,7 +3,7 @@ id: testing-suite
 title: Testing - Python SDK
 sidebar_label: Testing
 description: The Temporal Application Testing guide covers Frameworks facilitating Workflow and integration testing, including end-to-end, integration, and unit tests. Use mocked Activities, skip time in tests, and replay Workflow Executions.
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - python
   - sdk
@@ -136,7 +136,6 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 #### Skip time automatically {/* #automatic-method */}
 
-You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
@@ -147,8 +146,6 @@ Use the [`start_local()`](https://python.temporal.io/temporalio.testing.Workflow
 Use the [`from_client()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal Server.
 
 #### Skip time manually {/* #manual-method */}
-
-Skip time manually in the SDK of your choice.
 
 To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
 
