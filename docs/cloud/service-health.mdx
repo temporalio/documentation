@@ -205,7 +205,7 @@ Please use [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) as the so
 
 For spiky workloads, the throttle metric can be non-zero even though the count metric never rises above the limit. This looks contradictory, but both values are correct. They describe the workload at different time resolutions.
 
-Count and limit metrics are per-second rates **averaged over a 1-minute window** (see [Metric conventions](/cloud/metrics/openmetrics/metrics-reference#metric-types)). A short burst is smoothed across all 60 seconds, so the count metric can sit well below the limit even though the instantaneous request rate exceeded it and triggered throttling. The throttle metric, not the count-versus-limit comparison, is the definitive signal that a limit was hit.
+Count and limit metrics are per-second rates **averaged over a 1-minute window** (see [Metric conventions](/cloud/metrics/openmetrics/metrics-reference#metric-types)). A short burst is smoothed across all 60 seconds, so the count metric can sit well below the limit even though the instantaneous request rate exceeded it and triggered throttling. The throttle metric, not the count-versus-limit comparison, is what tells you throttling actually occurred.
 
 #### Example: a spiky Actions workload
 
@@ -213,7 +213,7 @@ Assume an Actions per second (APS) limit of 2,000 (`temporal_cloud_v1_action_lim
 
 A workload submits 60,000 Actions in a single second, then stays idle for the rest of the minute:
 
-- The rate limiter admits about 2,000 Actions in that second and throttles the remaining ~58,000. Throttled Actions are retried by the SDK and drain through at the 2,000 APS limit over the next ~30 seconds, so all 60,000 still complete within the minute.
+- The rate limiter admits about 2,000 Actions in that second and throttles the remaining ~58,000. The SDK retries throttled Actions, which drain through at the 2,000 APS limit over the next ~30 seconds. They complete, but delayed. When throttling persists, delayed completions such as `RespondWorkflowTaskCompleted` can push Workflow Tasks and Activities past their timeouts and cause retries.
 - `temporal_cloud_v1_total_action_throttled_count` reflects the throttling: ~58,000 Actions throttled over the minute, or ~967 per second.
 - `temporal_cloud_v1_total_action_count` reports 60,000 Actions / 60 seconds = **1,000 APS** — half the 2,000 limit.
 
@@ -229,7 +229,7 @@ To understand a spiky workload, always read all three metrics in the row as a se
 | Limit (e.g. `temporal_cloud_v1_action_limit`) | Your provisioned ceiling |
 | Throttle (e.g. `temporal_cloud_v1_total_action_throttled_count`) | Whether the limit was actually hit |
 
-A non-zero throttle value means the limit was hit during that window, even when the count sits comfortably below the limit. For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
+A non-zero throttle value means throttling occurred during that window, even when the count sits comfortably below the limit. Most often this reflects a sub-minute burst in your own workload. If you cannot find a matching burst in your SDK metrics, the cause may be a shared limit or another Cloud-side condition rather than your namespace. In that case, contact [Temporal Support](/cloud/support#support-ticket). For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
 
 ## Detecting Resource Exhaustion
 
