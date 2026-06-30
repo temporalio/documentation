@@ -22,15 +22,15 @@ tags:
 
 import { CaptionedImage, SdkGuideLinks } from '@site/src/components';
 
-Developers create Temporal applications by writing code, just like any other software.
+ Developers create Temporal Applications using an official Temporal SDK.
+A Temporal SDK (software development kit) is the open-source library you add to your application to use Temporal. 
 
-A Temporal SDK (software development kit) is the open-source library you add to your application to use Temporal. It provides everything needed to build Workflows, Activities, and other Temporal features in a specific programming language including APIs to configure a [Temporal Client](#temporal-client), develop your [Temporal Application](#temporal-application), and run horizontally scalable [Workers](/workers#worker).
+It provides everything needed to build Workflows, Activities, and other Temporal features in a specific programming language including APIs to configure a Temporal Client, develop your Temporal Application, and run [Workers](/workers#worker) you can scale out as your load grows.
 
 
 ## Temporal Applications {/* #temporal-application */}
 
 A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/activity-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
-Developers create Temporal Applications using an [official Temporal SDK](#official-sdks).
 
 Consider that the Workflow Definition code can be executed repeatedly.
 The Temporal Platform can concurrently support millions to billions of Workflow Executions, each of which representing an invoked Workflow Definition.
@@ -54,14 +54,14 @@ Each Temporal SDK targets a specific programming language.
 =======
 <SdkGuideLinks
   links={[
-    { name: 'goLangBlock', href: '/develop/go', label: 'Go SDK feature guides' },
-    { name: 'javaBlock', href: '/develop/java', label: 'Java SDK feature guides' },
-    { name: 'pythonBlock', href: '/develop/python', label: 'Python SDK feature guides' },
-    { name: 'typeScriptBlock', href: '/develop/typescript', label: 'TypeScript SDK feature guides' },
-    { name: 'dotnetBlock', href: '/develop/dotnet', label: '.NET SDK feature guides' },
-    { name: 'rubyBlock', href: '/develop/ruby', label: 'Ruby SDK feature guides' },
-    { name: 'phpBlock', href: '/develop/php', label: 'PHP SDK feature guides' },
-    { name: 'rustBlock', href: '/develop/rust', label: 'Rust SDK feature guides' },
+    { name: 'goLangBlock', href: '/develop/go', label: 'Go SDK developer guide' },
+    { name: 'javaBlock', href: '/develop/java', label: 'Java SDK developer guide' },
+    { name: 'pythonBlock', href: '/develop/python', label: 'Python SDK developer guide' },
+    { name: 'typeScriptBlock', href: '/develop/typescript', label: 'TypeScript SDK developer guide' },
+    { name: 'dotnetBlock', href: '/develop/dotnet', label: '.NET SDK developer guide' },
+    { name: 'rubyBlock', href: '/develop/ruby', label: 'Ruby SDK developer guide' },
+    { name: 'phpBlock', href: '/develop/php', label: 'PHP SDK developer guide' },
+    { name: 'rustBlock', href: '/develop/rust', label: 'Rust SDK developer guide' },
   ]}
 />
 >>>>>>> 3e6f8e918 (update the about the sdks page)
@@ -187,11 +187,11 @@ It showcases how to initialize a Temporal Client, create a connection to a local
 The following code is for example purposes only.
 For tested code samples and best practices, use your preferred language SDK's developer's guide.
 
-- [Go SDK Temporal Client feature guide](/develop/go/client/temporal-client)
-- [Java SDK Temporal Client feature guide](/develop/java/client/temporal-client)
-- [PHP SDK Temporal Client feature guide](/develop/php/client/temporal-client)
-- [Python SDK Temporal Client feature guide](/develop/python/client)
-- [TypeScript SDK Temporal Client feature guide](/develop/typescript/client)
+- [Go SDK Temporal Client developer guide](/develop/go/client/temporal-client)
+- [Java SDK Temporal Client developer guide](/develop/java/client/temporal-client)
+- [PHP SDK Temporal Client developer guide](/develop/php/client/temporal-client)
+- [Python SDK Temporal Client developer guide](/develop/python/client)
+- [TypeScript SDK Temporal Client developer guide](/develop/typescript/client)
 
 :::
 
