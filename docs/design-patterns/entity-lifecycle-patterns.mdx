@@ -1,0 +1,31 @@
+---
+id: entity-lifecycle-patterns
+title: Entity & lifecycle patterns
+sidebar_label: Overview
+description: Patterns for modeling long-lived stateful entities and managing Workflow history growth over time.
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Patterns for modeling long-lived stateful entities and managing Workflow history growth over time.
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/entity-workflow",
+    icon: "entity-workflow-icon.png",
+    title: "Entity Workflow",
+    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
+  },
+  {
+    href: "/design-patterns/continue-as-new",
+    icon: "continue-as-new-icon.png",
+    title: "Continue-As-New",
+    description: "Prevents unbounded history growth by completing the current execution and starting a new one with fresh history.",
+  },
+  {
+    href: "/design-patterns/updatable-timer",
+    icon: "updatable-timer-icon.png",
+    title: "Updatable Timer",
+    description: "Dynamically adjustable timers that respond to Signals or Updates. Extend, shorten, or cancel timers based on external events.",
+  },
+]} />

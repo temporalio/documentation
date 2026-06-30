@@ -1,0 +1,25 @@
+---
+id: worker-configuration-patterns
+title: Worker configuration patterns
+sidebar_label: Overview
+description: Patterns for configuring how Workers are set up, how work is routed, and how Activities access external dependencies.
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Patterns for configuring how Workers are set up, how work is routed, and how Activities access external dependencies.
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/worker-specific-taskqueue",
+    icon: "worker-specific-taskqueue-icon.png",
+    title: "Worker-Specific Task Queues",
+    description: "Routes Activities to specific Workers using unique Task Queues for Worker affinity and host-specific processing.",
+  },
+  {
+    href: "/design-patterns/activity-dependency-injection",
+    icon: "activity-dependency-injection-icon.png",
+    title: "Activity Dependency Injection",
+    description: "Injects external dependencies into Activities at Worker startup, keeping Workflow code deterministic and Activities testable.",
+  },
+]} />

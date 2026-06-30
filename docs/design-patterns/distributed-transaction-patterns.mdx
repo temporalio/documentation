@@ -1,0 +1,25 @@
+---
+id: distributed-transaction-patterns
+title: Distributed transaction patterns
+sidebar_label: Overview
+description: Patterns for managing distributed transactions with compensating actions and coordination across multiple services.
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Patterns for managing distributed transactions with compensating actions and coordination across multiple services.
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/saga-pattern",
+    icon: "saga-icon.png",
+    title: "Saga Pattern",
+    description: "Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.",
+  },
+  {
+    href: "/design-patterns/early-return",
+    icon: "early-return-icon.png",
+    title: "Early Return",
+    description: "Synchronous initialization with asynchronous completion. Returns results immediately while processing continues in the background.",
+  },
+]} />
