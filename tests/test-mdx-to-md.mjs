@@ -683,6 +683,49 @@ test("SetupStep emits prose children and code from the code={} prop", () => {
   assertNotContains(markdown, "code={");
 });
 
+test("SetupStep preserves non-code prose, links, and lists in the code={} prop", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep code={",
+    "  <>",
+    "    <p>Download the CLI for your platform:</p>",
+    "    <ul>",
+    '      <li><a href="https://example.com/win">Windows</a></li>',
+    "    </ul>",
+    "    <p>Then add <code>cli.exe</code> to your PATH.</p>",
+    "  </>",
+    "}>",
+    "## Install CLI",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "Download the CLI for your platform:");
+  assertContains(markdown, "- [Windows](https://example.com/win)");
+  assertContains(markdown, "Then add `cli.exe` to your PATH.");
+  assertNotContains(markdown, "<p>");
+  assertNotContains(markdown, "<li>");
+});
+
+test("SetupStep unwraps {`...`} template literals in CodeSnippet bodies", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep code={",
+    "  <>",
+    '    <CodeSnippet language="bash">{`dotnet build`}</CodeSnippet>',
+    "  </>",
+    "}>",
+    "## Build",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "```bash");
+  assertContains(markdown, "dotnet build");
+  assertNotContains(markdown, "{`");
+  assertNotContains(markdown, "`}");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — JsonTable (graceful degradation without root)
 // ---------------------------------------------------------------------------
