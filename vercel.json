@@ -12,6 +12,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/((?!_next/static|_next/image|assets|img|scripts|favicon\\.ico).*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</llms.txt>; rel=\"llms-txt\""
+        }
+      ]
     }
   ],
   "redirects": [

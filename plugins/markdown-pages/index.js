@@ -33,10 +33,14 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
 
   function findSection(page, sections) {
     const urlPath = page.urlPath;
+    // Explicit page lists are intentional categorization and always take
+    // priority over automatic directory-based discovery.
     for (const section of sections) {
       if (section.pages && section.pages.some(p => urlPath === p)) {
         return section;
       }
+    }
+    for (const section of sections) {
       if (section.autoDiscoverSubsections && page.relPath) {
         const prefix = section.autoDiscoverSubsections + '/';
         if (page.relPath.startsWith(prefix)) {
