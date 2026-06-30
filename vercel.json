@@ -12,6 +12,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\""
+        }
+      ]
     }
   ],
   "redirects": [

@@ -16,6 +16,44 @@ module.exports = async function createConfigAsync() {
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     headTags: [
+      // JSON-LD structured data so AI agents and search engines can identify
+      // the product (SoftwareApplication) and disambiguate the brand (sameAs).
+      {
+        tagName: 'script',
+        attributes: {
+          type: 'application/ld+json',
+        },
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Organization',
+              '@id': 'https://temporal.io/#organization',
+              name: 'Temporal Technologies',
+              url: 'https://temporal.io',
+              logo: 'https://docs.temporal.io/img/favicon.png',
+              sameAs: [
+                'https://github.com/temporalio',
+                'https://x.com/temporalio',
+                'https://www.youtube.com/c/Temporalio',
+              ],
+            },
+            {
+              '@type': 'SoftwareApplication',
+              '@id': 'https://temporal.io/#software',
+              name: 'Temporal',
+              applicationCategory: 'DeveloperApplication',
+              operatingSystem: 'Cross-platform',
+              url: 'https://temporal.io',
+              downloadUrl: 'https://github.com/temporalio/temporal',
+              description:
+                'Temporal is a durable execution platform for building reliable, scalable applications using workflows and activities.',
+              publisher: { '@id': 'https://temporal.io/#organization' },
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            },
+          ],
+        }),
+      },
     ],
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
@@ -37,7 +75,10 @@ module.exports = async function createConfigAsync() {
         //   },
         // },
       },
-      metadata: [{ name: 'robots', content: 'follow, index' }],
+      metadata: [
+        { name: 'robots', content: 'follow, index' },
+        { property: 'og:type', content: 'website' },
+      ],
       image: '/img/assets/open-graph-shiny.png',
       prism: {
         theme: prismLightTheme,
