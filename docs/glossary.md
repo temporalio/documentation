@@ -9,7 +9,7 @@ tags:
   - Reference
 ---
 
-The following terms are used in [Temporal Platform](/temporal) documentation.
+The following terms are used in [Temporal Platform](/encyclopedia/architecture/temporal-architecture) documentation.
 
 #### [Action](/cloud/pricing#action)
 
@@ -189,7 +189,7 @@ in your Temporal Service to facilitate migrating your Visibility data from one d
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Durable Execution](/temporal#durable-execution)
+#### [Durable Execution](/encyclopedia/architecture/temporal-architecture#history-service)
 
 Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and
 progress even in the face of failures, crashes, or server outages.
@@ -229,7 +229,7 @@ loss during failover.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failure](/temporal#failure)
+#### [Failure](/encyclopedia/architecture/temporal-architecture#failures)
 
 Temporal Failures are representations of various types of errors that occur in the system.
 
@@ -637,13 +637,13 @@ A Task Token is a unique identifier for an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal](/temporal)
+#### [Temporal](/encyclopedia/architecture/temporal-architecture)
 
 Temporal is a scalable and reliable runtime for Reentrant Processes called Temporal Workflow Executions.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Application](/temporal#temporal-application)
+#### [Temporal Application](/encyclopedia/architecture/temporal-architecture#client-application)
 
 A Temporal Application is a set of Workflow Executions.
 
@@ -655,7 +655,7 @@ The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 <!-- _Tags: [term](/tags/term), [cli](/tags/cli)_ -->
 
-#### [Temporal Client](/temporal-client)
+#### [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 
@@ -715,13 +715,13 @@ spawn a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Platform](/temporal#temporal-platform)
+#### [Temporal Platform](/encyclopedia/architecture/temporal-architecture#the-temporal-server)
 
 The Temporal Platform consists of a Temporal Service and Worker Processes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal SDK](/encyclopedia/temporal-sdks)
+#### [Temporal SDK](/encyclopedia/architecture/temporal-sdks)
 
 A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate
 with a Temporal Service, develop Workflow Definitions, and develop Worker Programs.
