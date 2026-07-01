@@ -92,7 +92,6 @@ and `session`. A few differences apply for Workflow-safe execution:
 
 - `runConfig.model` must be a model name string. The Worker's `modelProvider` resolves it inside the model Activity.
 - `signal` is not supported. Use Temporal cancellation APIs, such as `CancellationScope`, to cancel Workflow work.
-- `runStreamed()` is not currently supported.
 
 ### Configure the Worker
 
@@ -509,6 +508,29 @@ export async function approvalWorkflow(input: ApprovalInput = {}): Promise<strin
 
 The agent passed to `RunState.fromString` must define the same tool names, handoff graph, and MCP servers as the run
 that produced the serialized state.
+
+## Streaming
+
+`run` supports streaming with `{ stream: true }`. The streaming model Activity publishes each model event to a [Workflow Stream](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) topic as the model produces it, so an external client can observe a run live while it stays durable. Streaming is experimental.
+
+Set `modelParams.streamingTopic` on the plugin (in both the Worker and the Client), host a `WorkflowStream` in the Workflow, and run with `{ stream: true }`:
+
+<!--SNIPSTART typescript-openai-agents-streaming-workflow -->
+[openai-agents/src/streaming/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/streaming/workflows.ts)
+```ts
+export async function streamingChat(prompt: string): Promise<string> {
+  new WorkflowStream();
+  const agent = new Agent({ name: 'StreamingAgent', instructions: 'You are a helpful assistant.' });
+  const result = await new TemporalOpenAIRunner().run(agent, prompt, { stream: true });
+  // The external client is the event consumer; the Workflow only drives the run to completion.
+  for await (const _event of result);
+  await result.completed;
+  return result.finalOutput ?? '';
+}
+```
+<!--SNIPEND-->
+
+Streaming from within the Workflow like this is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
 
 ## Tracing
 
