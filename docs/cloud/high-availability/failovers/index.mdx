@@ -162,17 +162,10 @@ non-graceful failover, replication lag has two distinct effects:
 - **Operations that had not yet replicated at the moment of failover.** A Workflow start, Signal, Update, or other
   operation that the active region accepted but had not yet replicated falls within the
   [recovery point](/cloud/rpo-rto). If the original region recovers, those operations are reconciled into the active
-  Namespace according to the Conflict Resolution process. If the original region is _permanently_ lost — for example, an
-  unrecoverable cell outage — operations within the recovery point window may be lost entirely. Temporal Cloud targets a
-  recovery point of under one minute for these outages.
-
-:::caution
-
-Conflict Resolution can only recover data from a functioning Temporal Server. If the active server completely fails and
-does not recover, Workflow API calls that fall within the 1 minute RPO may be permanently lost. Such a case would require
+  Namespace according to the Conflict Resolution process.
+    - Note that Conflict Resolution can only recover data from a functioning Temporal Server. If the active server never
+recovers, the Workflow API calls that fall within the 1 minute RPO may be permanently lost. Such a case would require
 the permanent loss of multiple cloud Availability Zones and has never happened in the history of Temporal Cloud.
-
-:::
 
 A graceful failover avoids both effects: Temporal Cloud drains the replication backlog to zero and pauses traffic before
 switching regions, so the replica holds every acknowledged operation and the Namespace achieves a recovery point of
