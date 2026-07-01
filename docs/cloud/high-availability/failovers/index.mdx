@@ -154,20 +154,16 @@ remains active.
 
 Namespaces with replicas rely on asynchronous event replication. Updates made to the primary may not immediately be
 reflected in the replica due to <ToolTipTerm term="replication lag" />, particularly during failovers. In the event of a
-non-graceful failover, replication lag has two distinct effects:
+non-graceful failover, replication lag causes  temporary setback in Workflow progress. At the moment of non-graceful failover:
 
-- **A temporary setback in Workflow progress.** Operations that had already replicated remain durable in the replica.
-  Operations still in the replication backlog are reconciled when the original region recovers, so progress is set back
-  temporarily but not lost.
-- **Operations that had not yet replicated at the moment of failover.** A Workflow start, Signal, Update, or other
-  operation that the active region accepted but had not yet replicated falls within the
-  [recovery point](/cloud/rpo-rto). If the original region recovers, those operations are reconciled into the active
-  Namespace according to the Conflict Resolution process.
+- Operations that had already replicated remain durable in the replica.
+- Operations that had not yet replicated (i.e., that are still in the replication backlog) are reconciled when the region recovers.
+  according to the Conflict Resolution process.
     - Note that Conflict Resolution can only recover data from a functioning Temporal Server. If the active server never
 recovers, the Workflow API calls that fall within the 1 minute RPO may be permanently lost. Such a case would require
 the permanent loss of multiple cloud Availability Zones and has never happened in the history of Temporal Cloud.
 
-A graceful failover avoids both effects: Temporal Cloud drains the replication backlog to zero and pauses traffic before
+In a graceful failover, Temporal Cloud drains the replication backlog to zero and pauses traffic before
 switching regions, so the replica holds every acknowledged operation and the Namespace achieves a recovery point of
 zero.
 
