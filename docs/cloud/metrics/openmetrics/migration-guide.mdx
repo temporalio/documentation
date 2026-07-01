@@ -137,6 +137,26 @@ accurately aggregated_. For example:
 - ✅ Can still view individual namespace/task queue percentiles accurately
 - ✅ More accurate percentile calculations for individual series, especially with outliers
 
+:::caution Don't compare a v0 average against a v1 percentile
+
+The v0 latency metrics are a histogram, not a percentile. Dividing `temporal_cloud_v0_service_latency_sum` by
+`temporal_cloud_v0_service_latency_count` yields an **average** (roughly a p50), and a single
+`temporal_cloud_v0_service_latency_bucket{le="..."}` series only **counts** requests below a threshold. Neither is a p95
+or p99.
+
+If your v0 alert compared an average (or a raw `_sum` / `_bucket` value) against a latency threshold, switching to
+`temporal_cloud_v1_service_latency_p95` / `_p99` reports higher values for identical traffic. This is a measurement
+change, not a latency regression.
+
+To migrate latency alerts safely:
+
+- Compare like-for-like. To reproduce a former average-based alert, start on `temporal_cloud_v1_service_latency_p50`,
+  then move to `_p95` / `_p99` deliberately once you have set an appropriate threshold.
+- Confirm which percentile your SLO targets. The Temporal Cloud [latency SLO](/cloud/service-availability#latency) is a
+  **p99**; alerting on p95 against a p99 threshold trips earlier than the SLO.
+
+:::
+
 ### 4\. Authentication Setup
 
 **Before**: mTLS certificates with customer-specific endpoint
