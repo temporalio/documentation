@@ -81,7 +81,7 @@ list, and it may change over time.
 You can also [manually trigger a failover](/cloud/high-availability/failovers/manage#trigger-failover) based on your own
 monitoring or for failover testing.
 
-Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover (i.e., 
+Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover (i.e.,
 a failover triggered by a user) is warranted are:
 
 - **Testing failover or migrating to a new region.** A manual failover is the standard way to exercise your failover
@@ -154,18 +154,18 @@ remains active.
 
 Namespaces with replicas rely on asynchronous event replication. Updates made to the primary may not immediately be
 reflected in the replica due to <ToolTipTerm term="replication lag" />, particularly during failovers. In the event of a
-non-graceful failover, replication lag causes  temporary setback in Workflow progress. At the moment of non-graceful failover:
+non-graceful failover, replication lag causes temporary setback in Workflow progress. At the moment of non-graceful
+failover:
 
 - Operations that had already replicated remain durable in the replica.
-- Operations that had not yet replicated (i.e., that are still in the replication backlog) are reconciled when the region recovers.
-  according to the Conflict Resolution process.
-    - Note that Conflict Resolution can only recover data from a functioning Temporal Server. If the active server never
-recovers, the Workflow API calls that fall within the 1 minute RPO may be permanently lost. Such a case would require
-the permanent loss of multiple cloud Availability Zones and has never happened in the history of Temporal Cloud.
+- Operations that had not yet replicated (i.e., that are still in the replication backlog) are reconciled when the
+  region recovers. according to the Conflict Resolution process. - Note that Conflict Resolution can only recover data
+  from a functioning Temporal Server. If the active server never recovers, the Workflow API calls that fall within the 1
+  minute RPO may be permanently lost. Such a case would require the permanent loss of multiple cloud Availability Zones
+  and has never happened in the history of Temporal Cloud.
 
-In a graceful failover, Temporal Cloud drains the replication backlog to zero and pauses traffic before
-switching regions, so the replica holds every acknowledged operation and the Namespace achieves a recovery point of
-zero.
+In a graceful failover, Temporal Cloud drains the replication backlog to zero and pauses traffic before switching
+regions, so the replica holds every acknowledged operation and the Namespace achieves a recovery point of zero.
 
 Namespaces that are not replicated can be configured to provide _at-most-once_ semantics for Activity execution when a
 retry policy's [maximum attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0. High
@@ -173,16 +173,28 @@ Availability Namespaces provide _at-least-once_ semantics for execution of Activ
 re-dispatched in a newly active Namespace, leading to repeated executions.
 
 The same durability boundary applies to Workflow starts and Signals: a `StartWorkflowExecution` or
-`SignalWorkflowExecution` call that returns success is durably committed in the active region, and replicated asynchronously
-to the replica.
+`SignalWorkflowExecution` call that returns success is durably committed in the active region, and replicated
+asynchronously to the replica.
+
+### How Workflow Id uniqueness is preserved after a forced failover
 
 The [Workflow Id uniqueness guarantee](/workflow-execution/workflowid-runid) — at most one Open Workflow Execution per
 Workflow Id — is always enforced within the active Namespace, and conflict resolution preserves it across a failover.
+The guarantee limits how many Executions are _Open_ at the same time, not how many
+[Run Ids](/workflow-execution/workflowid-runid#run-id) a Workflow Id accumulates over its lifetime. That distinction is
+what lets conflict resolution reconcile a divergence without ever running the same Workflow Id twice concurrently.
 
-When a Workflow Execution is updated in a newly active replica following a failover, events from the previously active
-Namespace that arrive after the failover cannot be directly applied. At this point, Temporal Cloud has forked the Event
-History.
+1. **Steady state.** The active region enforces uniqueness on every write and asynchronously replicates the Event
+   History to the replica. Because only the active region accepts writes, the guarantee holds trivially.
+2. **Failover with divergence.** In a forced failover — or a [split-brain scenario](#split-brain-scenario) where the
+   replica is promoted during a network partition — both regions can independently append events to the same Workflow
+   Execution. When the regions reconnect, their Event Histories have diverged for that Workflow Id.
+3. **Fork instead of merge.** Temporal Cloud does not interleave the divergent histories. Events from the previously
+   active Namespace that arrive after the failover cannot be directly applied, so Temporal Cloud forks the Event History
+   and creates a new branch history, each branch identified by its own Run Id. Its
+   <ToolTipTerm term="conflict resolution" /> process keeps one branch as the Open Execution and supersedes the other,
+   leaving exactly one Open Workflow Execution per Workflow Id. The Temporal Service ensures the resulting Event
+   Histories remain valid and replayable by SDKs.
 
-After failover, Temporal Cloud creates a new branch history for execution and begins its
-<ToolTipTerm term="conflict resolution" /> process. The Temporal Service ensures that Event Histories remain valid and
-are replayable by SDKs post-failover or after conflict resolution.
+This guarantee is separate from durability: a forced failover never runs the same Workflow Id twice, but a start that
+had not yet replicated can still be lost if the original region is permanently lost, as described above.
