@@ -195,6 +195,3 @@ what lets conflict resolution reconcile a divergence without ever running the sa
    <ToolTipTerm term="conflict resolution" /> process keeps one branch as the Open Execution and supersedes the other,
    leaving exactly one Open Workflow Execution per Workflow Id. The Temporal Service ensures the resulting Event
    Histories remain valid and replayable by SDKs.
-
-This guarantee is separate from durability: a forced failover never runs the same Workflow Id twice, but a start that
-had not yet replicated can still be lost if the original region is permanently lost, as described above.
