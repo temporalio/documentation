@@ -11,6 +11,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 ## Develop a basic Workflow {/* #develop-workflows */}
 
 **How to develop a basic Workflow using the Temporal Python SDK.**
@@ -25,12 +27,7 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method
 defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py" />
 
 ```python
 from temporalio import workflow
@@ -60,12 +57,7 @@ data type Temporal can convert, including [`dataclasses`](https://docs.python.or
 properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single
 `dataclass` parameter containing all input fields.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py" />
 
 ```python
 from dataclasses import dataclass
@@ -96,12 +88,7 @@ third-party plugins, whose calls will be deterministic using
 Worker creation time by customizing the runner's restrictions with
 [`with_passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#with_passthrough_modules).
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py" />
 
 ```python
 from temporalio import workflow
@@ -133,12 +120,7 @@ You can customize the Workflow name with a custom name in the decorator argument
 `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the
 unqualified class name.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py" />
 
 ```python
 from temporalio import workflow

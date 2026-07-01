@@ -638,6 +638,21 @@ test("CallToAction becomes a markdown link with title and description", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: transformMdx — ViewSourceCodeNotice
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — ViewSourceCodeNotice");
+
+test("ViewSourceCodeNotice becomes a plain markdown link line", () => {
+  const input = `<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(
+    markdown,
+    "[View the source code](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code."
+  );
+  assertNotContains(markdown, "ViewSourceCodeNotice");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: transformMdx — RelatedReadContainer
 // ---------------------------------------------------------------------------
 console.log("\n📦 transformMdx — RelatedReadContainer");
@@ -960,7 +975,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "home-page-hero", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "home-page-hero", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(
