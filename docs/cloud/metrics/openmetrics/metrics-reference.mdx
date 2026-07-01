@@ -40,6 +40,14 @@ All metrics are stored as 1 minute aggregates. Rate metrics are therefore per-se
 
 :::
 
+:::note Percentile metrics on low-traffic namespaces
+
+Percentile metrics (`*_p50` / `_p95` / `_p99`) are calculated from the requests observed in each 1-minute aggregation window. On a namespace with few requests per minute, that sample is small, so a single slow request dominates every percentile and p50, p95, and p99 converge toward the slowest observed request. Tail percentiles generally need roughly 20 or more samples per window before they are statistically meaningful; below that, values vary widely.
+
+For example, a low-volume namespace that starts one Workflow every few minutes can report a several-hundred-millisecond `StartWorkflowExecution` `temporal_cloud_v1_service_latency_p95` that reflects a single request, not systemic latency. When alerting on percentile latency for low-traffic namespaces, gate the alert on a minimum request count (for example, [`temporal_cloud_v1_service_request_count`](#temporal_cloud_v1_service_request_count)) so that windows with too few samples don't trigger it. These percentiles are pre-calculated per 1-minute window and cannot be re-aggregated into an accurate longer-window percentile, so widening your evaluation window does not by itself make a sparse sample meaningful.
+
+:::
+
 ### Common Labels
 
 All metrics include these base labels:
