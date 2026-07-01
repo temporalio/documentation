@@ -177,10 +177,8 @@ Availability Namespaces provide _at-least-once_ semantics for execution of Activ
 re-dispatched in a newly active Namespace, leading to repeated executions.
 
 The same durability boundary applies to Workflow starts and Signals: a `StartWorkflowExecution` or
-`SignalWorkflowExecution` call that returns success is durably committed in the active region, but an operation that had
-not yet replicated could be absent from the newly active region after a forced failover with permanent regional loss, as
-described above. A successful start is therefore not guaranteed to survive a permanent loss of the original region if it
-fell within the recovery point window.
+`SignalWorkflowExecution` call that returns success is durably committed in the active region, and replicated asynchronously
+to the replica.
 
 The [Workflow Id uniqueness guarantee](/workflow-execution/workflowid-runid) — at most one Open Workflow Execution per
 Workflow Id — is always enforced within the active Namespace, and conflict resolution preserves it across a failover.
