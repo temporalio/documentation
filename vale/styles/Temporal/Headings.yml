@@ -90,6 +90,7 @@ exceptions:
   - Delays
   - Effect
   - Entity
+  - External
   - Frontend
   - High
   - Job
@@ -122,6 +123,7 @@ exceptions:
   - Start
   - State
   - Sticky
+  - Storage
   - Token
   - Tokens
   - Timeout

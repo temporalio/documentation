@@ -39,3 +39,5 @@
 ## Query a Workflow for state
 
 ## Update a running Workflow
+
+## Durable External Storage for large payloads
