@@ -244,52 +244,17 @@ When integration testing Workflows with a Worker, you can mock Activities by pro
 In cases where you do not wish to execute your actual Activity or Nexus Operation implementations during
 unit testing, you can use a framework such as [Mockito](https://site.mockito.org/) to mock them.
 
-The following code implements a unit test that shows how activities can be mocked:
+The following code implements a unit test that shows how Activities can be mocked:
 
 ```java
-public class HelloActivityTest {
+@Test
+public void testMockedActivity() {
+  GreetActivities activities =
+    mock(GreetActivities.class, withSettings().withoutAnnotations());
 
-    private TestWorkflowEnvironment testEnv;
-    private Worker worker;
-    private WorkflowClient client;
+  when(activities.greet("Temporal")).thenReturn("Hello Temporal!");
 
-    // Set up the test workflow environment
-    @Before
-    public void setUp() {
-        testEnv = TestWorkflowEnvironment.newInstance();
-        worker = testEnv.newWorker(TASK_QUEUE);
-        // Register your workflow implementations
-        worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-
-        client = testEnv.getWorkflowClient();
-    }
-
-    // Clean up test environment after tests are completed
-    @After
-    public void tearDown() {
-        testEnv.close();
-    }
-
-    @Test
-    public void testMockedActivity() {
-        // Mock our workflow activity
-        GreetingActivities activities = mock(GreetingActivities.class);
-        when(activities.composeGreeting("Hello", "World")).thenReturn("Hello Mocked World!");
-        worker.registerActivitiesImplementations(activities);
-
-        // Start test environment
-        testEnv.start();
-
-        // Create the workflow stub
-        GreetingWorkflow workflow =
-            client.newWorkflowStub(
-                GreetingWorkflow.class, WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build()
-            );
-
-        // Execute our workflow waiting for it to complete
-        String greeting = workflow.getGreeting("World");
-        assertEquals("Hello Mocked World!", greeting);
-    }
+  assertEquals("Hello Temporal!", activities.greet("Temporal"));
 }
 ```
 
@@ -299,15 +264,15 @@ For JUnit4 tests, Temporal provides the `TestWorkflowRule` class which simplifie
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
-We can now rewrite our above mentioned "HelloActivityTest" test class as follows:
+You can now rewrite the above Activity test class as follows:
 
 ```java
-public class HelloActivityJUnit4Test {
+public class GreetActivitiesJUnit4Test {
     @Rule
     public TestWorkflowRule testWorkflowRule =
         TestWorkflowRule.newBuilder()
-            .setWorkflowTypes(GreetingWorkflowImpl.class)
-            .setActivityImplementations(new GreetingActivitiesImpl())
+            .setWorkflowTypes(SayHelloWorkflowImpl.class)
+            .setActivityImplementations(new GreetActivitiesImpl())
             .build();
 
     @Test
@@ -321,8 +286,8 @@ public class HelloActivityJUnit4Test {
                     WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build()
                 );
         // Execute a workflow waiting for it to complete.
-        String greeting = workflow.getGreeting("World");
-        assertEquals("Hello World!", greeting);
+        String greeting = workflow.sayHello("Temporal");
+        assertEquals("Hello Temporal!", greeting);
 
         testWorkflowRule.getTestEnvironment().shutdown();
     }
@@ -334,32 +299,32 @@ public class HelloActivityJUnit4Test {
 For JUnit5 tests, Temporal also provides the `TestWorkflowExtension` helper class.
 This class can be used to simplify the Temporal test environment setup as well as Workflow Worker startup and shutdowns.
 
-To start using JUnit5 TestWorkflowExtension in your tests with [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
+To start using JUnit5 `TestWorkflowExtension` in your tests with [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
-We can now use JUnit5 and rewrite our above mentioned "HelloActivityTest" test class as follows:
+Now you can use JUnit5 and rewrite the above test class as follows:
 
 ```java
-public class HelloActivityJUnit5Test {
-    @RegisterExtension
-    public static final TestWorkflowExtension testWorkflowExtension =
-        TestWorkflowExtension.newBuilder()
-            .setWorkflowTypes(GreetingWorkflowImpl.class)
-            .setActivityImplementations(new GreetingActivitiesImpl())
-            .build();
+public class GreetActivitiesJUnit5Test {
+  @RegisterExtension
+  public static final TestWorkflowExtension testWorkflowExtension =
+    TestWorkflowExtension.newBuilder()
+      .setWorkflowTypes(SayHelloWorkflowImpl.class)
+      .setActivityImplementations(new GreetActivitiesImpl())
+      .build();
 
-    @Test
-    public void testActivityImpl(
-        TestWorkflowEnvironment testEnv, Worker worker, GreetingWorkflow workflow) {
-        // Execute a workflow waiting for it to complete.
-        String greeting = workflow.getGreeting("World");
-        assertEquals("Hello World!", greeting);
-    }
+  @Test
+  public void testActivityImpl(
+    TestWorkflowEnvironment testEnv, Worker worker, SayHelloWorkflow workflow) {
+    // Execute a workflow waiting for it to complete.
+    String greeting = workflow.sayHello("Temporal");
+    assertEquals("Hello Temporal!", greeting);
+  }
 }
 ```
 
-You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
+You can find more unit test examples in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
 
 
 ### How to mock Nexus Operations {/* #mock-nexus-operations */}
@@ -367,16 +332,15 @@ You can find all unit tests for the [Temporal Java samples](https://github.com/t
 When integration testing Workflows with a Worker, you can mock Nexus operations by providing mock Nexus Service handlers to the Worker.
 Alternatively, you could just mock the Nexus service itself.
 
-You can find example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [this test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
+You can find more example unit tests for Nexus in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [this test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller).
 These samples show how to call Nexus services in tests using the Temporal testing package and also how to mock them, for both JUnit 4 and 5.
 Detailed explanatory comments are included in the code in the repository.
 
-To mock Nexus handlers, create a Rule (for JUnit4) or Extension (for JUnit5) from the Temporal testing package, just as in the [sample unit tests](#sample-unit-tests) and add a call to `setNexusServiceImplementation` to the builder.
+To mock Nexus handlers, create a `Rule` (for JUnit4) or `Extension` (for JUnit5) from the Temporal testing package and add a call to `setNexusServiceImplementation` to the builder.
 That sets up the Nexus endpoints needed for testing as well as the Nexus handler workflows defined by the Nexus Service implementation.
-Everything is created and set up by the Temporal Testing package, so no more work is needed than that!
 
-You will need to create workers for each handler just as normal, using either `setWorkflowTypes` (for JUnit4) or `registerWorkflowImplementationTypes` (for JUnit5).
-With that in place, you can then mock a Nexus endpoint exactly like any other workflow - again, just as in [the sample unit tests](#sample-unit-tests) above.
+You will need to create Workers for each handler, using either `setWorkflowTypes` (for JUnit4) or `registerWorkflowImplementationTypes` (for JUnit5).
+With that in place, you can then mock a Nexus endpoint exactly like any other Workflow like you do with Activity tests.
 
 The following are samples derived from [the test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller) to demonstrate this.
 
@@ -455,11 +419,11 @@ public class CallerWorkflowJunit5MockTest {
 ```
 <!--SNIPEND-->
 
-An alternative approach is to simply mock the Nexus service itself, instead of mocking the handlers.
-This is useful if you just want to test the calling logic but can't easily mock the Nexus handlers.
+An alternative approach is to mock the Nexus service itself, instead of mocking the handlers.
+This is useful if you want to test the calling logic, but can't easily mock the Nexus handlers.
 
-The code will just mock the implementation of the SampleNexusService class with the handler methods, but will need those methods stubbed in for the testing framework.
-Those methods can be directly mocked with static return values, or else they can return an instance variable which each unit test can modify to return a desired value.
+The code will mock the implementation of the `SampleNexusService` class with the handler methods, but will need those methods stubbed in for the testing framework.
+Those methods can be directly mocked with static return values or they can return an instance variable which each unit test can modify to return a desired value.
 
 #### Mocking the Nexus Service with JUnit4
 {/* SNIPSTART java-nexus-service-sample-junit4-mock */}
@@ -606,18 +570,119 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Set up time skipping {/* #setting-up */}
-
-Set up the time-skipping test framework in the SDK of your choice.
-
 #### Skip time automatically {/* #automatic-method */}
 
-Start a test server process that skips time as needed.
-For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities or Nexus Operation handlers are running. Nexus Operation handlers timeout after 10 seconds and time skipping is allowed while waiting for retries.
+When you execute a Workflow and wait for the result, the test environment automatically skips Workflow timers such as `Workflow.sleep`. This means:
+
+- Workflow timers (like workflow.Sleep) are fast-forwarded.
+- Time doesn't skip while Activities and Nexus operations are executing.
+
+```java
+@Test
+void testSleepCompletesWithoutWaitingOneDay() {
+  try (TestWorkflowEnvironment testEnv = TestWorkflowEnvironment.newInstance()) {
+    Worker worker = testEnv.newWorker(TASK_QUEUE);
+    
+    worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new GreetActivitiesImpl());
+    
+    testEnv.start();
+
+    SayHelloWorkflow workflow =
+      testEnv
+        .getWorkflowClient()
+        .newWorkflowStub(
+          SayHelloWorkflow.class,
+          WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+
+    String result = workflow.sayHello("Temporal");
+
+    assertEquals("Hello Temporal!", result);
+  }
+}
+```
+
+Use `Workflow.sleep()` in Workflow code, not `Thread.sleep()`. `Workflow.sleep()` creates a Temporal timer that the test environment can skip. `Thread.sleep()` blocks a Java thread in real time and is not controlled by Temporal’s time-skipping test server.
 
 #### Skip time manually {/* #manual-method */}
 
-Skip time manually in the SDK of your choice.
+Use `TestWorkflowEnvironment.sleep(Duration)` when you want to advance virtual time yourself and inspect intermediate Workflow state. Start the Workflow asynchronously with `WorkflowClient.start()`, then call `testEnv.sleep()` from the test.
+
+Here's an example of a Workflow that lets you manually advance time with `testEnv.sleep()`:
+
+```java
+package helloworkflow;
+
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.testing.TestWorkflowEnvironment;
+import io.temporal.worker.Worker;
+import io.temporal.workflow.QueryMethod;
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+
+public class ManualTimeSkippingTest {
+  private static final String TASK_QUEUE = "manual-time-skipping-test";
+
+  @WorkflowInterface
+  public interface ProgressWorkflow {
+    @WorkflowMethod
+    void run();
+
+    @QueryMethod
+    int daysElapsed();
+  }
+
+  public static class ProgressWorkflowImpl implements ProgressWorkflow {
+    private int daysElapsed = 0;
+
+    @Override
+    public void run() {
+      for (int i = 0; i < 100; i++) {
+        Workflow.sleep(Duration.ofDays(1));
+        daysElapsed++;
+      }
+    }
+
+    @Override
+    public int daysElapsed() {
+      return daysElapsed;
+    }
+  }
+
+  @Test
+  void manuallyAdvanceWorkflowTime() {
+    try (TestWorkflowEnvironment testEnv = TestWorkflowEnvironment.newInstance()) {
+      Worker worker = testEnv.newWorker(TASK_QUEUE);
+      worker.registerWorkflowImplementationTypes(ProgressWorkflowImpl.class);
+      testEnv.start();
+
+      ProgressWorkflow workflow =
+          testEnv
+              .getWorkflowClient()
+              .newWorkflowStub(
+                  ProgressWorkflow.class,
+                  WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+
+      WorkflowClient.start(workflow::run);
+
+      assertEquals(0, workflow.daysElapsed());
+
+      testEnv.sleep(Duration.ofHours(25));
+      assertEquals(1, workflow.daysElapsed());
+
+      testEnv.sleep(Duration.ofHours(25));
+      assertEquals(2, workflow.daysElapsed());
+    }
+  }
+}
+```
 
 ## How to Replay a Workflow Execution {/* #replay */}
 
