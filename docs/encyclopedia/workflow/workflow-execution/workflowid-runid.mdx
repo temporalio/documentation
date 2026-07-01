@@ -31,9 +31,6 @@ However, each run will have a unique system-generated [Run ID](#run-id).
 
 This uniqueness constraint is enforced within the active [Namespace](/namespaces).
 On a [High Availability](/cloud/high-availability) Namespace, replication is asynchronous, and a failover preserves the constraint through Temporal Cloud's [conflict resolution](/cloud/high-availability/failovers#conflict-resolution) process.
-A Workflow start that the active region accepted but had not yet replicated falls within the [recovery point](/cloud/rpo-rto): if the original region is permanently lost, that start can be absent from the newly active region.
-In other words, a failover never causes the same Workflow Id to run twice concurrently, but a non-graceful failover with permanent regional loss can drop a start that had not yet replicated.
-See [conflict resolution](/cloud/high-availability/failovers#conflict-resolution) for details.
 
 :::
 
