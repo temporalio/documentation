@@ -169,7 +169,8 @@ non-graceful failover, replication lag has two distinct effects:
 :::caution
 
 Conflict Resolution can only recover data from a functioning Temporal Server. If the active server completely fails and
-does not recover, Workflow API calls that fall within the 1 minute RPO may be permanently lost.
+does not recover, Workflow API calls that fall within the 1 minute RPO may be permanently lost. Such a case would require
+the permanent loss of multiple cloud Availability Zones and has never happened in the history of Temporal Cloud.
 
 :::
 
