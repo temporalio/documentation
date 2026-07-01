@@ -21,6 +21,7 @@
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
+ *   - <ViewSourceCodeNotice href> → plain markdown link line
  *   - imported .md components      → transcluded inline (e.g. <AWSRegions />)
  *   - import / export stmts        → stripped
  *   - {/* MDX comments *​/}         → stripped
@@ -69,6 +70,7 @@ export const COMPONENT_REGISTRY = {
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
   HomePageHero: "home-page-hero",
+  ViewSourceCodeNotice: "view-source-code-notice",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
   DT: "strip-tag",
@@ -893,6 +895,23 @@ export function transformMdx(mdxContent, options = {}) {
         state = State.CODE_SNIPPET;
         codeSnippetLang = lang;
         codeSnippetLines = [];
+      }
+      continue;
+    }
+
+    // --- ViewSourceCodeNotice (self-closing) → plain markdown link line ---
+    if (state === State.NORMAL && /^\s*<ViewSourceCodeNotice\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const href = extractProp(tag, "href");
+      if (href) {
+        outputLines.push(
+          `[View the source code](${href}) in the context of the rest of the application code.`
+        );
+        outputLines.push("");
       }
       continue;
     }
