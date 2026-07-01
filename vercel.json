@@ -22,7 +22,12 @@
     },
     {
       "source": "/cloud/multi-region-failover",
-      "destination": "/cloud/high-availability/deployment-patterns",
+      "destination": "/cloud/high-availability/architecture-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/high-availability/deployment-patterns",
+      "destination": "/cloud/high-availability/architecture-patterns",
       "permanent": true
     },
     {

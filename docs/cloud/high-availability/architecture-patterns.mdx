@@ -1,8 +1,8 @@
 ---
-id: deployment-patterns
+id: architecture-patterns
 title: Worker deployment patterns for Active-Passive and Active-Active HA/DR
 sidebar_label: Worker deployment patterns
-slug: /cloud/high-availability/deployment-patterns
+slug: /cloud/high-availability/architecture-patterns
 description: Choose a Worker deployment pattern for high availability and disaster recovery (HA/DR) on Temporal Cloud — Active/Passive (cold or hot standby) and Active/Active — and plan multi-region failover for Workers, Clients, Codec Servers, and databases to meet your RTO and RPO.
 tags:
   - Temporal Cloud
@@ -87,7 +87,7 @@ See [High Availability for Temporal Cloud Namespaces](/cloud/high-availability) 
 ## Worker deployment patterns {/* #worker-deployment-patterns */}
 
 These Worker deployment patterns are how you extend Namespace High Availability into a full disaster recovery (DR) and business continuity plan across regions.
-This page covers three main patterns — **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active** — plus a rarely needed **[Regionally Sharded Namespaces](#regionally-sharded-namespaces)** variant.
+This page covers three main patterns — **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active**.
 They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**, and differ in where the Workers run and where Workflows process:
 
 - **Active/Passive** (also written Active-Passive) — Workflows process in one region at a time, the "active" region. The other region is "passive" and ready for failover. This pattern has two variants:
@@ -372,6 +372,7 @@ flowchart LR
 
 Active/Cold Pattern: **On failover**
 
+- **You must detect the outage yourself.** With no Workers running in the secondary region, nothing begins processing until you notice the outage and respond — detection is your responsibility, not Temporal Cloud's. Until you detect it and bring up Workers, your Workflows make no progress, so any delay in detection adds directly to your recovery time. This is a key advantage of the [Active/Passive (Hot)](#active-hot) pattern: its standby Workers begin processing the moment the Namespace fails over, so Workflows keep progressing even if you are slow to notice the outage. For how to detect an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
 - **The Namespace fails over automatically.** Temporal Cloud promotes the secondary region's replica to active. No action is needed to fail over the Namespace itself.
 - **You bring the Workers up in the secondary region.** Because no Workers were running there, they start from nothing — a "cold" start. Starting and scaling that fleet is your responsibility, ideally through tested automation. Until the Workers are running, no Workflows make progress.
 - **Promote your databases and queues, if needed.** If your Workflows depend on external data, make the secondary region's copy active so the new Workers can read and write it.
@@ -422,7 +423,7 @@ Active/Cold Pattern: **Tradeoffs**
 Active/Cold Pattern: **Recommendations and important constraints**
 
 - **Failing over the Workers is the operator's responsibility.** The Namespace fails over automatically, but bringing up the Workers in the secondary region is up to you. Plan for these sub-considerations:
-   - **How do you detect an outage and decide to fail over?** Define the failover conditions and the signals (alerts, health checks) that trigger them.
+   - **How do you detect an outage and decide to fail over?** Define the failover conditions and the signals (alerts, health checks) that trigger them. Because Workflows make no progress until you detect the outage and respond, detection is on the critical path of your recovery time. To monitor for an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
    - **How do you scale up the Workers?** Bring up the secondary-region fleet, ideally with tested automation, and scale down the primary region's fleet so Workers run in only one region at a time.
    - **Do you need to enforce single-region processing?** The Cold pattern relies on the operator to keep Workers in one region. To have Temporal enforce single-region processing instead, use the [Active/Passive (Hot)](#active-hot) pattern.
 
@@ -790,98 +791,6 @@ Active/Active Pattern: **Component behavior**
 - **Workflow starters and Clients** — run wherever convenient and connect through the Namespace Endpoint, like the Workers.
 - **Codec Servers and proxies** — run in every region where Workers run.
 - **Databases and queues** — accessed from every Worker region; cross-region consistency must be designed for.
-
-### Regionally Sharded Namespaces {/* #regionally-sharded-namespaces */}
-
-Regionally Sharded Namespaces: **Overview**
-
-A few workloads are so latency-sensitive, or so tied to region-specific data, that they need Active/Active behavior in *each* region at once. You can build this by **sharding across multiple Namespaces — one Namespace active per region** — and routing each region's traffic to its local shard. Each Namespace ("shard") serves low-latency, region-bound work in its own region and replicates to another region for disaster recovery. The same idea extends to as many regions as you need.
-
-```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart TD
-    classDef appA fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef appB fill:#0EA5E922,stroke:#0EA5E9,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    subgraph DUNR2["<b>Region 2</b>"]
-      DUNWPB["<b>Shard B Workers</b>"]:::appB
-      DUNNBa["<b>Namespace B</b>"]:::appB
-      DUNNAp["<b>Namespace A</b><br/>Replica"]:::appA
-      DUNWPB <-->|Workflows| DUNNBa
-    end
-    subgraph DUNR1["<b>Region 1</b>"]
-      DUNWPA["<b>Shard A Workers</b>"]:::appA
-      DUNNAa["<b>Namespace A</b>"]:::appA
-      DUNNBp["<b>Namespace B</b><br/>Replica"]:::appB
-      DUNWPA <-->|Workflows| DUNNAa
-    end
-    DUNNAa -. replicates .-> DUNNAp
-    DUNNBa -. replicates .-> DUNNBp
-    linkStyle 0 stroke:#0EA5E9,stroke-width:1.5px
-    linkStyle 1 stroke:#7C3AED,stroke-width:1.5px
-    linkStyle 2 stroke:#7C3AED,stroke-width:1.5px
-    linkStyle 3 stroke:#0EA5E9,stroke-width:1.5px
-    class DUNR1,DUNR2 region
-```
-
-Regionally Sharded Namespaces: **On failover (Region 1 outage)**
-
-```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart TD
-    classDef appA fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef appAhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
-    classDef appB fill:#0EA5E922,stroke:#0EA5E9,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    subgraph DUFR2["<b>Region 2</b>"]
-      DUFWPB["<b>Shard B Workers</b>"]:::appB
-      DUFNBa["<b>Namespace B</b>"]:::appB
-      DUFNAa2["<b>Namespace A</b><br/>(Active)"]:::appA
-      DUFWPA2["<b>Shard A Workers</b><br/>Hot or Cold Start"]:::appAhollow
-      DUFWPB <-->|Workflows| DUFNBa
-      DUFWPA2 <-->|Workflows| DUFNAa2
-    end
-    subgraph DUFR1["<b>Region 1</b> <span style='color:#ED360E'>(outage)</span>"]
-      DUFWPA["<b>Shard A Workers</b><br/>Unavailable"]:::down
-      DUFNAa["<b>Namespace A</b>"]:::down
-      DUFNBp["<b>Namespace B</b><br/>Replica"]:::down
-      DUFWPA ~~~ DUFNAa
-    end
-    DUFNAa -->|"Failover"| DUFNAa2
-    linkStyle 0 stroke:#0EA5E9,stroke-width:1.5px
-    linkStyle 1 stroke:#7C3AED,stroke-width:1.5px
-    linkStyle 3 stroke:#7C3AED,stroke-width:1.5px
-    class DUFR1 regiondown
-    class DUFR2 region
-```
-
-Each shard fails over independently, following the Active/Passive sequence for the Worker pattern you chose for it.
-
-Regionally Sharded Namespaces: **Choosing a pattern per shard**
-
-- Each shard's Workers can use **Single-region**, **[Active/Cold](#active-cold)**, or **[Active/Hot](#active-hot)**, depending on that shard's availability and recovery-time needs.
-- A shard that must survive a regional outage should use Active/Cold or Active/Hot, which get automatic Namespace failover. A shard that only needs low-latency local processing can run Single-region.
-
-Regionally Sharded Namespaces: **Benefits**
-
-- **Low-latency, region-bound data in each region.**
-   - Each shard serves its own region from a local active Namespace during normal operation, and the model extends to as many regions as you need.
-- **Per-shard control.**
-   - Each shard fails over independently and uses the Worker pattern that fits it.
-
-Regionally Sharded Namespaces: **Tradeoffs**
-
-- By far the most time-consuming architecture to operate, with the highest cost and the highest risk of misconfiguration: a separate active Namespace, Worker fleet, and failover story per region.
-- **Single-region shards don't get high availability out of the box.** Unlike the Active/Passive and Active/Active patterns — where Temporal Cloud fails the Namespace over for you — failing a Single-region shard over to another region is entirely your responsibility. Use Active/Cold or Active/Hot for any shard that needs automatic failover.
-
-Regionally Sharded Namespaces: **Component behavior**
-
-- **Workers** — one fleet per shard, each active in its shard's region using that shard's chosen pattern.
-- **Workflow starters and Clients** — run with each shard's Workers.
-- **Codec Servers and proxies** — run in every region that hosts an active shard.
-- **Databases and queues** — region-bound per shard; each fails over with its shard.
 
 ## The rest of the architecture {/* #rest-of-architecture */}
 

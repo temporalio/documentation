@@ -1168,7 +1168,7 @@ module.exports = {
           },
           items: [
             'cloud/high-availability/enable',
-            'cloud/high-availability/deployment-patterns',
+            'cloud/high-availability/architecture-patterns',
             'cloud/high-availability/monitoring',
             {
               type: 'category',
