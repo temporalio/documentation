@@ -81,8 +81,8 @@ list, and it may change over time.
 You can also [manually trigger a failover](/cloud/high-availability/failovers/manage#trigger-failover) based on your own
 monitoring or for failover testing.
 
-Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover is
-warranted are:
+Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover (i.e., 
+a failover triggered by a user) is warranted are:
 
 - **Testing failover or migrating to a new region.** A manual failover is the standard way to exercise your failover
   process with your Clients and Workers, or to move a Namespace to a different region.
@@ -91,7 +91,7 @@ warranted are:
   outage with your own monitoring and trigger a failover yourself.
 - **Failing over more aggressively during a regional outage.** Even with automatic failovers enabled, you can trigger a
   failover yourself if you detect a regional outage before Temporal does. Whichever failover happens first takes effect,
-  and the later one is a no-op. A user-triggered failover does not conflict with Temporal's automatic failover.
+  and the later one is a no-op. A manual failover does not conflict with Temporal's automatic failover.
 
 :::note Same-region Replication
 
