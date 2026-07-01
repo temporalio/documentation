@@ -185,7 +185,7 @@ The guarantee limits how many Executions are _Open_ at the same time, not how ma
 what lets conflict resolution reconcile a divergence without ever running the same Workflow Id twice concurrently.
 
 1. **Steady state.** The active region enforces uniqueness on every write and asynchronously replicates the Event
-   History to the replica. Because only the active region accepts writes, the guarantee holds trivially.
+   History to the replica.
 2. **Failover with divergence.** In a forced failover — or a [split-brain scenario](#split-brain-scenario) where the
    replica is promoted during a network partition — both regions can independently append events to the same Workflow
    Execution. When the regions reconnect, their Event Histories have diverged for that Workflow Id.
