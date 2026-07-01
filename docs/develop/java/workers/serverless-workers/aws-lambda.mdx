@@ -1,0 +1,253 @@
+---
+id: aws-lambda
+title: Serverless Workers on AWS Lambda - Java SDK
+sidebar_label: Serverless Workers on AWS Lambda
+description: Write a Temporal Worker that runs on AWS Lambda using the Java SDK temporal-aws-lambda contrib module.
+slug: /develop/java/workers/serverless-workers/aws-lambda
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - lambda
+  - aws
+  - java sdk
+  - worker
+  - serverless worker
+tags:
+  - Workers
+  - Java SDK
+  - Serverless
+  - AWS Lambda
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkers" />
+
+The `temporal-aws-lambda` contrib module lets you run a Temporal Serverless Worker on AWS Lambda.
+Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
+Each invocation starts a Worker, polls for Tasks, then gracefully shuts down before a configurable invocation deadline.
+You register Workflows and Activities the same way you would with a standard Worker.
+
+For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
+
+## Create and run a Worker in Lambda {/* #create-and-run */}
+
+Create a class that implements AWS Lambda's `RequestHandler` interface and delegates to `LambdaWorker.run` in a static field.
+Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
+Assign the handler to a static field so it is created once during Lambda cold start and reused across invocations.
+
+<!--SNIPSTART java-lambda-worker {"highlightedLines": "11-15"}-->
+[lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java)
+```java {11-15}
+package io.temporal.samples.lambdaworker;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import io.temporal.aws.lambda.LambdaWorker;
+import io.temporal.common.WorkerDeploymentVersion;
+
+/** AWS Lambda entry point for the Temporal worker. */
+public class LambdaFunction implements RequestHandler<Object, Void> {
+
+  private static final RequestHandler<Object, Void> WORKER =
+      LambdaWorker.run(
+          new WorkerDeploymentVersion(
+              LambdaWorkerSample.deploymentName(), LambdaWorkerSample.buildId()),
+          LambdaWorkerSample::configure);
+
+  @Override
+  public Void handleRequest(Object input, Context context) {
+    return WORKER.handleRequest(input, context);
+  }
+}
+```
+<!--SNIPEND-->
+
+The `WorkerDeploymentVersion` is required.
+Worker Deployment Versioning is always enabled for Serverless Workers.
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `AutoUpgrade` or `Pinned`.
+Set it per-Workflow with the `@WorkflowVersioningBehavior` annotation on the Workflow method, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
+
+<!--SNIPSTART java-lambda-worker-workflow {"highlightedLines": "21"}-->
+[lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java)
+```java {21}
+package io.temporal.samples.lambdaworker;
+
+import io.temporal.activity.ActivityOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowVersioningBehavior;
+import java.time.Duration;
+import org.slf4j.Logger;
+
+/** Workflow implementation that executes a greeting Activity. */
+public class SampleWorkflowImpl implements SampleWorkflow {
+
+  private static final Logger logger = Workflow.getLogger(SampleWorkflowImpl.class);
+
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(10)).build());
+
+  @Override
+  @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+  public String getGreeting(String name) {
+    logger.info("SampleWorkflow started for {}", name);
+    String result = activities.createGreeting(name);
+    logger.info("SampleWorkflow completed with {}", result);
+    return result;
+  }
+}
+```
+<!--SNIPEND-->
+
+The configure callback receives a `LambdaWorkerOptions.Builder` with the same [registration methods as a standard Worker](/develop/java/workers/run-worker-process#register-types): `registerWorkflowImplementationTypes`, `registerActivitiesImplementations`, and `registerDynamicWorkflowImplementationType`.
+
+If you need to assemble options outside the callback, call `LambdaWorkerOptions.newBuilderFromEnvironment()`, configure the builder, and pass the built options to `LambdaWorker.newHandler(...)`.
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+The `temporal-aws-lambda` module automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
+
+Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
+
+1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
+2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
+3. `temporal.toml` in the current working directory.
+
+The file is optional. If absent, only environment variables are used.
+
+Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
+
+## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
+
+The `temporal-aws-lambda` module applies conservative defaults suited to short-lived Lambda invocations.
+These differ from standard Worker defaults to avoid overcommitting resources in a constrained environment.
+
+| Setting | Lambda default |
+|---|---|
+| `MaxConcurrentActivityExecutionSize` | 2 |
+| `MaxConcurrentWorkflowTaskExecutionSize` | 10 |
+| `MaxConcurrentLocalActivityExecutionSize` | 2 |
+| `MaxConcurrentNexusExecutionSize` | 5 |
+| `MaxConcurrentWorkflowTaskPollers` | 2 |
+| `MaxConcurrentActivityTaskPollers` | 1 |
+| `MaxConcurrentNexusTaskPollers` | 1 |
+| `WorkflowCacheSize` | 30 |
+| `MaxWorkflowThreadCount` | 30 |
+| `GracefulShutdownTimeout` | 5 seconds |
+| `ShutdownDeadlineBuffer` | 7 seconds |
+
+`ShutdownDeadlineBuffer` is specific to the `temporal-aws-lambda` module.
+It controls the full shutdown window reserved at the end of the Lambda invocation, including graceful shutdown time, shutdown hooks, and service stub cleanup.
+The default is `GracefulShutdownTimeout` (5s) + 2s.
+
+If you change `GracefulShutdownTimeout` without explicitly setting `ShutdownDeadlineBuffer`, the buffer is recomputed as `GracefulShutdownTimeout` + 2s.
+If you explicitly set `ShutdownDeadlineBuffer`, it must be greater than or equal to `GracefulShutdownTimeout`.
+
+If your Worker handles long-running Activities, increase `GracefulShutdownTimeout`, `ShutdownDeadlineBuffer`, and the Lambda invocation deadline (`--timeout`) together.
+For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+
+## Add observability with OpenTelemetry {/* #add-observability */}
+
+The `OtelLambdaWorker` class provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
+With this enabled, the Worker emits SDK metrics and distributed traces for Workflow and Activity executions.
+The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ray and metrics to Amazon CloudWatch.
+
+The underlying metrics and traces are the same ones the Java SDK emits in any environment.
+For general observability concepts and the full list of available metrics, see [Observability - Java SDK](/develop/java/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+
+```java
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import io.temporal.aws.lambda.LambdaWorker;
+import io.temporal.aws.lambda.OtelLambdaWorker;
+import io.temporal.common.WorkerDeploymentVersion;
+
+public final class Handler implements RequestHandler<Object, Void> {
+  private static final RequestHandler<Object, Void> WORKER =
+      LambdaWorker.run(
+          new WorkerDeploymentVersion("my-app", "build-1"),
+          builder -> {
+            OtelLambdaWorker.configure(builder);
+            builder.setTaskQueue("serverless-task-queue-1");
+            builder.registerWorkflowImplementationTypes(SampleWorkflowImpl.class);
+            builder.registerActivitiesImplementations(new SampleActivitiesImpl());
+          });
+
+  @Override
+  public Void handleRequest(Object input, Context context) {
+    return WORKER.handleRequest(input, context);
+  }
+}
+```
+
+`OtelLambdaWorker.configure` configures OpenTelemetry with OTLP trace and metric exporters, uses AWS X-Ray-compatible trace ID generation, installs an OpenTelemetry-backed metrics scope, and registers per-invocation flush hooks.
+By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
+The endpoint can be overridden with the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
+
+To collect this telemetry, attach the [ADOT Collector layer](https://aws-otel.github.io/docs/getting-started/lambda) to your Lambda function.
+Java does not need a language-specific ADOT layer because the OTel SDK is included as a dependency of the module.
+
+The default Collector configuration does not route OpenTelemetry Protocol (OTLP) data to the traces pipeline.
+You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
+Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
+
+<!--SNIPSTART java-lambda-worker-otel-collector-config-->
+[lambda-worker/otel-collector-config.yaml.sample](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/otel-collector-config.yaml.sample)
+```sample
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "localhost:4317"
+      http:
+        endpoint: "localhost:4318"
+
+exporters:
+  debug:
+  awsxray:
+    region: us-west-2
+  awsemf:
+    namespace: TemporalWorkerMetrics
+    log_group_name: /aws/lambda/<your-function-name>
+    region: us-west-2
+    dimension_rollup_option: NoDimensionRollup
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [awsxray, debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [awsemf]
+  telemetry:
+    logs:
+      level: debug
+    metrics:
+      address: localhost:8888
+```
+<!--SNIPEND-->
+
+Set the following environment variable on the Lambda function to point the Collector at the bundled config:
+
+- `OPENTELEMETRY_COLLECTOR_CONFIG_URI=/var/task/otel-collector-config.yaml`
+
+Enable X-Ray active tracing on the Lambda function:
+
+```bash
+aws lambda update-function-configuration \
+  --function-name <your-function-name> \
+  --tracing-config Mode=Active
+```
+
+The Lambda execution role must have permissions to write to X-Ray and CloudWatch.
+Add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions to the execution role.
+Without these permissions, the Collector fails silently and no telemetry appears.
+
+If you only need metrics or tracing, use `OtelLambdaWorker.configureMetrics`, `OtelLambdaWorker.configureTracing`, or `OtelLambdaWorker.configureFlushHook` individually.
+To use an application-owned OpenTelemetry provider, call `builder.setOpenTelemetry(...)` instead. In that path, no exporters are created and the helper only installs the metrics scope, interceptors, and per-invocation flush hook.
