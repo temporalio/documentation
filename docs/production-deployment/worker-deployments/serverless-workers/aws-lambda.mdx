@@ -325,6 +325,17 @@ The following parameters apply to all SDKs:
 | `TEMPORAL_TLS_CLIENT_KEY_PATH`  | Path to the TLS client key file for mTLS authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `TEMPORAL_API_KEY`              | API key for API key authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
+:::caution
+
+AWS Lambda functions default to a 3-second timeout, which is too short for the Worker to start, connect to Temporal, and
+register the Task Queue. If the first invocation times out before the Worker polls, the Task Queue binding is never
+created and the Lambda is never invoked again. Always set `--timeout` high enough for the Worker to start, process Tasks,
+and [shut down gracefully](/serverless-workers#worker-lifecycle). See
+[Troubleshoot Serverless Workers](/troubleshooting/serverless-workers#check-wci-detecting-tasks) if the Task Queue
+binding is not established.
+
+:::
+
 The serverless Worker packages read environment variables and configuration files automatically at startup. For the full
 list of supported environment variables, config file format, and profiles, see
 [Environment configuration](/develop/environment-configuration).
