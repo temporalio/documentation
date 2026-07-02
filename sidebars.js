@@ -722,7 +722,7 @@ module.exports = {
               },
               items: [
                 'develop/typescript/integrations/ai-sdk',
-                'develop/typescript/integrations/strands-agents'
+                'develop/typescript/integrations/strands-agents',
                 'develop/typescript/integrations/openai-agents',
               ],
             },
