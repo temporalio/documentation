@@ -18,3 +18,6 @@ DotNet.displayName = 'dotnet';
 
 export const Ruby = ({ children }) => children;
 Ruby.displayName = 'rb';
+
+export const Rust = ({ children }) => children;
+Rust.displayName = 'rs';
