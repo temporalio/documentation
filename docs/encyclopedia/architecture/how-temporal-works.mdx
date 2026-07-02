@@ -15,7 +15,7 @@ tags:
   - Architecture
 ---
 
-import { TemporalArchitectureSimulator } from '@site/src/components';
+import { CaptionedImage, TemporalArchitectureSimulator } from '@site/src/components';
 
 In a Temporal application, the [Client](/encyclopedia/architecture/temporal-architecture#client-application), [Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server), and [Worker](/encyclopedia/architecture/temporal-architecture#worker-service) are three separate parts that talk to each other and each one has a clear purpose. To understand the internal mechanics of Temporal, it helps to follow what happens when you start a Workflow or schedule [Tasks](/tasks#task).
 
@@ -32,6 +32,15 @@ All of this state is written to a database, so the Server can remember what has 
 A [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application) is a library object from a [Temporal SDK](/develop) that your application code uses to talk to the [Temporal Server's Frontend](/encyclopedia/architecture/temporal-architecture#frontend-service). It opens a network connection (using gRPC) to the Server and sends requests like "start this Workflow with these inputs", "cancel this Workflow", "send this Signal to a running Workflow", "run this Query on a Workflow", or "get the result of this Workflow".
 
 The Client does not run Workflow or Activity code; it only sends and receives these control requests. This is important because it gives your existing services, CLIs, or UIs a simple and consistent way to interact with Temporal without knowing anything about how Tasks, Task Queues, or Event histories are implemented inside the Server.
+
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/temporal-clients-and-server.png"
+    srcDark="/img/encyclopedia/architecture/temporal-clients-and-server-dark.png"
+    alt="Diagram of Temporal Clients connecting to the Temporal Server"
+    width="70%"
+  />
+</div>
 
 ## Worker
 
