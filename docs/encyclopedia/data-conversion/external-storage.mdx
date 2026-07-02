@@ -182,6 +182,13 @@ External Storage stores payloads in a single storage backend. If that backend be
 retrieve payloads. To protect against regional or provider failures, implement your drivers in a way that takes
 advantage of your storage provider's redundancy features, such as cross-region replication and multi-region routing.
 
+The SDK does not retry a failed `Store` or `Retrieve` call within the same task attempt. If your storage driver
+returns an error, that failure fails the current Workflow Task or Activity Task attempt. Temporal retries the task as
+a whole, and the new attempt retries the storage operation along with the rest of the task. For Activities, the
+[Retry Policy](/encyclopedia/retry-policies) controls the timing of that retry. Design your storage driver and backing
+store to tolerate transient failures on their own, for example with the redundancy features described below, since
+each failure still costs a full task attempt rather than being retried in place.
+
 ### S3 Multi-Region Access Points
 
 The built-in S3 storage driver supports
