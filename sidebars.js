@@ -970,7 +970,7 @@ module.exports = {
             id: 'develop/rust/index',
           },
           items: [
-            'develop/rust/quickstart',
+            'develop/rust/set-up-your-local-rust',
             {
               type: 'category',
               label: 'Workflows',
@@ -1012,7 +1012,7 @@ module.exports = {
                 id: 'develop/rust/workers/index',
               },
               items: [
-                'develop/rust/workers/worker-process'
+                'develop/rust/workers/run-worker-process'
               ],
             },
             {
