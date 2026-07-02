@@ -17,6 +17,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 This page answers the following questions for .NET developers:
 
 - [What is Continue-As-New?](#what)
@@ -37,12 +39,7 @@ It also receives your Workflow's usual parameters.
 First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
 This state is typically set to `None` for the original caller of the Workflow.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs" />
 ```csharp
 public record Input
     {
@@ -60,12 +57,7 @@ The test hook in the above snippet is covered [below](#how-to-test).
 Inside your Workflow, throw a [`CreateContinueAsNewException`](https://dotnet.temporal.io/api/Temporalio.Workflows.ContinueAsNewException.html) exception.
 This stops the Workflow right away and starts a new one.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs" />
 ```csharp
 throw Workflow.CreateContinueAsNewException((ClusterManagerWorkflow wf) => wf.RunAsync(new()
 {
@@ -95,12 +87,7 @@ Instead, add a test hook to check your Workflow's Continue-as-New behavior faste
 For example, when `TestContinueAsNew == true`, this sample creates a test-only variable called `maxHistoryLength` and sets it to a small value.
 A helper variable in the Workflow checks it each time it considers using Continue-as-New:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/samples-dotnet/blob/main/src/SafeMessageHandlers/ClusterManagerWorkflow.workflow.cs" />
 
 ```csharp
 private bool ShouldContinueAsNew =>
