@@ -45,7 +45,3 @@ It is recommended that operators estimate the encryption rate of a key and use t
 Key rotation should generally be transparent to the Temporal Data Converter implementation. Temporal's `Encode()` and `Decode()` steps only need to trigger as expected, and Temporal has no knowledge of how or when you are generating your encryption keys.
 
 You should design your Encode and Decode steps to accept all the necessary parameters for your key management, such as the key version, alongside your payloads. Like the Data Converters, keys should be mapped to a Namespace in Temporal.
-
-### Using Vault for Key Management
-
-[This repository](https://github.com/zboralski/codecserver) provides a robust and complete example of using Temporal with HashiCorp's [Vault](https://www.vaultproject.io/) secrets engine.

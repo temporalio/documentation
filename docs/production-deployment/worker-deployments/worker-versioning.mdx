@@ -314,6 +314,11 @@ You also want to make sure you understand how your Activities are going to work 
 Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
+If you run [Serverless Workers](/serverless-workers), each Worker Deployment Version's compute provider points at a
+specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
+pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
+[Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
+
 ## Rolling out changes with the CLI
 
 Next, deploy your Worker with the additional configuration parameters. Before making any Workflow revisions, you can use
@@ -558,6 +563,9 @@ upgrade option enabled:
 When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
 `target_worker_deployment_version_changed`:
 
+<SdkTabs>
+<SdkTabs.Go>
+
 ```go
 func (w *Workflows) ContinueAsNewWithVersionUpgradeV1(
   ctx workflow.Context,
@@ -604,13 +612,169 @@ func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
 }
 ```
 
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```java
+public class ContinueAsNewWithVersionUpgradeImpl implements ContinueAsNewWithVersionUpgrade {
+  @Override
+  public String run(int attempt) {
+    if (attempt > 0) {
+      return "v1.0";
+    }
+
+    // isTargetWorkerDeploymentVersionChanged is refreshed after each Workflow Task completes.
+    // In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+    // timer; you could check the flag periodically, or before accepting Updates, starting
+    // Activities, or starting child Workflows.
+    while (true) {
+      Workflow.sleep(Duration.ofMillis(10));
+      if (Workflow.getInfo().isTargetWorkerDeploymentVersionChanged()) {
+        // Set InitialVersioningBehavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+        // behavior and uses the Target Version of its Worker Deployment.
+        Workflow.continueAsNew(
+            ContinueAsNewOptions.newBuilder()
+                .setInitialVersioningBehavior(InitialVersioningBehavior.AUTO_UPGRADE)
+                .build(),
+            attempt + 1);
+      }
+    }
+  }
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.Python>
+
+```python
+@workflow.defn
+class ContinueAsNewWithVersionUpgrade:
+    @workflow.run
+    async def run(self, attempt: int) -> str:
+        if attempt > 0:
+            return "v1.0"
+
+        # is_target_worker_deployment_version_changed() is refreshed after each Workflow Task
+        # completes. In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need
+        # an artificial timer; you could check the flag periodically, or before accepting Updates,
+        # starting Activities, or starting child Workflows.
+        while True:
+            await workflow.sleep(timedelta(milliseconds=10))
+            if workflow.info().is_target_worker_deployment_version_changed():
+                # Set initial_versioning_behavior to AUTO_UPGRADE so the new run starts with
+                # AutoUpgrade behavior and uses the Target Version of its Worker Deployment.
+                workflow.continue_as_new(
+                    attempt + 1,
+                    initial_versioning_behavior=ContinueAsNewVersioningBehavior.AUTO_UPGRADE,
+                )
+```
+
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+
+```ts
+import * as wf from '@temporalio/workflow';
+import { InitialVersioningBehavior } from '@temporalio/common';
+
+export async function continueAsNewWithVersionUpgrade(attempt: number): Promise<string> {
+  if (attempt > 0) {
+    return 'v1.0';
+  }
+
+  // targetWorkerDeploymentVersionChanged is refreshed after each Workflow Task completes.
+  // In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+  // timer; you could check the flag periodically, or before accepting Updates, starting
+  // Activities, or starting child Workflows.
+  for (;;) {
+    await wf.sleep('10ms');
+    if (wf.workflowInfo().targetWorkerDeploymentVersionChanged) {
+      // Set initialVersioningBehavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+      // behavior and uses the Target Version of its Worker Deployment.
+      return await wf.makeContinueAsNewFunc<typeof continueAsNewWithVersionUpgrade>({
+        initialVersioningBehavior: InitialVersioningBehavior.AUTO_UPGRADE,
+      })(attempt + 1);
+    }
+  }
+}
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+[Workflow]
+public class ContinueAsNewWithVersionUpgrade
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(int attempt)
+    {
+        if (attempt > 0)
+        {
+            return "v1.0";
+        }
+
+        // TargetWorkerDeploymentVersionChanged is refreshed after each Workflow Task completes.
+        // In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an
+        // artificial timer; you could check the flag periodically, or before accepting Updates,
+        // starting Activities, or starting child Workflows.
+        while (true)
+        {
+            await Workflow.DelayAsync(TimeSpan.FromMilliseconds(10));
+            if (Workflow.TargetWorkerDeploymentVersionChanged)
+            {
+                // Set InitialVersioningBehavior to AutoUpgrade so the new run starts with
+                // AutoUpgrade behavior and uses the Target Version of its Worker Deployment.
+                throw Workflow.CreateContinueAsNewException(
+                    (ContinueAsNewWithVersionUpgrade wf) => wf.RunAsync(attempt + 1),
+                    new ContinueAsNewOptions
+                    {
+                        InitialVersioningBehavior = InitialVersioningBehavior.AutoUpgrade,
+                    });
+            }
+        }
+    }
+}
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+class ContinueAsNewWithVersionUpgrade < Temporalio::Workflow::Definition
+  workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
+
+  def execute(attempt)
+    return 'v1.0' if attempt.positive?
+
+    # target_worker_deployment_version_changed? is refreshed after each Workflow Task completes.
+    # In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+    # timer; you could check the flag periodically, or before accepting Updates, starting
+    # Activities, or starting child Workflows.
+    loop do
+      Temporalio::Workflow.sleep(0.01)
+      next unless Temporalio::Workflow.target_worker_deployment_version_changed?
+
+      # Set initial_versioning_behavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+      # behavior and uses the Target Version of its Worker Deployment.
+      raise Temporalio::Workflow::ContinueAsNewError.new(
+        attempt + 1,
+        initial_versioning_behavior: Temporalio::ContinueAsNewVersioningBehavior::AUTO_UPGRADE
+      )
+    end
+  end
+end
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
 ### Limitations {/* #upgrade-on-can-limitations */}
 
 :::caution Current Limitations
 
-- **Lazy moving only:** Workflows must be invoked by executing a step to receive the Target-Version-Changed information.
-  Sleeping Workflows won't be proactively get the Target-Version-Changed information. If you have idle workflows that you
-  want to wake up so that they can check `GetTargetWorkerDeploymentVersionChanged`, you can send them a Signal.
+- **Lazy moving only:** Workflows must execute a step to receive the target-version-changed information. Sleeping
+  Workflows won't proactively get it. If you have idle Workflows that you want to wake up so they can check the
+  target-version-changed flag, you can send them a Signal.
 - **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input provided by the
   previous version's workflow definition is compatible with the new version's workflow definition. If incompatible, the
   new run may fail on its first Workflow Task.

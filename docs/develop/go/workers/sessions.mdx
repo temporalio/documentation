@@ -12,15 +12,17 @@ tags:
 description: Enable Worker Sessions, change concurrent Sessions, and create Session Workers using the Go SDK for precise Task Routing, ensuring efficient Activity Tasks execution.
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 This page shows how to do the following:
 
 - [Enable Worker Sessions](#enable-sessions)
 - [Change the maximum concurrent Sessions of a Worker](#max-concurrent-sessions)
 - [Create a Worker Session](#create-a-session)
 
-:::tip Support, stability, and dependency info
+:::tip
 
-- This feature is currently available only in the Go SDK.
+This feature is currently available only in the Go SDK.
 
 :::
 
@@ -30,12 +32,7 @@ A Worker Session is a feature that provides a straightforward API for [Task Rout
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go" />
 
 ```go
 // ...
@@ -64,12 +61,7 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go" />
 
 ```go
 func main() {
@@ -111,12 +103,7 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go" />
 
 ```go
 package sessions
@@ -190,7 +177,7 @@ token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
 
 **Is there a complete example?**
 
-Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
+Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/main/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
 
 **What happens to my Activity if the Worker dies?**
 

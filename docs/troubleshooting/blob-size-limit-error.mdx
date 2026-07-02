@@ -14,6 +14,8 @@ tags:
   - Failures
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
 Temporal enforces size limits on the data that passes between the Temporal Client, Workers, and the Temporal Service.
 There are two distinct limits, each producing different error messages and behaviors, and they require different
 solutions:
@@ -43,8 +45,9 @@ include:
 
 The behavior when a payload exceeds the size limit depends on the SDK version.
 
-**Python SDK 1.23.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
-Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue.
+**Python SDK 1.23.0+ and Go SDK 1.43.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
+Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue. For Activities,
+the Activity Task fails with an explicit error instead of timing out silently.
 
 **All other SDK versions:** The behavior depends on whether the oversized payload is an input or a result:
 
@@ -57,26 +60,23 @@ Workflow is not terminated and remains open, so you can deploy a fix and allow t
 ### How to resolve
 
 1. Offload large payloads to an object store to reduce the risk of exceeding payload size limits:
-   1. Pass references to the stored payloads within the Workflow instead of the actual data.
-   1. Retrieve the payloads from the object store when needed during execution.
+  1. Pass references to the stored payloads within the Workflow instead of the actual data.
+  1. Retrieve the payloads from the object store when needed during execution.
 
-   This is called the
-   [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern). The claim
-   check pattern is built into the SDKs as [External Storage](/external-storage), or you can implement your own claim
-   check pattern by using a custom [Payload Codec](/payload-codec)
+  This is called the
+  [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern). The claim
+  check pattern is built into the SDKs as [External Storage](/external-storage), or you can implement your own claim
+  check pattern by using a custom [Payload Codec](/payload-codec)
 
-   This is the most reliable way to avoid hitting payload size limits. Consider implementing the claim check pattern for
-   Workflows and Activities that have the potential to receive or return large payloads, even if they are currently
-   within the limit.
+  This is the most reliable way to avoid hitting payload size limits. Consider implementing the claim check pattern for
+  Workflows and Activities that have the potential to receive or return large payloads, even if they are currently
+  within the limit.
 
-   :::tip Support, stability, and dependency info
-
-   External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-   APIs and configuration may change before General Availability. Join the
+  <ReleaseNoteHeader type="publicPreview">
+    APIs and configuration may change before General Availability. Join the
    [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for
    help.
-
-   :::
+  </ReleaseNoteHeader>
 
 1. Use compression with a [custom Payload Codec](/payload-codec) for large payloads. This may address the immediate
    issue, but if payload sizes continue to grow, the problem can arise again.
@@ -101,13 +101,7 @@ The error message depends on which operation carried the oversized gRPC message 
 
 ### Error behavior {/* #grpc-error-behavior */}
 
-The behavior when a gRPC message exceeds the size limit depends on the SDK version.
-
-**Python SDK 1.23.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
-Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue. For Activities,
-the Activity fails with an explicit error instead of timing out silently.
-
-**All other SDK versions:** The behavior depends on where the oversized message originates:
+The behavior depends on where the oversized message originates:
 
 - **Workflow Tasks:** The Workflow gets stuck in a retry loop that isn't visible in the Event History. This happens
   because when the Worker completes a Workflow Task, it sends all the commands the Workflow produced (such as Activity

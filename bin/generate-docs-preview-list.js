@@ -8,6 +8,29 @@ const DOCS_DIR = path.join(process.cwd(), 'docs');
 const BASE_SHA = process.env.BASE_SHA;
 const PREVIEW_BASE_URL = process.env.DOCS_PREVIEW_BASE_URL || '';
 
+// Mirrors docs.exclude in docusaurus.config.js — underscore-prefixed partials
+// are not published as pages and should not appear in preview link lists.
+function isExcludedDocPath(filePath) {
+  const relativePath = filePath.startsWith('docs/')
+    ? filePath.slice('docs/'.length)
+    : path.relative(DOCS_DIR, filePath);
+
+  const segments = relativePath.split(path.sep);
+  const basename = segments[segments.length - 1];
+
+  // **/_*.{js,jsx,ts,tsx,md,mdx}
+  if (/^_[^.]/.test(basename) && /\.(mdx?|md)$/.test(basename)) {
+    return true;
+  }
+
+  // **/_*/**
+  if (segments.slice(0, -1).some((segment) => segment.startsWith('_'))) {
+    return true;
+  }
+
+  return false;
+}
+
 if (!BASE_SHA) {
   console.error('BASE_SHA environment variable is required.');
   process.exit(1);
@@ -26,6 +49,7 @@ function getChangedDocFiles(baseBranch = 'origin/main') {
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
     .filter((line) => /\.(mdx|md)$/.test(line))
+    .filter((line) => !isExcludedDocPath(line))
     .filter((line) => fs.existsSync(line));
 }
 
@@ -189,6 +213,7 @@ if (require.main === module) {
   main();
 } else {
   module.exports = {
+    isExcludedDocPath,
     getChangedDocFiles,
     extractFrontMatter,
     collectDocInfo,
