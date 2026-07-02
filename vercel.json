@@ -2115,6 +2115,16 @@
       "permanent": true
     },
     {
+      "source": "/develop/rust/quickstart",
+      "destination": "/develop/rust/set-up-your-local-rust",
+      "permanent": true
+    },
+    {
+      "source": "/develop/rust/workers/worker-process",
+      "destination": "/develop/rust/workers/run-worker-process",
+      "permanent": true
+    },
+    {
       "source": "/cloud/users",
       "destination": "/cloud/manage-access/users",
       "permanent": true
