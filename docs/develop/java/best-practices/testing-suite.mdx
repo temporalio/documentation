@@ -260,11 +260,7 @@ public void testMockedActivity() {
 
 #### Testing with JUnit4
 
-For JUnit4 tests, Temporal provides the `TestWorkflowRule` class which simplifies the Temporal test environment setup, as well as the creation and shutdown of Workflow Workers in your tests.
-
-Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
-
-You can now rewrite the above Activity test class as follows:
+For JUnit4 tests, Temporal provides the `TestWorkflowRule` class which simplifies the Temporal test environment setup, as well as the creation and shutdown of Workflow Workers in your tests. You can now rewrite the above Activity test class as follows:
 
 ```java
 public class GreetActivitiesJUnit4Test {
@@ -301,7 +297,6 @@ This class can be used to simplify the Temporal test environment setup as well a
 
 To start using JUnit5 `TestWorkflowExtension` in your tests with [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
 
-Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
 Now you can use JUnit5 and rewrite the above test class as follows:
 
@@ -574,7 +569,7 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 When you execute a Workflow and wait for the result, the test environment automatically skips Workflow timers such as `Workflow.sleep`. This means:
 
-- Workflow timers (like workflow.Sleep) are fast-forwarded.
+- Workflow timers (like `Workflow.Sleep`) are fast-forwarded.
 - Time doesn't skip while Activities and Nexus operations are executing.
 
 ```java
@@ -608,7 +603,7 @@ Use `Workflow.sleep()` in Workflow code, not `Thread.sleep()`. `Workflow.sleep()
 
 Use `TestWorkflowEnvironment.sleep(Duration)` when you want to advance virtual time yourself and inspect intermediate Workflow state. Start the Workflow asynchronously with `WorkflowClient.start()`, then call `testEnv.sleep()` from the test.
 
-Here's an example of a Workflow that lets you manually advance time with `testEnv.sleep()`:
+Here's an example of a Workflow test that lets you manually advance time with `testEnv.sleep()`:
 
 ```java
 package helloworkflow;
