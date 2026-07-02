@@ -55,3 +55,6 @@ test-results/*
 screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
 ai-cookbook
+
+# Local clones of SnipSync origin repos, used by scripts/find-snippable-hardcoded.mjs
+.snippet-audit
