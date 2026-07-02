@@ -25,6 +25,9 @@ DotNet.displayName = 'dotnet';
 export const Ruby = ({ children }) => children;
 Ruby.displayName = 'rb';
 
+export const Rust = ({ children }) => children;
+Rust.displayName = 'rs';
+
 // Main wrapper
 const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
   const contentMap = {};
@@ -78,5 +81,8 @@ SdkTabs.DotNet.displayName = 'dotnet';
 
 SdkTabs.Ruby = ({ children }) => children;
 SdkTabs.Ruby.displayName = 'rb';
+
+SdkTabs.Rust = ({ children }) => children;
+SdkTabs.Rust.displayName = 'rs';
 
 export default SdkTabs;
