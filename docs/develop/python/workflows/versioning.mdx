@@ -28,6 +28,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 import { CaptionedImage } from '@site/src/components';
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
@@ -58,12 +60,7 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py" />
 
 ```python
 from datetime import timedelta
@@ -85,12 +82,7 @@ class MyWorkflow:
 
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py" />
 
 ```python
 from datetime import timedelta
@@ -126,12 +118,7 @@ Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`).
 This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py" />
 
 ```python
 # ...
@@ -159,12 +146,7 @@ Once your Workflows are no longer running the pre-patch code paths, you can depl
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Event History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py" />
 
 ```python
 # ...
@@ -183,12 +165,7 @@ class MyWorkflow:
 
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py" />
 
 ```python
 # ...

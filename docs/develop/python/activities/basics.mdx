@@ -11,6 +11,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 ## Develop a basic Activity {/* #develop-activities */}
 
 **How to develop a basic Activity using the Temporal Python SDK.**
@@ -50,12 +52,7 @@ perform these actions. If you must use a blocking library, consider using a sync
 
 :::
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 from temporalio import activity
@@ -92,12 +89,7 @@ Activity parameters are the function parameters of the function decorated with `
 type Temporal can convert, including dataclasses when properly type-annotated. Technically this can be multiple
 parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 from temporalio import activity
@@ -125,12 +117,7 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes an object as input and returns a string.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 # ...
@@ -150,12 +137,7 @@ You can customize the Activity name with a custom name in the decorator argument
 `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the
 function name.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 # ...

@@ -36,13 +36,22 @@
     "href": "https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics"
   },
   {
-    "name": "Datadog",
+    "name": "Datadog (Metrics)",
     "description": "Export Temporal Cloud metrics to Datadog with a serverless integration and pre-built dashboard.",
     "tags": [
       "Observability",
       "Temporal Cloud"
     ],
     "href": "https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/"
+  },
+  {
+    "name": "Datadog (Cost Management)",
+    "description": "Send Temporal Cloud billing data to Datadog Cloud Cost Management for spend attribution by namespace and service type.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://docs.datadoghq.com/integrations/temporal-cloud-costs/"
   },
   {
     "name": "Google ADK",

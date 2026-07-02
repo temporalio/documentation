@@ -180,11 +180,32 @@ for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_c
 or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
 Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.
 
+### Provisioned capacity utilization
+
+For Namespaces in [provisioned capacity](/cloud/capacity-modes#provisioned-capacity) mode, the limit and count metrics also reveal the lower bound: how much of your reserved capacity you are actually using.
+This matters because provisioned capacity is reserved by the hour whether or not you use it.
+Each TRU beyond the first carries a minimum hourly Action charge of 360,000 Actions, which is 20% of that TRU's 500 APS, so a Namespace that runs well below its limit can accrue charges for capacity it never uses.
+See [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing) for how the minimum is calculated.
+
+Utilization is the ratio of `temporal_cloud_v1_total_action_count` to `temporal_cloud_v1_action_limit`.
+Sustained utilization well below 20% while provisioned indicates you may be paying for reserved capacity you are not using; consider alerting when the ratio stays under 20% over a sustained window, such as several hours, so you can reduce TRUs or return to on-demand mode.
+The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes provisioned-capacity panels for utilization and limits.
+
+Low utilization is not always a problem.
+If your traffic is spiky or unpredictable, you may intentionally keep capacity provisioned so it is ready the moment you need it.
+
+:::note
+
+These metrics are approximate measures of TRU capacity based on real-time TRU quotas, and do not capture the fact that TRUs are billed by the calendar hour.
+Please use [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) as the source of truth for TRU and action accounting.
+
+:::
+
 ### Why does throttling occur when count metrics stay below the limit?
 
 For spiky workloads, the throttle metric can be non-zero even though the count metric never rises above the limit. This looks contradictory, but both values are correct. They describe the workload at different time resolutions.
 
-Count and limit metrics are per-second rates **averaged over a 1-minute window** (see [Metric conventions](/cloud/metrics/openmetrics/metrics-reference#metric-types)). A short burst is smoothed across all 60 seconds, so the count metric can sit well below the limit even though the instantaneous request rate exceeded it and triggered throttling. The throttle metric, not the count-versus-limit comparison, is the definitive signal that a limit was hit.
+Count and limit metrics are per-second rates **averaged over a 1-minute window** (see [Metric conventions](/cloud/metrics/openmetrics/metrics-reference#metric-types)). A short burst is smoothed across all 60 seconds, so the count metric can sit well below the limit even though the instantaneous request rate exceeded it and triggered throttling. The throttle metric, not the count-versus-limit comparison, is what tells you throttling actually occurred.
 
 #### Example: a spiky Actions workload
 
@@ -192,7 +213,7 @@ Assume an Actions per second (APS) limit of 2,000 (`temporal_cloud_v1_action_lim
 
 A workload submits 60,000 Actions in a single second, then stays idle for the rest of the minute:
 
-- The rate limiter admits about 2,000 Actions in that second and throttles the remaining ~58,000. Throttled Actions are retried by the SDK and drain through at the 2,000 APS limit over the next ~30 seconds, so all 60,000 still complete within the minute.
+- The rate limiter admits about 2,000 Actions in that second and throttles the remaining ~58,000. The SDK retries throttled Actions, which drain through at the 2,000 APS limit over the next ~30 seconds. They complete, but delayed. When throttling persists, delayed completions such as `RespondWorkflowTaskCompleted` can push Workflow Tasks and Activities past their timeouts and cause retries.
 - `temporal_cloud_v1_total_action_throttled_count` reflects the throttling: ~58,000 Actions throttled over the minute, or ~967 per second.
 - `temporal_cloud_v1_total_action_count` reports 60,000 Actions / 60 seconds = **1,000 APS** — half the 2,000 limit.
 
@@ -208,7 +229,7 @@ To understand a spiky workload, always read all three metrics in the row as a se
 | Limit (e.g. `temporal_cloud_v1_action_limit`) | Your provisioned ceiling |
 | Throttle (e.g. `temporal_cloud_v1_total_action_throttled_count`) | Whether the limit was actually hit |
 
-A non-zero throttle value means the limit was hit during that window, even when the count sits comfortably below the limit. For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
+A non-zero throttle value means throttling occurred during that window, even when the count sits comfortably below the limit. Most often this reflects a sub-minute burst in your own workload. If you cannot find a matching burst in your SDK metrics, the cause may be a shared limit or another Cloud-side condition rather than your namespace. In that case, contact [Temporal Support](/cloud/support#support-ticket). For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
 
 ## Detecting Resource Exhaustion
 
