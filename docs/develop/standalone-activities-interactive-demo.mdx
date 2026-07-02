@@ -12,8 +12,7 @@ tags:
 description: An interactive overview of Temporal Standalone Activities.
 ---
 
-import { StandaloneActivityDemo, ReleaseNoteHeader } from '@site/src/components';
-import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
+import { StandaloneActivityDemo, ReleaseNoteHeader, SdkGuideLinks } from '@site/src/components';
 
 <ReleaseNoteHeader
   featureName="standaloneActivity"
@@ -70,21 +69,8 @@ automatically retries it according to the Retry Policy you configure.
 
 For complete API reference and advanced usage, see the SDK-specific guides:
 
-<div style={{display:'flex',flexDirection:'column',gap:'12px',marginTop:'1rem'}}>
-  {[
-    { name: 'goLangBlock',     href: '/develop/go/activities/standalone-activities',         label: 'Standalone Activities - Go' },
-    { name: 'javaBlock',       href: '/develop/java/activities/standalone-activities',       label: 'Standalone Activities - Java' },
-    { name: 'pythonBlock',     href: '/develop/python/activities/standalone-activities',     label: 'Standalone Activities - Python' },
-    { name: 'typeScriptBlock', href: '/develop/typescript/activities/standalone-activities', label: 'Standalone Activities - TypeScript' },
-    { name: 'dotnetBlock',     href: '/develop/dotnet/activities/standalone-activities',     label: 'Standalone Activities - .NET' },
-  ].map(({ name, href, label }) => (
-    <a key={name} href={href} style={{display:'flex',alignItems:'center',gap:'10px',textDecoration:'none'}}>
-      <span style={{width:'24px',height:'24px',flexShrink:0,overflow:'hidden',display:'block',position:'relative'}}>
-        <span style={{position:'absolute',top:0,left:0,transform:'scale(0.6)',transformOrigin:'top left'}}>
-          <SdkSvg name={name} />
-        </span>
-      </span>
-      <span>{label}</span>
-    </a>
-  ))}
-</div>
+<SdkGuideLinks
+  path="activities/standalone-activities"
+  filter={['go', 'java', 'python', 'typescript', 'dotnet', 'ruby']}
+  title="Standalone Activities"
+/>
