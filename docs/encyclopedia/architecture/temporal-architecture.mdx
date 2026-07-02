@@ -15,7 +15,7 @@ tags:
   - Architecture
 ---
 
-import { EnlargeImage } from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 Before reading this, it would be helpful to read [Understanding Temporal](/evaluate/understanding-temporal) as it assumes knowledge of the following introductory concepts: Workflow, Activity, Worker, Task Queues, and Event History.
 
@@ -29,14 +29,27 @@ As a developer, you are responsible for the Temporal Application code which incl
 
 As part of the Temporal Platform, we also have the Temporal Service, which runs the Temporal Server with its database and optional components, and is responsible for orchestrating execution. A Temporal application gains its durability, scalability, and reliability from the support provided by the Temporal Service.
 
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/your-environment-and-temporal-service.png"
+    srcDark="/img/encyclopedia/architecture/your-environment-and-temporal-service-dark.png"
+    alt="Diagram of your application environment with Workflow code, Workers, and the Temporal SDK connecting to the Temporal Service"
+    width="90%"
+  />
+</div>
+
 ## Overall architecture diagram
 
 To understand how Temporal works, you can start at the high level architecture view. This shows how all of the different layers interact with each other. Then you can take a deep dive into each layer.
 
-<EnlargeImage
-  src="/img/encyclopedia/architecture/overall_architecture.png"
-  alt="Overview of the Temporal architecture"
-/>
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/overall_architecture.png"
+    alt="Overview of the Temporal architecture"
+    width="100%"
+    zoom={true}
+  />
+</div>
 
 In the wider platform, there are three kinds of clients that talk to the Temporal Server:
 
@@ -65,6 +78,15 @@ Clients are responsible for starting Workflows by sending requests to initiate n
 The Temporal Server is the heart of the platform. It's responsible for orchestrating Workflow Execution, maintaining state, and ensuring reliability.
 
 The Temporal Server consists of a frontend and multiple backend services, plus a database as a required external component. A Temporal Server may also include some optional components, such as Elasticsearch for advanced search visibility or Grafana for creating operational dashboards for observability.
+
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/temporal-server-internals.png"
+    srcDark="/img/encyclopedia/architecture/temporal-server-internals-dark.png"
+    alt="Diagram of the Temporal Server with Frontend, History, Matching, and Worker services connected to a database and Elasticsearch"
+    width="80%"
+  />
+</div>
 
 ### Frontend Service
 
