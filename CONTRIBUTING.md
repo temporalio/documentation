@@ -153,11 +153,12 @@ Here is the hierarchy of how the canonical URLs work:
 5. Sidebar hierarchy
    - Controls nav placement only; it does not determine the canonical URL.
 
-We do not encourage the use of the `slug` field in the frontmatter for a page. This field will override the URL and could potentially cause issues with redirects and the sidebar nav.
+We do not encourage the use of the `slug` field in the frontmatter for a page. This field will override the URL and could potentially cause issues with redirects and the sidebar nav. A `slug` is useful when you want the public URL to be independent of where the file lives in the repo. In most cases, you don't need one.
 
 If you are considering using a custom slug, answer these questions first:
 
-- Does the page _need_ a custom URL? If so, why?
+- Is this page going to be widely linked from blogs, GitHub issues, or other docs?
+- Are you replacing an existing page?
 - Did you already check the redirects in `vercel.json`?
 - Is it in the page in a folder under the topic that makes the most sense?
 
