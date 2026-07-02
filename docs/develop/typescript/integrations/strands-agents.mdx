@@ -14,7 +14,7 @@ tags:
   - Strands Agents
   - TypeScript SDK
   - Temporal SDKs
-description: Run Strands Agents AI workflows with durable execution using the Temporal TypeScript SDK and Strands plugin.
+description: Run Strands Agents AI Workflows with Durable Execution using the Temporal TypeScript SDK and Strands plugin.
 ---
 
 Temporal's integration with [Strands Agents](https://strandsagents.com/) is an [SDK Plugin](/develop/plugins-guide) that
@@ -58,7 +58,7 @@ npm install @temporalio/strands-agents @strands-agents/sdk
 ### Run a Strands agent with Durable Execution
 
 The following example runs a Strands agent inside a Temporal Workflow. Model calls execute as Temporal Activities, which
-means they get automatic retries, timeouts, and durable execution. If the Worker process crashes mid-conversation,
+means they get automatic retries, timeouts, and Durable Execution. If the Worker process crashes mid-conversation,
 Temporal replays the Workflow and resumes from the last completed Activity.
 
 **1. Define the Workflow**
@@ -211,7 +211,7 @@ new StrandsPlugin({
 });
 ```
 
-Each `TemporalAgent` carries its own Activity options (timeouts, retry policy, task queue, streaming topic) and
+Each `TemporalAgent` carries its own Activity options (timeouts, Retry Policy, Task Queue, streaming topic) and
 dispatches to a shared model Activity, which resolves the model name against the registered factories at runtime. A
 model name not present in the `models` mapping throws inside the Activity.
 
@@ -412,7 +412,7 @@ const echo = new TemporalMCPClient({
 
 To amortize connection setup, the `{name}-listTools` and `{name}-callTool` Activities share one Worker-process MCP
 connection and reuse it across calls. The connection is disconnected after it sits idle for `mcpConnectionIdleTimeout`
-(default 5 minutes); the timer resets on every reuse. `mcpConnectionIdleTimeout` accepts a millisecond number or a
+(default 5 minutes); the Timer resets on every reuse. `mcpConnectionIdleTimeout` accepts a millisecond number or a
 duration string (such as `'30 seconds'`), like `startToCloseTimeout`:
 
 ```ts
@@ -508,10 +508,10 @@ export async function humanInTheLoop(prompt: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-#### Interrupt from an activity tool
+#### Interrupt from an Activity tool
 
 An `activityAsTool`-wrapped Activity can interrupt the agent by throwing an interrupt-shaped `ApplicationFailure`. The
-plugin's failure converter preserves the interrupt payload across the Activity boundary, so `AgentResult.interrupts` is
+plugin's Failure Converter preserves the interrupt payload across the Activity boundary, so `AgentResult.interrupts` is
 populated the same way as for hooks.
 
 Define the Activity that raises the interrupt with the `STRANDS_INTERRUPT_TYPE` failure type:
@@ -610,7 +610,7 @@ export async function activityInterrupt(prompt: string): Promise<string> {
 
 :::caution
 
-Activity-tool interrupts rely on the plugin's failure converter, which is installed via the client's data converter.
+Activity-tool interrupts rely on the plugin's Failure Converter, which is installed via the client's Data Converter.
 Attach `StrandsPlugin` to the **client** (not just the Worker) for Activity-tool interrupts to work. Workers built from
 that client pick up the plugin automatically.
 
@@ -763,7 +763,7 @@ Passing `retryStrategy` to `new TemporalAgent(...)` throws. Remove the argument 
 
 ### Handle long-running chat sessions
 
-A chat-style Workflow accumulates message history with every turn. Over a long session, the Workflow's event history can
+A chat-style Workflow accumulates message history with every turn. Over a long session, the Workflow's Event History can
 grow large enough to hit Temporal's per-Workflow history limit. To avoid this, use
 [Continue-as-New](/develop/typescript/workflows/continue-as-new) to start a fresh Workflow execution while carrying the agent's
 message history forward as input.
@@ -872,7 +872,7 @@ const worker = await Worker.create({
 
 ### Snapshots are not supported
 
-`TemporalAgent.takeSnapshot()` and `TemporalAgent.loadSnapshot()` throw. Temporal's event history already persists
+`TemporalAgent.takeSnapshot()` and `TemporalAgent.loadSnapshot()` throw. Temporal's Event History already persists
 Workflow state durably at a finer granularity than Strands snapshots, so snapshots are redundant inside a Workflow.
 
 ### Samples
