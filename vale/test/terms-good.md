@@ -27,3 +27,7 @@ Use Heartbeating to report Activity progress.
 The Codec Server provides remote Payload encoding.
 
 A Child Workflow Execution inherits the Parent Close Policy.
+
+See the source file for the Worker:
+
+[strands-agents/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/strands-agents/src/worker.ts)
