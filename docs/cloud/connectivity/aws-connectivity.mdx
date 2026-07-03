@@ -263,28 +263,28 @@ Workers connected to the passive region's VPC Endpoint stay productive: Temporal
 ---
 title: Direct VPCE targeting (High Availability)
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart LR
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':55,'rankSpacing':70,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart TD
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
     classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    subgraph HPRIM["<b>us-east-1</b> (active)"]
-      HWA["<b>Worker(s)</b><br/>Server name:<br/>my-namespace.my-account.tmprl.cloud"]:::worker
-      HVPA["<b>VPC Endpoint</b><br/>vpce-…-us-east-1"]:::endpoint
-      HNSA["<b>Replica</b><br/>(Active)"]:::ns
-      HWA --> HVPA
-      HVPA -->|PrivateLink| HNSA
-    end
     subgraph HSEC["<b>us-west-2</b> (passive)"]
-      HWB["<b>Worker(s)</b><br/>Server name:<br/>my-namespace.my-account.tmprl.cloud"]:::worker
-      HVPB["<b>VPC Endpoint</b><br/>vpce-…-us-west-2"]:::endpoint
-      HNSB["<b>Replica</b><br/>(Passive)"]:::ns
+      HWB["<b>Worker(s)</b><br/>Server name:<br/>namespace.<br/>acct.<br/>tmprl.cloud"]:::worker
+      HVPB["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>-us-west-2"]:::endpoint
+      HNSB["<b>Replica</b><br/>(Passive,<br/>forwards<br/>to active)"]:::ns
       HWB --> HVPB
-      HVPB -->|PrivateLink| HNSB
+      HVPB -->|Private<br/>Link| HNSB
     end
-    HNSB -.->|"Tasks forwarded to active"| HNSA
-    HNSA <-->|Replication| HNSB
+    subgraph HPRIM["<b>us-east-1</b> (active)"]
+      HWA["<b>Worker(s)</b><br/>Server name:<br/>namespace.<br/>acct.<br/>tmprl.cloud"]:::worker
+      HVPA["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>-us-east-1"]:::endpoint
+      HNSA["<b>Namespace</b><br/>(Active)"]:::ns
+      HWA --> HVPA
+      HVPA -->|Private<br/>Link| HNSA
+    end
+    
+    
     class HPRIM,HSEC region
 ```
 
