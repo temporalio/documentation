@@ -29,7 +29,7 @@ This one-way connection means Temporal cannot establish a connection back to you
 This is useful if normally you block traffic egress as part of your security protocols.
 If you use a private environment that does not allow external connectivity, you will remain isolated.
 
-After creating the PrivateLink endpoint, configure your clients to use it through either [private DNS](#configuring-private-dns-for-aws-privatelink) or [direct VPCE targeting](#direct-vpce) (single-region Namespaces only).
+After creating the PrivateLink endpoint, configure your clients to use it through either [private DNS](#configuring-private-dns-for-aws-privatelink) or [direct VPCE targeting](#direct-vpce). Direct VPCE targeting is simplest for single-region Namespaces, but also works for High Availability Namespaces with [more careful setup](#direct-vpce).
 
 ## Requirements
 
@@ -211,12 +211,89 @@ For single-region Namespaces, you can avoid creating DNS records for each Namesp
 
 With this approach, new Namespaces do not require new DNS records.
 
-:::warning Not compatible with High Availability Namespaces
+**Single-region Namespace**
 
-This approach does not work for Namespaces with High Availability features.
-HA Namespaces rely on Temporal's public DNS CNAME records to route traffic to the active region during failover.
-If you bypass DNS, your Workers cannot follow the CNAME to the new region.
-For HA Namespaces, use [private DNS](#configuring-private-dns-for-aws-privatelink) instead.
+```mermaid
+---
+title: Direct VPCE targeting (single region)
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph SREG["<b>Your VPC</b> — us-east-1"]
+      subgraph SWP["Worker Pool"]
+        SW1["<b>Worker</b>"]:::worker
+        SW2["<b>Worker</b>"]:::worker
+      end
+      SVPCE["<b>VPC Endpoint</b><br/>vpce-…-us-east-1"]:::endpoint
+      SWP -->|"Server name:<br/>my-namespace.my-account.tmprl.cloud"| SVPCE
+    end
+    SNS["<b>Namespace</b><br/>(Temporal Cloud)"]:::ns
+    SVPCE --> SNS
+    class SREG region
+    class SWP pool
+```
+
+Workers set their **Endpoint** to the VPC Endpoint DNS name and their **Server name** to the Namespace Endpoint, so the TLS handshake still presents the public Namespace hostname.
+
+:::note Using direct VPCE targeting with High Availability Namespaces
+
+Direct VPCE targeting also works for Namespaces with [High Availability features](/cloud/high-availability), but it takes more careful setup. Because each VPC Endpoint is pinned to its region and does not follow Temporal Cloud's active-region CNAME on failover, you cannot rely on DNS to move Workers between regions. This is the same trade-off as targeting a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) instead of the Namespace Endpoint.
+
+To stay available through a failover:
+
+- Run Workers in every region the Namespace can be active in.
+- Point each region's Workers at the VPC Endpoint **local to that region** — the Endpoint value differs per region.
+- Set the **Server name** (SNI override) to the Namespace Endpoint value in every region — it is the same everywhere.
+
+Workers connected to the passive region's VPC Endpoint stay productive: Temporal Cloud forwards their tasks to the active region. On failover, no DNS change is needed, because Workers are already connected in both regions and the surviving region takes over.
+
+**High Availability Namespace**
+
+```mermaid
+---
+title: Direct VPCE targeting (High Availability)
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph HPRIM["<b>us-east-1</b> (active)"]
+      subgraph HWPA["Worker Pool"]
+        HWA1["<b>Worker</b>"]:::worker
+        HWA2["<b>Worker</b>"]:::worker
+      end
+      HVPA["<b>VPC Endpoint</b><br/>vpce-…-us-east-1"]:::endpoint
+      HNSA["<b>Replica</b><br/>(Active)"]:::ns
+      HWPA -->|"Server name:<br/>my-namespace.my-account.tmprl.cloud"| HVPA
+      HVPA --> HNSA
+    end
+    subgraph HSEC["<b>us-west-2</b> (passive)"]
+      subgraph HWPB["Worker Pool"]
+        HWB1["<b>Worker</b>"]:::worker
+        HWB2["<b>Worker</b>"]:::worker
+      end
+      HVPB["<b>VPC Endpoint</b><br/>vpce-…-us-west-2"]:::endpoint
+      HNSB["<b>Replica</b><br/>(Passive)"]:::ns
+      HWPB -->|"Server name:<br/>my-namespace.my-account.tmprl.cloud"| HVPB
+      HVPB --> HNSB
+    end
+    HNSB -.->|"Tasks forwarded to active"| HNSA
+    HNSA <-->|Replication| HNSB
+    class HPRIM,HSEC region
+    class HWPA,HWPB pool
+```
+
+The **Server name** is identical in both regions; only the **Endpoint** (the local VPC Endpoint DNS name) differs. Passive-region Workers reach the passive Replica, and Temporal Cloud forwards their tasks to the active region.
+
+If you would rather not run Workers in every region, use [private DNS](#configuring-private-dns-for-aws-privatelink) with the regional-record pattern described in [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) instead, which relies on DNS-based failover to move Workers between regions.
 
 :::
 
@@ -231,7 +308,7 @@ For each additional AWS account or VPC:
 1. In that account, create the AWS PrivateLink VPC endpoint targeting the regional service name from the [regions table](#available-aws-regions-privatelink-endpoints-and-dns-record-overrides) — same as in the [creation steps](#creating-an-aws-privatelink-connection) above.
 2. Configure DNS in that VPC. You have two options:
    - Create a Route 53 Private Hosted Zone in that account scoped to the appropriate VPC(s), following the [private DNS steps](#configuring-private-dns-for-aws-privatelink) above. Each VPC's PHZ should point at the VPC Endpoint local to that VPC.
-   - Or, use [direct VPCE targeting](#direct-vpce) (single-region Namespaces only).
+   - Or, use [direct VPCE targeting](#direct-vpce). For High Availability Namespaces, follow the [additional setup](#direct-vpce) so each region's Workers target their local VPC Endpoint.
 3. **Optional:** if you want to enforce private-only access for a Namespace, add a Connectivity Rule for each VPC endpoint and attach all of them (plus a public rule, if needed) to the Namespace. See [Connectivity Rules](/cloud/connectivity#connectivity-rules).
 
 There is no upper limit on the number of VPC endpoints you can connect from your side to a regional PrivateLink service. The default per-account limit on private Connectivity Rules is 50 — [contact support](/cloud/support#support-ticket) if you need to raise it.
