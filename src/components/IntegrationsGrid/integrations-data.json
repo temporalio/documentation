@@ -181,6 +181,15 @@
     "href": "/develop/ruby/integrations/rails-integration"
   },
   {
+    "name": "SigNoz",
+    "description": "Ingest Temporal Cloud metrics into SigNoz via an OpenTelemetry collector with a pre-built dashboard.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://signoz.io/docs/integrations/temporal-cloud-metrics/"
+  },
+  {
     "name": "Spring AI",
     "description": "Build AI-powered Java applications with durable Spring AI tool calls.",
     "tags": [
