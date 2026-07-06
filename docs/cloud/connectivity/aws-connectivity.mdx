@@ -270,18 +270,18 @@ flowchart TD
     classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
     subgraph HSEC["<b>us-west-2</b> (passive)"]
-      HWB["<b>Worker(s)</b><br/>Server name:<br/>namespace.<br/>acct.<br/>tmprl.cloud"]:::worker
-      HVPB["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>-us-west-2"]:::endpoint
+      HWB["<b>Worker(s)</b><br/>Server name<br/><span style='font-family:mono'>namespace.<br/>acct.<br/>tmprl.cloud</span>"]:::worker
+      HVPB["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>us-west-2"]:::endpoint
       HNSB["<b>Replica</b><br/>(Passive,<br/>forwards<br/>to active)"]:::ns
       HWB --> HVPB
-      HVPB -->|Private<br/>Link| HNSB
+      HVPB --> HNSB
     end
     subgraph HPRIM["<b>us-east-1</b> (active)"]
-      HWA["<b>Worker(s)</b><br/>Server name:<br/>namespace.<br/>acct.<br/>tmprl.cloud"]:::worker
-      HVPA["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>-us-east-1"]:::endpoint
+      HWA["<b>Worker(s)</b><br/>Server name<br/><span style='font-family:mono'>namespace.<br/>acct.<br/>tmprl.cloud</span>"]:::worker
+      HVPA["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>us-east-1"]:::endpoint
       HNSA["<b>Namespace</b><br/>(Active)"]:::ns
       HWA --> HVPA
-      HVPA -->|Private<br/>Link| HNSA
+      HVPA --> HNSA
     end
     
     
