@@ -27,3 +27,5 @@ Use heartbeating to report activity progress.
 The codec server provides remote payload encoding.
 
 A child workflow execution inherits the parent close policy.
+
+## Highly available worker patterns {/* #ha-worker-patterns */}
