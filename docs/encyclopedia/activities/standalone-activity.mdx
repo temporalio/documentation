@@ -79,7 +79,8 @@ webhook, syncing data, or executing a single function reliably with built-in ret
 - Arbitrary length jobs with heartbeats for liveness and checkpointing progress
 - At-least-once execution by default with native retry policy and timeouts
 - At-most-once execution if retry max attempts is 1
-- Addressable - get an Activity ID / Run ID and get the result, cancel, and terminate
+- Addressable - get an Activity ID / Run ID and get the result, cancel, pause, unpause, reset, update options, and
+  terminate
 - Deduplication - with conflict policy: (USE_EXISTING, ...), reuse policy: (REJECT_DUPLICATES, ...)
 - Separate ID space from Workflows - Standalone Activities are a different kind of top-level execution
 - Priority and fairness - multi-tenant fairness, weighted priority tiers, and safeguards against starvation of lower-weighted tasks
@@ -105,7 +106,6 @@ failed, etc.) - not the number of queued tasks.
 
 The Public Preview of Standalone Activities has some known limitations:
 
-- Pause, reset, and update options are not supported in Public Preview but scheduled for GA.
 - `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
 
 ## Temporal CLI support
@@ -132,7 +132,11 @@ temporal version 1.7.0 (Server 1.31.0, UI 2.49.1)
 ```
 
 The `temporal activity` subcommand supports Standalone Activities with commands including: `start`,
-`execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
+`execute`, `result`, `list`, `count`, `describe`, `cancel`, `pause`, `unpause`, `reset`,
+`update-options`, and `terminate`.
+
+For details about Pause, Unpause, Reset, and Update Options, see
+[Standalone Activity operator commands](/activity-operations#standalone-activity-operator-commands).
 
 The Temporal Dev Server has Standalone Activities enabled by default for local testing.
 
