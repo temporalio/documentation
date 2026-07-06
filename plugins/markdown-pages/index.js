@@ -26,7 +26,11 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     const id = frontmatter.id || path.basename(withoutExt);
     const dir = path.dirname(withoutExt);
     if (dir === '.') return id === 'index' ? 'index' : id;
-    if (id === 'index') return dir;
+    // Docusaurus treats a doc named the same as its parent folder (e.g.
+    // `event-history/event-history.mdx`) as that folder's index page, the
+    // same way it treats `index.mdx`/`README.mdx`. Mirror that convention
+    // here so the generated .md file lands at the same route as the real page.
+    if (id === 'index' || id === path.basename(dir)) return dir;
     return `${dir}/${id}`;
   }
 

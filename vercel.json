@@ -2138,6 +2138,11 @@
       "source": "/cloud/user-groups",
       "destination": "/cloud/manage-access/user-groups",
       "permanent": true
+    },
+    {
+      "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
+      "destination": "/develop/ruby/workflows/versioning#patching",
+      "permanent": true
     }
   ]
 }
