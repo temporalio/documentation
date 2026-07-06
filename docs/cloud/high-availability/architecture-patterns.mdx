@@ -1,7 +1,7 @@
 ---
 id: architecture-patterns
-title: Worker deployment patterns for Active-Passive and Active-Active HA/DR
-sidebar_label: Worker deployment patterns
+title: Architecture patterns for Active-Passive and Active-Active HA/DR
+sidebar_label: Architecture patterns
 slug: /cloud/high-availability/architecture-patterns
 description: Choose a Worker deployment pattern for high availability and disaster recovery (HA/DR) on Temporal Cloud — Active/Passive (cold or hot standby) and Active/Active — and plan multi-region failover for Workers, Clients, Codec Servers, and databases to meet your RTO and RPO.
 tags:
@@ -31,26 +31,30 @@ keywords:
   .docusaurus-mermaid-container .edgeLabel p,
   .docusaurus-mermaid-container .edgeLabel rect,
   .docusaurus-mermaid-container .edgeLabel .labelBkg {
-    background-color: transparent !important;
-    fill: transparent !important;
+    background-color: var(--ifm-background-color) !important;
+    fill: var(--ifm-background-color) !important;
   }
 `}</style>
 
-When an outage strikes, a Namespace with [High Availability](/cloud/high-availability) fails over to another region automatically, but it does not move the rest of the architecture.
-Workers, Workflow starters, Codec Servers, databases, and the external systems that Workflows depend on each need their own failover story.
+When a cloud outage strikes, a Temporal Cloud Namespace with [High Availability](/cloud/high-availability) fails over to another region automatically, providing high availability and disaster recovery for your most important Workflows.
+But what about the rest of the architecture?
 
-A critical piece of the [recovery time](/cloud/rpo-rto) achieved in a real-world outage is the **Worker deployment pattern**: where Worker fleets run and which region (or regions) processes Workflows at any given moment.
-This page describes common Active/Passive (also written Active-Passive) and Active/Active (also written Active-Active) patterns for deploying Workers and the rest of the architecture to achieve an overall high availability and disaster recovery (HA/DR) strategy across regions.
+Workers, Workflow starters, Codec Servers, databases, network load balancers, and every other external systems that touch your Workflows use each need their own HA/DR failover story.
 
-## What needs a failover story {/* #what-needs-a-failover-story */}
+In a real outage, your [recovery time](/cloud/rpo-rto) depends on your **Worker deployment pattern**: where Worker fleets run, how they failover, and which region (or regions) processes Workflows at each step.
 
-Beyond the Namespace itself, these components live in the application environment and must be planned for:
+This page describes common Active/Passive (also written Active-Passive) and Active/Active (also written Active-Active) patterns for deploying Workers--and the other systems in your cloud architecture--to achieve your business goals for high availability and disaster recovery (HA/DR).
 
-- **Workers** (the focus of this page) — execute Workflows and Activities.
-- **Workflow starters and Clients** — start and signal Workflows.
-- **Codec Servers** — encode and decode payloads for Workers, the Web UI, and the CLI.
+## Pieces of a highly available cloud architecture {/* #pieces-to-failover */}
+
+To keep your Workflows running during a cloud outage, these components need to failover to a healthy region:
+
+- **Temporal Cloud Namespace** - achieve this simply by enabling [High Availability](/cloud/high-availability) on the Namespace.
+- **Workers** (the focus of this page) — the compute resources that execute Workflows and Activities.
+- **Workflow starters and Clients** — the applications that start and signal Workflows.
+- **Codec Servers** — a critical dependency for Workers, the Web UI, and the CLI.
 - **Proxies between Workers and Temporal Cloud** — any forward proxy or mTLS terminator in the connection path between Workers / Starters / Clients → Namespace.
-- **Databases and queues** — the systems that Activities read and write.
+- **Datastores** — databases, queues, and any other systems that Activities read and write.
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
@@ -75,25 +79,119 @@ flowchart LR
     class WFENV env
 ```
 
-Some systems must be active wherever Workers are running (for example, Codec Servers), while others might follow a different failover sequence (for example, databases).
-Because the right choice for each of these usually depends on where Workers run, **this page focuses on Worker deployment patterns**.
-
 :::tip
 
 See [High Availability for Temporal Cloud Namespaces](/cloud/high-availability) to learn more about Namespace replicas, replication, and failover.
 
 :::
 
-## Worker deployment patterns {/* #worker-deployment-patterns */}
+## Highly available Worker patterns {/* #ha-worker-patterns */}
 
-These Worker deployment patterns are how you extend Namespace High Availability into a full disaster recovery (DR) and business continuity plan across regions.
+A Worker deployment pattern pairs with Namespace High Availability to achieve a disaster recovery (DR) and business continuity plan for your full Temporal architecture.
+
 This page covers three main patterns — **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active**.
-They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**, and differ in where the Workers run and where Workflows process:
 
-- **Active/Passive** (also written Active-Passive) — Workflows process in one region at a time, the "active" region. The other region is "passive" and ready for failover. This pattern has two variants:
-  - **[Active/Passive (Cold)](#active-cold)** — a.k.a. Active/Cold — Workers run in only one region at a time. After a failover, Workers start in the secondary region. The region where Workers run == the region where Workflows process. To fail over, Workers need a "cold start" in the other region.
-  - **[Active/Passive (Hot)](#active-hot)** — a.k.a. Active/Hot — Workers run in **both regions** simultaneously, but Workflows still process in only one region at any given time. The other region's Workers are on "hot" standby.
-- **[Active/Active](#active-active)** (also written Active-Active) — Workflows process in both regions at the same time. Necessarily, Workers run in both regions at all times.
+They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**. They are defined by where the Workers run and where Workflows process:
+
+- **[Active/Passive (Cold)](#active-cold)** (also written Active-Passive) — a.k.a. Active/Cold — Workflows process in one region at a time, the "active" region. The other region is "passively" waiting, without any Workers. On a failover, the passive region becomes active, and new Workers are launched (from a "cold" start) to process Workflows.
+- **[Active/Passive (Hot)](#active-hot)** — a.k.a. Active/Hot — Workflows process in one region at a time, the "active" region. However, Workers run in **both regions** simultaneously: processing Workflows in the "active" region, and on "hot" standby in the passive region. This achieves a faster failover and lower recovery time.
+- **[Active/Active](#active-active)** (also written Active-Active) — a.k.a. Multi-Active - Workflows process in both/multiple regions at the same time, and Workers run in all regions at all times.
+
+```mermaid
+---
+title: Active/Passive (Cold)
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef empty fill:transparent,stroke:#9aa4b2,stroke-width:1px,stroke-dasharray:4 3,color:#9aa4b2;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph ICPRIM["<b>Primary</b>"]
+      subgraph ICWP["Worker Pool"]
+        ICW1["<b>Worker</b>"]:::worker
+        ICW2["<b>Worker</b>"]:::worker
+        ICW3["<b>Worker</b>"]:::worker
+      end
+      ICNS["<b>Namespace</b>"]:::ns
+      ICWP <-->|Workflows| ICNS
+    end
+    subgraph ICSEC["<b>Secondary</b>"]
+      ICR["<b>Replica</b>"]:::ns
+      subgraph ICWP2["Worker Pool"]
+        ICE["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]:::empty
+      end
+      ICR ~~~ ICWP2
+    end
+    ICNS --> ICR
+    class ICPRIM,ICSEC region
+    class ICWP,ICWP2 pool
+```
+
+```mermaid
+---
+title: Active/Passive (Hot)
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph IHPRIM["<b>Primary</b>"]
+      subgraph IHWP["Worker Pool"]
+        IHW1["<b>Worker</b><br/>Active"]:::worker
+        IHW2["<b>Worker</b><br/>Active"]:::worker
+        IHW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      IHNS["<b>Namespace</b>"]:::ns
+      IHWP <-->|Workflows| IHNS
+    end
+    subgraph IHSEC["<b>Secondary</b>"]
+      IHR["<b>Replica</b>"]:::ns
+      subgraph IHWP2["Worker Pool"]
+        IHS1["<b>Worker</b><br/>Standby"]:::worker
+        IHS2["<b>Worker</b><br/>Standby"]:::worker
+        IHS3["<b>Worker</b><br/>Standby"]:::worker
+      end
+      IHR <-->|"Connected"| IHWP2
+    end
+    IHNS --> IHR
+    class IHPRIM,IHSEC region
+    class IHWP,IHWP2 pool
+```
+
+```mermaid
+---
+title: Active/Active
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph IAPRIM["<b>Primary</b>"]
+      subgraph IAWP["Worker Pool"]
+        IAW1["<b>Worker</b><br/>Active"]:::worker
+        IAW2["<b>Worker</b><br/>Active"]:::worker
+      end
+      IANS["<b>Namespace</b>"]:::ns
+      IAWP <-->|Workflows| IANS
+    end
+    subgraph IASEC["<b>Secondary</b>"]
+      IAR["<b>Replica</b>"]:::ns
+      subgraph IAWP2["Worker Pool"]
+        IAS1["<b>Worker</b><br/>Active"]:::worker
+        IAS2["<b>Worker</b><br/>Active"]:::worker
+      end
+      IAR <-->|Workflows| IAWP2
+    end
+    IANS --> IAR
+    class IAPRIM,IASEC region
+    class IAWP,IAWP2 pool
+```
 
 :::info
 
@@ -101,26 +199,26 @@ They trade off **recovery time** after an outage, **cost during normal operation
 
 A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state.
 
-However, since both regions can serve requests and Worker polls, **Workers don't need to run in the same region as the active replica**, and Temporal Cloud Namespaces can still fit into a broader "Active/Active" strategy, as described below.
+However, since **Workers don't need to run in the same region as the active Namespace replica**, Temporal Cloud Namespaces can still fit into an Active/Active HA/DR strategy, as described below.
 
 :::
 
-These patterns work across two cloud regions, which could be in the same cloud provider or different cloud providers:
+These patterns work across two cloud regions, which could be in the same cloud provider ("multi-region") or different cloud providers ("multi-cloud"):
 
 - **Primary region** — the region where the Namespace is active during normal operation, also called the "preferred region."
-- **Secondary region** — the region the Namespace fails over to. It can be any [Temporal Cloud region](/cloud/regions) that supports replication from the primary region.
+- **Secondary region** — the region the Namespace fails over to. It can be any [Temporal Cloud region](/cloud/regions) that supports replication from the primary region. Multi-region and multi-cloud architectures use the same Worker deployment patterns.
 
-:::tip
+### Compare patterns at a glance {/* #compare-at-a-glance */}
 
-Multi-region Replication and Multi-cloud Replication generally use the same set of Worker deployment patterns, so this page will not distinguish between multi-region and multi-cloud.
-
-:::
-
-### Compare Worker deployment patterns at a glance (benefits and tradeoffs) {/* #compare-at-a-glance */}
-
-| Pattern | Best for | Major benefits | Major tradeoffs |
+| Pattern | Where Workers run | Best for and benefits | Major tradeoffs |
 | --- | --- | --- | --- |
-| **[Active/Passive (Cold)](#active-cold)** | Easy initial deployment | Acts like a single region; no special setup required | Failing over Workers is the user's responsibility |
+| **[Active/Passive (Cold)](#active-cold)** | One region at a time | Easy initial deployment; acts like a single region with no special setup | Failing over Workers is your responsibility; highest recovery time of the three |
+| **[Active/Passive (Hot)](#active-hot)** | Both regions; secondary on warm standby | Low RTO with strict single-region behavior; fast Worker failover that is guaranteed to act like a single region | More configuration and the cost of a full standby fleet |
+| **[Active/Active](#active-active)** | All regions, all processing Workflows | Low RTO with Workers active in every region; fast failover that uses fleet capacity instead of a standby fleet | Cross-region requests add Workflow latency; external systems need a cross-region consistency story |
+
+## Active/Passive (Cold) {/* #active-cold */}
+
+_Also known as "Active/Cold Standby", "Active/Cold", or simply "Active/Passive"._
 
 ```mermaid
 ---
@@ -188,161 +286,12 @@ flowchart LR
     class FPP,FSP pool
 ```
 
----
-
-| Pattern | Best for | Major benefits | Major tradeoffs |
-| --- | --- | --- | --- |
-| **[Active/Passive (Hot)](#active-hot)** | Low RTO with strict single-region behavior | Fast Worker failover; guaranteed to act like a single region | More configuration and higher cost for the Worker fleet |
-
-```mermaid
----
-title: Normal operation
----
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph HPRIM["<b>Primary</b>"]
-      subgraph HWP["Worker Pool"]
-        HW1["<b>Worker</b><br/>Active"]:::worker
-        HW2["<b>Worker</b><br/>Active"]:::worker
-        HW3["<b>Worker</b><br/>Active"]:::worker
-      end
-      HNS["<b>Namespace</b>"]:::ns
-      HWP <-->|Workflows| HNS
-    end
-    subgraph HSEC["<b>Secondary</b>"]
-      HR["<b>Replica</b>"]:::ns
-      subgraph HWP2["Worker Pool"]
-        HS1["<b>Worker</b><br/>Standby"]:::worker
-        HS2["<b>Worker</b><br/>Standby"]:::worker
-        HS3["<b>Worker</b><br/>Standby"]:::worker
-      end
-      HR <-->|"Connected"| HWP2
-    end
-    HNS --> HR
-    class HPRIM,HSEC region
-    class HWP,HWP2 pool
-```
-
-```mermaid
----
-title: After failover
----
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph HFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
-      subgraph HFPP["Worker Pool"]
-        HFPW1["Unavailable"]:::down
-      end
-      HFPN["<b>Namespace</b>"]:::down
-      HFPP ~~~ HFPN
-    end
-    subgraph HFSEC["<b>Secondary</b>"]
-      HFSN["<b>Namespace</b><br>(Active)"]:::ns
-      subgraph HFSP["Worker Pool"]
-        HFSW1["<b>Worker</b><br/>Active"]:::worker
-        HFSW2["<b>Worker</b><br/>Active"]:::worker
-        HFSW3["<b>Worker</b><br/>Active"]:::worker
-      end
-      HFSN <-->|Workflows| HFSP
-    end
-    HFPN -->|"Failover"| HFSN
-    class HFPRIM regiondown
-    class HFSEC region
-    class HFPP,HFSP pool
-```
-
----
-
-| Pattern | Best for | Major benefits | Major tradeoffs |
-| --- | --- | --- | --- |
-| **[Active/Active](#active-active)** | Low RTO with Workers active in multiple regions | Fast Worker failover; uses Worker fleet capacity (no standby Workers) | Cross-region requests add Workflow latency |
-
-```mermaid
----
-title: Normal operation
----
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph APRIM["<b>Primary</b>"]
-      subgraph AWP["Worker Pool"]
-        AW1["<b>Worker</b><br/>Active"]:::worker
-        AW2["<b>Worker</b><br/>Active"]:::worker
-      end
-      ANS["<b>Namespace</b>"]:::ns
-      AWP <-->|Workflows| ANS
-    end
-    subgraph ASEC["<b>Secondary</b>"]
-      AR["<b>Replica</b>"]:::ns
-      subgraph AWP2["Worker Pool"]
-        AS1["<b>Worker</b><br/>Active"]:::worker
-        AS2["<b>Worker</b><br/>Active"]:::worker
-      end
-      AR <-->|Workflows| AWP2
-    end
-    ANS --> AR
-    class APRIM,ASEC region
-    class AWP,AWP2 pool
-```
-
-```mermaid
----
-title: After failover
----
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph AFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
-      subgraph AFPP["Worker Pool"]
-        AFPW1["Unavailable"]:::down
-      end
-      AFPN["<b>Namespace</b>"]:::down
-      AFPP ~~~ AFPN
-    end
-    subgraph AFSEC["<b>Secondary</b>"]
-      AFSN["<b>Namespace</b><br>(Active)"]:::ns
-      subgraph AFSP["Worker Pool"]
-        AFSW1["<b>Worker</b><br/>Active"]:::worker
-        AFSW2["<b>Worker</b><br/>Active"]:::worker
-        AFSW3["<b>Worker</b><br/>Scaled up<br/>(as needed)"]:::workerhollow
-      end
-      AFSN <-->|Workflows| AFSP
-    end
-    AFPN -->|"Failover"| AFSN
-    class AFPRIM regiondown
-    class AFSEC region
-    class AFPP,AFSP pool
-```
-
-### Active/Passive (Cold) {/* #active-cold */}
-
-_Also known as "Active/Cold Standby", "Active/Cold", or simply "Active/Passive"._
-
 Active/Cold Pattern: **Normal operation**
 
 - **Workers run in only one region.** A single Worker fleet runs in the primary region and processes all Workflows. No Workers run in the secondary region.
 - **The Namespace replicates to the secondary region.** A Namespace with High Availability has an active replica in the primary region and a passive replica in the secondary region. Temporal Cloud continuously replicates Workflow state to the passive replica, so it stays ready to become active.
 - **Your databases and queues replicate too, if needed.** Workers read and write systems such as databases and queues. If your Workflows depend on that data, replicate it to the secondary region so it's available after a failover. Workflows that don't touch external state may not need this.
-- **Setup is minimal.** Turn on Replication for your Namespace (see [High Availability for Temporal Cloud Namespaces](/cloud/high-availability)) and enable replication on any databases or queues your Workflows use. At that point you're technically already running Active/Passive (Cold): the secondary region holds a ready replica, and failing over is a matter of bringing your Workers up there.
+- **Setup is minimal.** Turn on Replication for your Namespace (see [Enable and manage High Availability](/cloud/high-availability/enable)) and enable replication on any databases or queues your Workflows use. At that point you're technically already running Active/Passive (Cold): the secondary region holds a ready replica, and failing over is a matter of bringing your Workers up there.
 
 ```mermaid
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
@@ -373,7 +322,7 @@ flowchart LR
 Active/Cold Pattern: **On failover**
 
 - **You must detect the outage yourself.** With no Workers running in the secondary region, nothing begins processing until you notice the outage and respond — detection is your responsibility, not Temporal Cloud's. Until you detect it and bring up Workers, your Workflows make no progress, so any delay in detection adds directly to your recovery time. This is a key advantage of the [Active/Passive (Hot)](#active-hot) pattern: its standby Workers begin processing the moment the Namespace fails over, so Workflows keep progressing even if you are slow to notice the outage. For how to detect an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
-- **The Namespace fails over automatically.** Temporal Cloud promotes the secondary region's replica to active. No action is needed to fail over the Namespace itself.
+- **The Namespace fails over automatically.** Temporal Cloud promotes the secondary region's replica to active. No action is needed to fail over the Namespace itself. To trigger or test a failover yourself, see [Failovers](/cloud/high-availability/failovers).
 - **You bring the Workers up in the secondary region.** Because no Workers were running there, they start from nothing — a "cold" start. Starting and scaling that fleet is your responsibility, ideally through tested automation. Until the Workers are running, no Workflows make progress.
 - **Promote your databases and queues, if needed.** If your Workflows depend on external data, make the secondary region's copy active so the new Workers can read and write it.
 - **Recovery time is dominated by Worker startup.** After Temporal detects the outage and triggers failover, the Namespace is active almost immediately, but throughput returns to normal only after container or VM startup, image pulls, and application warm-up complete.
@@ -541,9 +490,76 @@ Active/Cold Pattern: **Component behavior**
 - **Codec Servers and proxies** — run alongside the active Workers; scaled up in the secondary region as part of a failover.
 - **Databases and queues** — single-region-active; fail over to the secondary region alongside the Workers.
 
-### Active/Passive (Hot) {/* #active-hot */}
+## Active/Passive (Hot) {/* #active-hot */}
 
 _Also known as "Active/Hot Standby" or "Active/Hot"._
+
+```mermaid
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph HPRIM["<b>Primary</b>"]
+      subgraph HWP["Worker Pool"]
+        HW1["<b>Worker</b><br/>Active"]:::worker
+        HW2["<b>Worker</b><br/>Active"]:::worker
+        HW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      HNS["<b>Namespace</b>"]:::ns
+      HWP <-->|Workflows| HNS
+    end
+    subgraph HSEC["<b>Secondary</b>"]
+      HR["<b>Replica</b>"]:::ns
+      subgraph HWP2["Worker Pool"]
+        HS1["<b>Worker</b><br/>Standby"]:::worker
+        HS2["<b>Worker</b><br/>Standby"]:::worker
+        HS3["<b>Worker</b><br/>Standby"]:::worker
+      end
+      HR <-->|"Connected"| HWP2
+    end
+    HNS --> HR
+    class HPRIM,HSEC region
+    class HWP,HWP2 pool
+```
+
+```mermaid
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph HFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph HFPP["Worker Pool"]
+        HFPW1["Unavailable"]:::down
+      end
+      HFPN["<b>Namespace</b>"]:::down
+      HFPP ~~~ HFPN
+    end
+    subgraph HFSEC["<b>Secondary</b>"]
+      HFSN["<b>Namespace</b><br>(Active)"]:::ns
+      subgraph HFSP["Worker Pool"]
+        HFSW1["<b>Worker</b><br/>Active"]:::worker
+        HFSW2["<b>Worker</b><br/>Active"]:::worker
+        HFSW3["<b>Worker</b><br/>Active"]:::worker
+      end
+      HFSN <-->|Workflows| HFSP
+    end
+    HFPN -->|"Failover"| HFSN
+    class HFPRIM regiondown
+    class HFSEC region
+    class HFPP,HFSP pool
+```
 
 Active/Hot Pattern: **Normal operation**
 
@@ -667,7 +683,73 @@ Active/Hot Pattern: **Component behavior**
 - **Codec Servers and proxies** — run in both regions continuously, not just after a failover.
 - **Databases and queues** — typically single-region-active; fail over alongside the active Workers.
 
-### Active/Active {/* #active-active */}
+## Active/Active {/* #active-active */}
+
+```mermaid
+---
+title: Normal operation
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph APRIM["<b>Primary</b>"]
+      subgraph AWP["Worker Pool"]
+        AW1["<b>Worker</b><br/>Active"]:::worker
+        AW2["<b>Worker</b><br/>Active"]:::worker
+      end
+      ANS["<b>Namespace</b>"]:::ns
+      AWP <-->|Workflows| ANS
+    end
+    subgraph ASEC["<b>Secondary</b>"]
+      AR["<b>Replica</b>"]:::ns
+      subgraph AWP2["Worker Pool"]
+        AS1["<b>Worker</b><br/>Active"]:::worker
+        AS2["<b>Worker</b><br/>Active"]:::worker
+      end
+      AR <-->|Workflows| AWP2
+    end
+    ANS --> AR
+    class APRIM,ASEC region
+    class AWP,AWP2 pool
+```
+
+```mermaid
+---
+title: After failover
+---
+%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
+flowchart LR
+    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
+    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
+    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
+    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
+    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    subgraph AFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+      subgraph AFPP["Worker Pool"]
+        AFPW1["Unavailable"]:::down
+      end
+      AFPN["<b>Namespace</b>"]:::down
+      AFPP ~~~ AFPN
+    end
+    subgraph AFSEC["<b>Secondary</b>"]
+      AFSN["<b>Namespace</b><br>(Active)"]:::ns
+      subgraph AFSP["Worker Pool"]
+        AFSW1["<b>Worker</b><br/>Active"]:::worker
+        AFSW2["<b>Worker</b><br/>Active"]:::worker
+        AFSW3["<b>Worker</b><br/>Scaled up<br/>(as needed)"]:::workerhollow
+      end
+      AFSN <-->|Workflows| AFSP
+    end
+    AFPN -->|"Failover"| AFSN
+    class AFPRIM regiondown
+    class AFSEC region
+    class AFPP,AFSP pool
+```
 
 Active/Active Pattern: **Normal operation**
 
@@ -833,23 +915,11 @@ flowchart LR
 
 On failover, Temporal Cloud promotes the secondary replica to active and invokes the Worker function there — no fleet to bring up and nothing for you to do. The Worker failover is hands-off.
 
-## Related {/* #related */}
-
-To add a replica and turn on High Availability features, see [Enable and manage High Availability](/cloud/high-availability/enable).
-
-To choose between the Namespace Endpoint and Regional Endpoints and to set up private connectivity, see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
-
-To stop forwarding Worker polls to the active region for the Active/Passive (Hot) pattern, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
-
-To trigger and manage failovers, see [Failovers](/cloud/high-availability/failovers).
-
-To understand the recovery objectives each pattern is measured against, see [RPO and RTO](/cloud/rpo-rto).
-
 ## Frequently asked questions {/* #faq */}
 
 ### What is the difference between Active/Passive and Active/Active? {/* #faq-active-passive-vs-active-active */}
 
-In **Active/Passive** (also written Active-Passive), Workflows process in one region at a time and the other region stands by for failover. In **Active/Active** (also written Active-Active), Workers run in both regions and process Workflows in both at once. See [Worker deployment patterns](#worker-deployment-patterns) for the full comparison.
+In **Active/Passive** (also written Active-Passive), Workflows process in one region at a time and the other region stands by for failover. In **Active/Active** (also written Active-Active), Workers run in both regions and process Workflows in both at once. See [Worker deployment patterns](#ha-worker-patterns) for the full comparison.
 
 ### How do I fail over Workers to another region? {/* #faq-fail-over-workers */}
 
@@ -862,3 +932,11 @@ A Namespace with High Availability fails over automatically, but bringing up or 
 ### Do I have to run Workers in both regions for high availability? {/* #faq-workers-both-regions */}
 
 No. **Active/Passive (Cold)** runs Workers in one region at a time and is the simplest starting point for disaster recovery. Running Workers in both regions — **Active/Passive (Hot)** or **Active/Active** — lowers recovery time at higher cost.
+
+### Does Temporal Cloud support Active/Active for HA/DR? {/* #faq-active-active */}
+
+Yes, as a Worker deployment pattern — not as a database-level active/active. A Temporal Cloud Namespace with High Availability always has exactly one active region and one passive replica; it is [always Active/Passive](#ha-worker-patterns) underneath. But because Workers in any region reach the active replica through the Namespace Endpoint, you can run Worker fleets in every region and process Workflows in all of them at once. See [Active/Active](#active-active).
+
+### What special patterns are needed for multi-cloud HA/DR? {/* #faq-multi-cloud */}
+
+None specific to multi-cloud. Multi-region and multi-cloud HA/DR use the same [Worker deployment patterns](#ha-worker-patterns) — the secondary region can be any [Temporal Cloud region](/cloud/regions) that supports replication from the primary, whether in the same cloud provider or a different one. The same considerations apply: route Workers through the right [endpoints and private connectivity](/cloud/high-availability/ha-connectivity), and give any databases and queues a cross-region — here, cross-cloud — consistency story.
