@@ -83,10 +83,10 @@ class WorkflowInitWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-## Workflow Logic Requirements {/* #workflow-logic-requirements */}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Temporal Workflows [must be deterministic](https://docs.temporal.io/workflows#deterministic-constraints), which includes
-Ruby workflows. This means there are several things workflows cannot do such as:
+Ruby Workflows. This means there are several things Workflows cannot do such as:
 
 - Perform IO (network, disk, stdio, etc)
 - Access/alter external mutable state
@@ -95,6 +95,6 @@ Ruby workflows. This means there are several things workflows cannot do such as:
 - Make any random calls
 - Make any not-guaranteed-deterministic calls
 
-To prevent illegal workflow calls, a call tracer is put on the workflow thread that raises an exception if any illegal
+To prevent illegal Workflow calls, a call tracer is put on the Workflow thread that raises an exception if any illegal
 calls are made.
-Which calls are illegal is configurable in the worker options.
+Which calls are illegal is configurable in the Worker options.
