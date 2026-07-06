@@ -129,6 +129,11 @@ This diagram shows how a client adds points to a customer's loyalty account via 
 6. When the customer account is closed, a shutdown Signal causes the Workflow to drain its queue, await all handlers, and complete.
 
 ```mermaid
+---
+config:
+  theme: default
+  fontSize: 20px
+---
 sequenceDiagram
     participant Client as External Service
     participant TS as Temporal Server
