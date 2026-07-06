@@ -155,7 +155,7 @@ flowchart LR
         IHS2["<b>Worker</b><br/>Standby"]:::worker
         IHS3["<b>Worker</b><br/>Standby"]:::worker
       end
-      IHR <-->|"Connected"| IHWP2
+      IHR <-.-> IHWP2
     end
     IHNS --> IHR
     class IHPRIM,IHSEC region
@@ -520,7 +520,7 @@ flowchart LR
         HS2["<b>Worker</b><br/>Standby"]:::worker
         HS3["<b>Worker</b><br/>Standby"]:::worker
       end
-      HR <-->|"Connected"| HWP2
+      HR <-.-> HWP2
     end
     HNS --> HR
     class HPRIM,HSEC region
@@ -590,7 +590,7 @@ flowchart LR
       DHNWP2["<b>Workers</b><br/>Standby"]:::worker
       DHNDB2[("<b>DB / queue</b><br/>Standby")]:::ext
       DHNCODEC2["<b>Codec Server</b>"]:::ext
-      DHNR <-->|"Connected"| DHNWP2
+      DHNR <-.-> DHNWP2
       DHNWP2 <--> DHNDB2
       DHNWP2 <--> DHNCODEC2
     end
@@ -882,39 +882,6 @@ The Worker deployment pattern sets the approach; the supporting pieces follow it
 - **Codec Servers and proxies.** Anything in the connection path between Workers and Temporal Cloud must be reachable from every region where Workers connect. In Active/Passive (Cold), scale them up in the secondary region as part of a failover; in the Active/Passive (Hot) and Active/Active patterns, run them in both regions at all times.
 - **Databases and queues.** These remain the application's responsibility, and the right approach depends on the Worker deployment pattern: a single-region-active datastore pairs naturally with Active/Passive, while running Workers active in both regions raises consistency questions that must be designed for. Detailed guidance is out of scope for this page.
 
-## Serverless Workers failover {/* #serverless-workers-failover */}
-
-In every pattern above, the Worker fleet is something you run, so failing it over — a cold start, a standby fleet, or a second active region — is the application's responsibility. [Serverless Workers](/develop/typescript/workers/serverless-workers) move that responsibility to Temporal Cloud.
-
-Instead of long-lived Workers that poll a Task Queue, Serverless Workers invert the model: Temporal Cloud pushes Task invocations to a customer-owned compute function (AWS Lambda today). Because Temporal Cloud is the component that starts the Workers, it can also start them in the secondary region after a failover, with no action from you.
-
-- **One Worker Deployment spans both regions.** You register a compute function per region under a single Build ID, so the deployment is ready to run in either region.
-- **Failover is automatic.** When the Namespace fails over, Temporal Cloud invokes the function in the new active region — there's no fleet to detect the outage and bring up.
-- **The whole system fails over hands-off.** Both the Namespace and the Workers move automatically, lowering overall recovery time by removing the manual Worker-failover step that the patterns above require.
-
-```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
-flowchart LR
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    subgraph SWPRI["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
-      SWPNS["<b>Namespace</b>"]:::down
-    end
-    subgraph SWSEC["<b>Secondary</b>"]
-      SWSNS["<b>Namespace</b><br/>(Active)"]:::ns
-      SWSL["<b>Serverless Workers</b><br/>(Lambda)"]:::worker
-      SWSNS -->|"Temporal Cloud<br/>starts Workers"| SWSL
-    end
-    SWPNS -->|"Failover"| SWSNS
-    class SWPRI regiondown
-    class SWSEC region
-```
-
-On failover, Temporal Cloud promotes the secondary replica to active and invokes the Worker function there — no fleet to bring up and nothing for you to do. The Worker failover is hands-off.
-
 ## Frequently asked questions {/* #faq */}
 
 ### What is the difference between Active/Passive and Active/Active? {/* #faq-active-passive-vs-active-active */}
@@ -923,7 +890,7 @@ In **Active/Passive** (also written Active-Passive), Workflows process in one re
 
 ### How do I fail over Workers to another region? {/* #faq-fail-over-workers */}
 
-A Namespace with High Availability fails over automatically, but bringing up or activating Workers in the secondary region is your responsibility — unless you use [Serverless Workers](#serverless-workers-failover), which Temporal Cloud starts for you. The exact steps depend on your pattern; see [Active/Passive (Cold)](#active-cold), [Active/Passive (Hot)](#active-hot), and [Active/Active](#active-active).
+A Namespace with High Availability fails over automatically, but bringing up or activating Workers in the secondary region is your responsibility. The exact steps depend on your pattern; see [Active/Passive (Cold)](#active-cold), [Active/Passive (Hot)](#active-hot), and [Active/Active](#active-active).
 
 ### Which pattern has the lowest recovery time (RTO)? {/* #faq-lowest-rto */}
 
