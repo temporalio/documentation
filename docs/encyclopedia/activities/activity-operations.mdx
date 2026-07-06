@@ -22,6 +22,7 @@ This page discusses the following:
 - [Unpause](#unpause)
 - [Reset](#reset)
 - [Update Options](#update-options)
+- [Standalone Activity operator commands](#standalone-activity-operator-commands)
 - [Observability](#observability)
 
 Activity Operations are deliberate actions you perform on a specific [Activity Execution](/activity-execution), as
@@ -30,8 +31,8 @@ opposed to lifecycle behaviors like [retries](/encyclopedia/retry-policies) and
 
 You can perform Activity Operations through the [CLI](/cli/command-reference/activity), the UI, or directly via the gRPC
 API. Not all operations are available in all interfaces yet - see the [summary table](#operations-summary) for current
-support. Activity Operations don't apply to [Local Activities](/local-activity) or
-[Standalone Activities](/standalone-activity).
+support. Activity Operations don't apply to [Local Activities](/local-activity). For Standalone Activities, see
+[Standalone Activity operator commands](#standalone-activity-operator-commands).
 
 :::note Public Preview
 
@@ -125,7 +126,7 @@ but they must be Unpaused separately.
 
 - **Pause operates on individual Activities by ID within a single Workflow.** Unlike Unpause, Reset, and Update Options,
   there's no `--query` flag. To pause multiple Activities, issue separate commands for each Activity ID.
-- **No Namespace-wide query for Paused Activities.** You must know the Workflow Id. See [Observability](#observability).
+- **No Namespace-wide query for Paused Activities.** You must know the Workflow ID. See [Observability](#observability).
 
 ## Unpause {/* #unpause */}
 
@@ -314,6 +315,263 @@ options, including Retry Policy, Task Queue, and bulk mode via `--query`.
 
 - **Update Options is CLI and gRPC only.** It's not available in the UI.
 
+## Standalone Activity operator commands {/* #standalone-activity-operator-commands */}
+
+Standalone Activity operator commands use the same Activity operation concepts as Workflow Activities, but they target a
+top-level [Standalone Activity](/standalone-activity) instead of an Activity scheduled by a Workflow.
+
+- To target a Standalone Activity, identify the Activity by Activity ID.
+- If the Activity ID has multiple runs, use the Activity Run ID to target one run.
+- Do not provide a Workflow ID when you are targeting a Standalone Activity.
+- These commands operate on one Standalone Activity Execution at a time.
+- Workflow Run Timeout and Workflow Execution Timeout don't apply because a Standalone Activity is not part of a
+  Workflow Execution.
+- Standalone Activities still use Activity timeouts: Schedule-To-Close, Schedule-To-Start, Start-To-Close, and
+  Heartbeat.
+- Schedule-To-Close is the overall Activity Execution deadline. It keeps running while the Activity is Paused.
+- Start-To-Close and Heartbeat timeouts apply only while a Worker is running an attempt.
+- If the Activity has a Start Delay, the first dispatch can't happen before `ScheduleTime + StartDelay`.
+- Start Delay also affects the Schedule-To-Close and Schedule-To-Start deadlines for the first dispatch.
+- Start Delay stops affecting dispatch after the first Worker has picked up the Activity.
+- If an operation reissues a dispatch task, the task is scheduled at the later of the operation time, any remaining
+  Start Delay, and any preserved retry backoff.
+- A cancel request can still be accepted while Pause or Reset is pending; after cancellation is pending, cancellation
+  takes precedence over operator commands.
+- Terminal Activity states can't be Paused, Unpaused, Reset, or updated.
+- The commands return `NotFound` if the targeted Standalone Activity Execution doesn't exist.
+
+### Pause a Standalone Activity {/* #pause-standalone-activity */}
+
+Pause prevents the Temporal Service from dispatching another attempt for a Standalone Activity.
+
+- If the Activity is SCHEDULED:
+  - Pause moves it to PAUSED.
+  - Pause invalidates any pending dispatch task.
+  - No Worker receives it until it is Unpaused or Reset without `keep_paused`.
+- If the Activity is STARTED:
+  - Pause moves it to PAUSE_REQUESTED.
+  - The running Worker keeps its task token.
+  - Pause doesn't invalidate Start-To-Close or Heartbeat timeout tasks.
+  - If the Activity heartbeats:
+    - The next heartbeat response reports that the Activity is paused.
+  - If the Activity completes successfully:
+    - The Activity completes normally.
+  - If the Activity fails retryably:
+    - The Activity moves to PAUSED instead of dispatching the next retry.
+  - If the Activity fails non-retryably:
+    - The Activity fails instead of moving to PAUSED.
+  - If the Activity reaches Start-To-Close Timeout:
+    - The retry path consumes the pause request and the Activity moves to PAUSED when retries remain.
+  - If the Activity reaches Heartbeat Timeout:
+    - The retry path consumes the pause request and the Activity moves to PAUSED when retries remain.
+- When a pause request is consumed by a failed or timed-out attempt, the attempt count is incremented before the
+  Activity lands in PAUSED.
+- Pause doesn't stop the Schedule-To-Close Timeout.
+- If the Activity is PAUSED:
+  - It can time out with Schedule-To-Close Timeout.
+  TODO: list all combinations and iteractions for pause and SAA timeouts
+- Pause is rejected:
+  - If cancellation is already pending.
+  TODO: List out all scenarios where a pause will be rejected
+  TODO: list out all scenarios where a cancellation is rejected
+  - If the Activity is already Paused, unless the request is a duplicate with the same request ID.
+  - If reset is already pending.
+- Pause records pause metadata such as identity, reason, request ID, and pause time.
+
+### Unpause a Standalone Activity {/* #unpause-standalone-activity */}
+
+Unpause resumes a Standalone Activity that is PAUSED or has a pending pause request.
+
+- If the Activity is PAUSED:
+  - Unpause:
+    - moves it back to SCHEDULED.
+    - creates a new dispatch task.
+    - creates a new Schedule-To-Start timeout task when Schedule-To-Start Timeout is set.
+  - If retry backoff is still in the future:
+    - Unpause honors the remaining retry backoff by default.
+  - If the retry backoff came from a Worker-provided `NextRetryDelay`:
+    - Unpause honors that retry delay by default.
+  - If retry backoff has already elapsed:
+    - Unpause can dispatch immediately.
+  - Unpause doesn't clear the current retry interval unless `reset_attempts` is set.
+  - If `reset_attempts` is set:
+    - Unpause:
+      - resets the attempt count to 1.
+      - clears the current retry interval.
+  - If `reset_heartbeat` is set:
+    - Unpause clears the stored heartbeat time and heartbeat details.
+  - If `jitter` is set:
+    - Unpause delays dispatch by a random duration within the jitter window.
+  - If the Activity still has an unexpired Start Delay and no Worker has picked it up yet:
+    - Unpause honors the Start Delay.
+- If the Activity is PAUSE_REQUESTED:
+  - Unpause moves it back to STARTED.
+  - The running Worker keeps its task token.
+  - Unpause doesn't schedule a new attempt.
+  - Unpause doesn't invalidate the current Start-To-Close or Heartbeat timeout tasks.
+  - If cancellation is requested before Unpause:
+    - Unpause is a no-op.
+- If the Activity is RESET_REQUESTED because Reset with `keep_paused` was requested while the Activity was
+  PAUSE_REQUESTED:
+  - Unpause clears the `keep_paused` intent but keeps the reset pending.
+  - The running Worker continues to see the pending reset on heartbeat, but no longer sees the Activity as paused.
+  - The reset lands in SCHEDULED instead of PAUSED when the running attempt yields.
+- Unpausing an Activity that is not Paused is a no-op.
+- Unpausing a terminal Activity is rejected.
+
+### Reset a Standalone Activity {/* #reset-standalone-activity */}
+
+Reset clears retry state and schedules, or requests, attempt 1 for a Standalone Activity.
+
+- If the Activity is SCHEDULED:
+  - Reset moves it to SCHEDULED at attempt 1.
+  - If the Activity is in retry backoff:
+    - Reset discards the retry backoff.
+  - Reset creates a new dispatch task.
+  - Reset creates a new Schedule-To-Start timeout task when Schedule-To-Start Timeout is set.
+  - If the Activity has never been picked up and still has an unexpired Start Delay:
+    - Reset honors the Start Delay.
+  - If `jitter` is set:
+    - Reset delays dispatch by a random duration within the jitter window.
+- If the Activity is PAUSED and `keep_paused` is false:
+  - Reset moves it to SCHEDULED at attempt 1.
+  - Reset unpauses the Activity.
+- If the Activity is PAUSED and `keep_paused` is true:
+  - Reset leaves it PAUSED at attempt 1.
+  - No new dispatch task is created until a later Unpause.
+- If the Activity is STARTED:
+  - Reset moves it to RESET_REQUESTED.
+  - Reset is deferred until the running attempt yields.
+  - The running Worker keeps its task token.
+  - The next heartbeat response reports that the Activity was reset.
+  - If the Activity completes successfully:
+    - The Activity completes normally and the reset doesn't apply.
+  - If the Activity fails:
+    - The reset is applied and the next attempt is attempt 1.
+  - If the Activity fails non-retryably:
+    - The reset is still applied and the next attempt is attempt 1.
+  - If the Activity has no retries remaining:
+    - The reset is still applied and the next attempt is attempt 1.
+  - If the Activity reaches Start-To-Close Timeout:
+    - The reset is applied and the Activity moves to SCHEDULED at attempt 1.
+  - If the Activity reaches Heartbeat Timeout:
+    - The reset is applied and the Activity moves to SCHEDULED at attempt 1.
+- If the Activity is PAUSE_REQUESTED and `keep_paused` is false:
+  - Reset clears the pause request.
+  - Reset is deferred until the running attempt yields.
+  - The Activity dispatches attempt 1 when the reset is applied.
+- If the Activity is PAUSE_REQUESTED and `keep_paused` is true:
+  - Reset is deferred until the running attempt yields.
+  - The Activity lands in PAUSED at attempt 1 when the reset is applied.
+  - The next heartbeat response reports both that the Activity was reset and that the Activity is paused.
+- Reset doesn't stop the Schedule-To-Close Timeout.
+- Reset doesn't create a new Schedule-To-Close clock.
+- Schedule-To-Close continues to use the Activity Execution's first dispatch time.
+- After a reset dispatches a new attempt, the attempt's scheduled time reports the reset attempt's dispatch time, not
+  the original first-attempt dispatch time.
+- Reset discards retry backoff, but it still respects any remaining Start Delay before the first Worker pickup.
+- If `reset_heartbeat` is set:
+  - Reset clears stored heartbeat time and heartbeat details.
+  - If the Activity is non-running:
+    - Heartbeat state is cleared immediately.
+  - If the Activity is running:
+    - Heartbeat state is cleared when the reset is applied to the next attempt.
+- If `reset_heartbeat` is not set:
+  - Heartbeat details are preserved.
+- If `restore_original_options` is set:
+  - Reset restores the options from when the Standalone Activity was created.
+  - Reset can restore Task Queue, Schedule-To-Close Timeout, Schedule-To-Start Timeout, Start-To-Close Timeout,
+    Heartbeat Timeout, Retry Policy, Priority, and Start Delay.
+  - Subfield updates made before Reset don't change the saved original options.
+  - Start Delay is restored only if the Activity has not started its first attempt.
+  - If the Activity is non-running:
+    - The restore is applied immediately.
+  - If the Activity is running:
+    - The restore is deferred until the reset is applied to the next attempt.
+    - Restored timeouts don't shorten or otherwise disturb the in-flight attempt.
+    - If the Activity completes successfully after the reset is requested:
+      - The Activity completes and the restored options are never applied.
+- Reset is rejected:
+  - If cancellation is already pending.
+  - If another reset is already pending.
+  - If the Activity is terminal.
+
+### Update Standalone Activity options {/* #update-standalone-activity-options */}
+
+Update Options changes a Standalone Activity's stored runtime options.
+
+- Update Options can change:
+  - Task Queue name.
+  - Schedule-To-Close Timeout.
+  - Schedule-To-Start Timeout.
+  - Start-To-Close Timeout.
+  - Heartbeat Timeout.
+  - Retry Policy.
+  - Retry Policy initial interval.
+  - Retry Policy backoff coefficient.
+  - Retry Policy maximum interval.
+  - Retry Policy maximum attempts.
+  - Priority.
+  - Priority Key.
+  - Fairness Key.
+  - Fairness Weight.
+  - Start Delay while the Activity is still in its delay window.
+- Update Options requires an update mask unless `restore_original` is used.
+- If `restore_original` is set:
+  - `restore_original` can't be combined with an update mask.
+  - `restore_original` restores the options from when the Standalone Activity was created.
+  - `restore_original` is applied immediately to the active Standalone Activity Execution.
+  - `restore_original` restores Start Delay only if the Activity has not started its first attempt.
+- Updated timeout values are validated and normalized after the update.
+- If Schedule-To-Close Timeout is updated:
+  - Update Options reissues the Schedule-To-Close timeout task at the new deadline.
+  - Stale Schedule-To-Close timeout tasks from before the latest options update are ignored.
+  - If Schedule-To-Close Timeout is disabled:
+    - Previously scheduled Schedule-To-Close timeout tasks are ignored.
+  - Shortening Schedule-To-Close Timeout can cause the Activity to time out sooner.
+  - Extending Schedule-To-Close Timeout can allow future retries that would otherwise be blocked by the Activity
+    deadline.
+- If Start-To-Close Timeout or Heartbeat Timeout is updated for a running attempt:
+  - Update Options reissues the Start-To-Close timeout task for that attempt.
+  - Update Options reissues the Heartbeat timeout task for that attempt.
+  - Updated running-attempt timers are anchored to the current attempt's start time or last heartbeat time.
+  - Updating Start-To-Close or Heartbeat Timeout can affect the current running attempt.
+- If Task Queue is updated:
+  - The change affects future dispatches, not a task already picked up by a Worker.
+- If Retry Policy is updated:
+  - Retry Policy subfield updates are merged with the existing Retry Policy and then validated.
+  - The update is rejected if the merged Retry Policy is invalid.
+  - Update Options recalculates the current retry interval only when the Activity is SCHEDULED or PAUSED, is waiting in
+    retry backoff, and the current retry interval was derived from the Retry Policy.
+  - Update Options doesn't recalculate a Worker-provided `NextRetryDelay` that is already scheduled.
+- If an unrelated field is updated:
+  - Update Options doesn't recalculate the current retry interval.
+- If `restore_original` is set and the Activity is SCHEDULED or PAUSED:
+  - Update Options can recalculate the current retry interval when the interval was derived from the Retry Policy.
+- If the Activity is SCHEDULED:
+  - Update Options reissues dispatch and Schedule-To-Start timeout tasks.
+  - If the Activity is in retry backoff:
+    - Reissued dispatch and Schedule-To-Start timeout tasks keep the existing retry deadline unless the retry interval
+      is recalculated by a Retry Policy update or cleared by another operation.
+- If the Activity is PAUSED:
+  - Update Options stores the new options but doesn't dispatch the Activity.
+  - Updated Retry Policy values can affect when the Activity dispatches after Unpause.
+- If the Activity is PAUSE_REQUESTED:
+  - Update Options reissues running-attempt timers so Start-To-Close and Heartbeat timeouts continue to be enforced.
+- If the Activity is RESET_REQUESTED:
+  - Update Options reissues running-attempt timers so Start-To-Close and Heartbeat timeouts continue to be enforced.
+- If cancellation is pending:
+  - Update Options is still allowed.
+  - Updated Start-To-Close and Heartbeat timers can still affect the running attempt.
+- If Start Delay is updated:
+  - Start Delay can be updated only while the Activity is SCHEDULED and the first dispatch time is still in the future.
+  - Start Delay can't be updated after the first dispatch delay has elapsed.
+  - Start Delay can't be updated after a Worker has picked up the first attempt.
+  - A nonzero Start Delay update requires Start Delay to be enabled for the Namespace.
+- Update Options doesn't reset attempts.
+- Update Options doesn't clear heartbeat details.
+- Updating a terminal Activity is rejected.
+
 ## Observability {/* #observability */}
 
 Activity Operations have a limited audit trail because they are not recorded in a Workflow's Event History. However, you
@@ -329,7 +587,7 @@ provided).
 
 The `TemporalPauseInfo` [Search Attribute](/search-attribute) is filterable within a Workflow.
 
-There's no Namespace-wide query to find all Paused Activities across Workflows. You must know the Workflow Id.
+There's no Namespace-wide query to find all Paused Activities across Workflows. You must know the Workflow ID.
 
 ### Audit trail {/* #audit-trail */}
 
