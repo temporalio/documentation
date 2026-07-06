@@ -69,7 +69,7 @@
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
-    "concurrently": "^10.0.1",
+    "concurrently": "^10.0.3",
     "docusaurus-plugin-llms": "^0.2.0",
     "docusaurus-pushfeedback": "^1.0.3",
     "js-yaml": "^4.2.0",
@@ -90,7 +90,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.60.0",
+    "@playwright/test": "^1.61.0",
     "@types/node": "^25.9.3",
     "@types/yaml": "^1.9.7",
     "dprint": "^0.54.0",
