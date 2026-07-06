@@ -32,7 +32,7 @@ After working through this guide, you'll have a session system where:
 - **Server crashes don't end player sessions**: state is durable and resumes on any available Worker without custom recovery logic
 - **Game actions are reliable**: room joins, combat moves, and leaderboard updates execute through Activities with automatic retries — partial failures don't corrupt session state
 - **Sessions run as long as needed**: Continue-As-New manages history growth so a session that lasts weeks costs no more to run than one that lasts minutes
-- **Every player is independently addressable**: any service can send a command, query state, or trigger an update using the player's Workflow Id
+- **Every player is independently addressable**: any service can send a command, Query state, or trigger an Update using the player's Workflow Id
 - **Active sessions are queryable by operators**: Search Attributes let you find who's in which room, how long a session has been running, or which players are idle
 
 ## Background and best practices
@@ -103,12 +103,12 @@ If your use case requires higher Signal ingestion rates — for example, streami
 
 ### Activity Heartbeating
 
-Long-running Activities, such as maintaining a WebSocket connection to a game room or processing a large batch of leaderboard updates, should emit heartbeats. A heartbeat serves two purposes:
+Long-running Activities, such as maintaining a WebSocket connection to a game room or processing a large batch of leaderboard updates, should emit Heartbeats. A Heartbeat serves two purposes:
 
 1. It tells the Temporal Service that the Activity is still making progress. If heartbeats stop arriving within the configured Heartbeat Timeout, the Temporal Service considers the Activity failed and schedules a retry.
 2. It carries a custom payload that captures the Activity's progress. When the Activity is retried after a failure, the new attempt can read the last heartbeat payload and resume from where it left off.
 
-Configure a short Heartbeat Timeout (for example, 30 seconds) and emit heartbeats frequently (for example, every 5 to 10 seconds). The SDK throttles heartbeat calls to avoid overwhelming the Temporal Service, so you can call `activity.heartbeat()` as often as needed without performance concern.
+Configure a short Heartbeat Timeout (for example, 30 seconds) and emit heartbeats frequently (for example, every 5 to 10 seconds). The SDK throttles Heartbeat calls to avoid overwhelming the Temporal Service, so you can call `activity.heartbeat()` as often as needed without performance concern.
 
 ### Workflow determinism
 
@@ -480,7 +480,7 @@ Each Activity follows a consistent pattern:
 
 Activities are defined as synchronous functions. The Python SDK runs synchronous Activities in a `ThreadPoolExecutor`, which is safer and easier to debug than async Activities. Async Activities are only necessary when the Activity must use `async`-native libraries throughout its implementation.
 
-### Phase 3: Define the Player Actor Workflow
+### Phase 3: Define the player Actor Workflow
 
 Create a file named `player_workflow.py`. This is the core of the system: a long-running Actor Workflow that represents a single player's game session.
 
@@ -938,7 +938,7 @@ The `PlayerSessionWorkflow` is the central piece of this system. Several design 
 
 **Continue-As-New with handler draining.** Before executing `workflow.continue_as_new()`, the Workflow calls `await workflow.wait_condition(workflow.all_handlers_finished)`. This ensures that any Signal or Update handler that is currently executing finishes before the current execution ends. Without this step, in-flight handlers could be interrupted, causing data loss.
 
-**Search Attribute updates.** The Workflow upserts Search Attributes whenever the player's status, room, or level changes. This enables operational queries such as:
+**Search Attribute updates.** The Workflow upserts Search Attributes whenever the player's status, room, or level changes. This enables operational Queries such as:
 
 ```
 PlayerStatus = "in_room" AND CurrentRoom = "dungeon-7"
@@ -948,7 +948,7 @@ PlayerStatus = "in_room" AND CurrentRoom = "dungeon-7"
 PlayerLevel >= 10 AND PlayerStatus = "online"
 ```
 
-These queries are invaluable for live operations: finding all players in a room that needs to be shut down for maintenance, identifying high-level players for a special event, or monitoring the distribution of player statuses across the system.
+These Queries are invaluable for live operations: finding all players in a room that needs to be shut down for maintenance, identifying high-level players for a special event, or monitoring the distribution of player statuses across the system.
 
 ### Phase 4: Configure and start the Worker
 
@@ -1225,9 +1225,9 @@ To find all players at level 10 or higher:
 temporal workflow list --query 'PlayerLevel >= 10'
 ```
 
-### (Optional) Phase 7: Add heartbeating to long-running Activities
+### (Optional) Phase 7: Add Heartbeating to long-running Activities
 
-If your game includes Activities that run for extended periods, such as maintaining a persistent connection to a game room server or processing a large batch of analytics events, add heartbeating to track progress and enable resumption after failures.
+If your game includes Activities that run for extended periods, such as maintaining a persistent connection to a game room server or processing a large batch of analytics events, add Heartbeating to track progress and enable resumption after failures.
 
 ```python
 # activities.py (additional long-running Activity example)
@@ -1280,7 +1280,7 @@ processed = await workflow.execute_activity(
 )
 ```
 
-The `heartbeat_timeout` of 30 seconds means that if the Activity does not emit a heartbeat for 30 seconds, the Temporal Service considers it stalled and schedules a retry. The new attempt reads the last heartbeat payload (the index of the last processed entry) and resumes from that point.
+The `heartbeat_timeout` of 30 seconds means that if the Activity does not emit a Heartbeat for 30 seconds, the Temporal Service considers it stalled and schedules a retry. The new attempt reads the last heartbeat payload (the index of the last processed entry) and resumes from that point.
 
 ---
 

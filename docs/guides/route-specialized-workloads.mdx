@@ -41,7 +41,7 @@ Use separate Task Queues to route Activities based on their resource requirement
 ## Background and best practices
 
 ### Task Queue fundamentals
-Task Queues in Temporal are dynamically created when first referenced. If your Workflow references task queue `gpu-processing` but your Worker polls `gpu-procesing` (typo), two separate queues are created and the Worker never receives Tasks.
+Task Queues in Temporal are dynamically created when first referenced. If your Workflow references Task Queue `gpu-processing` but your Worker polls `gpu-procesing` (typo), two separate queues are created and the Worker never receives Tasks.
 
 **Best practice:** Always define Task Queue names as constants in a shared module that both Workflows and Workers import.
 
@@ -88,15 +88,15 @@ This implementation requires code changes, Worker configuration, and deployment 
 - Python 3.8 or later
 - Temporal Python SDK v1.0.0 or later (`pip install temporalio`)
 - GPU infrastructure (AWS EC2 with NVIDIA GPUs, GCP with GPUs) for ML workloads
-- Process manager or container orchestration for multi-worker deployments
+- Process manager or container orchestration for multi-Worker deployments
 
-### Resources & Access Privileges
+### Resources & access privileges
 
-- Temporal namespace with permissions to start Workflows and register Workers
+- Temporal Namespace with permissions to start Workflows and register Workers
 - Infrastructure provisioning access for GPU instances and multiple Worker pools
 - Ability to configure autoscaling policies
 
-### Required Concepts
+### Required concepts
 
 - Temporal Workflows, Activities, and Task Queues
 - Python async/await patterns
@@ -105,7 +105,7 @@ This implementation requires code changes, Worker configuration, and deployment 
 
 ## Architecture diagram(s)
 
-### Resource-Based Routing Architecture
+### Resource-Based routing architecture
 
 ```mermaid
 flowchart TB
@@ -317,7 +317,7 @@ if __name__ == "__main__":
 
 **Deployment guidance:**
 - Deploy 3-5 instances of `worker_high_memory.py` on memory-optimized instances (r5.2xlarge: 8 vCPU, 64GB RAM)
-- Adjust `max_concurrent_activities` based on per-activity memory usage to prevent OOM errors
+- Adjust `max_concurrent_activities` based on per-Activity memory usage to prevent OOM errors
 - Monitor memory utilization and swap usage
 - Consider using instances with local NVMe storage for faster I/O on large datasets
 
@@ -659,22 +659,22 @@ By implementing separate Task Queues for resource-based routing, you have achiev
 
 Your application now intelligently routes work based on resource requirements, ensuring efficient hardware utilization and cost-effective infrastructure allocation.
 
-## Related Resources
+## Related resources
 
-### Official Documentation
+### Official documentation
 - [Temporal Documentation - Task Routing](https://docs.temporal.io/task-routing)
 - [Temporal Best Practices - Separate Task Queues](https://docs.temporal.io/best-practices/worker#separate-task-queues-logically)
 - [Python SDK Worker Configuration](https://python.temporal.io/temporalio.worker.Worker.html)
 
-### Related Patterns
+### Related patterns
 - [Separate Task Queues - Worker Affinity](worker-execution-affinity) - For Activities that must run on the same Worker instance
 - [Separate Task Queues - Rate Limiting](rate-limit-downstream-apis) - For protecting downstream APIs with rate limits
 
-### Code Samples
+### Code samples
 - [GPU-Accelerated Image Processing (Python)](https://github.com/temporalio/samples-python) - Example of GPU worker configuration
 - [Worker Versioning with Task Queues](https://github.com/temporalio/samples-python/tree/main/worker_versioning) - Managing different Worker versions
 
-### Community Resources
+### Community resources
 - [Blog: AI, ML, and Data Engineering Workflows with Temporal](https://temporal.io/blog/ai-ml-and-data-engineering-workflows-with-temporal)
 - [Forum: Task Queue Best Practices](https://community.temporal.io/t/in-what-situation-should-we-use-multiple-separated-task-queues/1254)
 - [Temporal ML/AI Use Cases](https://temporal.io/use-cases/machine-learning)

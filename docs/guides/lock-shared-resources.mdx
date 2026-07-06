@@ -25,7 +25,7 @@ The Workflow releases on a Signal pinned to the run.  If no release Signal is re
 By following this implementation plan, you will gain:
 
 - **Atomic Acquire**: Take a permit by starting a child Workflow whose ID is the lock. The operation succeeds or fails atomically against Temporal state.
-- **Lease-Based Recovery**: A per-permit lease timer makes the slot reusable if the holder crashes before releasing. For external resources that can be corrupted by overlap, pass a fencing token to reject stale holders.
+- **Lease-Based Recovery**: A per-permit lease Timer makes the slot reusable if the holder crashes before releasing. For external resources that can be corrupted by overlap, pass a fencing token to reject stale holders.
 - **Horizontal Scale**: Permit traffic spreads across the slots in a scarce resource pool, which is useful for long-held resource coordination.
 
 ## Background and best practices
@@ -280,7 +280,7 @@ class Semaphore:
 
 The constructor takes a fixed `capacity` and rejects values below 1. The `Semaphore` auto-generates slot names `"0"` through `"N-1"` and reshuffles them on every attempt using `workflow.random()` so long-running contention spreads evenly across slots. The `Semaphore` keeps the `ChildWorkflowHandle` returned by `start_child_workflow` and signals release on that handle, so the Signal cannot land on a subsequent acquirer's execution.
 The `FailureError` caught in `_release` covers the lease-already-expired case: the slot is already free and the release is a no-op, logged at info level for observability.
-Three orphan-recovery mechanisms work together to bound slot occupancy. The default `ParentClosePolicy.TERMINATE` is the fastest, when the parent Workflow closes for any reason without releasing, Temporal terminates the permit child immediately and the slot frees right away. The in-workflow timer `wait_condition(timeout=lease)` covers the case where the parent is still alive but the holder is silent, the permit Workflow exits cleanly as `"lease_expired"`, distinguishable in the Temporal UI. That timer only starts ticking once a Worker runs the permit's first task, however, so the workflow timeout `execution_timeout=lease` is a server-enforced backstop that ticks from Workflow creation regardless of whether a Worker ever picks it up. Together these guarantee the slot is never leaked, even if the permit Workflow never runs.
+Three orphan-recovery mechanisms work together to bound slot occupancy. The default `ParentClosePolicy.TERMINATE` is the fastest, when the parent Workflow closes for any reason without releasing, Temporal terminates the permit child immediately and the slot frees right away. The in-workflow timer `wait_condition(timeout=lease)` covers the case where the parent is still alive but the holder is silent, the permit Workflow exits cleanly as `"lease_expired"`, distinguishable in the Temporal UI. That Timer only starts ticking once a Worker runs the permit's first Task, however, so the workflow timeout `execution_timeout=lease` is a server-enforced backstop that ticks from Workflow creation regardless of whether a Worker ever picks it up. Together these guarantee the slot is never leaked, even if the permit Workflow never runs.
 
 ### Register the permit Workflow on a Worker
 
@@ -316,7 +316,7 @@ if __name__ == "__main__":
 ```
 
 `PermitSlotWorkflow` is in the `workflows=[...]` list and the `activities=[]` list is empty.
-The permit lifecycle is pure Workflow code, so this library needs no Activities. `worker.run()` blocks until the awaited task is cancelled, which is sufficient for `temporal server start-dev` and CI: Ctrl-C raises `KeyboardInterrupt` and the worker drains in-flight work as the cancellation propagates. For containerized production deployments, add a `SIGTERM` handler that cancels the run task so pod restarts and rolling deploys also drain gracefully. The `connect_temporal_client` function picks up environment variables to choose between Temporal Cloud API key auth, self-hosted TLS, and plain TCP for `temporal server start-dev`, so the same Worker source runs against any environment.
+The permit lifecycle is pure Workflow code, so this library needs no Activities. `worker.run()` blocks until the awaited Task is cancelled, which is sufficient for `temporal server start-dev` and CI: Ctrl-C raises `KeyboardInterrupt` and the Worker drains in-flight work as the cancellation propagates. For containerized production deployments, add a `SIGTERM` handler that cancels the run Task so pod restarts and rolling deploys also drain gracefully. The `connect_temporal_client` function picks up environment variables to choose between Temporal Cloud API key auth, self-hosted TLS, and plain TCP for `temporal server start-dev`, so the same Worker source runs against any environment.
 
 ### Example application Workflows
 
@@ -382,7 +382,7 @@ class GpuTrainingWorkflow:
 
 #### Heartbeat the long-running Activity
 
-Both Activities run inside the gated critical section, so a Worker crash mid-Activity must be detected promptly to free the slot. Set `heartbeat_timeout` on the Activity invocation and call `activity.heartbeat(...)` periodically inside the Activity body. Temporal fails the Activity attempt as soon as a heartbeat is missed for longer than the timeout, the holder Workflow then exits its `async with` block, the `Semaphore` sends `release` to the slot Workflow, and the slot returns to the pool. The lease timer remains as a coarse last-resort recovery for cases where heartbeats cannot run.
+Both Activities run inside the gated critical section, so a Worker crash mid-Activity must be detected promptly to free the slot. Set `heartbeat_timeout` on the Activity invocation and call `activity.heartbeat(...)` periodically inside the Activity body. Temporal fails the Activity attempt as soon as a Heartbeat is missed for longer than the timeout, the holder Workflow then exits its `async with` block, the `Semaphore` sends `release` to the slot Workflow, and the slot returns to the pool. The lease Timer remains as a coarse last-resort recovery for cases where Heartbeats cannot run.
 
 ```python
 # activities.py
@@ -422,7 +422,7 @@ async def run_training(model_id: str, slot: str) -> str:
     return f"trained {model_id} on cuda:{gpu_index}"
 ```
 
-Set the heartbeat interval shorter than `heartbeat_timeout` (a 2x to 3x ratio is a common starting point) so a single delayed heartbeat does not fail a healthy Activity. Pass progress data into `activity.heartbeat(...)` so retries can resume from the last reported point and operators can observe progress in the Temporal UI.
+Set the Heartbeat interval shorter than `heartbeat_timeout` (a 2x to 3x ratio is a common starting point) so a single delayed Heartbeat does not fail a healthy Activity. Pass progress data into `activity.heartbeat(...)` so retries can resume from the last reported point and operators can observe progress in the Temporal UI.
 
 ## Outcomes
 
@@ -431,7 +431,7 @@ By following this guide, you have built a durable distributed lock for Temporal 
 You now have the capability to:
 
 - Cap concurrent access to any shared resource or critical section without a database, cache-layer, or a central limiter service.
-- Recover orphan permits automatically when holders crash, using per-permit lease timers.
+- Recover orphan permits automatically when holders crash, using per-permit lease Timers.
 - Scale lock acquisition horizontally. Permit traffic distributes across short-lived child Workflows rather than concentrating on one limiter.
 
 ## Related resources

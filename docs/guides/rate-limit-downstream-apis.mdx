@@ -65,7 +65,7 @@ The Python SDK provides three rate limiting controls:
 
 4. **disable_eager_activity_execution** (Client configuration): Set to `True` when starting Workflows to prevent Activities from being eagerly assigned to the Workflow Worker, ensuring they go through the rate-limited Task Queue instead.
 
-**Important:** Without `disable_eager_activity_execution=True`, Activities may bypass your rate-limited Task Queues entirely. Eager execution runs activities on the same Worker as the Workflow, which circumvents the rate limiting controls configured on the activity-specific Task Queues. Always disable eager execution when using rate-limited Task Queues for API calls.
+**Important:** Without `disable_eager_activity_execution=True`, Activities may bypass your rate-limited Task Queues entirely. Eager execution runs Activities on the same Worker as the Workflow, which circumvents the rate limiting controls configured on the Activity-specific Task Queues. Always disable eager execution when using rate-limited Task Queues for API calls.
 
 ### Handling HTTP 429 responses
 

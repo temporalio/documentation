@@ -1,7 +1,7 @@
 ---
 id: entity-pattern-loyalty-points
-title: Track customer loyalty points with durable workflows
-description: How to run a customer loyalty program with durable workflows provided by Temporal
+title: Track customer loyalty points with durable Workflows
+description: How to run a customer loyalty program with durable Workflows provided by Temporal
 sidebar_label: Customer loyalty program
 toc_max_heading_level: 2
 author: Cecil Phillip
@@ -23,7 +23,7 @@ Every customer in a loyalty program is their own entity. Their points accumulate
 
 ## Solution
 
-Each customer gets their own Workflow — a persistent, running process identified by their customer ID. It holds the account's points balance, tier status, and activity history in memory. When a purchase happens, a Signal adds the points. When a customer redeems at checkout, an Update validates and applies the redemption synchronously. When a mobile app needs to display the current balance, a Query reads the state without touching the database. Tier upgrades happen as part of normal business logic, not from a nightly job. The workflow runs for as long as the customer relationship does — years if needed — and resets its internal history automatically to stay within platform limits.
+Each customer gets their own Workflow — a persistent, running process identified by their customer ID. It holds the account's points balance, tier status, and activity history in memory. When a purchase happens, a Signal adds the points. When a customer redeems at checkout, an Update validates and applies the redemption synchronously. When a mobile app needs to display the current balance, a Query reads the state without touching the database. Tier upgrades happen as part of normal business logic, not from a nightly job. The Workflow runs for as long as the customer relationship does — years if needed — and resets its internal history automatically to stay within platform limits.
 
 ## Outcomes
 
@@ -33,7 +33,7 @@ After working through this guide, you'll have a loyalty system where:
 - **Tier upgrades happen in real time**: business rules run in the Workflow itself, triggered by point accruals — no scheduler, no batch job
 - **Redemptions are consistent**: synchronous Updates validate and apply changes atomically, with the response going back to the caller
 - **In-memory Balance reads**: Queries read in-memory state without generating Events or hitting a database
-- **The workflow runs for the life of the customer**: Continue-As-New keeps history size in check so nothing needs to be migrated or restarted
+- **The Workflow runs for the life of the customer**: Continue-As-New keeps history size in check so nothing needs to be migrated or restarted
 - **Failures are isolated**: a notification failing doesn't roll back a point accrual; each concern fails independently
 
 ## Background and best practices
@@ -60,7 +60,7 @@ In this pattern, the loyalty Entity Workflow does not directly write to a databa
 
 Temporal provides several capabilities that make Entity Workflows practical:
 
-- **Durable timers**: A Workflow can sleep for hours, days, or months without consuming compute resources. The timer is persisted by the Temporal Server; the Worker is freed to handle other tasks.
+- **Durable Timers**: A Workflow can sleep for hours, days, or months without consuming compute resources. The Timer is persisted by the Temporal Server; the Worker is freed to handle other tasks.
 - **Message passing**: Signals, Queries, and Updates provide three distinct interaction patterns — fire-and-forget, read-only, and request-response — covering the full range of entity interactions.
 - **Event History**: Every state transition is recorded in an append-only log, giving a complete audit trail for compliance and debugging.
 - **Continue-As-New**: When the Event History approaches size limits, the Workflow resets itself with a fresh history while preserving current state, allowing Entity Workflows to run for years.
@@ -123,7 +123,7 @@ This diagram shows how a client adds points to a customer's loyalty account via 
 
 1. An external service starts a loyalty Entity Workflow with a stable Workflow Id tied to the customer identifier, such as `loyalty-cust-123`.
 2. The Temporal Server persists the start request and schedules a Workflow Task on the `loyalty-points-queue` Task Queue.
-3. A Python Worker picks up the task, initializes the loyalty state, and enters a wait loop.
+3. A Python Worker picks up the Task, initializes the loyalty state, and enters a wait loop.
 4. Throughout the customer's lifetime, external services send Signals to add points, Updates to redeem points, and Queries to read the current balance and tier.
 5. When the Event History approaches the suggested threshold, the Workflow serializes its current state and calls `continue_as_new`, starting a fresh Execution with the same Workflow Id.
 6. When the customer account is closed, a shutdown Signal causes the Workflow to drain its queue, await all handlers, and complete.
@@ -943,7 +943,7 @@ The Python SDK sandbox blocks most non-deterministic operations, but you must st
 | `datetime.now()` | `workflow.now()` | Returns the same value during replay |
 | `random.random()` | `workflow.random().random()` | Seeded deterministically by the SDK |
 | `uuid.uuid4()` | `workflow.uuid4()` | Produces the same value during replay |
-| `time.sleep()` | `asyncio.sleep()` or `workflow.sleep()` | Converts to a durable timer |
+| `time.sleep()` | `asyncio.sleep()` or `workflow.sleep()` | Converts to a Durable Timer |
 | `print()` | `workflow.logger.info()` | Replay-safe; only logs on initial execution |
 | Direct I/O (HTTP, file reads) | Activities | All I/O must happen in Activities |
 
@@ -981,7 +981,7 @@ if __name__ == "__main__":
 
 Run this test as part of your continuous integration pipeline before deploying Workflow code changes. If the replay fails with a `NondeterminismError`, the code change is not backward-compatible. Use Worker Versioning (see Phase 8) to deploy the change safely.
 
-### (Optional) Phase 8: Manage Workflow Evolution with Worker Versioning
+### (Optional) Phase 8: Manage Workflow evolution with Worker Versioning
 
 Entity Workflows are the hardest case for code evolution: a loyalty account can span years and dozens of deployments. Any change that alters the sequence of Commands the Workflow generates causes a `NondeterminismError` during replay for in-progress Executions.
 
