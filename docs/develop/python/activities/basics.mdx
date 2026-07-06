@@ -11,6 +11,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 ## Develop a basic Activity {/* #develop-activities */}
 
 **How to develop a basic Activity using the Temporal Python SDK.**
@@ -20,6 +22,10 @@ or method execution that's intended to execute a single, well-defined action (ei
 querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with the world outside
 the Temporal Platform or use a Temporal Client to interact with a Temporal Service. For the Workflow to be able to
 execute the Activity, we must define the [Activity Definition](/activity-definition).
+
+Standalone Activities are Activities that run independently, without being orchestrated by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal Client.
+
+The way you write the Activity and register it with a Worker is identical to [Workflow Activities](/develop/python/activities/basics). The only difference is that you execute a Standalone Activity directly from your Temporal Client. See [Standalone Activities](/develop/python/activities/standalone-activities).
 
 You can develop an Activity Definition by using the `@activity.defn` decorator. Register the function as an Activity
 with a custom name through a decorator argument, for example `@activity.defn(name="your_activity")`.
@@ -46,12 +52,7 @@ perform these actions. If you must use a blocking library, consider using a sync
 
 :::
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 from temporalio import activity
@@ -88,12 +89,7 @@ Activity parameters are the function parameters of the function decorated with `
 type Temporal can convert, including dataclasses when properly type-annotated. Technically this can be multiple
 parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 from temporalio import activity
@@ -121,12 +117,7 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes an object as input and returns a string.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 # ...
@@ -146,12 +137,7 @@ You can customize the Activity name with a custom name in the decorator argument
 `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the
 function name.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
 
 ```python
 # ...

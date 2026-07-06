@@ -16,6 +16,7 @@ import {
   extractProp,
   parseTabValues,
   parseReadList,
+  parseSdkGuideLinks,
   dedent,
   scanMarkdownImports,
   COMPONENT_REGISTRY,
@@ -192,6 +193,35 @@ test("parses readList prop", () => {
   assertEqual(items.length, 2);
   assertEqual(items[0].text, "Workflow Definition");
   assertEqual(items[0].href, "/workflow-definition");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: parseSdkGuideLinks
+// ---------------------------------------------------------------------------
+console.log("\n📦 parseSdkGuideLinks");
+
+test("generates links from path + filter + title props", () => {
+  const tag = `<SdkGuideLinks path="activities/standalone-activities" filter={['go', 'python', 'ruby']} title="Standalone Activities" />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 3);
+  assertEqual(items[0].text, "Standalone Activities - Go");
+  assertEqual(items[0].href, "/develop/go/activities/standalone-activities");
+  assertEqual(items[2].text, "Standalone Activities - Ruby");
+  assertEqual(items[2].href, "/develop/ruby/activities/standalone-activities");
+});
+
+test("generates links for all SDKs when filter is omitted", () => {
+  const tag = `<SdkGuideLinks path="client/temporal-client" title="Temporal Client" />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 8);
+});
+
+test("uses the explicit links prop when provided", () => {
+  const tag = `<SdkGuideLinks links={[{ name: 'goLangBlock', href: '/develop/go/foo', label: 'Go' }]} />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 1);
+  assertEqual(items[0].text, "Go");
+  assertEqual(items[0].href, "/develop/go/foo");
 });
 
 // ---------------------------------------------------------------------------
@@ -384,6 +414,19 @@ test("converts RelatedReadList to markdown link list", () => {
   assertContains(markdown, "- [Workflow Definition](/workflow-definition)");
   assertContains(markdown, "- [Activities](/activities)");
   assertNotContains(markdown, "RelatedReadList");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — SdkGuideLinks
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — SdkGuideLinks");
+
+test("converts SdkGuideLinks to a markdown link list", () => {
+  const input = `<SdkGuideLinks path="activities/standalone-activities" filter={['go', 'ruby']} title="Standalone Activities" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "- [Standalone Activities - Go](/develop/go/activities/standalone-activities)");
+  assertContains(markdown, "- [Standalone Activities - Ruby](/develop/ruby/activities/standalone-activities)");
+  assertNotContains(markdown, "SdkGuideLinks");
 });
 
 // ---------------------------------------------------------------------------
@@ -638,6 +681,21 @@ test("CallToAction becomes a markdown link with title and description", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: transformMdx — ViewSourceCodeNotice
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — ViewSourceCodeNotice");
+
+test("ViewSourceCodeNotice becomes a plain markdown link line", () => {
+  const input = `<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(
+    markdown,
+    "[View the source code](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code."
+  );
+  assertNotContains(markdown, "ViewSourceCodeNotice");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: transformMdx — RelatedReadContainer
 // ---------------------------------------------------------------------------
 console.log("\n📦 transformMdx — RelatedReadContainer");
@@ -681,6 +739,49 @@ test("SetupStep emits prose children and code from the code={} prop", () => {
   assertContains(markdown, "go version");
   assertNotContains(markdown, "SetupStep");
   assertNotContains(markdown, "code={");
+});
+
+test("SetupStep preserves non-code prose, links, and lists in the code={} prop", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep code={",
+    "  <>",
+    "    <p>Download the CLI for your platform:</p>",
+    "    <ul>",
+    '      <li><a href="https://example.com/win">Windows</a></li>',
+    "    </ul>",
+    "    <p>Then add <code>cli.exe</code> to your PATH.</p>",
+    "  </>",
+    "}>",
+    "## Install CLI",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "Download the CLI for your platform:");
+  assertContains(markdown, "- [Windows](https://example.com/win)");
+  assertContains(markdown, "Then add `cli.exe` to your PATH.");
+  assertNotContains(markdown, "<p>");
+  assertNotContains(markdown, "<li>");
+});
+
+test("SetupStep unwraps {`...`} template literals in CodeSnippet bodies", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep code={",
+    "  <>",
+    '    <CodeSnippet language="bash">{`dotnet build`}</CodeSnippet>',
+    "  </>",
+    "}>",
+    "## Build",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "```bash");
+  assertContains(markdown, "dotnet build");
+  assertNotContains(markdown, "{`");
+  assertNotContains(markdown, "`}");
 });
 
 // ---------------------------------------------------------------------------
@@ -917,7 +1018,8 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "home-page-hero", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "home-page-hero", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(
