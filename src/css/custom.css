@@ -1184,24 +1184,6 @@ code {
   vertical-align: baseline;
 }
 
-/* When the screen width is greater than or equal to 1024px (common desktop size), the element is shown */
-
-.copycode-notice-container {
-  background-color: #cd9eff;
-  border: 1px solid #fff;
-  color: #000000;
-  margin-bottom: 3px;
-  border-radius: 6px;
-  padding: 7px;
-  display: flex;
-  align-items: center;
-}
-
-.copycode-notice-container a {
-  color: #000000 !important;
-  margin-right: 5px; /* Add space between the link and the text */
-}
-
 @keyframes bounce {
   0%,
   20%,
