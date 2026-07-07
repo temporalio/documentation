@@ -49,13 +49,13 @@ gRPC API - not for programmatic use in Workflow or Activity code.
 | Operation                         | What it does                                                                     | CLI                                                                                  |
 | --------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | [Pause](#pause)                   | Stops retries. In-flight execution continues unless the Activity uses Heartbeat. | [`temporal activity pause`](/cli/command-reference/activity#pause)                   |
-| [Unpause](#unpause)               | Resumes a Paused Activity. The next execution starts immediately.                | [`temporal activity unpause`](/cli/command-reference/activity#unpause)               |
-| [Reset](#reset)                   | Clears retry state (attempts, backoff) and schedules a new execution.            | [`temporal activity reset`](/cli/command-reference/activity#reset)                   |
-| [Update Options](#update-options) | Changes timeouts, Retry Policy, or Task Queue without restarting the Activity.   | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
+| [Unpause](#unpause)               | Resumes a Paused Activity. The next execution starts after any remaining retry backoff or start delay.                | [`temporal activity unpause`](/cli/command-reference/activity#unpause)               |
+| [Reset](#reset)                   | Clears retry state (attempts, backoff) and schedules the Activity for execution again.            | [`temporal activity reset`](/cli/command-reference/activity#reset)                   |
+| [Update Options](#update-options) | Changes any Activity options (e.g. timeouts, Retry Policy, or Task Queue) without restarting the Activity.   | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
 
 ## Pause {/* #pause */}
 
-Pause stops the Temporal Service from scheduling new retries of an [Activity Execution](/activity-execution).
+Pause stops the Temporal Service scheduling new retries of an [Activity Execution](/activity-execution).
 
 ### When to Pause
 
@@ -66,20 +66,19 @@ Pause stops the Temporal Service from scheduling new retries of an [Activity Exe
 
 ### What happens when you Pause an Activity
 
-- **Pausing an Activity doesn't affect the parent Workflow.** The Workflow continues Running, and
-  [Signals, Queries, and Updates](/encyclopedia/workflow-message-passing) on the parent Workflow are unaffected.
-- **No further retries are scheduled.** The Temporal Service stops scheduling retries. This is enforced server-side, not
-  by the SDK.
-- **Workflow code has no visibility into Activity Operations.** Pause doesn't produce an Event History event, so the
-  Workflow can't detect or react to it. See [Observability](#observability).
-- **[Heartbeating](/encyclopedia/detecting-activity-failures#activity-heartbeat) determines whether the in-flight
-  execution is interrupted:**
-  - **Activities with Heartbeat** are interrupted on their next Heartbeat. The SDK raises a Pause-specific error, and
-    the Activity can catch this to clean up resources before exiting.
-  - **Activities without Heartbeat** continue running to completion. If the execution succeeds, the result is delivered
+- **No further retries are scheduled.** The Temporal Service stops scheduling retries.
+- **[Heartbeating](/encyclopedia/detecting-activity-failures#activity-heartbeat) determines whether an interruption is sent to the in-flight
+  Activity Task Execution:**
+  - For **Activities with Heartbeat** the interruption is sent on their next Heartbeat. The SDK raises a Pause-specific error;
+    the execution can catch this to clean up resources before exiting.
+  - **Activities without Heartbeat** continue running to completion. If the Activity Task Execution succeeds, the result is delivered
     to the Workflow normally. If it fails, no retry is scheduled. Pause takes effect after the in-flight execution ends.
 - **Pause is idempotent.** Pausing an already-Paused Activity has no effect. Pausing a completed Activity returns an
   error.
+- **Pausing an Activity doesn't affect the parent Workflow.** The Workflow continues Running, and
+  [Signals, Queries, and Updates](/encyclopedia/workflow-message-passing) on the parent Workflow are unaffected.
+- **Workflow code has no visibility into Activity Operations.** Pause doesn't produce an Event History event, so the
+  Workflow can't detect or react to it. See [Observability](#observability).
 
 ### CLI usage
 
@@ -94,7 +93,7 @@ See the [CLI reference for `temporal activity pause`](/cli/command-reference/act
 
 ### Detect Pause in Activity code
 
-Activities with Heartbeat can detect that an interruption was caused by Pause rather than a timeout or Workflow
+Activities with a Heartbeat can detect that an interruption was caused by Pause rather than by a timeout or Workflow
 Cancellation. A Paused Activity resumes later. A Cancelled Activity doesn't. Your Activity code may need to handle these
 cases differently, for example releasing held resources on Pause while preserving them on Cancellation, or vice versa.
 
@@ -111,7 +110,7 @@ cases differently, for example releasing held resources on Pause while preservin
 [Workflow Pause](/encyclopedia/workflow/workflow-pause) and Activity Pause are independent. Both stop Activity retries,
 but they must be Unpaused separately.
 
-- Workflow Pause blocks retries but doesn't interrupt in-flight executions via Heartbeat. Activity Pause does.
+- Workflow Pause blocks retries but doesn't interrupt in-flight Activity Task Executions via Heartbeat. Activity Pause does.
 - If both are active, both must be Unpaused before the Activity resumes.
 
 ### Important considerations
@@ -140,14 +139,11 @@ Unpause resumes a Paused Activity Execution.
 
 ### What happens when you Unpause an Activity
 
-- **The Activity is rescheduled immediately.** Any remaining retry backoff is discarded. The next execution starts right
-  away.
-- **Attempt count and Heartbeat data are preserved by default.** The Activity resumes from where it left off. Use
-  `--reset-attempts` or `--reset-heartbeats` on the CLI to clear these, or use [Reset](#reset) to restart from
-  attempt 1.
+- **The Activity is rescheduled for its next attempt.** The next attempt wait for the end of any remaining retry backoff (or start delay) before starting.
 
 Unpause is idempotent. Unpausing an Activity that isn't Paused has no effect. Unpausing an Activity that has already
-completed returns an error.
+completed returns an error. Use [Reset](#reset) with `--keep-paused` to reset the attempt counter to 1 and optionally
+clear the heartbeat data .
 
 ### CLI usage
 
@@ -157,8 +153,7 @@ temporal activity unpause \
   --activity-id my-activity
 ```
 
-See the [CLI reference for `temporal activity unpause`](/cli/command-reference/activity#unpause) for all options,
-including `--reset-attempts` and `--reset-heartbeats` to clear state on resume.
+See the [CLI reference for `temporal activity unpause`](/cli/command-reference/activity#unpause) for all options.
 
 ### Important considerations
 
@@ -179,37 +174,34 @@ including `--reset-attempts` and `--reset-heartbeats` to clear state on resume.
 
 ## Reset {/* #reset */}
 
-Reset clears an Activity's retry state and schedules a fresh execution.
+Reset clears an Activity's retry state and schedules it to start again from attempt 1.
 
 ### When to Reset
 
-- An Activity has exhausted most of its retries, and you want to give it a fresh set after fixing the underlying issue.
+- An Activity has exhausted most of its retries, and you want to give it its full retries after fixing the underlying issue.
 - A Paused Activity needs to start clean after a configuration change or code deploy.
-- You want to clear accumulated retry backoff and retry immediately instead of waiting for the next backoff interval.
+- You want to retry immediately instead of waiting for the next backoff interval.
 - A batch of Activities failed due to a transient issue and you want to restart them all with staggered jitter.
 
 ### What happens when you Reset an Activity
 
 - **The attempt count resets to 1.** The Activity gets a full set of retry attempts regardless of how many it had used.
 - **Retry backoff is discarded.** If the Activity was in a backoff wait, it's rescheduled to run immediately.
-- **If the Activity is Paused, Reset also Unpauses it.** Use `--keep-paused` to Reset the attempt count without resuming
-  execution. With `--keep-paused`, the attempt count and Heartbeat data (if `--reset-heartbeats`) are reset, but the
-  Activity stays Paused. No retry is scheduled until you [Unpause](#unpause) separately.
+- **If the Activity is Paused, Reset also Unpauses it.** Use `--keep-paused` to Reset without Unpausing.
+  No attenpt will be scheduled until you [Unpause](#unpause) separately.
 - **Resetting an Activity doesn't affect the parent Workflow.** The Workflow continues Running, and Signals, Queries,
   and Updates on the parent Workflow are unaffected.
 - **Workflow code has no visibility into Activity Operations.** Reset doesn't produce an Event History event, so the
   Workflow can't detect or react to it. See [Observability](#observability).
-- **[Heartbeating](/encyclopedia/detecting-activity-failures#activity-heartbeat) determines whether an in-flight
-  execution is interrupted:**
-  - **Activities with Heartbeat** are interrupted on their next Heartbeat. The SDK may raise a Reset-specific error so
+- **[Heartbeating](/encyclopedia/detecting-activity-failures#activity-heartbeat) determines whether an interruption will
+  be sent to an in-flight execution:**
+  - For **Activities with Heartbeat** an interruption is sent on their next Heartbeat. The SDK raises a Reset-specific error so
     the Activity can clean up before exiting. The next execution starts at attempt 1.
   - **Activities without Heartbeat** continue running to completion. Reset doesn't cancel, interrupt, or schedule a
-    concurrent execution. If the Activity was already retrying, the Temporal Service rejects the current execution's
-    result because Reset changed the expected attempt number, and a fresh execution is scheduled after the
-    [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) expires. If it was on its
-    first execution, a successful result is still delivered to the Workflow normally.
-- **Reset is idempotent.** Resetting an Activity that's already at attempt 1 with no backoff has no effect. Resetting a
-  completed Activity returns an error.
+    concurrent execution. If the Activity was running on the Worker, attempt 1 is scheduled to start after the attempt
+    finishes. If the attempt succeeds, the Reset request is ignored and the Activity completes successfully.
+- **Reset is idempotent.** Resetting an Activity that's already at attempt 1 has no effect. If is is in its start delay period,
+  it still waits for this to end. Resetting a completed Activity returns an error.
 
 ### CLI usage
 
@@ -230,8 +222,8 @@ See the [CLI reference for `temporal activity reset`](/cli/command-reference/act
 
 ### Detect Reset in Activity code
 
-Activities with Heartbeat can detect that an interruption was caused by Reset rather than a timeout or Workflow
-Cancellation. A Reset Activity is retried from attempt 1. A Cancelled Activity isn't. Your Activity code may need to
+Activities with a Heartbeat can detect that an interruption was caused by Reset rather than by a timeout or Workflow
+Cancellation. A Reset Activity will be retried from attempt 1. A Cancelled Activity won't be retried. Your Activity code may need to
 handle these cases differently, for example saving partial progress on Reset while discarding it on Cancellation.
 
 | SDK        | How to detect Reset                                                                |
@@ -252,11 +244,9 @@ handle these cases differently, for example saving partial progress on Reset whi
   want a clean restart, pass `--reset-heartbeats`.
 - **Reset won't interrupt an Activity that doesn't Heartbeat.** The current execution runs to completion, which could
   take up to the full [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). If the
-  Activity had already retried (attempt > 1), the Temporal Service rejects the current execution's result because Reset
-  changed the expected attempt number. The Activity waits for its Start-To-Close Timeout to expire before a new
-  execution is scheduled.
-- **`--restore-original-options` restores the Activity's original configuration.** It reverts timeouts, Retry Policy,
-  and Task Queue to the values from when the Activity was first scheduled.
+  current attempt succeeds, the Activity completes successfully and the Reset request is ignored.
+- **`--restore-original-options` restores the Activity's original configuration.** It reverts amy changes to timeouts, Retry Policy,
+  and Task Queue back to the values they had when the Activity was first scheduled.
 - **Bulk Reset can overwhelm downstream services.** When using `--query` to Reset Activities across many Workflows, use
   `--jitter` to stagger the restart times.
 
@@ -280,12 +270,11 @@ You can change [timeouts](/encyclopedia/detecting-activity-failures) (Schedule-T
 Schedule-To-Start, Heartbeat), Retry Policy (initial interval, maximum interval, backoff coefficient, maximum attempts),
 and Task Queue. Only the fields you specify are changed. All other options remain unchanged.
 
-- **If the Activity is waiting for retry (scheduled),** the new options take effect immediately. Any pending retry timer
+- **If the Activity is waiting for its start delay or retry backoff (i.e. in scheduled state),** the new options take effect immediately. Any pending delay timer
   is regenerated with the updated configuration.
-- **If the Activity is currently running,** the new options are stored but take effect on the next execution. The
-  in-flight execution isn't interrupted.
-- **If the Activity is Paused,** the new options are stored immediately. They take effect when the Activity is Unpaused
-  and the next execution starts.
+- **If the Activity is currently running,** the new options take effect on the next attempt. The
+  in-flight execution isn't interrupted or affected.
+- **If the Activity is Paused,** the new options are stored immediately and will affect the next attempt on Unpause.
 - **Workflow code has no visibility into Activity Operations.** Update Options doesn't produce an Event History event,
   so the Workflow can't detect or react to it. See [Observability](#observability).
 
@@ -306,8 +295,6 @@ options, including Retry Policy, Task Queue, and bulk mode via `--query`.
 
 ### Important considerations
 
-- **Changes to a running Activity take effect on the next execution, not the current one.** If you need the change to
-  apply immediately, the Activity must finish or fail its current execution first.
 - **`--restore-original-options` is batch-only.** This flag only works with `--query`. It's silently ignored in
   single-workflow mode. It can't be combined with other option changes in the same command.
 
