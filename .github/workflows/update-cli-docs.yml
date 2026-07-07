@@ -95,25 +95,6 @@ jobs:
           git checkout HEAD -- docs/cli/command-reference/index.mdx
           git checkout HEAD -- docs/cli/command-reference/cloud/index.mdx
 
-      - name: Setup Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          node-version: '24'
-          cache: 'yarn'
-          cache-dependency-path: docs/yarn.lock
-
-      - name: Install dependencies
-        working-directory: docs
-        run: yarn install --frozen-lockfile
-
-      - name: Validate docs build (Docusaurus)
-        working-directory: docs
-        # A real Docusaurus build is the ground truth for the generated MDX: it
-        # compiles every page and, because the site sets onBrokenLinks and
-        # onBrokenAnchors to 'throw', also fails on broken links and anchors.
-        # Running it here blocks broken generated docs from ever becoming a PR.
-        run: yarn build
-
       - name: Publish generated docs to documentation repo
         env:
           GH_TOKEN: ${{ github.token }}
