@@ -71,6 +71,38 @@ fn new(_ctx: &WorkflowContextView, name: String, age: u32) -> Self {
 
 The `#[init]` method receives a `WorkflowContextView`, which provides read-only access to Workflow execution information.
 
+#### Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. However, if you use the `#[init]` annotation on your constructor, you can give it the same [Workflow parameters](/develop/rust/workflows/basics#workflow-parameters) as your `#[run]`.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/rust/client/temporal-client#start-workflow-execution). The Workflow input arguments are also passed to your `#[run]` method. That always happens, whether or not you use the `#[init]` annotation.
+
+Here's an example. Notice that the constructor and `get_greeting` must have the same parameters:
+
+```rust
+#[workflow_methods]
+impl WorkflowRunSeesWorkflowInitWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, workflow_input: MyWorkflowInput) -> Self {
+        Self {
+            name_with_title: format!("Knight {}", workflow_input.name),
+            title_has_been_checked: false,
+        }
+    }
+
+    #[run]
+    async fn get_greeting(
+        ctx: &mut WorkflowContext<Self>,
+        _workflow_input: MyWorkflowInput,
+    ) -> WorkflowResult<String> {
+        ctx.wait_condition(|state| state.title_has_been_checked).await;
+
+        let name_with_title = ctx.state(|state| state.name_with_title.clone());
+        Ok(format!("Hello, {}", name_with_title))
+    }
+}
+```
+
 ### Run method {/* #run-method */}
 
 The `#[run]` method is required and contains the main Workflow logic. It:
