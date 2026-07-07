@@ -188,7 +188,8 @@ Reset clears an Activity's retry state and schedules it to start again from atte
 - **The attempt count resets to 1.** The Activity gets a full set of retry attempts regardless of how many it had used.
 - **Retry backoff is discarded.** If the Activity was in a backoff wait, it's rescheduled to run immediately.
 - **If the Activity is Paused, Reset also Unpauses it.** Use `--keep-paused` to Reset without Unpausing.
-  No attenpt will be scheduled until you [Unpause](#unpause) separately.
+  With `--keep-paused`, the attempt count and Heartbeat data are reset, but the Activity stays Paused. No attempt is
+  scheduled until you [Unpause](#unpause) separately.
 - **Resetting an Activity doesn't affect the parent Workflow.** The Workflow continues Running, and Signals, Queries,
   and Updates on the parent Workflow are unaffected.
 - **Workflow code has no visibility into Activity Operations.** Reset doesn't produce an Event History event, so the
@@ -200,8 +201,6 @@ Reset clears an Activity's retry state and schedules it to start again from atte
   - **Activities without Heartbeat** continue running to completion. Reset doesn't cancel, interrupt, or schedule a
     concurrent execution. If the Activity was running on the Worker, attempt 1 is scheduled to start after the attempt
     finishes. If the attempt succeeds, the Reset request is ignored and the Activity completes successfully.
-- **Reset is idempotent.** Resetting an Activity that's already at attempt 1 has no effect. If is is in its start delay period,
-  it still waits for this to end. Resetting a completed Activity returns an error.
 
 ### CLI usage
 
@@ -218,7 +217,7 @@ temporal activity reset \
 ```
 
 See the [CLI reference for `temporal activity reset`](/cli/command-reference/activity#reset) for all options, including
-`--reset-heartbeats` and bulk mode via `--query`.
+bulk mode via `--query`.
 
 ### Detect Reset in Activity code
 
@@ -240,13 +239,13 @@ handle these cases differently, for example saving partial progress on Reset whi
   [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout). The deadline is
   calculated from when the Activity was originally scheduled. Use [`update-options`](#update-options) to extend the
   timeout before or after Reset.
-- **Heartbeat details are preserved by default.** If your Activity uses Heartbeat details for progress tracking and you
-  want a clean restart, pass `--reset-heartbeats`.
+- **Heartbeat details are cleared.** If your Activity uses Heartbeat details for progress tracking, the next attempt
+  starts without those details after Reset.
 - **Reset won't interrupt an Activity that doesn't Heartbeat.** The current execution runs to completion, which could
   take up to the full [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). If the
   current attempt succeeds, the Activity completes successfully and the Reset request is ignored.
-- **`--restore-original-options` restores the Activity's original configuration.** It reverts amy changes to timeouts, Retry Policy,
-  and Task Queue back to the values they had when the Activity was first scheduled.
+- **`--restore-original-options` restores the Activity's original configuration.** It reverts any changes to timeouts,
+  Retry Policy, and Task Queue back to the values they had when the Activity was first scheduled.
 - **Bulk Reset can overwhelm downstream services.** When using `--query` to Reset Activities across many Workflows, use
   `--jitter` to stagger the restart times.
 
@@ -457,14 +456,11 @@ Reset clears retry state and schedules, or requests, attempt 1 for a Standalone 
 - After a reset dispatches a new attempt, the attempt's scheduled time reports the reset attempt's dispatch time, not
   the original first-attempt dispatch time.
 - Reset discards retry backoff, but it still respects any remaining Start Delay before the first Worker pickup.
-- If `reset_heartbeat` is set:
-  - Reset clears stored heartbeat time and heartbeat details.
-  - If the Activity is non-running:
-    - Heartbeat state is cleared immediately.
-  - If the Activity is running:
-    - Heartbeat state is cleared when the reset is applied to the next attempt.
-- If `reset_heartbeat` is not set:
-  - Heartbeat details are preserved.
+- Reset clears stored heartbeat time and heartbeat details.
+- If the Activity is non-running:
+  - Heartbeat state is cleared immediately.
+- If the Activity is running:
+  - Heartbeat state is cleared when the reset is applied to the next attempt.
 - If `restore_original_options` is set:
   - Reset restores the options from when the Standalone Activity was created.
   - Reset can restore Task Queue, Schedule-To-Close Timeout, Schedule-To-Start Timeout, Start-To-Close Timeout,
