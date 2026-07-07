@@ -158,6 +158,12 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Java SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Java SDK](/develop/java/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
+:::caution
+
+Traces are currently produced through a compatibility shim, not native OpenTelemetry support. The trace structure will change in a future release. Metrics are not affected.
+
+:::
+
 ```java
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
