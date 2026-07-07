@@ -15,7 +15,7 @@ tags:
 
 ### Problem statement
 
-Many workflows require multiple Activities to execute on the same Worker to maintain data locality. Common scenarios include:
+Many Workflows require multiple Activities to execute on the same Worker to maintain data locality. Common scenarios include:
 
 - **File processing:** Download a file (Activity 1), process it (Activity 2), and upload it (Activity 3). The file exists on the Worker's local disk, and requiring another Worker to re-download multi-GB files from the original storage (or via an object store) is slow and expensive.
 - **ML model caching:** Load a large ML model into memory (Activity 1), then run multiple inference calls (Activities 2-N) using the cached model. Loading the model on each Worker wastes time and memory.
@@ -29,7 +29,7 @@ Without Worker affinity, Temporal distributes Activities across available Worker
 
 ### Solution
 
-Use Worker-specific Task Queues to ensure all Activities in a workflow execute on the same Worker. To achieve this:
+Use Worker-specific Task Queues to ensure all Activities in a Workflow execute on the same Worker. To achieve this:
 
 1. Each Worker polls two Activity Task Queues: a shared queue and a unique queue (generated per Worker instance)
 2. The Workflow calls an Activity on the shared queue to discover an available Worker's unique queue name
@@ -80,10 +80,10 @@ If a Worker crashes while processing Activities on its unique queue:
 
 ## Target audience
 
-- **Temporal Workflow & Activity developers:** Implementing file processing and data-local workflows
+- **Temporal Workflow & Activity developers:** Implementing file processing and data-local Workflows
 - **Platform operators:** Deploying and monitoring Worker-specific queue patterns
 - **Data engineers:** Building ETL pipelines with large file processing
-- **ML Engineers:** Deploying inference workflows with model caching
+- **ML Engineers:** Deploying inference Workflows with model caching
 
 This implementation requires code changes to Workers and Workflows, and consideration for Worker lifecycle management.
 
@@ -375,16 +375,16 @@ When a Worker crashes, Activities scheduled to its unique queue will wait. Imple
 
 **Failure Detection Mechanisms:**
 
-1. **Heartbeat Timeout** (fastest): Activities periodically send heartbeats to signal they're alive. If a Worker crashes mid-execution, no heartbeats are sent, and the activity fails within seconds (e.g., 30s) rather than waiting for the full task duration.
+1. **Heartbeat Timeout** (fastest): Activities periodically send heartbeats to signal they're alive. If a Worker crashes mid-execution, no Heartbeats are sent, and the Activity fails within seconds (e.g., 30s) rather than waiting for the full Task duration.
 
-2. **Schedule-to-Start Timeout** (medium): If a Worker crashes before picking up a task from its queue, this timeout detects it within minutes (e.g., 5 min) instead of waiting for the full start-to-close timeout. This is critical for identifying dead Workers early.
+2. **Schedule-to-Start Timeout** (medium): If a Worker crashes before picking up a Task from its queue, this timeout detects it within minutes (e.g., 5 min) instead of waiting for the full Start-To-Close Timeout. This is critical for identifying dead Workers early.
 
-3. **Workflow-Level Retries** (recovery): The `for` loop catches all exceptions and retries the entire workflow sequence on a different Worker. This provides recovery after detecting a Worker failure—the workflow doesn't retry on the failed Worker's queue, but instead requests a new unique queue from a healthy Worker.
+3. **Workflow-Level Retries** (recovery): The `for` loop catches all exceptions and retries the entire Workflow sequence on a different Worker. This provides recovery after detecting a Worker failure—the Workflow doesn't retry on the failed Worker's queue, but instead requests a new unique queue from a healthy Worker.
 
 **Failure Scenarios:**
 
-- **Worker crashes mid-activity** → Detected by `heartbeat_timeout` (30s) → Exception caught by try/except → Workflow retries on new Worker
-- **Worker crashes before picking up task** → Detected by `schedule_to_start_timeout` (5 min) → Exception caught → Workflow retries on new Worker
+- **Worker crashes mid-Activity** → Detected by `heartbeat_timeout` (30s) → Exception caught by try/except → Workflow retries on new Worker
+- **Worker crashes before picking up Task** → Detected by `schedule_to_start_timeout` (5 min) → Exception caught → Workflow retries on new Worker
 - **All Workers fail** → Loop exhausts max attempts → Workflow fails after 3 attempts (configurable)
 
 **Enhanced Workflow with fallback:**
@@ -466,17 +466,17 @@ class FileProcessingWorkflowWithFallback:
 
 ## Conclusion
 
-By implementing worker-specific Task Queues for file processing, you have achieved:
+By implementing Worker-specific Task Queues for file processing, you have achieved:
 
 1. **Data locality:** Files downloaded in one Activity are immediately available to subsequent Activities on the same Worker, eliminating multi-GB network transfers
 
-2. **Performance improvement:** Reduced execution time by 80%+ for workflows processing large files (e.g., 10GB video file no longer transferred between Workers)
+2. **Performance improvement:** Reduced execution time by 80%+ for Workflows processing large files (e.g., 10GB video file no longer transferred between Workers)
 
-3. **Resource efficiency:** Load expensive resources (ML models, database connections) once per workflow instead of per Activity, reducing memory usage and initialization overhead
+3. **Resource efficiency:** Load expensive resources (ML models, database connections) once per Workflow instead of per Activity, reducing memory usage and initialization overhead
 
 4. **Cost reduction:** Eliminated network egress costs from transferring large files between Workers, potentially saving thousands of dollars per month
 
-Your file processing workflows now guarantee that all Activities execute on the same Worker, maintaining data locality and maximizing performance.
+Your file processing Workflows now guarantee that all Activities execute on the same Worker, maintaining data locality and maximizing performance.
 
 ## Related resources
 

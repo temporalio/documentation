@@ -62,11 +62,11 @@ The Workflow resumes where it left off when the condition becomes true, regardle
 This means thousands of loan applications can sit in a `PENDING_FIX` state simultaneously without consuming Worker capacity.
 
 The primary architectural challenge is distinguishing between transient failures that automated retries can resolve and permanent failures that require human intervention.
-Temporal addresses this with [`ApplicationFailure.nonRetryable()`](https://docs.temporal.io/references/failures#application-failure), which instructs the SDK to skip the retry policy and propagate the error to the Workflow code without delay.
+Temporal addresses this with [`ApplicationFailure.nonRetryable()`](https://docs.temporal.io/references/failures#application-failure), which instructs the SDK to skip the Retry Policy and propagate the error to the Workflow code without delay.
 The Workflow then has full control over how to handle the failure: it can log the error, update Search Attributes for visibility, and suspend until a [Signal](https://docs.temporal.io/develop/typescript/message-passing#signals) arrives.
 
 Custom [Search Attributes](https://docs.temporal.io/visibility#search-attribute) provide the mechanism for routing blocked Workflows to the correct resolution resource.
-By upserting attributes like `LoanStatus` and `FailedActivity` at each state transition, you create a queryable index across all active Workflows.
+By upserting attributes like `LoanStatus` and `FailedActivity` at each State Transition, you create a queryable index across all active Workflows.
 An operations dashboard can filter for `LoanStatus = 'PENDING_FIX' AND FailedActivity = 'runCreditCheck'` to show which applications need a credit-related data correction.
 This same query interface supports automated agents that poll for specific failure categories and apply corrections programmatically.
 
@@ -316,7 +316,7 @@ export async function closeLoan(
 ```
 
 Each Activity validates its inputs against business rules and throws `ApplicationFailure.nonRetryable()` when the data is fundamentally invalid.
-The `nonRetryable` designation is critical: it instructs the Temporal SDK to skip the retry policy entirely and propagate the error directly to the Workflow.
+The `nonRetryable` designation is critical: it instructs the Temporal SDK to skip the Retry Policy entirely and propagate the error directly to the Workflow.
 This distinguishes failures that require human judgment — corrupt input, policy breaches, compliance blocks — from transient infrastructure failures that retries can resolve.
 
 ### Implement the Workflow with the recoverableStep pattern
@@ -527,7 +527,7 @@ The Query handler returns the complete `LoanState` at any point during execution
 This includes the current status, the list of completed Activities, the full fix history, and the current application data.
 External systems can poll this Query to display real-time pipeline progress.
 
-By calling `upsertSearchAttributes` at every state transition, the Workflow maintains a denormalized index that the Temporal Visibility API can query across all active Workflows.
+By calling `upsertSearchAttributes` at every State Transition, the Workflow maintains a denormalized index that the Temporal Visibility API can query across all active Workflows.
 This enables an operations dashboard to display aggregate statistics and filter by any combination of status and failed Activity.
 
 ### Add saga compensation for side-effecting steps
@@ -812,7 +812,7 @@ npm run web
 Open `http://localhost:3000` in your browser. The dashboard provides:
 
 - **Stats bar** — live counts of Total, Pending Fix, Running, and Completed Workflows.
-- **Filters** — narrow by failed Activity or loan status, powered by the Search Attribute query endpoint.
+- **Filters** — narrow by failed Activity or loan status, powered by the Search Attribute Query endpoint.
 - **Pipeline visualization** — per-Workflow step indicators showing which Activities have completed, which failed, and which are pending.
 - **Detail panel** — click any Workflow to inspect its full state (via the Query API), view the error message, and send a corrective Signal through a form that pre-suggests which field to fix.
 - **Fix history** — an audit trail of every correction applied during the lifecycle of the Workflow.
@@ -957,7 +957,7 @@ After the Signal is delivered, the Workflow wakes up, retries the failed Activit
 
 ![Workflow completed after fixing the employer name](assets/saga-pattern/keep-business-moving-success.png)
 
-You can also verify the full event history — including the Signal and subsequent Activity completions — in the Temporal Web UI.
+You can also verify the full Event History — including the Signal and subsequent Activity completions — in the Temporal Web UI.
 
 ![Event History in the Temporal Web UI showing the Signal and Activity completions](assets/saga-pattern/keep-business-moving-event-history.png)
 
@@ -1001,7 +1001,7 @@ Using the web service search endpoint:
 curl "http://localhost:3000/api/workflows/search?failedActivity=runCreditCheck&status=PENDING_FIX"
 ```
 
-These queries return results in real time as Workflows update their Search Attributes.
+These Queries return results in real time as Workflows update their Search Attributes.
 An operations dashboard can poll these endpoints to display aggregate statistics: the number of applications awaiting correction, which Activities cause the most failures, and how long applications sit in `PENDING_FIX` status.
 
 This query capability supports automated resolution agents.
@@ -1048,7 +1048,7 @@ By following this guide, you have implemented a recoverable and compensatable pi
 - **Durable pause on permanent failure.** Activities throw `ApplicationFailure.nonRetryable()` to signal non-retryable failures — whether invalid data, a breached lending limit, or a blocked compliance check. The Workflow catches these errors and suspends using `await condition()`, consuming no Worker resources while waiting for correction. The Workflow resumes where it left off regardless of how much time passes.
 - **Signal-driven recovery.** External operators or automated agents send corrective Signals containing the field name and new value. The Signal handler patches the application data in-place, records the correction in an auditable fix history, and wakes the Workflow to retry the failed Activity.
 - **Saga compensation on abort.** When a `RollbackRequired` failure or a `cancelApplication` Signal aborts the forward pipeline, the Workflow unwinds registered compensations in LIFO order. Compensations are registered before execution and written to be idempotent so partial side effects are always cleaned up. Each compensation runs through the same recoverable wrapper, so a stuck rollback pauses with `ROLLBACK_PENDING_FIX` for operator intervention rather than leaving the process half-unwound.
-- **Search Attribute routing.** Custom Search Attributes `LoanStatus` and `FailedActivity` are updated at every state transition, creating a real-time queryable index across all active Workflows. Operations teams use visibility queries to filter blocked Workflows by failure type and route them to the appropriate resolution resource, be it human or agents.
+- **Search Attribute routing.** Custom Search Attributes `LoanStatus` and `FailedActivity` are updated at every State Transition, creating a real-time queryable index across all active Workflows. Operations teams use visibility Queries to filter blocked Workflows by failure type and route them to the appropriate resolution resource, be it human or agents.
 - **Full pipeline visibility.** Queries return the complete internal state of any running Workflow, including completed Activities, compensated Activities, fix history, compensation history, and the triggering cancellation reason. Search Attributes provide the denormalized aggregate view across all Workflows. Together, these mechanisms give you both the individual and cross-pipeline views needed to operate the system at scale.
 
 ## Related resources
@@ -1057,5 +1057,5 @@ By following this guide, you have implemented a recoverable and compensatable pi
 - [Temporal Signals](https://docs.temporal.io/develop/typescript/message-passing#signals) — Guide to defining and sending Signals to running Workflow Executions.
 - [Temporal Queries](https://docs.temporal.io/develop/typescript/message-passing#queries) — Guide to defining and handling synchronous read-only Queries on Workflows.
 - [Temporal Search Attributes](https://docs.temporal.io/visibility#search-attribute) — Reference for creating and using custom Search Attributes for Workflow visibility.
-- [Temporal Visibility](https://docs.temporal.io/visibility) — Overview of the Visibility subsystem and List Filter query syntax.
+- [Temporal Visibility](https://docs.temporal.io/visibility) — Overview of the Visibility subsystem and List Filter Query syntax.
 - [ApplicationFailure Reference](https://docs.temporal.io/references/failures#application-failure) — API reference for `ApplicationFailure` including retryable and non-retryable error handling.
