@@ -13,6 +13,8 @@ tags:
 description: Schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 This page shows how to do the following:
 
 - [Scheduled Workflows](#schedule-a-workflow)
@@ -33,6 +35,9 @@ Scheduling Workflows is a crucial aspect of any automation process, especially w
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
+Schedule behavior is governed by the Schedule's [Overlap Policy](/schedule#overlap-policy).
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and counts as the running execution for overlap decisions.
+
 ### Create a Schedule {/* #create-schedule */}
 
 Schedules are initiated with the `create` call.
@@ -41,12 +46,7 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-sdks#temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/schedule), and [Action](/schedule) in `client.ScheduleOptions{}`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go" />
 
 ```go
 func main() {
@@ -83,12 +83,7 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go" />
 
 ```go
 func main() {
@@ -122,12 +117,7 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go" />
 
 ```go
 func main() {
@@ -149,12 +139,7 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go" />
 
 ```go
 func main() {
@@ -169,12 +154,7 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go" />
 
 ```go
 func main() {
@@ -199,12 +179,7 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go" />
 
 ```go
 func main() {
@@ -225,12 +200,7 @@ By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go" />
 
 ```go
 func main() {
@@ -251,12 +221,7 @@ These changes can be made to Workflow Actions, Action parameters, Memos, and the
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go" />
 
 ```go
 func main() {

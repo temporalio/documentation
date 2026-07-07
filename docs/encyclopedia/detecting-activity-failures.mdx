@@ -32,13 +32,14 @@ A Schedule-To-Start Timeout is the maximum amount of time that is allowed from w
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
 <RelatedReadContainer>
+  <RelatedReadItem path="/develop/dotnet/activities/timeouts" text="Set a Schedule-To-Start Timeout using the .NET SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/go/activities/timeouts" text="Set a Schedule-To-Start Timeout using the Go SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/activities/timeouts" text="Set a Schedule-To-Start Timeout using the Java SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/php/activities/timeouts#activity-timeouts" text="Set a Schedule-To-Start Timeout using the PHP SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/activities/timeouts" text="Set a Schedule-To-Start Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Schedule-To-Start Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/activities/timeouts" text="Set a Schedule-To-Start Timeout using the .NET SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/ruby/activities/timeouts" text="Set a Schedule-To-Start Timeout using the Ruby SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/rust/activities/timeouts" text="Set a Schedule-To-Start Timeout using the Rust SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Schedule-To-Start Timeout using the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 The moment that the Task is picked by the Worker, from the Task Queue, is considered to be the start of the Activity Task Execution for the purposes of the Schedule-To-Start Timeout and associated metrics.
@@ -53,6 +54,10 @@ This definition of "Start" avoids issues that a clock difference between the Tem
 The Schedule-To-Start Timeout is enforced for each Activity Task, whereas the Schedule-To-Close Timeout is enforced once per Activity Execution.
 Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_ Activity Task in the sequence of Activity Tasks that make up the Activity Execution, while
 "Schedule" in Schedule-To-Close refers to the _first_ Activity Task in that sequence.
+
+An Activity Execution can be composed of multiple Activity Task Executions, with each Task representing a single attempt or retry. When you define an Activity in a Workflow, that definition represents a single logical Activity Execution.
+
+If that Activity fails (for example, due to a timeout or error) and a Retry Policy is in place, Temporal will schedule another attempt to execute the same Activity. Each attempt is called an Activity Task Execution.
 
 A [Retry Policy](/encyclopedia/retry-policies) attached to an Activity Execution retries an Activity Task.
 
@@ -80,13 +85,14 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
 
 <RelatedReadContainer>
+  <RelatedReadItem path="/develop/dotnet/activities/timeouts" text="Set a Start-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/go/activities/timeouts" text="Set a Start-To-Close Timeout using the Go SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/activities/timeouts" text="Set a Start-To-Close Timeout using the Java SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/php/activities/timeouts#activity-timeouts" text="Set a Start-To-Close Timeout using the PHP SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/activities/timeouts" text="Set a Start-To-Close Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Start-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/activities/timeouts" text="Set a Start-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/ruby/activities/timeouts" text="Set a Start-To-Close Timeout using the Ruby SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/rust/activities/timeouts" text="Set a Start-To-Close Timeout using the Rust SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Start-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
@@ -133,13 +139,14 @@ If this timeout is reached, the following actions occur:
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](/activity-execution), from when the first [Activity Task](/tasks#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
 <RelatedReadContainer>
+  <RelatedReadItem path="/develop/dotnet/activities/timeouts" text="Set a Schedule-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/go/activities/timeouts" text="Set a Schedule-To-Close Timeout using the Go SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/activities/timeouts" text="Set a Schedule-To-Close Timeout using the Java SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/php/activities/timeouts#activity-timeouts" text="Set a Schedule-To-Close Timeout using the PHP SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/activities/timeouts" text="Set a Schedule-To-Close Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Schedule-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/activities/timeouts" text="Set a Schedule-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/ruby/activities/timeouts" text="Set a Schedule-To-Close Timeout using the Ruby SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/rust/activities/timeouts" text="Set a Schedule-To-Close Timeout using the Rust SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Schedule-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 <CaptionedImage
@@ -174,13 +181,14 @@ An Activity Heartbeat is a ping from the Worker that is executing the Activity t
 Each ping informs the Temporal Service that the Activity Execution is making progress and the Worker has not crashed.
 
 <RelatedReadContainer>
+  <RelatedReadItem path="/develop/dotnet/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the .NET SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/go/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the Go SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the Java SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/php/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the PHP SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/activities/timeouts#activity-heartbeat-timeout" text="Heartbeat an Activity using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the .NET SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/ruby/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the Ruby SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/rust/activities/timeouts#activity-heartbeats" text="Heartbeat an Activity using the Rust SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/activities/timeouts#activity-heartbeat-timeout" text="Heartbeat an Activity using the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
@@ -257,13 +265,14 @@ And the following scenarios are not suitable for Heartbeating:
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeat).
 
 <RelatedReadContainer>
+  <RelatedReadItem path="/develop/dotnet/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the .NET SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/go/activities/timeouts#activity-heartbeats" text="Set a Heartbeat Timeout using the Go SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/java/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the Java SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/php/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the PHP SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/activities/timeouts#activity-heartbeat-timeout" text="Set a Heartbeat Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the .NET SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/ruby/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the Ruby SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/rust/activities/timeouts#heartbeat-timeout" text="Set a Heartbeat Timeout using the Rust SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/activities/timeouts#activity-heartbeat-timeout" text="Set a Heartbeat Timeout using the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 <CaptionedImage
