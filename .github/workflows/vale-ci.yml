@@ -14,7 +14,7 @@ jobs:
     name: Lint prose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: vale-cli/vale-action@2.1.2
         with:
