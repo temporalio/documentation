@@ -58,6 +58,8 @@ exceptions:
   - Queue
   - Queues
   - Retry
+  - Role
+  - Roles
   - Schedule
   - Search
   - Signal
