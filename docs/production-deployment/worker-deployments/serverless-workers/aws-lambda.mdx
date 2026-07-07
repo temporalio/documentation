@@ -393,7 +393,7 @@ Deploy the following CloudFormation template to create the invocation role and i
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `AssumeRoleExternalId` | A string you choose to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Can be any value. Use the same value when creating the Worker Deployment Version. |
 | `LambdaFunctionARNs`   | Comma-separated list of Lambda function ARNs that Temporal may invoke. To allow invocation of any published version of a function, use a wildcard suffix (for example, `arn:aws:lambda:...:function:my-temporal-worker:*`). One role can authorize multiple Worker Lambdas. |
-| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`.                                                                                                                                |
+| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`. The template appends the stack name to this value (`<RoleName>-<StackName>`), and IAM role names cannot exceed 64 characters. If the combined name is too long, stack creation fails; use a shorter `RoleName` or stack name. |
 
 <details>
 <summary>CloudFormation template</summary>
