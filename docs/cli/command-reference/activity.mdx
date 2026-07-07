@@ -236,8 +236,7 @@ Use the following options to change the behavior of this command. You can also u
 Reset an activity. Not supported for Standalone Activities.
 This restarts the activity as if it were first being
 scheduled. That is, it will reset both the number of attempts and the
-activity timeout, as well as, optionally, the
-[heartbeat details](#reset-heartbeats).
+activity timeout, as well as the [heartbeat details](#reset-heartbeats).
 
 If the activity may be executing (i.e. it has not yet timed out), the
 reset will take effect the next time it fails, heartbeats, or times out.
@@ -261,16 +260,15 @@ the next time they heartbeat after a reset.
 If, in your Activity, you need to do any cleanup when an Activity is
 reset, handle this error and then re-throw it when you've cleaned up.
 
-If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
+Reset clears heartbeat details.
 
 Specify the Activity and Workflow IDs:
 
 ```
 temporal activity reset \
     --activity-id YourActivityId \
-    --workflow-id YourWorkflowId
+    --workflow-id YourWorkflowId \
     --keep-paused
-    --reset-heartbeats
 ```
 
 Activities can be reset in bulk with a visibility query list filter:
@@ -291,7 +289,6 @@ Use the following options to change the behavior of this command. You can also u
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
 | `--reset-attempts` | No | **bool** Reset the activity attempts. |
-| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. |
 | `--restore-original-options` | No | **bool** Restore the original options of the activity. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
 | `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
@@ -525,4 +522,3 @@ The following options can be used with any command.
 | `--tls-key-data` | No | **string** Private certificate key data. Can't be used with --tls-key-path. |  |
 | `--tls-key-path` | No | **string** Path to x509 private key. Can't be used with --tls-key-data. |  |
 | `--tls-server-name` | No | **string** Override target TLS server name. |  |
-
