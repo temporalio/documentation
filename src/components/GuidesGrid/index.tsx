@@ -15,7 +15,7 @@ const SDK_BLOCK_NAMES: Record<SDK, string> = {
   Python: "pythonBlock",
   Ruby: "rubyBlock",
   TypeScript: "typeScriptBlock",
-  Go: "goBlock",
+  Go: "goLangBlock",
 };
 
 const ALL_TAGS = Array.from(
