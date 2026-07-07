@@ -511,7 +511,7 @@ that produced the serialized state.
 
 ## Streaming
 
-`run` supports streaming with `{ stream: true }`. The streaming model Activity publishes each model event to a [Workflow Stream](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) topic as the model produces it, so an external client can observe a run live while it stays durable. Streaming is experimental.
+`run` supports streaming with `{ stream: true }`. The streaming model Activity publishes each model event to a [Workflow Stream](/workflow-streams) topic as the model produces it, so an external client can observe a run live while it stays durable. Streaming is experimental.
 
 Streaming requires the `@temporalio/workflow-streams` package:
 
