@@ -1491,9 +1491,9 @@ module.exports = {
             'encyclopedia/architecture/temporal-architecture',
             'encyclopedia/architecture/how-temporal-works',
             'encyclopedia/architecture/temporal-sdks',
-            'encyclopedia/architecture/temporal-client',
           ],
         },
+        'encyclopedia/temporal-client',
         {
           type: 'category',
           label: 'Workflows',
