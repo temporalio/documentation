@@ -17,7 +17,7 @@ tags:
 
 import { CaptionedImage, TemporalArchitectureSimulator } from '@site/src/components';
 
-In a Temporal application, the [Client](/encyclopedia/architecture/temporal-architecture#client-application), [Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server), and [Worker](/encyclopedia/architecture/temporal-architecture#worker-service) are three separate parts that talk to each other and each one has a clear purpose. To understand the internal mechanics of Temporal, it helps to follow what happens when you start a Workflow or schedule [Tasks](/tasks#task).
+In a Temporal application, the [Client](/encyclopedia/architecture/temporal-architecture#client-application), [Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server), and [Worker](/workers#worker) are three separate parts that talk to each other and each one has a clear purpose. To understand the internal mechanics of Temporal, it helps to follow what happens when you start a Workflow or schedule [Tasks](/tasks#task).
 
 ## Relationship between the Client, Server, and Worker
 
@@ -44,13 +44,13 @@ The Client does not run Workflow or Activity code; it only sends and receives th
 
 ## Worker
 
-A [Worker](/encyclopedia/architecture/temporal-architecture#worker-service) is a long‑running process that you run on your own machines, built with a Temporal SDK, and it is the part that actually executes your Workflow and Activity code. The Worker connects to the Server and polls Task Queues managed by the Matching Service to ask "do you have work for me?".
+A [Worker](/workers#worker) is a long‑running process that you run on your own machines, built with a Temporal SDK, and it is the part that actually executes your Workflow and Activity code. The Worker connects to the Server and polls Task Queues managed by the Matching Service to ask "do you have work for me?".
 
 When it receives a Workflow Task, it replays the Workflow's Event History and runs your Workflow code until it either completes or reaches a point where it must wait (for example, waiting for an Activity or a Timer). It then sends Commands back to the Server that describe what should happen next, such as "schedule this Activity" or "start this Timer".
 
-When it receives an Activity Task, it calls your Activity function or method and then sends the outcome (success or failure and any additional result data) back to the Server, which records this as Events in the Event history. Temporal explicitly does not run your Workflow or Activity code inside the Server; that code only runs in Workers, which are under your control.
+When it receives an Activity Task, it calls your Activity function or method and then sends the outcome (success or failure and any additional result data) back to the Server, which records this as Events in the Event History. Temporal explicitly does not run your Workflow or Activity code inside the Server; that code only runs in Workers, which are under your control.
 
-The Server records all state and creates Workflow and Activity Tasks in Task Queues. Workers poll those queues, run your Workflow and Activity code, and send back Commands and results. The Server uses this information to update the [Event history](/workflow-execution/event) so that any Client can later read the current status or the final result, and execution can safely continue (or replay) even if individual Worker processes or machines fail.
+The Server records all state and creates Workflow and Activity Tasks in Task Queues. Workers poll those queues, run your Workflow and Activity code, and send back Commands and results. The Server uses this information to update the [Event History](/workflow-execution/event) so that any Client can later read the current status or the final result, and execution can safely continue (or replay) even if individual Worker processes or machines fail.
 
 This is the heart of how durable execution works.
 
@@ -78,11 +78,11 @@ A background queue processor in the History Service reads the Transfer Task and 
 
 **Step 4: A Worker polls for a Workflow Task**
 
-A Worker process (your code + SDK) is already polling that Task Queue using PollWorkflowTask via Frontend Service. The Frontend Service asks Matching for a task. The Matching Service picks this Workflow Task and tells the History Service that it was started. The History Service appends WorkflowTaskStarted to the Event History and returns the Workflow Task (plus history) to the Worker through Frontend.
+A Worker process (your code + SDK) is already polling that Task Queue using PollWorkflowTask via Frontend Service. The Frontend Service asks Matching for a Task. The Matching Service picks this Workflow Task and tells the History Service that it was started. The History Service appends WorkflowTaskStarted to the Event History and returns the Workflow Task (plus history) to the Worker through Frontend.
 
 **Step 5: The Worker runs your Workflow code**
 
-The SDK replays the Event History to reconstruct logical Workflow state, then starts your Workflow function/method. The Workflow runs until either returns a result or until it needs to wait (for an Activity, timer, signal, etc.).
+The SDK replays the Event History to reconstruct logical Workflow state, then starts your Workflow function/method. The Workflow runs until either returns a result or until it needs to wait (for an Activity, Timer, Signal, etc.).
 
 **Step 6: Your Workflow asks for work via Commands**
 
@@ -90,9 +90,9 @@ When your Workflow calls Temporal APIs (for example, "execute Activity"), the SD
 
 **Step 7: The History Service turns Commands into Events and new Tasks**
 
-The History appends Events based on the Commands and updates state, for example: For ScheduleActivityTask: WorkflowTaskCompleted, then ActivityTaskScheduled. It then creates new internal tasks (Transfer/Timer tasks) and, through the queue processors, calls Matching to add Activity Tasks to Activity Task Queues or later add more Workflow Tasks when needed.
+The History appends Events based on the Commands and updates state, for example: For ScheduleActivityTask: WorkflowTaskCompleted, then ActivityTaskScheduled. It then creates new internal Tasks (Transfer/Timer Tasks) and, through the queue processors, calls Matching to add Activity Tasks to Activity Task Queues or later add more Workflow Tasks when needed.
 
-At this point, the Workflow is waiting on whatever it asked for (Activities, timers, etc.). When those complete, the Workflow will resume.
+At this point, the Workflow is waiting on whatever it asked for (Activities, Timers, etc.). When those complete, the Workflow will resume.
 
 ### Activity lifecycle 
 
@@ -106,7 +106,7 @@ A (possibly different) Worker is polling that Activity Task Queue using PollActi
 
 **Step 10: Worker runs your Activity code**
 
-The Worker calls your Activity function/method with the inputs from the task. This code can do I/O, call external services, etc., because it is not replayed the same way as Workflow code. 
+The Worker calls your Activity function/method with the inputs from the Task. This code can do I/O, call external services, etc., because it is not replayed the same way as Workflow code. 
 
 **Step 11: Activity reports success or failure**
 
@@ -118,11 +118,11 @@ On failure, the Worker sends RespondActivityTaskFailed; History appends Activity
 
 **Step 12: A new Workflow Task is scheduled**
 
-Because of the Activity completion (or other events like timers), History has appended Events and scheduled a new Workflow Task. A queue processor in History calls Matching to add that Workflow Task to the Workflow Task Queue.
+Because of the Activity completion (or other Events like Timers), History has appended Events and scheduled a new Workflow Task. A queue processor in History calls Matching to add that Workflow Task to the Workflow Task Queue.
 
 **Step 13: Worker picks up the next Workflow Task and continues**
 
-A Worker polls the Workflow Task Queue again (PollWorkflowTask). The Matching Service selects the task; the History Service appends WorkflowTaskStarted. The Worker receives the updated Event History via Frontend. The SDK replays the history, unblocks the waiting Activity or timer, and your Workflow code continues from this new state.
+A Worker polls the Workflow Task Queue again (PollWorkflowTask). The Matching Service selects the Task; the History Service appends WorkflowTaskStarted. The Worker receives the updated Event History via Frontend. The SDK replays the Event History, unblocks the waiting Activity or Timer, and your Workflow code continues from this new state.
 
 **Step 14: Workflow eventually closes**
 
