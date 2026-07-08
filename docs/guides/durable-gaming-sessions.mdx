@@ -15,6 +15,8 @@ tags:
   - Workers
 ---
 
+**by Cecil Phillip**
+
 Multiplayer game backends run into the same wall at scale: player state lives in memory, pinned to a server, and when that server goes down the session goes with it. Reconnection logic is painful, distributed state is expensive, and cross-player coordination is worse. This guide shows how to model each player as their own durable, independently-running process — one that survives crashes, executes game actions, and stays addressable for as long as the session lasts.
 
 ## Problem statement

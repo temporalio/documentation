@@ -12,6 +12,8 @@ tags:
   - Signals
 ---
 
+**by Keith Tenzer**
+
 This guide details a reusable, durable distributed lock for Temporal Workflows. The design doesn't rely on an external database, a central limiter, or any shared state outside Temporal itself.
 
 This pattern is best for small, fixed pools of scarce resources where each permit is held for minutes, not milliseconds: GPU devices, lab hardware, tenant migrations, or similar operational resources. The latency maybe too high to qualify as a general-purpose high-throughput mutex or rate limiter.

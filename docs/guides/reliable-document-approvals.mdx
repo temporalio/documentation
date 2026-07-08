@@ -16,6 +16,8 @@ tags:
   - Workers
 ---
 
+**by Cecil Phillip**
+
 Document approval processes fail in predictable ways: requests go unanswered, deadlines pass silently, context gets lost across restarts, and audit trails end up incomplete. The usual fixes — polling loops, cron jobs, reminder emails kicked off by a scheduler — create coordination debt that compounds over time. This guide shows how to build an approval system where none of that is possible: decisions are waited on durably, SLAs are enforced automatically, escalations happen without a scheduler, and every action is recorded whether or not your infrastructure stays up.
 
 ### Problem statement
