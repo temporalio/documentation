@@ -36,14 +36,9 @@ keywords:
   }
 `}</style>
 
-When a cloud outage strikes, a Temporal Cloud Namespace with [High Availability](/cloud/high-availability) fails over to another region automatically, providing high availability and disaster recovery for your most important Workflows.
-But what about the rest of the architecture?
+When a cloud outage strikes, a Temporal Cloud Namespace with [High Availability](/cloud/high-availability) fails over to another region automatically, providing high availability and disaster recovery for your most important Workflows. But Workers, Workflow starters, Codec Servers, databases, network load balancers, and other external systems that touch your Workflows each need their own failover story.
 
-Workers, Workflow starters, Codec Servers, databases, network load balancers, and every other external systems that touch your Workflows use each need their own HA/DR failover story.
-
-In a real outage, your [recovery time](/cloud/rpo-rto) depends on your **Worker deployment pattern**: where Worker fleets run, how they failover, and which region (or regions) processes Workflows at each step.
-
-This page describes common Active/Passive and Active/Active patterns for deploying Workers--and the other systems in your cloud architecture--to achieve your business goals for high availability and disaster recovery (HA/DR).
+In a real outage, your [recovery time](/cloud/rpo-rto) depends on your **Worker deployment pattern**: where Worker fleets run, how they failover, and which region (or regions) processes Workflows at each step. This page describes common Active/Passive and Active/Active patterns for deploying Workers and the other systems in your cloud architecture to achieve your business goals for high availability and disaster recovery (HA/DR).
 
 ## Pieces of a highly available cloud architecture {/* #pieces-to-failover */}
 
@@ -79,17 +74,11 @@ flowchart LR
     class WFENV env
 ```
 
-:::tip
-
-See [High Availability for Temporal Cloud Namespaces](/cloud/high-availability) to learn more about Namespace replicas, replication, and failover.
-
-:::
-
 ## Highly available Worker patterns {/* #ha-worker-patterns */}
 
 A Worker deployment pattern pairs with Namespace High Availability to achieve a disaster recovery (DR) and business continuity plan for your full Temporal architecture.
 
-This page covers three main patterns — **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active**.
+This page covers three main patterns: **Active/Passive (Cold)**, **Active/Passive (Hot)**, and **Active/Active**.
 
 They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**. They are defined by where the Workers run and where Workflows process:
 
@@ -196,7 +185,7 @@ flowchart LR
 
 :::info
 
-**Namespaces are always Active/Passive, but can support an Active/Active pattern.**
+**Namespaces are always Active/Passive, but can support an Active/Active Worker deployment pattern.**
 
 A Temporal Cloud Namespace with High Availability has exactly one active region at a time. The other region holds a replica that passively receives replicated state.
 
