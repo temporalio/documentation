@@ -47,7 +47,7 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 - Deletion of resources associated with drained Worker Deployment Versions
 - `Manual`, `AllAtOnce`, and `Progressive` rollouts of new versions
 - Ability to specify a "gate" Workflow that must succeed on the new version before routing real traffic to that version
-- Autoscaling of versioned Deployments using Kubernetes Horizontal Pod Autoscaler (HPA)
+- Autoscaling of versioned Deployments using Kubernetes HPA or KEDA
 
 Refer to the [Temporal Worker Controller repo](https://github.com/temporalio/temporal-worker-controller/) for usage details.
 
@@ -62,8 +62,8 @@ Use the Worker Controller when you need all of the following:
 - Kubernetes-native rollout automation
 - autoscaling that follows each active Worker Deployment Version separately
 
-Because the Worker Controller uses Kubernetes HPA, you can scale on any metric available to your HPA pipeline,
-including:
+The Worker Controller provides Kubernetes-native autoscaling through either HPA or KEDA, so you can scale on any
+metric available to your scaling pipeline, including:
 
 - CPU and memory utilization
 - Task Queue backlog metrics exposed through your metrics pipeline
@@ -78,20 +78,27 @@ To attach autoscaling or other Kubernetes resources to each Worker Deployment Ve
 A TWOR lets you define a resource template once and have the Worker Controller create a version-specific copy for each
 active Worker Deployment Version. This is useful for resources such as:
 
-- `HorizontalPodAutoscaler`
+- `HorizontalPodAutoscaler` (HPA)
+- `ScaledObject` (KEDA)
 - `PodDisruptionBudget`
 - other Kubernetes resources that should track the lifecycle of a versioned Deployment
 
 The Worker Controller manages these resources alongside the versioned Deployments it creates, so they are updated and
 cleaned up as versions roll forward and drain.
 
-### Why use this instead of KEDA?
+### Choosing a scaling strategy
 
-If you are already using the Worker Controller for Worker Versioning, use the Worker Controller for autoscaling as
-well. This keeps rollout management and scaling attached to the same versioned Kubernetes Deployments.
+The Worker Controller supports two autoscaling strategies, each attached per Worker Deployment Version through a Worker
+Resource Template: Kubernetes HPA (with the Prometheus Adapter) and KEDA.
 
-KEDA can still be a valid option for non-versioned or legacy worker deployments. However, for versioned Workers, the
-Worker Controller is the preferred path because it keeps autoscaling aligned with Worker Deployment Versions.
+HPA with the Prometheus Adapter is the recommended default for most deployments. It scales independently of the number
+of namespaces or Task Queues and handles thousands of Task Queues efficiently. KEDA is a better fit when you need to
+scale from zero, have long idle periods, or require sub-minute reactivity, though it is subject to per-namespace
+Temporal API rate limits.
+
+For a full comparison and a decision matrix, see
+[Scaling recommendations](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/scaling-recommendations.md)
+in the Worker Controller repository.
 
 ## Configuring Worker Lifecycles
 
