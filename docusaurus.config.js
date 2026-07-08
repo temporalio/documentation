@@ -1,6 +1,7 @@
 //@ts-check
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
+const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -245,11 +246,11 @@ module.exports = async function createConfigAsync() {
         ],
       },
       algolia: {
-        apiKey: '4a2fa646f476d7756a7cdc599b625bec',
-        indexName: 'temporal',
+        apiKey: ALGOLIA_SEARCH_API_KEY,
+        indexName: ALGOLIA_INDEX_NAME,
         externalUrlRegex: 'temporal\\.io',
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
-        appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
+        appId: ALGOLIA_APP_ID, // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
