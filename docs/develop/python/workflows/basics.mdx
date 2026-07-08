@@ -15,8 +15,6 @@ import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCo
 
 ## Develop a basic Workflow {/* #develop-workflows */}
 
-**How to develop a basic Workflow using the Temporal Python SDK.**
-
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a
 [Workflow Definition](/workflow-definition).
 
@@ -46,8 +44,6 @@ class YourWorkflow:
 
 ### Define Workflow parameters {/* #workflow-parameters */}
 
-**How to define Workflow parameters using the Temporal Python SDK.**
-
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
 parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
 Workflow Definition parameters must be serializable.
@@ -70,8 +66,6 @@ class YourParams:
 ```
 
 ### Define Workflow return parameters {/* #workflow-return-values */}
-
-**How to define Workflow return parameters using the Temporal Python SDK.**
 
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly
 idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow
@@ -110,8 +104,6 @@ class YourWorkflow:
 
 ### Customize your Workflow Type {/* #workflow-type */}
 
-**How to customize your Workflow Type using the Temporal Python SDK.**
-
 Workflows have a Type that are referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
@@ -140,9 +132,36 @@ class YourWorkflow:
         )
 ```
 
-### Develop Workflow logic {/* #workflow-logic-requirements */}
+### Use Workflow constructors
 
-**How to develop Workflow logic using the Temporal Python SDK.**
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflow `__init__` method won't have any parameters. However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same Workflow parameters as your `@workflow.run` method.
+
+The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the Client sent. The Workflow input arguments are also passed to your `@workflow.run` method. That always happens, whether or not you use the `@workflow.init` decorator.
+
+Here's an example. Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
+
+```python
+@dataclass
+class MyWorkflowInput:
+    name: str
+
+
+@workflow.defn
+class WorkflowRunSeesWorkflowInitWorkflow:
+    @workflow.init
+    def __init__(self, workflow_input: MyWorkflowInput) -> None:
+        self.name_with_title = f"Knight {workflow_input.name}"
+        self.title_has_been_checked = False
+
+    @workflow.run
+    async def get_greeting(self, workflow_input: MyWorkflowInput) -> str:
+        await workflow.wait_condition(lambda: self.title_has_been_checked)
+        return f"Hello, {self.name_with_title}"
+
+    # other Workflow code
+```
+
+### Develop Workflow logic {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Each Temporal SDK provides a
