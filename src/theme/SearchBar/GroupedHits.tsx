@@ -8,7 +8,7 @@ interface GroupedHitsProps {
 }
 
 export function GroupedHits({ selectedIndex, onNavigate }: GroupedHitsProps) {
-  const { items } = useHits();
+  const { items, sendEvent } = useHits();
 
   // Group hits by their top-level category (hierarchy.lvl0)
   const groupedByCategory = items.reduce((acc: any, hit: any) => {
@@ -74,6 +74,7 @@ export function GroupedHits({ selectedIndex, onNavigate }: GroupedHitsProps) {
                         isSelected={hitIndex++ === selectedIndex}
                         onNavigate={onNavigate}
                         isAnchor={false}
+                        sendEvent={sendEvent}
                       />
                     )}
                     {/* If no page hit, render first anchor as page-level item */}
@@ -84,6 +85,7 @@ export function GroupedHits({ selectedIndex, onNavigate }: GroupedHitsProps) {
                         isSelected={hitIndex++ === selectedIndex}
                         onNavigate={onNavigate}
                         isAnchor={false}
+                        sendEvent={sendEvent}
                       />
                     )}
                     {/* Render remaining anchor hits as tree children */}
@@ -96,6 +98,7 @@ export function GroupedHits({ selectedIndex, onNavigate }: GroupedHitsProps) {
                         isAnchor={true}
                         isLastAnchor={anchorIndex === remainingAnchors.length - 1}
                         parentTitle={pageTitle}
+                        sendEvent={sendEvent}
                       />
                     ))}
                   </div>

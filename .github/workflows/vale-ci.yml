@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: vale-cli/vale-action@v2.1.1
+      - uses: vale-cli/vale-action@2.1.2
         with:
           reporter: github-pr-review
           level: info
