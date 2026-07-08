@@ -43,7 +43,7 @@ Workers, Workflow starters, Codec Servers, databases, network load balancers, an
 
 In a real outage, your [recovery time](/cloud/rpo-rto) depends on your **Worker deployment pattern**: where Worker fleets run, how they failover, and which region (or regions) processes Workflows at each step.
 
-This page describes common Active/Passive (also written Active-Passive) and Active/Active (also written Active-Active) patterns for deploying Workers--and the other systems in your cloud architecture--to achieve your business goals for high availability and disaster recovery (HA/DR).
+This page describes common Active/Passive and Active/Active patterns for deploying Workers--and the other systems in your cloud architecture--to achieve your business goals for high availability and disaster recovery (HA/DR).
 
 ## Pieces of a highly available cloud architecture {/* #pieces-to-failover */}
 
@@ -51,7 +51,7 @@ To keep your Workflows running during a cloud outage, these components need to f
 
 - **Temporal Cloud Namespace** - achieve this simply by enabling [High Availability](/cloud/high-availability) on the Namespace.
 - **Workers** (the focus of this page) — the compute resources that execute Workflows and Activities.
-- **Workflow starters and Clients** — the applications that start and signal Workflows.
+- **Workflow starters and Clients** — the applications that start and Signal Workflows.
 - **Codec Servers** — a critical dependency for Workers, the Web UI, and the CLI.
 - **Proxies between Workers and Temporal Cloud** — any forward proxy or mTLS terminator in the connection path between Workers / Starters / Clients → Namespace.
 - **Datastores** — databases, queues, and any other systems that Activities read and write.
@@ -93,9 +93,9 @@ This page covers three main patterns — **Active/Passive (Cold)**, **Active/Pas
 
 They trade off **recovery time** after an outage, **cost during normal operation**, and **operational complexity**. They are defined by where the Workers run and where Workflows process:
 
-- **[Active/Passive (Cold)](#active-cold)** (also written Active-Passive) — a.k.a. Active/Cold — Workflows process in one region at a time, the "active" region. The other region is "passively" waiting, without any Workers. On a failover, the passive region becomes active, and new Workers are launched (from a "cold" start) to process Workflows.
-- **[Active/Passive (Hot)](#active-hot)** — a.k.a. Active/Hot — Workflows process in one region at a time, the "active" region. However, Workers run in **both regions** simultaneously: processing Workflows in the "active" region, and on "hot" standby in the passive region. This achieves a faster failover and lower recovery time.
-- **[Active/Active](#active-active)** (also written Active-Active) — a.k.a. Multi-Active - Workflows process in both/multiple regions at the same time, and Workers run in all regions at all times.
+- **[Active/Passive (Cold)](#active-cold)** — Workflows process in one region at a time, the "active" region. The other region is "passively" waiting, without any Workers. On a failover, the passive region becomes active, and new Workers are launched (from a "cold" start) to process Workflows.
+- **[Active/Passive (Hot)](#active-hot)** — Workflows process in one region at a time, the "active" region. However, Workers run in **both regions** simultaneously: processing Workflows in the "active" region, and on "hot" standby in the passive region. This achieves a faster failover and lower recovery time.
+- **[Active/Active](#active-active)** — Workflows process in both/multiple regions at the same time, and Workers run in all regions at all times.
 
 ```mermaid
 ---
@@ -136,6 +136,7 @@ title: Active/Passive (Hot)
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
     classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
@@ -151,9 +152,9 @@ flowchart LR
     subgraph IHSEC["<b>Secondary</b>"]
       IHR["<b>Replica</b>"]:::ns
       subgraph IHWP2["Worker Pool"]
-        IHS1["<b>Worker</b><br/>Standby"]:::worker
-        IHS2["<b>Worker</b><br/>Standby"]:::worker
-        IHS3["<b>Worker</b><br/>Standby"]:::worker
+        IHS1["<b>Worker</b><br/>Standby"]:::standby
+        IHS2["<b>Worker</b><br/>Standby"]:::standby
+        IHS3["<b>Worker</b><br/>Standby"]:::standby
       end
       IHR <-.-> IHWP2
     end
@@ -217,8 +218,6 @@ These patterns work across two cloud regions, which could be in the same cloud p
 | **[Active/Active](#active-active)** | All regions, all processing Workflows | Low RTO with Workers active in every region; fast failover that uses fleet capacity instead of a standby fleet | Cross-region requests add Workflow latency; external systems need a cross-region consistency story |
 
 ## Active/Passive (Cold) {/* #active-cold */}
-
-_Also known as "Active/Cold Standby", "Active/Cold", or simply "Active/Passive"._
 
 ```mermaid
 ---
@@ -286,7 +285,7 @@ flowchart LR
     class FPP,FSP pool
 ```
 
-Active/Cold Pattern: **Normal operation**
+Active/Passive (Cold) Pattern: **Normal operation**
 
 - **Workers run in only one region.** A single Worker fleet runs in the primary region and processes all Workflows. No Workers run in the secondary region.
 - **The Namespace replicates to the secondary region.** A Namespace with High Availability has an active replica in the primary region and a passive replica in the secondary region. Temporal Cloud continuously replicates Workflow state to the passive replica, so it stays ready to become active.
@@ -319,7 +318,7 @@ flowchart LR
     class DCNPRI,DCNSEC region
 ```
 
-Active/Cold Pattern: **On failover**
+Active/Passive (Cold) Pattern: **On failover**
 
 - **You must detect the outage yourself.** With no Workers running in the secondary region, nothing begins processing until you notice the outage and respond — detection is your responsibility, not Temporal Cloud's. Until you detect it and bring up Workers, your Workflows make no progress, so any delay in detection adds directly to your recovery time. This is a key advantage of the [Active/Passive (Hot)](#active-hot) pattern: its standby Workers begin processing the moment the Namespace fails over, so Workflows keep progressing even if you are slow to notice the outage. For how to detect an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
 - **The Namespace fails over automatically.** Temporal Cloud promotes the secondary region's replica to active. No action is needed to fail over the Namespace itself. To trigger or test a failover yourself, see [Failovers](/cloud/high-availability/failovers).
@@ -355,7 +354,7 @@ flowchart LR
     class DCFSEC region
 ```
 
-Active/Cold Pattern: **Benefits**
+Active/Passive (Cold) Pattern: **Benefits**
 
 - **Easy to reason about.**
    - Only one region is active at a time, so traffic routing and interactions with systems (such as databases and queues) are simpler to understand, and the pattern pairs naturally with other active / passive systems. Active/Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
@@ -364,12 +363,12 @@ Active/Cold Pattern: **Benefits**
 - **Lowest overall architecture cost.**
    - The size of the Worker fleet is simply the capacity needed to operate in one region. There are no standby Workers during steady state.
 
-Active/Cold Pattern: **Tradeoffs**
+Active/Passive (Cold) Pattern: **Tradeoffs**
 
 - Highest overall recovery time of the three patterns, due to cold starting the Worker fleet after failover.
 - Depends on tested automation to bring up the secondary-region fleet quickly.
 
-Active/Cold Pattern: **Recommendations and important constraints**
+Active/Passive (Cold) Pattern: **Recommendations and important constraints**
 
 - **Failing over the Workers is the operator's responsibility.** The Namespace fails over automatically, but bringing up the Workers in the secondary region is up to you. Plan for these sub-considerations:
    - **How do you detect an outage and decide to fail over?** Define the failover conditions and the signals (alerts, health checks) that trigger them. Because Workflows make no progress until you detect the outage and respond, detection is on the critical path of your recovery time. To monitor for an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
@@ -483,7 +482,7 @@ flowchart LR
     class PXPRIM,PXSEC region
 ```
 
-Active/Cold Pattern: **Component behavior**
+Active/Passive (Cold) Pattern: **Component behavior**
 
 - **Workers** — run only in the primary region; brought up in the secondary region during a failover.
 - **Workflow starters and Clients** — run with the Workers; brought up in the secondary region during a failover.
@@ -492,8 +491,6 @@ Active/Cold Pattern: **Component behavior**
 
 ## Active/Passive (Hot) {/* #active-hot */}
 
-_Also known as "Active/Hot Standby" or "Active/Hot"._
-
 ```mermaid
 ---
 title: Normal operation
@@ -501,6 +498,7 @@ title: Normal operation
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
     classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
@@ -516,9 +514,9 @@ flowchart LR
     subgraph HSEC["<b>Secondary</b>"]
       HR["<b>Replica</b>"]:::ns
       subgraph HWP2["Worker Pool"]
-        HS1["<b>Worker</b><br/>Standby"]:::worker
-        HS2["<b>Worker</b><br/>Standby"]:::worker
-        HS3["<b>Worker</b><br/>Standby"]:::worker
+        HS1["<b>Worker</b><br/>Standby"]:::standby
+        HS2["<b>Worker</b><br/>Standby"]:::standby
+        HS3["<b>Worker</b><br/>Standby"]:::standby
       end
       HR <-.-> HWP2
     end
@@ -561,7 +559,7 @@ flowchart LR
     class HFPP,HFSP pool
 ```
 
-Active/Hot Pattern: **Normal operation**
+Active/Passive (Hot) Pattern: **Normal operation**
 
 - **Workers run in both regions.** A full Worker fleet runs in each region. The primary region's Workers are active and process all Workflows; the secondary region's Workers stay connected and warm, but on standby, doing no work.
 - **Workflows process in only one region at a time.** The Namespace has a single active replica, so even though Workers run in both regions, Workflows execute only in the active (primary) region.
@@ -572,6 +570,7 @@ Active/Hot Pattern: **Normal operation**
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
     classDef ext fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
@@ -587,7 +586,7 @@ flowchart LR
     end
     subgraph DHNSEC["<b>Secondary</b>"]
       DHNR["<b>Replica</b>"]:::ns
-      DHNWP2["<b>Workers</b><br/>Standby"]:::worker
+      DHNWP2["<b>Workers</b><br/>Standby"]:::standby
       DHNDB2[("<b>DB / queue</b><br/>Standby")]:::ext
       DHNCODEC2["<b>Codec Server</b>"]:::ext
       DHNR <-.-> DHNWP2
@@ -598,7 +597,7 @@ flowchart LR
     class DHNPRI,DHNSEC region
 ```
 
-Active/Hot Pattern: **On failover**
+Active/Passive (Hot) Pattern: **On failover**
 
 - **The Namespace and Workers fail over together, automatically.** When the primary region fails, Temporal Cloud promotes the secondary replica to active, and the secondary region's standby Workers — already connected and warm — begin processing immediately.
 - **No cold start and no DNS wait.** Because a full Worker fleet was already running in the secondary region, there's nothing to start or scale up before processing resumes. This pattern achieves the lowest recovery time of the three.
@@ -633,7 +632,7 @@ flowchart LR
     class DHFSEC region
 ```
 
-Active/Hot Pattern: **Benefits**
+Active/Passive (Hot) Pattern: **Benefits**
 
 - **Easy to reason about.**
    - Only one region is active at a time, so traffic routing and interactions with systems (such as databases and queues) are simpler to understand, and the pattern pairs naturally with other active / passive systems. Active/Active, by contrast, requires deciding how Workers reach an active database: either a local active database in each region, or a single active / passive database that some Workers must reach cross-region.
@@ -642,11 +641,11 @@ Active/Hot Pattern: **Benefits**
 - **Low latency during normal operation.**
    - Tasks are processed only in the active region, with no cross-region forwarding.
 
-Active/Hot Pattern: **Tradeoffs**
+Active/Passive (Hot) Pattern: **Tradeoffs**
 
 - Highest overall architecture cost: a full standby Worker fleet runs in the secondary region at all times, even during steady state.
 
-Active/Hot Pattern: **Recommendations and important constraints**
+Active/Passive (Hot) Pattern: **Recommendations and important constraints**
 
 - **Use Regional or VPC Endpoints and disable forwarding.**
    - Connect each Worker fleet through its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) and [disable forwarding](/cloud/high-availability/enable#change-forwarding-behavior) for Worker polls. Using the Namespace Endpoint by mistake routes the standby Workers to the active region and defeats the pattern.
@@ -655,6 +654,7 @@ Active/Hot Pattern: **Recommendations and important constraints**
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
     classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
+    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
     classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
     classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
     classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
@@ -666,7 +666,7 @@ flowchart LR
       HEPEP --> HEPNS
     end
     subgraph HESEC["<b>Secondary</b>"]
-      HESW["<b>Workers</b><br/>Standby"]:::worker
+      HESW["<b>Workers</b><br/>Standby"]:::standby
       HESEP["<b>Regional / VPC Endpoint</b>"]:::endpoint
       HESNS["<b>Replica</b>"]:::ns
       HESW --> HESEP
@@ -676,7 +676,7 @@ flowchart LR
     class HEPRIM,HESEC region
 ```
 
-Active/Hot Pattern: **Component behavior**
+Active/Passive (Hot) Pattern: **Component behavior**
 
 - **Workers** — run in both regions; only the active region processes Workflows.
 - **Workflow starters and Clients** — run in both regions alongside the Workers.
@@ -886,7 +886,7 @@ The Worker deployment pattern sets the approach; the supporting pieces follow it
 
 ### What is the difference between Active/Passive and Active/Active? {/* #faq-active-passive-vs-active-active */}
 
-In **Active/Passive** (also written Active-Passive), Workflows process in one region at a time and the other region stands by for failover. In **Active/Active** (also written Active-Active), Workers run in both regions and process Workflows in both at once. See [Worker deployment patterns](#ha-worker-patterns) for the full comparison.
+In **Active/Passive**, Workflows process in one region at a time and the other region stands by for failover. In **Active/Active**, Workers run in both regions and process Workflows in both at once. See [Worker deployment patterns](#ha-worker-patterns) for the full comparison.
 
 ### How do I fail over Workers to another region? {/* #faq-fail-over-workers */}
 
