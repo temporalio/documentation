@@ -2130,13 +2130,13 @@
       "permanent": true
     },
     {
-      "source": "/encyclopedia/temporal-client",
-      "destination": "/encyclopedia/architecture/temporal-client",
+      "source": "/encyclopedia/architecture/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
       "permanent": true
     },
     {
       "source": "/temporal-client",
-      "destination": "/encyclopedia/architecture/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
       "permanent": true
     },
     {
