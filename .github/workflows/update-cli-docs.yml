@@ -82,11 +82,11 @@ jobs:
         run: |
           set -ex
 
-          # Regenerate the command reference pages. cp -r preserves the cloud/
+          # Regenerate the command reference pages. cp -R preserves the cloud/
           # subdirectory produced by -subdir.
           rm -rf docs/cli/command-reference
           mkdir -p docs/cli/command-reference
-          cp -r ../cli/dist/docs/* docs/cli/command-reference/
+          cp -R ../cli/dist/docs/* docs/cli/command-reference/
 
           # gen-docs intentionally does not emit index.mdx landing pages: those
           # are hand-maintained (custom ordering, embedded components such as
