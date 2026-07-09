@@ -70,12 +70,12 @@ metric available to your scaling pipeline, including:
 - slot utilization and other Worker-specific metrics
 - custom metrics surfaced through Prometheus or another Kubernetes metrics adapter
 
-### TemporalWorkerOwnedResource
+### WorkerResourceTemplate
 
 To attach autoscaling or other Kubernetes resources to each Worker Deployment Version, use a
-`TemporalWorkerOwnedResource` (TWOR).
+`WorkerResourceTemplate` (WRT).
 
-A TWOR lets you define a resource template once and have the Worker Controller create a version-specific copy for each
+A WRT lets you define a resource template once and have the Worker Controller create a version-specific copy for each
 active Worker Deployment Version. This is useful for resources such as:
 
 - `HorizontalPodAutoscaler` (HPA)
@@ -88,8 +88,8 @@ cleaned up as versions roll forward and drain.
 
 ### Choosing a scaling strategy
 
-The Worker Controller supports two autoscaling strategies, each attached per Worker Deployment Version through a Worker
-Resource Template: Kubernetes HPA (with the Prometheus Adapter) and KEDA.
+The Worker Controller supports two autoscaling strategies, each attached per Worker Deployment Version through a
+`WorkerResourceTemplate`: Kubernetes HPA (with the Prometheus Adapter) and KEDA.
 
 HPA with the Prometheus Adapter is the recommended default for most deployments. It scales independently of the number
 of namespaces or Task Queues and handles thousands of Task Queues efficiently. KEDA is a better fit when you need to
