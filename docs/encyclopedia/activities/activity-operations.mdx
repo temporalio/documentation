@@ -46,16 +46,16 @@ gRPC API - not for programmatic use in Workflow or Activity code.
 
 ## Operations summary
 
-| Operation                         | What it does                                                                     | CLI                                                                                  |
-| --------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [Pause](#pause)                   | Stops retries. In-flight execution continues unless the Activity uses Heartbeat. | [`temporal activity pause`](/cli/command-reference/activity#pause)                   |
-| [Unpause](#unpause)               | Resumes a Paused Activity. The next execution starts after any remaining retry backoff or start delay.                | [`temporal activity unpause`](/cli/command-reference/activity#unpause)               |
-| [Reset](#reset)                   | Clears retry state (attempts, backoff) and schedules the Activity for execution again.            | [`temporal activity reset`](/cli/command-reference/activity#reset)                   |
-| [Update Options](#update-options) | Changes any Activity options (e.g. timeouts, Retry Policy, or Task Queue) without restarting the Activity.   | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
+| Operation                         | What it does                                                                                           | CLI                                                                                  |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| [Pause](#pause)                   | Stops retries. In-flight execution continues unless the Activity uses Heartbeat.                       | [`temporal activity pause`](/cli/command-reference/activity#pause)                   |
+| [Unpause](#unpause)               | Resumes a Paused Activity. The next execution starts after any remaining retry backoff or start delay. | [`temporal activity unpause`](/cli/command-reference/activity#unpause)               |
+| [Reset](#reset)                   | Clears retry state (attempts, backoff) and schedules the Activity for execution again.                 | [`temporal activity reset`](/cli/command-reference/activity#reset)                   |
+| [Update Options](#update-options) | Change Activity options (e.g. timeouts, Retry Policy, or Task Queue) without restarting the Activity.  | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
 
 ## Pause {/* #pause */}
 
-Pause stops the Temporal Service scheduling new retries of an [Activity Execution](/activity-execution).
+Pause stops the Temporal Service from scheduling new retries of an [Activity Execution](/activity-execution).
 
 ### When to Pause
 
@@ -251,7 +251,7 @@ handle these cases differently, for example saving partial progress on Reset whi
 
 ## Update Options {/* #update-options */}
 
-Update Options changes an Activity's runtime configuration without restarting it.
+An Activity's runtime configuration can be changed without restarting it.
 
 ### When to Update Options
 
@@ -274,10 +274,10 @@ and Task Queue. Only the fields you specify are changed. All other options remai
 - **If the Activity is currently running,** the new options take effect on the next attempt. The
   in-flight execution isn't interrupted or affected.
 - **If the Activity is Paused,** the new options are stored immediately and will affect the next attempt on Unpause.
-- **Workflow code has no visibility into Activity Operations.** Update Options doesn't produce an Event History event,
+- **Workflow code has no visibility into Activity Operations.** No Event History event is produced for Update Options,
   so the Workflow can't detect or react to it. See [Observability](#observability).
 
-Update Options is idempotent. Updating an Activity with the same values it already has produces no change. Updating
+The operation is idempotent. Updating an Activity with the same values it already has produces no change. Updating
 options on an Activity that has already completed returns an error.
 
 ### CLI usage
@@ -299,7 +299,7 @@ options, including Retry Policy, Task Queue, and bulk mode via `--query`.
 
 ### Limitations
 
-- **Update Options is CLI and gRPC only.** It's not available in the UI.
+- **CLI and gRPC only.** This operation isn't available in the UI.
 
 ## Standalone Activity operator commands {/* #standalone-activity-operator-commands */}
 
@@ -481,42 +481,41 @@ Reset clears retry state and schedules, or requests, attempt 1 for a Standalone 
 
 ### Update Standalone Activity options {/* #update-standalone-activity-options */}
 
-Update Options changes a Standalone Activity's stored runtime options.
+A Standalone Activity's stored runtime options can be changed.
 
-- Update Options can change:
-  - Task Queue name.
-  - Schedule-To-Close Timeout.
-  - Schedule-To-Start Timeout.
-  - Start-To-Close Timeout.
-  - Heartbeat Timeout.
-  - Retry Policy.
-  - Retry Policy initial interval.
-  - Retry Policy backoff coefficient.
-  - Retry Policy maximum interval.
-  - Retry Policy maximum attempts.
-  - Priority.
-  - Priority Key.
-  - Fairness Key.
-  - Fairness Weight.
-  - Start Delay while the Activity is still in its delay window.
-- Update Options requires an update mask unless `restore_original` is used.
+- The following fields can be changed. The value in parentheses is the `update_mask` entry to provide
+  in a CLI or gRPC request:
+  - Task Queue name (`task_queue.name`).
+  - Schedule-To-Close Timeout (`schedule_to_close_timeout`).
+  - Schedule-To-Start Timeout (`schedule_to_start_timeout`).
+  - Start-To-Close Timeout (`start_to_close_timeout`).
+  - Heartbeat Timeout (`heartbeat_timeout`).
+  - Retry Policy (`retry_policy`).
+  - Retry Policy initial interval (`retry_policy.initial_interval`).
+  - Retry Policy backoff coefficient (`retry_policy.backoff_coefficient`).
+  - Retry Policy maximum interval (`retry_policy.maximum_interval`).
+  - Retry Policy maximum attempts (`retry_policy.maximum_attempts`).
+  - Priority (`priority`).
+  - Priority Key (`priority.priority_key`).
+  - Fairness Key (`priority.fairness_key`).
+  - Fairness Weight (`priority.fairness_weight`).
+  - Start Delay while the Activity is still in its delay window (`start_delay`).
+- An update mask is required unless `restore_original` is used.
 - If `restore_original` is set:
   - `restore_original` can't be combined with an update mask.
   - `restore_original` restores the options from when the Standalone Activity was created.
   - `restore_original` is applied immediately to the active Standalone Activity Execution.
   - `restore_original` restores Start Delay only if the Activity has not started its first attempt.
-- Updated timeout values are validated and normalized after the update.
 - If Schedule-To-Close Timeout is updated:
-  - Update Options reissues the Schedule-To-Close timeout task at the new deadline.
+  - The Schedule-To-Close timeout task is reissued at the new deadline.
   - Stale Schedule-To-Close timeout tasks from before the latest options update are ignored.
   - If Schedule-To-Close Timeout is disabled:
     - Previously scheduled Schedule-To-Close timeout tasks are ignored.
-  - Shortening Schedule-To-Close Timeout can cause the Activity to time out sooner.
   - Extending Schedule-To-Close Timeout can allow future retries that would otherwise be blocked by the Activity
     deadline.
 - If Start-To-Close Timeout or Heartbeat Timeout is updated for a running attempt:
-  - Update Options reissues the Start-To-Close timeout task for that attempt.
-  - Update Options reissues the Heartbeat timeout task for that attempt.
+  - The Start-To-Close timeout task is reissued for that attempt.
+  - The Heartbeat timeout task is reissued for that attempt.
   - Updated running-attempt timers are anchored to the current attempt's start time or last heartbeat time.
   - Updating Start-To-Close or Heartbeat Timeout can affect the current running attempt.
 - If Task Queue is updated:
@@ -524,36 +523,49 @@ Update Options changes a Standalone Activity's stored runtime options.
 - If Retry Policy is updated:
   - Retry Policy subfield updates are merged with the existing Retry Policy and then validated.
   - The update is rejected if the merged Retry Policy is invalid.
-  - Update Options recalculates the current retry interval only when the Activity is SCHEDULED or PAUSED, is waiting in
-    retry backoff, and the current retry interval was derived from the Retry Policy.
-  - Update Options doesn't recalculate a Worker-provided `NextRetryDelay` that is already scheduled.
-- If an unrelated field is updated:
-  - Update Options doesn't recalculate the current retry interval.
+  - If the Activity is already waiting before its next retry because a previous attempt failed or timed out and Temporal
+    used the Retry Policy to calculate the next dispatch time, the retry deadline is recalculated from the updated
+    policy. For example, if the next attempt was waiting 30 minutes because of the previous policy and you lower
+    `retry_policy.maximum_interval` to 5 minutes, the next attempt can become eligible at the recalculated 5-minute
+    point.
+  - A Worker-provided `NextRetryDelay` that is already scheduled isn't recalculated.
+- If an unrelated field is updated, the current retry interval isn't recalculated.
 - If `restore_original` is set and the Activity is SCHEDULED or PAUSED:
-  - Update Options can recalculate the current retry interval when the interval was derived from the Retry Policy.
+  - The same retry-interval recalculation can apply when the current wait was derived from the Retry Policy.
 - If the Activity is SCHEDULED:
-  - Update Options reissues dispatch and Schedule-To-Start timeout tasks.
+  - Dispatch and Schedule-To-Start timeout tasks are reissued.
   - If the Activity is in retry backoff:
     - Reissued dispatch and Schedule-To-Start timeout tasks keep the existing retry deadline unless the retry interval
       is recalculated by a Retry Policy update or cleared by another operation.
 - If the Activity is PAUSED:
-  - Update Options stores the new options but doesn't dispatch the Activity.
+  - The new options are stored, but the Activity isn't dispatched.
   - Updated Retry Policy values can affect when the Activity dispatches after Unpause.
 - If the Activity is PAUSE_REQUESTED:
-  - Update Options reissues running-attempt timers so Start-To-Close and Heartbeat timeouts continue to be enforced.
+  - Running-attempt timers are reissued so Start-To-Close and Heartbeat timeouts continue to be enforced.
 - If the Activity is RESET_REQUESTED:
-  - Update Options reissues running-attempt timers so Start-To-Close and Heartbeat timeouts continue to be enforced.
+  - Running-attempt timers are reissued so Start-To-Close and Heartbeat timeouts continue to be enforced.
 - If cancellation is pending:
-  - Update Options is still allowed.
+  - The update is still allowed.
   - Updated Start-To-Close and Heartbeat timers can still affect the running attempt.
 - If Start Delay is updated:
-  - Start Delay can be updated only while the Activity is SCHEDULED and the first dispatch time is still in the future.
-  - Start Delay can't be updated after the first dispatch delay has elapsed.
-  - Start Delay can't be updated after a Worker has picked up the first attempt.
-  - A nonzero Start Delay update requires Start Delay to be enabled for the Namespace.
-- Update Options doesn't reset attempts.
-- Update Options doesn't clear heartbeat details.
+  - The first dispatch time is recalculated from the Activity's schedule time and the updated Start Delay. Shortening
+    Start Delay can make the first dispatch eligible sooner; extending it can defer the first dispatch.
+  - The update is allowed only while the Activity is SCHEDULED and the current first dispatch time is still in the future.
+  - After the first dispatch time, Start Delay can no longer be updated, even if no Worker has picked up the first
+    attempt yet.
 - Updating a terminal Activity is rejected.
+
+#### Timeout validation requirements {/* #timeout-validation-requirements */}
+
+Updated timeout values are validated and normalized after the update:
+
+- Each updated timeout must be a valid, non-negative duration.
+- An Activity must have either Schedule-To-Close or Start-To-Close Timeout set.
+- If Schedule-To-Close Timeout is set, missing Schedule-To-Start and Start-To-Close values are set from it, and longer
+  values are capped to it.
+- If only Start-To-Close Timeout is set, Schedule-To-Close and missing Schedule-To-Start values are set from the run
+  timeout when one is set.
+- Timeouts can't exceed the run timeout when one is set. Heartbeat Timeout can't exceed Start-To-Close Timeout.
 
 ## Observability {/* #observability */}
 
@@ -568,7 +580,8 @@ provided).
 
 ### Find Paused Activities
 
-The `TemporalPauseInfo` [Search Attribute](/search-attribute) is filterable within a Workflow.
+The `TemporalPauseInfo` [Search Attribute](/search-attribute) is filterable within a Workflow. `TemporalPauseInfo` is only added
+to Workflows, it does not exist for Standalone Activities.
 
 There's no Namespace-wide query to find all Paused Activities across Workflows. You must know the Workflow ID.
 
