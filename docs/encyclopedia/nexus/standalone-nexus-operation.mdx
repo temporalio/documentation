@@ -18,7 +18,7 @@ tags:
 ---
 
 import ThemedImage from '@theme/ThemedImage';
-import { ReleaseNoteHeader } from '@site/src/components';
+import { ReleaseNoteHeader, SdkGuideLinks } from '@site/src/components';
 
 <ReleaseNoteHeader
   featureName="standaloneNexusOperation"
@@ -56,17 +56,14 @@ If you need to orchestrate multiple Nexus Operations, call them from a [Workflow
 you just need to execute a single Nexus Operation across Namespace boundaries, use a Standalone
 Nexus Operation.
 
-:::tip GET STARTED
+### Get started with your SDK
 
-Pick your SDK and follow the quickstart:
 
-- [Go SDK - Standalone Nexus Operations](/develop/go/nexus/standalone-operations)
-- [Java SDK - Standalone Nexus Operations](/develop/java/nexus/standalone-operations)
-- [Python SDK - Standalone Nexus Operations](/develop/python/nexus/standalone-operations)
-- [TypeScript SDK - Standalone Nexus Operations](/develop/typescript/nexus/standalone-operations)
-- [.NET SDK - Standalone Nexus Operations](/develop/dotnet/nexus/standalone-operations)
-
-:::
+<SdkGuideLinks
+  path="nexus/standalone-operations"
+  filter={['go', 'java', 'python', 'typescript', 'dotnet']}
+  title="Standalone Nexus Operations"
+/>
 
 ## Use cases
 
@@ -81,9 +78,9 @@ reliability, retries, and observability of Nexus, but without paying the cost of
 - Same Service contract, Operation handlers, and Worker setup as Workflow-driven Operations
 - Supports both synchronous and asynchronous (Workflow-backed) Nexus Operations
 - At-least-once execution with automatic retries by the Nexus Machinery
-- Addressable — get a handle to retrieve results, with the Operation token for asynchronous Operations
-- Visibility — list and count Standalone Nexus Operation Executions using [List Filter](/list-filter) queries
-- Dual use — execute the same Operation from a Workflow or standalone with no handler code changes
+- Get a handle to retrieve results, with the Operation token for asynchronous Operations
+- List and count Standalone Nexus Operation Executions using [List Filter](/list-filter) queries
+- Execute the same Operation from a Workflow or standalone with no handler code changes
 
 ## Migrate a single-Operation caller Workflow to a Standalone Nexus Operation {/* #migrate-from-caller-workflow */}
 
