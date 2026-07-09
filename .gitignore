@@ -22,7 +22,6 @@ temp/
 .env.test.local
 .env.production.local
 .vs
-AGENTS.md
 CLAUDE.md
 .claude/*
 .omc

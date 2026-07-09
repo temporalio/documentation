@@ -1,8 +1,6 @@
-# Contributing guidance for LLMs
+# AGENTS.md
 
-This file guides AI coding agents working in the [Temporal documentation](https://github.com/temporalio/documentation) repository.
-
-For human contributors, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+Guidance for AI coding agents working in the [Temporal documentation](https://github.com/temporalio/documentation) repository.
 
 ## Read these first
 
@@ -67,8 +65,8 @@ Follow [STYLE.md](./STYLE.md) and the [Google developer documentation style guid
 
 - Cut filler that adds no information: "it's worth noting that," "in order to," "simply," "easily," "just." 
 - Avoid vague intensifiers doing the work a specific fact should do: "powerful," "robust," "seamless," "cutting-edge," "leverage" (use "use"), "unlock," "elevate," "streamline." Replace with what the thing actually does.
-- Don't pad a page to look thorough. 
-- Do not add emojis to documentation prose.
+- Don't pad a page to look thorough. Prefer brevity over overly-verbose paragraphs. 
+- Do not add emojis to documentation prose and use em-dashes sparingly. 
 
 ### Word choice
 
