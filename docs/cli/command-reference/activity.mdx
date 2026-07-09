@@ -264,7 +264,7 @@ the next time they heartbeat after a reset.
 If, in your Activity, you need to do any cleanup when an Activity is
 reset, handle this error and then re-throw it when you've cleaned up.
 
-Reset clears heartbeat details.
+Reset clears Heartbeat details.
 
 Specify the Activity and Workflow IDs:
 
@@ -275,7 +275,7 @@ temporal activity reset \
     --keep-paused
 ```
 
-Activities can be reset in bulk with a visibility query list filter:
+Activities can be reset in bulk with a Visibility Query List Filter:
 
 ```
 temporal activity reset \
@@ -288,12 +288,12 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--activity-id`, `-a` | No | **string** The Activity ID to reset. Mutually exclusive with `--query`. Requires `--workflow-id` to be specified. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
-| `--jitter` | No | **duration** The activity will reset at random a time within the specified duration. Can only be used with --query. |
-| `--keep-paused` | No | **bool** If the activity was paused, it will stay paused. |
+| `--jitter` | No | **duration** The Activity will reset at random a time within the specified duration. Can only be used with --query. |
+| `--keep-paused` | No | **bool** If the Activity was paused, it will stay paused. |
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
-| `--reset-attempts` | No | **bool** Reset the activity attempts. |
-| `--restore-original-options` | No | **bool** Restore the original options of the activity. |
+| `--reset-attempts` | No | **bool** Reset the Activity attempts. |
+| `--restore-original-options` | No | **bool** Restore the original options of the Activity. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
 | `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
