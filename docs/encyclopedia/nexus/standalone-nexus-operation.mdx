@@ -83,7 +83,7 @@ reliability, retries, and observability of Nexus, but without paying the cost of
 - Visibility — list and count Standalone Nexus Operation Executions using [List Filter](/list-filter) queries
 - Dual use — execute the same Operation from a Workflow or standalone with no handler code changes
 
-## Migrate a single-Operation caller Workflow to a Standalone Nexus Operation {#migrate-from-caller-workflow}
+## Migrate a single-Operation caller Workflow to a Standalone Nexus Operation {/* #migrate-from-caller-workflow */}
 
 A common pattern is a caller Workflow whose only purpose is to invoke a single Nexus Operation.
 When that's all the Workflow does, you can drop the caller Workflow entirely and call the
@@ -134,7 +134,7 @@ temporal --version
 The `temporal nexus operation` subcommand supports Standalone Nexus Operations with commands
 including: `start`, `execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
 The Nexus Endpoint must already exist on the server — create it with
-[`temporal operator nexus endpoint create`](/cli/operator#nexus-endpoint-create).
+[`temporal operator nexus endpoint create`](/cli/command-reference/operator#create-1).
 
 ## Temporal Cloud support
 

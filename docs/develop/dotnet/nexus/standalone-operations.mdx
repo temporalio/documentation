@@ -48,7 +48,7 @@ This page focuses on the client-side APIs that are unique to Standalone Nexus Op
 - [List Standalone Nexus Operations](#list-operations)
 - [Count Standalone Nexus Operations](#count-operations)
 
-## Execute a Standalone Nexus Operation {#execute-operation}
+## Execute a Standalone Nexus Operation {/* #execute-operation */}
 
 To execute a Standalone Nexus Operation, first create a
 [`NexusClient`](https://dotnet.temporal.io/api/Temporalio.Client.NexusClient.html) using
@@ -88,7 +88,7 @@ var handle = await nexusClient.StartNexusOperationAsync<IHelloService.EchoOutput
     });
 ```
 
-## Get the result of a Standalone Nexus Operation {#get-operation-result}
+## Get the result of a Standalone Nexus Operation {/* #get-operation-result */}
 
 Use `NexusOperationHandle<TResult>.GetResultAsync()` to await the Operation's completion and retrieve its result. This
 works for both synchronous and asynchronous (Workflow-backed) Operations.
@@ -109,7 +109,7 @@ var handle = client.GetNexusOperationHandle<IHelloService.EchoOutput>("unique-op
 var output = await handle.GetResultAsync();
 ```
 
-## List Standalone Nexus Operations {#list-operations}
+## List Standalone Nexus Operations {/* #list-operations */}
 
 Use [`ITemporalClient.ListNexusOperationsAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_ListNexusOperationsAsync_System_String_Temporalio_Client_NexusOperationListOptions_)
 to list Standalone Nexus Operation Executions that match a [List Filter](/list-filter) query. The call returns an
@@ -130,7 +130,7 @@ await foreach (var execution in client.ListNexusOperationsAsync(
 The query string accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
 
-## Count Standalone Nexus Operations {#count-operations}
+## Count Standalone Nexus Operations {/* #count-operations */}
 
 Use [`ITemporalClient.CountNexusOperationsAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_CountNexusOperationsAsync_System_String_Temporalio_Client_NexusOperationCountOptions_)
 to count Standalone Nexus Operation Executions that match a [List Filter](/list-filter) query.
@@ -143,7 +143,7 @@ var count = await client.CountNexusOperationsAsync(
 logger.LogInformation("Total Nexus operations: {Count}", count.Count);
 ```
 
-## Run Standalone Nexus Operations with Temporal Cloud {#run-standalone-nexus-operations-temporal-cloud}
+## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
 
 Standalone Nexus Operations work against Temporal Cloud with the same code — only the client connection options change.
 For full details on connecting to Temporal Cloud, including Namespace creation, Nexus Endpoint setup, certificate
