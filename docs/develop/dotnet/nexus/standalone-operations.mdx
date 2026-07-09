@@ -19,15 +19,11 @@ tags:
 description: Execute Nexus Operations independently without a Workflow using the Temporal .NET SDK.
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal .NET SDK support for Standalone Nexus Operations is at
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-Requires .NET SDK `1.16.0` or above.
-
-All APIs are experimental and may be subject to backwards-incompatible changes.
-
-:::
+<ReleaseNoteHeader featureName="standaloneNexusOperation">
+  Requires .NET SDK `1.16.0` or above. All APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
 
 [Standalone Nexus Operations](/standalone-nexus-operation) let you run Nexus Operation Executions independently, without
 being orchestrated by a Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using
