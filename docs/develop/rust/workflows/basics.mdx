@@ -26,7 +26,7 @@ A Workflow is defined by:
 
 ```rust
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowResult, WorkflowContextView};
+use temporalio_sdk::{WorkflowResult, WorkflowContextView, WorkflowContext};
 
 #[workflow]
 pub struct GreetingWorkflow {
@@ -41,7 +41,7 @@ impl GreetingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
         Ok(format!("Hello, {}!", name))
     }
@@ -91,7 +91,7 @@ impl WorkflowRunSeesWorkflowInitWorkflow {
     }
 
     #[run]
-    async fn get_greeting(
+    pub async fn get_greeting(
         ctx: &mut WorkflowContext<Self>,
         _workflow_input: MyWorkflowInput,
     ) -> WorkflowResult<String> {
@@ -108,13 +108,14 @@ impl WorkflowRunSeesWorkflowInitWorkflow {
 The `#[run]` method is required and contains the main Workflow logic. It:
 
 - Must be `async`
+- Must be `public`
 - Receives a mutable `WorkflowContext<Self>`
 - Returns `WorkflowResult<T>` where T is the Workflow return type
 - Executes exactly once per Workflow execution
 
 ```rust
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Execute activities, timers, child workflows, etc.
     let result = ctx.start_activity(
         MyActivities::greet,
@@ -158,7 +159,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+    pub async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Use the initialized state
         Ok("Processing complete".to_string())
     }
@@ -241,7 +242,7 @@ The Rust SDK provides:
 use std::time::Duration;
 
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
     ctx.timer(TimerOptions {
         duration: Duration::from_secs(60),
@@ -267,7 +268,7 @@ Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access 
 
 ```rust
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Read-only access
     let name = ctx.state(|s| s.name.clone());
 
@@ -290,7 +291,7 @@ For application failures, construct an `ApplicationFailure` and convert it into 
 use temporalio_sdk::ApplicationFailure;
 
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     if some_validation_fails {
         return Err(ApplicationFailure::new("validation_failed: Input is invalid").into());
     }
