@@ -1697,6 +1697,7 @@ module.exports = {
       collapsed: true,
       items: [
         'develop/standalone-activities-interactive-demo',
+        'develop/priority-fairness-walkthrough',
       ],
     },
     'integrations',
