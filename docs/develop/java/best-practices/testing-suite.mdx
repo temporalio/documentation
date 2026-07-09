@@ -569,8 +569,32 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 When you execute a Workflow and wait for the result, the test environment automatically skips Workflow timers such as `Workflow.sleep`. This means:
 
-- Workflow timers (like `Workflow.Sleep`) are fast-forwarded.
-- Time doesn't skip while Activities and Nexus operations are executing.
+- Workflow timers (like `Workflow.sleep`) are fast-forwarded.
+- Time doesn't skip while Activities and Nexus operations are executing. Nexus operation handlers timeout after 10 seconds and time skipping is allowed while waiting for retries.
+
+Here's an example of a Workflow that implements `Workflow.sleep` to wait for a day before calling the Activity:
+
+```java
+public class SayHelloWorkflowImpl implements SayHelloWorkflow {
+  private final GreetActivities activities =
+    Workflow.newActivityStub(
+      GreetActivities.class,
+      ActivityOptions.newBuilder()
+        .setStartToCloseTimeout(Duration.ofSeconds(30))
+        .build());
+
+  @Override
+  public String sayHello(String name) {
+    // This will complete immediately in TestWorkflowEnvironment because
+    // Workflow time is automatically advanced.
+    Workflow.sleep(Duration.ofDays(1));
+
+    return activities.greet(name);
+  }
+}
+```
+
+Here's what the test for that Workflow could look like:
 
 ```java
 @Test
