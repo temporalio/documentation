@@ -59,6 +59,10 @@ Nexus Operation.
 Pick your SDK and follow the quickstart:
 
 - [Go SDK - Standalone Nexus Operations](/develop/go/nexus/standalone-operations)
+- [Java SDK - Standalone Nexus Operations](/develop/java/nexus/standalone-operations)
+- [Python SDK - Standalone Nexus Operations](/develop/python/nexus/standalone-operations)
+- [TypeScript SDK - Standalone Nexus Operations](/develop/typescript/nexus/standalone-operations)
+- [.NET SDK - Standalone Nexus Operations](/develop/dotnet/nexus/standalone-operations)
 
 :::
 
@@ -86,7 +90,6 @@ When that's all the Workflow does, you can drop the caller Workflow entirely and
 Operation as a Standalone Nexus Operation. The handler Namespace's Service contract, Operation
 handlers, and Workers do not change — only the caller side does.
 
-
 Considerations when migrating:
 
 - If the caller Workflow does more than one Operation call, or has business logic between calls,
@@ -113,19 +116,14 @@ queued tasks.
 Standalone Nexus Operations are at Pre-release. APIs are experimental and may be subject to
 backwards-incompatible changes.
 
-
 ## Temporal CLI support
 
-Standalone Nexus Operations require [Temporal CLI](/cli) and Temporal Server versions that include
+Standalone Nexus Operations require a Pre-release build of the [Temporal CLI](/cli) that includes
 the `temporal nexus operation` command family. All commands are Experimental.
 
-Install with Homebrew:
-
-```bash
-brew install temporal
-```
-
-Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+Download the Pre-release build from the
+[`v1.7.3-standalone-nexus-operations` release](https://github.com/temporalio/cli/releases/tag/v1.7.3-standalone-nexus-operations)
+on GitHub and follow the platform-specific install instructions on that page.
 
 Verify the installation:
 
