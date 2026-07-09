@@ -2115,16 +2115,6 @@
       "permanent": true
     },
     {
-      "source": "/encyclopedia/temporal",
-      "destination": "/encyclopedia/architecture/temporal-architecture",
-      "permanent": true
-    },
-    {
-      "source": "/temporal",
-      "destination": "/encyclopedia/architecture/temporal-architecture",
-      "permanent": true
-    },
-    {
       "source": "/encyclopedia/temporal-sdks",
       "destination": "/encyclopedia/architecture/temporal-sdks",
       "permanent": true

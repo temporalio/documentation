@@ -1469,6 +1469,7 @@ module.exports = {
         id: 'encyclopedia/index',
       },
       items: [
+        'encyclopedia/temporal',
         {
           type: 'category',
           label: 'Architecture',
