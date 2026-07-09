@@ -383,8 +383,8 @@ This section applies to Temporal Cloud. For self-hosted Temporal Service deploym
 for IAM configuration with a different CloudFormation template.
 
 Temporal needs permission to invoke your Lambda function and check its status. The Temporal server assumes an IAM role in
-your AWS account that grants `lambda:InvokeFunction` and `lambda:GetFunction` on your Worker Lambda functions. The trust
-policy on the role includes an External ID condition to prevent
+your AWS account with a handful of Lambda permissions scoped to your Worker functions. The trust policy on the role
+includes an External ID condition to prevent
 [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
 Deploy the following CloudFormation template to create the invocation role with these permissions.
