@@ -1,15 +1,21 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   InstantSearch,
   SearchBox,
   Configure,
 } from 'react-instantsearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import aa from './algoliaInsights';
 import { ClearButton } from './ClearButton';
 import { LanguageFilter } from './LanguageFilter';
 import { SearchResults } from './SearchResults';
 import { SearchFooter } from './SearchFooter';
 import { SDK_LANGUAGES } from './SDKLanguageFilter';
+
+// Stable reference: an inline `{ insightsClient: aa }` object literal would be
+// a new object on every render, which resets the insights middleware's
+// dedup cache and re-fires "Hits Viewed" for results it already reported.
+const INSIGHTS_CONFIG = { insightsClient: aa };
 
 interface CustomSearchModalProps {
   appId: string;
@@ -28,7 +34,10 @@ export function CustomSearchModal({
   selectedLanguages,
   onLanguageChange,
 }: CustomSearchModalProps) {
-  const searchClient = algoliasearch(appId, apiKey);
+  // Memoized: an unmemoized client is a new instance every render, which
+  // made InstantSearch re-search and re-fire insights events on nearly
+  // every state change in this component (e.g. every keystroke).
+  const searchClient = useMemo(() => algoliasearch(appId, apiKey), [appId, apiKey]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [resultCount, setResultCount] = useState(0);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(false);
@@ -183,7 +192,11 @@ export function CustomSearchModal({
         aria-modal="true"
         aria-label="Search documentation"
       >
-        <InstantSearch searchClient={searchClient} indexName={indexName}>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName={indexName}
+          insights={INSIGHTS_CONFIG}
+        >
           <Configure
             hitsPerPage={20}
             facetFilters={facetFilters}
