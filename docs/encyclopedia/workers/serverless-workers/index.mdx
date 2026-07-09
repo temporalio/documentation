@@ -10,6 +10,7 @@ keywords:
   - serverless
   - workers
   - lambda
+  - cloud run
   - compute provider
 tags:
   - Workers
@@ -36,6 +37,7 @@ This page covers the following:
 - [Worker lifecycle](#worker-lifecycle)
 - [Failure handling](#failure-handling)
 - [Constraints](#constraints)
+- [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers)
 - [Compute providers](#compute-providers)
 
 ## What is a Serverless Worker? {/* #serverless-worker */}
@@ -67,10 +69,9 @@ The Worker Controller Instance (WCI) is a system Workflow that scales Serverless
 One WCI Workflow runs per Worker Deployment Version that has a compute provider configured. The WCI runs in the same
 Namespace as your Worker Deployment.
 
-The WCI responds to two triggers: [sync match failures](#sync-match-failure) and
-[Task Queue backlog](#task-queue-backlog). When either trigger fires, the WCI produces a scaling action, such as
-invoking the configured compute provider (for example, calling AWS Lambda's `InvokeFunction` API) to start new Workers.
-For details on how scaling works, see [Autoscaling](#autoscaling).
+The WCI responds to two triggers: sync match failures and Task Queue backlog. When either trigger fires, the WCI
+produces a scaling action, such as invoking the configured compute provider to start new Workers. For details on how
+scaling works, see [Autoscaling](#autoscaling).
 
 You can list WCI Workflows in your Namespace:
 
@@ -114,28 +115,17 @@ reuse or shared state across invocations.
 
 ## Autoscaling {/* #autoscaling */}
 
-The [WCI](#worker-controller-instance) automatically scales Serverless Workers based on Task Queue signals. When Tasks
-arrive and no Worker is available, the WCI invokes new Workers. When the Tasks are done, Workers exit and scale to zero.
+The [WCI](#worker-controller-instance) automatically scales Serverless Workers based on two signals: sync match failures and Task Queue backlog.
+The autoscaling algorithm differs by compute provider because of differences in cold start latency, invocation duration limits, and provider APIs.
+Refer to the autoscaling section for your compute provider:
 
-The WCI uses two signals to decide when to invoke new Workers:
-
-### Sync match failure {/* #sync-match-failure */}
-
-When a Task is submitted, the [Matching Service](/temporal-service/temporal-server#matching-service) attempts to route
-it directly to an available Worker. If no Worker is available, the sync match fails, and the Matching Service pushes a
-signal to the WCI. The WCI then invokes a new Worker. This is the primary scaling path. Because the Matching Service
-pushes match failures to the WCI as they happen rather than the WCI polling on a timer, latency stays low and scaling is
-responsive.
-
-### Task Queue backlog {/* #task-queue-backlog */}
-
-The WCI monitors Task Queue metadata to determine whether pending Tasks exist without enough Workers to process them. If
-there are Tasks on the queue and not enough Workers, the WCI invokes additional Workers.
+- [AWS Lambda autoscaling](/serverless-workers/aws-lambda#autoscaling)
+- [GCP Cloud Run autoscaling](/serverless-workers/cloud-run#autoscaling)
 
 ## Scaling with long-lived Workers {/* #scaling-with-long-lived-workers */}
 
 Serverless Workers can share a Task Queue with long-lived Workers. Because Serverless Workers are only invoked on
-[sync match failure](#sync-match-failure), Serverless Workers only pick up Tasks that no long-lived Worker was available
+sync match failure, Serverless Workers only pick up Tasks that no long-lived Worker was available
 to handle. In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
 
 :::caution
@@ -247,63 +237,12 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 ## Worker Versioning with Serverless Workers {/* #worker-versioning-with-serverless-workers */}
 
 Serverless Workers require [Worker Versioning](/worker-versioning), and the compute provider must invoke a stable,
-immutable build for each Worker Deployment Version. With AWS Lambda, this means aligning two versioning systems:
+immutable build for each Worker Deployment Version.
+How Worker Deployment Versions map to compute provider primitives differs by provider.
+Refer to the versioning section for your compute provider:
 
-- **Temporal Worker Deployment Versions** — identified by deployment name and Build ID. Each Workflow runs against a
-  specific Worker Deployment Version (Pinned) or moves between them on routing changes (Auto-Upgrade).
-- **AWS Lambda function versions** — immutable numbered snapshots of your Lambda function code (`1`, `2`, `3`, ...).
-
-A Worker Deployment Version is an immutable build identifier. For production workloads, keep the Lambda function code it
-invokes immutable as well: map each Worker Deployment Version to exactly one Lambda function version, and configure the
-compute provider with the qualified
-[versioned ARN](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) for that Lambda version (for
-example, `arn:aws:lambda:us-east-1:123:function:my-worker:5`).
-
-```mermaid
-flowchart LR
-    subgraph Temporal["Temporal · Worker Deployment 'my-app'"]
-        direction TB
-        b1["Build ID: v1"]
-        b2["Build ID: v2"]
-        b3["Build ID: v3<br/>(Current)"]
-    end
-    subgraph AWS["AWS Lambda · my-temporal-worker"]
-        direction TB
-        l1["Lambda version 1<br/><code>function:my-temporal-worker:1</code>"]
-        l2["Lambda version 2<br/><code>function:my-temporal-worker:2</code>"]
-        l3["Lambda version 3<br/><code>function:my-temporal-worker:3</code>"]
-    end
-    b1 -- qualified ARN --> l1
-    b2 -- qualified ARN --> l2
-    b3 -- qualified ARN --> l3
-```
-
-For development or non-critical workloads, you can use an unqualified ARN to iterate without publishing a new Lambda
-function version each time.
-
-:::caution
-
-An unqualified ARN (no version suffix) points at `$LATEST`, which changes on every redeploy. Without a versioned ARN,
-deploying replay-unsafe code causes non-determinism errors for in-flight Workflows, even for Workflows annotated as
-Pinned.
-
-:::
-
-### How the Versioning Behavior changes rollout {/* #rollout-by-behavior */}
-
-The choice of Pinned or Auto-Upgrade controls how _Workflows_ move between Worker Deployment Versions in Temporal. It
-does not change how a Worker Deployment Version targets Lambda. Both behaviors expect a versioned ARN that points at one
-immutable Lambda function version.
-The following table shows what happens to existing Workflows when you set a new Current Version, with and without versioned Lambda ARNs.
-
-| Versioning Behavior | With versioned Lambda ARN | Without versioned Lambda ARN |
-| ------------------- | ------------------------- | ---------------------------- |
-| **Pinned**          | Existing Workflows stay on their original Lambda function version until they complete. | Existing Workflows stay on their original Worker Deployment Version, but the underlying Lambda code has already changed since `$LATEST` updated at redeploy. The new code must be replay-compatible. |
-| **Auto-Upgrade**    | Existing Workflows move to the new Worker Deployment Version and its new Lambda function version at the next Workflow Task after you move the Current Version. | The Lambda redeploy already changed the code for all versions. Setting the Current Version only changes routing, not which code runs. |
-
-For step-by-step instructions on publishing Lambda versions and configuring the compute provider with a versioned ARN,
-see
-[Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version).
+- [AWS Lambda versioning](/serverless-workers/aws-lambda#worker-versioning)
+- [GCP Cloud Run versioning](/serverless-workers/cloud-run#worker-versioning)
 
 ## Compute providers {/* #compute-providers */}
 
@@ -319,6 +258,7 @@ provider because the Worker process lifecycle is not managed by the Temporal ser
 
 ### Supported providers
 
-| Provider   | Description                                                                   |
-| ---------- | ----------------------------------------------------------------------------- |
-| AWS Lambda | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
+| Provider      | Description                                                                   |
+| ------------- | ----------------------------------------------------------------------------- |
+| AWS Lambda    | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
+| GCP Cloud Run | Temporal manages Cloud Run instance scaling through the Cloud Run admin API.  |
