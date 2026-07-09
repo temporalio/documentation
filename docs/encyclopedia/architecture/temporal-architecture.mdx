@@ -27,7 +27,7 @@ Before diving into the architecture, let's recap what you're responsible for as 
 
 As a developer, you are responsible for the Temporal Application code which includes writing the Activity Definition, Workflow Definition, and the code to configure and start the Workers that coordinate with a Temporal Service to execute your Workflow and Activity code. 
 
-As part of the Temporal Platform, we also have the Temporal Service, which runs the Temporal Server with its database and optional components, and is responsible for orchestrating execution. A Temporal application gains its durability, scalability, and reliability from the support provided by the Temporal Service.
+As part of the Temporal Platform, the Temporal Service runs the Temporal Server with its database and optional components, and is responsible for orchestrating execution. A Temporal application gains its durability, scalability, and reliability from the support provided by the Temporal Service.
 
 <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
   <CaptionedImage
@@ -65,11 +65,11 @@ Consider the example of an order processing system.
 
 A Temporal Client lets you:
 
-- Start a Workflow Execution, for example, when a customer places an order.
-- Signal a Workflow Execution to update the order if the customer changes their shipping address.
-- Query a Workflow Execution to retrieve the current status of the order.
-- List Workflow Executions to view all orders being processed.
-- Get the result of a Workflow Execution to retrieve the final outcome of the order processing. 
+- **Start a Workflow Execution**, for example, when a customer places an order.
+- **Signal a Workflow Execution** to update the order if the customer changes their shipping address.
+- **Query a Workflow Execution** to retrieve the current status of the order.
+- **List Workflow Executions** to view all orders being processed.
+- **Get the result of a Workflow Execution** to retrieve the final outcome of the order processing. 
 
 Clients are responsible for starting Workflows by sending requests to initiate new Workflow Executions. They can query Workflows to retrieve current state or synchronous data from running Workflows and signal Workflows to send asynchronous messages that influence their behavior. Clients also manage Workflows by canceling, terminating, or describing Workflow Executions.
 
