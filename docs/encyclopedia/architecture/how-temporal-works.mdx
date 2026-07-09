@@ -2,7 +2,7 @@
 id: how-temporal-works
 title: How Temporal works
 sidebar_label: How Temporal works
-description: An interactive demo to Temporal's architecture, showing how the platform orchestrates durable Workflow Executions through its Frontend, backend services, and Worker coordination.
+description: How the Temporal Client, Server, and Worker interact during a Workflow and Activity lifecycle, with a step-by-step walkthrough and interactive demo.
 toc_max_heading_level: 4
 keywords:
   - architecture
@@ -15,9 +15,16 @@ tags:
   - Architecture
 ---
 
-import { CaptionedImage, TemporalArchitectureSimulator } from '@site/src/components';
+import {
+  CaptionedImage,
+  TemporalLifecycleDemo,
+} from '@site/src/components';
 
-In a Temporal application, the [Client](/encyclopedia/architecture/temporal-architecture#client-application), [Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server), and [Worker](/workers#worker) are three separate parts that talk to each other and each one has a clear purpose. To understand the internal mechanics of Temporal, it helps to follow what happens when you start a Workflow or schedule [Tasks](/tasks#task).
+In a Temporal application, the [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application), [Temporal Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server), and [Worker](/workers#worker) are three separate parts that communicate over the network. The Client sends control requests such as starting a Workflow, sending a Signal, or reading a result. The Server records [Event History](/workflow-execution/event), schedules [Tasks](/tasks#task) on [Task Queues](/task-queue), and persists state to a database. The Worker polls Task Queues and runs Workflow and Activity code.
+The Client does not execute Workflow or Activity code. The Server does not run your application code directly. 
+
+Understanding how these three parts exchange requests, Tasks, Commands, and Events is the basis for understanding Temporal's internal mechanics.
+
 
 ## Relationship between the Client, Server, and Worker
 
@@ -54,13 +61,13 @@ The Server records all state and creates Workflow and Activity Tasks in Task Que
 
 This is the heart of how durable execution works.
 
-## Example of the end-to-end lifecycle of a Workflow or Activity
+## End-to-end lifecycle of a Workflow and Activity
 
-Here's a fifteen step process involving the end to end lifecycle of a Workflow and Activity. 
+The following fifteen steps describe one Workflow Execution from start to finish, including a single Activity. The interactive demo below shows the same sequence and highlights which components communicate at each point.
 
 ### Interactive demo
 
-<TemporalArchitectureSimulator />
+<TemporalLifecycleDemo />
 
 ### Workflow lifecycle
 
