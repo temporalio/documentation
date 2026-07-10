@@ -36,7 +36,7 @@ jobs:
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
 
       - name: Checkout docs repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
@@ -44,7 +44,7 @@ jobs:
           ref: main
 
       - name: Checkout CLI repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           path: cli
           ref: ${{ github.event.inputs.cli_release_tag }}
@@ -59,7 +59,7 @@ jobs:
           go-version: '1.26'
 
       - name: Checkout cloud-cli repo
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7
         with:
           path: cloud-cli
           submodules: recursive
@@ -69,6 +69,10 @@ jobs:
 
       - name: Generate CLI docs
         working-directory: cli
+        # Gen-docs runs twice: main CLI and cloud CLI have overlapping option
+        # sets ("client", "common"), so combining them in one invocation causes
+        # a "duplicate option set" error. The second run uses -subdir to place
+        # cloud subcommands into a cloud/ subdirectory.
         run: |
           go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
           go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -subdir cloud

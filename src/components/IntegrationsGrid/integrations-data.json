@@ -1,7 +1,7 @@
 [
   {
     "name": "AI SDK by Vercel",
-    "description": "Build AI-powered applications with durable execution using the Vercel AI SDK.",
+    "description": "Build AI-powered applications with Durable Execution using the Vercel AI SDK.",
     "tags": [
       "Agent framework"
     ],
@@ -36,13 +36,22 @@
     "href": "https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics"
   },
   {
-    "name": "Datadog",
+    "name": "Datadog (Metrics)",
     "description": "Export Temporal Cloud metrics to Datadog with a serverless integration and pre-built dashboard.",
     "tags": [
       "Observability",
       "Temporal Cloud"
     ],
     "href": "https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/"
+  },
+  {
+    "name": "Datadog (Cost Management)",
+    "description": "Send Temporal Cloud billing data to Datadog Cloud Cost Management for spend attribution by namespace and service type.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://docs.datadoghq.com/integrations/temporal-cloud-costs/"
   },
   {
     "name": "Google ADK",
@@ -100,12 +109,21 @@
   },
   {
     "name": "OpenAI Agents SDK",
-    "description": "Run OpenAI Agents with crash-proof execution using Temporal.",
+    "description": "Run OpenAI Agents with Durable Execution using Temporal.",
     "tags": [
       "Agent framework"
     ],
     "sdk": "Python",
     "href": "https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md"
+  },
+  {
+    "name": "OpenAI Agents SDK",
+    "description": "Run OpenAI Agents with Durable Execution using Temporal.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "TypeScript",
+    "href": "/develop/typescript/integrations/openai-agents"
   },
   {
     "name": "OpenBox",
@@ -116,6 +134,15 @@
     ],
     "sdk": "Python",
     "href": "https://docs.openbox.ai/getting-started/temporal"
+  },
+  {
+    "name": "Parseable",
+    "description": "Stream Temporal Workflow and Activity execution events to Parseable for observability and analysis.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Java",
+    "href": "https://github.com/parseablehq/temporal-plugin-java/blob/main/INTEGRATION.md"
   },
   {
     "name": "Parseable",
@@ -146,7 +173,7 @@
   },
   {
     "name": "Pydantic AI",
-    "description": "Build type-safe AI agents with durable execution through Pydantic AI.",
+    "description": "Build type-safe AI agents with Durable Execution through Pydantic AI.",
     "tags": [
       "Agent framework"
     ],
@@ -197,5 +224,14 @@
     ],
     "sdk": "Python",
     "href": "https://tenuo.ai/temporal"
+  },
+  {
+    "name": "Vantage",
+    "description": "Track and analyze Temporal Cloud costs with detailed reports, filtering, and multi-account support.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://docs.vantage.sh/connecting_temporal/"
   }
 ]

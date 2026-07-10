@@ -1,5 +1,7 @@
 //@ts-check
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
+const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
+const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -11,10 +13,48 @@ module.exports = async function createConfigAsync() {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenAnchors: 'throw',
-    favicon: 'img/favicon.ico',
+    favicon: 'favicon.ico',
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     headTags: [
+      // JSON-LD structured data so AI agents and search engines can identify
+      // the product (SoftwareApplication) and disambiguate the brand (sameAs).
+      {
+        tagName: 'script',
+        attributes: {
+          type: 'application/ld+json',
+        },
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Organization',
+              '@id': 'https://temporal.io/#organization',
+              name: 'Temporal Technologies',
+              url: 'https://temporal.io',
+              logo: 'https://docs.temporal.io/img/favicon.png',
+              sameAs: [
+                'https://github.com/temporalio',
+                'https://x.com/temporalio',
+                'https://www.youtube.com/c/Temporalio',
+              ],
+            },
+            {
+              '@type': 'SoftwareApplication',
+              '@id': 'https://temporal.io/#software',
+              name: 'Temporal',
+              applicationCategory: 'DeveloperApplication',
+              operatingSystem: 'Cross-platform',
+              url: 'https://temporal.io',
+              downloadUrl: 'https://github.com/temporalio/temporal',
+              description:
+                'Temporal is a durable execution platform for building reliable, scalable applications using workflows and activities.',
+              publisher: { '@id': 'https://temporal.io/#organization' },
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            },
+          ],
+        }),
+      },
     ],
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
@@ -36,11 +76,14 @@ module.exports = async function createConfigAsync() {
         //   },
         // },
       },
-      metadata: [{ name: 'robots', content: 'follow, index' }],
+      metadata: [
+        { name: 'robots', content: 'follow, index' },
+        { property: 'og:type', content: 'website' },
+      ],
       image: '/img/assets/open-graph-shiny.png',
       prism: {
-        //theme: require("prism-react-renderer/themes/nightOwlLight"),
-        // darkTheme: require("prism-react-renderer/themes/dracula"),
+        theme: prismLightTheme,
+        darkTheme: prismDarkTheme,
         additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
@@ -203,11 +246,11 @@ module.exports = async function createConfigAsync() {
         ],
       },
       algolia: {
-        apiKey: '4a2fa646f476d7756a7cdc599b625bec',
-        indexName: 'temporal',
+        apiKey: ALGOLIA_SEARCH_API_KEY,
+        indexName: ALGOLIA_INDEX_NAME,
         externalUrlRegex: 'temporal\\.io',
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
-        appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
+        appId: ALGOLIA_APP_ID, // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
@@ -232,7 +275,12 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: ['**/clusters/**', '**/ai-cookbook/**'], // do not render context content
+            exclude: [
+              '**/_*.{js,jsx,ts,tsx,md,mdx}',
+              '**/_*/**',
+              '**/clusters/**',
+              '**/ai-cookbook/**',
+            ], // partials (underscore-prefixed) + context content we don't render
             editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
             /**
              * Whether to display the author who last updated the doc.
@@ -276,6 +324,7 @@ module.exports = async function createConfigAsync() {
             changefreq: 'daily',
             priority: 0.5,
             filename: 'sitemap.xml',
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
           },
         },
       ],

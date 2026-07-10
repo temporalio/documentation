@@ -124,6 +124,7 @@ module.exports = {
                 'develop/go/workflows/side-effects',
                 'develop/go/workflows/dynamic-workflow',
                 'develop/go/workflows/versioning',
+                'develop/go/workflows/workflow-streams',
               ],
             },
             {
@@ -185,7 +186,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/nexus/index',
               },
-              items: ['develop/go/nexus/quickstart', 'develop/go/nexus/feature-guide'],
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+                'develop/go/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -305,7 +310,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/nexus/index',
               },
-              items: ['develop/java/nexus/quickstart', 'develop/java/nexus/feature-guide'],
+              items: [
+                'develop/java/nexus/quickstart',
+                'develop/java/nexus/feature-guide',
+                'develop/java/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -521,7 +530,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/nexus/index',
               },
-              items: ['develop/python/nexus/quickstart', 'develop/python/nexus/feature-guide'],
+              items: [
+                'develop/python/nexus/quickstart',
+                'develop/python/nexus/feature-guide',
+                'develop/python/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -574,6 +587,7 @@ module.exports = {
               },
               items: [
                 'develop/python/integrations/braintrust',
+                'develop/python/integrations/google-adk',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
                 'develop/python/integrations/strands-agents',
@@ -678,7 +692,8 @@ module.exports = {
               },
               items: [
                 'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide'
+                'develop/typescript/nexus/feature-guide',
+                'develop/typescript/nexus/standalone-operations',
               ],
             },
             {
@@ -719,7 +734,8 @@ module.exports = {
                 id: 'develop/typescript/integrations/index',
               },
               items: [
-                'develop/typescript/integrations/ai-sdk'
+                'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/openai-agents',
               ],
             },
           ],
@@ -808,7 +824,8 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/nexus/quickstart',
-                'develop/dotnet/nexus/feature-guide'
+                'develop/dotnet/nexus/feature-guide',
+                'develop/dotnet/nexus/standalone-operations',
               ],
             },
             {
@@ -1080,11 +1097,12 @@ module.exports = {
           },
           items: [
             'cloud/manage-access/roles-and-permissions',
-            'cloud/get-started/users',
-            'cloud/get-started/user-groups',
-            'cloud/get-started/service-accounts',
-            'cloud/saml',
-            'cloud/scim',
+            'cloud/manage-access/users',
+            'cloud/manage-access/user-groups',
+            'cloud/manage-access/service-accounts',
+            'cloud/manage-access/custom-roles',
+            'cloud/manage-access/saml',
+            'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
           ],
         },
@@ -1258,13 +1276,16 @@ module.exports = {
           items: [
             'cloud/tcld/account',
             'cloud/tcld/apikey',
+            'cloud/tcld/connectivity-rule',
             'cloud/tcld/feature',
             'cloud/tcld/generate-certificates',
             'cloud/tcld/login',
             'cloud/tcld/logout',
+            'cloud/tcld/migration',
             'cloud/tcld/namespace',
             'cloud/tcld/nexus',
             'cloud/tcld/request',
+            'cloud/tcld/service-account',
             'cloud/tcld/user',
             'cloud/tcld/user-group',
             'cloud/tcld/version',
@@ -1366,6 +1387,7 @@ module.exports = {
                 'cli/command-reference/cloud/apikey',
                 'cli/command-reference/cloud/async-operation',
                 'cli/command-reference/cloud/connectivity',
+                'cli/command-reference/cloud/custom-role',
                 'cli/command-reference/cloud/login',
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
@@ -1638,6 +1660,7 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
+            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',

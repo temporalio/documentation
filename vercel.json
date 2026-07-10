@@ -12,6 +12,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\""
+        }
+      ]
     }
   ],
   "redirects": [
@@ -2112,6 +2121,36 @@
     {
       "source": "/develop/go/workers/cloud-worker",
       "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/users",
+      "destination": "/cloud/manage-access/users",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/saml",
+      "destination": "/cloud/manage-access/saml",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/scim",
+      "destination": "/cloud/manage-access/scim",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/service-accounts",
+      "destination": "/cloud/manage-access/service-accounts",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/user-groups",
+      "destination": "/cloud/manage-access/user-groups",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
+      "destination": "/develop/ruby/workflows/versioning#patching",
       "permanent": true
     }
   ]

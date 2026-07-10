@@ -158,7 +158,7 @@ w := worker.New(c, myTaskQueue, worker.Options{
     UseVersioning: true,
     Version: worker.WorkerDeploymentVersion{
       DeploymentName: "llm_srv",
-      BuildId:        buildID,
+      BuildID:        buildID,
     },
     DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
   },
@@ -313,6 +313,11 @@ Unspecified.
 You also want to make sure you understand how your Activities are going to work across different Worker Deployment
 Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
+
+If you run [Serverless Workers](/serverless-workers), each Worker Deployment Version's compute provider points at a
+specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
+pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
+[Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
 
 ## Rolling out changes with the CLI
 
@@ -841,7 +846,7 @@ workflowOptions := client.StartWorkflowOptions{
 	VersioningOverride: &client.PinnedVersioningOverride{
         Version: worker.WorkerDeploymentVersion{
             DeploymentName: "DeployName",
-            BuildId:        "1.0",
+            BuildID:        "1.0",
         },
     },
 }

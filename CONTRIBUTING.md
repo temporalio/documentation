@@ -20,8 +20,8 @@
    git checkout -b my-documentation-contribution
    ```
 
-5. **Follow the Style Guide**  
-   Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
+5. **Understand the docs architecture and follow the style guide**  
+   Refer to [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to understand where content belongs and what form it should take. Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
 
 6. **Preview Your Changes Locally**  
    Run the following commands to preview the site locally:
@@ -99,7 +99,7 @@ See [STYLE.md](./STYLE.md) for style guidance.
 
 You can preview how your changes will appear on the website locally on your machine.
 
-**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 20.0.0).**
+**Make sure you have [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) installed. Make sure you install the latest version of Node.js (later than 24.0.0).**
 
 Run `yarn` to install the site dependencies.
 
@@ -133,6 +133,34 @@ If you are making changes to code surrounded by Snipsync wrappers, i.e. `<!--SNI
 The location of the source code is written just inside the wrappers.
 
 After you have edited the source code, then you can run `yarn snipsync` to update that code snippet.
+
+# How page routing works
+
+Here is the hierarchy of how the canonical URLs work:
+
+1. Vercel redirects in `vercel.json`
+   - Old URL → destination URL, before Docusaurus page routing.
+
+2. Docusaurus route generation
+   - routeBasePath: `"/"` in docusaurus.config.js, so docs live at root, not `/docs/*`.
+
+3. Markdown front matter `slug` field
+   - Overrides the generated URL path for that doc page.
+
+4. File path fallback
+   - If no `slug` exists, URL comes from `docs/<path>/<file>.mdx`.
+
+5. Sidebar hierarchy
+   - Controls nav placement only; it does not determine the canonical URL.
+
+We do not encourage the use of the `slug` field in the frontmatter for a page. This field will override the URL and could potentially cause issues with redirects and the sidebar nav. A `slug` is useful when you want the public URL to be independent of where the file lives in the repo. In most cases, you don't need one.
+
+If you are considering using a custom slug, answer these questions first:
+
+- Is this page going to be widely linked from blogs, GitHub issues, or other docs?
+- Are you replacing an existing page?
+- Did you already check the redirects in `vercel.json`?
+- Is it in the page in a folder under the topic that makes the most sense?
 
 # Local development command reference
 
