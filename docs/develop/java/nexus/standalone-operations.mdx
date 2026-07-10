@@ -95,6 +95,25 @@ See the full
 for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
 counts Operations.
 
+Or use the Temporal CLI to execute a Standalone Nexus Operation:
+
+```bash
+./temporal nexus operation execute \
+  --endpoint my-nexus-endpoint \
+  --service my-service-name \
+  --operation my-operation-name \
+  --operation-id unique-operation-id \
+  --input '"some-input"'
+```
+
+:::note
+
+These CLI commands require the Pre-release Temporal CLI with Standalone Nexus Operation support. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install instructions, and
+run it from the current directory as `./temporal`.
+
+:::
+
 ## Start a Standalone Nexus Operation and Wait for the Result {/* #get-operation-result */}
 
 `start()` returns a
@@ -115,6 +134,12 @@ GreetingOutput greeting = handle.getResult();
 If the Operation completed successfully, the result is returned. If the Operation failed, the failure is thrown as a
 `NexusOperationException`. Use `getResultAsync()` for a non-blocking `CompletableFuture`, or
 `getResult(long timeout, TimeUnit unit)` to bound the wait.
+
+Or use the Temporal CLI to wait for a result by Operation ID:
+
+```bash
+./temporal nexus operation result --operation-id unique-operation-id
+```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
 
@@ -138,6 +163,12 @@ nexusClient
 The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
 
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation list --query 'Endpoint = "my-nexus-endpoint"'
+```
+
 ## Count Standalone Nexus Operations {/* #count-operations */}
 
 Use [`NexusClient.countNexusOperationExecutions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/NexusClient.html)
@@ -153,6 +184,12 @@ System.out.println("Total Nexus operations: " + count.getCount());
 
 Passing a `GROUP BY` query (for example, `"GROUP BY ExecutionStatus"`) returns a count per group, available through
 `NexusOperationExecutionCount.getGroups()`.
+
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation count --query 'Endpoint = "my-nexus-endpoint"'
+```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
 

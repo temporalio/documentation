@@ -78,6 +78,25 @@ See the full
 for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
 counts Operations.
 
+Or use the Temporal CLI to execute a Standalone Nexus Operation:
+
+```bash
+./temporal nexus operation execute \
+  --endpoint my-nexus-endpoint \
+  --service my-service-name \
+  --operation my-operation-name \
+  --operation-id unique-operation-id \
+  --input '"some-input"'
+```
+
+:::note
+
+These CLI commands require the Pre-release Temporal CLI with Standalone Nexus Operation support. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install instructions, and
+run it from the current directory as `./temporal`.
+
+:::
+
 ## Start a Standalone Nexus Operation and Wait for the Result {/* #get-operation-result */}
 
 `start_operation` returns a [`NexusOperationHandle`](https://python.temporal.io/temporalio.client.NexusOperationHandle.html).
@@ -103,6 +122,12 @@ except err:
 
 If the Operation completed successfully, the result is returned. If the Operation failed, the failure is raised as an error.
 
+Or use the Temporal CLI to wait for a result by Operation ID:
+
+```bash
+./temporal nexus operation result --operation-id unique-operation-id
+```
+
 ## List Standalone Nexus Operations {/* #list-operations */}
 
 Use [`client.list_nexus_operations()`](https://python.temporal.io/temporalio.client.Client.html#list_nexus_operations) to list Standalone Nexus
@@ -124,6 +149,12 @@ async for op in client.list_nexus_operations(query):
 The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
 
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation list --query 'Endpoint = "my-nexus-endpoint"'
+```
+
 ## Count Standalone Nexus Operations {/* #count-operations */}
 
 Use [`client.count_nexus_operations()`](https://python.temporal.io/temporalio.client.Client.html#count_nexus_operations) to count Standalone Nexus
@@ -135,6 +166,12 @@ Note that `count_nexus_operations` is called on the base `client.Client`, not on
 query = f'Endpoint = "{ENDPOINT_NAME}"'
 count = await client.count_nexus_operations(query)
 print(f"Total Nexus operations: {count.count}")
+```
+
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation count --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}

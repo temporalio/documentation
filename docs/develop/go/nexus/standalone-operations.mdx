@@ -85,6 +85,25 @@ To run the starter (in a separate terminal from the Worker):
 go run nexus-standalone-operations/starter/main.go
 ```
 
+Or use the Temporal CLI to execute a Standalone Nexus Operation:
+
+```bash
+./temporal nexus operation execute \
+  --endpoint my-nexus-endpoint \
+  --service my-service-name \
+  --operation my-operation-name \
+  --operation-id unique-operation-id \
+  --input '"some-input"'
+```
+
+:::note
+
+These CLI commands require the Pre-release Temporal CLI with Standalone Nexus Operation support. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install instructions, and
+run it from the current directory as `./temporal`.
+
+:::
+
 ## Get the result of a Standalone Nexus Operation {/* #get-operation-result */}
 
 Use `NexusOperationHandle.Get()` to block until the Operation completes and retrieve its result. This works for both
@@ -101,6 +120,12 @@ log.Println("Operation result:", result.Message)
 
 If the Operation completed successfully, the result is deserialized into the provided pointer. If the Operation failed,
 the failure is returned as an error.
+
+Or use the Temporal CLI to wait for a result by Operation ID:
+
+```bash
+./temporal nexus operation result --operation-id unique-operation-id
+```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
 
@@ -130,6 +155,12 @@ for metadata, err := range resp.Results {
 The `Query` field accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
 
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation list --query 'Endpoint = "my-nexus-endpoint"'
+```
+
 ## Count Standalone Nexus Operations {/* #count-operations */}
 
 Use [`client.CountNexusOperations()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to count Standalone Nexus
@@ -146,6 +177,12 @@ if err != nil {
 }
 
 log.Println("Total Nexus operations:", resp.Count)
+```
+
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation count --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}

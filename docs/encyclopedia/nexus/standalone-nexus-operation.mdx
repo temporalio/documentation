@@ -121,15 +121,41 @@ backwards-incompatible changes.
 Standalone Nexus Operations require a Pre-release build of the [Temporal CLI](/cli) that includes
 the `temporal nexus operation` command family. All commands are Experimental.
 
-Download the Pre-release build from the
-[`v1.7.3-standalone-nexus-operations` release](https://github.com/temporalio/cli/releases/tag/v1.7.3-standalone-nexus-operations)
-on GitHub and follow the platform-specific install instructions on that page.
+Download for your platform:
+
+```bash title="macOS (Apple Silicon)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_darwin_arm64.tar.gz | tar xz
+```
+
+```bash title="macOS (Intel)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_darwin_amd64.tar.gz | tar xz
+```
+
+```bash title="Linux (arm64)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_linux_arm64.tar.gz | tar xz
+```
+
+```bash title="Linux (amd64)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_linux_amd64.tar.gz | tar xz
+```
 
 Verify the installation:
 
 ```bash
-temporal --version
+./temporal --version
+# temporal version 1.7.3-standalone-nexus-operations
 ```
+
+Move the binary to your PATH or run it from the current directory as `./temporal`.
+
+:::warning
+
+If you see `unknown command "nexus"` or `Standalone Nexus Operations are disabled` when running
+commands, you are using the standard Temporal CLI instead of the Pre-release version above. The
+standard `brew install temporal` or `brew upgrade temporal` does not include Standalone Nexus
+Operation support during Pre-release.
+
+:::
 
 The `temporal nexus operation` subcommand supports Standalone Nexus Operations with commands
 including: `start`, `execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
