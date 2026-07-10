@@ -51,6 +51,45 @@ This documentation uses source code from the
 
 :::
 
+## Prerequisites {/* #prerequisites */}
+
+Standalone Nexus Operations are at Pre-release and require a special Temporal CLI build. Running them
+against a local dev server also requires specific dynamic config settings.
+
+### 1. Install and verify the Pre-release Temporal CLI {/* #install-cli */}
+
+The `temporal nexus operation` commands require a Pre-release build of the Temporal CLI. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for the platform downloads,
+then verify:
+
+```bash
+./temporal --version
+# temporal version 1.7.3-standalone-nexus-operations
+```
+
+Run it as `./temporal` from the directory where you extracted it. The standard `brew install temporal`
+build does not include Standalone Nexus Operation support during Pre-release.
+
+### 2. Start a local dev server with Standalone Nexus Operations enabled {/* #enable-dev-server */}
+
+When running a local dev server, start it with both required dynamic config settings:
+
+```bash
+./temporal server start-dev \
+  --dynamic-config-value "nexusoperation.enableStandalone=true" \
+  --dynamic-config-value "history.enableChasmCallbacks=true"
+```
+
+To run the examples on this page against the [.NET sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusStandaloneOperations),
+create the Nexus Endpoint and start the sample Worker (`dotnet run worker`):
+
+```bash
+./temporal operator nexus endpoint create \
+  --name nexus-standalone-operations-endpoint \
+  --target-namespace default \
+  --target-task-queue nexus-standalone-operations
+```
+
 ## Execute a Standalone Nexus Operation {/* #execute-operation */}
 
 To execute a Standalone Nexus Operation, first create a
@@ -67,7 +106,7 @@ get the result, describe, cancel, or terminate the Operation. `Id` is required o
 `ScheduleToCloseTimeout` is optional and defaults to the maximum allowed by the Temporal server.
 
 ```csharp
-var nexusClient = client.CreateNexusClient<IHelloService>("my-nexus-endpoint");
+var nexusClient = client.CreateNexusClient<IHelloService>("nexus-standalone-operations-endpoint");
 
 var result = await nexusClient.ExecuteNexusOperationAsync(
     svc => svc.Echo(new("Nexus Echo 👋")),
@@ -80,7 +119,7 @@ var result = await nexusClient.ExecuteNexusOperationAsync(
 You can also use the untyped overload that takes the Operation name as a string:
 
 ```csharp
-var nexusClient = client.CreateNexusClient("my-nexus-endpoint", "my-service-name");
+var nexusClient = client.CreateNexusClient("nexus-standalone-operations-endpoint", "HelloService");
 
 var handle = await nexusClient.StartNexusOperationAsync<IHelloService.EchoOutput>(
     "Echo",
@@ -95,20 +134,12 @@ Or use the Temporal CLI to execute a Standalone Nexus Operation:
 
 ```bash
 ./temporal nexus operation execute \
-  --endpoint my-nexus-endpoint \
-  --service my-service-name \
-  --operation my-operation-name \
-  --operation-id unique-operation-id \
-  --input '"some-input"'
+  --endpoint nexus-standalone-operations-endpoint \
+  --service HelloService \
+  --operation Echo \
+  --operation-id my-echo-op \
+  --input '{"Message":"hello"}'
 ```
-
-:::note
-
-These CLI commands require the Pre-release Temporal CLI with Standalone Nexus Operation support. See
-[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install instructions, and
-run it from the current directory as `./temporal`.
-
-:::
 
 ## Get the result of a Standalone Nexus Operation {/* #get-operation-result */}
 
@@ -134,7 +165,7 @@ var output = await handle.GetResultAsync();
 Or use the Temporal CLI to wait for a result by Operation ID:
 
 ```bash
-./temporal nexus operation result --operation-id unique-operation-id
+./temporal nexus operation result --operation-id my-echo-op
 ```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
@@ -147,7 +178,7 @@ Note that `ListNexusOperationsAsync` is called on the base `ITemporalClient`, no
 
 ```csharp
 await foreach (var execution in client.ListNexusOperationsAsync(
-    "Endpoint = 'my-nexus-endpoint'"))
+    "Endpoint = 'nexus-standalone-operations-endpoint'"))
 {
     logger.LogInformation(
         "OperationID: {Id}, Operation: {Operation}, Status: {Status}",
@@ -161,7 +192,7 @@ The query string accepts [List Filter](/list-filter) syntax. For example,
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation list --query 'Endpoint = "my-nexus-endpoint"'
+./temporal nexus operation list --query 'Endpoint = "nexus-standalone-operations-endpoint"'
 ```
 
 ## Count Standalone Nexus Operations {/* #count-operations */}
@@ -173,14 +204,14 @@ Note that `CountNexusOperationsAsync` is called on the base `ITemporalClient`, n
 
 ```csharp
 var count = await client.CountNexusOperationsAsync(
-    "Endpoint = 'my-nexus-endpoint'");
+    "Endpoint = 'nexus-standalone-operations-endpoint'");
 logger.LogInformation("Total Nexus operations: {Count}", count.Count);
 ```
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation count --query 'Endpoint = "my-nexus-endpoint"'
+./temporal nexus operation count --query 'Endpoint = "nexus-standalone-operations-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}

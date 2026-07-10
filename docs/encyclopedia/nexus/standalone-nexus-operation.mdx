@@ -150,10 +150,9 @@ Move the binary to your PATH or run it from the current directory as `./temporal
 
 :::warning
 
-If you see `unknown command "nexus"` or `Standalone Nexus Operations are disabled` when running
-commands, you are using the standard Temporal CLI instead of the Pre-release version above. The
-standard `brew install temporal` or `brew upgrade temporal` does not include Standalone Nexus
-Operation support during Pre-release.
+The standard `brew install temporal` or `brew upgrade temporal` does not include Standalone Nexus Operation support during Pre-release.
+If you see `unknown command "nexus operation"` then you are using the standard Temporal CLI instead of the Pre-release version above.
+If you see `Standalone Nexus Operations are disabled` when running commands against a local dev server or a self hosted deployment, then you may not have set the dynamic config settings appropriately.
 
 :::
 
