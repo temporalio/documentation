@@ -122,7 +122,7 @@ export default function ReleaseNoteHeader({
                             {icon}
                           </Link>
                         ) : (
-                          icon
+                          <span className={styles.languageStatic}>{icon}</span>
                         )}
                       </li>
                     );

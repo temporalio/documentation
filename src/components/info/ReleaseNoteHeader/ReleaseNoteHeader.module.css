@@ -105,6 +105,13 @@
   outline-offset: 2px;
 }
 
+.languageStatic {
+  display: flex;
+  line-height: 0;
+  pointer-events: none;
+  cursor: default;
+}
+
 .supportedLanguages {
   display: flex;
   align-items: center;
