@@ -69,7 +69,7 @@ export default function ReleaseNoteHeader({
   href,
   // These are the supported languages for the release. If provided, icons for these languages will be shown.
   languages = [],
-  // Path segment after /develop/<sdk>/ for linked language icons).
+  // Path segment after /develop/<sdk>/ for linked language icons.
   guidePath,
   // If you want to override the default label for the release type, you can pass it here. This is useful for cases like "generalAvailability" where you might want to just say "Stable".
   label,
