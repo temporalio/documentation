@@ -89,6 +89,22 @@
   margin-top: 10px;
 }
 
+.languageLink {
+  display: flex;
+  line-height: 0;
+  border-radius: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.languageLink:hover {
+  opacity: 0.85;
+}
+
+.languageLink:focus-visible {
+  outline: 2px solid var(--release-note-border);
+  outline-offset: 2px;
+}
+
 .supportedLanguages {
   display: flex;
   align-items: center;

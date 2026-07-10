@@ -1,8 +1,7 @@
 // src/components/info/ReleaseNoteHeader/index.js
 
 import React from "react";
-import clsx from "clsx";
-import { LANGUAGE_ICONS } from "../constants";
+import Link from "@docusaurus/Link";
 import SdkSvg from '../../elements/SdkSvgs/SdkSvg';
 import styles from "./ReleaseNoteHeader.module.css";
 import { FEATURE_RELEASE_TYPES } from "../../../constants/featureReleaseTypes";
@@ -35,6 +34,17 @@ const LANGUAGE_TO_SDK_SVG = {
   "TypeScript": "typeScriptBlock",
 }
 
+const LANGUAGE_TO_SDK_SLUG = {
+  ".NET": "dotnet",
+  "Go": "go",
+  "Java": "java",
+  "PHP": "php",
+  "Python": "python",
+  "Ruby": "ruby",
+  "Rust": "rust",
+  "TypeScript": "typescript",
+}
+
 function getResolvedType({ featureName, type }) {
   return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
 }
@@ -59,6 +69,8 @@ export default function ReleaseNoteHeader({
   href,
   // These are the supported languages for the release. If provided, icons for these languages will be shown.
   languages = [],
+  // Path segment after /develop/<sdk>/ for linked language icons).
+  guidePath,
   // If you want to override the default label for the release type, you can pass it here. This is useful for cases like "generalAvailability" where you might want to just say "Stable".
   label,
 }) {
@@ -94,12 +106,27 @@ export default function ReleaseNoteHeader({
           <div className={styles.supportedLanguages}>
             <p className={styles.text}>Supported languages:</p>
                 <ul className={styles.languages} aria-label="Supported languages">
-                  {languages.map((language) => (
+                  {languages.map((language) => {
+                    const icon = (
+                      <SdkSvg name={LANGUAGE_TO_SDK_SVG[language]} />
+                    );
+                    const sdkSlug = LANGUAGE_TO_SDK_SLUG[language];
+                    return (
                       <li key={language} className={styles.language}>
-                        <SdkSvg name={LANGUAGE_TO_SDK_SVG[language]} />
+                        {guidePath && sdkSlug ? (
+                          <Link
+                            to={`/develop/${sdkSlug}/${guidePath}`}
+                            className={styles.languageLink}
+                            aria-label={`${language} getting started guide`}
+                          >
+                            {icon}
+                          </Link>
+                        ) : (
+                          icon
+                        )}
                       </li>
-                    )
-                  )}
+                    );
+                  })}
                 </ul>
           </div>
         )}
