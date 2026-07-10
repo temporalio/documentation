@@ -11,14 +11,84 @@ tags:
   - namespaces
 ---
 
-import { ReleaseNoteHeader } from "@site/src/components";
-
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
-<ReleaseNoteHeader featureName="cloudCli" />
+Commands for creating, updating, and managing Temporal Cloud namespaces.
+
+Namespaces provide isolation for workflows and activities. Each namespace
+has its own configuration including retention period, region, and access
+controls.
 
 This page provides a reference for the `temporal cloud namespace` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
+## api-key
+
+Commands for managing API key authentication configuration of Temporal Cloud namespaces.
+
+### api-key disable
+
+Disable API key authentication for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace api-key disable --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### api-key enable
+
+Enable API key authentication for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace api-key enable --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### api-key get
+
+Retrieve the current API key authentication configuration for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace api-key get --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## apply
 
@@ -109,162 +179,6 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-
-## cert-ca
-
-Commands for managing the client CA certificates of Temporal Cloud namespaces.
-
-### cert-ca create
-
-Add client CA certificates to a Temporal Cloud namespace from a PEM file
-or base64 encoded string. These certificates are used to verify client
-connections and enable mTLS authentication.
-
-Specify either --ca-certificate-file or --ca-certificate, but not both.
-
-Example with file:
-
-```
-temporal cloud namespace cert-ca create --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
-```
-
-Example with base64 encoded data:
-
-```
-temporal cloud namespace cert-ca create --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
-```
-
-Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
-
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
-| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--ca-certificate` | No | **string** Base64-encoded CA certificate for mTLS authentication. Mutually exclusive with --ca-certificate-file. |
-| `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
-| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
-| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-
-### cert-ca delete
-
-Delete client CA certificates from a Temporal Cloud namespace. This operation
-requires confirmation and will remove the specified certificates from the
-namespace configuration.
-
-Specify either --ca-certificate-file or --ca-certificate, but not both.
-
-Example with file:
-
-```
-temporal cloud namespace cert-ca delete --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
-```
-
-Example with base64 encoded data:
-
-```
-temporal cloud namespace cert-ca delete --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
-```
-
-Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
-
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
-| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--ca-certificate` | No | **string** Base64-encoded CA certificate for mTLS authentication. Mutually exclusive with --ca-certificate-file. |
-| `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
-| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
-| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-
-### cert-ca list
-
-Retrieve the list of client CA certificates configured for a Temporal Cloud
-namespace. These certificates are used for client authentication.
-
-Example:
-
-```
-temporal cloud namespace cert-ca list --namespace my-namespace.my-account
-```
-
-Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
-
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-
-## cert-filter
-
-Commands for managing certificate filters for Temporal Cloud namespaces.
-Certificate filters restrict mTLS connections to client certificates with
-specific distinguished name properties.
-
-### cert-filter create
-
-Add new certificate filters to a Temporal Cloud namespace. Certificate
-filters restrict mTLS connections to client certificates whose distinguished
-name properties match at least one of the filters.
-
-Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
-
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
-| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--common-name` | No | **string** The common name (CN) field from the certificate's distinguished name. |
-| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--organization` | No | **string** The organization (O) field from the certificate's distinguished name. |
-| `--organizational-unit` | No | **string** The organizational unit (OU) field from the certificate's distinguished name. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
-| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-| `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
-
-### cert-filter delete
-
-Delete certificate filters from a Temporal Cloud namespace. Filters are
-matched by exact field equality.
-
-Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
-
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
-| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--common-name` | No | **string** The common name (CN) field from the certificate's distinguished name. |
-| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
-| `--organization` | No | **string** The organization (O) field from the certificate's distinguished name. |
-| `--organizational-unit` | No | **string** The organizational unit (OU) field from the certificate's distinguished name. |
-| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
-| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
-| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-| `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
-
-### cert-filter list
-
-List all certificate filters configured for a Temporal Cloud namespace.
-
-Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
-
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
-| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## codec
@@ -447,7 +361,9 @@ Use the following options to change the behavior of this command. You can also u
 | `--codec-pass-access-token` | No | **bool** Pass the user access token to the codec server endpoint. |
 | `--connection-rule-id` | No | **string[]** Private connectivity rule ID. Repeat to specify multiple. |
 | `--enable-delete-protection` | No | **bool** Prevent accidental deletion of this namespace. |
+| `--enable-task-queue-fairness` | No | **bool** Enable task queue fairness for the namespace. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--mtls-auth-enabled` | No | **bool** Enable mTLS authentication for the namespace. |
 | `--name`, `-n` | Yes | **string** The name for the new namespace (becomes part of the namespace ID). |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--region` | Yes | **string[]** Cloud region where the namespace will be hosted. Repeat to specify multiple regions for High Availability (e.g. --region aws-us-east-1 --region aws-us-west-2). |
@@ -801,6 +717,52 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--sink-name` | Yes | **string** The name of the export sink. |
 
+## fairness
+
+Commands for managing task queue fairness configuration of Temporal Cloud namespaces.
+
+### fairness get
+
+Retrieve the current task queue fairness configuration for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace fairness get --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### fairness set
+
+Set the task queue fairness configuration for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace fairness set --namespace my-namespace.my-account --enable-task-queue-fairness=true
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--enable-task-queue-fairness` | Yes | **bool** Enable or disable task queue fairness for the namespace. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
 ## get
 
 Retrieve the configuration and status of a Temporal Cloud namespace.
@@ -947,13 +909,16 @@ Use the following options to change the behavior of this command. You can also u
 ### ha update
 
 Update the High Availability configuration for a Temporal Cloud namespace.
-Use --disable-auto-failover to toggle Temporal-managed automatic failover.
-Use --disable-passive-poller-forwarding to toggle passive poller forwarding.
+Use --auto-failover to enable or disable Temporal-managed automatic failover.
+Use --passive-poller-forwarding to enable or disable passive poller forwarding.
 
 Example:
 
 ```
-temporal cloud namespace ha update --namespace my-namespace.my-account --disable-auto-failover true --disable-passive-poller-forwarding false
+temporal cloud namespace ha update \
+    --namespace my-namespace.my-account \
+    --auto-failover enabled \
+    --passive-poller-forwarding disabled
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -963,10 +928,10 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--disable-auto-failover` | No | **bool** Set to true to disable Temporal-managed automatic failover for the namespace. Set to false to re-enable automatic failover. |
-| `--disable-passive-poller-forwarding` | No | **bool** Set to true to disable passive poller forwarding for the namespace. Set to false to re-enable passive poller forwarding. |
+| `--auto-failover` | No | **string-enum** Enable or disable Temporal-managed automatic failover for the namespace. Accepted values: enabled, disabled. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--passive-poller-forwarding` | No | **string-enum** Enable or disable passive poller forwarding for the namespace. Accepted values: enabled, disabled. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
@@ -1041,6 +1006,230 @@ Use the following options to change the behavior of this command. You can also u
 | `--name` | No | **string** Filter namespaces by the name as defined in the specification of the namespace. |
 | `--page-size` | No | **int** Number of namespaces to return per page. Use for paginated results. |
 | `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## mtls
+
+Commands for managing mTLS authentication configuration of Temporal Cloud namespaces.
+
+### mtls cert-ca
+
+Commands for managing the client CA certificates of Temporal Cloud namespaces.
+
+#### mtls cert-ca create
+
+Add client CA certificates to a Temporal Cloud namespace from a PEM file
+or base64 encoded string. These certificates are used to verify client
+connections and enable mTLS authentication.
+
+Specify either --ca-certificate-file or --ca-certificate, but not both.
+
+Example with file:
+
+```
+temporal cloud namespace mtls cert-ca create --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
+```
+
+Example with base64 encoded data:
+
+```
+temporal cloud namespace mtls cert-ca create --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--ca-certificate` | No | **string** Base64-encoded CA certificate for mTLS authentication. Mutually exclusive with --ca-certificate-file. |
+| `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### mtls cert-ca delete
+
+Delete client CA certificates from a Temporal Cloud namespace. This operation
+requires confirmation and will remove the specified certificates from the
+namespace configuration.
+
+Specify either --ca-certificate-file or --ca-certificate, but not both.
+
+Example with file:
+
+```
+temporal cloud namespace mtls cert-ca delete --namespace my-namespace.my-account --ca-certificate-file ca-cert.pem
+```
+
+Example with base64 encoded data:
+
+```
+temporal cloud namespace mtls cert-ca delete --namespace my-namespace.my-account --ca-certificate <base64-encoded-cert>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--ca-certificate` | No | **string** Base64-encoded CA certificate for mTLS authentication. Mutually exclusive with --ca-certificate-file. |
+| `--ca-certificate-file` | No | **string** Path to a CA certificate PEM file for mTLS authentication. Mutually exclusive with --ca-certificate. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+#### mtls cert-ca list
+
+Retrieve the list of client CA certificates configured for a Temporal Cloud
+namespace. These certificates are used for client authentication.
+
+Example:
+
+```
+temporal cloud namespace mtls cert-ca list --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### mtls cert-filter
+
+Commands for managing certificate filters for Temporal Cloud namespaces.
+Certificate filters restrict mTLS connections to client certificates with
+specific distinguished name properties.
+
+#### mtls cert-filter create
+
+Add new certificate filters to a Temporal Cloud namespace. Certificate
+filters restrict mTLS connections to client certificates whose distinguished
+name properties match at least one of the filters.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--common-name` | No | **string** The common name (CN) field from the certificate's distinguished name. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--organization` | No | **string** The organization (O) field from the certificate's distinguished name. |
+| `--organizational-unit` | No | **string** The organizational unit (OU) field from the certificate's distinguished name. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
+
+#### mtls cert-filter delete
+
+Delete certificate filters from a Temporal Cloud namespace. Filters are
+matched by exact field equality.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--common-name` | No | **string** The common name (CN) field from the certificate's distinguished name. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--organization` | No | **string** The organization (O) field from the certificate's distinguished name. |
+| `--organizational-unit` | No | **string** The organizational unit (OU) field from the certificate's distinguished name. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--subject-alternative-name` | No | **string** The subject alternative name (SAN) from the certificate. |
+
+#### mtls cert-filter list
+
+List all certificate filters configured for a Temporal Cloud namespace.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### mtls disable
+
+Disable mTLS authentication for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace mtls disable --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### mtls enable
+
+Enable mTLS authentication for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace mtls enable --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### mtls get
+
+Retrieve the current mTLS authentication configuration for a Temporal Cloud namespace.
+
+Example:
+
+```
+temporal cloud namespace mtls get --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## retention
