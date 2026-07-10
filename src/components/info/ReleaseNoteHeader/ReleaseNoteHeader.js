@@ -130,7 +130,7 @@ export default function ReleaseNoteHeader({
                 </ul>
           </div>
         )}
-        <p className={styles.text}>
+        <div className={styles.text}>
           {href ? (
             <a href={href} className={styles.link}>
               {children}
@@ -138,7 +138,7 @@ export default function ReleaseNoteHeader({
           ) : (
             children
           )}
-        </p>
+        </div>
       </div>
     </aside>
   );
