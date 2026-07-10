@@ -15,6 +15,14 @@
 // every page the plugin doesn't touch (404, search, changelog, category/tag
 // pages, etc.) still falls back to the site-wide default, which remains the
 // Phase 1 regression floor for everything outside the plugin's reach.
+//
+// Generated-image expectations use ogImagePlugin.resolveSiteUrl(), which
+// substitutes VERCEL_URL on non-production Vercel deployments — see the
+// comment on that function in plugins/og-image/index.js for why. The
+// site-wide default check intentionally does NOT use it: that image is a
+// pre-existing static asset already live on the production domain in every
+// environment, and Docusaurus's own theme (not this plugin) renders that
+// meta tag against the hardcoded config.url regardless of environment.
 
 const fs = require('fs');
 const path = require('path');
@@ -101,7 +109,10 @@ async function main() {
     const description = frontmatter.description;
     const section = ogImagePlugin.resolveSection(DOCS_DIR, filePath);
     const hash = ogImagePlugin.hashFor(title, description, section);
-    const expectedImage = new URL(path.posix.join(config.baseUrl, 'img/og', `${hash}.png`), config.url).toString();
+    const expectedImage = new URL(
+      path.posix.join(config.baseUrl, 'img/og', `${hash}.png`),
+      ogImagePlugin.resolveSiteUrl(config),
+    ).toString();
     const expectedPngPath = path.join(BUILD_DIR, 'img', 'og', `${hash}.png`);
 
     if (ogImage !== expectedImage || twitterImage !== expectedImage) {

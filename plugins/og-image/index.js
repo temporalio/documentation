@@ -126,6 +126,22 @@ async function getCardBuffer(title, description, section) {
   return { hash, buffer, cached: false };
 }
 
+// On a Vercel preview (or local dev) deployment, generated cards only exist
+// on that deployment's own URL — siteConfig.url is always the production
+// domain, which never got this build's images. Pointing og:image there
+// means Slack/X/Facebook/etc. 404 when fetching a preview link, since they
+// resolve the literal URL in the meta tag, not wherever the page happens to
+// be served from. VERCEL_URL is Vercel's own reachable hostname for the
+// current deployment (preview or production); only substitute it for
+// non-production deployments, since production should keep the stable
+// custom domain. Local builds (no VERCEL_ENV) are unaffected.
+function resolveSiteUrl(siteConfig) {
+  if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production' && process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return siteConfig.url;
+}
+
 function replaceImageMeta(html, absoluteUrl) {
   return html
     .replace(
@@ -195,7 +211,7 @@ function ogImagePlugin(context, options = {}) {
 
         const absoluteUrl = new URL(
           path.posix.join(siteConfig.baseUrl, 'img/og', `${hash}.png`),
-          siteConfig.url,
+          resolveSiteUrl(siteConfig),
         ).toString();
 
         const html = fs.readFileSync(htmlPath, 'utf8');
@@ -227,5 +243,6 @@ ogImagePlugin.resolveSection = resolveSection;
 ogImagePlugin.hashFor = hashFor;
 ogImagePlugin.hasManualOverride = hasManualOverride;
 ogImagePlugin.overrideImageFor = overrideImageFor;
+ogImagePlugin.resolveSiteUrl = resolveSiteUrl;
 
 module.exports = ogImagePlugin;
