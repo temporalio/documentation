@@ -186,7 +186,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/nexus/index',
               },
-              items: ['develop/go/nexus/quickstart', 'develop/go/nexus/feature-guide'],
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+                'develop/go/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -320,7 +324,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/nexus/index',
               },
-              items: ['develop/java/nexus/quickstart', 'develop/java/nexus/feature-guide'],
+              items: [
+                'develop/java/nexus/quickstart',
+                'develop/java/nexus/feature-guide',
+                'develop/java/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -536,7 +544,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/nexus/index',
               },
-              items: ['develop/python/nexus/quickstart', 'develop/python/nexus/feature-guide'],
+              items: [
+                'develop/python/nexus/quickstart',
+                'develop/python/nexus/feature-guide',
+                'develop/python/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -694,7 +706,8 @@ module.exports = {
               },
               items: [
                 'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide'
+                'develop/typescript/nexus/feature-guide',
+                'develop/typescript/nexus/standalone-operations',
               ],
             },
             {
@@ -837,7 +850,8 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/nexus/quickstart',
-                'develop/dotnet/nexus/feature-guide'
+                'develop/dotnet/nexus/feature-guide',
+                'develop/dotnet/nexus/standalone-operations',
               ],
             },
             {
@@ -1672,6 +1686,7 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
+            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
