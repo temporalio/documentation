@@ -136,6 +136,13 @@ Failovers between cells are always managed automatically by Temporal. Unlike Mul
 
 ## Related considerations
 
+### Serverless Workers
+
+You can use [Serverless Workers](/serverless-workers) with a Namespace that has Multi-region or Multi-cloud Replication,
+but the compute provider configuration (for example, a Lambda ARN) is scoped to a single region. After a failover, the
+Worker Controller Instance keeps invoking the original region's Worker instead of one in the new active region. See
+[Constraints](/serverless-workers#constraints).
+
 ### External Storage
 
 If your Workflows use [External Storage](/external-storage) to offload large payloads, durability of the external store

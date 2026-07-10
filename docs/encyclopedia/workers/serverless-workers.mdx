@@ -238,6 +238,7 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 | Workflow duration | No limit. Workflows of any duration work, regardless of the invocation timeout. A Workflow runs across as many invocations as needed.                                                                                                                           |
 | Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                                                                                                                |
 | Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. For rollout strategies including ramping, see [Worker Versioning](/worker-versioning). See [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers). |
+| High Availability | Namespaces with [Multi-region or Multi-cloud Replication](/cloud/high-availability) are not failover-aware for Serverless Workers. The compute provider configuration (for example, a Lambda ARN) is scoped to a single region, so after a failover the WCI keeps invoking the original region's Worker instead of one in the new active region. |
 
 ## Worker Versioning with Serverless Workers {/* #worker-versioning-with-serverless-workers */}
 
