@@ -95,6 +95,14 @@ jobs:
           git checkout HEAD -- docs/cli/command-reference/index.mdx
           git checkout HEAD -- docs/cli/command-reference/cloud/index.mdx
 
+      - name: Post-process generated CLI docs
+        working-directory: docs
+        # gen-docs no longer emits the ReleaseNoteHeader banner on cloud CLI
+        # pages (that responsibility moved to this script). Also keeps
+        # command-reference/index.mdx and sidebars.js in sync with whatever
+        # commands gen-docs produced.
+        run: node bin/post-process-cli-docs.js
+
       - name: Publish generated docs to documentation repo
         env:
           GH_TOKEN: ${{ github.token }}
