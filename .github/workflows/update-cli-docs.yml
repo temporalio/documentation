@@ -97,11 +97,9 @@ jobs:
 
       - name: Post-process generated CLI docs
         working-directory: docs
-        # gen-docs has never emitted the ReleaseNoteHeader banner on cloud CLI
-        # pages; injecting it (and keeping command-reference/index.mdx and
-        # sidebars.js in sync) has always been this script's job. It was just
-        # never wired into this workflow, so it only took effect on past
-        # regens where someone ran it locally before committing.
+        # Injects the ReleaseNoteHeader banner into cloud CLI pages and keeps
+        # command-reference/index.mdx and sidebars.js in sync with the
+        # generated commands. Not previously called from this workflow.
         run: node bin/post-process-cli-docs.js
 
       - name: Publish generated docs to documentation repo
