@@ -32,7 +32,7 @@ Consider using a Local Activity only when the operation:
 - can execute in the same binary as the Workflow
 - does not require routing to a specific Worker or Task Queue
 - does not require global rate limiting
-- is idempotent
+- [is idempotent](/develop/python/best-practices/error-handling#make-activities-idempotent)
 
 For most production workloads, regular Activities remain the recommended default.
 
@@ -81,6 +81,8 @@ This enables Local Activities to run longer than a single Workflow Task timeout,
 
 If your operation regularly approaches the Workflow Task timeout, it is usually better implemented as a regular Activity.
 
+You can monitor your Local Activities by using the [`local_activity_total` metric](/references/sdk-metrics#local_activity_total) to determine how many Local Activity Executions have been made. You can also check your Event History for `RecordMarker` entries.
+
 ## Failure and durability
 
 Regular Activities are durably tracked by the Temporal Service. Scheduling, completion, retries, and failures are all recorded in the Event history. If a Worker crashes after an Activity completes, the completed Activity is not executed again.
@@ -89,7 +91,7 @@ Local Activities behave differently. A Local Activity result becomes durable onl
 
 If the Worker crashes before the Workflow Task completes, the Workflow Task is retried, causing Local Activities executed during that Workflow Task to run again.
 
-Because of this behavior, Local Activities provide at-least-once execution semantics and should always be idempotent.
+Because of this behavior, Local Activities provide at-least-once execution semantics and should always be idempotent. You can learn more about the behavior at shutdown in the [Workers section on Local Activities](encyclopedia/workers/worker-shutdown#local-activities).
 
 Once a `MarkerRecorded` event has been written to the Event history, replay uses the recorded result rather than executing the Local Activity again.
 
@@ -99,10 +101,9 @@ A Workflow can freely combine Local Activities and regular Activities.
 
 For example:
 
-```text
-Local Activity A
-Local Activity B
-Regular Activity C
+```mermaid
+flowchart LR
+    LA[Local Activity A] --> LB[Local Activity B] --> RC[Regular Activity C]
 ```
 
 When the Workflow Task completes after scheduling Activity C, the Worker sends commands similar to:
@@ -113,19 +114,7 @@ When the Workflow Task completes after scheduling Activity C, the Worker sends c
 
 If Activity C later fails or retries, the Workflow replays using the recorded markers for A and B. Those completed Local Activities are not executed again because their results have already been persisted in the Event history. Only Activity C is retried according to its Retry Policy.
 
-The only time completed Local Activities execute again is if the Worker fails before their completion markers are recorded.
-
-## Limitations
-
-Compared to regular Activities, Local Activities have several important limitations:
-
-- They execute on the Workflow Worker rather than an Activity Worker.
-- They do not support Activity heartbeating.
-- Long retry intervals are inefficient because retries eventually require Workflow Timers and additional Event history entries.
-- They delay Signal processing while the Workflow Task is executing.
-- They provide at-least-once execution semantics until their completion markers are recorded.
-
-These tradeoffs make Local Activities unsuitable for long-running operations or most interactions with external systems.
+The only time completed Local Activities execute again is if the Worker fails before their completion markers are recorded. Long retry intervals are inefficient because retries eventually require Workflow Timers and additional Event history entries.
 
 ## Choosing between regular Activities and Local Activities
 
