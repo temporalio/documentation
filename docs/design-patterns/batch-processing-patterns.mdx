@@ -19,7 +19,7 @@ These patterns process large volumes of records reliably, at scale, and without 
 | [Sliding Window](/design-patterns/sliding-window) | Unlimited | Bounded window of concurrent children | Yes — configurable window |
 | [MapReduce Tree](/design-patterns/mapreduce-tree) | Unlimited | Fully parallel recursive tree | No — maximum speed |
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -100,7 +100,7 @@ flowchart TD
 
 ---
 
-## Batch Signalling
+## Batch signalling
 
 The Temporal CLI lets you signal, reset, cancel, or terminate multiple Workflows with a single command using a visibility query.
 
@@ -125,7 +125,7 @@ temporal workflow terminate \
 
 ---
 
-## Key Limits
+## Key limits
 
 Full reference: [Temporal Cloud limits](https://docs.temporal.io/cloud/limits)
 
@@ -137,7 +137,7 @@ Full reference: [Temporal Cloud limits](https://docs.temporal.io/cloud/limits)
 | Updates per Workflow | 10 in-flight, 2,000 total |
 | Batch Signalling | 1 batch job per namespace; 50 Workflows/sec per batch |
 
-## Related Sections
+## Related sections
 
 - [Task Orchestration Patterns](/design-patterns/task-orchestration-patterns) — the child-Workflow and parallel primitives these patterns scale up
 - [QoS & Throughput Patterns](/design-patterns/qos-throughput-patterns) — rate-limit and prioritize the work a batch generates

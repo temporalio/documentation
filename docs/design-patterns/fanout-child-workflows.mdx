@@ -303,7 +303,7 @@ public class RecordBatchWorkflowImpl implements RecordBatchWorkflow {
 </TabItem>
 </Tabs>
 
-## Best Practices
+## Best practices
 
 - **Use offset and length, not explicit IDs.** Pass only two integers to each child rather than a full slice of IDs. The child fetches its own records. This keeps history events small.
 - **Size chunks to stay under the Activity limit.** Each child Workflow can have at most 2,000 in-flight Activities. Aim for chunks of 500 records or fewer if each record maps to one Activity.
@@ -311,13 +311,13 @@ public class RecordBatchWorkflowImpl implements RecordBatchWorkflow {
 - **Set `PARENT_CLOSE_POLICY_ABANDON`** for fire-and-forget fan-outs where the parent does not need to collect results. With the default `TERMINATE` policy, cancelling or timing out the parent will terminate all in-flight children.
 - **Give each child a deterministic Workflow ID** (`parentId/batch-<offset>`). This makes it safe to re-run the parent: Temporal deduplicates child starts by Workflow ID, so already-completed children are not re-executed.
 
-## Common Pitfalls
+## Common pitfalls
 
 - **Starting too many children at once.** Each child start adds to the parent's history. Temporal enforces a default limit of 2,000 pending (in-flight) child Workflows per parent; keep well under it. See [Temporal guidance](https://docs.temporal.io/workflows#when-to-use-child-workflows). If you need more children, switch to [MapReduce Tree](/design-patterns/mapreduce-tree) or [Sliding Window](/design-patterns/sliding-window).
 - **Passing large lists of IDs.** Workflow inputs are stored in event history. Passing millions of record IDs as a list will blow the history size limit. Use offset + length instead.
 - **Ignoring child failures.** A failed child does not automatically fail the parent unless you await all results. Always await child handles and handle errors explicitly.
 
-## Related Resources
+## Related resources
 
 - [Child Workflows pattern](/design-patterns/child-workflows) — core concepts for parent/child Workflow coordination
 - [Batch Iterator](/design-patterns/batch-iterator) — unbounded record sets with Continue-as-New pagination

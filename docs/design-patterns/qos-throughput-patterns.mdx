@@ -9,7 +9,7 @@ import PatternCards from '@site/src/components/PatternCards';
 
 These patterns control how fast work executes, protect downstream services from overload, and make sure no single caller or tenant monopolizes Worker capacity at the expense of others.
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -32,7 +32,7 @@ These patterns control how fast work executes, protect downstream services from 
   },
 ]} />
 
-## Choosing a Pattern
+## Choosing a pattern
 
 **A downstream dependency has a fixed rate limit**: use [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting) to cap throughput at the Worker.
 
@@ -40,7 +40,7 @@ These patterns control how fast work executes, protect downstream services from 
 
 **Multiple tenants share the same Workers**: use [Fairness](/design-patterns/fairness) to keep one tenant's burst from starving others.
 
-## Related Sections
+## Related sections
 
 - [Worker Configuration Patterns](/design-patterns/worker-configuration-patterns) — the Task Queue and Worker setup these patterns route through
 - [Batch Processing Patterns](/design-patterns/batch-processing-patterns) — rate-control patterns for large record sets

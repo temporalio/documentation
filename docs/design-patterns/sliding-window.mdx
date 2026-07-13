@@ -484,7 +484,7 @@ public class SlidingWindowWorkflowImpl implements SlidingWindowWorkflow {
 </TabItem>
 </Tabs>
 
-## Best Practices
+## Best practices
 
 - **Preserve the parent Workflow ID across Continue-as-New.** The parent's Workflow ID is stable across `continueAsNew` runs — do not generate a new one. Children use `signalExternalWorkflow` with that ID, so they always reach the current run.
 - **Use `PARENT_CLOSE_POLICY_ABANDON` on child Workflows.** This lets children that were started by a previous run complete normally even after the parent has continued as new.
@@ -492,13 +492,13 @@ public class SlidingWindowWorkflowImpl implements SlidingWindowWorkflow {
 - **Pass only IDs (not full records) to child Workflows.** Workflow inputs are stored in event history. Keep them small.
 - **Carry minimal state into `continueAsNew`.** Only pass `windowSize`, `startIndex`, and the record ID list (or a reference to it). Do not accumulate results in the parent — collect them out-of-band if needed.
 
-## Common Pitfalls
+## Common pitfalls
 
 - **Losing signals across Continue-as-New.** If a child signals before the parent's new run has registered the signal handler, the signal can be buffered and delivered correctly — Temporal buffers signals for existing Workflow IDs. However, ensure the signal handler is registered before any await, not conditionally.
 - **Race between CAN and remaining signal draining.** After `continueAsNew`, the new run must handle signals from children started by the previous run. Pass `nextIndex` (the next *unstarted* record) and `inFlight = windowSize` to the new run so it knows how many carried-over children to expect signals from, without re-starting them.
 - **Thundering herd on startup.** Starting hundreds of children simultaneously causes a burst of Activity polls. Ramp up the window gradually or use the [Batch Iterator](/design-patterns/batch-iterator) if rate limiting is more important than throughput.
 
-## Related Resources
+## Related resources
 
 - [Continue-as-New pattern](/design-patterns/continue-as-new) — history management fundamentals
 - [Batch Iterator](/design-patterns/batch-iterator) — sequential alternative when ordered, one-at-a-time processing is acceptable

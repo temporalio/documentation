@@ -9,7 +9,7 @@ import PatternCards from '@site/src/components/PatternCards';
 
 These patterns cover how you set up Workers, route work to them, and give Activities the external dependencies they need — while keeping Workflow code deterministic and testable.
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -26,13 +26,13 @@ These patterns cover how you set up Workers, route work to them, and give Activi
   },
 ]} />
 
-## Choosing a Pattern
+## Choosing a pattern
 
 **A sequence of Activities must run on the same Worker host**: use [Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue) to pin them to one Worker.
 
 **Activities depend on external resources**: use [Activity Dependency Injection](/design-patterns/activity-dependency-injection) to supply them at startup rather than constructing them inside each Activity.
 
-## Related Sections
+## Related sections
 
 - [QoS & Throughput Patterns](/design-patterns/qos-throughput-patterns) — Task Queue routing for rate control and fairness
 - [Performance & Latency Patterns](/design-patterns/performance-latency-patterns) — run Activities in-process with Local Activities

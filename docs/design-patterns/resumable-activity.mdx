@@ -443,7 +443,7 @@ export async function transferWorkflow(input: TransferInput): Promise<string> {
 </TabItem>
 </Tabs>
 
-### Sending signals
+### Send signals
 
 An operator sends the correction Signal using the Temporal CLI or any SDK client.
 The Workflow wakes immediately when the Signal is delivered.
@@ -516,7 +516,7 @@ export async function executeTransfer(transfer: TransferInput): Promise<string> 
 </TabItem>
 </Tabs>
 
-## State Diagram
+## State diagram
 
 The Workflow transitions through a well-defined set of states.
 Query `getStatus` at any time to observe the current state.

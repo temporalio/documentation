@@ -363,7 +363,7 @@ const { processOrder } = wf.proxyActivities<typeof activities>({
 </TabItem>
 </Tabs>
 
-### Handling non-retryable errors in the Workflow
+### Handle non-retryable errors in the Workflow
 
 Catch the `ActivityError` in the Workflow to distinguish between permanent failures and transient ones.
 Inspect the underlying cause to route to the appropriate compensation or escalation path.

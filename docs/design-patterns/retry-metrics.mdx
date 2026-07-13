@@ -62,7 +62,7 @@ The following describes each step:
 
 ## Implementation
 
-### Emitting a counter at high attempt counts
+### Emit a counter at high attempt counts
 
 Read the attempt number from the Activity info and emit a counter through the SDK metrics scope.
 Configure the retry policy separately — the metric emission does not change retry behavior.
@@ -287,7 +287,7 @@ export async function monitoredRetryWorkflow(endpoint: string): Promise<string> 
 </TabItem>
 </Tabs>
 
-### Adding dimension labels to the metric
+### Add dimension labels to the metric
 
 Add labels (tags) to the metric to identify which Activity type, endpoint, or Workflow is producing the high attempt counts.
 This makes the metric actionable in dashboards and alerts.

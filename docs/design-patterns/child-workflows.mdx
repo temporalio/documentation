@@ -279,7 +279,7 @@ In Python, `workflow.start_child_workflow()` returns a handle once the child has
 In Go, `childFuture.GetChildWorkflowExecution().Get()` blocks until the child has started.
 The ABANDON policy ensures the child continues running even if the parent completes first.
 
-## Parent close policy
+## Parent Close Policy
 
 The `ParentClosePolicy` determines Child Workflow behavior when the parent closes:
 

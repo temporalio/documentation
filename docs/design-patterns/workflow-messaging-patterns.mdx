@@ -9,7 +9,7 @@ import PatternCards from '@site/src/components/PatternCards';
 
 These patterns cover how external callers communicate with running Workflows — starting them on demand, sending data in, reading results back, and collecting streams of events. They build on Temporal's Signals and Updates.
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -32,7 +32,7 @@ These patterns cover how external callers communicate with running Workflows —
   },
 ]} />
 
-## Choosing a Pattern
+## Choosing a pattern
 
 **You want to send a message without checking whether the Workflow is running**: use [Signal with Start](/design-patterns/signal-with-start).
 
@@ -40,7 +40,7 @@ These patterns cover how external callers communicate with running Workflows —
 
 **You receive many events and want to process them in batches**: use the [Event Accumulator](/design-patterns/event-accumulator) to buffer and flush.
 
-## Related Sections
+## Related sections
 
 - [Entity & Lifecycle Patterns](/design-patterns/entity-lifecycle-patterns) — long-lived Workflows that consume these messages over time
 - [Distributed Transaction Patterns](/design-patterns/distributed-transaction-patterns) — Early Return builds on the Update-with-Start mechanism

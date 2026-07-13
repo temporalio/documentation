@@ -415,7 +415,7 @@ public class NodeWorkflowImpl implements NodeWorkflow {
 </TabItem>
 </Tabs>
 
-## Best Practices
+## Best practices
 
 - **Set a `leafThreshold` to control tree depth.** A threshold of 3–10 records per leaf is typical. Too small a threshold creates excessive Workflow overhead; too large prevents full parallelism.
 - **Set a `MAX_DEPTH` guard.** Recursive fan-out without a depth limit can produce extremely deep trees for large record sets. Fail fast if depth exceeds your expected maximum (e.g. `log2(totalRecords / leafThreshold) + 2`).
@@ -424,14 +424,14 @@ public class NodeWorkflowImpl implements NodeWorkflow {
 - **Skip the reduce phase if results are not needed.** If you only need the side effects of processing each record (writes to a database, messages sent), omit the signal-back entirely and set `PARENT_CLOSE_POLICY_ABANDON` on all children.
 - **Consider replacing Leaf Workflows with Activities for lighter workloads.** Leaf Workflows give each record its own Event History, independent cancellation, and dedicated visibility in the UI — useful when per-record observability matters. If those properties are not required, executing the `processLeaf` Activity directly from a Node Workflow reduces overhead. A successful child workflow and a successful Activity each add three Events to the parent's history, but a Leaf Workflow also maintains a separate Event History of its own and emits an extra signal back to the Node, so child workflows produce more overall Events than Activities. The Temporal documentation recommends starting with Activities and adopting child workflows only when there is a clear need.
 
-## Common Pitfalls
+## Common pitfalls
 
 - **Thundering herd.** The MapReduce Tree fans out exponentially. For large record sets, all leaf Activities start nearly simultaneously. Ensure your downstream system can absorb the burst, or switch to [Sliding Window](/design-patterns/sliding-window) for rate limiting.
 - **Signal storms.** If thousands of leaves all signal a single Node at the same time, the Node's signal queue can become a bottleneck. A two-level tree (Root → Nodes → Leaves) distributes this load; a deeper tree helps even more.
 - **History bloat in the Root Workflow.** Each child start and signal received adds events to the Root's history. For very large record sets, consider adding an extra tree level to keep the Root from receiving too many direct signals.
 - **Attempting external/downstream writes from Node Workflows.** Nodes may be retried. Any external write in a Node Workflow will be executed multiple times. Keep all side effects in Leaf Workflows (or Activities called by Leaves).
 
-## Related Resources
+## Related resources
 
 - [Fan-Out with Child Workflows](/design-patterns/fanout-child-workflows) — simpler flat fan-out for smaller record sets
 - [Sliding Window](/design-patterns/sliding-window) — bounded concurrency with rate limiting

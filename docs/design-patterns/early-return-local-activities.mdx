@@ -273,7 +273,7 @@ public class Impl implements TransactionWorkflow {
 </TabItem>
 </Tabs>
 
-## When to Use
+## When to use
 
 **Good fit:**
 
@@ -288,7 +288,7 @@ public class Impl implements TransactionWorkflow {
 - The Workflow's total latency matters more than first-response latency
 - Phase 1 and Phase 2 cannot be cleanly separated
 
-## Benefits and Trade-offs
+## Benefits and trade-offs
 
 | Pattern | First Response | Total Latency | Complexity |
 |---|---|---|---|
@@ -298,21 +298,21 @@ public class Impl implements TransactionWorkflow {
 | **Early Return + Local Activities** | **~160 ms** | **~275 ms** | **Medium** |
 | Eager Workflow Start + Local Activities | ~160 ms | ~265 ms | High |
 
-## Best Practices
+## Best practices
 
 - **Keep Phase 1 Local Activities short.** Each must complete well within the Workflow Task timeout (default 10 seconds). Aim for under 5 seconds total for all Phase 1 work.
 - **Design Phase 1 for at-least-once execution.** If the Workflow Task that runs Phase 1 fails and retries, all Phase 1 Local Activities re-execute. Phase 1 operations must be idempotent.
 - **Separate Phase 1 and Phase 2 concerns cleanly.** The Update handler should wait only on the Phase 1 sentinel flag, not on any Phase 2 state. Phase 2 should be independent enough to proceed without client involvement.
 - **Set appropriate timeouts for Phase 2.** Phase 2 regular Activities run in the background and should have a `startToCloseTimeout` that reflects the maximum acceptable settlement time.
 
-## Common Pitfalls
+## Common pitfalls
 
 - **Putting slow operations in Phase 1.** If any Phase 1 Local Activity takes too long, the Workflow Task times out and retries. The client also waits longer for its early response, defeating the purpose of the pattern.
 - **Non-idempotent Phase 1.** A retried Workflow Task re-executes all Local Activities in that task. Ensure Phase 1 operations (e.g., creating a record in an external system) are safe to re-run.
 - **Ignoring Phase 1 errors in Phase 2.** Always check Phase 1 error state before proceeding to Phase 2. If Phase 1 failed, Phase 2 should run a compensating Activity (cancel, rollback) rather than complete.
 - **Mixing Local and regular Activity stubs incorrectly.** In Java, `Workflow.newLocalActivityStub` and `Workflow.newActivityStub` return distinct objects. Make sure Phase 1 uses the local stub and Phase 2 uses the regular stub.
 
-## Related Patterns
+## Related patterns
 
 - [Early Return](/design-patterns/early-return) — the baseline Update-with-Start pattern without Local Activity optimization
 - [Local Activities](/design-patterns/local-activities) — using Local Activities for full-workflow latency reduction without early return

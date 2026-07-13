@@ -51,7 +51,7 @@ The following describes each step in the diagram:
 
 ## Implementation
 
-### Enable Fairness
+### Enable fairness
 
 **Temporal Cloud:** Navigate to the Namespace's Overview page in the UI and activate the Fairness toggle. Fairness is a paid feature in Temporal Cloud.
 
@@ -197,7 +197,7 @@ temporal task-queue config set \
   --fairness-key-weight free=2.0
 ```
 
-### Using Priority and Fairness together
+### Use priority and fairness together
 
 Priority and Fairness can be combined. Priority determines which sub-queue (1–5) a task enters; Fairness determines the dispatch order within each priority level. Set both `PriorityKey` and `FairnessKey` on the same options object.
 

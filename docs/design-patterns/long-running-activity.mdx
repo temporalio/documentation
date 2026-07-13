@@ -202,7 +202,7 @@ The heartbeat details call retrieves the last heartbeat value from a previous at
 If this is the first attempt, there are no details and the Activity starts from line 0.
 The Activity heartbeats every 100 lines, storing the current line number as the checkpoint.
 
-### Handling cancellation
+### Handle cancellation
 
 The following implementation adds cancellation support.
 The Activity checks for cancellation on each heartbeat and cleans up resources before exiting:

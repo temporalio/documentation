@@ -60,7 +60,7 @@ The following describes each step:
 
 ## Implementation
 
-### Overriding the retry delay from the response
+### Override the retry delay from the response
 
 Extract the wait duration from the error or response and pass it to `ApplicationFailure`.
 The RetryPolicy's `MaximumAttempts` and `ScheduleToCloseTimeout` still apply — only the interval for the next retry is overridden.

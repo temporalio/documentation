@@ -9,7 +9,7 @@ import PatternCards from '@site/src/components/PatternCards';
 
 These patterns control how Temporal retries Activities, surfaces persistent failures, and recovers from errors that require human intervention.
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -56,7 +56,7 @@ These patterns control how Temporal retries Activities, surfaces persistent fail
   },
 ]} />
 
-## Choosing a Pattern
+## Choosing a pattern
 
 The following decision tree helps you select the appropriate retry strategy for your use case.
 
@@ -104,7 +104,7 @@ The key `RetryPolicy` fields are:
 `ScheduleToCloseTimeout` is set on the Activity call options, not in `RetryPolicy`.
 It caps the total wall-clock time from when the Activity is first scheduled to when it must complete — across all retry attempts.
 
-## Related Sections
+## Related sections
 
 - [External Interaction Patterns](/design-patterns/external-interaction-patterns) — heartbeating, polling, and approval gates for the external calls that fail
 - [Distributed Transaction Patterns](/design-patterns/distributed-transaction-patterns) — compensate completed steps when retries finally give up

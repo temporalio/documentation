@@ -230,7 +230,7 @@ public class BatchIteratorWorkflowImpl implements BatchIteratorWorkflow {
 </TabItem>
 </Tabs>
 
-## Best Practices
+## Best practices
 
 - **Choose a page size that keeps history under 2,000 events.** Each page produces roughly `3 × pageSize` history events (`ActivityTaskScheduled` + `ActivityTaskStarted` + `ActivityTaskCompleted`). A page size of 500–800 records is a safe target.
 - **Include `totalProcessed` (or a similar counter) in the `continueAsNew` args.** This lets you observe overall progress via the Workflow input visible in the UI without querying internal state.
@@ -238,13 +238,13 @@ public class BatchIteratorWorkflowImpl implements BatchIteratorWorkflow {
 - **Make `processRecord` idempotent.** Activities have at-least-once execution semantics. If a worker crashes after an Activity completes externally but before the completion is recorded in history, Temporal will retry it. Your downstream system must tolerate receiving the same record more than once.
 - **Avoid accumulating large local state between pages.** `continueAsNew` does not carry over in-memory state; only the arguments you pass are available in the next run.
 
-## Common Pitfalls
+## Common pitfalls
 
 - **Forgetting `continueAsNew` on the last page.** If you call `continueAsNew` unconditionally, the Workflow loops forever even when the data source is exhausted. Check whether the returned page is shorter than `pageSize` before continuing.
 - **Passing unnecessary state into `continueAsNew`.** All arguments are serialized and stored in history. Pass only the minimal state needed (offset, counters) — not accumulated result lists or large collections that grow with each page.
 - **Sequential processing bottlenecks.** The default implementation processes one record at a time per page. You can fan out Activities concurrently within a page using the SDK's async primitives for higher per-page throughput — note this increases per-page event count accordingly. If record-set-wide throughput matters more than rate limiting, consider [Sliding Window](/design-patterns/sliding-window) or [MapReduce Tree](/design-patterns/mapreduce-tree).
 
-## Related Resources
+## Related resources
 
 - [Continue-as-New pattern](/design-patterns/continue-as-new) — core concepts for history management via `continueAsNew`
 - [Sliding Window](/design-patterns/sliding-window) — bounded concurrency that progresses at the rate of the fastest processor

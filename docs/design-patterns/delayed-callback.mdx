@@ -45,7 +45,7 @@ Temporal solves these problems with [durable timers](https://docs.temporal.io/wo
 - **Pattern 2 — Delayed Outbound Callbacks:** Use a durable `workflow.sleep()` to set the proper delay before executing the outbound HTTP activity. The sleep timer survives worker and server restarts; the activity retries automatically on failure.
 - **Pattern 3 — Async Activity Completion:** The activity records a task token before returning, and your callback endpoint uses that token to complete the activity from the outside. The Workflow resumes with the result as if the activity had returned normally.
 
-### Pattern 1 — Inbound Webhooks
+### Pattern 1 — inbound webhooks
 
 ```mermaid
 sequenceDiagram
@@ -69,7 +69,7 @@ The following describes each step in the diagram:
 3. Temporal atomically starts the Workflow if it is not already running, then delivers the Signal — no race condition between "start" and "signal."
 4. The Workflow wakes up exactly where it was blocked waiting (or begins execution if newly created) and processes the payload.
 
-### Pattern 2 — Delayed Outbound Callbacks
+### Pattern 2 — delayed outbound callbacks
 
 ```mermaid
 sequenceDiagram
@@ -96,7 +96,7 @@ The following describes each step in the diagram:
 3. If any worker restarts during the delay, the timer continues. When it fires, Temporal schedules the next Workflow Task on a healthy worker.
 4. The Workflow executes an activity that performs the outbound HTTP POST. If the POST fails, Temporal retries it with the configured retry policy.
 
-### Pattern 3 — Async Activity Completion
+### Pattern 3 — async Activity Completion
 
 ```mermaid
 sequenceDiagram
@@ -124,7 +124,7 @@ The following describes each step in the diagram:
 
 ## Implementation
 
-### Pattern 1 — Inbound Webhooks via Signal-with-Start
+### Pattern 1 — inbound webhooks via Signal-With-Start
 
 The following examples show an `OrderWorkflow` that waits for a `payment_received` Signal. The starter uses Signal-with-Start to atomically create the Workflow and deliver the payment signal in one call — exactly what your HTTP handler would do on a real POST.
 
@@ -439,7 +439,7 @@ func main() {
 </TabItem>
 </Tabs>
 
-### Pattern 2 — Delayed Outbound Callbacks
+### Pattern 2 — delayed outbound callbacks
 
 Use a durable `workflow.sleep()` before the outbound activity. The timer is stored in the Temporal cluster, not in process memory — it survives any number of worker restarts.
 
@@ -550,7 +550,7 @@ func DelayedCallbackWorkflow(ctx workflow.Context, input CallbackInput) error {
 </TabItem>
 </Tabs>
 
-### Pattern 3 — Async Activity Completion
+### Pattern 3 — async Activity Completion
 
 The activity records a task token before returning. Your callback endpoint later uses that token to complete the activity and unblock the Workflow.
 

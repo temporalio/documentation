@@ -9,7 +9,7 @@ import PatternCards from '@site/src/components/PatternCards';
 
 These patterns model long-lived business entities as Workflows and keep those Workflows healthy as they run for days, months, or indefinitely. They cover how an entity holds and mutates state, how you bound Workflow history growth, and how you manage timers that change over time.
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -32,7 +32,7 @@ These patterns model long-lived business entities as Workflows and keep those Wo
   },
 ]} />
 
-## Choosing a Pattern
+## Choosing a pattern
 
 **You are modeling something with an ongoing lifecycle** — an account, a device, a subscription: use an [Entity Workflow](/design-patterns/entity-workflow) as the single source of truth for that entity.
 
@@ -40,7 +40,7 @@ These patterns model long-lived business entities as Workflows and keep those Wo
 
 **You need a wait that responds to new information**: use an [Updatable Timer](/design-patterns/updatable-timer) instead of a fixed sleep.
 
-## Related Sections
+## Related sections
 
 - [Workflow Messaging Patterns](/design-patterns/workflow-messaging-patterns) — the Signals and Updates that drive entity state transitions
 - [Task Orchestration Patterns](/design-patterns/task-orchestration-patterns) — decompose a large entity into child Workflows

@@ -9,7 +9,7 @@ import PatternCards from '@site/src/components/PatternCards';
 
 These patterns cover how a Workflow waits on or interacts with the world outside it — external APIs, human decisions, scheduled delays, and inbound or outbound callbacks — while staying durable across failures.
 
-## Patterns in This Section
+## Patterns in this section
 
 <PatternCards items={[
   {
@@ -44,7 +44,7 @@ These patterns cover how a Workflow waits on or interacts with the world outside
   },
 ]} />
 
-## Choosing a Pattern
+## Choosing a pattern
 
 **The external system offers no notification**: use [Polling External Services](/design-patterns/polling) and tune the interval to the expected latency.
 
@@ -56,7 +56,7 @@ These patterns cover how a Workflow waits on or interacts with the world outside
 
 **You send or receive HTTP callbacks**: use [Delayed Callback (Webhooks)](/design-patterns/delayed-callback).
 
-## Related Sections
+## Related sections
 
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns) — retry strategies for the external calls these patterns make
 - [Workflow Messaging Patterns](/design-patterns/workflow-messaging-patterns) — the Signals that deliver external decisions into a Workflow

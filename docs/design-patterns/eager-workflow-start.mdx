@@ -183,7 +183,7 @@ public class Starter {
 The TypeScript SDK does not currently support Eager Workflow Start. Use [Local Activities](/design-patterns/local-activities) or [Early Return + Local Activities](/design-patterns/early-return-local-activities) for latency-sensitive TypeScript workflows.
 :::
 
-## When to Use
+## When to use
 
 **Good fit:**
 
@@ -197,7 +197,7 @@ The TypeScript SDK does not currently support Eager Workflow Start. Use [Local A
 - You are using the TypeScript SDK
 - First-response latency matters more than total latency—combine with [Early Return](/design-patterns/early-return) or [Early Return + Local Activities](/design-patterns/early-return-local-activities) for that use case
 
-## Benefits and Trade-offs
+## Benefits and trade-offs
 
 | | Normal Start | Eager Workflow Start |
 |---|---|---|
@@ -208,7 +208,7 @@ The TypeScript SDK does not currently support Eager Workflow Start. Use [Local A
 | Configuration required | None | `EnableEagerStart`/`request_eager_start`/`setDisableEagerExecution(false)` |
 | Self-hosted server flag | N/A | May need `system.enableEagerWorkflowStart=true` |
 
-## Best Practices
+## Best practices
 
 - **Combine with Local Activities.** Eager Workflow Start eliminates the Matching overhead on the first Workflow Task; Local Activities eliminate server round-trips within each Workflow Task. Together they provide the greatest total latency reduction.
 - **Use a non-blocking Worker start.** Start the Worker before executing the Workflow so it has an available slot. In Go, use `w.Start()` and defer `w.Stop()`. In Python, use `async with Worker(...)`. In Java, call `factory.start()` before creating the workflow stub.
@@ -216,14 +216,14 @@ The TypeScript SDK does not currently support Eager Workflow Start. Use [Local A
 - **Share the same client and connection.** The Worker and the workflow starter must use the same `WorkflowClient` instance (Java), `client.Client` (Go), or `Client` (Python). A Worker using a different connection cannot receive eager tasks from another client.
 - **Be mindful of resource sharing in co-located deployments.** When a Worker runs in the same process as a request handler, they share CPU, memory, and failure domains. A spike in activity execution can slow request handling, and vice versa. Monitor Worker CPU, Workflow Task execution latency, and task queue depth to ensure Worker load does not affect client-facing latency.
 
-## Common Pitfalls
+## Common pitfalls
 
 - **Starting the Worker after `ExecuteWorkflow`.** If the Worker is not registered and running before the eager start call, no local slot exists and the request falls back to normal dispatch.
 - **Expecting eager dispatch in distributed deployments.** If the process that calls `ExecuteWorkflow` is not the same process running the Worker, eager dispatch will never succeed. The call still works, but it provides no latency benefit.
 - **Missing the feature flag on self-hosted servers.** If the server dynamic config flag is not set, eager dispatch requests are silently ignored and the execution falls back to normal dispatch. Verify the flag is set if you do not observe the expected latency improvement.
 - **Using TypeScript.** The TypeScript SDK does not support Eager Workflow Start. Switch to Python, Go, or Java for this optimization.
 
-## Related Patterns
+## Related patterns
 
 - [Local Activities](/design-patterns/local-activities) — eliminates per-Activity server round-trips; pairs naturally with Eager Workflow Start
 - [Early Return + Local Activities](/design-patterns/early-return-local-activities) — minimum first-response latency via Update-with-Start plus Local Activities
