@@ -69,7 +69,7 @@ temporal workflow cancel \
     --query YourQuery
 ```
 
-Visit https://docs.temporal.io/visibility to read more about Search Attributes
+Visit /visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -94,7 +94,7 @@ temporal workflow count \
     --query YourQuery
 ```
 
-Visit https://docs.temporal.io/visibility to read more about Search Attributes
+Visit /visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -120,7 +120,7 @@ all replicas. Requests sent to a passive cluster are forwarded to the active
 cluster by default; to target the passive cluster directly, specify
 `--grpc-meta xdc-redirection=false`.
 
-Visit https://docs.temporal.io/visibility to read more about Search Attributes
+Visit /visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -290,7 +290,7 @@ temporal workflow list \
     --query YourQuery
 ```
 
-Visit https://docs.temporal.io/visibility to read more about Search Attributes
+Visit /visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
 
 View a list of archived Workflow Executions:
@@ -391,7 +391,7 @@ temporal workflow reset \
 For batch resets, limit your resets to FirstWorkflowTask, LastWorkflowTask, or
 BuildId. Do not use Workflow IDs, run IDs, or event IDs with this command.
 
-Visit https://docs.temporal.io/visibility to read more about Search
+Visit /visibility to read more about Search
 Attributes and Query creation.
 
 ### with-workflow-update-options
@@ -458,7 +458,7 @@ temporal workflow signal \
     --input '{"YourInputKey": "YourInputValue"}'
 ```
 
-Visit https://docs.temporal.io/visibility to read more about Search Attributes
+Visit /visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -668,7 +668,7 @@ temporal workflow terminate \
 Workflow code cannot see or respond to terminations. To perform clean-up work
 in your Workflow code, use `temporal workflow cancel` instead.
 
-Visit https://docs.temporal.io/visibility to read more about Search Attributes
+Visit /visibility to read more about Search Attributes
 and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.

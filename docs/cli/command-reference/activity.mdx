@@ -88,7 +88,7 @@ temporal activity count \
     --query 'ActivityType="YourActivity"'
 ```
 
-Visit https://docs.temporal.io/visibility to read more about
+Visit /visibility to read more about
 Search Attributes and queries.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -150,7 +150,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--retry-maximum-interval` | No | **duration** Maximum interval between retries. |
 | `--schedule-to-close-timeout` | No | **duration** Maximum time for the Activity Execution, including all retries. Either this or "start-to-close-timeout" is required. |
 | `--schedule-to-start-timeout` | No | **duration** Maximum time an Activity task can stay in a task queue before a Worker picks it up. On expiry it results in a non-retryable failure and no further attempts are scheduled. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. Can be passed multiple times. See https://docs.temporal.io/visibility. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. Can be passed multiple times. See /visibility. |
 | `--start-to-close-timeout` | No | **duration** Maximum time for a single Activity attempt. On expiry a new attempt may be scheduled if permitted by the retry policy and schedule-to-close timeout. Either this or "schedule-to-close-timeout" is required. |
 | `--static-details` | No | **string** Static Activity details for human consumption in UIs. Uses standard Markdown formatting excluding images, HTML, and script tags. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Activity summary for human consumption in UIs. Uses standard Markdown formatting excluding images, HTML, and script tags. _(Experimental)_ |
@@ -186,7 +186,7 @@ temporal activity list \
     --query 'ActivityType="YourActivity"'
 ```
 
-Visit https://docs.temporal.io/visibility to read more about
+Visit /visibility to read more about
 Search Attributes and queries.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -355,7 +355,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--retry-maximum-interval` | No | **duration** Maximum interval between retries. |
 | `--schedule-to-close-timeout` | No | **duration** Maximum time for the Activity Execution, including all retries. Either this or "start-to-close-timeout" is required. |
 | `--schedule-to-start-timeout` | No | **duration** Maximum time an Activity task can stay in a task queue before a Worker picks it up. On expiry it results in a non-retryable failure and no further attempts are scheduled. |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. Can be passed multiple times. See https://docs.temporal.io/visibility. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. Can be passed multiple times. See /visibility. |
 | `--start-to-close-timeout` | No | **duration** Maximum time for a single Activity attempt. On expiry a new attempt may be scheduled if permitted by the retry policy and schedule-to-close timeout. Either this or "schedule-to-close-timeout" is required. |
 | `--static-details` | No | **string** Static Activity details for human consumption in UIs. Uses standard Markdown formatting excluding images, HTML, and script tags. _(Experimental)_ |
 | `--static-summary` | No | **string** Static Activity summary for human consumption in UIs. Uses standard Markdown formatting excluding images, HTML, and script tags. _(Experimental)_ |

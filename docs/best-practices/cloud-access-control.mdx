@@ -38,8 +38,8 @@ The high-level end-to-end rotation process is:
 5. **Remove old credentials**: Remove old certificates and API keys from your secrets provider after confirming successful migration 
 
 This approach ensures near-zero-downtime rotation and prevents authentication failures that could impact running workflows. For specific guidance to rotate mTLS certificates and API keys, see:
-- https://docs.temporal.io/cloud/certificates#manage-certificates 
-- https://docs.temporal.io/cloud/api-keys#rotate-an-api-key 
+- /cloud/certificates#manage-certificates 
+- /cloud/api-keys#rotate-an-api-key 
 - https://github.com/temporal-sa/temporal-Worker-cert-rotation 
 
 For mutual TLS (mTLS) implementations, using Let's Encrypt is not recommended, as it is designed primarily for public-facing services and lacks support for internal certificate requirements. 
@@ -50,16 +50,16 @@ Select the option that aligns best with your infrastructure, security requiremen
 
 In the case that you are using multiple certificates signed by the same CA, and some of these certificates are for production environments, there are some workarounds you can employ. 
 
-One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can leverage Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](https://docs.temporal.io/cloud/certificates#control-authorization) of the documentation. 
+One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can leverage Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](/cloud/certificates#control-authorization) of the documentation. 
 
 ## Best practices
 
 ### Establish clear guidelines on authentication methods
 
-Teams should standardize on either [mTLS certificates](https://docs.temporal.io/cloud/certificates) or
-[API keys](https://docs.temporal.io/cloud/api-keys) for the following operations:
+Teams should standardize on either [mTLS certificates](/cloud/certificates) or
+[API keys](/cloud/api-keys) for the following operations:
 - Connect Temporal clients to Temporal Cloud (e.g. Worker processes)
-- Automation (e.g. Temporal Cloud [Operations API](https://docs.temporal.io/ops), [Terraform provider](https://docs.temporal.io/cloud/terraform-provider), [Temporal CLI](https://docs.temporal.io/cli/setup-cli))
+- Automation (e.g. Temporal Cloud [Operations API](/ops), [Terraform provider](/cloud/terraform-provider), [Temporal CLI](/cli/setup-cli))
 
 By default, teams should use API keys with [service accounts](/cloud/manage-access/service-accounts) for both operations. API keys
 are generally easier to set up and rotate than mTLS certificates, and service accounts let you assign account-level and

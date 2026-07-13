@@ -1,0 +1,13 @@
+# scope: raw is required to see link destinations at all (the default text
+# scope strips markdown link URLs entirely), but as a side effect it also
+# sees inside fenced code blocks/inline code, which the default scope would
+# normally skip. That's an accepted tradeoff: a handful of legitimate
+# absolute URLs shown in code samples (e.g. curl/CLI output) may get flagged
+# too, alongside the real links this rule targets.
+extends: existence
+message: "Use a relative path instead of the absolute docs.temporal.io URL '%s'."
+level: warning
+scope: raw
+ignorecase: true
+tokens:
+  - 'https?://docs\.temporal\.io[^\s()"''<>`\[\]]*'
