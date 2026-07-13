@@ -39,7 +39,7 @@ Webhook-based integrations have several failure modes that are difficult to hand
 
 ## Solution
 
-Temporal solves these problems with [durable timers](https://docs.temporal.io/workflow-execution/timers-delays) in a Workflow. You use [Signals or Updates](https://docs.temporal.io/encyclopedia/workflow-message-passing/) to send events to a Workflow. All of these are Temporal code — no extra infrastructure to deploy or manage.
+Temporal solves these problems with [durable timers](/workflow-execution/timers-delays) in a Workflow. You use [Signals or Updates](/encyclopedia/workflow-message-passing) to send events to a Workflow. All of these are Temporal code — no extra infrastructure to deploy or manage.
 
 - **Pattern 1 — Inbound Callback:** Route the incoming HTTP request to a Temporal Signal-with-Start. The Workflow is the durable recipient; if it is not running yet, Temporal creates it and delivers the Signal atomically.
 - **Pattern 2 — Delayed Outbound Callbacks:** Use a durable `workflow.sleep()` to set the proper delay before executing the outbound HTTP activity. The sleep timer survives worker and server restarts; the activity retries automatically on failure.
@@ -700,7 +700,7 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 | Submit a job to an external system; wait for its completion webhook | Async activity completion (Pattern 3) |
 | Poll an external system that does not support webhooks | [Polling External Services](/design-patterns/polling) pattern |
 
-**Do not use** Pattern 2 for delays shorter than one second. Timer durations range from one second to several years, and your Workflows should not rely on [sub-second accuracy for Timers](https://docs.temporal.io/workflow-execution/timers-delays).
+**Do not use** Pattern 2 for delays shorter than one second. Timer durations range from one second to several years, and your Workflows should not rely on [sub-second accuracy for Timers](/workflow-execution/timers-delays).
 
 ## Benefits and trade-offs
 

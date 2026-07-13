@@ -313,7 +313,7 @@ public class RecordBatchWorkflowImpl implements RecordBatchWorkflow {
 
 ## Common pitfalls
 
-- **Starting too many children at once.** Each child start adds to the parent's history. Temporal enforces a default limit of 2,000 pending (in-flight) child Workflows per parent; keep well under it. See [Temporal guidance](https://docs.temporal.io/workflows#when-to-use-child-workflows). If you need more children, switch to [MapReduce Tree](/design-patterns/mapreduce-tree) or [Sliding Window](/design-patterns/sliding-window).
+- **Starting too many children at once.** Each child start adds to the parent's history. Temporal enforces a default limit of 2,000 pending (in-flight) child Workflows per parent; keep well under it. See [Temporal guidance](/child-workflows#when-to-use-child-workflows). If you need more children, switch to [MapReduce Tree](/design-patterns/mapreduce-tree) or [Sliding Window](/design-patterns/sliding-window).
 - **Passing large lists of IDs.** Workflow inputs are stored in event history. Passing millions of record IDs as a list will blow the history size limit. Use offset + length instead.
 - **Ignoring child failures.** A failed child does not automatically fail the parent unless you await all results. Always await child handles and handle errors explicitly.
 
@@ -322,4 +322,4 @@ public class RecordBatchWorkflowImpl implements RecordBatchWorkflow {
 - [Child Workflows pattern](/design-patterns/child-workflows) — core concepts for parent/child Workflow coordination
 - [Batch Iterator](/design-patterns/batch-iterator) — unbounded record sets with Continue-as-New pagination
 - [Sliding Window](/design-patterns/sliding-window) — bounded concurrency with maximum throughput
-- [Temporal limits reference](https://docs.temporal.io/cloud/limits)
+- [Temporal limits reference](/cloud/limits)

@@ -838,7 +838,7 @@ If the approver's interface needs immediate confirmation that the approval was a
 - **Log approval events.** Record each decision for audit trails and compliance.
 - **Handle timeouts gracefully.** Define clear timeout behavior such as rejection, escalation, or notification.
 - **Support cancellation.** Allow Workflows to be cancelled if the request is withdrawn.
-- **Ensure idempotency.** Handle duplicate approval Signals safely so that re-delivery does not corrupt state. Signals [may be duplicated in rare cases](https://docs.temporal.io/workflows#signal), so use idempotency keys when necessary.
+- **Ensure idempotency.** Handle duplicate approval Signals safely so that re-delivery does not corrupt state. Signals [may be duplicated in rare cases](/handling-messages#exactly-once-message-processing), so use idempotency keys when necessary.
 - **Include timestamps.** Record when each approval was submitted to support time-based auditing.
 - **Expose approval history.** Provide a Query method that returns all approval attempts, not only the final decision.
 

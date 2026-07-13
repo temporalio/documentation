@@ -55,7 +55,7 @@ The following describes each step in the diagram:
 
 **Temporal Cloud:** Navigate to the Namespace's Overview page in the UI and activate the Fairness toggle. Fairness is a paid feature in Temporal Cloud.
 
-**Self-hosted Temporal:** Set `matching.enableFairness` to `true` in the [dynamic config](https://docs.temporal.io/temporal-service/configuration#dynamic-configuration) for the relevant Task Queues or Namespaces.
+**Self-hosted Temporal:** Set `matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration) for the relevant Task Queues or Namespaces.
 
 ### Set fairness key and weight at Workflow start
 
@@ -115,7 +115,7 @@ WorkflowClient.start(workflow::run);
 
 ### Set fairness key and weight on Activities
 
-Activities inherit the parent Workflow's fairness key and weight. Override them in `ActivityOptions` when an Activity should belong to a different fairness group than its Workflow. Each field (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently in this order: Task Queue weight overrides (highest precedence), value set explicitly in the options, value inherited from the calling Workflow, then the default. Workflows started with Continue-As-New inherit the current execution's priority values unless you pass explicit values. See [Inheritance](https://docs.temporal.io/develop/task-queue-priority-fairness#inheritance) in the Temporal docs for the full resolution diagram.
+Activities inherit the parent Workflow's fairness key and weight. Override them in `ActivityOptions` when an Activity should belong to a different fairness group than its Workflow. Each field (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently in this order: Task Queue weight overrides (highest precedence), value set explicitly in the options, value inherited from the calling Workflow, then the default. Workflows started with Continue-As-New inherit the current execution's priority values unless you pass explicit values. See [Inheritance](/develop/task-queue-priority-fairness#inheritance) in the Temporal docs for the full resolution diagram.
 
 <Tabs groupId="language" queryString>
 <TabItem value="python" label="Python">
@@ -258,7 +258,7 @@ WorkflowOptions options = WorkflowOptions.newBuilder()
 
 ## When to use
 
-This pattern is a good fit for multi-tenant applications where large tenants should not block small tenants, for workloads that need proportional capacity allocation across groups without hard rate limits, and when the set of tenants or groups is dynamic (new keys can be introduced without deploying new Workers). For a broader look at multi-tenancy strategies in Temporal, see [Multi-Tenant Patterns](https://docs.temporal.io/production-deployment/multi-tenant-patterns).
+This pattern is a good fit for multi-tenant applications where large tenants should not block small tenants, for workloads that need proportional capacity allocation across groups without hard rate limits, and when the set of tenants or groups is dynamic (new keys can be introduced without deploying new Workers). For a broader look at multi-tenancy strategies in Temporal, see [Multi-Tenant Patterns](/production-deployment/multi-tenant-patterns).
 
 It is not a good fit when absolute throughput isolation is required (dedicated queues per tenant remain or [task queue priorities](/design-patterns/priority-task-queues) are the appropriate choice).
 
