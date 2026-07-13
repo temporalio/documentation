@@ -1,0 +1,155 @@
+---
+id: standalone-operations
+title: Standalone Nexus Operations - .NET SDK
+sidebar_label: Standalone Operations
+toc_max_heading_level: 4
+keywords:
+  - standalone nexus operation
+  - nexus operation execution
+  - execute nexus operation
+  - nexus operation handle
+  - list nexus operations
+  - count nexus operations
+  - dotnet sdk
+tags:
+  - Nexus
+  - Temporal Client
+  - .NET SDK
+  - Temporal SDKs
+description: Execute Nexus Operations independently without a Workflow using the Temporal .NET SDK.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="standaloneNexusOperation">
+  Requires .NET SDK `1.16.0` or above. All APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+[Standalone Nexus Operations](/standalone-nexus-operation) let you run Nexus Operation Executions independently, without
+being orchestrated by a Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using
+`Workflow.CreateNexusWorkflowClient<TService>()`, you execute a Standalone Nexus Operation directly from a Nexus Client
+created using `ITemporalClient.CreateNexusClient<TService>()`.
+
+Standalone Nexus Operations use the same Nexus Service contract, Operation handlers, and Worker setup as
+Workflow-driven Operations — only the execution path differs. See the [Nexus feature guide](/develop/dotnet/nexus/feature-guide)
+for details on
+[defining a Service contract](/develop/dotnet/nexus/feature-guide#define-nexus-service-contract),
+[developing Operation handlers](/develop/dotnet/nexus/feature-guide#develop-nexus-service-operation-handlers), and
+[registering a Service in a Worker](/develop/dotnet/nexus/feature-guide#register-a-nexus-service-in-a-worker).
+
+This page focuses on the client-side APIs that are unique to Standalone Nexus Operations:
+
+- [Execute a Standalone Nexus Operation](#execute-operation)
+- [Get the result of a Standalone Nexus Operation](#get-operation-result)
+- [List Standalone Nexus Operations](#list-operations)
+- [Count Standalone Nexus Operations](#count-operations)
+- [Run Standalone Nexus Operations with Temporal Cloud](#run-standalone-nexus-operations-temporal-cloud)
+
+:::note
+This documentation uses source code from the
+[.NET Nexus Standalone sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusStandaloneOperations).
+
+:::
+
+## Execute a Standalone Nexus Operation {/* #execute-operation */}
+
+To execute a Standalone Nexus Operation, first create a
+[`NexusClient`](https://dotnet.temporal.io/api/Temporalio.Client.NexusClient.html) using
+`ITemporalClient.CreateNexusClient<TService>()`, bound to a specific Nexus Endpoint and Service. The endpoint must be
+pre-created on the server. Then call `ExecuteNexusOperationAsync()` from application code (for example, a starter
+program), not from inside a Workflow Definition.
+
+`ExecuteNexusOperationAsync` is a shortcut that starts the Operation and waits for the result. If you need a handle to
+the Operation while it runs, call `StartNexusOperationAsync` instead — it returns a
+[`NexusOperationHandle`](https://dotnet.temporal.io/api/Temporalio.Client.NexusOperationHandle.html) that you can use to
+get the result, describe, cancel, or terminate the Operation. `Id` is required on
+[`NexusOperationOptions`](https://dotnet.temporal.io/api/Temporalio.Client.NexusOperationOptions.html);
+`ScheduleToCloseTimeout` is optional and defaults to the maximum allowed by the Temporal server.
+
+```csharp
+var nexusClient = client.CreateNexusClient<IHelloService>("my-nexus-endpoint");
+
+var result = await nexusClient.ExecuteNexusOperationAsync(
+    svc => svc.Echo(new("Nexus Echo 👋")),
+    new("unique-operation-id")
+    {
+        ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
+    });
+```
+
+You can also use the untyped overload that takes the Operation name as a string:
+
+```csharp
+var nexusClient = client.CreateNexusClient("my-nexus-endpoint", "my-service-name");
+
+var handle = await nexusClient.StartNexusOperationAsync<IHelloService.EchoOutput>(
+    "Echo",
+    new IHelloService.EchoInput("Nexus Echo 👋"),
+    new("unique-operation-id")
+    {
+        ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
+    });
+```
+
+## Get the result of a Standalone Nexus Operation {/* #get-operation-result */}
+
+Use `NexusOperationHandle<TResult>.GetResultAsync()` to await the Operation's completion and retrieve its result. This
+works for both synchronous and asynchronous (Workflow-backed) Operations.
+
+```csharp
+var output = await handle.GetResultAsync();
+logger.LogInformation("Operation result: {Message}", output.Message);
+```
+
+If the Operation completed successfully, the result is deserialized into the handle's result type. If the Operation
+failed, a `NexusOperationFailedException` is thrown.
+
+You can also recover a handle for an already-started Operation using `GetNexusOperationHandle<TResult>()` on the
+Temporal Client:
+
+```csharp
+var handle = client.GetNexusOperationHandle<IHelloService.EchoOutput>("unique-operation-id");
+var output = await handle.GetResultAsync();
+```
+
+## List Standalone Nexus Operations {/* #list-operations */}
+
+Use [`ITemporalClient.ListNexusOperationsAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_ListNexusOperationsAsync_System_String_Temporalio_Client_NexusOperationListOptions_)
+to list Standalone Nexus Operation Executions that match a [List Filter](/list-filter) query. The call returns an
+`IAsyncEnumerable<NexusOperationExecution>` that you can iterate with `await foreach`.
+
+Note that `ListNexusOperationsAsync` is called on the base `ITemporalClient`, not on the `NexusClient`.
+
+```csharp
+await foreach (var execution in client.ListNexusOperationsAsync(
+    "Endpoint = 'my-nexus-endpoint'"))
+{
+    logger.LogInformation(
+        "OperationID: {Id}, Operation: {Operation}, Status: {Status}",
+        execution.OperationId, execution.Operation, execution.Status);
+}
+```
+
+The query string accepts [List Filter](/list-filter) syntax. For example,
+`"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
+
+## Count Standalone Nexus Operations {/* #count-operations */}
+
+Use [`ITemporalClient.CountNexusOperationsAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_CountNexusOperationsAsync_System_String_Temporalio_Client_NexusOperationCountOptions_)
+to count Standalone Nexus Operation Executions that match a [List Filter](/list-filter) query.
+
+Note that `CountNexusOperationsAsync` is called on the base `ITemporalClient`, not on the `NexusClient`.
+
+```csharp
+var count = await client.CountNexusOperationsAsync(
+    "Endpoint = 'my-nexus-endpoint'");
+logger.LogInformation("Total Nexus operations: {Count}", count.Count);
+```
+
+## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
+
+Standalone Nexus Operations work against Temporal Cloud with the same code — only the client connection options change.
+For full details on connecting to Temporal Cloud, including Namespace creation, Nexus Endpoint setup, certificate
+generation, and authentication options, see
+[Make Nexus calls across Namespaces in Temporal Cloud](/develop/dotnet/nexus/feature-guide#nexus-calls-across-namespaces-temporal-cloud)
+and [Connect to Temporal Cloud](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud).
