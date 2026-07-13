@@ -124,26 +124,26 @@ the `temporal nexus operation` command family. All commands are Experimental.
 Download for your platform:
 
 ```bash title="macOS (Apple Silicon)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_darwin_arm64.tar.gz | tar xz
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_darwin_arm64.tar.gz | tar xz
 ```
 
 ```bash title="macOS (Intel)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_darwin_amd64.tar.gz | tar xz
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_darwin_amd64.tar.gz | tar xz
 ```
 
 ```bash title="Linux (arm64)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_linux_arm64.tar.gz | tar xz
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_linux_arm64.tar.gz | tar xz
 ```
 
 ```bash title="Linux (amd64)"
-curl -L https://github.com/temporalio/cli/releases/download/v1.7.3-standalone-nexus-operations/temporal_cli_1.7.3-standalone-nexus-operations_linux_amd64.tar.gz | tar xz
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_linux_amd64.tar.gz | tar xz
 ```
 
 Verify the installation:
 
 ```bash
 ./temporal --version
-# temporal version 1.7.3-standalone-nexus-operations
+# temporal version 1.7.4-standalone-nexus-operations
 ```
 
 Move the binary to your PATH or run it from the current directory as `./temporal`.
@@ -152,7 +152,7 @@ Move the binary to your PATH or run it from the current directory as `./temporal
 
 The standard `brew install temporal` or `brew upgrade temporal` does not include Standalone Nexus Operation support during Pre-release.
 If you see `unknown command "nexus operation"` then you are using the standard Temporal CLI instead of the Pre-release version above.
-If you see `Standalone Nexus Operations are disabled` when running commands against a local dev server or a self hosted deployment, then you may not have set the dynamic config settings appropriately.
+If you see `Standalone Nexus Operations are disabled` when running commands against a local dev server, then your server does not support the feature — start it with the Pre-release dev server build above, which enables Standalone Nexus Operations by default.
 
 :::
 
