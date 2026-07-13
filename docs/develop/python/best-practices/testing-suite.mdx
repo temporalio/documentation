@@ -164,14 +164,13 @@ For example, if you have a Workflow sleep for a day, or have an Activity failure
 Instead, test the logic that happens after the sleep by skipping forward in time and complete your tests in a timely manner.
 
 The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
-Time is a global property of an instance of `TestWorkflowEnvironment`: skipping time (either automatically or manually) applies to all currently running tests.
+Time is a global property of an instance of `WorkflowEnvironment`: skipping time (either automatically or manually) applies to all currently running tests.
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
 #### Skip time automatically {/* #automatic-method */}
 
-Start a test server process that skips time as needed.
-For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
+Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to start a test server process and skip time automatically. In time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
 Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal Server. You can find an example of this being used in [the code above](/develop/python/best-practices/testing-suite#test-workflows).
 
@@ -179,7 +178,7 @@ Use the [`from_client()`](https://python.temporal.io/temporalio.testing.Workflow
 
 #### Skip time manually {/* #manual-method */}
 
-To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
+To implement time skipping manually, use the [`sleep`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#sleep) method inside the `WorkflowEnvironment`. This will manually advance time by the duration you specify.
 
 ```python
 from temporalio.testing import WorkflowEnvironment
