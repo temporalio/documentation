@@ -4,10 +4,19 @@
 # normally skip. That's an accepted tradeoff: a handful of legitimate
 # absolute URLs shown in code samples (e.g. curl/CLI output) may get flagged
 # too, alongside the real links this rule targets.
+#
+# Only match a docs.temporal.io URL when it's the destination of an actual
+# link — i.e. immediately preceded by `](` (Markdown link syntax) or by a
+# quote after `=` (an href/path/src/to prop on a JSX component). Bare URLs
+# (plain text with no link syntax, e.g. generated CLI reference docs) rely on
+# Docusaurus/remark autolinking, which only works for absolute URLs — a bare
+# relative path just renders as unlinked text, so those must stay absolute
+# and should NOT be flagged here.
 extends: existence
 message: "Use a relative path instead of the absolute docs.temporal.io URL '%s'."
 level: warning
 scope: raw
 ignorecase: true
 tokens:
-  - 'https?://docs\.temporal\.io[^\s()"''<>`\[\]]*'
+  - '(?<=\]\()https?://docs\.temporal\.io[^\s()"''<>`\[\]]*(?=\))'
+  - '(?<==["''])https?://docs\.temporal\.io[^\s()"''<>`]*(?=["''])'

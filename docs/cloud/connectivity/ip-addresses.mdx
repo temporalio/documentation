@@ -293,7 +293,7 @@ Take note of the following:
 
 The full list of Stable IP ranges is published as a public JSON file at:
 
-**[/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json)**
+**[https://docs.temporal.io/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json)**
 
 Click the link to inspect the list in your browser, or copy the URL into your firewall tooling, a `curl`/`wget` script, or a Terraform `http` data source:
 
@@ -387,7 +387,7 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 **Steps:**
 
-1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
+1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [https://docs.temporal.io/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
 
 2. **Create (or update) the account's public Connectivity Rule with Stable IPs enabled.** This step requires the [Cloud Ops API](#how-to-enable-stable-ips-with-curl) or the [`cloud-api` client](https://github.com/temporalio/cloud-api) — `tcld` does not currently support creating a public Connectivity Rule with Stable IPs.
 
