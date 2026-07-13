@@ -95,6 +95,13 @@ jobs:
           git checkout HEAD -- docs/cli/command-reference/index.mdx
           git checkout HEAD -- docs/cli/command-reference/cloud/index.mdx
 
+      - name: Post-process generated CLI docs
+        working-directory: docs
+        # Injects the ReleaseNoteHeader banner into cloud CLI pages and keeps
+        # command-reference/index.mdx and sidebars.js in sync with the
+        # generated commands. Not previously called from this workflow.
+        run: node bin/post-process-cli-docs.js
+
       - name: Publish generated docs to documentation repo
         env:
           GH_TOKEN: ${{ github.token }}
