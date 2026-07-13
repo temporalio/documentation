@@ -56,9 +56,36 @@ client.Options{
 }
 ```
 
-The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
+The Go SDK provides metrics handlers for [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) and [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry). Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
+
+### Configure OpenTelemetry counters as monotonic {/* #opentelemetry-monotonic-counters */}
+
+:::note
+
+`UseMonotonicCounters` is available in `go.temporal.io/sdk/contrib/opentelemetry` version 0.8.0 and later.
+
+:::
+
+By default, the OpenTelemetry metrics handler represents counters as `Int64UpDownCounter` instruments to preserve compatibility with earlier releases.
+To represent Temporal SDK counters as monotonic `Int64Counter` instruments, set `UseMonotonicCounters` to `true` when you create the handler:
+
+```go
+metricsHandler := temporalotel.NewMetricsHandler(temporalotel.MetricsHandlerOptions{
+    Meter: otel.GetMeterProvider().Meter("temporal-sdk-go"),
+    UseMonotonicCounters: true,
+})
+
+temporalClient, err := client.Dial(client.Options{
+    MetricsHandler: metricsHandler,
+})
+```
+
+Monotonic counters let exporters and metrics backends classify Temporal SDK counters correctly.
+The [`MetricsCounter`](https://pkg.go.dev/go.temporal.io/sdk/client#MetricsCounter) contract defines counters as ever-increasing.
+If you create custom counters through the same metrics handler, pass only non-negative values to `Inc`.
+Negative values can produce invalid or backend-dependent metric data when `UseMonotonicCounters` is enabled.
 
 ## Tracing {/* #tracing */}
 
