@@ -72,7 +72,7 @@ The following example creates a Child Workflow and calls it synchronously.
 The parent blocks until the child completes and returns a result:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -170,7 +170,7 @@ The following example starts a Child Workflow asynchronously with an ABANDON pol
 The parent receives the child's execution info without waiting for completion:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -296,7 +296,7 @@ The `ParentClosePolicy` determines Child Workflow behavior when the parent close
 The following example starts multiple Child Workflows in parallel and waits for all of them to complete:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -413,7 +413,7 @@ In Go, `workflow.ExecuteChildWorkflow()` returns a Future immediately without bl
 The following example starts a Child Workflow with the ABANDON policy and returns immediately without waiting:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -523,7 +523,7 @@ The ABANDON policy ensures the child continues running after the parent complete
 The following example conditionally starts different Child Workflows based on business logic:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -700,7 +700,7 @@ Starting a Child Workflow has more overhead than starting an Activity.
 - **Ignoring the Parent Close Policy.** The default policy is TERMINATE, which kills children when the parent closes. If children must outlive the parent, set the policy to ABANDON explicitly.
 - **Using synchronous calls when async is needed.** Calling a Child Workflow synchronously blocks the parent until the child completes. For long-running children, use the async API (`Async.function()` in Java, `startChild()` in TypeScript, `start_child_workflow()` in Python, or collect Futures without calling `.Get()` in Go) to avoid stalling the parent.
 - **Omitting Workflow IDs.** Without explicit Workflow IDs, you lose the ability to deduplicate or look up Child Workflows by a meaningful identifier. Generate deterministic IDs based on business keys.
-- **Not handling child failures.** Child Workflow failures propagate as `ChildWorkflowFailure` exceptions. If you do not catch and handle them, the parent Workflow fails as well.
+- **Not handling child failures.** Child Workflow failures propagate to the parent as a Child Workflow Failure (`ChildWorkflowFailure` in TypeScript and Java, `ChildWorkflowError` in Python, `ChildWorkflowExecutionError` in Go), with the underlying cause in its `cause` field. If you do not catch and handle them, the parent Workflow fails as well.
 
 ## Related patterns
 

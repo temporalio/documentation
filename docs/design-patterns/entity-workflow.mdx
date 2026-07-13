@@ -85,7 +85,7 @@ The following examples show how each SDK implements the Entity Workflow pattern.
 Each implementation defines Update handlers for synchronous operations, Signal handlers for asynchronous events, and Query handlers for state inspection.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -104,6 +104,12 @@ class UserState:
     created_at: datetime | None = None
     updated_at: datetime | None = None
 
+@dataclass
+class UserAccountInput:
+    user_id: str
+    # Unset for the original caller; carries state across Continue-As-New
+    state: UserState | None = None
+
 @workflow.defn
 class UserAccountWorkflow:
     def __init__(self) -> None:
@@ -112,7 +118,11 @@ class UserAccountWorkflow:
         self.operation_count = 0
 
     @workflow.run
-    async def run(self, user_id: str) -> None:
+    async def run(self, input: UserAccountInput) -> None:
+        # On Continue-As-New, restore the state carried from the previous run
+        if input.state is not None:
+            self.state = input.state
+
         # Block until deleted or Continue-As-New is suggested
         await workflow.wait_condition(
             lambda: self.deleted or workflow.info().is_continue_as_new_suggested()
@@ -120,7 +130,10 @@ class UserAccountWorkflow:
 
         if not self.deleted and workflow.info().is_continue_as_new_suggested():
             await workflow.wait_condition(workflow.all_handlers_finished)
-            workflow.continue_as_new(user_id)
+            # Carry current state forward so it is not reset on the new run
+            workflow.continue_as_new(
+                UserAccountInput(user_id=input.user_id, state=self.state)
+            )
 
         self.state.status = "DELETED"
 
@@ -176,10 +189,22 @@ type UserState struct {
 	UpdatedAt   time.Time
 }
 
-func (w *UserAccountWorkflow) Run(ctx workflow.Context, userId string) error {
-	state := UserState{
-		Status:    "ACTIVE",
-		CreatedAt: workflow.Now(ctx),
+type UserAccountInput struct {
+	UserID string
+	// Nil for the original caller; carries state across Continue-As-New
+	State *UserState
+}
+
+func (w *UserAccountWorkflow) Run(ctx workflow.Context, input UserAccountInput) error {
+	// On Continue-As-New, restore the state carried from the previous run
+	var state UserState
+	if input.State != nil {
+		state = *input.State
+	} else {
+		state = UserState{
+			Status:    "ACTIVE",
+			CreatedAt: workflow.Now(ctx),
+		}
 	}
 	deleted := false
 	operationCount := 0
@@ -229,7 +254,8 @@ func (w *UserAccountWorkflow) Run(ctx workflow.Context, userId string) error {
 			return nil
 		}
 		if workflow.GetInfo(ctx).GetContinueAsNewSuggested() {
-			return workflow.NewContinueAsNewError(ctx, w.Run, userId)
+			// Carry current state forward so it is not reset on the new run
+			return workflow.NewContinueAsNewError(ctx, w.Run, UserAccountInput{UserID: input.UserID, State: &state})
 		}
 	}
 }
@@ -240,10 +266,15 @@ func (w *UserAccountWorkflow) Run(ctx workflow.Context, userId string) error {
 
 ```java
 // UserAccountWorkflow.java
+
+// userId is always set; state is empty for the original caller and
+// carries state across Continue-As-New.
+public record UserAccountInput(String userId, Optional<UserState> state) {}
+
 @WorkflowInterface
 public interface UserAccountWorkflow {
   @WorkflowMethod
-  void run(String userId);
+  void run(UserAccountInput input);
 
   @UpdateMethod
   void updateProfile(ProfileData data);
@@ -272,9 +303,12 @@ public class UserAccountWorkflowImpl implements UserAccountWorkflow {
   private static final int CONTINUE_AS_NEW_THRESHOLD = 1000;
 
   @Override
-  public void run(String userId) {
-    this.userId = userId;
-    if (state.getStatus() == null) {
+  public void run(UserAccountInput input) {
+    this.userId = input.userId();
+    // On Continue-As-New, restore the state carried from the previous run
+    if (input.state().isPresent()) {
+      this.state = input.state().get();
+    } else {
       state.setStatus("ACTIVE");
       state.setCreatedAt(Workflow.currentTimeMillis());
     }
@@ -283,7 +317,8 @@ public class UserAccountWorkflowImpl implements UserAccountWorkflow {
     Workflow.await(() -> deleted || Workflow.getInfo().isContinueAsNewSuggested());
 
     if (!deleted && Workflow.getInfo().isContinueAsNewSuggested()) {
-      Workflow.continueAsNew(userId, state);
+      // Carry current state forward so it is not reset on the new run
+      Workflow.continueAsNew(new UserAccountInput(userId, Optional.of(state)));
     }
 
     state.setStatus("DELETED");
@@ -368,13 +403,20 @@ interface UserState {
   updatedAt: number;
 }
 
+interface UserAccountInput {
+  userId: string;
+  // Unset for the original caller; carries state across Continue-As-New
+  state?: UserState;
+}
+
 export const updateProfileUpdate = defineUpdate<void, [ProfileData]>('updateProfile');
 export const suspendSignal = defineSignal('suspend');
 export const deleteSignal = defineSignal('delete');
 export const getStateQuery = defineQuery<UserState>('getState');
 
-export async function userAccountWorkflow(userId: string): Promise<void> {
-  const state: UserState = {
+export async function userAccountWorkflow(input: UserAccountInput): Promise<void> {
+  // On Continue-As-New, restore the state carried from the previous run
+  const state: UserState = input.state ?? {
     status: 'ACTIVE',
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -416,7 +458,8 @@ export async function userAccountWorkflow(userId: string): Promise<void> {
   
   if (!deleted && workflowInfo().continueAsNewSuggested) {
     await condition(allHandlersFinished);
-    await continueAsNew<typeof userAccountWorkflow>(userId);
+    // Carry current state forward so it is not reset on the new run
+    await continueAsNew<typeof userAccountWorkflow>({ userId: input.userId, state });
   }
   
   state.status = 'DELETED';
@@ -429,6 +472,7 @@ export async function userAccountWorkflow(userId: string): Promise<void> {
 The Workflow blocks on `Workflow.await(() -> deleted)` (Java), `condition(() => deleted)` (TypeScript), `workflow.wait_condition(lambda: self.deleted)` (Python), or `selector.Select(ctx)` (Go) until the delete Signal arrives.
 All state transitions happen through Signal and Update handlers, ensuring that every operation on the entity goes through a single Workflow with no race conditions.
 Continue-As-New is triggered from the main Workflow method (not from handlers) when `isContinueAsNewSuggested()` returns true.
+The Workflow takes a single input object that carries both the entity ID and the current state, so state is passed forward on Continue-As-New rather than reset. The state field is unset for the original caller and populated only on continuation; the new run restores it before processing further operations.
 All SDK docs explicitly warn: do not call Continue-As-New from Update or Signal handlers.
 Instead, handlers set state, and the main Workflow method checks whether to Continue-As-New.
 
@@ -440,17 +484,21 @@ It is not a good fit for short-lived processes (use regular Workflows), stateles
 
 ## Benefits and trade-offs
 
-All operations on an entity go through a single Workflow, eliminating race conditions.
-The Workflow history provides a complete audit trail of all state changes.
-All entity logic lives in one place, and state survives process crashes and restarts.
-Temporal provides exactly-once execution and automatic retries.
-You can inspect current state through Queries without side effects.
+Benefits:
 
-The trade-offs to consider are that you must use Continue-As-New to prevent unbounded history growth.
-A single Workflow handles all operations for one entity, which limits throughput.
-State is kept in Workflow memory, so you should use Activities for large data.
-One Workflow per entity means you should consider costs at scale.
-The first operation after an idle period may have latency.
+- All operations on an entity go through a single Workflow, eliminating race conditions.
+- The Workflow history provides a complete audit trail of all state changes.
+- All entity logic lives in one place, and state survives process crashes and restarts.
+- Temporal provides exactly-once execution and automatic retries.
+- You can inspect current state through Queries without side effects.
+
+Trade-offs:
+
+- You must use Continue-As-New to prevent unbounded history growth.
+- A single Workflow handles all operations for one entity, which limits throughput.
+- State is kept in Workflow memory, so you should use Activities for large data.
+- One Workflow per entity means you should consider costs at scale.
+- The first operation after an idle period may have latency.
 
 ## Comparison with alternatives
 

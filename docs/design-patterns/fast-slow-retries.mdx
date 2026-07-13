@@ -2,7 +2,7 @@
 id: fast-slow-retries
 title: "Fast/Slow Retries"
 sidebar_label: "Fast/Slow Retries"
-description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted."
+description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -69,7 +69,6 @@ The following describes each step:
 
 ## Implementation
 
-
 ### Two-phase workflow retry management
 
 The key change between phases is the retry interval and attempt count.
@@ -77,7 +76,7 @@ In Phase 1, the Temporal Service manages a fast set of retries: short interval, 
 In Phase 2, the Temporal Service manages a slow set of retries: long fixed interval, unlimited attempts.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -289,7 +288,7 @@ If the business process has a maximum wait time, add a `ScheduleToCloseTimeout` 
 ## Best practices
 
 - **Log the phase transition.** The transition from fast to slow is a meaningful signal that the downstream system may have a sustained problem. Log it with enough context — request identifier, attempt count, timestamp — to aid diagnosis.
-- **Leave `MaximumAttempts` unset in Phase 2.** Omitting `MaximumAttempts` (or setting it to 0) gives the slow phase unlimited retries. The Temporal Service manages the wait between attempts via `InitialInterval`; the Workflow simply blocks until the Activity eventually succeeds.
+- **Leave `MaximumAttempts` unset in Phase 2.** Omitting `MaximumAttempts` (or setting it to 0) gives the slow phase unlimited retries. The Temporal Service manages the wait between attempts via `InitialInterval`; the Workflow blocks until the Activity eventually succeeds.
 - **Combine with Retry Alerting via Metrics.** Add a metric counter inside the Activity to surface slow-phase attempts to on-call teams. See [Retry Alerting via Metrics](/design-patterns/retry-metrics).
 
 ## Common pitfalls

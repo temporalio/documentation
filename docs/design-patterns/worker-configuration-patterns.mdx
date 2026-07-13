@@ -1,25 +1,38 @@
 ---
 id: worker-configuration-patterns
-title: Worker configuration patterns
-sidebar_label: Overview
-description: Patterns for configuring how Workers are set up, how work is routed, and how Activities access external dependencies.
+title: "Worker Configuration Patterns"
+sidebar_label: "Worker Configuration Patterns"
+description: "Pattern selection guide for configuring how Workers are set up, how work is routed, and how Activities access external dependencies."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-Patterns for configuring how Workers are set up, how work is routed, and how Activities access external dependencies.
+These patterns cover how you set up Workers, route work to them, and give Activities the external dependencies they need — while keeping Workflow code deterministic and testable.
+
+## Patterns in This Section
 
 <PatternCards items={[
   {
     href: "/design-patterns/worker-specific-taskqueue",
-    icon: "worker-specific-taskqueue-icon.png",
+    icon: "worker-specific-taskqueue-icon.svg",
     title: "Worker-Specific Task Queues",
-    description: "Routes Activities to specific Workers using unique Task Queues for Worker affinity and host-specific processing.",
+    description: "Routes Activities to a specific Worker using a unique Task Queue, for Worker affinity and host-specific processing.",
   },
   {
     href: "/design-patterns/activity-dependency-injection",
-    icon: "activity-dependency-injection-icon.png",
+    icon: "activity-dependency-injection-icon.svg",
     title: "Activity Dependency Injection",
-    description: "Injects external dependencies into Activities at Worker startup, keeping Workflow code deterministic and Activities testable.",
+    description: "Injects external dependencies — clients, connections, configuration — into Activities at Worker startup, keeping Workflow code deterministic and Activities testable.",
   },
 ]} />
+
+## Choosing a Pattern
+
+**A sequence of Activities must run on the same Worker host**: use [Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue) to pin them to one Worker.
+
+**Activities depend on external resources**: use [Activity Dependency Injection](/design-patterns/activity-dependency-injection) to supply them at startup rather than constructing them inside each Activity.
+
+## Related Sections
+
+- [QoS & Throughput Patterns](/design-patterns/qos-throughput-patterns) — Task Queue routing for rate control and fairness
+- [Performance & Latency Patterns](/design-patterns/performance-latency-patterns) — run Activities in-process with Local Activities

@@ -54,7 +54,7 @@ The following examples show a task assignment Workflow that accepts tasks via Up
 The Update validator rejects requests when the task limit is reached, and the Update handler assigns the task and returns a result.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -255,18 +255,21 @@ It is not a good fit for fire-and-forget operations (use Signals), read-only ope
 
 ## Benefits and trade-offs
 
-Updates provide a synchronous response — the client receives a typed return value immediately.
-Validation failures return as typed exceptions.
-The Update is recorded in history before returning, providing strong consistency.
-You can modify Workflow state directly from external systems.
+Benefits:
 
-The trade-offs to consider are that Updates are slower than Signals (they require a history write).
-The Update handler blocks Workflow Task execution.
-Update handlers consume Workflow Task execution time.
-Updates are more complex than Signals for notifications.
-Update arguments and return values are limited by the Workflow history event size (typically 2 MB per event).
-Each Update adds events to Workflow history, contributing to the 50K event limit.
-There is a maximum of 10 in-flight Updates per Workflow execution and a maximum of 2,000 total Updates in Workflow history.
+- Updates provide a synchronous response — the client receives a typed return value immediately.
+- Validation failures return as typed exceptions.
+- The Update is recorded in history before returning, providing strong consistency.
+- You can modify Workflow state directly from external systems.
+
+Trade-offs:
+
+- Updates are slower than Signals (they require a history write).
+- The Update handler blocks Workflow Task execution and consumes Workflow Task execution time.
+- For fire-and-forget messages that need no response, Updates require more machinery than Signals.
+- Update arguments and return values are limited by the Workflow history event size (typically 2 MB per event).
+- Each Update adds events to Workflow history, contributing to the 50K event limit.
+- There is a maximum of 10 in-flight Updates per Workflow execution and a maximum of 2,000 total Updates in Workflow history.
 
 ## Comparison with alternatives
 
@@ -281,7 +284,7 @@ There is a maximum of 10 in-flight Updates per Workflow execution and a maximum 
 - **Validate early.** Check inputs at the start of the Update handler to fail fast.
 - **Handle errors.** Throw typed exceptions for validation failures.
 - **Return quickly.** Do not perform long operations in the Update handler.
-- **Ensure idempotency.** Track processed Update IDs if Updates can be retried.
+- **Track Update IDs only across Continue-As-New.** Within a single Workflow Execution, the Server deduplicates retried Updates automatically by Update ID, so a retry does not run the handler twice. You only need to track processed Update IDs in Workflow state when carrying them across a Continue-As-New boundary, because Update ID deduplication is scoped to a single Workflow Run.
 - **Set timeouts.** Configure appropriate Update timeouts.
 - **Maintain state consistency.** Ensure state modifications are atomic within the handler.
 
@@ -290,7 +293,7 @@ There is a maximum of 10 in-flight Updates per Workflow execution and a maximum 
 - **Performing long operations in the Update handler.** Update handlers block Workflow Task execution. Offload long-running work to Activities and use `Workflow.await` in the handler to wait for results.
 - **Exceeding the 2,000 total Updates limit.** Each accepted Update adds events to history. Use Continue-As-New before reaching the limit. The server sets `SuggestContinueAsNew` at 90% of the limit.
 - **Not setting Update timeouts.** Without a client-side timeout, the caller blocks indefinitely if the Worker is unavailable. Always set a context timeout or deadline.
-- **Ignoring Update ID for deduplication.** Without an Update ID, retried requests create duplicate Updates. Provide a unique `updateId` for idempotency, especially with Update-with-Start.
+- **Assuming you must set an Update ID for retry safety.** The SDK auto-generates a unique `updateId` when you do not provide one, and retried client calls are deduplicated automatically, so a transient retry will not run the handler twice. Set a stable, business-meaningful `updateId` when you want a retried Update-with-Start to attach to an existing in-flight Update instead of starting duplicate work.
 - **Using Updates for fire-and-forget.** Updates require a Worker to be online and responsive. For fire-and-forget operations, use Signals instead.
 
 ## Related patterns

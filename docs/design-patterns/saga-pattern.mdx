@@ -1,8 +1,8 @@
 ---
 id: saga-pattern
-title: Saga Pattern
-sidebar_label: Saga Pattern
-description: Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.
+title: "Saga Pattern"
+sidebar_label: "Saga Pattern"
+description: "Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -24,7 +24,7 @@ You implement each step as a local transaction with a corresponding compensation
 If any step fails, you execute compensation transactions in reverse order to undo the effects of all completed steps.
 You register compensations as each step completes, then automatically trigger them when errors occur to ensure cleanup happens reliably.
 
-The following diagram shows the worked example: opening a customer account in four steps, where `addBankAccount` simulates a downstream failure to trigger compensation.
+The following diagram shows the worked example used by the runner: opening a customer account in four steps, where `addBankAccount` simulates a downstream failure to trigger compensation.
 
 ```mermaid
 flowchart TD
@@ -68,7 +68,7 @@ The following examples show how each SDK implements the Saga pattern.
 Each language uses a different mechanism to register and execute compensations, but the core principle is the same: register a compensation before or after each step, and run all compensations in reverse order on failure.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py

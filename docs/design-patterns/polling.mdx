@@ -54,7 +54,7 @@ For polling intervals of 1 second or faster, implement the polling loop inside t
 The heartbeat reports progress and enables Temporal to detect stuck Activities:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # activities.py
@@ -164,7 +164,7 @@ If the Worker crashes, the heartbeat timeout expires and Temporal retries the Ac
 The Workflow configures the Activity with a heartbeat timeout shorter than the start-to-close timeout:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -252,7 +252,7 @@ For polling intervals of 1 minute or slower, use Activity retries with a backoff
 The Activity throws an exception when the external service is not ready, and Temporal retries after the configured interval:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # activities.py
@@ -334,7 +334,7 @@ Temporal handles the retry scheduling.
 The Workflow configures the retry policy with a fixed interval:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -437,7 +437,7 @@ For polling that requires multiple Activities or changing parameters between att
 The Child Workflow polls in a loop and calls Continue-As-New to prevent unbounded history:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -580,7 +580,7 @@ After 10 attempts, it calls Continue-As-New to start a fresh execution with the 
 The parent Workflow starts the Child Workflow and waits for its result:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py

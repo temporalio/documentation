@@ -58,7 +58,7 @@ The following describes each step in the diagram:
 The following example creates a Workflow with a 30-second start delay:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # client.py
@@ -131,7 +131,7 @@ The following implementation sends a notification after a one-hour delay.
 The Workflow code runs only after the delay expires:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -236,7 +236,7 @@ The following implementation adds Signal handlers for cancellation and a Query f
 You can cancel the Workflow before it runs or check its status during the delay:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -410,7 +410,7 @@ The delay is managed by Temporal, ensuring deterministic behavior.
 
 The trade-offs to consider are that you cannot dynamically adjust the delay after creation (use the Updatable Timer pattern for that).
 The pattern is for one-time delays only — for recurring Schedules, use Temporal Schedules.
-Very short delays (milliseconds) provide minimal benefit — the minimum timer duration is 1 second.
+Very short delays (sub-second) provide minimal benefit — Temporal does not guarantee sub-second timer accuracy, and the delay is rounded up to account for scheduling latency.
 The delay is time-based only, not condition-based.
 Regular Signals sent during the delay are not delivered until the first Workflow Task fires, so Query and Signal handlers are not available until execution begins.
 
@@ -438,7 +438,7 @@ Regular Signals sent during the delay are not delivered until the first Workflow
 
 - **Using Signals during the delay.** Regular Signals do not interrupt the Start Delay. Only Signal-With-Start or Update-With-Start bypass the delay. Signals sent to a delayed Workflow are buffered but the Workflow code has not started, so there is no handler to process them until the delay expires.
 - **Querying before the Workflow starts.** Queries have no state to return during the delay because no Workflow code has executed yet. Clients may receive errors or empty results.
-- **Setting delays shorter than 1 second.** The minimum timer resolution is 1 second. Sub-second delays are not supported.
+- **Relying on sub-second delays.** Temporal does not guarantee sub-second timer accuracy, and the delay is rounded up due to scheduling latency. Treat the configured duration as a minimum, not an exact value.
 - **Forgetting that the Workflow ID is reserved.** A delayed Workflow reserves its Workflow ID immediately. Starting another Workflow with the same ID will fail depending on the ID reuse policy.
 
 ## Related patterns

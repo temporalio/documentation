@@ -1,78 +1,80 @@
 ---
 id: error-handling-patterns
-title: Error Handling & Retry Patterns
-sidebar_label: Overview
-description: Patterns for controlling how Temporal retries Activities, surfaces persistent failures, and recovers from errors that require human intervention.
+title: "Error Handling & Retry Patterns"
+sidebar_label: "Error Handling & Retry Patterns"
+description: "Pattern selection guide and decision tree for choosing the right retry strategy based on your error type, cost constraints, and recovery requirements."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-Patterns for controlling how Temporal retries Activities, surfaces persistent failures, and recovers from errors that require human intervention.
+These patterns control how Temporal retries Activities, surfaces persistent failures, and recovers from errors that require human intervention.
+
+## Patterns in This Section
 
 <PatternCards items={[
   {
     href: "/design-patterns/fixed-count-retries",
-    icon: "pick-first-icon.png",
+    icon: "fixed-count-retries-icon.svg",
     title: "Fixed Count of Retries",
-    description: "Cap the number of Activity retry attempts to control cost when each attempt consumes a paid or limited resource.",
+    description: "Caps the number of Activity retry attempts to control cost when each attempt consumes a paid or limited resource.",
   },
   {
     href: "/design-patterns/fixed-wall-time-retries",
-    icon: "delayed-start-icon.png",
+    icon: "fixed-wall-time-retries-icon.svg",
     title: "Fixed Wall-Time Retries",
-    description: "Bound the total elapsed time across all retry attempts to enforce a business SLA, regardless of how many individual attempts occur.",
+    description: "Bounds the total elapsed time across all retry attempts to enforce a business SLA, regardless of how many attempts occur.",
   },
   {
     href: "/design-patterns/non-retryable-errors",
-    icon: "saga-icon.png",
+    icon: "non-retryable-errors-icon.svg",
     title: "Non-Retryable Errors",
-    description: "Mark error types that will never succeed \u2014 such as validation failures or missing records \u2014 so Temporal fails fast instead of retrying indefinitely.",
+    description: "Marks error types that will never succeed — such as validation failures or missing records — so Temporal fails fast instead of retrying.",
   },
   {
     href: "/design-patterns/delayed-retry",
-    icon: "delayed-start-icon.png",
+    icon: "delayed-retry-icon.svg",
     title: "Delayed Retry",
-    description: "Use a fixed retry interval when you know the downstream system will be unavailable for a predictable duration, such as a scheduled maintenance window.",
+    description: "Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure. Use when an error carries information about how long to wait before retrying.",
   },
   {
     href: "/design-patterns/fast-slow-retries",
-    icon: "polling-icon.png",
+    icon: "fast-slow-retries-icon.svg",
     title: "Fast/Slow Retries",
-    description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers.",
+    description: "Retries aggressively with a short interval first, then shifts to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers.",
   },
   {
     href: "/design-patterns/retry-metrics",
-    icon: "downstream-rate-limiting-icon.svg",
+    icon: "retry-metrics-icon.svg",
     title: "Retry Alerting via Metrics",
-    description: "Emit a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach.",
+    description: "Emits a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach.",
   },
   {
     href: "/design-patterns/resumable-activity",
-    icon: "approval-icon.png",
+    icon: "resumable-activity-icon.svg",
     title: "Resumable Activity",
-    description: "Park the Workflow after retries are exhausted and wait for a human to signal it's ok to proceed or a data correction, then resume execution from where it left off.",
+    description: "Parks the Workflow after retries are exhausted and waits for a human to correct the data or approve continuing, then resumes from where it left off.",
   },
 ]} />
 
-## Choosing the right pattern
+## Choosing a Pattern
 
 The following decision tree helps you select the appropriate retry strategy for your use case.
 
 ```mermaid
 flowchart TD
-    Start([Activity failing]) --> Q1{Each attempt<br/>costs money or<br/>consumes quota?}
-    Q1 -->|Yes| FixedCount[Fixed Count of Retries<br/>Cap MaximumAttempts]
-    Q1 -->|No| Q2{Will this error<br/>ever succeed<br/>automatically?}
-    Q2 -->|No| Q2a{Can a human<br/>correct and retry?}
-    Q2a -->|Yes| Resumable[Resumable Activity<br/>Park and await signal]
-    Q2a -->|No| NonRetryable[Non-Retryable Errors<br/>Fail fast]
-    Q2 -->|Yes| Q3{Downstream has<br/>a predictable<br/>unavailability window?}
-    Q3 -->|Yes| Delayed[Delayed Retry<br/>Fixed interval backoff]
-    Q3 -->|No| Q4{Must resolve<br/>within a<br/>time budget?}
-    Q4 -->|Yes| WallTime[Fixed Wall-Time Retries<br/>ScheduleToCloseTimeout]
-    Q4 -->|No| Q5{Want aggressive<br/>initial retries then<br/>patient recovery?}
-    Q5 -->|Yes| FastSlow[Fast/Slow Retries<br/>Two-phase retry policy]
-    Q5 -->|No| Metrics[Retry Alerting via Metrics<br/>Emit metrics at attempt threshold]
+    Start([Activity failing]) --> Q1{Each attempt\ncosts money or\nconsumes quota?}
+    Q1 -->|Yes| FixedCount[Fixed Count of Retries\nCap MaximumAttempts]
+    Q1 -->|No| Q2{Will this error\never succeed\nautomatically?}
+    Q2 -->|No| Q2a{Can a human\ncorrect and retry?}
+    Q2a -->|Yes| Resumable[Resumable Activity\nPark and await signal]
+    Q2a -->|No| NonRetryable[Non-Retryable Errors\nFail fast]
+    Q2 -->|Yes| Q3{Downstream has\na predictable\nunavailability window?}
+    Q3 -->|Yes| Delayed[Delayed Retry\nFixed interval backoff]
+    Q3 -->|No| Q4{Must resolve\nwithin a\ntime budget?}
+    Q4 -->|Yes| WallTime[Fixed Wall-Time Retries\nScheduleToCloseTimeout]
+    Q4 -->|No| Q5{Want aggressive\ninitial retries then\npatient recovery?}
+    Q5 -->|Yes| FastSlow[Fast/Slow Retries\nTwo-phase retry policy]
+    Q5 -->|No| Metrics[Retry Alerting via Metrics\nEmit metrics at attempt threshold]
 ```
 
 The following describes each decision point:
@@ -102,11 +104,11 @@ The key `RetryPolicy` fields are:
 `ScheduleToCloseTimeout` is set on the Activity call options, not in `RetryPolicy`.
 It caps the total wall-clock time from when the Activity is first scheduled to when it must complete — across all retry attempts.
 
-## Related patterns
+## Related Sections
 
-- [Long Running Activity](/design-patterns/long-running-activity): Heartbeating and resumable progress for Activities that run for minutes to hours.
-- [Polling External Services](/design-patterns/polling): Periodic status checks when the downstream system is asynchronous.
-- [Approval](/design-patterns/approval): Human-in-the-loop gate before a Workflow proceeds.
+- [External Interaction Patterns](/design-patterns/external-interaction-patterns) — heartbeating, polling, and approval gates for the external calls that fail
+- [Distributed Transaction Patterns](/design-patterns/distributed-transaction-patterns) — compensate completed steps when retries finally give up
+- [Performance & Latency Patterns](/design-patterns/performance-latency-patterns) — where retry configuration fits in the latency budget
 
 ## References
 

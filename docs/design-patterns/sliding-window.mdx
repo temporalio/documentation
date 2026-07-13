@@ -60,11 +60,10 @@ The following describes each step in the diagram:
 
 ## Implementation
 
-
 The following examples show how each SDK implements the Sliding Window pattern.
 
 <Tabs groupId="language" queryString>
-<TabItem value="typescript" label="TypeScript" default>
+<TabItem value="typescript" label="TypeScript">
 
 ```typescript
 // workflows.ts
@@ -502,7 +501,7 @@ public class SlidingWindowWorkflowImpl implements SlidingWindowWorkflow {
 ## Related Resources
 
 - [Continue-as-New pattern](/design-patterns/continue-as-new) — history management fundamentals
-- [Batch Iterator](/design-patterns/batch-iterator) — simpler alternative when sequential processing is acceptable
+- [Batch Iterator](/design-patterns/batch-iterator) — sequential alternative when ordered, one-at-a-time processing is acceptable
 - [MapReduce Tree](/design-patterns/mapreduce-tree) — fully parallel alternative when rate limiting is not needed
 - [Temporal limits reference](https://docs.temporal.io/cloud/limits)
 - [Sliding window sample (Java)](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/batch/slidingwindow)

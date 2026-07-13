@@ -64,14 +64,13 @@ The following describes each step:
 
 ## Implementation
 
-
 ### Capping attempts
 
 Set `maximum_attempts` (Python), `MaximumAttempts` (Go / Java), or `maximumAttempts` (TypeScript) on the retry policy.
 The count includes the initial attempt, so `maximum_attempts=3` means one attempt plus two retries.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -221,7 +220,7 @@ The Activity starts once and any failure is immediately delivered to the Workflo
 This is appropriate when the operation is not idempotent and a second attempt would cause a duplicate side effect such as a double charge or a duplicate email.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -295,7 +294,6 @@ An idempotency key (a stable identifier derived from the Workflow and Activity I
 
 - [Non-Retryable Errors](/design-patterns/non-retryable-errors): Fail immediately for errors that will never succeed regardless of how many times you try.
 - [Fixed Wall-Time Retries](/design-patterns/fixed-wall-time-retries): Bound by total elapsed time rather than attempt count.
-- [Idempotent Distributed Transactions](/design-patterns/idempotent-distributed-transactions): Design Activities to be safe to retry without duplicate side effects.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
 ## References

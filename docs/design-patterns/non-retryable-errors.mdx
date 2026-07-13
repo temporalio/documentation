@@ -2,7 +2,7 @@
 id: non-retryable-errors
 title: "Non-Retryable Errors"
 sidebar_label: "Non-Retryable Errors"
-description: "Mark error types that will never succeed so Temporal fails fast instead of retrying indefinitely."
+description: "Mark error types that will never succeed — such as validation failures or missing records — so Temporal fails fast instead of retrying indefinitely."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -62,14 +62,13 @@ The following describes each path:
 
 ## Implementation
 
-
 ### Marking an error as non-retryable at the throw site
 
 Use the SDK's `ApplicationError` (or equivalent) with the non-retryable flag.
 Temporal propagates the error type name and the flag to the Workflow without retrying.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # activities.py
@@ -202,7 +201,7 @@ This approach separates the retry decision from the Activity code, which is usef
 The Activity raises a standard `ApplicationError` with a type name but without the non-retryable flag — the retry decision is delegated to the Workflow's `RetryPolicy`:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # activities.py
@@ -295,7 +294,7 @@ export async function processOrder(orderId: string): Promise<string> {
 The Workflow lists which error type names to never retry:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -370,7 +369,7 @@ Catch the `ActivityError` in the Workflow to distinguish between permanent failu
 Inspect the underlying cause to route to the appropriate compensation or escalation path.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py

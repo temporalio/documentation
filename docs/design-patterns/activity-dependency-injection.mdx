@@ -58,7 +58,7 @@ The following describes each path in the diagram:
 Define Activities as methods on a struct or class that accepts dependencies through its constructor or fields. Each method acts as a separate Activity Type.
 
 <Tabs groupId="language" queryString>
-<TabItem value="go" label="Go" default>
+<TabItem value="go" label="Go">
 
 ```go
 // activities.go
@@ -192,7 +192,7 @@ Each SDK uses a different mechanism to group Activities with their dependencies:
 The Workflow references Activity methods without any knowledge of the injected dependencies. Each SDK provides a type-safe way to call Activities.
 
 <Tabs groupId="language" queryString>
-<TabItem value="go" label="Go" default>
+<TabItem value="go" label="Go">
 
 ```go
 // workflow.go
@@ -313,7 +313,7 @@ Key points for each SDK:
 At Worker startup, you instantiate the Activity struct or class with real dependency implementations and register it.
 
 <Tabs groupId="language" queryString>
-<TabItem value="go" label="Go" default>
+<TabItem value="go" label="Go">
 
 ```go
 // worker/main.go
@@ -450,6 +450,293 @@ run().catch((err) => {
 </Tabs>
 
 Dependencies are initialized once when the Worker process starts. All Activity executions on that Worker share the same instances, which is appropriate for thread-safe resources like connection pools and HTTP clients.
+
+### Inject a circuit breaker
+
+A circuit breaker is a natural fit for Worker-level injection because it is a *stateful* dependency. It tracks recent failures for a downstream service and, once the failure rate crosses a threshold, trips to an open state that rejects calls immediately for a cool-down period before allowing a probe. That state only protects the service if it is shared across every Activity execution on the Worker. Constructing a new breaker inside each Activity method would reset the counters on every call, so the breaker would never trip.
+
+By injecting a single breaker instance alongside the client it guards, all executions of the Activity feed the same failure window. When the downstream service degrades, the breaker opens and Activities fail fast instead of piling up latency against an unhealthy dependency, which in turn lets Temporal's retry policy back off rather than hammering the service.
+
+The following examples wrap an outbound payment API call in a circuit breaker, using an established library for each language:
+
+<Tabs groupId="language" queryString>
+<TabItem value="go" label="Go">
+
+```go
+// activities.go — github.com/sony/gobreaker/v2
+package payment
+
+import (
+	"context"
+
+	"github.com/sony/gobreaker/v2"
+	"go.temporal.io/sdk/activity"
+)
+
+type Activities struct {
+	PaymentAPI PaymentAPI
+	Breaker    *gobreaker.CircuitBreaker[string]
+}
+
+func (a *Activities) ChargeCustomer(ctx context.Context, orderID string, amount int) (string, error) {
+	logger := activity.GetLogger(ctx)
+	logger.Info("Charging customer", "orderID", orderID, "amount", amount)
+
+	// The breaker rejects the call immediately when it is open,
+	// returning gobreaker.ErrOpenState without touching the API.
+	return a.Breaker.Execute(func() (string, error) {
+		return a.PaymentAPI.Charge(orderID, amount)
+	})
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+# activities.py — pybreaker
+import pybreaker
+from dataclasses import dataclass
+from temporalio import activity
+
+
+@dataclass
+class PaymentActivities:
+    payment_api: PaymentAPI
+    breaker: pybreaker.CircuitBreaker
+
+    @activity.defn
+    async def charge_customer(self, order_id: str, amount: int) -> str:
+        activity.logger.info(
+            "Charging customer", extra={"order_id": order_id, "amount": amount}
+        )
+        # Raises pybreaker.CircuitBreakerError when the breaker is open.
+        return await self.breaker.call_async(
+            self.payment_api.charge, order_id, amount
+        )
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// PaymentActivitiesImpl.java — resilience4j
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+
+public class PaymentActivitiesImpl implements PaymentActivities {
+    private final PaymentAPI paymentApi;
+    private final CircuitBreaker breaker;
+
+    public PaymentActivitiesImpl(PaymentAPI paymentApi, CircuitBreaker breaker) {
+        this.paymentApi = paymentApi;
+        this.breaker = breaker;
+    }
+
+    @Override
+    public String chargeCustomer(String orderId, int amount) {
+        // Throws CallNotPermittedException when the breaker is open.
+        return breaker.executeSupplier(() -> paymentApi.charge(orderId, amount));
+    }
+}
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// activities.ts — opossum
+import CircuitBreaker from 'opossum';
+
+export const createActivities = (breaker: CircuitBreaker) => ({
+  async chargeCustomer(orderId: string, amount: number): Promise<string> {
+    // Rejects with an EOPENBREAKER error when the breaker is open.
+    return breaker.fire(orderId, amount) as Promise<string>;
+  },
+});
+```
+
+</TabItem>
+</Tabs>
+
+You construct the breaker at Worker startup and inject it the same way as any other dependency, so its state lives for the lifetime of the Worker process.
+
+<Tabs groupId="language" queryString>
+<TabItem value="go" label="Go">
+
+```go
+// worker/main.go
+package main
+
+import (
+	"log"
+	"time"
+
+	"github.com/sony/gobreaker/v2"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"example/payment"
+)
+
+func main() {
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, "payment", worker.Options{})
+
+	w.RegisterWorkflow(payment.PaymentWorkflow)
+
+	// Construct the breaker once at Worker startup so its failure
+	// counters are shared across all Activity executions.
+	breaker := gobreaker.NewCircuitBreaker[string](gobreaker.Settings{
+		Name:        "payment-api",
+		MaxRequests: 3,                // probes allowed while half-open
+		Interval:    60 * time.Second, // window for counting failures
+		Timeout:     30 * time.Second, // cool-down before half-open
+	})
+
+	w.RegisterActivity(&payment.Activities{
+		PaymentAPI: payment.NewPaymentAPI("https://api.example.com"),
+		Breaker:    breaker,
+	})
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+# worker.py
+import asyncio
+
+import pybreaker
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from activities import PaymentActivities, PaymentAPI
+from workflows import PaymentWorkflow
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    # Construct the breaker once at Worker startup so its failure
+    # counters are shared across all Activity executions.
+    breaker = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=30)
+    payment_activities = PaymentActivities(
+        payment_api=PaymentAPI("https://api.example.com"),
+        breaker=breaker,
+    )
+
+    worker = Worker(
+        client,
+        task_queue="payment",
+        workflows=[PaymentWorkflow],
+        activities=[
+            payment_activities.charge_customer,
+            payment_activities.send_receipt,
+        ],
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// PaymentWorker.java
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+import java.time.Duration;
+
+public class PaymentWorker {
+    public static void main(String[] args) {
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+
+        Worker worker = factory.newWorker("payment");
+        worker.registerWorkflowImplementationTypes(PaymentWorkflowImpl.class);
+
+        // Construct the breaker once at Worker startup so its failure
+        // counters are shared across all Activity executions.
+        CircuitBreakerConfig config = CircuitBreakerConfig.custom()
+            .failureRateThreshold(50)                        // percent
+            .waitDurationInOpenState(Duration.ofSeconds(30)) // cool-down
+            .slidingWindowSize(20)
+            .build();
+        CircuitBreaker breaker = CircuitBreaker.of("payment-api", config);
+
+        worker.registerActivitiesImplementations(
+            new PaymentActivitiesImpl(new PaymentAPI("https://api.example.com"), breaker)
+        );
+
+        factory.start();
+    }
+}
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// worker.ts
+import { Worker } from '@temporalio/worker';
+import CircuitBreaker from 'opossum';
+import { createActivities } from './activities';
+import { PaymentAPI } from './payment-api';
+
+async function run() {
+  // Construct the breaker once at Worker startup so its failure
+  // counters are shared across all Activity executions.
+  const paymentApi = new PaymentAPI('https://api.example.com');
+  const breaker = new CircuitBreaker(
+    (orderId: string, amount: number) => paymentApi.charge(orderId, amount),
+    { errorThresholdPercentage: 50, resetTimeout: 30000 }, // cool-down in ms
+  );
+
+  const worker = await Worker.create({
+    taskQueue: 'payment',
+    workflowsPath: require.resolve('./workflows'),
+    activities: createActivities(breaker),
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+</TabItem>
+</Tabs>
+
+Circuit breaker libraries by language:
+
+- **Go**: [`sony/gobreaker`](https://github.com/sony/gobreaker) — the generic (`v2`) API returns the wrapped result type directly.
+- **Python**: [`pybreaker`](https://github.com/danielfm/pybreaker) — `call_async` wraps coroutine-based clients.
+- **Java**: [`resilience4j`](https://resilience4j.readme.io/docs/circuitbreaker) — the successor to Netflix Hystrix, built around functional decorators.
+- **TypeScript**: [`opossum`](https://nodeshift.dev/opossum/) — wraps a single async action bound at construction time.
+
+Because the breaker counts failures, size the Activity retry policy accordingly. A breaker that opens after a burst of failures pairs well with a retry policy that backs off, so an open breaker returns fast errors that Temporal retries later rather than each attempt waiting on a timeout.
 
 ## When to use
 

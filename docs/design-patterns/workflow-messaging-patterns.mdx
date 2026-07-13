@@ -1,25 +1,46 @@
 ---
 id: workflow-messaging-patterns
-title: Workflow messaging patterns
-sidebar_label: Overview
-description: Patterns for sending data into running Workflows and receiving responses or triggering behavior changes.
+title: "Workflow Messaging Patterns"
+sidebar_label: "Workflow Messaging Patterns"
+description: "Pattern selection guide for sending data into running Workflows and receiving responses or triggering behavior changes."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-Patterns for sending data into running Workflows and receiving responses or triggering behavior changes.
+These patterns cover how external callers communicate with running Workflows — starting them on demand, sending data in, reading results back, and collecting streams of events. They build on Temporal's Signals and Updates.
+
+## Patterns in This Section
 
 <PatternCards items={[
   {
     href: "/design-patterns/signal-with-start",
-    icon: "signal-with-start-icon.png",
+    icon: "signal-with-start-icon.svg",
     title: "Signal with Start",
-    description: "Starts a Workflow when Signaling it if it does not already exist. If already running, it receives the Signal directly.",
+    description: "Starts a Workflow and delivers a Signal in a single atomic operation. If the Workflow already runs, it receives the Signal directly.",
   },
   {
     href: "/design-patterns/request-response-via-updates",
-    icon: "request-response-icon.png",
+    icon: "request-response-icon.svg",
     title: "Request-Response via Updates",
-    description: "Synchronous request-response with validation. Updates modify state and return results directly.",
+    description: "Sends a request into a running Workflow and receives a validated result on the same call, using an Update handler.",
+  },
+  {
+    href: "/design-patterns/event-accumulator",
+    icon: "event-accumulator-icon.svg",
+    title: "Event Accumulator",
+    description: "Collects a stream of incoming Signals into a buffer and processes them together as a batch, rather than one at a time.",
   },
 ]} />
+
+## Choosing a Pattern
+
+**You want to send a message without checking whether the Workflow is running**: use [Signal with Start](/design-patterns/signal-with-start).
+
+**You need a result back from the Workflow, with validation**: use [Request-Response via Updates](/design-patterns/request-response-via-updates).
+
+**You receive many events and want to process them in batches**: use the [Event Accumulator](/design-patterns/event-accumulator) to buffer and flush.
+
+## Related Sections
+
+- [Entity & Lifecycle Patterns](/design-patterns/entity-lifecycle-patterns) — long-lived Workflows that consume these messages over time
+- [Distributed Transaction Patterns](/design-patterns/distributed-transaction-patterns) — Early Return builds on the Update-with-Start mechanism

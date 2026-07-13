@@ -1726,40 +1726,7 @@ module.exports = {
     'design-patterns/index',
     {
       type: 'category',
-      label: 'Distributed Transaction Patterns',
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/distributed-transaction-patterns' },
-      items: [
-        'design-patterns/saga-pattern',
-        'design-patterns/early-return',
-        'design-patterns/idempotent-distributed-transactions',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Entity & Lifecycle Patterns',
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/entity-lifecycle-patterns' },
-      items: [
-        'design-patterns/entity-workflow',
-        'design-patterns/continue-as-new',
-        'design-patterns/updatable-timer',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Workflow Messaging Patterns',
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/workflow-messaging-patterns' },
-      items: [
-        'design-patterns/signal-with-start',
-        'design-patterns/request-response-via-updates',
-        'design-patterns/event-accumulator',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Task Orchestration Patterns',
+      label: "Task Orchestration Patterns",
       collapsed: true,
       link: { type: 'doc', id: 'design-patterns/task-orchestration-patterns' },
       items: [
@@ -1770,30 +1737,52 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'External Interaction Patterns',
+      label: "Workflow Messaging Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/workflow-messaging-patterns' },
+      items: [
+        'design-patterns/signal-with-start',
+        'design-patterns/request-response-via-updates',
+        'design-patterns/event-accumulator',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Entity & Lifecycle Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/entity-lifecycle-patterns' },
+      items: [
+        'design-patterns/entity-workflow',
+        'design-patterns/continue-as-new',
+        'design-patterns/updatable-timer',
+      ],
+    },
+    {
+      type: 'category',
+      label: "External Interaction Patterns",
       collapsed: true,
       link: { type: 'doc', id: 'design-patterns/external-interaction-patterns' },
       items: [
         'design-patterns/polling',
         'design-patterns/long-running-activity',
-        'design-patterns/approval',
         'design-patterns/delayed-start',
         'design-patterns/delayed-callback',
+        'design-patterns/approval',
       ],
     },
     {
       type: 'category',
-      label: 'Worker Configuration Patterns',
+      label: "Distributed Transaction Patterns",
       collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/worker-configuration-patterns' },
+      link: { type: 'doc', id: 'design-patterns/distributed-transaction-patterns' },
       items: [
-        'design-patterns/worker-specific-taskqueue',
-        'design-patterns/activity-dependency-injection',
+        'design-patterns/saga-pattern',
+        'design-patterns/early-return',
       ],
     },
     {
       type: 'category',
-      label: 'Error Handling & Retry Patterns',
+      label: "Error Handling & Retry Patterns",
       collapsed: true,
       link: { type: 'doc', id: 'design-patterns/error-handling-patterns' },
       items: [
@@ -1808,7 +1797,19 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'QoS & Throughput Patterns',
+      label: "Batch Processing Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/batch-processing-patterns' },
+      items: [
+        'design-patterns/fanout-child-workflows',
+        'design-patterns/batch-iterator',
+        'design-patterns/sliding-window',
+        'design-patterns/mapreduce-tree',
+      ],
+    },
+    {
+      type: 'category',
+      label: "QoS & Throughput Patterns",
       collapsed: true,
       link: { type: 'doc', id: 'design-patterns/qos-throughput-patterns' },
       items: [
@@ -1819,14 +1820,23 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Batch Processing Patterns',
+      label: "Performance & Latency Patterns",
       collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/batch-processing-patterns' },
+      link: { type: 'doc', id: 'design-patterns/performance-latency-patterns' },
       items: [
-        'design-patterns/fanout-child-workflows',
-        'design-patterns/batch-iterator',
-        'design-patterns/sliding-window',
-        'design-patterns/mapreduce-tree',
+        'design-patterns/local-activities',
+        'design-patterns/early-return-local-activities',
+        'design-patterns/eager-workflow-start',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Worker Configuration Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/worker-configuration-patterns' },
+      items: [
+        'design-patterns/worker-specific-taskqueue',
+        'design-patterns/activity-dependency-injection',
       ],
     },
   ],

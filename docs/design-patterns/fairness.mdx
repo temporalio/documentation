@@ -60,7 +60,7 @@ The following describes each step in the diagram:
 ### Set fairness key and weight at Workflow start
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 from temporalio.common import Priority
@@ -118,7 +118,7 @@ WorkflowClient.start(workflow::run);
 Activities inherit the parent Workflow's fairness key and weight. Override them in `ActivityOptions` when an Activity should belong to a different fairness group than its Workflow. Each field (`priority_key`, `fairness_key`, `fairness_weight`) is resolved independently in this order: Task Queue weight overrides (highest precedence), value set explicitly in the options, value inherited from the calling Workflow, then the default. Workflows started with Continue-As-New inherit the current execution's priority values unless you pass explicit values. See [Inheritance](https://docs.temporal.io/develop/task-queue-priority-fairness#inheritance) in the Temporal docs for the full resolution diagram.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 from temporalio.common import Priority
@@ -202,7 +202,7 @@ temporal task-queue config set \
 Priority and Fairness can be combined. Priority determines which sub-queue (1–5) a task enters; Fairness determines the dispatch order within each priority level. Set both `PriorityKey` and `FairnessKey` on the same options object.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 from temporalio.common import Priority

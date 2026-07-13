@@ -69,7 +69,7 @@ The following describes each step in the diagram:
 The following implementation starts one Activity per item in a list and waits for all of them to complete:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -186,7 +186,7 @@ The Workflow then waits for all of them to complete and collects the results.
 The following implementation limits the number of concurrent Activities by processing items in batches:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -331,7 +331,7 @@ This prevents overwhelming Workers or external services.
 The following implementation wraps each Activity in error handling so that individual failures do not prevent other Activities from completing:
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -407,6 +407,11 @@ func ProcessWithErrorHandling(ctx workflow.Context, items []string) ([]Result, e
 ```java
 // ResilientParallelWorkflowImpl.java
 public class ResilientParallelWorkflowImpl implements ParallelWorkflow {
+  private final ProcessingActivity activity =
+    Workflow.newActivityStub(ProcessingActivity.class,
+        ActivityOptions.newBuilder()
+            .setStartToCloseTimeout(Duration.ofSeconds(30))
+            .build());
 
   @Override
   public ProcessingReport processWithErrorHandling(List<String> items) {

@@ -2,7 +2,7 @@
 id: delayed-retry
 title: "Delayed Retry"
 sidebar_label: "Delayed Retry"
-description: "Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure."
+description: "Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure. Use when an error carries information about how long to wait before retrying."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -60,14 +60,13 @@ The following describes each step:
 
 ## Implementation
 
-
 ### Overriding the retry delay from the response
 
 Extract the wait duration from the error or response and pass it to `ApplicationFailure`.
 The RetryPolicy's `MaximumAttempts` and `ScheduleToCloseTimeout` still apply — only the interval for the next retry is overridden.
 
 <Tabs groupId="language" queryString>
-<TabItem value="java" label="Java" default>
+<TabItem value="java" label="Java">
 
 ```java
 // RateLimitedActivityImpl.java
@@ -133,7 +132,7 @@ export async function callApi(endpoint: string): Promise<string> {
 You can also set the delay dynamically based on the attempt number — for example, to implement a custom backoff that differs from exponential, or to add a known base delay on top of the standard backoff.
 
 <Tabs groupId="language" queryString>
-<TabItem value="java" label="Java" default>
+<TabItem value="java" label="Java">
 
 ```java
 // BackoffActivityImpl.java
@@ -194,7 +193,7 @@ The Workflow sets a normal `RetryPolicy`.
 The `nextRetryDelay` set in the Activity overrides the interval only for the retry following that specific failure — subsequent attempts fall back to the RetryPolicy schedule if `nextRetryDelay` is not set again.
 
 <Tabs groupId="language" queryString>
-<TabItem value="java" label="Java" default>
+<TabItem value="java" label="Java">
 
 ```java
 // ApiWorkflowImpl.java
@@ -254,7 +253,6 @@ export async function apiWorkflow(endpoint: string): Promise<string> {
 
 - **Assuming `nextRetryDelay` persists across all retries.** It only applies to the immediate next retry. If the following attempt also fails without setting `nextRetryDelay`, the RetryPolicy interval resumes.
 - **Setting `nextRetryDelay` longer than `ScheduleToCloseTimeout`.** If the override delay exceeds the remaining `ScheduleToCloseTimeout` budget, the retry will never execute — Temporal will expire the Activity before the delay elapses.
-
 
 ## Related patterns
 

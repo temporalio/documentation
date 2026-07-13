@@ -2,7 +2,7 @@
 id: event-accumulator
 title: "Event Accumulator Pattern"
 sidebar_label: "Event Accumulator"
-description: "Buffers a stream of incoming Signals and processes them together in batches based on size or time thresholds."
+description: "Event Accumulator Pattern"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -78,12 +78,11 @@ The following describes each step in the diagram:
 
 ## Implementation
 
-
 The following examples highlight the key mechanics of the accumulator loop.
 Full implementations including the worker, starter, and shared types are available in the runner above.
 
 <Tabs groupId="language" queryString>
-<TabItem value="typescript" label="TypeScript" default>
+<TabItem value="typescript" label="TypeScript">
 
 ```typescript
 // workflows.ts

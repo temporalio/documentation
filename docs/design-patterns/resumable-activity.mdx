@@ -84,14 +84,13 @@ The key insight: **the Workflow never died**. It survived bad input, waited inde
 
 ## Implementation
 
-
 ### Workflow with correction and approval signals
 
 The Workflow maintains state as named fields.
 Signal handlers set the fields, and `wait_condition` blocks until they are non-null.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # workflows.py
@@ -470,7 +469,7 @@ Throw a non-retryable `ApplicationFailure` for permanent input errors so the Wor
 Let all other exceptions propagate so the RetryPolicy handles transient failures.
 
 <Tabs groupId="language" queryString>
-<TabItem value="python" label="Python" default>
+<TabItem value="python" label="Python">
 
 ```python
 # activities.py
@@ -542,7 +541,7 @@ stateDiagram-v2
 - **Use a bounded `MaximumAttempts` before parking.** Allow a few automatic retries to recover from transient failures. Parking immediately on the first failure forces operators to intervene for problems that would have resolved on their own.
 - **Manage history growth in long-running correction loops.** Each correction cycle — park, receive signal, re-execute Activity — adds events to the Workflow history (signal received, state transitions, Activity scheduled/completed). For workflows that may receive many corrections over time, use [Continue-As-New](/design-patterns/continue-as-new) to carry the current state into a fresh execution before the history grows too large, rather than relying solely on an arbitrary correction counter.
 - **Expose status via a Query method.** The `getStatus` Query gives operations tooling visibility into where the Workflow is parked without requiring access to the Workflow history.
-- **Validate the correction in the Signal handler.** Check that the corrected account is non-empty and matches the expected format before setting the state. An invalid correction just parks the Workflow again, but a clear error message helps operators.
+- **Validate the correction in the Signal handler.** Check that the corrected account is non-empty and matches the expected format before setting the state. An invalid correction parks the Workflow again, but a clear error message helps operators.
 - **Log and record state at every transition.** The `AWAITING_CORRECTION` and `AWAITING_APPROVAL` states can last hours or days. Structured log lines at each transition make the audit trail clear. For operational visibility, also update a [Search Attribute](https://docs.temporal.io/visibility) at each transition (for example, a `Keyword` attribute storing the current status) so operators can filter and query workflows by state directly from the Temporal UI or CLI.
 - **Notify the operator proactively.** The `AWAITING_CORRECTION` transition is a good point to send an alert — an email, a Slack message, or a ticket — rather than waiting for the operator to notice in the Temporal UI.
 - **Distinguish this from the Approval pattern.** The [Approval](/design-patterns/approval) pattern gates forward progress on a human decision. This pattern recovers from failure with a human-supplied data correction. Both use Signals and `wait_condition`, but serve different roles in a process.

@@ -1,31 +1,46 @@
 ---
 id: task-orchestration-patterns
-title: Task orchestration patterns
-sidebar_label: Overview
-description: Patterns for composing and coordinating multiple units of work within a Workflow.
+title: "Task Orchestration Patterns"
+sidebar_label: "Task Orchestration Patterns"
+description: "Pattern selection guide for composing and coordinating multiple units of work within a Workflow."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-Patterns for composing and coordinating multiple units of work within a Workflow.
+These patterns compose and coordinate multiple units of work within a Workflow — decomposing large processes into reusable pieces, running work concurrently, and racing alternatives against each other.
+
+## Patterns in This Section
 
 <PatternCards items={[
   {
     href: "/design-patterns/child-workflows",
-    icon: "child-workflows-icon.png",
+    icon: "child-workflows-icon.svg",
     title: "Child Workflows",
-    description: "Decomposes complex Workflows into smaller, reusable units. Each child has an independent Workflow ID, history, and lifecycle.",
+    description: "Decomposes a complex Workflow into smaller, reusable units. Each child has its own Workflow ID, history, and lifecycle.",
   },
   {
     href: "/design-patterns/parallel-execution",
-    icon: "parallel-execution-icon.png",
+    icon: "parallel-execution-icon.svg",
     title: "Parallel Execution",
-    description: "Executes multiple Activities concurrently for maximum throughput with error handling and controlled parallelism.",
+    description: "Runs multiple Activities concurrently for higher throughput, with error handling and a bound on how many run at once.",
   },
   {
     href: "/design-patterns/pick-first",
-    icon: "pick-first-icon.png",
+    icon: "pick-first-icon.svg",
     title: "Pick First (Race)",
-    description: "Starts multiple Activities in parallel and uses the first result, cancelling the rest.",
+    description: "Starts multiple Activities in parallel, takes the first result to arrive, and cancels the rest.",
   },
 ]} />
+
+## Choosing a Pattern
+
+**A process is large or reused across Workflows**: break it into [Child Workflows](/design-patterns/child-workflows) with independent histories.
+
+**Independent work can run at the same time**: use [Parallel Execution](/design-patterns/parallel-execution) with a concurrency bound.
+
+**Several approaches compete and you want the first to finish**: use [Pick First (Race)](/design-patterns/pick-first) and cancel the losers.
+
+## Related Sections
+
+- [Batch Processing Patterns](/design-patterns/batch-processing-patterns) — fan-out orchestration scaled to large record sets
+- [Performance & Latency Patterns](/design-patterns/performance-latency-patterns) — reduce the latency of the work each task performs

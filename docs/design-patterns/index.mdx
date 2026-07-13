@@ -1,59 +1,41 @@
 ---
 id: index
-title: Temporal Design Patterns
-sidebar_label: Overview
-description: A catalog of common, reusable, and proven design patterns for Temporal Workflows, organized by problem domain.
+title: "Temporal Design Patterns"
+sidebar_label: "Overview"
+description: "A catalog of common, reusable, and proven design patterns for Temporal Workflows, organized by problem domain."
 slug: /design-patterns
 displayed_sidebar: designPatterns
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-Temporal provides a set of durable execution primitives that you can compose into common, reusable, and proven patterns. Having these patterns in your toolbox helps you solve recurring problems in a battle-tested way.
+:::caution
+This catalog is under active development. Content and structure may change.
+:::
 
-## Distributed transaction patterns
+Temporal provides a set of durable execution primitives that you can compose into common, reusable, and proven patterns.
+Having these patterns in your toolbox helps you solve recurring problems in a battle-tested way.
 
-<PatternCards items={[
-  {
-    href: "/design-patterns/saga-pattern",
-    icon: "saga-icon.png",
-    title: "Saga Pattern",
-    description: "Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.",
-  },
-  {
-    href: "/design-patterns/early-return",
-    icon: "early-return-icon.png",
-    title: "Early Return",
-    description: "Synchronous initialization with asynchronous completion. Returns results immediately while processing continues in the background.",
-  },
-  {
-    href: "/design-patterns/idempotent-distributed-transactions",
-    icon: "saga-icon.png",
-    title: "Idempotent Distributed Transactions",
-    description: "Coordinates multi-step operations across external services with safe retries, automatic rollback on failure, and protection against duplicate submissions.",
-  },
-]} />
-
-## Entity & lifecycle patterns
+## Task orchestration patterns
 
 <PatternCards items={[
   {
-    href: "/design-patterns/entity-workflow",
-    icon: "entity-workflow-icon.png",
-    title: "Entity Workflow",
-    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
+    href: "/design-patterns/child-workflows",
+    icon: "child-workflows-icon.svg",
+    title: "Child Workflows",
+    description: "Decomposes complex Workflows into smaller, reusable units. Each child has an independent Workflow ID, history, and lifecycle.",
   },
   {
-    href: "/design-patterns/continue-as-new",
-    icon: "continue-as-new-icon.png",
-    title: "Continue-As-New",
-    description: "Prevents unbounded history growth by completing the current execution and starting a new one with fresh history.",
+    href: "/design-patterns/parallel-execution",
+    icon: "parallel-execution-icon.svg",
+    title: "Parallel Execution",
+    description: "Executes multiple Activities concurrently for maximum throughput with error handling and controlled parallelism.",
   },
   {
-    href: "/design-patterns/updatable-timer",
-    icon: "updatable-timer-icon.png",
-    title: "Updatable Timer",
-    description: "Dynamically adjustable timers that respond to Signals or Updates. Extend, shorten, or cancel timers based on external events.",
+    href: "/design-patterns/pick-first",
+    icon: "pick-first-icon.svg",
+    title: "Pick First (Race)",
+    description: "Starts multiple Activities in parallel and uses the first result, cancelling the rest.",
   },
 ]} />
 
@@ -62,44 +44,38 @@ Temporal provides a set of durable execution primitives that you can compose int
 <PatternCards items={[
   {
     href: "/design-patterns/signal-with-start",
-    icon: "signal-with-start-icon.png",
+    icon: "signal-with-start-icon.svg",
     title: "Signal with Start",
     description: "Starts a Workflow when Signaling it if it does not already exist. If already running, it receives the Signal directly.",
   },
   {
     href: "/design-patterns/request-response-via-updates",
-    icon: "request-response-icon.png",
+    icon: "request-response-icon.svg",
     title: "Request-Response via Updates",
     description: "Synchronous request-response with validation. Updates modify state and return results directly.",
   },
-  {
-    href: "/design-patterns/event-accumulator",
-    icon: "event-accumulator-icon.png",
-    title: "Event Accumulator",
-    description: "Buffers a stream of incoming Signals and processes them together in batches based on size or time thresholds.",
-  },
 ]} />
 
-## Task orchestration patterns
+## Entity & lifecycle patterns
 
 <PatternCards items={[
   {
-    href: "/design-patterns/child-workflows",
-    icon: "child-workflows-icon.png",
-    title: "Child Workflows",
-    description: "Decomposes complex Workflows into smaller, reusable units. Each child has an independent Workflow ID, history, and lifecycle.",
+    href: "/design-patterns/entity-workflow",
+    icon: "entity-workflow-icon.svg",
+    title: "Entity Workflow",
+    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
   },
   {
-    href: "/design-patterns/parallel-execution",
-    icon: "parallel-execution-icon.png",
-    title: "Parallel Execution",
-    description: "Executes multiple Activities concurrently for maximum throughput with error handling and controlled parallelism.",
+    href: "/design-patterns/continue-as-new",
+    icon: "continue-as-new-icon.svg",
+    title: "Continue-As-New",
+    description: "Prevents unbounded history growth by completing the current execution and starting a new one with fresh history.",
   },
   {
-    href: "/design-patterns/pick-first",
-    icon: "pick-first-icon.png",
-    title: "Pick First (Race)",
-    description: "Starts multiple Activities in parallel and uses the first result, cancelling the rest.",
+    href: "/design-patterns/updatable-timer",
+    icon: "updatable-timer-icon.svg",
+    title: "Updatable Timer",
+    description: "Dynamically adjustable timers that respond to Signals or Updates. Extend, shorten, or cancel timers based on external events.",
   },
 ]} />
 
@@ -108,50 +84,50 @@ Temporal provides a set of durable execution primitives that you can compose int
 <PatternCards items={[
   {
     href: "/design-patterns/polling",
-    icon: "polling-icon.png",
+    icon: "polling-icon.svg",
     title: "Polling External Services",
     description: "Strategies for polling external resources with varying frequencies: frequent, infrequent, and periodic patterns.",
   },
   {
     href: "/design-patterns/long-running-activity",
-    icon: "long-running-activity-icon.png",
+    icon: "long-running-activity-icon.svg",
     title: "Long-Running Activity",
     description: "Long-running Activities report progress via heartbeats and enable resumption after failures with cancellation support.",
   },
   {
-    href: "/design-patterns/approval",
-    icon: "approval-icon.png",
-    title: "Approval",
-    description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.",
-  },
-  {
     href: "/design-patterns/delayed-start",
-    icon: "delayed-start-icon.png",
+    icon: "delayed-start-icon.svg",
     title: "Delayed Start",
     description: "Creates Workflows immediately but defers execution until a specified delay expires. Fits one-time scheduled operations and grace periods.",
   },
   {
     href: "/design-patterns/delayed-callback",
-    icon: "webhooks-icon.png",
-    title: "Delayed Callback",
-    description: "Durable webhook and callback handling: fire delayed outbound callbacks with durable timers and complete work asynchronously via task tokens.",
+    icon: "webhooks-icon.svg",
+    title: "Delayed Callback (Webhooks)",
+    description: "Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.",
+  },
+  {
+    href: "/design-patterns/approval",
+    icon: "approval-icon.svg",
+    title: "Approval",
+    description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.",
   },
 ]} />
 
-## Worker configuration patterns
+## Distributed transaction patterns
 
 <PatternCards items={[
   {
-    href: "/design-patterns/worker-specific-taskqueue",
-    icon: "worker-specific-taskqueue-icon.png",
-    title: "Worker-Specific Task Queues",
-    description: "Routes Activities to specific Workers using unique Task Queues for Worker affinity and host-specific processing.",
+    href: "/design-patterns/saga-pattern",
+    icon: "saga-icon.svg",
+    title: "Saga Pattern",
+    description: "Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.",
   },
   {
-    href: "/design-patterns/activity-dependency-injection",
-    icon: "activity-dependency-injection-icon.png",
-    title: "Activity Dependency Injection",
-    description: "Injects external dependencies into Activities at Worker startup, keeping Workflow code deterministic and Activities testable.",
+    href: "/design-patterns/early-return",
+    icon: "early-return-icon.svg",
+    title: "Early Return",
+    description: "Synchronous initialization with asynchronous completion. Returns results immediately while processing continues in the background.",
   },
 ]} />
 
@@ -160,45 +136,74 @@ Temporal provides a set of durable execution primitives that you can compose int
 <PatternCards items={[
   {
     href: "/design-patterns/fixed-count-retries",
-    icon: "pick-first-icon.png",
+    icon: "fixed-count-retries-icon.svg",
     title: "Fixed Count of Retries",
     description: "Cap the number of Activity retry attempts to control cost when each attempt consumes a paid or limited resource.",
   },
   {
     href: "/design-patterns/fixed-wall-time-retries",
-    icon: "delayed-start-icon.png",
+    icon: "fixed-wall-time-retries-icon.svg",
     title: "Fixed Wall-Time Retries",
     description: "Bound the total elapsed time across all retry attempts to enforce a business SLA, regardless of how many individual attempts occur.",
   },
   {
     href: "/design-patterns/non-retryable-errors",
-    icon: "saga-icon.png",
+    icon: "non-retryable-errors-icon.svg",
     title: "Non-Retryable Errors",
-    description: "Mark error types that will never succeed \u2014 such as validation failures or missing records \u2014 so Temporal fails fast instead of retrying indefinitely.",
+    description: "Mark error types that will never succeed — such as validation failures or missing records — so Temporal fails fast instead of retrying indefinitely.",
   },
   {
     href: "/design-patterns/delayed-retry",
-    icon: "delayed-start-icon.png",
+    icon: "delayed-retry-icon.svg",
     title: "Delayed Retry",
     description: "Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure. Use when an error carries information about how long to wait before retrying.",
   },
   {
     href: "/design-patterns/fast-slow-retries",
-    icon: "polling-icon.png",
+    icon: "fast-slow-retries-icon.svg",
     title: "Fast/Slow Retries",
     description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers.",
   },
   {
     href: "/design-patterns/retry-metrics",
-    icon: "downstream-rate-limiting-icon.svg",
+    icon: "retry-metrics-icon.svg",
     title: "Retry Alerting via Metrics",
     description: "Emit a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach.",
   },
   {
     href: "/design-patterns/resumable-activity",
-    icon: "approval-icon.png",
+    icon: "resumable-activity-icon.svg",
     title: "Resumable Activity",
     description: "Park the Workflow after retries are exhausted and wait for a human to signal a correction, then resume execution from where it left off.",
+  },
+]} />
+
+## Batch processing patterns
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/fanout-child-workflows",
+    icon: "fanout-child-workflows-icon.svg",
+    title: "Fan-Out with Child Workflows",
+    description: "Distributes a large record set across parallel Child Workflows for concurrent processing with automatic scaling.",
+  },
+  {
+    href: "/design-patterns/batch-iterator",
+    icon: "batch-iterator-icon.svg",
+    title: "Batch Iterator",
+    description: "Pages through unbounded datasets using Continue-As-New to prevent history overflow while maintaining exactly-once processing guarantees.",
+  },
+  {
+    href: "/design-patterns/sliding-window",
+    icon: "sliding-window-icon.svg",
+    title: "Sliding Window",
+    description: "Maintains a fixed number of concurrently active Child Workflows, starting a new one each time an existing one completes.",
+  },
+  {
+    href: "/design-patterns/mapreduce-tree",
+    icon: "mapreduce-tree-icon.svg",
+    title: "MapReduce Tree",
+    description: "Recursively splits a dataset into a binary tree of Child Workflows, processes leaves in parallel, then aggregates results back up the tree.",
   },
 ]} />
 
@@ -225,27 +230,42 @@ Temporal provides a set of durable execution primitives that you can compose int
   },
 ]} />
 
-## Batch processing patterns
+## Performance & latency patterns
 
 <PatternCards items={[
   {
-    href: "/design-patterns/fanout-child-workflows",
-    title: "Fan-Out with Child Workflows",
-    description: "Distributes a large record set across parallel Child Workflows for concurrent processing with automatic scaling.",
+    href: "/design-patterns/local-activities",
+    icon: "local-activities-icon.svg",
+    title: "Local Activities",
+    description: "Run Activity functions in-process inside the Workflow Task, eliminating all server scheduling round-trips. Best for short, idempotent Activities on a latency-sensitive path.",
   },
   {
-    href: "/design-patterns/batch-iterator",
-    title: "Batch Iterator",
-    description: "Pages through unbounded datasets using Continue-As-New to prevent history overflow while maintaining exactly-once processing guarantees.",
+    href: "/design-patterns/early-return-local-activities",
+    icon: "early-return-local-activities-icon.svg",
+    title: "Early Return + Local Activities",
+    description: "Extends Early Return by running Phase 1 Activities as Local Activities. The client receives its response after Phase 1 completes entirely in-process, achieving the lowest possible first-response latency.",
   },
   {
-    href: "/design-patterns/sliding-window",
-    title: "Sliding Window",
-    description: "Maintains a fixed number of concurrently active Child Workflows, starting a new one each time an existing one completes.",
+    href: "/design-patterns/eager-workflow-start",
+    icon: "eager-workflow-start-icon.svg",
+    title: "Eager Workflow Start",
+    description: "Dispatch the first Workflow Task directly to a co-located Worker, bypassing the Temporal Matching Service. Requires the starter and Worker to share the same process and client connection.",
+  },
+]} />
+
+## Worker configuration patterns
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/worker-specific-taskqueue",
+    icon: "worker-specific-taskqueue-icon.svg",
+    title: "Worker-Specific Task Queues",
+    description: "Routes Activities to specific Workers using unique Task Queues for Worker affinity and host-specific processing.",
   },
   {
-    href: "/design-patterns/mapreduce-tree",
-    title: "MapReduce Tree",
-    description: "Recursively splits a dataset into a binary tree of Child Workflows, processes leaves in parallel, then aggregates results back up the tree.",
+    href: "/design-patterns/activity-dependency-injection",
+    icon: "activity-dependency-injection-icon.svg",
+    title: "Activity Dependency Injection",
+    description: "Injects external dependencies into Activities at Worker startup, keeping Workflow code deterministic and Activities testable.",
   },
 ]} />

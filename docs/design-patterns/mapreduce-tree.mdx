@@ -70,17 +70,16 @@ The following describes each step in the diagram:
 1. The Root Node Workflow receives the full record set and `depth=0`.
 2. Because the record set is larger than `leafThreshold`, the Root splits it into N chunks and starts N child Node Workflows (two in this example, but the split factor is configurable).
 3. Each Node Workflow receives its chunk and checks its size against `leafThreshold`. In this example, each chunk is small enough, so each Node starts one Leaf Workflow per record.
-4. Each Leaf Workflow calls the `processRecord` Activity and, when complete, signals its result back to its parent Node using `signalExternalWorkflow`.
+4. Each Leaf Workflow calls the `processLeaf` Activity and, when complete, signals its result back to its parent Node using `signalExternalWorkflow`.
 5. Each Node collects all leaf results via signal handlers, aggregates them, and signals the aggregated result back to the Root.
 6. The Root collects both node results and returns the final aggregate.
 
 ## Implementation
 
-
 The following examples show how each SDK implements the MapReduce Tree pattern.
 
 <Tabs groupId="language" queryString>
-<TabItem value="typescript" label="TypeScript" default>
+<TabItem value="typescript" label="TypeScript">
 
 ```typescript
 // workflows.ts
@@ -94,9 +93,9 @@ import {
   workflowInfo,
 } from "@temporalio/workflow";
 import type * as activities from "./activities";
-import { TASK_QUEUE, LEAF_THRESHOLD, MAX_DEPTH } from "./shared";
+import { TASK_QUEUE, LEAF_THRESHOLD, MAX_DEPTH, RESULT_SIGNAL } from "./shared";
 
-const { processRecord } = proxyActivities<typeof activities>({
+const { processLeaf } = proxyActivities<typeof activities>({
   startToCloseTimeout: "30 seconds",
 });
 
@@ -105,13 +104,13 @@ interface ResultPayload {
   results: string[];
 }
 
-export const resultSignal = defineSignal<[ResultPayload]>("leafResult");
+export const resultSignal = defineSignal<[ResultPayload]>(RESULT_SIGNAL);
 
 export async function leafWorkflow(
   record: string,
   parentWorkflowId: string
 ): Promise<void> {
-  const result = await processRecord(record);
+  const result = await processLeaf(record);
   // Signal result back to parent node.
   const parent = getExternalWorkflowHandle(parentWorkflowId);
   await parent.signal(resultSignal, { id: record, results: [result] });
@@ -178,13 +177,17 @@ export async function nodeWorkflow(
 
 ```python
 # workflows.py
-import asyncio
+from dataclasses import dataclass
 from datetime import timedelta
 from temporalio import workflow
-from activities import process_record
-from shared import TASK_QUEUE, LEAF_THRESHOLD, MAX_DEPTH
+from activities import process_leaf
+from shared import TASK_QUEUE, LEAF_THRESHOLD, MAX_DEPTH, RESULT_SIGNAL
 
-RESULT_SIGNAL = "leafResult"
+
+@dataclass
+class ResultPayload:
+    id: str
+    results: list[str]
 
 
 @workflow.defn
@@ -192,22 +195,24 @@ class LeafWorkflow:
     @workflow.run
     async def run(self, record: str, parent_workflow_id: str) -> None:
         result = await workflow.execute_activity(
-            process_record,
+            process_leaf,
             record,
             start_to_close_timeout=timedelta(seconds=30),
         )
-        handle = workflow.get_external_workflow_handle(parent_workflow_id)
-        await handle.signal(RESULT_SIGNAL, [record, result])
+        parent = workflow.get_external_workflow_handle(parent_workflow_id)
+        await parent.signal(RESULT_SIGNAL, ResultPayload(id=record, results=[result]))
 
 
 @workflow.defn
 class NodeWorkflow:
     def __init__(self) -> None:
-        self._results: list[str] = []
+        self._collected: list[str] = []
+        self._received = 0
 
     @workflow.signal(name=RESULT_SIGNAL)
-    def leaf_result(self, record: str, result: str) -> None:
-        self._results.append(result)
+    def node_result(self, payload: ResultPayload) -> None:
+        self._collected.extend(payload.results)
+        self._received += 1
 
     @workflow.run
     async def run(
@@ -223,6 +228,7 @@ class NodeWorkflow:
         expected = 0
 
         if len(records) <= LEAF_THRESHOLD:
+            expected = len(records)
             for record in records:
                 await workflow.start_child_workflow(
                     LeafWorkflow.run,
@@ -230,10 +236,10 @@ class NodeWorkflow:
                     id=f"{my_id}/leaf-{record}",
                     task_queue=TASK_QUEUE,
                 )
-            expected = len(records)
         else:
             mid = len(records) // 2
             chunks = [records[:mid], records[mid:]]
+            expected = len(chunks)
             for i, chunk in enumerate(chunks):
                 await workflow.start_child_workflow(
                     NodeWorkflow.run,
@@ -241,15 +247,16 @@ class NodeWorkflow:
                     id=f"{my_id}/node-d{depth+1}-{i}",
                     task_queue=TASK_QUEUE,
                 )
-            expected = len(chunks)
 
-        await workflow.wait_condition(lambda: len(self._results) >= expected)
+        await workflow.wait_condition(lambda: self._received >= expected)
 
         if parent_workflow_id:
-            handle = workflow.get_external_workflow_handle(parent_workflow_id)
-            await handle.signal(RESULT_SIGNAL, [my_id, ",".join(self._results)])
+            parent = workflow.get_external_workflow_handle(parent_workflow_id)
+            await parent.signal(
+                RESULT_SIGNAL, ResultPayload(id=my_id, results=self._collected)
+            )
 
-        return self._results
+        return self._collected
 ```
 
 </TabItem>
@@ -261,30 +268,24 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"go.temporal.io/sdk/workflow"
 )
 
-const ResultSignal = "leafResult"
-
-type ResultPayload struct {
-	ID     string
-	Result string
-}
+// ResultSignal and ResultPayload are declared in shared.go.
 
 func LeafWorkflow(ctx workflow.Context, record string, parentWorkflowID string) error {
 	ao := workflow.ActivityOptions{StartToCloseTimeout: 30 * time.Second}
 	ctx = workflow.WithActivityOptions(ctx, ao)
 
 	var result string
-	if err := workflow.ExecuteActivity(ctx, ProcessRecord, record).Get(ctx, &result); err != nil {
+	if err := workflow.ExecuteActivity(ctx, ProcessLeaf, record).Get(ctx, &result); err != nil {
 		return err
 	}
 
-	return workflow.SignalExternalWorkflow(ctx, parentWorkflowID, "", ResultSignal,
-		ResultPayload{ID: record, Result: result}).Get(ctx, nil)
+	payload := ResultPayload{ID: record, Results: []string{result}}
+	return workflow.SignalExternalWorkflow(ctx, parentWorkflowID, "", ResultSignal, payload).Get(ctx, nil)
 }
 
 func NodeWorkflow(ctx workflow.Context, records []string, depth int, parentWorkflowID string) ([]string, error) {
@@ -295,46 +296,45 @@ func NodeWorkflow(ctx workflow.Context, records []string, depth int, parentWorkf
 	myID := workflow.GetInfo(ctx).WorkflowExecution.ID
 	resultCh := workflow.GetSignalChannel(ctx, ResultSignal)
 
-	var results []string
+	var collected []string
 	expected := 0
 
 	if len(records) <= LeafThreshold {
+		expected = len(records)
 		for _, record := range records {
 			cwo := workflow.ChildWorkflowOptions{
 				WorkflowID: myID + "/leaf-" + record,
 				TaskQueue:  TaskQueue,
 			}
 			workflow.ExecuteChildWorkflow(workflow.WithChildOptions(ctx, cwo), LeafWorkflow, record, myID)
-			expected++
 		}
 	} else {
 		mid := len(records) / 2
 		chunks := [][]string{records[:mid], records[mid:]}
+		expected = len(chunks)
 		for i, chunk := range chunks {
 			cwo := workflow.ChildWorkflowOptions{
 				WorkflowID: fmt.Sprintf("%s/node-d%d-%d", myID, depth+1, i),
 				TaskQueue:  TaskQueue,
 			}
 			workflow.ExecuteChildWorkflow(workflow.WithChildOptions(ctx, cwo), NodeWorkflow, chunk, depth+1, myID)
-			expected++
 		}
 	}
 
 	for i := 0; i < expected; i++ {
 		var payload ResultPayload
 		resultCh.Receive(ctx, &payload)
-		results = append(results, payload.Result)
+		collected = append(collected, payload.Results...)
 	}
 
 	if parentWorkflowID != "" {
-		err := workflow.SignalExternalWorkflow(ctx, parentWorkflowID, "", ResultSignal,
-			ResultPayload{ID: myID, Result: strings.Join(results, ",")}).Get(ctx, nil)
-		if err != nil {
-			return results, err
+		payload := ResultPayload{ID: myID, Results: collected}
+		if err := workflow.SignalExternalWorkflow(ctx, parentWorkflowID, "", ResultSignal, payload).Get(ctx, nil); err != nil {
+			return collected, err
 		}
 	}
 
-	return results, nil
+	return collected, nil
 }
 ```
 
@@ -352,16 +352,18 @@ public interface NodeWorkflow {
     List<String> run(List<String> records, int depth, String parentWorkflowId);
 
     @SignalMethod
-    void leafResult(String id, String result);
+    void nodeResult(String id, List<String> results);
 }
 
 // NodeWorkflowImpl.java
 public class NodeWorkflowImpl implements NodeWorkflow {
-    private final List<String> results = new ArrayList<>();
+    private final List<String> collected = new ArrayList<>();
+    private int received = 0;
 
     @Override
-    public void leafResult(String id, String result) {
-        results.add(result);
+    public void nodeResult(String id, List<String> results) {
+        collected.addAll(results);
+        received++;
     }
 
     @Override
@@ -397,14 +399,15 @@ public class NodeWorkflowImpl implements NodeWorkflow {
             expected = chunks.size();
         }
 
-        Workflow.await(() -> results.size() >= expected);
+        final int exp = expected;
+        Workflow.await(() -> received >= exp);
 
         if (parentWorkflowId != null && !parentWorkflowId.isEmpty()) {
             ExternalWorkflowStub parent = Workflow.newUntypedExternalWorkflowStub(parentWorkflowId, "");
-            parent.signal("leafResult", myId, String.join(",", results));
+            parent.signal(Shared.RESULT_SIGNAL, myId, new ArrayList<>(collected));
         }
 
-        return results;
+        return collected;
     }
 }
 ```
@@ -419,7 +422,7 @@ public class NodeWorkflowImpl implements NodeWorkflow {
 - **Avoid external writes in Node Workflows.** Node Workflows only aggregate results from children. Leaf Workflows perform the actual work. Keeping the roles separate prevents duplicate external writes if a Node is retried.
 - **Use signals for result aggregation, not return values.** A parent cannot directly await a child started in a previous Workflow run. Signals decouple the result delivery from the parent-child lifetime, making the pattern resilient to replays.
 - **Skip the reduce phase if results are not needed.** If you only need the side effects of processing each record (writes to a database, messages sent), omit the signal-back entirely and set `PARENT_CLOSE_POLICY_ABANDON` on all children.
-- **Consider replacing Leaf Workflows with Activities for simpler workloads.** Leaf Workflows give each record its own history, independent cancellation, and dedicated visibility in the UI — useful when per-record observability matters. If those properties are not required, executing the `processRecord` Activity directly from a Node Workflow reduces overhead: each Leaf Workflow start and completion adds roughly 3 extra history events to the Node's history compared to a direct Activity call.
+- **Consider replacing Leaf Workflows with Activities for lighter workloads.** Leaf Workflows give each record its own Event History, independent cancellation, and dedicated visibility in the UI — useful when per-record observability matters. If those properties are not required, executing the `processLeaf` Activity directly from a Node Workflow reduces overhead. A successful child workflow and a successful Activity each add three Events to the parent's history, but a Leaf Workflow also maintains a separate Event History of its own and emits an extra signal back to the Node, so child workflows produce more overall Events than Activities. The Temporal documentation recommends starting with Activities and adopting child workflows only when there is a clear need.
 
 ## Common Pitfalls
 
