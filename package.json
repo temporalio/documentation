@@ -76,7 +76,7 @@
     "concurrently": "^10.0.3",
     "docusaurus-plugin-llms": "^0.2.0",
     "docusaurus-pushfeedback": "^1.0.3",
-    "js-yaml": "^4.2.0",
+    "js-yaml": "^5.1.0",
     "path": "^0.12.7",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
