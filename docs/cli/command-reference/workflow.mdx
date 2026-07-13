@@ -403,9 +403,9 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, auto_upgrade. |
-| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
-| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, one_time, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Deployment Name of the version to target. |
 
 ## result
 
@@ -848,6 +848,17 @@ temporal workflow update-options \
     --versioning-override-build-id YourDeploymentBuildId
 ```
 
+or to move the workflow execution to a Worker Deployment Version until
+the next Workflow Task completes there, set behavior to `one_time`:
+
+```
+temporal workflow update-options \
+    --workflow-id YourWorkflowId \
+    --versioning-override-behavior one_time \
+    --versioning-override-deployment-name YourDeploymentName \
+    --versioning-override-build-id YourDeploymentBuildId
+```
+
 To remove any previous overrides, set the behavior to
 `unspecified`:
 
@@ -868,9 +879,9 @@ Use the following options to change the behavior of this command. You can also u
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
 | `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
-| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, auto_upgrade. |
-| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
-| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, one_time, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Deployment Name of the version to target. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 

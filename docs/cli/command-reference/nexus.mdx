@@ -1,0 +1,261 @@
+---
+id: nexus
+title: Temporal CLI nexus command reference
+sidebar_label: nexus
+description: Learn how to use Temporal Nexus commands for starting, listing, and managing Nexus Operation Executions.
+toc_max_heading_level: 4
+keywords:
+  - nexus
+  - nexus operation
+  - nexus operation start
+  - nexus operation execute
+  - nexus operation describe
+  - nexus operation cancel
+  - nexus operation terminate
+  - nexus operation list
+  - nexus operation count
+  - cli reference
+  - cli-feature
+  - command-line-interface-cli
+  - temporal cli
+tags:
+  - Nexus
+  - Temporal CLI
+---
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
+
+This page provides a reference for the `temporal` CLI `nexus` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
+## operation
+
+These commands manage Nexus Operation Executions.
+
+Nexus Operation commands follow this syntax:
+
+```
+temporal nexus operation [command] [options]
+```
+
+### cancel
+
+Request cancellation of a Nexus Operation.
+
+```
+temporal nexus operation cancel \
+    --operation-id YourOperationId
+```
+
+The Operation handler determines how to handle the
+cancellation request.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--reason` | No | **string** Reason for cancellation. |
+| `--run-id`, `-r` | No | **string** Run ID of the Nexus Operation. |
+
+### count
+
+Return a count of Nexus Operations. Use `--query`
+to filter the operations to be counted.
+
+```
+temporal nexus operation count \
+    --query 'Endpoint="YourEndpoint"'
+```
+
+Visit https://docs.temporal.io/visibility to read more about
+Search Attributes and queries.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Query to filter Nexus Operation Executions to count. |
+
+### describe
+
+Display detailed information about a specific Nexus
+Operation Execution.
+
+```
+temporal nexus operation describe \
+    --operation-id YourOperationId
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--raw` | No | **bool** Print properties without changing their format. |
+| `--run-id`, `-r` | No | **string** Run ID of the Nexus Operation. |
+
+### execute
+
+Start a new Nexus Operation Execution and block until
+it completes. The result is output to stdout.
+
+```
+temporal nexus operation execute \
+    --endpoint YourEndpoint \
+    --service YourService \
+    --operation YourOperation \
+    --operation-id YourOperationId \
+    --input '{"some-key": "some-value"}'
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--endpoint` | Yes | **string** Nexus Endpoint name. |
+| `--id-conflict-policy` | No | **string-enum** Policy for handling an Operation ID conflict with a running operation. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Policy for re-using an Operation ID from a previously closed operation. Accepted values: AllowDuplicate, RejectDuplicate. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--operation` | Yes | **string** Nexus Operation name. |
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--schedule-to-close-timeout` | No | **duration** Total time the operation is allowed to run. |
+| `--schedule-to-start-timeout` | No | **duration** Maximum time to wait for an operation to be started (or completed synchronously) by a handler. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--service` | Yes | **string** Nexus Service name. |
+| `--start-to-close-timeout` | No | **duration** Maximum time to wait for an asynchronous operation to complete after it has been started. |
+| `--static-summary` | No | **string** Static summary for the Nexus Operation for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+
+### list
+
+List Nexus Operations. Use `--query` to filter results.
+
+```
+temporal nexus operation list \
+    --query 'Endpoint="YourEndpoint"'
+```
+
+Visit https://docs.temporal.io/visibility to read more about
+Search Attributes and queries.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--limit` | No | **int** Maximum number of Nexus Operation Executions to display. |
+| `--page-size` | No | **int** Maximum number of Nexus Operation Executions to fetch at a time from the server. |
+| `--query`, `-q` | No | **string** Query to filter the Nexus Operation Executions to list. |
+
+### result
+
+Wait for a Nexus Operation to complete and output
+the result.
+
+```
+temporal nexus operation result \
+    --operation-id YourOperationId
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--run-id`, `-r` | No | **string** Run ID of the Nexus Operation. |
+
+### start
+
+Start a new Nexus Operation. Outputs the
+Operation ID and Run ID.
+
+```
+temporal nexus operation start \
+    --endpoint YourEndpoint \
+    --service YourService \
+    --operation YourOperation \
+    --operation-id YourOperationId \
+    --input '{"some-key": "some-value"}'
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--endpoint` | Yes | **string** Nexus Endpoint name. |
+| `--id-conflict-policy` | No | **string-enum** Policy for handling an Operation ID conflict with a running operation. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Policy for re-using an Operation ID from a previously closed operation. Accepted values: AllowDuplicate, RejectDuplicate. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--operation` | Yes | **string** Nexus Operation name. |
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--schedule-to-close-timeout` | No | **duration** Total time the operation is allowed to run. |
+| `--schedule-to-start-timeout` | No | **duration** Maximum time to wait for an operation to be started (or completed synchronously) by a handler. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--service` | Yes | **string** Nexus Service name. |
+| `--start-to-close-timeout` | No | **duration** Maximum time to wait for an asynchronous operation to complete after it has been started. |
+| `--static-summary` | No | **string** Static summary for the Nexus Operation for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+
+### terminate
+
+Terminate a Nexus Operation.
+
+```
+temporal nexus operation terminate \
+    --operation-id YourOperationId \
+    --reason YourReason
+```
+
+Operation handlers cannot see or respond to terminations.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--reason` | No | **string** Reason for termination. Defaults to a message with the current user's name. |
+| `--run-id`, `-r` | No | **string** Run ID of the Nexus Operation. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--address` | No | **string** Temporal Service gRPC endpoint. | `localhost:7233` |
+| `--api-key` | No | **string** API key for request. |  |
+| `--client-authority` | No | **string** Temporal gRPC client :authority pseudoheader. |  |
+| `--client-connect-timeout` | No | **duration** The client connection timeout. 0s means no timeout. |  |
+| `--codec-auth` | No | **string** Authorization header for Codec Server requests. |  |
+| `--codec-endpoint` | No | **string** Remote Codec Server endpoint. |  |
+| `--codec-header` | No | **string[]** HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. |  |
+| `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
+| `--command-timeout` | No | **duration** The command execution timeout. 0s means no timeout. |  |
+| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. |  |
+| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. |  |
+| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. |  |
+| `--env` | No | **string** Active environment name (`ENV`). | `default` |
+| `--env-file` | No | **string** Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`. |  |
+| `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
+| `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
+| `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
+| `--log-level` | No | **string-enum** Log level. Default is "never" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `never` |
+| `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
+| `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
+| `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
+| `--profile` | No | **string** Profile to use for config file. |  |
+| `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
+| `--tls` | No | **bool** Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable. |  |
+| `--tls-ca-data` | No | **string** Data for server CA certificate. Can't be used with --tls-ca-path. |  |
+| `--tls-ca-path` | No | **string** Path to server CA certificate. Can't be used with --tls-ca-data. |  |
+| `--tls-cert-data` | No | **string** Data for x509 certificate. Can't be used with --tls-cert-path. |  |
+| `--tls-cert-path` | No | **string** Path to x509 certificate. Can't be used with --tls-cert-data. |  |
+| `--tls-disable-host-verification` | No | **bool** Disable TLS host-name verification. |  |
+| `--tls-key-data` | No | **string** Private certificate key data. Can't be used with --tls-key-path. |  |
+| `--tls-key-path` | No | **string** Path to x509 private key. Can't be used with --tls-key-data. |  |
+| `--tls-server-name` | No | **string** Override target TLS server name. |  |
+
