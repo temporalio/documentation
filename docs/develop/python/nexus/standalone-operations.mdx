@@ -1,0 +1,149 @@
+---
+id: standalone-operations
+title: Standalone Nexus Operations - Python SDK
+sidebar_label: Standalone Operations
+toc_max_heading_level: 4
+keywords:
+  - standalone nexus operation
+  - nexus operation execution
+  - execute nexus operation
+  - nexus operation handle
+  - list nexus operations
+  - count nexus operations
+  - python sdk
+tags:
+  - Nexus
+  - Temporal Client
+  - Python SDK
+  - Temporal SDKs
+description: Execute Nexus Operations independently without a Workflow using the Temporal Python SDK.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="standaloneNexusOperation">
+  Requires Python SDK `1.30.0` or above. All APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+[Standalone Nexus Operations](/standalone-nexus-operation) let you run Nexus Operation Executions independently, without
+being orchestrated by a Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using
+`workflow.create_nexus_client()`, you execute a Standalone Nexus Operation directly from a Nexus Client created using
+`client.create_nexus_client()`.
+
+Standalone Nexus Operations use the same Nexus Service contract, Operation handlers, and Worker setup as
+Workflow-driven Operations — only the execution path differs. See the [Nexus feature guide](/develop/python/nexus/feature-guide) for details on
+[defining a Service contract](/develop/python/nexus/feature-guide#define-nexus-service-contract),
+[developing Operation handlers](/develop/python/nexus/feature-guide#develop-nexus-service-operation-handlers), and
+[registering a Service in a Worker](/develop/python/nexus/feature-guide#register-a-nexus-service-in-a-worker).
+
+This page focuses on the client-side APIs that are unique to Standalone Nexus Operations:
+
+- [Execute a Standalone Nexus Operation](#execute-operation)
+- [Start a Standalone Nexus Operation and Wait for the Result](#get-operation-result)
+- [List Standalone Nexus Operations](#list-operations)
+- [Count Standalone Nexus Operations](#count-operations)
+- [Run Standalone Nexus Operations with Temporal Cloud](#run-standalone-nexus-operations-temporal-cloud)
+
+:::note
+This documentation uses source code from the
+[Python Nexus Standalone sample](https://github.com/temporalio/samples-python/tree/main/nexus_standalone_operations).
+
+:::
+
+## Execute a Standalone Nexus Operation {/* #execute-operation */}
+
+To execute a Standalone Nexus Operation, first create a
+[`NexusClient`](https://python.temporal.io/temporalio.client.NexusClient.html) using `client.create_nexus_client()`, bound to a
+specific Nexus Endpoint and Service. The endpoint must be pre-created on the server. Then call `start_operation()` or `execute_operation()` from application code (for example, a starter program), not from inside a Workflow Definition.
+
+`execute_operation` waits for the Operation to complete and returns the result.
+Both methods require `id`. `schedule_to_close_timeout` is optional and defaults to the maximum allowed by the Temporal server.
+
+```python
+nexus_client = client.create_nexus_client(
+    service=MyNexusService, endpoint=ENDPOINT_NAME
+)
+
+# Await the result of the operation immediately.
+echo_result = await nexus_client.execute_operation(
+    MyNexusService.echo,
+    EchoInput(message="hello"),
+    id=f"echo-{uuid.uuid4()}",
+    schedule_to_close_timeout=timedelta(seconds=10),
+)
+```
+
+See the full
+[starter sample](https://github.com/temporalio/samples-python/blob/main/nexus_standalone_operations/starter.py)
+for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
+counts Operations.
+
+## Start a Standalone Nexus Operation and Wait for the Result {/* #get-operation-result */}
+
+`start_operation` returns a [`NexusOperationHandle`](https://python.temporal.io/temporalio.client.NexusOperationHandle.html).
+Use `NexusOperationHandle.result()` to wait until the Operation completes and retrieve its result. This works for both
+synchronous and asynchronous Operations.
+
+```python
+# Start an operation and get a NexusOperationHandle
+handle = await nexus_client.start_operation(
+    MyNexusService.hello,
+    HelloInput(name="World"),
+    id=f"hello-{uuid.uuid4()}",
+    schedule_to_close_timeout=timedelta(seconds=10),
+)
+# Await the result
+try:
+    hello_result = await handle.result()
+    print(hello_result)
+except err:
+    print(err)
+    raise
+```
+
+If the Operation completed successfully, the result is returned. If the Operation failed, the failure is raised as an error.
+
+## List Standalone Nexus Operations {/* #list-operations */}
+
+Use [`client.list_nexus_operations()`](https://python.temporal.io/temporalio.client.Client.html#list_nexus_operations) to list Standalone Nexus
+Operation Executions that match a [List Filter](/list-filter) query. The result contains an iterator that yields
+operation metadata entries.
+
+Note that `list_nexus_operations` is called on the base `client.Client`, not on the `NexusClient`.
+
+```python
+query = f'Endpoint = "{ENDPOINT_NAME}"'
+async for op in client.list_nexus_operations(query):
+    print(
+        f" OperationId: {op.operation_id},",
+        f" Operation: {op.operation},",
+        f" Status: {op.status.name}",
+    )
+```
+
+The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
+`"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
+
+## Count Standalone Nexus Operations {/* #count-operations */}
+
+Use [`client.count_nexus_operations()`](https://python.temporal.io/temporalio.client.Client.html#count_nexus_operations) to count Standalone Nexus
+Operation Executions that match a [List Filter](/list-filter) query.
+
+Note that `count_nexus_operations` is called on the base `client.Client`, not on the `NexusClient`.
+
+```python
+query = f'Endpoint = "{ENDPOINT_NAME}"'
+count = await client.count_nexus_operations(query)
+print(f"Total Nexus operations: {count.count}")
+```
+
+## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
+
+The code samples referenced on this page use [`ClientConfig.load_client_connect_config()`](https://python.temporal.io/temporalio.envconfig.ClientConfig.html#load_client_connect_config), so the same code
+works against Temporal Cloud — just configure the connection via environment variables or a TOML
+profile. No code changes are needed.
+
+For full details on connecting to Temporal Cloud, including Namespace creation, Nexus Endpoint
+setup, certificate generation, and authentication options, see
+[Make Nexus calls across Namespaces in Temporal Cloud](/develop/python/nexus/feature-guide#nexus-calls-across-namespaces-temporal-cloud)
+and [Connect to Temporal Cloud](/develop/python/client/temporal-client#connect-to-temporal-cloud).

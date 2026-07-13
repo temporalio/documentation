@@ -36,7 +36,7 @@ jobs:
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
 
       - name: Checkout docs repo
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
@@ -44,7 +44,7 @@ jobs:
           ref: main
 
       - name: Checkout CLI repo
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           path: cli
           ref: ${{ github.event.inputs.cli_release_tag }}
@@ -59,7 +59,7 @@ jobs:
           go-version: '1.26'
 
       - name: Checkout cloud-cli repo
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7
         with:
           path: cloud-cli
           submodules: recursive
@@ -77,6 +77,24 @@ jobs:
           go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
           go run ./cmd/gen-docs -input ../cloud-cli/temporalcloudcli/commands.yml -output dist/docs -subdir cloud
 
+      - name: Copy generated command reference into the docs repo
+        working-directory: docs
+        run: |
+          set -ex
+
+          # Regenerate the command reference pages. cp -R preserves the cloud/
+          # subdirectory produced by -subdir.
+          rm -rf docs/cli/command-reference
+          mkdir -p docs/cli/command-reference
+          cp -R ../cli/dist/docs/* docs/cli/command-reference/
+
+          # gen-docs intentionally does not emit index.mdx landing pages: those
+          # are hand-maintained (custom ordering, embedded components such as
+          # ReleaseNoteHeader). Restore them after regeneration so they are not
+          # lost by the rm -rf above.
+          git checkout HEAD -- docs/cli/command-reference/index.mdx
+          git checkout HEAD -- docs/cli/command-reference/cloud/index.mdx
+
       - name: Publish generated docs to documentation repo
         env:
           GH_TOKEN: ${{ github.token }}
@@ -93,10 +111,7 @@ jobs:
 
           branch_name="update-cli-docs-$CLI_RELEASE_TAG"
           git checkout -b "$branch_name"
-          rm -rf docs/cli/command-reference
-          mkdir -p docs/cli/command-reference
-          cp -r ../cli/dist/docs/* docs/cli/command-reference/
-          git add .
+          git add -A docs/cli/command-reference
           git commit -m "$COMMIT_MESSAGE"
           git push origin "$branch_name"
 
