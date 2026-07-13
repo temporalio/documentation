@@ -30,7 +30,7 @@ tags:
 ---
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
 This page provides a reference for the `temporal` CLI `activity` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
@@ -206,6 +206,10 @@ failed), it will not be run again until it is unpaused.
 
 However, if the Activity is currently running, it will run until the next
 time it fails, completes, or times out, at which point the pause will kick in.
+
+Pause does not stop or extend the Activity's Schedule-To-Close Timeout.
+A paused Activity can still time out. Use `temporal activity update-options`
+to extend timeout settings before a long pause.
 
 If the Activity is on its last retry attempt and fails, the failure will
 be returned to the caller, just as if the Activity had not been paused.
