@@ -97,6 +97,6 @@ catch (ActivityFailureException err)
 
 This works differently in a Workflow than raising exceptions from Activities.
 In an Activity, any C# exceptions or custom exceptions are converted to a Temporal `ApplicationError`.
-In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried.
+In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](/tasks#workflow-task-execution) and be retried.
 This includes any typical C# `RuntimeError`s that are raised automatically.
 These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.
