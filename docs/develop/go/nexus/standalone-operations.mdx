@@ -137,6 +137,7 @@ Or use the Temporal CLI to execute a Standalone Nexus Operation:
 
 ```bash
 ./temporal nexus operation execute \
+  --namespace my-caller-namespace \
   --endpoint my-nexus-endpoint \
   --service my-hello-service \
   --operation echo \
@@ -164,7 +165,7 @@ the failure is returned as an error.
 Or use the Temporal CLI to wait for a result by Operation ID:
 
 ```bash
-./temporal nexus operation result --operation-id my-echo-op
+./temporal nexus operation result --namespace my-caller-namespace --operation-id my-echo-op
 ```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
@@ -198,7 +199,7 @@ The `Query` field accepts [List Filter](/list-filter) syntax. For example,
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation list --query 'Endpoint = "my-nexus-endpoint"'
+./temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Count Standalone Nexus Operations {/* #count-operations */}
@@ -222,7 +223,7 @@ log.Println("Total Nexus operations:", resp.Count)
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation count --query 'Endpoint = "my-nexus-endpoint"'
+./temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
