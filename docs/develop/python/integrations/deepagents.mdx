@@ -1,0 +1,230 @@
+---
+id: deepagents
+title: Deep Agents integration
+sidebar_label: Deep Agents
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - deepagents
+  - langchain
+  - durable execution
+  - ai workflows
+tags:
+  - Deep Agents
+  - Python SDK
+  - Temporal SDKs
+description:
+  Run LangChain Deep Agents with durable execution using the Temporal Python SDK and Deep Agents plugin.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+Temporal's integration with [Deep Agents](https://github.com/langchain-ai/deepagents) makes an existing LangChain
+Deep Agent durable by adding one plugin. Build your agent with `create_deep_agent(...)` inside a Workflow, add
+`DeepAgentsPlugin` to your Client or Worker, and each LLM call and each I/O tool call becomes a Temporal Activity —
+while the agent's control loop runs, and deterministically replays, inside the Workflow.
+
+The code you already wrote against `deepagents` doesn't change. Sub-agents, planning and todo state, the filesystem
+middleware, human-in-the-loop interrupts, and `agent.ainvoke(...)` all keep working. On top of that you get
+crash durability, automatic retries and timeouts on every model and tool call, resumable human-in-the-loop, and
+bounded Workflow history for long-running agents.
+
+<ReleaseNoteHeader type="prerelease" />
+
+:::info
+
+The `temporalio.contrib.deepagents` plugin is experimental and its API may change in future versions.
+
+:::
+
+Code snippets in this guide are taken from the
+[Deep Agents plugin samples](https://github.com/temporalio/samples-python/tree/main/deepagents_plugin). Refer to the
+samples for the complete code.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with Deep Agents. If you aren't, refer to the
+  [Deep Agents documentation](https://github.com/langchain-ai/deepagents) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave the
+  Temporal development server running if you want to test your code locally.
+
+## Install the plugin
+
+Install the Temporal Python SDK with Deep Agents support:
+
+```bash
+uv add "temporalio[deepagents]"
+```
+
+or with pip:
+
+```bash
+pip install "temporalio[deepagents]"
+```
+
+:::note
+
+The integration is experimental and ships with an upcoming Temporal Python SDK release. It requires Python 3.11 or
+newer, the same floor that `deepagents` sets.
+
+:::
+
+## Hello World
+
+A Deep Agent becomes durable without changing the agent code itself. The Workflow below builds a vanilla
+`create_deep_agent(...)` and drives it with `await agent.ainvoke(...)` — exactly the code you would write outside
+Temporal. Because `model=` is a bare `"provider:name"` string, the plugin auto-routes the model call through the
+`deepagents.invoke_model` Activity, so the LLM call gets Temporal-managed retries and timeouts while the agent's control
+loop replays deterministically in the Workflow.
+
+<!--SNIPSTART python-deepagents-hello-world-workflow-->
+<!--SNIPEND-->
+
+`DeepAgentsPlugin` is a **client-level** plugin: add it to `Client.connect(...)` and the SDK propagates it to any Worker
+built from that Client. Add it on exactly one side. The plugin registers the `deepagents.*` Activities and installs the
+LangChain-aware data converter, so the Worker needs no other wiring.
+
+<!--SNIPSTART python-deepagents-hello-world-worker-->
+<!--SNIPEND-->
+
+Use `model_activity_options` on the plugin to control the timeout and retry policy for each model call. API keys live on
+the Worker via the model provider (LangChain's `init_chat_model` by default), never in Workflow inputs or history —
+the Workflow ships only the model name, and the Worker builds the real client. LLM-SDK-side retries are disabled so that
+Temporal owns retries and timeouts.
+
+Start the Workflow like any other:
+
+<!--SNIPSTART python-deepagents-hello-world-run-workflow-->
+<!--SNIPEND-->
+
+## Choose Workflow or Activity execution per tool
+
+A Deep Agent holds its tools in-Workflow. A tool that only reads or writes agent state is pure and belongs there; a tool
+that does real I/O must not run in Workflow code. The plugin gives you two explicit ways to move a tool's work into an
+Activity:
+
+- `activity_as_tool(my_activity, ...)` surfaces an existing `@activity.defn` function as a Deep Agents tool without
+  re-declaring it.
+- `tool_as_activity(tool, ...)` wraps a LangChain tool whose body does I/O so its execution runs as a
+  `deepagents.invoke_tool` Activity.
+
+An unwrapped, non-builtin tool runs in-Workflow and the plugin warns at construction, so that choice is never silent.
+Deep Agents' pure built-ins (`write_todos`, the state-backed file tools) stay in-Workflow by design.
+
+This sample wraps an existing activity and an I/O tool, and constructs the model explicitly as `TemporalModel(...)` to
+show the non-auto path:
+
+<!--SNIPSTART python-deepagents-react-agent-activity-->
+<!--SNIPEND-->
+
+<!--SNIPSTART python-deepagents-react-agent-workflow-->
+<!--SNIPEND-->
+
+## Durable backends
+
+A Deep Agent's built-in file tools (`write_file`, `read_file`, `ls`, and so on) delegate to a *backend*. The default
+`StateBackend` keeps files in agent state — pure Workflow state, replay-safe, and needs no wrapping. A `FilesystemBackend`,
+`LocalShellBackend`, or `StoreBackend` touches real resources, which must not happen from Workflow code.
+
+Wrap such a backend with `TemporalBackend(inner, activity_options=...)` so each file or shell operation the agent's tools
+invoke becomes a `deepagents.backend_op` Activity instead of running in the Workflow. The agent code is unchanged; only
+the backend is wrapped.
+
+<!--SNIPSTART python-deepagents-filesystem-backend-workflow-->
+<!--SNIPEND-->
+
+## Sub-agents
+
+A coordinator built with `create_deep_agent(..., subagents=[...])` delegates to its sub-agents via the built-in `task`
+tool. Deep Agents builds each sub-agent as a separate graph, but they inherit the parent's `model` object by default.
+Because the plugin makes that model object durable, every sub-agent's model call is automatically durable too — you wire
+the plugin once and the whole agent tree is covered, with no per-sub-agent wiring.
+
+<!--SNIPSTART python-deepagents-subagents-workflow-->
+<!--SNIPEND-->
+
+## Human-in-the-loop
+
+`create_deep_agent(..., interrupt_on=...)` makes the agent pause before a guarded tool runs. With an in-Workflow
+`InMemorySaver` checkpointer, LangGraph does *not* raise out of `ainvoke` — it returns the current state with an
+`__interrupt__` entry describing the pending approval. Because the agent loop runs in the Workflow, that pause surfaces
+directly in Workflow code.
+
+The plugin adds no shim here; the native LangGraph resume protocol is used as-is. The recommended Temporal mapping is to
+expose the pending approval via a [Query](/develop/python/workflows/message-passing#queries) and resume via an
+[Update](/develop/python/workflows/message-passing#updates) that feeds the human's decision back with
+`Command(resume={"decisions": [...]})`. The `InMemorySaver` is replay-safe because its state lives in the Workflow's own
+memory, rehydrated by deterministic replay, and the stable Workflow ID is used as the `thread_id`.
+
+<!--SNIPSTART python-deepagents-human-in-the-loop-workflow-->
+<!--SNIPEND-->
+
+## Continue-as-new
+
+Long conversations bloat Workflow history until it hits Temporal's limits. `run_deep_agent(agent, input,
+continue_as_new_after=N, state_snapshot=...)` snapshots state and continues into a fresh run once history passes `N`
+events and the agent still has pending todos.
+
+- **Carries forward:** the accumulated messages and the model/tool result cache, so an LLM or tool call completed before
+  the continue-as-new is *not* re-run afterward.
+- **Does not carry forward:** anything held only in an in-memory checkpointer's own structures beyond the
+  messages/todos snapshot.
+
+Your `@workflow.run` method must accept the carried state — its signature is `run(self, input, state_snapshot=None)`.
+On a continue-as-new, `run_deep_agent` re-invokes the method with `args=[input, snapshot]`, so `input` must be passed
+straight through, not re-wrapped, or the carried conversation is corrupted.
+
+<!--SNIPSTART python-deepagents-continue-as-new-workflow-->
+<!--SNIPEND-->
+
+## Streaming
+
+Constructing the plugin with `DeepAgentsPlugin(streaming_topic="...")` flips model dispatch from
+`deepagents.invoke_model` to `deepagents.invoke_model_streaming`: the streaming Activity coalesces chunk batches and
+publishes them to a [`WorkflowStream`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/workflow_streams)
+topic for external subscribers, while the aggregated final message is still returned to the Workflow. The durable result
+is identical to the non-streaming path.
+
+Streaming is async-only, so the Workflow drives an explicit `TemporalModel.astream(...)` and hosts a `WorkflowStream`
+so external subscribers can attach by Workflow ID.
+
+<!--SNIPSTART python-deepagents-streaming-workflow-->
+<!--SNIPEND-->
+
+## Compose with an observability plugin
+
+This plugin carries no tracing context of its own. For observability, compose it with an observability plugin such as
+[`temporalio.contrib.langsmith`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith) or
+`temporalio.contrib.opentelemetry`. Register the observability plugin **before** `DeepAgentsPlugin` so it can capture
+the LLM calls that `DeepAgentsPlugin` runs as Activities. The Workflow itself is an ordinary Deep Agent — the tracing
+comes entirely from composing the plugins on the Client.
+
+<!--SNIPSTART python-deepagents-langsmith-tracing-workflow-->
+<!--SNIPEND-->
+
+For agents built directly as LangGraph graphs rather than a compiled Deep Agent, see the
+[LangGraph integration](/develop/python/integrations/langgraph).
+
+## Runtime behavior and limitations
+
+- **Auto-routing is Workflow-scoped.** While a Worker built with this plugin is running, the plugin patches Deep Agents'
+  model-resolution seam so a bare `model="provider:name"` string is auto-routed through an Activity, regardless of how you
+  imported `create_deep_agent`. This seam is shared by the agent and every sub-agent, and it only rewrites the model when
+  resolved *inside a Workflow*, so importing `deepagents` on a plain client or Activity Worker is unaffected, and the
+  patched seam is restored when the Worker stops. Pass `TemporalModel("provider:name")` yourself if you would rather be
+  explicit.
+- **Built-ins stay in-Workflow.** Deep Agents' pure built-in tools (`write_todos`, state-backed file tools) run
+  in-Workflow by design and do not need wrapping. Only tools and backends that do real I/O should be moved to Activities.
+- **Durable checkpointers are not replay-safe.** The default in-Workflow `InMemorySaver` is rehydrated for free by
+  deterministic replay. A durable checkpointer that does its own I/O is not replay-safe from inside a Workflow, and the
+  plugin warns if you pass one — prefer the snapshot plus continue-as-new path above.
+
+## Samples
+
+The [Deep Agents plugin samples](https://github.com/temporalio/samples-python/tree/main/deepagents_plugin) demonstrate
+all supported patterns, including tool choice, durable backends, sub-agents, human-in-the-loop, continue-as-new,
+streaming, and observability composition.
