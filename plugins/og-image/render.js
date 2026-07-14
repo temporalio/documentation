@@ -11,7 +11,7 @@ const CARD_HEIGHT = 630;
 // Bump this whenever the card layout/design changes (including the encoding
 // step below) so cached images invalidate even though the underlying page
 // content didn't change.
-const TEMPLATE_VERSION = 7;
+const TEMPLATE_VERSION = 8;
 
 // The icon spans the full height of the lockup's viewBox (0-395 of 0-395),
 // so rendering the whole icon+wordmark asset at LOGO_HEIGHT makes the icon
@@ -20,11 +20,27 @@ const TEMPLATE_VERSION = 7;
 const LOGO_HEIGHT = 60;
 const LOGO_ASPECT_RATIO = 1571 / 395;
 
+const TITLE_MAX_LINES = 3;
 const DESCRIPTION_MAX_LINES = 3;
 
 function dataUri(assetPath, mimeType) {
   const data = fs.readFileSync(assetPath);
   return `data:${mimeType};base64,${data.toString('base64')}`;
+}
+
+// satori has no equivalent of CSS `overflow-wrap: break-word` — its only
+// word-breaking knobs are `word-break: break-all` (breaks every word, even
+// short ones, which looks broken for normal titles) or the default (never
+// breaks within a word, so one long unbroken token — a hash, identifier, or
+// concatenated string with no spaces/hyphens — just runs off the edge of the
+// card). Inserting a zero-width space every `maxSegmentLength` characters
+// gives satori's line breaker a place to wrap inside such a token, while
+// leaving every word under that length (i.e. all real-world titles) untouched.
+function breakLongWords(text, maxSegmentLength) {
+  return text
+    .split(' ')
+    .map((word) => (word.length <= maxSegmentLength ? word : word.replace(new RegExp(`(.{${maxSegmentLength}})`, 'g'), '$1\u200B')))
+    .join(' ');
 }
 
 let assetsPromise;
@@ -62,7 +78,12 @@ function loadAssets() {
         },
       ],
       logo: dataUri(path.resolve(__dirname, '../../static/img/assets/temporal-logo.svg'), 'image/svg+xml'),
-      background: dataUri(path.resolve(__dirname, '../../static/img/assets/og-background.png'), 'image/png'),
+      // Lives next to render.js (not under static/) because nothing on the
+      // live site ever links to it — static/ gets copied verbatim into the
+      // public build output, which would ship this ~780KB source texture to
+      // every deploy for zero benefit. Unlike temporal-logo.svg above, which
+      // is also used elsewhere on the site and genuinely needs to be public.
+      background: dataUri(path.resolve(__dirname, 'assets/og-background.png'), 'image/png'),
     });
   }
   return assetsPromise;
@@ -111,15 +132,20 @@ function buildTree({ title, description }, { logo, background }) {
                       type: 'div',
                       props: {
                         style: {
-                          display: 'flex',
+                          // display: 'block' (not 'flex') is required for
+                          // lineClamp to actually truncate — satori silently
+                          // ignores lineClamp on flex containers, same as the
+                          // description div below.
+                          display: 'block',
                           fontFamily: 'Aeonik',
                           fontSize: 75,
                           fontWeight: 300,
                           color: TITLE_COLOR,
                           lineHeight: 1.15,
                           maxWidth: '92%',
+                          lineClamp: TITLE_MAX_LINES,
                         },
-                        children: title,
+                        children: breakLongWords(title, 25),
                       },
                     },
                     description
@@ -136,7 +162,7 @@ function buildTree({ title, description }, { logo, background }) {
                               maxWidth: '80%',
                               lineClamp: DESCRIPTION_MAX_LINES,
                             },
-                            children: description,
+                            children: breakLongWords(description, 40),
                           },
                         }
                       : null,

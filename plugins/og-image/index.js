@@ -3,35 +3,9 @@ const path = require('path');
 const crypto = require('crypto');
 const matter = require('gray-matter');
 const { renderCard, TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./render');
+const { walkDir, resolveUrlPath } = require('../shared/docsRouting');
 
 const CACHE_DIR = path.join(__dirname, '../../node_modules/.cache/og-images');
-
-function walkDir(dir) {
-  if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).flatMap((name) => {
-    const full = path.join(dir, name);
-    if (fs.statSync(full).isDirectory()) return walkDir(full);
-    if (/\.(md|mdx)$/i.test(name)) return [full];
-    return [];
-  });
-}
-
-// Mirrors plugins/markdown-pages's route resolution (slug/id front matter
-// takes precedence over the file path) so generated cards land at the same
-// route Docusaurus actually builds the page at.
-function resolveUrlPath(docsDir, filePath, frontmatter) {
-  if (frontmatter.slug) {
-    const slug = frontmatter.slug.replace(/^\/+/, '').replace(/\/+$/, '');
-    return slug || 'index';
-  }
-  const rel = path.relative(docsDir, filePath).replace(/\\/g, '/');
-  const withoutExt = rel.replace(/\.(md|mdx)$/i, '');
-  const id = frontmatter.id || path.basename(withoutExt);
-  const dir = path.dirname(withoutExt);
-  if (dir === '.') return id === 'index' ? 'index' : id;
-  if (id === 'index' || id === path.basename(dir)) return dir;
-  return `${dir}/${id}`;
-}
 
 function htmlPathForUrlPath(outDir, urlPath) {
   return urlPath === 'index'
