@@ -2139,11 +2139,6 @@
       "permanent": true
     },
     {
-      "source": "/encyclopedia/architecture/temporal-client",
-      "destination": "/encyclopedia/temporal-client",
-      "permanent": true
-    },
-    {
       "source": "/temporal-client",
       "destination": "/encyclopedia/temporal-client",
       "permanent": true

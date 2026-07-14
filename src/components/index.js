@@ -8,7 +8,7 @@ export { SdkGuideLinks } from './elements/SdkGuideLinks';
 export { default as PhotoCarousel } from './elements/PhotoCarousel';
 export { default as SdkTabs } from './elements/SdkTabs';
 export { default as ServerlessWorkerDemo } from './elements/ServerlessWorkerDemo';
-export { default as TemporalLifecycleDemo } from './elements/TemporalLifecycleDemo';
+export { default as TemporalLifecycleDemo } from './elements/LifecycleDemo/TemporalLifecycleDemo';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell, DocsTableRow } from './formatting/DocsTable';
