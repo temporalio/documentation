@@ -58,7 +58,7 @@ endpoints can differ based on what is visible to a system. Action Categories and
 billing API.
 
 Usage and Billing data will have the most complete Actions data while Event history and metrics will help with
-detailed _estimates_. For example, [History Event Types](https://docs.temporal.io/workflow-execution/event) are provided
+detailed _estimates_. For example, [History Event Types](/workflow-execution/event) are provided
 for transparency, but do not always have a simple 1:1 relationship with Action Types. The Categories, Action types, and
 available endpoints are listed in the following sections:
 
@@ -142,9 +142,9 @@ available endpoints are listed in the following sections:
 
 ## Signal {/* #signal */}
 
-- **Signal sent**. An Action occurs for every [Signal](https://docs.temporal.io/sending-messages#sending-signals),
+- **Signal sent**. An Action occurs for every [Signal](/sending-messages#sending-signals),
   whether sent from a Client or from a Workflow. Also, one total action occurs for any
-  [Signal-With-Start](https://docs.temporal.io/sending-messages#signal-with-start), regardless of whether the Workflow
+  [Signal-With-Start](/sending-messages#signal-with-start), regardless of whether the Workflow
   starts.
 
 | Usage Name                 | Metric Name                  | History Event Type                                                                                                                                                                                                                                                           |
@@ -156,7 +156,7 @@ available endpoints are listed in the following sections:
 ## Query {/* #query */}
 
 - **Query received by Worker**. An Action occurs for every
-  [Query](https://docs.temporal.io/sending-messages#sending-queries), including viewing the call stack in the Temporal
+  [Query](/sending-messages#sending-queries), including viewing the call stack in the Temporal
   Cloud UI, which results in a Query behind the scenes. `__temporal_workflow_metadata` is a built-in query used to
   retrieve workflow metadata at runtime and is excluded.
 
@@ -167,9 +167,9 @@ available endpoints are listed in the following sections:
 ## Update {/* #update */}
 
 - **Update received by Worker**.
-  - Occurs for every successful [Update](https://docs.temporal.io/sending-messages#sending-updates) and every
-    [rejected](https://docs.temporal.io/handling-messages#update-validators) Update.
-  - This includes [Update-With-Start](https://docs.temporal.io/sending-messages#update-with-start), and is in addition
+  - Occurs for every successful [Update](/sending-messages#sending-updates) and every
+    [rejected](/handling-messages#update-validators) Update.
+  - This includes [Update-With-Start](/sending-messages#update-with-start), and is in addition
     to the start Action in the case when the Workflow starts as well.
   - De-duplicated Updates that share an Update ID do _not_ count as an Action.
 
