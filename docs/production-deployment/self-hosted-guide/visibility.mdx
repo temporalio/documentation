@@ -261,6 +261,33 @@ Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
 to run the setup.
 
+### Maintaining Visibility index health {/* #postgresql-index-maintenance */}
+
+On high-volume deployments, the total size of the indexes on `executions_visibility` can grow much larger than the table itself and keep growing even with a Retention Period set. This is expected PostgreSQL b-tree behavior rather than a data leak:
+
+- Each pre-allocated custom and system Search Attribute has its own nullable column and its own index. PostgreSQL b-tree indexes store entries for `NULL` values, so a Search Attribute that a deployment never sets still has one index entry for every Workflow Execution row.
+- Closing or updating a Workflow Execution upserts its Visibility row, and because these indexes order on `close_time`, the updates leave dead index entries over time.
+- `VACUUM` reclaims table (heap) space but does not compact b-tree index bloat. `REINDEX` rebuilds an index and reclaims that space; removing rows through the Retention Period does not.
+
+To reclaim index space online, run `REINDEX` with `CONCURRENTLY`, which does not block reads or writes. It needs roughly the size of the index in extra disk space and I/O, so prefer a lower-traffic window:
+
+```sql
+REINDEX TABLE CONCURRENTLY executions_visibility;
+```
+
+You can also target a single index with `REINDEX INDEX CONCURRENTLY <index_name>;`.
+
+Because `executions_visibility` is update-heavy, more aggressive autovacuum settings for the table help keep dead tuples, and the resulting index bloat, under control:
+
+```sql
+ALTER TABLE executions_visibility SET (
+  autovacuum_vacuum_scale_factor = 0.05,
+  autovacuum_analyze_scale_factor = 0.05
+);
+```
+
+Track sizes with `pg_relation_size('executions_visibility')` and `pg_indexes_size('executions_visibility')`, and use the [`pgstattuple`](https://www.postgresql.org/docs/current/pgstattuple.html) extension for precise bloat estimates. For sustained high-volume Visibility workloads, consider [Elasticsearch or OpenSearch](#elasticsearch), which Temporal recommends for production at scale.
+
 ## How to set up SQLite Visibility store {/* #sqlite */}
 
 :::tip Support, stability, and dependency info
