@@ -81,13 +81,6 @@ Standalone Nexus Operations let you make Nexus calls from anywhere using the Tem
 Any code that can construct a Temporal Client can durably hand off a Nexus Operation to Temporal, such as a UI backend or BFF, a non-Temporal microservice, an HTTP handler, or a script.
 You still get automatic retries, built-in rate limiting and circuit breaking, and full execution visibility: the reliability of Nexus without the overhead of a caller (proxy) Workflow.
 
-
-### A foundation for Nexus Connectors
-
-Standalone Nexus Operations are a building block for inbound gateways and Connectors that expose Nexus Services via other protocols like HTTP or Kafka.
-A gateway caller Namespace is used to durably execute Nexus Operations using the Temporal SDK Client.
-Multiple Nexus Endpoints and Services can be used through a single gateway caller Namespace.
-
 ## Key features
 
 - Execute any Nexus Operation as a top-level primitive without the overhead of a caller Workflow
