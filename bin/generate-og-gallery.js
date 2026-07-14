@@ -14,6 +14,43 @@ const DOCS_DIR = path.join(process.cwd(), 'docs');
 const BUILD_DIR = path.join(process.cwd(), 'build');
 const OUT_FILE = path.join(BUILD_DIR, '__og-gallery.html');
 
+// Section grouping/labeling is purely a gallery-review concern now — the
+// generated card itself dropped the section pill in the Figma redesign, so
+// this doesn't live in plugins/og-image/index.js (the actual production
+// plugin) anymore, only here.
+const SDK_LABELS = {
+  go: 'Go',
+  python: 'Python',
+  java: 'Java',
+  typescript: 'TypeScript',
+  dotnet: '.NET',
+  php: 'PHP',
+  ruby: 'Ruby',
+  rust: 'Rust',
+};
+
+const SECTION_OVERRIDES = {
+  cli: 'CLI',
+  'tctl-v1': 'tctl v1',
+};
+
+function humanize(id) {
+  return id
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function resolveSection(docsDir, filePath) {
+  const rel = path.relative(docsDir, filePath).replace(/\\/g, '/');
+  const segments = rel.split('/');
+  if (segments.length === 1) return 'Docs';
+  const top = segments[0];
+  if (top === 'develop' && segments[1] && SDK_LABELS[segments[1]]) {
+    return `${SDK_LABELS[segments[1]]} SDK`;
+  }
+  return SECTION_OVERRIDES[top] || humanize(top);
+}
+
 async function getSiteUrl() {
   const createConfigAsync = require('../docusaurus.config.js');
   const config = await createConfigAsync();
@@ -39,7 +76,7 @@ async function main() {
     const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
     if (!fs.existsSync(htmlPath)) continue;
 
-    const section = ogImagePlugin.resolveSection(DOCS_DIR, filePath);
+    const section = resolveSection(DOCS_DIR, filePath);
     const routePath = urlPath === 'index' ? '/' : `/${urlPath}`;
 
     if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
@@ -53,9 +90,9 @@ async function main() {
     const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
     const title = ogImagePlugin.extractTitle(content, frontmatter, id);
     const description = frontmatter.description;
-    const hash = ogImagePlugin.hashFor(title, description, section);
+    const hash = ogImagePlugin.hashFor(title, description);
 
-    cards.push({ urlPath: routePath, section, title, isOverride: false, imgSrc: `/img/og/${hash}.png` });
+    cards.push({ urlPath: routePath, section, title, isOverride: false, imgSrc: `/img/og/${hash}.${ogImagePlugin.IMAGE_EXTENSION}` });
   }
 
   cards.sort((a, b) => a.section.localeCompare(b.section) || a.title.localeCompare(b.title));

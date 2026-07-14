@@ -4,7 +4,7 @@
 // get their own generated og:image (plugins/og-image), so they no longer
 // match the site-wide default from Phase 1. This script now asserts three
 // things instead of one: (1) every doc page's og:image/twitter:image point
-// to a real generated PNG under build/img/og/, UNLESS (2) the page declares
+// to a real generated image under build/img/og/, UNLESS (2) the page declares
 // a manual override (front-matter `image:` or an inline <Head> og:image),
 // in which case it must keep that exact override instead of the generated
 // image — Phase 4 intentionally makes "every doc page gets a generated
@@ -66,7 +66,7 @@ async function main() {
 
   const docHtmlPaths = new Set();
   const docMismatches = [];
-  const missingPngs = [];
+  const missingImages = [];
   const overrideMismatches = [];
   let docPagesChecked = 0;
   let overridePagesChecked = 0;
@@ -107,13 +107,12 @@ async function main() {
     const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
     const title = ogImagePlugin.extractTitle(content, frontmatter, id);
     const description = frontmatter.description;
-    const section = ogImagePlugin.resolveSection(DOCS_DIR, filePath);
-    const hash = ogImagePlugin.hashFor(title, description, section);
+    const hash = ogImagePlugin.hashFor(title, description);
     const expectedImage = new URL(
-      path.posix.join(config.baseUrl, 'img/og', `${hash}.png`),
+      path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
       ogImagePlugin.resolveSiteUrl(config),
     ).toString();
-    const expectedPngPath = path.join(BUILD_DIR, 'img', 'og', `${hash}.png`);
+    const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
 
     if (ogImage !== expectedImage || twitterImage !== expectedImage) {
       docMismatches.push({
@@ -123,8 +122,8 @@ async function main() {
         twitterImage,
       });
     }
-    if (!fs.existsSync(expectedPngPath)) {
-      missingPngs.push({ file: path.relative(BUILD_DIR, htmlPath), expectedPngPath });
+    if (!fs.existsSync(expectedImagePath)) {
+      missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
     }
   }
 
@@ -143,11 +142,11 @@ async function main() {
 
   console.log(`[validate-og-images] ${docPagesChecked} doc page(s) checked, ${skippedPartials} partial(s) skipped (not routed)`);
   console.log(`[validate-og-images] ${generatedPagesChecked - docMismatches.length}/${generatedPagesChecked} doc page(s) have a correct generated og:image + twitter:image`);
-  console.log(`[validate-og-images] ${generatedPagesChecked - missingPngs.length}/${generatedPagesChecked} doc page(s) have their generated PNG present on disk`);
+  console.log(`[validate-og-images] ${generatedPagesChecked - missingImages.length}/${generatedPagesChecked} doc page(s) have their generated image present on disk`);
   console.log(`[validate-og-images] ${overridePagesChecked - overrideMismatches.length}/${overridePagesChecked} manual-override doc page(s) kept their own og:image`);
   console.log(`[validate-og-images] ${otherFiles.length - otherMismatches.length}/${otherFiles.length} non-doc page(s) still match the site default`);
 
-  const failures = docMismatches.length + missingPngs.length + overrideMismatches.length + otherMismatches.length;
+  const failures = docMismatches.length + missingImages.length + overrideMismatches.length + otherMismatches.length;
   if (failures > 0) {
     if (docMismatches.length > 0) {
       console.error(`\n${docMismatches.length} doc page(s) have an unexpected og:image/twitter:image:\n`);
@@ -161,10 +160,10 @@ async function main() {
         console.error(`  ${m.file}: expected ${m.expected}, got og:image=${m.ogImage} twitter:image=${m.twitterImage}`);
       }
     }
-    if (missingPngs.length > 0) {
-      console.error(`\n${missingPngs.length} doc page(s) reference a PNG that doesn't exist on disk:\n`);
-      for (const m of missingPngs.slice(0, 20)) {
-        console.error(`  ${m.file}: missing ${m.expectedPngPath}`);
+    if (missingImages.length > 0) {
+      console.error(`\n${missingImages.length} doc page(s) reference an image that doesn't exist on disk:\n`);
+      for (const m of missingImages.slice(0, 20)) {
+        console.error(`  ${m.file}: missing ${m.expectedImagePath}`);
       }
     }
     if (otherMismatches.length > 0) {

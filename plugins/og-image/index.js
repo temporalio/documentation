@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const matter = require('gray-matter');
-const { renderCard, TEMPLATE_VERSION } = require('./render');
+const { renderCard, TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./render');
 
 const CACHE_DIR = path.join(__dirname, '../../node_modules/.cache/og-images');
 
@@ -52,36 +52,6 @@ function extractTitle(content, frontmatter, id) {
   return humanize(id);
 }
 
-const SDK_LABELS = {
-  go: 'Go',
-  python: 'Python',
-  java: 'Java',
-  typescript: 'TypeScript',
-  dotnet: '.NET',
-  php: 'PHP',
-  ruby: 'Ruby',
-  rust: 'Rust',
-};
-
-// Top-level folder name -> display label, for the cases where the generic
-// humanize() (hyphens -> spaces, capitalize each word) reads wrong, e.g.
-// "cli" -> "Cli" instead of "CLI".
-const SECTION_OVERRIDES = {
-  cli: 'CLI',
-  'tctl-v1': 'tctl v1',
-};
-
-function resolveSection(docsDir, filePath) {
-  const rel = path.relative(docsDir, filePath).replace(/\\/g, '/');
-  const segments = rel.split('/');
-  if (segments.length === 1) return 'Docs';
-  const top = segments[0];
-  if (top === 'develop' && segments[1] && SDK_LABELS[segments[1]]) {
-    return `${SDK_LABELS[segments[1]]} SDK`;
-  }
-  return SECTION_OVERRIDES[top] || humanize(top);
-}
-
 // A page opts out of the generated card either via front matter `image:`
 // (the mechanism Docusaurus already supports natively for docs) or by
 // embedding its own <Head> og:image override directly in the MDX content
@@ -106,21 +76,24 @@ function overrideImageFor(frontmatter, content, siteUrl) {
   return contentMatch ? contentMatch[1] : null;
 }
 
-function hashFor(title, description, section) {
+// Deliberately excludes section: render.js doesn't render it (dropped along
+// with the section pill in the Figma redesign), so including it here would
+// just fragment the cache between pages that render pixel-identically.
+function hashFor(title, description) {
   return crypto
     .createHash('sha256')
-    .update(`v${TEMPLATE_VERSION}:${section}:${title}:${description || ''}`)
+    .update(`v${TEMPLATE_VERSION}:${title}:${description || ''}`)
     .digest('hex')
     .slice(0, 16);
 }
 
-async function getCardBuffer(title, description, section) {
-  const hash = hashFor(title, description, section);
-  const cachePath = path.join(CACHE_DIR, `${hash}.png`);
+async function getCardBuffer(title, description) {
+  const hash = hashFor(title, description);
+  const cachePath = path.join(CACHE_DIR, `${hash}.${IMAGE_EXTENSION}`);
   if (fs.existsSync(cachePath)) {
     return { hash, buffer: fs.readFileSync(cachePath), cached: true };
   }
-  const buffer = await renderCard({ title, description, section });
+  const buffer = await renderCard({ title, description });
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.writeFileSync(cachePath, buffer);
   return { hash, buffer, cached: false };
@@ -192,9 +165,8 @@ function ogImagePlugin(context, options = {}) {
         const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
         const title = extractTitle(content, frontmatter, id);
         const description = frontmatter.description;
-        const section = resolveSection(docsDir, filePath);
         const renderStart = Date.now();
-        const { hash, buffer, cached: wasCached } = await getCardBuffer(title, description, section);
+        const { hash, buffer, cached: wasCached } = await getCardBuffer(title, description);
         if (wasCached) {
           cached++;
         } else {
@@ -203,14 +175,14 @@ function ogImagePlugin(context, options = {}) {
         }
         outputBytes += buffer.length;
 
-        const cardOutPath = path.join(outDir, 'img', 'og', `${hash}.png`);
+        const cardOutPath = path.join(outDir, 'img', 'og', `${hash}.${IMAGE_EXTENSION}`);
         if (!fs.existsSync(cardOutPath)) {
           fs.mkdirSync(path.dirname(cardOutPath), { recursive: true });
-          fs.copyFileSync(path.join(CACHE_DIR, `${hash}.png`), cardOutPath);
+          fs.copyFileSync(path.join(CACHE_DIR, `${hash}.${IMAGE_EXTENSION}`), cardOutPath);
         }
 
         const absoluteUrl = new URL(
-          path.posix.join(siteConfig.baseUrl, 'img/og', `${hash}.png`),
+          path.posix.join(siteConfig.baseUrl, 'img/og', `${hash}.${IMAGE_EXTENSION}`),
           resolveSiteUrl(siteConfig),
         ).toString();
 
@@ -239,10 +211,10 @@ ogImagePlugin.walkDir = walkDir;
 ogImagePlugin.resolveUrlPath = resolveUrlPath;
 ogImagePlugin.htmlPathForUrlPath = htmlPathForUrlPath;
 ogImagePlugin.extractTitle = extractTitle;
-ogImagePlugin.resolveSection = resolveSection;
 ogImagePlugin.hashFor = hashFor;
 ogImagePlugin.hasManualOverride = hasManualOverride;
 ogImagePlugin.overrideImageFor = overrideImageFor;
 ogImagePlugin.resolveSiteUrl = resolveSiteUrl;
+ogImagePlugin.IMAGE_EXTENSION = IMAGE_EXTENSION;
 
 module.exports = ogImagePlugin;
