@@ -120,7 +120,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
 | `HomePageHero` | `home-page-hero` | Homepage hero's headline, intro paragraphs, and link cards (content mirrored from the component) |
 | `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
-| `ZoomPanPinch`, `DiscoverableDisclosure` | `transparent` | Wrapper stripped; inner content passed through |
+| `ZoomPanPinch` | `transparent` | Wrapper stripped; inner content passed through |
 | `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `SdkLogos`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
 | `DL`, `DT`, `DD`, `DefinitionList` | `strip-tag` | Tags stripped, text content kept |
 | `details` / `summary` | `details` / `summary` | `<summary>` becomes a heading; body expanded inline |

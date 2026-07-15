@@ -19,7 +19,6 @@ export { default as EnlargeImage } from './images/EnlargeImage';
 export { default as ZoomingImage } from './images/ZoomingImage';
 
 // Information components
-export { default as DiscoverableDisclosure } from './info/DiscoverableDisclosure';
 export { default as ToolTipTerm } from './ToolTipTerm/ToolTipTerm';
 export { RelatedReadContainer, RelatedReadItem } from './info/RelatedRead/RelatedRead';
 export { default as RelatedReadList } from './info/RelatedRead/RelatedReadList';

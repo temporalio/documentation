@@ -53,7 +53,6 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
-  DiscoverableDisclosure: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",

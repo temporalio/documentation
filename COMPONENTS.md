@@ -20,7 +20,6 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
 - [Using IntegrationsGrid](#using-integrationsgrid)
 - [Using CaptionedImage](#using-captionedimage)
-- [Using DiscoverableDisclosure](#using-discoverabledisclosure)
 - [Using DocsTable](#using-docstable)
 - [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
@@ -118,9 +117,9 @@ import * as Components from '@site/src/components';
 Components imported this way use the "Components." prefix before their name:
 
 ```
-<Components.DiscoverableDisclosure>
+<Components.RelatedRead>
 ...Content that is folded away...
-</Components.DiscoverableDisclosure>
+</Components.RelatedRead>
 ```
 
 ## Using IntegrationsGrid
@@ -252,23 +251,6 @@ When images are complex and may not render in a readable fashion on normal monit
 One click will zoom out, another will zoom back.
 Most rendering will allow readers to pull the image around to view all parts of the image. 
 On non-mobile systems, cursors will change to interactive elements when hovered above zoomable items to indicate interaction.
-
-## Using DiscoverableDisclosure
-
-Role: Provide a more discoverable `<Details>` section.
-
-Unlike Details, it does not require a separate `<Summary>`.
-
-Usage:
-
-```
-<DiscoverableDisclosure label = "your_summary_text">
-...your content...
-</DiscoverableDisclosure>
-```
-
-An additional `prompt` prop enables you to specify the leading text.
-Normally it defaults to `prompt = "Dive deeper — "`.
 
 ## Using DocsTable
 
