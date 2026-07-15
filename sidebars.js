@@ -1512,6 +1512,7 @@ module.exports = {
                 'encyclopedia/workflow/workflow-execution/timers-delays',
               ],
             },
+            'encyclopedia/workflow/workflow-pause',
             'encyclopedia/workflow/dynamic-handler',
             'encyclopedia/workflow/workflow-schedule',
             'encyclopedia/workflow/cron-job',
