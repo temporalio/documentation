@@ -105,9 +105,9 @@ cases differently, for example releasing held resources on Pause while preservin
 | Python     | v1.12.0+ | Check `cancellation_details().paused` on `asyncio.CancelledError`    |
 | .NET       | v1.7.0+  | Check `CancellationDetails.IsPaused` on `OperationCanceledException` |
 
-### Interaction with Workflow Pause
+### Interaction with Workflow pause
 
-[Workflow Pause](/cli/command-reference/workflow#pause) and Activity Pause are independent. Both stop Activity retries,
+[Workflow Pause](/workflow-pause) and Activity Pause are independent. Both stop Activity retries,
 but they must be Unpaused separately.
 
 - Workflow Pause blocks retries but doesn't interrupt in-flight executions via Heartbeat. Activity Pause does.
