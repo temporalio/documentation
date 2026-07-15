@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Entry point -->
+  <circle cx="16" cy="40" r="8" fill="none" stroke="#888" stroke-width="2"/>
+
+  <!-- Fast path returns early (red) -->
+  <path d="M 24 36 L 52 20" fill="none" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="49,16 58,19 51,25" fill="#cc2222"/>
+  <rect x="60" y="12" width="30" height="16" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <text x="75" y="24" font-family="sans-serif" font-size="9" fill="#cc2222" text-anchor="middle">fast</text>
+
+  <!-- Slow path continues -->
+  <path d="M 24 44 L 52 60" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="49,55 58,61 50,64" fill="#888"/>
+  <rect x="60" y="52" width="30" height="16" rx="3" fill="none" stroke="#888" stroke-width="1.5"/>
+  <text x="75" y="64" font-family="sans-serif" font-size="9" fill="#888" text-anchor="middle">slow</text>
+</svg>

@@ -69,7 +69,7 @@ Environment variable and configuration file support were added in Go SDK v1.28.0
 :::
 
 When you are running a Temporal Service locally, such as the
-[Temporal CLI](https://docs.temporal.io/cli/command-reference/server#start-dev), the connection options you must provide are minimal.
+[Temporal CLI](/cli/command-reference/server#start-dev), the connection options you must provide are minimal.
 
 If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the
 address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service. If you don't set a
@@ -651,7 +651,7 @@ if err != nil {
 You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your
 application load. For more information, refer to
 [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and
-[Worker Versioning](https://docs.temporal.io/worker-versioning).
+[Worker Versioning](/worker-versioning).
 
 ### Set custom Workflow Id {/* #workflow-id */}
 

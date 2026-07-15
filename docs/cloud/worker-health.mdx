@@ -210,7 +210,7 @@ Consider
 
 #### High Schedule To Start latency and low sync match rate
 
-Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations.
+Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations and note that this timeout is non-retryable.
 
 It may be acceptable for your use case to have low sync match rate.
 For example, if you have known workloads or you intentionally throttle tasks.
