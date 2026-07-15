@@ -102,12 +102,9 @@ The backend consists of several specialized services including the History, Matc
 
 The History Service is the part of Temporal that keeps track of everything that happens in each Workflow. It writes an ordered [Event History](/encyclopedia/event-history/) to the database so Temporal always knows what has happened. This includes when a Workflow started, Activities ran, Signals were received, timers fired, and when it completed or failed. 
 
-The Event History (every event/step of each Workflow) is the key to making your application reliable and crash-proof. When an error or failure happens in your app, Temporal will recreate the state by parsing the Event History and replay each step. 
+The Event History (every event/step of each Workflow) is the key to making your application reliable and crash-proof. When an error or failure happens in your app, Temporal will recreate the state by parsing the Event History and replay each step.
 
-{/* TODO: PICK BACK UP HERE AND DECIDE HOW TO LINK OUT TO DETERMINISM
-*/}
-
-That's why determinism and idempotency are important when you're creating your Workflows.
+That's why [determinism](/workflow-definition#deterministic-constraints) and [idempotency](/activity-definition#idempotency) are important when you're creating your Workflows.
 
 The History Service is a central part of how Temporal provides Durable Execution. It persists all Workflow Execution state, including the Event History, any mutable state, and internal task queues like timers, transfers, replication, and visibility/indexing.
 

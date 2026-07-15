@@ -28,6 +28,8 @@ tags:
   - Certificates
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+
 A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the Temporal Service.
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
@@ -221,12 +223,7 @@ variables or a configuration file, and then override specific options in code.
 
 Use the `connect()` method on the `Client` class to create and connect to a Temporal Client to the Temporal Service.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -448,12 +445,7 @@ client = await Client.connect(
 
 To connect using mTLS instead of an API key, provide the mTLS certificate and private key as follows:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 ```python
 from temporalio.client import Client, TLSConfig
 # ...
@@ -507,12 +499,7 @@ To start a Workflow Execution in Python, use either the
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods
 in the Client.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -546,12 +533,7 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -587,12 +569,7 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -641,12 +618,7 @@ safety.
 Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current
 status of the Workflow. If the Workflow does not exist, this call fails.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py" />
 
 ```python
 # ...

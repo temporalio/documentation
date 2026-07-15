@@ -12,6 +12,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\""
+        }
+      ]
     }
   ],
   "redirects": [
@@ -2152,6 +2161,11 @@
     {
       "source": "/cloud/user-groups",
       "destination": "/cloud/manage-access/user-groups",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
+      "destination": "/develop/ruby/workflows/versioning#patching",
       "permanent": true
     }
   ]

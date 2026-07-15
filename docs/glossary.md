@@ -564,7 +564,7 @@ Activity Execution, reaches a Closed status.
 #### [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task
-Queue to when a Worker picks it up from the Task Queue.
+Queue to when a Worker picks it up from the Task Queue. This timeout is non-retryable by design.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 

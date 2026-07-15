@@ -34,6 +34,9 @@ By scheduling a Workflow, you can automate repetitive tasks, reduce manual inter
 
 Use the following actions to manage Scheduled Workflows.
 
+Schedule behavior is governed by the Schedule's [Overlap Policy](/schedule#overlap-policy).
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and counts as the running execution for overlap decisions.
+
 ### Create a Scheduled Workflow {/* #create-a-workflow */}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.

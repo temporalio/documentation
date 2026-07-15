@@ -17,10 +17,12 @@
  *   - <ReleaseNoteHeader>         → availability blockquote + body
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
  *   - <RelatedReadList>           → markdown link list from readList prop
+ *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
+ *   - <ViewSourceCodeNotice href> → plain markdown link line
  *   - imported .md components      → transcluded inline (e.g. <AWSRegions />)
  *   - import / export stmts        → stripped
  *   - {/* MDX comments *​/}         → stripped
@@ -55,6 +57,7 @@ export const COMPONENT_REGISTRY = {
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
+  SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
   ZoomingImage: "captioned-image",
@@ -69,6 +72,7 @@ export const COMPONENT_REGISTRY = {
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
   HomePageHero: "home-page-hero",
+  ViewSourceCodeNotice: "view-source-code-notice",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
   DT: "strip-tag",
@@ -228,6 +232,58 @@ export function parseReadList(tagStr) {
     results.push({ text: im[1], href: im[2] });
   }
   return results;
+}
+
+// Mirrors SdkGuideLinks.js DEFAULT_SDKS — sdk slug + display label, used to
+// auto-generate per-SDK links from a shared `path` prop.
+const SDK_GUIDE_DEFAULT_SDKS = [
+  { sdk: "go", label: "Go" },
+  { sdk: "java", label: "Java" },
+  { sdk: "php", label: "PHP" },
+  { sdk: "python", label: "Python" },
+  { sdk: "ruby", label: "Ruby" },
+  { sdk: "rust", label: "Rust" },
+  { sdk: "typescript", label: "TypeScript" },
+  { sdk: "dotnet", label: ".NET" },
+];
+
+/**
+ * Parse a <SdkGuideLinks .../> tag into {text, href} items, mirroring
+ * SdkGuideLinks.js:
+ *   - links={[{ href: '/some/path', label: 'Go' }, ...]}  → used as-is
+ *   - path="activities/foo" filter={['go','python']} title="Foo"  → auto-generated
+ */
+export function parseSdkGuideLinks(tagStr) {
+  const linksMatch = tagStr.match(/links=\{(\[[\s\S]*?\])\}/);
+  if (linksMatch) {
+    const results = [];
+    const itemRe = /\{[^}]*\}/g;
+    // Object-literal key/value pairs, e.g. href: '/develop/go/foo' — distinct
+    // from JSX-attribute syntax (key="value") that extractProp handles.
+    const field = (obj, key) => {
+      const m = obj.match(new RegExp(`${key}:\\s*['"\`]([^'"\`]+)['"\`]`));
+      return m ? m[1] : null;
+    };
+    let im;
+    while ((im = itemRe.exec(linksMatch[1])) !== null) {
+      const href = field(im[0], "href");
+      const label = field(im[0], "label");
+      if (href && label) results.push({ text: label, href });
+    }
+    return results;
+  }
+
+  const path = extractProp(tagStr, "path");
+  if (!path) return [];
+  const title = extractProp(tagStr, "title");
+  const filter = parseStringArrayProp(tagStr, "filter");
+
+  return SDK_GUIDE_DEFAULT_SDKS.filter(
+    ({ sdk }) => filter.length === 0 || filter.includes(sdk)
+  ).map(({ sdk, label }) => ({
+    text: title ? `${title} - ${label}` : label,
+    href: `/develop/${sdk}/${path}`,
+  }));
 }
 
 /**
@@ -897,6 +953,23 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- ViewSourceCodeNotice (self-closing) → plain markdown link line ---
+    if (state === State.NORMAL && /^\s*<ViewSourceCodeNotice\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const href = extractProp(tag, "href");
+      if (href) {
+        outputLines.push(
+          `[View the source code](${href}) in the context of the rest of the application code.`
+        );
+        outputLines.push("");
+      }
+      continue;
+    }
+
     // --- CallToAction open ---
     if (state === State.NORMAL && isOpenTag(line, "CallToAction")) {
       let tag = line;
@@ -975,6 +1048,22 @@ export function transformMdx(mdxContent, options = {}) {
         for (const item of items) outputLines.push(`- [${item.text}](${item.href})`);
         outputLines.push("");
       }
+      continue;
+    }
+
+    // --- SdkGuideLinks (self-contained, multi-line prop) ---
+    if (state === State.NORMAL && isOpenTag(line, "SdkGuideLinks")) {
+      let fullTag = line;
+      if (!trimmed.endsWith("/>") && !trimmed.includes("</SdkGuideLinks>")) {
+        while (i + 1 < lines.length) {
+          i++;
+          fullTag += " " + lines[i].trim();
+          if (lines[i].trim().endsWith("/>") || lines[i].includes("</SdkGuideLinks>")) break;
+        }
+      }
+      const items = parseSdkGuideLinks(fullTag);
+      for (const item of items) outputLines.push(`- [${item.text}](${item.href})`);
+      if (items.length > 0) outputLines.push("");
       continue;
     }
 

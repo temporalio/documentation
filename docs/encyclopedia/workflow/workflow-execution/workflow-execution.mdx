@@ -33,12 +33,14 @@ A Temporal Workflow Execution is a durable, reliable, and scalable function exec
 It is the main unit of execution of a [Temporal Application](/encyclopedia/architecture/temporal-architecture#client-application).
 
 - [How to start a Workflow Execution using temporal](/cli/command-reference/workflow#start)
+- [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/client/temporal-client#start-workflow)
 - [How to start a Workflow Execution using the Go SDK](/develop/go/client/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/develop/java/client/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/develop/php/client/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the Python SDK](/develop/python/client/temporal-client#start-workflow-execution)
+- [How to start a Workflow Execution using the Ruby SDK](/develop/ruby/client/temporal-client#start-workflow)
+- [How to start a Workflow Execution using the Rust SDK](/develop/rust/client/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/client/temporal-client#start-workflow-execution)
-- [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/client/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/sending-messages#sending-signals) and the environment through [Activities](/activities).
@@ -181,6 +183,8 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 - Excessive reliance on Memos hides mutable state from the Workflow Execution History
 
 :::
+
+On Temporal Cloud, a Memo is limited to 40 KB.
 
 ## What is a State Transition? {/* #state-transition */}
 
