@@ -309,7 +309,7 @@ module.exports = async function createConfigAsync() {
             admonitions: {
               keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
             },
-            remarkPlugins: [(await import('remark-math')).default],
+            remarkPlugins: [(await import('remark-math')).default, require('./plugins/og-image/remarkPlugin')],
             rehypePlugins: [(await import('rehype-katex')).default],
           },
           theme: {
