@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Incoming events (signals) -->
+  <polygon points="14,20 24,20 20,34 26,34 16,52 20,40 12,40" fill="#cc2222"/>
+  <polygon points="34,20 44,20 40,34 46,34 36,52 40,40 32,40" fill="#cc2222"/>
+
+  <!-- Collected into a buffer, flushed as a batch -->
+  <rect x="56" y="24" width="20" height="32" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="61" y1="34" x2="71" y2="34" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="61" y1="40" x2="71" y2="40" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="61" y1="46" x2="71" y2="46" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+
+  <line x1="78" y1="40" x2="92" y2="40" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="89,36 96,40 89,44" fill="#888"/>
+</svg>

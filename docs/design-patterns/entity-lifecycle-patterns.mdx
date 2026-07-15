@@ -1,0 +1,46 @@
+---
+id: entity-lifecycle-patterns
+title: "Entity & Lifecycle Patterns"
+sidebar_label: "Entity & Lifecycle Patterns"
+description: "Pattern selection guide for modeling long-lived stateful entities and managing Workflow history growth over time."
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+These patterns model long-lived business entities as Workflows and keep those Workflows healthy as they run for days, months, or indefinitely. They cover how an entity holds and mutates state, how you bound Workflow history growth, and how you manage timers that change over time.
+
+## Patterns in this section
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/entity-workflow",
+    icon: "entity-workflow-icon.svg",
+    title: "Entity Workflow",
+    description: "Models a long-lived business entity as a single Workflow that persists for the entity's entire lifetime, handling every state transition through Signals and Updates.",
+  },
+  {
+    href: "/design-patterns/continue-as-new",
+    icon: "continue-as-new-icon.svg",
+    title: "Continue-As-New",
+    description: "Prevents unbounded history growth by completing the current execution and starting a fresh one that carries forward the current state.",
+  },
+  {
+    href: "/design-patterns/updatable-timer",
+    icon: "updatable-timer-icon.svg",
+    title: "Updatable Timer",
+    description: "Provides a timer you can extend, shorten, or cancel in response to Signals or Updates while the Workflow waits.",
+  },
+]} />
+
+## Choosing a pattern
+
+**You are modeling something with an ongoing lifecycle** — an account, a device, a subscription: use an [Entity Workflow](/design-patterns/entity-workflow) as the single source of truth for that entity.
+
+**Your Workflow runs long enough to grow a large history**: apply [Continue-As-New](/design-patterns/continue-as-new) to reset history while preserving state.
+
+**You need a wait that responds to new information**: use an [Updatable Timer](/design-patterns/updatable-timer) instead of a fixed sleep.
+
+## Related sections
+
+- [Workflow Messaging Patterns](/design-patterns/workflow-messaging-patterns) — the Signals and Updates that drive entity state transitions
+- [Task Orchestration Patterns](/design-patterns/task-orchestration-patterns) — decompose a large entity into child Workflows
