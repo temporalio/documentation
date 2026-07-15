@@ -1,1 +1,1 @@
-export * as ToolTipTerm from './ToolTipTerm'
+export { default as ToolTipTerm } from './ToolTipTerm'
