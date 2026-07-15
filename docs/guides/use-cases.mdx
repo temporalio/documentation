@@ -1,0 +1,199 @@
+---
+id: use-cases
+title: Guides and Patterns by Use Case
+description: Browse Temporal Guides and design patterns organized by common use case, from AI systems to payment processing to order management.
+sidebar_label: By use case
+toc_max_heading_level: 2
+tags:
+  - use-cases
+  - guides
+  - design-patterns
+---
+
+Find the [Guides](/guides) and [design patterns](/design-patterns) most relevant to what you're building, organized by common use case.
+
+## AI
+
+AI systems range from autonomous agents that use an LLM to decide their own next steps, to fixed pipelines that prepare, retrieve, and generate content for AI inference, to distributed training and fine-tuning runs that update model weights. Temporal keeps each of these durable across long-running, multi-step calls to models, tools, and external APIs.
+
+**Guides:**
+
+- **[Route specialized workloads](/guides/route-specialized-workloads)** — Direct resource-intensive workloads to appropriate Task Queues to optimize resources.
+- **[Worker execution affinity](/guides/worker-execution-affinity)** — Direct multiple Activities to execute on the same Worker to maintain data locality.
+- **[Rate-limit downstream APIs](/guides/rate-limit-downstream-apis)** — Protect limited resources and avoid Workflow failures with separate Task Queues.
+
+**Design patterns:**
+
+- **[Long-Running Activity](/design-patterns/long-running-activity)** — Long-running Activities report progress via heartbeats and enable resumption after failures with cancellation support.
+- **[Fan-Out with Child Workflows](/design-patterns/fanout-child-workflows)** — Distributes a large record set across parallel Child Workflows for concurrent processing with automatic scaling.
+- **[MapReduce Tree](/design-patterns/mapreduce-tree)** — Recursively splits a dataset into a binary tree of Child Workflows, processes leaves in parallel, then aggregates results back up the tree.
+- **[Continue-As-New](/design-patterns/continue-as-new)** — Prevents unbounded history growth by completing the current execution and starting a new one with fresh history.
+- **[Downstream Rate Limiting](/design-patterns/downstream-rate-limiting)** — Caps Activity execution rate against a downstream service by routing throttled Activities to a dedicated Task Queue backed by Workers configured with a throughput limit.
+- **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)** — Routes Activities to specific Workers using unique Task Queues for Worker affinity and host-specific processing.
+
+## Order management & fulfillment
+
+End-to-end order lifecycle from placement through processing, fulfillment, delivery, and returns.
+
+**Design patterns:**
+
+- **[Saga Pattern](/design-patterns/saga-pattern)** — Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.
+- **[Entity Workflow](/design-patterns/entity-workflow)** — Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.
+- **[Signal with Start](/design-patterns/signal-with-start)** — Starts a Workflow when Signaling it if it does not already exist. If already running, it receives the Signal directly.
+- **[Event Accumulator](/design-patterns/event-accumulator)** — Durably collects and processes Signals from multiple senders over an unbounded time window, batching by a stable group key with a sliding inactivity timeout.
+- **[Delayed Callback (Webhooks)](/design-patterns/delayed-callback)** — Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.
+
+## Payment processing & settlement
+
+Payment capture, authorization, settlement, reconciliation, and financial transaction orchestration, including payment gateway integrations.
+
+**Guides:**
+
+- **[Rate-limit downstream APIs](/guides/rate-limit-downstream-apis)** — Protect limited resources and avoid Workflow failures with separate Task Queues.
+
+**Design patterns:**
+
+- **[Saga Pattern](/design-patterns/saga-pattern)** — Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.
+- **[Early Return](/design-patterns/early-return)** — Synchronous initialization with asynchronous completion. Returns results immediately while processing continues in the background.
+- **[Non-Retryable Errors](/design-patterns/non-retryable-errors)** — Mark error types that will never succeed — such as validation failures or missing records — so Temporal fails fast instead of retrying indefinitely.
+- **[Fixed Wall-Time Retries](/design-patterns/fixed-wall-time-retries)** — Bound the total elapsed time across all retry attempts to enforce a business SLA, regardless of how many individual attempts occur.
+- **[Retry Alerting via Metrics](/design-patterns/retry-metrics)** — Emit a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach.
+
+## Data pipelines & ETL
+
+Data ingestion, transformation, loading, synchronization across systems, and batch or streaming data processing.
+
+**Guides:**
+
+- **[Worker execution affinity](/guides/worker-execution-affinity)** — Direct multiple Activities to execute on the same Worker to maintain data locality.
+
+**Design patterns:**
+
+- **[Batch Iterator](/design-patterns/batch-iterator)** — Pages through unbounded datasets using Continue-As-New to prevent history overflow while maintaining exactly-once processing guarantees.
+- **[Fan-Out with Child Workflows](/design-patterns/fanout-child-workflows)** — Distributes a large record set across parallel Child Workflows for concurrent processing with automatic scaling.
+- **[MapReduce Tree](/design-patterns/mapreduce-tree)** — Recursively splits a dataset into a binary tree of Child Workflows, processes leaves in parallel, then aggregates results back up the tree.
+- **[Continue-As-New](/design-patterns/continue-as-new)** — Prevents unbounded history growth by completing the current execution and starting a new one with fresh history.
+- **[Sliding Window](/design-patterns/sliding-window)** — Maintains a fixed number of concurrently active Child Workflows, starting a new one each time an existing one completes.
+
+## Infrastructure automation & CI/CD
+
+Deployment pipelines, infrastructure provisioning, release automation, configuration management, and platform engineering workflows.
+
+**Guides:**
+
+- **[Temporary rate limit increases](/guides/temporary-rate-limit-increases)** — Handle temporary spikes in usage by dynamically provisioning extra capacity.
+
+**Design patterns:**
+
+- **[Approval](/design-patterns/approval)** — Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.
+- **[Resumable Activity](/design-patterns/resumable-activity)** — Park the Workflow after retries are exhausted and wait for a human to signal a correction, then resume execution from where it left off.
+- **[Delayed Start](/design-patterns/delayed-start)** — Creates Workflows immediately but defers execution until a specified delay expires. Fits one-time scheduled operations and grace periods.
+- **[Polling External Services](/design-patterns/polling)** — Strategies for polling external resources with varying frequencies: frequent, infrequent, and periodic patterns.
+- **[Fixed Count of Retries](/design-patterns/fixed-count-retries)** — Cap the number of Activity retry attempts to control cost when each attempt consumes a paid or limited resource.
+
+## Customer onboarding & identity verification
+
+Account creation, KYC/KYB verification, onboarding sequences, identity proofing, and compliance review workflows for new customers.
+
+**Guides:**
+
+- **[Reliable document approvals](/guides/reliable-document-approvals)** — Build durable human-in-the-loop Workflows.
+- **[Recover without restart](/guides/saga-pattern)** — Build business processes that pause on errors and recover without restarting.
+
+**Design patterns:**
+
+- **[Approval](/design-patterns/approval)** — Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.
+- **[Saga Pattern](/design-patterns/saga-pattern)** — Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.
+- **[Fast/Slow Retries](/design-patterns/fast-slow-retries)** — Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers.
+- **[Polling External Services](/design-patterns/polling)** — Strategies for polling external resources with varying frequencies: frequent, infrequent, and periodic patterns.
+- **[Early Return](/design-patterns/early-return)** — Synchronous initialization with asynchronous completion. Returns results immediately while processing continues in the background.
+
+## Entity lifecycle management
+
+Managing the full lifecycle of long-lived domain entities — subscriptions, accounts, resources, or sessions — through their state transitions over time.
+
+**Guides:**
+
+- **[Customer loyalty program](/guides/entity-pattern-loyalty-points)** — How to run a customer loyalty program with the entity pattern and durable workflows.
+- **[Durable gaming sessions](/guides/durable-gaming-sessions)** — Protect player sessions from backend failures by using the Actor pattern.
+
+**Design patterns:**
+
+- **[Entity Workflow](/design-patterns/entity-workflow)** — Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.
+- **[Continue-As-New](/design-patterns/continue-as-new)** — Prevents unbounded history growth by completing the current execution and starting a new one with fresh history.
+- **[Updatable Timer](/design-patterns/updatable-timer)** — Dynamically adjustable timers that respond to Signals or Updates. Extend, shorten, or cancel timers based on external events.
+- **[Request-Response via Updates](/design-patterns/request-response-via-updates)** — Synchronous request-response with validation. Updates modify state and return results directly.
+- **[Signal with Start](/design-patterns/signal-with-start)** — Starts a Workflow when Signaling it if it does not already exist. If already running, it receives the Signal directly.
+
+## Communications & marketing platform
+
+Notification orchestration, campaign management, multi-channel messaging (email, SMS, push), and marketing automation.
+
+**Guides:**
+
+- **[Rate-limit downstream APIs](/guides/rate-limit-downstream-apis)** — Protect limited resources and avoid Workflow failures with separate Task Queues.
+
+**Design patterns:**
+
+- **[Batch Iterator](/design-patterns/batch-iterator)** — Pages through unbounded datasets using Continue-As-New to prevent history overflow while maintaining exactly-once processing guarantees.
+- **[Downstream Rate Limiting](/design-patterns/downstream-rate-limiting)** — Caps Activity execution rate against a downstream service by routing throttled Activities to a dedicated Task Queue backed by Workers configured with a throughput limit.
+- **[Delayed Retry](/design-patterns/delayed-retry)** — Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure. Use when an error carries information about how long to wait before retrying.
+- **[Updatable Timer](/design-patterns/updatable-timer)** — Dynamically adjustable timers that respond to Signals or Updates. Extend, shorten, or cancel timers based on external events.
+- **[Delayed Callback (Webhooks)](/design-patterns/delayed-callback)** — Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.
+
+## Financial services & lending
+
+Loan origination, underwriting, claims processing, approvals, and settlement — regulated financial product workflows beyond simple payments.
+
+**Guides:**
+
+- **[Recover without restart](/guides/saga-pattern)** — Build business processes that pause on errors and recover without restarting.
+- **[Reliable document approvals](/guides/reliable-document-approvals)** — Build durable human-in-the-loop Workflows.
+
+**Design patterns:**
+
+- **[Saga Pattern](/design-patterns/saga-pattern)** — Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.
+- **[Approval](/design-patterns/approval)** — Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.
+- **[Entity Workflow](/design-patterns/entity-workflow)** — Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.
+- **[Fixed Wall-Time Retries](/design-patterns/fixed-wall-time-retries)** — Bound the total elapsed time across all retry attempts to enforce a business SLA, regardless of how many individual attempts occur.
+- **[Priority Task Queues](/design-patterns/priority-task-queues)** — Assigns a priority level to Workflows and Activities so that time-sensitive work executes ahead of lower-priority work within a single Task Queue.
+
+## Control plane operations
+
+Resource provisioning, multi-tenant orchestration, and platform-level operational workflows that manage other systems.
+
+**Guides:**
+
+- **[Distributed locking](/guides/lock-shared-resources)** — Coordinate access to shared resources with a distributed lock.
+
+**Design patterns:**
+
+- **[Fairness](/design-patterns/fairness)** — Distributes Worker capacity evenly across tenants or users so that a burst from one caller does not starve the others.
+- **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)** — Routes Activities to specific Workers using unique Task Queues for Worker affinity and host-specific processing.
+- **[Priority Task Queues](/design-patterns/priority-task-queues)** — Assigns a priority level to Workflows and Activities so that time-sensitive work executes ahead of lower-priority work within a single Task Queue.
+- **[Resumable Activity](/design-patterns/resumable-activity)** — Park the Workflow after retries are exhausted and wait for a human to signal a correction, then resume execution from where it left off.
+- **[Entity Workflow](/design-patterns/entity-workflow)** — Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.
+
+## Inventory & logistics
+
+Inventory management, supply chain coordination, warehouse operations, and shipping and tracking.
+
+**Design patterns:**
+
+- **[Saga Pattern](/design-patterns/saga-pattern)** — Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.
+- **[Entity Workflow](/design-patterns/entity-workflow)** — Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.
+- **[Event Accumulator](/design-patterns/event-accumulator)** — Durably collects and processes Signals from multiple senders over an unbounded time window, batching by a stable group key with a sliding inactivity timeout.
+- **[Polling External Services](/design-patterns/polling)** — Strategies for polling external resources with varying frequencies: frequent, infrequent, and periodic patterns.
+- **[Delayed Callback (Webhooks)](/design-patterns/delayed-callback)** — Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.
+
+## Customer service & support
+
+Ticket routing, case management, and support workflow automation. For AI-powered support, see the [AI](#ai) section above.
+
+**Design patterns:**
+
+- **[Entity Workflow](/design-patterns/entity-workflow)** — Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.
+- **[Event Accumulator](/design-patterns/event-accumulator)** — Durably collects and processes Signals from multiple senders over an unbounded time window, batching by a stable group key with a sliding inactivity timeout.
+- **[Approval](/design-patterns/approval)** — Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.
+- **[Signal with Start](/design-patterns/signal-with-start)** — Starts a Workflow when Signaling it if it does not already exist. If already running, it receives the Signal directly.
+- **[Request-Response via Updates](/design-patterns/request-response-via-updates)** — Synchronous request-response with validation. Updates modify state and return results directly.

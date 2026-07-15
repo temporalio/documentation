@@ -1715,6 +1715,7 @@ module.exports = {
         id: 'guides/index',
       },
       items: [
+        'guides/use-cases',
         'guides/entity-pattern-loyalty-points',
         'guides/saga-pattern',
         'guides/route-specialized-workloads',
