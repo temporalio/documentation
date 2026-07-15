@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "@docusaurus/Link";
-import SdkSvg from '../../elements/SdkSvgs/SdkSvg';
+import SdkSvg from '../SdkSvgs/SdkSvg';
 import styles from "./ReleaseNoteHeader.module.css";
 import { FEATURE_RELEASE_TYPES } from "../../../constants/featureReleaseTypes";
 

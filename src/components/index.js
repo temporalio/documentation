@@ -12,8 +12,5 @@ export { SdkGuideLinks } from './elements/SdkGuideLinks';
 export { default as PhotoCarousel } from './elements/PhotoCarousel';
 export { default as SdkTabs } from './elements/SdkTabs';
 
-// Information components
-export { default as ReleaseNoteHeader } from './info/ReleaseNoteHeader/ReleaseNoteHeader';
-
 // Extra export
 export { default } from './elements/SdkTabs';
