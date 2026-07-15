@@ -13,8 +13,6 @@ export { default as PhotoCarousel } from './elements/PhotoCarousel';
 export { default as SdkTabs } from './elements/SdkTabs';
 
 // Information components
-export { RelatedReadContainer, RelatedReadItem } from './info/RelatedRead/RelatedRead';
-export { default as RelatedReadList } from './info/RelatedRead/RelatedReadList';
 export { default as ReleaseNoteHeader } from './info/ReleaseNoteHeader/ReleaseNoteHeader';
 
 // Extra export
