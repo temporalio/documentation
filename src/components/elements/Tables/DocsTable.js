@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 
-export default function DocsTable({ Columns, children, sortable = false, defaultSort = null }) {
+export function DocsTable({ Columns, children, sortable = false, defaultSort = null }) {
   const [sortConfig, setSortConfig] = useState(() => {
     if (defaultSort && sortable) {
       return { key: defaultSort.column, direction: defaultSort.direction || 'asc' };

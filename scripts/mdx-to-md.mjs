@@ -59,7 +59,6 @@ export const COMPONENT_REGISTRY = {
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
-  ZoomingImage: "captioned-image",
   PhotoCarousel: "photo-carousel",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
@@ -1086,11 +1085,11 @@ export function transformMdx(mdxContent, options = {}) {
     }
 
     // --- Image components (self-closing, may span lines) ---
-    //     <CaptionedImage|EnlargeImage|ZoomingImage|Components.CaptionedImage
+    //     <CaptionedImage|EnlargeImage|Components.CaptionedImage
     //     src="..." alt|caption|title="..." />  →  ![text](src)
     if (
       state === State.NORMAL &&
-      /^\s*<(CaptionedImage|EnlargeImage|ZoomingImage|Components\.CaptionedImage)\b/.test(line)
+      /^\s*<(CaptionedImage|EnlargeImage|Components\.CaptionedImage)\b/.test(line)
     ) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {

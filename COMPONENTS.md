@@ -24,7 +24,6 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
-- [Using ZoomingImage](#using-zoomingimage)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using ReleaseNoteHeader](#using-release-note-header)
 
@@ -423,25 +422,6 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 ```
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
 ```
-
-## Using ZoomingImage
-
-Role: Provide image "asides" embedded into instructions where a standard image would normally interfere.
-
-A ZoomingImage is presented at a very small size, with the understanding that it is too small to view.
-An optional component, the image uses a magnifying glass and text prompt for discovery.
-See the instructions for [Prometheus Grafana](http://docs.temporal.io/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration) for an example.
-
-Reserve ZoomingImages for situations where the image itself is an obstacle to communicating steps or other content.
-It provides opt-in supplementary information.
-
-Usage:
-
-```
-<ZoomingImage src="/path/to/image" alt="Alt text" />
-```
-
-Images are normally stored in the '/static' folder in `img` or `diagrams`.
 
 ## Using SdkGuideLinks
 

@@ -108,7 +108,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `Tabs` / `TabItem` | `tabs` / `tabitem` | All tabs flattened, each under a **bold label** header |
 | `SdkTabs` / `SdkTabs.<Lang>` | `sdk-tabs` | Same, with language labels (`DotNet` → **.NET**) |
 | `CodeSnippet` | `code-snippet` | Fenced code block using the `language` prop |
-| `CaptionedImage`, `EnlargeImage`, `ZoomingImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
+| `CaptionedImage`, `EnlargeImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
 | `PhotoCarousel` | `photo-carousel` | One `![caption](url)` per entry in the `images`/`captions` arrays |
 | `CallToAction` | `call-to-action` | `- [h3 title](href): p description` |
 | `ReleaseNoteHeader` | `release-note-header` | `> **Public Preview** — Go, Java…` availability note + body blockquote. The self-closing form (`<ReleaseNoteHeader … />`) emits just the note and leaves the page body intact. |
