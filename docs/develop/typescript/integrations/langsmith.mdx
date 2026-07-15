@@ -1,0 +1,351 @@
+---
+id: langsmith
+title: LangSmith integration
+sidebar_label: LangSmith
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - langsmith
+  - observability
+  - tracing
+tags:
+  - LangSmith
+  - TypeScript SDK
+  - Temporal SDKs
+description: Add LangSmith tracing to TypeScript Workflows using the Temporal TypeScript SDK.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  All APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+Temporal's LangSmith integration lets you trace AI agent Workflows in [LangSmith](https://smith.langchain.com/)
+alongside every LLM call, tool execution, and Temporal operation.
+
+Temporal gives your agent code [durable execution](https://docs.temporal.io/temporal#durable-execution). LangSmith adds
+the observability side, so you can inspect LLM inputs and outputs, follow a request from the Client through to the
+model, and compare runs over time.
+
+The `LangSmithPlugin` is what connects the two. It propagates trace context across Temporal boundaries
+(Workflow → Activity → Child Workflow) so that runs started on the Client nest correctly under Workflow and Activity
+runs on the Worker. It can also emit LangSmith runs for the Temporal operations themselves: Workflow executions, Activity
+executions, Signals, and Updates.
+
+All code snippets in this guide are taken from the
+[LangSmith samples](https://github.com/temporalio/samples-typescript/tree/main/langsmith). Refer to the samples for
+complete code.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with LangSmith. If you aren't, refer to the
+  [LangSmith documentation](https://docs.smith.langchain.com/) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript) guide. When you are
+  done, leave the Temporal Development Server running if you want to test your code locally.
+
+## Configure Workers to use LangSmith
+
+Workers execute the code that defines your Workflows and Activities. To trace Workflow and Activity execution in
+LangSmith, add the `LangSmithPlugin` to your Worker.
+
+Follow the steps below to configure your Worker.
+
+1. Install the `@temporalio/langsmith` package along with `langsmith`, which is a peer dependency.
+
+   ```bash
+   npm install @temporalio/langsmith langsmith
+   ```
+
+2. Construct a LangSmith Client and a single shared `LangSmithPlugin`, then pass the plugin to your Worker.
+
+   ```ts {16}
+   import { NativeConnection, Worker } from '@temporalio/worker';
+   import { Client as LangSmithClient } from 'langsmith';
+   import { LangSmithPlugin } from '@temporalio/langsmith';
+   import * as activities from './activities';
+
+   const connection = await NativeConnection.connect({ address: 'localhost:7233' });
+
+   const langsmith = new LangSmithClient(); // reads LANGSMITH_API_KEY from the env
+   const plugin = new LangSmithPlugin({ client: langsmith, addTemporalRuns: true });
+
+   const worker = await Worker.create({
+     connection,
+     taskQueue: 'langsmith',
+     workflowsPath: require.resolve('./workflows'),
+     activities,
+     plugins: [plugin],
+   });
+
+   await worker.run();
+   ```
+
+   Reuse this one instance on both the Worker and Client — see [Compose with other plugins](#compose-with-other-plugins).
+
+3. Run the Worker with LangSmith tracing enabled. Ensure the Worker process has access to your LangSmith API key.
+
+   ```bash
+   export LANGSMITH_TRACING=true
+   export LANGSMITH_API_KEY="your-api-key"
+   ```
+
+   Tracing is **off by default**, matching the `langsmith` library. With no tracing flag set to `true`, the plugin
+   emits nothing.
+
+   The plugin reads the same flags `langsmith` itself uses — `LANGSMITH_TRACING` (or `LANGSMITH_TRACING_V2`) and their
+   `LANGCHAIN_` aliases.
+
+## Configure Clients to use LangSmith
+
+In TypeScript the Client and the Worker are configured independently, so add the same plugin instance to your
+`Client` as well. This links client-side operations, like starting a Workflow, to the Workflows they trigger.
+
+```ts {4}
+import { Connection, Client } from '@temporalio/client';
+
+const connection = await Connection.connect();
+const client = new Client({ connection, plugins: [plugin] });
+```
+
+Wrap the call that starts your Workflow in a `traceable` so the rest of the trace nests under your own run.
+
+```ts {3-11}
+import { traceable } from 'langsmith/traceable';
+
+const pipeline = traceable(
+  async () => {
+    return client.workflow.execute(GreetingWorkflow, {
+      taskQueue: 'langsmith',
+      workflowId: 'greeting-1',
+      args: ['hello'],
+    });
+  },
+  { name: 'user_pipeline' }
+);
+
+await pipeline();
+```
+
+:::tip
+
+Use the same `projectName` on both the Worker and the Client so their traces land in the same LangSmith project.
+
+:::
+
+## Trace Activities
+
+Any non-deterministic work in a Temporal Workflow (LLM calls, tool executions, database queries, external API calls,
+and so on) must run inside an Activity. That makes Activities an important place to add LangSmith runs. A `traceable`
+from `langsmith/traceable` works unchanged inside an Activity body: the run shows up in LangSmith nested under
+`RunActivity:` for the Activity that scheduled it.
+
+<!--SNIPSTART typescript-langsmith-activity -->
+[langsmith/activity-tracing/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/langsmith/activity-tracing/src/activities.ts)
+```ts
+import { traceable } from 'langsmith/traceable';
+
+const callModel = traceable(
+  async (prompt: string): Promise<string> => {
+    return `answer to: ${prompt}`;
+  },
+  { name: 'inner_llm_call' },
+);
+
+export async function answer(prompt: string): Promise<string> {
+  return callModel(prompt);
+}
+```
+<!--SNIPEND-->
+
+## Trace Workflows
+
+A `traceable` also works inside a Workflow body, and the plugin keeps it replay-safe: each run is emitted exactly
+once and is never duplicated when the Workflow replays its history.
+
+<!--SNIPSTART typescript-langsmith-workflow -->
+[langsmith/workflow-tracing/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/langsmith/workflow-tracing/src/workflows.ts)
+```ts
+import { traceable } from 'langsmith/traceable';
+
+const extractKeyPoints = traceable(async (text: string): Promise<string> => `points:${text}`, {
+  name: 'extract_key_points',
+});
+
+const summarize = traceable(async (points: string): Promise<string> => `summary:${points}`, {
+  name: 'summarize',
+});
+
+export async function SummarizeWorkflow(text: string): Promise<string> {
+  const points = await extractKeyPoints(text);
+  return summarize(points);
+}
+```
+<!--SNIPEND-->
+
+:::note
+
+Inside a Workflow body, sequential `await inner(...)` nesting is exact. Under `Promise.all(...)` fan-out, or for
+`traceable` calls made after an `await` in the same scope, parenting falls back to the Workflow run. This affects only
+the visual shape of the trace, never Workflow history or control flow. Activity-side and client-side `traceable` are
+unaffected.
+
+:::
+
+## Trace Signal and Update handlers
+
+A `traceable` inside a Signal or Update handler nests under that handler's run, following the same Workflow-body
+semantics. Temporal-internal Queries (`__temporal*`, `__stack_trace`) are never traced.
+
+<!--SNIPSTART typescript-langsmith-handlers -->
+[langsmith/message-handlers/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/langsmith/message-handlers/src/workflows.ts)
+```ts
+import { traceable } from 'langsmith/traceable';
+import { allHandlersFinished, condition, defineSignal, defineUpdate, setHandler } from '@temporalio/workflow';
+
+const classifyMessage = traceable(async (text: string): Promise<string> => `intent:${text}`, {
+  name: 'classify_intent',
+});
+
+const draftReply = traceable(async (text: string): Promise<string> => `reply:${text}`, {
+  name: 'draft_reply',
+});
+
+export const handleMessage = defineSignal<[string]>('handle_message');
+export const composeReply = defineUpdate<string, [string]>('compose_reply');
+export const complete = defineSignal('complete');
+
+export async function ConversationWorkflow(): Promise<string[]> {
+  const log: string[] = [];
+  let done = false;
+
+  setHandler(handleMessage, async (text: string) => {
+    log.push(await classifyMessage(text));
+  });
+
+  setHandler(composeReply, async (text: string) => {
+    const reply = await draftReply(text);
+    log.push(reply);
+    return reply;
+  });
+
+  setHandler(complete, () => {
+    done = true;
+  });
+
+  await condition(() => done && allHandlersFinished());
+  return log;
+}
+```
+<!--SNIPEND-->
+
+## Trace multi-step agents across Activities and Child Workflows
+
+A single trace threads through a multi-step agent that calls Activities and a Child Workflow. The parent Workflow
+gathers facts and writes a report in Activities, then delegates review to a Child Workflow, and every run nests under
+the same trace.
+
+<!--SNIPSTART typescript-langsmith-agent-pipeline -->
+[langsmith/agent-pipeline/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/langsmith/agent-pipeline/src/workflows.ts)
+```ts
+import { executeChild, proxyActivities, workflowInfo } from '@temporalio/workflow';
+import type * as activities from './activities';
+
+const { gatherFacts, writeReport, reviewReport } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+export async function ReviewWorkflow(report: string): Promise<string> {
+  return reviewReport(report);
+}
+
+export async function ResearchWorkflow(topic: string): Promise<string> {
+  const facts = await gatherFacts(topic);
+  const report = await writeReport(facts);
+  return executeChild(ReviewWorkflow, {
+    args: [report],
+    workflowId: `${workflowInfo().workflowId}-review`,
+  });
+}
+```
+<!--SNIPEND-->
+
+## Include Temporal operations as runs
+
+By default (`addTemporalRuns: false`), the plugin only propagates LangSmith context so that your `traceable` runs nest
+correctly. It does not create its own runs.
+
+Set `addTemporalRuns: true` if you want first-class runs for the Temporal operations themselves: Workflow executions,
+Activity executions, Signals, Updates, and so on (`StartWorkflow:`, `RunWorkflow:`, `StartActivity:`, `RunActivity:`,
+`HandleSignal:`, `HandleUpdate:`). `Start*` and `Run*` pairs appear as siblings: the `Start*` run is emitted by the
+side scheduling the operation (for example, the Client), and the `Run*` run is emitted by the side executing it (for
+example, the Worker).
+
+With the plugin configured on both the Client and the Worker, and `addTemporalRuns: true`, a trace for a simple LLM
+call looks like this:
+
+```
+user_pipeline
+  StartWorkflow:GreetingWorkflow
+  RunWorkflow:GreetingWorkflow
+    StartActivity:answer
+    RunActivity:answer
+      inner_llm_call
+```
+
+Without `addTemporalRuns` (the default), only your `traceable` runs appear. Context still propagates, so they nest
+correctly under the client-side run:
+
+```
+user_pipeline
+  inner_llm_call
+```
+
+## Plugin options
+
+| Option            | Default           | Meaning                                                                                                                                        |
+| ----------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `client`          | `new Client()`    | The LangSmith `Client` that runs are emitted to.                                                                                               |
+| `addTemporalRuns` | `false`           | Emit first-class runs for Temporal operations (`StartWorkflow:`, `RunActivity:`, `HandleSignal:`, …) in addition to your `traceable` runs.     |
+| `projectName`     | LangSmith default | Target LangSmith project for emitted runs.                                                                                                     |
+| `tags`            | —                 | Tags attached to every run the plugin emits.                                                                                                   |
+| `metadata`        | —                 | Metadata merged into every run the plugin emits. Credential-looking keys are scrubbed before emission.                                         |
+
+The LangSmith API key is never accepted as a plugin option and never crosses a Temporal boundary. Supply a
+pre-constructed `Client` (which reads `LANGSMITH_API_KEY` from the process environment) or let the plugin build a
+default client from the environment.
+
+## Compose with other plugins
+
+Register observability **first** (outermost) so it observes everything beneath it, then governance, then
+agent-framework plugins.
+
+```ts
+const worker = await Worker.create({
+  connection,
+  taskQueue: 'langsmith',
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+  plugins: [
+    new LangSmithPlugin({ client: langsmith }), // observability — first
+    // new GovernancePlugin(...),
+    // new AgentFrameworkPlugin(...),
+  ],
+});
+```
+
+The plugin de-duplicates its own instrumentation, so a Worker built from a plugin-configured Client will not
+double-instrument.
+
+## Samples
+
+| Sample                                                                                  | Demonstrates                                                                                  |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [activity-tracing](https://github.com/temporalio/samples-typescript/tree/main/langsmith/activity-tracing) | A `traceable` model call inside an Activity, nested under the Workflow and Activity runs.      |
+| [workflow-tracing](https://github.com/temporalio/samples-typescript/tree/main/langsmith/workflow-tracing) | Replay-safe `traceable` calls in a Workflow body — emitted once, never duplicated on replay.   |
+| [agent-pipeline](https://github.com/temporalio/samples-typescript/tree/main/langsmith/agent-pipeline)     | A multi-step agent whose trace threads through Activities and a Child Workflow.                |
+| [message-handlers](https://github.com/temporalio/samples-typescript/tree/main/langsmith/message-handlers) | `traceable` calls inside Signal and Update handlers, nested under each handler's run.          |
