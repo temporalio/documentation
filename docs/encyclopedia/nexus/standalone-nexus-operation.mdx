@@ -59,6 +59,13 @@ Nexus Operation.
 
 ### Get started with your SDK
 
+To make your first standalone Nexus call:
+
+1. Create a caller Namespace where durable Nexus Operations will be started.
+2. Import the Temporal SDK in your language of choice.
+3. Execute a Nexus Operation through your caller Namepace using the Temporal SDK Client.
+
+See the SDK guides below for details:
 
 <SdkGuideLinks
   path="nexus/standalone-operations"
@@ -68,10 +75,11 @@ Nexus Operation.
 
 ## Use cases
 
-Standalone Nexus Operations are useful when application code outside of a Workflow needs to invoke
-functionality exposed by another team's Namespace through a Nexus Endpoint — for example, calling a
-shared service from a starter program, a job runner, an HTTP handler, or a script — with all the
-reliability, retries, and observability of Nexus, but without paying the cost of a caller Workflow.
+### Make Nexus calls from anywhere
+
+Standalone Nexus Operations let you make Nexus calls from anywhere using the Temporal SDK Client.
+Any code that can construct a Temporal Client can durably hand off a Nexus Operation to Temporal, such as a UI backend or BFF, a non-Temporal microservice, an HTTP handler, or a script.
+You still get automatic retries, built-in rate limiting and circuit breaking, and full execution visibility: the reliability of Nexus without the overhead of a caller (proxy) Workflow.
 
 ## Key features
 
@@ -121,15 +129,41 @@ backwards-incompatible changes.
 Standalone Nexus Operations require a Pre-release build of the [Temporal CLI](/cli) that includes
 the `temporal nexus operation` command family. All commands are Experimental.
 
-Download the Pre-release build from the
-[`v1.7.3-standalone-nexus-operations` release](https://github.com/temporalio/cli/releases/tag/v1.7.3-standalone-nexus-operations)
-on GitHub and follow the platform-specific install instructions on that page.
+Download for your platform:
+
+```bash title="macOS (Apple Silicon)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_darwin_arm64.tar.gz | tar xz
+```
+
+```bash title="macOS (Intel)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_darwin_amd64.tar.gz | tar xz
+```
+
+```bash title="Linux (arm64)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_linux_arm64.tar.gz | tar xz
+```
+
+```bash title="Linux (amd64)"
+curl -L https://github.com/temporalio/cli/releases/download/v1.7.4-standalone-nexus-operations/temporal_cli_1.7.4-standalone-nexus-operations_linux_amd64.tar.gz | tar xz
+```
 
 Verify the installation:
 
 ```bash
-temporal --version
+./temporal --version
+# temporal version 1.7.4-standalone-nexus-operations
 ```
+
+Move the binary to your PATH or run it from the current directory as `./temporal`.
+
+:::warning
+
+- The standard `brew install temporal` or `brew upgrade temporal` does not include Standalone Nexus Operation support during Pre-release.
+- If you see `unknown command "nexus operation"` then you are using the standard Temporal CLI instead of the Pre-release version above.
+- If you see `Standalone Nexus Operations are disabled` when running commands against a local dev server, then your server does not support the feature. Start it with the Pre-release dev server build above, which enables Standalone Nexus Operations by default.
+- If you don't see the Standalone Nexus Operations button in the Temporal UI, make sure the UI is running the latest release and has the `EnableStandaloneNexusOperations` feature flag enabled.
+
+:::
 
 The `temporal nexus operation` subcommand supports Standalone Nexus Operations with commands
 including: `start`, `execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
