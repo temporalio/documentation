@@ -232,6 +232,17 @@ module.exports = {
                 },
               ],
             },
+            {
+              type: 'category',
+              label: 'Integrations',
+              className: 'sidebar-integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/integrations/index',
+              },
+              items: ['develop/go/integrations/google-adk'],
+            },
           ],
         },
         {
