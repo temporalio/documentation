@@ -430,6 +430,12 @@ module.exports = async function createConfigAsync() {
         },
       ],
       [
+        require.resolve('./plugins/og-image'),
+        {
+          docsDir: 'docs',
+        },
+      ],
+      [
         'docusaurus-plugin-llms',
         {
           // Generate both llms.txt (index) and llms-full.txt (complete content)
