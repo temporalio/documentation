@@ -47,6 +47,7 @@ An Operation's lifecycle spans scheduling, reliable delivery with retries, handl
 :::
 
 **Caller side:** A caller Workflow executes a Nexus Operation through a [Nexus Endpoint](/nexus/endpoints) using the Temporal SDK.
+A [Standalone Nexus Operation](/standalone-nexus-operation) is a top-level Nexus Operation Execution started directly by a Client, without using a caller Workflow.
 
 **Handler side:** [Nexus Services](/nexus/services) and their Operations are registered with a Worker that polls the Endpoint's target Task Queue. Operations are defined using SDK builder functions:
 
