@@ -2,47 +2,171 @@
 id: local-activity
 title: Local Activity
 sidebar_label: Local Activity
-description: Learn about Local Activities in Temporal, their benefits, execution model, and when to use them.
+description: Learn about Local Activities in Temporal, how they work, when to use them, and how they differ from regular Activities.
 slug: /local-activity
 toc_max_heading_level: 4
 keywords:
   - explanation
   - term
   - timeouts
+  - activities
+  - local activities
+  - workflow
 tags:
   - Concepts
   - Activities
   - Durable Execution
 ---
 
-This page discusses [Local Activity](#local-activity).
-
 ## What is a Local Activity? {/* #local-activity */}
 
-A Local Activity is an [Activity Execution](/activity-execution) that executes in the same process as the [Workflow Execution](/workflow-execution) that spawns it.
+A Local Activity is an [Activity Execution](/activity-execution) that executes in the same Worker process as the [Workflow Execution](/workflow-execution) that schedules it.
 
-Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
-For this case, Temporal supports the Local Activity feature.
+Unlike a regular Activity, a Local Activity never enters an Activity Task Queue. Instead, the Workflow Worker executes it directly in an in-process queue. Because it avoids the round trip through the Temporal Service, a Local Activity has significantly lower latency and produces fewer Event History entries than a regular Activity.
 
-The main benefit of Local Activities is that they use less Temporal Service resources (for example, fewer History events) and have much lower latency overhead (because no need to roundtrip to the Temporal Service) compared to normal Activity Executions.
-However, Local Activities are subject to shorter durations and a lack of rate limiting.
+Local Activities help with performance optimization and are not a replacement for regular Activities.
 
-Consider using Local Activities for functions that are the following:
+Consider using a Local Activity only when the operation:
 
-- can be implemented in the same binary as the Workflow that calls them.
-- do not require global rate limiting.
-- do not require routing to a specific Worker or Worker pool.
-- no longer than a few seconds, inclusive of retries.
+- is short-lived (completes in a few seconds), including retries
+- can execute in the same binary as the Workflow
+- does not require routing to a specific Worker or Task Queue
+- does not require global rate limiting
+- [is idempotent](/develop/python/best-practices/error-handling#make-activities-idempotent)
 
-If it takes longer than 80% of the Workflow Task Timeout (which is 10 seconds by default), the Worker will ask the Temporal Service to create a new Workflow Task to extend the "lease" for processing the Local Activity.
-The Worker will continue doing so until the Local Activity has completed.
-This is called Workflow Task Heartbeating.
-The drawbacks of long-running Local Activities are:
+For most production workloads, regular Activities remain the recommended default.
 
-- Each new Workflow Task results in 3 more Events in History.
-- The Workflow won't get notified of new events like Signals and completions until the next Workflow Task Heartbeat.
-- New Commands created by the Workflow concurrently with the Local Activity will not be sent to the Temporal Service until either the Local Activity completes or the next Workflow Task Heartbeat.
+:::tip Recommendation
 
-Using a Local Activity without understanding its limitations can cause various production issues.
-**We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
-More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
+Use Local Activities only when your use case requires the performance optimization they provide, such as high-throughput Workflows with many very short-lived operations. For most business logic, regular Activities are the better choice.
+
+:::
+
+## How Local Activities execute
+
+Regular Activities are coordinated through the Temporal Service.
+
+The execution flow is:
+
+1. A Workflow schedules an Activity.
+2. The Workflow completes its Workflow Task by sending a `ScheduleActivityTask` command to the Temporal Service.
+3. The Temporal Service creates an Activity Task.
+4. An Activity Worker polls the Activity Task Queue and executes the Activity.
+5. The Activity result is recorded in Event history.
+6. The Workflow resumes in a new Workflow Task.
+
+Local Activities follow a shorter execution path:
+
+1. A Workflow schedules a Local Activity.
+2. The Local Activity is placed into an in-process queue within the Workflow Worker.
+3. The Workflow Worker executes the Local Activity immediately.
+4. The result is returned directly to the Workflow.
+5. When the Workflow Task completes, the Worker records a `MarkerRecorded` event containing the Local Activity result.
+
+Unlike regular Activities, scheduling and execution occur entirely within the Worker process. Only the final marker is persisted to Event history.
+
+## Workflow Task heartbeating
+
+Local Activities do **not** support Activity heartbeats. Instead, the SDK supports Workflow Task heartbeating.
+
+Workflow Task heartbeating means that if a Local Activity approaches approximately 80% of the Workflow Task Timeout (10 seconds by default), the Worker completes the current Workflow Task and requests a new one from the Temporal Service. This renews the Worker's authorization to continue executing the Workflow and allows the Local Activity to keep running without exceeding the Workflow Task Timeout.
+
+This enables Local Activities to run longer than a single Workflow Task timeout, but it comes with tradeoffs:
+
+- Each Workflow Task heartbeat adds additional Events to the Event history.
+- Signals and other external Workflow events are not processed until the Local Activities finish.
+- Commands generated by the Workflow are not sent to the Temporal Service until one of the following occurs:
+  - the Local Activity completes
+  - the next Workflow Task heartbeat occurs
+
+If your operation regularly approaches the Workflow Task timeout, it is usually better implemented as a regular Activity.
+
+You can monitor your Local Activities by using the [`local_activity_total` metric](/references/sdk-metrics#local_activity_total) to determine how many Local Activity Executions have been made. You can also check your Event History for `RecordMarker` entries.
+
+## Failure and durability
+
+Regular Activities are durably tracked by the Temporal Service. Scheduling, completion, retries, and failures are all recorded in the Event history. If a Worker crashes after an Activity completes, the completed Activity is not executed again.
+
+Local Activities behave differently. A Local Activity result becomes durable only when the enclosing Workflow Task successfully completes and records a `MarkerRecorded` event. Until then, execution exists only in Worker memory.
+
+If the Worker crashes before the Workflow Task completes, the Workflow Task is retried, causing Local Activities executed during that Workflow Task to run again.
+
+Because of this behavior, Local Activities provide at-least-once execution semantics and should always be idempotent. You can learn more about the behavior at shutdown in the [Workers section on Local Activities](encyclopedia/workers/worker-shutdown#local-activities).
+
+Once a `MarkerRecorded` event has been written to the Event history, replay uses the recorded result rather than executing the Local Activity again.
+
+## Mixing Local Activities and regular Activities
+
+A Workflow can freely combine Local Activities and regular Activities.
+
+For example:
+
+```mermaid
+flowchart LR
+    LA[Local Activity A] --> LB[Local Activity B] --> RC[Regular Activity C]
+```
+
+When the Workflow Task completes after scheduling Activity C, the Worker sends commands similar to:
+
+- `MarkerRecorded` (Local Activity A)
+- `MarkerRecorded` (Local Activity B)
+- `ScheduleActivityTask` (Activity C)
+
+If Activity C later fails or retries, the Workflow replays using the recorded markers for A and B. Those completed Local Activities are not executed again because their results have already been persisted in the Event history. Only Activity C is retried according to its Retry Policy.
+
+The only time completed Local Activities execute again is if the Worker fails before their completion markers are recorded. Long retry intervals are inefficient because retries eventually require Workflow Timers and additional Event history entries.
+
+## Choosing between regular Activities and Local Activities
+
+Choose a regular Activity unless you have a specific need for the performance optimization that Local Activities provide.
+
+Use a Local Activity when:
+
+- execution completes in a few seconds
+- retries are expected to be short
+- the operation is idempotent
+- low latency is more important than full durability
+- routing, rate limiting, and separate Activity Workers are unnecessary
+
+Use a regular Activity when:
+
+- interacting with external systems
+- execution may take longer than a few seconds
+- retries may span minutes or hours
+- Activity heartbeating is required
+- strong durability guarantees are important
+
+Regular Activities are the right choice for most applications. Local Activities are an optimization for specialized, high-throughput workloads where minimizing latency and Event history size outweighs their reduced durability guarantees.
+
+### Use cases for Local Activities
+
+Good use cases for Local Activities include:
+
+- Lightweight data transformations
+- Small computations
+- Reading from an in-memory cache
+- Fast local filesystem operations
+- High-throughput Workflows with many very short-lived operations
+
+Use regular Activities for:
+
+- Network requests
+- Database operations
+- External API calls
+- Long-running work
+- Operations requiring durable retries
+- Operations that benefit from Task Queue routing or rate limiting
+
+### Activity vs. Local Activity
+
+| Feature | Activity | Local Activity |
+| --- | --- | --- |
+| Execution | Activity Worker | Workflow Worker |
+| Task Queue | Yes | No |
+| Service round trip | Required | Not required |
+| Latency | Higher | Lower |
+| Event history | Fully recorded | `MarkerRecorded` on completion |
+| Heartbeating | Activity heartbeats | Workflow Task heartbeating |
+| Retry durability | Durable | At-least-once until marker is recorded |
+| Signal responsiveness | Unaffected | Delayed while the Workflow Task executes |
+| Best for | General-purpose work | Short, high-throughput operations |
