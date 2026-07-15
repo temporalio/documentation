@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Retry attempts leading up to a deadline -->
+  <circle cx="10" cy="40" r="5" fill="none" stroke="#888" stroke-width="1.5"/>
+  <circle cx="28" cy="40" r="5" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <path d="M 15 36 A 8 8 0 0 1 23 36" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="20,33 25,37 18,38" fill="#888"/>
+
+  <line x1="34" y1="40" x2="46" y2="40" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="44,37 50,40 44,43" fill="#888"/>
+
+  <!-- Wall-clock deadline (bounds the retries) -->
+  <circle cx="72" cy="40" r="17" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="72" y1="40" x2="72" y2="29" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <line x1="72" y1="40" x2="81" y2="44" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="72" cy="40" r="2" fill="#cc2222"/>
+</svg>

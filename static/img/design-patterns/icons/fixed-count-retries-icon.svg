@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Three discrete attempts -->
+  <circle cx="16" cy="46" r="8" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="44" cy="46" r="8" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="72" cy="46" r="8" fill="none" stroke="#cc2222" stroke-width="2"/>
+
+  <!-- Retry arcs between the attempts -->
+  <path d="M 22 41 A 12 12 0 0 1 38 41" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="35,37 40,42 33,43" fill="#888"/>
+
+  <path d="M 50 41 A 12 12 0 0 1 66 41" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="63,37 68,42 61,43" fill="#888"/>
+
+  <!-- Hard stop after the fixed count -->
+  <line x1="80" y1="46" x2="90" y2="46" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <line x1="90" y1="38" x2="90" y2="54" stroke="#cc2222" stroke-width="3" stroke-linecap="round"/>
+</svg>
