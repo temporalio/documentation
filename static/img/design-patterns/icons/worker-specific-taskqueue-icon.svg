@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Tasks routed to a specific worker -->
+  <rect x="6" y="22" width="26" height="14" rx="3" fill="none" stroke="#888" stroke-width="1.5"/>
+  <line x1="11" y1="29" x2="27" y2="29" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="6" y="46" width="26" height="14" rx="3" fill="none" stroke="#888" stroke-width="1.5"/>
+  <line x1="11" y1="53" x2="27" y2="53" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Pinned routes -->
+  <line x1="34" y1="29" x2="56" y2="29" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="53,25 62,29 53,33" fill="#cc2222"/>
+  <line x1="34" y1="53" x2="56" y2="53" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="53,49 62,53 53,57" fill="#cc2222"/>
+
+  <!-- Dedicated workers -->
+  <rect x="64" y="22" width="28" height="14" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <text x="78" y="33" font-family="sans-serif" font-size="9" fill="#cc2222" text-anchor="middle">W1</text>
+  <rect x="64" y="46" width="28" height="14" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <text x="78" y="57" font-family="sans-serif" font-size="9" fill="#cc2222" text-anchor="middle">W2</text>
+</svg>

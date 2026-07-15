@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Hourglass: long-running work -->
+  <line x1="20" y1="18" x2="52" y2="18" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <line x1="20" y1="62" x2="52" y2="62" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 22 18 L 50 18 L 36 40 Z" fill="none" stroke="#888" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M 22 62 L 50 62 L 36 40 Z" fill="#cc2222" stroke="#888" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Heartbeat keeping it alive -->
+  <polyline points="60,40 66,40 70,28 76,52 80,40 90,40" fill="none" stroke="#cc2222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
