@@ -9,7 +9,7 @@ tags:
   - Reference
 ---
 
-The following terms are used in [Temporal Platform](/encyclopedia/architecture/temporal-architecture) documentation.
+The following terms are used in [Temporal Platform](/temporal) documentation.
 
 #### [Action](/cloud/pricing#action)
 
@@ -189,7 +189,7 @@ in your Temporal Service to facilitate migrating your Visibility data from one d
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Durable Execution](/encyclopedia/architecture/temporal-architecture#history-service)
+#### [Durable Execution](/temporal#durable-execution)
 
 Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and
 progress even in the face of failures, crashes, or server outages.
@@ -637,13 +637,13 @@ A Task Token is a unique identifier for an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal](/encyclopedia/architecture/temporal-architecture)
+#### [Temporal](/temporal)
 
 Temporal is a scalable and reliable runtime for Reentrant Processes called Temporal Workflow Executions.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Application](/encyclopedia/architecture/temporal-architecture#client-application)
+#### [Temporal Application](/temporal#temporal-application)
 
 A Temporal Application is a set of Workflow Executions.
 
@@ -715,7 +715,7 @@ spawn a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Platform](/encyclopedia/architecture/temporal-architecture#the-temporal-server)
+#### [Temporal Platform](/temporal#temporal-platform)
 
 The Temporal Platform consists of a Temporal Service and Worker Processes.
 
