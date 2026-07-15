@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Parent workflow -->
+  <rect x="38" y="12" width="24" height="18" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <text x="50" y="25" font-family="sans-serif" font-size="10" fill="#888" text-anchor="middle">P</text>
+
+  <!-- Links to children -->
+  <line x1="50" y1="30" x2="20" y2="48" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="50" y1="30" x2="50" y2="48" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="50" y1="30" x2="80" y2="48" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Child workflows -->
+  <rect x="8" y="50" width="24" height="18" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <text x="20" y="63" font-family="sans-serif" font-size="10" fill="#cc2222" text-anchor="middle">C</text>
+  <rect x="38" y="50" width="24" height="18" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <text x="50" y="63" font-family="sans-serif" font-size="10" fill="#cc2222" text-anchor="middle">C</text>
+  <rect x="68" y="50" width="24" height="18" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <text x="80" y="63" font-family="sans-serif" font-size="10" fill="#cc2222" text-anchor="middle">C</text>
+</svg>

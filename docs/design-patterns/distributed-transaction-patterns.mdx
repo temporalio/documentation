@@ -1,0 +1,39 @@
+---
+id: distributed-transaction-patterns
+title: "Distributed Transaction Patterns"
+sidebar_label: "Distributed Transaction Patterns"
+description: "Pattern selection guide for distributed transactions, with a decision tree for choosing between Saga and Early Return."
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Distributed transactions span multiple services that each own their own data, with no shared database transaction to roll back. These patterns coordinate the steps, undo completed work when a later step fails, and keep external side effects correct under retries.
+
+## Patterns in this section
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/saga-pattern",
+    icon: "saga-icon.svg",
+    title: "Saga Pattern",
+    description: "Manages a distributed transaction as a sequence of local steps, where each step defines a compensating action that undoes its effect if a later step fails.",
+  },
+  {
+    href: "/design-patterns/early-return",
+    icon: "early-return-icon.svg",
+    title: "Early Return",
+    description: "Returns a result to the caller as soon as initialization succeeds, while the remaining work continues asynchronously in the background.",
+  },
+]} />
+
+## Choosing a pattern
+
+**You need to undo completed steps when a later step fails**: use the [Saga Pattern](/design-patterns/saga-pattern) and define a compensation for every step that has an external effect.
+
+**You need to respond to the caller before the transaction finishes**: use [Early Return](/design-patterns/early-return) to acknowledge after initialization and continue processing in the background.
+
+## Related sections
+
+- [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns) — control how each step retries before a compensation triggers
+- [Workflow Messaging Patterns](/design-patterns/workflow-messaging-patterns) — the Update-with-Start mechanism behind Early Return
+- [Performance & Latency Patterns](/design-patterns/performance-latency-patterns) — combine Early Return with Local Activities for the lowest first-response latency

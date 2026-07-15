@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Failing task -->
+  <rect x="8" y="26" width="28" height="28" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="16" y1="34" x2="28" y2="46" stroke="#cc2222" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="28" y1="34" x2="16" y2="46" stroke="#cc2222" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Retry loop that will NOT run -->
+  <path d="M 72 26 A 16 16 0 1 0 86 34" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="83,30 87,36 79,37" fill="#888"/>
+
+  <!-- Prohibition slash across the retry loop -->
+  <line x1="60" y1="26" x2="84" y2="54" stroke="#cc2222" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
