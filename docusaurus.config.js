@@ -1,6 +1,7 @@
 //@ts-check
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
+const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -15,8 +16,11 @@ module.exports = async function createConfigAsync() {
     favicon: 'favicon.ico',
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
-    headTags: [
-    ],
+    // JSON-LD structured data (Organization/SoftwareApplication/WebPage) is
+    // rendered per-page instead of injected globally here — see
+    // src/theme/DocItem/StructuredData and src/constants/organizationSchema.
+    // A single global block would put the full Organization property set on
+    // every page, which is exactly the drift risk the JSON-LD audit flagged.
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
@@ -37,7 +41,10 @@ module.exports = async function createConfigAsync() {
         //   },
         // },
       },
-      metadata: [{ name: 'robots', content: 'follow, index' }],
+      metadata: [
+        { name: 'robots', content: 'follow, index' },
+        { property: 'og:type', content: 'website' },
+      ],
       image: '/img/assets/open-graph-shiny.png',
       prism: {
         theme: prismLightTheme,
@@ -95,6 +102,13 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'ai-cookbook',
             position: 'left',
           },
+          // hide this for now, making this a soft-launch
+          // {
+          //   label: 'Design Patterns',
+          //   to: '/design-patterns',
+          //   activeBasePath: 'design-patterns',
+          //   position: 'left',
+          // },
           {
             label: 'Code Exchange',
             href: 'https://temporal.io/code-exchange',
@@ -204,11 +218,11 @@ module.exports = async function createConfigAsync() {
         ],
       },
       algolia: {
-        apiKey: '4a2fa646f476d7756a7cdc599b625bec',
-        indexName: 'temporal',
+        apiKey: ALGOLIA_SEARCH_API_KEY,
+        indexName: ALGOLIA_INDEX_NAME,
         externalUrlRegex: 'temporal\\.io',
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
-        appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
+        appId: ALGOLIA_APP_ID, // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
@@ -370,8 +384,8 @@ module.exports = async function createConfigAsync() {
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
-          docItemComponent: '@site/src/components/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override
+          docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
+          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
         },
       ],
       [
@@ -383,6 +397,12 @@ module.exports = async function createConfigAsync() {
       ],
       [
         require.resolve('./plugins/markdown-pages'),
+        {
+          docsDir: 'docs',
+        },
+      ],
+      [
+        require.resolve('./plugins/og-image'),
         {
           docsDir: 'docs',
         },

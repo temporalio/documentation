@@ -1,0 +1,125 @@
+:root {
+  /* Pre-release */
+  --release-prerelease-bg: #fef3c7;
+  --release-prerelease-border: #f59e0b;
+  --release-prerelease-text: #111827;
+
+  /* Public Preview */
+  --release-public-preview-bg: #eff6ff;
+  --release-public-preview-border: #8b5cf6;
+  --release-public-preview-text: #111827;
+}
+
+[data-theme="dark"] {
+  /* Pre-release */
+  --release-prerelease-bg: #422006;
+  --release-prerelease-border: #fbbf24;
+  --release-prerelease-text: #e6f6e6;
+
+  /* Public Preview */
+  --release-public-preview-bg: #2e1065;
+  --release-public-preview-border: #a78bfa;
+  --release-public-preview-text: #e6f6e6;
+}
+
+.releaseNoteHeader {
+  display: flex;
+  gap: 0.875rem;
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--release-note-border);
+  background: var(--release-note-background);
+  color: var(--release-note-text);
+}
+
+.accent {
+  width: 0.25rem;
+  border-radius: 999px;
+  background: var(--release-note-border);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pill {
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.text {
+  margin: 0.35rem 0 0;
+}
+
+.text > p {
+  margin: unset;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: center;
+}
+
+.languageIcon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 10px;
+}
+
+.languageLink {
+  display: flex;
+  line-height: 0;
+  border-radius: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.languageLink:hover {
+  opacity: 0.85;
+}
+
+.languageLink:focus-visible {
+  outline: 2px solid var(--release-note-border);
+  outline-offset: 2px;
+}
+
+.languageStatic {
+  display: flex;
+  line-height: 0;
+  pointer-events: none;
+  cursor: default;
+}
+
+.supportedLanguages {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .headerRow {
+    flex-direction: column;
+  }
+}

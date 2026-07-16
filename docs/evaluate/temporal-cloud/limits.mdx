@@ -57,11 +57,9 @@ The following limits apply at the Namespace level.
 ### Actions per second
 
 - Scope: Namespace
-- Default limit: 500 actions per second (APS)
-- How to increase:
-  - Automatically increases (and decreases) based on the last 7 days of APS usage. Will never go below the default limit.
-  - See [Capacity Modes](/cloud/capacity-modes).
-  - [Contact support](/cloud/support#support-ticket).
+- Default limit: 500 actions per second (APS). With On-Demand Capacity, the default limit is the floor your APS limit automatically scales above based on the last 7 days of usage; your limit never falls below the default limit. With Provisioned Capacity, your limit is set by the Temporal Resource Units you provision.
+- See your current limit: View it in the Temporal Cloud UI under the Namespace overview, retrieve it with the [Temporal CLI](/cli/command-reference/cloud/namespace#capacity) (`temporal cloud namespace capacity get`), or track the `temporal_cloud_v1_action_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
+- How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/cloud/support#support-ticket).
 - What happens when you exceed the limit: See [Throttling behavior](#throttling-behavior) below.
 
 See the [Actions page](/cloud/actions) for the list of actions. 
@@ -69,22 +67,18 @@ See the [Actions page](/cloud/actions) for the list of actions.
 ### Requests per second
 
 - Scope: Namespace
-- Default limit: 2000 requests per second (RPS)
-- How to increase:
-  - Automatically increases (and decreases) based on the last 7 days of RPS usage. Will never go below the default limit.
-  - See [Capacity Modes](/cloud/capacity-modes).
-  - [Contact support](/cloud/support#support-ticket).
+- Limit: Your requests per second (RPS) limit is dynamic and depends on your [capacity mode](/cloud/capacity-modes). With On-Demand Capacity it automatically increases (and decreases) based on the last 7 days of RPS usage and never falls below the On-Demand floor; with Provisioned Capacity it is set by the Temporal Resource Units you provision.
+- See your current limit: Track the `temporal_cloud_v1_service_request_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
+- How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/cloud/support#support-ticket).
 
 See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
 
 ### Operations per second
 
 - Scope: Namespace
-- Default limit: 4000 operations per second (OPS)
-- How to increase:
-  - Automatically increases (and decreases) based on the last 7 days of OPS usage. Will never go below the default limit.
-  - See [Capacity Modes](/cloud/capacity-modes).
-  - [Contact support](/cloud/support#support-ticket).
+- Limit: Your operations per second (OPS) limit is dynamic and depends on your [capacity mode](/cloud/capacity-modes). With On-Demand Capacity it automatically increases (and decreases) based on the last 7 days of OPS usage and never falls below the On-Demand floor; with Provisioned Capacity it is set by the Temporal Resource Units you provision.
+- See your current limit: Track the `temporal_cloud_v1_operations_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
+- How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/cloud/support#support-ticket).
 
 See the [operations list](/references/operation-list) for the list of operations.
 
@@ -127,7 +121,7 @@ Nexus requests (such as starting a Nexus Operation or sending a Nexus completion
 If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace.
 Throttling limits the rate at which Nexus requests are processed, ensuring the RPS limit isn't exceeded.
 
-You can request this limit be manually raised by [opening a support ticket](https://docs.temporal.io/cloud/support#support-ticket).
+You can request this limit be manually raised by [opening a support ticket](/cloud/support#support-ticket).
 
 :::note
 

@@ -10,14 +10,18 @@ import {
   Configure,
 } from 'react-instantsearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import aa from '../theme/SearchBar/algoliaInsights';
+import { trackSearchClick, trackNoResults } from '../theme/SearchBar/trackSearchEvent';
 import { SDK_LANGUAGES, getInitialLanguageFilter, SDK_LANGUAGE_STORAGE_KEY } from '../theme/SearchBar/SDKLanguageFilter';
+import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } from '../constants/algolia';
 import '../theme/SearchBar/styles.css';
 
-const ALGOLIA_APP_ID = 'T5D6KNJCQS';
-const ALGOLIA_API_KEY = '4a2fa646f476d7756a7cdc599b625bec';
-const ALGOLIA_INDEX_NAME = 'temporal';
+const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY);
 
-const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+// Stable reference: an inline `{ insightsClient: aa }` object literal would be
+// a new object on every render, which resets the insights middleware's
+// dedup cache and re-fires "Hits Viewed" for results it already reported.
+const INSIGHTS_CONFIG = { insightsClient: aa };
 
 // Get the appropriate hierarchy attribute based on hit type
 function getHierarchyAttribute(hit: any): string {
@@ -51,13 +55,14 @@ function getBreadcrumbPath(hit: any): string[] {
   return path;
 }
 
-function SearchResultItem({ hit }: { hit: any }) {
+function SearchResultItem({ hit, sendEvent }: { hit: any; sendEvent: (eventType: string, hit: any, eventName: string) => void }) {
   const history = useHistory();
   const hierarchyAttr = getHierarchyAttribute(hit);
   const breadcrumbs = getBreadcrumbPath(hit);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    trackSearchClick(sendEvent, hit);
     const fullUrl = hit.url || hit.objectID;
     try {
       const url = new URL(fullUrl, window.location.origin);
@@ -95,9 +100,26 @@ function SearchResultItem({ hit }: { hit: any }) {
   );
 }
 
-function SearchResultsList() {
-  const { items, isLastPage, showMore } = useInfiniteHits();
+// Gates mounting the actual hits widget behind a typed query: useInfiniteHits
+// registers an insights-aware widget, and with `insights: true` on the tree
+// that auto-fires a "Hits Viewed" event for whatever it renders — including
+// the default browse results Algolia returns for an empty query.
+function SearchResultsSection() {
   const { query } = useSearchBox();
+
+  if (!query) {
+    return (
+      <div className="search-page-empty">
+        Enter a search term to find documentation
+      </div>
+    );
+  }
+
+  return <SearchResultsList query={query} />;
+}
+
+function SearchResultsList({ query }: { query: string }) {
+  const { items, isLastPage, showMore, sendEvent } = useInfiniteHits();
   const { nbHits } = useStats();
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -121,13 +143,11 @@ function SearchResultsList() {
     return () => observer.disconnect();
   }, [isLastPage, showMore]);
 
-  if (!query) {
-    return (
-      <div className="search-page-empty">
-        Enter a search term to find documentation
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (items.length === 0) {
+      trackNoResults(query);
+    }
+  }, [query, items.length]);
 
   if (items.length === 0) {
     return (
@@ -144,7 +164,7 @@ function SearchResultsList() {
       </div>
       <div className="search-page-results">
         {items.map((hit: any) => (
-          <SearchResultItem key={hit.objectID} hit={hit} />
+          <SearchResultItem key={hit.objectID} hit={hit} sendEvent={sendEvent} />
         ))}
       </div>
       {/* Sentinel element for infinite scroll */}
@@ -288,6 +308,7 @@ function SearchPageContent() {
       <InstantSearch
         searchClient={searchClient}
         indexName={ALGOLIA_INDEX_NAME}
+        insights={INSIGHTS_CONFIG}
         initialUiState={{
           [ALGOLIA_INDEX_NAME]: {
             query: initialQuery,
@@ -312,7 +333,7 @@ function SearchPageContent() {
           selectedLanguages={selectedLanguages}
           onLanguageChange={handleLanguageChange}
         />
-        <SearchResultsList />
+        <SearchResultsSection />
       </InstantSearch>
     </div>
   );

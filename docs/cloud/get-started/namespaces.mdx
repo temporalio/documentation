@@ -19,7 +19,7 @@ tags:
   - Temporal Cloud
 ---
 
-import { CaptionedImage, ZoomingImage } from '@site/src/components';
+import { CaptionedImage, EnlargeImage } from '@site/src/components';
 
 :::info Temporal Cloud
 This page covers namespace operations in **Temporal Cloud**.
@@ -77,7 +77,7 @@ utility at a command line interface (CLI). Follow these steps.
     1. Select your account avatar at the top right of the page.
        A profile dropdown menu appears.
     1. Copy the Cloud Account ID from the menu.
-       <ZoomingImage
+      <EnlargeImage
            src="/img/cloud/cloud-guide/cloud-account-id.png"
            alt="Temporal Cloud user profile dropdown menu. The dropdown includes a Cloud Account ID and copy button, with role, profile and logout options, and links to community resources."
        />
@@ -249,7 +249,7 @@ accessing Namespace endpoints.
 Temporal Cloud supports authentication to Namespaces using [API keys](/cloud/api-keys) _or_
 [mTLS](/cloud/certificates). To migrate a Namespace from one authentication method to another, or to use both API
 key and mTLS authentication on the same Namespace, please contact
-[Support](https://docs.temporal.io/cloud/support#support-ticket).
+[Support](/cloud/support#support-ticket).
 
 :::info
 
@@ -383,7 +383,7 @@ Namespace removal is permanent.
 Closed Workflow Histories remain in Temporal storage until the user-defined retention period expires. This period
 reflects the policy in effect when the Workflow Execution was closed.
 
-For further questions or concerns, contact [Support](https://docs.temporal.io/cloud/support#support-ticket).
+For further questions or concerns, contact [Support](/cloud/support#support-ticket).
 
 ### Delete a Namespace using tcld
 
