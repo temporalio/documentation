@@ -52,7 +52,7 @@ flowchart TD
 The following describes each step in the diagram:
 
 1. The parent Workflow starts with a list of record IDs and a configured `windowSize`.
-2. It starts the first `windowSize` children concurrently, one per record, each receiving the parent's Workflow ID so they know where to signal.
+2. It starts the first `windowSize` children concurrently, one per record. Each child reads the parent's Workflow ID from its own Workflow metadata, so it knows where to signal.
 3. As each child completes, it sends a completion signal to the parent.
 4. The parent receives the signal, increments its completion counter, and starts the next child (the next record in the list).
 5. After starting `windowSize` children in total, the parent calls `continueAsNew` with the updated start index. The window slides forward without gaps because the parent's Workflow ID is preserved across runs.
@@ -88,14 +88,16 @@ const { processRecord } = proxyActivities<typeof activities>({
 
 export const completionSignal = defineSignal<[string]>("recordCompleted");
 
-export async function recordProcessorWorkflow(
-  recordId: string,
-  parentWorkflowId: string
-): Promise<void> {
+export async function recordProcessorWorkflow(recordId: string): Promise<void> {
   await processRecord(recordId);
+  // Read the parent's Workflow ID from this Workflow's own metadata. The
+  // parent's Workflow ID is stable across Continue-as-New, so signaling by
+  // Workflow ID (no run ID) always reaches the current run.
+  const parentId = workflowInfo().parent?.workflowId;
+  if (!parentId) throw new Error("recordProcessorWorkflow must run as a Child Workflow");
   // Ignore NOT_FOUND — the parent's final run may have already completed.
   try {
-    const parent = getExternalWorkflowHandle(parentWorkflowId);
+    const parent = getExternalWorkflowHandle(parentId);
     await parent.signal(completionSignal, recordId);
   } catch (err) {
     if (!(err instanceof ApplicationFailure && err.type === 'NOT_FOUND')) throw err;
@@ -127,7 +129,7 @@ export async function slidingWindowWorkflow(input: SlidingWindowInput): Promise<
   const newFill = Math.min(windowSize - inFlight, recordIds.length - startIndex);
   for (let i = 0; i < newFill; i++) {
     await startChild(recordProcessorWorkflow, {
-      args: [recordIds[nextIndex], parentId],
+      args: [recordIds[nextIndex]],
       workflowId: `${parentId}/record-${recordIds[nextIndex]}`,
       taskQueue: TASK_QUEUE,
       parentClosePolicy: ParentClosePolicy.ABANDON,
@@ -149,7 +151,7 @@ export async function slidingWindowWorkflow(input: SlidingWindowInput): Promise<
     pendingSignals--;
     active--;
     await startChild(recordProcessorWorkflow, {
-      args: [recordIds[nextIndex], parentId],
+      args: [recordIds[nextIndex]],
       workflowId: `${parentId}/record-${recordIds[nextIndex]}`,
       taskQueue: TASK_QUEUE,
       parentClosePolicy: ParentClosePolicy.ABANDON,
@@ -197,15 +199,20 @@ COMPLETION_SIGNAL = "recordCompleted"
 @workflow.defn
 class RecordProcessorWorkflow:
     @workflow.run
-    async def run(self, record_id: str, parent_workflow_id: str) -> None:
+    async def run(self, record_id: str) -> None:
         await workflow.execute_activity(
             process_record,
             record_id,
             start_to_close_timeout=timedelta(seconds=30),
         )
+        # Read the parent's Workflow ID from this Workflow's own metadata. The
+        # parent's Workflow ID is stable across Continue-as-New, so signaling by
+        # Workflow ID (no run ID) always reaches the current run.
+        parent = workflow.info().parent
+        assert parent is not None, "must run as a Child Workflow"
         # Ignore NOT_FOUND — the parent's final run may have already completed.
         try:
-            handle = workflow.get_external_workflow_handle(parent_workflow_id)
+            handle = workflow.get_external_workflow_handle(parent.workflow_id)
             await handle.signal(COMPLETION_SIGNAL, record_id)
         except ApplicationError as e:
             if "not found" not in str(e).lower():
@@ -241,7 +248,7 @@ class SlidingWindowWorkflow:
         for _ in range(new_fill):
             await workflow.start_child_workflow(
                 RecordProcessorWorkflow.run,
-                args=[record_ids[next_index], parent_id],
+                args=[record_ids[next_index]],
                 id=f"{parent_id}/record-{record_ids[next_index]}",
                 task_queue=TASK_QUEUE,
                 parent_close_policy=ParentClosePolicy.ABANDON,
@@ -257,7 +264,7 @@ class SlidingWindowWorkflow:
             active -= 1
             await workflow.start_child_workflow(
                 RecordProcessorWorkflow.run,
-                args=[record_ids[next_index], parent_id],
+                args=[record_ids[next_index]],
                 id=f"{parent_id}/record-{record_ids[next_index]}",
                 task_queue=TASK_QUEUE,
                 parent_close_policy=ParentClosePolicy.ABANDON,
@@ -289,6 +296,7 @@ class SlidingWindowWorkflow:
 package main
 
 import (
+	"errors"
 	"strings"
 	"time"
 
@@ -298,7 +306,7 @@ import (
 
 const CompletionSignal = "recordCompleted"
 
-func RecordProcessorWorkflow(ctx workflow.Context, recordID string, parentWorkflowID string) error {
+func RecordProcessorWorkflow(ctx workflow.Context, recordID string) error {
 	ao := workflow.ActivityOptions{StartToCloseTimeout: 30 * time.Second}
 	ctx = workflow.WithActivityOptions(ctx, ao)
 
@@ -306,8 +314,16 @@ func RecordProcessorWorkflow(ctx workflow.Context, recordID string, parentWorkfl
 		return err
 	}
 
+	// Read the parent's Workflow ID from this Workflow's own metadata. The
+	// parent's Workflow ID is stable across Continue-as-New, so signaling by
+	// Workflow ID (empty run ID) always reaches the current run.
+	parent := workflow.GetInfo(ctx).ParentWorkflowExecution
+	if parent == nil {
+		return errors.New("RecordProcessorWorkflow must run as a Child Workflow")
+	}
+
 	// Ignore not-found — the parent's final run may have already completed.
-	err := workflow.SignalExternalWorkflow(ctx, parentWorkflowID, "", CompletionSignal, recordID).Get(ctx, nil)
+	err := workflow.SignalExternalWorkflow(ctx, parent.ID, "", CompletionSignal, recordID).Get(ctx, nil)
 	if err != nil && strings.Contains(err.Error(), "not found") {
 		return nil
 	}
@@ -334,7 +350,7 @@ func SlidingWindowWorkflow(ctx workflow.Context, input SlidingWindowInput) (int,
 			TaskQueue:         TaskQueue,
 			ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
 		}
-		future := workflow.ExecuteChildWorkflow(workflow.WithChildOptions(ctx, cwo), RecordProcessorWorkflow, recordID, parentID)
+		future := workflow.ExecuteChildWorkflow(workflow.WithChildOptions(ctx, cwo), RecordProcessorWorkflow, recordID)
 		return future.GetChildWorkflowExecution().Get(ctx, nil)
 	}
 
@@ -476,7 +492,8 @@ public class SlidingWindowWorkflowImpl implements SlidingWindowWorkflow {
             .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
             .build();
         RecordProcessorWorkflow child = Workflow.newChildWorkflowStub(RecordProcessorWorkflow.class, opts);
-        Async.procedure(child::run, recordId, parentId);
+        // The child reads the parent's Workflow ID with Workflow.getInfo().getParentWorkflowId().
+        Async.procedure(child::run, recordId);
     }
 }
 ```
@@ -486,7 +503,7 @@ public class SlidingWindowWorkflowImpl implements SlidingWindowWorkflow {
 
 ## Best practices
 
-- **Preserve the parent Workflow ID across Continue-as-New.** The parent's Workflow ID is stable across `continueAsNew` runs — do not generate a new one. Children use `signalExternalWorkflow` with that ID, so they always reach the current run.
+- **Preserve the parent Workflow ID across Continue-as-New.** The parent's Workflow ID is stable across `continueAsNew` runs — do not generate a new one. Children read the parent's Workflow ID from their own Workflow metadata (`workflowInfo().parent` in TypeScript, `workflow.info().parent` in Python, `workflow.GetInfo(ctx).ParentWorkflowExecution` in Go, `Workflow.getInfo().getParentWorkflowId()` in Java) rather than receiving it as an argument, then signal by Workflow ID (with no run ID) so they always reach the current run.
 - **Use `PARENT_CLOSE_POLICY_ABANDON` on child Workflows.** This lets children that were started by a previous run complete normally even after the parent has continued as new.
 - **Size the window conservatively at first.** Each in-flight child counts toward the 2,000 unfinished-actions limit for the parent. A window of 50–200 is a reasonable starting point depending on child duration and downstream capacity.
 - **Pass only IDs (not full records) to child Workflows.** Workflow inputs are stored in event history. Keep them small.
