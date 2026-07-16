@@ -384,8 +384,8 @@ module.exports = async function createConfigAsync() {
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
-          docItemComponent: '@site/src/components/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override
+          docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
+          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
         },
       ],
       [

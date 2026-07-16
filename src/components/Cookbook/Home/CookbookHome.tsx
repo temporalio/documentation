@@ -1,9 +1,9 @@
 import React from 'react';
-import Tile from '@site/src/components/elements/Tile';
 import { useAllDocsData } from '@docusaurus/plugin-content-docs/client';
 import styles from './CookbookHome.module.css';
 import useGlobalData, { usePluginData } from '@docusaurus/useGlobalData';
 import clsx from 'clsx';
+import Tile from '../../elements/Tile/Tile';
 
 type CookbookItem = {
   id: string;
