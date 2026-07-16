@@ -1708,6 +1708,13 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Interactive Demos',
+      collapsed: true,
+      items: [
+        'develop/standalone-activities-interactive-demo',
+      ],
+    },    {
+      type: 'category',
       label: 'Guides',
       collapsed: true,
       link: {
