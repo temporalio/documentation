@@ -13,7 +13,7 @@ tags:
 description: Schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+import { ViewSourceCodeNotice } from '@site/src/components';
 
 This page shows how to do the following:
 
@@ -262,7 +262,7 @@ if err != nil {
 
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
+We recommend using [Schedules](/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
