@@ -1,0 +1,234 @@
+---
+id: standalone-operations
+title: Standalone Nexus Operations - TypeScript SDK
+sidebar_label: Standalone Operations
+toc_max_heading_level: 4
+keywords:
+  - standalone nexus operation
+  - nexus operation execution
+  - execute nexus operation
+  - nexus operation handle
+  - list nexus operations
+  - count nexus operations
+  - typescript sdk
+tags:
+  - Nexus
+  - Temporal Client
+  - TypeScript SDK
+  - Temporal SDKs
+description: Execute Nexus Operations independently without a Workflow using the Temporal TypeScript SDK.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="standaloneNexusOperation">
+  Requires TypeScript SDK `v1.20.2` or above. All APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+[Standalone Nexus Operations](/standalone-nexus-operation) let you run Nexus Operation Executions independently, without
+being orchestrated by a Workflow. Instead of calling a Nexus Operation from within a Workflow Definition using
+`@temporalio/workflow`'s `createNexusServiceClient()`, you execute a Standalone Nexus Operation directly from a Nexus
+service client created on the Temporal Client using `client.nexus.createServiceClient()`.
+
+Standalone Nexus Operations use the same Nexus Service contract, Operation handlers, and Worker setup as
+Workflow-driven Operations — only the execution path differs. See the [Nexus feature guide](/develop/typescript/nexus/feature-guide) for details on
+[defining a Service contract](/develop/typescript/nexus/feature-guide#define-nexus-service-contract) and
+[developing Operation handlers and registering a Service in a Worker](/develop/typescript/nexus/feature-guide#develop-nexus-service-operation-handlers).
+
+This page focuses on the client-side APIs that are unique to Standalone Nexus Operations:
+
+- [Execute a Standalone Nexus Operation](#execute-operation)
+- [Start a Standalone Nexus Operation and Wait for the Result](#get-operation-result)
+- [List Standalone Nexus Operations](#list-operations)
+- [Count Standalone Nexus Operations](#count-operations)
+- [Run Standalone Nexus Operations with Temporal Cloud](#run-standalone-nexus-operations-temporal-cloud)
+
+:::note
+This documentation uses source code from the
+[TypeScript Nexus Standalone sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-standalone-operations).
+
+:::
+
+## Prerequisites {/* #prerequisites */}
+
+Standalone Nexus Operations are at Pre-release and require a special Temporal CLI build.
+
+### 1. Install and verify the Pre-release Temporal CLI {/* #install-cli */}
+
+The `temporal nexus operation` commands require a Pre-release build of the Temporal CLI. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for the platform downloads,
+then verify:
+
+```bash
+./temporal --version
+# temporal version 1.7.4-standalone-nexus-operations
+```
+
+Run it as `./temporal` from the directory where you extracted it. The standard `brew install temporal`
+build does not include Standalone Nexus Operation support during Pre-release.
+
+### 2. Start a local dev server {/* #enable-dev-server */}
+
+The Pre-release dev server enables Standalone Nexus Operations by default — no dynamic config is
+required. Start it with the caller and handler Namespaces pre-created:
+
+```bash
+./temporal server start-dev \
+  --namespace my-caller-namespace \
+  --namespace my-handler-namespace
+```
+
+The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
+Namespace), mirroring how Nexus crosses Namespace boundaries.
+
+To run the examples on this page against the [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-standalone-operations),
+create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
+
+```bash
+./temporal operator nexus endpoint create \
+  --name my-nexus-endpoint \
+  --target-namespace my-handler-namespace \
+  --target-task-queue nexus-handler-queue
+```
+
+Start the sample Worker in the handler Namespace:
+
+```bash
+TEMPORAL_NAMESPACE=my-handler-namespace npm run worker
+```
+
+Run the starter in the caller Namespace (from a separate terminal):
+
+```bash
+TEMPORAL_NAMESPACE=my-caller-namespace npm run starter
+```
+
+## Execute a Standalone Nexus Operation {/* #execute-operation */}
+
+To execute a Standalone Nexus Operation, first create a [`NexusServiceClient`](https://typescript.temporal.io/api/interfaces/client.NexusServiceClient) using [`client.nexus.createServiceClient()`](https://typescript.temporal.io/api/classes/client.NexusClient#createserviceclient),
+bound to a specific Nexus Endpoint and Service. The endpoint must be pre-created on the server. Then call
+`startOperation()` or `executeOperation()` from application code (for example, a starter program), not from inside a
+Workflow Definition.
+
+`executeOperation` waits for the Operation to complete and returns the result.
+Both methods require `id`. `scheduleToCloseTimeout` is optional and defaults to the maximum allowed by the Temporal server.
+
+```ts
+const nexusClient = client.nexus.createServiceClient({
+  endpoint: ENDPOINT_NAME,
+  service: myNexusService,
+});
+
+// Await the result of the operation immediately.
+const echoResult = await nexusClient.executeOperation(
+  myNexusService.operations.echo,
+  { message: 'hello' },
+  {
+    id: `echo-${nanoid()}`,
+    scheduleToCloseTimeout: '10s',
+  },
+);
+```
+
+See the full
+[starter sample](https://github.com/temporalio/samples-typescript/blob/main/nexus-standalone-operations/src/starter.ts)
+for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
+counts Operations.
+
+Or use the Temporal CLI to execute a Standalone Nexus Operation:
+
+```bash
+./temporal nexus operation execute \
+  --namespace my-caller-namespace \
+  --endpoint my-nexus-endpoint \
+  --service myNexusService \
+  --operation echo \
+  --operation-id my-echo-op \
+  --input '{"message":"hello"}'
+```
+
+## Start a Standalone Nexus Operation and Wait for the Result {/* #get-operation-result */}
+
+`startOperation` returns a [`NexusOperationHandle`](https://typescript.temporal.io/api/interfaces/client.NexusOperationHandle).
+Use `NexusOperationHandle.result()` to wait until the Operation completes and retrieve its result. This works for both
+synchronous and asynchronous Operations.
+
+```ts
+// Start an operation and get a NexusOperationHandle
+const handle = await nexusClient.startOperation(
+  myNexusService.operations.hello,
+  { name: 'World' },
+  {
+    id: `hello-${nanoid()}`,
+    scheduleToCloseTimeout: '10s',
+  },
+);
+
+// Await the result
+const helloResult = await handle.result();
+console.log(helloResult.greeting);
+```
+
+If the Operation completed successfully, the result is returned. If the Operation failed, the failure is thrown as an error.
+
+Or use the Temporal CLI to wait for a result by Operation ID:
+
+```bash
+./temporal nexus operation result --namespace my-caller-namespace --operation-id my-echo-op
+```
+
+## List Standalone Nexus Operations {/* #list-operations */}
+
+Use [`client.nexus.list()`](https://typescript.temporal.io/api/classes/client.NexusClient#list) to list Standalone Nexus Operation Executions that match a [List Filter](/list-filter) query.
+The result is an async iterator that yields operation metadata entries.
+
+Note that `client.nexus.list()` is called on the base `Client`, not on the `NexusServiceClient`.
+
+```ts
+const query = `Endpoint = "${ENDPOINT_NAME}"`;
+for await (const op of client.nexus.list({ query })) {
+  console.log(
+    `OperationId: ${op.operationId},`,
+    `Operation: ${op.operation},`,
+    `Status: ${op.status}`,
+  );
+}
+```
+
+The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
+`"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
+
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+```
+
+## Count Standalone Nexus Operations {/* #count-operations */}
+
+Use [`client.nexus.count()`](https://typescript.temporal.io/api/classes/client.NexusClient#count) to count Standalone Nexus Operation Executions that match a [List Filter](/list-filter) query.
+
+Note that `client.nexus.count()` is called on the base `Client`, not on the Nexus service client.
+
+```ts
+const query = `Endpoint = "${ENDPOINT_NAME}"`;
+const count = await client.nexus.count(query);
+console.log(`Total Nexus operations: ${count.count}`);
+```
+
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+```
+
+## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
+
+The code samples referenced on this page use [`loadClientConnectConfig()`](https://typescript.temporal.io/api/namespaces/envconfig#loadclientconfig) from `@temporalio/envconfig`, so the same code
+works against Temporal Cloud — just configure the connection via environment variables or a TOML
+profile. No code changes are needed.
+
+For full details on connecting to Temporal Cloud, including Namespace creation, Nexus Endpoint
+setup, certificate generation, and authentication options, see
+[Make Nexus calls across Namespaces in Temporal Cloud](/develop/typescript/nexus/feature-guide#nexus-calls-across-namespaces-temporal-cloud)
+and [Connect to Temporal Cloud](/develop/typescript/client/temporal-client#connect-to-temporal-cloud).

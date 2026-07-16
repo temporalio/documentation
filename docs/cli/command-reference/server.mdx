@@ -16,7 +16,7 @@ tags:
 ---
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
 This page provides a reference for the `temporal` CLI `server` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
@@ -79,6 +79,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--sqlite-pragma` | No | **string[]** SQLite pragma statements in "PRAGMA=VALUE" format. |
 | `--ui-asset-path` | No | **string** UI custom assets path. |
 | `--ui-codec-endpoint` | No | **string** UI remote codec HTTP endpoint. |
+| `--ui-disable-news-fetch` | No | **bool** Disable the Web UI newsfeed. When set, the UI will not request the newsfeed and the button to open the newsfeed panel is hidden. |
 | `--ui-ip` | No | **string** IP address bound to the Web UI. Defaults to same as '--ip' value. |
 | `--ui-port` | No | **int** Port for the Web UI. Defaults to '--port' value + 1000. |
 | `--ui-public-path` | No | **string** The public base path for the Web UI. Defaults to `/`. |

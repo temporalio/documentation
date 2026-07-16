@@ -137,8 +137,9 @@ A Workflow Execution can be either _Open_ or _Closed_.
 
 An _Open_ status means that the Workflow Execution is able to make progress.
 
-- Running: The only Open status for a Workflow Execution.
-  When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
+- Running: The Workflow Execution is actively progressing or is waiting on something.
+- Paused: The Workflow Execution has been [Paused](/encyclopedia/workflow/workflow-pause). It remains Open, but the Temporal Service doesn't
+  dispatch new Workflow Tasks until the Workflow Execution is Unpaused.
 
 #### Closed
 
