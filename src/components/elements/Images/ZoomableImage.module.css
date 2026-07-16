@@ -33,6 +33,29 @@
   cursor: zoom-out;
 }
 
+/* Wraps a cloned Mermaid <svg> (injected via dangerouslySetInnerHTML by
+   MermaidZoomWrapper). The svg keeps its own viewBox-driven aspect ratio, so
+   sizing it here mirrors .modalImage's width/height/max-height treatment.
+   `width: 100%` (not just `max-width`) is required: this wrapper is a flex
+   item inside .overlay, so without an explicit width it would shrink-to-fit
+   its child — but the child svg's own `width: 100%` resolves against this
+   wrapper's width, which is a circular reference browsers resolve by
+   falling back to the default 300x150 replaced-element size, ignoring our
+   intended sizing entirely. */
+.modalSvgWrapper {
+  display: flex;
+  width: 100%;
+  max-height: 90vh;
+  cursor: zoom-out;
+}
+
+.modalSvgWrapper svg {
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
 .close {
   position: fixed;
   top: 16px;

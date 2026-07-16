@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useColorMode } from '@docusaurus/theme-common';
 import clsx from 'clsx';
 import { useNoZoom } from './NoZoom';
+import ZoomModal from './ZoomModal';
+import { wouldEnlargeInModal } from './zoomSizing';
 import styles from './ZoomableImage.module.css';
 
 type ZoomableImageProps = React.ComponentProps<'img'> & {
@@ -35,15 +36,26 @@ export default function ZoomableImage({
 
   const resolvedSrc = colorMode === 'dark' && srcDark ? srcDark : src;
 
-  // An image is zoomable only when it is being displayed smaller than its
-  // native resolution, i.e. it overflows the available width.
+  // An image is zoomable only when opening the modal would actually show it
+  // larger than it already appears on the page. That's usually just "is it
+  // being displayed smaller than its native resolution", but a tall image
+  // can overflow its column width-wise while still rendering *smaller* in
+  // the modal once the height cap clamps it (see zoomSizing.ts).
   const measure = useCallback(() => {
     const img = imgRef.current;
     if (!img || !img.naturalWidth) {
       return;
     }
     setNaturalWidth(img.naturalWidth);
-    setIsZoomable(!noZoom && img.naturalWidth > img.clientWidth + 1);
+    setIsZoomable(
+      !noZoom &&
+        wouldEnlargeInModal({
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          pageWidth: img.clientWidth,
+          capToNaturalWidth: true,
+        })
+    );
   }, [noZoom]);
 
   useEffect(() => {
@@ -54,30 +66,17 @@ export default function ZoomableImage({
     if (img.complete) {
       measure();
     }
-    // Recompute when the column is resized (responsive layout, sidebar toggle).
+    // Recompute when the column is resized (responsive layout, sidebar
+    // toggle) or the viewport height changes (affects the modal's 90vh cap
+    // without necessarily changing the image's own rendered width).
     const observer = new ResizeObserver(measure);
     observer.observe(img);
-    return () => observer.disconnect();
-  }, [measure, resolvedSrc]);
-
-  // While the modal is open, lock body scroll and close on Escape.
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-    const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKey);
+    window.addEventListener('resize', measure);
     return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', handleKey);
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
     };
-  }, [isOpen]);
+  }, [measure, resolvedSrc]);
 
   return (
     <>
@@ -101,35 +100,14 @@ export default function ZoomableImage({
         }}
         {...rest}
       />
-      {isOpen &&
-        typeof document !== 'undefined' &&
-        createPortal(
-          <div
-            className={styles.overlay}
-            role="dialog"
-            aria-modal="true"
-            aria-label={alt || 'Expanded image'}
-            onClick={() => setIsOpen(false)}
-          >
-            <button
-              type="button"
-              className={styles.close}
-              aria-label="Close expanded image"
-              onClick={() => setIsOpen(false)}
-            >
-              &times;
-            </button>
-            <img
-              src={resolvedSrc}
-              alt={alt}
-              className={styles.modalImage}
-              style={{
-                maxWidth: naturalWidth ? `min(95vw, ${naturalWidth}px)` : '95vw',
-              }}
-            />
-          </div>,
-          document.body
-        )}
+      <ZoomModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        label={alt || 'Expanded image'}
+        src={resolvedSrc}
+        alt={alt}
+        naturalWidth={naturalWidth}
+      />
     </>
   );
 }
