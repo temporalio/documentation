@@ -233,7 +233,7 @@ The TLS server name override depends on your authentication method:
 | -------------- | ---------------------- |
 | mTLS (single-region Namespace) | The Namespace Endpoint, e.g. `my-namespace.my-account.tmprl.cloud` |
 | API key (single-region Namespace) | The regional API endpoint, e.g. `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
-| Multi-region Namespace (mTLS or API key) | The active region endpoint, e.g. `aws-us-east-1.region.tmprl.cloud` |
+| Multi-region Namespace (mTLS or API key) | The active region endpoint, e.g. `us-east-1.aws.api.temporal.io` |
 
 If you authenticate with an API key over PrivateLink/PSC and use the wrong server name, the TLS handshake will fail with errors such as `connection reset by peer` even though `nc` reports the port as open.
 

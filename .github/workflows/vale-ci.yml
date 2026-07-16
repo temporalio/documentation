@@ -22,4 +22,7 @@ jobs:
           level: info
           filter_mode: diff_context
           fail_on_error: false
+          # Scope linting to docs only; do not put the path in vale_flags —
+          # the action runs `vale ${vale_flags} sync`, so a path there breaks sync.
+          files: docs
           vale_flags: "--config=.vale-ci.ini"

@@ -120,6 +120,12 @@ Temporal Cloud expresses the active replica through DNS:
 
 Namespace DNS records have a 15-second TTL. Clients should converge to the new region within roughly 30 seconds (about twice the TTL) once their resolver cache expires.
 
+:::note Deterministic DNS behavior is unique to HA Namespace Endpoints
+
+This is the **only** place in Temporal Cloud where you can depend on Temporal-managed DNS to behave in a specific, deterministic way — a Namespace Endpoint on an HA Namespace CNAMEing to its active region's regional record. Everywhere else, take a dependency on Temporal's published endpoints (the hostnames themselves), not on what they resolve to. The underlying IP addresses, CNAME chains, and resolution behavior of non-HA endpoints can change at any time without notice.
+
+:::
+
 For private connectivity, your job is to make sure that:
 
 - Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
@@ -206,19 +212,20 @@ This pattern is **different** from the long-term HA setup described in [Single-c
 ### How Namespace DNS records work with PrivateLink
 
 When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
-Temporal treats each `region.<tmprl_domain>` as a separate zone.
-This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you're using.
+Temporal treats each `region.tmprl.cloud` zone as a separate zone, so you override resolution per region — this routes traffic to your VPC Endpoint internally for the regions you're using.
 
 A Namespace's active region is reflected in the target of the Namespace Endpoint's CNAME record.
 For example, if the active region of a Namespace is AWS us-east-1, the DNS configuration would look like this:
 
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-east-1.region.tmprl.cloud |
-| ----------------------------------- | ----- | -------------------------------- |
+| Record name                         | Record type | Value                              |
+| ----------------------------------- | ----------- | ---------------------------------- |
+| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-east-1.region.tmprl.cloud   |
 
 After a failover, the CNAME record is updated to point to the failover region, for example:
 
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
-| ----------------------------------- | ----- | -------------------------------- |
+| Record name                         | Record type | Value                              |
+| ----------------------------------- | ----------- | ---------------------------------- |
+| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-west-2.region.tmprl.cloud   |
 
 The Temporal domain did not change, but the CNAME updated from us-east-1 to us-west-2.
 
@@ -239,7 +246,7 @@ In AWS, use a Route 53 private hosted zone for `region.tmprl.cloud` to override 
 
 Link the private zone to every VPC where Workers run.
 
-When your Workers connect to the Namespace, they first resolve `<ns>.<account>.tmprl.cloud`, which CNAMEs to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your local VPC Endpoint.
+When your Workers connect to the Namespace, they first resolve `<ns>.<account>.tmprl.cloud`, which CNAMEs to `aws-<active-region>.region.tmprl.cloud`, which then resolves to your local VPC Endpoint.
 
 You also need to decide how Workers reach whichever region becomes active. Either:
 
@@ -279,17 +286,6 @@ If you run Workers on Alpine and use multi-cloud HA, either:
 - Configure your application/runtime to disable AAAA lookups (e.g., set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
 
 :::
-
-To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
-For example, you might set `aws-us-west-1.region.tmprl.cloud` to target `192.168.1.2`.
-In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
-Link that private zone to the VPCs you use for Workers.
-
-A reasonable validation plan:
-
-Consider how you'll configure Workers for this setup.
-You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
-Either approach ensures Workers can access the newly activated region once failover occurs.
 
 ### Available regions, PrivateLink endpoints, and DNS record overrides
 
