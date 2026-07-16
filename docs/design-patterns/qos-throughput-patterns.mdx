@@ -1,0 +1,47 @@
+---
+id: qos-throughput-patterns
+title: "QoS & Throughput Patterns"
+sidebar_label: "QoS & Throughput Patterns"
+description: "Pattern selection guide for controlling execution rate, protecting downstream services from overload, and ensuring fair capacity distribution across tenants."
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+These patterns control how fast work executes, protect downstream services from overload, and make sure no single caller or tenant monopolizes Worker capacity at the expense of others.
+
+## Patterns in this section
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/downstream-rate-limiting",
+    icon: "downstream-rate-limiting-icon.svg",
+    title: "Downstream Rate Limiting",
+    description: "Caps the Activity execution rate against a downstream service by routing throttled Activities to a dedicated Task Queue whose Workers enforce a throughput limit.",
+  },
+  {
+    href: "/design-patterns/priority-task-queues",
+    icon: "priority-task-queues-icon.svg",
+    title: "Priority Task Queues",
+    description: "Assigns a priority level to Workflows and Activities so time-sensitive work runs ahead of lower-priority work on the same Task Queue.",
+  },
+  {
+    href: "/design-patterns/fairness",
+    icon: "fairness-icon.svg",
+    title: "Fairness",
+    description: "Distributes Worker capacity evenly across tenants or users so a burst from one caller does not starve the others.",
+  },
+]} />
+
+## Choosing a pattern
+
+**A downstream dependency has a fixed rate limit**: use [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting) to cap throughput at the Worker.
+
+**Urgent work must not wait behind bulk work**: use [Priority Task Queues](/design-patterns/priority-task-queues).
+
+**Multiple tenants share the same Workers**: use [Fairness](/design-patterns/fairness) to keep one tenant's burst from starving others.
+
+## Related sections
+
+- [Worker Configuration Patterns](/design-patterns/worker-configuration-patterns) — the Task Queue and Worker setup these patterns route through
+- [Batch Processing Patterns](/design-patterns/batch-processing-patterns) — rate-control patterns for large record sets
+- [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns) — back off and retry when a rate limit is hit
