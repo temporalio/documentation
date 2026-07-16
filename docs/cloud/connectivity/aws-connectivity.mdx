@@ -50,7 +50,7 @@ After creating the PrivateLink endpoint, configure your clients to use it throug
 
 ### Cross-region PrivateLink Connectivity {/* #cross-region-privatelink */}
 
-Temporal Cloud does **not** support [cross-region connectivity for AWS PrivateLink](https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-cross-region-connectivity-for-aws-privatelink/) out of the box. However, if you need to reach Temporal Cloud privately from a different region than your Namespace, you can route traffic to your VPC Endpoint in the Namespace's region using [AWS's native cross-region networking features]((https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/centralized-access-to-vpc-private-endpoints.html#cross-region-endpoint-access)). 
+Temporal Cloud does **not** support [cross-region connectivity for AWS PrivateLink](https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-cross-region-connectivity-for-aws-privatelink/) out of the box. However, if you need to reach Temporal Cloud privately from a different region than your Namespace, you can route traffic to your VPC Endpoint in the Namespace's region using [AWS's native cross-region networking features](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/centralized-access-to-vpc-private-endpoints.html#cross-region-endpoint-access). 
 
 
 When using High Availability on Temporal Cloud, it's best practice to have two VPC Endpoints, one in each of the Namespace's regions, to ensure at least one VPC Endpoint is accessible during a regional outage.
