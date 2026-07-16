@@ -84,7 +84,7 @@ temporalClient, err := client.Dial(client.Options{
 
 Monotonic counters let exporters and metrics backends classify Temporal SDK counters correctly.
 The [`MetricsCounter`](https://pkg.go.dev/go.temporal.io/sdk/client#MetricsCounter) contract defines counters as ever-increasing.
-If you create custom counters through the same metrics handler, pass only non-negative values to `Inc`.
+If you create custom counters through the same metrics handler, pass only non-negative values to [`client.MetricsCounter.Inc`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Counter).
 Negative values can produce invalid or backend-dependent metric data when `UseMonotonicCounters` is enabled.
 
 ## Tracing {/* #tracing */}
