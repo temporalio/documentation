@@ -1,6 +1,6 @@
 import React from 'react';
 import type {Props} from '@theme/DocCategoryGeneratedIndexPage';
-import CookbookHome from '@site/src/components/elements/CookbookHome';
+import { CookbookHome } from '@site/src/components';
 import Original from '@theme-original/DocCategoryGeneratedIndexPage';
 
 export default function CookbookCategoryIndex(props: Props) {

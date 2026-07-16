@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import { v4 as uuidv4 } from "uuid";
 
-import { LANGUAGE_ICONS } from "../constants";
+import { LANGUAGE_SVGS } from "../../../constants/sdkLanguages";
 import styles from "./RelatedRead.module.css";
 
 const archetypeClasses = {
@@ -19,9 +19,9 @@ function getTagClass(tag) {
 }
 
 function getLanguageIcon(text) {
-  for (const lang in LANGUAGE_ICONS) {
+  for (const lang in LANGUAGE_SVGS) {
     if (text.includes(lang)) {
-      return LANGUAGE_ICONS[lang];
+      return LANGUAGE_SVGS[lang];
     }
   }
   return null;
