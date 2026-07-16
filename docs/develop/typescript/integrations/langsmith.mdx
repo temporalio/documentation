@@ -100,8 +100,8 @@ Follow the steps below to configure your Worker.
 
 ## Configure Clients to use LangSmith
 
-In TypeScript the Client and the Worker are configured independently, so add the same plugin instance to your
-`Client` as well. This links client-side operations, like starting a Workflow, to the Workflows they trigger.
+In TypeScript the Client and the Worker are configured independently, so add a `LangSmithPlugin` to your
+`Client` too. This links client-side operations, like starting a Workflow, to the Workflows they trigger.
 
 ```ts {4}
 import { Connection, Client } from '@temporalio/client';
@@ -128,12 +128,6 @@ const pipeline = traceable(
 
 await pipeline();
 ```
-
-:::tip
-
-Use the same `projectName` on both the Worker and the Client so their traces land in the same LangSmith project.
-
-:::
 
 ## Trace Activities
 
