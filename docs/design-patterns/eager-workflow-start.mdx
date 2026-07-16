@@ -1,0 +1,230 @@
+---
+id: eager-workflow-start
+title: "Eager Workflow Start"
+sidebar_label: "Eager Workflow Start"
+description: "Dispatch the first Workflow Task directly to a co-located Worker, bypassing the Temporal Matching Service. Requires the starter and Worker to share the same process and client connection."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::info[TLDR]
+**Bypass the Temporal Matching Service by dispatching the first Workflow Task directly to a co-located Worker.** The Worker and the client that starts the Workflow must share the same process and server connection. Eager Workflow Start eliminates the Matching Service round-trip, saving approximately 30–50 ms per Workflow start. When combined with Local Activities, this pattern achieves ~265 ms total-workflow latency (vs ~850 ms baseline). The TypeScript SDK does not support Eager Workflow Start.
+:::
+
+## Overview
+
+When you call `ExecuteWorkflow`, the Temporal server normally stores the new Workflow execution, then routes the first Workflow Task through its Matching Service to an available Worker. **Eager Workflow Start** short-circuits this routing: the server returns the first Workflow Task inline in the `StartWorkflowExecution` response, and the co-located Worker processes it immediately—without a separate polling round-trip.
+
+```mermaid
+sequenceDiagram
+    participant CW as Client + Worker (same process)
+    participant S as Temporal Server
+
+    rect rgb(230, 235, 250)
+        Note over CW,S: Normal Workflow Start
+        CW->>S: StartWorkflowExecution
+        S->>S: Matching Service routes task to available Worker
+        S-->>CW: WorkflowTask dispatched via polling
+        CW->>CW: Execute WorkflowTask
+        CW->>S: Complete WorkflowTask
+    end
+
+    rect rgb(220, 245, 225)
+        Note over CW,S: Eager Workflow Start (co-located Worker)
+        CW->>S: StartWorkflowExecution (EnableEagerStart=true)
+        S-->>CW: WorkflowTask returned inline — no Matching step
+        CW->>CW: Execute WorkflowTask immediately
+        CW->>S: Complete WorkflowTask
+    end
+```
+
+**Numbered walkthrough:**
+
+1. In a normal start, the server queues the Workflow execution and the Matching Service waits for an available Worker slot. The Worker polls, picks up the task, runs it, and reports back—adding an extra server round-trip.
+2. With Eager Workflow Start enabled, the server detects that the requesting client has a co-located Worker with an available slot. Instead of queuing the task, the server attaches the first Workflow Task to the `StartWorkflowExecution` response.
+3. The Worker processes the Workflow Task immediately upon receiving the response. No separate poll is required.
+4. If the server cannot fulfill the eager request (e.g., no local slot is available), it falls back silently to normal dispatch. Your code does not need to handle this case explicitly.
+
+## Problem
+
+Even with Local Activities eliminating per-Activity server round-trips, the Workflow's first Workflow Task still requires a scheduling round-trip through the Temporal Matching Service. This adds latency that is unavoidable in a distributed deployment where Workers are separate from the caller.
+
+For applications where the starter and Worker share the same deployment unit—such as a request-handling service that also runs Workers—this Matching overhead can be eliminated.
+
+## Solution
+
+Start a Worker in the same process as the workflow starter, using the same client connection. Set `EnableEagerStart: true` (Go), `setDisableEagerExecution(false)` (Java), or `request_eager_start=True` (Python) on the `StartWorkflowOptions`. The SDK signals to the server that a local Worker is available, and the server returns the first Workflow Task inline.
+
+:::warning[Feature flag for self-hosted Temporal]
+On self-hosted Temporal Server, Eager Workflow Start may require enabling a dynamic config flag:
+
+```
+--dynamic-config-value system.enableEagerWorkflowStart=true
+```
+
+Temporal Cloud and recent versions of the open-source server may enable this by default. Check your server's release notes or documentation to confirm.
+:::
+
+<Tabs groupId="language" queryString>
+<TabItem value="python" label="Python">
+
+```python
+# starter.py — starts the Worker in the same process, then executes the Workflow eagerly
+import asyncio
+from temporalio.client import Client
+from temporalio.worker import Worker
+from workflows import TransactionWorkflow
+from activities import validate_transaction, settle_transaction
+from shared import TASK_QUEUE, TransactionRequest
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    # The Worker must share this process and client for eager dispatch to work.
+    async with Worker(
+        client,
+        task_queue=TASK_QUEUE,
+        workflows=[TransactionWorkflow],
+        activities=[validate_transaction, settle_transaction],
+    ):
+        result = await client.execute_workflow(
+            TransactionWorkflow.run,
+            TransactionRequest(amount=100.00, currency="USD"),
+            id="eager-workflow-start-demo",
+            task_queue=TASK_QUEUE,
+            request_eager_start=True,  # Dispatch first WorkflowTask inline
+        )
+        print(f"Transaction complete: ID={result.id} Status={result.status}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// starter.go — starts the Worker in the same process, then executes the Workflow eagerly
+func main() {
+    c, err := client.Dial(client.Options{})
+    if err != nil {
+        log.Fatalln("Unable to create Temporal client:", err)
+    }
+    defer c.Close()
+
+    // Start the Worker non-blocking — it must share this process and client.
+    w := worker.New(c, TaskQueue, worker.Options{})
+    w.RegisterWorkflow(TransactionWorkflow)
+    w.RegisterActivity(ValidateTransaction)
+    w.RegisterActivity(SettleTransaction)
+    if err := w.Start(); err != nil {
+        log.Fatalln("Unable to start worker:", err)
+    }
+    defer w.Stop()
+
+    run, err := c.ExecuteWorkflow(context.Background(), client.StartWorkflowOptions{
+        ID:               "eager-workflow-start-demo",
+        TaskQueue:        TaskQueue,
+        EnableEagerStart: true, // Dispatch first WorkflowTask inline
+    }, TransactionWorkflow, TransactionRequest{Amount: 100.00, Currency: "USD"})
+    if err != nil {
+        log.Fatalln("Failed to start workflow:", err)
+    }
+
+    var result Transaction
+    if err := run.Get(context.Background(), &result); err != nil {
+        log.Fatalln("Workflow failed:", err)
+    }
+    fmt.Printf("Transaction complete: ID=%s Status=%s\n", result.ID, result.Status)
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Starter.java — starts the Worker in the same process, then executes the Workflow eagerly
+public class Starter {
+    public static void main(String[] args) {
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+
+        // The Worker must share this process and client for eager dispatch.
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+        io.temporal.worker.Worker worker = factory.newWorker(Shared.TASK_QUEUE);
+        worker.registerWorkflowImplementationTypes(TransactionWorkflow.Impl.class);
+        worker.registerActivitiesImplementations(new Activities.Impl());
+        factory.start();
+
+        TransactionWorkflow workflow = client.newWorkflowStub(
+            TransactionWorkflow.class,
+            WorkflowOptions.newBuilder()
+                .setTaskQueue(Shared.TASK_QUEUE)
+                .setWorkflowId("eager-workflow-start-demo")
+                .setDisableEagerExecution(false) // false = enable eager dispatch
+                .build()
+        );
+
+        Shared.Transaction result = workflow.processTransaction(
+            new Shared.TransactionRequest(100.00, "USD"));
+        System.out.printf("Transaction complete: ID=%s Status=%s%n",
+            result.id(), result.status());
+
+        factory.shutdown();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+:::info[TypeScript SDK]
+The TypeScript SDK does not currently support Eager Workflow Start. Use [Local Activities](/design-patterns/local-activities) or [Early Return + Local Activities](/design-patterns/early-return-local-activities) for latency-sensitive TypeScript workflows.
+:::
+
+## When to use
+
+**Good fit:**
+
+- The workflow starter and Worker run in the same deployment unit (e.g., a single service that both handles API requests and runs Workers)
+- You need the absolute minimum total-workflow latency and are already using Local Activities
+- The language is Go, Java, or Python
+
+**Poor fit:**
+
+- Workers are deployed independently from starters (the eager request falls back to normal dispatch, which is harmless but provides no benefit)
+- You are using the TypeScript SDK
+- First-response latency matters more than total latency—combine with [Early Return](/design-patterns/early-return) or [Early Return + Local Activities](/design-patterns/early-return-local-activities) for that use case
+
+## Benefits and trade-offs
+
+| | Normal Start | Eager Workflow Start |
+|---|---|---|
+| Matching Service round-trip | Yes (~30–50 ms) | No (eliminated) |
+| Worker co-location required | No | Yes (same process + client) |
+| Fallback behavior | N/A | Graceful fallback to normal dispatch |
+| TypeScript SDK support | Yes | No |
+| Configuration required | None | `EnableEagerStart`/`request_eager_start`/`setDisableEagerExecution(false)` |
+| Self-hosted server flag | N/A | May need `system.enableEagerWorkflowStart=true` |
+
+## Best practices
+
+- **Combine with Local Activities.** Eager Workflow Start eliminates the Matching overhead on the first Workflow Task; Local Activities eliminate server round-trips within each Workflow Task. Together they provide the greatest total latency reduction.
+- **Use a non-blocking Worker start.** Start the Worker before executing the Workflow so it has an available slot. In Go, use `w.Start()` and defer `w.Stop()`. In Python, use `async with Worker(...)`. In Java, call `factory.start()` before creating the workflow stub.
+- **Do not rely on eager dispatch always firing.** The server falls back to normal dispatch if no local slot is available (e.g., the Worker is at capacity). Design the Workflow to work correctly in both cases.
+- **Share the same client and connection.** The Worker and the workflow starter must use the same `WorkflowClient` instance (Java), `client.Client` (Go), or `Client` (Python). A Worker using a different connection cannot receive eager tasks from another client.
+- **Be mindful of resource sharing in co-located deployments.** When a Worker runs in the same process as a request handler, they share CPU, memory, and failure domains. A spike in activity execution can slow request handling, and vice versa. Monitor Worker CPU, Workflow Task execution latency, and task queue depth to ensure Worker load does not affect client-facing latency.
+
+## Common pitfalls
+
+- **Starting the Worker after `ExecuteWorkflow`.** If the Worker is not registered and running before the eager start call, no local slot exists and the request falls back to normal dispatch.
+- **Expecting eager dispatch in distributed deployments.** If the process that calls `ExecuteWorkflow` is not the same process running the Worker, eager dispatch will never succeed. The call still works, but it provides no latency benefit.
+- **Missing the feature flag on self-hosted servers.** If the server dynamic config flag is not set, eager dispatch requests are silently ignored and the execution falls back to normal dispatch. Verify the flag is set if you do not observe the expected latency improvement.
+- **Using TypeScript.** The TypeScript SDK does not support Eager Workflow Start. Switch to Python, Go, or Java for this optimization.
+
+## Related patterns
+
+- [Local Activities](/design-patterns/local-activities) — eliminates per-Activity server round-trips; pairs naturally with Eager Workflow Start
+- [Early Return + Local Activities](/design-patterns/early-return-local-activities) — minimum first-response latency via Update-with-Start plus Local Activities
+- [Early Return](/design-patterns/early-return) — returns early to the client via Update-with-Start

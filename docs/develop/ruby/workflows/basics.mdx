@@ -36,22 +36,6 @@ end
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that hashes or objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 
-### Workflow Logic Requirements {/* #workflow-logic-requirements */}
-
-Temporal Workflows [must be deterministic](https://docs.temporal.io/workflows#deterministic-constraints), which includes
-Ruby workflows. This means there are several things workflows cannot do such as:
-
-- Perform IO (network, disk, stdio, etc)
-- Access/alter external mutable state
-- Do any threading
-- Do anything using the system clock (e.g. `Time.Now`)
-- Make any random calls
-- Make any not-guaranteed-deterministic calls
-
-To prevent illegal workflow calls, a call tracer is put on the workflow thread that raises an exception if any illegal
-calls are made.
-Which calls are illegal is configurable in the worker options.
-
 ### Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
@@ -75,3 +59,42 @@ class MyWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+
+### Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). The `workflow_init` class method above `initialize` gives it access to [Workflow input](/handling-messages#workflow-initializers). When you use the `workflow_init` on your constructor, you give the constructor the same Workflow parameters as your `execute` method.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/ruby/client/temporal-client#start-workflow). The Workflow input arguments are also passed to your `execute` method. That always happens, whether or not you use the `workflow_init` class method above `initialize`.
+
+Here's an example.
+The constructor and `execute` must have the same parameters with the same types:
+
+```ruby
+class WorkflowInitWorkflow < Temporalio::Workflow::Definition
+  workflow_init
+  def initialize(input)
+    @name_with_title = "Knight #{input['name']}"
+  end
+
+  def execute(input)
+    Temporalio::Workflow.wait_condition { @title_has_been_checked }
+    "Hello, #{@name_with_title}"
+  end
+end
+```
+
+## Workflow logic requirements {/* #workflow-logic-requirements */}
+
+Temporal Workflows [must be deterministic](/workflow-definition#deterministic-constraints), which includes
+Ruby Workflows. This means there are several things Workflows cannot do such as:
+
+- Perform IO (network, disk, stdio, etc)
+- Access/alter external mutable state
+- Do any threading
+- Do anything using the system clock (e.g. `Time.Now`)
+- Make any random calls
+- Make any not-guaranteed-deterministic calls
+
+To prevent illegal Workflow calls, a call tracer is put on the Workflow thread that raises an exception if any illegal
+calls are made.
+Which calls are illegal is configurable in the Worker options.

@@ -150,6 +150,15 @@
     "tags": [
       "Agent observability"
     ],
+    "sdk": "Java",
+    "href": "https://github.com/parseablehq/temporal-plugin-java/blob/main/INTEGRATION.md"
+  },
+  {
+    "name": "Parseable",
+    "description": "Stream Temporal Workflow and Activity execution events to Parseable for observability and analysis.",
+    "tags": [
+      "Agent observability"
+    ],
     "sdk": "Python",
     "href": "https://github.com/parseablehq/temporal-plugin-python/blob/main/INTEGRATION.MD"
   },

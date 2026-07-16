@@ -18,7 +18,7 @@ keywords:
   - term
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage, SdkTabs } from '@site/src/components';
+import { CaptionedImage, SdkTabs } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 
 ## Private network connectivity for namespaces
@@ -81,15 +81,13 @@ Each Connectivity Rule specifies either generic public (internet) access or a sp
 | AWS PrivateLink | **Optional.** Add one only if you want to enforce private-only access (block internet traffic to that Namespace). | AWS PrivateLink connections become usable as soon as the VPC endpoint is `Available`. Adding a Connectivity Rule restricts access; it does not establish it. |
 | GCP Private Service Connect | **Required.** The PSC endpoint stays in `Pending` until a matching Connectivity Rule is created. | The Connectivity Rule is what tells Temporal Cloud to accept the PSC connection. |
 
-A public Connectivity Rule has one optional parameter:
-
-- `enable-stable-ips`: When set, Namespaces attached to this rule resolve their Namespace endpoint to a published, fixed set of IP addresses you can allowlist in your firewall. See [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) for details.
+A public Connectivity Rule can optionally enable [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses), so Namespaces attached to it resolve their Namespace endpoint to a published, fixed set of IP addresses you can allowlist in your firewall.
 
 Only one public Connectivity Rule is allowed per account (see [Permissions and limits](#permissions-and-limits) below). 
 
 :::caution
 
-Connectivity Rules cannot be updated in place. If you already have a public Connectivity Rule and want to turn on Stable IPs, you must delete the existing public rule, create a new one with `enable-stable-ips` set, and re-attach it to every Namespace that needs it. Attempting to create a second public rule alongside the existing one returns an error.
+Connectivity Rules cannot be updated in place. If you already have a public Connectivity Rule and want to turn on Stable IPs, you must delete the existing public rule, create a new one with Stable IPs enabled, and re-attach it to every Namespace that needs it. Attempting to create a second public rule alongside the existing one returns an error.
 
 :::
 
@@ -104,7 +102,7 @@ A GCP Private Service Connect (PSC) private Connectivity Rule requires:
 - `region`: The region of the PSC connection, prefixed with `gcp-` (ex: `gcp-us-east1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 - `gcp-project-id`: The identifier of the GCP project where you created the PSC connection (ex: `my-example-project-123`).
 
-Connectivity Rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), the Web UI (under **Connectivity** in your account settings), or the [Cloud Ops API](/ops).
+Connectivity Rules can be created and managed with [tcld](/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops). There is no Temporal Cloud Web UI option for creating or managing Connectivity Rules at this time.
 
 :::tip Connectivity Rules give Temporal visibility into your private connections
 
@@ -142,11 +140,7 @@ Create public connectivity rule (you only need to do this once ever in your acco
 tcld connectivity-rule create --connectivity-type public
 ```
 
-Create a public Connectivity Rule with [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) enabled:
-
-```bash
-tcld connectivity-rule create --connectivity-type public --enable-stable-ips
-```
+To enable [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) on the public rule, use the Cloud Ops API or Terraform. See [How to enable Stable IPs](/cloud/connectivity/ip-addresses#how-to-enable-stable-ips).
 
 The `cr` alias works the same way:
 

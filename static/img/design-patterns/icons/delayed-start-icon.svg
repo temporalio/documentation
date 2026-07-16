@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Wait period (clock) -->
+  <circle cx="36" cy="40" r="22" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="36" y1="40" x2="36" y2="26" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <line x1="36" y1="40" x2="47" y2="46" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Kicks off after the delay -->
+  <polygon points="66,26 66,54 90,40" fill="#cc2222"/>
+</svg>
