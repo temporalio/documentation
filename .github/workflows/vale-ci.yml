@@ -22,4 +22,4 @@ jobs:
           level: info
           filter_mode: diff_context
           fail_on_error: false
-          vale_flags: "--config=.vale-ci.ini"
+          vale_flags: "--config=.vale-ci.ini docs"
