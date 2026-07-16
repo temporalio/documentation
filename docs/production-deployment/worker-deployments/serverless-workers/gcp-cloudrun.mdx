@@ -1,0 +1,328 @@
+---
+id: gcp-cloudrun
+title: Deploy a Serverless Worker on GCP Cloud Run
+sidebar_label: GCP Cloud Run
+description: Deploy a Temporal Serverless Worker on a GCP Cloud Run worker pool.
+slug: /production-deployment/worker-deployments/serverless-workers/gcp-cloudrun
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - cloud run
+  - gcp
+  - google cloud
+  - worker
+  - deployment
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account
+  team. APIs are experimental and may be subject to backwards-incompatible changes. [Sign up for
+  updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public
+  Preview.
+</ReleaseNoteHeader>
+
+This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on a
+[GCP Cloud Run worker pool](https://cloud.google.com/run/docs/deploy-worker-pools). You deploy your Worker container to a
+worker pool scaled to zero instances, then create a Worker Deployment Version whose compute provider points at that
+worker pool. When a Task arrives with no active pollers, Temporal scales the worker pool up to process the Task and
+scales it back to zero when the invocation window ends.
+
+## Prerequisites {/* #prerequisites */}
+
+- A Temporal Cloud account with a GCP-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
+  Namespace's cloud provider must match the serverless compute provider.
+- Every Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), or the Worker must set a
+  default versioning behavior.
+- A GCP project with the Cloud Run API enabled and permission to create Cloud Run worker pools, Secret Manager secrets,
+  and service accounts.
+- A service account that Temporal uses to invoke the worker pool. Grant it permission to run the worker pool and to read
+  the TLS secrets it mounts.
+- The [`gcloud` CLI](https://cloud.google.com/sdk/docs/install) installed and authenticated, and
+  [`yq`](https://github.com/mikefarah/yq) for converting the worker pool manifest to JSON. You can also perform these
+  steps with the GCP Console.
+- The [Temporal CLI](/cli) v1.8.0 or later, which adds the GCP Cloud Run compute provider flags used below.
+- If your Namespace uses mTLS, the client certificate and private key you use to connect. Save them to local files (for
+  example, `client.pem` and `client.key`). You reference these for both the Worker and the CLI.
+
+## 1. Configure CLI access to your Namespace {/* #configure-cli */}
+
+The commands in this guide connect to your Namespace with mTLS. Store the connection details in a
+[CLI configuration profile](/develop/environment-configuration) so you don't repeat them on every command:
+
+```bash
+temporal config --profile serverless set --prop address \
+  --value "<your-namespace>.<account>.tmprl.cloud:7233"
+temporal config --profile serverless set --prop namespace \
+  --value "<your-namespace>"
+temporal config --profile serverless set --prop tls --value true
+temporal config --profile serverless set --prop tls.client_cert_path \
+  --value "/path/to/client.pem"
+temporal config --profile serverless set --prop tls.client_key_path \
+  --value "/path/to/client.key"
+```
+
+This writes the following profile to your Temporal CLI configuration file, which you can also edit directly:
+
+```toml
+[profile.serverless]
+address = "<your-namespace>.<account>.tmprl.cloud:7233"
+namespace = "<your-namespace>"
+
+[profile.serverless.tls]
+client_cert_path = "/path/to/client.pem"
+client_key_path = "/path/to/client.key"
+```
+
+Verify the connection before continuing. Both commands should exit without an error:
+
+```bash
+temporal config get --profile serverless
+temporal workflow list --profile serverless --limit 1
+```
+
+## 2. Deploy the Worker to a Cloud Run worker pool {/* #deploy-worker-pool */}
+
+Package your Worker as a container image, store its TLS credentials in Secret Manager, and deploy it to a Cloud Run
+worker pool scaled to zero instances.
+
+### i. Build the Worker container image {/* #build-worker-image */}
+
+Build a container image that runs a Temporal Worker and push it to a registry Cloud Run can pull from, such as
+[Artifact Registry](https://cloud.google.com/artifact-registry/docs). The Worker must:
+
+- Connect to your Namespace address with mTLS, using the certificate and key mounted into the container.
+- Register with the [Worker Deployment](/worker-versioning#deployments) name and Build ID you use in the steps below.
+- Set a [versioning behavior](/worker-versioning#versioning-behaviors) for every Workflow, or set a default versioning
+  behavior of `Pinned` or `AutoUpgrade`.
+
+For guidance on writing a Worker and setting these options, see the SDK Worker documentation for
+[Go](/develop/go/workers/run-worker-process), [Python](/develop/python/workers/run-worker-process), or
+[TypeScript](/develop/typescript/workers/run-worker-process).
+
+### ii. Store the TLS credentials in Secret Manager {/* #store-tls-secrets */}
+
+Create Secret Manager secrets for the client certificate and key. The worker pool manifest mounts these into the
+container:
+
+```bash
+gcloud secrets create worker-tls-cert --data-file=client.pem
+gcloud secrets create worker-tls-key --data-file=client.key
+```
+
+Grant the invocation service account permission to read both secrets:
+
+```bash
+gcloud secrets add-iam-policy-binding worker-tls-cert \
+  --member="serviceAccount:<your-invocation-service-account>@<your-gcp-project>.iam.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+gcloud secrets add-iam-policy-binding worker-tls-key \
+  --member="serviceAccount:<your-invocation-service-account>@<your-gcp-project>.iam.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+```
+
+### iii. Create and configure the worker pool {/* #create-worker-pool */}
+
+Create the worker pool in the GCP Console under **Cloud Run** > **Worker Pools** > **Deploy worker pool**, or apply the
+manifest below. Set the manual instance count to `0`. Temporal scales the pool up when Tasks arrive and back to zero when
+the invocation window ends.
+
+Save the following manifest as `worker-pool.yaml` and replace the values marked with `# change-me`:
+
+- `metadata.name` — the worker pool name.
+- `metadata.namespace` — your GCP project number.
+- `image` — your Worker container image.
+- `serviceAccountName` — the invocation service account.
+- The Worker's connection arguments and its Worker Deployment name, Build ID, and versioning behavior. The exact
+  arguments depend on your image. The example below passes them as container arguments.
+
+```yaml
+apiVersion: run.googleapis.com/v1
+kind: WorkerPool
+metadata:
+  annotations:
+    run.googleapis.com/manualInstanceCount: '0'
+    run.googleapis.com/scalingMode: manual
+  labels:
+    cloud.googleapis.com/location: us-central1
+  name: <your-worker-pool-name> # change-me
+  namespace: '<your-gcp-project-number>' # change-me
+spec:
+  instanceSplits:
+    - latestRevision: true
+      percent: 100
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      containerConcurrency: 0
+      serviceAccountName: <your-invocation-service-account>@<your-gcp-project>.iam.gserviceaccount.com # change-me
+      containers:
+        - image: <your-worker-image> # change-me
+          name: worker-1
+          args:
+            - --server-address=<your-namespace>.<account>.tmprl.cloud:7233
+            - --namespace=<your-namespace>
+            - --tls
+            - --tls-cert-path=/etc/tls/cert/worker-tls-cert
+            - --tls-key-path=/etc/tls/key/worker-tls-key
+            - --default-versioning-behavior=pinned
+            - --deployment-name=<your-worker-deployment-name> # change-me
+            - --deployment-build-id=1.0
+          resources:
+            limits:
+              cpu: '2'
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /etc/tls/cert
+              name: secret-cert
+            - mountPath: /etc/tls/key
+              name: secret-key
+      volumes:
+        - name: secret-cert
+          secret:
+            secretName: worker-tls-cert
+            items:
+              - key: latest
+                path: worker-tls-cert
+        - name: secret-key
+          secret:
+            secretName: worker-tls-key
+            items:
+              - key: latest
+                path: worker-tls-key
+```
+
+Convert the manifest to JSON and apply it as a revision of the worker pool through the Cloud Run Admin API:
+
+```bash
+POOL=<your-worker-pool-name>   # must match metadata.name
+
+yq -o=json worker-pool.yaml > "$POOL.json"
+
+curl -s -X PUT \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/<your-gcp-project>/workerpools/$POOL" \
+  -d @"$POOL.json"
+```
+
+### iv. Verify the worker pool {/* #verify-worker-pool */}
+
+Confirm the worker pool exists and its configuration matches the manifest:
+
+```bash
+gcloud run worker-pools describe <your-worker-pool-name> --region us-central1 --format export
+```
+
+## 3. Create the Worker Deployment {/* #create-worker-deployment */}
+
+Create the [Worker Deployment](/worker-versioning#deployments) that the version attaches to. The name must match the
+deployment name your Worker registers with in [Step 2](#deploy-worker-pool).
+
+```bash
+temporal worker deployment create \
+  --profile serverless \
+  --name <your-worker-deployment-name>
+```
+
+## 4. Create a Worker Deployment Version {/* #create-worker-deployment-version */}
+
+Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute provider
+that points at your Cloud Run worker pool. The compute configuration tells Temporal how to invoke your Worker: the GCP
+project, region, worker pool, and the service account to run as. The deployment name and Build ID must match the values
+your Worker registers with.
+
+You can create the version using the Temporal UI or the Temporal CLI.
+
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal UI">
+
+1. In the Temporal UI, open your Namespace.
+2. In the left pane, select **Workers**.
+3. Click **Create Worker Deployment** in the upper right corner.
+4. Under **Configuration**, enter a **Name** and **Build ID**. These must match the deployment name and Build ID your
+   Worker registers with.
+5. Under **Compute**, select **GCP Cloud Run** and provide the project, region, worker pool, and invocation service
+   account.
+6. Click **Save**.
+
+When you create a version through the UI, the version is automatically set as current. Skip to
+[Verify the deployment](#verify-deployment).
+
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
+
+Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must
+[set the version as current](#set-current-version) as a separate step.
+
+```bash
+temporal worker deployment create-version \
+  --profile serverless \
+  --deployment-name <your-worker-deployment-name> \
+  --build-id 1.0 \
+  --gcp-cloud-run-project <your-gcp-project> \
+  --gcp-cloud-run-region us-central1 \
+  --gcp-cloud-run-worker-pool <your-worker-pool-name> \
+  --gcp-cloud-run-service-account <your-invocation-service-account>@<your-gcp-project>.iam.gserviceaccount.com
+```
+
+| Flag                              | Description                                                                                      |
+| --------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `--deployment-name`               | Worker Deployment name. Must match the deployment name your Worker registers with.               |
+| `--build-id`                      | Worker Deployment Version Build ID. Must match the Build ID your Worker registers with.          |
+| `--gcp-cloud-run-project`         | GCP project that contains the worker pool.                                                        |
+| `--gcp-cloud-run-region`          | Region of the worker pool (for example, `us-central1`).                                           |
+| `--gcp-cloud-run-worker-pool`     | Name of the Cloud Run worker pool Temporal invokes for this version.                              |
+| `--gcp-cloud-run-service-account` | Service account Temporal uses to run the worker pool.                                             |
+
+</TabItem>
+</Tabs>
+
+## 5. Set version as current {/* #set-current-version */}
+
+If you created the version through the Temporal UI, the version is already current and you can skip this step.
+
+If you used the CLI, set the version as current. Without this step, Tasks on the Task Queue don't route to the version,
+and Temporal doesn't invoke the worker pool.
+
+```bash
+temporal worker deployment set-current-version \
+  --profile serverless \
+  --deployment-name <your-worker-deployment-name> \
+  --build-id 1.0
+```
+
+## 6. Verify deployment {/* #verify-deployment */}
+
+Start a Workflow on the same Task Queue to confirm that Temporal invokes your Cloud Run Worker.
+
+```bash
+temporal workflow start \
+  --profile serverless \
+  --task-queue <your-task-queue> \
+  --type MyWorkflow \
+  --input '"Hello, serverless!"'
+```
+
+When the Task lands on the Task Queue with no active pollers, Temporal detects the compute provider configuration and
+scales the worker pool up. The Worker starts, connects to Temporal, picks up the Task, and processes it.
+
+Verify the invocation by checking:
+
+- **Temporal UI:** Open the **Workflows** view for your Namespace. The Workflow Execution should show Task completions in
+  its Event History.
+- **GCP Console:** Open [Cloud Run worker pools](https://console.cloud.google.com/run/worker-pools). Your worker pool
+  should show instance, CPU, and memory metrics for the invocation.
+
+If the Workflow does not progress or the worker pool is not invoked, see
+[Troubleshoot Serverless Workers](/troubleshooting/serverless-workers).
