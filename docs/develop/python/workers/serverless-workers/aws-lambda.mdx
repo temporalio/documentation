@@ -19,14 +19,13 @@ tags:
   - AWS Lambda
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release) and available to select Temporal Cloud customers.
-To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-APIs are experimental and may be subject to backwards-incompatible changes.
-[Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
-
-:::
+<ReleaseNoteHeader type="prerelease">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
 
 The `lambda_worker` contrib package lets you run a Temporal Serverless Worker on AWS Lambda.
 Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.

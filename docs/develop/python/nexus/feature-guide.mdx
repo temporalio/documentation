@@ -17,12 +17,6 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Python SDK support for Nexus is [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
-
-:::
-
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 This page shows how to do the following:
@@ -93,7 +87,7 @@ Defining a clear contract for the Nexus Service is crucial for smooth communicat
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
-Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion).
+Each [Temporal SDK includes and uses a default Data Converter](/dataconversion).
 The default data converter encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses Python dataclasses serialized into JSON.
@@ -262,7 +256,7 @@ class MyNexusServiceHandler:
 <!--SNIPEND-->
 
 
-### Register your Nexus Service handler in a Worker
+### Register your Nexus Service handler in a Worker {/* #register-a-nexus-service-in-a-worker */}
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register your Nexus Service handler in a Worker.
 At this stage you can pass any arguments you need to your service handler's `__init__` method.
@@ -328,7 +322,7 @@ See [hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blo
 
 ## Exceptions in Nexus operations {/* #exceptions-in-nexus-operations */}
 
-Temporal provides general guidance on [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
+Temporal provides general guidance on [Errors in Nexus operations](/references/failures#errors-in-nexus-operations).
 In Python, there are three Nexus-specific exception classes:
 
 - [`nexusrpc.OperationError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.OperationError.html): this is the exception type you should raise in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.

@@ -564,7 +564,7 @@ Activity Execution, reaches a Closed status.
 #### [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task
-Queue to when a Worker picks it up from the Task Queue.
+Queue to when a Worker picks it up from the Task Queue. This timeout is non-retryable by design.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
@@ -655,7 +655,7 @@ The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 <!-- _Tags: [term](/tags/term), [cli](/tags/cli)_ -->
 
-#### [Temporal Client](/encyclopedia/temporal-sdks#temporal-client)
+#### [Temporal Client](/temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 

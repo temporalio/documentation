@@ -9,7 +9,7 @@ tags:
   - Performance
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 
@@ -124,12 +124,9 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 
 #### Eager Workflow Start
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
-Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+. No additional configuration or access request is needed. However, you must set Request-Eager-Start to true when starting each Workflow for Eager Workflow Start to be used.
-
-:::
+<ReleaseNoteHeader type="publicPreview" languages={["Go", "Java", "Python", ".NET"]}>
+  Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+. No additional configuration or access request is needed. However, you must set `Request-Eager-Start` to true when starting each Workflow for Eager Workflow Start to be used.
+</ReleaseNoteHeader>
 
 Eager Workflow Start reduces the latency required to initiate a Workflow execution.
 It is recommended for short-lived Workflows that use Local Activities to interact with external services, especially when these interactions are initiated in the first Workflow Task and the Workflow is deployed near the Temporal Server to minimize network delay.
@@ -692,7 +689,7 @@ The `maxWorkflowThreadCount` and `workflow_active_thread_count` parameters are f
 
 ## Available Task Queue information {/* #task-queue-metrics */}
 
-:::tip Support, stability, and dependency info
+:::info
 
 The information listed in this section is readable using the `DescribeTaskQueueEnhanced` method in the [Go SDK](https://github.com/temporalio/sdk-go/blob/74320648ab0e4178b1fedde01672f9b5b9f6c898/client/client.go), with the [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.1.0) `task-queue describe` command, and using `DescribeTaskQueue` through RPC.
 
@@ -759,8 +756,8 @@ While individual `add` and `dispatch` rates may be inaccurate due to Eager and S
 
 ## Evaluate Task Queue performance {/* #evaluate-worker-loads */}
 
-A [Task Queue](https://docs.temporal.io/task-queue) is a lightweight, dynamically allocated queue.
-[Worker Entities](/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
+A [Task Queue](/task-queue) is a lightweight, dynamically allocated queue.
+[Worker Entities](/workers#worker-entity) poll the queue for [Tasks](/tasks#task) and retrieve Tasks to work on.
 Tasks are contexts that a Worker progresses using a specific Workflow Execution, Activity Execution, or a Nexus Task Execution.
 Each Task Queue type offers its Tasks to compatible Workers for Task completion.
 The Temporal Service dynamically creates different [Task Queue types](/task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
@@ -822,7 +819,7 @@ for _, taskQueueName := range taskQueueNames {
 
 ### Evaluate Worker availability and capacity issues {/* #worker-capacity-issues */}
 
-Each Temporal [Server](https://docs.temporal.io/temporal-service/temporal-server) records the last time of each poll request.
+Each Temporal [Server](/temporal-service/temporal-server) records the last time of each poll request.
 This time is displayed in the `temporal task-queue describe` output.
 
 - A `LastAccessTime` value exceeding one minute may indicate that the Worker fleet is at capacity or that Workers have shut down or been removed.

@@ -24,19 +24,18 @@ When a Namespace with [High Availability](/cloud/high-availability) is disrupted
 over the Namespace from the primary to the replica. This lets in-flight Workflow Executions continue, new Workflow
 Executions start, and closed Workflow Executions be inspected, all with minimal interruptions or data loss.
 
-Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />. After a Temporal-managed
+Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />. After an automatic
 failover, Temporal automatically fails back to the original region once it is healthy, unless you
-[opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). See
+[opt out](/cloud/high-availability/failovers/manage#after-an-automatic-failover). See
 [Failbacks](/cloud/high-availability/failovers/manage#failbacks) for details.
 
 ## Automatic failover
 
 Temporal Cloud offers managed outage detection and failover to all Namespaces that use High Availability.
-Temporal-managed failovers, also known as "automatic failovers," keep your Namespace available without manual
-intervention. Temporal aims to both detect the outage and complete a failover in minutes from when the outage began,
+These automatic failovers keep your Namespace available without manual intervention. Temporal aims to both detect the outage and complete a failover in minutes from when the outage began,
 according to the stated [Recovery Time Objective (RTO)](/cloud/rpo-rto).
 
-After a Temporal-managed failover, the Namespace will have a replica in its original region. Once the original region is
+After an automatic failover, the Namespace will have a replica in its original region. Once the original region is
 healthy again, Temporal Cloud automatically performs a [failback](/cloud/high-availability/failovers/manage#failbacks),
 moving the Namespace back to its original region.
 
@@ -45,8 +44,8 @@ moving the Namespace back to its original region.
   title="On failover, the replica becomes active and the Namespace endpoint directs access to it."
 />
 
-To opt out of Temporal-managed failovers and their RTO, you can
-[disable automated failovers](/cloud/high-availability/failovers/manage#disabling-temporal-initiated).
+To opt out of automatic failovers and their RTO, you can
+[disable automatic failovers](/cloud/high-availability/enable#automatic-failovers).
 
 ### Conditions that trigger an automatic failover
 
@@ -65,12 +64,12 @@ regional outage.
 
 :::info
 
-The following list gives a general idea of the conditions that trigger a Temporal-managed failover. This is not an
+The following list gives a general idea of the conditions that trigger an automatic failover. This is not an
 exhaustive list, and it may change over time.
 
 :::
 
-- Whether Temporal Cloud's services in the cell are reachable from the control plane.
+- Whether Temporal Cloud's services in the cell are reachable from the Control Plane.
 - The average latency of inbound RPC calls (excluding long-polling APIs) to Temporal services in the cell.
 - The percentage of inbound RPC calls that returned errors related to server health.
 - The average latency of calls from Temporal Cloud's services in the cell to its persistence layer.
@@ -81,7 +80,7 @@ exhaustive list, and it may change over time.
 You can also [manually trigger a failover](/cloud/high-availability/failovers/manage#trigger-failover) based on your own
 monitoring or for failover testing.
 
-Most Namespaces with High Availability are well-served by Temporal-managed failovers. The cases where a manual failover
+Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover
 is warranted are:
 
 - **Testing failover or migrating to a new region.** A manual failover is the standard way to exercise your failover
@@ -89,10 +88,16 @@ is warranted are:
 - **An outage that affects only your systems.** If an outage is contained to your application, Workers, or other
   infrastructure, and Temporal Cloud is not affected, Temporal will not initiate a failover on your behalf. Detect the
   outage with your own monitoring and trigger a failover yourself.
-- **Failing over more aggressively during a regional outage.** Even with Temporal-managed failovers enabled, you can
+- **Failing over more aggressively during a regional outage.** Even with automatic failovers enabled, you can
   trigger a failover yourself if you detect a regional outage before Temporal does. Whichever failover happens first
   takes effect, and the later one is a no-op. A user-triggered failover does not conflict with Temporal's automatic
   failover.
+
+:::note Same-region Replication
+
+Manual failovers apply only to Multi-region and Multi-cloud Replication. A [Same-region Replication](/cloud/high-availability#same-region-replication) Namespace fails over automatically between cells and cannot be failed over manually or have its automatic failovers disabled.
+
+:::
 
 ## The failover process {/* #failover-process */}
 
@@ -124,7 +129,7 @@ The failover process is the same whether it is triggered automatically by Tempor
 
 After any failover, whether triggered by you or by Temporal, an event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs. The audit log entry uses the `"operation": "FailoverNamespace"` event. Temporal Cloud [notifies you via email](/cloud/notifications#admin-notifications) whenever a failover occurs.
 
-After a Temporal-managed failover, Temporal automatically fails back to the original region once the region is healthy, unless you [opt out](/cloud/high-availability/failovers/manage#after-a-temporal-managed-failover). After a user-triggered failover, the Namespace stays in the replica region until a user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for details.
+After an automatic failover, Temporal automatically fails back to the original region once the region is healthy, unless you [opt out](/cloud/high-availability/failovers/manage#after-an-automatic-failover). After a user-triggered failover, the Namespace stays in the replica region until a user triggers another failover. See [failback options](/cloud/high-availability/failovers/manage#failbacks) for details.
 
 ## Split-brain scenario
 
@@ -144,7 +149,7 @@ reflected in the replica due to <ToolTipTerm term="replication lag" />, particul
 non-graceful failover, replication lag may cause a temporary setback in Workflow progress.
 
 Namespaces that are not replicated can be configured to provide _at-most-once_ semantics for Activity execution when a
-retry policy's [maximum attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0. High
+retry policy's [maximum attempts](/encyclopedia/retry-policies#maximum-attempts) is set to 0. High
 Availability Namespaces provide _at-least-once_ semantics for execution of Activities. Completed Activities _may_ be
 re-dispatched in a newly active Namespace, leading to repeated executions.
 

@@ -4,13 +4,15 @@ import React from 'react';
 
   export const SetupStep = ({ children, code }) => {
     return (
-      <div className={styles.setupStep}>
+      <div className={`${styles.setupStep} ${code ? '' : styles.noCode}`}>
         <div className={styles.content}>
           {children}
         </div>
-        <div className={styles.code}>
-          {code}
-        </div>
+        {code && (
+          <div className={styles.code}>
+            {code}
+          </div>
+        )}
       </div>
     );
   };

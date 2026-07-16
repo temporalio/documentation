@@ -39,7 +39,7 @@ To migrate your Workflows to Temporal Cloud, you need to change some parameters 
 The changes needed to direct your Workflow to your Temporal Cloud
 Namespace are only a few lines of code, including:
 
-- [Add your SSL certificate and private key](/cloud/saml) associated with your Namespace.
+- Add your [SSL certificate and private key](/cloud/certificates) or [API key](/cloud/api-keys) associated with your Namespace.
 - [Copy the Cloud-hosted endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint) from the Namespace detail Web page.
   The endpoint uses this format: `<namespace_id>.<account_id>.tmprl.cloud:port`.
 - [Connect to Temporal Cloud](/cloud/get-started) with your Client.
@@ -86,11 +86,11 @@ The volume of these requests might be high to execute against all the matches to
 - Have you added an mTLS certificate to your Temporal Namespace? Review our [documentation for adding a certificate to your Temporal Cloud account](/cloud/certificates) for more information.
 - There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics/) for more information.
 - Consider the implications for [security and access to your Temporal Service](/cloud/security).
-- Review your current load (actions per second) and speak to your Account Executive and Solutions Architect so we can set appropriate [Namespace limits](/cloud/limits).
+- Review your current load with [Action estimates](/cloud/migrate/estimate-actions) and speak to your Account Executive and Solutions Architect so we can set appropriate [Namespace limits](/cloud/limits).
 
 ### Multi-Cluster Replication
 
 [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) is an experimental feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters for backup and state reconstruction.
 Migrating Execution History from a self-hosted Temporal Service to Temporal Cloud is not currently supported.
 However, a migration tool based on Multi-Cluster Replication, which will enable this, is currently in development for Temporal Cloud.
-If you have used this feature locally or you are interested in using it to migrate to Temporal Cloud, [create a support ticket](https://docs.temporal.io/cloud/support) or watch this space for more information about public availability.
+If you have used this feature locally or you are interested in using it to migrate to Temporal Cloud, [create a support ticket](/cloud/support) or watch this space for more information about public availability.

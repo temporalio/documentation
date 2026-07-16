@@ -165,12 +165,19 @@ Note:
 
 :::warning List-of-values deprecation for non-list types
 
-Storing a list of values in a non-list Search Attribute type (such as multiple strings in a **Keyword** attribute) is deprecated.  
+Storing a list of values in any single-value Search Attribute type — for example, multiple strings in a **Keyword** or **Text** attribute, or multiple integers in an **Int** attribute — is deprecated.
+**KeywordList** is the only type designed to store a list of values.
+
 New namespaces on Temporal Cloud are already blocked from using this pattern. Existing Namespaces that rely on it will need to migrate before Sep. 30, 2026. After that date, Workflow Executions with invalid Search Attribute values will fail. 
 This pattern was unintended behavior inherited from the underlying Elasticsearch encoding, not a supported feature.
 
-If you are currently storing lists in **Keyword** attributes, migrate to **KeywordList**.
-If you are storing lists in **Int** attributes, consider either migrating to **KeywordList** (storing integers as strings, with string-based comparison only) or splitting into multiple individual **Int** attributes.
+To migrate, choose the path that matches the type you store today:
+
+- **Keyword:** Migrate to **KeywordList**.
+- **Int:** Either migrate to **KeywordList** (store integers as strings, with string-based comparison only) or split the list into multiple individual **Int** attributes.
+- **Text:** Concatenate the list values into a single space-delimited string (for example, store `["wf-1", "wf-2"]` as `"wf-1 wf-2"`).
+  Because **Text** tokenizes values into words, a filter such as `SourceWorkflowIds = 'wf-1'` still matches.
+  If you only need exact matching rather than word-level search, migrate to **KeywordList** instead.
 
 
 :::

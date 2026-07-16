@@ -31,12 +31,6 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 [Nexus Operations](/glossary#nexus-operation) can be synchronous or asynchronous. Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-running Operation backed by a Workflow.
 An Operation's lifecycle spans scheduling, reliable delivery with retries, handler execution, and result or callback completion.
 
@@ -194,9 +188,9 @@ The Schedule-to-Close timeout limits the total duration from when the Operation 
 This is the overall timeout for the entire Operation.
 The Nexus Machinery [automatically retries](#automatic-retries) failed requests internally until this timeout is exceeded, at which point the Operation fails with a [NexusOperationTimedOut](/references/events#nexusoperationtimedout) event.
 
-This timeout covers the full [Nexus Operation lifecycle](https://docs.temporal.io/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
+This timeout covers the full [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
 
-In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](https://docs.temporal.io/cloud/limits#nexus-operation-duration-limits).
+In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](/cloud/limits#nexus-operation-duration-limits).
 
 ### Schedule-to-Start timeout {/* #schedule-to-start-timeout */}
 

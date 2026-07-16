@@ -106,19 +106,9 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
+Logging uses the .NET standard logging APIs. You can find the log levels supported in [their official documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel?view=net-11.0-pp). The Temporal SDK core normally uses `WARN` as its default logging level.
 
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
 
-The Temporal SDK core normally uses `WARN` as its default logging level.
-
-Logging uses the .NET standard logging APIs.
 The `LoggerFactory` can be set in the client.
 The following example shows logging on the console and sets the level to `Information`.
 
@@ -166,7 +156,7 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `Describe` on a `WorkflowHandle`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
-  - [In the Temporal CLI](/cli/operator#list-2)
+  - [In the Temporal CLI](/cli/command-reference/operator#list-2)
   - In code by calling `ListWorkflowsAsync`.
 
 ### List Workflow Executions {/* #list-workflow-executions */}

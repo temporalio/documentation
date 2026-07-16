@@ -18,12 +18,11 @@ tags:
   - Production
 ---
 
-:::tip Support, stability, and dependency info
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Automated migration is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-Please contact your Temporal account executive prior to planning your migration project.
-
-:::
+<ReleaseNoteHeader type="prerelease">
+  Please contact your Temporal account executive prior to planning your migration project.
+</ReleaseNoteHeader>
 
 ## Process Overview
 
@@ -108,9 +107,18 @@ Metrics are used for cloud-side resource planning. For each Namespace, collect t
 - Total storage used
 - Current retention policy. Note that this may differ from the
   [default retention policy](/cloud/limits#default-retention-period) in Temporal Cloud.
-- Peak [action per second](/glossary#actions-per-second-aps) (APS). See the section
-  [below](#how-to-gather-self-hosted-metrics) for instructions on collecting these metrics.
+- Peak [action per second](/glossary#actions-per-second-aps) (APS). For instructions on collecting these metrics, see
+  [Estimate Actions for migration](/cloud/migrate/estimate-actions).
 
+When planning an automated migration, share the following estimates with your Temporal account team:
+
+- Peak APS for each Namespace.
+- Average APS for each Namespace, if available.
+- Fixed-range Action counts, such as total Actions over the last 30 days.
+- Representative Workflow Types and their estimated Actions per Workflow Execution.
+- Retention Periods and storage estimates.
+
+These estimates help Temporal plan capacity, Namespace limits, and migration timing.
 
 ### Prepare mTLS certificates
 
@@ -189,7 +197,23 @@ Use the following procedure to deploy the proxy:
    See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
    as a reference. Note that the number of replicas must match on both sides of the connection. If your replica count differs
    from 3, update Temporal with the actual number of replicas so that the same count can be configured on the cloud side.
-4. Test access using the command below. It should display the information of the migration server.
+4. Verify that you have included your self-hosted namespaces and their translations in your proxy configuration. Example:
+```yaml
+aclPolicy:
+  allowedNamespaces:
+   - temporal-system
+   - namespace1
+   - namespace2
+   - etc...
+namespaceTranslation:
+  mappings:
+  - local: "namespace1"
+    remote: "cloud-namespace1.wxyz"
+  - local: "namespace2"
+    remote: "cloud-namespace2.wxyz"
+  - etc...
+```
+5. Test access using the command below. It should display the information of the migration server.
 
 ```
 temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
@@ -227,8 +251,11 @@ If you have previously enabled [Global Namespace](/global-namespace), the Failov
 Temporal. This is **critical**, since the value may only be set once and cannot change.
 
 If you've never enabled Global Namespace, then you may enable it and set the Initial Failover Version to a unique value
-(between 1 and 100). Enable by updating the _clusterMetadata_ and the _dcRedirectionPolicy_. When complete, restart all
-Temporal services (frontend, history, matching, worker), starting with the frontend.
+in the range of 2-99. Enable by updating the _clusterMetadata_ and the _dcRedirectionPolicy_. 
+
+For server versions 1.22 - 1.23, note this [extra required setting](#special-dynamic-configuration-for-version-122x-123x).
+
+When complete, restart all Temporal services (frontend, history, matching, worker), starting with the frontend.
 
 ```yaml
 dcRedirectionPolicy:
@@ -245,6 +272,10 @@ clusterInformation:
     initialFailoverVersion: CHANGEME # set in the range 2-99. use a unique number per cluster
     rpcName: _NO_CHANGE_
     rpcAddress: _NO_CHANGE_
+
+# for versions 1.22 - 1.23 only
+#history.enableReplicationStream:
+#  - value: true
 ```
 
 After all services have restarted, verify the configuration using:
@@ -445,47 +476,6 @@ history.enableReplicationStream:
 ```
 
 Enabling this configuration will require a restart of your history pods.
-
-## How to gather self-hosted metrics
-
-Temporal Server (version > 1.17) provides an [action](/cloud/pricing#action) metric. You may use Grafana to capture and
-display this metric. Use this [sample](https://github.com/temporalio/dashboards/blob/master/server/server-general.json)
-dashboard as a reference. To determine actions per second (APS) you may use the following promql queries.
-
-`sum (rate(action{service_name="frontend"}[1m]))`
-
-`sum (rate(action{service_name="frontend"}[1m]))  by (exported_namespace)`
-
-The first query will calculate total APS. The second will isolate the metric per Namespace.
-
-For Datadog, the following widget will calculate actions per second:
-
-```
-{
-    "title": "Average Actions per Second",
-    "type": "query_value",
-    "requests": [
-        {
-            "formulas": [
-                {
-                    "formula": "query1"
-                }
-            ],
-            "queries": [
-                {
-                    "name": "query1",
-                    "data_source": "metrics",
-                    "query": "sum:io.temporal.server.action.count{$server-name}.as_rate()",
-                    "aggregator": "avg"
-                }
-            ],
-            "response_format": "scalar"
-        }
-    ],
-    "autoscale": true,
-    "precision": 2
-}
-```
 
 ## Frequently asked questions
 

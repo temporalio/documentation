@@ -94,6 +94,7 @@ An end-entity (leaf) certificate _must_ meet the following criteria:
 - The key usage must include Digital Signature.
 - The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication. SHA-1
   and MD5 cannot be used.
+- The certificate needs the `extendedKeyUsage` set to `clientAuth` or it needs to be omitted.
 
 ## How to issue root CA and end-entity certificates {/* #issue-certificates */}
 
@@ -297,7 +298,7 @@ ones are generated and deployed.
 
 ### 3. Regenerate end-entity certificates with the new CA certificate
 
-[Configure all clients](https://docs.temporal.io/cloud/certificates#configure-clients-to-use-client-certificates)
+[Configure all clients](/cloud/certificates#configure-clients-to-use-client-certificates)
 (Temporal CLI, SDKs, or Workers) to use the new certificate and private key alongside the compromised key. Update the
 client configuration as described in
 [Configure clients to use client certificates](#configure-clients-to-use-client-certificates).
@@ -318,7 +319,7 @@ stricter controls, such as:
 
 - Limiting end-entity certificates to specific Namespaces
 - Rotating certificates regularly as a preventive measure
-- [Audit logs on a regular schedule](https://docs.temporal.io/cloud/audit-logs)
+- [Audit logs on a regular schedule](/cloud/audit-logs)
 
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {/* #manage-certificates */}
 
@@ -501,4 +502,5 @@ temporal <command> <subcommand> \
     --tls-server-name <Override for target TLS server name>
 ```
 
-For more information on Temporal CLI environment variables, see [Environment variables](/cli#environment-variables).
+For more information on Temporal CLI environment variables, see
+[Environment variables](/cli/setup-cli#environment-variables).

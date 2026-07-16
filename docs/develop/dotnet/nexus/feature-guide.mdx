@@ -14,13 +14,11 @@ tags:
   - .NET SDK
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal .NET SDK support for Nexus is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseNoteHeader
+  featureName="nexus"
+/>
 
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
@@ -89,7 +87,7 @@ Defining a clear contract for the Nexus Service is crucial for smooth communicat
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
-Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion).
+Each [Temporal SDK includes and uses a default Data Converter](/dataconversion).
 The default data converter encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses .NET classes serialized into JSON.

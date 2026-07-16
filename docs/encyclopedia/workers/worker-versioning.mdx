@@ -47,7 +47,7 @@ To learn more about implementing Worker Versioning, see our [Worker Versioning i
 
 ### Pinned Workflows {/* #pinned */}
 
-A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](/cli/workflow#update-options).
+A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](/cli/command-reference/workflow#update-options).
 
 ### Auto-Upgrade Workflows {/* #auto-upgrade */}
 
@@ -85,7 +85,7 @@ A Worker Deployment Version moves through the following states:
 1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never becomes Active, it will never be Draining or Drained.
 2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing auto-upgrade Workflows.
 3. **Draining**: The version has open pinned Workflows running on it, but stopped being Current or Ramping, usually because a newer version has been deployed. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated only periodically.
-4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed. Closed Workflows may still re-run some code paths if they are [Queried](https://docs.temporal.io/sending-messages#sending-queries) within their [Retention Period](https://docs.temporal.io/temporal-service/temporal-server#retention-period) and Workers with that version are still polling.
+4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed. Closed Workflows may still re-run some code paths if they are [Queried](/sending-messages#sending-queries) within their [Retention Period](/temporal-service/temporal-server#retention-period) and Workers with that version are still polling.
 
 ## Continue-as-new, Child Workflow, and Retry Semantics {/* #inheritance-semantics */}
 
@@ -95,10 +95,10 @@ When Workflows start new runs (e.g. by continuing-as-new or retrying) the new ru
 
 A Workflow can start a new run through:
 
-- Starting a [Child Workflow](https://docs.temporal.io/child-workflows)
-- Invoking [Continue-As-New](https://docs.temporal.io/workflow-execution/continue-as-new)
-- Retrying per its [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies)
-- Starting another iteration of a [Cron Job](https://docs.temporal.io/cron-job) (superseded by [Schedules](https://docs.temporal.io/schedule))
+- Starting a [Child Workflow](/child-workflows)
+- Invoking [Continue-As-New](/workflow-execution/continue-as-new)
+- Retrying per its [Retry Policy](/encyclopedia/retry-policies)
+- Starting another iteration of a [Cron Job](/cron-job) (superseded by [Schedules](/schedule))
 
 ### Inheritance Rules Overview
 

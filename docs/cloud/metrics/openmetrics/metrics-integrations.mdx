@@ -42,7 +42,9 @@ Datadog provides a serverless integration with the OpenMetrics endpoint. It scra
 
 For Datadog-side details, see the [Datadog integration page](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/).
 
-For Datadog users, treat this integration as the Cloud-side half of your observability setup:
+Datadog also offers a separate [Cost Management integration](https://docs.datadoghq.com/integrations/temporal-cloud-costs/) that sends Temporal Cloud billing data to Datadog Cloud Cost Management for spend attribution by namespace and service type.
+
+For Datadog users, treat the OpenMetrics integration as the Cloud-side half of your observability setup:
 
 - Use OpenMetrics in Datadog to monitor Temporal Cloud behavior such as Task Queue backlog, poll success, and rate limiting.
 - Collect [SDK metrics](/cloud/metrics/sdk-metrics-setup) from your Workers separately to monitor saturation, Schedule-To-Start latency, slot availability, and sticky cache behavior.
@@ -52,16 +54,18 @@ If you only ingest Cloud metrics, you will miss many worker-side bottlenecks. Fo
 
 ### Grafana Cloud
 
-Grafana Cloud provides a serverless integration with the OpenMetrics endpoint. It scrapes metrics, stores them in Grafana Cloud, and ships a default dashboard for visualizing them.
+Grafana Cloud provides a serverless integration that scrapes the OpenMetrics endpoint, stores metrics in Grafana Cloud, and ships a prebuilt **Temporal overview** dashboard.
 
-1. In Grafana Cloud, go to **Connections → Add new connection** and search for **Temporal Cloud**.
-2. On the integration page, paste your Temporal Cloud API key into the **API Key** field.
-3. Add `metrics.temporal.io` to **Allowed hosts** so Grafana Cloud can reach the endpoint.
-4. Click **Install** to enable the integration and import the pre-built dashboard.
+1. In Grafana Cloud, go to **Connections** and select the **Temporal Cloud** tile.
+2. On the **Configuration** page, add a scrape job: give it a name, paste your Temporal Cloud API key, and set the scrape interval (default 1 minute - lower intervals increase data points per minute and cost).
+3. Click **Test Connection** to verify authentication, then **Save** to start collecting metrics.
+4. Click **Install** to deploy the prebuilt dashboards.
+
+Add a separate scrape job per account to monitor multiple accounts from one Grafana Cloud instance.
 
 If the dashboard shows no data after a few minutes, confirm the API key's Service Account has the **Metrics Read-Only** role and that the endpoint is reachable using the `curl` check from the [Quickstart](/cloud/metrics/openmetrics#quickstart).
 
-For Grafana-side details, see the [Grafana Cloud integration page](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-temporal/).
+For full configuration, dashboards, and changelog, see the [Grafana Cloud integration page](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-temporal/).
 
 ### ClickStack
 

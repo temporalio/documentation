@@ -47,7 +47,7 @@ You can also Signal-With-Start to lazily initialize a Workflow while sending a S
 #### Send a Signal from a Temporal Client or the CLI
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/cli/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
+    <RelatedReadItem path="/cli/command-reference/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
     <RelatedReadItem path="/develop/go/workflows/message-passing#send-signal-from-client" text="Send Signals with the Go SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/workflows/message-passing#send-signal-from-client" text="Send Signals with the Java SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/workflows/message-passing#send-signal-from-client" text="Send Signals with the PHP SDK" archetype="feature-guide" />
@@ -139,12 +139,12 @@ For open source server users, Temporal Server version [Temporal Server version 1
 :::
 
 Update-with-Start sends an Update request, starting a Workflow if necessary.
-A [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) must be specified.
+A [`WorkflowIDConflictPolicy`](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) must be specified.
 Workflow ID and Update ID can be used as idempotency keys as follows:
 
 - If the Workflow exists and you provided an Update ID, and the Update exists in the latest Workflow Run, then Update-With-Start attaches to the existing Update (regardless of `WorkflowIDConflictPolicy`)
   - If the Workflow is closed, it attaches only if the Update has completed.
-- Otherwise it uses [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
+- Otherwise it uses [`WorkflowIDConflictPolicy`](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
 
 Update-With-Start is great for latency-sensitive use cases:
 
@@ -186,7 +186,7 @@ Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Exe
 You can also send a built-in "Stack Trace Query" for debugging.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/cli/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
+    <RelatedReadItem path="/cli/command-reference/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
     <RelatedReadItem path="/develop/go/workflows/message-passing#send-query" text="Send a Query with the Go SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/workflows/message-passing#send-query" text="Send a Query with the Java SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/workflows/message-passing#send-query" text="Send a Query with the PHP SDK" archetype="feature-guide" />

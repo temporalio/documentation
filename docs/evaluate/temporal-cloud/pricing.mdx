@@ -156,8 +156,8 @@ For additional storage within a calendar month, you are billed for Active and Re
 
 :::tip Storage costs are also affected by Temporal System Workflows that back features such as:
 
-- [Schedules](https://docs.temporal.io/schedule): Each Scheduled Workflow contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from Scheduled Workflows.
-- [Batch jobs](https://docs.temporal.io/cli/batch): Batch Workflow executions also consume storage.
+- [Schedules](/schedule): Each Scheduled Workflow contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from Scheduled Workflows.
+- [Batch jobs](/cli/command-reference/batch): Batch Workflow executions also consume storage.
 
 These Workflow executions contribute to overall active and retained storage consumption.
 
@@ -339,7 +339,7 @@ When upgrading an existing Namespace, some points to consider:
 
 **How does pricing for Fairness work?**
 
-When [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) is enabled on a Namespace, an additional `0.1` Action is charged per Action in that Namespace for each hour the feature is on, regardless of whether individual Workflows or Activities use fairness keys.
+When [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) is enabled on a Namespace, an additional `0.1` Action is charged per Action in that Namespace during each hour the feature is on, regardless of whether individual Workflows or Activities use fairness keys.
 
 The examples below use a Namespace, `your-namespace`, that normally generates 10,000 Actions per hour.
 
