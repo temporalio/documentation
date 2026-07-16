@@ -1714,6 +1714,25 @@ module.exports = {
       items: [
         'develop/standalone-activities-interactive-demo',
       ],
+    },    {
+      type: 'category',
+      label: 'Guides',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
+      items: [
+        'guides/entity-pattern-loyalty-points',
+        'guides/saga-pattern',
+        'guides/route-specialized-workloads',
+        'guides/worker-execution-affinity',
+        'guides/temporary-rate-limit-increases',
+        'guides/reliable-document-approvals',
+        'guides/rate-limit-downstream-apis',
+        'guides/durable-gaming-sessions',
+        'guides/lock-shared-resources',
+      ],
     },
     'integrations',
     'glossary',
