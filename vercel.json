@@ -91,7 +91,22 @@
     },
     {
       "source": "/evaluate/serverless-workers-demo",
-      "destination": "/evaluate/serverless-workers/demo",
+      "destination": "/demos/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/serverless-workers/demo",
+      "destination": "/demos/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/activity-retry-simulator",
+      "destination": "/demos/activity-retry-simulator",
+      "permanent": true
+    },
+    {
+      "source": "/develop/standalone-activities-interactive-demo",
+      "destination": "/demos/standalone-activities",
       "permanent": true
     },
     {

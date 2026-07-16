@@ -41,7 +41,13 @@ module.exports = {
               type: 'category',
               label: 'Serverless Workers',
               link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
-              items: ['evaluate/development-production-features/serverless-workers/demo'],
+              items: [
+                {
+                  type: 'doc',
+                  id: 'demos/serverless-workers',
+                  label: 'Interactive Demo',
+                },
+              ],
             },
             {
               type: 'category',
@@ -1056,7 +1062,7 @@ module.exports = {
           ],
         },
         'develop/environment-configuration',
-        'develop/activity-retry-simulator',
+        'demos/activity-retry-simulator',
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
@@ -1711,7 +1717,9 @@ module.exports = {
       label: 'Interactive Demos',
       collapsed: true,
       items: [
-        'develop/standalone-activities-interactive-demo',
+        'demos/standalone-activities',
+        'demos/serverless-workers',
+        'demos/activity-retry-simulator',
       ],
     },
     'integrations',
