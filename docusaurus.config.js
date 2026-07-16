@@ -137,6 +137,13 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'ai-cookbook',
             position: 'left',
           },
+          // hide this for now, making this a soft-launch
+          // {
+          //   label: 'Design Patterns',
+          //   to: '/design-patterns',
+          //   activeBasePath: 'design-patterns',
+          //   position: 'left',
+          // },
           {
             label: 'Code Exchange',
             href: 'https://temporal.io/code-exchange',
@@ -425,6 +432,12 @@ module.exports = async function createConfigAsync() {
       ],
       [
         require.resolve('./plugins/markdown-pages'),
+        {
+          docsDir: 'docs',
+        },
+      ],
+      [
+        require.resolve('./plugins/og-image'),
         {
           docsDir: 'docs',
         },

@@ -382,25 +382,20 @@ This section applies to Temporal Cloud. For self-hosted Temporal Service deploym
 [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#create-invocation-role)
 for IAM configuration with a different CloudFormation template.
 
-Temporal needs permission to invoke your Lambda function. The Temporal server assumes an IAM role in your AWS account to
-call `lambda:InvokeFunction`. The trust policy on the role includes an External ID condition to prevent
+Temporal needs permission to invoke your Lambda function and check its status. The Temporal server assumes an IAM role in
+your AWS account with a handful of Lambda permissions scoped to your Worker functions. The trust policy on the role
+includes an External ID condition to prevent
 [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
-Deploy the following CloudFormation template to create the invocation role and its permissions.
-[Download the template](/files/temporal-cloud-serverless-worker-role.yaml).
+Deploy the following CloudFormation template to create the invocation role with these permissions.
+[Download the template](/files/temporal-cloud-serverless-worker-role.yaml). See the template details below for the exact
+permissions granted.
 
 | Parameter              | Description                                                                                                                                                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `AssumeRoleExternalId` | A string you choose to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Can be any value. Use the same value when creating the Worker Deployment Version. |
 | `LambdaFunctionARNs`   | Comma-separated list of Lambda function ARNs that Temporal may invoke. To allow invocation of any published version of a function, use a wildcard suffix (for example, `arn:aws:lambda:...:function:my-temporal-worker:*`). One role can authorize multiple Worker Lambdas. |
-| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`.                                                                                                                                |
-
-:::caution
-
-The template appends the stack name to `RoleName` to form the final IAM role name (`<RoleName>-<StackName>`). IAM role
-names cannot exceed 64 characters, so a long `RoleName` or stack name can cause stack creation to fail.
-
-:::
+| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`. Provide a new role name if creating more than one stack.                                                                                                                                |
 
 <details>
 <summary>CloudFormation template</summary>
@@ -453,7 +448,7 @@ Resources:
   TemporalCloudServerlessWorker:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub '${RoleName}-${AWS::StackName}'
+      RoleName: !Ref RoleName
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -488,7 +483,7 @@ Resources:
               - lambda:GetFunction
             Resource: !Ref LambdaFunctionARNs
       Roles:
-        - !Sub '${RoleName}-${AWS::StackName}'
+        - !Ref RoleName
 
 Outputs:
   RoleARN:
@@ -629,7 +624,10 @@ You can verify the invocation by checking:
 
 - **Temporal UI:** The Workflow execution should show task completions in the event history.
 - **AWS CloudWatch Logs:** The Lambda function's log group (`/aws/lambda/my-temporal-worker`) should show invocation
-  logs with the Worker startup, task processing, and graceful shutdown.
+  logs with the Worker startup, task processing, and graceful shutdown. This requires the Lambda execution role from
+  [Step 2](#deploy-lambda-function) to have CloudWatch Logs permissions, included in the
+  [`AWSLambdaBasicExecutionRole`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html)
+  managed policy.
 
 If the Workflow does not progress or the Lambda is not invoked, see
 [Troubleshoot Serverless Workers](/troubleshooting/serverless-workers).
