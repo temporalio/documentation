@@ -3,7 +3,7 @@ id: reliable-document-approvals
 title: Reliable document approvals with human-in-the-loop workflows
 description: Build durable human-in-the-loop Workflows that can recover even if the humans are delayed.
 sidebar_label: Reliable document approvals
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 author: Cecil Phillip
 tags:
   - Workflows
@@ -37,8 +37,6 @@ After working through this guide, you'll have a running approval system where:
 - **Escalations happen automatically when reviewers go quiet**: If an approver doesn't respond within the SLA window, the Workflow escalates to a backup approver without any external trigger.
 - **Resubmissions work without restarting the process from scratch**: Change requests loop back cleanly, preserving full context and the existing audit trail.
 - **Every action is in the audit record**: Decisions, reminders, escalations, and status changes are all recorded — whether from a Signal, an Activity, or a timer firing.
-
----
 
 ## Background and best practices
 
@@ -93,8 +91,6 @@ For Activities that may take minutes (PDF report generation, rate-limited API ca
 - Set `heartbeat_timeout` to the maximum acceptable interval between progress reports. If the Worker crashes, the Server retries on another Worker within this window.
 - Call `activity.heartbeat()` periodically with a progress payload. On retry, read `activity.info().heartbeat_details` to resume from where it left off.
 
----
-
 ## Prerequisites
 
 ### Required software and infrastructure
@@ -118,8 +114,6 @@ Readers should be familiar with the following concepts:
 - [Task Queues](https://docs.temporal.io/task-queues) — the named queues that route work to Workers
 - Python `asyncio` — coroutines, `await`, and the event loop
 - Python dataclasses or [Pydantic](https://docs.pydantic.dev/) for structured data
-
----
 
 ## Architecture diagram
 
@@ -170,8 +164,6 @@ sequenceDiagram
         W-->>TS: Workflow completes with REJECTED status
     end
 ```
-
----
 
 ## Implementation plan
 
@@ -1349,8 +1341,6 @@ Do not set `schedule_to_close_timeout` unless you need to bound the total time a
 ## Outcomes
 
 You've built a document approval system that holds up under real conditions — slow reviewers, missed deadlines, infrastructure restarts, and repeated resubmissions. The techniques here aren't specific to documents. Any process that has to wait for a human — loan applications, employee onboarding, content moderation, procurement sign-off, insurance claims — can be built the same way. The Workflow waits, the timers fire, the audit trail fills in, and the process completes regardless of what happens underneath it.
-
----
 
 ## Related resources
 

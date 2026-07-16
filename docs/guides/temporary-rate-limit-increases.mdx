@@ -3,7 +3,7 @@ id: temporary-rate-limit-increases
 title: Orchestrate temporary rate limit increases on your Namespaces
 description: Handle temporary spikes in usage by dynamically provisioning extra capacity when you need it, and deprovision it when you don't.
 sidebar_label: Temporary rate limit increases
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 author: Taylor Khan
 tags:
   - Workflows
@@ -110,31 +110,31 @@ package capacity
 import "fmt"
 
 type ProvisionTRUInput struct {
-	Namespace          string
-	APSLimit           int32
-	MinutesToProvision int32
+  Namespace          string
+  APSLimit           int32
+  MinutesToProvision int32
 }
 
 type DeprovisionTRUInput struct {
-	Namespace          string
-	MinutesToProvision int32
+  Namespace          string
+  MinutesToProvision int32
 }
 
 type AddTRUInput struct {
-	Namespace string
-	APSLimit  int32
+  Namespace string
+  APSLimit  int32
 }
 
 type RemoveTRUInput struct {
-	Namespace string
+  Namespace string
 }
 
 func generateProvisioningId(namespace string) string {
-	return fmt.Sprintf("provision-%s", namespace)
+  return fmt.Sprintf("provision-%s", namespace)
 }
 
 func generateDeprovisioningId(namespace string) string {
-	return fmt.Sprintf("deprovision-%s", namespace)
+  return fmt.Sprintf("deprovision-%s", namespace)
 }
 
 ```
@@ -148,167 +148,167 @@ You must create functions that interact with the Temporal Cloud Operations API t
 package capacity
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
-	"fmt"
-	"go.temporal.io/sdk/temporal"
-	"io"
-	"net/http"
-	"strconv"
+  "bytes"
+  "context"
+  "encoding/json"
+  "fmt"
+  "go.temporal.io/sdk/temporal"
+  "io"
+  "net/http"
+  "strconv"
 )
 
 const (
-	defaultBaseURL = "https://saas-api.tmprl.cloud"
+  defaultBaseURL = "https://saas-api.tmprl.cloud"
 )
 
 // Activities holds the dependencies required by the provisioning activities.
 type Activities struct {
-	HTTPClient *http.Client
-	BaseURL    string
-	APIKey     string
+  HTTPClient *http.Client
+  BaseURL    string
+  APIKey     string
 }
 
 type getNamespaceResponse struct {
-	Namespace struct {
-		Spec            json.RawMessage `json:"spec"`
-		ResourceVersion string          `json:"resourceVersion"`
-	} `json:"namespace"`
+  Namespace struct {
+    Spec            json.RawMessage `json:"spec"`
+    ResourceVersion string          `json:"resourceVersion"`
+  } `json:"namespace"`
 }
 
 type updateNamespaceRequest struct {
-	Spec            json.RawMessage `json:"spec"`
-	ResourceVersion string          `json:"resourceVersion"`
+  Spec            json.RawMessage `json:"spec"`
+  ResourceVersion string          `json:"resourceVersion"`
 }
 
 func (a *Activities) baseURL() string {
-	if a.BaseURL != "" {
-		return a.BaseURL
-	}
-	return defaultBaseURL
+  if a.BaseURL != "" {
+    return a.BaseURL
+  }
+  return defaultBaseURL
 }
 
 func (a *Activities) httpClient() *http.Client {
-	if a.HTTPClient != nil {
-		return a.HTTPClient
-	}
-	return http.DefaultClient
+  if a.HTTPClient != nil {
+    return a.HTTPClient
+  }
+  return http.DefaultClient
 }
 
 func (a *Activities) getNamespace(ctx context.Context, namespace string) (json.RawMessage, string, error) {
-	url := fmt.Sprintf("%s/cloud/namespaces/%s", a.baseURL(), namespace)
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, "", err
-	}
-	req.Header.Set("Authorization", "Bearer "+a.APIKey)
+  url := fmt.Sprintf("%s/cloud/namespaces/%s", a.baseURL(), namespace)
+  req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+  if err != nil {
+    return nil, "", err
+  }
+  req.Header.Set("Authorization", "Bearer "+a.APIKey)
 
-	resp, err := a.httpClient().Do(req)
-	if err != nil {
-		return nil, "", err
-	}
-	defer resp.Body.Close()
+  resp, err := a.httpClient().Do(req)
+  if err != nil {
+    return nil, "", err
+  }
+  defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, "", err
-	}
-	if resp.StatusCode != http.StatusOK {
-		msg := fmt.Sprintf("%s", body)
-		return nil, "", temporal.NewApplicationError(msg, strconv.Itoa(resp.StatusCode))
-	}
-	var result getNamespaceResponse
-	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, "", err
-	}
-	return result.Namespace.Spec, result.Namespace.ResourceVersion, nil
+  body, err := io.ReadAll(resp.Body)
+  if err != nil {
+    return nil, "", err
+  }
+  if resp.StatusCode != http.StatusOK {
+    msg := fmt.Sprintf("%s", body)
+    return nil, "", temporal.NewApplicationError(msg, strconv.Itoa(resp.StatusCode))
+  }
+  var result getNamespaceResponse
+  if err := json.Unmarshal(body, &result); err != nil {
+    return nil, "", err
+  }
+  return result.Namespace.Spec, result.Namespace.ResourceVersion, nil
 }
 
 func (a *Activities) updateNamespace(ctx context.Context, namespace string, spec json.RawMessage, resourceVersion string) error {
-	url := fmt.Sprintf("%s/cloud/namespaces/%s", a.baseURL(), namespace)
+  url := fmt.Sprintf("%s/cloud/namespaces/%s", a.baseURL(), namespace)
 
-	payload, err := json.Marshal(updateNamespaceRequest{
-		Spec:            spec,
-		ResourceVersion: resourceVersion,
-	})
-	if err != nil {
-		return err
-	}
+  payload, err := json.Marshal(updateNamespaceRequest{
+    Spec:            spec,
+    ResourceVersion: resourceVersion,
+  })
+  if err != nil {
+    return err
+  }
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Authorization", "Bearer "+a.APIKey)
-	req.Header.Set("Content-Type", "application/json")
+  req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
+  if err != nil {
+    return err
+  }
+  req.Header.Set("Authorization", "Bearer "+a.APIKey)
+  req.Header.Set("Content-Type", "application/json")
 
-	resp, err := a.httpClient().Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
+  resp, err := a.httpClient().Do(req)
+  if err != nil {
+    return err
+  }
+  defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		msg := fmt.Sprintf("%s", body)
-		return temporal.NewApplicationError(msg, strconv.Itoa(resp.StatusCode))
-	}
-	return nil
+  if resp.StatusCode != http.StatusOK {
+    body, _ := io.ReadAll(resp.Body)
+    msg := fmt.Sprintf("%s", body)
+    return temporal.NewApplicationError(msg, strconv.Itoa(resp.StatusCode))
+  }
+  return nil
 }
 
 // AddTRUs increases the provisioned capacity of the target namespace to the requested APS limit.
 func (a *Activities) AddTRUs(ctx context.Context, input AddTRUInput) error {
-	spec, resourceVersion, err := a.getNamespace(ctx, input.Namespace)
-	if err != nil {
-		return fmt.Errorf("get namespace %q: %w", input.Namespace, err)
-	}
+  spec, resourceVersion, err := a.getNamespace(ctx, input.Namespace)
+  if err != nil {
+    return fmt.Errorf("get namespace %q: %w", input.Namespace, err)
+  }
 
-	var specMap map[string]interface{}
-	if err := json.Unmarshal(spec, &specMap); err != nil {
-		return fmt.Errorf("unmarshal namespace spec: %w", err)
-	}
-	specMap["capacitySpec"] = map[string]interface{}{
-		"provisioned": map[string]interface{}{
-			// 1 TRU = 500 APS; convert the requested APS limit to TRUs.
-			"value": float64(input.APSLimit) / 500.0,
-		},
-	}
+  var specMap map[string]interface{}
+  if err := json.Unmarshal(spec, &specMap); err != nil {
+    return fmt.Errorf("unmarshal namespace spec: %w", err)
+  }
+  specMap["capacitySpec"] = map[string]interface{}{
+    "provisioned": map[string]interface{}{
+      // 1 TRU = 500 APS; convert the requested APS limit to TRUs.
+      "value": float64(input.APSLimit) / 500.0,
+    },
+  }
 
-	updatedSpec, err := json.Marshal(specMap)
-	if err != nil {
-		return fmt.Errorf("marshal updated spec: %w", err)
-	}
+  updatedSpec, err := json.Marshal(specMap)
+  if err != nil {
+    return fmt.Errorf("marshal updated spec: %w", err)
+  }
 
-	if err := a.updateNamespace(ctx, input.Namespace, updatedSpec, resourceVersion); err != nil {
-		return err
-	}
-	return nil
+  if err := a.updateNamespace(ctx, input.Namespace, updatedSpec, resourceVersion); err != nil {
+    return err
+  }
+  return nil
 }
 
 // RemoveTRUs reverts the target namespace to on-demand capacity mode.
 func (a *Activities) RemoveTRUs(ctx context.Context, input RemoveTRUInput) error {
-	spec, resourceVersion, err := a.getNamespace(ctx, input.Namespace)
-	if err != nil {
-		return err
-	}
+  spec, resourceVersion, err := a.getNamespace(ctx, input.Namespace)
+  if err != nil {
+    return err
+  }
 
-	var specMap map[string]interface{}
-	if err := json.Unmarshal(spec, &specMap); err != nil {
-		return fmt.Errorf("unmarshal namespace spec: %w", err)
-	}
-	specMap["capacitySpec"] = map[string]interface{}{
-		"onDemand": map[string]interface{}{},
-	}
+  var specMap map[string]interface{}
+  if err := json.Unmarshal(spec, &specMap); err != nil {
+    return fmt.Errorf("unmarshal namespace spec: %w", err)
+  }
+  specMap["capacitySpec"] = map[string]interface{}{
+    "onDemand": map[string]interface{}{},
+  }
 
-	updatedSpec, err := json.Marshal(specMap)
-	if err != nil {
-		return fmt.Errorf("marshal updated spec: %w", err)
-	}
+  updatedSpec, err := json.Marshal(specMap)
+  if err != nil {
+    return fmt.Errorf("marshal updated spec: %w", err)
+  }
 
-	if err := a.updateNamespace(ctx, input.Namespace, updatedSpec, resourceVersion); err != nil {
-		return err
-	}
-	return nil
+  if err := a.updateNamespace(ctx, input.Namespace, updatedSpec, resourceVersion); err != nil {
+    return err
+  }
+  return nil
 }
 ```
 
@@ -323,31 +323,31 @@ To ensure capacity reverts after the given duration without consuming active com
 package capacity
 
 import (
-	"go.temporal.io/sdk/temporal"
-	"time"
+  "go.temporal.io/sdk/temporal"
+  "time"
 
-	"go.temporal.io/sdk/workflow"
+  "go.temporal.io/sdk/workflow"
 )
 
 // DeprovisionTRUWorkflow sleeps for the TTL duration then reverts the namespace
 // to on-demand capacity. It is started as an asynchronous Child Workflow by
 // ProvisionTRUWorkflow and runs independently after the parent completes.
 func DeprovisionTRUWorkflow(ctx workflow.Context, input DeprovisionTRUInput) error {
-	err := workflow.Sleep(ctx, time.Duration(input.MinutesToProvision)*time.Minute)
-	if err != nil {
-		return err
-	}
+  err := workflow.Sleep(ctx, time.Duration(input.MinutesToProvision)*time.Minute)
+  if err != nil {
+    return err
+  }
 
-	ao := workflow.ActivityOptions{
-		StartToCloseTimeout: 2 * time.Minute,
-		RetryPolicy: &temporal.RetryPolicy{
-			NonRetryableErrorTypes: []string{unauthorized, forbidden, badRequest},
-		},
-	}
-	ctx = workflow.WithActivityOptions(ctx, ao)
+  ao := workflow.ActivityOptions{
+    StartToCloseTimeout: 2 * time.Minute,
+    RetryPolicy: &temporal.RetryPolicy{
+      NonRetryableErrorTypes: []string{unauthorized, forbidden, badRequest},
+    },
+  }
+  ctx = workflow.WithActivityOptions(ctx, ao)
 
-	var a *Activities
-	return workflow.ExecuteActivity(ctx, a.RemoveTRUs, input).Get(ctx, nil)
+  var a *Activities
+  return workflow.ExecuteActivity(ctx, a.RemoveTRUs, input).Get(ctx, nil)
 }
 ```
 
@@ -360,60 +360,60 @@ You will now create the main orchestration Workflow. This Workflow applies the c
 package capacity
 
 import (
-	"go.temporal.io/sdk/temporal"
-	"net/http"
-	"strconv"
-	"time"
+  "go.temporal.io/sdk/temporal"
+  "net/http"
+  "strconv"
+  "time"
 
-	"go.temporal.io/api/enums/v1"
-	"go.temporal.io/sdk/workflow"
+  "go.temporal.io/api/enums/v1"
+  "go.temporal.io/sdk/workflow"
 )
 
 var (
-	unauthorized = strconv.Itoa(http.StatusUnauthorized)
-	forbidden    = strconv.Itoa(http.StatusForbidden)
-	badRequest   = strconv.Itoa(http.StatusBadRequest)
+  unauthorized = strconv.Itoa(http.StatusUnauthorized)
+  forbidden    = strconv.Itoa(http.StatusForbidden)
+  badRequest   = strconv.Itoa(http.StatusBadRequest)
 )
 
 // ProvisionTRUWorkflow raises the namespace capacity limit, then starts the
 // DeprovisionTRUWorkflow as an asynchronous Child Workflow with an abandon
 // policy so the parent can return immediately while cleanup runs independently.
 func ProvisionTRUWorkflow(ctx workflow.Context, input ProvisionTRUInput) error {
-	ao := workflow.ActivityOptions{
-		StartToCloseTimeout: 2 * time.Minute,
-		RetryPolicy: &temporal.RetryPolicy{
-			NonRetryableErrorTypes: []string{unauthorized, forbidden, badRequest},
-		},
-	}
-	actCtx := workflow.WithActivityOptions(ctx, ao)
+  ao := workflow.ActivityOptions{
+    StartToCloseTimeout: 2 * time.Minute,
+    RetryPolicy: &temporal.RetryPolicy{
+      NonRetryableErrorTypes: []string{unauthorized, forbidden, badRequest},
+    },
+  }
+  actCtx := workflow.WithActivityOptions(ctx, ao)
 
-	var a *Activities
-	err := workflow.ExecuteActivity(actCtx, a.AddTRUs, AddTRUInput{
-		Namespace: input.Namespace,
-		APSLimit:  input.APSLimit,
-	}).Get(ctx, nil)
-	if err != nil {
-		return err
-	}
+  var a *Activities
+  err := workflow.ExecuteActivity(actCtx, a.AddTRUs, AddTRUInput{
+    Namespace: input.Namespace,
+    APSLimit:  input.APSLimit,
+  }).Get(ctx, nil)
+  if err != nil {
+    return err
+  }
 
-	cwo := workflow.ChildWorkflowOptions{
-		WorkflowID:        generateDeprovisioningId(input.Namespace),
-		ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
-	}
-	childCtx := workflow.WithChildOptions(ctx, cwo)
+  cwo := workflow.ChildWorkflowOptions{
+    WorkflowID:        generateDeprovisioningId(input.Namespace),
+    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
+  }
+  childCtx := workflow.WithChildOptions(ctx, cwo)
 
-	childFuture := workflow.ExecuteChildWorkflow(childCtx, DeprovisionTRUWorkflow, DeprovisionTRUInput{
-		Namespace:          input.Namespace,
-		MinutesToProvision: input.MinutesToProvision,
-	})
+  childFuture := workflow.ExecuteChildWorkflow(childCtx, DeprovisionTRUWorkflow, DeprovisionTRUInput{
+    Namespace:          input.Namespace,
+    MinutesToProvision: input.MinutesToProvision,
+  })
 
-	var childExec workflow.Execution
-	err = childFuture.GetChildWorkflowExecution().Get(ctx, &childExec)
-	if err != nil {
-		return err
-	}
+  var childExec workflow.Execution
+  err = childFuture.GetChildWorkflowExecution().Get(ctx, &childExec)
+  if err != nil {
+    return err
+  }
 
-	return nil
+  return nil
 }
 ```
 
@@ -428,10 +428,10 @@ Connect the Workflow to your application's API layer. You will write the code th
 package capacity
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"go.temporal.io/sdk/client"
+  "context"
+  "errors"
+  "fmt"
+  "go.temporal.io/sdk/client"
 )
 
 const TaskQueue = "capacity-management"
@@ -440,38 +440,38 @@ const TaskQueue = "capacity-management"
 // after the Temporal Cluster accepts the request. It does not wait
 // for the Workflow to complete.
 func HandleProvisionRequest(c client.Client, namespace string, apsLimit int32, minutesToProvision int32) error {
-	id := generateProvisioningId(namespace)
-	preExistingRun := c.GetWorkflow(context.Background(), id, "").GetRunID()
-	if preExistingRun != "" {
-		return errors.New("provisioning request already in-progress")
-	}
-	deprovisionId := fmt.Sprintf("deprovision-%s", namespace)
-	preExistingDeprovisionRun := c.GetWorkflow(context.Background(), deprovisionId, "").GetRunID()
-	if preExistingDeprovisionRun != "" {
-		err := c.CancelWorkflow(context.Background(), deprovisionId, preExistingDeprovisionRun)
-		if err != nil {
-			return errors.Join(errors.New("unable to cancel deprovisioning workflow"), err)
-		}
-	}
-	options := client.StartWorkflowOptions{
-		ID:        id,
-		TaskQueue: TaskQueue,
-	}
+  id := generateProvisioningId(namespace)
+  preExistingRun := c.GetWorkflow(context.Background(), id, "").GetRunID()
+  if preExistingRun != "" {
+    return errors.New("provisioning request already in-progress")
+  }
+  deprovisionId := fmt.Sprintf("deprovision-%s", namespace)
+  preExistingDeprovisionRun := c.GetWorkflow(context.Background(), deprovisionId, "").GetRunID()
+  if preExistingDeprovisionRun != "" {
+    err := c.CancelWorkflow(context.Background(), deprovisionId, preExistingDeprovisionRun)
+    if err != nil {
+      return errors.Join(errors.New("unable to cancel deprovisioning workflow"), err)
+    }
+  }
+  options := client.StartWorkflowOptions{
+    ID:        id,
+    TaskQueue: TaskQueue,
+  }
 
-	input := ProvisionTRUInput{
-		Namespace:          namespace,
-		APSLimit:           apsLimit,
-		MinutesToProvision: minutesToProvision,
-	}
+  input := ProvisionTRUInput{
+    Namespace:          namespace,
+    APSLimit:           apsLimit,
+    MinutesToProvision: minutesToProvision,
+  }
 
-	we, err := c.ExecuteWorkflow(context.Background(), options, ProvisionTRUWorkflow, input)
-	if err != nil {
-		return fmt.Errorf("failed to start workflow: %w", err)
-	}
+  we, err := c.ExecuteWorkflow(context.Background(), options, ProvisionTRUWorkflow, input)
+  if err != nil {
+    return fmt.Errorf("failed to start workflow: %w", err)
+  }
 
-	fmt.Printf("Successfully started provision workflow. ID: %s, RunID: %s\n",
-		we.GetID(), we.GetRunID())
-	return nil
+  fmt.Printf("Successfully started provision workflow. ID: %s, RunID: %s\n",
+    we.GetID(), we.GetRunID())
+  return nil
 }
 ```
 
@@ -486,39 +486,39 @@ Now that you have built the Activities and Workflows here is the complete set of
 package main
 
 import (
-	"github.com/temporal-sa/temporary-rate-limit-increases/capacity"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-	"log"
-	"os"
+  "github.com/temporal-sa/temporary-rate-limit-increases/capacity"
+  "go.temporal.io/sdk/client"
+  "go.temporal.io/sdk/worker"
+  "log"
+  "os"
 )
 
 func main() {
-	apiKey := os.Getenv("TEMPORAL_CLOUD_API_KEY")
-	if apiKey == "" {
-		log.Fatalln("TEMPORAL_CLOUD_API_KEY missing and required")
-	}
+  apiKey := os.Getenv("TEMPORAL_CLOUD_API_KEY")
+  if apiKey == "" {
+    log.Fatalln("TEMPORAL_CLOUD_API_KEY missing and required")
+  }
 
-	c, err := client.Dial(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create Temporal client", err)
-	}
-	defer c.Close()
+  c, err := client.Dial(client.Options{})
+  if err != nil {
+    log.Fatalln("Unable to create Temporal client", err)
+  }
+  defer c.Close()
 
-	w := worker.New(c, capacity.TaskQueue, worker.Options{})
+  w := worker.New(c, capacity.TaskQueue, worker.Options{})
 
-	w.RegisterWorkflow(capacity.ProvisionTRUWorkflow)
-	w.RegisterWorkflow(capacity.DeprovisionTRUWorkflow)
+  w.RegisterWorkflow(capacity.ProvisionTRUWorkflow)
+  w.RegisterWorkflow(capacity.DeprovisionTRUWorkflow)
 
-	activities := &capacity.Activities{
-		APIKey: apiKey,
-	}
-	w.RegisterActivity(activities)
+  activities := &capacity.Activities{
+    APIKey: apiKey,
+  }
+  w.RegisterActivity(activities)
 
-	err = w.Run(worker.InterruptCh())
-	if err != nil {
-		log.Fatalln("Unable to start worker", err)
-	}
+  err = w.Run(worker.InterruptCh())
+  if err != nil {
+    log.Fatalln("Unable to start worker", err)
+  }
 }
 ```
 
@@ -542,38 +542,38 @@ To verify the capacity provisioning process, you must simulate the client reques
 package main
 
 import (
-	"github.com/temporal-sa/temporary-rate-limit-increases/capacity"
-	"go.temporal.io/sdk/client"
-	"log"
-	"os"
-	"strconv"
+  "github.com/temporal-sa/temporary-rate-limit-increases/capacity"
+  "go.temporal.io/sdk/client"
+  "log"
+  "os"
+  "strconv"
 )
 
 func main() {
-	c, err := client.Dial(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create Temporal client", err)
-	}
-	defer c.Close()
+  c, err := client.Dial(client.Options{})
+  if err != nil {
+    log.Fatalln("Unable to create Temporal client", err)
+  }
+  defer c.Close()
 
-	targetNamespace := os.Getenv("TEMPORAL_CLOUD_NAMESPACE")
-	if targetNamespace == "" {
-		log.Fatalln("TEMPORAL_CLOUD_NAMESPACE missing and required")
-	}
-	minutesToProvisionRaw := os.Getenv("MINUTES_TO_PROVISION")
-	if minutesToProvisionRaw == "" {
-		log.Fatalln("MINUTES_TO_PROVISION missing and required")
-	}
-	minutesToProvision, err := strconv.Atoi(minutesToProvisionRaw)
-	if err != nil {
-		log.Fatalln("Unable to parse MINUTES_TO_PROVISION: " + err.Error())
-	}
-	var newLimit int32 = 1000
+  targetNamespace := os.Getenv("TEMPORAL_CLOUD_NAMESPACE")
+  if targetNamespace == "" {
+    log.Fatalln("TEMPORAL_CLOUD_NAMESPACE missing and required")
+  }
+  minutesToProvisionRaw := os.Getenv("MINUTES_TO_PROVISION")
+  if minutesToProvisionRaw == "" {
+    log.Fatalln("MINUTES_TO_PROVISION missing and required")
+  }
+  minutesToProvision, err := strconv.Atoi(minutesToProvisionRaw)
+  if err != nil {
+    log.Fatalln("Unable to parse MINUTES_TO_PROVISION: " + err.Error())
+  }
+  var newLimit int32 = 1000
 
-	err = capacity.HandleProvisionRequest(c, targetNamespace, newLimit, int32(minutesToProvision))
-	if err != nil {
-		log.Fatalln("Unable to execute provision request", err)
-	}
+  err = capacity.HandleProvisionRequest(c, targetNamespace, newLimit, int32(minutesToProvision))
+  if err != nil {
+    log.Fatalln("Unable to execute provision request", err)
+  }
 }
 ```
 
@@ -606,33 +606,33 @@ Verify that the Workflow orchestrates the Activities and Child Workflow without 
 package capacity
 
 import (
-	"testing"
+  "testing"
 
-	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/require"
-	"go.temporal.io/sdk/testsuite"
+  "github.com/stretchr/testify/mock"
+  "github.com/stretchr/testify/require"
+  "go.temporal.io/sdk/testsuite"
 )
 
 func Test_ProvisionTRUWorkflow(t *testing.T) {
-	testSuite := &testsuite.WorkflowTestSuite{}
-	env := testSuite.NewTestWorkflowEnvironment()
+  testSuite := &testsuite.WorkflowTestSuite{}
+  env := testSuite.NewTestWorkflowEnvironment()
 
-	env.RegisterWorkflow(DeprovisionTRUWorkflow)
+  env.RegisterWorkflow(DeprovisionTRUWorkflow)
 
-	var a *Activities
-	env.OnActivity(a.AddTRUs, mock.Anything, mock.Anything).Return(nil)
+  var a *Activities
+  env.OnActivity(a.AddTRUs, mock.Anything, mock.Anything).Return(nil)
 
-	input := ProvisionTRUInput{
-		Namespace:          "test-namespace",
-		APSLimit:           2000,
-		MinutesToProvision: 5,
-	}
+  input := ProvisionTRUInput{
+    Namespace:          "test-namespace",
+    APSLimit:           2000,
+    MinutesToProvision: 5,
+  }
 
-	env.ExecuteWorkflow(ProvisionTRUWorkflow, input)
+  env.ExecuteWorkflow(ProvisionTRUWorkflow, input)
 
-	require.True(t, env.IsWorkflowCompleted())
-	require.NoError(t, env.GetWorkflowError())
-	env.AssertExpectations(t)
+  require.True(t, env.IsWorkflowCompleted())
+  require.NoError(t, env.GetWorkflowError())
+  env.AssertExpectations(t)
 }
 ```
 
@@ -665,30 +665,30 @@ When testing long-running Workflows, waiting for real time to pass is inefficien
 package capacity
 
 import (
-	"testing"
+  "testing"
 
-	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/require"
-	"go.temporal.io/sdk/testsuite"
+  "github.com/stretchr/testify/mock"
+  "github.com/stretchr/testify/require"
+  "go.temporal.io/sdk/testsuite"
 )
 
 func Test_DeprovisionTRUWorkflow(t *testing.T) {
-	testSuite := &testsuite.WorkflowTestSuite{}
-	env := testSuite.NewTestWorkflowEnvironment()
+  testSuite := &testsuite.WorkflowTestSuite{}
+  env := testSuite.NewTestWorkflowEnvironment()
 
-	var a *Activities
-	env.OnActivity(a.RemoveTRUs, mock.Anything, mock.Anything).Return(nil)
+  var a *Activities
+  env.OnActivity(a.RemoveTRUs, mock.Anything, mock.Anything).Return(nil)
 
-	input := DeprovisionTRUInput{
-		Namespace:          "test-namespace",
-		MinutesToProvision: 5,
-	}
+  input := DeprovisionTRUInput{
+    Namespace:          "test-namespace",
+    MinutesToProvision: 5,
+  }
 
-	env.ExecuteWorkflow(DeprovisionTRUWorkflow, input)
+  env.ExecuteWorkflow(DeprovisionTRUWorkflow, input)
 
-	require.True(t, env.IsWorkflowCompleted())
-	require.NoError(t, env.GetWorkflowError())
-	env.AssertExpectations(t)
+  require.True(t, env.IsWorkflowCompleted())
+  require.NoError(t, env.GetWorkflowError())
+  env.AssertExpectations(t)
 }
 ```
 

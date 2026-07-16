@@ -1,6 +1,6 @@
 import guidesData from "./guides-data.json";
 
-export type SDK = "Java" | "Python" | "TypeScript" | "Ruby" | "Go";
+export type SDK = "Python" | "TypeScript" | "Go";
 
 export type Guide = {
   name: string;
