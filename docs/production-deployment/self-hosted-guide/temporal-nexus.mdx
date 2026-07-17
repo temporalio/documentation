@@ -117,20 +117,21 @@ target an external URL (`--target-url`), which is experimental and not covered h
    [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
    Create the same Endpoints (same target Namespace and Task Queue) on each Cluster.
 
-4. **Enable automatic forwarding** so a request that lands on a standby Cluster
-   forwards to the active one.
+4. **Enable cross-Cluster forwarding.** Two independent settings apply:
 
-   - Set the server's [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy)
-     in static config. It defaults to no redirection, so set it to
-     `all-apis-forwarding` (or `selected-apis-forwarding`):
+   - **Nexus requests and callbacks** are forwarded by
+     `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace dynamic config,
+     defaults to `true`). Make sure it isn't turned off for the Namespace.
+
+   - **Workflow and Activity client APIs** (so callers and clients reach the active
+     Cluster from either side) are forwarded by the server's
+     [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) in static
+     config. It defaults to no redirection, so set it to `all-apis-forwarding`:
 
      ```yaml
      dcRedirectionPolicy:
        policy: "all-apis-forwarding"
      ```
-
-   - Make sure `system.enableNamespaceNotActiveAutoForwarding` isn't turned off for
-     the Namespace. This per-Namespace dynamic config defaults to `true`.
 
 ### What to expect on failover
 
