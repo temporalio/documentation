@@ -142,7 +142,7 @@ sequenceDiagram
     Note over caA,haA: Cluster A active
     caA->>haA: start Nexus Operation
     haA-->>caA: Operation started, token returned
-    Note over caA,haB: 💥 Failover both namespaces from Cluster A to B
+    Note over caA,haB: 💥 Fail over both namespaces from Cluster A to B
     Note over caB,haB: Cluster B active
     haB->>caB: deliver completion callback  
     Note over caB: Nexus Operation completes
