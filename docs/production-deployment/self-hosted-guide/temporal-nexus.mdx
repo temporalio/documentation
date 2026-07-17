@@ -115,7 +115,7 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 3. **Register Endpoints on every Cluster.** The
    [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
-   Create the same Endpoints (same target Namespace and Task Queue) on each Cluster.
+   Create the same Endpoints (same target Namespace and Task Queue) on **each** Cluster.
 
 4. **Cross-Cluster forwarding.** Nexus request and callback forwarding is on by
    default via `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace
