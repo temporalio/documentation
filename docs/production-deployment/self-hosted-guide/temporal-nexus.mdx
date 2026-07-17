@@ -134,17 +134,26 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 ### What to expect on failover
 
+Each Namespace is replicated across Clusters, and the active Cluster is set per
+Namespace. When the caller and handler Namespaces are active on different Clusters,
+the completion callback crosses Clusters:
+
 ```mermaid
-%%{init: {'sequence': {'mirrorActors': false}}}%%
-sequenceDiagram
-    participant C as Caller Namespace
-    participant A as Cluster A
-    participant B as Cluster B
-    C->>A: start async Nexus Operation
-    A-->>C: Operation started, token returned
-    Note over A,B: Namespace state continuously<br/>replicates A → B
-    B->>C: completion delivered on the caller's active Cluster
-    Note over C: Nexus Operation completes
+flowchart LR
+    subgraph A["Cluster A"]
+        direction TB
+        caA["Caller Namespace<br/>active"]
+        haA["Handler Namespace<br/>standby"]
+    end
+    subgraph B["Cluster B"]
+        direction TB
+        caB["Caller Namespace<br/>standby"]
+        haB["Handler Namespace<br/>active"]
+    end
+    caA -. replicated .- caB
+    haA -. replicated .- haB
+    caA ==>|Nexus Operation| haB
+    haB ==>|completion callback| caA
 ```
 
 - **Callbacks are delivered internally** to the caller Namespace's active Cluster,
