@@ -250,7 +250,7 @@ module.exports = async function createConfigAsync() {
               '**/clusters/**',
               '**/ai-cookbook/**',
             ], // partials (underscore-prefixed) + context content we don't render
-            editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
+            editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
              */
