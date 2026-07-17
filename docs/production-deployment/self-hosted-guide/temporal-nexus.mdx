@@ -134,7 +134,7 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 ### What to expect on failover
 
-A Nexus Operation started before a cluster failover completes on the new active Cluster:
+A Nexus Operation started before a Cluster failover completes on the new active Cluster:
 
 ```mermaid
 sequenceDiagram
@@ -155,4 +155,6 @@ sequenceDiagram
     Note over caB: Nexus Operation completes
 ```
 
-Callbacks are delivered to the caller namespace's active Cluster, re-resolved on each attempt.
+Callbacks are delivered to the caller Namespace's active Cluster, re-resolved on each attempt.
+
+On an abrupt region loss, fail over every Namespace off the lost Cluster. Replication is asynchronous, so state not replicated before the loss is lost.
