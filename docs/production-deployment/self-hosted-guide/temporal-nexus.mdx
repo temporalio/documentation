@@ -118,10 +118,10 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 4. **Cross-Cluster forwarding.** Nexus request and callback forwarding is on by
    default via `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace
-   dynamic config); just don't disable it. Optionally, set the server's
+   dynamic config). Optionally, set the server's
    [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) to
-   `all-apis-forwarding` so Workflow and Activity client APIs also forward to the
-   active Cluster when a client connects to a standby.
+   `all-apis-forwarding` so client requests also forward to the
+   active Cluster when it connects to a standby.
 
 ### What to expect on failover
 
