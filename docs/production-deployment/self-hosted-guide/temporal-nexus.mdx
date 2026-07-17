@@ -2,13 +2,14 @@
 id: nexus
 title:  Self-hosted Temporal Nexus
 sidebar_label: Temporal Nexus
-description: Use Nexus in your self-hosted Temporal Service.
+description: Use Nexus in your self-hosted Temporal Service, including across Global (multi-region) Namespaces and failover.
 toc_max_heading_level: 4
 keywords:
   - self-hosted
 tags:
   - Self hosting
   - enable-nexus
+  - global-namespace
 ---
 
 :::info NEW TO NEXUS?
@@ -20,11 +21,6 @@ This page explains how to self-host Nexus. To learn about Nexus, see the [how Ne
 ## Enable Nexus
 
 Nexus can be configured by setting static configuration and dynamic configuration entries.
-
-
-:::note
-Nexus is supported in single-cluster setups only. See [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md) for operational details.
-:::
 
 :::note
 Replace `$PUBLIC_URL` with a URL value that's accessible to external callers or internally within the cluster.
@@ -91,3 +87,87 @@ See [how Nexus works](/nexus) for an architectural overview, then follow an SDK 
   [.NET](/develop/dotnet/nexus)
 
 :::
+
+## Global Namespaces (multi-region failover)
+
+Nexus works across a [Global (multi-region) Namespace](/global-namespace): an
+asynchronous operation started in one region completes even if the Namespace fails
+over or the region is lost before it finishes. This applies to
+[worker-target endpoints](/nexus/endpoints) — the endpoint routes to a target
+Namespace and Task Queue a Temporal worker polls.
+
+### Configuration
+
+1. **Register the endpoint in every region.** The
+   [Nexus Endpoint registry](/nexus/registry) is not replicated across clusters;
+   create the same endpoint (same target Namespace and task queue) on each cluster.
+
+2. **Make both Namespaces Global Namespaces** replicated across the same clusters —
+   the one that *calls* the operation and the one that *handles* it — so every
+   cluster is aware of both. See
+   [multi-cluster replication](/self-hosted-guide/multi-cluster-replication) for
+   connecting clusters and creating replicated Namespaces.
+
+3. **Give every cluster a frontend HTTP address — set *and* advertised.** Each
+   cluster must set a local `frontend.rpc.httpPort` **and** advertise it via
+   `clusterMetadata.clusterInformation.<cluster>.httpAddress`. This is the same
+   `httpAddress` shown in [Enable Nexus](#enable-nexus) — but for failover it must
+   be set on **every** cluster, each with its own address, not just one. Callback
+   routing resolves this address at delivery time; without it, cross-cluster
+   callbacks fail with `HTTPAddress not configured for cluster: <name>`. The
+   `operator cluster upsert` flow does **not** set `httpAddress` — configure it
+   explicitly, and re-run `upsert` after changing it.
+
+   ```yaml
+   # cluster-a (repeat on every cluster with its own addresses)
+   services:
+     frontend:
+       rpc:
+         httpPort: 7243
+   clusterMetadata:
+     clusterInformation:
+       cluster-a:
+         rpcAddress: "cluster-a-host:7233"
+         httpAddress: "cluster-a-host:7243"   # advertised to peers — required
+   ```
+
+4. **Enable auto-forwarding** (per Namespace) so a request that lands on a standby
+   cluster is forwarded to the active one, with the frontend `dcRedirectionPolicy`
+   allowing redirection (e.g. `all-apis-forwarding`).
+
+   ```yaml
+   system.enableNamespaceNotActiveAutoForwarding:
+     - value: true
+   ```
+
+5. **Leave `component.nexusoperations.useSystemCallbackURL` at its default (`true`).**
+   Callbacks then route internally; no callback URL is required.
+
+### What to expect on failover
+
+```mermaid
+%%{init: {'sequence': {'mirrorActors': false}}}%%
+sequenceDiagram
+    participant C as Caller (client ns)
+    participant A as Region A
+    participant B as Region B
+    C->>A: start async Nexus operation
+    A-->>C: operation started, token
+    Note over A,B: region A fails over / is lost — active moves to B
+    A->>B: handler workflow + callback resume on B
+    B->>C: completion delivered to the caller's active cluster
+    Note over C: caller workflow completes
+```
+
+- **Completion callbacks are delivered internally** to the caller Namespace's
+  *current* active cluster, re-resolved on each attempt — no callback URL, DNS, or
+  routing layer to manage.
+- **Forwarding runs on the surviving cluster**, toward the active cluster; it does
+  **not** depend on the failed region. Planned failover and **permanent region
+  loss** both work.
+- **On permanent region loss, fail over *every* Namespace off the dead region**
+  (both caller and handler). A completion whose caller Namespace still points at the
+  lost region retries until you do.
+- **Caveat:** anything not replicated before a region dies is lost. Long-running
+  async operations replicate their setup state early, so mid-flight failover
+  completes.
