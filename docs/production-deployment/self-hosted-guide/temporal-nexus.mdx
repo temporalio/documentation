@@ -108,10 +108,10 @@ target an external URL (`--target-url`), which is experimental and not covered h
    [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) for
    connecting Clusters and creating replicated Namespaces.
 
-2. **Advertise a frontend HTTP address on every Cluster.** [Enable Nexus](#enable-nexus)
-   sets `frontend.rpc.httpPort` and `clusterInformation.<cluster>.httpAddress` for
-   one Cluster. Set both on **every** Cluster, each with its own address, so the
-   other Clusters can reach it to deliver callbacks.
+2. **Advertise a frontend HTTP address on every Cluster.** Set
+   `frontend.rpc.httpPort` and `clusterInformation.<cluster>.httpAddress` (shown in
+   [Enable Nexus](#enable-nexus) for one Cluster) on **every** Cluster, each with its
+   own address, so the other Clusters can reach it to deliver callbacks.
 
 3. **Register Endpoints on every Cluster.** The
    [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
