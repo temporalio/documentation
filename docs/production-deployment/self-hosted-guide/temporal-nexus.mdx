@@ -112,26 +112,14 @@ target an external URL (`--target-url`), which is experimental and not covered h
    [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
    Create the same Endpoints (same target Namespace and Task Queue) on each Cluster.
 
-3. **Advertise a frontend HTTP address on every Cluster.** On top of the
-   `clusterMetadata` you configured for replication, each Cluster must set a local
-   `frontend.rpc.httpPort` and add an `httpAddress` to its `clusterInformation`
-   entry so peers can reach it. Callback routing resolves this address at delivery
+3. **Advertise a frontend HTTP address on every Cluster.** [Enable Nexus](#enable-nexus)
+   sets `frontend.rpc.httpPort` and a `clusterInformation.<cluster>.httpAddress` for
+   one Cluster. For failover, set them on **every** Cluster, each with its own
+   address, so peers can reach it. Callback routing resolves this address at delivery
    time. Without it, cross-Cluster callbacks fail with
    `HTTPAddress not configured for cluster: <name>`. The `operator cluster upsert`
-   command doesn't set `httpAddress`, so configure it explicitly and re-run
-   `upsert` after changing it.
-
-   ```yaml
-   services:
-     frontend:
-       rpc:
-         httpPort: 7243
-   clusterMetadata:
-     clusterInformation:
-       cluster-a:                             
-         # ...existing fields: enabled, rpcName, rpcAddress, initialFailoverVersion
-         httpAddress: "cluster-a-host:7243"   # add this, advertised to peers
-   ```
+   command doesn't set `httpAddress`, so configure it explicitly and re-run `upsert`
+   after changing it.
 
 4. **Enable automatic forwarding** so a request that lands on a standby Cluster
    forwards to the active one. This has two parts.
