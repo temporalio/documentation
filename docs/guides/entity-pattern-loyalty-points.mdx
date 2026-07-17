@@ -131,22 +131,17 @@ This diagram shows how a client adds points to a customer's loyalty account via 
 6. When the customer account is closed, a shutdown Signal causes the Workflow to drain its queue, await all handlers, and complete.
 
 ```mermaid
----
-config:
-  theme: default
-  fontSize: 20px
----
 sequenceDiagram
     participant Client as External Service
     participant TS as Temporal Server
     participant W as Worker (Python)
 
-    Client->>TS: start_workflow(LoyaltyEntity, id="loyalty-cust-123")
+    Client->>TS: start_workflow(LoyaltyEntity,<br/>id="loyalty-cust-123")
     TS->>W: Schedule Workflow Task
     W->>W: Initialize loyalty state (0 points, Bronze tier)
     W-->>TS: Blocked on wait_condition (waiting for messages)
 
-    Client->>TS: signal("loyalty-cust-123", add_points, {points: 500})
+    Client->>TS: signal("loyalty-cust-123",<br/>add_points, {points: 500})
     TS->>W: Deliver Signal
     W->>W: Append to internal queue
     W->>W: Process: update points balance
@@ -156,13 +151,13 @@ sequenceDiagram
 
     Client->>TS: query("loyalty-cust-123", get_loyalty_summary)
     TS->>W: Deliver Query
-    W-->>Client: Return {points: 500, tier: "Bronze"} (no Event recorded)
+    W-->>Client: Return {points: 500, tier: "Bronze"}<br/>(no Event recorded)
 
     Note over W: Event History approaching threshold
     W->>W: Drain pending signals
     W->>W: await all_handlers_finished()
     W->>TS: continue_as_new(current_state)
-    Note over TS: Same Workflow Id, new Run Id, fresh Event History
+    Note over TS: Same Workflow Id,<br/>new Run Id, fresh Event History
 ```
 
 ### Update flow for point redemption
@@ -175,7 +170,7 @@ sequenceDiagram
     participant TS as Temporal Server
     participant W as Worker (Python)
 
-    Client->>TS: execute_update("loyalty-cust-123", redeem_points, {points: 200})
+    Client->>TS: execute_update("loyalty-cust-123",<br/>redeem_points, {points: 200})
     TS->>W: Deliver Update
     W->>W: Run validator (check points > 0)
     W->>W: Check sufficient balance

@@ -55,9 +55,9 @@ sequenceDiagram
     participant W as Workflow
 
     E->>A: POST /webhook (payload)
-    A->>T: signal_with_start(workflow_id, "payment_received", payload)
+    A->>T: signal_with_start(workflow_id,<br/>"payment_received", payload)
     Note over T: Atomic: start if not running, then signal
-    T->>W: Start workflow (if not running) + deliver signal
+    T->>W: Start workflow (if not running)<br/>+ deliver signal
     W->>W: Wake up, process payload
     W->>W: Execute follow-on activities
 ```
@@ -78,7 +78,7 @@ sequenceDiagram
     participant T as Temporal Cluster
     participant E as External Service
 
-    C->>T: Start DelayedCallbackWorkflow(url, data, delay)
+    C->>T: Start DelayedCallbackWorkflow<br/>(url, data, delay)
     T->>W: Schedule first task
     W->>T: workflow.sleep(delay)
     Note over T: Durable timer (survives restarts)
@@ -110,7 +110,7 @@ sequenceDiagram
     A-->>W: Return (workflow paused waiting)
     Note over W: Waiting for external completion...
     E->>CB: POST /callback (result)
-    CB->>W: complete_async_activity(task_token, result)
+    CB->>W: complete_async_activity<br/>(task_token, result)
     W->>W: Resume with result
 ```
 
