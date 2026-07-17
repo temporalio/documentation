@@ -98,15 +98,13 @@ Namespace and Task Queue a Temporal worker polls.
 
 ### Configuration
 
-1. **Register the endpoint in every region.** The
-   [Nexus Endpoint registry](/nexus/registry) is not replicated across clusters;
-   create the same endpoint (same target Namespace and task queue) on each cluster.
-
-2. **Make both Namespaces Global Namespaces** replicated across the same clusters —
-   the one that *calls* the operation and the one that *handles* it — so every
-   cluster is aware of both. See
+1. **Setup Multi-Cluster Replication** See
    [multi-cluster replication](/self-hosted-guide/multi-cluster-replication) for
    connecting clusters and creating replicated Namespaces.
+
+2. **Register endpoints in every region.** The
+   [Nexus Endpoint registry](/nexus/registry) is not replicated across clusters.
+   Create the same endpoints (same target Namespace and task queue) on each cluster.
 
 3. **Give every cluster a frontend HTTP address — set *and* advertised.** Each
    cluster must set a local `frontend.rpc.httpPort` **and** advertise it via
@@ -139,9 +137,6 @@ Namespace and Task Queue a Temporal worker polls.
    system.enableNamespaceNotActiveAutoForwarding:
      - value: true
    ```
-
-5. **Leave `component.nexusoperations.useSystemCallbackURL` at its default (`true`).**
-   Callbacks then route internally; no callback URL is required.
 
 ### What to expect on failover
 
