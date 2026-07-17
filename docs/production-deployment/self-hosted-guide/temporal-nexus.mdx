@@ -158,12 +158,8 @@ sequenceDiagram
     Note over caB: Nexus Operation completes
 ```
 
-- **No external callback infrastructure.** Worker-target completions route
-  internally, so there's no callback URL, DNS, or proxy to manage.
 - **Survives permanent region loss, not just planned failover.** A surviving Cluster
   delivers the completion.
 - **Caller and handler can be active on different Clusters** (active is per
   Namespace), so a completion can cross Clusters. This is why every Cluster must
   advertise its `httpAddress`.
-- **On permanent loss, fail over every Namespace off the dead Cluster.** Unreplicated
-  state is lost.
