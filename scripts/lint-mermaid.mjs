@@ -1,9 +1,25 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import DOMPurify from 'dompurify';
-import mermaidModule from 'mermaid';
+import { JSDOM } from 'jsdom';
 
-const mermaid = mermaidModule.default ?? mermaidModule;
+// Mermaid parses using browser DOM APIs; some diagram syntaxes (for example a
+// sequence diagram `box`) reference window/document/Option during parse and
+// fail headless with "window is not defined". Provide a DOM before loading
+// mermaid so `mermaid.parse` works in CI.
+const dom = new JSDOM('<!DOCTYPE html><body></body>');
+globalThis.window = dom.window;
+globalThis.document = dom.window.document;
+for (const key of Object.getOwnPropertyNames(dom.window)) {
+  if (!(key in globalThis)) {
+    try {
+      globalThis[key] = dom.window[key];
+    } catch {
+      // Some window properties are getters that throw when read standalone.
+    }
+  }
+}
+
+const { default: mermaid } = await import('mermaid');
 const DOCS_ROOT = path.resolve('docs');
 const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 
@@ -109,20 +125,6 @@ async function lintFile(filePath) {
 }
 
 async function main() {
-  // Mermaid's parser may call DOMPurify hooks for some diagram syntaxes.
-  // In Node (without a browser window), dompurify can resolve to a minimal
-  // implementation that lacks hook APIs; provide no-op hooks so syntax-only
-  // parsing still works in CI.
-  if (typeof DOMPurify.addHook !== 'function') {
-    DOMPurify.addHook = () => {};
-  }
-  if (typeof DOMPurify.removeHook !== 'function') {
-    DOMPurify.removeHook = () => {};
-  }
-  if (typeof DOMPurify.sanitize !== 'function') {
-    DOMPurify.sanitize = (value) => value;
-  }
-
   mermaid.initialize({ startOnLoad: false });
 
   const markdownFiles = await walk(DOCS_ROOT);
