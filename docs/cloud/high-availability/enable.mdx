@@ -10,6 +10,8 @@ You can enable [High Availability](/cloud/high-availability) features for a new 
 replica. When you add a replica, Temporal Cloud begins asynchronously replicating ongoing and existing Workflow
 Executions.
 
+Adding a replica fails the Namespace over automatically; to plan how your Workers fail over with it, see [Worker deployment patterns for high availability and disaster recovery](/cloud/high-availability/architecture-patterns).
+
  The replica region must be on the same continent as the primary region. Because of that, not all replication options are available in all Temporal Cloud regions. See the [Service regions](/cloud/regions) page for the supported replica regions for each active region.
 
 Using private network connectivity with a HA namespace requires extra setup. See
@@ -135,6 +137,8 @@ Client APIs (Start, Signal, Cancel, Terminate, Query, and the equivalent Activit
 
 Same-region replicas are not affected by this setting.
 
+To deploy Worker fleets in both regions that stay on standby in the passive region until failover, see [Active/Hot-Passive](/cloud/high-availability/architecture-patterns#active-hot).
+
 :::info
 
 To see which endpoints route to which replica, see [How requests reach the replica](/cloud/high-availability/ha-connectivity#how-requests-reach-the-replica).
@@ -150,10 +154,10 @@ Use the [`temporal cloud namespace ha update`](/cli/command-reference/cloud/name
 ```bash
 temporal cloud namespace ha update \
     --namespace <namespace>.<account> \
-    --disable-passive-poller-forwarding true
+    --passive-poller-forwarding disabled
 ```
 
-Set the flag to `false` to re-enable forwarding.
+Set the flag to `enabled` to re-enable forwarding.
 
 ### Set the forwarding behavior with the Cloud Ops API {/* #set-forwarding-curl */}
 
