@@ -125,8 +125,8 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 ### What to expect on failover
 
-A Nexus Operation started before a Cluster failover completes on the new active
-Cluster. The completion callback is delivered to the caller Namespace's current
+For a Nexus Operation started before a Cluster failover completes on the new active
+Cluster, the completion callback is delivered to the caller Namespace's current
 active Cluster, re-resolved on each attempt:
 
 ```mermaid
