@@ -111,9 +111,8 @@ target an external URL (`--target-url`), which is experimental and not covered h
 2. **Advertise a frontend HTTP address on every Cluster.** Extend the `httpPort`
    and `clusterInformation.<cluster>.httpAddress` from [Enable Nexus](#enable-nexus)
    to **every** Cluster, each with its own address, so callback routing can resolve
-   it at delivery time. `operator cluster upsert` doesn't set `httpAddress`, so set
-   it explicitly; otherwise cross-Cluster callbacks fail with `HTTPAddress not
-   configured for cluster: <name>`.
+   it at delivery time. Without it, cross-Cluster callbacks fail with `HTTPAddress
+   not configured for cluster: <name>`.
 
 3. **Register Endpoints on every Cluster.** The
    [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
