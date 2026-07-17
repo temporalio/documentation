@@ -128,16 +128,18 @@ target an external URL (`--target-url`), which is experimental and not covered h
          httpPort: 7243
    clusterMetadata:
      clusterInformation:
-       cluster-a:                             # existing replication entry, per Cluster
+       cluster-a:                             # per-Cluster entry from replication setup
+         # ...existing fields: enabled, rpcName, rpcAddress, initialFailoverVersion
          httpAddress: "cluster-a-host:7243"   # add this, advertised to peers
    ```
 
 4. **Enable automatic forwarding** so a request that lands on a standby Cluster
    forwards to the active one. This has two parts.
 
-   Set the server's `dcRedirectionPolicy` in static config. It defaults to no
-   redirection, so you must set it to `all-apis-forwarding` (or
-   `selected-apis-forwarding`):
+   Set the server's
+   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) in static
+   config. It defaults to no redirection, so you must set it to
+   `all-apis-forwarding` (or `selected-apis-forwarding`):
 
    ```yaml
    dcRedirectionPolicy:
