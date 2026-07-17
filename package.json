@@ -23,6 +23,7 @@
     "lint:py": "vale docs/develop/python/*.mdx",
     "lint:ruby": "vale docs/develop/ruby/*.mdx",
     "lint:ts": "vale docs/develop/typescript/*.mdx",
+    "lint:mermaid": "node ./scripts/lint-mermaid.mjs",
     "fix-vale": "node vale/auto-fix-vale.js vale-output.json",
     "serve": "docusaurus serve",
     "snipsync": "snipsync",

@@ -2,7 +2,7 @@
  * component-handlers/data-tables.mjs
  *
  * Handler for <JsonTable filename="/json/foo.json" />.
- * Component: src/components/formatting/JsonTable.js (carries a matching comment).
+ * Component: src/components/Tables/JsonTable.js (carries a matching comment).
  *
  * JsonTable renders, at runtime in the browser, a table fetched from a JSON
  * file under static/. The JSON shape is { columns: string[], rows: string[][] }.
