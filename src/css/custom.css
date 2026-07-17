@@ -1330,6 +1330,9 @@ code {
    * variable rather than reusing that one.
    */
   --mermaid-sequence-number-text: #ffffff;
+  /* Same value as --mermaid-text in light mode — see the dark-mode block for
+     why this needs to be a separate variable at all. */
+  --mermaid-message-text: #1c1e21;
 }
 
 [data-theme='dark'] {
@@ -1347,6 +1350,29 @@ code {
   --mermaid-activation-border: #64748b;
   --mermaid-edge-label-bg: #141414;
   --mermaid-sequence-number-text: #1c1e21;
+  /*
+   * .messageText (plain sequence-diagram message labels) needed its own
+   * variable, separate from --mermaid-text: message text can sit either
+   * directly on the page background (near-black in dark mode — wants a
+   * light fill) or inside a Mermaid `rect rgb(...) ... end` highlight block
+   * (a literal, non-theme-aware light color mermaid draws behind a group of
+   * messages — e.g. local-activities.mdx's "Regular Activity"/"Local
+   * Activity" bands — wants a dark fill). These highlight rects are drawn
+   * as plain unrelated siblings with no shared ancestor with the message
+   * text (confirmed: .messageText's direct parent is the <svg> root), so
+   * there is no selector — :has() or otherwise — that can tell which case
+   * applies for a given piece of text. White text plus the halo below
+   * rendered as a visibly outlined "sticker" against the pale rect case,
+   * which is what prompted this.
+   * #6f7887 is the maximin solution: the single fixed color that maximizes
+   * the *worse* of (contrast against the dark page background, contrast
+   * against the pale rect fills used in this codebase, ~#e6ebfa/#dcf5e1),
+   * landing both around 3.7:1. That's below the 4.5:1 AA normal-text
+   * minimum — no fixed color can hit 4.5:1 against both a near-black and a
+   * near-white background at once — but it reads cleanly with no outline
+   * needed in either context, which is what was actually being asked for.
+   */
+  --mermaid-message-text: #6f7887;
 }
 
 /* Flowchart + state diagram nodes (generic, unclassed) */
@@ -1556,22 +1582,23 @@ code {
  * Message text sits directly on top of its own arrow for self-messages (the
  * source and target are the same lifeline, so the text can't help but
  * straddle it), and can touch a neighboring lifeline for long two-line
- * labels between adjacent actors. Same halo treatment as .loopText/
- * .sectionTitle above.
- *
- * The halo color is pinned to the page background (--mermaid-edge-label-bg),
- * but a `rect rgb(...)` diagram highlight block (a common pattern — see
- * local-activities.mdx) paints its own literal, non-theme-aware background
- * behind this text, so the halo often doesn't match what's actually behind
- * it. A thinner, partially-transparent halo still breaks up a crossing line
- * without reading as a hard, mismatched outline when it doesn't blend.
+ * labels between adjacent actors — hence the halo, same technique as
+ * .loopText/.sectionTitle above. fill uses --mermaid-message-text rather
+ * than --mermaid-text; see that variable's definition for why (in short: a
+ * `rect rgb(...)` diagram highlight block is exactly as likely to sit
+ * behind this text as the true page background, and there's no way to tell
+ * which applies to a given label, so white-in-dark-mode plus a halo read as
+ * a visibly outlined "sticker" against those pale, non-theme-aware
+ * highlight blocks). Now that fill is a mid-tone gray rather than a fully
+ * saturated white/dark swap, the halo itself can shrink too — it's there
+ * as a bit of insurance against a crossing line, not to rescue contrast.
  */
 .docusaurus-mermaid-container .messageText {
-  fill: var(--mermaid-text) !important;
+  fill: var(--mermaid-message-text) !important;
   paint-order: stroke fill;
   stroke: var(--mermaid-edge-label-bg) !important;
-  stroke-width: 3px !important;
-  stroke-opacity: 0.55 !important;
+  stroke-width: 1px !important;
+  stroke-opacity: 0.3 !important;
   stroke-linejoin: round !important;
 }
 .docusaurus-mermaid-container .note {
@@ -1675,6 +1702,27 @@ code {
   --dp-mermaid-highlight-bg: #fff1c2;
   --dp-mermaid-highlight-border: #d6a90f;
   --dp-mermaid-highlight-text: #3b3107;
+  /*
+   * blue/amber/purple are deliberately named for their color, not a state
+   * (unlike success/fail/etc. above) — they exist for diagrams that need to
+   * visually distinguish N parallel categories with no inherent good/bad/
+   * waiting meaning (e.g. route-specialized-workloads.mdx's CPU/GPU/memory
+   * resource pools, rate-limit-downstream-apis.mdx's SendGrid/Twilio/OpenAI
+   * queues). Values match the hardcoded #e1f5ff/#fff4e1/#f3e5f5 those two
+   * files used to hardcode directly (light mode only, unreadable in dark
+   * mode) — same hues, now theme-aware. Border contrast verified against
+   * WCAG 1.4.11's 3:1 non-text minimum; #c9840c (an earlier amber border
+   * candidate) measured 2.84:1 and was darkened to #bd7a09 (3.24:1).
+   */
+  --dp-mermaid-blue-bg: #e1f5ff;
+  --dp-mermaid-blue-border: #2f7bc4;
+  --dp-mermaid-blue-text: #0d3a5c;
+  --dp-mermaid-amber-bg: #fff4e1;
+  --dp-mermaid-amber-border: #bd7a09;
+  --dp-mermaid-amber-text: #4a3208;
+  --dp-mermaid-purple-bg: #f3e5f5;
+  --dp-mermaid-purple-border: #9b3fa8;
+  --dp-mermaid-purple-text: #3d1442;
 }
 
 [data-theme='dark'] {
@@ -1696,6 +1744,15 @@ code {
   --dp-mermaid-highlight-bg: #3a3414;
   --dp-mermaid-highlight-border: #f3cb29;
   --dp-mermaid-highlight-text: #f7edab;
+  --dp-mermaid-blue-bg: #16324a;
+  --dp-mermaid-blue-border: #5ab0f5;
+  --dp-mermaid-blue-text: #cfe8ff;
+  --dp-mermaid-amber-bg: #3d2e0f;
+  --dp-mermaid-amber-border: #f2b84b;
+  --dp-mermaid-amber-text: #ffe9c2;
+  --dp-mermaid-purple-bg: #2f1a35;
+  --dp-mermaid-purple-border: #c77dd6;
+  --dp-mermaid-purple-text: #f3d9f7;
 }
 
 /*
@@ -1745,6 +1802,67 @@ code {
   fill: var(--dp-mermaid-highlight-bg) !important;
   stroke: var(--dp-mermaid-highlight-border) !important;
 }
+.docusaurus-mermaid-container g.node.blue rect,
+.docusaurus-mermaid-container g.node.blue polygon,
+.docusaurus-mermaid-container g.node.blue path,
+.docusaurus-mermaid-container g.node.blue circle {
+  fill: var(--dp-mermaid-blue-bg) !important;
+  stroke: var(--dp-mermaid-blue-border) !important;
+}
+.docusaurus-mermaid-container g.node.amber rect,
+.docusaurus-mermaid-container g.node.amber polygon,
+.docusaurus-mermaid-container g.node.amber path,
+.docusaurus-mermaid-container g.node.amber circle {
+  fill: var(--dp-mermaid-amber-bg) !important;
+  stroke: var(--dp-mermaid-amber-border) !important;
+}
+.docusaurus-mermaid-container g.node.purple rect,
+.docusaurus-mermaid-container g.node.purple polygon,
+.docusaurus-mermaid-container g.node.purple path,
+.docusaurus-mermaid-container g.node.purple circle {
+  fill: var(--dp-mermaid-purple-bg) !important;
+  stroke: var(--dp-mermaid-purple-border) !important;
+}
+/*
+ * blue/amber/purple also support subgraphs (`class SomeSubgraph blue`) —
+ * route-specialized-workloads.mdx colors two Worker Pool subgraphs this way
+ * (GPUPool, MEMPool), not just individual nodes. success/fail/etc. above
+ * don't need this; nothing currently classes a subgraph with them.
+ */
+.docusaurus-mermaid-container g.cluster.blue rect {
+  fill: var(--dp-mermaid-blue-bg) !important;
+  stroke: var(--dp-mermaid-blue-border) !important;
+}
+.docusaurus-mermaid-container g.cluster.amber rect {
+  fill: var(--dp-mermaid-amber-bg) !important;
+  stroke: var(--dp-mermaid-amber-border) !important;
+}
+.docusaurus-mermaid-container g.cluster.purple rect {
+  fill: var(--dp-mermaid-purple-bg) !important;
+  stroke: var(--dp-mermaid-purple-border) !important;
+}
+/*
+ * Cluster titles need their own background+text pairing (not just the
+ * fill/stroke rules above): the generic .cluster-label .nodeLabel rule
+ * earlier in this file paints --mermaid-cluster-bg behind every title by
+ * default, which would mismatch a blue/amber/purple cluster's own
+ * background exactly like the hardcoded-fill mismatch that rule was built
+ * to avoid. Higher specificity here (two classes on .cluster) wins over
+ * that generic rule for background-color; color needs !important to beat
+ * the generic .cluster text/span rule below, which also carries it.
+ */
+.docusaurus-mermaid-container g.cluster.blue .cluster-label .nodeLabel {
+  background-color: var(--dp-mermaid-blue-bg);
+  color: var(--dp-mermaid-blue-text) !important;
+}
+.docusaurus-mermaid-container g.cluster.amber .cluster-label .nodeLabel {
+  background-color: var(--dp-mermaid-amber-bg);
+  color: var(--dp-mermaid-amber-text) !important;
+}
+.docusaurus-mermaid-container g.cluster.purple .cluster-label .nodeLabel {
+  background-color: var(--dp-mermaid-purple-bg);
+  color: var(--dp-mermaid-purple-text) !important;
+}
 
 .docusaurus-mermaid-container g.node.success .nodeLabel,
 .docusaurus-mermaid-container g.node.success .nodeLabel p {
@@ -1769,6 +1887,18 @@ code {
 .docusaurus-mermaid-container g.node.highlight .nodeLabel,
 .docusaurus-mermaid-container g.node.highlight .nodeLabel p {
   color: var(--dp-mermaid-highlight-text) !important;
+}
+.docusaurus-mermaid-container g.node.blue .nodeLabel,
+.docusaurus-mermaid-container g.node.blue .nodeLabel p {
+  color: var(--dp-mermaid-blue-text) !important;
+}
+.docusaurus-mermaid-container g.node.amber .nodeLabel,
+.docusaurus-mermaid-container g.node.amber .nodeLabel p {
+  color: var(--dp-mermaid-amber-text) !important;
+}
+.docusaurus-mermaid-container g.node.purple .nodeLabel,
+.docusaurus-mermaid-container g.node.purple .nodeLabel p {
+  color: var(--dp-mermaid-purple-text) !important;
 }
 
 /* Ask AI Navbar Button */

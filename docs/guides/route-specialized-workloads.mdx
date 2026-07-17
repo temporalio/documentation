@@ -160,11 +160,14 @@ flowchart TB
     GPUTQ --> GPUPool
     MEMTQ --> MEMPool
 
-    style CPUTQ fill:#e1f5ff
-    style GPUTQ fill:#fff4e1
-    style MEMTQ fill:#f3e5f5
-    style GPUPool fill:#fff4e1
-    style MEMPool fill:#f3e5f5
+    classDef blue stroke-width:1px
+    classDef amber stroke-width:1px
+    classDef purple stroke-width:1px
+    class CPUTQ blue
+    class GPUTQ amber
+    class MEMTQ purple
+    class GPUPool amber
+    class MEMPool purple
 ```
 
 ## Implementation plan
