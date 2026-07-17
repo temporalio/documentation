@@ -129,16 +129,8 @@ target an external URL (`--target-url`), which is experimental and not covered h
        policy: "all-apis-forwarding"
      ```
 
-   - `system.enableNamespaceNotActiveAutoForwarding` (dynamic, per-Namespace)
-     controls whether a Namespace that isn't active on the receiving Cluster
-     forwards its requests to its active Cluster. It defaults to `true`, so it's
-     usually already on — just confirm it hasn't been disabled for the caller
-     Namespace:
-
-     ```yaml
-     system.enableNamespaceNotActiveAutoForwarding:
-       - value: true
-     ```
+   - Make sure `system.enableNamespaceNotActiveAutoForwarding` isn't turned off for
+     the Namespace. This per-Namespace dynamic config defaults to `true`.
 
 ### What to expect on failover
 
@@ -150,9 +142,7 @@ sequenceDiagram
     participant B as Cluster B
     C->>A: start async Nexus Operation
     A-->>C: Operation started, token returned
-    Note over A,B: Namespace state continuously replicates A → B
-    Note over A,B: failover: active moves to B (Cluster A may be lost)
-    Note over B: handler completes; callback fires from replicated state
+    Note over A,B: "Namespace state continuously replicates A → B"
     B->>C: completion delivered on the caller's active Cluster
     Note over C: caller Workflow completes
 ```
