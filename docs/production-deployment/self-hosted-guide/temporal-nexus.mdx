@@ -134,9 +134,7 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 ### What to expect on failover
 
-Each Namespace is a Global Namespace replicated across both Clusters, with one
-active Cluster per Namespace. An Operation started before a failover completes
-after it, on the new active Cluster:
+A Nexus Operation started before a cluster failover completes on the new active Cluster:
 
 ```mermaid
 sequenceDiagram
@@ -151,15 +149,10 @@ sequenceDiagram
     Note over caA,haA: Cluster A active
     caA->>haA: start Nexus Operation
     haA-->>caA: Operation started, token returned
-    Note over caA,haB: Namespace state replicates A to B
-    Note over caA,haB: 💥 failover, active moves to Cluster B
+    Note over caA,haB: 💥 Failover from Cluster A to B
     Note over caB,haB: Cluster B active
     haB->>caB: completion delivered (callback)
     Note over caB: Nexus Operation completes
 ```
 
-- **Survives permanent region loss, not just planned failover.** A surviving Cluster
-  delivers the completion.
-- **Caller and handler can be active on different Clusters** (active is per
-  Namespace), so a completion can cross Clusters. This is why every Cluster must
-  advertise its `httpAddress`.
+Callbacks are delivered to the caller namespace's active Cluster, re-resolved on each attempt.
