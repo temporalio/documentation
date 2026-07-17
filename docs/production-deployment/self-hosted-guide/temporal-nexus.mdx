@@ -144,7 +144,6 @@ sequenceDiagram
     haA-->>caA: Operation started, token returned
     Note over caA,haB: 💥 Failover from Cluster A to B
     Note over caB,haB: Cluster B active
-    haB-xcaB: completion attempt fails (retryable)
     haB->>caB: retry delivers the completion
     Note over caB: Nexus Operation completes
 ```
