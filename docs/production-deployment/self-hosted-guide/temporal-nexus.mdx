@@ -157,20 +157,13 @@ sequenceDiagram
     Note over C: caller Workflow completes
 ```
 
-- **Completion callbacks are delivered internally** to the caller Namespace's
-  current active Cluster, re-resolved on each attempt. There is no callback URL,
-  DNS, or routing layer to manage.
-- **Forwarding runs on the surviving Cluster**, toward the active Cluster. It does
-  not depend on the failed Cluster, so planned failover and permanent Cluster loss
-  both work.
-- **The caller and handler can be active on different Clusters.** The active
-  Cluster is set per Namespace, so the caller Namespace can be active on one Cluster
-  while the handler Namespace is active on another. The completion is then forwarded
-  across Clusters automatically, as long as each Cluster advertises its
-  `httpAddress` (requirement 3).
-- **On permanent Cluster loss, fail over *every* Namespace off the lost Cluster**
-  (both caller and handler). A completion whose caller Namespace still points at the
-  lost Cluster retries until you do.
-- **Caveat:** anything not replicated before a Cluster is lost is lost with it.
-  Long-running Operations replicate their setup state early, so a mid-flight
-  failover completes.
+- **Callbacks are delivered internally** to the caller Namespace's active Cluster,
+  re-resolved on each attempt. No callback URL, DNS, or proxy to manage.
+- **Forwarding runs on the surviving Cluster**, never the failed one, so planned
+  failover and permanent Cluster loss both work.
+- **Caller and handler can be active on different Clusters** (active is per
+  Namespace). The completion forwards across Clusters automatically, as long as each
+  Cluster advertises its `httpAddress`.
+- **On permanent Cluster loss, fail over every Namespace off it.** A completion
+  still pointing at the lost Cluster retries until you do; state not replicated
+  before the loss is lost with it.
