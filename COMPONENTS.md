@@ -155,7 +155,7 @@ For example, the Python SDK integrations page pre-filters to Python:
 <IntegrationsGrid defaultSdks={["Python"]} />
 ```
 
-Valid SDK values are `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
 
 ### Filter behavior
 
