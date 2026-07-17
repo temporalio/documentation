@@ -130,20 +130,17 @@ Cluster, the completion callback is delivered to the caller Namespace's current
 active Cluster, re-resolved on each attempt:
 
 ```mermaid
-sequenceDiagram
-    box Cluster A
-    participant caA as Caller Namespace
-    participant haA as Handler Namespace
+flowchart LR
+    subgraph A["Cluster A (initially active)"]
+        caA["Caller Namespace"]
+        haA["Handler Namespace"]
     end
-    box Cluster B
-    participant caB as Caller Namespace
-    participant haB as Handler Namespace
+    subgraph B["Cluster B (active after failover)"]
+        caB["Caller Namespace"]
+        haB["Handler Namespace"]
     end
-    Note over caA,haA: Cluster A active
-    caA->>haA: start Nexus Operation
-    haA-->>caA: Operation started, token returned
-    Note over caA,haB: 💥 Fail over both namespaces from Cluster A to B
-    Note over caB,haB: Cluster B active
-    haB->>caB: deliver completion callback  
-    Note over caB: Nexus Operation completes
+    caA -->|"1 start Nexus Operation"| haA
+    caA -. replicated .- caB
+    haA -. replicated .- haB
+    haB -->|"2 completion callback, after failover"| caB
 ```
