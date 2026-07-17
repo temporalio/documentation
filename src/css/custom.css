@@ -1434,9 +1434,52 @@ code {
  * Queues") had enough slack to absorb the padding and looked fine, which is
  * why this wasn't caught immediately — the bug is width-dependent per title,
  * not universal, so the only universally safe fix is no added width at all.
+ *
+ * display: inline-block is required, not cosmetic: .nodeLabel (a <span>) is
+ * `display: inline` by default, but wraps a block-level <p> — invalid inline
+ * content per the CSS spec, which browsers handle via an anonymous-block
+ * fixup around the <p>. That fixup detaches the span's own background-color
+ * from the box the text actually paints in, so the background silently
+ * never appears behind the visible glyphs — confirmed live on a real
+ * production page (route-specialized-workloads.mdx's "GPU ML Pool"/
+ * "High-Memory Pool" titles, on hardcoded pale cluster fills where a missing
+ * background makes the text unreadable), even though getComputedStyle
+ * reports the correct background-color and color throughout. A dev-only
+ * standalone test tool missed this entirely; it only surfaces with
+ * Docusaurus's real surrounding markup. inline-block establishes its own
+ * block formatting context, which sidesteps the fixup and paints the
+ * background where the text actually is, without disturbing the parent's
+ * text-align: center (verified: still centers identically to an unaffected
+ * title like "Standard CPU Pool").
  */
 .docusaurus-mermaid-container .cluster-label .nodeLabel {
   background-color: var(--mermaid-cluster-bg);
+  display: inline-block;
+}
+/*
+ * A subgraph can itself carry a hardcoded `style X fill:#hex` (e.g.
+ * route-specialized-workloads.mdx's GPUPool/MEMPool), the cluster-level
+ * equivalent of the hardcoded node fills handled elsewhere in this file —
+ * same inline style="fill:#hex !important" mechanism, same fill-only (no
+ * stroke) signature. For those specific clusters, the rule above paints a
+ * --mermaid-cluster-bg patch that doesn't match the cluster's own actual
+ * (pale, non-theme-aware) background at all, so instead of blending it
+ * shows as a mismatched solid box sitting on top of the pale fill.
+ * Transparent lets the label sit directly on whatever's actually behind it,
+ * matching every other unclassed node/text in this codebase that just
+ * accepts a hardcoded fill's background as-is rather than fighting it.
+ *
+ * Text color has to come along with it: the general .cluster text/span rule
+ * below still paints this label var(--mermaid-text) (white in dark mode),
+ * and white-on-pale is exactly the original unreadable-text bug this
+ * stylesheet exists to fix — a transparent background alone would silently
+ * reintroduce it. Hardcoded fills in this codebase are always pale,
+ * light-mode-only colors (same premise as the equivalent node-level fix),
+ * so dark text is always correct here regardless of site theme.
+ */
+.docusaurus-mermaid-container .cluster:has(rect[style*='fill:']):not(:has(rect[style*='stroke:'])) .cluster-label .nodeLabel {
+  background-color: transparent;
+  color: #1c1e21 !important;
 }
 
 /*
