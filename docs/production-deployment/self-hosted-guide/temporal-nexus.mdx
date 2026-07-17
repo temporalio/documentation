@@ -158,13 +158,11 @@ sequenceDiagram
     Note over caB: Nexus Operation completes
 ```
 
-- **Callbacks are delivered internally** to the caller Namespace's active Cluster,
-  re-resolved on each attempt. No callback URL, DNS, or proxy to manage.
-- **Forwarding runs on the surviving Cluster**, never the failed one, so planned
-  failover and permanent Cluster loss both work.
-- **Caller and handler can be active on different Clusters** (active is per
-  Namespace). The completion forwards across Clusters automatically, as long as each
-  Cluster advertises its `httpAddress`.
-- **On permanent Cluster loss, fail over every Namespace off it.** A completion
-  still pointing at the lost Cluster retries until you do; state not replicated
-  before the loss is lost with it.
+- **Callbacks are delivered internally** to the caller's active Cluster, re-resolved
+  on each attempt. No callback URL, DNS, or proxy needed.
+- **Forwarding runs on a surviving Cluster**, never the failed one, so planned
+  failover and permanent loss both work.
+- **Caller and handler can be active on different Clusters.** Cross-Cluster
+  completions forward automatically when every Cluster advertises its `httpAddress`.
+- **On permanent Cluster loss, fail over every Namespace off it.** Completions to the
+  lost Cluster retry until you do, and unreplicated state is lost.
