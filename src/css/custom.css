@@ -1330,9 +1330,6 @@ code {
    * variable rather than reusing that one.
    */
   --mermaid-sequence-number-text: #ffffff;
-  /* Same value as --mermaid-text in light mode — see the dark-mode block for
-     why this needs to be a separate variable at all. */
-  --mermaid-message-text: #1c1e21;
 }
 
 [data-theme='dark'] {
@@ -1350,29 +1347,6 @@ code {
   --mermaid-activation-border: #64748b;
   --mermaid-edge-label-bg: #141414;
   --mermaid-sequence-number-text: #1c1e21;
-  /*
-   * .messageText (plain sequence-diagram message labels) needed its own
-   * variable, separate from --mermaid-text: message text can sit either
-   * directly on the page background (near-black in dark mode — wants a
-   * light fill) or inside a Mermaid `rect rgb(...) ... end` highlight block
-   * (a literal, non-theme-aware light color mermaid draws behind a group of
-   * messages — e.g. local-activities.mdx's "Regular Activity"/"Local
-   * Activity" bands — wants a dark fill). These highlight rects are drawn
-   * as plain unrelated siblings with no shared ancestor with the message
-   * text (confirmed: .messageText's direct parent is the <svg> root), so
-   * there is no selector — :has() or otherwise — that can tell which case
-   * applies for a given piece of text. White text plus the halo below
-   * rendered as a visibly outlined "sticker" against the pale rect case,
-   * which is what prompted this.
-   * #6f7887 is the maximin solution: the single fixed color that maximizes
-   * the *worse* of (contrast against the dark page background, contrast
-   * against the pale rect fills used in this codebase, ~#e6ebfa/#dcf5e1),
-   * landing both around 3.7:1. That's below the 4.5:1 AA normal-text
-   * minimum — no fixed color can hit 4.5:1 against both a near-black and a
-   * near-white background at once — but it reads cleanly with no outline
-   * needed in either context, which is what was actually being asked for.
-   */
-  --mermaid-message-text: #6f7887;
 }
 
 /* Flowchart + state diagram nodes (generic, unclassed) */
@@ -1583,23 +1557,37 @@ code {
  * source and target are the same lifeline, so the text can't help but
  * straddle it), and can touch a neighboring lifeline for long two-line
  * labels between adjacent actors — hence the halo, same technique as
- * .loopText/.sectionTitle above. fill uses --mermaid-message-text rather
- * than --mermaid-text; see that variable's definition for why (in short: a
- * `rect rgb(...)` diagram highlight block is exactly as likely to sit
- * behind this text as the true page background, and there's no way to tell
- * which applies to a given label, so white-in-dark-mode plus a halo read as
- * a visibly outlined "sticker" against those pale, non-theme-aware
- * highlight blocks). Now that fill is a mid-tone gray rather than a fully
- * saturated white/dark swap, the halo itself can shrink too — it's there
- * as a bit of insurance against a crossing line, not to rescue contrast.
+ * .loopText/.sectionTitle above. fill is plain --mermaid-text: a
+ * `rect rgb(...) ... end` diagram highlight block used to draw a literal,
+ * non-theme-aware light background behind some messages (e.g.
+ * local-activities.mdx's "Regular Activity"/"Local Activity" bands), which
+ * made full-strength text plus a halo read as an outlined "sticker" against
+ * it. Fixed at the source instead — see the `.rect` rule below — so message
+ * text no longer needs to compromise for a background it might not even be
+ * sitting on.
  */
 .docusaurus-mermaid-container .messageText {
-  fill: var(--mermaid-message-text) !important;
+  fill: var(--mermaid-text) !important;
   paint-order: stroke fill;
   stroke: var(--mermaid-edge-label-bg) !important;
   stroke-width: 1px !important;
   stroke-opacity: 0.3 !important;
   stroke-linejoin: round !important;
+}
+/*
+ * Mermaid's `rect rgb(...) ... end` sequence-diagram highlight block (used
+ * by local-activities.mdx, eager-workflow-start.mdx, and
+ * early-return-local-activities.mdx to band groups of messages) renders as
+ * a plain `<rect class="rect" fill="rgb(...)">` with no `style` attribute —
+ * unlike the classDef-driven hardcoded-hex bug elsewhere in this file, a
+ * plain SVG presentation attribute loses to any stylesheet rule regardless
+ * of !important, so this is overridable even though the source literal
+ * isn't theme-aware. Reuses --mermaid-cluster-bg so the band reads as a
+ * subtle, theme-aware highlight instead of a fixed pale rectangle that goes
+ * white-on-white in light mode and fights message text in dark mode.
+ */
+.docusaurus-mermaid-container .rect {
+  fill: var(--mermaid-cluster-bg) !important;
 }
 .docusaurus-mermaid-container .note {
   fill: var(--mermaid-note-bg) !important;
@@ -1899,6 +1887,130 @@ code {
 .docusaurus-mermaid-container g.node.purple .nodeLabel,
 .docusaurus-mermaid-container g.node.purple .nodeLabel p {
   color: var(--dp-mermaid-purple-text) !important;
+}
+
+/*
+ * Infrastructure/topology diagram classes for
+ * docs/cloud/high-availability/architecture-patterns.mdx and
+ * docs/cloud/connectivity/aws-connectivity.mdx, migrated off hardcoded hex.
+ * These reuse the class names the diagrams already register locally
+ * (classDef worker/ns/endpoint/... with no color) rather than renaming
+ * every usage site to blue/amber/purple.
+ */
+:root {
+  --dp-mermaid-green-bg: #dcf7e3;
+  --dp-mermaid-green-border: #1f9d55;
+  --dp-mermaid-green-text: #0d3820;
+}
+[data-theme='dark'] {
+  --dp-mermaid-green-bg: #163524;
+  --dp-mermaid-green-border: #4ade80;
+  --dp-mermaid-green-text: #c8f7d8;
+}
+
+/* Namespace / environment entity */
+.docusaurus-mermaid-container g.node.ns rect,
+.docusaurus-mermaid-container g.node.ns polygon,
+.docusaurus-mermaid-container g.node.ns path,
+.docusaurus-mermaid-container g.node.ns circle {
+  fill: var(--dp-mermaid-green-bg) !important;
+  stroke: var(--dp-mermaid-green-border) !important;
+}
+.docusaurus-mermaid-container g.node.ns .nodeLabel,
+.docusaurus-mermaid-container g.node.ns .nodeLabel p {
+  color: var(--dp-mermaid-green-text) !important;
+}
+
+/* Worker / active-application entity — reuses the existing purple palette */
+.docusaurus-mermaid-container g.node.worker rect,
+.docusaurus-mermaid-container g.node.worker polygon,
+.docusaurus-mermaid-container g.node.worker path,
+.docusaurus-mermaid-container g.node.worker circle,
+.docusaurus-mermaid-container g.node.app rect,
+.docusaurus-mermaid-container g.node.app polygon,
+.docusaurus-mermaid-container g.node.app path,
+.docusaurus-mermaid-container g.node.app circle {
+  fill: var(--dp-mermaid-purple-bg) !important;
+  stroke: var(--dp-mermaid-purple-border) !important;
+}
+.docusaurus-mermaid-container g.node.worker .nodeLabel,
+.docusaurus-mermaid-container g.node.worker .nodeLabel p,
+.docusaurus-mermaid-container g.node.app .nodeLabel,
+.docusaurus-mermaid-container g.node.app .nodeLabel p {
+  color: var(--dp-mermaid-purple-text) !important;
+}
+
+/* Outage / unavailable state — reuses the existing fail palette */
+.docusaurus-mermaid-container g.node.down rect,
+.docusaurus-mermaid-container g.node.down polygon,
+.docusaurus-mermaid-container g.node.down path,
+.docusaurus-mermaid-container g.node.down circle {
+  fill: var(--dp-mermaid-fail-bg) !important;
+  stroke: var(--dp-mermaid-fail-border) !important;
+}
+.docusaurus-mermaid-container g.node.down .nodeLabel,
+.docusaurus-mermaid-container g.node.down .nodeLabel p {
+  color: var(--dp-mermaid-fail-text) !important;
+}
+.docusaurus-mermaid-container g.cluster.regiondown rect {
+  fill: var(--dp-mermaid-fail-bg) !important;
+  stroke: var(--dp-mermaid-fail-border) !important;
+}
+.docusaurus-mermaid-container g.cluster.regiondown .cluster-label .nodeLabel {
+  background-color: var(--dp-mermaid-fail-bg);
+  color: var(--dp-mermaid-fail-text) !important;
+}
+
+/*
+ * Neutral structural boxes: region/env subgraph wrappers (thicker outline) and
+ * endpoint nodes / pool subgraphs (thinner outline) — transparent fill, reusing
+ * the existing theme-aware neutral grays rather than new color variables.
+ */
+.docusaurus-mermaid-container g.node.endpoint rect,
+.docusaurus-mermaid-container g.cluster.pool rect {
+  fill: transparent !important;
+  stroke: var(--mermaid-cluster-border) !important;
+}
+.docusaurus-mermaid-container g.cluster.region rect,
+.docusaurus-mermaid-container g.cluster.env rect {
+  fill: transparent !important;
+  stroke: var(--mermaid-line) !important;
+}
+.docusaurus-mermaid-container g.cluster.region .cluster-label .nodeLabel,
+.docusaurus-mermaid-container g.cluster.env .cluster-label .nodeLabel,
+.docusaurus-mermaid-container g.cluster.pool .cluster-label .nodeLabel {
+  background-color: transparent;
+}
+
+/* Standby worker: connected but idle — muted, reusing the neutral cluster background */
+.docusaurus-mermaid-container g.node.standby rect {
+  fill: var(--mermaid-cluster-bg) !important;
+  stroke: var(--mermaid-line) !important;
+}
+
+/* Empty Worker Pool placeholder: dashed, transparent, muted text */
+.docusaurus-mermaid-container g.node.empty rect {
+  fill: transparent !important;
+  stroke: var(--mermaid-line) !important;
+}
+.docusaurus-mermaid-container g.node.empty .nodeLabel,
+.docusaurus-mermaid-container g.node.empty .nodeLabel p {
+  color: var(--mermaid-line) !important;
+}
+
+/* "Scaled up as needed" worker: dashed, transparent purple outline */
+.docusaurus-mermaid-container g.node.workerhollow rect {
+  fill: transparent !important;
+  stroke: var(--dp-mermaid-purple-border) !important;
+}
+
+/*
+ * Inline "(outage)" label span used inside subgraph titles. Specificity must
+ * beat the generic .cluster-label .nodeLabel color rule above (also
+ * !important), which would otherwise win on source order alone.
+ */
+.docusaurus-mermaid-container .cluster-label .nodeLabel .dp-outage-text {
+  color: var(--dp-mermaid-fail-border) !important;
 }
 
 /* Ask AI Navbar Button */
