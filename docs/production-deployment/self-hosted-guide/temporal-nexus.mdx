@@ -144,7 +144,7 @@ sequenceDiagram
     A-->>C: Operation started, token returned
     Note over A,B: Namespace state continuously<br/>replicates A → B
     B->>C: completion delivered on the caller's active Cluster
-    Note over C: caller Workflow completes
+    Note over C: Nexus Operation completes
 ```
 
 - **Callbacks are delivered internally** to the caller Namespace's active Cluster,
