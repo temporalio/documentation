@@ -118,7 +118,9 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 4. **Cross-Cluster forwarding.** Nexus request and callback forwarding is on by
    default via `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace
-   dynamic config). Optionally, set the server's
+   dynamic config).
+
+   Optionally, set the server's
    [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so client
    requests forward to the active Cluster when a client connects to a standby: use
    `all-apis-forwarding` for all client APIs, or `selected-apis-forwarding` for a
