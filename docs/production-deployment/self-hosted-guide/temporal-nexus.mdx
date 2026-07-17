@@ -110,33 +110,31 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 2. **Advertise a frontend HTTP address on every Cluster.** Extend the `httpPort`
    and `clusterInformation.<cluster>.httpAddress` from [Enable Nexus](#enable-nexus)
-   to **every** Cluster, each with its own address, so callback routing can resolve
-   it at delivery time. Without it, cross-Cluster callbacks fail with `HTTPAddress
-   not configured for cluster: <name>`.
+   to **every** Cluster, each with its own address. Without it, cross-Cluster
+   callbacks fail with `HTTPAddress not configured for cluster: <name>`.
 
 3. **Register Endpoints on every Cluster.** The
    [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
    Create the same Endpoints (same target Namespace and Task Queue) on each Cluster.
 
 4. **Enable automatic forwarding** so a request that lands on a standby Cluster
-   forwards to the active one. This has two parts.
+   forwards to the active one. Two parts:
 
-   Set the server's
-   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) in static
-   config. It defaults to no redirection, so you must set it to
-   `all-apis-forwarding` (or `selected-apis-forwarding`):
+   - Set the server's [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy)
+     in static config. It defaults to no redirection, so set it to
+     `all-apis-forwarding` (or `selected-apis-forwarding`):
 
-   ```yaml
-   dcRedirectionPolicy:
-     policy: "all-apis-forwarding"
-   ```
+     ```yaml
+     dcRedirectionPolicy:
+       policy: "all-apis-forwarding"
+     ```
 
-   Turn on auto-forwarding per Namespace in dynamic config:
+   - Turn on auto-forwarding per Namespace in dynamic config:
 
-   ```yaml
-   system.enableNamespaceNotActiveAutoForwarding:
-     - value: true
-   ```
+     ```yaml
+     system.enableNamespaceNotActiveAutoForwarding:
+       - value: true
+     ```
 
 ### What to expect on failover
 
