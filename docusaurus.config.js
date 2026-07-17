@@ -28,19 +28,6 @@ module.exports = async function createConfigAsync() {
         defaultMode: 'dark',
         disableSwitch: false,
         respectPrefersColorScheme: true,
-        // switchConfig: {
-        //   darkIcon: "🌙",
-        //   darkIconStyle: {
-        //     content: `url(/img/assets/moon.svg)`,
-        //     transform: "scale(2)",
-        //     margin: "0 0.2rem",
-        //   },
-        //   lightIcon: "\u{1F602}",
-        //   lightIconStyle: {
-        //     content: `url(/img/assets/sun.svg)`,
-        //     transform: "scale(2)",
-        //   },
-        // },
       },
       metadata: [
         { name: 'robots', content: 'follow, index' },
