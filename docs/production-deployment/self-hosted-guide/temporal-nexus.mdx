@@ -134,26 +134,38 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 ### What to expect on failover
 
-Each Namespace is replicated across Clusters, and the active Cluster is set per
-Namespace. When the caller and handler Namespaces are active on different Clusters,
-the completion callback crosses Clusters:
+Each Namespace is a Global Namespace replicated across both Clusters, with one
+active Cluster per Namespace. An Operation started before a failover completes
+after it, on the new active Cluster.
+
+**Before failover** — the Operation starts on the active Cluster:
 
 ```mermaid
 flowchart LR
-    subgraph A["Cluster A"]
-        direction TB
-        caA["Caller Namespace<br/>active"]
-        haA["Handler Namespace<br/>standby"]
+    subgraph A["Cluster A — active"]
+        caA["Caller Namespace"] -->|Nexus Operation| haA["Handler Namespace"]
     end
-    subgraph B["Cluster B"]
-        direction TB
-        caB["Caller Namespace<br/>standby"]
-        haB["Handler Namespace<br/>active"]
+    subgraph B["Cluster B — standby"]
+        caB["Caller Namespace"]
+        haB["Handler Namespace"]
     end
     caA -. replicated .- caB
     haA -. replicated .- haB
-    caA ==>|Nexus Operation| haB
-    haB ==>|completion callback| caA
+```
+
+**After failover** — the completion is delivered on the new active Cluster:
+
+```mermaid
+flowchart LR
+    subgraph A["Cluster A — lost or standby"]
+        caA["Caller Namespace"]
+        haA["Handler Namespace"]
+    end
+    subgraph B["Cluster B — now active"]
+        haB["Handler Namespace"] -->|completion callback| caB["Caller Namespace"]
+    end
+    caA -. replicated .- caB
+    haA -. replicated .- haB
 ```
 
 - **Callbacks are delivered internally** to the caller Namespace's active Cluster,
