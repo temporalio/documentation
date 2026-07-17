@@ -119,9 +119,11 @@ target an external URL (`--target-url`), which is experimental and not covered h
 4. **Cross-Cluster forwarding.** Nexus request and callback forwarding is on by
    default via `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace
    dynamic config). Optionally, set the server's
-   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) to
-   `all-apis-forwarding` so client requests also forward to the
-   active Cluster when it connects to a standby.
+   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so client
+   requests forward to the active Cluster when a client connects to a standby: use
+   `all-apis-forwarding` for all client APIs, or `selected-apis-forwarding` for a
+   fixed subset that includes `StartNexusOperationExecution` (used to start a
+   standalone Nexus Operation).
 
 ### What to expect on failover
 
@@ -130,17 +132,20 @@ Cluster, the completion callback is delivered to the caller Namespace's current
 active Cluster, re-resolved on each attempt:
 
 ```mermaid
-flowchart LR
-    subgraph A["Cluster A (initially active)"]
-        caA["Caller Namespace"]
-        haA["Handler Namespace"]
+sequenceDiagram
+    box Cluster A
+    participant caA as Caller Namespace
+    participant haA as Handler Namespace
     end
-    subgraph B["Cluster B (active after failover)"]
-        caB["Caller Namespace"]
-        haB["Handler Namespace"]
+    box Cluster B
+    participant caB as Caller Namespace
+    participant haB as Handler Namespace
     end
-    caA -->|"1 start Nexus Operation"| haA
-    caA -. replicated .- caB
-    haA -. replicated .- haB
-    haB -->|"2 completion callback, after failover"| caB
+    Note over caA,haA: Cluster A active
+    caA->>haA: start Nexus Operation
+    haA-->>caA: Operation started, token returned
+    Note over caA,haB: 💥 Fail over both namespaces from Cluster A to B
+    Note over caB,haB: Cluster B active
+    haB->>caB: deliver completion callback
+    Note over caB: Nexus Operation completes
 ```
