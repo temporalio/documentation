@@ -152,7 +152,7 @@ sequenceDiagram
     caA->>haA: start Nexus Operation
     haA-->>caA: Operation started, token returned
     Note over caA,haB: Namespace state replicates A to B
-    Note over caA,haB: failover, active moves to Cluster B
+    Note over caA,haB: 💥 failover, active moves to Cluster B
     Note over caB,haB: Cluster B active
     haB->>caB: completion delivered (callback)
     Note over caB: Caller Workflow completes
