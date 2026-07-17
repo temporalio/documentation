@@ -735,6 +735,7 @@ module.exports = {
               },
               items: [
                 'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/langsmith',
                 'develop/typescript/integrations/openai-agents',
               ],
             },
@@ -1185,6 +1186,7 @@ module.exports = {
           },
           items: [
             'cloud/high-availability/enable',
+            'cloud/high-availability/architecture-patterns',
             'cloud/high-availability/monitoring',
             {
               type: 'category',
