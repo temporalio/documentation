@@ -136,36 +136,26 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 Each Namespace is a Global Namespace replicated across both Clusters, with one
 active Cluster per Namespace. An Operation started before a failover completes
-after it, on the new active Cluster.
-
-**Before failover** — the Operation starts on the active Cluster:
+after it, on the new active Cluster:
 
 ```mermaid
-flowchart LR
-    subgraph A["Cluster A — active"]
-        caA["Caller Namespace"] -->|Nexus Operation| haA["Handler Namespace"]
+sequenceDiagram
+    box Cluster A
+    participant caA as Caller ns
+    participant haA as Handler ns
     end
-    subgraph B["Cluster B — standby"]
-        caB["Caller Namespace"]
-        haB["Handler Namespace"]
+    box Cluster B
+    participant caB as Caller ns
+    participant haB as Handler ns
     end
-    caA -. replicated .- caB
-    haA -. replicated .- haB
-```
-
-**After failover** — the completion is delivered on the new active Cluster:
-
-```mermaid
-flowchart LR
-    subgraph A["Cluster A — lost or standby"]
-        caA["Caller Namespace"]
-        haA["Handler Namespace"]
-    end
-    subgraph B["Cluster B — now active"]
-        haB["Handler Namespace"] -->|completion callback| caB["Caller Namespace"]
-    end
-    caA -. replicated .- caB
-    haA -. replicated .- haB
+    Note over caA,haA: Cluster A active
+    caA->>haA: start Nexus Operation
+    haA-->>caA: Operation started, token returned
+    Note over caA,haB: Namespace state replicates A to B
+    Note over caA,haB: failover, active moves to Cluster B
+    Note over caB,haB: Cluster B active
+    haB->>caB: completion delivered (callback)
+    Note over caB: Caller Workflow completes
 ```
 
 - **Callbacks are delivered internally** to the caller Namespace's active Cluster,
