@@ -148,12 +148,12 @@ sequenceDiagram
     participant caB as Caller Namespace
     participant haB as Handler Namespace
     end
-    Note over caA,haA: <b>Cluster A active</b>
+    Note over caA,haA: Cluster A active
     caA->>haA: start Nexus Operation
     haA-->>caA: Operation started, token returned
     Note over caA,haB: Namespace state replicates A to B
     Note over caA,haB: 💥 failover, active moves to Cluster B
-    Note over caB,haB: <b>Cluster B active</b>
+    Note over caB,haB: Cluster B active
     haB->>caB: completion delivered (callback)
     Note over caB: Nexus Operation completes
 ```
