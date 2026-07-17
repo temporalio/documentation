@@ -105,8 +105,8 @@
     "dprint": "^0.55.1",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
+    "global-jsdom": "^29.0.0",
     "husky": "^9.1.7",
-    "hyperlink": "^5.0.4",
-    "jsdom": "^19.0.0"
+    "hyperlink": "^5.0.4"
   }
 }

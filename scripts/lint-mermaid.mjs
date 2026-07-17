@@ -1,25 +1,11 @@
+// Set up a browser-like DOM before loading mermaid. mermaid.parse() uses DOM
+// APIs for some diagram syntaxes (for example a sequence diagram `box`) and
+// otherwise fails headless with "window is not defined".
+import 'global-jsdom/register';
+
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { JSDOM } from 'jsdom';
-
-// Mermaid parses using browser DOM APIs; some diagram syntaxes (for example a
-// sequence diagram `box`) reference window/document/Option during parse and
-// fail headless with "window is not defined". Provide a DOM before loading
-// mermaid so `mermaid.parse` works in CI.
-const dom = new JSDOM('<!DOCTYPE html><body></body>');
-globalThis.window = dom.window;
-globalThis.document = dom.window.document;
-for (const key of Object.getOwnPropertyNames(dom.window)) {
-  if (!(key in globalThis)) {
-    try {
-      globalThis[key] = dom.window[key];
-    } catch {
-      // Some window properties are getters that throw when read standalone.
-    }
-  }
-}
-
-const { default: mermaid } = await import('mermaid');
+import mermaid from 'mermaid';
 const DOCS_ROOT = path.resolve('docs');
 const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 

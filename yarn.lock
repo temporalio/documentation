@@ -8098,6 +8098,11 @@ global-dirs@^3.0.0:
   dependencies:
     ini "2.0.0"
 
+global-jsdom@^29.0.0:
+  version "29.0.0"
+  resolved "https://registry.yarnpkg.com/global-jsdom/-/global-jsdom-29.0.0.tgz#c7c7f51d58f8069d94563afb5d7b8cd34546d64e"
+  integrity sha512-S9Wl+EHDfkO8DYleqMYzf14hKfwIysEN/FvoVRdPif3uUGUlmiHs/gj1PVKXhmJ20DwUVACtdxxhNYYvvn9K7A==
+
 globals@^14.0.0:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-14.0.0.tgz#898d7413c29babcf6bafe56fcadded858ada724e"
