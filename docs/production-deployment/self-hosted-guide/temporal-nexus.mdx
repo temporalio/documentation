@@ -90,11 +90,17 @@ See [how Nexus works](/nexus) for an architectural overview, then follow an SDK 
 
 ## Global Namespaces (multi-region failover)
 
-Nexus works across a [Global (multi-region) Namespace](/global-namespace): an
+Nexus works across a [Global (multi-region) Namespace](/global-namespace). An
 asynchronous Nexus Operation started in one Cluster completes even if the Namespace
-fails over, or its Cluster is lost, before the Operation finishes. This applies to
-[worker-target Endpoints](/nexus/endpoints), where the Endpoint routes to a target
-Namespace and Task Queue that a Worker polls.
+fails over, or its Cluster is lost, before the Operation finishes.
+
+:::note Endpoint target types
+
+This applies to [Worker-target Endpoints](/nexus/endpoints), where the Endpoint
+routes to a target Namespace and Task Queue that a Worker polls. Endpoints can also
+target an external URL (`--target-url`), which is experimental and not covered here.
+
+:::
 
 ### Configuration
 
@@ -103,7 +109,7 @@ Namespace and Task Queue that a Worker polls.
    connecting Clusters and creating replicated Namespaces.
 
 2. **Register Endpoints on every Cluster.** The
-   [Nexus Endpoint registry](/nexus/registry) is not replicated across Clusters.
+   [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
    Create the same Endpoints (same target Namespace and Task Queue) on each Cluster.
 
 3. **Give every Cluster a frontend HTTP address, set *and* advertised.** Each
@@ -113,7 +119,7 @@ Namespace and Task Queue that a Worker polls.
    on **every** Cluster, each with its own address. Callback routing resolves this
    address at delivery time. Without it, cross-Cluster callbacks fail with
    `HTTPAddress not configured for cluster: <name>`. The `operator cluster upsert`
-   command does not set `httpAddress`, so configure it explicitly and re-run
+   command doesn't set `httpAddress`, so configure it explicitly and re-run
    `upsert` after changing it.
 
    ```yaml
@@ -129,9 +135,9 @@ Namespace and Task Queue that a Worker polls.
          httpAddress: "cluster-a-host:7243"   # advertised to peers, required
    ```
 
-4. **Enable auto-forwarding** (per Namespace) so a request that lands on a standby
-   Cluster forwards to the active one, with the frontend `dcRedirectionPolicy` set
-   to allow redirection (for example, `all-apis-forwarding`).
+4. **Enable automatic forwarding** (per Namespace) so a request that lands on a
+   standby Cluster forwards to the active one, with the frontend
+   `dcRedirectionPolicy` set to allow redirection (for example, `all-apis-forwarding`).
 
    ```yaml
    system.enableNamespaceNotActiveAutoForwarding:
