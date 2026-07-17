@@ -157,10 +157,10 @@ sequenceDiagram
 
 Callbacks are delivered to the caller Namespace's active Cluster, re-resolved on each attempt.
 
-:::warning Abrupt region loss
+:::note Abrupt region loss
 
-Replication is asynchronous, so any state not replicated before the loss is lost.
-A Namespace still active on the lost Cluster stays stuck until it's failed over to
-a surviving Cluster.
+Replication is asynchronous, so state not replicated before the loss is lost. A
+Namespace still active on the lost Cluster resumes once it's failed over to a
+surviving Cluster.
 
 :::
