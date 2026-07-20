@@ -83,7 +83,6 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
-  SdkLogos: "strip-block",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
