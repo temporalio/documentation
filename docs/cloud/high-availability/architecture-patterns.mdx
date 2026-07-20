@@ -26,16 +26,6 @@ keywords:
   - temporal cloud
 ---
 
-<style>{`
-  .docusaurus-mermaid-container .edgeLabel,
-  .docusaurus-mermaid-container .edgeLabel p,
-  .docusaurus-mermaid-container .edgeLabel rect,
-  .docusaurus-mermaid-container .edgeLabel .labelBkg {
-    background-color: var(--ifm-background-color) !important;
-    fill: var(--ifm-background-color) !important;
-  }
-`}</style>
-
 When a cloud outage strikes, a Temporal Cloud Namespace with [High Availability](/cloud/high-availability) fails over to another region automatically, providing high availability and disaster recovery for your most important Workflows. But Workers, Workflow starters, Codec Servers, databases, network load balancers, and other external systems that touch your Workflows each need their own failover story.
 
 In a real outage, your [recovery time](/cloud/rpo-rto) depends on your **Worker deployment pattern**: where Worker fleets run, how they failover, and which region (or regions) processes Workflows at each step. This page describes the Active/Passive, Active/Hot-Passive, and Active/Active patterns for deploying Workers and the other systems in your cloud architecture to achieve your business goals for high availability and disaster recovery (HA/DR).
@@ -52,12 +42,11 @@ To keep your Workflows running during a cloud outage, these components need to f
 - **Datastores** — databases, queues, and any other systems that Activities read and write.
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef app fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef env fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef app stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef env stroke-width:1.5px;
     subgraph WFENV["<b>Application environment</b>"]
       WFW["<b>Workers</b>"]:::app
       WFCL["<b>Workflow starters / Clients</b>"]:::app
@@ -90,13 +79,12 @@ They trade off **recovery time** after an outage, **cost during normal operation
 ---
 title: Active/Passive
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef empty fill:transparent,stroke:#9aa4b2,stroke-width:1px,stroke-dasharray:4 3,color:#9aa4b2;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef empty stroke-width:1px,stroke-dasharray:4 3;
+    classDef region stroke-width:1.5px;
+    classDef pool stroke-width:1px;
     subgraph ICPRIM["<b>Primary</b>"]
       subgraph ICWP["Worker Pool"]
         ICW1["<b>Worker</b>"]:::worker
@@ -122,13 +110,12 @@ flowchart LR
 ---
 title: Active/Hot-Passive
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef worker stroke-width:1px;
+    classDef standby stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef region stroke-width:1.5px;
+    classDef pool stroke-width:1px;
     subgraph IHPRIM["<b>Primary</b>"]
       subgraph IHWP["Worker Pool"]
         IHW1["<b>Worker</b><br/>Active"]:::worker
@@ -156,12 +143,11 @@ flowchart LR
 ---
 title: Active/Active
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef region stroke-width:1.5px;
+    classDef pool stroke-width:1px;
     subgraph IAPRIM["<b>Primary</b>"]
       subgraph IAWP["Worker Pool"]
         IAW1["<b>Worker</b><br/>Active"]:::worker
@@ -214,13 +200,12 @@ Workers run in only one region at a time. The secondary region stays empty until
 ---
 title: Normal operation
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef empty fill:transparent,stroke:#9aa4b2,stroke-width:1px,stroke-dasharray:4 3,color:#9aa4b2;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef empty stroke-width:1px,stroke-dasharray:4 3;
+    classDef region stroke-width:1.5px;
+    classDef pool stroke-width:1px;
     subgraph CPRIM["<b>Primary</b>"]
       subgraph CWP["Worker Pool"]
         CW1["<b>Worker</b>"]:::worker
@@ -246,15 +231,14 @@ flowchart LR
 ---
 title: After failover
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph FPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef down stroke-width:1px,stroke-dasharray:3 3;
+    classDef region stroke-width:1.5px;
+    classDef regiondown stroke-width:1.5px;
+    classDef pool stroke-width:1px;
+    subgraph FPRIM["<b>Primary</b> <span class='dp-outage-text'>(outage)</span>"]
       subgraph FPP["Worker Pool"]
         FPW1["Unavailable"]:::down
       end
@@ -318,7 +302,6 @@ Keep these in mind when setting up Active/Passive:
    - **Do you need to enforce single-region processing?** This pattern relies on the operator to keep Workers in one region. To have Temporal enforce single-region processing instead, use the [Active/Hot-Passive](#active-hot) pattern.
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':30,'curve':'basis'}}}%%
 flowchart LR
     FS1["Detect<br/>outage"]
     FS3["Failover<br/>DBs / queues"]
@@ -333,12 +316,11 @@ flowchart LR
    - **Rationale:** If a Temporal Cloud incident requires the Namespace to fail over while the rest of the primary region is healthy, the Workers in the primary region can still connect through the Namespace Endpoint and process Workflows. If the Workers use the Regional Endpoint for the primary region, they will not reliably connect to the Namespace during a Temporal Cloud incident in the primary region.
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     NEW["<b>Worker</b>"]:::worker
     NEEP["<b>Namespace Endpoint</b>"]:::endpoint
     NEW --> NEEP
@@ -358,12 +340,11 @@ flowchart LR
    - For the full setup of Regional Endpoints, VPC Endpoints, and cross-region routing, see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph CRCPRIM["<b>Primary Region</b>"]
       CRCPW["<b>Worker</b>"]:::worker
       CRCPEP["<b>VPC Endpoint</b>"]:::endpoint
@@ -395,13 +376,12 @@ A full Worker fleet runs in both regions, but only the primary region's fleet pr
 ---
 title: Normal operation
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef worker stroke-width:1px;
+    classDef standby stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef region stroke-width:1.5px;
+    classDef pool stroke-width:1px;
     subgraph HPRIM["<b>Primary</b>"]
       subgraph HWP["Worker Pool"]
         HW1["<b>Worker</b><br/>Active"]:::worker
@@ -429,15 +409,14 @@ flowchart LR
 ---
 title: After failover
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph HFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef down stroke-width:1px,stroke-dasharray:3 3;
+    classDef region stroke-width:1.5px;
+    classDef regiondown stroke-width:1.5px;
+    classDef pool stroke-width:1px;
+    subgraph HFPRIM["<b>Primary</b> <span class='dp-outage-text'>(outage)</span>"]
       subgraph HFPP["Worker Pool"]
         HFPW1["Unavailable"]:::down
       end
@@ -496,13 +475,12 @@ Keep this in mind when setting up Active/Hot-Passive:
    - Connect each Worker fleet through its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) and [disable forwarding](/cloud/high-availability/enable#change-forwarding-behavior) for Worker polls. Using the Namespace Endpoint by mistake routes the standby Workers to the active region and defeats the pattern.
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef standby fill:#9aa4b224,stroke:#9aa4b2,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef standby stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph HEPRIM["<b>Primary</b>"]
       HEPW["<b>Workers</b><br/>Active"]:::worker
       HEPEP["<b>Regional / VPC Endpoint</b>"]:::endpoint
@@ -529,12 +507,11 @@ Worker fleets run in as many regions as you want, all processing Workflows again
 ---
 title: Normal operation
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef region stroke-width:1.5px;
+    classDef pool stroke-width:1px;
     subgraph APRIM["<b>Primary</b>"]
       subgraph AWP["Worker Pool"]
         AW1["<b>Worker</b><br/>Active"]:::worker
@@ -560,16 +537,15 @@ flowchart LR
 ---
 title: After failover
 ---
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef workerhollow fill:transparent,stroke:#7C3AED,stroke-width:1px,stroke-dasharray:4 3;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef down fill:#ED360E14,stroke:#ED360E,stroke-width:1px,stroke-dasharray:3 3,color:#ED360E;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
-    classDef regiondown fill:#ED360E0D,stroke:#ED360E,stroke-width:1.5px;
-    classDef pool fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    subgraph AFPRIM["<b>Primary</b> <span style='color:#ED360E'>(outage)</span>"]
+    classDef worker stroke-width:1px;
+    classDef workerhollow stroke-width:1px,stroke-dasharray:4 3;
+    classDef ns stroke-width:1px;
+    classDef down stroke-width:1px,stroke-dasharray:3 3;
+    classDef region stroke-width:1.5px;
+    classDef regiondown stroke-width:1.5px;
+    classDef pool stroke-width:1px;
+    subgraph AFPRIM["<b>Primary</b> <span class='dp-outage-text'>(outage)</span>"]
       subgraph AFPP["Worker Pool"]
         AFPW1["Unavailable"]:::down
       end
@@ -631,12 +607,11 @@ Keep these in mind when setting up Active/Active:
    - Connecting each fleet to its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) removes the DNS step from the connection path, which can shave time off failover for the lowest possible RTO. The tradeoffs: more setup, and a real risk of misconfiguration (such as routing a fleet to the wrong region). Reach for it only when you absolutely need low recovery time. With Regional Endpoints, keep forwarding enabled so passive-region polls still reach the active replica.
 
 ```mermaid
-%%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif','edgeLabelBackground':'transparent'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph REPR1["<b>Region 1</b>"]
       REPW1["<b>Workers</b>"]:::worker
       REPE1["<b>Regional Endpoint</b>"]:::endpoint

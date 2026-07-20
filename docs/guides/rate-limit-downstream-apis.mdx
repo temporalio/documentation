@@ -244,9 +244,12 @@ flowchart TB
     TWWP -.->|Respects<br/>60/min limit| TWAPI
     AIWP -.->|Respects<br/>60/min limit| AIAPI
 
-    style SGTQ fill:#e1f5ff
-    style TWTQ fill:#fff4e1
-    style AITQ fill:#f3e5f5
+    classDef blue stroke-width:1px
+    classDef amber stroke-width:1px
+    classDef purple stroke-width:1px
+    class SGTQ blue
+    class TWTQ amber
+    class AITQ purple
 ```
 
 ## Implementation plan
