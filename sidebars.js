@@ -746,6 +746,7 @@ module.exports = {
               },
               items: [
                 'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/langsmith',
                 'develop/typescript/integrations/openai-agents',
               ],
             },
@@ -1196,6 +1197,7 @@ module.exports = {
           },
           items: [
             'cloud/high-availability/enable',
+            'cloud/high-availability/architecture-patterns',
             'cloud/high-availability/monitoring',
             {
               type: 'category',
@@ -1523,6 +1525,7 @@ module.exports = {
                 'encyclopedia/workflow/workflow-execution/timers-delays',
               ],
             },
+            'encyclopedia/workflow/workflow-pause',
             'encyclopedia/workflow/dynamic-handler',
             'encyclopedia/workflow/workflow-schedule',
             'encyclopedia/workflow/cron-job',
@@ -1723,6 +1726,25 @@ module.exports = {
       collapsed: true,
       items: [
         'develop/standalone-activities-interactive-demo',
+      ],
+    },    {
+      type: 'category',
+      label: 'Guides',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
+      items: [
+        'guides/entity-pattern-loyalty-points',
+        'guides/saga-pattern',
+        'guides/route-specialized-workloads',
+        'guides/worker-execution-affinity',
+        'guides/temporary-rate-limit-increases',
+        'guides/reliable-document-approvals',
+        'guides/rate-limit-downstream-apis',
+        'guides/durable-gaming-sessions',
+        'guides/lock-shared-resources',
       ],
     },
     'integrations',

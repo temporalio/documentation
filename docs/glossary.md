@@ -805,6 +805,10 @@ are executed with the same Worker without requiring you to manually specify Task
 In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a
 Workflow Execution.
 
+#### [Workflow cache](/workflow-execution#workflow-cache)
+
+An in-memory cache on a Worker that holds the state of Workflow Executions it has processed so later Workflow Tasks can avoid a full Event History replay. Used with [Sticky Execution](/sticky-execution). See also [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning).
+
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 #### [Workflow Definition](/workflow-definition)
