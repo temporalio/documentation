@@ -6,7 +6,6 @@ export * from './Quickstart'
 export * from './ToolTipTerm';
 
 export { default as HomePageHero } from './elements/HomePageHero';
-export { SdkLogos } from './elements/SdkLogos';
 export { SdkLogosAsBlocks } from './elements/SdkLogosAsBlocks';
 export { SdkGuideLinks } from './elements/SdkGuideLinks';
 export { default as PhotoCarousel } from './elements/PhotoCarousel';
