@@ -53,3 +53,4 @@ test-results/*
 screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
 ai-cookbook
+scripts/mermaid-compare/*
