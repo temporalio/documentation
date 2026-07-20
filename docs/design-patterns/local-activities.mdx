@@ -22,7 +22,7 @@ sequenceDiagram
     participant S as Temporal Server
 
     rect rgb(230, 235, 250)
-        Note over W,S: Regular Activity — server round-trips on each call
+        Note over W,S: Regular Activity —<br/>server round-trips on each call
         W->>S: Schedule ActivityTask
         S-->>W: Dispatch ActivityTask
         W->>W: Execute activity
@@ -31,7 +31,7 @@ sequenceDiagram
     end
 
     rect rgb(220, 245, 225)
-        Note over W,S: Local Activity — runs in-process, zero server calls
+        Note over W,S: Local Activity —<br/>runs in-process, zero server calls
         W->>W: Execute activity function directly
         Note over W: Result bundled in WorkflowTask completion
     end

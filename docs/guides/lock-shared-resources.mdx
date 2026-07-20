@@ -85,7 +85,29 @@ To complete the implementation plan, you will need:
 ## Architecture diagram
 
 The following diagram shows the acquire and release flow when two Workflows compete for slots in a 2-slot pool. The first attempt to get a slot collides with an already held slot; the second succeeds.
-![Sequence Diagram of Distributed Lock Pattern](assets/lock-shared-resources/distributed-lock-1.svg)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor App as Application Workflow
+    participant Sem as Semaphore (helper)
+    participant Permit as PermitSlotWorkflow (child)
+    participant Temporal as Temporal Service
+
+    App->>Sem: acquire(lease=10m, backoff=5s)
+    Sem->>Temporal: start_child_workflow(id="permit:gpu-pool:2")
+    Temporal-->>Sem: WorkflowAlreadyStartedError (slot held)
+    Sem->>Temporal: start_child_workflow(id="permit:gpu-pool:3")
+    Temporal-->>Sem: ChildWorkflowHandle (pinned to this run)
+    Temporal->>Permit: dispatch run(PermitSlotInput)
+    Sem-->>App: yield "3"
+    Note over App: execute gated work
+    App->>Sem: release on context exit
+    Sem->>Temporal: signal "release" on the child handle
+    Temporal->>Permit: deliver release Signal
+    Permit-->>Temporal: complete ("released")
+    Note over Permit,Temporal: slot ID becomes reusable
+```
 
 1. The application Workflow calls `Semaphore.acquire`. The `Semaphore` shuffles slot names using `workflow.random()` and attempts to acquire a slot.
 2. The first attempt to acquire a slot starts a child Workflow with ID `permit:gpu-pool:2`. Temporal already has a running Workflow at that ID and rejects the start with `WorkflowAlreadyStartedError`.

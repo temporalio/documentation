@@ -2,6 +2,7 @@
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
+const mermaidTheme = require('./src/constants/mermaidTheme');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -223,6 +224,15 @@ module.exports = async function createConfigAsync() {
             'type',
             'sdk_language',
           ],
+        },
+      },
+      mermaid: {
+        theme: mermaidTheme.theme,
+        options: {
+          themeVariables: { fontFamily: mermaidTheme.fontFamily },
+          flowchart: mermaidTheme.flowchart,
+          sequence: mermaidTheme.sequence,
+          state: mermaidTheme.state,
         },
       },
     },
