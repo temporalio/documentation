@@ -11,6 +11,7 @@ import { MDXProvider } from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
 import clsx from 'clsx';
 import { usePluginData } from '@docusaurus/useGlobalData';
+import DocItemStructuredData from '@site/src/theme/DocItem/StructuredData';
 
 import styles from './CookbookDocItem.module.css';
 
@@ -250,6 +251,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
   return (
     <HtmlClassNameProvider className="cookbook--centered">
       <DocItemMetadata />
+      <DocItemStructuredData />
 
       <Head>
         <title>{title}</title>
