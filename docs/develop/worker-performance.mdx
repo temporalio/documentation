@@ -344,7 +344,7 @@ worker = Temporalio::Worker.new(
 
 ### Cache options (Java SDK) {/* #cache-options */}
 
-A Workflow Cache is created and shared between all Workers on a single host.
+A [Workflow Cache](/workflow-execution#workflow-cache) is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
 These options are defined on `WorkerFactoryOptions`:
 
@@ -371,7 +371,7 @@ These properties should always be true for a Worker's configuration.
 Perform this sanity check after the adjustments to Worker settings.
 
 1. `workflowCacheSize` should be ≤ `maxWorkflowThreadCount`. Each Workflow has at least one Workflow thread.
-2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It's recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
+2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. It's recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`. This is because having more Worker slots than the Workflow cache size will lead to resource allocation issues between executors and cause unpredictable delays.
 3. `maxConcurrentWorkflowTaskPollers` should be significantly ≤ `maxConcurrentWorkflowTaskExecutionSize`. And `maxConcurrentActivityTaskPollers` should be significantly ≤ `maxConcurrentActivityExecutionSize`. The number of pollers should always be lower than the number of executors.
 
 ## Worker runtime performance tuning {/* #worker-performance-tuning */}
