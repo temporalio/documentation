@@ -339,6 +339,94 @@ Related read:
 
 - [How to secure a Temporal Service](/security)
 
+### What is a TokenProvider Plugin? {/* #token-provider */}
+
+The Token Provider component is a pluggable component that attaches an authentication token to outbound cross-cluster RPCs.
+Where the `ClaimMapper` and `Authorizer` plugins protect the receiving end of a request, `TokenProvider` protects the sending end.
+When a Temporal Service replicates Workflows, Schedules, or Namespaces to a peer cluster, `TokenProvider` supplies the bearer token that the peer's `ClaimMapper` validates.
+
+A typical approach pairs a JWT-emitting `TokenProvider` on the sender with the [default JWT `ClaimMapper`](#default-jwt-claimmapper) on the receiver.
+
+`TokenProvider` is a single-method interface:
+
+```go
+type TokenProvider interface {
+    GetToken(ctx context.Context, rpcAddress string) (token string, err error)
+}
+```
+
+`GetToken` is called on every outbound cross-cluster RPC.
+`rpcAddress` is the receiver cluster's `host:port`. Providers commonly use this value as the JWT's `aud` claim to scope each token to a specific receiver.
+
+The Temporal Service does not cache the returned token.
+Implementations are responsible for caching and refresh.
+A provider that fetches tokens from an external service must cache internally, otherwise every outbound RPC triggers a network round-trip to that service.
+OAuth 2.0 client libraries typically handle this caching, and a `TokenProvider` can often be a thin wrapper around one.
+
+#### Required claims on the receiver
+
+Cross-cluster RPCs target the receiver's `AdminService`, which the default `Authorizer` only admits with `Claims{System: RoleAdmin}`.
+Tokens carrying lower roles are rejected.
+
+With the default JWT `ClaimMapper`, the token must carry a `permissions` claim with the entry `temporal-system:admin`.
+
+```
+{
+   "permissions":[
+      "temporal-system:admin"
+   ]
+}
+```
+
+A custom `ClaimMapper` can recognize any JWT shape, such as an OAuth-style `scp` scope or a custom claim, and translate it into the same `Claims{System: RoleAdmin}` result.
+
+#### Stream lifecycle
+
+Cross-cluster replication runs over long-lived gRPC streams.
+The token is attached when a stream is opened, and the receiver's `ClaimMapper` and `Authorizer` evaluate it at that point.
+Already-open streams are not re-checked when the token later expires.
+Rotation and revocation therefore only take effect when a stream is reestablished, for example after a reconnect or a process restart.
+
+#### Transport security
+
+`auth.TokenCredentials` requires transport security, so the gRPC runtime refuses to attach the credential to a plaintext dial.
+Configuring `WithTokenProvider` therefore requires also configuring TLS for the destination, either through [`global.tls.remoteClusters`](/references/configuration) in the YAML config or by passing a custom provider through [`temporal.WithTLSConfigFactory`](/references/server-options#withtlsconfigfactory).
+
+:::note
+
+If `WithTokenProvider` is set but no remote-cluster TLS source is configured, the Temporal Service fails to boot with a directed error message.
+This catches the misconfiguration at startup rather than on the first cross-cluster RPC.
+
+:::
+
+#### Fail-closed mode
+
+Set `global.authorization.remoteClusterAuth.require: true` to require a non-empty token on every outbound remote-cluster RPC.
+When `require` is `true`, the Temporal Service refuses to start if no `TokenProvider` is configured, and the credential returns `Unauthenticated` rather than sending an empty `authorization` header.
+
+#### Configuration
+
+Configure your `TokenProvider` with the [`temporal.WithTokenProvider`](/references/server-options#withtokenprovider) server option.
+Pair it with the receiver-side plugins so peers validate what the sender attaches.
+
+```go
+temporalServer, err := temporal.NewServer(
+    temporal.WithTokenProvider(myTokenProvider),
+    temporal.WithAuthorizer(authorization.NewDefaultAuthorizer()),
+    temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+        logger := getYourLogger()
+        return authorization.NewDefaultJWTClaimMapper(
+            authorization.NewDefaultTokenKeyProvider(cfg, logger),
+            cfg,
+            logger,
+        )
+    }),
+)
+```
+
+When `TokenProvider` is not configured, outbound cross-cluster RPCs carry no `authorization` header.
+This is the default for deployments that don't replicate to peers, or that rely on transport-level (mTLS) authentication alone.
+
 ## Data Converter {/* #data-converter */}
 
 Each Temporal SDK provides a [Data Converter](/dataconversion) that can be customized with a custom [Payload Codec](/payload-codec) to encode and secure your data.
