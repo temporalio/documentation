@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import SdkSvg from './SdkSvgs/SdkSvg';
+import SdkSvg from '../../SdkSvgs/SdkSvg';
 import styles from './sdk-guide-links.module.css';
 
 const DEFAULT_SDKS = [

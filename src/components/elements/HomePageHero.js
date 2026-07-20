@@ -4,7 +4,7 @@
 // change that copy here, update the handler too. See MARKDOWN_PIPELINE.md.
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import { SdkLogosAsBlocks } from './SdkLogosAsBlocks';
+import { SdkLogosAsBlocks } from './Sdk';
 import '../../css/homepage-hero.css';
 
 const Icon = ({ src, alt, className, width, height }) => {
