@@ -53,7 +53,7 @@ scales it back to zero when the invocation window ends.
 - If your Namespace uses mTLS, the client certificate and private key you use to connect. Save them to local files (for
   example, `client.pem` and `client.key`). You reference these for both the Worker and the CLI.
 
-## 1. Configure CLI access to your Namespace {/* #configure-cli */}
+## Configure CLI access to your Namespace {/* #configure-cli */}
 
 The commands in this guide connect to your Namespace with mTLS. Store the connection details in a
 [CLI configuration profile](/develop/environment-configuration) so you don't repeat them on every command:
@@ -89,12 +89,12 @@ temporal config get --profile serverless
 temporal workflow list --profile serverless --limit 1
 ```
 
-## 2. Deploy the Worker to a Cloud Run worker pool {/* #deploy-worker-pool */}
+## Deploy the Worker to a Cloud Run worker pool {/* #deploy-worker-pool */}
 
 Package your Worker as a container image, store its TLS credentials in Secret Manager, and deploy it to a Cloud Run
 worker pool scaled to zero instances.
 
-### i. Build the Worker container image {/* #build-worker-image */}
+### Build the Worker container image {/* #build-worker-image */}
 
 Build a container image that runs a Temporal Worker and push it to a registry Cloud Run can pull from, such as
 [Artifact Registry](https://cloud.google.com/artifact-registry/docs). The Worker must:
@@ -108,7 +108,7 @@ For guidance on writing a Worker and setting these options, see the SDK Worker d
 [Go](/develop/go/workers/run-worker-process), [Python](/develop/python/workers/run-worker-process), or
 [TypeScript](/develop/typescript/workers/run-worker-process).
 
-### ii. Store the TLS credentials in Secret Manager {/* #store-tls-secrets */}
+### Store the TLS credentials in Secret Manager {/* #store-tls-secrets */}
 
 Create Secret Manager secrets for the client certificate and key. The worker pool manifest mounts these into the
 container:
@@ -129,7 +129,7 @@ gcloud secrets add-iam-policy-binding worker-tls-key \
   --role="roles/secretmanager.secretAccessor"
 ```
 
-### iii. Create and configure the worker pool {/* #create-worker-pool */}
+### Create and configure the worker pool {/* #create-worker-pool */}
 
 Create the worker pool in the GCP Console under **Cloud Run** > **Worker Pools** > **Deploy worker pool**, or apply the
 manifest below. Set the manual instance count to `0`. Temporal scales the pool up when Tasks arrive and back to zero when
@@ -216,7 +216,7 @@ curl -s -X PUT \
   -d @"$POOL.json"
 ```
 
-### iv. Verify the worker pool {/* #verify-worker-pool */}
+### Verify the worker pool {/* #verify-worker-pool */}
 
 Confirm the worker pool exists and its configuration matches the manifest:
 
@@ -224,7 +224,7 @@ Confirm the worker pool exists and its configuration matches the manifest:
 gcloud run worker-pools describe <your-worker-pool-name> --region us-central1 --format export
 ```
 
-## 3. Create the Worker Deployment {/* #create-worker-deployment */}
+## Create the Worker Deployment {/* #create-worker-deployment */}
 
 Create the [Worker Deployment](/worker-versioning#deployments) that the version attaches to. The name must match the
 deployment name your Worker registers with in [Step 2](#deploy-worker-pool).
@@ -235,7 +235,7 @@ temporal worker deployment create \
   --name <your-worker-deployment-name>
 ```
 
-## 4. Create a Worker Deployment Version {/* #create-worker-deployment-version */}
+## Create a Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute provider
 that points at your Cloud Run worker pool. The compute configuration tells Temporal how to invoke your Worker: the GCP
@@ -288,7 +288,7 @@ temporal worker deployment create-version \
 </TabItem>
 </Tabs>
 
-## 5. Set version as current {/* #set-current-version */}
+## Set version as current {/* #set-current-version */}
 
 If you created the version through the Temporal UI, the version is already current and you can skip this step.
 
@@ -302,7 +302,7 @@ temporal worker deployment set-current-version \
   --build-id 1.0
 ```
 
-## 6. Verify deployment {/* #verify-deployment */}
+## Verify deployment {/* #verify-deployment */}
 
 Start a Workflow on the same Task Queue to confirm that Temporal invokes your Cloud Run Worker.
 
