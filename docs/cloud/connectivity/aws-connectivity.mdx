@@ -23,16 +23,6 @@ keywords:
 
 import { CaptionedImage, JsonTable } from '@site/src/components';
 
-<style>{`
-  .docusaurus-mermaid-container .edgeLabel,
-  .docusaurus-mermaid-container .edgeLabel p,
-  .docusaurus-mermaid-container .edgeLabel rect,
-  .docusaurus-mermaid-container .edgeLabel .labelBkg {
-    background-color: var(--ifm-background-color) !important;
-    fill: var(--ifm-background-color) !important;
-  }
-`}</style>
-
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
 This one-way connection means Temporal cannot establish a connection back to your service.
@@ -43,9 +33,17 @@ After creating the PrivateLink endpoint, configure your clients to use it throug
 
 ## Requirements
 
-Your AWS PrivateLink endpoint must be in the same region as your Temporal Cloud namespace. If using [replication for High Availability](/cloud/high-availability), the PL connection must be in the same region as one of the replicas.
+* Your AWS PrivateLink (PL) endpoint must be in the same region as your Temporal Cloud Namespace or one of its [High Availability](/cloud/high-availability) replicas.
+  See [cross-region PrivateLink connectivity](#cross-region-privatelink) to access the Namespace from a different region.
+* Your Private DNS must be configured to direct Worker / Client traffic to your VPC Endpoint, as described below.
+* If the Worker / Client does not use the Namespace Endpoint as the connection string in its code, it may need to set the `server_name` config to the Namespace Endpoint string, as described below.
 
-AWS Cross Region endpoints are not supported.
+### Cross-region PrivateLink Connectivity {/* #cross-region-privatelink */}
+
+Temporal Cloud does **not** support [cross-region connectivity for AWS PrivateLink](https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-cross-region-connectivity-for-aws-privatelink/) out of the box. However, if you need to reach Temporal Cloud privately from a different region than your Namespace, you can route traffic to your VPC Endpoint in the Namespace's region using [AWS's native cross-region networking features](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/centralized-access-to-vpc-private-endpoints.html#cross-region-endpoint-access). 
+
+
+When using High Availability on Temporal Cloud, it's best practice to have two VPC Endpoints, one in each of the Namespace's regions, to ensure at least one VPC Endpoint is accessible during a regional outage.
 
 ## Creating an AWS PrivateLink connection
 
@@ -68,7 +66,7 @@ Individual Namespaces do not use separate services.
 
 :::
 
-<JsonTable filename="/json/privatelink_aws.json" />
+<JsonTable filename="/json/privatelink_services_aws.json" />
 
 7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
 
@@ -118,14 +116,14 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Endpoint type      | PHZ domain format                     | Example                                 | Use when |
-| ------------------ | ------------------------------------- | --------------------------------------- | -------- |
-| Namespace endpoint | `<namespace-id>.tmprl.cloud`          | `payments.abcde.tmprl.cloud`            | **Single-region Namespaces only.** Simplest pattern — one record per Namespace. Do not use this for [High Availability](/cloud/high-availability/ha-connectivity) Namespaces: the override short-circuits Temporal's regional CNAME chain and failover stops working. |
-| Regional endpoint  | `<cloud>-<region>.region.tmprl.cloud` | `aws-ap-northeast-2.region.tmprl.cloud` | **Single-region or HA Namespaces.** One record per Temporal Cloud region, reused by every Namespace active or replicated in that region. **Required for HA Namespaces** — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity). |
+| Endpoint type      | PHZ domain format                  | Example                              | Use when |
+| ------------------ | ---------------------------------- | ------------------------------------ | -------- |
+| Namespace endpoint | `<namespace-id>.tmprl.cloud`       | `payments.abcde.tmprl.cloud`         | **Single-region Namespaces.** Simplest pattern — one record per Namespace. For [High Availability](/cloud/high-availability/ha-connectivity) Namespaces, overriding the Namespace Endpoint is nuanced — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity). |
+| Regional endpoint  | `<region>.<cloud>.api.temporal.io` | `ap-northeast-2.aws.api.temporal.io` | You want to pin a client to a specific Temporal Cloud region. |
 
-:::warning HA Namespaces require the regional override
+:::caution HA Namespaces need a more nuanced PHZ setup
 
-For Namespaces with [High Availability](/cloud/high-availability/ha-connectivity), use the regional-endpoint PHZ pattern only. The Namespace-endpoint override is read out of the PHZ before public DNS, so the regional CNAME that Temporal Cloud rewrites on failover is never followed and Workers stay pinned to the old region. If you're switching an existing single-region private Namespace to HA, see [How to enable HA on a Namespace using Private Connectivity](/cloud/high-availability/ha-connectivity#how-to-enable-ha-on-a-namespace-using-private-connectivity) for the PHZ migration steps.
+For Namespaces with [High Availability](/cloud/high-availability/ha-connectivity), the PHZ pattern to use depends on how you want Workers to reach the active region. Overriding the Namespace Endpoint directly is read out of the PHZ before public DNS, so the regional CNAME that Temporal Cloud rewrites on failover isn't followed — which is usually not what you want, but can be the right choice in some topologies (for example, multi-cloud HA with one region per cloud, where Workers on each cloud should always reach their local region). Because the trade-offs depend on your setup, see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) before choosing a pattern.
 
 :::
 
@@ -229,10 +227,10 @@ title: Direct VPCE targeting (single region)
 ---
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph SREG["<b>Your VPC</b>"]
       SW["<b>Worker(s)</b><br/>Server name:<br/>my-namespace.my-account.tmprl.cloud"]:::worker
       SVPCE["<b>VPC Endpoint</b><br/>vpce-…"]:::endpoint
@@ -265,10 +263,10 @@ title: Direct VPCE targeting (High Availability)
 ---
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':55,'rankSpacing':70,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart TD
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph HSEC["<b>us-west-2</b> (passive)"]
       HWB["<b>Worker(s)</b><br/>Server name<br/><span style='font-family:mono'>namespace.<br/>acct.<br/>tmprl.cloud</span>"]:::worker
       HVPB["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>us-west-2"]:::endpoint
