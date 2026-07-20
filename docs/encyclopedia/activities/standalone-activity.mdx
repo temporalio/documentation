@@ -107,6 +107,9 @@ failed, etc.) - not the number of queued tasks.
 The Public Preview of Standalone Activities has some known limitations:
 
 - `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
+- Pause, Unpause, Reset, and Update Options are available through the CLI, gRPC API, and the UI. The UI shows these
+  controls when connected to Temporal Server v1.32.0 or later.
+- Visibility Query batch operations don't target Standalone Activities.
 
 ## Temporal CLI support
 
@@ -134,6 +137,9 @@ temporal version 1.7.0 (Server 1.31.0, UI 2.49.1)
 The `temporal activity` subcommand supports Standalone Activities with commands including: `start`,
 `execute`, `result`, `list`, `count`, `describe`, `cancel`, `pause`, `unpause`, `reset`,
 `update-options`, and `terminate`.
+
+For Pause, Unpause, Reset, and Update Options, provide `--activity-id` and omit `--workflow-id`. Add `--run-id` to target
+a specific Activity Run; otherwise, the command targets the latest run.
 
 For details about Pause, Unpause, Reset, and Update Options, see
 [Standalone Activity operator commands](/activity-operations#standalone-activity-operator-commands).
