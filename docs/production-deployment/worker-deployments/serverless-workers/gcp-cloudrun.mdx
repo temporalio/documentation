@@ -40,7 +40,7 @@ scales it back to zero when the invocation window ends.
 
 - A Temporal Cloud account with a GCP-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
   Namespace's cloud provider must match the serverless compute provider.
-- Every Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), or the Worker must set a
+- Every Workflow has to declare a [versioning behavior](/worker-versioning#versioning-behaviors), or the Worker needs to set a
   default versioning behavior.
 - A GCP project with the Cloud Run API enabled and permission to create Cloud Run worker pools, Secret Manager secrets,
   and service accounts.
@@ -70,12 +70,12 @@ temporal config --profile serverless set --prop tls.client_key_path \
   --value "/path/to/client.key"
 ```
 
-This writes the following profile to your Temporal CLI configuration file, which you can also edit directly:
+This writes the following profile to your Temporal CLI configuration file, which you can also edit directly in the TOML:
 
 ```toml
 [profile.serverless]
 address = "<your-namespace>.<account>.tmprl.cloud:7233"
-namespace = "<your-namespace>"
+namespace = "<your-namespace>.<account>"
 
 [profile.serverless.tls]
 client_cert_path = "/path/to/client.pem"
@@ -97,16 +97,15 @@ worker pool scaled to zero instances.
 ### Build the Worker container image {/* #build-worker-image */}
 
 Build a container image that runs a Temporal Worker and push it to a registry Cloud Run can pull from, such as
-[Artifact Registry](https://cloud.google.com/artifact-registry/docs). The Worker must:
+[Artifact Registry](https://cloud.google.com/artifact-registry/docs). The Worker should:
 
 - Connect to your Namespace address with mTLS, using the certificate and key mounted into the container.
 - Register with the [Worker Deployment](/worker-versioning#deployments) name and Build ID you use in the steps below.
 - Set a [versioning behavior](/worker-versioning#versioning-behaviors) for every Workflow, or set a default versioning
   behavior of `Pinned` or `AutoUpgrade`.
 
-For guidance on writing a Worker and setting these options, see the SDK Worker documentation for
-[Go](/develop/go/workers/run-worker-process), [Python](/develop/python/workers/run-worker-process), or
-[TypeScript](/develop/typescript/workers/run-worker-process).
+For guidance on writing a Worker and setting these options, see the Worker documentation for
+your specific SDK.
 
 ### Store the TLS credentials in Secret Manager {/* #store-tls-secrets */}
 
@@ -132,10 +131,10 @@ gcloud secrets add-iam-policy-binding worker-tls-key \
 ### Create and configure the worker pool {/* #create-worker-pool */}
 
 Create the worker pool in the GCP Console under **Cloud Run** > **Worker Pools** > **Deploy worker pool**, or apply the
-manifest below. Set the manual instance count to `0`. Temporal scales the pool up when Tasks arrive and back to zero when
+manifest below. Set the manual instance count to `1`. Temporal scales the pool up when Tasks arrive and back to zero when
 the invocation window ends.
 
-Save the following manifest as `worker-pool.yaml` and replace the values marked with `# change-me`:
+Save the following manifest as `worker-pool-spec.yaml` and replace the values marked with `# replace`:
 
 - `metadata.name` — the worker pool name.
 - `metadata.namespace` — your GCP project number.
@@ -149,12 +148,12 @@ apiVersion: run.googleapis.com/v1
 kind: WorkerPool
 metadata:
   annotations:
-    run.googleapis.com/manualInstanceCount: '0'
+    run.googleapis.com/manualInstanceCount: '1'
     run.googleapis.com/scalingMode: manual
   labels:
     cloud.googleapis.com/location: us-central1
-  name: <your-worker-pool-name> # change-me
-  namespace: '<your-gcp-project-number>' # change-me
+  name: <your-worker-pool-name> # replace
+  namespace: '<your-gcp-project-number>' # replace
 spec:
   instanceSplits:
     - latestRevision: true
@@ -165,19 +164,20 @@ spec:
         run.googleapis.com/execution-environment: gen2
     spec:
       containerConcurrency: 0
-      serviceAccountName: <your-invocation-service-account>@<your-gcp-project>.iam.gserviceaccount.com # change-me
+      serviceAccountName: <your-invocation-service-account>@<your-gcp-project>.iam.gserviceaccount.com # replace
       containers:
-        - image: <your-worker-image> # change-me
+        - image: <your-worker-image> # replace
           name: worker-1
           args:
             - --server-address=<your-namespace>.<account>.tmprl.cloud:7233
-            - --namespace=<your-namespace>
+            - --namespace=<your-namespace>.<account>
             - --tls
             - --tls-cert-path=/etc/tls/cert/worker-tls-cert
             - --tls-key-path=/etc/tls/key/worker-tls-key
             - --default-versioning-behavior=pinned
-            - --deployment-name=<your-worker-deployment-name> # change-me
+            - --deployment-name=<your-worker-deployment-name> # replace
             - --deployment-build-id=1.0
+            - --run-id=<your-run-id> # replace
           resources:
             limits:
               cpu: '2'
@@ -207,7 +207,7 @@ Convert the manifest to JSON and apply it as a revision of the worker pool throu
 ```bash
 POOL=<your-worker-pool-name>   # must match metadata.name
 
-yq -o=json worker-pool.yaml > "$POOL.json"
+yq -o=json worker-pool-spec.yaml > "$POOL.json"
 
 curl -s -X PUT \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
@@ -227,7 +227,7 @@ gcloud run worker-pools describe <your-worker-pool-name> --region us-central1 --
 ## Create the Worker Deployment {/* #create-worker-deployment */}
 
 Create the [Worker Deployment](/worker-versioning#deployments) that the version attaches to. The name must match the
-deployment name your Worker registers with in [Step 2](#deploy-worker-pool).
+deployment name your Worker registers with in the earlier [Deploy the Worker to a Cloud Run worker pool](#deploy-worker-pool) section.
 
 ```bash
 temporal worker deployment create \
