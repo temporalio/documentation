@@ -129,15 +129,6 @@ target an external URL (`--target-url`), which is experimental and not covered h
    default via `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace
    dynamic config).
 
-   This covers the completion callback. Separately, if clients may connect to a
-   standby Cluster, set the server's
-   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so their
-   requests forward to the active Cluster: use `all-apis-forwarding` for all client
-   APIs, or `selected-apis-forwarding` for a fixed subset that includes
-   `StartNexusOperationExecution` (used to start a
-   [Standalone Nexus Operation](/standalone-nexus-operation)). If every client
-   already connects to the active Cluster, this is not required.
-
 ### What to expect on failover
 
 For a Nexus Operation started before a Cluster failover completes on the new active
