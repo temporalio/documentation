@@ -2,6 +2,7 @@
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
+const mermaidTheme = require('./src/constants/mermaidTheme');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -27,19 +28,6 @@ module.exports = async function createConfigAsync() {
         defaultMode: 'dark',
         disableSwitch: false,
         respectPrefersColorScheme: true,
-        // switchConfig: {
-        //   darkIcon: "🌙",
-        //   darkIconStyle: {
-        //     content: `url(/img/assets/moon.svg)`,
-        //     transform: "scale(2)",
-        //     margin: "0 0.2rem",
-        //   },
-        //   lightIcon: "\u{1F602}",
-        //   lightIconStyle: {
-        //     content: `url(/img/assets/sun.svg)`,
-        //     transform: "scale(2)",
-        //   },
-        // },
       },
       metadata: [
         { name: 'robots', content: 'follow, index' },
@@ -238,6 +226,15 @@ module.exports = async function createConfigAsync() {
           ],
         },
       },
+      mermaid: {
+        theme: mermaidTheme.theme,
+        options: {
+          themeVariables: { fontFamily: mermaidTheme.fontFamily },
+          flowchart: mermaidTheme.flowchart,
+          sequence: mermaidTheme.sequence,
+          state: mermaidTheme.state,
+        },
+      },
     },
     presets: [
       [
@@ -253,7 +250,7 @@ module.exports = async function createConfigAsync() {
               '**/clusters/**',
               '**/ai-cookbook/**',
             ], // partials (underscore-prefixed) + context content we don't render
-            editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
+            editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
              */

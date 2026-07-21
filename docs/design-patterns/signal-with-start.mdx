@@ -38,8 +38,7 @@ sequenceDiagram
         activate W
         T->>W: Deliver Signal
         W->>W: Process Signal
-    end
-    alt Workflow already running
+    else Workflow already running
         T->>W: Deliver Signal only (no start)
         W->>W: Process Signal
     end
