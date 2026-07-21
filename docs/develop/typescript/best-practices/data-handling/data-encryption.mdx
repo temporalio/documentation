@@ -1,0 +1,161 @@
+---
+id: data-encryption
+title: Payload encryption - TypeScript SDK
+sidebar_label: Payload encryption
+toc_max_heading_level: 3
+tags:
+  - Security
+  - Encryption
+  - Codec Server
+  - Java SDK
+  - Temporal SDKs
+description: Encrypt data sent to and from the Temporal Service using a custom Payload Codec in the TypeScript SDK.
+---
+
+Temporal's security model is designed around client-side encryption of Payloads. A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server. This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data. It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access with keys, algorithms, or other security measures.
+
+A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client. Depending on business needs, a complete implementation of Payload Encryption may involve selecting appropriate encryption algorithms, managing encryption keys, restricting a subset of their users from viewing payload output, or a combination of these.
+
+The server itself never adds encryption over Payloads. Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows. When working with sensitive data, you should always implement Payload encryption.
+
+## Custom Payload Codec
+
+> Background: [Encryption](/payload-codec#encryption)
+
+The following is an example class that implements the `PayloadCodec` interface:
+
+<!--SNIPSTART typescript-encryption-codec -->
+[encryption/src/encryption-codec.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/encryption-codec.ts)
+```ts
+import { webcrypto as crypto } from 'node:crypto';
+import { METADATA_ENCODING_KEY, Payload, PayloadCodec, ValueError } from '@temporalio/common';
+import { temporal } from '@temporalio/proto';
+import { decode, encode } from '@temporalio/common/lib/encoding';
+import { decrypt, encrypt } from './crypto';
+
+const ENCODING = 'binary/encrypted';
+const METADATA_ENCRYPTION_KEY_ID = 'encryption-key-id';
+
+export class EncryptionCodec implements PayloadCodec {
+  constructor(
+    protected readonly keys: Map<string, crypto.CryptoKey>,
+    protected readonly defaultKeyId: string,
+  ) {}
+
+  static async create(keyId: string): Promise<EncryptionCodec> {
+    const keys = new Map<string, crypto.CryptoKey>();
+    keys.set(keyId, await fetchKey(keyId));
+    return new this(keys, keyId);
+  }
+
+  async encode(payloads: Payload[]): Promise<Payload[]> {
+    return Promise.all(
+      payloads.map(async (payload) => ({
+        metadata: {
+          [METADATA_ENCODING_KEY]: encode(ENCODING),
+          [METADATA_ENCRYPTION_KEY_ID]: encode(this.defaultKeyId),
+        },
+        // Encrypt entire payload, preserving metadata
+        data: await encrypt(
+          temporal.api.common.v1.Payload.encode(payload).finish(),
+          this.keys.get(this.defaultKeyId)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        ),
+      })),
+    );
+  }
+
+  async decode(payloads: Payload[]): Promise<Payload[]> {
+    return Promise.all(
+      payloads.map(async (payload) => {
+        if (!payload.metadata || decode(payload.metadata[METADATA_ENCODING_KEY]) !== ENCODING) {
+          return payload;
+        }
+        if (!payload.data) {
+          throw new ValueError('Payload data is missing');
+        }
+
+        const keyIdBytes = payload.metadata[METADATA_ENCRYPTION_KEY_ID];
+        if (!keyIdBytes) {
+          throw new ValueError('Unable to decrypt Payload without encryption key id');
+        }
+
+        const keyId = decode(keyIdBytes);
+        let key = this.keys.get(keyId);
+        if (!key) {
+          key = await fetchKey(keyId);
+          this.keys.set(keyId, key);
+        }
+        const decryptedPayloadBytes = await decrypt(payload.data, key);
+        console.log('Decrypting payload.data:', payload.data);
+        return temporal.api.common.v1.Payload.decode(decryptedPayloadBytes);
+      }),
+    );
+  }
+}
+
+async function fetchKey(_keyId: string): Promise<crypto.CryptoKey> {
+  // In production, fetch key from a key management system (KMS). You may want to memoize requests if you'll be decoding
+  // Payloads that were encrypted using keys other than defaultKeyId.
+  const key = Buffer.from('test-key-test-key-test-key-test!');
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    key,
+    {
+      name: 'AES-GCM',
+    },
+    true,
+    ['encrypt', 'decrypt'],
+  );
+
+  return cryptoKey;
+}
+```
+<!--SNIPEND-->
+
+The encryption and decryption code is in [src/crypto.ts](https://github.com/temporalio/samples-typescript/tree/main/encryption/src/crypto.ts).
+Because encryption is CPU intensive, and doing AES with the crypto module built into Node.js blocks the main thread, we use `@ronomon/crypto-async`, which uses the Node.js thread pool.
+
+As before, we provide a custom Data Converter to the Client and Worker:
+
+<!--SNIPSTART typescript-encryption-client -->
+[encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/client.ts)
+```ts
+const client = new Client({
+  connection,
+  dataConverter: await getDataConverter(),
+});
+
+const handle = await client.workflow.start(example, {
+  args: ['Alice: Private message for Bob.'],
+  taskQueue: 'encryption',
+  workflowId: `my-business-id-${uuid()}`,
+});
+
+console.log(`Started workflow ${handle.workflowId}`);
+console.log(await handle.result());
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-encryption-worker -->
+[encryption/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/worker.ts)
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue: 'encryption',
+  dataConverter: await getDataConverter(),
+});
+```
+<!--SNIPEND-->
+
+When the Client sends `'Alice: Private message for Bob.'` to the Workflow, it gets encrypted on the Client and decrypted in the Worker.
+The Workflow receives the decrypted message and appends another message.
+When it returns that longer string, the string gets encrypted by the Worker and decrypted by the Client.
+
+<!--SNIPSTART typescript-encryption-workflow -->
+[encryption/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/workflows.ts)
+```ts
+export async function example(message: string): Promise<string> {
+  return `${message}\nBob: Hi Alice, I'm Workflow Bob.`;
+}
+```
+<!--SNIPEND-->

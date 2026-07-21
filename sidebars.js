@@ -743,8 +743,20 @@ module.exports = {
               items: [
                 'develop/typescript/best-practices/testing-suite',
                 'develop/typescript/best-practices/debugging',
-                'develop/typescript/best-practices/converters-and-encryption',
                 'develop/typescript/best-practices/entity-pattern',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/typescript/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/typescript/best-practices/data-handling/data-conversion',
+                    'develop/typescript/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
             {
