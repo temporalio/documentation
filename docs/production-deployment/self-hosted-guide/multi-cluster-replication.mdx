@@ -550,13 +550,3 @@ dcRedirectionPolicy:
 ```
 
 If every client already connects to the active Cluster, this is not required.
-
-:::note Nexus
-
-Starting a [Standalone Nexus Operation](/standalone-nexus-operation)
-(`StartNexusOperationExecution`) is not in the `selected-apis-forwarding` set, so
-use `all-apis-forwarding` if clients start Standalone Nexus Operations against a
-standby Cluster. Nexus Operation completion callbacks are forwarded separately and
-automatically; see [Self-hosted Temporal Nexus](/production-deployment/self-hosted-guide/nexus).
-
-:::
