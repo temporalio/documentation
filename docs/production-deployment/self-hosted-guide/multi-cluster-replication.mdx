@@ -21,7 +21,7 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
 When a client connects to a standby Cluster, its requests can be forwarded to the
-active Cluster. This is off by default; enable it by setting the Frontend's
+active Cluster. This is off by default; enable it by setting
 [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
