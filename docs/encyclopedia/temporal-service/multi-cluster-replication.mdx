@@ -33,10 +33,13 @@ When necessary, for higher availability, Cluster operators can failover to any o
 
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
-Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/global-namespace).
+When a client connects to a standby Cluster, its requests can be forwarded to the
+active Cluster. This is off by default; enable it by setting the Frontend's
+[`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) to
+`selected-apis-forwarding` or `all-apis-forwarding`. Forwarding applies only to
+[Global Namespaces](/global-namespace).
 
-When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
+When forwarding is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
 This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
