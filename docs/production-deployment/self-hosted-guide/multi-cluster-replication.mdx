@@ -20,10 +20,11 @@ When necessary, for higher availability, Cluster operators can failover to any o
 
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
-Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/global-namespace).
+When a client connects to a standby Cluster, its requests can be forwarded to the
+active Cluster. This is configured with the Frontend's `dcRedirectionPolicy` and is
+not enabled by default; see [Request forwarding](#request-forwarding).
 
-When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
+When forwarding is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
 This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
@@ -531,22 +532,28 @@ temporal operator cluster remove --name="someClusterName"
 
 #### Request forwarding
 
-By default, a client request that reaches a standby Cluster for a Namespace whose
-active Cluster is elsewhere is not automatically routed to the active Cluster. If
-your clients may connect to a standby Cluster (for example, during or after a
-failover), set the server's
-[`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so those
-requests are forwarded to the active Cluster:
+When a client connects to a standby Cluster, the Frontend can forward its requests
+to the current active Cluster for the Namespace, so clients don't have to track
+which Cluster is active. This is useful when clients may connect to a standby
+Cluster, for example during or after a failover. Two settings control it:
 
-- `all-apis-forwarding`: forwards all client APIs for the Namespace.
-- `selected-apis-forwarding`: forwards a fixed subset (start, signal, cancel,
-  terminate, delete, and query APIs). See
-  [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) for the
-  exact list.
+- **`dcRedirectionPolicy`** (static configuration) selects which APIs are
+  forwarded. It defaults to `noop` (no forwarding), so forwarding is **off unless
+  you set it**:
+  - `all-apis-forwarding`: forwards all client APIs for the Namespace.
+  - `selected-apis-forwarding`: forwards a fixed subset (start, signal, cancel,
+    terminate, delete, and query APIs). See
+    [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) for the
+    exact list.
+- **`system.enableNamespaceNotActiveAutoForwarding`** (dynamic configuration,
+  per-Namespace) gates forwarding for each Namespace and is **enabled by default**.
+  Setting it to `false` disables forwarding for that Namespace even when a policy
+  is configured.
 
 ```yaml
 dcRedirectionPolicy:
   policy: "all-apis-forwarding"
 ```
 
-If every client already connects to the active Cluster, this is not required.
+Forwarding applies only to [Global Namespaces](/global-namespace). If every client
+already connects to the active Cluster, it is not required.
