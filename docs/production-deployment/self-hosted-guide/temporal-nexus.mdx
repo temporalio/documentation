@@ -2,14 +2,14 @@
 id: nexus
 title:  Self-hosted Temporal Nexus
 sidebar_label: Temporal Nexus
-description: Use Nexus in your self-hosted Temporal Service, including across Global (multi-region) Namespaces.
+description: Use Nexus in your self-hosted Temporal Service.
 toc_max_heading_level: 4
 keywords:
   - self-hosted
 tags:
   - Self hosting
   - enable-nexus
-  - global-namespace
+  - multi-cluster-replication
 ---
 
 :::info NEW TO NEXUS?
@@ -88,10 +88,18 @@ See [how Nexus works](/nexus) for an architectural overview, then follow an SDK 
 
 :::
 
-## Global Namespaces (multi-region failover)
+## Multi-Cluster Replication (multi-region failover)
 
-Nexus works across a [Global (multi-region) Namespace](/global-namespace). An
-asynchronous Nexus Operation started in one Cluster completes even if the Namespace
+:::warning EXPERIMENTAL
+
+Nexus across [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
+is experimental.
+
+:::
+
+Nexus works across
+[Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication). An
+asynchronous Nexus Operation started in one Cluster completes even if its Namespace
 fails over, or its Cluster is lost, before the Operation finishes.
 
 :::note Endpoint target types
@@ -121,12 +129,14 @@ target an external URL (`--target-url`), which is experimental and not covered h
    default via `system.enableNamespaceNotActiveAutoForwarding` (per-Namespace
    dynamic config).
 
-   Optionally, set the server's
-   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so client
-   requests forward to the active Cluster when a client connects to a standby: use
-   `all-apis-forwarding` for all client APIs, or `selected-apis-forwarding` for a
-   fixed subset that includes `StartNexusOperationExecution` (used to start a
-   [Standalone Nexus Operation](/standalone-nexus-operation)).
+   This covers the completion callback. Separately, if clients may connect to a
+   standby Cluster, set the server's
+   [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so their
+   requests forward to the active Cluster: use `all-apis-forwarding` for all client
+   APIs, or `selected-apis-forwarding` for a fixed subset that includes
+   `StartNexusOperationExecution` (used to start a
+   [Standalone Nexus Operation](/standalone-nexus-operation)). If every client
+   already connects to the active Cluster, this is not required.
 
 ### What to expect on failover
 
