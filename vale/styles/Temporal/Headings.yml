@@ -32,6 +32,7 @@ exceptions:
   - Activity
   - Activities
   - Archival
+  - Cloud
   - Codec
   - Converter
   - Cron
@@ -41,6 +42,7 @@ exceptions:
   - Execution
   - Executions
   - Failure
+  - Fairness
   - Filter
   - Filters
   - Heartbeat
@@ -52,7 +54,10 @@ exceptions:
   - Namespace
   - Namespaces
   - Nexus
+  - Operation
+  - Operations
   - Payload
+  - Priority
   - Query
   - Queries
   - Queue
@@ -64,6 +69,7 @@ exceptions:
   - Search
   - Signal
   - Signals
+  - Standalone
   - Task
   - Temporal
   - Timer

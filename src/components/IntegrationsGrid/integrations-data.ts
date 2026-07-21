@@ -1,6 +1,6 @@
 import integrationsData from "./integrations-data.json";
 
-export type SDK = "Java" | "Python" | "TypeScript" | "Ruby";
+export type SDK = "Go" | "Java" | "Python" | "TypeScript" | "Ruby";
 
 export type Integration = {
   name: string;

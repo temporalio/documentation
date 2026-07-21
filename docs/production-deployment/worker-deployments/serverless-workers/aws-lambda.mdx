@@ -18,8 +18,7 @@ tags:
   - AWS Lambda
 ---
 
-import SdkTabs from '@site/src/components/elements/SdkTabs';
-import { ReleaseNoteHeader } from '@site/src/components';
+import { ReleaseNoteHeader, SdkTabs } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -395,14 +394,7 @@ permissions granted.
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `AssumeRoleExternalId` | A string you choose to prevent [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Can be any value. Use the same value when creating the Worker Deployment Version. |
 | `LambdaFunctionARNs`   | Comma-separated list of Lambda function ARNs that Temporal may invoke. To allow invocation of any published version of a function, use a wildcard suffix (for example, `arn:aws:lambda:...:function:my-temporal-worker:*`). One role can authorize multiple Worker Lambdas. |
-| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`.                                                                                                                                |
-
-:::caution
-
-The template appends the stack name to `RoleName` to form the final IAM role name (`<RoleName>-<StackName>`). IAM role
-names cannot exceed 64 characters, so a long `RoleName` or stack name can cause stack creation to fail.
-
-:::
+| `RoleName`             | Base name for the created IAM role. Defaults to `Temporal-Cloud-Serverless-Worker`. Provide a new role name if creating more than one stack.                                                                                                                                |
 
 <details>
 <summary>CloudFormation template</summary>
@@ -455,7 +447,7 @@ Resources:
   TemporalCloudServerlessWorker:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub '${RoleName}-${AWS::StackName}'
+      RoleName: !Ref RoleName
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -490,7 +482,7 @@ Resources:
               - lambda:GetFunction
             Resource: !Ref LambdaFunctionARNs
       Roles:
-        - !Sub '${RoleName}-${AWS::StackName}'
+        - !Ref RoleName
 
 Outputs:
   RoleARN:

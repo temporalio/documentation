@@ -22,8 +22,6 @@ temp/
 .env.test.local
 .env.production.local
 .vs
-AGENTS.md
-CLAUDE.md
 .claude/*
 .omc
 
@@ -55,3 +53,4 @@ test-results/*
 screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
 ai-cookbook
+scripts/mermaid-compare/*

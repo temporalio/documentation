@@ -87,7 +87,7 @@ Defining a clear contract for the Nexus Service is crucial for smooth communicat
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
-Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion).
+Each [Temporal SDK includes and uses a default Data Converter](/dataconversion).
 The default data converter encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses .NET classes serialized into JSON.
