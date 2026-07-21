@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const matter = require('gray-matter');
 const { renderCard, TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./render');
 const { walkDir, resolveUrlPath } = require('../shared/docsRouting');
+const { mergeWithSectionFrontMatter } = require('../shared/sectionFrontMatter');
 
 const CACHE_DIR = path.join(__dirname, '../../node_modules/.cache/og-images');
 
@@ -103,6 +104,7 @@ function replaceImageMeta(html, absoluteUrl) {
 
 function ogImagePlugin(context, options = {}) {
   const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
+  const sectionFrontMatterCache = new Map();
 
   return {
     name: 'og-image',
@@ -118,7 +120,11 @@ function ogImagePlugin(context, options = {}) {
 
       for (const filePath of files) {
         const raw = fs.readFileSync(filePath, 'utf8');
-        const { data: frontmatter, content } = matter(raw);
+        const { data, content } = matter(raw);
+        const frontmatter = mergeWithSectionFrontMatter(filePath, data, {
+          stopDir: context.siteDir,
+          cache: sectionFrontMatterCache,
+        });
         const urlPath = resolveUrlPath(docsDir, filePath, frontmatter);
         const htmlPath = htmlPathForUrlPath(outDir, urlPath);
 

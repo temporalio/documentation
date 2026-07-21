@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { mergeWithSectionFrontMatter } = require('../shared/sectionFrontMatter');
 
 module.exports = function cookbookIndexPlugin(context, options = {}) {
 console.log('[cookbook-index] init with docsDir:', options.docsDir);
@@ -12,6 +13,7 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
     : path.join(context.siteDir, options.docsDir || 'cookbook');
 
   const routeBasePath = options.routeBasePath || 'cookbook';
+  const sectionFrontMatterCache = new Map();
 
   function walk(dir) {
   if (!fs.existsSync(dir)) {
@@ -36,7 +38,11 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
   const items = files
     .map((file) => {
       const src = fs.readFileSync(file, 'utf8');
-      const { data } = matter(src);
+      const { data: pageData } = matter(src);
+      const data = mergeWithSectionFrontMatter(file, pageData, {
+        stopDir: context.siteDir,
+        cache: sectionFrontMatterCache,
+      });
 
       const rel = path.relative(docsDir, file).replace(/\\/g, '/');
       const base = rel.replace(/\.(md|mdx)$/i, '');

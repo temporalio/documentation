@@ -1,0 +1,74 @@
+# Controlled vocabulary for the `content_type` facet.
+#
+# `id` is the canonical value to use in front matter (`content_type: how-to`).
+# This facet is single-valued per Phase 2 (a page has one primary content type).
+#
+# Seeded from Phase 0 findings: the most frequent `keywords` values already show
+# authors informally sorting pages into these categories (`explanation`: 60 files,
+# `how-to`: 31, `term`: 30, `introduction`/`temporal SDK tutorial`, `cli reference`:
+# 34, `best practices`: 13) even though no formal field existed for it. `keywords`
+# itself is not carried forward as data — see TAXONOMY.md — but its patterns
+# informed this list.
+
+- id: tutorial
+  label: Tutorial
+  description: Learning-oriented, step-by-step content building toward a working result.
+  aliases:
+    - temporal SDK tutorial
+    - getting started
+
+- id: how-to
+  label: How-to guide
+  description: Task-oriented instructions for accomplishing a specific goal.
+  aliases:
+    - how-to
+    - setup
+
+- id: reference
+  label: Reference
+  description: Lookup-oriented technical description (API, CLI, config).
+  aliases:
+    - Reference
+    - cli reference
+    - reference
+
+- id: explanation
+  label: Explanation
+  description: Understanding-oriented content covering concepts and how/why something works.
+  aliases:
+    - explanation
+    - Concepts
+    - introduction
+
+- id: glossary-term
+  label: Glossary term
+  description: A single Encyclopedia definition entry.
+  aliases:
+    - term
+    - Concepts
+
+- id: design-pattern
+  label: Design pattern
+  description: A named, reusable solution to a recurring implementation problem.
+  aliases:
+    - design-patterns
+
+- id: guide
+  label: Guide
+  description: Narrative, example-driven walkthrough of a use case or end-to-end scenario.
+  aliases:
+    - Guides
+    - guide
+
+- id: integration
+  label: Integration
+  description: How Temporal works with or connects to a specific external system or framework.
+  aliases:
+    - Integrations
+
+- id: best-practice
+  label: Best practice
+  description: Recommended approach or guidance for production use.
+  aliases:
+    - Best Practices
+    - best practices

@@ -12,6 +12,7 @@ import MDXComponents from '@theme/MDXComponents';
 import clsx from 'clsx';
 import { usePluginData } from '@docusaurus/useGlobalData';
 import DocItemStructuredData from '@site/src/theme/DocItem/StructuredData';
+import DocItemTaxonomyMeta from '@site/src/theme/DocItem/TaxonomyMeta';
 
 import styles from './CookbookDocItem.module.css';
 
@@ -252,6 +253,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
     <HtmlClassNameProvider className="cookbook--centered">
       <DocItemMetadata />
       <DocItemStructuredData />
+      <DocItemTaxonomyMeta />
 
       <Head>
         <title>{title}</title>

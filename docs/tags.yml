@@ -1,0 +1,28 @@
+# Predefined tag metadata for the docs plugin.
+#
+# Location: docs/tags.yml (convention — Docusaurus looks for this file at
+# the root of the content folder configured for the docs plugin).
+#
+# Each key must exactly match a tag string already used in front matter
+# (tags: [...]) — this file overrides that tag's label/permalink/description,
+# it does not rename or merge tags. Consolidating duplicate tag strings
+# (e.g. Activity -> Activities) still requires editing front matter in the
+# affected files; see TAXONOMY.md's Phase 0 findings for that list.
+#
+# permalink is the URL segment under /tags/ — e.g. permalink: /temporal-sdks
+# produces /tags/temporal-sdks.
+
+Temporal SDKs:
+  label: Temporal SDKs
+  permalink: /temporal-sdks
+  # Was auto-generating as /tags/temporal-sd-ks (lodash kebabCase splits
+  # "SDKs" into "SD" + "Ks" — a capital immediately followed by lowercase
+  # is treated as a new word boundary). Confirmed 3rd most-clicked tag
+  # link site-wide (116 clicks/90d) — ship this with a redirect from
+  # /tags/temporal-sd-ks, see TAXONOMY.md traffic data section.
+
+TypeScript SDK:
+  label: TypeScript SDK
+  permalink: /typescript-sdk
+  # Same kebabCase issue, splits at every capital: was /tags/type-script-sdk.
+  # Also needs a redirect from the old slug (47 clicks/90d).

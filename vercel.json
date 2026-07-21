@@ -2167,6 +2167,16 @@
       "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
       "destination": "/develop/ruby/workflows/versioning#patching",
       "permanent": true
-    }
+    },
+    {
+      "source": "/tags/temporal-sd-ks",
+      "destination": "/tags/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/tags/type-script-sdk",
+      "destination": "/tags/typescript-sdk",
+      "permanent": true
+    },
   ]
 }

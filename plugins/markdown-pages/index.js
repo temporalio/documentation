@@ -2,10 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const { walkDir, resolveUrlPath: resolveUrlPathShared } = require('../shared/docsRouting');
+const { mergeWithSectionFrontMatter } = require('../shared/sectionFrontMatter');
 
 module.exports = function markdownPagesPlugin(context, options = {}) {
   const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
   const routeBasePath = options.routeBasePath || '/';
+  const sectionFrontMatterCache = new Map();
 
   const resolveUrlPath = (filePath, frontmatter) => resolveUrlPathShared(docsDir, filePath, frontmatter);
 
@@ -28,7 +30,11 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
 
       for (const filePath of files) {
         const raw = fs.readFileSync(filePath, 'utf8');
-        const { data: frontmatter } = matter(raw);
+        const { data } = matter(raw);
+        const frontmatter = mergeWithSectionFrontMatter(filePath, data, {
+          stopDir: context.siteDir,
+          cache: sectionFrontMatterCache,
+        });
 
         const urlPath = resolveUrlPath(filePath, frontmatter);
         const outputPath = path.join(outDir, urlPath + '.md');

@@ -473,6 +473,16 @@ module.exports = async function createConfigAsync() {
         admonitions: true,
       },
       mermaid: true,
+      // Folder-level defaults from `_frontmatter.yml` (page front matter wins).
+      // See plugins/shared/sectionFrontMatter.js and TAXONOMY.md.
+      parseFrontMatter: async (params) => {
+        const result = await params.defaultParseFrontMatter(params);
+        const { mergeWithSectionFrontMatter } = require('./plugins/shared/sectionFrontMatter');
+        result.frontMatter = mergeWithSectionFrontMatter(params.filePath, result.frontMatter, {
+          stopDir: __dirname,
+        });
+        return result;
+      },
     },
     themes: ['@docusaurus/theme-mermaid'],
     future: {

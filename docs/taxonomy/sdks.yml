@@ -1,0 +1,62 @@
+# Controlled vocabulary for the `sdks` facet.
+#
+# `id` is the canonical value to use in front matter (`sdks: [go, python]`).
+# `aliases` are legacy tag/keyword strings found in the Phase 0 inventory that map
+# to this id — used by the Phase 3 validator to suggest a fix rather than just fail.
+#
+# `id` values intentionally match the language tokens the Algolia crawler already
+# derives from URL paths (see crawler `languageMatch` regex), so that Phase 6 can
+# swap the crawler's regex-based derivation for this front-matter value without a
+# renaming pass. The crawler regex is currently missing `rust` — this vocab does
+# not repeat that gap.
+
+- id: go
+  label: Go SDK
+  aliases:
+    - Go SDK
+    - go-sdk
+
+- id: java
+  label: Java SDK
+  aliases:
+    - Java SDK
+    - java-sdk
+
+- id: dotnet
+  label: .NET SDK
+  aliases:
+    - .Net SDK
+    - .NET SDK
+    - dotnet
+    - net-sdk
+
+- id: typescript
+  label: TypeScript SDK
+  aliases:
+    - TypeScript SDK
+    - typescript
+    - type-script-sdk
+
+- id: python
+  label: Python SDK
+  aliases:
+    - Python SDK
+    - python-sdk
+
+- id: php
+  label: PHP SDK
+  aliases:
+    - PHP SDK
+    - php-sdk
+
+- id: ruby
+  label: Ruby SDK
+  aliases:
+    - Ruby SDK
+    - ruby-sdk
+
+- id: rust
+  label: Rust SDK
+  aliases:
+    - Rust SDK
+    - rust-sdk
