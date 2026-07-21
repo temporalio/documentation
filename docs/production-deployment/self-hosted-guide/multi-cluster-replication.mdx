@@ -528,3 +528,35 @@ temporal operator cluster upsert --frontend_address="localhost:8233" --enable_co
 # Delete connections
 temporal operator cluster remove --name="someClusterName"
 ```
+
+#### Request forwarding
+
+By default, a client request that reaches a standby Cluster for a Namespace whose
+active Cluster is elsewhere is not automatically routed to the active Cluster. If
+your clients may connect to a standby Cluster (for example, during or after a
+failover), set the server's
+[`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) so those
+requests are forwarded to the active Cluster:
+
+- `all-apis-forwarding`: forwards all client APIs for the Namespace.
+- `selected-apis-forwarding`: forwards a fixed subset (start, signal, cancel,
+  terminate, delete, and query APIs). See
+  [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy) for the
+  exact list.
+
+```yaml
+dcRedirectionPolicy:
+  policy: "all-apis-forwarding"
+```
+
+If every client already connects to the active Cluster, this is not required.
+
+:::note Nexus
+
+Starting a [Standalone Nexus Operation](/standalone-nexus-operation)
+(`StartNexusOperationExecution`) is not in the `selected-apis-forwarding` set, so
+use `all-apis-forwarding` if clients start Standalone Nexus Operations against a
+standby Cluster. Nexus Operation completion callbacks are forwarded separately and
+automatically; see [Self-hosted Temporal Nexus](/production-deployment/self-hosted-guide/nexus).
+
+:::
