@@ -348,7 +348,19 @@ module.exports = {
               items: [
                 'develop/java/best-practices/testing-suite',
                 'develop/java/best-practices/debugging',
-                'develop/java/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/java/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/java/best-practices/data-handling/data-conversion',
+                    'develop/java/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
             {
