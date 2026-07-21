@@ -36,7 +36,7 @@ Temporal's Multi-Cluster Replication feature is considered **experimental** and 
 When a client connects to a standby Cluster, its requests can be forwarded to the
 active Cluster. This is off by default; enable it by setting the Frontend's
 [`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy). Forwarding
-applies only to [Global Namespaces](/global-namespace).
+is enabled for [Global Namespaces](/global-namespace).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
