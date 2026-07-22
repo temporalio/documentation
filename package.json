@@ -87,8 +87,6 @@
     "react-instantsearch": "^7.38.0",
     "react-markdown": "^10.1.0",
     "react-player": "^3.4.0",
-    "rehype-katex": "7",
-    "remark-math": "6",
     "satori": "^0.26.0",
     "search-insights": "^2",
     "sharp": "^0.35.3",
