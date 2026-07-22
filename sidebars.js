@@ -301,7 +301,21 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/workers/index',
               },
-              items: ['develop/java/workers/run-worker-process'],
+              items: [
+                'develop/java/workers/run-worker-process',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/java/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/java/workers/serverless-workers/aws-lambda',
+                  ],
+                },
+              ],
             },
             {
               type: 'category',
@@ -812,6 +826,18 @@ module.exports = {
               items: [
                 'develop/dotnet/workers/run-worker-process',
                 'develop/dotnet/workers/interceptors',
+                {
+                  type: 'category',
+                  label: 'Serverless Workers',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/dotnet/workers/serverless-workers/index',
+                  },
+                  items: [
+                    'develop/dotnet/workers/serverless-workers/aws-lambda',
+                  ],
+                },
               ]
             },
             {

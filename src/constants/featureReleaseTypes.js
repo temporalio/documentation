@@ -6,5 +6,5 @@ export const FEATURE_RELEASE_TYPES = {
   standaloneNexusOperation: "prerelease",
   nexus: "publicPreview",
   workflowStreams: "publicPreview",
-  serverlessWorkers: "prerelease",
+  serverlessWorkers: "publicPreview",
 };

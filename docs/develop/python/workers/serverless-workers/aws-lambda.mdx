@@ -21,18 +21,14 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader type="prerelease">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-  APIs are experimental and may be subject to backwards-incompatible changes.
-  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
-</ReleaseNoteHeader>
+<ReleaseNoteHeader featureName="serverlessWorkers" />
 
 The `lambda_worker` contrib package lets you run a Temporal Serverless Worker on AWS Lambda.
 Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
 Each invocation starts a Worker, polls for Tasks, then gracefully shuts down before a configurable invocation deadline.
 You register Workflows and Activities the same way you would with a standard Worker.
 
-For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
 
 ## Create and run a Worker in Lambda {/* #create-and-run */}
 
@@ -90,7 +86,7 @@ class MyWorkflow:
 
 The `lambda_worker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-The config file is resolved in order:
+Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
 
 1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
 2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
@@ -138,7 +134,7 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Python SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-<!--SNIPSTART python-lambda-worker-->
+<!--SNIPSTART python-lambda-worker {"highlightedLines": "4, 12"}-->
 [lambda_worker/lambda_function.py](https://github.com/temporalio/samples-python/blob/lambda-worker/lambda_worker/lambda_function.py)
 ```py
 from activities import hello_activity
