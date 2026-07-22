@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function EditThisPageWrapper() {
+export default function EditThisPageWrapper({ editUrl }) {
+  if (!editUrl) {
+    return null;
+  }
+
   const feedbackStyle = {
     marginTop: "20px",
     padding: "10px 15px",
@@ -13,10 +17,8 @@ export default function EditThisPageWrapper() {
   };
 
   return (
-    <>
-      <div style={feedbackStyle}>
-          <p style={{ margin: 0, fontWeight: "500" }}>Help us make Temporal better. Contribute to our <a href="https://github.com/temporalio/documentation">documentation</a>.</p>
-      </div>
-    </>
+    <div style={feedbackStyle}>
+      <p style={{ margin: 0, fontWeight: "500" }}>Help us make Temporal better. <a href={editUrl}>View this page</a> on GitHub.</p>
+    </div>
   );
 }

@@ -2,6 +2,8 @@
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
+const mermaidTheme = require('./src/constants/mermaidTheme');
+const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -14,67 +16,47 @@ module.exports = async function createConfigAsync() {
     onBrokenLinks: 'throw',
     onBrokenAnchors: 'throw',
     favicon: 'favicon.ico',
-    organizationName: 'temporalio', // Usually your GitHub org/user name.
-    projectName: 'temporal-documentation', // Usually your repo name.
+    // Aeonik Light/Regular are used above the fold on every page (headings,
+    // sidebar nav). Preloading them here covers non-Vercel previews; the
+    // production Link header in vercel.json is what lets the browser fetch
+    // them before it even has the HTML to parse this tag from. Filenames
+    // come from src/constants/preloadFonts.js — see that file and
+    // bin/check-font-preload-hash.js for why they're hardcoded.
     headTags: [
-      // JSON-LD structured data so AI agents and search engines can identify
-      // the product (SoftwareApplication) and disambiguate the brand (sameAs).
       {
-        tagName: 'script',
+        tagName: 'link',
         attributes: {
-          type: 'application/ld+json',
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_LIGHT_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
         },
-        innerHTML: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@graph': [
-            {
-              '@type': 'Organization',
-              '@id': 'https://temporal.io/#organization',
-              name: 'Temporal Technologies',
-              url: 'https://temporal.io',
-              logo: 'https://docs.temporal.io/img/favicon.png',
-              sameAs: [
-                'https://github.com/temporalio',
-                'https://x.com/temporalio',
-                'https://www.youtube.com/c/Temporalio',
-              ],
-            },
-            {
-              '@type': 'SoftwareApplication',
-              '@id': 'https://temporal.io/#software',
-              name: 'Temporal',
-              applicationCategory: 'DeveloperApplication',
-              operatingSystem: 'Cross-platform',
-              url: 'https://temporal.io',
-              downloadUrl: 'https://github.com/temporalio/temporal',
-              description:
-                'Temporal is a durable execution platform for building reliable, scalable applications using workflows and activities.',
-              publisher: { '@id': 'https://temporal.io/#organization' },
-              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            },
-          ],
-        }),
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_REGULAR_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
       },
     ],
+    organizationName: 'temporalio', // Usually your GitHub org/user name.
+    projectName: 'temporal-documentation', // Usually your repo name.
+    // JSON-LD structured data (Organization/SoftwareApplication/WebPage) is
+    // rendered per-page instead of injected globally here — see
+    // src/theme/DocItem/StructuredData and src/constants/organizationSchema.
+    // A single global block would put the full Organization property set on
+    // every page, which is exactly the drift risk the JSON-LD audit flagged.
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: false,
         respectPrefersColorScheme: true,
-        // switchConfig: {
-        //   darkIcon: "🌙",
-        //   darkIconStyle: {
-        //     content: `url(/img/assets/moon.svg)`,
-        //     transform: "scale(2)",
-        //     margin: "0 0.2rem",
-        //   },
-        //   lightIcon: "\u{1F602}",
-        //   lightIconStyle: {
-        //     content: `url(/img/assets/sun.svg)`,
-        //     transform: "scale(2)",
-        //   },
-        // },
       },
       metadata: [
         { name: 'robots', content: 'follow, index' },
@@ -273,6 +255,15 @@ module.exports = async function createConfigAsync() {
           ],
         },
       },
+      mermaid: {
+        theme: mermaidTheme.theme,
+        options: {
+          themeVariables: { fontFamily: mermaidTheme.fontFamily },
+          flowchart: mermaidTheme.flowchart,
+          sequence: mermaidTheme.sequence,
+          state: mermaidTheme.state,
+        },
+      },
     },
     presets: [
       [
@@ -288,7 +279,7 @@ module.exports = async function createConfigAsync() {
               '**/clusters/**',
               '**/ai-cookbook/**',
             ], // partials (underscore-prefixed) + context content we don't render
-            editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
+            editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
              */
@@ -309,8 +300,7 @@ module.exports = async function createConfigAsync() {
             admonitions: {
               keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
             },
-            remarkPlugins: [(await import('remark-math')).default, require('./plugins/og-image/remarkPlugin')],
-            rehypePlugins: [(await import('rehype-katex')).default],
+            remarkPlugins: [require('./plugins/og-image/remarkPlugin')],
           },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
@@ -370,14 +360,6 @@ module.exports = async function createConfigAsync() {
         defer: true,
       },
     ],
-    stylesheets: [
-      {
-        href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-        type: 'text/css',
-        integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-        crossorigin: 'anonymous',
-      },
-    ],
     plugins: [
       function preloadFontPlugin() {
         return {
@@ -419,8 +401,8 @@ module.exports = async function createConfigAsync() {
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
-          docItemComponent: '@site/src/components/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override
+          docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
+          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
         },
       ],
       [
