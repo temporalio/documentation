@@ -37,18 +37,7 @@ module.exports = {
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
             'evaluate/development-production-features/job-queue',
-            {
-              type: 'category',
-              label: 'Serverless Workers',
-              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
-              items: [
-                {
-                  type: 'doc',
-                  id: 'demos/serverless-workers',
-                  label: 'Interactive Demo',
-                },
-              ],
-            },
+            'evaluate/development-production-features/serverless-workers/index',
             {
               type: 'category',
               label: 'Product release stages',
@@ -1062,7 +1051,6 @@ module.exports = {
           ],
         },
         'develop/environment-configuration',
-        'demos/activity-retry-simulator',
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
