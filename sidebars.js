@@ -732,6 +732,7 @@ module.exports = {
                 'develop/typescript/best-practices/testing-suite',
                 'develop/typescript/best-practices/debugging',
                 'develop/typescript/best-practices/converters-and-encryption',
+                'develop/typescript/best-practices/external-storage',
                 'develop/typescript/best-practices/entity-pattern',
               ],
             },
