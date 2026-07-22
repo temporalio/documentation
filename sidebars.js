@@ -889,7 +889,19 @@ module.exports = {
                 'develop/dotnet/best-practices/error-handling',
                 'develop/dotnet/best-practices/testing-suite',
                 'develop/dotnet/best-practices/debugging',
-                'develop/dotnet/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/dotnet/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/dotnet/best-practices/data-handling/data-conversion',
+                    'develop/dotnet/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
           ],
