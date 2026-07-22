@@ -11,7 +11,7 @@ tags:
   - Activity
 ---
 
-## Start Activity Execution {#activity-execution}
+## Start Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -49,6 +49,6 @@ Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
-### Get Activity Execution results {#get-activity-results}
+### Get Activity Execution results {/* #get-activity-results */}
 
 The Activity result is returned in the Task from the `ExecuteActivityAsync` call.

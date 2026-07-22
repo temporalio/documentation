@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## Develop a basic Activity {#develop-activities}
+## Develop a basic Activity {/* #develop-activities */}
 
 One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 
@@ -42,7 +42,7 @@ impl GreetingActivities {
 }
 ```
 
-### Define Activity parameters {#activity-parameters}
+### Define Activity parameters {/* #activity-parameters */}
 
 There is a limit of 6 parameters that an [Activity Definition](/activity-definition) may support. There is also a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
@@ -113,7 +113,7 @@ impl GreetingActivities {
 }
 ```
 
-### Define Activity return values {#activity-return-values}
+### Define Activity return values {/* #activity-return-values */}
 
 All data returned from an Activity must be serializable.
 
@@ -136,7 +136,7 @@ impl MyActivities {
     ) -> Result<ProcessedData, ActivityError> {
         // If an error should be retried
         if !validate_input(&input) {
-            return Err(ApplicationFailure::builder(anyhow::anyhow!("Invalid input format"))
+            return Err(ApplicationFailure::builder("Invalid input format")
                 .next_retry_delay(Duration::from_secs(5))
                 .build()
                 .into());
@@ -144,9 +144,7 @@ impl MyActivities {
 
         // If an error should not be retried
         if input.len() > 1000000 {
-            return Err(ApplicationFailure::non_retryable(
-                anyhow::anyhow!("Input too large")
-            ).into());
+            return Err(ApplicationFailure::non_retryable("Input too large").into());
         }
 
         let result = ProcessedData {
@@ -158,7 +156,7 @@ impl MyActivities {
 }
 ```
 
-### Customize your Activity Type {#activity-type}
+### Customize your Activity Type {/* #activity-type */}
 
 Activities have a Type that refers to the Activity name. The Activity name is used to identify Activity Types in the Workflow Execution Event History, Visibility Queries, and Metrics.
 

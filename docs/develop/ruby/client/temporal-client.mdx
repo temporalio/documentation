@@ -20,6 +20,8 @@ A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to 
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
 
+For [Standalone Activities](/standalone-activity), a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
+
 This page shows you how to do the following using the Ruby SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
@@ -30,7 +32,7 @@ This page shows you how to do the following using the Ruby SDK with the Temporal
 A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
 Temporal Client inside an Activity to communicate with a Temporal Service.
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 Use [`Client.connect`](https://ruby.temporal.io/Temporalio/Client.html#connect-class_method) to create a client.
 Connection options include the Temporal Server address, Namespace, and (optionally) TLS configuration. You can provide
@@ -39,7 +41,7 @@ these options directly in code, load them from **environment variables**, or a *
 configuration file for secure, repeatable configuration.
 
 When you’re running a Temporal Service locally (such as with the
-[Temporal CLI dev server](https://docs.temporal.io/cli/server#start-dev)), the required options are minimal. If you
+[Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
 <Tabs groupId="connect-options" defaultValue="config-file" >
@@ -211,7 +213,7 @@ client = Temporalio::Client.connect('localhost:7233', 'default')
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -418,7 +420,7 @@ For more information about configuring TLS to secure inter- and intra-network co
 
 </Tabs>
 
-## Start a Workflow {#start-workflow}
+## Start a Workflow {/* #start-workflow */}
 
 To start a Workflow Execution, supply:
 
@@ -439,7 +441,7 @@ result = my_client.execute_workflow(
 puts "Result: #{result}"
 ```
 
-## Get Workflow results {#get-workflow-results}
+## Get Workflow results {/* #get-workflow-results */}
 
 Once a Workflow Execution is started, the Workflow Id and Run Id can be used to uniquely identify it.
 

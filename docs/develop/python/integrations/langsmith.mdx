@@ -17,10 +17,12 @@ description:
   Add LangSmith tracing to Python Workflows using the Temporal Python SDK.
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
 Temporal's LangSmith integration lets you trace AI agent Workflows in [LangSmith](https://smith.langchain.com/)
 alongside every LLM call, tool execution, and Temporal operation.
 
-Temporal gives your agent code [durable execution](https://docs.temporal.io/temporal#durable-execution). 
+Temporal gives your agent code [durable execution](/temporal#durable-execution). 
 LangSmith adds the observability side, so you can inspect LLM inputs and outputs, follow a
 request from the Client through to the model, and compare runs over time.
 
@@ -28,14 +30,7 @@ The `LangSmithPlugin` is what connects the two. It propagates trace context acro
 started on the Client nest correctly under Workflow and Activity runs on the Worker. It can also create LangSmith
 runs for Temporal operations themselves: Workflow executions, Activity executions, Signals, Updates, and Queries.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Python SDK support for LangSmith is at
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-All APIs are experimental and may be subject to backwards-incompatible changes.
-
-:::
+<ReleaseNoteHeader type="publicPreview" />
 
 All code snippets in this guide are taken from the
 [LangSmith tracing sample](https://github.com/temporalio/samples-python/tree/main/langsmith_tracing). Refer to the

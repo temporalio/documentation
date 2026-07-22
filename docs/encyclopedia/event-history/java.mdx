@@ -39,7 +39,7 @@ In order to understand how Workflow Replay works, this page will go through the 
 3. [How History Replay Provides Durable Execution](#How-History-Replay-Provides-Durable-Execution)
 4. [Example of a Non-Deterministic Workflow](#Example-of-Non-Deterministic-Workflow)
 
-## How Workflow Code Maps to Commands {#How-Workflow-Code-Maps-To-Commands}
+## How Workflow Code Maps to Commands {/* #How-Workflow-Code-Maps-To-Commands */}
 
 This walkthrough will cover how the Workflow code maps to Commands that get sent to the Temporal Service, letting the
 Temporal Service know what to do.
@@ -73,7 +73,7 @@ Temporal Service know what to do.
   ]}
 />
 
-## How Workflow Commands Map to Events {#How-Workflow-Commands-Map-To-Events}
+## How Workflow Commands Map to Events {/* #How-Workflow-Commands-Map-To-Events */}
 
 The Commands that are sent to the Temporal Service are then turned into Events, which build up the Event History. The
 Event History is a detailed log of Events that occur during the lifecycle of a Workflow Execution, such as the execution
@@ -117,7 +117,7 @@ These Events are what are used to recreate a Workflow Execution's state in the c
   ]}
 />
 
-## How History Replay Provides Durable Execution {#How-History-Replay-Provides-Durable-Execution}
+## How History Replay Provides Durable Execution {/* #How-History-Replay-Provides-Durable-Execution */}
 
 Now that you have seen how code maps to Commands, and how Commands map to Events, this next walkthrough will take a look
 at how Temporal uses Replay with the Events to provide Durable Execution and restore a Workflow Execution in the case of
@@ -254,10 +254,10 @@ the Workflow Execution, ultimately resulting in a completed execution that's ide
   ]}
 />
 
-## Example of a Non-Deterministic Workflow {#Example-of-Non-Deterministic-Workflow}
+## Example of a Non-Deterministic Workflow {/* #Example-of-Non-Deterministic-Workflow */}
 
 Now that Replay has been covered, this section will explain why Workflows need to be
-[deterministic](https://docs.temporal.io/workflow-definition#deterministic-constraints) in order for Replay to work.
+[deterministic](/workflow-definition#deterministic-constraints) in order for Replay to work.
 
 A Workflow is deterministic if every execution of its Workflow Definition produces the same Commands in the same
 sequence given the same input.
@@ -306,11 +306,11 @@ number generator.
 />
 
 Note that non-deterministic failures do not fail the Workflow Execution by default. A non-deterministic failure is
-considered a [Workflow Task Failure](https://docs.temporal.io/references/failures#workflow-task-failures) which is
+considered a [Workflow Task Failure](/references/failures#workflow-task-failures) which is
 considered a transient failure, meaning it retries over and over. Users can also fix the source of non-determinism,
 perhaps by removing the Activity, and then restart the Workers. This means that this type of failure can recover by
 itself. You can also use a strategy called versioning to address this non-determinism error. See
-[versioning](https://docs.temporal.io/develop/java/versioning) to learn more.
+[versioning](/develop/java/workflows/versioning) to learn more.
 
 For more information on how Temporal handles Durable Execution or to see these slides in a video format with more
 explanation, check out our free, self-paced courses: [Temporal 102](https://learn.temporal.io/courses/temporal_102/) and

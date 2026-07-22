@@ -1,0 +1,234 @@
+---
+id: manage-failovers
+title: Manage failovers
+sidebar_label: Manage failovers
+slug: /cloud/high-availability/failovers/manage
+description: Trigger, configure, and test failovers for Temporal Cloud High Availability Namespaces.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - failover
+  - high-availability
+  - replication
+  - namespaces
+  - temporal-cloud
+---
+
+import { ToolTipTerm } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Trigger a failover {/* #trigger-failover */}
+
+You can trigger a failover manually using the Temporal Cloud Web UI, the tcld CLI, or the Cloud Ops API.
+
+Manual failovers apply only to Multi-region and Multi-cloud Replication. A
+[Same-region Replication](/cloud/high-availability#same-region-replication) Namespace fails over automatically between
+cells and cannot be failed over manually.
+
+:::warning Check your replication lag
+
+Always check the <ToolTipTerm term="replication lag" /> before initiating a failover. A forced failover when there is a
+significant replication lag has a higher likelihood of rolling back Workflow progress.
+
+:::
+
+<Tabs>
+
+<TabItem value="webui" label="Web UI">
+
+1. Visit the [Namespace page](https://cloud.temporal.io/namespaces) on the Temporal Cloud Web UI.
+1. Navigate to your Namespace details page and select the **Trigger a failover** option from the menu.
+1. Confirm your action. After confirmation, Temporal initiates the failover.
+
+</TabItem>
+
+<TabItem value="tcldcli" label="tcld">
+
+To manually trigger a failover, run the following command in your terminal:
+
+```
+tcld namespace failover \
+    --namespace <namespace_id>.<account_id> \
+    --region <target_region>
+```
+
+The `<target_region>` must be the name of a region (example: `us-east-1`) where the Namespace has a replica that is
+ready to be failed over to (replica state is `Activated`).
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before
+`namespace failover`.
+
+</TabItem>
+
+<TabItem value="ops-api" label="Cloud Ops API">
+
+You can trigger a failover programmatically using the [Cloud Ops API](/ops). The API is available via both HTTP and
+gRPC.
+
+**Using HTTP**
+
+Send a POST request to the
+[`FailoverNamespaceRegion`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/{namespace}/failover-region)
+endpoint:
+
+```
+POST https://saas-api.tmprl.cloud/cloud/namespaces/<namespace>/failover-region
+```
+
+Request body:
+
+```json
+{
+  "region": "<target_region>",
+  "asyncOperationId": "<optional_async_operation_id>"
+}
+```
+
+- `region` (required): The [region code](/cloud/regions) of the region to failover to. Must be a region where the
+  Namespace has a replica in `Activated` replica state, indicating the replica is ready to be failed over to. Example:
+  `aws-us-east-1`
+- `asyncOperationId` (optional): A user-defined ID for tracking the async operation. If not set, the server will assign
+  one.
+
+**Using gRPC**
+
+Use the
+[`FailoverNamespaceRegion`](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CloudService.FailoverNamespaceRegion)
+RPC with a
+[`FailoverNamespaceRegionRequest`](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.FailoverNamespaceRegionRequest):
+
+```protobuf
+message FailoverNamespaceRegionRequest {
+    // The namespace to failover.
+    string namespace = 1;
+    // The id of the region to failover to.
+    // Must be a region that the namespace is currently available in.
+    string region = 2;
+    // The id to use for this async operation - optional.
+    string async_operation_id = 3;
+}
+```
+
+Both methods return a
+[`FailoverNamespaceRegionResponse`](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.FailoverNamespaceRegionResponse)
+containing an async operation that you can use to track the failover status.
+
+</TabItem>
+
+</Tabs>
+
+:::info Terraform not supported
+
+The [Temporal Cloud Terraform provider](https://registry.terraform.io/providers/temporalio/temporalcloud/latest) does
+not support triggering failovers. You must use the Web UI, tcld CLI, or Cloud Ops API.
+
+:::
+
+Once the failover async operation returns successfully, the Namespace will be failed over. Temporal manages retries for
+the failover Workflow. In the rare event that an internal error prevents the failover from completing, the Temporal
+on-call team is automatically paged to intervene and force the failover to completion.
+
+## Return to the primary with failbacks {/* #failbacks */}
+
+Failback behavior depends on whether the failover was automatic or manually triggered.
+
+### After an automatic failover {/* #after-an-automatic-failover */}
+
+After an automatic failover, Temporal Cloud automatically fails back to the original region once the region is
+healthy. No action is required from you. Follow [Temporal's status page](https://status.temporal.io) for updates on the
+original region's health.
+
+If you prefer to manage failback yourself, you have two options:
+
+- **Opt out of automatic failback (manage failback manually):** After the automatic failover has completed,
+  [disable automatic failovers](/cloud/high-availability/enable#automatic-failovers) on the Namespace to prevent
+  Temporal from automatically failing back. When you're ready to return to the original region,
+  [trigger a failover](#trigger-failover) to that region and then re-enable automatic failovers.
+
+- **Stay on the new region permanently ("fail forward"):** After the automatic failover has completed,
+  [trigger a failover](#trigger-failover) to the region that is already active. This tells Temporal that you want to
+  treat the new region as your primary for as long as it's healthy. Automatic failovers remain enabled,
+  so Temporal will still protect you if the new region has an outage.
+
+### After a user-triggered failover
+
+If you triggered a failover yourself during an outage (instead of relying on an automatic failover), Temporal will
+_not_ automatically fail back for you. You must [trigger a failover](#trigger-failover) back to the original region when
+it is healthy. Monitor [Temporal's status page](https://status.temporal.io) for updates on region health.
+
+Automatic failback is only available when the most recent failover was automatic.
+
+### How to check whether your Namespace will be automatically failed back
+
+If you are not sure whether your Namespace will be automatically failed back, check the list of failovers in the
+Temporal Cloud Web UI on your Namespace's detail page:
+
+- If the most recent failover was **automatic**, then Temporal will fail the Namespace back when
+  the original region is healthy.
+- If the most recent failover was **user-triggered**, then the Namespace will _not_ be automatically failed back. You
+  must trigger the failback yourself.
+
+## Workers and failovers {/* #worker */}
+
+Enabling High Availability for Namespaces does not require specific Worker configuration. When a Namespace fails over to
+the replica, the DNS redirection orchestrated by Temporal ensures that your existing Workers continue to poll the
+Namespace without interruption. Temporal Cloud forwards their requests from the passive replica to the active region and
+the responses back, so Workers keep running through a failover.
+
+To choose where your Worker fleets run across regions, see [Deployment patterns for High Availability](/cloud/high-availability/architecture-patterns).
+
+To route Workers to the passive region's replica, see [How requests reach the replica](/cloud/high-availability/ha-connectivity#how-requests-reach-the-replica).
+
+To stop forwarding Worker polls to the active region, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+
+To disable automatic failovers, see [Enable or disable automatic failovers](/cloud/high-availability/enable#automatic-failovers).
+
+When a Namespace fails over to a replica in a different region, Workers will be communicating cross-region.
+
+- If your application cannot tolerate this latency, deploy a second set of Workers in the replica's region or opt for a
+  replica in the same region.
+- In the case of a complete regional outage, Workers in the original region may fail alongside the original Namespace.
+  To keep Workflows moving during this level of outage, deploy a second set of Workers to the secondary region.
+
+Temporal Cloud enforces a maximum connection lifetime of 5 minutes, which gives your Workers an opportunity to
+re-resolve the DNS.
+
+## Test failovers {/* #testing */}
+
+Temporal recommends regular failover testing for mission-critical applications in production. By testing in
+non-emergency conditions, you verify that your application continues to function even when parts of the infrastructure
+fail.
+
+Because failover testing relies on manually triggering a failover, it applies to Multi-region and Multi-cloud
+Replication. A [Same-region Replication](/cloud/high-availability#same-region-replication) Namespace fails over
+automatically between cells and cannot be failed over manually for testing.
+
+:::tip
+
+If this is your first time performing a failover test, run it with a test-specific Namespace and application. Practice
+runs help ensure the process runs smoothly during real incidents in production.
+
+:::
+
+Failover testing (also known as "<ToolTipTerm term="trigger testing" />") can:
+
+- **Validate replicated deployments:** In multi-region setups, failover testing ensures your application can run from
+  another region when the primary region experiences outages.
+
+- **Assess replication lag:** In multi-region deployments, monitoring
+  [replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) between regions
+  is important. Check the lag before initiating a failover to avoid rolling back Workflow progress.
+
+- **Assess recovery time:** Manual testing helps you measure actual recovery time and check if it meets your expected
+  [Recovery Time Objective (RTO)](/cloud/rpo-rto).
+
+- **Identify potential issues:** Failover testing uncovers problems not visible during normal operation, including
+  issues like
+  [backlogs and capacity planning](https://temporal.io/blog/workers-in-production#testing-failure-paths-2438) and how
+  external dependencies behave during a failover event.
+
+- **Operational readiness:** Regular testing familiarizes your team with the failover process, improving their ability
+  to handle real incidents.

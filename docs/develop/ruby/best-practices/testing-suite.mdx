@@ -26,7 +26,7 @@ This page shows how to do the following:
 
 The Ruby test-suite feature guide describes the frameworks that facilitate Workflow and integration testing.
 
-## Types of Tests {#types-of-tests}
+## Types of Tests {/* #types-of-tests */}
 
 In the context of Temporal, you can create these types of automated tests:
 
@@ -41,14 +41,14 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 **Compatible testing frameworks**
 
 The Ruby SDK is compatible with any testing framework and does not have a specific recommendation.
 Most Ruby SDK samples use [minitest](https://github.com/minitest/minitest).
 
-## Testing Workflows {#testing-workflows}
+## Testing Workflows {/* #testing-workflows */}
 
 Workflow testing can be done in an integration-test fashion against a real server, however it is hard to simulate timeouts and other long time-based code.
 Using the time-skipping Workflow test environment can help there.
@@ -225,13 +225,13 @@ When testing Workflows, often you don't want to actually run the Activities.
 Activities are just classes that extend `Temporalio::Activity::Definition`.
 Simply write different/empty/fake/asserting ones and pass those to the Worker to have different activities called during the test.
 
-## Testing Activities {#test-activities}
+## Testing Activities {/* #test-activities */}
 
 Unit testing an Activity or any code that could run in an Activity is done via the `Temporalio::Testing::ActivityEnvironment` class.
 Simply instantiate the class, and any code inside the block to `run` will be invoked inside the activity context.
 Several things about the activity environment can be customized via parameters when constructing the environment including setting the info, providing a proc to call back on each heartbeat, setting the cancellation to be used, etc.
 
-## Replay test {#replay-test}
+## Replay test {/* #replay-test */}
 
 Given a Workflow's history, it can be replayed locally to check for things like non-determinism errors.
 For example, assuming the `history_json` parameter below is given a JSON string of history exported from the CLI or web UI for workflow `MyWorkflow`, the following method will replay it:

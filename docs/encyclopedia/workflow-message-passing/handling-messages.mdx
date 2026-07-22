@@ -35,9 +35,9 @@ import { RelatedReadContainer, RelatedReadItem, CaptionedImage } from '@site/src
 When Signals, Updates, and Queries arrive at your Workflow, the handlers for these messages will operate on the current state of your Workflow and can use the fields you have set.
 In this section, we’ll give you an overview of how messages work with Temporal and cover how to write correct and robust handlers by covering topics like atomicity, guaranteeing completion before the Workflow exits, exceptions, and idempotency.
 
-## Handling Messages {#handling-messages}
+## Handling Messages {/* #handling-messages */}
 
-### Message handler concurrency {#message-handler-concurrency}
+### Message handler concurrency {/* #message-handler-concurrency */}
 
 If your Workflow receives messages, you may need to consider how those messages interact with one another or with the main Workflow method.
 Behind the scenes, Temporal is running a loop that looks like this:
@@ -50,7 +50,7 @@ Every time the Workflow wakes up--generally, it wakes up when it needs to--it wi
 
 This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
 
-#### Initializing the Workflow first {#workflow-initializers}
+#### Initializing the Workflow first {/* #workflow-initializers */}
 
 Initialize your Workflow's state before handling messages.
 This prevents your handler from reading uninitialized instance variables.
@@ -72,7 +72,7 @@ If you need to block, make your Signal or Update handler [wait](#waiting) for an
 
 In Go and TypeScript, register any message handlers only after completing initialization.
 
-### Message handler patterns {#message-handler-patterns}
+### Message handler patterns {/* #message-handler-patterns */}
 
 Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](/handling-messages#update-validators):
 
@@ -87,7 +87,7 @@ Here are several common patterns for write operations, Signal and Update handler
 
 Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
 
-#### Waiting {#waiting}
+#### Waiting {/* #waiting */}
 
 A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
 
@@ -96,12 +96,12 @@ A Signal or Update handler can block waiting for the Workflow to reach a certain
 Sometimes, you need your message handler to wait for long-running operations such as executing an Activity. When this happens, the handler will yield control back to [the loop](#message-handler-concurrency). This means that your handlers can have race conditions if you’re not careful.
 You can guard your handlers with concurrency primitives like mutexes or semaphores, but you should use versions of these primitives provided for Workflows in most languages. See the links below for examples of how to use them in your SDK.
 
-#### Inject work into the main Workflow {#injecting-work-into-main-workflow}
+#### Inject work into the main Workflow {/* #injecting-work-into-main-workflow */}
 
 Sometimes you want to process work provided by messages in the main Workflow. Perhaps you’d like to accumulate several messages before acting on any of them. For example, message handlers might put work into a queue, which can then be picked up and processed in an event loop that you yourself write.
 This option is considered advanced but offers powerful flexibility. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
 
-#### Finishing handlers before the Workflow completes {#finishing-message-handlers}
+#### Finishing handlers before the Workflow completes {/* #finishing-message-handlers */}
 
 You should generally finish running all handlers before the Workflow run completes or continues as new. For some Workflows, this means you should explicitly check to make sure that all the handlers have completed before finishing. You can await a condition called All Handlers Finished at the end of your Workflow.
 
@@ -109,7 +109,7 @@ If you don’t need to ensure that your handlers complete, you may specify your 
 
 See the links below for how to ensure handlers are finished in your SDK.
 
-#### Message IDs and handling Continue-As-New {#exactly-once-message-processing}
+#### Message IDs and handling Continue-As-New {/* #exactly-once-message-processing */}
 
 Usually, you'll want your message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice. For Updates, Temporal handles this for you on the server, by deduplicating according to the Update ID. The Update ID is set automatically to a UUID, but you can set it yourself.
 
@@ -140,7 +140,7 @@ See examples of the above patterns.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#message-handler-patterns" text="Author message handler patterns in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Update Validators {#update-validators}
+### Update Validators {/* #update-validators */}
 
 When you define an Update handler, you may optionally define an Update Validator: a read operation that's responsible for accepting or rejecting the Update. You can use Validators to verify arguments or make sure the Workflow is ready to accept your Updates.
 
@@ -166,7 +166,7 @@ Once the Update handler is finished and has returned a value, the operation is c
     <RelatedReadItem path="/develop/rust/workflows/message-passing#updates" text="Validate updates in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Exceptions in message handlers {#exceptions}
+### Exceptions in message handlers {/* #exceptions */}
 
 When throwing an exception in a message handler, you should decide whether to make it an [Application Failure](/references/failures#application-failure). The implications are different between Signals and Updates.
 
@@ -177,16 +177,16 @@ The following content applies in every SDK except the Go SDK. See below.
 #### Exceptions in Signals
 
 In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
-Similarly, allowing a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure) will cause the entire Workflow to fail.
-Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
+Similarly, allowing a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](/references/failures#activity-failure) or [Child Workflow Failure](/references/failures#child-workflow-failure) will cause the entire Workflow to fail.
+Note that for Activities, this will only happen if you change the default Activity [Retry Policy](/encyclopedia/retry-policies), since by default they retry forever.
 If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change.
 
 #### Exceptions in Updates
 
 Doing any of the following will fail the Update and cause the client to receive the error:
 
-- Reject the Update by throwing any exception from your [Validator](https://docs.temporal.io/handling-messages#update-validators).
-- Allow a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
+- Reject the Update by throwing any exception from your [Validator](/handling-messages#update-validators).
+- Allow a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](/references/failures#activity-failure) or [Child Workflow Failure](/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](/encyclopedia/retry-policies), since by default they retry forever.
 - Throw an [Application Failure](/references/failures#application-failure) from your Update handler.
 
 Unlike with Signals, the Workflow will keep going in these cases.
@@ -197,7 +197,7 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 
 In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they cause a [Workflow Task Failure](/references/failures#workflow-task-failures).
 
-### Writing Signal Handlers {#writing-signal-handlers}
+### Writing Signal Handlers {/* #writing-signal-handlers */}
 
 Use these links to see a simple Signal handler.
 
@@ -212,7 +212,7 @@ Use these links to see a simple Signal handler.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#signals" text="Handle Signals in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Writing Update Handlers {#writing-update-handlers}
+### Writing Update Handlers {/* #writing-update-handlers */}
 
 Use these links to see a simple update handler.
 
@@ -227,7 +227,7 @@ Use these links to see a simple update handler.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#updates" text="Handle Updates in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Writing Query Handlers {#writing-query-handlers}
+### Writing Query Handlers {/* #writing-query-handlers */}
 
 Author queries using these per-language guides.
 

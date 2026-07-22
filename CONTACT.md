@@ -22,7 +22,7 @@ We’re always happy to help and look forward to hearing from you!
 
 We believe strongly in Open Source and encourage contributions to our documentation. If you’d like to contribute or help us improve, these links may help:
 
-- **About the docs**: Learn more about the documentation structure and how we maintain it by visiting the [documentation overview](https://github.com/temporalio/documentation/blob/master/README.md).
+- **About the docs**: Learn more about the documentation structure and how we maintain it by visiting the [documentation overview](https://github.com/temporalio/documentation/blob/main/README.md).
 - **Contributing**: Check out our [Contributing Guidelines](https://github.com/temporalio/documentation/blob/main/CONTRIBUTING.md) for how to get started with contributing to the Temporal documentation or codebase.
 - **We’re Hiring**: Interested in joining the Temporal team? We’re always looking for passionate individuals. Explore open positions at [Temporal Careers](https://temporal.io/careers).
 

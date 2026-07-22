@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a basic Workflow {#develop-workflows}
+## How to develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -30,7 +30,7 @@ interface FileProcessingWorkflow
 }
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+### How to define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -52,7 +52,7 @@ interface FileProcessingWorkflow {
 }
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+### How to define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -71,7 +71,7 @@ interface FileProcessingWorkflow {
 }
 ```
 
-### How to customize your Workflow Type {#workflow-type}
+### How to customize your Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -94,7 +94,42 @@ interface YourWorkflowDefinitionInterface
 }
 ```
 
-### How to develop Workflow logic {#workflow-logic-requirements}
+### Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. However, if you use the `#[WorkflowInit]` attribute on your constructor, you can give it the same [Workflow parameters](/develop/php/workflows/basics#workflow-parameters) as your `#[WorkflowMethod]`.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/php/client/temporal-client#start-workflow-execution). The Workflow input arguments are also passed to your `#[WorkflowMethod]` method. That always happens, whether or not you use the `#[WorkflowInit]` attribute.
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class GreetingExample
+{
+    private readonly string $nameWithTitle;
+    private bool $titleHasBeenChecked;
+
+    // Note the attribute is on a public constructor
+    #[Workflow\WorkflowInit]
+    public function __construct(string $input)
+    {
+        $this->nameWithTitle = 'Sir ' . $input;
+        $this->titleHasBeenChecked = false;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function getGreeting(string $input)
+    {
+        yield Workflow::await(fn() => $this->titleHasBeenChecked);
+        return "Hello " . $this->nameWithTitle;
+    }
+}
+```
+
+### How to develop Workflow logic {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow. used inside your Workflow to interact with external (to the Workflow) application code.
 

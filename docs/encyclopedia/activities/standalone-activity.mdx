@@ -16,17 +16,19 @@ tags:
   - Durable Execution
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Standalone Activities are available as a [Public Preview](/evaluate/development-production-features/release-stages#public-preview) feature in [Temporal Cloud](#temporal-cloud-support) and in the [Temporal CLI](#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher.
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
+  guidePath="activities/standalone-activities"
+>
+  Available in [Temporal Cloud](#temporal-cloud-support) and in Temporal Server v1.31.0 or higher (included in [Temporal CLI](#temporal-cli-support) v1.7.0 or higher).
+</ReleaseNoteHeader>
 
 See [limitations](#public-preview-limitations) below.
 
-## What is a Standalone Activity? {#standalone-activity}
+## What is a Standalone Activity? {/* #standalone-activity */}
 
 If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to
 execute a single Activity, use a Standalone Activity.
@@ -35,16 +37,11 @@ Standalone Activities are Temporal’s [job queue](/evaluate/development-product
 the simplest way to run durable, retryable tasks on Temporal.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <a href="/diagrams/standalone-activities-vs-workflowlight.svg" target="_blank" rel="noopener noreferrer">
-    <ThemedImage
-      alt="Standalone Activity vs. Workflow - Standalone Activities execute a single function reliably as a top-level primitive, while Workflows orchestrate multiple Activity steps"
-      sources={{
-        light: '/diagrams/standalone-activities-vs-workflowlight.svg',
-        dark: '/diagrams/standalone-activities-vs-workflowdark.svg',
-      }}
-      style={{maxWidth: '100%', cursor: 'pointer'}}
-    />
-  </a>
+  <CaptionedImage
+    src="/diagrams/standalone-activities-vs-workflowlight.svg"
+    srcDark="/diagrams/standalone-activities-vs-workflowdark.svg"
+    alt="Standalone Activity vs. Workflow - Standalone Activities execute a single function reliably as a top-level primitive, while Workflows orchestrate multiple Activity steps"
+  />
 </div>
 
 A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a
@@ -64,6 +61,7 @@ Pick your SDK and follow the quickstart:
 - [Python SDK - Standalone Activities quickstart and code sample](/develop/python/activities/standalone-activities)
 - [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities)
 - [Java SDK - Standalone Activities quickstart and code sample](/develop/java/activities/standalone-activities)
+- [Ruby SDK - Standalone Activities quickstart and code sample](/develop/ruby/activities/standalone-activities)
 - [TypeScript SDK - Standalone Activities quickstart and code sample](/develop/typescript/activities/standalone-activities)
 
 :::
@@ -90,7 +88,7 @@ webhook, syncing data, or executing a single function reliably with built-in ret
 - Activity metrics - including counts for success, failure, timeout, and cancel
 - Dual use - execute Activities within a Workflow or standalone with no Worker code changes
 
-## Observability {#observability}
+## Observability {/* #observability */}
 
 All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
 to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
@@ -120,7 +118,7 @@ Install with Homebrew:
 brew install temporal
 ```
 
-Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
 Verify the installation:
 

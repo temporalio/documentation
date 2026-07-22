@@ -25,7 +25,7 @@ This section covers features related to viewing the state of the application, in
 - [Log from a Workflow](#logging)
 - [Visibility APIs](#visibility)
 
-## Emit metrics {#metrics}
+## Emit metrics {/* #metrics */}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -44,14 +44,14 @@ To set up tracing of Workflows and Activities, use our `opentelemetry-intercepto
 
 ```typescript
 telemetryOptions: {
-    metrics: {
-      prometheus: { bindAddress: '0.0.0.0:9464' },
-    },
-    logging: { forward: { level: 'DEBUG' } },
+  metrics: {
+    prometheus: { bindAddress: '0.0.0.0:9464' },
   },
+  logging: { forward: { level: 'DEBUG' } },
+},
 ```
 
-## Set up tracing {#tracing}
+## Set up tracing {/* #tracing */}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -96,7 +96,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 
 Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
 
-## Log from a Workflow {#logging}
+## Set up logging {/* #logging */}
 
 Logging enables you to record critical information during code execution.
 Loggers create an audit trail and capture information about your Workflow's operation.
@@ -104,17 +104,7 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
-
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-The Temporal SDK core normally uses `WARN` as its default logging level.
+You can find the log levels supported by the `winston` package used in the examples below in [their official documentation](https://github.com/winstonjs/winston#logging-levels). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 ### Logging from Activities
 
@@ -241,7 +231,7 @@ import {
   makeTelemetryFilterString,
   Runtime,
 } from '@temporalio/worker';
-import winston from 'winston';
+import winston, { transports } from 'winston';
 
 const logger = winston.createLogger({
   level: 'info',
@@ -250,7 +240,15 @@ const logger = winston.createLogger({
 });
 
 Runtime.install({
-  logger,
+  logger: new DefaultLogger('INFO', (entry) => {
+    logger.log({
+      label: entry.meta?.activityId ? 'activity' : entry.meta?.workflowId ? 'workflow' : 'worker',
+      level: entry.level.toLowerCase(),
+      message: entry.message,
+      timestamp: Number(entry.timestampNanos / 1_000_000n),
+      ...entry.meta,
+    });
+  }),
   // The following block is optional, but generally desired.
   // It allows capturing log messages emitted by the underlying Temporal Core SDK (native code).
   // The Telemetry Filter String determine the desired verboseness of messages emitted by the
@@ -264,9 +262,182 @@ Runtime.install({
 });
 ```
 
-{/* FIXME(JWH): Everything below this point must be revisited and moved to a distinct section (Sinks). */}
+### How to provide a custom logger {/* #custom-logger */}
 
-### Implementing custom Logging-like features based on Workflow Sinks
+#### Logging in Workers and Clients
+
+The Worker comes with a default logger, which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
+
+#### Customizing the default logger
+
+Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
+
+```ts
+import { DefaultLogger, Runtime } from '@temporalio/worker';
+
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
+  console.log(`Custom logger: ${level} — ${message}`);
+});
+Runtime.install({ logger });
+```
+
+The previous code example sets the default logger to log only messages with level `WARN` and higher.
+
+#### Accumulate logs for testing and reporting
+
+```ts
+import { DefaultLogger, LogEntry, LogLevel } from '@temporalio/worker';
+
+const logs: LogEntry[] = [];
+const logger = new DefaultLogger(LogLevel.TRACE, (entry) => logs.push(entry));
+
+logger.debug('hey', { a: 1 });
+logger.info('ho');
+logger.warn('lets', { a: 1 });
+logger.error('go');
+```
+
+A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
+
+```ts
+import { 
+  DefaultLogger,
+  Runtime
+} from '@temporalio/worker';
+import winston from 'winston';
+
+const winstonLogger = winston.createLogger({
+  level: 'debug',
+});
+
+const logger = new DefaultLogger('DEBUG', (entry) => {
+  winstonLogger.log({
+    label: 'worker',
+    level: entry.level.toLowerCase(),
+    message: entry.message,
+    timestamp: Number(entry.timestampNanos / 1_000_000n),
+    ...entry.meta,
+  });
+});
+
+Runtime.install({ logger });
+```
+
+## Visibility APIs {/* #visibility */}
+
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
+
+### How to use Search Attributes {/* #search-attributes */}
+
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
+
+However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
+
+You can do this with [Search Attributes](/search-attribute).
+
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- [Custom Search Attributes](/search-attribute#custom-search-attribute) can contain their own domain-specific data (like `customerId` or `numItems`).
+
+The steps to using custom Search Attributes are:
+
+- Create a new Search Attribute in your Temporal Service using `temporal operator search-attribute create` or the Cloud UI.
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an option when starting the Execution.
+  - In the Workflow by calling `UpsertSearchAttributes`.
+- Read the value of the Search Attribute:
+  - On the Client by calling `DescribeWorkflow`.
+  - In the Workflow by looking at `WorkflowInfo`.
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
+  - [With the Temporal CLI](/cli/command-reference/workflow#list).
+  - In code by calling `ListWorkflowExecutions`.
+
+Here is how to query Workflow Executions:
+
+Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions):
+
+```typescript
+import { Connection } from '@temporalio/client';
+
+const connection = await Connection.connect();
+const response = await connection.workflowService.listWorkflowExecutions({
+  query: `ExecutionStatus = "Running"`,
+});
+```
+
+where `query` is a [List Filter](/list-filter).
+
+### How to set custom Search Attributes {/* #custom-search-attributes */}
+
+After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+
+Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
+
+<!--SNIPSTART typescript-search-attributes-client-->
+[search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/client.ts)
+```ts
+const handle = await client.workflow.start(example, {
+  taskQueue: 'search-attributes',
+  workflowId: 'search-attributes-example-0',
+  searchAttributes: {
+    CustomIntField: [2],
+    CustomKeywordListField: ['keywordA', 'keywordB'],
+    CustomBoolField: [true],
+    CustomDatetimeField: [new Date()],
+    CustomTextField: [
+      'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
+    ],
+  },
+});
+
+const { searchAttributes } = await handle.describe();
+```
+<!--SNIPEND-->
+
+The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
+
+### How to upsert Search Attributes {/* #upsert-search-attributes */}
+
+You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
+
+Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
+
+<!--SNIPSTART typescript-search-attributes-workflow -->
+[search-attributes/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/workflows.ts)
+```ts
+export async function example(): Promise<SearchAttributes> {
+  const customInt = (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
+  upsertSearchAttributes({
+    // overwrite the existing CustomIntField: [2]
+    CustomIntField: [customInt + 1],
+
+    // delete the existing CustomBoolField: [true]
+    CustomBoolField: [],
+
+    // add a new value
+    CustomDoubleField: [3.14],
+  });
+  return workflowInfo().searchAttributes;
+}
+```
+<!--SNIPEND-->
+
+### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
+
+To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+
+```typescript
+import { upsertSearchAttributes } from '@temporalio/workflow';
+
+async function yourWorkflow() {
+  upsertSearchAttributes({ CustomIntField: 1 });
+
+// ... later, to remove:
+upsertSearchAttributes({ CustomIntField: null });
+}
+```
+
+## Workflow Sinks
 
 Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
@@ -276,7 +447,7 @@ Workflows in Temporal may be replayed from the beginning of their history when r
 Sinks are written as objects with methods.
 Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
-#### Comparing Sinks and Activities
+### Comparing Sinks and Activities
 
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
@@ -285,26 +456,24 @@ However, they differ from Activities in important ways:
 - A sink call isn't recorded in the Event History of a Workflow Execution (no timeouts or retries).
 - A sink function _always_ runs on the same Worker that runs the Workflow Execution it's called from.
 
-#### Declare the sink interface
+### Declare the sink interface
 
 Explicitly declaring a sink's interface is optional but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
-[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/workflows.ts)
+[packages/test/src/workflows/log-sink-tester.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sink-tester.ts)
 ```ts
-import { log, proxySinks, Sinks } from '@temporalio/workflow';
+import type { Sinks } from '@temporalio/workflow';
 
-export interface AlertSinks extends Sinks {
-  alerter: {
-    alert(message: string): void;
+export interface CustomLoggerSinks extends Sinks {
+  customLogger: {
+    info(message: string): void;
   };
 }
-
-export type MySinks = AlertSinks;
 ```
 <!--SNIPEND-->
 
-#### Implement sinks
+### Implement sinks
 
 Implementing sinks is a two-step process.
 
@@ -350,17 +519,15 @@ main().catch((err) => {
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks).
 - You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` option.
 
-#### Proxy and call a sink function from a Workflow
+### Proxy and call a sink function from a Workflow
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
-[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/workflows.ts)
+[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sample.ts)
 ```ts
-const { alerter } = proxySinks<MySinks>();
+import * as wf from '@temporalio/workflow';
 
-export async function sinkWorkflow(): Promise<string> {
-  log.info('Workflow Execution started');
-  alerter.alert('alerter: Workflow Execution started');
-  return 'Hello, Temporal!';
+export async function logSampleWorkflow(): Promise<void> {
+  wf.log.info('Workflow execution started');
 }
 ```
 <!--SNIPEND-->
@@ -377,168 +544,3 @@ The injected sink function contributes to the overall Workflow Task processing d
 
 - If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
 - The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
-
-### How to provide a custom logger {#custom-logger}
-
-Use a custom logger for logging.
-
-#### Logging in Workers and Clients
-
-The Worker comes with a default logger, which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
-The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
-
-#### Customizing the default logger
-
-Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
-
-```ts
-import { DefaultLogger, Runtime } from '@temporalio/worker';
-
-const logger = new DefaultLogger('WARN', ({ level, message }) => {
-  console.log(`Custom logger: ${level} — ${message}`);
-});
-Runtime.install({ logger });
-```
-
-The previous code example sets the default logger to log only messages with level `WARN` and higher.
-
-#### Accumulate logs for testing and reporting
-
-```ts
-import { DefaultLogger, LogEntry, LogLevel } from '@temporalio/worker';
-
-const logs: LogEntry[] = [];
-const logger = new DefaultLogger(LogLevel.TRACE, (entry) => logs.push(entry));
-
-logger.debug('hey', { a: 1 });
-logger.info('ho');
-logger.warn('lets', { a: 1 });
-logger.error('go');
-```
-
-A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
-
-```ts
-import { Runtime } from '@temporalio/worker';
-import winston from 'winston';
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [new transports.File({ filename: '/path/to/worker.log' })],
-});
-Runtime.install({ logger });
-```
-
-## Visibility APIs {#visibility}
-
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
-
-### How to use Search Attributes {#search-attributes}
-
-The typical method of retrieving a Workflow Execution is by its Workflow Id.
-
-However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
-
-You can do this with [Search Attributes](/search-attribute).
-
-- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
-- [Custom Search Attributes](/search-attribute#custom-search-attribute) can contain their own domain-specific data (like `customerId` or `numItems`).
-
-The steps to using custom Search Attributes are:
-
-- Create a new Search Attribute in your Temporal Service using `temporal operator search-attribute create` or the Cloud UI.
-- Set the value of the Search Attribute for a Workflow Execution:
-  - On the Client by including it as an option when starting the Execution.
-  - In the Workflow by calling `UpsertSearchAttributes`.
-- Read the value of the Search Attribute:
-  - On the Client by calling `DescribeWorkflow`.
-  - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
-  - [With the Temporal CLI](/cli/workflow#list).
-  - In code by calling `ListWorkflowExecutions`.
-
-Here is how to query Workflow Executions:
-
-Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions):
-
-```typescript
-import { Connection } from '@temporalio/client';
-
-const connection = await Connection.connect();
-const response = await connection.workflowService.listWorkflowExecutions({
-  query: `ExecutionStatus = "Running"`,
-});
-```
-
-where `query` is a [List Filter](/list-filter).
-
-### How to set custom Search Attributes {#custom-search-attributes}
-
-After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
-
-Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
-
-<!--SNIPSTART typescript-search-attributes-client-->
-[search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/client.ts)
-```ts
-const handle = await client.workflow.start(example, {
-  taskQueue: 'search-attributes',
-  workflowId: 'search-attributes-example-0',
-  searchAttributes: {
-    CustomIntField: [2],
-    CustomKeywordListField: ['keywordA', 'keywordB'],
-    CustomBoolField: [true],
-    CustomDatetimeField: [new Date()],
-    CustomTextField: [
-      'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
-    ],
-  },
-});
-
-const { searchAttributes } = await handle.describe();
-```
-<!--SNIPEND-->
-
-The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
-
-### How to upsert Search Attributes {#upsert-search-attributes}
-
-You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
-
-Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
-
-<!--SNIPSTART typescript-search-attributes-workflow -->
-[search-attributes/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/workflows.ts)
-```ts
-export async function example(): Promise<SearchAttributes> {
-  const customInt = (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
-  upsertSearchAttributes({
-    // overwrite the existing CustomIntField: [2]
-    CustomIntField: [customInt + 1],
-
-    // delete the existing CustomBoolField: [true]
-    CustomBoolField: [],
-
-    // add a new value
-    CustomDoubleField: [3.14],
-  });
-  return workflowInfo().searchAttributes;
-}
-```
-<!--SNIPEND-->
-
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
-
-To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
-
-```typescript
-import { upsertSearchAttributes } from '@temporalio/workflow';
-
-async function yourWorkflow() {
-  upsertSearchAttributes({ CustomIntField: 1 });
-
-// ... later, to remove:
-upsertSearchAttributes({ CustomIntField: null });
-}
-```

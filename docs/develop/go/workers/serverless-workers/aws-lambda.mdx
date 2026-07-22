@@ -19,14 +19,13 @@ tags:
   - AWS Lambda
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Serverless Workers are in [Pre-release](/evaluate/development-production-features/release-stages#pre-release) and available to select Temporal Cloud customers.
-To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-APIs are experimental and may be subject to backwards-incompatible changes.
-[Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
-
-:::
+<ReleaseNoteHeader featureName="serverlessWorkers">
+    To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+    APIs are experimental and may be subject to backwards-incompatible changes.
+    [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
 
 The `lambdaworker` package lets you run a Temporal Serverless Worker on AWS Lambda.
 Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
@@ -35,7 +34,7 @@ You register Workflows and Activities the same way you would with a standard Wor
 
 For a full end-to-end deployment guide covering AWS IAM setup, compute configuration, and verification, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
 
-## Create and run a Worker in Lambda {#create-and-run}
+## Create and run a Worker in Lambda {/* #create-and-run */}
 
 Use the `RunWorker` function to start a Lambda-based Worker.
 Pass a `WorkerDeploymentVersion` and a callback that registers your Workflows and Activities.
@@ -81,7 +80,7 @@ Set it per-Workflow at registration time, or set a worker-level default with `De
 
 The `Options` callback gives you access to the same registration methods you use with a traditional Worker: `RegisterWorkflow`, `RegisterWorkflowWithOptions`, `RegisterActivity`, `RegisterActivityWithOptions`, and `RegisterNexusService`.
 
-## Configure the Temporal connection {#configure-connection}
+## Configure the Temporal connection {/* #configure-connection */}
 
 The `lambdaworker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
@@ -95,7 +94,7 @@ The file is optional. If absent, only environment variables are used.
 
 Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
 
-## Adjust Worker defaults for Lambda {#lambda-tuned-defaults}
+## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 
 The `lambdaworker` package applies conservative defaults suited to short-lived Lambda invocations.
 These differ from standard Worker defaults to avoid overcommitting resources in a constrained environment.
@@ -125,7 +124,7 @@ The default is `WorkerStopTimeout` + 2 seconds.
 If your Worker handles long-running Activities, increase `WorkerStopTimeout`, `ShutdownDeadlineBuffer`, and the Lambda invocation deadline (`--timeout`) together.
 For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
 
-## Add observability with OpenTelemetry {#add-observability}
+## Add observability with OpenTelemetry {/* #add-observability */}
 
 The `lambdaworker/otel` sub-package provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
 With this enabled, the Worker emits SDK metrics and distributed traces for Workflow and Activity executions.

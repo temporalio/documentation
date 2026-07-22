@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a Workflow {#develop-workflows}
+## How to develop a Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -42,10 +42,9 @@ A Workflow implementation implements a Workflow interface.
 
 ```java
 // Define the Workflow implementation which implements our getGreeting Workflow method.
-  public static class GreetingWorkflowImpl implements GreetingWorkflow {
-      ...
-    }
-  }
+public static class GreetingWorkflowImpl implements GreetingWorkflow {
+  ...
+}
 ```
 
 To call Activities in your Workflow, call the Activity implementation.
@@ -54,7 +53,7 @@ Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to ot
 
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 
-## Workflow interface inheritance {#interface-inheritance}
+## Workflow interface inheritance {/* #interface-inheritance */}
 
 Workflow interfaces can form inheritance hierarchies.
 It may be useful for creating reusable components across multiple
@@ -137,7 +136,7 @@ This registration will fail with:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-## Define Workflow parameters {#workflow-parameters}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -161,7 +160,7 @@ public interface YourWorkflow {
 }
 ```
 
-## Define Workflow return parameters {#workflow-return-values}
+## Define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -177,7 +176,7 @@ Related references:
 - [Data Converter](/dataconversion)
 - [Java DataConverter reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-## Customize your Workflow Type {#workflow-type}
+## Customize your Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that is referred to as the Workflow name.
 
@@ -209,7 +208,43 @@ In the following example, the Workflow Type is set to `your-workflow`.
 
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
 
-## Workflow logic requirements {#workflow-logic-requirements}
+## Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/workflows/basics#workflow-parameters) as your `@WorkflowMethod`.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/java/client/temporal-client#start-workflow-execution). The Workflow input arguments are also passed to your `@WorkflowMethod` method. That always happens, whether or not you use the `@WorkflowInit` annotation.
+
+Here's an example. Notice that the constructor and `getGreeting` must have the same parameters:
+
+```java
+public class GreetingExample {
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        @WorkflowMethod
+        String getGreeting(String input);
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        private final String nameWithTitle;
+        private boolean titleHasBeenChecked;
+        ...
+        // Note the annotation is on a public constructor
+        @WorkflowInit
+        public GreetingWorkflowImpl(String input) {
+          this.nameWithTitle = "Knight " + input;
+          this.titleHasBeenChecked = false;
+        }
+
+        @Override
+        public String getGreeting(String input) {
+          Workflow.await(() -> titleHasBeenChecked)
+          return "Hello " + nameWithTitle;
+        }
+    }
+}
+```
+
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 

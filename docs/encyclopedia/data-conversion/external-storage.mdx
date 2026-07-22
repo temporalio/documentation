@@ -23,14 +23,15 @@ import { CaptionedImage } from '@site/src/components';
 
 :::info Release, stability, and dependency info
 
-External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs and
-configuration may change before General Availability. Join the
+External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs
+and configuration may change before General Availability. Join the
 [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 
 :::
 
 External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
-the Event History instead. This is called the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern).
+the Event History instead. This is called the
+[claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern).
 
 For SDK-specific usage guides, see:
 
@@ -39,14 +40,15 @@ For SDK-specific usage guides, see:
 
 ## Why use External Storage
 
-The Temporal Service enforces a maximum per-payload size. The default and recommended limit is 2 MB. Self-hosted users can
-[configure this limit](/self-hosted-guide/defaults), but it is fixed at 2 MB on Temporal Cloud. Payloads that exceed this limit fail the
-operation. Without External Storage, you must restructure your code to work around the limit, for example by splitting
-data across multiple Workflows.
+The Temporal Service enforces a maximum per-payload size. The default and recommended limit is 2 MB. Self-hosted users
+can [configure this limit](/self-hosted-guide/defaults), but it is fixed at 2 MB on Temporal Cloud. Payloads that exceed
+this limit fail the operation. Without External Storage, you must restructure your code to work around the limit, for
+example by splitting data across multiple Workflows.
 
 Even when individual payloads stay under the hard limit, payload data accumulates in Event History. Every Activity input
 and output is persisted, so Workflows that pass data through many Activities can see history size grow quickly. Large
-histories degrade Workflow Task latency. You may use [Continue-as-New](/workflow-execution/continue-as-new) to work around this problem, but that comes with other tradeoffs.
+histories degrade Workflow Task latency. You may use [Continue-as-New](/workflow-execution/continue-as-new) to work
+around this problem, but that comes with other tradeoffs.
 
 External Storage addresses several common scenarios:
 
@@ -59,15 +61,15 @@ External Storage addresses several common scenarios:
 - **Migration to Temporal Cloud.** Self-hosted deployments may have higher configured payload limits. External Storage
   lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
-  payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads regardless
-  of size.
+  payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads
+  regardless of size.
 
 For SDK-specific usage guides, see:
 
 - [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
 - [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
 
-## How External Storage fits in the data conversion pipeline {#data-pipeline}
+## How External Storage fits in the data conversion pipeline {/* #data-pipeline */}
 
 During [Data Conversion](/dataconversion), External Storage sits at the end of the pipeline, after both the
 [Payload Converter](/payload-converter) and the [Payload Codec](/payload-codec):
@@ -98,6 +100,26 @@ payload from external storage before returning it to your Workflow or Client.
 Because External Storage runs after the Payload Codec, if you use an encryption codec, payloads are already encrypted
 before upload to your store.
 
+## Choose a storage system {/* #choose-storage */}
+
+A production storage system should meet the following requirements:
+
+- Store payload data durably and retain it for the full Workflow lifetime plus the Namespace retention period. See
+  [Lifecycle management](#lifecycle) for details.
+- Be reachable from every Client, Worker, and Codec Server that encodes or decodes payloads.
+- Support your expected payload sizes.
+- Return consistent data immediately after a write completes.
+- Meet your latency and throughput requirements under realistic load.
+- Provide appropriate controls for authentication, encryption, monitoring, and backup.
+
+Start with an object store such as Amazon S3, Google Cloud Storage, or Azure Blob Storage unless you have a specific
+reason to use a different system, such as lower latency or existing infrastructure constraints.
+
+- **Amazon S3, Google Cloud Storage, Azure Blob Storage:** Default choice for durable payload storage. We provide a
+  first-party S3 storage driver for the [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) and [Python](/develop/python/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3) SDKs.
+- **Google Cloud Bigtable:** Low-latency reads on Google Cloud, but payloads must fit within Bigtable's cell and row size limits.
+- **Redis:** Suitable when configured for durability (such as with AOF persistence), not as an evicting cache. Refer to the [Python Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis) for an example implementation. 
+
 ## Storage drivers
 
 A storage driver connects External Storage to a backing store. Each driver provides two operations:
@@ -106,7 +128,8 @@ A storage driver connects External Storage to a backing store. Each driver provi
   later.
 - **Retrieve**. Download payloads using the claims that `store` produced.
 
-The S3 driver also includes diagnostic metadata in error messages, such as the AWS region, to help with troubleshooting storage failures.
+The S3 driver also includes diagnostic metadata in error messages, such as the AWS region, to help with troubleshooting
+storage failures.
 
 Temporal SDKs include built-in drivers for common storage systems like Amazon S3. You can configure multiple storage
 drivers and use a selector function to route payloads to different drivers based on size, type, or other criteria such
@@ -114,10 +137,14 @@ as hot and cold storage tiers.
 
 ### Custom storage drivers
 
-If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific examples, see:
+If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific
+examples, see:
 
 - [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
+
+For example, see the
+[Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis).
 
 ## Key configuration settings
 
@@ -128,7 +155,7 @@ Configure External Storage on the Data Converter. The key settings are:
 - **Driver selector**. When using multiple drivers, you must provide a function that chooses which driver handles each
   payload.
 
-## Lifecycle management for external storage {#lifecycle}
+## Lifecycle management for external storage {/* #lifecycle */}
 
 Temporal does not automatically delete payloads from your external store. Payloads can also be orphaned if a request
 fails after the upload completes. We recommend you configure a lifecycle policy that both ensures these payloads are
@@ -148,3 +175,47 @@ If your Workflows run indefinitely (no Run Timeout), there is no finite TTL that
 based on your operational needs. Use [Continue-as-New](/workflow-execution/continue-as-new) for Workflows that need to
 run longer. The new run uploads fresh payloads, and the old run's payloads only need to survive through its retention
 period.
+
+## Durable External Storage {/* #durable-external-storage */}
+
+External Storage stores payloads in a single storage backend. If that backend becomes unavailable, Workers can't
+retrieve payloads. To protect against regional or provider failures, implement your drivers in a way that takes
+advantage of your storage provider's redundancy features, such as cross-region replication and multi-region routing.
+
+:::info Storage failures are not retried within a Task attempt
+
+The SDK does not retry a failed `Store` or `Retrieve` call within the same Task attempt. If your storage driver
+returns an error, that failure fails the current Workflow Task or Activity Task attempt. Temporal retries the Task as
+a whole, and the new attempt retries the storage operation along with the rest of the Task. For Activities, the
+[Retry Policy](/encyclopedia/retry-policies) controls the timing of that retry.
+
+:::
+
+### S3 Multi-Region Access Points
+
+The built-in S3 storage driver supports
+[S3 Multi-Region Access Points (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/) as the bucket
+endpoint. Combined with
+[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html), this gives you
+automatic failover across regions: if a bucket or region becomes unavailable, requests route to the closest healthy
+bucket.
+
+For setup instructions, see
+[Configuring S3 Multi-Region Access Points with replication](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiRegionAccessPointBucketReplication.html)
+in the AWS documentation. After creating the MRAP, configure the External Storage S3 driver to use the MRAP ARN in place
+of the bucket name.
+
+### Replication tradeoffs
+
+Cross-region replication introduces eventual consistency. After a write, a read in another region may temporarily miss
+the object. To mitigate:
+
+- Ensure Activities that read from External Storage have appropriate retry policies, so they recover from transient
+  unavailability caused by replication lag.
+- If an Activity needs to read a payload immediately after it is written, prefer scheduling it on the same Worker or in
+  the same region to avoid the lag window.
+
+By default, S3 CRR has no SLA on replication time. If you need stronger guarantees, enable
+[Replication Time Control](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html).
+
+Replication and versioning can also significantly increase storage costs. Check your provider's pricing before enabling.

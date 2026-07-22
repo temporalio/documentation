@@ -36,9 +36,7 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## How to emit metrics {#metrics}
-
-**How to emit application metrics using the Temporal Go SDK.**
+## How to emit metrics {/* #metrics */}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -51,17 +49,45 @@ To emit metrics from the Temporal Client in Go, create a [metrics handler](https
 
 ```go
 client.Options{
-		MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
-			ListenAddress: "0.0.0.0:9090",
-			TimerType:     "histogram",
-		}
+    MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
+      ListenAddress: "0.0.0.0:9090",
+      TimerType:     "histogram",
+    }
+}
 ```
 
-The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
+The Go SDK provides metrics handlers for [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) and [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry). Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
-## Tracing {#tracing}
+### Configure OpenTelemetry counters as monotonic {/* #opentelemetry-monotonic-counters */}
+
+:::note
+
+`UseMonotonicCounters` is available in `go.temporal.io/sdk/contrib/opentelemetry` version 0.8.0 and later.
+
+:::
+
+By default, the OpenTelemetry metrics handler represents counters as `Int64UpDownCounter` instruments to preserve compatibility with earlier releases.
+To represent Temporal SDK counters as monotonic `Int64Counter` instruments, set `UseMonotonicCounters` to `true` when you create the handler:
+
+```go
+metricsHandler := temporalotel.NewMetricsHandler(temporalotel.MetricsHandlerOptions{
+    Meter: otel.GetMeterProvider().Meter("temporal-sdk-go"),
+    UseMonotonicCounters: true,
+})
+
+temporalClient, err := client.Dial(client.Options{
+    MetricsHandler: metricsHandler,
+})
+```
+
+Monotonic counters let exporters and metrics backends classify Temporal SDK counters correctly.
+The [`MetricsCounter`](https://pkg.go.dev/go.temporal.io/sdk/client#MetricsCounter) contract defines counters as ever-increasing.
+If you create custom counters through the same metrics handler, pass only non-negative values to [`client.MetricsCounter.Inc`](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Counter).
+Negative values can produce invalid or backend-dependent metric data when `UseMonotonicCounters` is enabled.
+
+## Tracing {/* #tracing */}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and Child Workflows.
 
@@ -95,9 +121,7 @@ For more information, see the documentation for [OpenTelemetry](https://opentele
 
 To build custom context propagation (e.g., tenant IDs, auth tokens), see [Context Propagation](/develop/go/best-practices/context-propagation).
 
-## Log from a Workflow {#logging}
-
-**How to log from a Workflow using the Go SDK.**
+## Log from a Workflow {/* #logging */}
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -106,27 +130,17 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
-
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-The Temporal SDK core normally uses `WARN` as its default logging level.
+You can find the log levels supported by `slog` in [their official documentation](https://pkg.go.dev/log/slog#Level). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
 
 ```go
 import (
-	"context"
-	"time"
+  "context"
+  "time"
 
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/workflow"
+  "go.temporal.io/sdk/activity"
+  "go.temporal.io/sdk/workflow"
 )
 
 // Workflow is a standard workflow definition.
@@ -138,23 +152,21 @@ func Workflow(ctx workflow.Context, name string) (string, error) {
 workflow.WithActivityOptions(ctx, ao)
 
 // Getting the logger from the context.
-	logger := workflow.GetLogger(ctx)
+  logger := workflow.GetLogger(ctx)
 // Logging a message with the key value pair `name` and `name`
-	logger.Info("Compressed Payloads workflow started", "name", name)
+  logger.Info("Compressed Payloads workflow started", "name", name)
 
-	info := map[string]string{
-		"name": name,
-	}
+  info := map[string]string{
+    "name": name,
+  }
 
-	logger.Info("Compressed Payloads workflow completed.", "result", result)
+  logger.Info("Compressed Payloads workflow completed.", "result", result)
 
-	return result, nil
+  return result, nil
 }
 ```
 
-### Provide a custom logger {#custom-logger}
-
-**How to provide a custom logger to the Temporal Client using the Go SDK.**
+### Provide a custom logger {/* #custom-logger */}
 
 This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
 
@@ -165,22 +177,22 @@ Because most modern logging libraries (zap, zerolog, logrus, etc.) can back a `s
 
 ```go
 import (
-	"log/slog"
-	"os"
+  "log/slog"
+  "os"
 
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/log"
+  "go.temporal.io/sdk/client"
+  "go.temporal.io/sdk/log"
 )
 
 func main() {
-	// ...
-	slogHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
-	logger := log.NewStructuredLogger(slog.New(slogHandler))
-	clientOptions := client.Options{
-		Logger: logger,
-	}
-	temporalClient, err := client.Dial(clientOptions)
-	// ...
+  // ...
+  slogHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
+  logger := log.NewStructuredLogger(slog.New(slogHandler))
+  clientOptions := client.Options{
+    Logger: logger,
+  }
+  temporalClient, err := client.Dial(clientOptions)
+  // ...
 }
 ```
 
@@ -188,37 +200,35 @@ func main() {
 
 ```go
 import (
-	"log/slog"
+  "log/slog"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/exp/zapslog"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/log"
+  "go.uber.org/zap"
+  "go.uber.org/zap/exp/zapslog"
+  "go.temporal.io/sdk/client"
+  "go.temporal.io/sdk/log"
 )
 
 func main() {
-	// ...
-	zapLogger, _ := zap.NewProduction()
-	handler := zapslog.NewHandler(zapLogger.Core())
-	logger := log.NewStructuredLogger(slog.New(handler))
-	clientOptions := client.Options{
-		Logger: logger,
-	}
-	temporalClient, err := client.Dial(clientOptions)
-	// ...
+  // ...
+  zapLogger, _ := zap.NewProduction()
+  handler := zapslog.NewHandler(zapLogger.Core())
+  logger := log.NewStructuredLogger(slog.New(handler))
+  clientOptions := client.Options{
+    Logger: logger,
+  }
+  temporalClient, err := client.Dial(clientOptions)
+  // ...
 }
 ```
 
 As an alternative, you can implement the `log.Logger` interface directly.
 The Temporal samples repo has a [zap adapter](https://github.com/temporalio/samples-go/blob/main/zapadapter/zap_adapter.go) that can be used as a reference.
 
-## Visibility APIs {#visibility}
+## Visibility APIs {/* #visibility */}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
-### Search Attributes {#search-attributes}
-
-**How to use Search Attributes using the Go SDK.**
+### Search Attributes {/* #search-attributes */}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -239,7 +249,7 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
-  - [In the Temporal CLI](/cli/workflow#list).
+  - [In the Temporal CLI](/cli/command-reference/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
@@ -268,9 +278,7 @@ for _, exec := range resp.Executions {
 }
 ```
 
-### Set custom Search Attributes {#custom-search-attributes}
-
-**How to set custom Search Attributes using the Go SDK.**
+### Set custom Search Attributes {/* #custom-search-attributes */}
 
 After you've created custom Search Attributes in your Temporal Service (using the `temporal operator search-attribute create` command or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -290,23 +298,21 @@ If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` 
 
 ```go
 func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
+  // ...
+  searchAttributes := map[string]interface{}{
+    "CustomerId": payload["customer"],
+    "MiscData": payload["miscData"]
+  }
+  options := client.StartWorkflowOptions{
+    SearchAttributes:   searchAttributes
     // ...
-    searchAttributes := map[string]interface{}{
-        "CustomerId": payload["customer"],
-        "MiscData": payload["miscData"]
-    }
-    options := client.StartWorkflowOptions{
-        SearchAttributes:   searchAttributes
-        // ...
-    }
-    we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
-    // ...
+  }
+  we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
+  // ...
 }
 ```
 
-### Upsert Search Attributes {#upsert-search-attributes}
-
-**How to upsert Search Attributes using the Go SDK.**
+### Upsert Search Attributes {/* #upsert-search-attributes */}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -319,17 +325,17 @@ Consider this example Workflow code:
 ```go
 func YourWorkflow(ctx workflow.Context, input string) error {
 
-    attr1 := map[string]interface{}{
-        "CustomIntField": 1,
-        "CustomBoolField": true,
-    }
-    workflow.UpsertSearchAttributes(ctx, attr1)
+  attr1 := map[string]interface{}{
+    "CustomIntField": 1,
+    "CustomBoolField": true,
+  }
+  workflow.UpsertSearchAttributes(ctx, attr1)
 
-    attr2 := map[string]interface{}{
-        "CustomIntField": 2,
-        "CustomKeywordField": "seattle",
-    }
-    workflow.UpsertSearchAttributes(ctx, attr2)
+  attr2 := map[string]interface{}{
+    "CustomIntField": 2,
+    "CustomKeywordField": "seattle",
+  }
+  workflow.UpsertSearchAttributes(ctx, attr2)
 }
 ```
 
@@ -337,15 +343,13 @@ After the second call to `UpsertSearchAttributes`, the map will contain:
 
 ```go
 map[string]interface{}{
-    "CustomIntField": 2, // last update wins
-    "CustomBoolField": true,
-    "CustomKeywordField": "seattle",
+  "CustomIntField": 2, // last update wins
+  "CustomBoolField": true,
+  "CustomKeywordField": "seattle",
 }
 ```
 
-### Remove a Search Attribute from a Workflow {#remove-search-attribute}
-
-**How to remove a Search Attribute from a Workflow using the Go SDK.**
+### Remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

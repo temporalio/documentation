@@ -114,7 +114,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 
 ## Measuring
 
-Establish [baseline metrics](https://docs.temporal.io/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
+Establish [baseline metrics](/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
 Specifically:
 
 - Actions consumption (per Workflow, per day/month, by Namespace)
@@ -124,7 +124,7 @@ Specifically:
 
 ## Actions optimization
 
-[Actions](https://docs.temporal.io/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
+[Actions](/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
 Each represents a unit of consumption.
 
 ### Activity granularity
@@ -156,7 +156,7 @@ For expensive external operations like this, consider:
 - Increasing `InitialInterval` (for example, to 10s) to reduce retry frequency
 - Adding error types to `NonRetryableErrorTypes` for errors that won't resolve on retry (such as 4xx HTTP status codes)
 - Using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types (for example, respecting rate-limit headers)
-- Implementing an [Activity pause pattern](/cli/activity#pause) to wait for manual intervention rather than automatic retries
+- Implementing an [Activity pause pattern](/cli/command-reference/activity#pause) to wait for manual intervention rather than automatic retries
 
 Use the [Activity Retry Simulator](/develop/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
 

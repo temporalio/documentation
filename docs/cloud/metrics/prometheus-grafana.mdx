@@ -25,7 +25,7 @@ tags:
   - Temporal Cloud
 ---
 
-import { ZoomingImage } from '@site/src/components';
+import { EnlargeImage } from '@site/src/components';
 
 :::danger PromQL endpoint deprecated
 
@@ -219,7 +219,7 @@ For more examples on setting metrics endpoints in other SDKs, see the metrics sa
 - [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
-## Grafana data source configuration {#grafana-data-source-configuration}
+## Grafana data source configuration {/* #grafana-data-source-configuration */}
 
 **How to configure the Temporal Cloud metrics data source in Grafana.**
 
@@ -242,7 +242,7 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the
    - Paste in your end-entity certificate and key.
    - Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates
      used in your [Temporal Cloud observability setup](/cloud/metrics/general-setup).
-     <ZoomingImage
+     <EnlargeImage
        src="/img/cloud/prometheus/add-prometheus-api-endpoint.png"
        alt="Data source configuration in Grafana"
      />

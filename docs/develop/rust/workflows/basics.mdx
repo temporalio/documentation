@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to develop a Workflow {#develop-workflows}
+## How to develop a Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -26,7 +26,7 @@ A Workflow is defined by:
 
 ```rust
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowResult, WorkflowContextView};
+use temporalio_sdk::{WorkflowResult, WorkflowContextView, WorkflowContext};
 
 #[workflow]
 pub struct GreetingWorkflow {
@@ -41,7 +41,7 @@ impl GreetingWorkflow {
     }
 
     #[run]
-    async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
         Ok(format!("Hello, {}!", name))
     }
@@ -50,11 +50,11 @@ impl GreetingWorkflow {
 
 The `#[workflow]` macro marks the struct as a Workflow. The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
 
-### Workflow struct {#workflow-struct}
+### Workflow struct {/* #workflow-struct */}
 
 The Workflow struct holds the state of your Workflow Execution. This state is persisted and recovered during replays. All fields in a Workflow struct should be serializable.
 
-### Workflow initialization {#init-method}
+### Workflow initialization {/* #init-method */}
 
 The `#[init]` method is optional and is called when the Workflow first starts. It receives the initial Workflow input parameters and initializes the Workflow struct:
 
@@ -71,18 +71,51 @@ fn new(_ctx: &WorkflowContextView, name: String, age: u32) -> Self {
 
 The `#[init]` method receives a `WorkflowContextView`, which provides read-only access to Workflow execution information.
 
-### Run method {#run-method}
+#### Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. However, if you use the `#[init]` annotation on your constructor, you can give it the same [Workflow parameters](/develop/rust/workflows/basics#workflow-parameters) as your `#[run]`.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/rust/client/temporal-client#start-workflow-execution). The Workflow input arguments are also passed to your `#[run]` method. That always happens, whether or not you use the `#[init]` annotation.
+
+Here's an example. Notice that the constructor and `get_greeting` must have the same parameters:
+
+```rust
+#[workflow_methods]
+impl WorkflowRunSeesWorkflowInitWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, workflow_input: MyWorkflowInput) -> Self {
+        Self {
+            name_with_title: format!("Knight {}", workflow_input.name),
+            title_has_been_checked: false,
+        }
+    }
+
+    #[run]
+    pub async fn get_greeting(
+        ctx: &mut WorkflowContext<Self>,
+        _workflow_input: MyWorkflowInput,
+    ) -> WorkflowResult<String> {
+        ctx.wait_condition(|state| state.title_has_been_checked).await;
+
+        let name_with_title = ctx.state(|state| state.name_with_title.clone());
+        Ok(format!("Hello, {}", name_with_title))
+    }
+}
+```
+
+### Run method {/* #run-method */}
 
 The `#[run]` method is required and contains the main Workflow logic. It:
 
 - Must be `async`
+- Must be `public`
 - Receives a mutable `WorkflowContext<Self>`
 - Returns `WorkflowResult<T>` where T is the Workflow return type
 - Executes exactly once per Workflow execution
 
 ```rust
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Execute activities, timers, child workflows, etc.
     let result = ctx.start_activity(
         MyActivities::greet,
@@ -94,7 +127,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 }
 ```
 
-## Define Workflow parameters {#workflow-parameters}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that structs are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
 
@@ -126,7 +159,7 @@ impl ProcessingWorkflow {
     }
 
     #[run]
-    async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+    pub async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         // Use the initialized state
         Ok("Processing complete".to_string())
     }
@@ -135,7 +168,7 @@ impl ProcessingWorkflow {
 
 All Workflow input should be serializable by `serde`.
 
-## Define Workflow return parameters {#workflow-return-values}
+## Define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
@@ -154,7 +187,7 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult
 }
 ```
 
-## Customize your Workflow Type {#workflow-type}
+## Customize your Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that is referred to as the Workflow name. By default, the Workflow type is the name of the Workflow struct. You can customize it by providing a `name` parameter to the `#[workflow]` macro:
 
@@ -174,7 +207,7 @@ pub struct GreetingWorkflow {
 }
 ```
 
-## Workflow logic requirements {#workflow-logic-requirements}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). For non-deterministic operations like API calls, and database queries, use [Activities](/develop/rust/activities/basics).
 
@@ -209,7 +242,7 @@ The Rust SDK provides:
 use std::time::Duration;
 
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
     ctx.timer(TimerOptions {
         duration: Duration::from_secs(60),
@@ -229,13 +262,13 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 }
 ```
 
-## Access Workflow State {#workflow-state}
+## Access Workflow State {/* #workflow-state */}
 
 Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access to your Workflow state:
 
 ```rust
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Read-only access
     let name = ctx.state(|s| s.name.clone());
 
@@ -248,17 +281,19 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 
 In synchronous [`Signal`](/develop/rust/workflows/message-passing#signals) and [`Update`](/develop/rust/workflows/message-passing#updates) handlers, you can mutate state directly via `&mut self`.
 
-## Workflow return types {#return-types}
+## Workflow return types {/* #return-types */}
 
-The `#[run]` method must return `WorkflowResult<T>`. This is a type alias for `Result<T, WorkflowTermination>`. 
+The `#[run]` method must return `WorkflowResult<T>`. This is a type alias for `Result<T, WorkflowTermination>`.
 
-For errors, use `WorkflowTermination::Failed` which can be constructed from other error types via `into()`:
+For application failures, construct an `ApplicationFailure` and convert it into `WorkflowTermination`:
 
 ```rust
+use temporalio_sdk::ApplicationFailure;
+
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     if some_validation_fails {
-        return Err(anyhow::anyhow!("validation_failed: Input is invalid").into());
+        return Err(ApplicationFailure::new("validation_failed: Input is invalid").into());
     }
 
     Ok("Success".to_string())

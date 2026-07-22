@@ -11,7 +11,7 @@ tags:
   - Activity
 ---
 
-## Start an Activity Execution {#activity-execution}
+## Start an Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -213,7 +213,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
 
-## Set required Activity Timeouts {#required-timeout}
+## Set required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -263,7 +263,7 @@ If you define options per-Activity Type options with `WorkflowImplementationOpti
 
 :::
 
-## Java ActivityOptions reference {#activity-options-reference}
+## Java ActivityOptions reference {/* #activity-options-reference */}
 
 Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure how to invoke an Activity Execution.
 
@@ -540,7 +540,7 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-## Get the result of an Activity Execution {#activity-execution-result}
+## Get the result of an Activity Execution {/* #activity-execution-result */}
 
 The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.

@@ -1,5 +1,9 @@
 //@ts-check
 const FontPreloadPlugin = require('webpack-font-preload-plugin');
+const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
+const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
+const mermaidTheme = require('./src/constants/mermaidTheme');
+const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -11,44 +15,57 @@ module.exports = async function createConfigAsync() {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenAnchors: 'throw',
-    favicon: 'img/favicon.ico',
-    organizationName: 'temporalio', // Usually your GitHub org/user name.
-    projectName: 'temporal-documentation', // Usually your repo name.
+    favicon: 'favicon.ico',
+    // Aeonik Light/Regular are used above the fold on every page (headings,
+    // sidebar nav). Preloading them here covers non-Vercel previews; the
+    // production Link header in vercel.json is what lets the browser fetch
+    // them before it even has the HTML to parse this tag from. Filenames
+    // come from src/constants/preloadFonts.js — see that file and
+    // bin/check-font-preload-hash.js for why they're hardcoded.
     headTags: [
       {
         tagName: 'link',
         attributes: {
           rel: 'preload',
-          href: 'https://iq.temporal.io',
-          as: 'document',
+          href: `/assets/fonts/${AEONIK_LIGHT_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_REGULAR_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
         },
       },
     ],
+    organizationName: 'temporalio', // Usually your GitHub org/user name.
+    projectName: 'temporal-documentation', // Usually your repo name.
+    // JSON-LD structured data (Organization/SoftwareApplication/WebPage) is
+    // rendered per-page instead of injected globally here — see
+    // src/theme/DocItem/StructuredData and src/constants/organizationSchema.
+    // A single global block would put the full Organization property set on
+    // every page, which is exactly the drift risk the JSON-LD audit flagged.
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: false,
         respectPrefersColorScheme: true,
-        // switchConfig: {
-        //   darkIcon: "🌙",
-        //   darkIconStyle: {
-        //     content: `url(/img/assets/moon.svg)`,
-        //     transform: "scale(2)",
-        //     margin: "0 0.2rem",
-        //   },
-        //   lightIcon: "\u{1F602}",
-        //   lightIconStyle: {
-        //     content: `url(/img/assets/sun.svg)`,
-        //     transform: "scale(2)",
-        //   },
-        // },
       },
-      metadata: [{ name: 'robots', content: 'follow, index' }],
+      metadata: [
+        { name: 'robots', content: 'follow, index' },
+        { property: 'og:type', content: 'website' },
+      ],
       image: '/img/assets/open-graph-shiny.png',
       prism: {
-        //theme: require("prism-react-renderer/themes/nightOwlLight"),
-        // darkTheme: require("prism-react-renderer/themes/dracula"),
+        theme: prismLightTheme,
+        darkTheme: prismDarkTheme,
         additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
@@ -102,6 +119,13 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'ai-cookbook',
             position: 'left',
           },
+          // hide this for now, making this a soft-launch
+          // {
+          //   label: 'Design Patterns',
+          //   to: '/design-patterns',
+          //   activeBasePath: 'design-patterns',
+          //   position: 'left',
+          // },
           {
             label: 'Code Exchange',
             href: 'https://temporal.io/code-exchange',
@@ -136,7 +160,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/temporalio',
+                href: 'https://x.com/temporalio',
               },
               {
                 label: 'YouTube',
@@ -144,7 +168,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/master/README.md',
+                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
               },
             ],
           },
@@ -157,10 +181,6 @@ module.exports = async function createConfigAsync() {
               {
                 label: 'Meetups',
                 href: 'https://temporal.io/community#events',
-              },
-              {
-                label: 'Workshops',
-                href: 'https://temporal.io/community#workshops',
               },
               {
                 label: 'Support forum',
@@ -184,7 +204,7 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Use cases',
-                href: 'https://temporal.io/use-cases',
+                href: 'https://temporal.io/in-use',
               },
               {
                 label: 'Newsletter signup',
@@ -200,11 +220,11 @@ module.exports = async function createConfigAsync() {
               },
               {
                 label: 'Privacy policy',
-                to: 'https://temporal.io/global-privacy-policy',
+                href: 'https://temporal.io/global-privacy-policy',
               },
               {
                 label: 'Terms of service',
-                href: 'https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf',
+                href: 'https://temporal.io/terms-of-service',
               },
               {
                 label: "We're hiring",
@@ -215,11 +235,11 @@ module.exports = async function createConfigAsync() {
         ],
       },
       algolia: {
-        apiKey: '4a2fa646f476d7756a7cdc599b625bec',
-        indexName: 'temporal',
+        apiKey: ALGOLIA_SEARCH_API_KEY,
+        indexName: ALGOLIA_INDEX_NAME,
         externalUrlRegex: 'temporal\\.io',
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
-        appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
+        appId: ALGOLIA_APP_ID, // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
@@ -235,6 +255,15 @@ module.exports = async function createConfigAsync() {
           ],
         },
       },
+      mermaid: {
+        theme: mermaidTheme.theme,
+        options: {
+          themeVariables: { fontFamily: mermaidTheme.fontFamily },
+          flowchart: mermaidTheme.flowchart,
+          sequence: mermaidTheme.sequence,
+          state: mermaidTheme.state,
+        },
+      },
     },
     presets: [
       [
@@ -244,8 +273,13 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: ['**/clusters/**', '**/ai-cookbook/**'], // do not render context content
-            editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
+            exclude: [
+              '**/_*.{js,jsx,ts,tsx,md,mdx}',
+              '**/_*/**',
+              '**/clusters/**',
+              '**/ai-cookbook/**',
+            ], // partials (underscore-prefixed) + context content we don't render
+            editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
              */
@@ -266,8 +300,6 @@ module.exports = async function createConfigAsync() {
             admonitions: {
               keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
             },
-            remarkPlugins: [(await import('remark-math')).default],
-            rehypePlugins: [(await import('rehype-katex')).default],
           },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
@@ -288,6 +320,7 @@ module.exports = async function createConfigAsync() {
             changefreq: 'daily',
             priority: 0.5,
             filename: 'sitemap.xml',
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
           },
         },
       ],
@@ -326,14 +359,6 @@ module.exports = async function createConfigAsync() {
         defer: true,
       },
     ],
-    stylesheets: [
-      {
-        href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-        type: 'text/css',
-        integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-        crossorigin: 'anonymous',
-      },
-    ],
     plugins: [
       function preloadFontPlugin() {
         return {
@@ -345,6 +370,15 @@ module.exports = async function createConfigAsync() {
           },
         };
       },
+      [
+        './plugins/cloud-region-counts',
+        {
+          regionFiles: {
+            aws: 'docs/cloud/references/regions/awsregions.md',
+            gcp: 'docs/cloud/references/regions/gcpregions.md',
+          },
+        },
+      ],
       [
         'docusaurus-pushfeedback',
         {
@@ -366,8 +400,8 @@ module.exports = async function createConfigAsync() {
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
-          docItemComponent: '@site/src/components/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override
+          docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
+          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
         },
       ],
       [
@@ -379,6 +413,12 @@ module.exports = async function createConfigAsync() {
       ],
       [
         require.resolve('./plugins/markdown-pages'),
+        {
+          docsDir: 'docs',
+        },
+      ],
+      [
+        require.resolve('./plugins/og-image'),
         {
           docsDir: 'docs',
         },
@@ -445,9 +485,18 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    markdown: {
+      mdx1Compat: {
+        // Required for snipsync HTML comment markers (<!--SNIPSTART-->, <!--SNIPEND-->)
+        comments: true,
+        admonitions: true,
+      },
+      mermaid: true,
+    },
+    themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      experimental_faster: true,
+      faster: true,
     },
   };
 

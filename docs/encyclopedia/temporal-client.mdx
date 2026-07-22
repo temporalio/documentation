@@ -1,0 +1,36 @@
+---
+id: temporal-client
+title: Temporal Client
+sidebar_label: Temporal Client
+description: A Temporal Client acts as the bridge for communication between your applications and the Temporal Service, enabling you to start Workflow Executions, send Signals and Queries, and retrieve results.
+slug: /temporal-client
+toc_max_heading_level: 4
+keywords:
+  - client
+  - explanation
+  - temporal client
+  - term
+tags:
+  - Concepts
+  - Temporal SDKs
+---
+
+import { SdkGuideLinks } from '@site/src/components';
+
+A Temporal Client allows you to communicate with the [Temporal Service](/temporal-service).
+
+The most common operations that a Temporal Client allows you to perform are the following:
+- Start a Workflow Execution
+- Get the result of Workflow Execution
+- List Workflow Executions
+- Query a Workflow Execution
+- Signal a Workflow Execution
+- Start and manage [Standalone Activities](/standalone-activity) directly, without involving a Workflow
+- Start a [Standalone Nexus Operation](/standalone-nexus-operation) directly, without using a caller Workflow
+
+A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a Client, without using a Workflow.
+A Standalone Nexus Operation is a top-level [Nexus Operation Execution](/nexus/operations) started directly by a Client, without using a caller Workflow.
+
+## SDK guides {/* #sdk-guides */}
+
+<SdkGuideLinks path="client/temporal-client" title="Temporal Client" />

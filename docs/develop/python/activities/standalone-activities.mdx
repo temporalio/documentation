@@ -19,12 +19,11 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal Python SDK.
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal Python SDK support for [Standalone Activities](/standalone-activity) is at
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+/>
 
 Standalone Activities are Activities that run independently, without being orchestrated by a
 Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
@@ -52,7 +51,7 @@ This documentation uses source code from the [hello_standalone_activity](https:/
 
 :::
 
-## Get Started with Standalone Activities {#get-started}
+## Get Started with Standalone Activities {/* #get-started */}
 
 Prerequisites:
 
@@ -80,7 +79,7 @@ Prerequisites:
   brew install temporal
   ```
 
-  Or see the [Temporal CLI install guide](/cli#install) for other platforms.
+  Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
 
   Verify the installation:
 
@@ -134,7 +133,7 @@ hello_standalone_activity/
 └── count_activities.py
 ```
 
-## Write an Activity Function {#write-activity}
+## Write an Activity Function {/* #write-activity */}
 
 An Activity in the Temporal Python SDK is just a normal function with the `@activity.defn`
 decorator. It can optionally be an `async def`. The way you write a Standalone Activity is identical
@@ -162,7 +161,7 @@ def compose_greeting(input: ComposeGreetingInput) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-## Run a Worker with the Activity registered {#run-worker}
+## Run a Worker with the Activity registered {/* #run-worker */}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
@@ -209,7 +208,7 @@ uv run hello_standalone_activity/worker.py
 
 Leave this terminal running - the Worker needs to stay up to process activities.
 
-## Execute a Standalone Activity {#execute-activity}
+## Execute a Standalone Activity {/* #execute-activity */}
 
 Use
 [`client.execute_activity()`](https://python.temporal.io/temporalio.client.Client.html#execute_activity)
@@ -270,7 +269,7 @@ temporal activity execute \
 ```
 
 
-## Start a Standalone Activity without waiting for the result {#start-activity}
+## Start a Standalone Activity without waiting for the result {/* #start-activity */}
 
 Starting a Standalone Activity means sending a request to the Temporal Server to durably enqueue
 your Activity job, without waiting for it to be executed by your Worker.
@@ -306,7 +305,7 @@ temporal activity start \
   --input '{"greeting": "Hello", "name": "World"}'
 ```
 
-## Get a handle to an existing Standalone Activity {#get-activity-handle}
+## Get a handle to an existing Standalone Activity {/* #get-activity-handle */}
 
 You can also use `client.get_activity_handle()` to create a handle to a previously started Standalone Activity:
 
@@ -319,7 +318,7 @@ activity_handle = client.get_activity_handle(
 
 You can now use the handle to wait for the result, describe, cancel, or terminate the Activity.
 
-## Wait for the result of a Standalone Activity {#get-activity-result}
+## Wait for the result of a Standalone Activity {/* #get-activity-result */}
 
 Under the hood, calling `client.execute_activity()` is the same as calling
 [`client.start_activity()`](https://python.temporal.io/temporalio.client.Client.html#start_activity)
@@ -336,7 +335,7 @@ Or use the Temporal CLI to wait for a result by Activity ID:
 temporal activity result --activity-id my-standalone-activity-id
 ```
 
-## List Standalone Activities {#list-activities}
+## List Standalone Activities {/* #list-activities */}
 
 Use
 [`client.list_activities()`](https://python.temporal.io/temporalio.client.Client.html#list_activities)
@@ -389,7 +388,7 @@ The query parameter accepts the same [List Filter](/list-filter) syntax used for
 Visibility](/visibility). For example, "ActivityType = 'MyActivity' AND Status = 'Running'".
 
 
-## Count Standalone Activities {#count-activities}
+## Count Standalone Activities {/* #count-activities */}
 
 Use [`client.count_activities()`](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
 Standalone Activity Executions that match a [List Filter](/list-filter) query. This returns the total
@@ -436,7 +435,7 @@ Or use the Temporal CLI:
 temporal activity count
 ```
 
-## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
+## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
 The code samples on this page use `ClientConfig.load_client_connect_config()`, so the same code
 works against Temporal Cloud - just configure the connection via environment variables or a TOML
@@ -462,7 +461,7 @@ export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
 Set these environment variables with values from your Temporal Cloud API key settings:
 
 ```
-export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
 export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```

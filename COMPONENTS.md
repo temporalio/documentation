@@ -18,13 +18,14 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Finding Components](#finding-components)
 - [Adding Components to This Repository](#adding-components-to-this-repository)
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
+- [Using IntegrationsGrid](#using-integrationsgrid)
 - [Using CaptionedImage](#using-captionedimage)
-- [Using DiscoverableDisclosure](#using-discoverabledisclosure)
 - [Using DocsTable](#using-docstable)
 - [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
-- [Using ZoomingImage](#using-zoomingimage)
+- [Using SdkGuideLinks](#using-sdkguidelinks)
+- [Using ReleaseNoteHeader](#using-release-note-header)
 
 ## Finding Components
 
@@ -115,10 +116,92 @@ import * as Components from '@site/src/components';
 Components imported this way use the "Components." prefix before their name:
 
 ```
-<Components.DiscoverableDisclosure>
+<Components.RelatedRead>
 ...Content that is folded away...
-</Components.DiscoverableDisclosure>
+</Components.RelatedRead>
 ```
+
+## Using IntegrationsGrid
+
+Role: Display a searchable, filterable grid of Temporal integrations with partner tools and services.
+
+The component renders a search bar, two rows of filter pills (SDK and Tag), and a card grid.
+Each card shows the integration name, a short description, tag badges, and an SDK icon when applicable.
+Cards that link to external sites display an external link indicator and open in a new tab.
+
+How to import:
+
+```
+import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
+```
+
+Usage:
+
+```
+<IntegrationsGrid />
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultSdks` | `SDK[]` | `[]` | Pre-selects SDK filters on load. Used on per-SDK integrations pages. |
+
+For example, the Python SDK integrations page pre-filters to Python:
+
+```
+<IntegrationsGrid defaultSdks={["Python"]} />
+```
+
+Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+
+### Filter behavior
+
+The component has three filter dimensions that work together:
+
+- **Search**: Free-text search across integration names, descriptions, and tags.
+- **SDK pills**: Filter by language SDK. Selecting "Language-agnostic" shows integrations that have no SDK (such as Temporal Cloud metrics integrations). Multiple SDK pills can be active at once (OR logic).
+- **Tag pills**: Filter by category tag. Multiple tag pills can be active at once (OR logic).
+
+When filters from different dimensions are active, they combine with AND logic.
+For example, selecting the "Python" SDK pill and the "Observability" tag pill shows only Python observability integrations.
+
+### Where the component is used
+
+- `/integrations` (top-level page, no default filters)
+- `/develop/java/integrations` (pre-filtered to Java)
+- `/develop/python/integrations` (pre-filtered to Python)
+- `/develop/ruby/integrations` (pre-filtered to Ruby)
+- `/develop/typescript/integrations` (pre-filtered to TypeScript)
+
+### Adding a new integration
+
+Integration data lives in `src/components/IntegrationsGrid/integrations-data.ts`.
+Add a new entry to the `integrations` array with the following shape:
+
+```ts
+{
+  name: "Partner Name",
+  description: "One sentence describing what this integration does with Temporal.",
+  tags: ["Agent framework"],
+  sdk: "Python",
+  href: "/develop/python/integrations/partner-name",
+}
+```
+
+**Fields:**
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | Yes | Display name of the integration. |
+| `description` | `string` | Yes | One-sentence summary shown on the card. |
+| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
+| `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
+| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/braintrust`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
+
+**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, Braintrust has one entry for Python and one for TypeScript, each with a different `href`.
+
+**Language-agnostic integrations:** Omit the `sdk` field. These integrations appear when the "Language-agnostic" SDK filter is selected and do not display a language icon on the card.
 
 ## Using CaptionedImage
 
@@ -167,23 +250,6 @@ When images are complex and may not render in a readable fashion on normal monit
 One click will zoom out, another will zoom back.
 Most rendering will allow readers to pull the image around to view all parts of the image. 
 On non-mobile systems, cursors will change to interactive elements when hovered above zoomable items to indicate interaction.
-
-## Using DiscoverableDisclosure
-
-Role: Provide a more discoverable `<Details>` section.
-
-Unlike Details, it does not require a separate `<Summary>`.
-
-Usage:
-
-```
-<DiscoverableDisclosure label = "your_summary_text">
-...your content...
-</DiscoverableDisclosure>
-```
-
-An additional `prompt` prop enables you to specify the leading text.
-Normally it defaults to `prompt = "Dive deeper — "`.
 
 ## Using DocsTable
 
@@ -357,21 +423,117 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
 ```
 
-## Using ZoomingImage
+## Using SdkGuideLinks
 
-Role: Provide image "asides" embedded into instructions where a standard image would normally interfere.
+Role: Render a vertical list of SDK guide links, each with a colored block icon and label, linking readers to the relevant SDK-specific page.
 
-A ZoomingImage is presented at a very small size, with the understanding that it is too small to view.
-An optional component, the image uses a magnifying glass and text prompt for discovery.
-See the instructions for [Prometheus Grafana](http://docs.temporal.io/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration) for an example.
+How to import:
 
-Reserve ZoomingImages for situations where the image itself is an obstacle to communicating steps or other content.
-It provides opt-in supplementary information.
+```
+import { SdkGuideLinks } from '@site/src/components';
+```
+
+### Standard usage
+
+Pass a `path` prop and the component generates links for all eight SDKs automatically.
+The path is appended to `/develop/<sdk>/`, so you only need the portion after the SDK segment.
+
+```
+<SdkGuideLinks path="client/temporal-client" />
+```
+
+This produces links to `/develop/go/client/temporal-client`, `/develop/java/client/temporal-client`, and so on for all supported SDKs.
+
+### Filtering to specific SDKs
+
+Use the `filter` prop to show only a subset of SDKs.
+Pass an array of SDK identifiers.
+
+```
+<SdkGuideLinks path="client/temporal-client" filter={['go', 'java', 'python']} />
+```
+
+Valid SDK identifiers: `go`, `java`, `dotnet`, `php`, `python`, `ruby`, `rust`, `typescript`.
+
+### Custom links
+
+When SDK guide pages do not follow the standard `/develop/<sdk>/<path>` pattern, pass explicit links with the `links` prop.
+The `path` and `filter` props are ignored when `links` is provided.
+
+```
+<SdkGuideLinks links={[
+  { name: 'goLangBlock',     href: '/develop/go/custom/path',         label: 'Go' },
+  { name: 'pythonBlock',     href: '/develop/python/custom/path',     label: 'Python' },
+  { name: 'typeScriptBlock', href: '/develop/typescript/custom/path', label: 'TypeScript' },
+]} />
+```
+
+Valid `name` values for the block icons: `goLangBlock`, `javaBlock`, `dotnetBlock`, `phpBlock`, `pythonBlock`, `rubyBlock`, `rustBlock`, `typeScriptBlock`.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | `string` | Yes, unless `links` is provided | Path segment appended to `/develop/<sdk>/` for each SDK link. |
+| `filter` | `string[]` | No | Limits generated links to the specified SDK identifiers. Only applies when using `path`. |
+| `links` | `object[]` | Yes, unless `path` is provided | Explicit list of links. Each item requires `name`, `href`, and `label`. Overrides `path` and `filter`. |
+
+### Where the component is used
+
+- `/temporal-client` — links to the Temporal Client feature guide for each SDK
+
+## Using ReleaseNoteHeader
+
+Role: To provide a consistent component for adding, updating, and removing release stages on different features.
 
 Usage:
 
-```
-<ZoomingImage src="/path/to/image" alt="Alt text" />
+In `/src/constants`, update the [`featureReleaseTypes.js`](./src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
+
+Example: `serverlessWorkers: "prerelease"`
+
+Then on the pages you want it to show, add this to the top of the content, right below the frontmatter. The `featureName` prop is how you share the release stages you add to `featureReleaseTypes.js` across pages.
+
+```js
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader
+  featureName="nexus"
+/>
 ```
 
-Images are normally stored in the '/static' folder in `img` or `diagrams`.
+Or you can choose one of these variations.
+
+Use the `type` prop to set a specific type if the release stage is only for one page.
+```js
+<ReleaseNoteHeader
+  type="publicPreview"
+/>
+```
+
+Add `children` for more detailed messaging.
+```js
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+```
+
+Show the supported languages by using the `languages` prop.
+```js
+<ReleaseNoteHeader
+  type="prerelease"
+  languages={["Go", "TypeScript", "Java", ".NET", "Python"]}
+/>
+```
+
+Use the `href` prop to make the `children` content a link.
+```js
+<ReleaseNoteHeader
+  featureName="serverlessWorkers"
+  href="https://temporal.io/pages/serverless-workers-updates"
+>
+  Sign up for updates to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+```

@@ -28,13 +28,16 @@ This page shows how to do the following:
 - [Temporal Cron Jobs](#temporal-cron-jobs)
 - [Start Delay](#start-delay)
 
-## How to Schedule a Workflow {#schedule-a-workflow}
+## How to Schedule a Workflow {/* #schedule-a-workflow */}
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes.
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
-### Create a Schedule {#create-schedule}
+Schedule behavior is governed by the Schedule's [Overlap Policy](/schedule#overlap-policy).
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and counts as the running execution for overlap decisions.
+
+### Create a Schedule {/* #create-schedule */}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
@@ -92,7 +95,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### Backfill a Schedule {#backfill-schedule}
+### Backfill a Schedule {/* #backfill-schedule */}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
 
@@ -123,7 +126,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### Delete a Schedule {#delete-schedule}
+### Delete a Schedule {/* #delete-schedule */}
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
@@ -143,7 +146,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### Describe a Schedule {#describe-schedule}
+### Describe a Schedule {/* #describe-schedule */}
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
 
@@ -164,7 +167,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### List a Schedule {#list-schedule}
+### List a Schedule {/* #list-schedule */}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -189,7 +192,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### Pause a Schedule {#pause-schedule}
+### Pause a Schedule {/* #pause-schedule */}
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
 
@@ -209,7 +212,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### Trigger a Schedule {#trigger-schedule}
+### Trigger a Schedule {/* #trigger-schedule */}
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
@@ -230,7 +233,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-### Update a Schedule {#update-schedule}
+### Update a Schedule {/* #update-schedule */}
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
 
@@ -261,11 +264,11 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-## Temporal Cron Jobs {#temporal-cron-jobs}
+## Temporal Cron Jobs {/* #temporal-cron-jobs */}
 
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
+We recommend using [Schedules](/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
@@ -295,7 +298,7 @@ Temporal Workflow Schedule Cron strings follow this format:
 * * * * *
 ```
 
-## Start Delay {#start-delay}
+## Start Delay {/* #start-delay */}
 
 **How to use Start Delay**
 

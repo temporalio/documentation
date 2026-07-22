@@ -18,6 +18,10 @@ An Activity is a normal function or method execution that's intended to execute 
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
+[Standalone Activities](/standalone-activity) are Activities that run independently, without being orchestrated by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal Client.
+
+The way you write the Activity and register it with a Worker is identical to [Workflow Activities](/develop/java/activities/basics). The only difference is that you execute a Standalone Activity directly from your Temporal Client. See [Standalone Activities](/develop/java/activities/standalone-activities).
+
 An [Activity Definition](/activities) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
@@ -54,7 +58,7 @@ An Activity implementation is a Java class that implements an Activity annotated
   }
 ```
 
-## Define Activity parameters {#activity-parameters}
+## Define Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -108,11 +112,11 @@ The `execute` method in the dynamic Activity interface implementation takes in `
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
 
-## Define Activity return values {#activity-return-values}
+## Define Activity return values {/* #activity-return-values */}
 
 All data returned from an Activity must be serializable.
 
-Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction ([see Cloud limits here](https://docs.temporal.io/cloud/limits#per-message-grpc-limit)). Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
+Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction ([see Cloud limits here](/cloud/limits#per-message-grpc-limit)). Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
@@ -122,7 +126,7 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 - [Data Converter](/dataconversion)
 - Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-## Customize your Activity Type {#activity-type}
+## Customize your Activity Type {/* #activity-type */}
 
 Each Activity has a Type, which may also be referred to as the Activity 'name'.
 This name appears in the Workflow Execution Event History in the Summary tab for each Activity Task.

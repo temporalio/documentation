@@ -1,9 +1,13 @@
 import React from 'react';
 import styles from './sdk-svg.module.css';
+import { useSvgTitle } from './useSvgTitle';
 
-const PythonBlock = () => {
+const PythonBlock = ({ title }) => {
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
+
   return (
     <svg
+      {...svgA11yProps}
       className={styles.sdkPython}
       fill="none"
       height="40"
@@ -11,6 +15,7 @@ const PythonBlock = () => {
       width="40"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {titleElement}
       <path d="m0 0h40v40h-40z" className={styles.backgroundPath} />
       <g fill="#141414">
         <path d="m19.8926 11.319c-.7422.0034-1.451.0667-2.0746.1771-1.8372.3246-2.1708 1.0039-2.1708 2.2568v1.6546h4.3415v.5516h-4.3415-1.6294c-1.2617 0-2.3666.7584-2.7122 2.2011-.3986 1.6537-.4163 2.6857 0 4.4124.3086 1.2853 1.0457 2.2012 2.3074 2.2012h1.4928v-1.9836c0-1.433 1.2398-2.697 2.7122-2.697h4.3365c1.2071 0 2.1707-.9939 2.1707-2.2062v-4.1341c0-1.1766-.9926-2.0604-2.1707-2.2568-.7459-.1242-1.5197-.1806-2.2619-.1771zm-2.3479 1.3308c.4485 0 .8147.3722.8147.8299 0 .456-.3662.8247-.8147.8247-.45 0-.8147-.3687-.8147-.8247 0-.4577.3647-.8299.8147-.8299z" />

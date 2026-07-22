@@ -19,7 +19,7 @@ tags:
   - Errors
 ---
 
-## Raise and Handle Exceptions {#exception-handling}
+## Raise and Handle Exceptions {/* #exception-handling */}
 
 In each Temporal SDK, error handling is implemented idiomatically, following the conventions of the language.
 Temporal uses several different error classes internally — for example, [`CancelledFailureException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.CanceledFailureException.html) in the .NET SDK, to handle a Workflow cancellation. 
@@ -70,7 +70,7 @@ public Task<OrderConfirmation> SendBillAsync(Bill bill)
 
 You can alternately specify a list of errors that are non-retryable in your Activity [Retry Policy](/develop/dotnet/activities/timeouts#activity-retries).
 
-## Failing Workflows {#workflow-failure}
+## Failing Workflows {/* #workflow-failure */}
 
 One of the core design principles of Temporal is that an Activity Failure will never directly cause a Workflow Failure — a Workflow should never return as Failed unless deliberately.
 The default retry policy associated with Temporal Activities is to retry them until reaching a certain timeout threshold.
@@ -97,6 +97,6 @@ catch (ActivityFailureException err)
 
 This works differently in a Workflow than raising exceptions from Activities.
 In an Activity, any C# exceptions or custom exceptions are converted to a Temporal `ApplicationError`.
-In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried.
+In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](/tasks#workflow-task-execution) and be retried.
 This includes any typical C# `RuntimeError`s that are raised automatically.
 These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.

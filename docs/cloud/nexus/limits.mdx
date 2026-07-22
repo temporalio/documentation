@@ -13,22 +13,17 @@ keywords:
   - limits
   - rate limits
   - max endpoints
+  - max allowed namespaces
   - max operations
   - request handler timeout
   - max operation duration
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
-Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
-
-:::
-
 Nexus limits are documented in [Temporal Cloud limits](/cloud/limits):
 
 - [Nexus rate limits](/cloud/limits#nexus-rate-limits) - Nexus requests count toward the Namespace RPS limit.
 - [Nexus Endpoint limits](/cloud/limits#nexus-endpoints-limits) - 100 Endpoints per Account (default).
+- [Nexus caller Namespace limits](/cloud/limits#nexus-endpoint-access-policy-limits) - 1,000 caller Namespaces per Endpoint.
 - [Per-Workflow Nexus Operation limits](/cloud/limits#per-workflow-nexus-operation-limits) - 30 in-flight Operations per Workflow.
 - [Nexus Operation request timeout](/cloud/limits#nexus-operation-request-timeout) - Less than 10 seconds for a handler to process a start or cancel request.
 - [Nexus Operation duration limits](/cloud/limits#nexus-operation-duration-limits) - 60-day maximum ScheduleToClose duration.

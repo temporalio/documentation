@@ -41,9 +41,7 @@ module.exports = {
               type: 'category',
               label: 'Serverless Workers',
               link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
-              items: [
-                'evaluate/development-production-features/serverless-workers/demo',
-              ],
+              items: ['evaluate/development-production-features/serverless-workers/demo'],
             },
             {
               type: 'category',
@@ -126,6 +124,7 @@ module.exports = {
                 'develop/go/workflows/side-effects',
                 'develop/go/workflows/dynamic-workflow',
                 'develop/go/workflows/versioning',
+                'develop/go/workflows/workflow-streams',
               ],
             },
             {
@@ -165,9 +164,7 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/go/workers/serverless-workers/index',
                   },
-                  items: [
-                    'develop/go/workers/serverless-workers/aws-lambda',
-                  ],
+                  items: ['develop/go/workers/serverless-workers/aws-lambda'],
                 },
               ],
             },
@@ -179,10 +176,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/client/index',
               },
-              items: [
-                'develop/go/client/temporal-client',
-                'develop/go/client/namespaces'
-              ],
+              items: ['develop/go/client/temporal-client', 'develop/go/client/namespaces'],
             },
             {
               type: 'category',
@@ -195,6 +189,7 @@ module.exports = {
               items: [
                 'develop/go/nexus/quickstart',
                 'develop/go/nexus/feature-guide',
+                'develop/go/nexus/standalone-operations',
               ],
             },
             {
@@ -205,10 +200,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/platform/index',
               },
-              items: [
-                'develop/go/platform/observability',
-                'develop/go/platform/enriching-ui',
-              ],
+              items: ['develop/go/platform/observability', 'develop/go/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -239,6 +231,17 @@ module.exports = {
                   ],
                 },
               ],
+            },
+            {
+              type: 'category',
+              label: 'Integrations',
+              className: 'sidebar-integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/integrations/index',
+              },
+              items: ['develop/go/integrations/google-adk'],
             },
           ],
         },
@@ -298,9 +301,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/workers/index',
               },
-              items: [
-                'develop/java/workers/run-worker-process',
-              ],
+              items: ['develop/java/workers/run-worker-process'],
             },
             {
               type: 'category',
@@ -310,10 +311,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/client/index',
               },
-              items: [
-                'develop/java/client/temporal-client',
-                'develop/java/client/namespaces',
-              ],
+              items: ['develop/java/client/temporal-client', 'develop/java/client/namespaces'],
             },
             {
               type: 'category',
@@ -326,6 +324,7 @@ module.exports = {
               items: [
                 'develop/java/nexus/quickstart',
                 'develop/java/nexus/feature-guide',
+                'develop/java/nexus/standalone-operations',
               ],
             },
             {
@@ -336,10 +335,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/platform/index',
               },
-              items: [
-                'develop/java/platform/observability',
-                'develop/java/platform/enriching-ui',
-              ],
+              items: ['develop/java/platform/observability', 'develop/java/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -358,15 +354,13 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
                 id: 'develop/java/integrations/index',
               },
-              items: [
-                'develop/java/integrations/spring-boot',
-                'develop/java/integrations/spring-ai',
-              ],
+              items: ['develop/java/integrations/spring-boot', 'develop/java/integrations/spring-ai'],
             },
           ],
         },
@@ -399,7 +393,7 @@ module.exports = {
                 'develop/php/workflows/timers',
                 'develop/php/workflows/side-effects',
                 'develop/php/workflows/versioning',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -414,7 +408,7 @@ module.exports = {
                 'develop/php/activities/execution',
                 'develop/php/activities/timeouts',
                 'develop/php/activities/asynchronous-activity',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -424,9 +418,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/workers/index',
               },
-              items: [
-                'develop/php/workers/run-worker-process',
-              ]
+              items: ['develop/php/workers/run-worker-process'],
             },
             {
               type: 'category',
@@ -436,9 +428,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/client/index',
               },
-              items: [                
-                'develop/php/client/temporal-client',
-              ],
+              items: ['develop/php/client/temporal-client'],
             },
             {
               type: 'category',
@@ -448,10 +438,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/platform/index',
               },
-              items: [
-                'develop/php/platform/observability',
-                'develop/php/platform/enriching-ui',
-              ],
+              items: ['develop/php/platform/observability', 'develop/php/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -461,10 +448,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/php/best-practices/index',
               },
-              items: [
-                'develop/php/best-practices/testing-suite',
-                'develop/php/best-practices/debugging'
-              ]
+              items: ['develop/php/best-practices/testing-suite', 'develop/php/best-practices/debugging'],
             },
           ],
         },
@@ -497,7 +481,7 @@ module.exports = {
                 'develop/python/workflows/timers',
                 'develop/python/workflows/versioning',
                 'develop/python/workflows/workflow-streams',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -535,9 +519,7 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/python/workers/serverless-workers/index',
                   },
-                  items: [
-                    'develop/python/workers/serverless-workers/aws-lambda',
-                  ],
+                  items: ['develop/python/workers/serverless-workers/aws-lambda'],
                 },
               ],
             },
@@ -549,9 +531,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/client/index',
               },
-              items: [
-                'develop/python/client/temporal-client',
-              ],
+              items: ['develop/python/client/temporal-client'],
             },
             {
               type: 'category',
@@ -564,6 +544,7 @@ module.exports = {
               items: [
                 'develop/python/nexus/quickstart',
                 'develop/python/nexus/feature-guide',
+                'develop/python/nexus/standalone-operations',
               ],
             },
             {
@@ -574,10 +555,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/platform/index',
               },
-              items: [
-                'develop/python/platform/observability',
-                'develop/python/platform/enriching-ui',
-              ],
+              items: ['develop/python/platform/observability', 'develop/python/platform/enriching-ui'],
             },
             {
               type: 'category',
@@ -612,6 +590,7 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
@@ -619,8 +598,10 @@ module.exports = {
               },
               items: [
                 'develop/python/integrations/braintrust',
+                'develop/python/integrations/google-adk',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
+                'develop/python/integrations/strands-agents',
               ],
             },
           ],
@@ -654,6 +635,7 @@ module.exports = {
                 'develop/typescript/workflows/schedules',
                 'develop/typescript/workflows/timers',
                 'develop/typescript/workflows/versioning',
+                'develop/typescript/workflows/workflow-streams',
               ],
             },
             {
@@ -693,7 +675,7 @@ module.exports = {
                     id: 'develop/typescript/workers/serverless-workers/index',
                   },
                   items: [
-                    'develop/typescript/workers/serverless-workers/aws-lambda',
+                    'develop/typescript/workers/serverless-workers/aws-lambda'
                   ],
                 },
               ],
@@ -721,7 +703,8 @@ module.exports = {
               },
               items: [
                 'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide'
+                'develop/typescript/nexus/feature-guide',
+                'develop/typescript/nexus/standalone-operations',
               ],
             },
             {
@@ -734,7 +717,7 @@ module.exports = {
               },
               items: [
                 'develop/typescript/platform/observability',
-                'develop/typescript/platform/enriching-ui',
+                'develop/typescript/platform/enriching-ui'
               ],
             },
             {
@@ -755,12 +738,17 @@ module.exports = {
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
                 id: 'develop/typescript/integrations/index',
               },
-              items: ['develop/typescript/integrations/ai-sdk'],
+              items: [
+                'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/langsmith',
+                'develop/typescript/integrations/openai-agents',
+              ],
             },
           ],
         },
@@ -793,7 +781,7 @@ module.exports = {
                 'develop/dotnet/workflows/timers',
                 'develop/dotnet/workflows/dynamic-workflow',
                 'develop/dotnet/workflows/versioning',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -811,7 +799,7 @@ module.exports = {
                 'develop/dotnet/activities/dynamic-activity',
                 'develop/dotnet/activities/benign-exceptions',
                 'develop/dotnet/activities/standalone-activities',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -823,6 +811,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/interceptors',
               ]
             },
             {
@@ -834,7 +823,7 @@ module.exports = {
                 id: 'develop/dotnet/client/index',
               },
               items: [
-                'develop/dotnet/client/temporal-client',
+                'develop/dotnet/client/temporal-client'
               ],
             },
             {
@@ -848,6 +837,7 @@ module.exports = {
               items: [
                 'develop/dotnet/nexus/quickstart',
                 'develop/dotnet/nexus/feature-guide',
+                'develop/dotnet/nexus/standalone-operations',
               ],
             },
             {
@@ -860,7 +850,7 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/platform/observability',
-                'develop/dotnet/platform/enriching-ui',
+                'develop/dotnet/platform/enriching-ui'
               ],
             },
             {
@@ -876,7 +866,7 @@ module.exports = {
                 'develop/dotnet/best-practices/testing-suite',
                 'develop/dotnet/best-practices/debugging',
                 'develop/dotnet/best-practices/converters-and-encryption',
-              ]
+              ],
             },
           ],
         },
@@ -910,7 +900,7 @@ module.exports = {
                 'develop/ruby/workflows/futures',
                 'develop/ruby/workflows/dynamic-workflow',
                 'develop/ruby/workflows/versioning',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -923,11 +913,12 @@ module.exports = {
               items: [
                 'develop/ruby/activities/basics',
                 'develop/ruby/activities/execution',
+                'develop/ruby/activities/standalone-activities',
                 'develop/ruby/activities/timeouts',
                 'develop/ruby/activities/asynchronous-activity',
                 'develop/ruby/activities/dynamic-activity',
                 'develop/ruby/activities/benign-exceptions',
-              ]
+              ],
             },
             {
               type: 'category',
@@ -938,8 +929,8 @@ module.exports = {
                 id: 'develop/ruby/workers/index',
               },
               items: [
-                'develop/ruby/workers/run-worker-process',
-              ]
+                'develop/ruby/workers/run-worker-process'
+              ],
             },
             {
               type: 'category',
@@ -950,7 +941,7 @@ module.exports = {
                 id: 'develop/ruby/client/index',
               },
               items: [
-                'develop/ruby/client/temporal-client',
+                'develop/ruby/client/temporal-client'
               ],
             },
             {
@@ -963,19 +954,20 @@ module.exports = {
               },
               items: [
                 'develop/ruby/platform/observability',
-                'develop/ruby/platform/enriching-ui',
+                'develop/ruby/platform/enriching-ui'
               ],
             },
             {
               type: 'category',
               label: 'Integrations',
+              className: 'sidebar-integrations',
               collapsed: true,
               link: {
                 type: 'doc',
                 id: 'develop/ruby/integrations/index',
               },
               items: [
-                'develop/ruby/integrations/rails-integration',
+                'develop/ruby/integrations/rails-integration'
               ],
             },
             {
@@ -991,7 +983,7 @@ module.exports = {
                 'develop/ruby/best-practices/testing-suite',
                 'develop/ruby/best-practices/debugging',
                 'develop/ruby/best-practices/converters-and-encryption',
-              ]
+              ],
             },
           ],
         },
@@ -1046,7 +1038,7 @@ module.exports = {
                 id: 'develop/rust/workers/index',
               },
               items: [
-                'develop/rust/workers/worker-process',
+                'develop/rust/workers/worker-process'
               ],
             },
             {
@@ -1058,7 +1050,7 @@ module.exports = {
                 id: 'develop/rust/client/index',
               },
               items: [
-                'develop/rust/client/temporal-client',
+                'develop/rust/client/temporal-client'
               ],
             },
             {
@@ -1069,7 +1061,9 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/rust/nexus/index',
               },
-              items: ['develop/rust/nexus/feature-guide'],
+              items: [
+                'develop/rust/nexus/feature-guide'
+              ],
             },
           ],
         },
@@ -1078,7 +1072,6 @@ module.exports = {
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
-        'develop/integrations',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
       ],
@@ -1103,7 +1096,7 @@ module.exports = {
           items: [
             'cloud/get-started/namespaces',
             'cloud/get-started/api-keys',
-            'cloud/get-started/certificates',
+            'cloud/get-started/certificates'
           ],
         },
         {
@@ -1116,11 +1109,12 @@ module.exports = {
           },
           items: [
             'cloud/manage-access/roles-and-permissions',
-            'cloud/get-started/users',
-            'cloud/get-started/user-groups',
-            'cloud/get-started/service-accounts',
-            'cloud/saml',
-            'cloud/scim',
+            'cloud/manage-access/users',
+            'cloud/manage-access/user-groups',
+            'cloud/manage-access/service-accounts',
+            'cloud/manage-access/custom-roles',
+            'cloud/manage-access/saml',
+            'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
           ],
         },
@@ -1156,7 +1150,11 @@ module.exports = {
                 type: 'doc',
                 id: 'cloud/metrics/promql',
               },
-              items: ['cloud/metrics/general-setup', 'cloud/metrics/reference', 'cloud/metrics/prometheus-grafana'],
+              items: [
+                'cloud/metrics/general-setup',
+                'cloud/metrics/reference',
+                'cloud/metrics/prometheus-grafana'
+              ],
             },
             'cloud/metrics/sdk-metrics-setup',
           ],
@@ -1199,8 +1197,20 @@ module.exports = {
           },
           items: [
             'cloud/high-availability/enable',
+            'cloud/high-availability/architecture-patterns',
             'cloud/high-availability/monitoring',
-            'cloud/high-availability/failovers',
+            {
+              type: 'category',
+              label: 'Failovers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/high-availability/failovers/failovers',
+              },
+              items: [
+                'cloud/high-availability/failovers/manage-failovers',
+              ],
+            },
             'cloud/high-availability/ha-connectivity',
           ],
         },
@@ -1229,7 +1239,12 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+          items: [
+            'cloud/migrate/automated',
+            'cloud/migrate/manual',
+            'cloud/migrate/migrate-within-cloud',
+            'cloud/migrate/estimate-actions',
+          ],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
@@ -1245,7 +1260,10 @@ module.exports = {
             type: 'doc',
             id: 'cloud/export',
           },
-          items: ['cloud/aws-export-s3', 'cloud/gcp-export-gcs'],
+          items: [
+            'cloud/aws-export-s3',
+            'cloud/gcp-export-gcs'
+          ],
         },
         {
           type: 'category',
@@ -1271,13 +1289,16 @@ module.exports = {
           items: [
             'cloud/tcld/account',
             'cloud/tcld/apikey',
+            'cloud/tcld/connectivity-rule',
             'cloud/tcld/feature',
             'cloud/tcld/generate-certificates',
             'cloud/tcld/login',
             'cloud/tcld/logout',
+            'cloud/tcld/migration',
             'cloud/tcld/namespace',
             'cloud/tcld/nexus',
             'cloud/tcld/request',
+            'cloud/tcld/service-account',
             'cloud/tcld/user',
             'cloud/tcld/user-group',
             'cloud/tcld/version',
@@ -1359,16 +1380,48 @@ module.exports = {
       },
       items: [
         'cli/setup-cli',
-        'cli/activity',
-        'cli/batch',
-        'cli/config',
-        'cli/env',
-        'cli/operator',
-        'cli/schedule',
-        'cli/server',
-        'cli/task-queue',
-        'cli/worker',
-        'cli/workflow',
+        'cli/cloud',
+        'cli/cli-basics',
+        {
+          type: 'category',
+          label: 'Command reference',
+          collapsed: true,
+          link: { type: 'doc', id: 'cli/command-reference/index' },
+          items: [
+            'cli/command-reference/activity',
+            'cli/command-reference/batch',
+            {
+              type: 'category',
+              label: 'cloud',
+              collapsed: true,
+              link: { type: 'doc', id: 'cli/command-reference/cloud/index' },
+              items: [
+                'cli/command-reference/cloud/account',
+                'cli/command-reference/cloud/apikey',
+                'cli/command-reference/cloud/async-operation',
+                'cli/command-reference/cloud/connectivity',
+                'cli/command-reference/cloud/custom-role',
+                'cli/command-reference/cloud/login',
+                'cli/command-reference/cloud/logout',
+                'cli/command-reference/cloud/namespace',
+                'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/region',
+                'cli/command-reference/cloud/service-account',
+                'cli/command-reference/cloud/user',
+                'cli/command-reference/cloud/user-group',
+                'cli/command-reference/cloud/whoami',
+              ],
+            },
+            'cli/command-reference/config',
+            'cli/command-reference/env',
+            'cli/command-reference/operator',
+            'cli/command-reference/schedule',
+            'cli/command-reference/server',
+            'cli/command-reference/task-queue',
+            'cli/command-reference/worker',
+            'cli/command-reference/workflow',
+          ],
+        },
       ],
     },
     {
@@ -1429,6 +1482,7 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/error-handling',
         'best-practices/cost-optimization',
         'best-practices/knowledge-hub',
       ],
@@ -1444,6 +1498,7 @@ module.exports = {
       items: [
         'encyclopedia/temporal',
         'encyclopedia/temporal-sdks',
+        'encyclopedia/temporal-client',
         {
           type: 'category',
           label: 'Workflows',
@@ -1470,6 +1525,7 @@ module.exports = {
                 'encyclopedia/workflow/workflow-execution/timers-delays',
               ],
             },
+            'encyclopedia/workflow/workflow-pause',
             'encyclopedia/workflow/dynamic-handler',
             'encyclopedia/workflow/workflow-schedule',
             'encyclopedia/workflow/cron-job',
@@ -1494,13 +1550,14 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Detecting application failures',
+          label: 'Failures and error handling',
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'encyclopedia/detecting-application-failures',
+            id: 'encyclopedia/failures-and-error-handling',
           },
           items: [
+            'encyclopedia/application-failures',
             'encyclopedia/detecting-activity-failures',
             'encyclopedia/detecting-workflow-failures',
             'encyclopedia/retry-policies',
@@ -1552,6 +1609,7 @@ module.exports = {
           items: [
             'encyclopedia/workflow-message-passing/sending-messages',
             'encyclopedia/workflow-message-passing/handling-messages',
+            'encyclopedia/workflow-message-passing/workflow-streams',
           ],
         },
         {
@@ -1616,6 +1674,7 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
+            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
@@ -1661,12 +1720,158 @@ module.exports = {
         'web-ui',
       ],
     },
+    {
+      type: 'category',
+      label: 'Interactive Demos',
+      collapsed: true,
+      items: [
+        'develop/standalone-activities-interactive-demo',
+      ],
+    },    {
+      type: 'category',
+      label: 'Guides',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
+      items: [
+        'guides/entity-pattern-loyalty-points',
+        'guides/saga-pattern',
+        'guides/route-specialized-workloads',
+        'guides/worker-execution-affinity',
+        'guides/temporary-rate-limit-increases',
+        'guides/reliable-document-approvals',
+        'guides/rate-limit-downstream-apis',
+        'guides/durable-gaming-sessions',
+        'guides/lock-shared-resources',
+      ],
+    },
+    'integrations',
     'glossary',
     'with-ai',
     // {
     //   type: "autogenerated",
     //   dirName: "./dev-guide", // '.' means the current docs folder
     // },
+  ],
+  designPatterns: [
+    'design-patterns/index',
+    {
+      type: 'category',
+      label: "Task Orchestration Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/task-orchestration-patterns' },
+      items: [
+        'design-patterns/child-workflows',
+        'design-patterns/parallel-execution',
+        'design-patterns/pick-first',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Workflow Messaging Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/workflow-messaging-patterns' },
+      items: [
+        'design-patterns/signal-with-start',
+        'design-patterns/request-response-via-updates',
+        'design-patterns/event-accumulator',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Entity & Lifecycle Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/entity-lifecycle-patterns' },
+      items: [
+        'design-patterns/entity-workflow',
+        'design-patterns/continue-as-new',
+        'design-patterns/updatable-timer',
+      ],
+    },
+    {
+      type: 'category',
+      label: "External Interaction Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/external-interaction-patterns' },
+      items: [
+        'design-patterns/polling',
+        'design-patterns/long-running-activity',
+        'design-patterns/delayed-start',
+        'design-patterns/delayed-callback',
+        'design-patterns/approval',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Distributed Transaction Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/distributed-transaction-patterns' },
+      items: [
+        'design-patterns/saga-pattern',
+        'design-patterns/early-return',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Error Handling & Retry Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/error-handling-patterns' },
+      items: [
+        'design-patterns/fixed-count-retries',
+        'design-patterns/fixed-wall-time-retries',
+        'design-patterns/non-retryable-errors',
+        'design-patterns/delayed-retry',
+        'design-patterns/fast-slow-retries',
+        'design-patterns/retry-metrics',
+        'design-patterns/resumable-activity',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Batch Processing Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/batch-processing-patterns' },
+      items: [
+        'design-patterns/fanout-child-workflows',
+        'design-patterns/batch-iterator',
+        'design-patterns/sliding-window',
+        'design-patterns/mapreduce-tree',
+      ],
+    },
+    {
+      type: 'category',
+      label: "QoS & Throughput Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/qos-throughput-patterns' },
+      items: [
+        'design-patterns/downstream-rate-limiting',
+        'design-patterns/priority-task-queues',
+        'design-patterns/fairness',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Performance & Latency Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/performance-latency-patterns' },
+      items: [
+        'design-patterns/local-activities',
+        'design-patterns/early-return-local-activities',
+        'design-patterns/eager-workflow-start',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Worker Configuration Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/worker-configuration-patterns' },
+      items: [
+        'design-patterns/worker-specific-taskqueue',
+        'design-patterns/activity-dependency-injection',
+      ],
+    },
   ],
   tctl: [
     'tctl-v1/index',

@@ -35,7 +35,7 @@ Terminating a Workflow forcefully stops Workflow Execution. This action resemble
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
 Workflow is stuck and cannot be canceled normally.
 
-## Cancel a Workflow Execution {#cancellation}
+## Cancel a Workflow Execution {/* #cancellation */}
 
 Canceling a Workflow provides a graceful way to stop Workflow Execution. This action resembles sending a `SIGTERM` to a
 process.
@@ -57,7 +57,7 @@ let handle = client.start_workflow(
 handle.cancel(WorkflowCancelOptions::builder().reason("No longer needed").build()).await?;
 ````
 
-### Cancel an Activity from a Workflow {#cancel-activity}
+### Cancel an Activity from a Workflow {/* #cancel-activity */}
 
 Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat
 Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. When any non-immediate
@@ -124,7 +124,7 @@ impl CancellationWorkflow {
 
         temporalio_sdk::workflows::select! {
             result = &mut activity_fut => {
-                let value = result.map_err(|e| anyhow::anyhow!("{e}"))?;
+                let value = result?;
                 Ok(value)
             }
             reason = ctx.cancelled() => {
@@ -136,8 +136,7 @@ impl CancellationWorkflow {
                         (),
                         ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
                     )
-                    .await
-                    .map_err(|e| anyhow::anyhow!("{e}"))?;
+                    .await?;
 
                 Ok(format!("Cancelled (reason={reason}), {cleanup_result}"))
             }
@@ -146,7 +145,7 @@ impl CancellationWorkflow {
 }
 ```
 
-## Terminate a Workflow Execution {#termination}
+## Terminate a Workflow Execution {/* #termination */}
 
 Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
 
@@ -171,7 +170,7 @@ handle.terminate(WorkflowTerminateOptions::builder()
 
 ```
 
-## Reset a Workflow Execution {#reset}
+## Reset a Workflow Execution {/* #reset */}
 
 Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
 point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other

@@ -31,16 +31,10 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 [Nexus Operations](/glossary#nexus-operation) can be synchronous or asynchronous. Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-running Operation backed by a Workflow.
 An Operation's lifecycle spans scheduling, reliable delivery with retries, handler execution, and result or callback completion.
 
-## SDK support {#sdk-support}
+## SDK support {/* #sdk-support */}
 
 :::tip SDK GUIDES
 
@@ -53,6 +47,7 @@ An Operation's lifecycle spans scheduling, reliable delivery with retries, handl
 :::
 
 **Caller side:** A caller Workflow executes a Nexus Operation through a [Nexus Endpoint](/nexus/endpoints) using the Temporal SDK.
+A [Standalone Nexus Operation](/standalone-nexus-operation) is a top-level Nexus Operation Execution started directly by a Client, without using a caller Workflow.
 
 **Handler side:** [Nexus Services](/nexus/services) and their Operations are registered with a Worker that polls the Endpoint's target Task Queue. Operations are defined using SDK builder functions:
 
@@ -60,7 +55,7 @@ An Operation's lifecycle spans scheduling, reliable delivery with retries, handl
 - **New-Sync-Operation** - Run a synchronous Operation: invoke a Query, Signal, or Update, or execute other reliable code using the Temporal SDK Client.
 
 
-## Nexus Operation lifecycle {#operation-lifecycle}
+## Nexus Operation lifecycle {/* #operation-lifecycle */}
 
 When a caller Workflow executes a Nexus Operation, the command is atomically handed off to the [Nexus Machinery](/glossary#nexus-machinery).
 The Machinery ensures [at-least-once](#at-least-once-execution-semantics-and-idempotency) execution with [automatic retries](#automatic-retries) and reliable result delivery.
@@ -105,7 +100,7 @@ Timed-out handlers are retried until the Operation's Schedule-to-Close timeout i
 
 :::
 
-### Asynchronous Operation lifecycle {#asynchronous-operation-lifecycle}
+### Asynchronous Operation lifecycle {/* #asynchronous-operation-lifecycle */}
 
 Asynchronous Operations can run up to [60 days](/cloud/limits#nexus-operation-duration-limits) (the maximum Schedule-to-Close timeout in Temporal Cloud).
 Differences from the synchronous lifecycle are in **bold**.
@@ -134,7 +129,7 @@ Differences from the synchronous lifecycle are in **bold**.
     title="Nexus"
 />
 
-### Executing code from a synchronous handler {#executing-arbitrary-code-from-a-sync-handler}
+### Executing code from a synchronous handler {/* #executing-arbitrary-code-from-a-sync-handler */}
 
 Synchronous handlers can execute code directly but must complete within the [handler deadline](/cloud/limits#nexus-operation-request-timeout).
 Use the Temporal SDK Client to invoke Signals, Queries, Updates, or other reliable code.
@@ -168,7 +163,7 @@ At a high level, when a caller Workflow executes a Nexus Operation:
 3. The handler processes the task and returns the result (synchronous) or an Operation token (asynchronous).
 4. The caller's Nexus Machinery records a NexusOperation event ([Started](/references/events#nexusoperationstarted), [Completed](/references/events#nexusoperationcompleted), [Failed](/references/events#nexusoperationfailed), [Canceled](/references/events#nexusoperationcanceled), or [TimedOut](/references/events#nexusoperationtimedout)) in the caller's Event History.
 
-## Automatic retries {#automatic-retries}
+## Automatic retries {/* #automatic-retries */}
 
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation.
 If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's [Schedule-to-Start timeout](#schedule-to-start-timeout) or [Schedule-to-close timeout](#schedule-to-close-timeout) is exceeded.
@@ -183,22 +178,22 @@ See [errors in Activities](/references/failures#errors-in-activities) and [non-r
 To control retry behavior, return a [non-retryable Nexus error](/references/failures#non-retryable-nexus-errors).
 See [errors in Nexus handlers](/nexus/error-handling#errors-in-nexus-handlers).
 
-## Timeouts {#timeouts}
+## Timeouts {/* #timeouts */}
 
 Nexus Operations support three types of timeouts that control how long the caller is willing to wait at different stages of the Operation lifecycle.
 These timeouts are set by the caller when scheduling the Operation.
 
-### Schedule-to-Close timeout {#schedule-to-close-timeout}
+### Schedule-to-Close timeout {/* #schedule-to-close-timeout */}
 
 The Schedule-to-Close timeout limits the total duration from when the Operation is scheduled to when it completes.
 This is the overall timeout for the entire Operation.
 The Nexus Machinery [automatically retries](#automatic-retries) failed requests internally until this timeout is exceeded, at which point the Operation fails with a [NexusOperationTimedOut](/references/events#nexusoperationtimedout) event.
 
-This timeout covers the full [Nexus Operation lifecycle](https://docs.temporal.io/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
+This timeout covers the full [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
 
-In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](https://docs.temporal.io/cloud/limits#nexus-operation-duration-limits).
+In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](/cloud/limits#nexus-operation-duration-limits).
 
-### Schedule-to-Start timeout {#schedule-to-start-timeout}
+### Schedule-to-Start timeout {/* #schedule-to-start-timeout */}
 
 The Schedule-to-Start timeout limits how long the caller is willing to wait for the Operation to be started (or completed, if synchronous) by the handler.
 If the Operation is not started within this timeout, it fails with `TIMEOUT_TYPE_SCHEDULE_TO_START`.
@@ -211,7 +206,7 @@ The Schedule-to-Start timeout requires Temporal Server version 1.31.0 or later.
 
 :::
 
-### Start-to-Close timeout {#start-to-close-timeout}
+### Start-to-Close timeout {/* #start-to-close-timeout */}
 
 The Start-to-Close timeout limits how long the caller is willing to wait for an asynchronous Operation to complete after it has been started.
 If the Operation does not complete within this timeout after starting, it fails with `TIMEOUT_TYPE_START_TO_CLOSE`.
@@ -227,7 +222,7 @@ The Start-to-Close timeout requires Temporal Server version 1.31.0 or later.
 
 :::
 
-## Circuit breaking {#circuit-breaking}
+## Circuit breaking {/* #circuit-breaking */}
 
 Nexus implements circuit breaking per caller-Namespace/Endpoint pair ("destination pair").
 Each destination pair trips and resets independently.
@@ -309,7 +304,7 @@ Pending Nexus Operations: 1
   CancelationBlockedReason            The circuit breaker is open.
 ```
 
-## Execution semantics {#execution-semantics}
+## Execution semantics {/* #execution-semantics */}
 
 ### At-least-once execution semantics and idempotency
 
@@ -338,13 +333,13 @@ difficult to detect and correlate. If the Nexus Operation was part of a multi-st
 to run compensation logic, potentially leaving the system in a partially completed state.
 Prefer [cancellation](#cancelation) when possible.
 
-## Versioning {#versioning}
+## Versioning {/* #versioning */}
 
 Task Routing is the simplest way to version Nexus service code.
 For backward-incompatible changes, use a different Service name and Task Queue (for example, `prod.payments.v2`).
 Callers migrate to the new version on their own deployment schedule.
 
-## Attaching multiple Nexus callers to a handler Workflow {#attaching-multiple-nexus-callers}
+## Attaching multiple Nexus callers to a handler Workflow {/* #attaching-multiple-nexus-callers */}
 
 
 Operations started with [New-Workflow-Run-Operation](/nexus/operations#sdk-support) automatically attach a completion Callback to the handler Workflow.
