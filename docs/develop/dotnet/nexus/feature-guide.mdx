@@ -285,6 +285,49 @@ async Task RunHandlerWorkerAsync()
 }
 ```
 
+### Use dependency injection with a Nexus Service handler {/* #dependency-injection */}
+
+Nexus Service handlers support dependency injection through the [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) generic-host Worker.
+Register the handler on the Worker with `AddScopedNexusService`, and the container injects the handler's constructor dependencies.
+Use `AddSingletonNexusService` or `AddTransientNexusService` for singleton or transient lifetimes instead, mirroring `AddScopedActivities` / `AddSingletonActivities` / `AddTransientActivities`.
+
+For a complete, runnable example, see the [NexusDependencyInjection sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusDependencyInjection).
+
+[NexusDependencyInjection/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusDependencyInjection/Program.cs)
+```csharp
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(ctx =>
+        ctx.
+            // Add the dependency that will be injected into the Nexus Service handler
+            AddScoped<IGreetingClient, GreetingClient>().
+            // Add the worker
+            AddHostedTemporalWorker(handlerTaskQueue).
+            ConfigureOptions(options => options.ClientOptions = LoadConnectOptions()).
+            // Add the Nexus Service handler at the scoped level
+            AddScopedNexusService<GreetingServiceHandler>())
+    .Build();
+await host.RunAsync();
+```
+
+The handler receives its dependencies through its constructor, and a scoped instance is created for each Operation:
+
+[NexusDependencyInjection/Handler/GreetingServiceHandler.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusDependencyInjection/Handler/GreetingServiceHandler.cs)
+```csharp
+[NexusServiceHandler(typeof(IGreetingService))]
+public class GreetingServiceHandler
+{
+    private readonly IGreetingClient greetingClient;
+
+    // The dependency is injected by the container
+    public GreetingServiceHandler(IGreetingClient greetingClient) => this.greetingClient = greetingClient;
+
+    [NexusOperationHandler]
+    public IOperationHandler<IGreetingService.SayHelloInput, string> SayHello() =>
+        OperationHandler.Sync<IGreetingService.SayHelloInput, string>(
+            (ctx, input) => greetingClient.GetGreetingAsync(input.Name));
+}
+```
+
 ## Develop a caller Workflow that uses the Nexus Service {/* #develop-caller-workflow-nexus-service */}
 
 Import the Service API package that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
