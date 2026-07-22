@@ -136,7 +136,7 @@ export const LIFECYCLE_STEPS = [
       { from: "History", to: "Matching" },
       { from: "Matching", to: "TaskQueue" },
     ],
-    note: "Activity completion (or Timer/Signal Events) triggers a new Workflow Task on the Workflow Task Queue.",
+    note: "Activity completion (or Timer/Signal Events) triggers a new Workflow Task on the Task Queue.",
   },
   {
     number: 13,
