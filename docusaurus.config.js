@@ -299,8 +299,6 @@ module.exports = async function createConfigAsync() {
             admonitions: {
               keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
             },
-            remarkPlugins: [(await import('remark-math')).default],
-            rehypePlugins: [(await import('rehype-katex')).default],
           },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
@@ -358,14 +356,6 @@ module.exports = async function createConfigAsync() {
         src: '/scripts/copycode-notice.js',
         async: true,
         defer: true,
-      },
-    ],
-    stylesheets: [
-      {
-        href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-        type: 'text/css',
-        integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-        crossorigin: 'anonymous',
       },
     ],
     plugins: [
