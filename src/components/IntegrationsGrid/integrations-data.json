@@ -63,6 +63,15 @@
     "href": "https://adk.dev/integrations/temporal/"
   },
   {
+    "name": "Google ADK",
+    "description": "Run Google ADK agents with durable execution using the Temporal Go SDK.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Go",
+    "href": "/develop/go/integrations/google-adk"
+  },
+  {
     "name": "Grafana Cloud",
     "description": "Export Temporal Cloud metrics to Grafana Cloud with a serverless integration and pre-built dashboard.",
     "tags": [
@@ -88,6 +97,15 @@
     ],
     "sdk": "Python",
     "href": "/develop/python/integrations/langsmith"
+  },
+  {
+    "name": "LangSmith",
+    "description": "Trace and debug LLM calls in Temporal Workflows with LangSmith.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "TypeScript",
+    "href": "/develop/typescript/integrations/langsmith"
   },
   {
     "name": "Mastra",

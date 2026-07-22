@@ -8,6 +8,7 @@ Guidance for AI coding agents working in the [Temporal documentation](https://gi
 |-------|------|
 | Where content belongs | [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) |
 | React components in MDX | [COMPONENTS.md](./COMPONENTS.md) |
+| Mermaid diagrams | [MERMAID.md](./readme/MERMAID.md) |
 | LLM Markdown pipeline | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md) |
 | Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md) |
 

@@ -18,12 +18,27 @@
       "headers": [
         {
           "key": "Link",
-          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\""
+          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\", </assets/fonts/Aeonik-Light-c944de5d59061b5eca77f8b08852df3b.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Aeonik-Regular-5daa2b042642b01633b5ba8273b0d396.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
         }
       ]
     }
   ],
   "redirects": [
+    {
+      "source": "/cloud/disaster-recovery",
+      "destination": "/cloud/high-availability",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/multi-region-failover",
+      "destination": "/cloud/high-availability/architecture-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/high-availability/deployment-patterns",
+      "destination": "/cloud/high-availability/architecture-patterns",
+      "permanent": true
+    },
     {
       "source": "/encyclopedia/detecting-application-failures",
       "destination": "/encyclopedia/failures-and-error-handling",
