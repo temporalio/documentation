@@ -293,7 +293,7 @@ Take note of the following:
 
 The full list of Stable IP ranges is published as a public JSON file at:
 
-**[https://docs.temporal.io/json/stable-ip-ranges-prod.json](https://docs.temporal.io/json/stable-ip-ranges-prod.json)**
+**[https://docs.temporal.io/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json)**
 
 Click the link to inspect the list in your browser, or copy the URL into your firewall tooling, a `curl`/`wget` script, or a Terraform `http` data source:
 
@@ -341,6 +341,11 @@ IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, 
 
 :::
 
+:::note Don't depend on DNS resolution behavior
+
+Take a dependency on Temporal's published endpoints (the hostnames themselves), not on what they resolve to. The underlying IP addresses, CNAME chains, and resolution behavior can change at any time without notice. The **only** exception is the Namespace Endpoint for a Namespace with [High Availability features](/cloud/high-availability), which deterministically CNAMEs to its active region's regional record — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for details.
+
+:::
 ### How to connect using Stable IPs
 
 To connect to a Namespace with Stable IPs enabled:
@@ -387,7 +392,7 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 **Steps:**
 
-1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [https://docs.temporal.io/json/stable-ip-ranges-prod.json](https://docs.temporal.io/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
+1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [https://docs.temporal.io/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
 
 2. **Create (or update) the account's public Connectivity Rule with Stable IPs enabled.** This step requires the [Cloud Ops API](#how-to-enable-stable-ips-with-curl) or the [`cloud-api` client](https://github.com/temporalio/cloud-api) — `tcld` does not currently support creating a public Connectivity Rule with Stable IPs.
 
@@ -406,7 +411,7 @@ If your Namespace is currently reached over AWS PrivateLink and protected by a p
 
 4. **Switch client DNS resolution from PrivateLink to public.** This is the actual cutover. Remove the private DNS override — Route 53 private hosted zone, `/etc/hosts`, or VPC DNS resolver rules — so that `<namespace>.<account>.tmprl.cloud` resolves through public DNS to a Stable IP. Restart Workers to drop existing PrivateLink connections and force re-resolution.
 
-5. **Verify traffic is flowing over Stable IPs.** On a Worker host, run `dig <namespace>.<account>.tmprl.cloud` and confirm the answer is a Stable IP from the [published JSON list](https://docs.temporal.io/json/stable-ip-ranges-prod.json), not your VPC endpoint IP. Confirm Workers are polling and there are no `RESOURCE_EXHAUSTED` or connection errors in their logs.
+5. **Verify traffic is flowing over Stable IPs.** On a Worker host, run `dig <namespace>.<account>.tmprl.cloud` and confirm the answer is a Stable IP from the [published JSON list](/json/stable-ip-ranges-prod.json), not your VPC endpoint IP. Confirm Workers are polling and there are no `RESOURCE_EXHAUSTED` or connection errors in their logs.
 
 6. **Detach the private Connectivity Rule.** Once you are confident all traffic is on the public path, remove the private rule by re-attaching only the public rule:
 

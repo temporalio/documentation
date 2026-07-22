@@ -48,7 +48,7 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
 
 ### Procedure
 
-1. Clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repository.
+1. Clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repository. The [docker-compose.yml example](https://github.com/temporalio/samples-server/blob/main/compose/docker-compose.yml) uses the `temporalio/server:${TEMPORAL_VERSION}` image. This is what you need to use in your production environments and you can find a thorough list of configs [here](https://github.com/temporalio/temporal/blob/main/docker/config_template.yaml). 
 
 2. Change into the `compose` directory.
 
@@ -69,6 +69,8 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
    [the additional configuration options](https://github.com/temporalio/samples-server/tree/main/compose#other-configuration-files)
    available in the samples-server repository and use `docker compose up` with the corresponding configuration file to
    try them out. The configurations include different databases, visibility stores, and TLS settings.
+
+When you use the `temporalio/server` image, you have to manually manage schema updates using the `temporalio/admin-tools` image or by building the tools from the matching release tag.
 
 ## Use Temporal Server binaries
 

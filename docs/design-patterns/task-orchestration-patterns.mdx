@@ -1,0 +1,46 @@
+---
+id: task-orchestration-patterns
+title: "Task Orchestration Patterns"
+sidebar_label: "Task Orchestration Patterns"
+description: "Pattern selection guide for composing and coordinating multiple units of work within a Workflow."
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+These patterns compose and coordinate multiple units of work within a Workflow — decomposing large processes into reusable pieces, running work concurrently, and racing alternatives against each other.
+
+## Patterns in this section
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/child-workflows",
+    icon: "child-workflows-icon.svg",
+    title: "Child Workflows",
+    description: "Decomposes a complex Workflow into smaller, reusable units. Each child has its own Workflow ID, history, and lifecycle.",
+  },
+  {
+    href: "/design-patterns/parallel-execution",
+    icon: "parallel-execution-icon.svg",
+    title: "Parallel Execution",
+    description: "Runs multiple Activities concurrently for higher throughput, with error handling and a bound on how many run at once.",
+  },
+  {
+    href: "/design-patterns/pick-first",
+    icon: "pick-first-icon.svg",
+    title: "Pick First (Race)",
+    description: "Starts multiple Activities in parallel, takes the first result to arrive, and cancels the rest.",
+  },
+]} />
+
+## Choosing a pattern
+
+**A process is large or reused across Workflows**: break it into [Child Workflows](/design-patterns/child-workflows) with independent histories.
+
+**Independent work can run at the same time**: use [Parallel Execution](/design-patterns/parallel-execution) with a concurrency bound.
+
+**Several approaches compete and you want the first to finish**: use [Pick First (Race)](/design-patterns/pick-first) and cancel the losers.
+
+## Related sections
+
+- [Batch Processing Patterns](/design-patterns/batch-processing-patterns) — fan-out orchestration scaled to large record sets
+- [Performance & Latency Patterns](/design-patterns/performance-latency-patterns) — reduce the latency of the work each task performs

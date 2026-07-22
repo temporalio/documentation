@@ -10,6 +10,8 @@ import MDXComponents from '@theme-original/MDXComponents';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import LLMActions from '@site/src/components/LLMActions/LLMActions';
+import ZoomableImage from '@site/src/components/elements/Images/ZoomableImage';
+import NoZoom from '@site/src/components/elements/Images/NoZoom';
 import styles from '@site/src/theme/DocItem/Content/styles.module.css';
 
 function H1WithLLMActions(props: React.ComponentProps<'h1'>): JSX.Element {
@@ -25,5 +27,7 @@ export default {
     ...MDXComponents,
     Tabs,
     TabItem,
+    NoZoom,
     h1: H1WithLLMActions,
+    img: ZoomableImage,
 };

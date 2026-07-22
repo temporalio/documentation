@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Failing task -->
+  <rect x="6" y="30" width="24" height="24" rx="4" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="13" y1="37" x2="23" y2="47" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <line x1="23" y1="37" x2="13" y2="47" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Delay before the retry -->
+  <line x1="32" y1="42" x2="44" y2="42" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="42,39 48,42 42,45" fill="#888"/>
+
+  <circle cx="64" cy="42" r="14" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="64" y1="42" x2="64" y2="33" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <line x1="64" y1="42" x2="71" y2="45" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Retry loops back to the task after the delay -->
+  <path d="M 64 28 A 30 26 0 0 0 18 26" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="21,22 16,29 14,21" fill="#888"/>
+</svg>
