@@ -3,6 +3,7 @@ const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 const mermaidTheme = require('./src/constants/mermaidTheme');
+const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -15,6 +16,34 @@ module.exports = async function createConfigAsync() {
     onBrokenLinks: 'throw',
     onBrokenAnchors: 'throw',
     favicon: 'favicon.ico',
+    // Aeonik Light/Regular are used above the fold on every page (headings,
+    // sidebar nav). Preloading them here covers non-Vercel previews; the
+    // production Link header in vercel.json is what lets the browser fetch
+    // them before it even has the HTML to parse this tag from. Filenames
+    // come from src/constants/preloadFonts.js — see that file and
+    // bin/check-font-preload-hash.js for why they're hardcoded.
+    headTags: [
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_LIGHT_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_REGULAR_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+      },
+    ],
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     // JSON-LD structured data (Organization/SoftwareApplication/WebPage) is
