@@ -1,6 +1,6 @@
 module documentation-samples-go/features/updates
 
-go 1.24.0
+go 1.25.0
 
 require go.temporal.io/sdk v1.27.0
 
@@ -19,9 +19,9 @@ require (
 	github.com/stretchr/testify v1.9.0 // indirect
 	go.temporal.io/api v1.34.0 // indirect
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20230322174352-cde4c949918d // indirect
 	google.golang.org/grpc v1.79.3 // indirect
