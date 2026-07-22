@@ -1018,7 +1018,19 @@ module.exports = {
                 'develop/ruby/best-practices/error-handling',
                 'develop/ruby/best-practices/testing-suite',
                 'develop/ruby/best-practices/debugging',
-                'develop/ruby/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/ruby/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/ruby/best-practices/data-handling/data-conversion',
+                    'develop/ruby/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
           ],
