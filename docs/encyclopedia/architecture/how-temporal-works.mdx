@@ -99,7 +99,7 @@ The SDK replays the Event History to reconstruct logical Workflow state, then st
 
 **Step 6: Your Workflow asks for work via Commands**
 
-When your Workflow calls Temporal APIs (for example, "execute Activity"), the SDK records Commands like ScheduleActivityTask or StartTimer instead of executing them directly. When the Workflow cannot make more progress right now, the Worker sends RespondWorkflowTaskCompleted to Frontend, carrying the list of Commands and then the Frontend forwards this to History.
+When your Workflow calls Temporal APIs (for example, "execute Activity"), the SDK records Commands like ScheduleActivityTask or StartTimer instead of executing them directly. When the Workflow cannot make more progress, the Worker sends RespondWorkflowTaskCompleted to Frontend, carrying the list of Commands. Then the Frontend forwards this list to History.
 
 **Step 7: The History Service turns Commands into Events and new Tasks**
 
