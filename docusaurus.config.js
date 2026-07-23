@@ -299,6 +299,7 @@ module.exports = async function createConfigAsync() {
             admonitions: {
               keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
             },
+            remarkPlugins: [require('./plugins/og-image/remarkPlugin')],
           },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
