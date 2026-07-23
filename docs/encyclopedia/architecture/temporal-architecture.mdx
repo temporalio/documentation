@@ -109,4 +109,4 @@ The Worker Service is where all of the background functionality that keeps the T
 
 You can configure the database that you want to store Workflow state, Event History, and Task Queues. You can choose between Cassandra, MySQL, PostgreSQL, and SQLite. This is also where you store metadata about your Workflows and other data that needs to be recorded in order to ensure Durable Execution. This persistence enables recovery and replay - if anything fails, Temporal can reconstruct the exact state of a Workflow from its Event History.
 
-Application [Workers](/workers#worker) run your Workflow and Activity code on your own infrastructure; for how they coordinate with the Server, see [How Temporal works](/encyclopedia/architecture/how-temporal-works).
+Application [Workers](/workers#worker) run your Workflow and Activity code on your own infrastructure. For how they coordinate with the Server, see [How Temporal works](/encyclopedia/architecture/how-temporal-works).
