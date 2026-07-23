@@ -38,7 +38,7 @@ The [Server](/encyclopedia/architecture/temporal-architecture#the-temporal-serve
 
 ### Client
 
-A [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application) is a library object from a [Temporal SDK](/develop) that your application code uses to talk to the [Temporal Server's Frontend](/encyclopedia/architecture/temporal-architecture#frontend-service). It opens a network connection (using gRPC) to the Server and sends requests like "start this Workflow with these inputs", "cancel this Workflow", "send this Signal to a running Workflow", "run this Query on a Workflow", or "get the result of this Workflow".
+A [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application) is a library object from a [Temporal SDK](/develop) that your application code uses to talk to the [Temporal Server's Frontend](/encyclopedia/architecture/temporal-architecture#frontend-service). It opens a network connection (using gRPC) to the Server and sends requests like "start this Workflow with these inputs," "cancel this Workflow," "send this Signal to a running Workflow," "run this Query on a Workflow," or "get the result of this Workflow."
 
 The Client does not run Workflow or Activity code; it only sends and receives these control requests. This is important because it gives your existing services, CLIs, or UIs a simple and consistent way to interact with Temporal without knowing anything about how Tasks, Task Queues, or Event histories are implemented inside the Server.
 
