@@ -165,9 +165,19 @@ If you are considering using a custom slug, answer these questions first:
 # Social share images (og:image)
 
 Every doc page automatically gets a social-share preview card generated at build time — the image that
-shows up when a link to the page is shared in Slack, X, LinkedIn, etc. It's built from the page's `title`,
-`description`, and a section label derived from its folder (e.g. `develop/go/...` → "Go SDK"). There's
-nothing to do for a normal page.
+shows up when a link to the page is shared in Slack, X, LinkedIn, etc. It's built from the page's `title`
+and `description`. There's nothing to do for a normal page.
+
+The image itself is rendered by a `postBuild` step (`plugins/og-image/`), but *which* image a page points
+at is decided earlier, during MDX compilation (`plugins/og-image/remarkPlugin.js`), which writes it into
+the page's front matter as a real `image` field — the same field you'd set manually (below). This matters
+because it's what makes the image survive past the initial page load: Docusaurus renders `<head>` through
+`react-helmet-async`, which re-renders it again on the client the moment a page hydrates. A tag injected
+after the fact by patching the built HTML would get silently wiped out and replaced with the site-wide
+default as soon as a real browser (or anything else that executes JavaScript) hydrated the page — only
+tools that read the raw HTML without running JS (like `curl`, or most social-share scrapers) would ever
+see it. Going through real front matter means Docusaurus's own metadata rendering produces the same tag
+both times, so there's nothing for hydration to revert.
 
 If you want a page to use a different image instead of the generated one, you have two options:
 
@@ -199,6 +209,11 @@ Either way, the generator leaves the page alone.
 This only happens during `yarn build` (see below) — running `yarn start` won't show generated or
 overridden images, since it skips the production build step entirely. The generator itself lives in
 `plugins/og-image/`.
+
+Note that `yarn build` always runs in production mode (`NODE_ENV=production`), whether that's on your
+machine, a Vercel preview deployment for a PR, or the real production deploy — so `yarn build && yarn
+serve` locally is enough to preview real generated cards on new content before pushing anything; you don't
+need to wait for an actual deploy.
 
 # Local development command reference
 
