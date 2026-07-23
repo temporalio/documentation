@@ -11,7 +11,9 @@ tags:
   - Activity
 ---
 
-## How to start an Activity Execution {#activity-execution}
+import { ViewSourceCodeNotice } from '@site/src/components';
+
+## How to start an Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -34,12 +36,7 @@ Otherwise, no additional limitations exist on Activity implementations.
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go" />
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
@@ -66,7 +63,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to set the required Activity Timeouts {#required-timeout}
+### How to set the required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -95,7 +92,7 @@ if err != nil {
 }
 ```
 
-### Go ActivityOptions reference {#activity-options-reference}
+### Go ActivityOptions reference {/* #activity-options-reference */}
 
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 
@@ -298,7 +295,7 @@ if err != nil {
 }
 ```
 
-### How to get the results of an Activity Execution {#get-activity-results}
+### How to get the results of an Activity Execution {/* #get-activity-results */}
 
 The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.

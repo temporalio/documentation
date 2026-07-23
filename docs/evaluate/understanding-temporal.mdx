@@ -73,6 +73,10 @@ Since Activities often rely on external systems, transient issues can occur.
 These include temporary but critical problems like network failures, timeouts, or service outages.
 You have full control over how often and how many times these retries should happen for each Activity.
 
+If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity).
+
+A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow.
+
 ### SDK
 
 Developers create Temporal applications by writing code, just like you would to create any other software.
@@ -113,6 +117,8 @@ Workers, which are part of your application and provided by the Temporal SDK, th
 The Worker polls the Temporal Service to see if there are tasks available and the Temporal Service matches the task with the Worker.
 The Worker runs the Workflow code based on the details specified in the task.
 
+Deploy to an Activity Worker once, and invoke standalone or from within a Workflow.
+
 This collaboration is crucial for building reliable, scalable, and durable applications.
 You can run multiple Workers — often dozens, hundreds, or even thousands — to improve application performance and scalability.
 
@@ -149,7 +155,7 @@ The Temporal CLI provides developers with direct access to a Temporal Service fo
 
 ### Event History
 
-With Temporal, your Workflows can seamlessly recover from crashes. This is made possible by the [Event History](https://docs.temporal.io/workflow-execution/event), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution, as well as the ability of the Temporal Service to durably persist the Events during Replay.
+With Temporal, your Workflows can seamlessly recover from crashes. This is made possible by the [Event History](/workflow-execution/event), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution, as well as the ability of the Temporal Service to durably persist the Events during [Replay](/workflow-execution#replay).
 
 Temporal uses the Event History to record every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer for instance, it doesn’t perform the action directly. Instead, it sends a Command to the Temporal Service.
 

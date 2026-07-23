@@ -17,7 +17,7 @@ tags:
   - Temporal SDKs
 ---
 
-## How to set Activity timeouts {#activity-timeouts}
+## How to set Activity timeouts {/* #activity-timeouts */}
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -25,7 +25,7 @@ The following timeouts are available in the Activity Options.
 
 - **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activity-execution).
 - **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
-- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.  This timeout is non-retryable by design.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -48,7 +48,7 @@ $this->greetingActivity = Workflow::newActivityStub(
 );
 ```
 
-### How to set an Activity Retry Policy {#activity-retries}
+### How to set an Activity Retry Policy {/* #activity-retries */}
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -74,13 +74,13 @@ $this->greetingActivity = Workflow::newActivityStub(
 
 For an executable code sample, see [ActivityRetry sample](https://github.com/temporalio/samples-php/tree/master/app/src/ActivityRetry) in the PHP samples repository.
 
-### How to set the required Activity Timeouts {#required-timeout}
+### How to set the required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
-## Activity next Retry delay {#activity-next-retry-delay}
+## Activity next Retry delay {/* #activity-next-retry-delay */}
 
 **How to override the next Retry delay following an Activity failure using the Temporal PHP SDK**
 
@@ -100,7 +100,7 @@ throw new \Temporal\Exception\Failure\ApplicationFailure(
 );
 ```
 
-## How to Heartbeat an Activity {#activity-heartbeats}
+## How to Heartbeat an Activity {/* #activity-heartbeats */}
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
@@ -155,7 +155,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 }
 ```
 
-#### How to set a Heartbeat Timeout {#heartbeat-timeout}
+#### How to set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

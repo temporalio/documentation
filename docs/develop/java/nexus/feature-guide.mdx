@@ -17,13 +17,6 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Java SDK support for Nexus is
-[Generally Available](/evaluate/development-production-features/release-stages#general-availability).
-
-:::
-
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus
 Endpoint, a Nexus Service contract, and Nexus Operations.
 
@@ -45,7 +38,7 @@ This documentation uses source code derived from the
 
 :::
 
-## Run the Temporal Development Server with Nexus enabled {#run-the-temporal-nexus-development-server}
+## Run the Temporal Development Server with Nexus enabled {/* #run-the-temporal-nexus-development-server */}
 
 Prerequisites:
 
@@ -66,7 +59,7 @@ It uses an in-memory database, so do not use it for real use cases.
 The Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233), and the Temporal Server
 should now be available for client connections on `localhost:7233`.
 
-## Create caller and handler Namespaces {#create-caller-handler-namespaces}
+## Create caller and handler Namespaces {/* #create-caller-handler-namespaces */}
 
 Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
 
@@ -78,7 +71,7 @@ temporal operator namespace create --namespace my-caller-namespace
 `my-target-namespace` will contain the Nexus Operation handler, and we will use a Workflow in `my-caller-namespace` to
 call that Operation handler. We use different namespaces to demonstrate cross-Namespace Nexus calls.
 
-## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
+## Create a Nexus Endpoint to route requests from caller to handler {/* #create-nexus-endpoint */}
 
 After establishing caller and handler Namespaces, the next step is to create a Nexus Endpoint to route requests.
 
@@ -91,14 +84,14 @@ temporal operator nexus endpoint create \
 
 You can also use the Web UI to create the Namespaces and Nexus endpoint.
 
-## Define the Nexus Service contract {#define-nexus-service-contract}
+## Define the Nexus Service contract {/* #define-nexus-service-contract */}
 
 Defining a clear contract for the Nexus Service is crucial for smooth communication.
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types
 for caller Workflows to use the Nexus Endpoint.
 
-Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion). The default
+Each [Temporal SDK includes and uses a default Data Converter](/dataconversion). The default
 data converter encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON. In a polyglot
 environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and
 JSON are common choices. This example uses Java classes serialized into JSON.
@@ -192,7 +185,7 @@ public interface SampleNexusService {
 
 <!--SNIPEND-->
 
-## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
+## Develop a Nexus Service and Operation handlers {/* #develop-nexus-service-operation-handlers */}
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous. They can invoke underlying
@@ -249,6 +242,30 @@ A common pattern is to use the Temporal Client from within a sync handler to Sig
 can also use Signal-With-Start or Update-With-Start to ensure the Workflow is started and send it a Signal or Update.
 All calls must complete within the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout). Updates
 should be short-lived to stay within this deadline.
+
+The [nexus_messaging](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexusmessaging) sample shows how to create a Nexus Service that uses synchronous operations to send Updates and Queries.
+
+Use the Nexus library, as shown below, to get the Client that the Worker was initialized with. In this example, the Workflow Id is derived from the client Id, with the "getWorkflowId" method. This converts a given client Id (in this case, the client is passing in a user Id) to generate a Workflow Id from it.
+This way the client only needs the identifier it cares about.
+
+[nexusmessaging/callerpattern/handler/NexusGreetingServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexusmessaging/callerpattern/handler/NexusGreetingServiceImpl.java)
+```java
+static final String WORKFLOW_ID_PREFIX = "GreetingWorkflow_for_";
+
+  public static String getWorkflowId(String userId) {
+    return WORKFLOW_ID_PREFIX + userId;
+  }
+
+  private GreetingWorkflow getWorkflowStub(String userId) {
+    return Nexus.getOperationContext()
+        .getWorkflowClient()
+        .newWorkflowStub(GreetingWorkflow.class, getWorkflowId(userId));
+  }
+    ...
+```
+
+There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexusmessaging/callerpattern/) and [on-demand pattern](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexusmessaging/ondemandpattern/).
+The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -401,7 +418,7 @@ public class HandlerWorker {
 
 <!--SNIPEND-->
 
-## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
+## Develop a caller Workflow that uses the Nexus Service {/* #develop-caller-workflow-nexus-service */}
 
 Import the Service API package that has the necessary service and operation names and input/output types to execute a
 Nexus Operation from the caller Workflow:
@@ -573,7 +590,7 @@ public class CallerStarter {
 
 <!--SNIPEND-->
 
-## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
+## Make Nexus calls across Namespaces with a development Server {/* #nexus-calls-across-namespaces-dev-server */}
 
 Follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter app.
 
@@ -613,7 +630,7 @@ This will result in:
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋
 ```
 
-### Canceling a Nexus Operation {#canceling-a-nexus-operation}
+### Canceling a Nexus Operation {/* #canceling-a-nexus-operation */}
 
 To cancel a Nexus Operation from within a Workflow, create a `CancellationScope` using the
 `Workflow.newCancellationScope` API. `Workflow.newCancellationScope` takes a `Runnable`. Any SDK methods started in this
@@ -650,7 +667,7 @@ See the
 [Nexus cancelation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscancellation)
 for reference.
 
-## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
+## Make Nexus calls across Namespaces in Temporal Cloud {/* #nexus-calls-across-namespaces-temporal-cloud */}
 
 This section assumes you are already familiar with
 [how connect a Worker to Temporal Cloud](/develop/java/client/temporal-client#start-workflow-execution). The same
@@ -766,12 +783,12 @@ This will result in:
 ### Web UI
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and
-`NexusOperationCompleted` events in the caller's Workflow history:
+`NexusOperationCompleted` events in the caller's Event history:
 
 <CaptionedImage src="/img/cloud/nexus/go-sdk-observability-sync.png" title="Observability Sync" />
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`,
-`NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Workflow history:
+`NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Event history:
 
 <CaptionedImage src="/img/cloud/nexus/go-sdk-observability-async.png" title="Observability Async" />
 
@@ -784,7 +801,7 @@ on the handler Workflow:
 temporal workflow describe -w <ID>
 ```
 
-Nexus events are included in the caller's Workflow history:
+Nexus events are included in the caller's Event history:
 
 ```
 temporal workflow show -w <ID>

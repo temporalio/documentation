@@ -315,13 +315,6 @@ data integrity and prevent costly errors.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Isolation Domain](/cloud/high-availability)
-
-An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents
-them from spreading to other parts of the system, providing redundancy and fault tolerance.
-
-<!-- _Tags: [term](/tags/term)_ -->
-
 #### [List Filter](/list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
@@ -549,7 +542,7 @@ A Run Id is a globally unique, platform-level identifier for a Workflow Executio
 
 #### [Same-region Replication](/cloud/high-availability/enable)
 
-Same-region Replication replicates Workflows and metadata to an isolation domain within the same region as the primary
+Same-region Replication replicates Workflows and metadata to a separate cell within the same region as the primary
 Namespace. It provides a reliable failover mechanism while maintaining deployment simplicity.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
@@ -571,7 +564,7 @@ Activity Execution, reaches a Closed status.
 #### [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task
-Queue to when a Worker picks it up from the Task Queue.
+Queue to when a Worker picks it up from the Task Queue. This timeout is non-retryable by design.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
@@ -656,13 +649,13 @@ A Temporal Application is a set of Workflow Executions.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal CLI](/cli) {#cli}
+#### [Temporal CLI](/cli) {/* #cli */}
 
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 <!-- _Tags: [term](/tags/term), [cli](/tags/cli)_ -->
 
-#### [Temporal Client](/encyclopedia/temporal-sdks#temporal-client)
+#### [Temporal Client](/temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 
@@ -811,6 +804,10 @@ are executed with the same Worker without requiring you to manually specify Task
 
 In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a
 Workflow Execution.
+
+#### [Workflow cache](/workflow-execution#workflow-cache)
+
+An in-memory cache on a Worker that holds the state of Workflow Executions it has processed so later Workflow Tasks can avoid a full Event History replay. Used with [Sticky Execution](/sticky-execution). See also [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

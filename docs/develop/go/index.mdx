@@ -15,7 +15,11 @@ tags:
 
 import * as Components from '@site/src/components';
 
+<NoZoom>
+
 ![Go SDK Banner](/img/assets/banner-go-temporal.png)
+
+</NoZoom>
 
 ## Install and get started
 
@@ -46,6 +50,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 - [Timers](/develop/go/workflows/timers)
 - [Dynamic Workflow](/develop/go/workflows/dynamic-workflow)
 - [Versioning](/develop/go/workflows/versioning)
+- [Workflow Streams](/develop/go/workflows/workflow-streams)
 
 ## [Activities](/develop/go/activities)
 
@@ -59,9 +64,9 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 
 ## [Workers](/develop/go/workers)
 
-- [Worker processes](/develop/go/workers/run-worker-process)
-- [Cloud Worker](/develop/go/workers/cloud-worker)
+- [Run a Worker](/develop/go/workers/run-worker-process)
 - [Sessions](/develop/go/workers/sessions)
+- [Serverless Workers](/develop/go/workers/serverless-workers)
 
 ## [Temporal Client](/develop/go/client)
 
@@ -72,6 +77,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 
 - [Quickstart](/develop/go/nexus/quickstart)
 - [Feature guide](/develop/go/nexus/feature-guide)
+- [Standalone Operations](/develop/go/nexus/standalone-operations)
 
 ## [Platform](/develop/go/platform)
 
@@ -87,7 +93,11 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 - [Testing](/develop/go/best-practices/testing-suite)
 - [Data handling](/develop/go/data-handling)
 
-## Temporal Go Technical Resources
+## [Integrations](/develop/go/integrations)
+
+- [Google ADK integration](/develop/go/integrations/google-adk)
+
+## Temporal Go technical resources
 
 - [Go SDK Quickstart - Setup Guide](/develop/go/set-up-your-local-go)
 - [Go API Documentation](https://pkg.go.dev/go.temporal.io/sdk)
@@ -95,7 +105,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 - [Go SDK GitHub](https://github.com/temporalio/sdk-go)
 - [Temporal 101 in Go Free Course](https://learn.temporal.io/courses/temporal_101/go/)
 
-### Where are SDK-specific code examples? {#code-samples}
+### Where are SDK-specific code examples? {/* #code-samples */}
 
 - [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal
   Application implementation in conjunction with

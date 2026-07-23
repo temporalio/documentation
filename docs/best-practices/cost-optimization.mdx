@@ -59,7 +59,7 @@ However, excessive Activity retries often indicate underlying issues like timeou
 Detect Activity retry frequency and if high, consider increasing retry intervals or Activity timeouts before failures occur.
 See [Spooky Stories: Chilling Temporal Anti-Patterns](https://temporal.io/blog/spooky-stories-chilling-temporal-anti-patterns-part-2#2-hiding-behind-the-chainsaws) for guidance on retry defaults and patterns.
 
-### Large payloads in Workflow History
+### Large payloads in Event History
 
 Passing multi-megabyte payloads through Workflows when external storage (S3, blob storage) is more appropriate.
 Use [compression](/troubleshooting/blob-size-limit-error#payload-size-limit) or the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) for large data.
@@ -96,7 +96,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 - [Many Activities per Workflow](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow)
 - Frequent [Signals, Queries, or Updates](/encyclopedia/workflow-message-passing#choosing-messages)
 - Long-running Activities with [Heartbeats](/cloud/worker-health#manage-worker-heartbeating)
-- High [Activity retry rates](/develop/activity-retry-simulator)
+- High [Activity retry rates](/demos/activity-retry-simulator)
 - Extensive Query usage
 
 **High Storage costs generally indicate**:
@@ -114,7 +114,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 
 ## Measuring
 
-Establish [baseline metrics](https://docs.temporal.io/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
+Establish [baseline metrics](/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
 Specifically:
 
 - Actions consumption (per Workflow, per day/month, by Namespace)
@@ -124,7 +124,7 @@ Specifically:
 
 ## Actions optimization
 
-[Actions](https://docs.temporal.io/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
+[Actions](/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
 Each represents a unit of consumption.
 
 ### Activity granularity
@@ -156,9 +156,9 @@ For expensive external operations like this, consider:
 - Increasing `InitialInterval` (for example, to 10s) to reduce retry frequency
 - Adding error types to `NonRetryableErrorTypes` for errors that won't resolve on retry (such as 4xx HTTP status codes)
 - Using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types (for example, respecting rate-limit headers)
-- Implementing an [Activity pause pattern](/cli/activity#pause) to wait for manual intervention rather than automatic retries
+- Implementing an [Activity pause pattern](/cli/command-reference/activity#pause) to wait for manual intervention rather than automatic retries
 
-Use the [Activity Retry Simulator](/develop/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
+Use the [Activity Retry Simulator](/demos/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
 
 Refer to this blog post on [Mastering Workflow retry logic for resilient applications](https://temporal.io/blog/failure-handling-in-practice) for additional guidance.
 
@@ -241,11 +241,11 @@ See [Namespace retention documentation](/temporal-service/temporal-server#retent
 
 #### Workflow export
 
-Temporal Cloud supports exporting Workflow Histories to external storage for compliance while maintaining shorter retention periods.
+Temporal Cloud supports exporting Event Histories to external storage for compliance while maintaining shorter retention periods.
 Note that Workflow export costs one Action per export.
 
 See the [Workflow History export documentation](/cloud/export) for more details.
-Alternatively, if you are looking to do analysis on closed Workflow Executions, [review this blog post to learn how to gain insights from exported Workflow Histories](https://temporal.io/blog/get-insights-from-workflow-histories-export-on-temporal-cloud).
+Alternatively, if you are looking to do analysis on closed Workflow Executions, [review this blog post to learn how to gain insights from exported Event Histories](https://temporal.io/blog/get-insights-from-workflow-histories-export-on-temporal-cloud).
 
 ## Validation
 
@@ -265,7 +265,7 @@ Alternatively, if you are looking to do analysis on closed Workflow Executions, 
 ### Tools
 
 - Temporal Cloud Usage dashboard for Actions and Storage metrics
-- Workflow History for per-Workflow billable Actions estimates
+- Event History for per-Workflow billable Actions estimates
 - Export metrics to observability platforms (Datadog, Grafana, etc.) for custom monitoring
 
 ## When to get help

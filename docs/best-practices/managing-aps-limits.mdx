@@ -175,7 +175,11 @@ An APS limit is set per Namespace, so multiple use cases with multiple traffic p
 
 #### How to Mitigate
 
-Plan for a set of Namespaces (one per environment) per use case. See [Managing a Namespace](/best-practices/managing-namespace) for more details.
+Plan for a set of Namespaces (one per environment) per use case. This gives each use case its own APS envelope and
+reduces the blast radius when one workload spikes or misbehaves.
+
+If you are deciding whether to split by use case, service, or domain, see
+[Managing a Namespace](/best-practices/managing-namespace) for a topology decision framework.
 
 ## Provisioned Capacity and TRUs
 
@@ -203,6 +207,7 @@ Use Provisioned capacity when the on-demand model can't respond quickly enough:
 
 :::note
 When switching back to on-demand mode, your APS limit resets to the running average from the last 7 days.
+If Temporal Support has set a custom limit for your Namespace, that limit is preserved across the switch.
 Plan for this if your workload is sensitive to the transition.
 :::
 

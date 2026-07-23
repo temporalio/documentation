@@ -1,0 +1,56 @@
+---
+id: login
+title: Temporal CLI cloud login command reference
+sidebar_label: login
+description: Login
+toc_max_heading_level: 4
+keywords:
+  - login
+  - authentication
+  - auth
+tags:
+  - login
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
+
+<ReleaseNoteHeader featureName="cloudCli" />
+
+Authenticate with Temporal Cloud using browser-based OAuth login.
+
+This command opens your default browser to complete authentication. Once
+logged in, your credentials are stored locally for subsequent commands.
+
+Example:
+
+```
+temporal cloud login
+```
+
+For headless environments, use --disable-pop-up and follow the printed URL.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--audience` | No | **string** OAuth audience parameter for token generation. |
+| `--client-id` | No | **string** OAuth client identifier for authentication. |
+| `--domain` | No | **string** Authentication domain for the OAuth provider. |
+| `--redirect-url` | No | **string** Redirect URL for OAuth authentication flow. |
+| `--reset` | No | **bool** Clear stored login credentials and configuration, then re-authenticate. Use this if you need to switch accounts or fix authentication issues. |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |  |
+| `--auto-confirm` | No | **bool** Automatically confirm prompts and actions that require user confirmation. Useful for scripting and automation. |  |
+| `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
+| `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+

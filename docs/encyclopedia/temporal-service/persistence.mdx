@@ -20,7 +20,7 @@ This page discusses the following:
 - [Persistence](#persistence)
 - [Dependency Versions](#dependency-versions)
 
-## What is Persistence? {#persistence}
+## What is Persistence? {/* #persistence */}
 
 The Temporal Persistence store is a database used by the [Temporal Server](/temporal-service/temporal-server) to persist events generated and processed in your Temporal Service and SDK.
 
@@ -51,7 +51,7 @@ With Temporal Server version 1.20 and later, advanced Visibility features are av
 Temporal tests compatibility by spanning the minimum and maximum stable major versions for each supported database.
 The following versions are used in our test pipelines and actively tested before we release any version of Temporal:
 
-- **Cassandra v3.11 and v4.0**
+- **Cassandra v3.11, v4.0, and 5.0.4 and later** (Cassandra 5 versions earlier than 5.0.4 are not supported)
 - **PostgreSQL 13.18, 14.15, 15.10 and 16.6**
 - **MySQL v5.7 and v8.0** (specifically 8.0.19+ due to a bug)
 

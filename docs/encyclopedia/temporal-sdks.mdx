@@ -30,9 +30,9 @@ SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
 The SDK's internal implementation, working in collaboration with the Temporal Service, steps through that code, guaranteeing execution progression during application runtime.
 
-## Temporal Applications {#temporal-application}
+## Temporal Applications {/* #temporal-application */}
 
-A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/workflow-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
+A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/activity-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
 Developers create Temporal Applications using an [official Temporal SDK](#official-sdks).
 
 Consider that the Workflow Definition code can be executed repeatedly.
@@ -46,19 +46,20 @@ Additionally, a Temporal Workflow Execution is both resumable and recoverable, a
 
 Hence, a Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
 
-## Official SDKs {#official-sdks}
+## Official SDKs {/* #official-sdks */}
 
 **What are the officially supported SDKs?**
 
 Each Temporal SDK targets a specific programming language.
 
+- [.NET SDK feature guides](/develop/dotnet)
 - [Go SDK feature guides](/develop/go)
 - [Java SDK feature guides](/develop/java)
-- [Python SDK feature guides](/develop/python/)
-- [TypeScript SDK feature guides](/develop/typescript/)
-- [.NET SDK feature guides](/develop/dotnet)
-- [Ruby SDK feature guides](/develop/ruby/)
 - [PHP SDK feature guides](/develop/php)
+- [Python SDK feature guides](/develop/python/)
+- [Ruby SDK feature guides](/develop/ruby/)
+- [Rust SDK feature guides](/develop/rust)
+- [TypeScript SDK feature guides](/develop/typescript/)
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
@@ -71,7 +72,7 @@ The following third-party SDKs exist but are not officially supported by Tempora
 - [Clojure](https://github.com/manetu/temporal-clojure-sdk) from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
 
-## Why use a Temporal SDK? {#why-use-an-sdk}
+## Why use a Temporal SDK? {/* #why-use-an-sdk */}
 
 Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
 
@@ -143,7 +144,7 @@ This capability stems from the SDK's ability to persist each step the program ta
 
 {/* - [Developing for Durable Execution using the Go SDK](/develop/go/durable-execution) */}
 
-## Temporal SDKs major components {#major-components}
+## Temporal SDKs major components {/* #major-components */}
 
 **What are the major components of Temporal SDKs?**
 
@@ -270,7 +271,7 @@ A Workflow executes Activities (other functions that interact with external syst
 
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
-When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Temporal Service. The Temporal Service creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Temporal Service work together to incrementally execute Workflow code in a reliable way.
+When a Workflow calls the API to execute an Activity, the Worker sends a [Command](/references/commands) back to the Temporal Service. The Temporal Service creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Temporal Service work together to incrementally execute Workflow code in a reliable way.
 We discuss this more in detail in [The SDK and Temporal Service relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
@@ -411,7 +412,7 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 }
 ```
 
-## The SDK and Temporal Service relationship {#sdk-and-cluster-relationship}
+## The SDK and Temporal Service relationship {/* #sdk-and-cluster-relationship */}
 
 **How do the Temporal SDKs work with the Temporal Service?**
 

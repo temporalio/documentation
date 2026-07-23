@@ -31,7 +31,7 @@ You can interrupt a Workflow Execution in one of the following ways:
 
 Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
 
-- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The system records a `WorkflowExecutionTerminated` event in the Event History.
 - The termination forcefully and immediately stops the Workflow Execution.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
@@ -39,7 +39,7 @@ Terminating a Workflow forcefully stops Workflow Execution. This action resemble
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
 Workflow is stuck and cannot be canceled normally.
 
-## Cancellation {#cancellation}
+## Cancellation {/* #cancellation */}
 
 To give a Workflow and its Activities the ability to be cancelled, do the following:
 
@@ -48,7 +48,7 @@ To give a Workflow and its Activities the ability to be cancelled, do the follow
 - Listen for and handle a Cancellation request within an Activity.
 - Send a Cancellation request from a Temporal Client.
 
-## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+## Handle Cancellation in Workflow {/* #handle-cancellation-in-workflow */}
 
 Workflow Definitions can be written to respond to cancellation requests. It is common for an Activity to be run on
 Cancellation to perform cleanup.
@@ -83,7 +83,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+## Handle Cancellation in an Activity {/* #handle-cancellation-in-an-activity */}
 
 Ensure that the Activity is [Heartbeating](/develop/ruby/activities/timeouts#activity-heartbeats) to receive the
 Cancellation request and stop execution. Also make sure that the
@@ -107,7 +107,7 @@ class MyActivity < Temporalio::Activity::Definition
 end
 ```
 
-## Request Cancellation {#request-cancellation}
+## Request Cancellation {/* #request-cancellation */}
 
 Use `cancel` on the `WorkflowHandle` to cancel a Workflow Execution.
 
@@ -158,7 +158,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-## Termination {#termination}
+## Termination {/* #termination */}
 
 To Terminate a Workflow Execution in Ruby, use the `terminate` method on the Workflow handle.
 
@@ -175,7 +175,7 @@ handle.terminate
 Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the
 UI when that happens.
 
-## Reset a Workflow Execution {#reset}
+## Reset a Workflow Execution {/* #reset */}
 
 Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
 point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other

@@ -137,6 +137,26 @@ accurately aggregated_. For example:
 - ✅ Can still view individual namespace/task queue percentiles accurately
 - ✅ More accurate percentile calculations for individual series, especially with outliers
 
+:::caution Don't compare a v0 average against a v1 percentile
+
+The v0 latency metrics are a histogram, not a percentile. Dividing `temporal_cloud_v0_service_latency_sum` by
+`temporal_cloud_v0_service_latency_count` yields an **average** (roughly a p50), and a single
+`temporal_cloud_v0_service_latency_bucket{le="..."}` series only **counts** requests below a threshold. Neither is a p95
+or p99.
+
+If your v0 alert compared an average (or a raw `_sum` / `_bucket` value) against a latency threshold, switching to
+`temporal_cloud_v1_service_latency_p95` / `_p99` reports higher values for identical traffic. This is a measurement
+change, not a latency regression.
+
+To migrate latency alerts safely:
+
+- Compare like-for-like. To reproduce a former average-based alert, start on `temporal_cloud_v1_service_latency_p50`,
+  then move to `_p95` / `_p99` deliberately once you have set an appropriate threshold.
+- Confirm which percentile your SLO targets. The Temporal Cloud [latency SLO](/cloud/service-availability#latency) is a
+  **p99**; alerting on p95 against a p99 threshold trips earlier than the SLO.
+
+:::
+
 ### 4\. Authentication Setup
 
 **Before**: mTLS certificates with customer-specific endpoint
@@ -370,34 +390,90 @@ See [API limits](/cloud/metrics/openmetrics/api-reference#api-limits) for detail
 
 ## FAQ
 
-### Q: Will metrics match between promQL and OpenMetrics endpoints?
+### What new metrics are available in OpenMetrics that are not available in PromQL?
+
+OpenMetrics provides visibility into several new areas
+
+- **Activity execution and latency**: completion outcomes (success, fail, timeout, cancel, terminate, plus activity-task-level fail/timeout) and latency percentiles (start-to-close, schedule-to-close), including Standalone Activities.
+- **Task queue health**: approximate backlog depth and a rate of tasks added to queues with no active pollers.
+- **Namespace utilization and rate limits**: operations counters, throttled-action and throttled-operation rates, a billable-action breakdown, an open-workflow gauge, and configured-limit and on-demand-envelope-limit gauges to chart usage against quotas.
+- **Usage against limits**: a request-throttled rate and a pending-requests (active long-pollers) gauge.
+- **Higher-dimensional breakdowns**: new labels including region, task queue, workflow type, activity type, worker deployment, and more.
+
+**New metrics:**
+
+- `temporal_cloud_v1_service_request_throttled_count`
+- `temporal_cloud_v1_service_pending_requests`
+- `temporal_cloud_v1_activity_success_count`
+- `temporal_cloud_v1_activity_fail_count`
+- `temporal_cloud_v1_activity_timeout_count`
+- `temporal_cloud_v1_activity_task_fail_count`
+- `temporal_cloud_v1_activity_task_timeout_count`
+- `temporal_cloud_v1_activity_cancel_count`
+- `temporal_cloud_v1_activity_terminate_count`
+- `temporal_cloud_v1_activity_start_to_close_latency_p50` / `_p95` / `_p99`
+- `temporal_cloud_v1_activity_schedule_to_close_latency_p50` / `_p95` / `_p99`
+- `temporal_cloud_v1_approximate_backlog_count`
+- `temporal_cloud_v1_no_poller_tasks_count`
+- `temporal_cloud_v1_namespace_open_workflows`
+- `temporal_cloud_v1_billable_action_count`
+- `temporal_cloud_v1_total_action_throttled_count`
+- `temporal_cloud_v1_operations_count`
+- `temporal_cloud_v1_operations_throttled_count`
+- `temporal_cloud_v1_action_limit`
+- `temporal_cloud_v1_operations_limit`
+- `temporal_cloud_v1_service_request_limit`
+- `temporal_cloud_v1_poller_limit`
+- `temporal_cloud_v1_action_on_demand_envelope_limit`
+- `temporal_cloud_v1_operations_on_demand_envelope_limit`
+- `temporal_cloud_v1_service_request_on_demand_envelope_limit`
+
+**New labels:**
+
+- `region`
+- `temporal_task_queue`
+- `temporal_workflow_type`
+- `task_type`
+- `task_priority`
+- `is_background`
+- `namespace_mode`
+- `action_type`
+- `timeout_type`
+- `temporal_activity_type` (opt-in)
+- `temporal_worker_deployment_name` (opt-in)
+- `temporal_worker_build_id` (opt-in)
+- `worker_version` (opt-in)
+
+For full descriptions, types, and per-metric labels, see the [OpenMetrics metrics reference](/cloud/metrics/openmetrics/metrics-reference).
+
+### Will metrics match between promQL and OpenMetrics endpoints?
 
 No. The metrics will be approximately the same but due to aggregation differences and windowing, values likely won't
 match exactly between the two endpoints. Some metrics may be consistently different such as
 `temporal_cloud_v1_total_action_count` which includes History Export actions in the OpenMetrics endpoint. In the case of
 consistent differences the OpenMetrics endpoint is considered to be more accurate.
 
-### Q: Can I still query metrics directly (e.g. with a Grafana dashboard)?
+### Can I still query metrics directly (e.g. with a Grafana dashboard)?
 
 Currently, the OpenMetrics endpoint requires an observability platform to collect and query metrics. Direct querying via
 API to return a time series of data is not supported. Supporting this type of query pattern is a future roadmap item.
 
-### Q: What happens to my existing dashboards and alerts?
+### What happens to my existing dashboards and alerts?
 
 During the transition period, both endpoints remain active.
 
-### Q: Will historical data be preserved?
+### Will historical data be preserved?
 
 Historical data from the query endpoint will remain in your observability platform. To maintain continuity:
 
 - Combine old (`v0`) and new (`v1`) metrics in your queries during transition
 - Consider using the PromQL `or` operator: `metric_v1 or metric_v0`
 
-### Q: Are there limits to how frequently I can scrape or how much data will be returned?
+### Are there limits to how frequently I can scrape or how much data will be returned?
 
 The limits are documented [here](/cloud/metrics/openmetrics/api-reference#api-limits).
 
-### Q: Why are some metrics missing from my scrapes? I don’t see all the metrics documented.
+### Why are some metrics missing from my scrapes? I don’t see all the metrics documented.
 
 The OpenMetrics endpoint only returns metrics that were generated during the one-minute aggregation window. This is
 different from the query endpoint which might return zeros.

@@ -24,6 +24,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components';
+
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 This section covers features related to viewing the state of the application, including:
@@ -33,9 +35,7 @@ This section covers features related to viewing the state of the application, in
 - [Log from a Workflow](#logging)
 - [Visibility APIs](#visibility)
 
-## Emit metrics {#metrics}
-
-**How to emit metrics**
+## Emit metrics {/* #metrics */}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -57,9 +57,7 @@ new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_ad
 my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
 
-## Set up tracing {#tracing}
-
-**How to set up tracing**
+## Set up tracing {/* #tracing */}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -77,7 +75,7 @@ Then the [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.
 When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
 Spans are created and serialized through the server to give one trace for a Workflow Execution.
 
-## Log from a Workflow {#logging}
+## Log from a Workflow {/* #logging */}
 
 Logging enables you to record critical information during code execution.
 Loggers create an audit trail and capture information about your Workflow's operation.
@@ -85,25 +83,7 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
-
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-The Temporal SDK core normally uses `WARN` as its default logging level.
-
-**How to log from a Workflow**
-
-Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-
-The SDK core uses `WARN` for its default logging level.
-
-You can log from a Workflow using Python's standard library, by importing the logging module `logging`.
+You can log from a Workflow using Python's standard library, by importing the logging module `logging`. You can find the log levels supported by the `logging` module in [their official documentation](https://docs.python.org/3/library/logging.html#logging-levels). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 Set your logging configuration to a level you want to expose logs to.
 The following example sets the logging information level to `INFO`.
@@ -114,29 +94,24 @@ logging.basicConfig(level=logging.INFO)
 
 Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py" />
 
 ```python
 # ...
-        workflow.logger.info("Workflow input parameter: %s" % name)
+workflow.logger.info("Workflow input parameter: %s" % name)
 ```
 
-### Custom logger {#custom-logger}
+### Custom logger {/* #custom-logger */}
 
 Use a custom logger for logging.
 
 Use the built-in [Logging facility for Python](https://docs.python.org/3/library/logging.html) to set a custom logger.
 
-## Visibility APIs {#visibility}
+## Visibility APIs {/* #visibility */}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
-### Use Search Attributes {#search-attributes}
+### Use Search Attributes {/* #search-attributes */}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -160,19 +135,14 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
-  - [In the Temporal CLI](/cli/operator#list-2)
+  - [In the Temporal CLI](/cli/command-reference/operator#list-2)
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
 
 Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py" />
 
 ```python
 # ...
@@ -180,7 +150,7 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
         print(f"Workflow: {workflow.id}")
 ```
 
-### How to set custom Search Attributes {#custom-search-attributes}
+### How to set custom Search Attributes {/* #custom-search-attributes */}
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -205,7 +175,7 @@ handle = await client.start_workflow(
 In this example, `CustomerId` and `MiscData` are set as Search Attributes.
 These attributes are useful for querying Workflows based on the customer ID or the date the order was placed.
 
-### Upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes {/* #upsert-search-attributes */}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -218,7 +188,7 @@ workflow.upsert_search_attributes([
 ])
 ```
 
-### Remove a Search Attribute from a Workflow {#remove-search-attribute}
+### Remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
 To remove a Search Attribute that was previously set, use `value_unset call` on the Search Attribute key.
 

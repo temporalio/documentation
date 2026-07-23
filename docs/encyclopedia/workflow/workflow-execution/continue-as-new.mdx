@@ -15,7 +15,7 @@ tags:
 
 This page discusses [Continue-As-New](#continue-as-new) and how to decide [when to use it](#when).
 
-## What is Continue-As-New? {#continue-as-new}
+## What is Continue-As-New? {/* #continue-as-new */}
 
 Continue-As-New allows you to checkpoint your Workflow's state and start a fresh Workflow.
 
@@ -45,7 +45,7 @@ Workflows that do this are often called Entity Workflows because they represent 
 - [How to Continue-As-New using the Ruby SDK](/develop/ruby/workflows/continue-as-new)
 - [How to Continue-As-New using the Rust SDK](/develop/rust/workflows/continue-as-new)
 
-## When in your Workflow is it right to Continue-As-New? {#when}
+## When in your Workflow is it right to Continue-As-New? {/* #when */}
 
 Temporal will tell your Workflow when it's approaching performance or scalability problems.
 Find out if it's time by checking Continue-As-New Suggested in your Workflow at spots in your implementation where you are ready to checkpoint your state.

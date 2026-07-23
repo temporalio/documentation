@@ -37,6 +37,8 @@ A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to 
 Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results
 of a Workflow Execution, and providing Activity Task Tokens.
 
+For [Standalone Activities](/standalone-activity), a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
+
 This page shows you how to do the following using the Go SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
@@ -51,7 +53,7 @@ Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the
 [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a
@@ -67,7 +69,7 @@ Environment variable and configuration file support were added in Go SDK v1.28.0
 :::
 
 When you are running a Temporal Service locally, such as the
-[Temporal CLI](https://docs.temporal.io/cli/server#start-dev), the connection options you must provide are minimal.
+[Temporal CLI](/cli/command-reference/server#start-dev), the connection options you must provide are minimal.
 
 If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the
 address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service. If you don't set a
@@ -240,7 +242,7 @@ func main() {
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -544,7 +546,7 @@ apiKeyProvider.APIKey = myKeyUpdated
 
 </Tabs>
 
-## Start Workflow Execution {#start-workflow-execution}
+## Start Workflow Execution {/* #start-workflow-execution */}
 
 **How to start a Workflow Execution using the Go SDK**
 
@@ -618,7 +620,7 @@ Workflow Type can be provided as a `string`.
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
 
-### Set Workflow Task Queue {#set-task-queue}
+### Set Workflow Task Queue {/* #set-task-queue */}
 
 **How to set a Workflow's Task Queue using the Go SDK**
 
@@ -649,9 +651,9 @@ if err != nil {
 You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your
 application load. For more information, refer to
 [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and
-[Worker Versioning](https://docs.temporal.io/worker-versioning).
+[Worker Versioning](/worker-versioning).
 
-### Set custom Workflow Id {#workflow-id}
+### Set custom Workflow Id {/* #workflow-id */}
 
 **How to set a custom Workflow Id using the Go SDK**
 
@@ -678,7 +680,7 @@ if err != nil {
 }
 ```
 
-### Go StartWorkflowOptions reference {#workflow-options-reference}
+### Go StartWorkflowOptions reference {/* #workflow-options-reference */}
 
 Create an instance of
 [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the
@@ -881,7 +883,7 @@ if err != nil {
 }
 ```
 
-[Sample](https://github.com/temporalio/samples-go/tree/master/cron)
+[Sample](https://github.com/temporalio/samples-go/tree/main/cron)
 
 #### Memo
 
@@ -932,7 +934,7 @@ if err != nil {
 }
 ```
 
-### Get Workflow results {#get-workflow-results}
+### Get Workflow results {/* #get-workflow-results */}
 
 **How to get the results of a Workflow Execution using the Go SDK**
 

@@ -31,11 +31,56 @@ Future pricing may apply to high-volume usage that exceeds standard [limits](/cl
 
 Temporal Cloud's [OpenMetrics](https://openmetrics.io/) endpoint provides operational metrics for your Temporal Cloud workloads in industry-standard Prometheus format, enabling comprehensive monitoring across Namespaces, Workflows, and Task Queues with your existing observability stack.
 
+## Quickstart
+
+Stream metrics from Temporal Cloud into your observability tool in about 5 minutes.
+
+**Prerequisites**
+
+- An **Account Owner** or **Global Admin** role on the Temporal Cloud account. The Metrics Read-Only role is an account-level role and can only be granted by these roles. A Namespace Admin cannot complete these steps.
+- An account in the observability tool you want to use (Datadog, Grafana Cloud, New Relic, ClickStack, self-hosted Prometheus, etc.).
+
+**Steps**
+
+1. **Create a Service Account with the Metrics Read-Only role.**
+
+   In the Temporal Cloud UI, go to **Settings → Service Accounts → Create Service Account** and assign the **Metrics Read-Only** account-level role.
+
+2. **Generate an API key for the Service Account.**
+
+   Open the Service Account and create an API key. Copy the key and store it somewhere secure. It is shown only once.
+
+3. **Verify the endpoint is reachable.**
+
+   ```shell
+   curl -H "Authorization: Bearer <API_KEY>" https://metrics.temporal.io/v1/metrics
+   ```
+
+   You should see OpenMetrics-formatted output beginning with `# TYPE temporal_cloud_v1_...`.
+
+   :::note `metrics.temporal.io` is for scrapers, not browsers
+
+   The endpoint requires an `Authorization: Bearer <API key>` header on every request. There is no browser UI. Opening `https://metrics.temporal.io` or `https://metrics.temporal.io/v1/metrics` directly in a browser returns `Jwt is missing`. Configure the endpoint inside your observability tool instead.
+
+   :::
+
+4. **Configure your observability tool.**
+
+   Paste the API key into the integration for your tool of choice. See [Metrics integrations](/cloud/metrics/openmetrics/metrics-integrations) for tool-specific setup:
+
+   - [Datadog](/cloud/metrics/openmetrics/metrics-integrations#datadog)
+   - [Grafana Cloud](/cloud/metrics/openmetrics/metrics-integrations#grafana-cloud)
+   - [New Relic](/cloud/metrics/openmetrics/metrics-integrations#new-relic)
+   - [ClickStack](/cloud/metrics/openmetrics/metrics-integrations#clickstack)
+   - [Self-hosted Prometheus or OpenTelemetry Collector](/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana)
+
+Metrics begin populating in your tool within a few minutes.
+
 ## Quick Links
 * [Integrations](/cloud/metrics/openmetrics/metrics-integrations) - Get started exporting metrics with common integrations
 * [API Documentation](/cloud/metrics/openmetrics/api-reference) - Endpoint specification and advanced configuration
 * [Metrics Reference](/cloud/metrics/openmetrics/metrics-reference) - Complete catalog of all metrics with descriptions and labels
-* [Migration Guide](/cloud/metrics/openmetrics/migration-guide) - Guide on how to transition from the Prometheus query endpoint
+* [Migration Guide](/cloud/metrics/openmetrics/migration-guide) - Transition from the deprecated Prometheus query endpoint to OpenMetrics
 
 ## Overview
 Temporal Cloud OpenMetrics exposes 50+ metrics covering workflow lifecycles, task queue operations, service performance, and system limits. All metrics are aggregated over one-minute windows and available for scraping within three minutes. Each scrape returns only the most recently completed one-minute window—configure your monitoring system to retain what it scrapes.
@@ -45,7 +90,7 @@ Temporal Cloud OpenMetrics exposes 50+ metrics covering workflow lifecycles, tas
 * Teams using the query endpoint should review the [migration guide](/cloud/metrics/openmetrics/migration-guide).
 
 ## API key authentication
-Create a [service account](/cloud/metrics/openmetrics/migration-guide#create-an-api-key) with the "Metrics Read-Only" role, generate an API key, and start scraping immediately - no certificate rotation or distribution required.
+Create a Service Account with the "Metrics Read-Only" role and generate an API key. See the [Quickstart](#quickstart) above for step-by-step instructions. API keys work with standard HTTPS, with no certificate rotation or distribution required.
 
 ## Global endpoint
 This is a single endpoint at `metrics.temporal.io` which serves all metrics across your entire account with API key authentication and standard HTTPS.

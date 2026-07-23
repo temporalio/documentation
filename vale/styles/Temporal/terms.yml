@@ -57,8 +57,6 @@ swap:
   namespace: Namespace
   namespaces: Namespaces
   namespace id: Namespace Id
-  nexus: Temporal Nexus
-  Nexus: Temporal Nexus
   nexus registry: Nexus Registry
   parent close policy: Parent Close Policy
   payload codec: Payload Codec
@@ -102,11 +100,12 @@ swap:
   temporal sdks: Temporal SDKs
   temporal server: Temporal Server
   '\bworker\b': Worker
+  serverless worker: Serverless Worker
+  serverless workers: Serverless Workers
   worker controller: Worker Controller
   '\bworkflow\b': Workflow
   timer: Timer
   timers: Timers
-  update: Update
   update-with-start: Update-With-Start
   worker entity: Worker Entity
   worker process: Worker Process

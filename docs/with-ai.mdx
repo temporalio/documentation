@@ -8,7 +8,7 @@ description: Give your AI coding agent Temporal expertise and real-time access t
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Give your AI coding agent Temporal expertise with Skills and real-time documentation access with the Temporal Docs MCP
+Give your AI coding agent Temporal expertise with Skills and real-time documentation access with the Temporal Knowledge Base MCP
 Server.
 
 ## Skills
@@ -112,18 +112,22 @@ git clone https://github.com/temporalio/skill-temporal-cloud.git ~/.claude/skill
 
 Restart your coding agent after installing.
 
-## Temporal Docs MCP Server
+## Temporal Knowledge Base  MCP Server
 
-Connect Temporal documentation directly to your AI assistant for accurate, up-to-date answers about Temporal. The
-Temporal docs MCP server gives AI tools real-time access to our documentation, so responses draw from current docs
+Connect Temporal expertise directly to your AI assistant for accurate, up-to-date answers about Temporal. The
+Temporal knowledge base MCP server gives AI tools real-time access to best practices compiled from our documentation, educational materials, community forum responses, and slack channels, so responses draw from current expertise
 rather than training data.
 
-The server requires anonymous authentication using any Google account to enforce rate limits and prevent abuse. We
-cannot see nor do we collect any contact information from this.
+:::info Authentication required
+
+The Temporal Knowledge Base MCP Server is publicly available, but requires a one-time login with a Google or GitHub account to enforce rate limits and prevent abuse.
+Only an opaque user ID is used for rate limiting. Your name, email, repositories, and other personal data are not accessed or collected.
+
+:::
 
 ### Claude Code
 
-Add the Temporal docs MCP server globally so it's available in all your projects:
+Add the Temporal knowledge base MCP server globally so it's available in all your projects:
 
 1. Register the MCP server with Claude Code:
 
@@ -148,21 +152,14 @@ claude mcp add --transport http temporal-docs https://temporal.mcp.kapa.ai
 
 ### Other MCP-compatible tools
 
-For any tool that supports the Model Context Protocol, use the following server URL:
+The Temporal Knowledge Base MCP Server URL is:
 
 ```
 https://temporal.mcp.kapa.ai
 ```
 
-Configuration format varies by tool. Here's a generic JSON configuration:
-
-```json
-{
-  "mcpServers": {
-    "temporal-docs": {
-      "transport": "http",
-      "url": "https://temporal.mcp.kapa.ai"
-    }
-  }
-}
-```
+The server requires authentication through MCP OAuth.
+Not all MCP clients support this protocol.
+If your client supports MCP OAuth, it will open a browser window to verify with Google or GitHub on first connection.
+If your client does not support MCP OAuth, you may need to use a stdio proxy that handles the OAuth flow and passes credentials to the remote server.
+Check your client's documentation for details on connecting to OAuth-protected MCP servers.

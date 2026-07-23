@@ -1,0 +1,234 @@
+.container {
+  --ig-pill-gradient: linear-gradient(255deg, #444ce7 0%, #8b46d4 100%);
+  --ig-pill-text-active: #fff;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+:global([data-theme="light"]) .container {
+  --ig-search-bg: #fff;
+  --ig-search-border: rgba(15, 23, 42, 0.25);
+  --ig-search-text: #1e293b;
+  --ig-search-placeholder: #94a3b8;
+  --ig-focus-color: #444ce7;
+  --ig-focus-shadow: 0 0 0 3px rgba(68, 76, 231, 0.15);
+  --ig-pill-text: #475569;
+  --ig-pill-border: rgba(15, 23, 42, 0.25);
+  --ig-card-bg: #fff;
+  --ig-card-border: rgba(15, 23, 42, 0.15);
+  --ig-card-hover: 0 4px 24px rgba(68, 76, 231, 0.18), 0 0 0 1px rgba(68, 76, 231, 0.12);
+  --ig-badge-bg: #f1f5f9;
+  --ig-badge-text: #475569;
+  --ig-muted: #64748b;
+}
+
+:global([data-theme="dark"]) .container {
+  --ig-search-bg: #1a1a1a;
+  --ig-search-border: rgba(148, 163, 184, 0.35);
+  --ig-search-text: #f1f5f9;
+  --ig-search-placeholder: #64748b;
+  --ig-focus-color: #7c6aef;
+  --ig-focus-shadow: 0 0 0 3px rgba(124, 106, 239, 0.25);
+  --ig-pill-text: #cbd5e1;
+  --ig-pill-border: rgba(148, 163, 184, 0.35);
+  --ig-card-bg: #1a1a1a;
+  --ig-card-border: rgba(148, 163, 184, 0.4);
+  --ig-card-hover: 0 0 24px rgba(130, 90, 255, 0.25), 0 0 0 1px rgba(130, 90, 255, 0.2);
+  --ig-badge-bg: rgba(148, 163, 184, 0.15);
+  --ig-badge-text: #cbd5e1;
+  --ig-muted: #64748b;
+}
+
+/* Search */
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ig-search-placeholder);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px var(--ig-search-border);
+  background: var(--ig-search-bg);
+  color: var(--ig-search-text);
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--ig-search-placeholder);
+}
+
+.searchInput:focus {
+  box-shadow: inset 0 0 0 1px var(--ig-focus-color), var(--ig-focus-shadow);
+}
+
+/* Filters */
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ig-badge-text);
+  margin-right: 0.25rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px var(--ig-pill-border);
+  background: transparent;
+  color: var(--ig-pill-text);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+}
+
+.pill:hover {
+  box-shadow: inset 0 0 0 1px var(--ig-focus-color);
+}
+
+.pillActive {
+  background: var(--ig-pill-gradient);
+  color: var(--ig-pill-text-active);
+  box-shadow: none;
+}
+
+/* Grid */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* Card */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  background: var(--ig-card-bg);
+  border: 1px solid var(--ig-card-border);
+  border-radius: 0;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-image: linear-gradient(255deg, #444ce7 0%, #b664ff 100%) 1;
+  box-shadow: var(--ig-card-hover);
+  text-decoration: none;
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--ig-focus-color);
+  outline-offset: 2px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardName {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-900);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.sdkIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+}
+
+.sdkIcons svg {
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+
+.externalIcon {
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.cardDescription {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0 0 0.75rem 0;
+  flex: 1;
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: auto;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: 0;
+  background: var(--ig-badge-bg);
+  color: var(--ig-badge-text);
+}
+
+/* Empty state */
+
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ig-muted);
+  font-size: 1rem;
+}

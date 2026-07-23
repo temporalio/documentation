@@ -18,7 +18,7 @@ keywords:
   - version
   - versioning
   - workflow completion
-  - workflow history
+  - event history
   - workflow transition
 tags:
   - Workflows
@@ -28,12 +28,14 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components';
+
 import { CaptionedImage } from '@site/src/components';
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 
-The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
-If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints). If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows. This only applies to Workflow orchestration logic. Non-deterministic work such as API calls, and database queries should be placed in Activities, which Temporal retries reliably.
+
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
 There are two primary Versioning methods that you can use:
 
@@ -48,22 +50,17 @@ Support for the experimental Worker Versioning method before 2025 will be remove
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
 
-## Versioning with Patching {#patching}
+## Versioning with Patching {/* #patching */}
 
 ### Adding a patch
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
-When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
+When you want to make substantive code changes that may affect existing Workflow Executions, create a patch.
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py" />
 
 ```python
 from datetime import timedelta
@@ -85,12 +82,7 @@ class MyWorkflow:
 
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py" />
 
 ```python
 from datetime import timedelta
@@ -120,18 +112,13 @@ Patching is a three-step process:
 3. Once there are no longer any open Workflow Executions of the previous version of the code, remove `deprecate_patch()`.
    Let's walk through this process in sequence.
 
-### Patching in new code {#using-patched-for-workflow-history-markers}
+### Patching in new code {/* #using-patched-for-workflow-history-markers */}
 
-Using `patched` inserts a marker into the Workflow History.
+Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`).
 This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py" />
 
 ```python
 # ...
@@ -151,20 +138,15 @@ class MyWorkflow:
             )
 ```
 
-### Deprecating patches {#deprecated-patches}
+### Deprecating patches {/* #deprecated-patches */}
 
 After ensuring that all Workflows started with `pre_patch_activity` code have left retention, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 
 Once your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
-Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
+Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Event History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py" />
 
 ```python
 # ...
@@ -179,16 +161,11 @@ class MyWorkflow:
         )
 ```
 
-### Removing a patch {#deploy-new-code}
+### Removing a patch {/* #deploy-new-code */}
 
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py" />
 
 ```python
 # ...

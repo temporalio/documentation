@@ -28,13 +28,16 @@ This page shows how to do the following:
 - [How to set a Cron Schedule in Java](#cron-schedule)
 - [Start Delay](#start-delay)
 
-## How to Schedule a Workflow {#schedule-a-workflow}
+## How to Schedule a Workflow {/* #schedule-a-workflow */}
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes.
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
-### How to create a Schedule in Java {#create-schedule}
+Schedule behavior is governed by the Schedule's [Overlap Policy](/schedule#overlap-policy).
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and counts as the running execution for overlap decisions.
+
+### How to create a Schedule in Java {/* #create-schedule */}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
@@ -78,7 +81,7 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 :::
 
-### How to backfill a Schedule in Java {#backfill-schedule}
+### How to backfill a Schedule in Java {/* #backfill-schedule */}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
 
@@ -94,7 +97,7 @@ handle.backfill(
         new ScheduleBackfill(now.minusMillis(2500), now)));
 ```
 
-### How to delete a Schedule in Java {#delete-schedule}
+### How to delete a Schedule in Java {/* #delete-schedule */}
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
@@ -105,7 +108,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 handle.delete();
 ```
 
-### How to describe a Schedule in Java {#describe-schedule}
+### How to describe a Schedule in Java {/* #describe-schedule */}
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
 
@@ -116,7 +119,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 ScheduleDescription description = handle.describe();
 ```
 
-### How to list a Schedule in Java {#list-schedule}
+### How to list a Schedule in Java {/* #list-schedule */}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -127,7 +130,7 @@ If a schedule is added or deleted, it may not be available in the list immediate
 Stream<ScheduleListDescription> scheduleStream = client.listSchedules();
 ```
 
-### How to pause a Schedule in Java {#pause-schedule}
+### How to pause a Schedule in Java {/* #pause-schedule */}
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
 
@@ -139,7 +142,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 handle.pause("Pausing the schedule for now");
 ```
 
-### How to trigger a Schedule in Java {#trigger-schedule}
+### How to trigger a Schedule in Java {/* #trigger-schedule */}
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
@@ -150,7 +153,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 handle.trigger();
 ```
 
-### How to update a Schedule in Java {#update-schedule}
+### How to update a Schedule in Java {/* #update-schedule */}
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
 
@@ -173,11 +176,11 @@ handle.update(
     });
 ```
 
-## How to set a Cron Schedule in Java {#cron-schedule}
+## How to set a Cron Schedule in Java {/* #cron-schedule */}
 
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
+We recommend using [Schedules](/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
@@ -221,7 +224,7 @@ Temporal Workflow Schedule Cron strings follow this format:
 
 For more details, see the [Cron Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java)
 
-## Start Delay {#start-delay}
+## Start Delay {/* #start-delay */}
 
 **How to delay the start of a Workflow Execution using Start Delay with the Temporal Java SDK.**
 

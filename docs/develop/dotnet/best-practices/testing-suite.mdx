@@ -33,14 +33,14 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks {/* #test-frameworks */}
 
 **Compatible testing frameworks**
 
 The .NET SDK is compatible with any testing framework and does not have a specific recommendation.
 Most .NET SDK samples use [xUnit](https://xunit.net/).
 
-## Testing Workflows {#testing-workflows}
+## Testing Workflows {/* #testing-workflows */}
 
 **How to test Workflow Definitions using the Temporal .NET SDK**
 
@@ -103,6 +103,7 @@ While this is just a demonstration, a local server is often used as a fixture ac
 
 Sometimes there is a need to test Workflows that run a long time or to test that timeouts occur.
 A time-skipping `Temporalio.Testing.WorkflowEnvironment` can be started via `StartTimeSkippingAsync` which is a reimplementation of the Temporal server with special time skipping capabilities.
+
 Like `StartLocalAsync`, this also lazily downloads the process to run when first called.
 Note, unlike `StartLocalAsync`, this class is not thread safe nor safe for use with independent tests.
 It can be technically be reused, but only for one test at a time because time skipping is locked/unlocked at the environment level.
@@ -158,7 +159,7 @@ public async Task WaitADayWorkflow_SimpleRun_Succeeds()
 ```
 
 This test will run almost instantly.
-This is because by calling `ExecuteWorkflowAsync` on our client, we are actually calling `StartWorkflowAsync` + `GetResultAsync`, and `GetResultAsync` automatically skips time as much as it can (basically until the end of the workflow or until an activity is run).
+This is because by calling `ExecuteWorkflowAsync` on our client, we are actually calling `StartWorkflowAsync` + `GetResultAsync`, and `GetResultAsync` automatically skips time as much as it can (basically until the end of the Workflow or until an Activity is run).
 
 To disable automatic time-skipping while waiting for a workflow result, run code as a lambda passed to `env.WithAutoTimeSkippingDisabled` or `env.WithAutoTimeSkippingDisabledAsync`.
 
@@ -246,7 +247,7 @@ When testing Workflows, often you don't want to actually run the Activities.
 Activities are just methods with the `[Activity]` attribute.
 Simply write different/empty/fake/asserting ones and pass those to the Worker to have different activities called during the test.
 
-## Testing Activities {#test-activities}
+## Testing Activities {/* #test-activities */}
 
 **How to test Activity Definitions using the Temporal .NET SDK**
 
@@ -263,7 +264,7 @@ The following important members are available on the environment to affect the a
 - `WorkerShutdownTokenSource` - Token source for issuing Worker shutdown.
 - `PayloadConverter` - Defaulted to default payload converter.
 
-## Replay test {#replay}
+## Replay test {/* #replay */}
 
 **How to do a Replay test using the Temporal .NET SDK**
 
@@ -284,7 +285,7 @@ public static async Task ReplayFromJsonAsync(string historyJson)
 
 If there is a non-determinism, this will throw an exception.
 
-Workflow history can be loaded from more than just JSON.
+Event history can be loaded from more than just JSON.
 It can be fetched individually from a Workflow handle, or even in a list.
 For example, the following code will check that all Workflow histories for a certain Workflow type (i.e. workflow class) are safe with the current Workflow code.
 

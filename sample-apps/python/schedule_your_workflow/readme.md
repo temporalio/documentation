@@ -5,7 +5,6 @@
 - [x] delete: Deletes a Schedule. Deleting a Schedule does not affect any Workflows started by the Schedule.
 - [x] describe: Shows the current Schedule configuration. This command also provides information about past, current, and future Workflow Runs.
 - [x] list: Lists all Schedule configurations. Listing Schedules in Standard Visibility will only provide Schedule IDs.
-- [x] toggle: (Pause in python) can pause and unpause a Schedule.
 - [x] trigger: Triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule.
 - [x] update: Updates an existing Schedule.
 
@@ -30,6 +29,5 @@ poetry run python start_schedule_dacx.py
 poetry run python backfill_schedule_dacx.py
 poetry run python delete_schedule_dacx.py
 poetry run python describe_schedule_dacx.py
-poetry run python toggle_schedule_dacx.py
 poetry run python update_schedule_dacx.py
 ```

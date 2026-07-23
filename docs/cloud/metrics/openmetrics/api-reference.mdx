@@ -46,7 +46,7 @@ API keys can be created using the [Temporal Cloud UI](https://cloud.temporal.io)
 
 :::info
 
-See the [docs](https://docs.temporal.io/cloud/api-keys#serviceaccount-api-keys) for more details on generating API keys.
+See the [docs](/cloud/api-keys#serviceaccount-api-keys) for more details on generating API keys.
 
 :::
 
@@ -159,6 +159,18 @@ To account for metric data latency, this endpoint returns metrics from the curre
 | ----- | ----- | ----- |
 | `namespaces` | string array | Filter to specific Namespaces. Supports wildcards (e.g., `production-*`) |
 | `metrics` | string array | Filter to specific metrics |
+
+Array parameters use repeated keys. To pass multiple values, repeat the parameter name once per value:
+
+```shell
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders
+```
+
+The `namespaces` and `metrics` parameters can be combined, and each may be repeated independently:
+
+```shell
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders&metrics=temporal_cloud_v1_workflow_success_count&metrics=temporal_cloud_v1_approximate_backlog_count
+```
 
 #### Response Headers
 
@@ -286,6 +298,9 @@ You can isolate only the metrics/namespaces you need.  For example, the followin
 ```shell
 # Only specific namespaces matching the wildcard pattern
 /v1/metrics?namespaces=production-*
+
+# Multiple namespaces
+/v1/metrics?namespaces=prod-payments&namespaces=prod-orders
 
 # Only specific metrics
 /v1/metrics?metrics=temporal_cloud_v1_workflow_success_count

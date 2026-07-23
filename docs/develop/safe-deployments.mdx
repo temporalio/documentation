@@ -26,7 +26,7 @@ Eager start does not respect Worker versioning. An eagerly started Workflow may 
 
 The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](/workflow-execution#replay).
 
-Replay testing takes one or more existing [Workflow Histories](/workflow-execution/event#event-history) that ran against a previous version of Workflow code and runs them against your _current_ Workflow code, verifying that it is compatible with the provided history.
+Replay testing takes one or more existing [Event Histories](/workflow-execution/event#event-history) that ran against a previous version of Workflow code and runs them against your _current_ Workflow code, verifying that it is compatible with the provided history.
 
 In the case of Worker Versioning, you may have a [pinned Workflow](/worker-versioning#pinned) that you're switching over to the [current Worker deployment version](/worker-versioning#versioning-definitions) and you want to make sure that the changes don't introduce non-determinism errors. Or you may have an [Auto-Upgrade Workflow](/worker-versioning#auto-upgrade) that you want to run automated tests on to ensure the deployments don't trigger errors.
 

@@ -39,7 +39,7 @@ Supported Visibility stores include:
 - PostgreSQL v12 and later with Temporal Server v1.20 and later
 - SQLite v3.31.0 and later with Temporal Server v1.20 and later
 
-## Current and legacy Visibility support {#supported-databases}
+## Current and legacy Visibility support {/* #supported-databases */}
 
 [Advanced Visibility](/visibility#advanced-visibility) is the current generation of Temporal Visibility. It supports the
 modern query model, including [custom Search Attributes](/search-attribute#custom-search-attribute).
@@ -66,7 +66,7 @@ You can use any combination of the supported databases for your Persistence and 
 Temporal Server v1.21 introduced support for a secondary Visibility store in your Temporal Service to enable
 [Dual Visibility](/dual-visibility). This is useful for migrating your Visibility store database.
 
-## How to set up MySQL Visibility store {#mysql}
+## How to set up MySQL Visibility store {/* #mysql */}
 
 :::tip Support, stability, and dependency info
 
@@ -166,7 +166,7 @@ Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
 to run the setup.
 
-## How to set up PostgreSQL Visibility store {#postgresql}
+## How to set up PostgreSQL Visibility store {/* #postgresql */}
 
 :::tip Support, stability, and dependency info
 
@@ -261,7 +261,34 @@ Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
 to run the setup.
 
-## How to set up SQLite Visibility store {#sqlite}
+### Maintaining Visibility index health {/* #postgresql-index-maintenance */}
+
+On high-volume deployments, the total size of the indexes on `executions_visibility` can grow much larger than the table itself and keep growing even with a Retention Period set. This is expected PostgreSQL b-tree behavior rather than a data leak:
+
+- Each pre-allocated custom and system Search Attribute has its own nullable column and its own index. PostgreSQL b-tree indexes store entries for `NULL` values, so a Search Attribute that a deployment never sets still has one index entry for every Workflow Execution row.
+- Closing or updating a Workflow Execution upserts its Visibility row, and because these indexes order on `close_time`, the updates leave dead index entries over time.
+- `VACUUM` reclaims table (heap) space but does not compact b-tree index bloat. `REINDEX` rebuilds an index and reclaims that space; removing rows through the Retention Period does not.
+
+To reclaim index space online, run `REINDEX` with `CONCURRENTLY`, which does not block reads or writes. It needs roughly the size of the index in extra disk space and I/O, so prefer a lower-traffic window:
+
+```sql
+REINDEX TABLE CONCURRENTLY executions_visibility;
+```
+
+You can also target a single index with `REINDEX INDEX CONCURRENTLY <index_name>;`.
+
+Because `executions_visibility` is update-heavy, more aggressive autovacuum settings for the table help keep dead tuples, and the resulting index bloat, under control:
+
+```sql
+ALTER TABLE executions_visibility SET (
+  autovacuum_vacuum_scale_factor = 0.05,
+  autovacuum_analyze_scale_factor = 0.05
+);
+```
+
+Track sizes with `pg_relation_size('executions_visibility')` and `pg_indexes_size('executions_visibility')`, and use the [`pgstattuple`](https://www.postgresql.org/docs/current/pgstattuple.html) extension for precise bloat estimates. For sustained high-volume Visibility workloads, consider [Elasticsearch or OpenSearch](#elasticsearch), which Temporal recommends for production at scale.
+
+## How to set up SQLite Visibility store {/* #sqlite */}
 
 :::tip Support, stability, and dependency info
 
@@ -332,12 +359,12 @@ https://github.com/temporalio/temporal/blob/main/schema/sqlite/v3/visibility/sch
 For an example of setting up the SQLite schema, see
 [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
 
-## Legacy standard Visibility configuration {#legacy-standard-visibility}
+## Legacy standard Visibility configuration {/* #legacy-standard-visibility */}
 
 The following section applies to older self-hosted deployments that still use standard Visibility. For new deployments,
 use one of the advanced Visibility backends described earlier on this page.
 
-### How to set up Cassandra Visibility store {#cassandra}
+### How to set up Cassandra Visibility store {/* #cassandra */}
 
 :::tip Support, stability, and dependency info
 
@@ -421,7 +448,7 @@ setup_cassandra_schema() {
 }
 ```
 
-## How to integrate Elasticsearch or OpenSearch into a Temporal Service {#elasticsearch}
+## How to integrate Elasticsearch or OpenSearch into a Temporal Service {/* #elasticsearch */}
 
 You can integrate Elasticsearch or OpenSearch with your Temporal Service as your Visibility store. We recommend using
 one of these backends for large-scale operations on the Temporal Service.
@@ -550,7 +577,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster):
     `monitor` or `manage`.
 
-## How to set up Dual Visibility {#dual-visibility}
+## How to set up Dual Visibility {/* #dual-visibility */}
 
 To enable [Dual Visibility](/dual-visibility), set up a secondary Visibility store with your primary Visibility store,
 and configure your Temporal Service to enable read and/or write operations on the secondary Visibility store.
@@ -743,7 +770,7 @@ For details on the configuration options, see:
 - [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings)
 - [Migrating Visibility databases](#migrating-visibility-database)
 
-## How to migrate Visibility database {#migrating-visibility-database}
+## How to migrate Visibility database {/* #migrating-visibility-database */}
 
 To migrate your Visibility database, [set up a secondary Visibility store](#dual-visibility) to enable
 [Dual Visibility](/dual-visibility), and update the dynamic configuration in your Temporal Service to update the read
@@ -866,11 +893,11 @@ When you are ready to deprecate your primary store, follow these steps.
        closeIdleConnectionsInterval: 15s
    ```
 
-## Managing custom Search Attributes {#custom-search-attributes}
+## Managing custom Search Attributes {/* #custom-search-attributes */}
 
 To manage custom Search Attributes on Temporal Cloud, use the [`tcld`](/cloud/tcld/namespace#search-attributes) CLI tool.
 With Temporal Cloud, you can create and rename custom Search Attributes. If you need to delete a custom Search Attribute, contact Support at [support.temporal.io](https://support.temporal.io).
-To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/operator#search-attribute).
+To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/command-reference/operator#search-attribute).
 With a self-hosted Temporal Service, you can create and remove custom Search Attributes.
 
 If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#supported-databases) version supports custom Search Attributes before proceeding.
@@ -886,7 +913,7 @@ Using sensitive data in either names or values risks exposure to anyone with Nam
 
 :::
 
-### How to create custom Search Attributes {#create-custom-search-attributes}
+### How to create custom Search Attributes {/* #create-custom-search-attributes */}
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and
 [List Filters](/list-filter).
@@ -964,7 +991,7 @@ add_custom_search_attributes() {
 When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow
 code.
 
-### How to remove custom Search Attributes {#remove-custom-search-attributes}
+### How to remove custom Search Attributes {/* #remove-custom-search-attributes */}
 
 To remove a Search Attribute key from your self-hosted Temporal Service Visibility store, use the command
 `temporal operator search-attribute remove`. Removing Search Attributes is not supported on Temporal Cloud.

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Request in -->
+  <line x1="6" y1="40" x2="34" y2="40" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="31,36 40,40 31,44" fill="#cc2222"/>
+
+  <!-- Workflow handling the update -->
+  <rect x="40" y="22" width="20" height="36" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="45" y1="34" x2="55" y2="34" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="45" y1="40" x2="55" y2="40" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="45" y1="46" x2="55" y2="46" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Response out -->
+  <line x1="60" y1="40" x2="86" y2="40" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="84,36 93,40 84,44" fill="#cc2222"/>
+</svg>

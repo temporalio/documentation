@@ -146,11 +146,11 @@ temporal-ui:
 For more general guidance for configuration, refer to the [Temporal UI README](https://github.com/temporalio/ui?tab=readme-ov-file#configuration).
 For more details on configuration with Docker, refer to [Temporal UI Config](https://github.com/temporalio/ui/blob/c95265ee6431fd0f6cf78ae06373885d66a8ee0c/server/docker/config-template.yaml).
 
-## Temporal Service plugins {#plugins}
+## Temporal Service plugins {/* #plugins */}
 
 The Temporal Service supports some pluggable components.
 
-### What is a ClaimMapper Plugin? {#claim-mapper}
+### What is a ClaimMapper Plugin? {/* #claim-mapper */}
 
 The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
 
@@ -261,7 +261,7 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
-### What is an Authorizer Plugin? {#authorizer-plugin}
+### What is an Authorizer Plugin? {/* #authorizer-plugin */}
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
 `Authorize` receives information about the API call, along with the role and permission claims of the caller.
@@ -304,7 +304,7 @@ temporalServer, err := temporal.NewServer(
 )
 ```
 
-#### How to authorize SDK API calls {#authorize-api-calls}
+#### How to authorize SDK API calls {/* #authorize-api-calls */}
 
 When authentication is enabled, you can authorize API calls made to the Frontend Service.
 
@@ -339,7 +339,7 @@ Related read:
 
 - [How to secure a Temporal Service](/security)
 
-## Data Converter {#data-converter}
+## Data Converter {/* #data-converter */}
 
 Each Temporal SDK provides a [Data Converter](/dataconversion) that can be customized with a custom [Payload Codec](/payload-codec) to encode and secure your data.
 

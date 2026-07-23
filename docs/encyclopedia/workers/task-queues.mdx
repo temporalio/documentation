@@ -16,7 +16,7 @@ import { CaptionedImage } from '@site/src/components';
 
 This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#set-task-queue) and [Task Ordering](#task-ordering).
 
-## What is a Task Queue? {#task-queue}
+## What is a Task Queue? {/* #task-queue */}
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](/tasks).
 There are three types of Task Queues: Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
@@ -72,29 +72,33 @@ When Workers don't have a registered Workflow, Activity, Nexus Operation, or dyn
 - "Not Found" Workflow Tasks and Activity Tasks are treated as _retryable_ errors.
 - "Not Found" Nexus Operation handlers are _non-retryable_ and must be manually retried from the caller Workflow.
 
-#### Where to set Task Queues {#set-task-queue}
+#### Where to set Task Queues {/* #set-task-queue */}
 
 There are five places where the name of the Task Queue can be set by the developer.
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-   - [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
+   - [How to start a Workflow Execution using the Temporal CLI](/cli/command-reference/workflow#start)
+   - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/client/temporal-client#start-workflow)
    - [How to start a Workflow Execution using the Go SDK](/develop/go/client/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the Java SDK](/develop/java/client/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the PHP SDK](/develop/php/client/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the Python SDK](/develop/python/client/temporal-client#start-workflow-execution)
+   - [How to start a Workflow Execution using the Ruby SDK](/develop/ruby/client/temporal-client#start-workflow)
+   - [How to start a Workflow Execution using the Rust SDK](/develop/rust/client/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/client/temporal-client#start-workflow-execution)
-   - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/client/temporal-client#start-workflow)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
+   - [How to run a development Worker using the .NET SDK](/develop/dotnet/workers/run-worker-process)
    - [How to run a development Worker using the Go SDK](/develop/go/workers/run-worker-process)
    - [How to run a development Worker using the Java SDK](/develop/java/workers/run-worker-process)
    - [How to run a development Worker using the PHP SDK](/develop/php/workers/run-worker-process#run-a-dev-worker)
    - [How to run a development Worker using the Python SDK](/develop/python/workers/run-worker-process#run-a-dev-worker)
-   - [How to run a development Worker using the TypeScript SDK](/develop/typescript/workers/run-worker-process#run-a-dev-worker)
-   - [How to run a development Worker using the .NET SDK](/develop/dotnet/workers/run-worker-process)<br /><br />
-   - [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/workers/cloud-worker)
+   - [How to run a development Worker using the Ruby SDK](/develop/ruby/workers/run-worker-process#run-worker-process)
+   - [How to run a development Worker using the Rust SDK](/develop/rust/workers/worker-process#run-a-dev-worker)
+   - [How to run a development Worker using the TypeScript SDK](/develop/typescript/workers/run-worker-process#run-a-dev-worker)<br /><br />
+   - [How to connect a Go SDK Worker to Temporal Cloud](/develop/go/workers/run-worker-process#connect-to-temporal-cloud)
    - [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/workers/run-worker-process#run-a-temporal-cloud-worker)
 
    Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types, Activity Types, and Nexus Operations.
@@ -107,24 +111,26 @@ There are five places where the name of the Task Queue can be set by the develop
    This is optional.
    An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
+   - [How to start an Activity Execution using the .NET SDK](/develop/dotnet/activities/execution)
    - [How to start an Activity Execution using the Go SDK](/develop/go/activities/execution)
    - [How to start an Activity Execution using the Java SDK](/develop/java/activities/execution)
    - [How to start an Activity Execution using the PHP SDK](/develop/php/activities/execution)
    - [How to start an Activity Execution using the Python SDK](/develop/python/activities/execution)
    - [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/activities/execution)
-   - [How to start an Activity Execution using the .NET SDK](/develop/dotnet/activities/execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
    This is optional.
    A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
+   - [How to start a Child Workflow Execution using the .NET SDK](/develop/dotnet/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the Go SDK](/develop/go/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the Java SDK](/develop/java/workflows/child-workflows)
-   - [How to start a Child Workflow Execution using the PHP SDK](/develop/php/workflows/continue-as-new)
+   - [How to start a Child Workflow Execution using the PHP SDK](/develop/php/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the Python SDK](/develop/python/workflows/child-workflows)
+   - [How to start a Child Workflow Execution using the Python SDK](/develop/ruby/workflows/child-workflows)
+   - [How to start a Child Workflow Execution using the Rust SDK](/develop/rust/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the TypeScript SDK](/develop/typescript/workflows/child-workflows)
-   - [How to start a Child Workflow Execution using the .NET SDK](/develop/dotnet/workflows/child-workflows)
 
 5. A Task Queue name can be provided when creating a Nexus Endpoint.
    Nexus Endpoints route requests to the target Task Queue.

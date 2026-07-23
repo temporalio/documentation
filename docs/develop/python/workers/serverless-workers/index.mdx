@@ -1,0 +1,26 @@
+---
+id: index
+title: Serverless Workers - Python SDK
+sidebar_label: Serverless Workers
+description: Write Temporal Workers that run on serverless compute using the Python SDK.
+slug: /develop/python/workers/serverless-workers
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - python sdk
+  - worker
+tags:
+  - Workers
+  - Python SDK
+  - Serverless
+---
+
+Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
+Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
+
+For a general overview of how Serverless Workers work, see [Serverless Workers](/serverless-workers).
+For the end-to-end deployment guide, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+
+## Supported providers
+
+- [**AWS Lambda**](/develop/python/workers/serverless-workers/aws-lambda) - Use the `lambda_worker` contrib package to run a Worker as a Lambda function. Covers setup, configuration, Lambda-tuned defaults, and observability.

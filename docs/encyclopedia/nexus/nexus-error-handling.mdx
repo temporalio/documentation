@@ -15,12 +15,6 @@ tags:
   - Nexus
 ---
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 Nexus Operations can return errors for a caller Workflow to handle.
 Errors from an asynchronous Operation's underlying Workflow propagate back to the caller.
 
@@ -35,7 +29,7 @@ By default, handler errors are retryable unless they are:
 
 When the caller's Nexus Machinery receives an error:
 
-- **Non-retryable** - A [NexusOperationFailed](/references/events#nexusoperationfailed) event is added to the caller's Workflow History.
+- **Non-retryable** - A [NexusOperationFailed](/references/events#nexusoperationfailed) event is added to the caller's Event History.
 - **Retryable** - The Nexus Machinery [automatically retries](/nexus/operations#automatic-retries). These errors surface in [Pending Operations](/nexus/execution-debugging/#pending-operations).
 
 :::tip

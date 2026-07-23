@@ -13,7 +13,7 @@ tags:
   - AI Agents
 ---
 
-import SdkTabs from '@site/src/components';
+import { SdkTabs } from '@site/src/components';
 
 # Plugins
 
@@ -42,6 +42,8 @@ If you prefer to learn by getting hands-on with code, check out some existing pl
 
 - Temporal's Python SDK ships with an
   [OpenAI Agents SDK](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents) plugin
+- Temporal's Python SDK ships with a
+  [LangGraph](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langgraph) plugin
 - [Temporal client and Worker plugin for Pydantic AI](https://github.com/pydantic/pydantic-ai/blob/757d40932ebb8ef00f25cc469ff44e9b267b1aa3/pydantic_ai_slim/pydantic_ai/durable_exec/temporal/__init__.py#L83)
 - Temporal's TypeScript SDK ships with an
   [OpenTelemetry Plugin](https://github.com/temporalio/sdk-typescript/blob/main/packages/interceptors-opentelemetry/src/plugin.ts)
@@ -812,7 +814,7 @@ plugin = Temporalio::SimplePlugin.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-### Context Propagators {#context-propagators}
+### Context Propagators {/* #context-propagators */}
 
 Context propagators pass custom key-value data (such as tracing IDs, tenant IDs, or auth tokens) across Workflow, Activity, and Child Workflow boundaries via Temporal headers. See [Context Propagation](/encyclopedia/context-propagation) for details on how they work.
 
@@ -889,7 +891,7 @@ const worker = await Worker.create({
 ```
 {/* SNIPEND */}
 
-## Testing your Plugin {#testing-your-plugin}
+## Testing your Plugin {/* #testing-your-plugin */}
 
 To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client.
 
@@ -976,6 +978,9 @@ worker = Temporalio::Worker.new(
   </SdkTabs.Ruby>
 </SdkTabs>
 
-Check for duplicate side effects or other types of failures.
+Inside this replay regime, you should test for duplicate side effects or other types of failures. When testing for duplicate side effects, it may not be sufficient to simply have a counter that increments once per effect, as activities may be retried. Instead, consider these patterns:
+
+- count `ActivityTaskScheduled` events of the expected activity type in event history (one per intended call, independent of retries), 
+- or accumulate activity IDs in a concurrency-safe set and assert on its size (different scheduled activities get different IDs; retries of the same scheduled activity share one).
 
 It's harder to test against side effects to global variables, so this practice is best avoided entirely.

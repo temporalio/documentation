@@ -15,7 +15,7 @@ poetry run python run_workflow.py
 
 ## Replay History
 
-You can Replay the Workflow History either as History Object or through JSON file.
+You can Replay the Event History either as History Object or through JSON file.
 
 ### Replay as a History Object
 

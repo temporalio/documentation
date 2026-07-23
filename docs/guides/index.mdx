@@ -1,0 +1,28 @@
+---
+id: index
+title: Guides
+slug: /guides
+toc_max_heading_level: 2
+keywords:
+  - guides
+  - how-to
+  - best practices
+  - troubleshooting
+  - performance
+tags:
+  - Integrations
+  - AI Frameworks
+  - Agent Frameworks
+  - Observability
+description: Browse all Guides available for Temporal.
+llm_exclude:
+  This page renders an interactive grid component. For a machine-readable list of guides and their metadata, see
+  [guides-data.ts](https://github.com/temporalio/documentation/blob/main/src/components/GuidesGrid/guides-data.ts).
+---
+
+import GuidesGrid from '@site/src/components/GuidesGrid';
+
+Browse Guides for Temporal SDKs and Temporal Cloud.
+Filter by SDK, tag, or search to find what you need.
+
+<GuidesGrid />

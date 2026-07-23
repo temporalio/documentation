@@ -11,13 +11,17 @@ tags:
   - Activity
 ---
 
-## How to develop an Activity {#develop-activities}
+## How to develop an Activity {/* #develop-activities */}
 
 One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function
 or method execution that's intended to execute a single, well-defined action (either short or long-running), such as
 querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with world outside
 the Temporal Platform or use a Temporal Client to interact with a Temporal Service. For the Workflow to be able to
 execute the Activity, we must define the [Activity Definition](/activity-definition).
+
+Standalone Activities are Activities that run independently, without being orchestrated by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal Client.
+
+The way you write the Activity and register it with a Worker is identical to [Workflow Activities](/develop/typescript/activities/basics). The only difference is that you execute a Standalone Activity directly from your Temporal Client. See [Standalone Activities](/develop/typescript/activities/standalone-activities).
 
 - Activities execute in the standard Node.js environment.
 - Activities cannot be in the same file as Workflows and must be separately registered.
@@ -34,7 +38,7 @@ export async function greet(name: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-## How to develop Activity Parameters {#activity-parameters}
+## How to develop Activity Parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -65,13 +69,13 @@ export async function greet(name: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-## How to define Activity return values {#activity-return-values}
+## How to define Activity return values {/* #activity-return-values */}
 
 All data returned from an Activity must be serializable.
 
 Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there
 is a hard limit of 4MB for any gRPC message size in the Event History transaction
-([see Cloud limits here](https://docs.temporal.io/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
+([see Cloud limits here](/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
 values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 In TypeScript, the return value is always a Promise.
@@ -84,7 +88,7 @@ export async function greet(name: string): Promise<string> {
 }
 ```
 
-## How to customize your Activity Type {#activity-type}
+## How to customize your Activity Type {/* #activity-type */}
 
 Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom
 name for your Activity Type.
@@ -112,7 +116,7 @@ async function run() {
 ```
 <!--SNIPEND-->
 
-## Important design patterns for Activities {#activity-design-patterns}
+## Important design patterns for Activities {/* #activity-design-patterns */}
 
 The following are some important (and frequently requested) patterns for using our Activities APIs. These patterns
 address common needs and use cases.

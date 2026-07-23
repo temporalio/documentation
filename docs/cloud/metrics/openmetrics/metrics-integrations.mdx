@@ -30,26 +30,86 @@ This document is for basic configuration only. For advanced concepts such as lab
 
 ## Integrations
 
+Before configuring any integration, complete the [Quickstart](/cloud/metrics/openmetrics#quickstart) to create a Service Account with the **Metrics Read-Only** role and generate an API key. This requires the **Account Owner** or **Global Admin** role - a Namespace Admin cannot grant the Metrics Read-Only role.
+
 ### Datadog
 
-Datadog provides a serverless integration with the OpenMetrics endpoint. This integration will scrape metrics, store them in Datadog, and provides a default dashboard with some built in monitors. See the [integration page](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/) for more details.
+Datadog provides a serverless integration with the OpenMetrics endpoint. It scrapes metrics, stores them in Datadog, and ships a default dashboard with built-in monitors.
+
+1. In Datadog, open the [Integrations catalog](https://app.datadoghq.com/integrations) and search for **Temporal Cloud OpenMetrics**. Install the integration.
+2. Click **Add Account** in the integration tile and paste your Temporal Cloud API key into the **API Key** field.
+3. Save the configuration. The default Temporal Cloud dashboard appears in **Dashboards → Dashboards List** once data starts flowing (typically within a few minutes).
+
+For Datadog-side details, see the [Datadog integration page](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/).
+
+Datadog also offers a separate [Cost Management integration](https://docs.datadoghq.com/integrations/temporal-cloud-costs/) that sends Temporal Cloud billing data to Datadog Cloud Cost Management for spend attribution by namespace and service type.
+
+For Datadog users, treat the OpenMetrics integration as the Cloud-side half of your observability setup:
+
+- Use OpenMetrics in Datadog to monitor Temporal Cloud behavior such as Task Queue backlog, poll success, and rate limiting.
+- Collect [SDK metrics](/cloud/metrics/sdk-metrics-setup) from your Workers separately to monitor saturation, Schedule-To-Start latency, slot availability, and sticky cache behavior.
+
+If you only ingest Cloud metrics, you will miss many worker-side bottlenecks. For recommended Worker monitors, see
+[Monitor worker health](/cloud/worker-health).
 
 ### Grafana Cloud
 
-Grafana provides a serverless integration with the OpenMetrics endpoint for Grafana Cloud. This integration will scrape metrics, store them in Grafana Cloud, and provides a default dashboard
-for visualizing the metrics in Grafana Cloud. See the [integration page](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-temporal/)
- for more details.
+Grafana Cloud provides a serverless integration that scrapes the OpenMetrics endpoint, stores metrics in Grafana Cloud, and ships a prebuilt **Temporal overview** dashboard.
+
+1. In Grafana Cloud, go to **Connections** and select the **Temporal Cloud** tile.
+2. On the **Configuration** page, add a scrape job: give it a name, paste your Temporal Cloud API key, and set the scrape interval (default 1 minute - lower intervals increase data points per minute and cost).
+3. Click **Test Connection** to verify authentication, then **Save** to start collecting metrics.
+4. Click **Install** to deploy the prebuilt dashboards.
+
+Add a separate scrape job per account to monitor multiple accounts from one Grafana Cloud instance.
+
+If the dashboard shows no data after a few minutes, confirm the API key's Service Account has the **Metrics Read-Only** role and that the endpoint is reachable using the `curl` check from the [Quickstart](/cloud/metrics/openmetrics#quickstart).
+
+For full configuration, dashboards, and changelog, see the [Grafana Cloud integration page](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-temporal/).
 
 ### ClickStack
 
 ClickHouse provides an integration with the OpenMetrics endpoint for ClickStack. This integration uses an OpenTelemetry collector to read from the OpenMetrics endpoint, ingest data into ClickHouse, and
 includes a default dashboard to visualize the data with HyperDX. See the [integration page](https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics) for more details.
 
+1. Save your Temporal Cloud API key to a local file named `temporal.key` (no trailing newline or spaces).
+2. Create an OpenTelemetry collector config named `temporal-metrics.yaml` that uses a Prometheus receiver against `metrics.temporal.io` with Bearer token auth, a 60-second scrape interval, the `service.name: "temporal"` resource attribute, and the ClickHouse exporter. Copy the full template from the [ClickStack integration page](https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics).
+3. Mount both files into your ClickStack collector and set the custom config env var. With Docker Compose:
+
+   ```yaml
+   volumes:
+     - ./temporal-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml
+     - ./temporal.key:/etc/otelcol-contrib/temporal.key
+   environment:
+     CUSTOM_OTELCOL_CONFIG_FILE: /etc/otelcol-contrib/custom.config.yaml
+   ```
+
+4. In HyperDX, open the **Metrics explorer** and confirm metrics with the `temporal` prefix are arriving.
+5. Import the pre-built dashboard: in HyperDX click **Import Dashboard**, upload `temporal-metrics-dashboard.json` from the ClickStack integration page, then click **Finish Import**.
+
 ### New Relic
 
-New Relic integrates with Temporal Cloud via the infrastructure agent using a flex integration that pulls data from the OpenMetrics endpoint. See the [integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/) for more details.
+The New Relic integration pulls metrics from the OpenMetrics endpoint via the `nri-flex` integration that runs alongside the New Relic infrastructure agent.
 
-### Prometheus \+ Grafana
+:::note Requires a host
+
+The integration runs on a host (Linux, Windows, or Kubernetes) with the New Relic infrastructure agent installed. The agent scrapes the endpoint and forwards metrics to New Relic.
+
+:::
+
+1. Install the **New Relic infrastructure agent** on a host. See the [agent install docs](https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/get-started/install-infrastructure-agent/) for platform-specific instructions.
+2. Create `/etc/newrelic-infra/integrations.d/nri-flex-temporal-cloud-config.yml` using the template from the [New Relic integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/), and replace the `${TEMPORAL_API_KEY}` placeholder with your Temporal Cloud API key.
+3. Restart the agent so the new config is picked up:
+
+   ```shell
+   sudo systemctl restart newrelic-infra.service
+   ```
+
+4. In **one.newrelic.com**, go to **Integrations & Agents → Dashboards**, search for **Temporal Cloud**, and install the pre-built dashboard. Data appears within a few minutes.
+
+For New Relic-side details, see the [New Relic integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/).
+
+### Prometheus \+ Grafana {/* #prometheus-grafana */}
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.
 

@@ -20,13 +20,14 @@ When necessary, for higher availability, Cluster operators can failover to any o
 
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
-Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/global-namespace).
+When a client connects to a standby Cluster, its requests can be forwarded to the
+active Cluster. This is off by default; enable it by setting
+[`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
-This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly for Global Namespaces.
+This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
@@ -411,7 +412,7 @@ T = 2: task A is loaded.
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
 
-## How to set up Multi-Cluster Replication {#set-up-multi-cluster-replication}
+## How to set up Multi-Cluster Replication {/* #set-up-multi-cluster-replication */}
 
 The [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 

@@ -14,7 +14,7 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+import { CallToAction, SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -66,11 +66,11 @@ futures = "0.3.32"
 futures-util = "0.3.32"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-temporalio-client = "0.4.0"
-temporalio-common = "0.4.0"
-temporalio-macros = "0.4.0"
-temporalio-sdk = "0.4.0"
-temporalio-sdk-core = "0.4.0"
+temporalio-client = "0.5.0"
+temporalio-common = "0.5.0"
+temporalio-macros = "0.5.0"
+temporalio-sdk = "0.5.0"
+temporalio-sdk-core = "0.5.0"
 tokio = { version = "1", features = ["full"] }
 `}
 </CodeSnippet>
@@ -134,7 +134,7 @@ sudo mv temporal /usr/local/bin
 ## Install Temporal CLI and start the development server
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use
-[Temporal CLI](https://docs.temporal.io/cli).
+[Temporal CLI](/cli).
 
 Choose your operating system to install Temporal CLI:
 
@@ -304,3 +304,8 @@ Now that you have the basics working, explore the following resources to build m
 - [Develop an Activity](/develop/rust/activities/basics) - Understand activity patterns and best practices
 - [Worker Processes](/develop/rust/workers/worker-process) - Configure and scale workers
 - [Using the Temporal Client](/develop/rust/client/temporal-client) - Start workflows and interact with the Temporal Service
+
+<CallToAction href="https://learn.temporal.io/courses/">
+  <h3>Take a Temporal 101 course</h3>
+  <p>Learn Temporal concepts and build your first application with a guided course</p>
+</CallToAction>

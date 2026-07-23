@@ -16,12 +16,6 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 :::info NEW TO NEXUS?
 
 This page explains what Nexus is and how it works. To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus).
@@ -55,6 +49,7 @@ Caller and handler Workflows are siblings that communicate across Namespace boun
 
 A [Nexus Service](/nexus/services) is a named collection of [Nexus Operations](/nexus/operations) that a team exposes.
 Operations abstract the underlying implementation - callers don't need to know whether an Operation starts a Workflow, sends a Signal, runs a Query, or executes other reliable code.
+If you need to orchestrate multiple Nexus Operations, call them from a Workflow. But if you just need to execute a single Nexus Operation across Namespace boundaries, use a [Standalone Nexus Operation](/standalone-nexus-operation).
 
 The [Operation lifecycle](/nexus/operations#operation-lifecycle) supports two modes:
 

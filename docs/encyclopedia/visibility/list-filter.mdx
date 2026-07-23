@@ -18,7 +18,7 @@ tags:
 
 This page discusses [List Filter](#list-filter).
 
-## What is a List Filter? {#list-filter}
+## What is a List Filter? {/* #list-filter */}
 
 The [Visibility](/temporal-service/visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
@@ -55,7 +55,35 @@ There are different options for partial string matching when the type of the Sea
 
 #### Text
 
-Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
+`Text` Search Attributes support word-level search.
+Both stored values and query strings are analyzed by the [Elasticsearch standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html), and the `=` operator returns a result if any query token matches any indexed token.
+
+If you need exact matching on identifiers, UUIDs, or other structured strings, use `Keyword` instead.
+See [Choose a string type](/search-attribute#choose-a-string-type).
+
+##### Tokenization {/* #text-tokenization */}
+
+The standard analyzer applies [Unicode word boundary rules](https://unicode.org/reports/tr29/) to split values into tokens.
+All tokens are lowercased by the analyzer's lowercase filter.
+
+Most punctuation and whitespace act as delimiters.
+For example, `order-processing-v2` produces three tokens: `order`, `processing`, `v2`.
+
+The following characters do **not** split when they appear between two letters or between two digits:
+
+| Character | Example | Tokens |
+| --- | --- | --- |
+| Underscores (`_`) | `payment_retry_handler` | one token |
+| Dots (`.`) | `com.example.workflows.ProcessOrder` | one token |
+| Colons (`:`) | `alpha:bravo` | one token |
+| Apostrophes (`'`) | `it's` | one token |
+
+Dots and colons between digits also stay connected (`v1.2.3` → one token).
+However, a dot or colon between a digit and a letter does split: `v1.ProcessOrder` → `v1`, `processorder`.
+
+##### Search matching {/* #text-search-matching */}
+
+The `=` operator on `Text` Search Attributes uses **OR matching**: the query string is tokenized using the same rules as above, and a result is returned if **any** query token matches **any** indexed token.
 
 For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
@@ -76,6 +104,15 @@ Description = 'foobar'
 // Doesn't match
 Description = 'foo'
 ```
+
+Because the query string is also tokenized, a query like `= "processing-v2"` is split into `processing` and `v2`, matching any workflow that contains **either** token.
+This can return unexpected results when tokens are shared across different values.
+
+:::note
+
+Broader tokenizer and matching improvements for `Text` Search Attributes are being evaluated as part of future Visibility enhancements.
+
+:::
 
 #### Keyword
 
@@ -136,7 +173,7 @@ Continue until the page token becomes `null`/`nil`.
 
 #### List Filter examples
 
-Here are examples of List Filters set with the [Temporal CLI](/cli/workflow#list):
+Here are examples of List Filters set with the [Temporal CLI](/cli/command-reference/workflow#list):
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")

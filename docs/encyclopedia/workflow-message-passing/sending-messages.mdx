@@ -38,7 +38,7 @@ This section will help you write clients that send messages to Workflows which i
 - [Sending Updates](#sending-updates)
 - [Sending Queries](#sending-queries)
 
-### Sending Signals {#sending-signals}
+### Sending Signals {/* #sending-signals */}
 
 You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
 
@@ -47,7 +47,7 @@ You can also Signal-With-Start to lazily initialize a Workflow while sending a S
 #### Send a Signal from a Temporal Client or the CLI
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/cli/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
+    <RelatedReadItem path="/cli/command-reference/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
     <RelatedReadItem path="/develop/go/workflows/message-passing#send-signal-from-client" text="Send Signals with the Go SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/workflows/message-passing#send-signal-from-client" text="Send Signals with the Java SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/workflows/message-passing#send-signal-from-client" text="Send Signals with the PHP SDK" archetype="feature-guide" />
@@ -71,7 +71,7 @@ You can also Signal-With-Start to lazily initialize a Workflow while sending a S
     <RelatedReadItem path="/develop/rust/workflows/message-passing#from-a-workflow" text="Send Signals from Workflows with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-#### Signal-With-Start {#signal-with-start}
+#### Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start is a great tool for lazily initializing Workflows. When you send this operation, if there is a running Workflow Execution with the given Workflow Id, it will be Signaled. Otherwise, a new Workflow Execution starts and is immediately sent the Signal.
 
@@ -86,7 +86,7 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
     <RelatedReadItem path="/develop/rust/workflows/message-passing#signal-with-start" text="Signal-With-Start using the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Sending Updates {#sending-updates}
+### Sending Updates {/* #sending-updates */}
 
 Updates can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution. This call is synchronous and will call into the corresponding Update handler. If you’d rather make an asynchronous request, you should use Signals.
 
@@ -115,7 +115,7 @@ Use [Update Validators](/handling-messages#update-validators) and [Update IDs](/
     <RelatedReadItem path="/develop/rust/workflows/message-passing#send-update-from-client" text="Send Updates in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-#### Update-With-Start {#update-with-start}
+#### Update-With-Start {/* #update-with-start */}
 
 :::tip
 
@@ -124,12 +124,12 @@ For open source server users, Temporal Server version [Temporal Server version 1
 :::
 
 Update-with-Start sends an Update request, starting a Workflow if necessary.
-A [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) must be specified.
+A [`WorkflowIDConflictPolicy`](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) must be specified.
 Workflow ID and Update ID can be used as idempotency keys as follows:
 
 - If the Workflow exists and you provided an Update ID, and the Update exists in the latest Workflow Run, then Update-With-Start attaches to the existing Update (regardless of `WorkflowIDConflictPolicy`)
   - If the Workflow is closed, it attaches only if the Update has completed.
-- Otherwise it uses [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
+- Otherwise it uses [`WorkflowIDConflictPolicy`](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
 
 Update-With-Start is great for latency-sensitive use cases:
 
@@ -165,13 +165,13 @@ The SDKs will retry the Update-With-Start request, but there is no guarantee tha
     <RelatedReadItem path="/develop/rust/workflows/message-passing#update-with-start" text="Update-With-Start with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Sending Queries {#sending-queries}
+### Sending Queries {/* #sending-queries */}
 
 Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution--even if this Workflow has Completed. This call is synchronous and will call into the corresponding Query handler.
 You can also send a built-in "Stack Trace Query" for debugging.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/cli/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
+    <RelatedReadItem path="/cli/command-reference/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
     <RelatedReadItem path="/develop/go/workflows/message-passing#send-query" text="Send a Query with the Go SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/workflows/message-passing#send-query" text="Send a Query with the Java SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/workflows/message-passing#send-query" text="Send a Query with the PHP SDK" archetype="feature-guide" />
@@ -182,7 +182,7 @@ You can also send a built-in "Stack Trace Query" for debugging.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#send-query" text="Send a Query with the Rust SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-#### Stack Trace Query {#stack-trace-query}
+#### Stack Trace Query {/* #stack-trace-query */}
 
 In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.

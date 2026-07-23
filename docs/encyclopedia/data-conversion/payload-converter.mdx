@@ -22,14 +22,17 @@ tags:
 
 This page discusses [Payload Converter](#payload-converter).
 
-## What is a Payload Converter? {#payload-converter}
+## What is a Payload Converter? {/* #payload-converter */}
 
-A Payload Converter serializes data, converting values to bytes and back.
+A Payload Converter serializes data, converting values to bytes and back. This is how you can serialize application objects into a Payload and deserialize them back into application objects.
 
-When you initiate a Workflow Execution through a Client and pass data as input, the input is serialized using a Data Converter that runs it through a set of Payload Converters.
-When your Workflow Execution starts, this data input is deserialized and passed as input to your Workflow.
+A Payload, in this context, is a binary form suitable for network transmission that may include some metadata. This serialization process transforms an object (like those in JSON or Protobuf formats) into a binary format and vice versa. For example, an object might be serialized to JSON with UTF-8 byte encoding or to a protobuf binary using a specific set of protobuf message definitions.
 
-### Composite Data Converters {#composite-data-converters}
+When you initiate a Workflow Execution through a Client and pass data as input, the input is serialized using a Data Converter that runs it through a set of Payload Converters. When your Workflow Execution starts, this data input is deserialized and passed as input to your Workflow.
+
+Due to their operation within the Workflow context, Payload Converters run inside the Workflow sandbox. Consequently, Payload Converters cannot access external services or employ non-deterministic modules, which excludes most types of encryption due to their non-deterministic nature.
+
+### Composite Data Converters {/* #composite-data-converters */}
 
 A Composite Data Converter is used to apply custom, type-specific Payload Converters in a specified order.
 A Composite Data Converter can be comprised of custom rules that you created, and it can also leverage the default Data Converters built into Temporal.

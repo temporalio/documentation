@@ -32,7 +32,7 @@ Temporal Clients use messages to read Workflow state and control its execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
 This page introduces these features for the Temporal Typescript SDK.
 
-## Write message handlers {#writing-message-handlers}
+## Write message handlers {/* #writing-message-handlers */}
 
 :::info
 The code that follows is part of a working [message-passing sample](https://github.com/temporalio/samples-typescript/tree/main/message-passing/introduction).
@@ -47,7 +47,7 @@ Follow these guidelines when writing your message handlers:
 - Prefer using a single object over multiple input parameters.
   A single object allows you to add fields without changing the signature.
 
-### Query handlers {#queries}
+### Query handlers {/* #queries */}
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
@@ -95,7 +95,7 @@ export async function greetingWorkflow(): Promise<string> {
 
 - `setHandler` can take `QueryHandlerOptions` (such as `description`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
 
-### Signal handlers {#signals}
+### Signal handlers {/* #signals */}
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
@@ -130,7 +130,7 @@ export async function greetingWorkflow(): Promise<string> {
 
 - `setHandler` can take `SignalHandlerOptions` (such as `description` and `unfinishedPolicy`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
 
-### Update handlers and validators {#updates}
+### Update handlers and validators {/* #updates */}
 
 An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
 It can change the Workflow state, control its flow, and return a result.
@@ -195,7 +195,7 @@ wf.setHandler(
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
 - If your Workflow needs to do some async initialization before handling an Update or Signal, use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) inside your handler to wait until initialization has completed.
 
-## Send messages {#send-messages}
+## Send messages {/* #send-messages */}
 
 To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](https://typescript.temporal.io/api/namespaces/client#workflowhandle) object:
 
@@ -223,7 +223,7 @@ To check the argument types required when sending messages -- and the return typ
 
 :::
 
-### Send a Query {#send-query}
+### Send a Query {/* #send-query */}
 
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to send a Query to a Workflow Execution:
 
@@ -241,12 +241,12 @@ const supportedLanguages = await handle.query(getLanguages, {
 
 - A Worker must be online and polling the Task Queue to process a Query.
 
-### Send a Signal {#send-signal}
+### Send a Signal {/* #send-signal */}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
 However, you can only send Signals to Workflow Executions that haven’t closed.
 
-#### Send a Signal from a Client {#send-signal-from-client}
+#### Send a Signal from a Client {/* #send-signal-from-client */}
 
 Use [WorkflowHandle.signal](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) to send a Signal:
 
@@ -258,7 +258,7 @@ await handle.signal(greetingWorkflow.approve, { name: 'me' });
 
 - The [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Workflow's Event History.
 
-### Send a Signal from a Workflow {#send-signal-from-workflow}
+### Send a Signal from a Workflow {/* #send-signal-from-workflow */}
 
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 Use [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getExternalWorkflowHandle):
@@ -283,7 +283,7 @@ Recall that one aspect of deterministic Workflows means not directly making netw
 This means that developers cannot use a Temporal Client directly within the Workflow code to send Signals or start other Workflows.
 Instead, to communicate between Workflows, we use `getExternalWorkflowHandle` to both ensure that Workflows remain deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
 
-### Signal-With-Start {#signal-with-start}
+### Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
 Use [`Client.workflow.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart):
@@ -306,14 +306,14 @@ await client.workflow.signalWithStart(yourWorkflow, {
 Signal-With-Start is limited to Client use.
 It cannot be called from a Workflow.
 
-### Send an Update {#send-update-from-client}
+### Send an Update {/* #send-update-from-client */}
 
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
 A client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
 If you need a response as soon as the Server receives the request, use a Signal instead.
-Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
+You can't send Updates directly from one Workflow to another or perform an Update equivalent of Signal-With-Start. If you need to send Updates across Workflows, like to Child Workflows, use an Activity.
 
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
@@ -352,7 +352,7 @@ To obtain an Update handle, you can:
 - Use [`WorkflowHandle.startUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#startUpdate) to start an Update and return the handle, as shown in the preceding example.
 - Use [`getUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#getupdatehandle) to fetch a handle for an in-progress Update using the Update ID.
 
-#### Update-With-Start {#update-with-start}
+#### Update-With-Start {/* #update-with-start */}
 
 :::tip
 
@@ -419,7 +419,7 @@ Pass Workflow IDs to these APIs to get Workflow handles:
 
 :::
 
-## Message handler patterns {#message-handler-patterns}
+## Message handler patterns {/* #message-handler-patterns */}
 
 This section covers common write operations, such as Signal and Update handlers.
 It doesn't apply to pure read operations, like Queries or Update Validators.
@@ -430,7 +430,7 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 
 :::
 
-### Use async handlers {#async-handlers}
+### Use async handlers {/* #async-handlers */}
 
 Signal and Update handlers can be `async` functions.
 Using `async` allows you to use `await` with Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, etc.
@@ -539,7 +539,7 @@ Remember: handlers can execute before the main Workflow method starts.
 You can also use wait conditions anywhere else in the handler to wait for a specific condition to become true.
 This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
 
-#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+#### Ensure your handlers finish before the Workflow completes {/* #wait-for-message-handlers */}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses `async` Signal or Update handlers, your main Workflow method can return or Continue-as-New while a handler is still waiting on an async task, such as an Activity result.
@@ -558,7 +558,7 @@ You can silence these warnings on a per-handler basis by setting the `unfinished
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
-### Use a lock to prevent concurrent handler execution {#control-handler-concurrency}
+### Use a lock to prevent concurrent handler execution {/* #control-handler-concurrency */}
 
 Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
@@ -615,7 +615,7 @@ export async function myWorkflow(): Promise<MyWorkflowOutput> {
 }
 ```
 
-## Message handler troubleshooting {#message-handler-troubleshooting}
+## Message handler troubleshooting {/* #message-handler-troubleshooting */}
 
 When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
 
@@ -625,13 +625,13 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The workflow does not exist**:
   You'll receive an [`common.WorkflowNotFoundError`](https://typescript.temporal.io/api/classes/common.WorkflowNotFoundError) error.
 
-### Problems when sending a Signal {#signal-problems}
+### Problems when sending a Signal {/* #signal-problems */}
 
 When using Signal, the two errors described above are the only errors that will result from your requests.
 
 For Queries and Updates, the client waits for a response from the Worker and therefore additional errors may occur during the handler Execution by the Worker.
 
-### Problems when sending an Update {#update-problems}
+### Problems when sending an Update {/* #update-problems */}
 
 When working with Updates, you may encounter these problems:
 
@@ -667,7 +667,7 @@ When working with Updates, you may encounter these problems:
 
   - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
-### Problems when sending a Query {#query-problems}
+### Problems when sending a Query {/* #query-problems */}
 
 When working with Queries, you may encounter these errors:
 
@@ -682,7 +682,7 @@ When working with Queries, you may encounter these errors:
 - **The handler caused the Workflow Task to fail.**
   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
-## Define Signals and Queries statically or dynamically {#dynamic-handler}
+## Define Signals and Queries statically or dynamically {/* #dynamic-handler */}
 
 - Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
 - Only Signal Handlers can mutate state, and only Query Handlers can return values.
@@ -690,7 +690,7 @@ When working with Queries, you may encounter these errors:
 * [Define Signals and Queries statically](#static-signals-and-queries)
 * [Define Signals and Queries dynamically](#dynamic-signals-and-queries)
 
-### Define Signals and Queries statically {#static-signals-and-queries}
+### Define Signals and Queries statically {/* #static-signals-and-queries */}
 
 If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
 
@@ -722,7 +722,7 @@ export async function unblockOrCancel(): Promise<void> {
 
 This technique helps provide type safety because you can export the type signature of the Signal or Query to be called by the Client.
 
-### Define Signals and Queries dynamically {#dynamic-signals-and-queries}
+### Define Signals and Queries dynamically {/* #dynamic-signals-and-queries */}
 
 For more flexible use cases, you might want a dynamic Signal (such as a generated ID).
 You can handle it in two ways:

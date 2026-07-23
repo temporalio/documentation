@@ -15,18 +15,12 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
-
-:::
-
 
 Nexus supports end-to-end execution debugging across caller Workflows, Nexus Operations, and handler Workflows - even across [multi-level calls](/nexus#multi-level-calls) spanning multiple Namespaces.
 
 ## Bi-directional linking
 
-Bidirectional links connect Nexus Operation events in the caller's Workflow History to corresponding events in the handler's Workflow History.
+Bidirectional links connect Nexus Operation events in the caller's Event History to corresponding events in the handler's Event History.
 They are automatically wired by SDK builder functions like New-Workflow-Run-Operation, enabling click-through navigation across Namespaces, regions, and clouds in the Temporal UI.
 
 <CaptionedImage

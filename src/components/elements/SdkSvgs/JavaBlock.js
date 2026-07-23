@@ -1,9 +1,13 @@
 import React from 'react';
 import styles from './sdk-svg.module.css';
+import { useSvgTitle } from './useSvgTitle';
 
-const DotnetBlock = () => {
+const JavaBlock = ({ title }) => {
+  const { titleElement, svgA11yProps } = useSvgTitle(title);
+
   return (
-    <svg
+    <svg 
+      {...svgA11yProps}
       className={styles.sdkJava}
       fill="none"
       height="40"
@@ -11,6 +15,7 @@ const DotnetBlock = () => {
       width="40"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {titleElement}
       <linearGradient id="a">
         <stop offset="0" stopColor="#111827" />
         <stop offset="1" stopColor="#141414" />
@@ -46,4 +51,4 @@ const DotnetBlock = () => {
   );
 };
 
-export default DotnetBlock;
+export default JavaBlock;

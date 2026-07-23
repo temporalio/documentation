@@ -13,16 +13,13 @@ tags:
   - Temporal Cloud
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+
 The Temporal Cloud Billing API provides Namespace-level cost attribution through on-demand billing reports. 
 Reports are delivered in CSV format and can be accessed via API or downloaded directly for use in FinOps tooling and cost management platforms.  
 
 This API is part of the [Cloud Operations API](/ops).
-
-:::tip Support, stability, and dependency info
-
-The Temporal Cloud Billing API is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-:::
 
 The Billing API allows you to:
 
@@ -33,7 +30,7 @@ The Billing API allows you to:
 The Billing Report contains:
 
 - Accurate Namespace-level cost attribution  
-- Hourly granularity  
+- Hourly, daily, and monthly granularities
 - A [FOCUS](https://focus.finops.org/)-friendly data format
 
 For complete request and response schemas, refer to the Schema below.
@@ -42,13 +39,16 @@ Billing report generation is **asynchronous**. You initiate report creation, the
 
 ## Report data limitations
 
-For pre-release, reports can be generated with hourly granularity only, for the current billing month, and the previous billing month.
+For public preview, reports can be generated with hourly, daily and monthly granularities, each of which have their own data ranges.
+- Hourly: Current billing month and previous billing month
+- Daily: Current billing month and previous two billing months
+- Monthly: Current billing month and previous eleven billing months
 
 ## Allowed date ranges
 
 Date ranges must use billing-month boundaries (MM/YYYY). 
 Requests may include the current billing month. 
-The data in finalized reports includes usage up to `current_time` \- 24 hours (rounded up to nearest hour).
+The data in finalized reports includes usage up to `current_time` \- 24 hours (rounded down to the granularity level).
 
 ## Rate limits and concurrency
 
@@ -64,6 +64,7 @@ Within a single account:
 ### Report Generation Latency
 
 Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
+
 
 ## Best practices
 

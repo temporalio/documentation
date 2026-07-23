@@ -28,9 +28,13 @@ tags:
   - Certificates
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components';
+
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the Temporal Service.
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
+
+For [Standalone Activities](/standalone-activity), a Temporal Client can also start and manage Standalone Activities directly, without involving a Workflow.
 
 This page shows you how to do the following using the Python SDK with the Temporal Client:
 
@@ -42,7 +46,7 @@ This page shows you how to do the following using the Python SDK with the Tempor
 A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
 Temporal Client inside an Activity to communicate with a Temporal Service.
 
-## Connect to development Temporal Service {#connect-to-development-service}
+## Connect to development Temporal Service {/* #connect-to-development-service */}
 
 Use [`Client.connect`](https://python.temporal.io/temporalio.client.Client.html#connect) to create a client. Connection
 options include the Temporal Server address, Namespace, and (optionally) TLS configuration. You can provide these
@@ -51,7 +55,7 @@ options directly in code, load them from **environment variables**, or a **TOML 
 configuration file for secure, repeatable configuration.
 
 When you’re running a Temporal Service locally (such as with the
-[Temporal CLI dev server](https://docs.temporal.io/cli/server#start-dev)), the required options are minimal. If you
+[Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
 <Tabs groupId="connect-options" defaultValue="config-file" >
@@ -219,12 +223,7 @@ variables or a configuration file, and then override specific options in code.
 
 Use the `connect()` method on the `Client` class to create and connect to a Temporal Client to the Temporal Service.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -249,7 +248,7 @@ if __name__ == "__main__":
 
 </Tabs>
 
-## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
@@ -446,12 +445,7 @@ client = await Client.connect(
 
 To connect using mTLS instead of an API key, provide the mTLS certificate and private key as follows:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 ```python
 from temporalio.client import Client, TLSConfig
 # ...
@@ -480,7 +474,7 @@ For more information about configuring TLS to secure inter- and intra-network co
 
 </Tabs>
 
-## Start a Workflow Execution {#start-workflow-execution}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
 **How to start a Workflow Execution using the Python SDK**
 
@@ -505,12 +499,7 @@ To start a Workflow Execution in Python, use either the
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods
 in the Client.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -531,7 +520,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Set a Workflow's Task Queue {#set-task-queue}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
 **How to set a Workflow's Task Queue using the Python SDK**
 
@@ -544,12 +533,7 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -570,7 +554,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Set a Workflow Id {#workflow-id}
+### Set a Workflow Id {/* #workflow-id */}
 
 **How to set a Workflow Id using the Python SDK**
 
@@ -585,12 +569,7 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -611,7 +590,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Get the results of a Workflow Execution {#get-workflow-results}
+### Get the results of a Workflow Execution {/* #get-workflow-results */}
 
 **How to get the results of a Workflow Execution using the Python SDK**
 
@@ -639,12 +618,7 @@ safety.
 Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current
 status of the Workflow. If the Workflow does not exist, this call fails.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py" />
 
 ```python
 # ...
