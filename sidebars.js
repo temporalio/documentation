@@ -37,12 +37,7 @@ module.exports = {
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
             'evaluate/development-production-features/job-queue',
-            {
-              type: 'category',
-              label: 'Serverless Workers',
-              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
-              items: ['evaluate/development-production-features/serverless-workers/demo'],
-            },
+            'evaluate/development-production-features/serverless-workers/index',
             {
               type: 'category',
               label: 'Product release stages',
@@ -186,7 +181,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/go/nexus/index',
               },
-              items: ['develop/go/nexus/quickstart', 'develop/go/nexus/feature-guide'],
+              items: [
+                'develop/go/nexus/quickstart',
+                'develop/go/nexus/feature-guide',
+                'develop/go/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -227,6 +226,17 @@ module.exports = {
                   ],
                 },
               ],
+            },
+            {
+              type: 'category',
+              label: 'Integrations',
+              className: 'sidebar-integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/integrations/index',
+              },
+              items: ['develop/go/integrations/google-adk'],
             },
           ],
         },
@@ -306,7 +316,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/java/nexus/index',
               },
-              items: ['develop/java/nexus/quickstart', 'develop/java/nexus/feature-guide'],
+              items: [
+                'develop/java/nexus/quickstart',
+                'develop/java/nexus/feature-guide',
+                'develop/java/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -329,7 +343,19 @@ module.exports = {
               items: [
                 'develop/java/best-practices/testing-suite',
                 'develop/java/best-practices/debugging',
-                'develop/java/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/java/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/java/best-practices/data-handling/data-conversion',
+                    'develop/java/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
             {
@@ -522,7 +548,11 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/nexus/index',
               },
-              items: ['develop/python/nexus/quickstart', 'develop/python/nexus/feature-guide'],
+              items: [
+                'develop/python/nexus/quickstart',
+                'develop/python/nexus/feature-guide',
+                'develop/python/nexus/standalone-operations',
+              ],
             },
             {
               type: 'category',
@@ -575,6 +605,7 @@ module.exports = {
               },
               items: [
                 'develop/python/integrations/braintrust',
+                'develop/python/integrations/google-adk',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
                 'develop/python/integrations/strands-agents',
@@ -679,7 +710,8 @@ module.exports = {
               },
               items: [
                 'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide'
+                'develop/typescript/nexus/feature-guide',
+                'develop/typescript/nexus/standalone-operations',
               ],
             },
             {
@@ -706,8 +738,20 @@ module.exports = {
               items: [
                 'develop/typescript/best-practices/testing-suite',
                 'develop/typescript/best-practices/debugging',
-                'develop/typescript/best-practices/converters-and-encryption',
                 'develop/typescript/best-practices/entity-pattern',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/typescript/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/typescript/best-practices/data-handling/data-conversion',
+                    'develop/typescript/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
             {
@@ -720,7 +764,9 @@ module.exports = {
                 id: 'develop/typescript/integrations/index',
               },
               items: [
-                'develop/typescript/integrations/ai-sdk'
+                'develop/typescript/integrations/ai-sdk',
+                'develop/typescript/integrations/langsmith',
+                'develop/typescript/integrations/openai-agents',
               ],
             },
           ],
@@ -809,7 +855,8 @@ module.exports = {
               },
               items: [
                 'develop/dotnet/nexus/quickstart',
-                'develop/dotnet/nexus/feature-guide'
+                'develop/dotnet/nexus/feature-guide',
+                'develop/dotnet/nexus/standalone-operations',
               ],
             },
             {
@@ -837,7 +884,19 @@ module.exports = {
                 'develop/dotnet/best-practices/error-handling',
                 'develop/dotnet/best-practices/testing-suite',
                 'develop/dotnet/best-practices/debugging',
-                'develop/dotnet/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/dotnet/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/dotnet/best-practices/data-handling/data-conversion',
+                    'develop/dotnet/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
           ],
@@ -954,7 +1013,19 @@ module.exports = {
                 'develop/ruby/best-practices/error-handling',
                 'develop/ruby/best-practices/testing-suite',
                 'develop/ruby/best-practices/debugging',
-                'develop/ruby/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/ruby/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/ruby/best-practices/data-handling/data-conversion',
+                    'develop/ruby/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
           ],
@@ -1040,7 +1111,6 @@ module.exports = {
           ],
         },
         'develop/environment-configuration',
-        'develop/activity-retry-simulator',
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
@@ -1081,11 +1151,12 @@ module.exports = {
           },
           items: [
             'cloud/manage-access/roles-and-permissions',
-            'cloud/get-started/users',
-            'cloud/get-started/user-groups',
-            'cloud/get-started/service-accounts',
-            'cloud/saml',
-            'cloud/scim',
+            'cloud/manage-access/users',
+            'cloud/manage-access/user-groups',
+            'cloud/manage-access/service-accounts',
+            'cloud/manage-access/custom-roles',
+            'cloud/manage-access/saml',
+            'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
           ],
         },
@@ -1168,6 +1239,7 @@ module.exports = {
           },
           items: [
             'cloud/high-availability/enable',
+            'cloud/high-availability/architecture-patterns',
             'cloud/high-availability/monitoring',
             {
               type: 'category',
@@ -1259,13 +1331,16 @@ module.exports = {
           items: [
             'cloud/tcld/account',
             'cloud/tcld/apikey',
+            'cloud/tcld/connectivity-rule',
             'cloud/tcld/feature',
             'cloud/tcld/generate-certificates',
             'cloud/tcld/login',
             'cloud/tcld/logout',
+            'cloud/tcld/migration',
             'cloud/tcld/namespace',
             'cloud/tcld/nexus',
             'cloud/tcld/request',
+            'cloud/tcld/service-account',
             'cloud/tcld/user',
             'cloud/tcld/user-group',
             'cloud/tcld/version',
@@ -1368,6 +1443,7 @@ module.exports = {
                 'cli/command-reference/cloud/apikey',
                 'cli/command-reference/cloud/async-operation',
                 'cli/command-reference/cloud/connectivity',
+                'cli/command-reference/cloud/custom-role',
                 'cli/command-reference/cloud/login',
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
@@ -1492,6 +1568,7 @@ module.exports = {
                 'encyclopedia/workflow/workflow-execution/timers-delays',
               ],
             },
+            'encyclopedia/workflow/workflow-pause',
             'encyclopedia/workflow/dynamic-handler',
             'encyclopedia/workflow/workflow-schedule',
             'encyclopedia/workflow/cron-job',
@@ -1640,6 +1717,7 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
+            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
@@ -1690,7 +1768,28 @@ module.exports = {
       label: 'Interactive Demos',
       collapsed: true,
       items: [
-        'develop/standalone-activities-interactive-demo',
+        'demos/standalone-activities',
+        'demos/serverless-workers',
+        'demos/activity-retry-simulator',
+      ],
+    },    {
+      type: 'category',
+      label: 'Guides',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
+      items: [
+        'guides/entity-pattern-loyalty-points',
+        'guides/saga-pattern',
+        'guides/route-specialized-workloads',
+        'guides/worker-execution-affinity',
+        'guides/temporary-rate-limit-increases',
+        'guides/reliable-document-approvals',
+        'guides/rate-limit-downstream-apis',
+        'guides/durable-gaming-sessions',
+        'guides/lock-shared-resources',
       ],
     },
     'integrations',
@@ -1700,6 +1799,124 @@ module.exports = {
     //   type: "autogenerated",
     //   dirName: "./dev-guide", // '.' means the current docs folder
     // },
+  ],
+  designPatterns: [
+    'design-patterns/index',
+    {
+      type: 'category',
+      label: "Task Orchestration Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/task-orchestration-patterns' },
+      items: [
+        'design-patterns/child-workflows',
+        'design-patterns/parallel-execution',
+        'design-patterns/pick-first',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Workflow Messaging Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/workflow-messaging-patterns' },
+      items: [
+        'design-patterns/signal-with-start',
+        'design-patterns/request-response-via-updates',
+        'design-patterns/event-accumulator',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Entity & Lifecycle Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/entity-lifecycle-patterns' },
+      items: [
+        'design-patterns/entity-workflow',
+        'design-patterns/continue-as-new',
+        'design-patterns/updatable-timer',
+      ],
+    },
+    {
+      type: 'category',
+      label: "External Interaction Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/external-interaction-patterns' },
+      items: [
+        'design-patterns/polling',
+        'design-patterns/long-running-activity',
+        'design-patterns/delayed-start',
+        'design-patterns/delayed-callback',
+        'design-patterns/approval',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Distributed Transaction Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/distributed-transaction-patterns' },
+      items: [
+        'design-patterns/saga-pattern',
+        'design-patterns/early-return',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Error Handling & Retry Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/error-handling-patterns' },
+      items: [
+        'design-patterns/fixed-count-retries',
+        'design-patterns/fixed-wall-time-retries',
+        'design-patterns/non-retryable-errors',
+        'design-patterns/delayed-retry',
+        'design-patterns/fast-slow-retries',
+        'design-patterns/retry-metrics',
+        'design-patterns/resumable-activity',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Batch Processing Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/batch-processing-patterns' },
+      items: [
+        'design-patterns/fanout-child-workflows',
+        'design-patterns/batch-iterator',
+        'design-patterns/sliding-window',
+        'design-patterns/mapreduce-tree',
+      ],
+    },
+    {
+      type: 'category',
+      label: "QoS & Throughput Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/qos-throughput-patterns' },
+      items: [
+        'design-patterns/downstream-rate-limiting',
+        'design-patterns/priority-task-queues',
+        'design-patterns/fairness',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Performance & Latency Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/performance-latency-patterns' },
+      items: [
+        'design-patterns/local-activities',
+        'design-patterns/early-return-local-activities',
+        'design-patterns/eager-workflow-start',
+      ],
+    },
+    {
+      type: 'category',
+      label: "Worker Configuration Patterns",
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/worker-configuration-patterns' },
+      items: [
+        'design-patterns/worker-specific-taskqueue',
+        'design-patterns/activity-dependency-injection',
+      ],
+    },
   ],
   tctl: [
     'tctl-v1/index',

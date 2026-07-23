@@ -16,14 +16,14 @@ tags:
   - Durable Execution
 ---
 
-import ThemedImage from '@theme/ThemedImage';
-import { ReleaseNoteHeader } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader
   featureName="standaloneActivity"
   languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
+  guidePath="activities/standalone-activities"
 >
-  Available in [Temporal Cloud](#temporal-cloud-support) and in the [Temporal CLI](#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher. Java SDK support is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+  Available in [Temporal Cloud](#temporal-cloud-support) and in Temporal Server v1.31.0 or higher (included in [Temporal CLI](#temporal-cli-support) v1.7.0 or higher).
 </ReleaseNoteHeader>
 
 See [limitations](#public-preview-limitations) below.
@@ -37,16 +37,11 @@ Standalone Activities are Temporal’s [job queue](/evaluate/development-product
 the simplest way to run durable, retryable tasks on Temporal.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <a href="/diagrams/standalone-activities-vs-workflowlight.svg" target="_blank" rel="noopener noreferrer">
-    <ThemedImage
-      alt="Standalone Activity vs. Workflow - Standalone Activities execute a single function reliably as a top-level primitive, while Workflows orchestrate multiple Activity steps"
-      sources={{
-        light: '/diagrams/standalone-activities-vs-workflowlight.svg',
-        dark: '/diagrams/standalone-activities-vs-workflowdark.svg',
-      }}
-      style={{maxWidth: '100%', cursor: 'pointer'}}
-    />
-  </a>
+  <CaptionedImage
+    src="/diagrams/standalone-activities-vs-workflowlight.svg"
+    srcDark="/diagrams/standalone-activities-vs-workflowdark.svg"
+    alt="Standalone Activity vs. Workflow - Standalone Activities execute a single function reliably as a top-level primitive, while Workflows orchestrate multiple Activity steps"
+  />
 </div>
 
 A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a

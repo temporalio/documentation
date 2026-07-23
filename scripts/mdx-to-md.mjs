@@ -17,10 +17,12 @@
  *   - <ReleaseNoteHeader>         → availability blockquote + body
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
  *   - <RelatedReadList>           → markdown link list from readList prop
+ *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
+ *   - <ViewSourceCodeNotice href> → plain markdown link line
  *   - imported .md components      → transcluded inline (e.g. <AWSRegions />)
  *   - import / export stmts        → stripped
  *   - {/* MDX comments *​/}         → stripped
@@ -51,13 +53,12 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
-  DiscoverableDisclosure: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
+  SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
-  ZoomingImage: "captioned-image",
   PhotoCarousel: "photo-carousel",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
@@ -69,6 +70,7 @@ export const COMPONENT_REGISTRY = {
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
   HomePageHero: "home-page-hero",
+  ViewSourceCodeNotice: "view-source-code-notice",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
   DT: "strip-tag",
@@ -81,7 +83,6 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
-  SdkLogos: "strip-block",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
@@ -230,6 +231,58 @@ export function parseReadList(tagStr) {
   return results;
 }
 
+// Mirrors SdkGuideLinks.js DEFAULT_SDKS — sdk slug + display label, used to
+// auto-generate per-SDK links from a shared `path` prop.
+const SDK_GUIDE_DEFAULT_SDKS = [
+  { sdk: "go", label: "Go" },
+  { sdk: "java", label: "Java" },
+  { sdk: "php", label: "PHP" },
+  { sdk: "python", label: "Python" },
+  { sdk: "ruby", label: "Ruby" },
+  { sdk: "rust", label: "Rust" },
+  { sdk: "typescript", label: "TypeScript" },
+  { sdk: "dotnet", label: ".NET" },
+];
+
+/**
+ * Parse a <SdkGuideLinks .../> tag into {text, href} items, mirroring
+ * SdkGuideLinks.js:
+ *   - links={[{ href: '/some/path', label: 'Go' }, ...]}  → used as-is
+ *   - path="activities/foo" filter={['go','python']} title="Foo"  → auto-generated
+ */
+export function parseSdkGuideLinks(tagStr) {
+  const linksMatch = tagStr.match(/links=\{(\[[\s\S]*?\])\}/);
+  if (linksMatch) {
+    const results = [];
+    const itemRe = /\{[^}]*\}/g;
+    // Object-literal key/value pairs, e.g. href: '/develop/go/foo' — distinct
+    // from JSX-attribute syntax (key="value") that extractProp handles.
+    const field = (obj, key) => {
+      const m = obj.match(new RegExp(`${key}:\\s*['"\`]([^'"\`]+)['"\`]`));
+      return m ? m[1] : null;
+    };
+    let im;
+    while ((im = itemRe.exec(linksMatch[1])) !== null) {
+      const href = field(im[0], "href");
+      const label = field(im[0], "label");
+      if (href && label) results.push({ text: label, href });
+    }
+    return results;
+  }
+
+  const path = extractProp(tagStr, "path");
+  if (!path) return [];
+  const title = extractProp(tagStr, "title");
+  const filter = parseStringArrayProp(tagStr, "filter");
+
+  return SDK_GUIDE_DEFAULT_SDKS.filter(
+    ({ sdk }) => filter.length === 0 || filter.includes(sdk)
+  ).map(({ sdk, label }) => ({
+    text: title ? `${title} - ${label}` : label,
+    href: `/develop/${sdk}/${path}`,
+  }));
+}
+
 /**
  * Parse a JSX string-array prop: images={['a', 'b']} → ['a', 'b'].
  */
@@ -277,34 +330,70 @@ export function applyInlineTransforms(line) {
 }
 
 /**
- * Extract <CodeSnippet language="x">...</CodeSnippet> blocks from a set of
- * lines (used for the SetupStep `code={}` prop). Returns an array of fenced
- * code-block strings.
+ * Unwrap a JSX expression that holds a single template literal, as used by
+ * <CodeSnippet>{`...`}</CodeSnippet>:  {`code`} → code. The closing brace may
+ * sit on its own line for multi-line snippets. Anything that isn't this exact
+ * shape is returned unchanged (plain-text snippet bodies are left alone).
  */
-function extractCodeSnippets(lines) {
-  const blocks = [];
-  for (let i = 0; i < lines.length; i++) {
-    const open = lines[i].match(/<CodeSnippet\b[^>]*>/);
-    if (!open) continue;
-    const lang = extractProp(open[0], "language") || "";
+export function unwrapJsxString(code) {
+  const m = code.trim().match(/^\{`([\s\S]*)`\s*\}$/);
+  return m ? m[1] : code;
+}
 
-    // Same-line close: <CodeSnippet ...>code</CodeSnippet>
-    const sameLine = lines[i].match(/<CodeSnippet\b[^>]*>([\s\S]*?)<\/CodeSnippet>/);
-    if (sameLine) {
-      blocks.push("```" + lang + "\n" + sameLine[1].trim() + "\n```");
+/**
+ * Convert the hand-written HTML used inside a SetupStep `code={}` prop into
+ * Markdown, one line at a time. Block tags used in these props (<p>, <h4>,
+ * <li>, <ul>, <div>) and inline tags (<a>, <strong>, <code>, <em>) are mapped
+ * to their Markdown equivalents; the JSX fragment wrapper and layout-only
+ * <div> spacers are dropped. <CodeSnippet>/<Tabs>/<TabItem> are left intact so
+ * the main transformer can handle them — and lines inside a <CodeSnippet> are
+ * passed through verbatim so code is never mangled.
+ */
+export function setupCodePropToMarkdown(lines) {
+  const out = [];
+  let inSnippet = false;
+  for (const raw of lines) {
+    if (inSnippet) {
+      out.push(raw);
+      if (/<\/CodeSnippet>/.test(raw)) inSnippet = false;
       continue;
     }
-
-    const inner = [];
-    i++;
-    while (i < lines.length && !/<\/CodeSnippet>/.test(lines[i])) {
-      inner.push(lines[i]);
-      i++;
+    if (/<CodeSnippet\b/.test(raw)) {
+      out.push(raw);
+      if (!/<\/CodeSnippet>/.test(raw)) inSnippet = true;
+      continue;
     }
-    const code = dedent(inner).join("\n").replace(/^\n+|\n+$/g, "");
-    blocks.push("```" + lang + "\n" + code + "\n```");
+    out.push(htmlLineToMarkdown(raw));
   }
-  return blocks;
+  return out;
+}
+
+function htmlLineToMarkdown(line) {
+  // These prop lines are authored deeply indented inside `code={ <> ... }`.
+  // Strip the leading whitespace so it isn't read as a Markdown code block;
+  // <CodeSnippet> bodies keep their indentation (handled by the caller).
+  let s = line.replace(/^\s+/, "");
+  // JSX fragment wrapper and layout-only spacer divs carry no content.
+  s = s.replace(/<\/?>/g, "");
+  s = s.replace(/<div\b[^>]*\/>/g, "");
+  // Block elements (single-line forms used in these props).
+  s = s.replace(
+    /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g,
+    (_m, n, inner) => "#".repeat(Number(n)) + " " + inner.trim()
+  );
+  s = s.replace(/<li\b[^>]*>([\s\S]*?)<\/li>/g, (_m, inner) => "- " + inner.trim());
+  s = s.replace(/<p\b[^>]*>([\s\S]*?)<\/p>/g, (_m, inner) => inner.trim());
+  // Strip any remaining block-wrapper tags (e.g. multi-line <div>/<ul>), keep text.
+  s = s.replace(/<\/?(?:ul|ol|div|p|h[1-6])\b[^>]*>/g, "");
+  // Inline elements.
+  s = s.replace(
+    /<a\b[^>]*?href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g,
+    (_m, href, txt) => `[${txt.trim()}](${href})`
+  );
+  s = s.replace(/<(strong|b)\b[^>]*>([\s\S]*?)<\/\1>/g, (_m, _t, inner) => `**${inner.trim()}**`);
+  s = s.replace(/<(em|i)\b[^>]*>([\s\S]*?)<\/\1>/g, (_m, _t, inner) => `*${inner.trim()}*`);
+  s = s.replace(/<code\b[^>]*>([\s\S]*?)<\/code>/g, (_m, inner) => "`" + inner.trim() + "`");
+  return s;
 }
 
 /**
@@ -422,7 +511,6 @@ export function transformMdx(mdxContent, options = {}) {
   let relatedItems = [];
 
   // --- SetupStep state ---
-  let setupCodeBlocks = [];
   let setupChildLines = [];
   let collectingSetupCode = false;
   let setupCodePropLines = [];
@@ -527,7 +615,9 @@ export function transformMdx(mdxContent, options = {}) {
     // --- CodeSnippet block ---
     if (state === State.CODE_SNIPPET) {
       if (/<\/CodeSnippet>/.test(line)) {
-        const code = dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "");
+        const code = unwrapJsxString(
+          dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "")
+        );
         outputLines.push("```" + codeSnippetLang);
         outputLines.push(code);
         outputLines.push("```");
@@ -656,7 +746,6 @@ export function transformMdx(mdxContent, options = {}) {
       }
       if (isOpenTag(line, "SetupStep")) {
         state = State.SETUP_STEP;
-        setupCodeBlocks = [];
         setupChildLines = [];
         setupCodePropLines = [];
         // The open tag usually ends with `code={` — begin collecting the prop.
@@ -672,14 +761,16 @@ export function transformMdx(mdxContent, options = {}) {
         // The prop closes on a line that is (or ends with) `}>`.
         if (trimmed === "}>" || /\}>\s*$/.test(trimmed)) {
           collectingSetupCode = false;
-          setupCodeBlocks = extractCodeSnippets(setupCodePropLines);
           continue;
         }
         setupCodePropLines.push(line);
         continue;
       }
       if (isCloseTag(line, "SetupStep")) {
-        // Emit prose children, then the code blocks extracted from the prop.
+        // Emit prose children, then the full code={} prop. The prop is not
+        // code-only: it mixes prose, links, lists, tabs, and <CodeSnippet>
+        // blocks. Convert its HTML to Markdown, then run it back through the
+        // transformer so <Tabs>/<TabItem>/<CodeSnippet> are handled too.
         const inner = transformMdx(setupChildLines.join("\n"), {
           sourceFile: sourceFile + "#setup-step",
           projectRoot,
@@ -692,13 +783,24 @@ export function transformMdx(mdxContent, options = {}) {
           outputLines.push(childMd);
           outputLines.push("");
         }
-        for (const block of setupCodeBlocks) {
-          outputLines.push(block);
+        const prop = transformMdx(
+          setupCodePropToMarkdown(setupCodePropLines).join("\n"),
+          {
+            sourceFile: sourceFile + "#setup-step-code",
+            projectRoot,
+            mdxDir: options.mdxDir,
+            _depth: depth + 1,
+          }
+        );
+        warnings.push(...prop.warnings);
+        const propMd = prop.markdown.trim();
+        if (propMd) {
+          outputLines.push(propMd);
           outputLines.push("");
         }
         state = State.SETUP_STEPS;
         setupChildLines = [];
-        setupCodeBlocks = [];
+        setupCodePropLines = [];
         continue;
       }
       setupChildLines.push(line);
@@ -837,13 +939,30 @@ export function transformMdx(mdxContent, options = {}) {
       const sameLine = line.match(/<CodeSnippet\b[^>]*>([\s\S]*?)<\/CodeSnippet>/);
       if (sameLine) {
         outputLines.push("```" + lang);
-        outputLines.push(sameLine[1].trim());
+        outputLines.push(unwrapJsxString(sameLine[1].trim()));
         outputLines.push("```");
         outputLines.push("");
       } else {
         state = State.CODE_SNIPPET;
         codeSnippetLang = lang;
         codeSnippetLines = [];
+      }
+      continue;
+    }
+
+    // --- ViewSourceCodeNotice (self-closing) → plain markdown link line ---
+    if (state === State.NORMAL && /^\s*<ViewSourceCodeNotice\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const href = extractProp(tag, "href");
+      if (href) {
+        outputLines.push(
+          `[View the source code](${href}) in the context of the rest of the application code.`
+        );
+        outputLines.push("");
       }
       continue;
     }
@@ -929,6 +1048,22 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- SdkGuideLinks (self-contained, multi-line prop) ---
+    if (state === State.NORMAL && isOpenTag(line, "SdkGuideLinks")) {
+      let fullTag = line;
+      if (!trimmed.endsWith("/>") && !trimmed.includes("</SdkGuideLinks>")) {
+        while (i + 1 < lines.length) {
+          i++;
+          fullTag += " " + lines[i].trim();
+          if (lines[i].trim().endsWith("/>") || lines[i].includes("</SdkGuideLinks>")) break;
+        }
+      }
+      const items = parseSdkGuideLinks(fullTag);
+      for (const item of items) outputLines.push(`- [${item.text}](${item.href})`);
+      if (items.length > 0) outputLines.push("");
+      continue;
+    }
+
     // --- SetupSteps open ---
     if (state === State.NORMAL && isOpenTag(line, "SetupSteps")) {
       state = State.SETUP_STEPS;
@@ -949,11 +1084,11 @@ export function transformMdx(mdxContent, options = {}) {
     }
 
     // --- Image components (self-closing, may span lines) ---
-    //     <CaptionedImage|EnlargeImage|ZoomingImage|Components.CaptionedImage
+    //     <CaptionedImage|EnlargeImage|Components.CaptionedImage
     //     src="..." alt|caption|title="..." />  →  ![text](src)
     if (
       state === State.NORMAL &&
-      /^\s*<(CaptionedImage|EnlargeImage|ZoomingImage|Components\.CaptionedImage)\b/.test(line)
+      /^\s*<(CaptionedImage|EnlargeImage|Components\.CaptionedImage)\b/.test(line)
     ) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {

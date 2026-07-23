@@ -16,7 +16,7 @@ keywords:
   - temporal-cloud
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
+import { ToolTipTerm } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -178,6 +178,8 @@ the replica, the DNS redirection orchestrated by Temporal ensures that your exis
 Namespace without interruption. Temporal Cloud forwards their requests from the passive replica to the active region and
 the responses back, so Workers keep running through a failover.
 
+To choose where your Worker fleets run across regions, see [Deployment patterns for High Availability](/cloud/high-availability/architecture-patterns).
+
 To route Workers to the passive region's replica, see [How requests reach the replica](/cloud/high-availability/ha-connectivity#how-requests-reach-the-replica).
 
 To stop forwarding Worker polls to the active region, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
@@ -211,8 +213,6 @@ runs help ensure the process runs smoothly during real incidents in production.
 
 :::
 
-<DiscoverableDisclosure label="Why test?">
-
 Failover testing (also known as "<ToolTipTerm term="trigger testing" />") can:
 
 - **Validate replicated deployments:** In multi-region setups, failover testing ensures your application can run from
@@ -232,5 +232,3 @@ Failover testing (also known as "<ToolTipTerm term="trigger testing" />") can:
 
 - **Operational readiness:** Regular testing familiarizes your team with the failover process, improving their ability
   to handle real incidents.
-
-</DiscoverableDisclosure>

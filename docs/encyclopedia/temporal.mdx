@@ -41,11 +41,8 @@ It enables application code to execute effectively once and to completion, regar
 
 ## What is the Temporal Platform? {/* #temporal-platform */}
 
-The Temporal Platform consists of a [Temporal Service](/temporal-service) and [Worker Processes](/workers#worker-process).
-Together these components create a runtime for Workflow Executions.
-
-The Temporal Platform consists of a supervising software typically called the [Temporal Service](/temporal-service) and application code bundled as Worker Processes.
-Together these components create a runtime for your application.
+The Temporal Platform consists of supervising software called the [Temporal Service](/temporal-service) and application code bundled as [Worker Processes](/workers#worker-process).
+Together these components create a runtime for your [Temporal Application](/temporal#temporal-application).
 
 <CaptionedImage
     src="/diagrams/temporal-platform-simple.svg"
@@ -70,7 +67,7 @@ A Temporal Application is a set of [Temporal Workflow Executions](/workflow-exec
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.
-Workflow Executions are lightweight
+Workflow Executions are lightweight. 
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
 
 **Reentrant Process**
@@ -82,6 +79,10 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 - Reactive: Ability of a process to react to external events.
 
 Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+
+A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow.
+
+If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity).
 
 ## What is a Failure? {/* #failure */}
 

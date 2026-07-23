@@ -1,34 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { walkDir, resolveUrlPath: resolveUrlPathShared } = require('../shared/docsRouting');
 
 module.exports = function markdownPagesPlugin(context, options = {}) {
   const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
   const routeBasePath = options.routeBasePath || '/';
 
-  function walkDir(dir) {
-    if (!fs.existsSync(dir)) return [];
-    return fs.readdirSync(dir).flatMap((name) => {
-      const full = path.join(dir, name);
-      if (fs.statSync(full).isDirectory()) return walkDir(full);
-      if (/\.(md|mdx)$/i.test(name)) return [full];
-      return [];
-    });
-  }
-
-  function resolveUrlPath(filePath, frontmatter) {
-    if (frontmatter.slug) {
-      const slug = frontmatter.slug.replace(/^\/+/, '').replace(/\/+$/, '');
-      return slug || 'index';
-    }
-    const rel = path.relative(docsDir, filePath).replace(/\\/g, '/');
-    const withoutExt = rel.replace(/\.(md|mdx)$/i, '');
-    const id = frontmatter.id || path.basename(withoutExt);
-    const dir = path.dirname(withoutExt);
-    if (dir === '.') return id === 'index' ? 'index' : id;
-    if (id === 'index') return dir;
-    return `${dir}/${id}`;
-  }
+  const resolveUrlPath = (filePath, frontmatter) => resolveUrlPathShared(docsDir, filePath, frontmatter);
 
   return {
     name: 'markdown-pages',

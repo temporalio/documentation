@@ -1,0 +1,62 @@
+---
+id: external-interaction-patterns
+title: "External Interaction Patterns"
+sidebar_label: "External Interaction Patterns"
+description: "Pattern selection guide for waiting on or interacting with systems and actors outside the Workflow."
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+These patterns cover how a Workflow waits on or interacts with the world outside it — external APIs, human decisions, scheduled delays, and inbound or outbound callbacks — while staying durable across failures.
+
+## Patterns in this section
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/polling",
+    icon: "polling-icon.svg",
+    title: "Polling External Services",
+    description: "Checks an external resource on a schedule until it reaches the state you need, with frequent, infrequent, and periodic variants.",
+  },
+  {
+    href: "/design-patterns/long-running-activity",
+    icon: "long-running-activity-icon.svg",
+    title: "Long Running Activity",
+    description: "Reports progress via heartbeats and resumes after failures, with cancellation support, for Activities that run for minutes to hours.",
+  },
+  {
+    href: "/design-patterns/approval",
+    icon: "approval-icon.svg",
+    title: "Approval",
+    description: "Blocks the Workflow until an external decision arrives, capturing the approval and its metadata through a Signal.",
+  },
+  {
+    href: "/design-patterns/delayed-start",
+    icon: "delayed-start-icon.svg",
+    title: "Delayed Start",
+    description: "Creates the Workflow immediately but defers execution until a delay expires.",
+  },
+  {
+    href: "/design-patterns/delayed-callback",
+    icon: "webhooks-icon.svg",
+    title: "Delayed Callback (Webhooks)",
+    description: "Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.",
+  },
+]} />
+
+## Choosing a pattern
+
+**The external system offers no notification**: use [Polling External Services](/design-patterns/polling) and tune the interval to the expected latency.
+
+**One Activity runs for a long time**: use a [Long Running Activity](/design-patterns/long-running-activity) with heartbeats so failures resume instead of restarting.
+
+**A person or external system must decide**: use [Approval](/design-patterns/approval) to block on a Signal.
+
+**Execution should begin later**: use [Delayed Start](/design-patterns/delayed-start).
+
+**You send or receive HTTP callbacks**: use [Delayed Callback (Webhooks)](/design-patterns/delayed-callback).
+
+## Related sections
+
+- [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns) — retry strategies for the external calls these patterns make
+- [Workflow Messaging Patterns](/design-patterns/workflow-messaging-patterns) — the Signals that deliver external decisions into a Workflow

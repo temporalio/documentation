@@ -2,8 +2,8 @@
 id: request
 title: tcld request command reference
 sidebar_label: request
-description: Manage asynchronous requests in Temporal Cloud using tcld request commands. Use "get" to check request status with modifiers for Namespace or request ID for tailored control.
-slug: /cloud/tcld/request/
+description: Manage asynchronous requests
+slug: /cloud/tcld/request
 toc_max_heading_level: 4
 keywords:
   - cli reference
@@ -13,32 +13,23 @@ tags:
   - tcld
 ---
 
-The `tcld request` commands manage asynchronous requests in Temporal Cloud.
+{/* This is an auto-generated file. Do not edit directly. */}
+
+The `tcld request` command manage asynchronous requests.
 
 Alias: `r`
 
 - [tcld request get](#get)
 
-## get
+### get
 
-The `tcld request get` command gets the status of the specified request in Temporal Cloud.
-
-`tcld request get --request-id <request_id>`
+The `tcld request get` command get the request status.
 
 Alias: `g`
 
-The following modifiers control the behavior of the command.
+#### --request-id
 
-#### --request
+The request-id of the asynchronous request
 
-_Required modifier_
+Alias: `r`
 
-Specify a request identifier.
-
-Alias: `-r`
-
-**Example**
-
-```bash
-tcld request get --request-id <request_id>
-```

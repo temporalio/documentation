@@ -42,7 +42,9 @@ Datadog provides a serverless integration with the OpenMetrics endpoint. It scra
 
 For Datadog-side details, see the [Datadog integration page](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/).
 
-For Datadog users, treat this integration as the Cloud-side half of your observability setup:
+Datadog also offers a separate [Cost Management integration](https://docs.datadoghq.com/integrations/temporal-cloud-costs/) that sends Temporal Cloud billing data to Datadog Cloud Cost Management for spend attribution by namespace and service type.
+
+For Datadog users, treat the OpenMetrics integration as the Cloud-side half of your observability setup:
 
 - Use OpenMetrics in Datadog to monitor Temporal Cloud behavior such as Task Queue backlog, poll success, and rate limiting.
 - Collect [SDK metrics](/cloud/metrics/sdk-metrics-setup) from your Workers separately to monitor saturation, Schedule-To-Start latency, slot availability, and sticky cache behavior.
