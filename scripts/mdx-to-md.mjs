@@ -89,6 +89,10 @@ export const COMPONENT_REGISTRY = {
   ServerlessWorkerDemo: "strip-block",
   OperationsTable: "strip-block",
   InvitationContent: "strip-block",
+  AnnotatedCode: "strip-block",
+  WorkerVersioningConfigExample: "strip-block",
+  PollerAutoscalingConfigExample: "strip-block",
+  FairnessWorkflowConfigExample: "strip-block",
 
   // Details/summary (HTML, handled natively)
   details: "details",
