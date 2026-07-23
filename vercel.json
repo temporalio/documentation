@@ -2182,6 +2182,26 @@
       "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
       "destination": "/develop/ruby/workflows/versioning#patching",
       "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/best-practices/converters-and-encryption",
+      "destination": "/develop/dotnet/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/best-practices/converters-and-encryption",
+      "destination": "/develop/java/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/best-practices/converters-and-encryption",
+      "destination": "/develop/ruby/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/converters-and-encryption",
+      "destination": "/develop/typescript/best-practices/data-handling",
+      "permanent": true
     }
   ]
 }
