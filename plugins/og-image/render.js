@@ -4,14 +4,10 @@ const satori = require('satori').default;
 const { Resvg } = require('@resvg/resvg-js');
 const sharp = require('sharp');
 const { TITLE_COLOR, SUBTITLE_COLOR, FOOTER_COLOR } = require('../../src/constants/ogImageColors');
+const { TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./constants');
 
 const CARD_WIDTH = 1200;
 const CARD_HEIGHT = 630;
-
-// Bump this whenever the card layout/design changes (including the encoding
-// step below) so cached images invalidate even though the underlying page
-// content didn't change.
-const TEMPLATE_VERSION = 8;
 
 // The icon spans the full height of the lockup's viewBox (0-395 of 0-395),
 // so rendering the whole icon+wordmark asset at LOGO_HEIGHT makes the icon
@@ -224,4 +220,4 @@ async function renderCard({ title, description }) {
   return sharp(png).jpeg({ quality: 80 }).toBuffer();
 }
 
-module.exports = { renderCard, TEMPLATE_VERSION, CARD_WIDTH, CARD_HEIGHT, IMAGE_EXTENSION: 'jpg' };
+module.exports = { renderCard, TEMPLATE_VERSION, CARD_WIDTH, CARD_HEIGHT, IMAGE_EXTENSION };
