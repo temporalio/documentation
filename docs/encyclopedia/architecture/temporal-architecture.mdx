@@ -23,9 +23,7 @@ Temporal is a tool that abstracts away a lot of difficulty for anyone managing a
 
 ## Application structure recap
 
-Before diving into the architecture, let's recap what you're responsible for as a developer. 
-
-As a developer, you are responsible for the Temporal Application code which includes writing the Activity Definition, Workflow Definition, and the code to configure and start the Workers that coordinate with a Temporal Service to execute your Workflow and Activity code. 
+Before diving into the architecture, let's recap what you're responsible for as a developer: the Temporal Application code which includes writing the Activity Definition, Workflow Definition, and the code to configure and start the Workers that coordinate with a Temporal Service to execute your Workflow and Activity code. 
 
 As part of the Temporal Platform, the Temporal Service runs the Temporal Server with its database and optional components, and is responsible for orchestrating execution. A Temporal application gains its durability, scalability, and reliability from the support provided by the Temporal Service.
 
@@ -58,7 +56,7 @@ A Temporal Client lets you:
 - **List Workflow Executions** to view all orders being processed.
 - **Get the result of a Workflow Execution** to retrieve the final outcome of the order processing. 
 
-Clients are responsible for starting Workflows by sending requests to initiate new Workflow Executions. They can query Workflows to retrieve current state or synchronous data from running Workflows and signal Workflows to send asynchronous messages that influence their behavior. Clients also manage Workflows by canceling, terminating, or describing Workflow Executions.
+Clients are responsible for starting Workflows by sending requests to initiate new Workflow Executions. They can query Workflows to retrieve current state or synchronous data from running Workflows and signal Workflows to send asynchronous messages that influence their behavior. Clients also manage Workflows by canceling or terminating Workflow Executions.
 
 ## The Temporal Server 
 
@@ -79,7 +77,7 @@ The Temporal Server consists of a Frontend and multiple backend services, plus a
 
 From your application's perspective, the Frontend Service is the Temporal endpoint your Temporal Client talks to. Your client sends requests (start Workflow, Signal, Query, etc.) to the Frontend, and the Frontend forwards them to the appropriate backend services.
 
-It handles rate limiting, authorization, validation, and routing requests internally to the right subsystem. Clients never communicate directly with backend services or Workers so everything goes through this unified entry point.
+It handles rate limiting, authorization, validation, and routing requests internally to the right subsystem. Clients never communicate directly with backend services or Workers so all requests goes through this unified entry point.
 
 ### Temporal Service backend
 

@@ -144,9 +144,8 @@ const TemporalLifecycleDemo = () => {
       />
 
       <p className={styles.legend}>
-        <strong>Purple arrows</strong> show requests sent through the Frontend. <strong>Green arrows</strong> show
-        responses coming back. Your Worker runs in YOUR ENVIRONMENT. The internal Worker Service inside the server stays
-        dim.
+        <strong>Blue lines</strong> show requests sent through the Frontend. <strong>Green arrows</strong> show
+        responses coming back. Your Worker runs in YOUR ENVIRONMENT.
       </p>
     </div>
   );

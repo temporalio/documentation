@@ -27,7 +27,7 @@ export const LIFECYCLE_STEPS = [
       { from: "History", to: "Matching" },
       { from: "Matching", to: "TaskQueue" },
     ],
-    note: "A History queue processor reads the Transfer Task and calls Matching.",
+    note: "A History queue processor reads the Transfer Task and calls Matching to AddWorkflowTask for that Task Queue.",
   },
   {
     number: 4,
@@ -80,7 +80,7 @@ export const LIFECYCLE_STEPS = [
       { from: "History", to: "Matching" },
       { from: "Matching", to: "TaskQueue" },
     ],
-    note: "For each ActivityTaskScheduled Event, History calls Matching to add the Activity Task.",
+    note: "For each ActivityTaskScheduled Event, History calls Matching to AddActivityTask on the corresponding Activity Task Queue.",
   },
   {
     number: 9,
