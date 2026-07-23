@@ -1,3 +1,1039 @@
+const { SDKS } = require('./src/constants/sdks');
+
+const developDotnetCategory = {
+    type: 'category',
+    label: '.NET SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/dotnet/index',
+    },
+    items: [
+      'develop/dotnet/set-up-your-local-dotnet',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/workflows/index',
+        },
+        items: [
+          'develop/dotnet/workflows/basics',
+          'develop/dotnet/workflows/child-workflows',
+          'develop/dotnet/workflows/continue-as-new',
+          'develop/dotnet/workflows/cancellation',
+          'develop/dotnet/workflows/timeouts',
+          'develop/dotnet/workflows/message-passing',
+          'develop/dotnet/workflows/schedules',
+          'develop/dotnet/workflows/timers',
+          'develop/dotnet/workflows/dynamic-workflow',
+          'develop/dotnet/workflows/versioning',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/activities/index',
+        },
+        items: [
+          'develop/dotnet/activities/basics',
+          'develop/dotnet/activities/execution',
+          'develop/dotnet/activities/timeouts',
+          'develop/dotnet/activities/asynchronous-activity',
+          'develop/dotnet/activities/dynamic-activity',
+          'develop/dotnet/activities/benign-exceptions',
+          'develop/dotnet/activities/standalone-activities',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/workers/index',
+        },
+        items: [
+          'develop/dotnet/workers/run-worker-process',
+          'develop/dotnet/workers/interceptors',
+        ]
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/client/index',
+        },
+        items: [
+          'develop/dotnet/client/temporal-client'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Nexus',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/nexus/index',
+        },
+        items: [
+          'develop/dotnet/nexus/quickstart',
+          'develop/dotnet/nexus/feature-guide',
+          'develop/dotnet/nexus/standalone-operations',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/platform/index',
+        },
+        items: [
+          'develop/dotnet/platform/observability',
+          'develop/dotnet/platform/enriching-ui'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/best-practices/index',
+        },
+        items: [
+          'develop/dotnet/best-practices/error-handling',
+          'develop/dotnet/best-practices/testing-suite',
+          'develop/dotnet/best-practices/debugging',
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/dotnet/best-practices/data-handling/data-handling',
+            },
+            items: [
+              'develop/dotnet/best-practices/data-handling/data-conversion',
+              'develop/dotnet/best-practices/data-handling/data-encryption',
+            ],
+          },
+        ],
+      },
+    ],
+};
+const developGoCategory = {
+    type: 'category',
+    label: 'Go SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/go/index',
+    },
+    items: [
+      'develop/go/set-up-your-local-go',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/workflows/index',
+        },
+        items: [
+          'develop/go/workflows/basics',
+          'develop/go/workflows/child-workflows',
+          'develop/go/workflows/continue-as-new',
+          'develop/go/workflows/cancellation',
+          'develop/go/workflows/timeouts',
+          'develop/go/workflows/message-passing',
+          'develop/go/workflows/schedules',
+          'develop/go/workflows/timers',
+          'develop/go/workflows/selectors',
+          'develop/go/workflows/side-effects',
+          'develop/go/workflows/dynamic-workflow',
+          'develop/go/workflows/versioning',
+          'develop/go/workflows/workflow-streams',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/activities/index',
+        },
+        items: [
+          'develop/go/activities/basics',
+          'develop/go/activities/execution',
+          'develop/go/activities/standalone-activities',
+          'develop/go/activities/timeouts',
+          'develop/go/activities/asynchronous-activity',
+          'develop/go/activities/dynamic-activity',
+          'develop/go/activities/benign-exceptions',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/workers/index',
+        },
+        items: [
+          'develop/go/workers/run-worker-process',
+          'develop/go/workers/sessions',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/go/workers/serverless-workers/index',
+            },
+            items: ['develop/go/workers/serverless-workers/aws-lambda'],
+          },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/client/index',
+        },
+        items: ['develop/go/client/temporal-client', 'develop/go/client/namespaces'],
+      },
+      {
+        type: 'category',
+        label: 'Temporal Nexus',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/nexus/index',
+        },
+        items: [
+          'develop/go/nexus/quickstart',
+          'develop/go/nexus/feature-guide',
+          'develop/go/nexus/standalone-operations',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/platform/index',
+        },
+        items: ['develop/go/platform/observability', 'develop/go/platform/enriching-ui'],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/best-practices/index',
+        },
+        items: [
+          'develop/go/best-practices/multithreading',
+          'develop/go/best-practices/context-propagation',
+          'develop/go/best-practices/error-handling',
+          'develop/go/best-practices/debugging',
+          'develop/go/best-practices/testing-suite',
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/go/best-practices/data-handling/data-handling',
+            },
+            items: [
+              'develop/go/best-practices/data-handling/data-conversion',
+              'develop/go/best-practices/data-handling/data-encryption',
+              'develop/go/best-practices/data-handling/external-storage',
+            ],
+          },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/go/integrations/index',
+        },
+        items: ['develop/go/integrations/google-adk'],
+      },
+    ],
+};
+const developJavaCategory = {
+    type: 'category',
+    label: 'Java SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/java/index',
+    },
+    items: [
+      'develop/java/set-up-your-local-java',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/workflows/index',
+        },
+        items: [
+          'develop/java/workflows/basics',
+          'develop/java/workflows/child-workflows',
+          'develop/java/workflows/continue-as-new',
+          'develop/java/workflows/message-passing',
+          'develop/java/workflows/cancellation',
+          'develop/java/workflows/timeouts',
+          'develop/java/workflows/schedules',
+          'develop/java/workflows/timers',
+          'develop/java/workflows/side-effects',
+          'develop/java/workflows/versioning',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/activities/index',
+        },
+        items: [
+          'develop/java/activities/basics',
+          'develop/java/activities/execution',
+          'develop/java/activities/standalone-activities',
+          'develop/java/activities/timeouts',
+          'develop/java/activities/asynchronous-activity',
+          'develop/java/activities/benign-exceptions',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/workers/index',
+        },
+        items: ['develop/java/workers/run-worker-process'],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/client/index',
+        },
+        items: ['develop/java/client/temporal-client', 'develop/java/client/namespaces'],
+      },
+      {
+        type: 'category',
+        label: 'Nexus',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/nexus/index',
+        },
+        items: [
+          'develop/java/nexus/quickstart',
+          'develop/java/nexus/feature-guide',
+          'develop/java/nexus/standalone-operations',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/platform/index',
+        },
+        items: ['develop/java/platform/observability', 'develop/java/platform/enriching-ui'],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/best-practices/index',
+        },
+        items: [
+          'develop/java/best-practices/testing-suite',
+          'develop/java/best-practices/debugging',
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/java/best-practices/data-handling/data-handling',
+            },
+            items: [
+              'develop/java/best-practices/data-handling/data-conversion',
+              'develop/java/best-practices/data-handling/data-encryption',
+            ],
+          },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/java/integrations/index',
+        },
+        items: ['develop/java/integrations/spring-boot', 'develop/java/integrations/spring-ai'],
+      },
+    ],
+};
+const developPhpCategory = {
+    type: 'category',
+    label: 'PHP SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/php/index',
+    },
+    items: [
+      'develop/php/set-up-your-local-php',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/php/workflows/index',
+        },
+        items: [
+          'develop/php/workflows/basics',
+          'develop/php/workflows/child-workflows',
+          'develop/php/workflows/continue-as-new',
+          'develop/php/workflows/cancellation',
+          'develop/php/workflows/timeouts',
+          'develop/php/workflows/message-passing',
+          'develop/php/workflows/schedules',
+          'develop/php/workflows/timers',
+          'develop/php/workflows/side-effects',
+          'develop/php/workflows/versioning',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/php/activities/index',
+        },
+        items: [
+          'develop/php/activities/basics',
+          'develop/php/activities/execution',
+          'develop/php/activities/timeouts',
+          'develop/php/activities/asynchronous-activity',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/php/workers/index',
+        },
+        items: ['develop/php/workers/run-worker-process'],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/php/client/index',
+        },
+        items: ['develop/php/client/temporal-client'],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/php/platform/index',
+        },
+        items: ['develop/php/platform/observability', 'develop/php/platform/enriching-ui'],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/php/best-practices/index',
+        },
+        items: ['develop/php/best-practices/testing-suite', 'develop/php/best-practices/debugging'],
+      },
+    ],
+};
+const developPythonCategory = {
+    type: 'category',
+    label: 'Python SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/python/index',
+    },
+    items: [
+      'develop/python/set-up-your-local-python',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/workflows/index',
+        },
+        items: [
+          'develop/python/workflows/basics',
+          'develop/python/workflows/child-workflows',
+          'develop/python/workflows/continue-as-new',
+          'develop/python/workflows/cancellation',
+          'develop/python/workflows/timeouts',
+          'develop/python/workflows/message-passing',
+          'develop/python/workflows/schedules',
+          'develop/python/workflows/timers',
+          'develop/python/workflows/versioning',
+          'develop/python/workflows/workflow-streams',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/activities/index',
+        },
+        items: [
+          'develop/python/activities/basics',
+          'develop/python/activities/execution',
+          'develop/python/activities/standalone-activities',
+          'develop/python/activities/timeouts',
+          'develop/python/activities/asynchronous-activity',
+          'develop/python/activities/benign-exceptions',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/workers/index',
+        },
+        items: [
+          'develop/python/workers/run-worker-process',
+          'develop/python/workers/interceptors',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/python/workers/serverless-workers/index',
+            },
+            items: ['develop/python/workers/serverless-workers/aws-lambda'],
+          },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/client/index',
+        },
+        items: ['develop/python/client/temporal-client'],
+      },
+      {
+        type: 'category',
+        label: 'Nexus',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/nexus/index',
+        },
+        items: [
+          'develop/python/nexus/quickstart',
+          'develop/python/nexus/feature-guide',
+          'develop/python/nexus/standalone-operations',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/platform/index',
+        },
+        items: ['develop/python/platform/observability', 'develop/python/platform/enriching-ui'],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/best-practices/index',
+        },
+        items: [
+          'develop/python/best-practices/error-handling',
+          'develop/python/best-practices/testing-suite',
+          'develop/python/best-practices/python-sdk-sandbox',
+          'develop/python/best-practices/debugging',
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/python/best-practices/data-handling/data-handling',
+            },
+            items: [
+              'develop/python/best-practices/data-handling/data-conversion',
+              'develop/python/best-practices/data-handling/data-encryption',
+              'develop/python/best-practices/data-handling/external-storage',
+            ],
+          },
+          'develop/python/best-practices/python-sdk-sync-vs-async',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/python/integrations/index',
+        },
+        items: [
+          'develop/python/integrations/braintrust',
+          'develop/python/integrations/google-adk',
+          'develop/python/integrations/langgraph',
+          'develop/python/integrations/langsmith',
+          'develop/python/integrations/strands-agents',
+        ],
+      },
+    ],
+};
+const developRubyCategory = {
+    type: 'category',
+    label: 'Ruby SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/ruby/index',
+    },
+    items: [
+      'develop/ruby/set-up-local-ruby',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/workflows/index',
+        },
+        items: [
+          'develop/ruby/workflows/basics',
+          'develop/ruby/workflows/child-workflows',
+          'develop/ruby/workflows/continue-as-new',
+          'develop/ruby/workflows/cancellation',
+          'develop/ruby/workflows/timeouts',
+          'develop/ruby/workflows/message-passing',
+          'develop/ruby/workflows/schedules',
+          'develop/ruby/workflows/timers',
+          'develop/ruby/workflows/futures',
+          'develop/ruby/workflows/dynamic-workflow',
+          'develop/ruby/workflows/versioning',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/activities/index',
+        },
+        items: [
+          'develop/ruby/activities/basics',
+          'develop/ruby/activities/execution',
+          'develop/ruby/activities/standalone-activities',
+          'develop/ruby/activities/timeouts',
+          'develop/ruby/activities/asynchronous-activity',
+          'develop/ruby/activities/dynamic-activity',
+          'develop/ruby/activities/benign-exceptions',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/workers/index',
+        },
+        items: [
+          'develop/ruby/workers/run-worker-process'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/client/index',
+        },
+        items: [
+          'develop/ruby/client/temporal-client'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/platform/index',
+        },
+        items: [
+          'develop/ruby/platform/observability',
+          'develop/ruby/platform/enriching-ui'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/integrations/index',
+        },
+        items: [
+          'develop/ruby/integrations/rails-integration'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/best-practices/index',
+        },
+        items: [
+          'develop/ruby/best-practices/error-handling',
+          'develop/ruby/best-practices/testing-suite',
+          'develop/ruby/best-practices/debugging',
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/ruby/best-practices/data-handling/data-handling',
+            },
+            items: [
+              'develop/ruby/best-practices/data-handling/data-conversion',
+              'develop/ruby/best-practices/data-handling/data-encryption',
+            ],
+          },
+        ],
+      },
+    ],
+};
+const developRustCategory = {
+    type: 'category',
+    label: 'Rust SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/rust/index',
+    },
+    items: [
+      'develop/rust/quickstart',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/workflows/index',
+        },
+        items: [
+          'develop/rust/workflows/basics',
+          'develop/rust/workflows/child-workflows',
+          'develop/rust/workflows/continue-as-new',
+          'develop/rust/workflows/message-passing',
+          'develop/rust/workflows/cancellation',
+          'develop/rust/workflows/timers',
+          'develop/rust/workflows/timeouts',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/activities/index',
+        },
+        items: [
+          'develop/rust/activities/basics',
+          'develop/rust/activities/execution',
+          'develop/rust/activities/timeouts',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/workers/index',
+        },
+        items: [
+          'develop/rust/workers/worker-process'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/client/index',
+        },
+        items: [
+          'develop/rust/client/temporal-client'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Nexus',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/nexus/index',
+        },
+        items: [
+          'develop/rust/nexus/feature-guide'
+        ],
+      },
+    ],
+};
+const developTypeScriptCategory = {
+    type: 'category',
+    label: 'TypeScript SDK',
+    collapsed: true,
+    link: {
+      type: 'doc',
+      id: 'develop/typescript/index',
+    },
+    items: [
+      'develop/typescript/set-up-your-local-typescript',
+      {
+        type: 'category',
+        label: 'Workflows',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/workflows/index',
+        },
+        items: [
+          'develop/typescript/workflows/basics',
+          'develop/typescript/workflows/child-workflows',
+          'develop/typescript/workflows/continue-as-new',
+          'develop/typescript/workflows/message-passing',
+          'develop/typescript/workflows/cancellation',
+          'develop/typescript/workflows/cancellation-scopes',
+          'develop/typescript/workflows/timeouts',
+          'develop/typescript/workflows/schedules',
+          'develop/typescript/workflows/timers',
+          'develop/typescript/workflows/versioning',
+          'develop/typescript/workflows/workflow-streams',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Activities',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/activities/index',
+        },
+        items: [
+          'develop/typescript/activities/basics',
+          'develop/typescript/activities/execution',
+          'develop/typescript/activities/standalone-activities',
+          'develop/typescript/activities/timeouts',
+          'develop/typescript/activities/asynchronous-activity',
+          'develop/typescript/activities/benign-exceptions',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Workers',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/workers/index',
+        },
+        items: [
+          'develop/typescript/workers/run-worker-process',
+          'develop/typescript/workers/interceptors',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/typescript/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/typescript/workers/serverless-workers/aws-lambda'
+            ],
+          },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Client',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/client/index',
+        },
+        items: [
+          'develop/typescript/client/temporal-client',
+          'develop/typescript/client/namespaces'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Nexus',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/nexus/index',
+        },
+        items: [
+          'develop/typescript/nexus/quickstart',
+          'develop/typescript/nexus/feature-guide',
+          'develop/typescript/nexus/standalone-operations',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Platform',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/platform/index',
+        },
+        items: [
+          'develop/typescript/platform/observability',
+          'develop/typescript/platform/enriching-ui'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/best-practices/index',
+        },
+        items: [
+          'develop/typescript/best-practices/testing-suite',
+          'develop/typescript/best-practices/debugging',
+          'develop/typescript/best-practices/entity-pattern',
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/typescript/best-practices/data-handling/data-handling',
+            },
+            items: [
+              'develop/typescript/best-practices/data-handling/data-conversion',
+              'develop/typescript/best-practices/data-handling/data-encryption',
+            ],
+          },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/typescript/integrations/index',
+        },
+        items: [
+          'develop/typescript/integrations/ai-sdk',
+          'develop/typescript/integrations/langsmith',
+          'develop/typescript/integrations/openai-agents',
+        ],
+      },
+    ],
+};
+
+const developSdkCategoriesById = {
+  dotnet: developDotnetCategory,
+  go: developGoCategory,
+  java: developJavaCategory,
+  php: developPhpCategory,
+  python: developPythonCategory,
+  ruby: developRubyCategory,
+  rust: developRustCategory,
+  typescript: developTypeScriptCategory,
+};
+
 module.exports = {
   documentation: [
     'index',
@@ -88,1028 +1124,7 @@ module.exports = {
         id: 'develop/index',
       },
       items: [
-        {
-          type: 'category',
-          label: 'Go SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/go/index',
-          },
-          items: [
-            'develop/go/set-up-your-local-go',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/workflows/index',
-              },
-              items: [
-                'develop/go/workflows/basics',
-                'develop/go/workflows/child-workflows',
-                'develop/go/workflows/continue-as-new',
-                'develop/go/workflows/cancellation',
-                'develop/go/workflows/timeouts',
-                'develop/go/workflows/message-passing',
-                'develop/go/workflows/schedules',
-                'develop/go/workflows/timers',
-                'develop/go/workflows/selectors',
-                'develop/go/workflows/side-effects',
-                'develop/go/workflows/dynamic-workflow',
-                'develop/go/workflows/versioning',
-                'develop/go/workflows/workflow-streams',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/activities/index',
-              },
-              items: [
-                'develop/go/activities/basics',
-                'develop/go/activities/execution',
-                'develop/go/activities/standalone-activities',
-                'develop/go/activities/timeouts',
-                'develop/go/activities/asynchronous-activity',
-                'develop/go/activities/dynamic-activity',
-                'develop/go/activities/benign-exceptions',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/workers/index',
-              },
-              items: [
-                'develop/go/workers/run-worker-process',
-                'develop/go/workers/sessions',
-                {
-                  type: 'category',
-                  label: 'Serverless Workers',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/go/workers/serverless-workers/index',
-                  },
-                  items: ['develop/go/workers/serverless-workers/aws-lambda'],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/client/index',
-              },
-              items: ['develop/go/client/temporal-client', 'develop/go/client/namespaces'],
-            },
-            {
-              type: 'category',
-              label: 'Temporal Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/nexus/index',
-              },
-              items: [
-                'develop/go/nexus/quickstart',
-                'develop/go/nexus/feature-guide',
-                'develop/go/nexus/standalone-operations',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/platform/index',
-              },
-              items: ['develop/go/platform/observability', 'develop/go/platform/enriching-ui'],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/best-practices/index',
-              },
-              items: [
-                'develop/go/best-practices/multithreading',
-                'develop/go/best-practices/context-propagation',
-                'develop/go/best-practices/error-handling',
-                'develop/go/best-practices/debugging',
-                'develop/go/best-practices/testing-suite',
-                {
-                  type: 'category',
-                  label: 'Data handling',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/go/best-practices/data-handling/data-handling',
-                  },
-                  items: [
-                    'develop/go/best-practices/data-handling/data-conversion',
-                    'develop/go/best-practices/data-handling/data-encryption',
-                    'develop/go/best-practices/data-handling/external-storage',
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Integrations',
-              className: 'sidebar-integrations',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/go/integrations/index',
-              },
-              items: ['develop/go/integrations/google-adk'],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Java SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/java/index',
-          },
-          items: [
-            'develop/java/set-up-your-local-java',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/workflows/index',
-              },
-              items: [
-                'develop/java/workflows/basics',
-                'develop/java/workflows/child-workflows',
-                'develop/java/workflows/continue-as-new',
-                'develop/java/workflows/message-passing',
-                'develop/java/workflows/cancellation',
-                'develop/java/workflows/timeouts',
-                'develop/java/workflows/schedules',
-                'develop/java/workflows/timers',
-                'develop/java/workflows/side-effects',
-                'develop/java/workflows/versioning',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/activities/index',
-              },
-              items: [
-                'develop/java/activities/basics',
-                'develop/java/activities/execution',
-                'develop/java/activities/standalone-activities',
-                'develop/java/activities/timeouts',
-                'develop/java/activities/asynchronous-activity',
-                'develop/java/activities/benign-exceptions',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/workers/index',
-              },
-              items: ['develop/java/workers/run-worker-process'],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/client/index',
-              },
-              items: ['develop/java/client/temporal-client', 'develop/java/client/namespaces'],
-            },
-            {
-              type: 'category',
-              label: 'Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/nexus/index',
-              },
-              items: [
-                'develop/java/nexus/quickstart',
-                'develop/java/nexus/feature-guide',
-                'develop/java/nexus/standalone-operations',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/platform/index',
-              },
-              items: ['develop/java/platform/observability', 'develop/java/platform/enriching-ui'],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/best-practices/index',
-              },
-              items: [
-                'develop/java/best-practices/testing-suite',
-                'develop/java/best-practices/debugging',
-                {
-                  type: 'category',
-                  label: 'Data handling',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/java/best-practices/data-handling/data-handling',
-                  },
-                  items: [
-                    'develop/java/best-practices/data-handling/data-conversion',
-                    'develop/java/best-practices/data-handling/data-encryption',
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Integrations',
-              className: 'sidebar-integrations',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/java/integrations/index',
-              },
-              items: ['develop/java/integrations/spring-boot', 'develop/java/integrations/spring-ai'],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'PHP SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/php/index',
-          },
-          items: [
-            'develop/php/set-up-your-local-php',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/php/workflows/index',
-              },
-              items: [
-                'develop/php/workflows/basics',
-                'develop/php/workflows/child-workflows',
-                'develop/php/workflows/continue-as-new',
-                'develop/php/workflows/cancellation',
-                'develop/php/workflows/timeouts',
-                'develop/php/workflows/message-passing',
-                'develop/php/workflows/schedules',
-                'develop/php/workflows/timers',
-                'develop/php/workflows/side-effects',
-                'develop/php/workflows/versioning',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/php/activities/index',
-              },
-              items: [
-                'develop/php/activities/basics',
-                'develop/php/activities/execution',
-                'develop/php/activities/timeouts',
-                'develop/php/activities/asynchronous-activity',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/php/workers/index',
-              },
-              items: ['develop/php/workers/run-worker-process'],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/php/client/index',
-              },
-              items: ['develop/php/client/temporal-client'],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/php/platform/index',
-              },
-              items: ['develop/php/platform/observability', 'develop/php/platform/enriching-ui'],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/php/best-practices/index',
-              },
-              items: ['develop/php/best-practices/testing-suite', 'develop/php/best-practices/debugging'],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Python SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/python/index',
-          },
-          items: [
-            'develop/python/set-up-your-local-python',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/workflows/index',
-              },
-              items: [
-                'develop/python/workflows/basics',
-                'develop/python/workflows/child-workflows',
-                'develop/python/workflows/continue-as-new',
-                'develop/python/workflows/cancellation',
-                'develop/python/workflows/timeouts',
-                'develop/python/workflows/message-passing',
-                'develop/python/workflows/schedules',
-                'develop/python/workflows/timers',
-                'develop/python/workflows/versioning',
-                'develop/python/workflows/workflow-streams',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/activities/index',
-              },
-              items: [
-                'develop/python/activities/basics',
-                'develop/python/activities/execution',
-                'develop/python/activities/standalone-activities',
-                'develop/python/activities/timeouts',
-                'develop/python/activities/asynchronous-activity',
-                'develop/python/activities/benign-exceptions',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/workers/index',
-              },
-              items: [
-                'develop/python/workers/run-worker-process',
-                'develop/python/workers/interceptors',
-                {
-                  type: 'category',
-                  label: 'Serverless Workers',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/python/workers/serverless-workers/index',
-                  },
-                  items: ['develop/python/workers/serverless-workers/aws-lambda'],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/client/index',
-              },
-              items: ['develop/python/client/temporal-client'],
-            },
-            {
-              type: 'category',
-              label: 'Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/nexus/index',
-              },
-              items: [
-                'develop/python/nexus/quickstart',
-                'develop/python/nexus/feature-guide',
-                'develop/python/nexus/standalone-operations',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/platform/index',
-              },
-              items: ['develop/python/platform/observability', 'develop/python/platform/enriching-ui'],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/best-practices/index',
-              },
-              items: [
-                'develop/python/best-practices/error-handling',
-                'develop/python/best-practices/testing-suite',
-                'develop/python/best-practices/python-sdk-sandbox',
-                'develop/python/best-practices/debugging',
-                {
-                  type: 'category',
-                  label: 'Data handling',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/python/best-practices/data-handling/data-handling',
-                  },
-                  items: [
-                    'develop/python/best-practices/data-handling/data-conversion',
-                    'develop/python/best-practices/data-handling/data-encryption',
-                    'develop/python/best-practices/data-handling/external-storage',
-                  ],
-                },
-                'develop/python/best-practices/python-sdk-sync-vs-async',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Integrations',
-              className: 'sidebar-integrations',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/python/integrations/index',
-              },
-              items: [
-                'develop/python/integrations/braintrust',
-                'develop/python/integrations/google-adk',
-                'develop/python/integrations/langgraph',
-                'develop/python/integrations/langsmith',
-                'develop/python/integrations/strands-agents',
-              ],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'TypeScript SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/typescript/index',
-          },
-          items: [
-            'develop/typescript/set-up-your-local-typescript',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/workflows/index',
-              },
-              items: [
-                'develop/typescript/workflows/basics',
-                'develop/typescript/workflows/child-workflows',
-                'develop/typescript/workflows/continue-as-new',
-                'develop/typescript/workflows/message-passing',
-                'develop/typescript/workflows/cancellation',
-                'develop/typescript/workflows/cancellation-scopes',
-                'develop/typescript/workflows/timeouts',
-                'develop/typescript/workflows/schedules',
-                'develop/typescript/workflows/timers',
-                'develop/typescript/workflows/versioning',
-                'develop/typescript/workflows/workflow-streams',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/activities/index',
-              },
-              items: [
-                'develop/typescript/activities/basics',
-                'develop/typescript/activities/execution',
-                'develop/typescript/activities/standalone-activities',
-                'develop/typescript/activities/timeouts',
-                'develop/typescript/activities/asynchronous-activity',
-                'develop/typescript/activities/benign-exceptions',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/workers/index',
-              },
-              items: [
-                'develop/typescript/workers/run-worker-process',
-                'develop/typescript/workers/interceptors',
-                {
-                  type: 'category',
-                  label: 'Serverless Workers',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/typescript/workers/serverless-workers/index',
-                  },
-                  items: [
-                    'develop/typescript/workers/serverless-workers/aws-lambda'
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/client/index',
-              },
-              items: [
-                'develop/typescript/client/temporal-client',
-                'develop/typescript/client/namespaces'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/nexus/index',
-              },
-              items: [
-                'develop/typescript/nexus/quickstart',
-                'develop/typescript/nexus/feature-guide',
-                'develop/typescript/nexus/standalone-operations',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/platform/index',
-              },
-              items: [
-                'develop/typescript/platform/observability',
-                'develop/typescript/platform/enriching-ui'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/best-practices/index',
-              },
-              items: [
-                'develop/typescript/best-practices/testing-suite',
-                'develop/typescript/best-practices/debugging',
-                'develop/typescript/best-practices/entity-pattern',
-                {
-                  type: 'category',
-                  label: 'Data handling',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/typescript/best-practices/data-handling/data-handling',
-                  },
-                  items: [
-                    'develop/typescript/best-practices/data-handling/data-conversion',
-                    'develop/typescript/best-practices/data-handling/data-encryption',
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Integrations',
-              className: 'sidebar-integrations',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/typescript/integrations/index',
-              },
-              items: [
-                'develop/typescript/integrations/ai-sdk',
-                'develop/typescript/integrations/langsmith',
-                'develop/typescript/integrations/openai-agents',
-              ],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: '.NET SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/dotnet/index',
-          },
-          items: [
-            'develop/dotnet/set-up-your-local-dotnet',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/workflows/index',
-              },
-              items: [
-                'develop/dotnet/workflows/basics',
-                'develop/dotnet/workflows/child-workflows',
-                'develop/dotnet/workflows/continue-as-new',
-                'develop/dotnet/workflows/cancellation',
-                'develop/dotnet/workflows/timeouts',
-                'develop/dotnet/workflows/message-passing',
-                'develop/dotnet/workflows/schedules',
-                'develop/dotnet/workflows/timers',
-                'develop/dotnet/workflows/dynamic-workflow',
-                'develop/dotnet/workflows/versioning',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/activities/index',
-              },
-              items: [
-                'develop/dotnet/activities/basics',
-                'develop/dotnet/activities/execution',
-                'develop/dotnet/activities/timeouts',
-                'develop/dotnet/activities/asynchronous-activity',
-                'develop/dotnet/activities/dynamic-activity',
-                'develop/dotnet/activities/benign-exceptions',
-                'develop/dotnet/activities/standalone-activities',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/workers/index',
-              },
-              items: [
-                'develop/dotnet/workers/run-worker-process',
-                'develop/dotnet/workers/interceptors',
-              ]
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/client/index',
-              },
-              items: [
-                'develop/dotnet/client/temporal-client'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/nexus/index',
-              },
-              items: [
-                'develop/dotnet/nexus/quickstart',
-                'develop/dotnet/nexus/feature-guide',
-                'develop/dotnet/nexus/standalone-operations',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/platform/index',
-              },
-              items: [
-                'develop/dotnet/platform/observability',
-                'develop/dotnet/platform/enriching-ui'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/dotnet/best-practices/index',
-              },
-              items: [
-                'develop/dotnet/best-practices/error-handling',
-                'develop/dotnet/best-practices/testing-suite',
-                'develop/dotnet/best-practices/debugging',
-                {
-                  type: 'category',
-                  label: 'Data handling',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/dotnet/best-practices/data-handling/data-handling',
-                  },
-                  items: [
-                    'develop/dotnet/best-practices/data-handling/data-conversion',
-                    'develop/dotnet/best-practices/data-handling/data-encryption',
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Ruby SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/ruby/index',
-          },
-          items: [
-            'develop/ruby/set-up-local-ruby',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/workflows/index',
-              },
-              items: [
-                'develop/ruby/workflows/basics',
-                'develop/ruby/workflows/child-workflows',
-                'develop/ruby/workflows/continue-as-new',
-                'develop/ruby/workflows/cancellation',
-                'develop/ruby/workflows/timeouts',
-                'develop/ruby/workflows/message-passing',
-                'develop/ruby/workflows/schedules',
-                'develop/ruby/workflows/timers',
-                'develop/ruby/workflows/futures',
-                'develop/ruby/workflows/dynamic-workflow',
-                'develop/ruby/workflows/versioning',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/activities/index',
-              },
-              items: [
-                'develop/ruby/activities/basics',
-                'develop/ruby/activities/execution',
-                'develop/ruby/activities/standalone-activities',
-                'develop/ruby/activities/timeouts',
-                'develop/ruby/activities/asynchronous-activity',
-                'develop/ruby/activities/dynamic-activity',
-                'develop/ruby/activities/benign-exceptions',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/workers/index',
-              },
-              items: [
-                'develop/ruby/workers/run-worker-process'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/client/index',
-              },
-              items: [
-                'develop/ruby/client/temporal-client'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Platform',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/platform/index',
-              },
-              items: [
-                'develop/ruby/platform/observability',
-                'develop/ruby/platform/enriching-ui'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Integrations',
-              className: 'sidebar-integrations',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/integrations/index',
-              },
-              items: [
-                'develop/ruby/integrations/rails-integration'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Best practices',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/ruby/best-practices/index',
-              },
-              items: [
-                'develop/ruby/best-practices/error-handling',
-                'develop/ruby/best-practices/testing-suite',
-                'develop/ruby/best-practices/debugging',
-                {
-                  type: 'category',
-                  label: 'Data handling',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'develop/ruby/best-practices/data-handling/data-handling',
-                  },
-                  items: [
-                    'develop/ruby/best-practices/data-handling/data-conversion',
-                    'develop/ruby/best-practices/data-handling/data-encryption',
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Rust SDK',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'develop/rust/index',
-          },
-          items: [
-            'develop/rust/quickstart',
-            {
-              type: 'category',
-              label: 'Workflows',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/rust/workflows/index',
-              },
-              items: [
-                'develop/rust/workflows/basics',
-                'develop/rust/workflows/child-workflows',
-                'develop/rust/workflows/continue-as-new',
-                'develop/rust/workflows/message-passing',
-                'develop/rust/workflows/cancellation',
-                'develop/rust/workflows/timers',
-                'develop/rust/workflows/timeouts',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Activities',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/rust/activities/index',
-              },
-              items: [
-                'develop/rust/activities/basics',
-                'develop/rust/activities/execution',
-                'develop/rust/activities/timeouts',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Workers',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/rust/workers/index',
-              },
-              items: [
-                'develop/rust/workers/worker-process'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Client',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/rust/client/index',
-              },
-              items: [
-                'develop/rust/client/temporal-client'
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'develop/rust/nexus/index',
-              },
-              items: [
-                'develop/rust/nexus/feature-guide'
-              ],
-            },
-          ],
-        },
+        ...SDKS.map(({ id }) => developSdkCategoriesById[id]),
         'develop/environment-configuration',
         'develop/worker-performance',
         'develop/worker-tuning-reference',
@@ -1930,3 +1945,4 @@ module.exports = {
     'tctl-v1/workflow',
   ],
 };
+
