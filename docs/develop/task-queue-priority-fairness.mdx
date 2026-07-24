@@ -14,7 +14,7 @@ tags:
   - Priority and Fairness
 ---
 
-import { EnlargeImage, SdkTabs } from '@site/src/components';
+import { EnlargeImage, SdkTabs, FairnessWorkflowConfigExample } from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
 distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
@@ -267,86 +267,9 @@ temporal workflow start \
   --fairness-weight 3.14
 ```
 
-You can set fairness keys and weights for a Workflow within the SDK like so:
+You can set fairness keys and weights for a Workflow within the SDK like so. Select a concept to highlight the matching lines:
 
-<SdkTabs>
-<SdkTabs.Go>
-```go
-workflowOptions := client.StartWorkflowOptions{
-  ID:        "my-workflow-id",
-  TaskQueue: "my-task-queue",
-  Priority:  temporal.Priority{
-    PriorityKey:    1,
-    FairnessKey:    "a-key",
-    FairnessWeight: 3.14,
-  },
-}
-we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, MyWorkflow)
-```
-</SdkTabs.Go>
-<SdkTabs.Java>
-```java
-WorkflowOptions options = WorkflowOptions.newBuilder()
-  .setTaskQueue("my-task-queue")
-  .setPriority(Priority.newBuilder().setPriorityKey(5).setFairnessKey("a-key").setFairnessWeight(3.14).build())
-  .build();
-WorkflowClient client = WorkflowClient.newInstance(service);
-MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
-workflow.run();
-```
-</SdkTabs.Java>
-<SdkTabs.Python>
-```python
-await client.start_workflow(
-  MyWorkflow.run,
-  args="hello",
-  id="my-workflow-id",
-  task_queue="my-task-queue",
-  priority=Priority(priority_key=3, fairness_key="a-key", fairness_weight=3.14),
-)
-```
-</SdkTabs.Python>
-<SdkTabs.Ruby>
-```ruby
-client.start_workflow(
-  MyWorkflow, "input-arg",
-  id: "my-workflow-id",
-  task_queue: "my-task-queue",
-  priority: Temporalio::Priority.new(
-    priority_key: 3,
-    fairness_key: "a-key",
-    fairness_weight: 3.14
-  )
-)
-```
-</SdkTabs.Ruby>
-<SdkTabs.TypeScript>
-```ts
-const handle = await startWorkflow(workflows.priorityWorkflow, {
-  args: [false, 1],
-  priority: { priorityKey: 3, fairnessKey: 'a-key', fairnessWeight: 3.14 },
-});
-```
-</SdkTabs.TypeScript>
-<SdkTabs.DotNet>
-```csharp
-var handle = await Client.StartWorkflowAsync(
-  (MyWorkflow wf) => wf.RunAsync("hello"),
-  new StartWorkflowOptions(
-    id: "my-workflow-id",
-    taskQueue: "my-task-queue"
-  )
-  {
-    Priority = new Priority(
-      priorityKey: 3,
-      fairnessKey: "a-key",
-      fairnessWeight: 3.14
-    )
-  }
-);
-```
-</SdkTabs.DotNet>
-</SdkTabs>
+<FairnessWorkflowConfigExample />
 
 You can set fairness keys and weights for an Activity within the SDK like so:
 
