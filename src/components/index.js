@@ -5,5 +5,4 @@ export * from './Demos'
 export * from './Quickstart'
 export * from './ToolTipTerm';
 
-export { default as HomePageHero } from './elements/HomePageHero';
 export { default as PhotoCarousel } from './elements/PhotoCarousel';
