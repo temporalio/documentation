@@ -767,6 +767,7 @@ module.exports = {
                 'develop/typescript/integrations/ai-sdk',
                 'develop/typescript/integrations/langsmith',
                 'develop/typescript/integrations/openai-agents',
+                'develop/typescript/integrations/strands-agents',
               ],
             },
           ],
