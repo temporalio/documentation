@@ -605,6 +605,7 @@ module.exports = {
               },
               items: [
                 'develop/python/integrations/braintrust',
+                'develop/python/integrations/deepagents',
                 'develop/python/integrations/google-adk',
                 'develop/python/integrations/langgraph',
                 'develop/python/integrations/langsmith',
