@@ -2163,6 +2163,21 @@
       "permanent": true
     },
     {
+      "source": "/encyclopedia/temporal-sdks",
+      "destination": "/encyclopedia/architecture/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/architecture/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
+      "permanent": true
+    },
+    {
       "source": "/cloud/users",
       "destination": "/cloud/manage-access/users",
       "permanent": true
