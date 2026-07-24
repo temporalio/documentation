@@ -1,5 +1,5 @@
 ---
-id: aws-lambda
+id: index
 title: Deploy a Serverless Worker on AWS Lambda
 sidebar_label: AWS Lambda
 description: Deploy a Temporal Serverless Worker on AWS Lambda.
@@ -37,7 +37,7 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
   Namespace's cloud provider must match the serverless compute provider.
 - For self-hosted deployments, complete the
-  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup) before following
+  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup) before following
   this guide.
 - Every Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), or the Worker must set a
   default versioning behavior.
@@ -368,7 +368,7 @@ The previous Worker Deployment Version still points at its original Lambda funct
 ## 3. Configure IAM for Temporal invocation (Cloud only) {/* #configure-iam */}
 
 This section applies to Temporal Cloud. For self-hosted Temporal Service deployments, see
-[Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#create-invocation-role)
+[Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#create-invocation-role)
 for IAM configuration with a different CloudFormation template.
 
 Temporal needs permission to invoke your Lambda function. The Temporal server assumes an IAM role in your AWS account to

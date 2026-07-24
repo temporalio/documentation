@@ -21,6 +21,7 @@ tags:
   - AWS Lambda
 ---
 
+import CaptionedImage from '@site/src/components/images/CaptionedImage';
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkers">
@@ -122,3 +123,56 @@ The following table shows what happens to existing Workflows when you set a new 
 For step-by-step instructions on publishing Lambda versions and configuring the compute provider with a versioned ARN,
 see
 [Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version).
+
+## Lifecycle {/* #lifecycle */}
+
+A single Serverless Worker invocation has three phases: init, work, and shutdown.
+
+<CaptionedImage
+  src="/diagrams/serverless-worker-lifecycle.svg"
+  srcDark="/diagrams/serverless-worker-lifecycle-dark.svg"
+  alt="Serverless Worker lifecycle"
+  title="Diagram is not to scale. The shutdown deadline buffer controls when the Worker stops polling, and the Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish before shutdown hooks run. Shutdown hooks typically take less than a few seconds."
+/>
+
+During the **init** phase, the Worker initializes and establishes a client connection to Temporal.
+
+During the **work** phase, the Worker polls the Task Queue and processes Tasks.
+
+During the **shutdown** phase, the Worker stops polling, waits for in-flight Tasks to finish, and runs any shutdown
+hooks (for example, OpenTelemetry telemetry flushes). Shutdown begins before the invocation deadline so the Worker can
+exit cleanly before the compute provider forcibly terminates the execution environment.
+
+### Tuning for long-running Activities
+
+If your Worker handles long-running Activities, set these three values together:
+
+- **Worker stop timeout > longest Activity runtime.** Gives in-flight Activities enough time to finish after polling
+  stops.
+- **Shutdown deadline buffer > Worker stop timeout + shutdown hook time.** Ensures the drain and any shutdown hooks
+  complete before the compute provider terminates the environment.
+- **Invocation deadline > longest Activity runtime + shutdown deadline buffer.** Set on the compute provider to give
+  each invocation enough total runtime.
+
+  :::tip
+
+  If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be
+  difficult or impossible to meet. In this case, use
+  [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) to record the state of the
+  Activity execution so that the next retry can pick up where it left off.
+
+  :::
+
+For example, if your longest Activity runtime is 5 minutes, and your shutdown hooks take 3 seconds to run, set the
+Worker stop timeout to more than 5 minutes, and the shutdown deadline buffer to more than 303 seconds (5 minutes + 3
+seconds). Set your invocation deadline to at least 10 minutes and 3 seconds (5 minutes + 303 seconds).
+
+The Worker stop timeout controls how long the Worker waits for in-flight Tasks to finish after it stops polling. The
+shutdown deadline buffer controls how much time before the invocation deadline the Worker stops polling for Tasks.
+
+Raising only the shutdown deadline buffer makes the Worker stop polling earlier, but does not give in-flight Tasks any
+more time to complete.
+
+Raising only the Worker stop timeout does not make the Worker stop polling earlier, which means the compute provider
+might terminate the Worker before the full stop timeout completes. In-flight Activities then do not get the full stop
+timeout to finish, and the shutdown hooks may not run.

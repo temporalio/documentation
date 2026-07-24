@@ -133,7 +133,7 @@ Common errors include:
 - **Connection failures**: The Worker cannot reach the Temporal Service. Check that the `TEMPORAL_ADDRESS` and
   `TEMPORAL_API_KEY` environment variables (or `temporal.toml` config file) are correctly set on the Lambda function.
   For self-hosted deployments, verify
-  [network reachability](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#ensure-network-reachability).
+  [network reachability](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#ensure-network-reachability).
 - **TLS errors**: The TLS certificate or key is missing, expired, or does not match the Namespace.
 - **Authentication errors**: The API key is invalid or does not have access to the Namespace.
 
@@ -146,7 +146,7 @@ The Worker begins graceful shutdown before the Lambda deadline. If Activities ta
 window, the Activities are abandoned mid-execution and retried on the next invocation.
 
 For long-running Activities, increase the Lambda timeout and the Worker's shutdown buffer together. See
-[Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities) for guidance on how these
+[Tuning for long-running Activities](/serverless-workers/aws-lambda#tuning-for-long-running-activities) for guidance on how these
 values relate.
 
 ### Check that the deployment name and build ID match {/* #check-deployment-match */}

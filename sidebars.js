@@ -500,7 +500,10 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/python/workers/serverless-workers/index',
                   },
-                  items: ['develop/python/workers/serverless-workers/aws-lambda'],
+                  items: [
+                    'develop/python/workers/serverless-workers/aws-lambda',
+                    'develop/python/workers/serverless-workers/cloud-run',
+                  ],
                 },
               ],
             },
@@ -1331,8 +1334,30 @@ module.exports = {
                 id: 'production-deployment/worker-deployments/serverless-workers/index',
               },
               items: [
-                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
-                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
+                {
+                  type: 'category',
+                  label: 'AWS Lambda',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'GCP Cloud Run',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/cloud-run/index',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup',
+                  ],
+                },
               ],
             },
           ],

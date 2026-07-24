@@ -16,6 +16,11 @@
   ],
   "redirects": [
     {
+      "source": "/production-deployment/worker-deployments/serverless-workers/self-hosted-setup",
+      "destination": "/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup",
+      "permanent": true
+    },
+    {
       "source": "/encyclopedia/detecting-application-failures",
       "destination": "/encyclopedia/failures-and-error-handling",
       "permanent": true
