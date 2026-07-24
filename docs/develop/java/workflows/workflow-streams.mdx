@@ -54,9 +54,9 @@ public class OrderWorkflowImpl implements OrderWorkflow {
 }
 ```
 
-`WorkflowStream.newInstance` creates the in-memory event log and registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. The `priorState` argument may be `null` and is only needed for Continue-As-New rollovers: pass `null` (or call the no-argument overload) on a fresh start, and the carried `WorkflowStreamState` after a rollover (see [Stream from long-running Workflows](#continue-as-new)).
+`WorkflowStream.newInstance` creates the in-memory event log and registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. The `priorState` argument may be `null` and is only needed for Continue-As-New rollovers. Pass `null` or call the no-argument overload on a fresh start, and the carried `WorkflowStreamState` after a rollover. See [Stream from long-running Workflows](#continue-as-new) for more details.
 
-Constructing the stream at the top of the Workflow method also works — Signals received earlier are buffered by the SDK — but polls and offset Queries are rejected until the stream exists, so prefer `@WorkflowInit`. Construct exactly one `WorkflowStream` per Workflow.
+Constructing the stream at the top of the Workflow method also works. Signals received earlier are buffered by the SDK, but polls and offset Queries are rejected until the stream exists, so use `@WorkflowInit`. Construct exactly one `WorkflowStream` per Workflow.
 
 ## Publish from a Workflow
 
@@ -117,7 +117,9 @@ public class OrderWorkflowImpl implements OrderWorkflow {
 
 `publish()` runs the payload converter to encode each value. The codec chain (encryption, compression, etc.) runs once on the Signal or Update envelope that carries the batch, never per item, so encryption and compression are applied exactly once each direction.
 
-Unlike the Python and TypeScript SDKs, Java topics carry no per-topic type binding. A topic handle is bound only to a name; published values are `Object` and subscribers decode each item from its raw payload (see [Subscribe](#subscribe)). To customize per-item serialization, pass `WorkflowStreamOptions.newBuilder().setPayloadConverters(...)` to `WorkflowStream.newInstance`, and use the matching converters on the subscriber side. There is no public accessor for the Worker's configured data converter inside Workflow code, so a custom converter can't be picked up automatically; pass matching payload converters explicitly to keep Workflow-side publishes consistent with the rest of your Workflow. A pre-built `io.temporal.api.common.v1.Payload` may also be passed to `publish()`, bypassing conversion.
+Unlike the Python and TypeScript SDKs, Java topics carry no per-topic type binding. A topic handle is bound only to a name; published values are `Object` and subscribers decode each item from its raw payload (see [Subscribe](#subscribe)). To customize per-item serialization, pass `WorkflowStreamOptions.newBuilder().setPayloadConverters(...)` to `WorkflowStream.newInstance`, and use the matching converters on the subscriber side.
+
+There is no public accessor for the Worker's configured data converter inside Workflow code, so a custom converter can't be picked up automatically. Pass matching payload converters explicitly to keep Workflow-side publishes consistent with the rest of your Workflow. A pre-built `io.temporal.api.common.v1.Payload` may also be passed to `publish()`, bypassing conversion.
 
 ## Publish from a client
 
@@ -131,7 +133,7 @@ WorkflowStreamClient.newInstance(workflowClient, workflowId)
 
 Then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let try-with-resources flush on scope exit (`close()` guarantees a final flush of buffered items).
 
-When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
+When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream. It processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
 
 ```java
 import io.temporal.client.WorkflowClient;
@@ -178,7 +180,7 @@ public void streamDeltas(String orderId) {
 }
 ```
 
-For a [standalone Activity](/develop/java/activities/standalone-activities) (one started directly via the Client rather than from a Workflow), there is no parent Workflow context to infer, so `fromActivity()` throws an `IllegalStateException`. Fall back to the general pattern with `Activity.getExecutionContext().getWorkflowClient()` and the target Workflow Id threaded through the Activity's input.
+For a [standalone Activity](/develop/java/activities/standalone-activities), there is no parent Workflow context to infer, so `fromActivity()` throws an `IllegalStateException`. Fall back to the general pattern with `Activity.getExecutionContext().getWorkflowClient()` and the target Workflow Id threaded through the Activity's input.
 
 Two operations give the application explicit control over when batches ship: the `forceFlush` argument on a publish for latency, and `client.flush()` for confirmation that prior publications have landed.
 
@@ -212,7 +214,9 @@ try (WorkflowStreamClient streamClient =
 
 Batches also ship early once the buffer reaches `maxBatchSize`, if you set one on `WorkflowStreamClientOptions`; by default only the interval, `forceFlush`, `flush()`, and `close()` trigger a flush.
 
-`publish()` is non-blocking and applies no backpressure. From an Activity or other client, it appends to the client's in-memory buffer and returns (the value goes through the payload converters immediately, so an unconvertible value fails the `publish()` call rather than a later background flush). From inside a Workflow, it appends synchronously to the in-memory log. [Subscribers](/workflow-streams#subscribing) pull from the Workflow's log on their own schedule, so a slow subscriber doesn't slow down [publishers](/workflow-streams#publishing). If a publisher emits faster than batches can ship to the server, the buffer grows: the process uses more memory, the stream falls further behind real time, and at the limit Signals can't keep up.
+`publish()` is non-blocking and applies no backpressure. From an Activity or other client, it appends to the client's in-memory buffer and returns. The value goes through the payload converters immediately, so an unconvertible value fails the `publish()` call rather than a later background flush.
+
+From inside a Workflow, it appends synchronously to the in-memory log. [Subscribers](/workflow-streams#subscribing) pull from the Workflow's log on their own schedule, so a slow subscriber doesn't slow down [publishers](/workflow-streams#publishing). If a publisher emits faster than batches can ship to the server, the buffer grows: the process uses more memory, the stream falls further behind real time, and at the limit Signals can't keep up.
 
 If your application needs to bound this (to cap memory, to keep the stream close to real time, or to apply a policy when the publisher overruns the network), apply that policy upstream of `publish()`. The choice (block, drop, error, sample) is application-specific, and Workflow Streams doesn't pick one for you.
 
@@ -220,13 +224,15 @@ If your application needs to bound this (to cap memory, to keep the stream close
 
 [Subscribing](/workflow-streams#subscribing) uses the same client construction as publishing: `WorkflowStreamClient.newInstance(workflowClient, workflowId)` from any process that has a Temporal Client, or `fromActivity()` inside an Activity. Subscribing from an Activity is less common in practice, so the general client case is the primary example below.
 
-The Java SDK offers two subscriber APIs over one shared poll engine: a blocking iterator for synchronous consumers, and a non-blocking listener that delivers items as callbacks without occupying a caller thread. Neither occupies a thread while a poll is blocked on the server — polling runs on a small executor shared by all of a client's subscriptions (2 daemon threads by default; see `WorkflowStreamClientOptions.Builder.setPollExecutor`) — so many concurrent subscriptions don't mean many threads. Either way, the subscription ends cleanly when the Workflow reaches a terminal state, automatically follows Continue-As-New chains, recovers from Workflow-side log truncation by restarting from the current base offset, handles pagination when a poll response hits the ~1 MB cap, and also ends when the owning `WorkflowStreamClient` is closed.
+The Java SDK offers two subscriber APIs over one shared poll engine: a blocking iterator for synchronous consumers, and a non-blocking listener that delivers items as callbacks without occupying a caller thread. Neither occupies a thread while a poll is blocked on the server. Polling runs on a small executor shared by all of a client's subscriptions (2 daemon threads by default; see `WorkflowStreamClientOptions.Builder.setPollExecutor`), so many concurrent subscriptions don't mean many threads.
+
+Either way, the subscription ends cleanly when the Workflow reaches a terminal state, automatically follows Continue-As-New chains, recovers from Workflow-side log truncation by restarting from the current base offset, handles pagination when a poll response hits the ~1 MB cap, and also ends when the owning `WorkflowStreamClient` is closed.
 
 Items carry the raw `io.temporal.api.common.v1.Payload` in `item.getPayload()`; decode at the call site with your data converter. Offsets are global across all topics, not per-topic.
 
 ### Blocking iterator
 
-`client.subscribe(options)` without a listener returns a `WorkflowStreamSubscription`: a blocking, single-use subscription the consuming thread iterates with a for-each loop. The thread blocks waiting for items while polling still runs on the shared executor.
+`client.subscribe(options)` without a listener returns a `WorkflowStreamSubscription`. A blocking, single-use subscription the consuming thread iterates with a for-each loop. The thread blocks waiting for items while polling still runs on the shared executor.
 
 ```java
 import io.temporal.client.WorkflowClient;
@@ -259,9 +265,9 @@ public void watchOrder(WorkflowClient workflowClient, String orderId) {
 
 ### Non-blocking listener
 
-Unique to the Java SDK, the second subscriber API inverts control: instead of parking a thread in an iterator, pass a `WorkflowStreamListener` to `subscribe` and items are delivered as callbacks on the poll executor. `subscribe` returns a `WorkflowStreamSubscriptionHandle` immediately. This is the right shape when one process consumes many streams concurrently — all subscriptions share the client's small executor rather than each pinning a thread.
+Unique to the Java SDK, the second subscriber API inverts control. Instead of parking a thread in an iterator, pass a `WorkflowStreamListener` to `subscribe` and items are delivered as callbacks on the poll executor. `subscribe` returns a `WorkflowStreamSubscriptionHandle` immediately. This is the right shape when one process consumes many streams concurrently — all subscriptions share the client's small executor rather than each pinning a thread.
 
-Callbacks are serialized (never invoked concurrently, with happens-before ordering between invocations) and must not block. The `CompletionStage` returned by `onNext` is the backpressure boundary: return `null` (or an already-completed stage) to receive the next item immediately, or a pending stage to defer both further delivery and the next poll until it completes. A stage that completes exceptionally — or an exception thrown directly from `onNext` — stops the subscription and is reported to `onError`.
+Callbacks are serialized and are never invoked concurrently and must not block. The `CompletionStage` returned by `onNext` is the backpressure boundary. Return `null` or an already-completed stage to receive the next item immediately, or a pending stage to defer both further delivery and the next poll until it completes. A stage that completes exceptionally or an exception thrown directly from `onNext` stops the subscription and is reported to `onError`.
 
 ```java
 import io.temporal.common.converter.DefaultDataConverter;
@@ -296,9 +302,9 @@ WorkflowStreamSubscriptionHandle handle =
 handle.getDoneFuture().join();
 ```
 
-`onCompleted` fires once when the stream ends cleanly because the Workflow reached a terminal state. `onError` fires once on an unrecoverable failure (including a failure from `onNext`); its default implementation logs at warn level. `handle.close()` stops the subscription before the next poll without calling `onCompleted`. `handle.getDoneFuture()` completes normally when the stream ends cleanly or the subscription is closed, and exceptionally with the failure passed to `onError`. A single-topic convenience, `streamClient.topic("status").subscribe(fromOffset, listener)`, is also available.
+`onCompleted` fires once when the stream ends cleanly because the Workflow reached a terminal state. `onError` fires once on an unrecoverable failure, including a failure from `onNext`. Its default implementation logs at warn level. `handle.close()` stops the subscription before the next poll without calling `onCompleted`. `handle.getDoneFuture()` completes normally when the stream ends cleanly or the subscription is closed, and exceptionally with the failure passed to `onError`. A single-topic convenience, `streamClient.topic("status").subscribe(fromOffset, listener)`, is also available.
 
-To hand work off a callback without blocking the executor, return a stage that completes when the work is done — for example, `CompletableFuture.runAsync(() -> render(item), renderExecutor)` — and the next item is delivered only after it completes.
+To hand work off a callback without blocking the executor, return a stage that completes when the work is done. For example, `CompletableFuture.runAsync(() -> render(item), renderExecutor)` and the next item is delivered only after it completes.
 
 ### Heterogeneous topics
 
@@ -375,7 +381,9 @@ You can [inspect the terminal status](/workflow-streams#inspecting-terminal-stat
 
 ## Stream from long-running Workflows {/* #continue-as-new */}
 
-Workflows that run for hours or accumulate thousands of events need to periodically roll over via [Continue-As-New](/workflow-streams#stream-from-long-running-workflows) to keep history bounded. Subscribers automatically follow these rollovers. To keep a stream running across them without subscribers seeing a gap, carry both your application state and the stream state across the boundary. Add a `WorkflowStreamState` field to your Workflow input, pass it to `WorkflowStream.newInstance`, and call `stream.continueAsNew(buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, snapshots the stream state, then continues-as-new with the arguments built by `buildArgs(postDrainState)`. It never returns:
+Workflows that run for hours or accumulate thousands of events need to periodically roll over via [Continue-As-New](/workflow-streams#stream-from-long-running-workflows) to keep history bounded. Subscribers automatically follow these rollovers. To keep a stream running across them without subscribers seeing a gap, carry both your application state and the stream state across the boundary.
+
+Add a `WorkflowStreamState` field to your Workflow input, pass it to `WorkflowStream.newInstance`, and call `stream.continueAsNew(buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, snapshots the stream state, then Continues-As-New with the arguments built by `buildArgs(postDrainState)`. It never returns:
 
 ```java
 public class WorkflowInput {
