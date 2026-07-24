@@ -269,6 +269,7 @@ module.exports = {
                 'develop/java/workflows/timers',
                 'develop/java/workflows/side-effects',
                 'develop/java/workflows/versioning',
+                'develop/java/workflows/workflow-streams',
               ],
             },
             {
