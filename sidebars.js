@@ -1391,6 +1391,7 @@ module.exports = {
           },
           items: [
             'production-deployment/worker-deployments/worker-versioning',
+            'production-deployment/worker-deployments/recover-pinned-workflows',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
             'production-deployment/worker-deployments/unversioned-to-versioned-migration',
