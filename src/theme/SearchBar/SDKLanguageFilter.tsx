@@ -8,6 +8,7 @@ export const SDK_LANGUAGES = [
   { id: 'php', label: 'PHP' },
   { id: 'dotnet', label: '.NET' },
   { id: 'ruby', label: 'Ruby' },
+  { id: 'rust', label: 'Rust' },
 ];
 
 export const SDK_LANGUAGE_STORAGE_KEY = 'temporal-docs-sdk-language-filter';

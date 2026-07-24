@@ -25,7 +25,7 @@ The following timeouts are available in Activity options:
 
 - [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout): the maximum amount of time allowed for the overall [Activity Execution](/activity-execution).
 - [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout): the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
-- [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout): the maximum amount of time allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout): the maximum amount of time allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task. This timeout is non-retryable by design.
 
 An Activity Execution must have either the Start-To-Close Timeout or the Schedule-To-Close Timeout set. Temporal strongly recommends setting a Start-To-Close Timeout because the service relies on it to detect lost Activity Tasks and trigger retries when appropriate.
 
@@ -76,7 +76,10 @@ For example, you can increase the delay linearly with each attempt instead of us
 
 ```rust
 use temporalio_macros::{activities};
-use temporalio_sdk::activities::{ActivityContext, ActivityError};
+use temporalio_sdk::{
+    ApplicationFailure,
+    activities::{ActivityContext, ActivityError},
+};
 use std::sync::{Arc, atomic::{AtomicUsize, Ordering}};
 
 struct TestGreetActivities {
@@ -88,7 +91,7 @@ impl TestGreetActivities {
     #[activity]
     pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
         if name == "ziggy" {
-            return Err(ApplicationFailure::builder(anyhow::anyhow!("Ziggy is not a valid name"))
+            return Err(ApplicationFailure::builder("Ziggy is not a valid name")
                 // next retry will be after 5 seconds
                 .next_retry_delay(std::time::Duration::from_secs(5))
                 .build()
@@ -114,7 +117,7 @@ pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, Activit
     ctx.record_heartbeat(vec!["greet activity started".into()]);
 
     if name == "ziggy" {
-        return Err(anyhow::anyhow!("Ziggy is not a valid name").into());
+        return Err(ApplicationFailure::new("Ziggy is not a valid name").into());
     }
 
     Ok(format!("Hello, {}!", name))

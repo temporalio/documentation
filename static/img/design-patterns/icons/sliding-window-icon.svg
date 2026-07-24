@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Sequence of items -->
+  <rect x="6" y="42" width="11" height="14" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="20" y="42" width="11" height="14" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="34" y="42" width="11" height="14" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="48" y="42" width="11" height="14" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="62" y="42" width="11" height="14" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="76" y="42" width="11" height="14" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Fixed-size window over a subset -->
+  <rect x="31" y="37" width="45" height="24" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+
+  <!-- Window slides forward -->
+  <line x1="42" y1="24" x2="66" y2="24" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="64,21 71,24 64,27" fill="#cc2222"/>
+</svg>

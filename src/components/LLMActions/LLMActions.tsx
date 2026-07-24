@@ -68,7 +68,7 @@ export default function LLMActions() {
           ) : (
             <FaRegCopy className={styles.icon} />
           )}
-          {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy Markdown'}
+          {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy for LLM'}
         </button>
 
         <a

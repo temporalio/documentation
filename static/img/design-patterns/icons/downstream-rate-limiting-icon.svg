@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- 3 incoming request arrows -->
+  <line x1="4" y1="20" x2="35" y2="20" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="33,17 41,20 33,23" fill="#888"/>
+
+  <line x1="4" y1="40" x2="35" y2="40" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="33,37 41,40 33,43" fill="#888"/>
+
+  <line x1="4" y1="60" x2="35" y2="60" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="33,57 41,60 33,63" fill="#888"/>
+
+  <!-- Rate limit gate -->
+  <rect x="44" y="6" width="8" height="68" rx="3" fill="#cc2222"/>
+
+  <!-- Single throttled output arrow -->
+  <line x1="55" y1="40" x2="87" y2="40" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="85,37 93,40 85,43" fill="#888"/>
+</svg>

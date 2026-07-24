@@ -7,5 +7,9 @@
  * lives in one place.
  */
 export function getMarkdownPath(permalink: string): string {
-  return `${permalink.replace(/\/$/, '')}.md`;
+  const stripped = permalink.replace(/\/+$/, '');
+  // The docs root permalink is "/", which strips to "". The markdown-pages
+  // plugin writes the root index to index.md, so map "/" -> "/index.md"
+  // (otherwise the href would be a bare ".md"). Assumes baseUrl "/".
+  return `${stripped || '/index'}.md`;
 }

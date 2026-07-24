@@ -2,186 +2,109 @@
 id: generate-certificates
 title: tcld generate-certificates command reference
 sidebar_label: generate-certificates
-description: Generate certificate authority and end-entity TLS certificates for Temporal Cloud with tcld generate-certificates commands. Use modifiers for customization.
-slug: /cloud/tcld/generate-certificates/
+description: Commands for generating certificate authority and end-entity TLS certificates
+slug: /cloud/tcld/generate-certificates
 toc_max_heading_level: 4
 keywords:
-  - cli-reference
+  - cli reference
   - tcld
 tags:
   - Temporal Cloud
   - tcld
-  - Certificates
 ---
 
-The `tcld generate-certificates` commands generate certificate authority (CA) and end-entity TLS certificates for Temporal Cloud.
+{/* This is an auto-generated file. Do not edit directly. */}
+
+The `tcld generate-certificates` command commands for generating certificate authority and end-entity TLS certificates.
 
 Alias: `gen`
 
 - [tcld generate-certificates certificate-authority-certificate](#certificate-authority-certificate)
 - [tcld generate-certificates end-entity-certificate](#end-entity-certificate)
 
-## tcld generate-certificates certificate-authority-certificate {/* #certificate-authority-certificate */}
+### certificate-authority-certificate
 
-The `tcld generate-certificates certificate-authority-certificate` command generates certificate authority (CA) certificates for Temporal Cloud.
-
-`tcld generate-certificates certificate-authority-certificate <modifiers>`
+The `tcld generate-certificates certificate-authority-certificate` command generate a certificate authority certificate.
 
 Alias: `ca`
 
-The following modifiers control the behavior of the command.
-
 #### --organization
 
-Specify an organization name for certificate generation.
+The name of the organization
 
-Alias: `--org`
-
-**Example**
-
-```bash
-tcld generate-certificates certificate-authority-certificate --organization <value>
-```
+Alias: `org`
 
 #### --validity-period
 
-Specify the duration for which the certificate is valid.
-Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
+The duration for which the certificate is valid for. example: 30d10h (30 days and 10 hrs)
 
-Alias: `-d`
-
-**Example**
-
-```bash
-tcld generate-certificates certificate-authority-certificate --validity-period <value>
-```
+Alias: `d`
 
 #### --ca-certificate-file
 
-Specify a path to a `.pem` file where the generated X.509 certificate file will be stored.
+The path where the generated x509 certificate will be stored
 
-Alias: `--ca-cert`
-
-**Example**
-
-```bash
-tcld generate-certificates certificate-authority-certificate --ca-certificate-file <path>
-```
+Alias: `ca-cert`
 
 #### --ca-key-file
 
-Specify a path to a `.key` file where the certificate's private key will be stored.
+The path where the certificate's private key will be stored
 
-Alias: `--ca-key`
-
-**Example**
-
-```bash
-tcld generate-certificates certificate-authority-certificate --ca-key-file <path>
-```
+Alias: `ca-key`
 
 #### --rsa-algorithm
 
-When enabled, a 4096-bit RSA key pair is generated for the certificate instead of an ECDSA P-384 key pair.
-Because an ECDSA P-384 key pair is the recommended default, this option is disabled.
+Generates a 4096-bit RSA keypair instead of an ECDSA P-384 keypair (the recommended default) for the certificate (optional)
 
-Alias: `--rsa`
+Alias: `rsa`
 
-**Example**
+### end-entity-certificate
 
-```bash
-tcld generate-certificates certificate-authority-certificate --rsa-algorithm <boolean>
-```
-
-## tcld generate-certificates end-entity-certificate {/* #end-entity-certificate */}
-
-The `tcld generate-certificates end-entity-certificate` command generates end-entity (leaf) certificates for Temporal Cloud.
-
-`tcld generate-certificates end-entity-certificate <modifiers>`
+The `tcld generate-certificates end-entity-certificate` command generate an end-entity certificate.
 
 Alias: `leaf`
 
-The following modifiers control the behavior of the command.
-
 #### --organization
 
-Specify an organization name for certificate generation.
+The name of the organization
 
-Alias: `--org`
-
-**Example**
-
-```bash
-tcld generate-certificates end-entity-certificate --organization <value>
-```
+Alias: `org`
 
 #### --organization-unit
 
-Optional: Specify the name of the organization unit.
+The name of the organizational unit (optional)
 
-**Example**
+#### --common-name
 
-```bash
-tcld generate-certificates end-entity-certificate --organization-unit <value>
-```
+The common name (optional)
 
 #### --validity-period
 
-Specify the duration for which the certificate is valid.
-Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
+The duration for which the end entity certificate is valid for. example: 30d10h (30 days and 10 hrs). By default the generated certificate expires 24 hours before the certificate authority expires (optional)
 
-Alias: `-d`
-
-**Example**
-
-```bash
-tcld generate-certificates end-entity-certificate --validity-period <value>
-```
+Alias: `d`
 
 #### --ca-certificate-file
 
-Specify the path of the X.509 CA certificate in a `.pem` file for the certificate authority.
+The path of the x509 certificate for the certificate authority
 
-Alias: `--ca-cert`
-
-**Example**
-
-```bash
-tcld generate-certificates end-entity-certificate --ca-certificate-file <path>
-```
+Alias: `ca-cert`
 
 #### --ca-key-file
 
-Specify the path of the private key in a `.key` file for the certificate authority.
+The path of the private key for the certificate authority
 
-Alias: `--ca-key`
-
-**Example**
-
-```bash
-tcld generate-certificates end-entity-certificate --ca-key-file <path>
-```
+Alias: `ca-key`
 
 #### --certificate-file
 
-Specify a path to a `.pem` file where the generated X.509 leaf certificate file will be stored.
+The path where the generated x509 certificate will be stored
 
-Alias: `--cert`
-
-**Example**
-
-```bash
-tcld generate-certificates end-entity-certificate --certificate-file <path>
-```
+Alias: `cert`
 
 #### --key-file
 
-Specify a path to a `.key` file where the leaf certificate's private key will be stored.
+The path where the certificate's private key will be stored
 
-Alias: `--key`
+Alias: `key`
 
-**Example**
-
-```bash
-tcld generate-certificates end-entity-certificate --key-file <path>
-```

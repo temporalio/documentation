@@ -298,7 +298,9 @@ A `sql` data store definition can contain the following values:
 - `connectAddr` - _required_ - the remote address of the database, e.g. "192.168.1.2".
 - `connectProtocol` - _required_ - the protocol that goes with the `connectAddr`
   - _Valid values_: `tcp` or `unix`
-- `connectAttributes` - a map of key-value attributes to be sent as part of connect `data_source_name` url.
+- `connectAttributes` - an optional map of key-value attributes to be sent as part of connect `data_source_name` url.
+  - `cache`: This is a standard parameter to set the SQLite shared-cache mode. `private` means each database connection uses its own private cache (as opposed to "shared", where connections share a cache). This is the recommended setting for Temporal's SQLite usage.
+  - `setup`: Instructs the Temporal server to automatically initialize a SQLite database schema on startup.
 - `maxConns` - the max number of connections to this data store.
 - `maxIdleConns` - the max number of idle connections to this data store
 - `maxConnLifetime` - is the maximum time a connection can be alive.

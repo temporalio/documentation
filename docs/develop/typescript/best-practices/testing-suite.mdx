@@ -171,7 +171,7 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 #### Set up time skipping {/* #setting-up */}
 
-Set up the time-skipping test framework in the SDK of your choice.
+Make sure you have the `testing` package installed for the TypeScript SDK:
 
 ```bash
 npm install @temporalio/testing
@@ -225,7 +225,6 @@ The Workflow is executed using `testEnv.client.workflow`, which is connected to 
 
 #### Skip time automatically {/* #automatic-method */}
 
-You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
@@ -265,8 +264,6 @@ test('sleep completes almost immediately', async () => {
 ```
 
 #### Skip time manually {/* #manual-method */}
-
-Skip time manually in the SDK of your choice.
 
 You can call `testEnv.sleep()` from your test code to advance the test server's time.
 This is useful for testing intermediate states or indefinitely long-running Workflows.
@@ -327,8 +324,6 @@ test('sleeperWorkflow counts days correctly', async () => {
 ```
 
 #### Skip time in Activities {/* #skip-time-in-activities */}
-
-Skip time in Activities in the SDK of your choice.
 
 Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#sleep) from the mock Activity.
 

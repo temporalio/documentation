@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Three tasks launched at once -->
+  <rect x="8" y="18" width="10" height="10" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="8" y="35" width="10" height="10" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+  <rect x="8" y="52" width="10" height="10" rx="2" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <!-- First branch highlighted -->
+  <line x1="20" y1="23" x2="66" y2="23" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="63,19 72,23 63,27" fill="#cc2222"/>
+  <line x1="20" y1="40" x2="66" y2="40" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="63,36 72,40 63,44" fill="#888"/>
+  <line x1="20" y1="57" x2="66" y2="57" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="63,53 72,57 63,61" fill="#888"/>
+
+  <!-- Join bracket -->
+  <path d="M 80 18 L 86 18 L 86 62 L 80 62" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="86" y1="40" x2="92" y2="40" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+</svg>
