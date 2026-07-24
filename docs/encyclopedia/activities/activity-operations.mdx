@@ -29,8 +29,7 @@ opposed to lifecycle behaviors like [retries](/encyclopedia/retry-policies) and
 [timeouts](/encyclopedia/detecting-activity-failures) which happen automatically.
 
 You can perform Activity Operations through the [CLI](/cli/command-reference/activity), the UI, or directly via the gRPC
-API. Not all operations are available in all interfaces yet - see the [summary table](#operations-summary) for current
-support. Activity Operations don't apply to [Local Activities](/local-activity) or
+API. Activity Operations don't apply to [Local Activities](/local-activity) or
 [Standalone Activities](/standalone-activity).
 
 :::note Public Preview
@@ -309,10 +308,6 @@ options, including Retry Policy, Task Queue, and bulk mode via `--query`.
   apply immediately, the Activity must finish or fail its current execution first.
 - **`--restore-original-options` is batch-only.** This flag only works with `--query`. It's silently ignored in
   single-workflow mode. It can't be combined with other option changes in the same command.
-
-### Limitations
-
-- **Update Options is CLI and gRPC only.** It's not available in the UI.
 
 ## Observability {/* #observability */}
 
