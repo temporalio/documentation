@@ -289,7 +289,7 @@ as invocation start/end, model call before/after, tool call before/after, and me
 metrics, or custom logic at each stage.
 
 Register callbacks with `agent.addHook(EventClass, callback)`. Hook callbacks fire in Workflow context, so deterministic
-callbacks work without any extra setup. For callbacks that need I/O (audit logging, metrics, alerting), use
+callbacks work without any extra setup. For callbacks that need I/O (writing audit logs, metrics, alerting), use
 `workflow.activityAsHook` to dispatch the work as a Temporal Activity. The following example shows both patterns. The
 first callback mutates Workflow state (deterministic), while `persistToolCall` runs as an Activity (I/O-safe):
 
