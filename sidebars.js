@@ -37,12 +37,7 @@ module.exports = {
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
             'evaluate/development-production-features/job-queue',
-            {
-              type: 'category',
-              label: 'Serverless Workers',
-              link: { type: 'doc', id: 'evaluate/development-production-features/serverless-workers/index' },
-              items: ['evaluate/development-production-features/serverless-workers/demo'],
-            },
+            'evaluate/development-production-features/serverless-workers/index',
             {
               type: 'category',
               label: 'Product release stages',
@@ -232,6 +227,17 @@ module.exports = {
                 },
               ],
             },
+            {
+              type: 'category',
+              label: 'Integrations',
+              className: 'sidebar-integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/integrations/index',
+              },
+              items: ['develop/go/integrations/google-adk'],
+            },
           ],
         },
         {
@@ -337,7 +343,19 @@ module.exports = {
               items: [
                 'develop/java/best-practices/testing-suite',
                 'develop/java/best-practices/debugging',
-                'develop/java/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/java/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/java/best-practices/data-handling/data-conversion',
+                    'develop/java/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
             {
@@ -720,8 +738,20 @@ module.exports = {
               items: [
                 'develop/typescript/best-practices/testing-suite',
                 'develop/typescript/best-practices/debugging',
-                'develop/typescript/best-practices/converters-and-encryption',
                 'develop/typescript/best-practices/entity-pattern',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/typescript/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/typescript/best-practices/data-handling/data-conversion',
+                    'develop/typescript/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
             {
@@ -854,7 +884,19 @@ module.exports = {
                 'develop/dotnet/best-practices/error-handling',
                 'develop/dotnet/best-practices/testing-suite',
                 'develop/dotnet/best-practices/debugging',
-                'develop/dotnet/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/dotnet/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/dotnet/best-practices/data-handling/data-conversion',
+                    'develop/dotnet/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
           ],
@@ -971,7 +1013,19 @@ module.exports = {
                 'develop/ruby/best-practices/error-handling',
                 'develop/ruby/best-practices/testing-suite',
                 'develop/ruby/best-practices/debugging',
-                'develop/ruby/best-practices/converters-and-encryption',
+                {
+                  type: 'category',
+                  label: 'Data handling',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'develop/ruby/best-practices/data-handling/data-handling',
+                  },
+                  items: [
+                    'develop/ruby/best-practices/data-handling/data-conversion',
+                    'develop/ruby/best-practices/data-handling/data-encryption',
+                  ],
+                },
               ],
             },
           ],
@@ -1057,7 +1111,6 @@ module.exports = {
           ],
         },
         'develop/environment-configuration',
-        'develop/activity-retry-simulator',
         'develop/worker-performance',
         'develop/worker-tuning-reference',
         'develop/safe-deployments',
@@ -1486,7 +1539,16 @@ module.exports = {
       },
       items: [
         'encyclopedia/temporal',
-        'encyclopedia/temporal-sdks',
+        {
+          type: 'category',
+          label: 'Architecture',
+          collapsed: true,
+          items: [
+            'encyclopedia/architecture/temporal-architecture',
+            'encyclopedia/architecture/how-temporal-works',
+            'encyclopedia/architecture/temporal-sdks',
+          ],
+        },
         'encyclopedia/temporal-client',
         {
           type: 'category',
@@ -1714,7 +1776,9 @@ module.exports = {
       label: 'Interactive Demos',
       collapsed: true,
       items: [
-        'develop/standalone-activities-interactive-demo',
+        'demos/standalone-activities',
+        'demos/serverless-workers',
+        'demos/activity-retry-simulator',
       ],
     },    {
       type: 'category',

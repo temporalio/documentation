@@ -1,0 +1,92 @@
+---
+id: data-encryption
+title: Payload encryption - .NET SDK
+sidebar_label: Payload encryption
+toc_max_heading_level: 3
+tags:
+  - Security
+  - Encryption
+  - Codec Server
+  - .NET SDK
+  - Temporal SDKs
+description: Encrypt data sent to and from the Temporal Service using a custom Payload Codec in the .NET SDK.
+---
+
+Temporal's security model is designed around client-side encryption of Payloads.
+A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
+This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
+It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access with keys, algorithms, or other security measures.
+
+A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client.
+Depending on business needs, a complete implementation of Payload Encryption may involve selecting appropriate encryption algorithms, managing encryption keys, restricting a subset of their users from viewing payload output, or a combination of these.
+
+The server itself never adds encryption over Payloads.
+Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
+When working with sensitive data, you should always implement Payload encryption.
+
+## Custom Payload Codec {/* #custom-payload-codec */}
+
+Custom Data Converters can change the default Temporal Data Conversion behavior by adding hooks, sending payloads to external storage, or performing different encoding steps.
+If you only need to change the encoding performed on your payloads -- by adding compression or encryption -- you can override the default Data Converter to use a new `PayloadCodec`.
+
+The `IPayloadCodec` needs to implement `EncodeAsync()` and `DecodeAsync()` methods.
+These should convert the given payloads as needed into new payloads, using the `"encoding"` metadata field.
+Do not mutate the existing payloads.
+Here is an example of an encryption codec that just uses base64 in each direction:
+
+```csharp
+public class EncryptionCodec : IPayloadCodec
+{
+    public Task<IReadOnlyCollection<Payload>> EncodeAsync(IReadOnlyCollection<Payload> payloads) =>
+        Task.FromResult<IReadOnlyCollection<Payload>>(payloads.Select(p =>
+        {
+            return new Payload()
+            {
+                // Set our specific encoding. We may also want to add a key ID in here for use by
+                // the decode side
+                Metadata = { ["encoding"] = "binary/my-payload-encoding" },
+                Data = ByteString.CopyFrom(Encrypt(p.ToByteArray())),
+            };
+        }).ToList());
+
+    public Task<IReadOnlyCollection<Payload>> DecodeAsync(IReadOnlyCollection<Payload> payloads) =>
+        Task.FromResult<IReadOnlyCollection<Payload>>(payloads.Select(p =>
+        {
+            // Ignore if it doesn't have our expected encoding
+            if (p.Metadata.GetValueOrDefault("encoding") != "binary/my-payload-encoding")
+            {
+                return p;
+            }
+            // Decrypt
+            return Payload.Parser.ParseFrom(Decrypt(p.Data.ToByteArray()));
+        }).ToList());
+
+    private byte[] Encrypt(byte[] data) => Encoding.ASCII.GetBytes(Convert.ToBase64String(data));
+
+    private byte[] Decrypt(byte[] data) => Convert.FromBase64String(Encoding.ASCII.GetString(data));
+}
+```
+
+### Set Data Converter to use custom Payload Codec
+
+When creating a client, the default `DataConverter` can be updated with the payload codec like so:
+
+```csharp
+var myClient = await TemporalClient.ConnectAsync(new("localhost:7233")
+{
+    DataConverter = DataConverter.Default with { PayloadCodec = new EncryptionCodec() },
+});
+```
+
+- Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
+- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/command-reference/workflow#show) command or when browsing the Web UI to view output.
+
+For reference, see the [Encryption](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption) sample.
+
+## Using a Codec Server
+
+A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
+The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
+You create, operate, and manage access to your Codec Server in your own environment.
+The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.

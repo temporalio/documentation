@@ -409,72 +409,44 @@ main.max-w-screen-lg {
 
 @font-face {
   font-family: 'Aeonik';
-  src: url('../fonts/Aeonik/Aeonik-Light.woff');
+  src: url('../fonts/Aeonik/Aeonik-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 @font-face {
   font-family: 'Aeonik';
-  src: url('../fonts/Aeonik/Aeonik-Regular.woff');
+  src: url('../fonts/Aeonik/Aeonik-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 @font-face {
   font-family: 'Aeonik';
-  src: url('../fonts/Aeonik/Aeonik-Bold.woff');
+  src: url('../fonts/Aeonik/Aeonik-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
+/* Metric-matched fallback so the swap from system font to Aeonik doesn't shift layout.
+   Values computed from Aeonik-Regular's actual font metrics vs Arial (see PR discussion). */
 @font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/Poppins/Poppins-Regular.ttf');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/Poppins/Poppins-Medium.ttf');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/Poppins/Poppins-SemiBold.ttf');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/Poppins/Poppins-Bold.ttf');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Sans Mono';
-  src: url('../fonts/Noto\ Sans\ Mono/NotoSansMono-VariableFont_wdth,wght.ttf');
-  font-style: normal;
-  font-display: swap;
+  font-family: 'Aeonik Fallback';
+  src: local('Arial');
+  size-adjust: 100.4933%;
+  ascent-override: 93.5386%;
+  descent-override: 20.8969%;
+  line-gap-override: 0%;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
 }
 
 h1 {
@@ -505,14 +477,14 @@ h3 {
 }
 
 .p-landing {
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 1px;
 }
 
 .a-landing {
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
@@ -535,7 +507,7 @@ h3 {
   display: grid;
   grid-template-columns: 50% 50%;
   column-gap: 1rem;
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   vertical-align: top;
@@ -544,7 +516,7 @@ h3 {
 
 .single-column-list {
   margin-right: 2.5em;
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   vertical-align: top;
@@ -635,7 +607,7 @@ h3 {
 }
 
 .landing-card-p {
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 1.5rem;
@@ -655,55 +627,7 @@ h3 {
 }
 
 .menu__link {
-  font-family: 'Aeonik';
-}
-
-.badge-purple {
-  font-family: 'Poppins';
-  font-weight: 500;
-  font-size: 0.75rem;
-  color: #6d28d9;
-  background-color: #ede9fe;
-  border-radius: 0.125rem;
-  padding: 0 0.5rem;
-  width: fit-content;
-}
-
-.badge-blue {
-  font-family: 'Poppins';
-  font-weight: 500;
-  font-size: 0.75rem;
-  color: #1d4ed8;
-  background-color: #dbeafe;
-  border-radius: 0.125rem;
-  padding: 0 0.5rem;
-  width: fit-content;
-}
-
-.badge-header {
-  flex-direction: column;
-  display: flex;
-}
-
-@media (min-width: 640px) {
-  .badge-header {
-    align-items: center;
-    flex-direction: row;
-  }
-
-  .badge-purple {
-    margin: 0rem 1rem 0rem 0rem;
-  }
-
-  .badge-blue {
-    margin: 2.5rem 1rem 0rem 1rem;
-  }
-}
-
-@media (min-width: 710px) {
-  .badge-purple {
-    margin: 2.5rem 1rem 0rem 1rem;
-  }
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
 }
 
 .aside {
@@ -714,7 +638,7 @@ h3 {
   border-color: #2563eb;
   border-style: solid;
   padding: 1.2rem 1.25rem 0.25rem 1.25rem;
-  font-family: 'Aeonik';
+  font-family: 'Aeonik', 'Aeonik Fallback', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 1px;
@@ -768,7 +692,7 @@ h3 {
 }
 
 .main-card h1 {
-  font-family: Aeonik;
+  font-family: Aeonik, 'Aeonik Fallback', sans-serif;
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
@@ -776,7 +700,7 @@ h3 {
 }
 
 .main-card p {
-  font-family: Aeonik;
+  font-family: Aeonik, 'Aeonik Fallback', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -822,31 +746,6 @@ h3 {
   font-size: 24px;
 }
 
-.cloud-button {
-  font-feature-settings:
-    'clig' off,
-    'liga' off;
-  font-family: Noto Sans Mono;
-  font-style: normal;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  display: flex;
-  padding: 16px 24px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 8px;
-  background: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
-  cursor: pointer;
-  border: 0px;
-  color: var(--White, #fff);
-}
-
-.cloud-button {
-  text-decoration: none;
-}
-
 .highlight {
   padding: 0.05rem 0.2rem;
   background-color: var(--color-indigo, #444ce7);
@@ -854,173 +753,7 @@ h3 {
   border-radius: 0.2rem;
 }
 
-.core-concepts {
-  background-image: url('/img/assets/stars_bg.png');
-  color: white;
-  position: absolute;
-  right: 0;
-  left: 300px;
-  height: 680px;
-  padding: 80px;
-  z-index: 1;
-  margin-top: 20px;
-}
-
-.deployment {
-  display: block;
-  gap: 1rem;
-}
-
-.second-row-container {
-  gap: 1rem;
-}
-
-.core-concepts-info {
-  display: flex;
-  gap: 24px;
-  width: 680px;
-}
-
-.arrow {
-  background-color: transparent;
-  border: none;
-  color: #a5a9f5;
-  cursor: pointer;
-  font-size: 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-top: 58px;
-}
-
-.arrow img {
-  min-width: 20px;
-  width: 20px;
-  height: 35px;
-}
-
-.core-concepts-info h1 {
-  font-family: Aeonik;
-  font-size: 60px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 110%;
-}
-
-.core-concepts-title {
-  font-family: Noto Sans Mono;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 170%;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  background: var(--purp-indigo, linear-gradient(316deg, #444ce7 2.29%, #b664ff 100%));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.core-concepts-description {
-  font-family: Noto Sans Mono;
-  color: #c7d7fe;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%;
-  padding: 12px 0;
-  border-bottom: 2px solid var(--color-indigo, #444ce7);
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.core-concepts-slide {
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-}
-
-.slide-dots {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-}
-
-.slide-dot {
-  width: 14px;
-  height: 14px;
-  opacity: 0.6;
-  border: 2px solid var(--indigos-indigo-600, #4f46e5);
-  border-radius: 9999px;
-  cursor: pointer;
-}
-
-.slide-dot-active {
-  opacity: 1;
-  background-color: var(--indigos-indigo-600, #4f46e5);
-}
-
-@media (max-width: 1240px) {
-  .core-concepts-info {
-    width: 580px;
-  }
-}
-
-@media (max-width: 996px) {
-  .core-concepts {
-    left: 0px;
-    padding: 60px;
-  }
-}
-
-@media (max-width: 639px) {
-  .core-concepts {
-    left: 0px;
-    padding: 40px;
-  }
-
-  .core-concepts-info {
-    width: 340px;
-    gap: 4px;
-  }
-
-  .core-concepts-info h1 {
-    font-size: 32px;
-  }
-
-  .core-concepts-title {
-    font-size: 12px;
-    line-height: 100%;
-  }
-
-  .core-concepts-description {
-    font-size: 12px;
-  }
-
-  .core-concepts-info p {
-    font-size: 14px;
-  }
-
-  .arrow {
-    padding-top: 38px;
-  }
-
-  .arrow img {
-    min-width: 10px;
-    width: 10px;
-    height: 17px;
-  }
-}
-
 @media (min-width: 768px) {
-  .deployment {
-    display: flex;
-  }
-  .second-row-container {
-    display: flex;
-  }
-
   .troubleshooting {
     width: 300px;
     min-width: 300px;
@@ -2126,4 +1859,18 @@ code {
 
 .sidebar-integrations:has(.menu__list > .menu__list-item .menu__link--active) > .menu__list-item-collapsible > .menu__caret {
   display: flex;
+}
+
+/* About the SDKs: expandable walkthrough — transparent background */
+.sdk-walkthrough-details,
+.sdk-walkthrough-details[open] {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.sdk-walkthrough-details summary {
+  background: transparent;
+  cursor: pointer;
 }

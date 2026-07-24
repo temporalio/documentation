@@ -31,11 +31,6 @@ function isExcludedDocPath(filePath) {
   return false;
 }
 
-if (!BASE_SHA) {
-  console.error('BASE_SHA environment variable is required.');
-  process.exit(1);
-}
-
 function getChangedDocFiles(baseBranch = 'origin/main') {
   // Find the common ancestor (merge base)
   const mergeBase = execSync(`git merge-base HEAD ${baseBranch}`, { encoding: 'utf8' }).trim();
@@ -63,7 +58,7 @@ function extractFrontMatter(filePath) {
   const block = match[1];
   const result = {};
 
-  ['slug', 'title', 'sidebar_label'].forEach((key) => {
+  ['slug', 'id', 'title', 'sidebar_label'].forEach((key) => {
     const pattern = new RegExp(`^${key}:\\s*(.+)$`, 'm');
     const valueMatch = block.match(pattern);
     if (valueMatch) {
@@ -74,25 +69,31 @@ function extractFrontMatter(filePath) {
   return result;
 }
 
-function relativeSlugFromPath(filePath) {
+function relativeSlugFromPath(filePath, id) {
   const relativePath = path.relative(DOCS_DIR, filePath);
   const withoutExtension = relativePath.replace(/\.[^.]+$/, '');
   const parts = withoutExtension.split(path.sep);
 
-  if (parts[parts.length - 1] === 'index') {
+  // Mirror Docusaurus: when a doc has no `slug`, its URL is the directory path
+  // plus its `id`. The `id` defaults to the filename, but a custom `id` in the
+  // frontmatter overrides that last segment (e.g. temporal-nexus.mdx with
+  // `id: nexus` publishes at .../nexus, not .../temporal-nexus).
+  if (typeof id === 'string' && id.trim().length > 0) {
+    parts[parts.length - 1] = id.trim();
+  } else if (parts[parts.length - 1] === 'index') {
     parts.pop();
   }
 
   return parts.join('/');
 }
 
-function normalizeSlug(slug, filePath) {
+function normalizeSlug(slug, filePath, id) {
   if (typeof slug === 'string' && slug.trim().length > 0) {
     const trimmed = slug.trim();
     return trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
   }
 
-  return relativeSlugFromPath(filePath);
+  return relativeSlugFromPath(filePath, id);
 }
 
 function humanizeSegment(segment) {
@@ -115,7 +116,7 @@ function buildUrlForSlug(slug) {
 
 function collectDocInfo(filePath) {
   const frontMatter = extractFrontMatter(filePath);
-  const slug = normalizeSlug(frontMatter.slug, filePath);
+  const slug = normalizeSlug(frontMatter.slug, filePath, frontMatter.id);
   const segments = slug.split('/').filter((segment) => segment.length > 0);
   const label =
     frontMatter.sidebar_label ||
@@ -190,6 +191,11 @@ function renderTree(tree) {
 }
 
 function main() {
+  if (!BASE_SHA) {
+    console.error('BASE_SHA environment variable is required.');
+    process.exit(1);
+  }
+
   const changedFiles = getChangedDocFiles('origin/main');
 
   if (changedFiles.length === 0) {
@@ -216,6 +222,8 @@ if (require.main === module) {
     isExcludedDocPath,
     getChangedDocFiles,
     extractFrontMatter,
+    relativeSlugFromPath,
+    normalizeSlug,
     collectDocInfo,
     insertIntoTree,
     renderTree,
