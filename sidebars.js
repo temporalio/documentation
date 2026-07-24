@@ -768,6 +768,7 @@ module.exports = {
                 'develop/typescript/integrations/ai-sdk',
                 'develop/typescript/integrations/langsmith',
                 'develop/typescript/integrations/openai-agents',
+                'develop/typescript/integrations/strands-agents',
               ],
             },
           ],
@@ -1392,6 +1393,7 @@ module.exports = {
           },
           items: [
             'production-deployment/worker-deployments/worker-versioning',
+            'production-deployment/worker-deployments/recover-pinned-workflows',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
             'production-deployment/worker-deployments/unversioned-to-versioned-migration',
