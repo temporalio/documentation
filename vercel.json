@@ -21,6 +21,15 @@
           "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\", </assets/fonts/Aeonik-Light-c944de5d59061b5eca77f8b08852df3b.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Aeonik-Regular-5daa2b042642b01633b5ba8273b0d396.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
         }
       ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -2151,6 +2160,21 @@
     {
       "source": "/develop/go/workers/cloud-worker",
       "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/temporal-sdks",
+      "destination": "/encyclopedia/architecture/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/architecture/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
       "permanent": true
     },
     {

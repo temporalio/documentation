@@ -1,5 +1,4 @@
 //@ts-check
-const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 const mermaidTheme = require('./src/constants/mermaidTheme');
@@ -62,7 +61,7 @@ module.exports = async function createConfigAsync() {
         { name: 'robots', content: 'follow, index' },
         { property: 'og:type', content: 'website' },
       ],
-      image: '/img/assets/open-graph-shiny.png',
+      image: '/img/assets/open-graph-shiny.jpg',
       prism: {
         theme: prismLightTheme,
         darkTheme: prismDarkTheme,
@@ -361,16 +360,6 @@ module.exports = async function createConfigAsync() {
       },
     ],
     plugins: [
-      function preloadFontPlugin() {
-        return {
-          name: 'preload-font-plugin',
-          configureWebpack() {
-            return {
-              plugins: [new FontPreloadPlugin()],
-            };
-          },
-        };
-      },
       [
         './plugins/cloud-region-counts',
         {
