@@ -1793,7 +1793,7 @@ module.exports = {
       },
       items: [
         'guides/entity-pattern-loyalty-points',
-        'guides/saga-pattern',
+        'guides/recover-without-restart',
         'guides/route-specialized-workloads',
         'guides/worker-execution-affinity',
         'guides/temporary-rate-limit-increases',
