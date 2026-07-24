@@ -1411,6 +1411,7 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
+        'production-deployment/temporal-proxy/index',
       ],
     },
     {
