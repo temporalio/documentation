@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 
+// Mirrors the hero blurb in src/components/Cookbook/Home/CookbookHome.tsx —
+// duplicated (not imported) because that file is a .tsx React component and
+// this is a plain build-time script. Keep these in sync if the copy changes.
+const HERO_BLURB =
+  'Step-by-step solutions that show you how to build reliable, production-ready AI systems with Temporal. Learn practical paradigms for prompts, tools, retries, and Workflow design.';
+
 module.exports = function cookbookIndexPlugin(context, options = {}) {
 console.log('[cookbook-index] init with docsDir:', options.docsDir);
   console.log('[cookbook-index] resolved docsDir:', path.isAbsolute(options.docsDir)
@@ -91,7 +97,34 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
       await createData('cookbook.index.json', JSON.stringify(content.items, null, 2));
       setGlobalData({ items: content.items });
     },
-  };
 
-  
+    // The /ai-cookbook landing page (src/pages/ai-cookbook.tsx) is a plain
+    // React page, not an MDX doc, so it's invisible to plugins/markdown-pages
+    // (which only walks docsDir trees). It links to a markdown alternate
+    // (<link rel="alternate" type="text/markdown">) same as every recipe
+    // page, so something has to actually produce that file — this plugin
+    // already has the exact item list/sort needed, so it does it here rather
+    // than duplicating cookbook-item-shaping logic elsewhere.
+    async postBuild({ outDir }) {
+      const items = readItems();
+      const sorted = [...items].sort((a, b) => {
+        const priorityA = typeof a.priority === 'number' ? a.priority : -Infinity;
+        const priorityB = typeof b.priority === 'number' ? b.priority : -Infinity;
+        if (priorityA !== priorityB) return priorityB - priorityA;
+        return a.title.localeCompare(b.title);
+      });
+
+      const lines = [
+        '# AI Cookbook',
+        '',
+        `> ${HERO_BLURB}`,
+        '',
+        ...sorted.map((item) => `- [${item.title}](${item.permalink}): ${item.description}`),
+        '',
+      ];
+
+      fs.writeFileSync(path.join(outDir, 'ai-cookbook.md'), lines.join('\n'));
+      console.log(`[cookbook-index] Generated ai-cookbook.md index (${sorted.length} recipe(s))`);
+    },
+  };
 };

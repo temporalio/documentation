@@ -10,4 +10,9 @@ const TEMPLATE_VERSION = 8;
 
 const IMAGE_EXTENSION = 'jpg';
 
-module.exports = { TEMPLATE_VERSION, IMAGE_EXTENSION };
+// Footer label rendered bottom-right of the card, next to the logo. Per-target
+// overrides (e.g. ai-cookbook) are passed explicitly alongside docsDir/
+// routeBasePath wherever a target is configured — see docusaurus.config.js.
+const DEFAULT_FOOTER_TEXT = 'DOCS.TEMPORAL.IO';
+
+module.exports = { TEMPLATE_VERSION, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT };

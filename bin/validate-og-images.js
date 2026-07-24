@@ -32,6 +32,15 @@ const ogImagePlugin = require('../plugins/og-image');
 
 const BUILD_DIR = path.join(process.cwd(), 'build');
 const DOCS_DIR = path.join(process.cwd(), 'docs');
+const AI_COOKBOOK_DIR = path.join(process.cwd(), 'ai-cookbook');
+
+// Every docs plugin instance the og-image plugin actually targets (see the
+// `targets` option in docusaurus.config.js) — kept in sync with that list so
+// this validator checks the same pages the plugin generates cards for.
+const DOC_TARGETS = [
+  { dir: DOCS_DIR, routeBasePath: '/' },
+  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+];
 
 function walkHtmlFiles(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -73,58 +82,60 @@ async function main() {
   let overridePagesChecked = 0;
   let skippedPartials = 0;
 
-  for (const filePath of ogImagePlugin.walkDir(DOCS_DIR)) {
-    const raw = fs.readFileSync(filePath, 'utf8');
-    const { data: frontmatter, content } = matter(raw);
-    const urlPath = ogImagePlugin.resolveUrlPath(DOCS_DIR, filePath, frontmatter);
-    const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
+  for (const { dir, routeBasePath, footerText } of DOC_TARGETS) {
+    for (const filePath of ogImagePlugin.walkDir(dir)) {
+      const raw = fs.readFileSync(filePath, 'utf8');
+      const { data: frontmatter, content } = matter(raw);
+      const urlPath = ogImagePlugin.resolveUrlPath(dir, filePath, frontmatter, routeBasePath);
+      const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
 
-    if (!fs.existsSync(htmlPath)) {
-      skippedPartials++;
-      continue;
-    }
-    docHtmlPaths.add(htmlPath);
-    docPagesChecked++;
+      if (!fs.existsSync(htmlPath)) {
+        skippedPartials++;
+        continue;
+      }
+      docHtmlPaths.add(htmlPath);
+      docPagesChecked++;
 
-    const html = fs.readFileSync(htmlPath, 'utf8');
-    const ogImage = extractMetaContent(html, 'property', 'og:image');
-    const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
+      const html = fs.readFileSync(htmlPath, 'utf8');
+      const ogImage = extractMetaContent(html, 'property', 'og:image');
+      const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
 
-    if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
-      overridePagesChecked++;
-      const expectedOverride = ogImagePlugin.overrideImageFor(frontmatter, content, siteUrl);
+      if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
+        overridePagesChecked++;
+        const expectedOverride = ogImagePlugin.overrideImageFor(frontmatter, content, siteUrl);
 
-      if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
-        overrideMismatches.push({
+        if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
+          overrideMismatches.push({
+            file: path.relative(BUILD_DIR, htmlPath),
+            expected: expectedOverride,
+            ogImage,
+            twitterImage,
+          });
+        }
+        continue;
+      }
+
+      const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
+      const title = ogImagePlugin.extractTitle(content, frontmatter, id);
+      const description = frontmatter.description;
+      const hash = ogImagePlugin.hashFor(title, description, footerText);
+      const expectedImage = new URL(
+        path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
+        config.url,
+      ).toString();
+      const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
+
+      if (ogImage !== expectedImage || twitterImage !== expectedImage) {
+        docMismatches.push({
           file: path.relative(BUILD_DIR, htmlPath),
-          expected: expectedOverride,
+          expected: expectedImage,
           ogImage,
           twitterImage,
         });
       }
-      continue;
-    }
-
-    const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
-    const title = ogImagePlugin.extractTitle(content, frontmatter, id);
-    const description = frontmatter.description;
-    const hash = ogImagePlugin.hashFor(title, description);
-    const expectedImage = new URL(
-      path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
-      config.url,
-    ).toString();
-    const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
-
-    if (ogImage !== expectedImage || twitterImage !== expectedImage) {
-      docMismatches.push({
-        file: path.relative(BUILD_DIR, htmlPath),
-        expected: expectedImage,
-        ogImage,
-        twitterImage,
-      });
-    }
-    if (!fs.existsSync(expectedImagePath)) {
-      missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
+      if (!fs.existsSync(expectedImagePath)) {
+        missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
+      }
     }
   }
 

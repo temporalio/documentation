@@ -11,8 +11,16 @@ const matter = require('gray-matter');
 const ogImagePlugin = require('../plugins/og-image');
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
+const AI_COOKBOOK_DIR = path.join(process.cwd(), 'ai-cookbook');
 const BUILD_DIR = path.join(process.cwd(), 'build');
 const OUT_FILE = path.join(BUILD_DIR, '__og-gallery.html');
+
+// Kept in sync with the og-image plugin's `targets` option in
+// docusaurus.config.js — every docs plugin instance it renders cards for.
+const DOC_TARGETS = [
+  { dir: DOCS_DIR, routeBasePath: '/' },
+  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+];
 
 // Section grouping/labeling is purely a gallery-review concern now — the
 // generated card itself dropped the section pill in the Figma redesign, so
@@ -40,10 +48,10 @@ function humanize(id) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function resolveSection(docsDir, filePath) {
+function resolveSection(docsDir, filePath, defaultSection) {
   const rel = path.relative(docsDir, filePath).replace(/\\/g, '/');
   const segments = rel.split('/');
-  if (segments.length === 1) return 'Docs';
+  if (segments.length === 1) return defaultSection;
   const top = segments[0];
   if (top === 'develop' && segments[1] && SDK_LABELS[segments[1]]) {
     return `${SDK_LABELS[segments[1]]} SDK`;
@@ -69,30 +77,34 @@ async function main() {
 
   const siteUrl = await getSiteUrl();
   const cards = [];
-  for (const filePath of ogImagePlugin.walkDir(DOCS_DIR)) {
-    const raw = fs.readFileSync(filePath, 'utf8');
-    const { data: frontmatter, content } = matter(raw);
-    const urlPath = ogImagePlugin.resolveUrlPath(DOCS_DIR, filePath, frontmatter);
-    const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
-    if (!fs.existsSync(htmlPath)) continue;
+  for (const { dir, routeBasePath, footerText } of DOC_TARGETS) {
+    const defaultSection = dir === AI_COOKBOOK_DIR ? 'AI Cookbook' : 'Docs';
 
-    const section = resolveSection(DOCS_DIR, filePath);
-    const routePath = urlPath === 'index' ? '/' : `/${urlPath}`;
+    for (const filePath of ogImagePlugin.walkDir(dir)) {
+      const raw = fs.readFileSync(filePath, 'utf8');
+      const { data: frontmatter, content } = matter(raw);
+      const urlPath = ogImagePlugin.resolveUrlPath(dir, filePath, frontmatter, routeBasePath);
+      const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
+      if (!fs.existsSync(htmlPath)) continue;
 
-    if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
+      const section = resolveSection(dir, filePath, defaultSection);
+      const routePath = urlPath === 'index' ? '/' : `/${urlPath}`;
+
+      if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
+        const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
+        const title = ogImagePlugin.extractTitle(content, frontmatter, id);
+        const overrideImage = ogImagePlugin.overrideImageFor(frontmatter, content, siteUrl);
+        cards.push({ urlPath: routePath, section, title, isOverride: true, imgSrc: overrideImage });
+        continue;
+      }
+
       const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
       const title = ogImagePlugin.extractTitle(content, frontmatter, id);
-      const overrideImage = ogImagePlugin.overrideImageFor(frontmatter, content, siteUrl);
-      cards.push({ urlPath: routePath, section, title, isOverride: true, imgSrc: overrideImage });
-      continue;
+      const description = frontmatter.description;
+      const hash = ogImagePlugin.hashFor(title, description, footerText);
+
+      cards.push({ urlPath: routePath, section, title, isOverride: false, imgSrc: `/img/og/${hash}.${ogImagePlugin.IMAGE_EXTENSION}` });
     }
-
-    const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
-    const title = ogImagePlugin.extractTitle(content, frontmatter, id);
-    const description = frontmatter.description;
-    const hash = ogImagePlugin.hashFor(title, description);
-
-    cards.push({ urlPath: routePath, section, title, isOverride: false, imgSrc: `/img/og/${hash}.${ogImagePlugin.IMAGE_EXTENSION}` });
   }
 
   cards.sort((a, b) => a.section.localeCompare(b.section) || a.title.localeCompare(b.title));
