@@ -24,7 +24,7 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+import { ViewSourceCodeNotice } from '@site/src/components';
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
@@ -36,8 +36,6 @@ This section covers features related to viewing the state of the application, in
 - [Visibility APIs](#visibility)
 
 ## Emit metrics {/* #metrics */}
-
-**How to emit metrics**
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -60,8 +58,6 @@ my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
 
 ## Set up tracing {/* #tracing */}
-
-**How to set up tracing**
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -87,25 +83,7 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
-
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-The Temporal SDK core normally uses `WARN` as its default logging level.
-
-**How to log from a Workflow**
-
-Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-
-The SDK core uses `WARN` for its default logging level.
-
-You can log from a Workflow using Python's standard library, by importing the logging module `logging`.
+You can log from a Workflow using Python's standard library, by importing the logging module `logging`. You can find the log levels supported by the `logging` module in [their official documentation](https://docs.python.org/3/library/logging.html#logging-levels). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 Set your logging configuration to a level you want to expose logs to.
 The following example sets the logging information level to `INFO`.
@@ -120,7 +98,7 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 
 ```python
 # ...
-        workflow.logger.info("Workflow input parameter: %s" % name)
+workflow.logger.info("Workflow input parameter: %s" % name)
 ```
 
 ### Custom logger {/* #custom-logger */}

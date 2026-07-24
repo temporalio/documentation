@@ -41,3 +41,5 @@
 ## Update a running Workflow
 
 ## Durable External Storage for large payloads
+
+## Highly available Worker patterns {/* #ha-worker-patterns */}

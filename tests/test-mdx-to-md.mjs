@@ -16,6 +16,7 @@ import {
   extractProp,
   parseTabValues,
   parseReadList,
+  parseSdkGuideLinks,
   dedent,
   scanMarkdownImports,
   COMPONENT_REGISTRY,
@@ -192,6 +193,35 @@ test("parses readList prop", () => {
   assertEqual(items.length, 2);
   assertEqual(items[0].text, "Workflow Definition");
   assertEqual(items[0].href, "/workflow-definition");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: parseSdkGuideLinks
+// ---------------------------------------------------------------------------
+console.log("\n📦 parseSdkGuideLinks");
+
+test("generates links from path + filter + title props", () => {
+  const tag = `<SdkGuideLinks path="activities/standalone-activities" filter={['go', 'python', 'ruby']} title="Standalone Activities" />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 3);
+  assertEqual(items[0].text, "Standalone Activities - Go");
+  assertEqual(items[0].href, "/develop/go/activities/standalone-activities");
+  assertEqual(items[2].text, "Standalone Activities - Ruby");
+  assertEqual(items[2].href, "/develop/ruby/activities/standalone-activities");
+});
+
+test("generates links for all SDKs when filter is omitted", () => {
+  const tag = `<SdkGuideLinks path="client/temporal-client" title="Temporal Client" />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 8);
+});
+
+test("uses the explicit links prop when provided", () => {
+  const tag = `<SdkGuideLinks links={[{ name: 'goLangBlock', href: '/develop/go/foo', label: 'Go' }]} />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 1);
+  assertEqual(items[0].text, "Go");
+  assertEqual(items[0].href, "/develop/go/foo");
 });
 
 // ---------------------------------------------------------------------------
@@ -384,6 +414,19 @@ test("converts RelatedReadList to markdown link list", () => {
   assertContains(markdown, "- [Workflow Definition](/workflow-definition)");
   assertContains(markdown, "- [Activities](/activities)");
   assertNotContains(markdown, "RelatedReadList");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — SdkGuideLinks
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — SdkGuideLinks");
+
+test("converts SdkGuideLinks to a markdown link list", () => {
+  const input = `<SdkGuideLinks path="activities/standalone-activities" filter={['go', 'ruby']} title="Standalone Activities" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "- [Standalone Activities - Go](/develop/go/activities/standalone-activities)");
+  assertContains(markdown, "- [Standalone Activities - Ruby](/develop/ruby/activities/standalone-activities)");
+  assertNotContains(markdown, "SdkGuideLinks");
 });
 
 // ---------------------------------------------------------------------------
@@ -976,6 +1019,7 @@ test("all registry strategies are valid strings", () => {
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
     "json-table", "integrations-grid", "home-page-hero", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(

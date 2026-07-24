@@ -36,6 +36,8 @@ Some SDKs have support or examples for popular test frameworks, runners, or libr
 
 One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parameterized tests.
 
+If you do use `pytest`, consider using `-s` (`--show-capture=no`) so you can see the logs live.
+
 ## Testing Activities {/* #test-activities */}
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
@@ -75,13 +77,45 @@ assert heartbeats == ["param: test", "second heartbeat"]
 
 ## Testing Workflows {/* #test-workflows */}
 
+The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results. `WorkflowEnvironment.start_local` configures a local environment for running and testing Workflows:
+
+```python
+import uuid
+
+import pytest
+from temporalio import activity
+from temporalio.testing import WorkflowEnvironment
+from temporalio.worker import Worker
+
+from activities import greet
+from workflows import SayHelloWorkflow
+
+
+@pytest.mark.asyncio
+async def test_say_hello_workflow():
+    """Execute the workflow end-to-end with its real activity."""
+    task_queue_name = str(uuid.uuid4())
+    async with await WorkflowEnvironment.start_local(ui=True, ui_port=8233) as env:
+        async with Worker(
+            env.client,
+            task_queue=task_queue_name,
+            workflows=[SayHelloWorkflow],
+            activities=[greet],
+        ):
+            result = await env.client.execute_workflow(
+                SayHelloWorkflow.run,
+                "Temporal",
+                id=str(uuid.uuid4()),
+                task_queue=task_queue_name,
+            )
+            assert result == "Hello Temporal"
+```
+
+You can also pass `ui=True` to `start_local` to see the UI.
+
 ### How to mock Activities {/* #mock-activities */}
 
-Mock the Activity invocation when unit testing your Workflows.
-
-When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
-
-Provide mock Activity implementations to the Worker.
+When running unit tests on Workflows, many times you want to test the Workflow logic in isolation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
 ```python
 import uuid
@@ -130,24 +164,21 @@ For example, if you have a Workflow sleep for a day, or have an Activity failure
 Instead, test the logic that happens after the sleep by skipping forward in time and complete your tests in a timely manner.
 
 The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
-Time is a global property of an instance of `TestWorkflowEnvironment`: skipping time (either automatically or manually) applies to all currently running tests.
+Time is a global property of an instance of `WorkflowEnvironment`: skipping time (either automatically or manually) applies to all currently running tests.
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
 #### Skip time automatically {/* #automatic-method */}
 
-Start a test server process that skips time as needed.
-For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
+Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to start a test server process and skip time automatically. In time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
-Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to start a test server process and skip time automatically.
-
-Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal Server.
+Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for testing a full local Temporal Server. There is no time skipping in this environment, so any Timers will wait the actual amount of time. You can find an example of this being used in [the code above](/develop/python/best-practices/testing-suite#test-workflows).
 
 Use the [`from_client()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal Server.
 
 #### Skip time manually {/* #manual-method */}
 
-To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
+To implement time skipping manually, use the [`sleep`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#sleep) method inside the `WorkflowEnvironment`. This will manually advance time by the duration you specify.
 
 ```python
 from temporalio.testing import WorkflowEnvironment
@@ -159,14 +190,6 @@ async def test_manual_time_skipping():
         await env.sleep(3) # This will advance time by 3 seconds
         # Your code here
 ```
-
-### Assert in Workflow {/* #assert-in-workflow */}
-
-The `assert` statement is a convenient way to insert debugging assertions into the Workflow context.
-
-The `assert` method is available in Python and TypeScript.
-
-For information about assert statements in Python, see [`assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) in the Python Language Reference.
 
 ## How to Replay a Workflow Execution {/* #replay */}
 

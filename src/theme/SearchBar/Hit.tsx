@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Highlight, Snippet } from 'react-instantsearch';
 import { useHistory } from '@docusaurus/router';
 import { PageIcon, AnchorIcon, TreeBranch } from './Icons';
+import { trackSearchClick } from './trackSearchEvent';
 
 interface HitProps {
   hit: any;
@@ -10,6 +11,7 @@ interface HitProps {
   isAnchor?: boolean;
   isLastAnchor?: boolean;
   parentTitle?: string;
+  sendEvent: (eventType: string, hit: any, eventName: string) => void;
 }
 
 // Get the appropriate hierarchy attribute based on hit type
@@ -28,7 +30,7 @@ function getHierarchyAttribute(hit: any): string {
   return 'hierarchy.lvl1';
 }
 
-export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, parentTitle }: HitProps) {
+export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, parentTitle, sendEvent }: HitProps) {
   const history = useHistory();
   const hitRef = useRef<HTMLAnchorElement>(null);
 
@@ -36,6 +38,7 @@ export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, paren
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    trackSearchClick(sendEvent, hit);
     const fullUrl = hit.url || hit.objectID;
     try {
       const url = new URL(fullUrl, window.location.origin);

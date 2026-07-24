@@ -11,7 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
+import { ViewSourceCodeNotice } from '@site/src/components';
 
 ## Develop a basic Activity {/* #develop-activities */}
 
@@ -110,7 +110,7 @@ All data returned from an Activity must be serializable.
 
 Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there
 is a hard limit of 4MB for any gRPC message size in the Event History transaction
-([see Cloud limits here](https://docs.temporal.io/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
+([see Cloud limits here](/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
 values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 An Activity Execution can return inputs and other Activity values.

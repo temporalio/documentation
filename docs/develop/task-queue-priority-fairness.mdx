@@ -14,8 +14,7 @@ tags:
   - Priority and Fairness
 ---
 
-import { EnlargeImage } from '@site/src/components';
-import SdkTabs from '@site/src/components';
+import { EnlargeImage, SdkTabs } from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
 distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
@@ -64,7 +63,7 @@ temporal workflow start \
 
 You can set priority keys for a Workflow within the SDK like so:
 
-<SdkTabs>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
 ```go
 workflowOptions := client.StartWorkflowOptions{

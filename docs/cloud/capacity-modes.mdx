@@ -100,7 +100,7 @@ Actions that are external to the core Temporal service do not contribute to your
 ## On-Demand Capacity {/* #on-demand-capacity */}
 
 Using On-Demand Capacity, your rate limit grows automatically along with your usage.
-Each Namespace has an Actions per second (APS), Requests per second (RPS), and Operations per second (OPS) limit that scales automatically with usage. Your APS limit never falls below its [default limit](/cloud/limits#actions-per-second).
+Each Namespace has an Actions per second (APS), Requests per second (RPS), and Operations per second (OPS) limit that scales automatically with usage. Your APS limit never falls below its [default limit](/cloud/limits#actions-per-second). If Temporal Support has manually set your Namespace's limit, that value becomes your floor in place of the default, and it persists across capacity mode changes.
 
 Scaling automatically adjusts based on the lesser of 4 * APS Average or 2 * APS P90 over the past 7 days.
 
@@ -155,7 +155,7 @@ For Requests in excess of 4 TRUs in regions outside of the US, we recommend subm
 ### Provisioned Capacity Availability
 The amount of capacity available within a region may vary. 
 Temporal will check available capacity at the time of your request and aims to provision requested capacity within two minutes. 
-If you need capacity beyond what is self-serviceable or available in a region, please [file a support ticket](https://docs.temporal.io/cloud/support#ticketing) indicating the limit, region, and timeframe that the capacity is needed. 
+If you need capacity beyond what is self-serviceable or available in a region, please [file a support ticket](/cloud/support#ticketing) indicating the limit, region, and timeframe that the capacity is needed. 
 
 
 ### When should I use Provisioned Capacity?
@@ -179,6 +179,10 @@ For the metrics to watch and how to alert on utilization, see [Provisioned capac
 ## Setting Capacity Modes
 Capacity Modes and TRUs can be set via the Temporal Cloud UI, CLI, or API. 
 Capacity modes can be set and adjusted by Global Admin and Namespace Admin. 
+
+When you switch to Provisioned Capacity, your limit is set by the number of TRUs you select.
+When you switch back to On-Demand, your limit is recalculated from the trailing 7-day usage formula and never falls below your floor.
+If Temporal Support has set a custom limit for your Namespace, that limit is your floor, so switching to Provisioned and back to On-Demand preserves it.
 
 ### Setting Capacity Modes from the UI
 

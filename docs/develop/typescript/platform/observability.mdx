@@ -44,11 +44,11 @@ To set up tracing of Workflows and Activities, use our `opentelemetry-intercepto
 
 ```typescript
 telemetryOptions: {
-    metrics: {
-      prometheus: { bindAddress: '0.0.0.0:9464' },
-    },
-    logging: { forward: { level: 'DEBUG' } },
+  metrics: {
+    prometheus: { bindAddress: '0.0.0.0:9464' },
   },
+  logging: { forward: { level: 'DEBUG' } },
+},
 ```
 
 ## Set up tracing {/* #tracing */}
@@ -96,7 +96,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 
 Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
 
-## Log from a Workflow {/* #logging */}
+## Set up logging {/* #logging */}
 
 Logging enables you to record critical information during code execution.
 Loggers create an audit trail and capture information about your Workflow's operation.
@@ -104,17 +104,7 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
-
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-The Temporal SDK core normally uses `WARN` as its default logging level.
+You can find the log levels supported by the `winston` package used in the examples below in [their official documentation](https://github.com/winstonjs/winston#logging-levels). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 ### Logging from Activities
 
@@ -241,7 +231,7 @@ import {
   makeTelemetryFilterString,
   Runtime,
 } from '@temporalio/worker';
-import winston from 'winston';
+import winston, { transports } from 'winston';
 
 const logger = winston.createLogger({
   level: 'info',
@@ -250,7 +240,15 @@ const logger = winston.createLogger({
 });
 
 Runtime.install({
-  logger,
+  logger: new DefaultLogger('INFO', (entry) => {
+    logger.log({
+      label: entry.meta?.activityId ? 'activity' : entry.meta?.workflowId ? 'workflow' : 'worker',
+      level: entry.level.toLowerCase(),
+      message: entry.message,
+      timestamp: Number(entry.timestampNanos / 1_000_000n),
+      ...entry.meta,
+    });
+  }),
   // The following block is optional, but generally desired.
   // It allows capturing log messages emitted by the underlying Temporal Core SDK (native code).
   // The Telemetry Filter String determine the desired verboseness of messages emitted by the
@@ -264,119 +262,7 @@ Runtime.install({
 });
 ```
 
-{/* FIXME(JWH): Everything below this point must be revisited and moved to a distinct section (Sinks). */}
-
-### Implementing custom Logging-like features based on Workflow Sinks
-
-Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
-
-{/*
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking determinism, in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. */}
-
-Sinks are written as objects with methods.
-Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
-
-#### Comparing Sinks and Activities
-
-Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
-However, they differ from Activities in important ways:
-
-- A sink function doesn't return any value back to the Workflow and cannot be awaited.
-- A sink call isn't recorded in the Event History of a Workflow Execution (no timeouts or retries).
-- A sink function _always_ runs on the same Worker that runs the Workflow Execution it's called from.
-
-#### Declare the sink interface
-
-Explicitly declaring a sink's interface is optional but is useful for ensuring type safety in subsequent steps:
-
-<!--SNIPSTART typescript-logger-sink-interface-->
-[packages/test/src/workflows/log-sink-tester.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sink-tester.ts)
-```ts
-import type { Sinks } from '@temporalio/workflow';
-
-export interface CustomLoggerSinks extends Sinks {
-  customLogger: {
-    info(message: string): void;
-  };
-}
-```
-<!--SNIPEND-->
-
-#### Implement sinks
-
-Implementing sinks is a two-step process.
-
-Implement and inject the Sink function into a Worker
-
-<!--SNIPSTART typescript-logger-sink-worker-->
-[sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/worker.ts)
-```ts
-import { InjectedSinks, Worker } from '@temporalio/worker';
-import { MySinks } from './workflows';
-
-async function main() {
-  const sinks: InjectedSinks<MySinks> = {
-    alerter: {
-      alert: {
-        fn(workflowInfo, message) {
-          console.log('sending SMS alert!', {
-            workflowId: workflowInfo.workflowId,
-            workflowRunId: workflowInfo.runId,
-            message,
-          });
-        },
-        callDuringReplay: false, // The default
-      },
-    },
-  };
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    taskQueue: 'sinks',
-    sinks,
-  });
-  await worker.run();
-  console.log('Worker gracefully shutdown');
-}
-
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-<!--SNIPEND-->
-
-- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks).
-- You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` option.
-
-#### Proxy and call a sink function from a Workflow
-
-<!--SNIPSTART typescript-logger-sink-workflow-->
-[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sample.ts)
-```ts
-import * as wf from '@temporalio/workflow';
-
-export async function logSampleWorkflow(): Promise<void> {
-  wf.log.info('Workflow execution started');
-}
-```
-<!--SNIPEND-->
-
-Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
-
-- **Injected WorkflowInfo argument:** The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
-- **Limited arguments types:** The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
-- **No return value:** To prevent breaking determinism, Sink functions cannot return values to the Workflow.
-
-**Advanced: Performance considerations and non-blocking Sinks**
-
-The injected sink function contributes to the overall Workflow Task processing duration.
-
-- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
-- The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
-
 ### How to provide a custom logger {/* #custom-logger */}
-
-Use a custom logger for logging.
 
 #### Logging in Workers and Clients
 
@@ -415,14 +301,26 @@ logger.error('go');
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import { Runtime } from '@temporalio/worker';
+import { 
+  DefaultLogger,
+  Runtime
+} from '@temporalio/worker';
 import winston from 'winston';
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [new transports.File({ filename: '/path/to/worker.log' })],
+const winstonLogger = winston.createLogger({
+  level: 'debug',
 });
+
+const logger = new DefaultLogger('DEBUG', (entry) => {
+  winstonLogger.log({
+    label: 'worker',
+    level: entry.level.toLowerCase(),
+    message: entry.message,
+    timestamp: Number(entry.timestampNanos / 1_000_000n),
+    ...entry.meta,
+  });
+});
+
 Runtime.install({ logger });
 ```
 
@@ -538,3 +436,111 @@ async function yourWorkflow() {
 upsertSearchAttributes({ CustomIntField: null });
 }
 ```
+
+## Workflow Sinks
+
+Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
+
+{/*
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking determinism, in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. */}
+
+Sinks are written as objects with methods.
+Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
+
+### Comparing Sinks and Activities
+
+Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
+However, they differ from Activities in important ways:
+
+- A sink function doesn't return any value back to the Workflow and cannot be awaited.
+- A sink call isn't recorded in the Event History of a Workflow Execution (no timeouts or retries).
+- A sink function _always_ runs on the same Worker that runs the Workflow Execution it's called from.
+
+### Declare the sink interface
+
+Explicitly declaring a sink's interface is optional but is useful for ensuring type safety in subsequent steps:
+
+<!--SNIPSTART typescript-logger-sink-interface-->
+[packages/test/src/workflows/log-sink-tester.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sink-tester.ts)
+```ts
+import type { Sinks } from '@temporalio/workflow';
+
+export interface CustomLoggerSinks extends Sinks {
+  customLogger: {
+    info(message: string): void;
+  };
+}
+```
+<!--SNIPEND-->
+
+### Implement sinks
+
+Implementing sinks is a two-step process.
+
+Implement and inject the Sink function into a Worker
+
+<!--SNIPSTART typescript-logger-sink-worker-->
+[sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/worker.ts)
+```ts
+import { InjectedSinks, Worker } from '@temporalio/worker';
+import { MySinks } from './workflows';
+
+async function main() {
+  const sinks: InjectedSinks<MySinks> = {
+    alerter: {
+      alert: {
+        fn(workflowInfo, message) {
+          console.log('sending SMS alert!', {
+            workflowId: workflowInfo.workflowId,
+            workflowRunId: workflowInfo.runId,
+            message,
+          });
+        },
+        callDuringReplay: false, // The default
+      },
+    },
+  };
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'sinks',
+    sinks,
+  });
+  await worker.run();
+  console.log('Worker gracefully shutdown');
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+<!--SNIPEND-->
+
+- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks).
+- You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` option.
+
+### Proxy and call a sink function from a Workflow
+
+<!--SNIPSTART typescript-logger-sink-workflow-->
+[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sample.ts)
+```ts
+import * as wf from '@temporalio/workflow';
+
+export async function logSampleWorkflow(): Promise<void> {
+  wf.log.info('Workflow execution started');
+}
+```
+<!--SNIPEND-->
+
+Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
+
+- **Injected WorkflowInfo argument:** The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
+- **Limited arguments types:** The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
+- **No return value:** To prevent breaking determinism, Sink functions cannot return values to the Workflow.
+
+**Advanced: Performance considerations and non-blocking Sinks**
+
+The injected sink function contributes to the overall Workflow Task processing duration.
+
+- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
+- The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.

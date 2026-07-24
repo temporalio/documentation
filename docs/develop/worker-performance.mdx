@@ -9,9 +9,8 @@ tags:
   - Performance
 ---
 
-import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader, SdkTabs } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import SdkTabs from '@site/src/components';
 
 This page documents metrics and configurations that drive the efficiency of your Worker fleet.
 It provides coverage of performance metric families, Worker configuration options, Task Queue information, backlog counts, Task rates, and how to evaluate Worker availability.
@@ -248,7 +247,7 @@ These options define the maximum count of pollers performing poll requests on Wo
 
 #### SDK Examples
 
-<SdkTabs>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
 [Go SDK docs](https://pkg.go.dev/go.temporal.io/sdk/worker#PollerBehaviorAutoscalingOptions)
 ```go
@@ -345,7 +344,7 @@ worker = Temporalio::Worker.new(
 
 ### Cache options (Java SDK) {/* #cache-options */}
 
-A Workflow Cache is created and shared between all Workers on a single host.
+A [Workflow Cache](/workflow-execution#workflow-cache) is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
 These options are defined on `WorkerFactoryOptions`:
 
@@ -372,7 +371,7 @@ These properties should always be true for a Worker's configuration.
 Perform this sanity check after the adjustments to Worker settings.
 
 1. `workflowCacheSize` should be ≤ `maxWorkflowThreadCount`. Each Workflow has at least one Workflow thread.
-2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It's recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
+2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. It's recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`. This is because having more Worker slots than the Workflow cache size will lead to resource allocation issues between executors and cause unpredictable delays.
 3. `maxConcurrentWorkflowTaskPollers` should be significantly ≤ `maxConcurrentWorkflowTaskExecutionSize`. And `maxConcurrentActivityTaskPollers` should be significantly ≤ `maxConcurrentActivityExecutionSize`. The number of pollers should always be lower than the number of executors.
 
 ## Worker runtime performance tuning {/* #worker-performance-tuning */}
@@ -756,8 +755,8 @@ While individual `add` and `dispatch` rates may be inaccurate due to Eager and S
 
 ## Evaluate Task Queue performance {/* #evaluate-worker-loads */}
 
-A [Task Queue](https://docs.temporal.io/task-queue) is a lightweight, dynamically allocated queue.
-[Worker Entities](/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
+A [Task Queue](/task-queue) is a lightweight, dynamically allocated queue.
+[Worker Entities](/workers#worker-entity) poll the queue for [Tasks](/tasks#task) and retrieve Tasks to work on.
 Tasks are contexts that a Worker progresses using a specific Workflow Execution, Activity Execution, or a Nexus Task Execution.
 Each Task Queue type offers its Tasks to compatible Workers for Task completion.
 The Temporal Service dynamically creates different [Task Queue types](/task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
@@ -819,7 +818,7 @@ for _, taskQueueName := range taskQueueNames {
 
 ### Evaluate Worker availability and capacity issues {/* #worker-capacity-issues */}
 
-Each Temporal [Server](https://docs.temporal.io/temporal-service/temporal-server) records the last time of each poll request.
+Each Temporal [Server](/temporal-service/temporal-server) records the last time of each poll request.
 This time is displayed in the `temporal task-queue describe` output.
 
 - A `LastAccessTime` value exceeding one minute may indicate that the Worker fleet is at capacity or that Workers have shut down or been removed.

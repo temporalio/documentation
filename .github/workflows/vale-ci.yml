@@ -14,12 +14,15 @@ jobs:
     name: Lint prose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      - uses: vale-cli/vale-action@v2.1.1
+      - uses: vale-cli/vale-action@2.1.2
         with:
           reporter: github-pr-review
           level: info
           filter_mode: diff_context
           fail_on_error: false
+          # Scope linting to docs only; do not put the path in vale_flags —
+          # the action runs `vale ${vale_flags} sync`, so a path there breaks sync.
+          files: docs
           vale_flags: "--config=.vale-ci.ini"

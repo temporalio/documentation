@@ -27,8 +27,7 @@ keywords:
   - temporal worker resources
 ---
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import SdkTabs from '@site/src/components';
-import { ReleaseNoteHeader } from '@site/src/components';
+import { ReleaseNoteHeader, SdkTabs } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -210,7 +209,7 @@ Consider
 
 #### High Schedule To Start latency and low sync match rate
 
-Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations.
+Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations and note that this timeout is non-retryable.
 
 It may be acceptable for your use case to have low sync match rate.
 For example, if you have known workloads or you intentionally throttle tasks.

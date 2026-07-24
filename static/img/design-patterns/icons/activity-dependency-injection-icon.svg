@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- External dependency (DB) -->
+  <rect x="8" y="30" width="26" height="20" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <text x="21" y="44" font-family="sans-serif" font-size="9" fill="#cc2222" text-anchor="middle">DB</text>
+
+  <!-- Injected into the activity -->
+  <line x1="36" y1="40" x2="56" y2="40" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="53,36 62,40 53,44" fill="#cc2222"/>
+
+  <!-- Activity function receiving the dependency -->
+  <rect x="64" y="22" width="28" height="36" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <text x="78" y="36" font-family="sans-serif" font-size="9" fill="#888" text-anchor="middle">fn()</text>
+  <circle cx="78" cy="47" r="5" fill="none" stroke="#cc2222" stroke-width="1.5"/>
+  <circle cx="78" cy="47" r="1.5" fill="#cc2222"/>
+</svg>
