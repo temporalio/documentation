@@ -11,10 +11,12 @@ import { SiGo, SiTypescript, SiPhp, SiDotnet, SiRuby, SiRust } from 'react-icons
 //   (`src/components/elements/Sdk/SdkTabs.js`) — kept as-is so existing tab
 //   sync/groupId behavior doesn't change.
 // - `blockName` matches the `case` values in `SdkSvg.js`'s icon switch.
+// .NET sorts as if it were spelled "NET" (ignoring the leading period), so it
+// lands between Java and PHP rather than first.
 export const SDKS = [
-  { id: 'dotnet', label: '.NET', tabKey: 'dotnet', icon: SiDotnet, blockName: 'dotnetBlock' },
   { id: 'go', label: 'Go', tabKey: 'go', icon: SiGo, blockName: 'goLangBlock' },
   { id: 'java', label: 'Java', tabKey: 'java', icon: FaJava, blockName: 'javaBlock' },
+  { id: 'dotnet', label: '.NET', tabKey: 'dotnet', icon: SiDotnet, blockName: 'dotnetBlock' },
   { id: 'php', label: 'PHP', tabKey: 'php', icon: SiPhp, blockName: 'phpBlock' },
   { id: 'python', label: 'Python', tabKey: 'py', icon: FaPython, blockName: 'pythonBlock' },
   { id: 'ruby', label: 'Ruby', tabKey: 'rb', icon: SiRuby, blockName: 'rubyBlock' },
