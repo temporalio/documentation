@@ -34,6 +34,11 @@
   ],
   "redirects": [
     {
+      "source": "/guides/saga-pattern",
+      "destination": "/guides/recover-without-restart",
+      "permanent": true
+    },
+    {
       "source": "/cloud/disaster-recovery",
       "destination": "/cloud/high-availability",
       "permanent": true

@@ -1,5 +1,5 @@
 ---
-id: saga-pattern
+id: recover-without-restart
 title: Recover business processes without restarting
 description: Build a multi-step business procss that pauses when it hits a permanent failure, then resumes from where it stopped without restarting.
 sidebar_label: Recovery without restart
@@ -18,7 +18,7 @@ tags:
 This pattern shows how to build a multi-step business process that pauses when it hits a permanent failure — a malformed identifier, an exceeded policy limit, a failed compliance check — allows a human or automated agent to correct the underlying issue, and resumes from where it stopped without restarting from the beginning.
 Queryable metadata routes each blocked process to the right resolution resource, and operators get full visibility into the state of every individual execution and across the entire pipeline.
 
-![A blocked Workflow showing the failure details and a form to send a corrective Signal](assets/saga-pattern/keep-business-moving-list-view.png)
+![A blocked Workflow showing the failure details and a form to send a corrective Signal](assets/recover-without-restart/keep-business-moving-list-view.png)
 
 ## Problem statement
 
@@ -43,7 +43,7 @@ The process picks up where it left off: completed steps do not re-execute, and t
 
 While you can use traditional architectures to implement a similar solution, they often involve significantly more complexity and demand higher implementation and operational costs. A Temporal-based solution is typically much leaner and more robust.
 
-![Architectural comparison between a traditional implementation and the Temporal-based solution](assets/saga-pattern/keep-business-moving-architectural-comparison.png)
+![Architectural comparison between a traditional implementation and the Temporal-based solution](assets/recover-without-restart/keep-business-moving-architectural-comparison.png)
 
 ## What you will achieve
 
@@ -949,19 +949,19 @@ You can do this through the demo UI, the web service API, or the Temporal CLI.
 
 The dashboard shows all Workflows and their pipeline status. Click a blocked Workflow to inspect the failure details and send a correction.
 
-![Dashboard showing 3 blocked Workflows and 1 completed](assets/saga-pattern/keep-business-moving-list-view.png)
+![Dashboard showing 3 blocked Workflows and 1 completed](assets/recover-without-restart/keep-business-moving-list-view.png)
 
 Click a `PENDING_FIX` Workflow to open its detail panel. The UI shows the failure message and suggests a fix. Select the field to patch, enter the corrected value, and click **Patch and Retry** to send the Signal.
 
-![Sending a corrective Signal to fix an unknown employer](assets/saga-pattern/keep-business-moving-fix-employer.png)
+![Sending a corrective Signal to fix an unknown employer](assets/recover-without-restart/keep-business-moving-fix-employer.png)
 
 After the Signal is delivered, the Workflow wakes up, retries the failed Activity with the corrected data, and advances through the remaining pipeline steps. The detail panel shows the updated state including the fix history.
 
-![Workflow completed after fixing the employer name](assets/saga-pattern/keep-business-moving-success.png)
+![Workflow completed after fixing the employer name](assets/recover-without-restart/keep-business-moving-success.png)
 
 You can also verify the full Event History — including the Signal and subsequent Activity completions — in the Temporal Web UI.
 
-![Event History in the Temporal Web UI showing the Signal and Activity completions](assets/saga-pattern/keep-business-moving-event-history.png)
+![Event History in the Temporal Web UI showing the Signal and Activity completions](assets/recover-without-restart/keep-business-moving-event-history.png)
 
 #### Using the Temporal CLI
 
