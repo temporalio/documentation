@@ -69,7 +69,7 @@ docusaurus-plugin-llms ───────────────────
 | `scripts/mdx-to-md.mjs` | **The transformer.** Exports `transformMdx()` + parsing helpers and `COMPONENT_REGISTRY`. Zero-dependency ES module. |
 | `scripts/component-handlers/data-tables.mjs` | Handler for `<JsonTable>` — resolves a `static/json/*.json` file into a Markdown table. |
 | `scripts/component-handlers/integrations.mjs` | Handler for `<IntegrationsGrid>` — reads `src/components/IntegrationsGrid/integrations-data.json`, filters by the `defaultSdks` prop, and emits a Markdown list. |
-| `scripts/component-handlers/home-page-hero.mjs` | Handler for `<HomePageHero>` — emits the homepage hero's headline, intro, and link cards. Content is mirrored from the component (no shared data file). |
+| `scripts/component-handlers/hero.mjs` | Handler for the homepage hero cards (`<ActionCard>` / `<CommunityCard>`) — parses `title`/`href` props and children into a Markdown link-list item. Copy lives in `docs/index.mdx`; layout wrappers strip generically. |
 | `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
 | `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `COMPONENT_REGISTRY.md` at the repo root. |
 | `src/components/LLMActions/LLMActions.tsx` | On-page actions (Copy, View as Markdown, Open in ChatGPT/Claude). Points at the generated `/<path>.md` (not the raw MDX). |
@@ -118,7 +118,8 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop |
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
-| `HomePageHero` | `home-page-hero` | Homepage hero's headline, intro paragraphs, and link cards (content mirrored from the component) |
+| `ActionCard` / `CommunityCard` | `hero-card` | Homepage hero cards → `- [title](href): description` link-list item (copy authored in `docs/index.mdx`) |
+| `HeroWrapper`, `HeroHeader`, `HeroSection`, `HeroContent`, `HeroActions`, `HeroCta`, `CommunityCards` | `strip-tag` | Homepage hero layout wrappers — stripped to their inner Markdown (headline + intro prose) |
 | `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
 | `ZoomPanPinch` | `transparent` | Wrapper stripped; inner content passed through |
 | `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
@@ -144,12 +145,12 @@ transformer itself is safe from these — its detection is anchored to whole lin
 4. Run `node scripts/audit-components.mjs` to refresh coverage.
 
 **Keep handlers and components in sync.** When a handler reproduces content or logic that also
-lives in the React component (data-driven components like `JsonTable`, `IntegrationsGrid`, or the
-content-mirroring `HomePageHero`), add a cross-reference comment in *both* files — a `⚠️ LLM
-MARKDOWN PIPELINE` comment in the component pointing at the handler, and a `Component:` line in
-the handler pointing back — so a future change to one prompts updating the other. Components
-transformed generically (e.g. `Tabs`, `CallToAction`) have no separate source of truth and don't
-need this.
+lives in the React component (data-driven components like `JsonTable` or `IntegrationsGrid`), add
+a cross-reference comment in *both* files — a `⚠️ LLM MARKDOWN PIPELINE` comment in the component
+pointing at the handler, and a `Component:` line in the handler pointing back — so a future change
+to one prompts updating the other. Components transformed generically (e.g. `Tabs`,
+`CallToAction`, and the homepage hero cards) have no separate source of truth and don't need this
+— the copy lives in the MDX and the handler reads it straight from the page.
 
 ### Known limitation: content/logic duplicated between components and handlers (follow-up)
 
@@ -157,11 +158,6 @@ A few handlers currently re-express something that also lives in the React compo
 means two places to keep in sync. This is a known issue to be addressed in a follow-up; the
 cross-reference comments above are an interim guard, not the fix.
 
-- **`HomePageHero` — duplicated content.** `scripts/component-handlers/home-page-hero.mjs` holds
-  its own copy of the homepage hero's text (headline, intro paragraphs, action/community cards),
-  duplicating `src/components/elements/HomePageHero.js`. The intended fix is to move that content
-  into the page's source of truth — `docs/index.mdx` — and reduce the component to presentation
-  (content via props/children), so the hero-specific handler can be removed entirely.
 - **`IntegrationsGrid` — duplicated logic.** The data is already shared
   (`integrations-data.json`), but the default-view filter/sort in
   `scripts/component-handlers/integrations.mjs` (`selectIntegrations`) mirrors the filtering in
