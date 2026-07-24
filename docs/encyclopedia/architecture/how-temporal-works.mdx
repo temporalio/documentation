@@ -1,0 +1,146 @@
+---
+id: how-temporal-works
+title: How Temporal works
+sidebar_label: How Temporal works
+description: How the Temporal Client, Server, and Worker interact during a Workflow and Activity lifecycle, with a step-by-step walkthrough and interactive demo.
+toc_max_heading_level: 4
+keywords:
+  - architecture
+  - durable execution
+  - how temporal works
+  - temporal service
+tags:
+  - Durable Execution
+  - Temporal
+  - Architecture
+---
+
+import {
+  CaptionedImage,
+  TemporalLifecycleDemo,
+} from '@site/src/components';
+
+In a Temporal application, the [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application), [Temporal Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server), and [Worker](/workers#worker) are three separate parts that communicate over the network. The Client sends control requests such as starting a Workflow, sending a Signal, or requesting a result. The Server records [Event History](/workflow-execution/event), schedules [Tasks](/tasks#task) on [Task Queues](/task-queue), and persists state to a database. The Worker polls Task Queues and runs Workflow and Activity code.
+The Client does not execute Workflow or Activity code. The Server does not run your application code directly. 
+
+Understanding how these three parts exchange requests, Tasks, Commands, and Events is the basis for understanding Temporal's internal mechanics.
+
+
+## Relationship between the Client, Service, and Worker
+
+### Service
+
+The Temporal Service is a group of backend services that together form the core Temporal system. It exposes a [Frontend Service](/encyclopedia/architecture/temporal-architecture#frontend-service), which is the network API that everything else connects to, and [backend services](/encyclopedia/architecture/temporal-architecture#temporal-service-backend) like the [History Service](/encyclopedia/architecture/temporal-architecture#history-service), which keeps the full Event History and state for each Workflow Execution, and the [Matching Service](/encyclopedia/architecture/temporal-architecture#matching-service), which manages [Task Queues](/task-queue) that hold pending work items for [Workers](/workers#worker).
+
+### Server
+
+The [Server](/encyclopedia/architecture/temporal-architecture#the-temporal-server) is a part of the Temporal Service that handles all the Temporal functionality. All of this state is written to a database, so the Server can remember what has happened even if processes or machines fail. You can run a Server yourself (self‑hosted cluster) or use [Temporal Cloud](/cloud), which is the same kind of service but operated for you.
+
+### Client
+
+A [Temporal Client](/encyclopedia/architecture/temporal-architecture#client-application) is a library object from a [Temporal SDK](/develop) that your application code uses to talk to the [Temporal Server's Frontend](/encyclopedia/architecture/temporal-architecture#frontend-service). It opens a network connection (using gRPC) to the Server and sends requests like "start this Workflow with these inputs," "cancel this Workflow," "send this Signal to a running Workflow," "run this Query on a Workflow," or "get the result of this Workflow."
+
+The Client does not run Workflow or Activity code; it only sends and receives these control requests. This is important because it gives your existing services, CLIs, or UIs a simple and consistent way to interact with Temporal without knowing anything about how Tasks, Task Queues, or Event histories are implemented inside the Server.
+
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/temporal-clients-and-server.png"
+    srcDark="/img/encyclopedia/architecture/temporal-clients-and-server-dark.png"
+    alt="Diagram of Temporal Clients connecting to the Temporal Server"
+    width="70%"
+  />
+</div>
+
+## Worker
+
+A [Worker](/workers#worker) is the application component responsible for running your Workflow and Activity code, built with a Temporal SDK. Workers have historically been long-running processes deployed on bare metal, virtual machines, or in containers.
+
+They can now also run as [Serverless Workers](/serverless-workers) on serverless cloud infrastructure, such as AWS Lambda. Regardless of how and where Workers are deployed, they are always separate and distinct from the Temporal Service.
+
+The Worker connects to the Server and polls Task Queues managed by the Matching Service to ask "do you have work for me?"
+
+When it receives a Workflow Task, it replays the Workflow's Event History and runs your Workflow code until it either completes or reaches a point where it must wait (for example, waiting for an Activity or a Timer). It then sends Commands back to the Server that describe what should happen next, such as "schedule this Activity" or "start this Timer."
+
+When it receives an Activity Task, it calls your Activity function or method and then sends the outcome (success or failure and any additional result data) back to the Server, which records this as Events in the Event History. Temporal explicitly does not run your Workflow or Activity code inside the Server; that code only runs in Workers, which are under your control.
+
+The Server records all state and creates Workflow and Activity Tasks in Task Queues. Workers poll those queues, run your Workflow and Activity code, and send back Commands and results. The Server uses this information to update the [Event History](/workflow-execution/event) so that any Client can later request the current status or the final result, and execution can safely continue (or replay) even if individual Worker processes or machines fail.
+
+This is the heart of how durable execution works.
+
+## End-to-end lifecycle of a Workflow and Activity
+
+The following fifteen steps describe one Workflow Execution from start to finish, including a single Activity. The interactive demo below shows the same sequence and highlights which components communicate at each point.
+
+### Interactive demo
+
+<TemporalLifecycleDemo />
+
+### Workflow lifecycle
+
+**Step 1: The Temporal Client asks Temporal to start a Workflow**
+
+Your application calls `StartWorkflowExecution` on the Temporal API (gRPC) exposed by the Frontend Service. The request includes the Workflow type (which Workflow function/class to run), input arguments, and the Task Queue name. Frontend forwards the request to the History Service, which owns this Workflow Execution.
+
+**Step 2: The History Service creates the Workflow Execution**
+
+History creates a new Workflow Execution in the database and initializes its Event History with: `WorkflowExecutionStarted` and `WorkflowTaskScheduled` (to tell a Worker to run Workflow code). It also creates an internal Transfer Task telling the system to put a Workflow Task on the specified Task Queue.
+
+**Step 3: The Matching Service adds a Workflow Task to the Task Queue**
+
+A background queue processor in the History Service reads the Transfer Task and calls the Matching Service to `AddWorkflowTask` for that Task Queue. The Task Queue now has one pending Workflow Task for this Workflow Execution.
+
+**Step 4: A Worker polls for a Workflow Task**
+
+A Worker process (your code + SDK) is already polling that Task Queue using `PollWorkflowTask` via Frontend Service. The Frontend Service asks Matching for a Task. The Matching Service picks this Workflow Task and tells the History Service that it was started. The History Service appends `WorkflowTaskStarted` to the Event History and returns the Workflow Task (plus history) to the Worker through Frontend.
+
+**Step 5: The Worker runs your Workflow code**
+
+The SDK replays the Event History to reconstruct logical Workflow state, then starts your Workflow function/method. The Workflow runs until either returns a result or until it needs to wait (for an Activity, Timer, Signal, etc.).
+
+**Step 6: Your Workflow asks for work via Commands**
+
+When your Workflow calls Temporal APIs (for example, "execute Activity"), the SDK records Commands like `ScheduleActivityTask` or `StartTimer` instead of executing them directly. When the Workflow cannot make more progress, the Worker sends `RespondWorkflowTaskCompleted` to Frontend, carrying the list of Commands. Then the Frontend forwards this list to History.
+
+**Step 7: The History Service turns Commands into Events and new Tasks**
+
+The History appends Events based on the Commands and updates state, for example: For `ScheduleActivityTask`: `WorkflowTaskCompleted`, then `ActivityTaskScheduled`. It then creates new internal Tasks (Transfer/Timer Tasks) and, through the queue processors, calls Matching to add Activity Tasks to Activity Task Queues or later add more Workflow Tasks when needed.
+
+At this point, the Workflow is waiting on whatever it asked for (Activities, Timers, etc.). When those complete, the Workflow will resume.
+
+### Activity lifecycle 
+
+**Step 8: The Matching Service puts an Activity Task on the Activity Task Queue**
+
+For each `ActivityTaskScheduled` Event, a queue processor in History calls Matching to `AddActivityTask` on the corresponding Activity Task Queue.
+
+**Step 9: An Activity Worker polls and starts the Activity**
+
+A (possibly different) Worker is polling that Activity Task Queue using `PollActivityTask` via Frontend. Frontend asks Matching; Matching selects the Activity Task and notifies History that it has started. History appends `ActivityTaskStarted` and sets up any Activity timeout timers (for example, schedule-to-close). The Activity Task is then returned to the Worker via Frontend.
+
+**Step 10: Worker runs your Activity code**
+
+The Worker calls your Activity function/method with the inputs from the Task. This code can do I/O, call external services, etc., because it is not replayed the same way as Workflow code. 
+
+**Step 11: Activity reports success or failure**
+
+On success, the Worker sends `RespondActivityTaskCompleted` (with the result) to Frontend; Frontend forwards it to History. The History appends: `ActivityTaskCompleted` (including the result) and `WorkflowTaskScheduled` (to wake up the Workflow), and adds a Transfer Task to create the next Workflow Task.
+
+On failure, the Worker sends `RespondActivityTaskFailed`; History appends `ActivityTaskFailed` and either will append a new `ActivityTaskScheduled` (for a retry), or leaves the failure to propagate to the Workflow, depending on retry settings.
+
+### Workflow resumes and finishes
+
+**Step 12: A new Workflow Task is scheduled**
+
+Because of the Activity completion (or other Events like Timers), History has appended Events and scheduled a new Workflow Task. A queue processor in History calls Matching to add that Workflow Task to the Workflow Task Queue.
+
+**Step 13: Worker picks up the next Workflow Task and continues**
+
+A Worker polls the Workflow Task Queue again (`PollWorkflowTask`). The Matching Service selects the Task; the History Service appends `WorkflowTaskStarted`. The Worker receives the updated Event History via Frontend. The SDK replays the Event History, unblocks the waiting Activity or Timer, and your Workflow code continues from this new state.
+
+**Step 14: Workflow eventually closes**
+
+This cycle (Workflow Task → Commands → Events → new Tasks) repeats as many times as needed. When the Workflow function/method returns a result, the Worker sends `RespondWorkflowTaskCompleted` with a `CompleteWorkflowExecution` command. The History Service appends `WorkflowTaskCompleted` and `WorkflowExecutionCompleted` and marks the Workflow Execution as closed. Workflows can also close via failure, cancellation, termination, or "continue-as-new," but in all cases they move from open to closed and do not reopen.
+
+**Step 15: The Client reads the result or status from the Frontend Service**
+
+While the Workflow is open, Clients can query it (read-only inspection of state) and send Signals to it. After it is closed, a Client can request the final result or failure by calling the SDK, which talks to Frontend; the Frontend Service reads the necessary data from the History Service/Persistence Layer and returns it.
