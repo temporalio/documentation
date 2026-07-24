@@ -123,7 +123,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Core, Go, Java |
 | [temporal_worker_task_slots_used](#worker_task_slots_used)                                       | Worker         | Gauge       | Core, Go, Java |
 | [temporal_workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java           |
-| [temporal_workflow_cancelled](#workflow_cancelled)                                               | Worker         | Counter     | Core, Go, Java |
+| [temporal_workflow_canceled](#workflow_canceled)                                                 | Worker         | Counter     | Core, Go, Java |
 | [temporal_workflow_completed](#workflow_completed)                                               | Worker         | Counter     | Core, Go, Java |
 | [temporal_workflow_continue_as_new](#workflow_continue_as_new)                                   | Worker         | Counter     | Core, Go, Java |
 | [temporal_workflow_endtoend_latency](#workflow_endtoend_latency)                                 | Worker         | Histogram   | Core, Go, Java |
@@ -462,7 +462,7 @@ Total amount of Workflow threads in the Worker Process.
 - Type: Gauge
 - Available in: Java
 
-### workflow_cancelled
+### workflow_canceled
 
 Workflow Execution ended because of a cancellation request.
 
