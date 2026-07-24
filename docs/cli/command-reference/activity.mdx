@@ -199,10 +199,11 @@ Use the following options to change the behavior of this command. You can also u
 
 ## pause
 
-Pause an Activity. Not supported for Standalone Activities.
+Pause a Workflow Activity or Standalone Activity.
 
-If the Activity is not currently running (e.g. because it previously
-failed), it will not be run again until it is unpaused.
+If no Worker is running the Activity, it won't be dispatched until it is Unpaused. If an attempt is running, the Pause
+remains pending. The next Heartbeat response reports the Pause; otherwise, the attempt continues until it completes,
+fails, or times out.
 
 However, if the Activity is currently running, it will run until the next
 time it fails, completes, or times out, at which point the pause will kick in.
@@ -218,46 +219,54 @@ Specify the Activity and Workflow IDs:
 
 ```
 temporal activity pause \
-    --activity-id YourActivityId \
-    --workflow-id YourWorkflowId
+    --workflow-id YourWorkflowId \
+    --activity-id YourActivityId
 ```
 
-To later unpause the activity, see [unpause](#unpause). You may also want to
-[reset](#reset) the activity to unpause it while also starting it from the beginning.
+To target the latest run of a Standalone Activity, omit `--workflow-id`:
+
+```
+temporal activity pause \
+    --activity-id YourActivityId
+```
+
+Use `--run-id` to target a specific Workflow Run or Standalone Activity Run. See
+[Activity Operations](/activity-operations) for behavior and state transitions.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to pause. Required. |
+| `--activity-id`, `-a` | Yes | **string** Activity ID. |
 | `--identity` | No | **string** The identity of the user or client submitting this request. |
 | `--reason` | No | **string** Reason for pausing the Activity. |
-| `--run-id`, `-r` | No | **string** Run ID. |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
+| `--run-id`, `-r` | No | **string** Workflow Run ID when `--workflow-id` is set; otherwise, Standalone Activity Run ID. If omitted for a Standalone Activity, targets the latest run. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID for a Workflow Activity. Omit for a Standalone Activity. |
 
 ## reset
 
-Reset an activity. Not supported for Standalone Activities.
-This restarts the activity as if it were first being
-scheduled. That is, it will reset both the number of attempts and the
-activity timeout, as well as, optionally, the
-[heartbeat details](#reset-heartbeats).
+Reset a Workflow Activity or Standalone Activity to attempt 1. Reset clears retry backoff and Heartbeat details, but it
+doesn't restart the Schedule-To-Close period.
 
-If the activity may be executing (i.e. it has not yet timed out), the
-reset will take effect the next time it fails, heartbeats, or times out.
-If is waiting for a retry (i.e. has failed or timed out), the reset
-will apply immediately.
+Reset applies immediately when no Activity Task Execution is in flight—for example, while the Activity is waiting for
+its initial Start Delay or retry backoff, is dispatched but not yet picked up by a Worker, or is fully Paused. The next
+attempt still waits for any applicable Start Delay, jitter, or Paused state.
 
-If the activity is already paused, it will be unpaused by default.
-You can specify `keep_paused` to prevent this.
+After a Worker picks up an Activity Task, Reset remains pending until that attempt reports an outcome or times out. A
+successful result wins and Reset has no effect; a failure or timeout applies Reset and schedules attempt 1 if it fits
+within the unchanged Schedule-To-Close deadline. The next Heartbeat response reports the pending Reset.
 
-If the activity is paused and the `keep_paused` flag is not provided,
-it will be unpaused. If the activity is paused and `keep_paused` flag
-is provided - it will stay paused.
+If the Activity is Paused, Reset Unpauses it by default. Use `--keep-paused` to reset its state without dispatching it.
 
-Either `--activity-id` (with `--workflow-id`) or `--query` must be specified.
+To target a Workflow Activity, provide both IDs. To target a Standalone Activity, provide `--activity-id` and omit
+`--workflow-id`. Use `--run-id` to select a specific Workflow Run or Standalone Activity Run.
 
-### Resetting activities that heartbeat {/* #reset-heartbeats */}
+```
+temporal activity reset \
+    --activity-id YourActivityId
+```
+
+### Heartbeat behavior when resetting {/* #reset-heartbeat-behavior */}
 
 Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure)
 the next time they heartbeat after a reset.
@@ -265,19 +274,10 @@ the next time they heartbeat after a reset.
 If, in your Activity, you need to do any cleanup when an Activity is
 reset, handle this error and then re-throw it when you've cleaned up.
 
-If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
+Reset always clears the last Heartbeat time and Heartbeat details when it is applied.
 
-Specify the Activity and Workflow IDs:
-
-```
-temporal activity reset \
-    --activity-id YourActivityId \
-    --workflow-id YourWorkflowId
-    --keep-paused
-    --reset-heartbeats
-```
-
-Activities can be reset in bulk with a visibility query list filter:
+Workflow Activities can be Reset in bulk with a Visibility Query List Filter. Batch mode doesn't target Standalone
+Activities.
 
 ```
 temporal activity reset \
@@ -288,18 +288,16 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to reset. Mutually exclusive with `--query`. Requires `--workflow-id` to be specified. |
+| `--activity-id`, `-a` | No | **string** Activity ID. Mutually exclusive with `--query`. Set `--workflow-id` for a Workflow Activity; omit it for a Standalone Activity. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
-| `--jitter` | No | **duration** The activity will reset at random a time within the specified duration. Can only be used with --query. |
-| `--keep-paused` | No | **bool** If the activity was paused, it will stay paused. |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
+| `--jitter` | No | **duration** Delays the new dispatch by a random duration within this window. Ignored while `--keep-paused` prevents dispatch. |
+| `--keep-paused` | No | **bool** Keep a Paused Activity Paused after Reset. |
+| `--query`, `-q` | No | **string** SQL-like Visibility Query List Filter for a batch of Workflow Activities. Mutually exclusive with `--activity-id`. This feature is experimental and may change. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
-| `--reset-attempts` | No | **bool** Reset the activity attempts. |
-| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. |
-| `--restore-original-options` | No | **bool** Restore the original options of the activity. |
+| `--restore-original-options` | No | **bool** Restore the Activity options captured when it was first scheduled. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--run-id`, `-r` | No | **string** Workflow Run ID when `--workflow-id` is set; otherwise, Standalone Activity Run ID. Can't be used with `--query`. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID for a Workflow Activity. Omit for a Standalone Activity. Can't be used with `--query`. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## result
@@ -384,33 +382,26 @@ Use the following options to change the behavior of this command. You can also u
 
 ## unpause
 
-Re-schedule a previously-paused Activity for execution.
-Not supported for Standalone Activities.
+Resume a Paused Workflow Activity or Standalone Activity.
 
-If the Activity is not running and is past its retry timeout, it will be
-scheduled immediately. Otherwise, it will be scheduled after its retry
-timeout expires.
+By default, the Activity keeps its attempt count, Heartbeat details, and any remaining retry backoff. The next attempt is
+dispatched after that backoff and any remaining Start Delay.
 
-Use `--reset-attempts` to reset the number of previous run attempts to
-zero. For example, if an Activity is near the maximum number of attempts
-N specified in its retry policy, `--reset-attempts` will allow the
-Activity to be retried another N times after unpausing.
+Use `--reset-attempts` to restart at attempt 1 or `--jitter` to add a random delay before dispatch.
 
-Use `--reset-heartbeat` to reset the Activity's heartbeats.
-
-Either `--activity-id` (with `--workflow-id`) or `--query` must be specified.
-
-Specify the Activity and Workflow IDs:
+To target a Workflow Activity, provide both IDs:
 
 ```
 temporal activity unpause \
-    --activity-id YourActivityId \
-    --workflow-id YourWorkflowId
-    --reset-attempts
-    --reset-heartbeats
+    --workflow-id YourWorkflowId \
+    --activity-id YourActivityId
 ```
 
-Activities can be unpaused in bulk via a visibility Query list filter:
+To target a Standalone Activity, provide `--activity-id` and omit `--workflow-id`. Use `--run-id` to select a specific
+Workflow Run or Standalone Activity Run.
+
+Workflow Activities can be Unpaused in bulk with a Visibility Query List Filter. Batch mode doesn't target Standalone
+Activities.
 
 ```
 temporal activity unpause \
@@ -421,30 +412,28 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to unpause. Mutually exclusive with `--query`. Requires `--workflow-id` to be specified. |
+| `--activity-id`, `-a` | No | **string** Activity ID. Mutually exclusive with `--query`. Set `--workflow-id` for a Workflow Activity; omit it for a Standalone Activity. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
-| `--jitter` | No | **duration** The activity will start at random a time within the specified duration. Can only be used with --query. |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
+| `--jitter` | No | **duration** Adds a random delay within this window before the next dispatch. |
+| `--query`, `-q` | No | **string** SQL-like Visibility Query List Filter for a batch of Workflow Activities. Mutually exclusive with `--activity-id`. This feature is experimental and may change. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
-| `--reset-attempts` | No | **bool** Reset the activity attempts. |
-| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. |
+| `--reset-attempts` | No | **bool** Reset the Activity to attempt 1 and clear its current retry interval. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--run-id`, `-r` | No | **string** Workflow Run ID when `--workflow-id` is set; otherwise, Standalone Activity Run ID. Can't be used with `--query`. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID for a Workflow Activity. Omit for a Standalone Activity. Can't be used with `--query`. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## update-options
 
-Update the options of a running Activity that were passed into it from
-a Workflow. Updates are incremental, only changing the specified options.
-Not supported for Standalone Activities.
+Update the options of a Workflow Activity or Standalone Activity. Updates are incremental; options that you don't
+specify remain unchanged.
 
-For example:
+To target a Workflow Activity, provide the Workflow and Activity IDs. To target a Standalone Activity, provide
+`--activity-id` and omit `--workflow-id`:
 
 ```
 temporal activity update-options \
     --activity-id YourActivityId \
-    --workflow-id YourWorkflowId \
     --task-queue NewTaskQueueName \
     --schedule-to-close-timeout DURATION \
     --schedule-to-start-timeout DURATION \
@@ -456,11 +445,11 @@ temporal activity update-options \
     --retry-maximum-attempts NewMaximumAttempts
 ```
 
-You may follow this command with `temporal activity reset`, and the new values will apply after the reset.
+Use `--run-id` to select a specific Workflow Run or Standalone Activity Run. Use `--restore-original-options` without
+other option flags to restore the values captured when the Activity was first scheduled.
 
-Either `--activity-id` or `--query` must be specified.
-
-Activity options can be updated in bulk with a visibility query list filter:
+Workflow Activity options can be updated in bulk with a Visibility Query List Filter. Batch mode doesn't target
+Standalone Activities.
 
 ```
 temporal activity update-options \
@@ -472,23 +461,23 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to update options. Mutually exclusive with `--query`. Requires `--workflow-id` to be specified. |
+| `--activity-id`, `-a` | No | **string** Activity ID. Mutually exclusive with `--query`. Set `--workflow-id` for a Workflow Activity; omit it for a Standalone Activity. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--heartbeat-timeout` | No | **duration** Maximum permitted time between successful worker heartbeats. |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
+| `--query`, `-q` | No | **string** SQL-like Visibility Query List Filter for a batch of Workflow Activities. Mutually exclusive with `--activity-id`. This feature is experimental and may change. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
-| `--restore-original-options` | No | **bool** Restore the original options of the activity. |
+| `--restore-original-options` | No | **bool** Restore the Activity options captured when it was first scheduled. Can't be combined with option changes. |
 | `--retry-backoff-coefficient` | No | **float** Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the backoff coefficient. Must be 1 or larger. |
 | `--retry-initial-interval` | No | **duration** Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries. |
 | `--retry-maximum-attempts` | No | **int** Maximum number of attempts. When exceeded the retries stop even if not expired yet. Setting this value to 1 disables retries. Setting this value to 0 means unlimited attempts(up to the timeouts). |
 | `--retry-maximum-interval` | No | **duration** Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--run-id`, `-r` | No | **string** Workflow Run ID when `--workflow-id` is set; otherwise, Standalone Activity Run ID. Can't be used with `--query`. |
 | `--schedule-to-close-timeout` | No | **duration** Indicates how long the caller is willing to wait for an activity completion. Limits how long retries will be attempted. |
 | `--schedule-to-start-timeout` | No | **duration** Limits time an activity task can stay in a task queue before a worker picks it up. This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue. Defaults to the schedule-to-close timeout or workflow execution timeout if not specified. |
 | `--start-to-close-timeout` | No | **duration** Maximum time an activity is allowed to execute after being picked up by a worker. This timeout is always retryable. |
 | `--task-queue` | No | **string** Name of the task queue for the Activity. |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID for a Workflow Activity. Omit for a Standalone Activity. Can't be used with `--query`. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## Global Flags
@@ -529,4 +518,3 @@ The following options can be used with any command.
 | `--tls-key-data` | No | **string** Private certificate key data. Can't be used with --tls-key-path. |  |
 | `--tls-key-path` | No | **string** Path to x509 private key. Can't be used with --tls-key-data. |  |
 | `--tls-server-name` | No | **string** Override target TLS server name. |  |
-
