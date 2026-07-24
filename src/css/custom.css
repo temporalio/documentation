@@ -1860,3 +1860,17 @@ code {
 .sidebar-integrations:has(.menu__list > .menu__list-item .menu__link--active) > .menu__list-item-collapsible > .menu__caret {
   display: flex;
 }
+
+/* About the SDKs: expandable walkthrough — transparent background */
+.sdk-walkthrough-details,
+.sdk-walkthrough-details[open] {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.sdk-walkthrough-details summary {
+  background: transparent;
+  cursor: pointer;
+}

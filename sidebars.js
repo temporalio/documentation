@@ -1540,7 +1540,16 @@ module.exports = {
       },
       items: [
         'encyclopedia/temporal',
-        'encyclopedia/temporal-sdks',
+        {
+          type: 'category',
+          label: 'Architecture',
+          collapsed: true,
+          items: [
+            'encyclopedia/architecture/temporal-architecture',
+            'encyclopedia/architecture/how-temporal-works',
+            'encyclopedia/architecture/temporal-sdks',
+          ],
+        },
         'encyclopedia/temporal-client',
         {
           type: 'category',
