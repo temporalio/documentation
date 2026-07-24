@@ -7,6 +7,50 @@ hide_title: true
 description: Official docs for Temporal, the open source Durable Execution platform for crash-proof applications. Guides, SDKs, and references for reliable workflows.
 ---
 
-import HomePageHero from '@site/src/components/elements/HomePageHero';
+import {
+  HeroWrapper,
+  HeroHeader,
+  HeroSection,
+  HeroContent,
+  HeroHeadline,
+  HeroActions,
+  HeroCta,
+  ActionCard,
+  CommunityCards,
+  CommunityCard,
+} from '@site/src/components';
 
-<HomePageHero />
+<HeroWrapper>
+
+<HeroHeader>Temporal Docs</HeroHeader>
+
+<HeroSection>
+
+<HeroContent>
+
+<HeroHeadline>Build applications that never fail</HeroHeadline>
+
+Temporal is an open-source platform for building reliable applications. Temporal delivers crash-proof execution by guaranteeing that applications resume exactly where they left off after crashes, network failures, or infrastructure outages, whether that happens seconds, days, or even years later.
+
+Temporal enables developers to focus on building features that drive the business while ensuring that mission-critical processes such as order fulfillment, customer onboarding, and payment processing never fail or disappear, regardless of what goes wrong.
+
+<HeroCta href="/quickstarts">Quickstart</HeroCta>
+
+</HeroContent>
+
+<HeroActions>
+  <ActionCard href="/quickstarts" icon="bolt" iconAlt="Lightning icon" title="Quickstart">Setup your local and run a Hello World workflow.</ActionCard>
+  <ActionCard href="/develop" icon="code" iconAlt="Code icon" title="Developer Guide">Dive into everything you need to know about building Temporal workflows.</ActionCard>
+  <ActionCard href="/production-deployment" icon="rocket" iconAlt="Rocket icon" title="Deploy your Workflows">Deploy your Temporal Application to your environment. Self-Host the Temporal Service or use Temporal Cloud.</ActionCard>
+  <ActionCard href="https://temporal.io/cloud" icon="cloud" iconAlt="Cloud icon" title="Get started for free with $1000 in credits"><span className="linkify">Sign up for Temporal Cloud</span> and let us host the Temporal Service for you.</ActionCard>
+</HeroActions>
+
+</HeroSection>
+
+<CommunityCards>
+  <CommunityCard href="https://temporal.io/slack" icon="slack" iconAlt="Slack" title="Slack Community">Join us on <a href="https://temporal.io/slack">temporal.io/slack</a> and say hi or ask us a question.</CommunityCard>
+  <CommunityCard href="https://community.temporal.io" icon="forum" iconAlt="Message" title="Developer Forum"><a href="https://community.temporal.io">Find out</a> if your question has already been asked.</CommunityCard>
+  <CommunityCard href="https://learn.temporal.io/courses/" icon="learn" iconAlt="Education" title="Learn it all"><a href="https://learn.temporal.io/courses/">Master Temporal</a> with our courses and tutorials.</CommunityCard>
+</CommunityCards>
+
+</HeroWrapper>

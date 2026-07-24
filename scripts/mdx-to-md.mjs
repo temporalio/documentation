@@ -34,7 +34,7 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
-import { homePageHeroToMarkdown } from "./component-handlers/home-page-hero.mjs";
+import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
@@ -69,8 +69,23 @@ export const COMPONENT_REGISTRY = {
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
-  HomePageHero: "home-page-hero",
   ViewSourceCodeNotice: "view-source-code-notice",
+
+  // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
+  // from presentational components in src/components/elements/HomePageHero.js.
+  // Layout wrappers strip to their inner Markdown; the single-line HeroHeader /
+  // HeroCta lines strip whole (their text is redundant with the title / first
+  // action card); the cards resolve to Markdown link-list items.
+  HeroWrapper: "strip-tag",
+  HeroHeader: "strip-tag",
+  HeroSection: "strip-tag",
+  HeroContent: "strip-tag",
+  HeroHeadline: "hero-headline",
+  HeroActions: "strip-tag",
+  HeroCta: "strip-tag",
+  CommunityCards: "strip-tag",
+  ActionCard: "hero-card",
+  CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
   DT: "strip-tag",
@@ -1167,12 +1182,37 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- HomePageHero (self-closing) → hardcoded hero content ---
-    // See scripts/component-handlers/home-page-hero.mjs (kept in sync with
-    // src/components/elements/HomePageHero.js).
-    if (state === State.NORMAL && /^\s*<HomePageHero\b/.test(line)) {
-      outputLines.push(homePageHeroToMarkdown());
-      outputLines.push("");
+    // --- HeroHeadline → Markdown H1 ---
+    if (state === State.NORMAL && /^\s*<HeroHeadline\b/.test(line)) {
+      let el = line;
+      while (!/<\/HeroHeadline>/.test(el) && i + 1 < lines.length) {
+        i++;
+        el += "\n" + lines[i];
+      }
+      const md = heroHeadlineToMarkdown(el);
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
+      continue;
+    }
+
+    // --- ActionCard / CommunityCard → Markdown link-list item ---
+    // The homepage hero cards (docs/index.mdx). Accumulate the whole element
+    // (usually a single line) and resolve title/href/description to a list item.
+    if (state === State.NORMAL && /^\s*<(ActionCard|CommunityCard)\b/.test(line)) {
+      const name = line.match(/^\s*<(ActionCard|CommunityCard)\b/)[1];
+      const closeRe = new RegExp(`</${name}>`);
+      let el = line;
+      while (!closeRe.test(el) && i + 1 < lines.length) {
+        i++;
+        el += "\n" + lines[i];
+      }
+      const md = heroCardToMarkdown(el);
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
       continue;
     }
 
