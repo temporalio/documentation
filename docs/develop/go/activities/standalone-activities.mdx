@@ -43,6 +43,7 @@ This page covers the following:
 - [List Standalone Activities](#list-activities)
 - [Count Standalone Activities](#count-activities)
 - [Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud)
+- [Move to production with Serverless Workers](#move-to-production-serverless-workers)
 
 :::note
 
@@ -437,3 +438,150 @@ export TEMPORAL_API_KEY=<your-api-key>
 ```
 
 Then run the Worker and starter code as shown in the earlier sections.
+
+## Move to production with Serverless Workers {/* #move-to-production-serverless-workers */}
+
+After you have run the Standalone Activity locally and configured its Temporal Cloud connection, you can deploy its
+Worker as a [Serverless Worker](/serverless-workers). Serverless Workers run on ephemeral, on-demand compute rather than
+as long-lived processes.
+
+:::note
+
+Serverless Workers are a separate Pre-release feature. To request access, create a
+[support ticket](/cloud/support#support-ticket) or contact your account team.
+
+:::
+
+### AWS Lambda {/* #serverless-worker-aws-lambda */}
+
+AWS Lambda is the first Serverless Worker provider example. When a Standalone Activity Task is added to a Task Queue with
+no active poller, Temporal invokes the Lambda function configured for that Task Queue. The Worker connects, processes
+available Tasks, and shuts down before the Lambda invocation deadline.
+
+The
+[Standalone Activity Lambda sample](https://github.com/temporalio/samples-go/tree/main/standalone-activity/lambda-worker)
+contains an Activity, an activity-only Lambda Worker, and a starter program:
+
+```text
+standalone-activity/lambda-worker/
+├── activity.go
+├── worker/
+│   └── main.go
+└── starter/
+    └── main.go
+```
+
+#### Register the Activity with a Lambda Worker {/* #register-activity-lambda-worker */}
+
+Use the Go SDK's `lambdaworker` package to run the Worker inside Lambda. Set the Worker Deployment name, Build ID, and
+Task Queue, then register the Activity.
+
+<!--SNIPSTART samples-go-standalone-activity-lambda-worker-->
+[standalone-activity/lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/lambda-worker/worker/main.go)
+```go
+package main
+
+import (
+	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
+	"go.temporal.io/sdk/worker"
+
+	lambdaactivity "github.com/temporalio/samples-go/standalone-activity/lambda-worker"
+)
+
+func main() {
+	lambdaworker.RunWorker(worker.WorkerDeploymentVersion{
+		DeploymentName: "standalone-activity-lambda",
+		BuildID:        "build-1",
+	}, func(options *lambdaworker.Options) error {
+		options.TaskQueue = "standalone-activity-lambda"
+		options.RegisterActivity(lambdaactivity.Greet)
+		return nil
+	})
+}
+
+```
+<!--SNIPEND-->
+
+An activity-only Worker doesn't register a Workflow, so it doesn't need to set a Workflow
+[versioning behavior](/worker-versioning#versioning-behaviors). The `WorkerDeploymentVersion` is still required because
+Serverless Workers use Worker Deployment Versioning to route Tasks to the configured Lambda function.
+
+#### Deploy the Worker to Lambda {/* #deploy-standalone-activity-lambda-worker */}
+
+Follow [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda)
+to build and package the Worker, create the Lambda function, configure IAM, and create the Worker Deployment Version.
+
+Run the guide's build commands from `standalone-activity/lambda-worker` so `./worker` resolves to the sample's Worker
+package. Use these values when you configure the Worker Deployment Version:
+
+| Setting | Value |
+| --- | --- |
+| Worker Deployment name | `standalone-activity-lambda` |
+| Build ID | `build-1` |
+| Task Queue | `standalone-activity-lambda` |
+
+The Worker Deployment name and Build ID must match the values passed to `lambdaworker.RunWorker`. After you create the
+version, [set it as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version)
+so Temporal can route Tasks to it.
+
+#### Execute the Standalone Activity {/* #execute-standalone-activity-lambda */}
+
+Run the starter outside Lambda. It connects to Temporal and schedules the Standalone Activity on the same Task Queue as
+the Serverless Worker.
+
+<!--SNIPSTART samples-go-standalone-activity-lambda-starter-->
+[standalone-activity/lambda-worker/starter/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/lambda-worker/starter/main.go)
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+
+	lambdaactivity "github.com/temporalio/samples-go/standalone-activity/lambda-worker"
+)
+
+func main() {
+	temporalClient, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalln("Unable to create Temporal Client", err)
+	}
+	defer temporalClient.Close()
+
+	handle, err := temporalClient.ExecuteActivity(
+		context.Background(),
+		client.StartActivityOptions{
+			ID:                     "standalone-activity-lambda-greeting",
+			TaskQueue:              "standalone-activity-lambda",
+			ScheduleToCloseTimeout: time.Minute,
+		},
+		lambdaactivity.Greet,
+		"Temporal",
+	)
+	if err != nil {
+		log.Fatalln("Unable to execute Standalone Activity", err)
+	}
+
+	var result string
+	if err := handle.Get(context.Background(), &result); err != nil {
+		log.Fatalln("Standalone Activity failed", err)
+	}
+	log.Println("Standalone Activity result:", result)
+}
+
+```
+<!--SNIPEND-->
+
+Configure the starter's Temporal Client connection using
+[environment configuration](/references/client-environment-configuration), then run it from the sample directory:
+
+```bash
+go run ./starter
+```
+
+When the starter schedules the Activity, Temporal invokes the Lambda function, and the Lambda Worker processes the
+Activity Task and returns the result.
