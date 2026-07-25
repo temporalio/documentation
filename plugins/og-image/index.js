@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const matter = require('gray-matter');
-const { renderCard, TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./render');
+const { renderCard } = require('./render');
 const { walkDir, resolveUrlPath } = require('../shared/docsRouting');
+const { extractTitle, hasManualOverride, overrideImageFor, hashFor, IMAGE_EXTENSION } = require('./shared');
 
 const CACHE_DIR = path.join(__dirname, '../../node_modules/.cache/og-images');
 
@@ -11,54 +11,6 @@ function htmlPathForUrlPath(outDir, urlPath) {
   return urlPath === 'index'
     ? path.join(outDir, 'index.html')
     : path.join(outDir, urlPath, 'index.html');
-}
-
-function humanize(id) {
-  return id
-    .replace(/[-_]+/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-function extractTitle(content, frontmatter, id) {
-  if (frontmatter.title) return frontmatter.title;
-  const heading = content.match(/^#\s+(.+)$/m);
-  if (heading) return heading[1].trim();
-  return humanize(id);
-}
-
-// A page opts out of the generated card either via front matter `image:`
-// (the mechanism Docusaurus already supports natively for docs) or by
-// embedding its own <Head> og:image override directly in the MDX content
-// (the mechanism used for pages without front matter support). Either way,
-// Docusaurus/react-helmet has already rendered that override into the built
-// HTML by the time postBuild runs, so all we have to do is leave it alone.
-function hasManualOverride(frontmatter, content) {
-  return Boolean(frontmatter.image) || /<Head[^>]*>[\s\S]*?og:image[\s\S]*?<\/Head>/i.test(content);
-}
-
-// For a page with a manual override, this is the image it's actually using
-// — front-matter `image:` if set, otherwise whatever content= value the
-// page's own <Head> og:image tag has. Used by bin/validate-og-images.js and
-// bin/generate-og-gallery.js so neither has to re-parse the <Head> block.
-function overrideImageFor(frontmatter, content, siteUrl) {
-  if (frontmatter.image) return new URL(frontmatter.image, siteUrl).toString();
-  const headMatch = content.match(/<Head[^>]*>([\s\S]*?)<\/Head>/i);
-  if (!headMatch) return null;
-  const tagMatch = headMatch[1].match(/<meta[^>]*property=["']?og:image["']?[^>]*>/i);
-  if (!tagMatch) return null;
-  const contentMatch = tagMatch[0].match(/content=["']?([^"'\s>]+)["']?/i);
-  return contentMatch ? contentMatch[1] : null;
-}
-
-// Deliberately excludes section: render.js doesn't render it (dropped along
-// with the section pill in the Figma redesign), so including it here would
-// just fragment the cache between pages that render pixel-identically.
-function hashFor(title, description) {
-  return crypto
-    .createHash('sha256')
-    .update(`v${TEMPLATE_VERSION}:${title}:${description || ''}`)
-    .digest('hex')
-    .slice(0, 16);
 }
 
 async function getCardBuffer(title, description) {
@@ -73,41 +25,20 @@ async function getCardBuffer(title, description) {
   return { hash, buffer, cached: false };
 }
 
-// On a Vercel preview (or local dev) deployment, generated cards only exist
-// on that deployment's own URL — siteConfig.url is always the production
-// domain, which never got this build's images. Pointing og:image there
-// means Slack/X/Facebook/etc. 404 when fetching a preview link, since they
-// resolve the literal URL in the meta tag, not wherever the page happens to
-// be served from. VERCEL_URL is Vercel's own reachable hostname for the
-// current deployment (preview or production); only substitute it for
-// non-production deployments, since production should keep the stable
-// custom domain. Local builds (no VERCEL_ENV) are unaffected.
-function resolveSiteUrl(siteConfig) {
-  if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production' && process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  return siteConfig.url;
-}
-
-function replaceImageMeta(html, absoluteUrl) {
-  return html
-    .replace(
-      /(<meta[^>]*property=["']?og:image["']?[^>]*content=)["']?[^"'\s>]+["']?/i,
-      `$1${absoluteUrl}`,
-    )
-    .replace(
-      /(<meta[^>]*name=["']?twitter:image["']?[^>]*content=)["']?[^"'\s>]+["']?/i,
-      `$1${absoluteUrl}`,
-    );
-}
-
 function ogImagePlugin(context, options = {}) {
   const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
 
   return {
     name: 'og-image',
 
-    async postBuild({ outDir, siteConfig }) {
+    // plugins/og-image/remarkPlugin.js is what actually gets the correct
+    // og:image/twitter:image into each page's rendered <head> — it injects
+    // the same hash-based path computed below as real front matter, early
+    // enough (during MDX compilation) that Docusaurus's own PageMetadata
+    // component renders it identically during SSR and client hydration. All
+    // this postBuild hook is responsible for is making sure the *image
+    // bytes* that path points to actually exist in the build output.
+    async postBuild({ outDir }) {
       const files = walkDir(docsDir);
       let generated = 0;
       let cached = 0;
@@ -124,14 +55,14 @@ function ogImagePlugin(context, options = {}) {
 
         if (!fs.existsSync(htmlPath)) {
           // Not a routed page (e.g. an underscore-prefixed partial or an
-          // excluded directory) — nothing to inject an og:image into.
+          // excluded directory) — nothing to render a card for.
           skipped++;
           continue;
         }
 
         if (hasManualOverride(frontmatter, content)) {
-          // Docusaurus already rendered the author's own image into this
-          // page's meta tags — don't touch it.
+          // The page's own front matter/<Head> already won; nothing to
+          // render.
           overridden++;
           continue;
         }
@@ -154,14 +85,6 @@ function ogImagePlugin(context, options = {}) {
           fs.mkdirSync(path.dirname(cardOutPath), { recursive: true });
           fs.copyFileSync(path.join(CACHE_DIR, `${hash}.${IMAGE_EXTENSION}`), cardOutPath);
         }
-
-        const absoluteUrl = new URL(
-          path.posix.join(siteConfig.baseUrl, 'img/og', `${hash}.${IMAGE_EXTENSION}`),
-          resolveSiteUrl(siteConfig),
-        ).toString();
-
-        const html = fs.readFileSync(htmlPath, 'utf8');
-        fs.writeFileSync(htmlPath, replaceImageMeta(html, absoluteUrl));
       }
 
       console.log(
@@ -178,9 +101,10 @@ function ogImagePlugin(context, options = {}) {
   };
 }
 
-// Exposed so bin/validate-og-images.js can compute the exact same expected
-// route/title/hash a doc page got, instead of re-deriving that logic and
-// risking drift between the plugin and its own validation script.
+// Exposed so bin/validate-og-images.js and bin/generate-og-gallery.js can
+// compute the exact same expected route/title/hash a doc page got, instead
+// of re-deriving that logic and risking drift between the plugin and its
+// own validation script.
 ogImagePlugin.walkDir = walkDir;
 ogImagePlugin.resolveUrlPath = resolveUrlPath;
 ogImagePlugin.htmlPathForUrlPath = htmlPathForUrlPath;
@@ -188,7 +112,6 @@ ogImagePlugin.extractTitle = extractTitle;
 ogImagePlugin.hashFor = hashFor;
 ogImagePlugin.hasManualOverride = hasManualOverride;
 ogImagePlugin.overrideImageFor = overrideImageFor;
-ogImagePlugin.resolveSiteUrl = resolveSiteUrl;
 ogImagePlugin.IMAGE_EXTENSION = IMAGE_EXTENSION;
 
 module.exports = ogImagePlugin;

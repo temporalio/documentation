@@ -1361,6 +1361,32 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
+## service-account
+
+Commands for inspecting the service accounts that have access to a
+Temporal Cloud namespace.
+
+### service-account list
+
+List the service accounts that have access to a Temporal Cloud namespace,
+including both directly-assigned and inherited access.
+
+Example:
+
+```
+temporal cloud namespace service-account list --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--page-size` | No | **int** Number of service accounts to return per page. Use for paginated results. |
+| `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
 ## tag
 
 Commands for managing tags of Temporal Cloud namespaces.
@@ -1457,6 +1483,58 @@ Use the following options to change the behavior of this command. You can also u
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--value` | Yes | **string** The new value for the tag. |
+
+## user
+
+Commands for inspecting the users that have access to a Temporal Cloud
+namespace.
+
+### user list
+
+List the users that have access to a Temporal Cloud namespace, including
+both directly-assigned and inherited access.
+
+Example:
+
+```
+temporal cloud namespace user list --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--page-size` | No | **int** Number of users to return per page. Use for paginated results. |
+| `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## user-group
+
+Commands for inspecting the user groups that have access to a Temporal
+Cloud namespace.
+
+### user-group list
+
+List the user groups that have access to a Temporal Cloud namespace,
+including both directly-assigned and inherited access.
+
+Example:
+
+```
+temporal cloud namespace user-group list --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--page-size` | No | **int** Number of user groups to return per page. Use for paginated results. |
+| `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## Global Flags
 
