@@ -311,6 +311,7 @@ const developJavaCategory = {
           'develop/java/workflows/timers',
           'develop/java/workflows/side-effects',
           'develop/java/workflows/versioning',
+          'develop/java/workflows/workflow-streams',
         ],
       },
       {
@@ -1018,6 +1019,7 @@ const developTypeScriptCategory = {
           'develop/typescript/integrations/ai-sdk',
           'develop/typescript/integrations/langsmith',
           'develop/typescript/integrations/openai-agents',
+          'develop/typescript/integrations/strands-agents',
         ],
       },
     ],
@@ -1406,6 +1408,7 @@ module.exports = {
           },
           items: [
             'production-deployment/worker-deployments/worker-versioning',
+            'production-deployment/worker-deployments/recover-pinned-workflows',
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
             'production-deployment/worker-deployments/unversioned-to-versioned-migration',
@@ -1554,7 +1557,16 @@ module.exports = {
       },
       items: [
         'encyclopedia/temporal',
-        'encyclopedia/temporal-sdks',
+        {
+          type: 'category',
+          label: 'Architecture',
+          collapsed: true,
+          items: [
+            'encyclopedia/architecture/temporal-architecture',
+            'encyclopedia/architecture/how-temporal-works',
+            'encyclopedia/architecture/temporal-sdks',
+          ],
+        },
         'encyclopedia/temporal-client',
         {
           type: 'category',
@@ -1796,7 +1808,7 @@ module.exports = {
       },
       items: [
         'guides/entity-pattern-loyalty-points',
-        'guides/saga-pattern',
+        'guides/recover-without-restart',
         'guides/route-specialized-workloads',
         'guides/worker-execution-affinity',
         'guides/temporary-rate-limit-increases',

@@ -19,7 +19,9 @@ exceptions:
   - Linux
   - macOS
   - Marketplace
+  - MCP
   - MongoDB
+  - OpenTelemetry
   - REPL
   - Studio
   - TypeScript

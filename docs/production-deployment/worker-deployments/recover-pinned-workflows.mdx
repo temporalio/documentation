@@ -1,0 +1,259 @@
+---
+id: recover-pinned-workflows
+title: Recover pinned Workflows after a bad rollout
+sidebar_label: Recover pinned Workflows
+description: Roll back, identify, and recover pinned Workflows affected by a faulty Worker Deployment Version using Versioning Override and Reset-with-Move.
+slug: /production-deployment/worker-deployments/recover-pinned-workflows
+toc_max_heading_level: 4
+keywords:
+  - versioning
+  - recovery
+  - reset
+  - pinned
+  - rollback
+  - workers
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+This runbook covers how to recover pinned Workflows after rolling out a Worker Deployment Version that turned out to be faulty.
+Use it when a new code version has caused pinned Workflows to fail, time out, or get stuck retrying Workflow Tasks.
+
+This page assumes you have already configured [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) and that the affected Workflows are pinned to a specific Worker Deployment Version.
+
+:::tip Prerequisites
+
+- Worker Versioning is enabled and the affected Workflows are pinned.
+- Your Worker fleet uses [blue-green or rainbow deployments](/production-deployment/worker-deployments/worker-versioning#deployment-systems), not rolling upgrades.
+- You can run the `temporal` CLI against the affected Namespace.
+
+:::
+
+## Stop the rollout
+
+Stop sending new Workflows to the faulty version before you do anything else.
+
+If the bad Version is currently ramping, set the ramp percentage to zero:
+
+```bash
+temporal worker deployment set-ramping-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBadBuildID" \
+    --percentage 0
+```
+
+If the bad Version has already become the Current Version, switch the Current Version back to the previous good Version:
+
+```bash
+temporal worker deployment set-current-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourPreviousBuildID"
+```
+
+After either change, new Workflows stop landing on the bad Version. Existing pinned Workflows still execute on the bad Version until you recover them.
+
+## Identify affected Workflows
+
+Use Search Attributes to find Workflows running on or affected by the bad Version.
+
+Useful filters:
+
+- `ExecutionStatus` — for example, `Running`, `Failed`, or `TimedOut`.
+- `TemporalWorkerDeploymentVersion` — formatted as `'YourDeploymentName:YourBuildID'`.
+- `TemporalReportedProblems` — accepts values like `category=WorkflowTaskFailed` or `category=WorkflowTaskTimedOut`. See [Detecting Workflow Task Failures](/encyclopedia/detecting-workflow-failures#detecting-workflow-task-failures).
+- `WorkflowType` — for example, `'OrderProcessing'`.
+
+Use `temporal workflow count` to quickly check how many Workflows match a query. For Workflows that are still retrying tasks after the upgrade:
+
+```bash
+temporal workflow count \
+  --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+    AND ExecutionStatus='Running' \
+    AND TemporalReportedProblems IN ('category=WorkflowTaskFailed', 'category=WorkflowTaskTimedOut')"
+```
+
+For closed Workflows that failed:
+
+```bash
+temporal workflow count \
+  --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+    AND (ExecutionStatus='Failed' OR ExecutionStatus='TimedOut')"
+```
+
+To get the Workflow Id and Run Id of matching executions, use `temporal workflow list` with JSON output and extract the relevant fields with [`jq`](https://jqlang.org/):
+
+```bash
+temporal workflow list --output json \
+  --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+    AND (ExecutionStatus='Failed' OR ExecutionStatus='TimedOut')" \
+  | jq '.[].execution'
+```
+
+Example output:
+
+```json
+{
+  "workflowId": "worker-versioning-pinned-2_032f7b06-f3a0-47a7-a7c2-949fcce7fc42",
+  "runId": "019e9a92-1d8e-7a43-a345-721351d2d544"
+}
+{
+  "workflowId": "worker-versioning-pinned-2_99e7c4ac-74cd-48c5-ae2e-94aa3c67c36f",
+  "runId": "019e9a91-e8e3-765b-aba8-3a7002ec7d6c"
+}
+```
+
+## Choose a recovery strategy
+
+The right recovery strategy depends on three questions about each affected Workflow:
+
+1. **Is the Workflow closed, or are its tasks still retrying?**
+2. **Can the Workflow safely re-execute from the start of its current run?** Workflows that can are called *restartable* in this runbook. Whether a Workflow is restartable is a property of the Workflow design and must be documented or annotated (for example, via a Custom Search Attribute) by the team that owns it.
+3. **Has the Workflow's internal state been corrupted?** Detecting state corruption is difficult to scale. In practice, most teams filter by Workflow Type and make conservative assumptions for an entire batch rather than per-instance.
+
+The answers map to recovery strategies as follows:
+
+| Workflow state | Restartable? | Strategy |
+|---|---|---|
+| Running, tasks retrying, state intact | Yes | [Reset-with-Move](#recover-workflows) to `FirstWorkflowTask` on the previous good Version. |
+| Running, tasks retrying, state intact | No | [Versioning Override](#recover-workflows) to a new replay-safe Version. |
+| Running, recently corrupted state | No | [Reset-with-Move](#recover-workflows) to `LastWorkflowTask` on a new replay-safe Version. |
+| Closed (Failed, Completed, TimedOut) | Either | [Reset-with-Move](#recover-workflows) to `FirstWorkflowTask`. Critical state may need out-of-band compensation. |
+| Stateless or simple replacement is acceptable | Either | Terminate (if still running) and start new Workflows with the original arguments and the new Version. |
+
+For Workflows still retrying without state corruption, you may need to use the [Patching APIs](/patching) to make a new Version replay-safe before pointing Workflows at it.
+
+## Recover Workflows
+
+Temporal exposes two recovery primitives, both available through the CLI or directly through the Worker Versioning APIs (see [Moving a pinned Workflow](/production-deployment/worker-deployments/worker-versioning#moving-a-pinned-workflow)):
+
+- **Versioning Override** — forces the next retried Workflow Task to execute on a different pinned Version. Use [`temporal workflow update-options`](/cli/command-reference/workflow#update-options).
+- **Reset-with-Move** — atomically resets a Workflow's Event History and applies a Versioning Override. Use [`temporal workflow reset with-workflow-update-options`](/cli/command-reference/workflow#with-workflow-update-options).
+
+Both commands accept a `--query` argument for batch operations.
+
+### Reset restartable Workflows to the previous Version
+
+Schedule a batch Reset-with-Move targeting the start of execution on the previous good Version. Use `--reapply-exclude All` to skip re-applying signals and Updates, which is typically the right choice for a clean restart:
+
+```bash
+temporal workflow reset with-workflow-update-options \
+    --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+        AND ExecutionStatus='Running' \
+        AND WorkflowType='YourWorkflowType' \
+        AND TemporalReportedProblems IN ('category=WorkflowTaskFailed', 'category=WorkflowTaskTimedOut')" \
+    --reason "Reset restartable Workflow to YourPreviousBuildID" \
+    --versioning-override-behavior pinned \
+    --versioning-override-build-id "YourPreviousBuildID" \
+    --versioning-override-deployment-name "YourDeploymentName" \
+    --reapply-exclude All \
+    --type FirstWorkflowTask \
+    --output json --yes
+```
+
+### Move running Workflows to a replay-safe Version
+
+For Workflows whose tasks are still retrying and whose state is intact, apply a Versioning Override to a new replay-safe Version. No Reset is needed:
+
+```bash
+temporal workflow update-options \
+    --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+        AND ExecutionStatus='Running' \
+        AND WorkflowType='YourWorkflowType' \
+        AND TemporalReportedProblems IN ('category=WorkflowTaskFailed', 'category=WorkflowTaskTimedOut')" \
+    --versioning-override-behavior pinned \
+    --versioning-override-build-id "YourGoodBuildID" \
+    --versioning-override-deployment-name "YourDeploymentName" \
+    --output json --yes
+```
+
+### Roll back recently corrupted Workflows
+
+When a Workflow's state was corrupted recently but tasks are still retrying, you can sometimes recover by resetting to `LastWorkflowTask` on a replay-safe Version. This re-applies pending signals and Updates:
+
+```bash
+temporal workflow reset with-workflow-update-options \
+    --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+        AND ExecutionStatus='Running' \
+        AND WorkflowType='YourWorkflowType' \
+        AND TemporalReportedProblems IN ('category=WorkflowTaskFailed', 'category=WorkflowTaskTimedOut')" \
+    --reason "Reset corrupted Workflow to YourGoodBuildID" \
+    --versioning-override-behavior pinned \
+    --versioning-override-build-id "YourGoodBuildID" \
+    --versioning-override-deployment-name "YourDeploymentName" \
+    --type LastWorkflowTask \
+    --output json --yes
+```
+
+### Recover closed Workflows
+
+Closed Workflows (Failed, Completed, TimedOut) need Reset-with-Move. Choose `ExecutionStatus` values that match the failure mode:
+
+```bash
+temporal workflow reset with-workflow-update-options \
+    --query "TemporalWorkerDeploymentVersion='YourDeploymentName:YourBadBuildID' \
+        AND (ExecutionStatus='Completed' OR ExecutionStatus='Failed') \
+        AND WorkflowType='YourWorkflowType'" \
+    --reason "Reset closed Workflow to YourGoodBuildID" \
+    --versioning-override-behavior pinned \
+    --versioning-override-build-id "YourGoodBuildID" \
+    --versioning-override-deployment-name "YourDeploymentName" \
+    --reapply-exclude All \
+    --type FirstWorkflowTask \
+    --output json --yes
+```
+
+:::warning Not idempotent
+
+Resetting a closed Workflow does not change the status of the prior closed execution. Re-running the same command will reset the same closed Workflows again, terminating each previous reset attempt and starting another new run.
+Plan to run this command exactly once per affected batch, after the bad Version has fully [drained](#handle-eventual-consistency).
+
+:::
+
+The earlier batch commands targeting Running Workflows are idempotent because they filter on `TemporalWorkerDeploymentVersion` and `ExecutionStatus='Running'`. Once a Workflow is moved off the bad Version, it stops matching the query.
+
+## Handle eventual consistency
+
+The Visibility store is eventually consistent, which means a query that identifies affected Workflows may not return all of them in a single execution.
+
+Use the drainage status of the bad Version as a signal that the Visibility index has caught up.
+A Version is **drained** when no new Workflows are expected on it and all existing pinned Workflows on it are closed.
+
+Check drainage status:
+
+```bash
+temporal worker deployment describe-version \
+  --deployment-name "YourDeploymentName" \
+  --build-id "YourBadBuildID" \
+  --output json \
+  | jq .drainageInfo.drainageStatus
+```
+
+Recommended approach:
+
+1. Repeat the idempotent recovery commands on `Running` Workflows until the drainage status reports `drained`. The Temporal Service refreshes drainage status periodically, so it may take a few minutes after the last running Workflow closes.
+2. Once the Version is drained, run the non-idempotent Reset-with-Move command against closed Workflows once.
+
+See [Sunsetting an old Deployment Version](/production-deployment/worker-deployments/worker-versioning#sunsetting-an-old-deployment-version) for more on drainage states.
+
+## Clean up the drained Version
+
+After the bad Version has drained and all recovered closed Workflows have been processed, stop the Workers on the bad Version and delete the Version:
+
+```bash
+temporal worker deployment delete-version \
+  --deployment-name "YourDeploymentName" \
+  --build-id "YourBadBuildID"
+```
+
+See [`temporal worker deployment delete-version`](/cli/command-reference/worker#delete-version) for prerequisites on deletion (the Version must not be Current, Ramping, or have active pollers, and it must be drained unless you pass `--skip-drainage`).
+
+## Summary
+
+Recovering pinned Workflows from a faulty Worker Deployment Version takes the following steps:
+
+1. **Stop the rollout** by ramping to zero or reverting the Current Version.
+2. **Identify** affected Workflows with `TemporalWorkerDeploymentVersion` and `TemporalReportedProblems` queries.
+3. **Choose a strategy** based on execution status, restartability, and state integrity.
+4. **Recover** using Versioning Override or Reset-with-Move, idempotently while the Version drains.
+5. **Clean up** by deleting the drained Version once all affected Workflows are recovered.

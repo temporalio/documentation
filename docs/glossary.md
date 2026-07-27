@@ -229,7 +229,7 @@ loss during failover.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failure](/temporal#failure)
+#### [Failure](/references/failures)
 
 Temporal Failures are representations of various types of errors that occur in the system.
 
@@ -655,7 +655,7 @@ The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 <!-- _Tags: [term](/tags/term), [cli](/tags/cli)_ -->
 
-#### [Temporal Client](/temporal-client)
+#### [Temporal Client](/encyclopedia/temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 
@@ -721,7 +721,7 @@ The Temporal Platform consists of a Temporal Service and Worker Processes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal SDK](/encyclopedia/temporal-sdks)
+#### [Temporal SDK](/encyclopedia/architecture/temporal-sdks)
 
 A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate
 with a Temporal Service, develop Workflow Definitions, and develop Worker Programs.

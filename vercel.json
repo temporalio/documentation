@@ -34,6 +34,11 @@
   ],
   "redirects": [
     {
+      "source": "/guides/saga-pattern",
+      "destination": "/guides/recover-without-restart",
+      "permanent": true
+    },
+    {
       "source": "/cloud/disaster-recovery",
       "destination": "/cloud/high-availability",
       "permanent": true
@@ -2160,6 +2165,21 @@
     {
       "source": "/develop/go/workers/cloud-worker",
       "destination": "/develop/go/workers/run-worker-process#connect-to-temporal-cloud",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/temporal-sdks",
+      "destination": "/encyclopedia/architecture/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/architecture/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
       "permanent": true
     },
     {

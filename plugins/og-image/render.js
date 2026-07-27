@@ -4,7 +4,7 @@ const satori = require('satori').default;
 const { Resvg } = require('@resvg/resvg-js');
 const sharp = require('sharp');
 const { TITLE_COLOR, SUBTITLE_COLOR, FOOTER_COLOR } = require('../../src/constants/ogImageColors');
-const { TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./constants');
+const { TEMPLATE_VERSION, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./constants');
 
 const CARD_WIDTH = 1200;
 const CARD_HEIGHT = 630;
@@ -85,7 +85,7 @@ function loadAssets() {
   return assetsPromise;
 }
 
-function buildTree({ title, description }, { logo, background }) {
+function buildTree({ title, description, footerText = DEFAULT_FOOTER_TEXT }, { logo, background }) {
   return {
     type: 'div',
     props: {
@@ -184,7 +184,7 @@ function buildTree({ title, description }, { logo, background }) {
                           fontWeight: 400,
                           color: FOOTER_COLOR,
                         },
-                        children: 'DOCS.TEMPORAL.IO',
+                        children: footerText,
                       },
                     },
                   ],
@@ -198,9 +198,9 @@ function buildTree({ title, description }, { logo, background }) {
   };
 }
 
-async function renderCard({ title, description }) {
+async function renderCard({ title, description, footerText = DEFAULT_FOOTER_TEXT }) {
   const { fonts, logo, background } = await loadAssets();
-  const svg = await satori(buildTree({ title, description }, { logo, background }), {
+  const svg = await satori(buildTree({ title, description, footerText }, { logo, background }), {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     fonts,
