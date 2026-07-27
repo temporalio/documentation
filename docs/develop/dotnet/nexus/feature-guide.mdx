@@ -309,7 +309,8 @@ IHost host = Host.CreateDefaultBuilder(args)
 await host.RunAsync();
 ```
 
-The handler receives its dependencies through its constructor, and a scoped instance is created for each Operation:
+The handler receives its dependencies through its constructor.
+The container creates a new scoped handler instance and its scoped dependencies for each Operation invocation; it does not cache them between invocations:
 
 [NexusDependencyInjection/Handler/GreetingServiceHandler.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusDependencyInjection/Handler/GreetingServiceHandler.cs)
 ```csharp
