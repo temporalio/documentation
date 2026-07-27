@@ -96,7 +96,7 @@ This guide requires Python, a Temporal Worker, and either a local development se
 
 - Python 3.9 or later
 - Temporal Python SDK (`temporalio`) version 1.7.0 or later (required for `@workflow.init`, `workflow.all_handlers_finished`, and Workflow Updates)
-- A running Temporal Server, either via the [Temporal CLI](https://docs.temporal.io/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
+- A running Temporal Server, either via the [Temporal CLI](/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
 - `pip` or `uv` for Python dependency management
 
 ### Resources and access privileges
@@ -108,10 +108,10 @@ This guide requires Python, a Temporal Worker, and either a local development se
 
 You should be familiar with the following before proceeding:
 
-- [Temporal Workflows](https://docs.temporal.io/workflows): The durable, stateful functions that Temporal orchestrates
-- [Temporal Activities](https://docs.temporal.io/activities): The functions that perform side effects such as API calls and database writes
-- [Temporal Workers](https://docs.temporal.io/workers): The processes that host and execute Workflow and Activity code
-- [Temporal Task Queues](https://docs.temporal.io/task-queues): The named queues that route work from the Temporal Server to Workers
+- [Temporal Workflows](/workflows): The durable, stateful functions that Temporal orchestrates
+- [Temporal Activities](/activities): The functions that perform side effects such as API calls and database writes
+- [Temporal Workers](/workers): The processes that host and execute Workflow and Activity code
+- [Temporal Task Queues](/task-queue): The named queues that route work from the Temporal Server to Workers
 
 ## Architecture diagrams
 
@@ -982,7 +982,7 @@ Run this test as part of your continuous integration pipeline before deploying W
 
 Entity Workflows are the hardest case for code evolution: a loyalty account can span years and dozens of deployments. Any change that alters the sequence of Commands the Workflow generates causes a `NondeterminismError` during replay for in-progress Executions.
 
-[Worker Versioning](https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning) is the recommended solution: run multiple builds simultaneously, route each Execution to the build it started on, and drain old builds without any code-level branching.
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is the recommended solution: run multiple builds simultaneously, route each Execution to the build it started on, and drain old builds without any code-level branching.
 
 > Worker Versioning requires Python SDK v1.11.0 or later, Temporal Server v1.29.1 or later, and Temporal CLI v1.4.1 or later.
 
@@ -1119,12 +1119,12 @@ You've built a loyalty account system where each customer is an independent, sel
 
 ## Related resources
 
-- [Temporal Python SDK documentation](https://docs.temporal.io/develop/python)
+- [Temporal Python SDK documentation](/develop/python)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
-- [Message Passing — Signals, Queries, Updates](https://docs.temporal.io/develop/python/message-passing)
-- [Continue-As-New](https://docs.temporal.io/develop/python/continue-as-new)
-- [Worker Versioning](https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning)
-- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](https://docs.temporal.io/develop/python/failure-detection)
+- [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
+- [Continue-As-New](/develop/python/workflows/continue-as-new)
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
+- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
 - [Temporal Python SDK samples](https://github.com/temporalio/samples-python)
 
 <!-- - [Companion article: Actor Workflow Pattern](ActorWorkflow_PlayerSessions.md) — covers the related Actor Workflow pattern for autonomous agents that take action -->
