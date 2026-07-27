@@ -58,8 +58,8 @@
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.1",
-    "@docusaurus/faster": "^3.10.1",
-    "@docusaurus/mdx-loader": "^3.10.1",
+    "@docusaurus/faster": "^3.10.2",
+    "@docusaurus/mdx-loader": "^3.10.2",
     "@docusaurus/module-type-aliases": "^3.10.1",
     "@docusaurus/plugin-content-docs": "^3.10.1",
     "@docusaurus/preset-classic": "^3.10.1",
@@ -95,7 +95,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
-    "@types/node": "^26.0.0",
+    "@types/node": "^26.1.1",
     "dprint": "^0.55.1",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
