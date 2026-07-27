@@ -18,7 +18,8 @@ tags:
 ---
 
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import { SdkTabs, WorkerVersioningConfigExample } from '@site/src/components';
+import { SdkTabs, AnnotatedCode } from '@site/src/components';
+import * as WV from '@site/src/components/elements/AnnotatedCode/annotations/workerVersioning';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
@@ -149,7 +150,115 @@ three new parameters, with different names depending on the language:
 
 Follow the example for your SDK below. Select a concept to highlight the matching lines:
 
-<WorkerVersioningConfigExample />
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Go>
+<AnnotatedCode annotations={WV.go}>
+```go
+buildID := mustGetEnv("MY_BUILD_ID")
+w := worker.New(c, myTaskQueue, worker.Options{
+  DeploymentOptions: worker.DeploymentOptions{
+    UseVersioning: true,
+    Version: worker.WorkerDeploymentVersion{
+      DeploymentName: "llm_srv",
+      BuildID:        buildID,
+    },
+    DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
+  },
+})
+```
+</AnnotatedCode>
+</SdkTabs.Go>
+<SdkTabs.Java>
+<AnnotatedCode annotations={WV.java}>
+```java
+import io.temporal.worker.WorkerOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.worker.WorkerDeploymentOptions;
+
+WorkerOptions.newBuilder()
+  .setDeploymentOptions(
+      WorkerDeploymentOptions.newBuilder()
+      .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+      .setUseVersioning(true)
+      .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+      .build())
+  .build();
+```
+</AnnotatedCode>
+</SdkTabs.Java>
+<SdkTabs.Python>
+<AnnotatedCode annotations={WV.python}>
+```python
+from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
+Worker(
+    client,
+    task_queue="mytaskqueue",
+    workflows=workflows,
+    activities=activities,
+    deployment_config=WorkerDeploymentConfig(
+        version=WorkerDeploymentVersion(
+            deployment_name="llm_srv",
+            build_id=my_env.build_id),
+        use_worker_versioning=True,
+        default_versioning_behavior=VersioningBehavior.UNSPECIFIED
+    ),
+)
+```
+</AnnotatedCode>
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+<AnnotatedCode annotations={WV.typescript}>
+```ts
+const myWorker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue,
+  workerDeploymentOptions: {
+    useWorkerVersioning: true,
+    version: { buildId: '1.0', deploymentName: 'llm_srv' },
+  },
+  connection: nativeConnection,
+});
+```
+</AnnotatedCode>
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+<AnnotatedCode annotations={WV.dotnet}>
+```csharp
+var myWorker = new TemporalWorker(
+    Client,
+    new TemporalWorkerOptions(taskQueue)
+    {
+      DeploymentOptions = new(new("llm_srv", "1.0"), true)
+      {
+        DefaultVersioningBehavior = VersioningBehavior.Unspecified,
+      },
+    }.AddWorkflow<MyWorkflow>());
+```
+</AnnotatedCode>
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+<AnnotatedCode annotations={WV.ruby}>
+```ruby
+worker = Temporalio::Worker.new(
+  client: client,
+  task_queue: task_queue,
+  workflows: [MyWorkflow],
+  deployment_options: Temporalio::Worker::DeploymentOptions.new(
+      version: Temporalio::WorkerDeploymentVersion.new(
+          deployment_name: 'llm_srv',
+          build_id: '1.0'
+      ),
+      use_worker_versioning: true,
+      default_versioning_behavior: Temporalio::VersioningBehavior::UNSPECIFIED
+  )
+)
+```
+</AnnotatedCode>
+</SdkTabs.Ruby>
+</SdkTabs>
 
 ## Choosing a Versioning Behavior {/* #choosing-behavior */}
 

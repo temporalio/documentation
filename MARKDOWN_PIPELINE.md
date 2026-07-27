@@ -122,7 +122,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
 | `ZoomPanPinch` | `transparent` | Wrapper stripped; inner content passed through |
 | `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
-| `DL`, `DT`, `DD`, `DefinitionList` | `strip-tag` | Tags stripped, text content kept |
+| `DL`, `DT`, `DD`, `DefinitionList`, `AnnotatedCode` | `strip-tag` | Tags stripped, text content kept |
 | `details` / `summary` | `details` / `summary` | `<summary>` becomes a heading; body expanded inline |
 
 **Transclusion.** Components imported from a Markdown file
