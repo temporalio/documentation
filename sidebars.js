@@ -1002,6 +1002,7 @@ const developTypeScriptCategory = {
             items: [
               'develop/typescript/best-practices/data-handling/data-conversion',
               'develop/typescript/best-practices/data-handling/data-encryption',
+              'develop/typescript/best-practices/data-handling/external-storage',
             ],
           },
         ],

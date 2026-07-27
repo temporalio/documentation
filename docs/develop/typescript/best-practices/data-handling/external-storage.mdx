@@ -1,0 +1,330 @@
+---
+id: external-storage
+title: External Storage - TypeScript SDK
+sidebar_label: External Storage
+toc_max_heading_level: 3
+tags:
+  - TypeScript SDK
+  - Temporal SDKs
+  - Data Converters
+description: Offload large payloads to external storage using the claim check pattern in the TypeScript SDK.
+---
+
+:::info Release, stability, and dependency info
+
+External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs
+and configuration may change before General Availability. Join the
+[#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
+
+:::
+
+The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted
+deployments. When your Workflows or Activities handle data larger than the limit, you can offload payloads to external
+storage, such as Amazon S3, and pass a small reference token through the Event History instead. This page shows you how
+to set up External Storage with Amazon S3 or Google Cloud Storage, and how to implement a custom storage driver.
+
+For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
+
+## Store and retrieve large payloads with Amazon S3
+
+The TypeScript SDK includes an S3 storage driver. Follow these steps to set it up:
+
+### Prerequisites
+
+- An Amazon S3 bucket that you have read and write access to. Refer to
+  [lifecycle management](/external-storage#lifecycle) to ensure that your payloads remain available for the entire
+  lifetime of the Workflow. For multi-region durability, see
+  [Durable External Storage](/external-storage#durable-external-storage).
+- The credentials used by your S3 client need `s3:PutObject` on components that store payloads and `s3:GetObject` on
+  components that retrieve them.
+- Install the driver, the AWS client adapter, and the AWS SDK:
+
+  ```sh
+  npm install @temporalio/external-storage-s3 \
+    @temporalio/external-storage-s3-aws-sdk \
+    @aws-sdk/client-s3
+  ```
+
+  The `@temporalio/external-storage-s3` package has no AWS dependency of its own. It defines the driver and an
+  `S3StorageDriverClient` interface, and `@temporalio/external-storage-s3-aws-sdk` supplies an implementation backed by
+  `@aws-sdk/client-s3`.
+
+### Procedure
+
+1. Create an S3 client, wrap it in `AwsSdkS3StorageDriverClient`, and pass the result to the driver. The AWS client uses
+   your standard AWS credentials from the environment (environment variables, IAM role, or AWS config file):
+
+   ```ts
+   import { S3Client } from '@aws-sdk/client-s3';
+   import { S3StorageDriver } from '@temporalio/external-storage-s3';
+   import { AwsSdkS3StorageDriverClient } from '@temporalio/external-storage-s3-aws-sdk';
+
+   const s3Client = new S3Client({ region: 'us-east-2' });
+
+   const driver = new S3StorageDriver({
+     client: new AwsSdkS3StorageDriverClient(s3Client),
+     bucket: 'my-temporal-payloads',
+   });
+   ```
+
+   To route payloads to different buckets at runtime, pass a function as `bucket` instead of a string. The function
+   receives the store context and the payload, and returns a bucket name.
+
+2. Build an `ExternalStorage` instance from the driver, set it on your Data Converter, and pass the converter to your
+   Client and Worker. External Storage runs outside the Workflow sandbox, so you can pass the driver object directly
+   rather than referencing it by path the way a custom Payload Converter requires:
+
+   ```ts
+   import { Client, Connection } from '@temporalio/client';
+   import { ExternalStorage } from '@temporalio/common';
+   import { Worker } from '@temporalio/worker';
+
+   const dataConverter = {
+     externalStorage: new ExternalStorage({ drivers: [driver] }),
+   };
+
+   const connection = await Connection.connect();
+   const client = new Client({ connection, dataConverter });
+
+   const worker = await Worker.create({
+     workflowsPath: require.resolve('./workflows'),
+     taskQueue: 'my-task-queue',
+     dataConverter,
+   });
+   ```
+
+By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
+`payloadSizeThreshold` option, even setting it to `0` to externalize all payloads regardless of size. Refer to
+[Configure payload size threshold](#configure-payload-size-threshold) for more information.
+
+All Workflows and Activities running on the Worker use the storage driver automatically without changes to your business
+logic. The driver uploads and downloads payloads concurrently, skips uploads for content already present in the bucket,
+and verifies a SHA-256 checksum on retrieve.
+
+The S3 driver rejects any single payload larger than `maxPayloadSize`, which defaults to 50 MiB. The driver also
+includes diagnostic metadata, such as the AWS region, in error messages to help troubleshoot storage failures.
+
+## Store and retrieve large payloads with Google Cloud Storage
+
+The TypeScript SDK also includes a Google Cloud Storage driver. The packages are split the same way as the S3 driver:
+
+```sh
+npm install @temporalio/external-storage-gcs \
+  @temporalio/external-storage-gcs-google-sdk \
+  @google-cloud/storage
+```
+
+Construct the driver from a `Storage` instance, then configure it on the Data Converter exactly as you would the S3
+driver:
+
+```ts
+import { Storage } from '@google-cloud/storage';
+import { GcsStorageDriver } from '@temporalio/external-storage-gcs';
+import { GoogleCloudGcsStorageDriverClient } from '@temporalio/external-storage-gcs-google-sdk';
+
+const storage = new Storage();
+
+const driver = new GcsStorageDriver({
+  client: new GoogleCloudGcsStorageDriverClient(storage),
+  bucket: 'my-temporal-payloads',
+});
+```
+
+## Implement a custom storage driver
+
+If you need a storage backend other than what the built-in drivers allow, you can implement your own storage driver.
+Refer to [Choose a storage system](/external-storage#choose-storage) for guidance on selecting a backing store and
+[Lifecycle management](/external-storage#lifecycle) for retention requirements.
+
+The following example shows a custom driver that uses local disk as the backing store. This example is for local
+development and testing only. In production, use a durable storage system that is accessible to all Workers.
+
+```ts
+import { randomUUID } from 'node:crypto';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import {
+  StorageDriverClaim,
+  type Payload,
+  type StorageDriver,
+  type StorageDriverRetrieveContext,
+  type StorageDriverStoreContext,
+} from '@temporalio/common';
+import { temporal } from '@temporalio/proto';
+
+const PayloadProto = temporal.api.common.v1.Payload;
+
+export class LocalDiskStorageDriver implements StorageDriver {
+  readonly name = 'my-local-disk';
+  readonly type = 'local-disk';
+
+  constructor(private readonly storeDir = '/tmp/temporal-payload-store') {}
+
+  async store(context: StorageDriverStoreContext, payloads: Payload[]): Promise<StorageDriverClaim[]> {
+    let dir = this.storeDir;
+    const target = context.target;
+    if (target?.id) {
+      // `target.kind` is either 'workflow' or 'activity'. Including it in the path keeps a
+      // Workflow Id from colliding with an Activity Id in the same Namespace.
+      dir = path.join(this.storeDir, target.namespace, target.kind, target.id);
+    }
+    await mkdir(dir, { recursive: true });
+
+    const claims: StorageDriverClaim[] = [];
+    for (const payload of payloads) {
+      const filePath = path.join(dir, `${randomUUID()}.bin`);
+      await writeFile(filePath, PayloadProto.encode(payload).finish());
+      claims.push(new StorageDriverClaim({ path: filePath }));
+    }
+    return claims;
+  }
+
+  async retrieve(_context: StorageDriverRetrieveContext, claims: StorageDriverClaim[]): Promise<Payload[]> {
+    const payloads: Payload[] = [];
+    for (const claim of claims) {
+      const filePath = claim.claimData.path;
+      if (!filePath) {
+        throw new Error("claim is missing required 'path' data");
+      }
+      payloads.push(PayloadProto.decode(await readFile(filePath)));
+    }
+    return payloads;
+  }
+}
+```
+
+The following sections walk through the key parts of the driver implementation.
+
+### 1. Implement the StorageDriver interface
+
+A custom driver implements the `StorageDriver` interface, which has two readonly properties and two methods:
+
+- `name` is a unique string that identifies the driver instance. The SDK stores this name in the claim check reference
+  so it can route retrieval requests to the correct driver. Changing the name after payloads have been stored breaks
+  retrieval. For example, two S3 drivers could be named `"s3-primary"` and `"s3-archive"`.
+- `type` is a string that identifies the driver implementation, and the Worker reports it in its heartbeat. Unlike
+  `name`, `type` must be the same across all instances of the same driver type regardless of configuration. Two S3
+  drivers named `"s3-primary"` and `"s3-archive"` would both report `"aws.s3driver"` as their type, while the local disk
+  driver in the preceding code sample reports `"local-disk"`.
+- `store()` receives an array of payloads and returns one `StorageDriverClaim` per payload. A claim wraps a set of
+  string key-value pairs that the driver uses to locate the payload later.
+- `retrieve()` receives the claims that `store()` produced and returns the original payloads.
+
+### 2. Store payloads
+
+In `store()`, serialize each Payload protobuf message to bytes and write the bytes to your storage system. The
+application data has already been serialized by the
+[Payload Converter](/develop/typescript/best-practices/data-handling/data-conversion) and
+[Payload Codec](/develop/typescript/best-practices/data-handling/data-encryption) before it reaches the driver. See the
+[data conversion pipeline](/external-storage#data-pipeline) for more details.
+
+Return a `StorageDriverClaim` for each payload with enough information to retrieve it later. The `context.target`
+provides identity information and is a discriminated union: check the `kind` property to distinguish
+`"workflow"` from `"activity"`, then read `namespace`, `id`, `runId`, and `type`. Consider structuring your storage keys
+to include this information so that you can identify which Workflow owns each payload. Within that scope,
+content-addressable keys, such as a SHA-256 hash of the payload bytes, can help deduplicate identical payloads. The
+built-in S3 and GCS drivers use this approach.
+
+### 3. Retrieve payloads
+
+In `retrieve()`, download the bytes using the claim data, then reconstruct the Payload protobuf message. The Payload
+Converter handles deserializing the application data after the driver returns the payload.
+
+### 4. Configure the Data Converter
+
+Pass your driver to an `ExternalStorage` instance on the Data Converter, and use the converter when creating your Client
+and Worker. You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
+
+```ts
+import { ExternalStorage } from '@temporalio/common';
+
+const dataConverter = {
+  externalStorage: new ExternalStorage({
+    drivers: [new LocalDiskStorageDriver()],
+  }),
+};
+```
+
+## Configure payload size threshold
+
+You can configure the payload size threshold that triggers external storage. By default, payloads larger than 256 KiB
+are offloaded to external storage. You can adjust this with the `payloadSizeThreshold` option, or set it to `0` to
+externalize all payloads regardless of size. Payloads at or below the threshold stay inline in Event History.
+
+```ts
+const dataConverter = {
+  externalStorage: new ExternalStorage({
+    drivers: [driver],
+    payloadSizeThreshold: 0,
+  }),
+};
+```
+
+## Use multiple storage drivers
+
+When you register multiple drivers, you must provide a `driverSelector` function that chooses which driver stores each
+payload. `ExternalStorage` throws if you register more than one driver without a selector. Any driver in the list that
+is not selected for storing is still available for retrieval, which is useful when migrating between storage backends.
+Return `null` from the selector to keep a specific payload inline in Event History.
+
+Multiple drivers are useful in scenarios such as:
+
+- Driver migration. Your Worker needs to retrieve payloads created by clients that use a different driver than the one
+  you prefer. Register both drivers and use the selector to always pick your preferred driver for new payloads. The old
+  driver remains available for retrieving existing claims.
+- Multi-cloud storage. Route payloads to different storage backends based on your cloud environment. For example, use S3
+  for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the appropriate driver
+  based on the runtime environment.
+
+Every registered driver needs a distinct `name`. Because `S3StorageDriver` defaults its `name` to `"aws.s3driver"`,
+registering two S3 drivers requires setting the `driverName` option on at least one of them.
+
+The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver`
+is only registered so the Worker can retrieve payloads that were previously stored with it:
+
+```ts
+const preferredDriver = new S3StorageDriver({
+  client: new AwsSdkS3StorageDriverClient(s3Client),
+  bucket: 'my-bucket',
+});
+const legacyDriver = new LegacyStorageDriver();
+
+const externalStorage = new ExternalStorage({
+  drivers: [preferredDriver, legacyDriver],
+  driverSelector: () => preferredDriver,
+});
+```
+
+## Multi-region durability
+
+To make your S3-backed External Storage tolerant of regional failures, configure the AWS side with
+[Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) and an
+[S3 Multi-Region Access Point (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/), then point the
+driver at the MRAP ARN instead of a bucket name. See
+[Durable External Storage](/external-storage#durable-external-storage) for the full pattern and trade-offs.
+
+MRAP requests are signed with [SigV4A](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html).
+The AWS SDK for JavaScript does not bundle a SigV4A signer, so install one alongside your existing dependencies:
+
+```sh
+npm install @aws-sdk/signature-v4a
+```
+
+Import the signer once during application startup. The import registers the signer with the AWS SDK, so you do not
+reference it directly:
+
+```ts
+import '@aws-sdk/signature-v4a';
+```
+
+`@aws-sdk/signature-v4-crt` is an alternative implementation backed by the AWS Common Runtime. When both are installed,
+the AWS SDK prefers the CRT implementation.
+
+With the signer registered, the only remaining change is the value you pass as `bucket`:
+
+```ts
+const driver = new S3StorageDriver({
+  client: new AwsSdkS3StorageDriverClient(s3Client),
+  bucket: 'arn:aws:s3::123456789012:accesspoint/mfzwi23gnjvgw.mrap',
+});
+```
