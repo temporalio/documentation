@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const ogImagePlugin = require('../plugins/og-image');
+const { AI_COOKBOOK_OG_IMAGE_PATH } = require('../src/constants/aiCookbookOgImage');
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 const AI_COOKBOOK_DIR = path.join(process.cwd(), 'ai-cookbook');
@@ -105,6 +106,20 @@ async function main() {
 
       cards.push({ urlPath: routePath, section, title, isOverride: false, imgSrc: `/img/og/${hash}.${ogImagePlugin.IMAGE_EXTENSION}` });
     }
+  }
+
+  // /ai-cookbook (src/pages/ai-cookbook.tsx) is a plain page, not an MDX doc,
+  // so it's invisible to the DOC_TARGETS walk above — added manually so the
+  // gallery still shows every card the site actually ships.
+  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai-cookbook', 'index.html');
+  if (fs.existsSync(cookbookHomeHtmlPath)) {
+    cards.push({
+      urlPath: '/ai-cookbook',
+      section: 'AI Cookbook',
+      title: 'AI Cookbook (landing page)',
+      isOverride: true,
+      imgSrc: AI_COOKBOOK_OG_IMAGE_PATH,
+    });
   }
 
   cards.sort((a, b) => a.section.localeCompare(b.section) || a.title.localeCompare(b.title));
