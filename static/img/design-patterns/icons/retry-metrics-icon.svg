@@ -1,15 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
-  <!-- Chart axes -->
-  <line x1="12" y1="10" x2="12" y2="66" stroke="#888" stroke-width="2" stroke-linecap="round"/>
-  <line x1="12" y1="66" x2="80" y2="66" stroke="#888" stroke-width="2" stroke-linecap="round"/>
-
-  <!-- Retry-rate bars, spiking on the last -->
-  <rect x="20" y="54" width="8" height="12" fill="#888"/>
-  <rect x="32" y="48" width="8" height="18" fill="#888"/>
-  <rect x="44" y="52" width="8" height="14" fill="#888"/>
-  <rect x="56" y="22" width="8" height="44" fill="#cc2222"/>
-
-  <!-- Alert bell -->
-  <path d="M 78 16 a 7 7 0 0 1 14 0 v6 l3 4 h-20 l3 -4 z" fill="none" stroke="#cc2222" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M 82 30 a 3 3 0 0 0 6 0" fill="none" stroke="#cc2222" stroke-width="2"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80"><line x1="12" x2="12" y1="10" y2="66" stroke="#888" stroke-linecap="round" stroke-width="2"/><line x1="12" x2="80" y1="66" y2="66" stroke="#888" stroke-linecap="round" stroke-width="2"/><rect width="8" height="12" x="20" y="54" fill="#888"/><rect width="8" height="18" x="32" y="48" fill="#888"/><rect width="8" height="14" x="44" y="52" fill="#888"/><rect width="8" height="44" x="56" y="22" fill="#c22"/><path fill="none" stroke="#c22" stroke-linejoin="round" stroke-width="2" d="M 78 16 a 7 7 0 0 1 14 0 v6 l3 4 h-20 l3 -4 z"/><path fill="none" stroke="#c22" stroke-width="2" d="M 82 30 a 3 3 0 0 0 6 0"/></svg>
