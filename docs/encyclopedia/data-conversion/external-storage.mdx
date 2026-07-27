@@ -19,15 +19,13 @@ tags:
   - Data Converters
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
-:::info Release, stability, and dependency info
-
-External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs
-and configuration may change before General Availability. Join the
-[#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
-
-:::
+<ReleaseNoteHeader featureName="externalStorage">
+  APIs and configuration may change before General Availability. Join the
+  [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for
+  help.
+</ReleaseNoteHeader>
 
 External Storage offloads payloads to an external store (such as Amazon S3) and passes a small reference token through
 the Event History instead. This is called the

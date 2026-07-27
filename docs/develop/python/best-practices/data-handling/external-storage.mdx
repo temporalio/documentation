@@ -11,13 +11,13 @@ tags:
 description: Offload large payloads to external storage using the claim check pattern in the Python SDK.
 ---
 
-:::info Release, stability, and dependency info
+import { ReleaseNoteHeader } from '@site/src/components';
 
-External Storage is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). APIs
-and configuration may change before General Availability. Join the
-[#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
-
-:::
+<ReleaseNoteHeader featureName="externalStorage">
+  APIs and configuration may change before General Availability. Join the
+  [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for
+  help.
+</ReleaseNoteHeader>
 
 The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted
 deployments. When your Workflows or Activities handle data larger than the limit, you can offload payloads to external
