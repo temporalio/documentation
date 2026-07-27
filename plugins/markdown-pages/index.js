@@ -166,16 +166,23 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
         const sortedDirs = [...subGroups.keys()].sort();
         for (const subdir of sortedDirs) {
           const subPages = subGroups.get(subdir);
+          // Find the subsection's overview page to title the group, trying
+          // progressively looser filename conventions. Order matters: an exact
+          // match must win, or e.g. visibility/ would title itself from
+          // dual-visibility.mdx instead of visibility.mdx.
+          const filenameOf = (p) =>
+            p.relPath.split('/').pop().replace(/\.(md|mdx)$/i, '');
           const normalized = subdir.replace(/-/g, '');
           const indexPage =
             subPages.find(p => {
-              const filename = p.relPath.split('/').pop().replace(/\.(md|mdx)$/i, '');
+              const filename = filenameOf(p);
               return filename === 'index' || filename === subdir;
             }) ||
             subPages.find(p => {
-              const filename = p.relPath.split('/').pop().replace(/\.(md|mdx)$/i, '');
+              const filename = filenameOf(p);
               return filename === normalized || filename.endsWith('-overview');
-            });
+            }) ||
+            subPages.find(p => filenameOf(p).endsWith('-' + subdir));
           const subTitle = indexPage
             ? (indexPage.sidebarLabel || indexPage.title)
             : subdir;
