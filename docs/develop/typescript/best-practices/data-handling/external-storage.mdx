@@ -71,6 +71,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
 
    The AWS SDK reads environment variables, an IAM role, or your AWS config file.
 
+   <!--SNIPSTART typescript-s3-driver-create-->
    ```ts
    import { S3Client } from '@aws-sdk/client-s3';
    import { S3StorageDriver } from '@temporalio/external-storage-s3';
@@ -83,12 +84,14 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
      bucket: 'my-temporal-payloads',
    });
    ```
+   <!--SNIPEND-->
 
      </TabItem>
      <TabItem value="gcs" label="Google Cloud Storage">
 
    The Google Cloud SDK reads Application Default Credentials.
 
+   <!--SNIPSTART typescript-gcs-driver-create-->
    ```ts
    import { Storage } from '@google-cloud/storage';
    import { GcsStorageDriver } from '@temporalio/external-storage-gcs';
@@ -101,6 +104,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
      bucket: 'my-temporal-payloads',
    });
    ```
+   <!--SNIPEND-->
 
      </TabItem>
    </Tabs>
@@ -113,6 +117,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
    you can pass the driver object directly rather than referencing it by path the way a custom Payload Converter
    requires:
 
+   <!--SNIPSTART typescript-s3-external-storage-setup-->
    ```ts
    import { Client, Connection } from '@temporalio/client';
    import { ExternalStorage } from '@temporalio/common';
@@ -131,6 +136,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
      dataConverter,
    });
    ```
+   <!--SNIPEND-->
 
 By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
 `payloadSizeThreshold` option, even setting it to `0` to externalize all payloads regardless of size. Refer to
@@ -151,6 +157,7 @@ Refer to [Choose a storage system](/external-storage#choose-storage) for guidanc
 The following example shows a custom driver that uses local disk as the backing store. This example is for local
 development and testing only. In production, use a durable storage system that is accessible to all Workers.
 
+<!--SNIPSTART typescript-custom-storage-driver-->
 ```ts
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -204,6 +211,7 @@ export class LocalDiskStorageDriver implements StorageDriver {
   }
 }
 ```
+<!--SNIPEND-->
 
 The following sections walk through the key parts of the driver implementation.
 
@@ -247,6 +255,7 @@ Converter handles deserializing the application data after the driver returns th
 Pass your driver to an `ExternalStorage` instance on the Data Converter, and use the converter when creating your Client
 and Worker. You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
+<!--SNIPSTART typescript-custom-driver-data-converter-->
 ```ts
 import { ExternalStorage } from '@temporalio/common';
 
@@ -256,6 +265,7 @@ const dataConverter = {
   }),
 };
 ```
+<!--SNIPEND-->
 
 ## Configure payload size threshold
 
@@ -263,6 +273,7 @@ You can configure the payload size threshold that triggers external storage. By 
 are offloaded to external storage. You can adjust this with the `payloadSizeThreshold` option, or set it to `0` to
 externalize all payloads regardless of size. Payloads at or below the threshold stay inline in Event History.
 
+<!--SNIPSTART typescript-external-storage-threshold-->
 ```ts
 const dataConverter = {
   externalStorage: new ExternalStorage({
@@ -271,6 +282,7 @@ const dataConverter = {
   }),
 };
 ```
+<!--SNIPEND-->
 
 ## Use multiple storage drivers
 
@@ -294,6 +306,7 @@ registering two S3 drivers requires setting the `driverName` option on at least 
 The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
+<!--SNIPSTART typescript-external-storage-multiple-drivers-->
 ```ts
 const preferredDriver = new S3StorageDriver({
   client: new AwsSdkS3StorageDriverClient(s3Client),
@@ -306,6 +319,7 @@ const externalStorage = new ExternalStorage({
   driverSelector: () => preferredDriver,
 });
 ```
+<!--SNIPEND-->
 
 ## Multi-region durability with Amazon S3
 
