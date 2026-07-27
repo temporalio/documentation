@@ -1,18 +1,12 @@
-import { FaPython, FaJava } from 'react-icons/fa';
-import { SiGo, SiTypescript, SiPhp, SiDotnet, SiRuby, SiRust } from 'react-icons/si';
+import { SDKS } from './sdks';
 
 export const LANGUAGE_TAB_GROUP = 'language';
 
-export const SDK_LANGUAGES = [
-  { key: 'go', label: 'Go', icon: SiGo },
-  { key: 'java', label: 'Java', icon: FaJava },
-  { key: 'py', label: 'Python', icon: FaPython },
-  { key: 'ts', label: 'TypeScript', icon: SiTypescript },
-  { key: 'php', label: 'PHP', icon: SiPhp },
-  { key: 'dotnet', label: '.NET', icon: SiDotnet },
-  { key: 'rb', label: 'Ruby', icon: SiRuby },
-  { key: 'rs', label: 'Rust', icon: SiRust },
-];
+export const SDK_LANGUAGES = SDKS.map(({ tabKey, label, icon }) => ({
+  key: tabKey,
+  label,
+  icon,
+}));
 
 export const LANGUAGE_SVGS = {
   Go: "/img/sdks/svgs/golang.svg",
