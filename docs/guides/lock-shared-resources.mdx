@@ -71,16 +71,16 @@ To complete the implementation plan, you will need:
     - Python 3.12 or later ([download](https://www.python.org/downloads/))
     - Temporal Python SDK 1.7 or later ([github](https://github.com/temporalio/sdk-python))
     - `uv` 0.9.18 for Python dependency management ([install](https://docs.astral.sh/uv/))
-    - Temporal CLI 1.6.2 for the local development server ([install](https://docs.temporal.io/cli))
+    - Temporal CLI 1.6.2 for the local development server ([install](/cli))
     - Access to a Temporal Cluster 1.3.2 (local development server or Temporal Cloud).
 - **Resources and access privileges**:
     - A Temporal Namespace where you can register Workers and start Workflows.
     - For Temporal Cloud: an API key with the Namespace Admin role for the target Namespace.
 - **Required concepts**:
-    - Familiarity with Temporal Workflows and Activities ([docs](https://docs.temporal.io/workflows)).
-    - Child Workflows and parent close policies ([docs](https://docs.temporal.io/encyclopedia/child-workflows)).
-    - Signals and Queries ([docs](https://docs.temporal.io/encyclopedia/workflow-message-passing)).
-    - Workflow determinism ([docs](https://docs.temporal.io/workflows#workflow-determinism)).
+    - Familiarity with Temporal Workflows and Activities ([docs](/workflows)).
+    - Child Workflows and parent close policies ([docs](/encyclopedia/child-workflows)).
+    - Signals and Queries ([docs](/encyclopedia/workflow-message-passing)).
+    - Workflow determinism ([docs](/workflows#workflow-determinism)).
 
 ## Architecture diagram
 
@@ -460,7 +460,7 @@ You now have the capability to:
 
 ## Related resources
 
-- [Temporal Python SDK Documentation](https://docs.temporal.io/develop/python). SDK reference for Workflows, Signals, child Workflows, and Worker setup.
-- [Child Workflow Executions](https://docs.temporal.io/encyclopedia/child-workflows). How parent and child Workflows interact, including parent close policies.
-- [Workflow Message Passing](https://docs.temporal.io/encyclopedia/workflow-message-passing). Reference for Signals and Queries.
+- [Temporal Python SDK Documentation](/develop/python). SDK reference for Workflows, Signals, child Workflows, and Worker setup.
+- [Child Workflow Executions](/encyclopedia/child-workflows). How parent and child Workflows interact, including parent close policies.
+- [Workflow Message Passing](/encyclopedia/workflow-message-passing). Reference for Signals and Queries.
 - [Reference implementation source repository](https://github.com/temporal-sa/temporal-workflow-throttler). The upstream repository bundles `PermitSlotWorkflow`, the `Semaphore` helper, demo Workers, a FastAPI service, and a React UI. The package directory is named `throttler/` in the source.

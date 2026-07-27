@@ -64,15 +64,15 @@ The Workflow resumes where it left off when the condition becomes true, regardle
 This means thousands of loan applications can sit in a `PENDING_FIX` state simultaneously without consuming Worker capacity.
 
 The primary architectural challenge is distinguishing between transient failures that automated retries can resolve and permanent failures that require human intervention.
-Temporal addresses this with [`ApplicationFailure.nonRetryable()`](https://docs.temporal.io/references/failures#application-failure), which instructs the SDK to skip the Retry Policy and propagate the error to the Workflow code without delay.
-The Workflow then has full control over how to handle the failure: it can log the error, update Search Attributes for visibility, and suspend until a [Signal](https://docs.temporal.io/develop/typescript/message-passing#signals) arrives.
+Temporal addresses this with [`ApplicationFailure.nonRetryable()`](/references/failures#application-failure), which instructs the SDK to skip the Retry Policy and propagate the error to the Workflow code without delay.
+The Workflow then has full control over how to handle the failure: it can log the error, update Search Attributes for visibility, and suspend until a [Signal](/develop/typescript/message-passing#signals) arrives.
 
-Custom [Search Attributes](https://docs.temporal.io/visibility#search-attribute) provide the mechanism for routing blocked Workflows to the correct resolution resource.
+Custom [Search Attributes](/visibility#search-attribute) provide the mechanism for routing blocked Workflows to the correct resolution resource.
 By upserting attributes like `LoanStatus` and `FailedActivity` at each State Transition, you create a queryable index across all active Workflows.
 An operations dashboard can filter for `LoanStatus = 'PENDING_FIX' AND FailedActivity = 'runCreditCheck'` to show which applications need a credit-related data correction.
 This same query interface supports automated agents that poll for specific failure categories and apply corrections programmatically.
 
-Temporal [Queries](https://docs.temporal.io/develop/typescript/message-passing#queries) provide synchronous read access to the current state of any running Workflow.
+Temporal [Queries](/develop/typescript/message-passing#queries) provide synchronous read access to the current state of any running Workflow.
 Unlike Search Attributes, which expose denormalized metadata for cross-Workflow queries, Queries return the full internal state of a single execution.
 Together, Search Attributes and Queries give you both the aggregate view across your entire pipeline and the detailed view into any individual Workflow.
 
@@ -220,7 +220,7 @@ export interface RetryUpdate {
 ### Define the Activities
 
 Create functions that validate loan application data at each pipeline stage.
-Temporal Activities automatically recover from transient failures — network timeouts, temporary service unavailability, rate limits — through their built-in [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies) and [timeout management](https://docs.temporal.io/develop/typescript/failure-detection#activity-timeouts).
+Temporal Activities automatically recover from transient failures — network timeouts, temporary service unavailability, rate limits — through their built-in [Retry Policy](/encyclopedia/retry-policies) and [timeout management](/develop/typescript/failure-detection#activity-timeouts).
 When an Activity encounters a permanent failure that retries cannot fix — invalid input data, a policy violation, or a missing record — it throws `ApplicationFailure.nonRetryable()` to bypass the Retry Policy and propagate the error directly to the Workflow.
 
 ```typescript
@@ -523,7 +523,7 @@ Temporal delivers Signals with at-least-once semantics: a client retry, a flaky 
 Without protection, the second delivery would overwrite the field again — usually a no-op, but harmful when the operator has since sent a different value, and always noisy in `fixHistory`.
 The handler defends against this by checking the caller-supplied `id` against the audit trail and dropping anything it has already applied.
 The client (the dashboard, CLI script, or upstream agent) is responsible for generating a stable `id` per logical correction — typically a UUID minted when the operator clicks **Patch and Retry**, reused across any retries of that same submission.
-[Workflow Updates](https://docs.temporal.io/encyclopedia/workflow-message-passing#updates) would give you this deduplication for free via the SDK's built-in `updateId` handling, along with a synchronous result to the caller; this pattern sticks with Signals because the dashboard is fire-and-forget and the audit trail already provides the dedup index.
+[Workflow Updates](/encyclopedia/workflow-message-passing#updates) would give you this deduplication for free via the SDK's built-in `updateId` handling, along with a synchronous result to the caller; this pattern sticks with Signals because the dashboard is fire-and-forget and the audit trail already provides the dedup index.
 
 The Query handler returns the complete `LoanState` at any point during execution.
 This includes the current status, the list of completed Activities, the full fix history, and the current application data.
@@ -1055,9 +1055,9 @@ By following this guide, you have implemented a recoverable and compensatable pi
 
 ## Related resources
 - [Source code](https://github.com/temporal-sa/validated-pattern-keep-business-moving)
-- [Temporal TypeScript SDK Documentation](https://docs.temporal.io/develop/typescript) — Complete reference for building Workflows, Activities, and Workers with the TypeScript SDK.
-- [Temporal Signals](https://docs.temporal.io/develop/typescript/message-passing#signals) — Guide to defining and sending Signals to running Workflow Executions.
-- [Temporal Queries](https://docs.temporal.io/develop/typescript/message-passing#queries) — Guide to defining and handling synchronous read-only Queries on Workflows.
-- [Temporal Search Attributes](https://docs.temporal.io/visibility#search-attribute) — Reference for creating and using custom Search Attributes for Workflow visibility.
-- [Temporal Visibility](https://docs.temporal.io/visibility) — Overview of the Visibility subsystem and List Filter Query syntax.
-- [ApplicationFailure Reference](https://docs.temporal.io/references/failures#application-failure) — API reference for `ApplicationFailure` including retryable and non-retryable error handling.
+- [Temporal TypeScript SDK Documentation](/develop/typescript) — Complete reference for building Workflows, Activities, and Workers with the TypeScript SDK.
+- [Temporal Signals](/develop/typescript/message-passing#signals) — Guide to defining and sending Signals to running Workflow Executions.
+- [Temporal Queries](/develop/typescript/message-passing#queries) — Guide to defining and handling synchronous read-only Queries on Workflows.
+- [Temporal Search Attributes](/visibility#search-attribute) — Reference for creating and using custom Search Attributes for Workflow visibility.
+- [Temporal Visibility](/visibility) — Overview of the Visibility subsystem and List Filter Query syntax.
+- [ApplicationFailure Reference](/references/failures#application-failure) — API reference for `ApplicationFailure` including retryable and non-retryable error handling.

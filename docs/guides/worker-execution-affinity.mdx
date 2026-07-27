@@ -55,7 +55,7 @@ Task Queues in Temporal are dynamically created when first referenced. With this
 
 ### Worker-specific vs Worker sessions
 
-- **Go SDK** has a built-in [Worker Sessions API](https://docs.temporal.io/develop/go/sessions) that handles Worker-specific routing automatically
+- **Go SDK** has a built-in [Worker Sessions API](/develop/go/sessions) that handles Worker-specific routing automatically
 - **Other SDKs** (Python, TypeScript, etc.) must implement the pattern manually using unique Task Queue names
 
 This pattern provides the same guarantees as Go's Sessions API for non-Go SDKs.
@@ -77,7 +77,7 @@ If a Worker crashes while processing Activities on its unique queue:
 
 - **Queue proliferation:** Each Worker creates a unique queue. Monitor total queue count.
 - **Queue lifecycle:** Consider setting a reasonable `schedule_to_close_timeout` on Activities to bound how long work tied to a unique queue can remain active, or implement explicit cleanup job to remove stale unique queues when Workers terminate.
-- **Worker scaling:** When scaling down, ensure Workers complete in-progress Workflows before [termination](https://docs.temporal.io/encyclopedia/workers/worker-shutdown)
+- **Worker scaling:** When scaling down, ensure Workers complete in-progress Workflows before [termination](/encyclopedia/workers/worker-shutdown)
 - **Monitoring:** Track Activities stuck in unique queues (indicates Worker crash/unavailability)
 
 ## Target audience
@@ -483,8 +483,8 @@ Your file processing Workflows now guarantee that all Activities execute on the 
 ## Related resources
 
 ### Official documentation
-- [Temporal Documentation - Task Routing](https://docs.temporal.io/task-routing)
-- [Temporal Documentation - Worker Sessions (Go SDK)](https://docs.temporal.io/develop/go/sessions)
+- [Temporal Documentation - Task Routing](/task-routing)
+- [Temporal Documentation - Worker Sessions (Go SDK)](/develop/go/sessions)
 
 ### Related patterns
 - [Separate Task Queues - Priorities](/guides/route-specialized-workloads) - For priority-based routing
