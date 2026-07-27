@@ -25,19 +25,23 @@ to set up External Storage with Amazon S3 or Google Cloud Storage, and how to im
 
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
-## Store and retrieve large payloads with Amazon S3
+## Store and retrieve large payloads with Amazon S3 or Google Cloud Storage {/* #store-and-retrieve-large-payloads */}
 
-The TypeScript SDK includes an S3 storage driver. Follow these steps to set it up:
+The TypeScript SDK includes storage drivers for Amazon S3 and Google Cloud Storage. Select your storage backend in the
+tabs that follow. Only the driver setup differs between the two. Everything after that is the same.
 
 ### Prerequisites
 
-- An Amazon S3 bucket that you have read and write access to. Refer to
+- A bucket that you have read and write access to. Refer to
   [lifecycle management](/external-storage#lifecycle) to ensure that your payloads remain available for the entire
   lifetime of the Workflow. For multi-region durability, see
   [Durable External Storage](/external-storage#durable-external-storage).
-- The credentials used by your S3 client need `s3:PutObject` on components that store payloads and `s3:GetObject` on
-  components that retrieve them.
-- Install the driver, the AWS client adapter, and the AWS SDK:
+- Credentials with permission to write objects on components that store payloads, and to read objects on components
+  that retrieve them. Components that only retrieve payloads do not need write access, and the reverse is also true.
+- Install the driver, the client adapter for your cloud provider's SDK, and that SDK:
+
+  <Tabs groupId="external-storage-backend" queryString>
+    <TabItem value="s3" label="Amazon S3" default>
 
   ```sh
   npm install @temporalio/external-storage-s3 \
@@ -45,14 +49,27 @@ The TypeScript SDK includes an S3 storage driver. Follow these steps to set it u
     @aws-sdk/client-s3
   ```
 
-  The `@temporalio/external-storage-s3` package has no AWS dependency of its own. It defines the driver and an
-  `S3StorageDriverClient` interface, and `@temporalio/external-storage-s3-aws-sdk` supplies an implementation backed by
-  `@aws-sdk/client-s3`.
+    </TabItem>
+    <TabItem value="gcs" label="Google Cloud Storage">
+
+  ```sh
+  npm install @temporalio/external-storage-gcs \
+    @temporalio/external-storage-gcs-google-sdk \
+    @google-cloud/storage
+  ```
+
+    </TabItem>
+  </Tabs>
 
 ### Procedure
 
-1. Create an S3 client, wrap it in `AwsSdkS3StorageDriverClient`, and pass the result to the driver. The AWS client uses
-   your standard AWS credentials from the environment (environment variables, IAM role, or AWS config file):
+1. Create a storage client, wrap it in the matching driver client, and pass the result to the driver. Each cloud SDK
+   picks up your standard credentials from the environment:
+
+   <Tabs groupId="external-storage-backend" queryString>
+     <TabItem value="s3" label="Amazon S3" default>
+
+   The AWS SDK reads environment variables, an IAM role, or your AWS config file.
 
    ```ts
    import { S3Client } from '@aws-sdk/client-s3';
@@ -67,12 +84,34 @@ The TypeScript SDK includes an S3 storage driver. Follow these steps to set it u
    });
    ```
 
+     </TabItem>
+     <TabItem value="gcs" label="Google Cloud Storage">
+
+   The Google Cloud SDK reads Application Default Credentials.
+
+   ```ts
+   import { Storage } from '@google-cloud/storage';
+   import { GcsStorageDriver } from '@temporalio/external-storage-gcs';
+   import { GoogleCloudGcsStorageDriverClient } from '@temporalio/external-storage-gcs-google-sdk';
+
+   const storage = new Storage();
+
+   const driver = new GcsStorageDriver({
+     client: new GoogleCloudGcsStorageDriverClient(storage),
+     bucket: 'my-temporal-payloads',
+   });
+   ```
+
+     </TabItem>
+   </Tabs>
+
    To route payloads to different buckets at runtime, pass a function as `bucket` instead of a string. The function
    receives the store context and the payload, and returns a bucket name.
 
 2. Build an `ExternalStorage` instance from the driver, set it on your Data Converter, and pass the converter to your
-   Client and Worker. External Storage runs outside the Workflow sandbox, so you can pass the driver object directly
-   rather than referencing it by path the way a custom Payload Converter requires:
+   Client and Worker. This step is the same for every driver. External Storage runs outside the Workflow sandbox, so
+   you can pass the driver object directly rather than referencing it by path the way a custom Payload Converter
+   requires:
 
    ```ts
    import { Client, Connection } from '@temporalio/client';
@@ -98,37 +137,10 @@ By default, payloads larger than 256 KiB are offloaded to external storage. You 
 [Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
 All Workflows and Activities running on the Worker use the storage driver automatically without changes to your business
-logic. The driver uploads and downloads payloads concurrently, skips uploads for content already present in the bucket,
-and verifies a SHA-256 checksum on retrieve.
-
-The S3 driver rejects any single payload larger than `maxPayloadSize`, which defaults to 50 MiB. The driver also
-includes diagnostic metadata, such as the AWS region, in error messages to help troubleshoot storage failures.
-
-## Store and retrieve large payloads with Google Cloud Storage
-
-The TypeScript SDK also includes a Google Cloud Storage driver. The packages are split the same way as the S3 driver:
-
-```sh
-npm install @temporalio/external-storage-gcs \
-  @temporalio/external-storage-gcs-google-sdk \
-  @google-cloud/storage
-```
-
-Construct the driver from a `Storage` instance, then configure it on the Data Converter exactly as you would the S3
-driver:
-
-```ts
-import { Storage } from '@google-cloud/storage';
-import { GcsStorageDriver } from '@temporalio/external-storage-gcs';
-import { GoogleCloudGcsStorageDriverClient } from '@temporalio/external-storage-gcs-google-sdk';
-
-const storage = new Storage();
-
-const driver = new GcsStorageDriver({
-  client: new GoogleCloudGcsStorageDriverClient(storage),
-  bucket: 'my-temporal-payloads',
-});
-```
+logic. Both drivers upload and download payloads concurrently, address objects by a SHA-256 hash of their contents so
+identical payloads are stored once, and verify that hash on retrieve. Each rejects any single payload larger than
+`maxPayloadSize`, which defaults to 50 MiB, and includes diagnostic metadata in error messages to help troubleshoot
+storage failures.
 
 ## Implement a custom storage driver
 
@@ -295,7 +307,7 @@ const externalStorage = new ExternalStorage({
 });
 ```
 
-## Multi-region durability
+## Multi-region durability with Amazon S3
 
 To make your S3-backed External Storage tolerant of regional failures, configure the AWS side with
 [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) and an
