@@ -269,6 +269,7 @@ module.exports = {
                 'develop/java/workflows/timers',
                 'develop/java/workflows/side-effects',
                 'develop/java/workflows/versioning',
+                'develop/java/workflows/workflow-streams',
               ],
             },
             {
@@ -767,6 +768,7 @@ module.exports = {
                 'develop/typescript/integrations/ai-sdk',
                 'develop/typescript/integrations/langsmith',
                 'develop/typescript/integrations/openai-agents',
+                'develop/typescript/integrations/strands-agents',
               ],
             },
           ],
@@ -1791,7 +1793,7 @@ module.exports = {
       },
       items: [
         'guides/entity-pattern-loyalty-points',
-        'guides/saga-pattern',
+        'guides/recover-without-restart',
         'guides/route-specialized-workloads',
         'guides/worker-execution-affinity',
         'guides/temporary-rate-limit-increases',

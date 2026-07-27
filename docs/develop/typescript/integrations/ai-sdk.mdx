@@ -22,8 +22,17 @@ code while Temporal handles Durable Execution.
 Like all API calls, LLM API calls are non-deterministic. In a [Temporal Application](/glossary#temporal-application),
 that means you cannot make LLM calls directly from a [Workflow](/glossary#workflow); they must run as
 [Activities](/glossary#activity). The AI SDK plugin handles this automatically: when you call methods in the AI SDK such
-as `generateText()`, the plugin wraps those calls in Activities behind the scenes. This preserves the Vercel AI SDK's
-developer experience that you are already familiar with while Temporal handles Durable Execution for you.
+as `generateText()`, `streamText()`, or `streamObject()`, the plugin wraps those calls in Activities behind the scenes.
+This preserves the Vercel AI SDK's developer experience that you are already familiar with while Temporal handles
+Durable Execution for you.
+
+:::note
+
+Import the plugin (`AiSdkPlugin`) from `@temporalio/ai-sdk` in your Worker setup, but import Workflow-side helpers such
+as `temporalProvider` and `TemporalMCPClient` from the `@temporalio/ai-sdk/workflow` subpath. The `/workflow` subpath is
+safe to use in the deterministic Workflow sandbox.
+
+:::
 
 All code snippets in this guide are taken from the TypeScript SDK
 [ai-sdk samples](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk). Refer to the samples for the
@@ -131,7 +140,7 @@ to your configured `modelProvider` to create the model.
 
 ```ts {2,6}
 import { generateText } from 'ai';
-import { temporalProvider } from '@temporalio/ai-sdk';
+import { temporalProvider } from '@temporalio/ai-sdk/workflow';
 
 export async function haikuAgent(prompt: string): Promise<string> {
   const result = await generateText({
@@ -156,7 +165,9 @@ For example, if you want to call an external API to get the weather, you would i
 from the tool function. The following is an example of an Activity that gets the weather for a given location:
 
 <!--SNIPSTART typescript-vercel-ai-sdk-weather-activity -->
+
 [ai-sdk/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/activities.ts)
+
 ```ts
 export async function getWeather(input: {
   location: string;
@@ -168,6 +179,7 @@ export async function getWeather(input: {
   };
 }
 ```
+
 <!--SNIPEND-->
 
 Then in your agent implementation, provide the tool to the model using the `tools` option and instruct the model to use
@@ -176,7 +188,7 @@ the tool when needed.
 ```ts {15-23}
 import { proxyActivities } from '@temporalio/workflow';
 import { generateText, tool } from 'ai';
-import { temporalProvider } from '@temporalio/ai-sdk';
+import { temporalProvider } from '@temporalio/ai-sdk/workflow';
 import { z } from 'zod';
 
 const { getWeather } = proxyActivities<typeof activities>({
@@ -251,7 +263,7 @@ Follow the steps below to integrate your agent with an MCP server.
 3. In your agent Workflow, use `TemporalMCPClient` to get tools from the MCP server by referencing it by name:
 
    ```ts {4-5,9}
-   import { TemporalMCPClient, temporalProvider } from '@temporalio/ai-sdk';
+   import { TemporalMCPClient, temporalProvider } from '@temporalio/ai-sdk/workflow';
 
    export async function mcpAgent(prompt: string): Promise<string> {
      const mcpClient = new TemporalMCPClient({ name: 'testServer' });
@@ -269,3 +281,144 @@ Follow the steps below to integrate your agent with an MCP server.
 
    Both listing tools and calling them run as Activities behind the scenes, giving you automatic retries, timeouts, and
    full observability.
+
+## Stream model output from a Workflow
+
+The AI SDK's `streamText()` and `streamObject()` functions stream a response incrementally instead of returning it all
+at once. The plugin runs the model call in an Activity and publishes each delta onto a
+[Workflow Stream](/develop/typescript/workflows/workflow-streams) topic. External consumers can subscribe to that topic
+by Workflow ID to render tokens live as they arrive, while the Workflow durably reassembles the final result.
+
+:::note
+
+Inside the Workflow, the streamed result is reassembled after the Activity completes, so the Workflow's own `textStream`
+/ `partialObjectStream` is not incremental. Live, token-by-token deltas are delivered to **external** consumers through
+a `WorkflowStreamClient`. This is inherent to Durable Execution: the Activity must run to completion before the Workflow
+can observe a deterministic, replayable result.
+
+:::
+
+Streaming uses the [`@temporalio/workflow-streams`](/develop/typescript/workflows/workflow-streams) package. Install it
+alongside the AI SDK plugin:
+
+```bash
+npm install @temporalio/workflow-streams
+```
+
+To stream text, configure a provider with a `streamingTopic` (this enables streaming and names the topic that deltas are
+published to), host a `WorkflowStream` in your Workflow, and consume the AI SDK stream as usual:
+
+```ts
+import { streamText } from 'ai';
+import { TemporalProvider } from '@temporalio/ai-sdk/workflow';
+import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
+
+export const STREAM_TOPIC = 'text-stream';
+
+const streamingProvider = new TemporalProvider({
+  languageModel: { streamingTopic: STREAM_TOPIC },
+});
+```
+
+<!--SNIPSTART typescript-vercel-ai-sdk-streaming-agent -->
+
+[ai-sdk/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/workflows.ts)
+
+```ts
+export async function streamingAgent(prompt: string): Promise<string> {
+  // Host the WorkflowStream as the first statement of the workflow so its
+  // publish-signal handler is registered before the streaming activity starts
+  // publishing deltas to it.
+  new WorkflowStream();
+
+  const result = streamText({
+    model: streamingProvider.languageModel('gpt-4o-mini'),
+    prompt,
+    system: 'You only respond in haikus.',
+  });
+
+  // The model call runs in an activity that publishes each delta to
+  // STREAM_TOPIC for external subscribers. Inside the workflow the deltas are
+  // replayed after the activity completes, so this loop durably reassembles
+  // the full text.
+  let text = '';
+  for await (const delta of result.textStream) {
+    text += delta;
+  }
+
+  // Briefly hold the run open so a subscriber's final poll can deliver the
+  // last deltas before the workflow exits and its in-memory stream log is gone.
+  await sleep('500 milliseconds');
+  return text;
+}
+```
+
+<!--SNIPEND-->
+
+The consumer subscribes to the topic by Workflow ID and renders each delta as it arrives. Each item's payload is the
+JSON-encoded AI SDK stream part:
+
+<!--SNIPSTART typescript-vercel-ai-sdk-streaming-consumer -->
+
+[ai-sdk/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/client.ts)
+
+```ts
+// Subscribe to a Workflow's stream topic and render each text delta live as it
+// is published by the streaming activity. Each item's payload is the
+// JSON-encoded AI SDK stream part; `resultType: true` decodes it to raw bytes.
+async function renderStream(client: Client, workflowId: string, topic: string): Promise<void> {
+  const streamClient = WorkflowStreamClient.create(client, workflowId);
+  for await (const item of streamClient.subscribe<Uint8Array>(topic, 0, { resultType: true })) {
+    const part = JSON.parse(new TextDecoder().decode(item.data));
+    if (part.type === 'text-delta') process.stdout.write(part.delta);
+    if (part.type === 'finish') break;
+  }
+  process.stdout.write('\n');
+}
+```
+
+<!--SNIPEND-->
+
+### Stream structured output
+
+`streamObject()` streams a structured object as its JSON is generated. It flows through the same model path as
+`streamText()`, so no extra wiring is needed beyond choosing a distinct `streamingTopic` so concurrent streams stay
+separable. External subscribers see the object build up incrementally, and the Workflow durably resolves the final,
+validated object.
+
+<!--SNIPSTART typescript-vercel-ai-sdk-stream-object-agent -->
+
+[ai-sdk/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/workflows.ts)
+
+```ts
+export async function streamObjectAgent(prompt: string): Promise<string> {
+  new WorkflowStream();
+
+  const result = streamObject({
+    model: objectStreamingProvider.languageModel('gpt-4o-mini'),
+    schema: z.object({
+      recipe: z.object({
+        name: z.string(),
+        ingredients: z.array(z.object({ name: z.string(), amount: z.string() })),
+        steps: z.array(z.string()),
+      }),
+    }),
+    prompt,
+  });
+
+  // External subscribers see the object build up incrementally via the partial
+  // JSON deltas published to OBJECT_STREAM_TOPIC. The workflow drains the
+  // partial stream and durably resolves the final, validated object.
+  for await (const _partial of result.partialObjectStream) {
+    // Draining drives the stream; the consumer renders the live partials.
+  }
+  const object = await result.object;
+
+  await sleep('500 milliseconds');
+  return object.recipe.name;
+}
+```
+
+<!--SNIPEND-->
+
+See the full example at [ai-sdk samples](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk).
