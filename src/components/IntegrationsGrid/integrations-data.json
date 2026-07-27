@@ -63,6 +63,15 @@
     "href": "https://adk.dev/integrations/temporal/"
   },
   {
+    "name": "Google ADK",
+    "description": "Run Google ADK agents with durable execution using the Temporal Go SDK.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Go",
+    "href": "/develop/go/integrations/google-adk"
+  },
+  {
     "name": "Grafana Cloud",
     "description": "Export Temporal Cloud metrics to Grafana Cloud with a serverless integration and pre-built dashboard.",
     "tags": [
@@ -224,6 +233,15 @@
     ],
     "sdk": "Python",
     "href": "/develop/python/integrations/strands-agents"
+  },
+  {
+    "name": "Strands Agents",
+    "description": "Orchestrate AWS Strands Agents with durable Temporal Workflows.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "TypeScript",
+    "href": "/develop/typescript/integrations/strands-agents"
   },
   {
     "name": "Tenuo",

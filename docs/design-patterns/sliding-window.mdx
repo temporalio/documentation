@@ -39,11 +39,10 @@ flowchart TD
     CAN["continueAsNew\n(startIndex + W)"]
 
     Records --> Parent
-    Parent -->|"start W children"| C1
+    Parent <-->|"start W children /<br/>signal: complete"| C1
     Parent --> C2
     Parent --> C3
 
-    C1 -->|"Signal: complete"| Parent
     Parent -->|"slot free → start next"| C4
 
     Parent -->|"after W children started"| CAN

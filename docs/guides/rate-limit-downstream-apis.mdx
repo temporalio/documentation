@@ -244,9 +244,12 @@ flowchart TB
     TWWP -.->|Respects<br/>60/min limit| TWAPI
     AIWP -.->|Respects<br/>60/min limit| AIAPI
 
-    style SGTQ fill:#e1f5ff
-    style TWTQ fill:#fff4e1
-    style AITQ fill:#f3e5f5
+    classDef blue stroke-width:1px
+    classDef amber stroke-width:1px
+    classDef purple stroke-width:1px
+    class SGTQ blue
+    class TWTQ amber
+    class AITQ purple
 ```
 
 ## Implementation plan
@@ -767,8 +770,8 @@ Your application now safely integrates with rate-limited external APIs, ensuring
 ## Related resources
 
 ### Official documentation
-- [Temporal Documentation - Task Routing](https://docs.temporal.io/task-routing)
-- [Temporal Best Practices - Separate Task Queues](https://docs.temporal.io/best-practices/worker#separate-task-queues-logically)
+- [Temporal Documentation - Task Routing](/task-routing)
+- [Temporal Best Practices - Separate Task Queues](/best-practices/worker#separate-task-queues-logically)
 - [Python SDK Worker Configuration](https://python.temporal.io/temporalio.worker.Worker.html)
 
 ### Related patterns

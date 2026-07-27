@@ -23,16 +23,6 @@ keywords:
 
 import { CaptionedImage, JsonTable } from '@site/src/components';
 
-<style>{`
-  .docusaurus-mermaid-container .edgeLabel,
-  .docusaurus-mermaid-container .edgeLabel p,
-  .docusaurus-mermaid-container .edgeLabel rect,
-  .docusaurus-mermaid-container .edgeLabel .labelBkg {
-    background-color: var(--ifm-background-color) !important;
-    fill: var(--ifm-background-color) !important;
-  }
-`}</style>
-
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
 This one-way connection means Temporal cannot establish a connection back to your service.
@@ -237,10 +227,10 @@ title: Direct VPCE targeting (single region)
 ---
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':18,'rankSpacing':45,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart LR
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph SREG["<b>Your VPC</b>"]
       SW["<b>Worker(s)</b><br/>Server name:<br/>my-namespace.my-account.tmprl.cloud"]:::worker
       SVPCE["<b>VPC Endpoint</b><br/>vpce-…"]:::endpoint
@@ -273,10 +263,10 @@ title: Direct VPCE targeting (High Availability)
 ---
 %%{init: {'themeVariables':{'fontFamily':'Inter, ui-sans-serif, system-ui, sans-serif'},'flowchart':{'nodeSpacing':55,'rankSpacing':70,'curve':'basis','subGraphTitleMargin':{'top':6,'bottom':12}}}}%%
 flowchart TD
-    classDef worker fill:#7C3AED22,stroke:#7C3AED,stroke-width:1px;
-    classDef ns fill:#59FDA024,stroke:#59FDA0,stroke-width:1px;
-    classDef endpoint fill:transparent,stroke:#c2c8d2,stroke-width:1px;
-    classDef region fill:transparent,stroke:#9aa4b2,stroke-width:1.5px;
+    classDef worker stroke-width:1px;
+    classDef ns stroke-width:1px;
+    classDef endpoint stroke-width:1px;
+    classDef region stroke-width:1.5px;
     subgraph HSEC["<b>us-west-2</b> (passive)"]
       HWB["<b>Worker(s)</b><br/>Server name<br/><span style='font-family:mono'>namespace.<br/>acct.<br/>tmprl.cloud</span>"]:::worker
       HVPB["<b>VPC<br/>Endpoint</b><br/>vpce-…<br/>us-west-2"]:::endpoint

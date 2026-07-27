@@ -17,8 +17,7 @@ tags:
   - Durable Execution
 ---
 
-import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import SdkTabs from '@site/src/components';
+import { SdkTabs } from '@site/src/components';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
@@ -149,7 +148,7 @@ three new parameters, with different names depending on the language:
 
 Follow the example for your SDK below:
 
-<SdkTabs>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
 ```go
 buildID:= mustGetEnv("MY_BUILD_ID")
@@ -492,6 +491,8 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
+
+For a complete runbook covering batch recovery, drainage handling, and how to choose between Versioning Override and Reset-with-Move based on each Workflow's state, see [Recover pinned Workflows after a bad rollout](/production-deployment/worker-deployments/recover-pinned-workflows).
 
 ## Migrating a Workflow from Pinned to Auto-Upgrade
 

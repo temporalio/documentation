@@ -28,10 +28,10 @@ sequenceDiagram
     S->>W: Schedule WorkflowTask
 
     rect rgb(220, 245, 225)
-        Note over S,W: Phase 1 — Local Activities (in-process, zero server round-trips)
+        Note over S,W: Phase 1 — Local Activities<br/>(in-process, zero server round-trips)
         W->>W: validateTransaction (local)
         W->>W: initTransaction (local)
-        W->>S: Complete WorkflowTask (Phase 1 done, Update result ready)
+        W->>S: Complete WorkflowTask<br/>(Phase 1 done, Update result ready)
     end
 
     S-->>C: Update result returned (~160 ms first response)

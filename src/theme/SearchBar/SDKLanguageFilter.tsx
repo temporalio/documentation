@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react';
+import { SDKS } from '../../constants/sdks';
 
-export const SDK_LANGUAGES = [
-  { id: 'go', label: 'Go' },
-  { id: 'python', label: 'Python' },
-  { id: 'typescript', label: 'TypeScript' },
-  { id: 'java', label: 'Java' },
-  { id: 'php', label: 'PHP' },
-  { id: 'dotnet', label: '.NET' },
-  { id: 'ruby', label: 'Ruby' },
-  { id: 'rust', label: 'Rust' },
-];
+export const SDK_LANGUAGES = SDKS.map(({ id, label }) => ({ id, label }));
 
 export const SDK_LANGUAGE_STORAGE_KEY = 'temporal-docs-sdk-language-filter';
 

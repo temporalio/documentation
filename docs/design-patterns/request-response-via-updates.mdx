@@ -34,7 +34,7 @@ sequenceDiagram
     Workflow->>Workflow: Validate Input
     alt Validation Fails
         Workflow-->>Client: Error Response
-    else Validation Succeeds
+    else Success
         Workflow->>State: Modify State
         State-->>Workflow: Updated
         Workflow-->>Client: Typed Response

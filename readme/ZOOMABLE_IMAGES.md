@@ -137,7 +137,7 @@ Pages that did **not** previously have any zoom but contain raster images ≥ 80
 
 - [/develop/dotnet/client/temporal-client](https://docs.temporal.io/develop/dotnet/client/temporal-client) — _max 4096px_
 - [/develop/dotnet/nexus/feature-guide](https://docs.temporal.io/develop/dotnet/nexus/feature-guide) — _max 3542px_
-- [/develop/dotnet/best-practices/converters-and-encryption](https://docs.temporal.io/develop/dotnet/best-practices/converters-and-encryption) — _max 1320px_
+- [/develop/dotnet/best-practices/data-handling](https://docs.temporal.io/develop/dotnet/best-practices/data-handling) — _max 1320px_
 
 #### Develop — go
 
@@ -149,7 +149,7 @@ Pages that did **not** previously have any zoom but contain raster images ≥ 80
 
 - [/develop/java/client/temporal-client](https://docs.temporal.io/develop/java/client/temporal-client) — _max 4096px_
 - [/develop/java/nexus/feature-guide](https://docs.temporal.io/develop/java/nexus/feature-guide) — _max 3542px_
-- [/develop/java/best-practices/converters-and-encryption](https://docs.temporal.io/develop/java/best-practices/converters-and-encryption) — _max 1320px_
+- [/develop/java/best-practices/data-handling](https://docs.temporal.io/develop/java/best-practices/data-handling) — _max 1320px_
 
 #### Develop — python
 
@@ -159,7 +159,7 @@ Pages that did **not** previously have any zoom but contain raster images ≥ 80
 #### Develop — ruby
 
 - [/develop/ruby/client/temporal-client](https://docs.temporal.io/develop/ruby/client/temporal-client) — _max 4096px_
-- [/develop/ruby/best-practices/converters-and-encryption](https://docs.temporal.io/develop/ruby/best-practices/converters-and-encryption) — _max 1320px_
+- [/develop/ruby/best-practices/data-handling](https://docs.temporal.io/develop/ruby/best-practices/data-handling) — _max 1320px_
 
 #### Develop — typescript
 

@@ -41,11 +41,11 @@ sequenceDiagram
     participant Temporal as Temporal Service
     participant API as Rate-Limited API
 
-    Workflow->>Temporal: Schedule activity (RetryPolicy: initialInterval=1s)
+    Workflow->>Temporal: Schedule activity<br/>(RetryPolicy: initialInterval=1s)
     Temporal->>+API: Attempt 1
     API-->>-Temporal: HTTP 429 — Retry-After: 60s
-    Note over Temporal: Activity throws ApplicationFailure(nextRetryDelay=60s)
-    Note over Temporal: Override: wait 60s (ignoring RetryPolicy interval)
+    Note over Temporal: Activity throws<br/>ApplicationFailure(nextRetryDelay=60s)
+    Note over Temporal: Override: wait 60s<br/>(ignoring RetryPolicy interval)
     Temporal->>+API: Attempt 2
     API-->>-Temporal: Success
     Temporal-->>Workflow: Result

@@ -24,7 +24,7 @@ sequenceDiagram
     rect rgb(230, 235, 250)
         Note over CW,S: Normal Workflow Start
         CW->>S: StartWorkflowExecution
-        S->>S: Matching Service routes task to available Worker
+        S->>S: Matching Service routes<br/>task to available Worker
         S-->>CW: WorkflowTask dispatched via polling
         CW->>CW: Execute WorkflowTask
         CW->>S: Complete WorkflowTask
@@ -33,7 +33,7 @@ sequenceDiagram
     rect rgb(220, 245, 225)
         Note over CW,S: Eager Workflow Start (co-located Worker)
         CW->>S: StartWorkflowExecution (EnableEagerStart=true)
-        S-->>CW: WorkflowTask returned inline — no Matching step
+        S-->>CW: WorkflowTask returned inline<br/>— no Matching step
         CW->>CW: Execute WorkflowTask immediately
         CW->>S: Complete WorkflowTask
     end

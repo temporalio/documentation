@@ -8,6 +8,7 @@ Guidance for AI coding agents working in the [Temporal documentation](https://gi
 |-------|------|
 | Where content belongs | [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) |
 | React components in MDX | [COMPONENTS.md](./COMPONENTS.md) |
+| Mermaid diagrams | [MERMAID.md](./readme/MERMAID.md) |
 | LLM Markdown pipeline | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md) |
 | Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md) |
 
@@ -146,6 +147,13 @@ yarn snipsync     # Refresh Snipsync code snippets
 Vale linting (style):
 
 ```bash
-yarn lint:py      # Example: lint Python SDK docs
-yarn vale         # Full Vale run via assembly script
+yarn lint:py                          # Example: lint Python SDK docs
+vale --config .vale-ci.ini docs/      # CI-scoped rules only (what PR checks run)
+vale docs/                            # Full Vale style set
 ```
+
+Before finishing any docs change, run the CI-scoped command (`vale --config .vale-ci.ini docs/`) against the files you touched and resolve every result it reports, unless it's a genuine false positive (e.g. a heading that's a literal command/metric name, or a bare URL that must stay absolute for autolinking). `.vale-ci.ini` enables only the small set of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) that gate PRs in `.github/workflows/vale-ci.yml` — treat that as the bar to hit.
+
+Do not use the full Vale style set (plain `vale docs/`, no `--config`) to judge whether a change is done. It runs many noisier suggestion-level rules that are not enforced in CI and are not a requirement for this repo.
+
+`.vale-ci.ini` enables only the small set of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) used as a CI gate in `.github/workflows/vale-ci.yml`. `.vale.ini` (the default config) runs the full style set, which includes noisier suggestion-level rules not enforced in CI.
