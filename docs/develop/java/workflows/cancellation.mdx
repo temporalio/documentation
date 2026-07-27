@@ -54,7 +54,7 @@ WorkflowStub workflowStub = WorkflowStub.fromTyped(workflow);
 workflowStub.cancel();
 ```
 
-## Cancellation scopes in Java {/* #cancellation-scopes */}
+## Cancellation scopes {/* #cancellation-scopes */}
 
 In the Java SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors
 you can specify. By default, everything runs in the "root" scope.
@@ -83,6 +83,10 @@ created within it, such as the following:
   function)
 - Child Workflows
 - Nexus Operations
+
+### Cancel with Workflow error
+
+When you want to interrupt a Workflow Execution using an error, throw the [`DestroyWorkflowThreadError`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/DestroyWorkflowThreadError.html). Make sure there isn't any code on that thread to catch this error or it could cause issues with the Temporal service.
 
 ### Cancel an Activity from a Workflow {/* #cancel-activity */}
 

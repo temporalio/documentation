@@ -16,6 +16,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components';
+
 This page shows the following:
 
 - How to handle a Cancellation request within a Workflow.
@@ -83,12 +85,7 @@ func YourWorkflow(ctx workflow.Context) error {
 
 Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/activity.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/activity.go" />
 
 ```go
 // ActivityToBeCanceled is the Activity that will respond to the Cancellation Request
@@ -116,12 +113,7 @@ func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 
 Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/cancel/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/cancel/main.go" />
 
 ```go
 func main() {

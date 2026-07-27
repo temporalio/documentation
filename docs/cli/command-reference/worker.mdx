@@ -14,7 +14,7 @@ tags:
 ---
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
 This page provides a reference for the `temporal` CLI `worker` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
@@ -99,6 +99,8 @@ temporal worker deployment create-version \
 
 If a Worker Deployment Version with the supplied BuildID already exists,
 this command will return an error.
+
+Returns an error if all compute configuration fields are empty.
 
 Note: This is an experimental feature and may change in the future.
 
@@ -441,6 +443,54 @@ Use the following options to change the behavior of this command. You can also u
 | `--percentage` | No | **float** Percentage of tasks redirected to the Ramping Version. Valid range [0,100]. |
 | `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm set Ramping Version. |
+
+### update-version-compute-config
+
+Update compute configuration associated with a Worker Deployment
+Version.
+
+For example, to update the AWS Lambda function ARN associated with an
+existing Worker Deployment Version:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --aws-lambda-function-arn UpdatedLambdaFunctionARN
+```
+
+To update the AWS IAM role ARN that is assumed by the serverless worker
+manager associated with an existing Worker Deployment Version:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --aws-lambda-assume-role-arn UpdatedRoleARN
+```
+
+If --remove is specified, the compute configuration for the Worker
+Deployment Version will be removed:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --remove
+```
+
+If a Worker Deployment Version with the supplied BuildID does not exist,
+this command will return an error.
+
+Note: This is an experimental feature and may change in the future.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--aws-lambda-assume-role-arn` | No | **string** AWS IAM role ARN that the Temporal server will assume when invoking the Lambda function that spawns a new Worker in this Worker Deployment Version. Required when --aws-lambda-function-arn is specified. |
+| `--aws-lambda-assume-role-external-id` | No | **string** Temporal server will enforce that the AWS IAM trust policy associated with the AWS IAM role specified in --aws-lambda-assume-role-arn has an aws:ExternalId condition that matches the supplied value. Required when --aws-lambda-function-arn is specified. |
+| `--aws-lambda-function-arn` | No | **string** Qualified (contains version suffix) or unqualified AWS Lambda function ARN to invoke when there are no active pollers for task queue targets in the Worker Deployment. |
+| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--remove` | No | **bool** Removes any compute configuration associated with this Worker Deployment Version. |
 
 ### update-version-metadata
 

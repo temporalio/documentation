@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Two services (servers) -->
+  <rect x="8" y="40" width="24" height="16" rx="2" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="14" cy="48" r="2" fill="#888"/>
+  <circle cx="20" cy="48" r="2" fill="#888"/>
+  <rect x="68" y="40" width="24" height="16" rx="2" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="74" cy="48" r="2" fill="#888"/>
+  <circle cx="80" cy="48" r="2" fill="#888"/>
+
+  <!-- Callback bridge -->
+  <path d="M 20 40 A 30 30 0 0 1 80 40" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Inbound POST -->
+  <line x1="20" y1="48" x2="62" y2="48" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="59,44 68,48 59,52" fill="#cc2222"/>
+  <text x="44" y="66" font-family="sans-serif" font-size="9" fill="#cc2222" text-anchor="middle" font-weight="bold">POST</text>
+</svg>

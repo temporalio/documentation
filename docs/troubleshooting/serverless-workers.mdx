@@ -110,8 +110,13 @@ Version when a Worker with that deployment version successfully connects and pol
 
 A common cause is a failed first invocation. When you create a Worker Deployment Version, the WCI invokes the Lambda to
 validate the configuration. If that first invocation fails (for example, due to missing environment variables, incorrect
-TLS configuration, or missing dependencies), the Worker never connects to Temporal and never polls. Without a successful
-poll, the Task Queue binding is never created.
+TLS configuration, missing dependencies, or a Lambda timeout that is too short), the Worker never connects to Temporal
+and never polls. Without a successful poll, the Task Queue binding is never created.
+
+Pay particular attention to the Lambda timeout. AWS Lambda functions default to a 3-second timeout, which is often too
+short for the Worker to start, connect to Temporal, and register the Task Queue before AWS terminates the invocation. If
+the function times out during this initial invocation, the binding is never established and the Lambda is not invoked
+again.
 
 To diagnose a failed first invocation, invoke the Lambda function manually from the AWS Console. The console displays
 the execution result and any errors directly, making it easier to identify configuration issues than searching through

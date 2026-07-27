@@ -10,12 +10,13 @@ import integrations, { type SDK, type Integration } from "./integrations-data";
 import SdkSvg from "../elements/SdkSvgs/SdkSvg";
 import styles from "./IntegrationsGrid.module.css";
 
-const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript"];
+const ALL_SDKS: SDK[] = ["Go", "Java", "Python", "Ruby", "TypeScript"];
 const LANGUAGE_AGNOSTIC = "Language-agnostic";
 type SdkFilter = SDK | typeof LANGUAGE_AGNOSTIC;
 const ALL_SDK_FILTERS: SdkFilter[] = [...ALL_SDKS, LANGUAGE_AGNOSTIC];
 
 const SDK_BLOCK_NAMES: Record<SDK, string> = {
+  Go: "goLangBlock",
   Java: "javaBlock",
   Python: "pythonBlock",
   Ruby: "rubyBlock",

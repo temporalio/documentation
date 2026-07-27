@@ -14,8 +14,7 @@ tags:
   - Priority and Fairness
 ---
 
-import { EnlargeImage } from '@site/src/components';
-import SdkTabs from '@site/src/components';
+import { EnlargeImage, SdkTabs } from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
 distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
@@ -31,6 +30,8 @@ You can use Priority and Fairness individually or combine them to express Fairne
   src="/img/develop/task-queue-priority-fairness/priority-details.png"
   alt="Flowchart of how Priority dispatches Tasks from highest to lowest priority queue"
 />
+
+Priority is enforced within a single Task Queue [partition](/task-queue#task-ordering). A Task Queue by default uses multiple partitions and randomly distributes Tasks across them, so partitions are usually balanced and priority ordering closely approximates the Task Queue as a whole. When partitions become imbalanced, lower-priority Tasks on a lighter partition can dispatch ahead of higher-priority Tasks waiting on a heavier one.
 
 ### When to use Priority
 
@@ -62,7 +63,7 @@ temporal workflow start \
 
 You can set priority keys for a Workflow within the SDK like so:
 
-<SdkTabs>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
 ```go
 workflowOptions := client.StartWorkflowOptions{
@@ -527,7 +528,7 @@ When you use Priority and Fairness together, the next Task to dispatch is chosen
 2. **Fairness key within a tier (weighted).** Within a priority tier, each fairness key is a virtual queue. Keys are dispatched proportional to their weights - a key with weight 2.0 is dispatched twice as often as one with weight 1.0.
 3. **FIFO within a key.** Tasks that share a priority tier _and_ fairness key dispatch in the order they were enqueued.
 
-These rules apply within a Task Queue partition. See [Limitations of Fairness](#limitations-of-fairness) for how partitioning can affect ordering.
+These rules apply within a Task Queue partition.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
@@ -613,7 +614,7 @@ To unset a single key's override, pass `key=default`. To clear all overrides on 
 ### Limitations of Fairness
 
 - There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
-- Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfere with fairness. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
+- Fairness is enforced within a single Task Queue [partition](/task-queue#task-ordering). When a Task Queue's partitions are imbalanced, Fairness may not appear to hold, since it applies only within individual partitions. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
 - The fairness weight applies at schedule time, not at dispatch time. So it only affects newly-scheduled Tasks, not currently backlogged ones. This means if you need to throttle a single fairness key in the existing backlog of Tasks, you won't be able to.
 - When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
 - Backlogged tasks are durable and unaffected by server restarts. Fairness ordering is preserved across restarts for the most active keys; less active keys may briefly dispatch new tasks ahead of their existing backlog until ordering normalizes.

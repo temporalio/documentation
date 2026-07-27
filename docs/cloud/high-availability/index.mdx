@@ -18,7 +18,7 @@ keywords:
   - temporal-cloud
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
+import { ToolTipTerm, CaptionedImage } from '@site/src/components';
 
 Temporal keeps your Workflows running even when a Worker crashes. But what happens when a whole data center crashes? Or a region?
 
@@ -105,6 +105,10 @@ To route Workers to the passive region's replica, see [How requests reach the re
 
 To disable passive region replica forwarding, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
 
+To run Worker fleets in both regions that rely on this forwarding, see [Active/Active](/cloud/high-availability/architecture-patterns#active-active).
+
+To keep passive-region Workers on standby until failover by disabling this forwarding, see [Active/Hot-Passive](/cloud/high-availability/architecture-patterns#active-hot).
+
 ## Service levels and recovery objectives
 
 Namespaces using High Availability have a 99.99% [uptime SLA](/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
@@ -115,6 +119,7 @@ Namespaces using High Availability have a 99.99% [uptime SLA](/cloud/sla) with s
 ## Failover
 
 High Availability Namespaces can automatically or manually [fail over](/cloud/high-availability/failovers) to the replica if the primary is unavailable or unhealthy.
+The Namespace fails over automatically, but your Workers and the rest of your architecture need their own plan — see [Worker deployment patterns for Active-Passive and Active-Active HA/DR](/cloud/high-availability/architecture-patterns).
 
 ## Target workloads
 

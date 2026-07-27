@@ -1,35 +1,25 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { walkDir, resolveUrlPath: resolveUrlPathShared } = require('../shared/docsRouting');
+
+// Accepts either a single {docsDir, routeBasePath} (back-compat) or a
+// `targets` array, so one plugin instance can walk multiple docs plugin
+// instances that live at different routeBasePaths (e.g. the main docs/ tree
+// at '/' plus ai-cookbook/ at '/ai-cookbook').
+function normalizeTargets(options) {
+  if (Array.isArray(options.targets) && options.targets.length) {
+    return options.targets;
+  }
+  return [{ docsDir: options.docsDir || 'docs', routeBasePath: options.routeBasePath }];
+}
 
 module.exports = function markdownPagesPlugin(context, options = {}) {
-  const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
-  const routeBasePath = options.routeBasePath || '/';
+  const targets = normalizeTargets(options).map(({ docsDir, routeBasePath }) => ({
+    docsDir: path.resolve(context.siteDir, docsDir),
+    routeBasePath,
+  }));
   const llmsTxt = options.llmsTxt || null;
-
-  function walkDir(dir) {
-    if (!fs.existsSync(dir)) return [];
-    return fs.readdirSync(dir).flatMap((name) => {
-      const full = path.join(dir, name);
-      if (fs.statSync(full).isDirectory()) return walkDir(full);
-      if (/\.(md|mdx)$/i.test(name)) return [full];
-      return [];
-    });
-  }
-
-  function resolveUrlPath(filePath, frontmatter) {
-    if (frontmatter.slug) {
-      const slug = frontmatter.slug.replace(/^\/+/, '').replace(/\/+$/, '');
-      return slug || 'index';
-    }
-    const rel = path.relative(docsDir, filePath).replace(/\\/g, '/');
-    const withoutExt = rel.replace(/\.(md|mdx)$/i, '');
-    const id = frontmatter.id || path.basename(withoutExt);
-    const dir = path.dirname(withoutExt);
-    if (dir === '.') return id === 'index' ? 'index' : id;
-    if (id === 'index') return dir;
-    return `${dir}/${id}`;
-  }
 
   function findSection(page, sections) {
     const urlPath = page.urlPath;
@@ -268,43 +258,46 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
         pathToFileURL(path.join(__dirname, '../../scripts/mdx-to-md.mjs')).href
       );
 
-      const files = walkDir(docsDir);
       let generated = 0;
       let excluded = 0;
       let totalWarnings = 0;
       const pages = [];
 
-      for (const filePath of files) {
-        const raw = fs.readFileSync(filePath, 'utf8');
-        const { data: frontmatter } = matter(raw);
+      for (const { docsDir, routeBasePath } of targets) {
+        const files = walkDir(docsDir);
 
-        const urlPath = resolveUrlPath(filePath, frontmatter);
-        const outputPath = path.join(outDir, urlPath + '.md');
+        for (const filePath of files) {
+          const raw = fs.readFileSync(filePath, 'utf8');
+          const { data: frontmatter } = matter(raw);
 
-        fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+          const urlPath = resolveUrlPathShared(docsDir, filePath, frontmatter, routeBasePath);
+          const outputPath = path.join(outDir, urlPath + '.md');
 
-        if (frontmatter.llm_exclude) {
-          fs.writeFileSync(outputPath, frontmatter.llm_exclude + '\n');
-          excluded++;
-        } else {
-          // Transform MDX → clean Markdown (flatten tabs, resolve components,
-          // strip imports/JSX) rather than serving the raw source.
-          const { markdown, warnings } = transformMdx(raw, {
-            sourceFile: path.relative(context.siteDir, filePath),
-            projectRoot: context.siteDir,
-          });
-          fs.writeFileSync(outputPath, markdown + '\n');
-          totalWarnings += warnings.length;
-          generated++;
+          fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-          if (llmsTxt && frontmatter.title) {
-            pages.push({
-              urlPath,
-              title: frontmatter.title,
-              sidebarLabel: frontmatter.sidebar_label || '',
-              description: frontmatter.description || '',
-              relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),
+          if (frontmatter.llm_exclude) {
+            fs.writeFileSync(outputPath, frontmatter.llm_exclude + '\n');
+            excluded++;
+          } else {
+            // Transform MDX → clean Markdown (flatten tabs, resolve components,
+            // strip imports/JSX) rather than serving the raw source.
+            const { markdown, warnings } = transformMdx(raw, {
+              sourceFile: path.relative(context.siteDir, filePath),
+              projectRoot: context.siteDir,
             });
+            fs.writeFileSync(outputPath, markdown + '\n');
+            totalWarnings += warnings.length;
+            generated++;
+
+            if (llmsTxt && frontmatter.title) {
+              pages.push({
+                urlPath,
+                title: frontmatter.title,
+                sidebarLabel: frontmatter.sidebar_label || '',
+                description: frontmatter.description || '',
+                relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),
+              });
+            }
           }
         }
       }

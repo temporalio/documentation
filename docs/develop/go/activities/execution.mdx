@@ -11,6 +11,8 @@ tags:
   - Activity
 ---
 
+import { ViewSourceCodeNotice } from '@site/src/components';
+
 ## How to start an Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
@@ -34,12 +36,7 @@ Otherwise, no additional limitations exist on Activity implementations.
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go" />
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
