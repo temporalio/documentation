@@ -50,7 +50,7 @@ When a Workflow calls `workflow.wait_condition()`, **the Worker returns the curr
 
 ### Event History management
 
-Temporal's Event History has a hard limit of 51,200 events or 50 MB ([Workflow Execution limits](https://docs.temporal.io/workflow-execution/limits)). The Server emits warnings at ~10,240 events or 10 MB; hitting either hard limit terminates the Workflow. For this approval pattern:
+Temporal's Event History has a hard limit of 51,200 events or 50 MB ([Workflow Execution limits](/workflow-execution/limits)). The Server emits warnings at ~10,240 events or 10 MB; hitting either hard limit terminates the Workflow. For this approval pattern:
 
 | Workflow operation | Approximate events generated |
 |--------------------|------------------------------|
@@ -97,7 +97,7 @@ For Activities that may take minutes (PDF report generation, rate-limited API ca
 
 - Python **3.11** or later
 - Temporal Python SDK (`temporalio`) **1.7.0** or later
-- A running Temporal Server — either the [Temporal CLI](https://docs.temporal.io/cli) development server (`temporal server start-dev`) or [Temporal Cloud](https://temporal.io/cloud)
+- A running Temporal Server — either the [Temporal CLI](/cli) development server (`temporal server start-dev`) or [Temporal Cloud](https://temporal.io/cloud)
 - `uv` or `pip` for Python dependency management
 
 ### Resources and access privileges
@@ -108,10 +108,10 @@ For Activities that may take minutes (PDF report generation, rate-limited API ca
 
 Readers should be familiar with the following concepts:
 
-- [Signals](https://docs.temporal.io/signals) — the mechanism for sending data to a running Workflow
-- [Queries](https://docs.temporal.io/queries) — the mechanism for reading Workflow state without affecting execution
-- [Workers](https://docs.temporal.io/workers) — the processes that execute Workflow and Activity code
-- [Task Queues](https://docs.temporal.io/task-queues) — the named queues that route work to Workers
+- [Signals](/develop/python/workflows/message-passing#signals) — the mechanism for sending data to a running Workflow
+- [Queries](/develop/python/workflows/message-passing#queries) — the mechanism for reading Workflow state without affecting execution
+- [Workers](/workers) — the processes that execute Workflow and Activity code
+- [Task Queues](/task-queue) — the named queues that route work to Workers
 - Python `asyncio` — coroutines, `await`, and the event loop
 - Python dataclasses or [Pydantic](https://docs.pydantic.dev/) for structured data
 
@@ -1344,12 +1344,12 @@ You've built a document approval system that holds up under real conditions — 
 
 ## Related resources
 
-- [Temporal Python SDK documentation](https://docs.temporal.io/develop/python)
-- [Message Passing — Signals, Queries, Updates](https://docs.temporal.io/develop/python/message-passing)
-- [Continue-As-New](https://docs.temporal.io/develop/python/continue-as-new)
-- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](https://docs.temporal.io/develop/python/failure-detection)
-- [Child Workflows](https://docs.temporal.io/develop/python/child-workflows)
-- [Worker Versioning](https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning)
+- [Temporal Python SDK documentation](/develop/python)
+- [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
+- [Continue-As-New](/develop/python/workflows/continue-as-new)
+- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
+- [Child Workflows](/develop/python/workflows/child-workflows)
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
 - [Temporal Python SDK GitHub repository](https://github.com/temporalio/sdk-python)
 - [Temporal Python SDK samples](https://github.com/temporalio/samples-python)

@@ -165,9 +165,7 @@ For example, if you want to call an external API to get the weather, you would i
 from the tool function. The following is an example of an Activity that gets the weather for a given location:
 
 <!--SNIPSTART typescript-vercel-ai-sdk-weather-activity -->
-
 [ai-sdk/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/activities.ts)
-
 ```ts
 export async function getWeather(input: {
   location: string;
@@ -179,7 +177,6 @@ export async function getWeather(input: {
   };
 }
 ```
-
 <!--SNIPEND-->
 
 Then in your agent implementation, provide the tool to the model using the `tools` option and instruct the model to use
@@ -321,15 +318,19 @@ const streamingProvider = new TemporalProvider({
 ```
 
 <!--SNIPSTART typescript-vercel-ai-sdk-streaming-agent -->
-
 [ai-sdk/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/workflows.ts)
-
 ```ts
 export async function streamingAgent(prompt: string): Promise<string> {
   // Host the WorkflowStream as the first statement of the workflow so its
   // publish-signal handler is registered before the streaming activity starts
   // publishing deltas to it.
   new WorkflowStream();
+
+  // A subscriber flips this once it has consumed the final delta (see below).
+  let consumerDone = false;
+  setHandler(consumerDoneSignal, () => {
+    consumerDone = true;
+  });
 
   const result = streamText({
     model: streamingProvider.languageModel('gpt-4o-mini'),
@@ -346,22 +347,22 @@ export async function streamingAgent(prompt: string): Promise<string> {
     text += delta;
   }
 
-  // Briefly hold the run open so a subscriber's final poll can deliver the
-  // last deltas before the workflow exits and its in-memory stream log is gone.
-  await sleep('500 milliseconds');
+  // The workflow's stream log lives in memory and is discarded once the run
+  // completes, which can race a subscriber's final poll. Rather than guess at a
+  // fixed delay, wait for the subscriber to signal that it received the last
+  // delta. The timeout is a fallback for when nothing is subscribed, so the run
+  // can't hang forever.
+  await condition(() => consumerDone, '10 seconds');
   return text;
 }
 ```
-
 <!--SNIPEND-->
 
 The consumer subscribes to the topic by Workflow ID and renders each delta as it arrives. Each item's payload is the
 JSON-encoded AI SDK stream part:
 
 <!--SNIPSTART typescript-vercel-ai-sdk-streaming-consumer -->
-
 [ai-sdk/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/client.ts)
-
 ```ts
 // Subscribe to a Workflow's stream topic and render each text delta live as it
 // is published by the streaming activity. Each item's payload is the
@@ -374,9 +375,11 @@ async function renderStream(client: Client, workflowId: string, topic: string): 
     if (part.type === 'finish') break;
   }
   process.stdout.write('\n');
+  // Acknowledge receipt so the Workflow can complete without racing this final
+  // poll against its in-memory stream log being discarded.
+  await client.workflow.getHandle(workflowId).signal(consumerDoneSignal);
 }
 ```
-
 <!--SNIPEND-->
 
 ### Stream structured output
