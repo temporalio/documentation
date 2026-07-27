@@ -392,6 +392,12 @@ module.exports = async function createConfigAsync() {
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
           docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
+          // Same remark plugin the main docs preset uses (see the `docs` preset
+          // option above) — injects the generated og:image path as real front
+          // matter during MDX compilation so it survives client hydration.
+          // footerText must match the og-image plugin's ai-cookbook target
+          // below, or the hash this injects won't match what postBuild renders.
+          remarkPlugins: [[require('./plugins/og-image/remarkPlugin'), { footerText: 'AI COOKBOOK' }]],
         },
       ],
       [
@@ -404,13 +410,19 @@ module.exports = async function createConfigAsync() {
       [
         require.resolve('./plugins/markdown-pages'),
         {
-          docsDir: 'docs',
+          targets: [
+            { docsDir: 'docs', routeBasePath: '/' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook' },
+          ],
         },
       ],
       [
         require.resolve('./plugins/og-image'),
         {
-          docsDir: 'docs',
+          targets: [
+            { docsDir: 'docs', routeBasePath: '/' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+          ],
         },
       ],
       [
