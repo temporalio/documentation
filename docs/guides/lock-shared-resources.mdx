@@ -78,9 +78,9 @@ To complete the implementation plan, you will need:
     - For Temporal Cloud: an API key with the Namespace Admin role for the target Namespace.
 - **Required concepts**:
     - Familiarity with Temporal Workflows and Activities ([docs](/workflows)).
-    - Child Workflows and parent close policies ([docs](/encyclopedia/child-workflows)).
+    - Child Workflows and parent close policies ([docs](/child-workflows)).
     - Signals and Queries ([docs](/encyclopedia/workflow-message-passing)).
-    - Workflow determinism ([docs](/workflows#workflow-determinism)).
+    - Workflow determinism ([docs](/workflow-definition#deterministic-constraints)).
 
 ## Architecture diagram
 
@@ -461,6 +461,6 @@ You now have the capability to:
 ## Related resources
 
 - [Temporal Python SDK Documentation](/develop/python). SDK reference for Workflows, Signals, child Workflows, and Worker setup.
-- [Child Workflow Executions](/encyclopedia/child-workflows). How parent and child Workflows interact, including parent close policies.
+- [Child Workflow Executions](/child-workflows). How parent and child Workflows interact, including parent close policies.
 - [Workflow Message Passing](/encyclopedia/workflow-message-passing). Reference for Signals and Queries.
 - [Reference implementation source repository](https://github.com/temporal-sa/temporal-workflow-throttler). The upstream repository bundles `PermitSlotWorkflow`, the `Semaphore` helper, demo Workers, a FastAPI service, and a React UI. The package directory is named `throttler/` in the source.

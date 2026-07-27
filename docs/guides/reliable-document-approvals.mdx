@@ -108,10 +108,10 @@ For Activities that may take minutes (PDF report generation, rate-limited API ca
 
 Readers should be familiar with the following concepts:
 
-- [Signals](/signals) — the mechanism for sending data to a running Workflow
-- [Queries](/queries) — the mechanism for reading Workflow state without affecting execution
+- [Signals](/develop/python/workflows/message-passing#signals) — the mechanism for sending data to a running Workflow
+- [Queries](/develop/python/workflows/message-passing#queries) — the mechanism for reading Workflow state without affecting execution
 - [Workers](/workers) — the processes that execute Workflow and Activity code
-- [Task Queues](/task-queues) — the named queues that route work to Workers
+- [Task Queues](/task-queue) — the named queues that route work to Workers
 - Python `asyncio` — coroutines, `await`, and the event loop
 - Python dataclasses or [Pydantic](https://docs.pydantic.dev/) for structured data
 
@@ -1345,10 +1345,10 @@ You've built a document approval system that holds up under real conditions — 
 ## Related resources
 
 - [Temporal Python SDK documentation](/develop/python)
-- [Message Passing — Signals, Queries, Updates](/develop/python/message-passing)
-- [Continue-As-New](/develop/python/continue-as-new)
-- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/failure-detection)
-- [Child Workflows](/develop/python/child-workflows)
+- [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
+- [Continue-As-New](/develop/python/workflows/continue-as-new)
+- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
+- [Child Workflows](/develop/python/workflows/child-workflows)
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
 - [Temporal Python SDK GitHub repository](https://github.com/temporalio/sdk-python)

@@ -55,7 +55,7 @@ Task Queues in Temporal are dynamically created when first referenced. With this
 
 ### Worker-specific vs Worker sessions
 
-- **Go SDK** has a built-in [Worker Sessions API](/develop/go/sessions) that handles Worker-specific routing automatically
+- **Go SDK** has a built-in [Worker Sessions API](/develop/go/workers/sessions) that handles Worker-specific routing automatically
 - **Other SDKs** (Python, TypeScript, etc.) must implement the pattern manually using unique Task Queue names
 
 This pattern provides the same guarantees as Go's Sessions API for non-Go SDKs.
@@ -484,7 +484,7 @@ Your file processing Workflows now guarantee that all Activities execute on the 
 
 ### Official documentation
 - [Temporal Documentation - Task Routing](/task-routing)
-- [Temporal Documentation - Worker Sessions (Go SDK)](/develop/go/sessions)
+- [Temporal Documentation - Worker Sessions (Go SDK)](/develop/go/workers/sessions)
 
 ### Related patterns
 - [Separate Task Queues - Priorities](/guides/route-specialized-workloads) - For priority-based routing

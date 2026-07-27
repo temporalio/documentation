@@ -111,7 +111,7 @@ You should be familiar with the following before proceeding:
 - [Temporal Workflows](/workflows): The durable, stateful functions that Temporal orchestrates
 - [Temporal Activities](/activities): The functions that perform side effects such as API calls and database writes
 - [Temporal Workers](/workers): The processes that host and execute Workflow and Activity code
-- [Temporal Task Queues](/task-queues): The named queues that route work from the Temporal Server to Workers
+- [Temporal Task Queues](/task-queue): The named queues that route work from the Temporal Server to Workers
 
 ## Architecture diagrams
 
@@ -1121,10 +1121,10 @@ You've built a loyalty account system where each customer is an independent, sel
 
 - [Temporal Python SDK documentation](/develop/python)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
-- [Message Passing — Signals, Queries, Updates](/develop/python/message-passing)
-- [Continue-As-New](/develop/python/continue-as-new)
+- [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
+- [Continue-As-New](/develop/python/workflows/continue-as-new)
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
-- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/failure-detection)
+- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
 - [Temporal Python SDK samples](https://github.com/temporalio/samples-python)
 
 <!-- - [Companion article: Actor Workflow Pattern](ActorWorkflow_PlayerSessions.md) — covers the related Actor Workflow pattern for autonomous agents that take action -->
