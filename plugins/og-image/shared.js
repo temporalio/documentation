@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const matter = require('gray-matter');
-const { TEMPLATE_VERSION, IMAGE_EXTENSION } = require('./constants');
+const { TEMPLATE_VERSION, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./constants');
 
 // Shared by plugins/og-image/index.js (postBuild: renders the actual image
 // bytes) and plugins/og-image/remarkPlugin.js (build-time MDX compilation:
@@ -47,10 +47,15 @@ function overrideImageFor(frontmatter, content, siteUrl) {
 // Deliberately excludes section: render.js doesn't render it (dropped along
 // with the section pill in the Figma redesign), so including it here would
 // just fragment the cache between pages that render pixel-identically.
-function hashFor(title, description) {
+//
+// footerText defaults to DEFAULT_FOOTER_TEXT so existing docs pages (which
+// don't pass one) hash identically to before — only a target that overrides
+// it (e.g. ai-cookbook) gets a distinct cache entry, matching its distinct
+// rendered appearance.
+function hashFor(title, description, footerText = DEFAULT_FOOTER_TEXT) {
   return crypto
     .createHash('sha256')
-    .update(`v${TEMPLATE_VERSION}:${title}:${description || ''}`)
+    .update(`v${TEMPLATE_VERSION}:${title}:${description || ''}:${footerText}`)
     .digest('hex')
     .slice(0, 16);
 }
@@ -73,4 +78,5 @@ module.exports = {
   hashFor,
   stripFrontmatter,
   IMAGE_EXTENSION,
+  DEFAULT_FOOTER_TEXT,
 };

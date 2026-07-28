@@ -35,7 +35,7 @@ The primary architectural challenge is ensuring that temporary capacity increase
 
 By separating the provisioning and deprovisioning steps into distinct Workflows, you adhere to the best practice of returning control to the caller as soon as the provisioning command succeeds. The `ParentClosePolicyAbandon` setting instructs the Temporal Service to allow the Child Workflow to continue running even after the parent completes. This decouples the client's synchronous request from the long-running *Time-To-Live (TTL)* wait state. When the Child Workflow enters a sleep state, it consumes no Worker memory, allowing you to scale this pattern across thousands of concurrent requests efficiently.
 
-**Note:** Latency to the caller can be further reduced via [the Early Return pattern paired with an SDK call to update-with-start](https://docs.temporal.io/sending-messages#update-with-start).
+**Note:** Latency to the caller can be further reduced via [the Early Return pattern paired with an SDK call to update-with-start](/sending-messages#update-with-start).
 
 ## Target audience
 
@@ -723,7 +723,7 @@ By following this guide, you have implemented a time-bound capacity provisioning
 
 ## Related Resources
 
-- [Temporal Capacity Modes](https://docs.temporal.io/cloud/capacity-modes)
-- [Temporal Best Practices](https://docs.temporal.io/best-practices)
+- [Temporal Capacity Modes](/cloud/capacity-modes)
+- [Temporal Best Practices](/best-practices)
 - [Python Capacity Mode Sample](https://github.com/lainecsmith/temporal-cloud-ops-capacity-modes)
 - [Go Capacity Mode Sample](https://github.com/temporal-sa/temporary-rate-limit-increases)

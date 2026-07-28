@@ -1,5 +1,5 @@
 const path = require('path');
-const { extractTitle, hasManualOverride, hashFor, stripFrontmatter, IMAGE_EXTENSION } = require('./shared');
+const { extractTitle, hasManualOverride, hashFor, stripFrontmatter, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./shared');
 
 // This is what actually makes the generated og:image survive client-side
 // hydration. The previous approach patched og:image/twitter:image directly
@@ -20,8 +20,13 @@ const { extractTitle, hasManualOverride, hashFor, stripFrontmatter, IMAGE_EXTENS
 // early enough — during MDX compilation — that it becomes genuine front
 // matter data. Docusaurus then renders it itself, identically, every time.
 //
-// Registered in docusaurus.config.js's docs preset `remarkPlugins`.
-function ogImageRemarkPlugin() {
+// Registered in docusaurus.config.js's docs preset `remarkPlugins` (and, with
+// a `footerText` override, on the ai-cookbook docs plugin instance's own
+// remarkPlugins — unified's `[plugin, options]` tuple form calls this with
+// `options`).
+function ogImageRemarkPlugin(options = {}) {
+  const footerText = options.footerText || DEFAULT_FOOTER_TEXT;
+
   return (tree, file) => {
     // `docusaurus build` always runs with NODE_ENV=production (see
     // @docusaurus/core's build command); `docusaurus start` (yarn start)
@@ -41,7 +46,7 @@ function ogImageRemarkPlugin() {
     const id = frontMatter.id || path.basename(file.path || '').replace(/\.(md|mdx)$/i, '');
     const title = extractTitle(content, frontMatter, id);
     const description = frontMatter.description;
-    const hash = hashFor(title, description);
+    const hash = hashFor(title, description, footerText);
 
     // Mutating in place, not reassigning file.data.frontMatter — the mdx
     // loader holds the same object reference and serializes it into the
