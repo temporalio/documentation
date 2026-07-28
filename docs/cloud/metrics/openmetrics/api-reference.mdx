@@ -95,7 +95,7 @@ A [Metric Family](https://github.com/prometheus/OpenMetrics/blob/main/specificat
 
 ## Client Considerations
 
-### Rate Limiting
+### Rate limiting
 
 To protect the stability of the API and keep it available to all users, Temporal employs multiple safeguards.
 
@@ -153,7 +153,7 @@ Returns metrics in OpenMetrics format suitable for scraping by Prometheus-compat
 
 To account for metric data latency, this endpoint returns metrics from the current timestamp minus a fixed offset.  The current offset is 3 minutes rounded down to the start of the minute. To accommodate this offset, the timestamps in the response should be honored when importing the metrics. For example, in Prometheus this can be controlled using the `honor\_timestamps` flag.
 
-#### Query Parameters
+#### Query parameters
 
 | Parameter | Type | Description |
 | ----- | ----- | ----- |
@@ -215,7 +215,7 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace="production",temp
 
 Lists all metric descriptors including metadata, data types, and available dimensions (a.k.a. labels).
 
-#### Query Parameters
+#### Query parameters
 
 | Parameter | Type | Description |
 | ----- | ----- | ----- |

@@ -68,7 +68,7 @@ client = await Client.connect(
 The `interceptors` list can contain multiple interceptors.
 In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
 
-### Register via a Plugin
+### Register via a plugin
 
 If you're building a reusable library or want to bundle interceptors with other primitives, you can register them through a [Plugin](/develop/plugins-guide#interceptors).
 

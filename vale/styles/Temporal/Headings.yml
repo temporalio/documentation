@@ -179,3 +179,19 @@ exceptions:
   - Terraform
   - Prometheus
   - Grafana
+  # Company / product proper nouns
+  - Amazon
+  - Google
+  - Microsoft
+  - S3
+  # Temporal Cloud feature names
+  - Ops
+  - Audit
+  - Log
+  - Saved
+  - View
+  - Actions
+  - Non-Deterministic
+  # Conventional programming idiom
+  - Hello
+  - World
