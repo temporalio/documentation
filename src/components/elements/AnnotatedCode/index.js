@@ -98,12 +98,11 @@ export default function AnnotatedCode({
               );
             })}
           </div>
-          <div
-            className={`${styles.description} ${active ? styles.descriptionActive : ''}`}
-            aria-live="polite"
-          >
-            {active ? active.description : null}
-          </div>
+          {active && (
+            <div className={styles.description} aria-live="polite">
+              {active.description}
+            </div>
+          )}
         </>
       )}
 

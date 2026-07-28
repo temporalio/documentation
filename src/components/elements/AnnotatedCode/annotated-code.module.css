@@ -49,20 +49,14 @@
 }
 
 .description {
-  min-height: 3rem;
   margin-bottom: 0.75rem;
   padding: 0.75rem 1rem;
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--ac-pill) 40%, transparent);
+  background: color-mix(in srgb, var(--ac-pill) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--ac-pill);
   font-size: 0.875rem;
   line-height: 1.6;
   color: var(--ifm-font-color-base);
-  transition: border-color 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
-}
-
-.descriptionActive {
-  border-color: color-mix(in srgb, var(--ac-pill) 40%, transparent);
-  background: color-mix(in srgb, var(--ac-pill) 10%, transparent);
-  box-shadow: inset 3px 0 0 var(--ac-pill);
 }
 
 .codeWrap {
@@ -164,7 +158,7 @@
     0 0 18px color-mix(in srgb, var(--ac-pill) 55%, transparent);
 }
 
-:global(html[data-theme='dark']) .descriptionActive {
+:global(html[data-theme='dark']) .description {
   border-color: color-mix(in srgb, var(--ac-accent) 55%, transparent);
   background: color-mix(in srgb, var(--ac-accent) 14%, transparent);
   box-shadow:

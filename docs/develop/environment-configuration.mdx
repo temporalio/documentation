@@ -11,7 +11,8 @@ tags:
 ---
 
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import { SdkTabs } from '@site/src/components';
+import { SdkTabs, AnnotatedCode } from '@site/src/components';
+import { prodProfile } from '@site/src/components/elements/AnnotatedCode/annotations/environmentConfig';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -92,6 +93,21 @@ client_key_data = """-----BEGIN PRIVATE KEY-----
 MIIPrivateKeyDataHere...
 -----END PRIVATE KEY-----"""
 ```
+
+Select a concept to highlight the matching connection settings in a Cloud profile:
+
+<AnnotatedCode annotations={prodProfile}>
+```toml
+[profile.prod]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+
+[profile.prod.tls]
+client_cert_path = "/etc/temporal/certs/client.pem"
+client_key_path = "/etc/temporal/certs/client.key"
+```
+</AnnotatedCode>
 
 The [`temporal cloud login`](/cli/cloud#interactive-login) command also writes to this file. When you run `temporal cloud login --profile prod`, the OAuth token is stored in the specified profile automatically. Subsequent commands that use that profile read the token from the TOML file to authenticate with Temporal Cloud.
 

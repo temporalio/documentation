@@ -7,6 +7,8 @@ description: "Decomposes complex Workflows into smaller, reusable units. Each ch
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { AnnotatedCode } from '@site/src/components';
+import * as Child from '@site/src/components/elements/AnnotatedCode/annotations/childWorkflows';
 
 ## Overview
 
@@ -167,13 +169,12 @@ In Go, `workflow.ExecuteChildWorkflow()` returns a `ChildWorkflowFuture`, and ca
 ### Asynchronous Child Workflow
 
 The following example starts a Child Workflow asynchronously with an ABANDON policy.
-The parent receives the child's execution info without waiting for completion:
+The parent receives the child's execution info without waiting for completion. Select a concept to highlight the matching lines:
 
 <Tabs groupId="language" queryString>
 <TabItem value="python" label="Python">
-
+<AnnotatedCode annotations={Child.python}>
 ```python
-# workflows.py
 from temporalio import workflow
 from temporalio.workflow import ParentClosePolicy
 
@@ -183,7 +184,6 @@ from child_workflows import ChildWorkflow
 class ParentWorkflow:
     @workflow.run
     async def run(self, input: str) -> str:
-        # Async call - returns handle once child starts
         handle = await workflow.start_child_workflow(
             ChildWorkflow.run,
             input,
@@ -191,20 +191,13 @@ class ParentWorkflow:
             parent_close_policy=ParentClosePolicy.ABANDON,
         )
 
-        # Parent continues without waiting for child completion
         return handle.id
 ```
-
+</AnnotatedCode>
 </TabItem>
 <TabItem value="go" label="Go">
-
+<AnnotatedCode annotations={Child.go}>
 ```go
-// parent_workflow.go
-import (
-    enumspb "go.temporal.io/api/enums/v1"
-    "go.temporal.io/sdk/workflow"
-)
-
 func ParentWorkflow(ctx workflow.Context, input string) (string, error) {
     cwo := workflow.ChildWorkflowOptions{
         ParentClosePolicy: enumspb.PARENT_CLOSE_POLICY_ABANDON,
@@ -213,22 +206,19 @@ func ParentWorkflow(ctx workflow.Context, input string) (string, error) {
 
     childFuture := workflow.ExecuteChildWorkflow(ctx, ChildWorkflow, input)
 
-    // Wait for child to start, not complete
     var childWE workflow.Execution
     if err := childFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
         return "", err
     }
 
-    // Parent continues without waiting for child completion
     return childWE.ID, nil
 }
 ```
-
+</AnnotatedCode>
 </TabItem>
 <TabItem value="java" label="Java">
-
+<AnnotatedCode annotations={Child.java}>
 ```java
-// ParentWorkflowImpl.java
 public class ParentWorkflowImpl implements ParentWorkflow {
   @Override
   public WorkflowExecution execute(String input) {
@@ -239,21 +229,18 @@ public class ParentWorkflowImpl implements ParentWorkflow {
 
     ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, options);
 
-    // Async call - returns immediately
     Async.function(child::processData, input);
 
-    // Get child execution info without waiting for completion
     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-    return childExecution.get(); // Blocks only until child starts
+    return childExecution.get();
   }
 }
 ```
-
+</AnnotatedCode>
 </TabItem>
 <TabItem value="typescript" label="TypeScript">
-
+<AnnotatedCode annotations={Child.typescript}>
 ```typescript
-// workflows.ts
 import { startChild, ParentClosePolicy } from '@temporalio/workflow';
 import { childWorkflow } from './child-workflows';
 
@@ -263,12 +250,10 @@ export async function parentWorkflow(input: string): Promise<string> {
     parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
   });
 
-  // Parent continues without waiting for child completion
-  // childHandle.workflowId and childHandle.firstExecutionRunId are available
   return childHandle.workflowId;
 }
 ```
-
+</AnnotatedCode>
 </TabItem>
 </Tabs>
 

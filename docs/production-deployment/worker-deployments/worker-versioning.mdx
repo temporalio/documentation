@@ -160,7 +160,7 @@ w := worker.New(c, myTaskQueue, worker.Options{
     UseVersioning: true,
     Version: worker.WorkerDeploymentVersion{
       DeploymentName: "llm_srv",
-      BuildID:        buildID,
+      BuildID: buildID,
     },
     DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
   },
@@ -854,7 +854,7 @@ workflowOptions := client.StartWorkflowOptions{
 	VersioningOverride: &client.PinnedVersioningOverride{
         Version: worker.WorkerDeploymentVersion{
             DeploymentName: "DeployName",
-            BuildID:        "1.0",
+            BuildID: "1.0",
         },
     },
 }
