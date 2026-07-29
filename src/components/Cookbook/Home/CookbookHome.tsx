@@ -4,6 +4,7 @@ import styles from './CookbookHome.module.css';
 import useGlobalData, { usePluginData } from '@docusaurus/useGlobalData';
 import clsx from 'clsx';
 import Tile from '../../elements/Tile/Tile';
+import { AI_COOKBOOK_BLURB } from '@site/src/constants/aiCookbookBlurb';
 
 type CookbookItem = {
   id: string;
@@ -186,10 +187,7 @@ export default function CookbookHome() {
       <div className={styles.inner}>
         <header data-testid="cookbook-hero" className={styles.hero} aria-label="Cookbook overview">
           <h1 className={styles.heroTitle}>AI Cookbook</h1>
-          <p className={styles.heroBlurb}>
-            Step-by-step solutions that show you how to build reliable, production-ready AI systems with Temporal. Learn
-            practical paradigms for prompts, tools, retries, and Workflow design.
-          </p>
+          <p className={styles.heroBlurb}>{AI_COOKBOOK_BLURB}</p>
         </header>
         <div className={styles.grid}>
           {sortedItems.map((it) => (
