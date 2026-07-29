@@ -1,0 +1,125 @@
+---
+id: cloud-run
+title: Serverless Workers on GCP Cloud Run - TypeScript SDK
+sidebar_label: GCP Cloud Run
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the TypeScript SDK.
+slug: /develop/typescript/workers/serverless-workers/cloud-run
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - cloud run
+  - gcp
+  - google cloud
+  - typescript sdk
+  - worker
+  - serverless worker
+tags:
+  - Workers
+  - TypeScript SDK
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+
+On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/worker-pools), you run a standard long-lived Temporal Worker.
+Register Workflows and Activities the same way you would with any other TypeScript Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
+
+Cloud Run needs no SDK-specific package, unlike [AWS Lambda](/develop/typescript/workers/serverless-workers/aws-lambda), which uses `@temporalio/lambda-worker`.
+The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+
+For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running TypeScript Worker, then pass `workerDeploymentOptions` to `Worker.create()` to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```ts
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const config = loadClientConnectConfig();
+  const connection = await NativeConnection.connect(config.connectionOptions);
+
+  const worker = await Worker.create({
+    connection,
+    namespace: config.namespace,
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    workerDeploymentOptions: {
+      version: { deploymentName: 'my-app', buildId: 'build-1' },
+      useWorkerVersioning: true,
+      defaultVersioningBehavior: 'PINNED',
+    },
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+`deploymentName` and `buildId` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `defaultVersioningBehavior` as shown above covers every Workflow on the Worker.
+To set the behavior per Workflow instead, pass the Workflow function to `setWorkflowOptions()` from `@temporalio/workflow`:
+
+```ts
+import { setWorkflowOptions } from '@temporalio/workflow';
+
+setWorkflowOptions({ versioningBehavior: 'PINNED' }, myWorkflow);
+export async function myWorkflow(): Promise<string> {
+  // ...
+}
+```
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/typescript/workers/run-worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+The `@temporalio/envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
+Set the non-secret values as environment variables on the Worker Pool, and mount the API key or TLS material from Secret Manager.
+For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
+
+`loadClientConnectConfig()` returns `connectionOptions` and `namespace`. Pass `connectionOptions` to `NativeConnection.connect()` and `namespace` to `Worker.create()`, as shown above.
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/typescript/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+
+```ts
+import { heartbeat } from '@temporalio/activity';
+
+export async function myActivity(items: string[]): Promise<string> {
+  for (let i = 0; i < items.length; i++) {
+    heartbeat(i);
+    // ... process items[i]
+  }
+  return 'done';
+}
+```
+
+For how scale-in decisions are made and how to hold the pool steady while long Activities run, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
+
+## Add observability {/* #add-observability */}
+
+A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
+For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - TypeScript SDK](/develop/typescript/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).

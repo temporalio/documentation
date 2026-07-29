@@ -159,7 +159,10 @@ module.exports = {
                     type: 'doc',
                     id: 'develop/go/workers/serverless-workers/index',
                   },
-                  items: ['develop/go/workers/serverless-workers/aws-lambda'],
+                  items: [
+                    'develop/go/workers/serverless-workers/aws-lambda',
+                    'develop/go/workers/serverless-workers/cloud-run',
+                  ],
                 },
               ],
             },
@@ -686,7 +689,8 @@ module.exports = {
                     id: 'develop/typescript/workers/serverless-workers/index',
                   },
                   items: [
-                    'develop/typescript/workers/serverless-workers/aws-lambda'
+                    'develop/typescript/workers/serverless-workers/aws-lambda',
+                    'develop/typescript/workers/serverless-workers/cloud-run',
                   ],
                 },
               ],

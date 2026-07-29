@@ -123,14 +123,117 @@ To export traces and Temporal Core metrics to Google Cloud, add the OpenTelemetr
 </SdkTabs.Python>
 <SdkTabs.Go>
 
-{/* TODO(lenny): Add the Go standard-Worker + WorkerDeploymentVersion setup. Verify the exact API against the Go SDK
-before publishing; the Python tab is the only one dogfooded so far. */}
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"example.com/myapp"
+)
+
+func main() {
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
+		DeploymentOptions: worker.DeploymentOptions{
+			UseVersioning: true,
+			Version: worker.WorkerDeploymentVersion{
+				DeploymentName: "my-app",
+				BuildID:        "build-1",
+			},
+		},
+	})
+
+	w.RegisterWorkflowWithOptions(myapp.MyWorkflow, workflow.RegisterOptions{
+		VersioningBehavior: workflow.VersioningBehaviorPinned,
+	})
+	w.RegisterActivity(myapp.MyActivity)
+
+	if err := w.Run(worker.InterruptCh()); err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `VersioningBehaviorPinned` or
+`VersioningBehaviorAutoUpgrade`. Set it per Workflow at registration as shown above, or set a Worker-level default in
+`DeploymentOptions`:
+
+```go
+w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
+	DeploymentOptions: worker.DeploymentOptions{
+		UseVersioning:             true,
+		Version:                   version,
+		DefaultVersioningBehavior: workflow.VersioningBehaviorPinned,
+	},
+})
+```
+
+If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
+
+To export traces and Temporal Core metrics to Google Cloud, add the OpenTelemetry plugin to the Worker. See
+[Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
 
-{/* TODO(lenny): Add the TypeScript standard-Worker + workerDeploymentOptions setup. Verify against the TS SDK before
-publishing. */}
+```ts
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const config = loadClientConnectConfig();
+  const connection = await NativeConnection.connect(config.connectionOptions);
+
+  const worker = await Worker.create({
+    connection,
+    namespace: config.namespace,
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    workerDeploymentOptions: {
+      version: { deploymentName: 'my-app', buildId: 'build-1' },
+      useWorkerVersioning: true,
+      defaultVersioningBehavior: 'PINNED',
+    },
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `defaultVersioningBehavior` as shown above covers every Workflow on the Worker. To set the behavior per Workflow
+instead, pass the Workflow function to `setWorkflowOptions()`:
+
+```ts
+import { setWorkflowOptions } from '@temporalio/workflow';
+
+setWorkflowOptions({ versioningBehavior: 'PINNED' }, myWorkflow);
+export async function myWorkflow(): Promise<string> {
+  // ...
+}
+```
+
+For the TypeScript Worker setup specific to Cloud Run, see
+[Serverless Workers on GCP Cloud Run - TypeScript SDK](/develop/typescript/workers/serverless-workers/cloud-run).
 
 </SdkTabs.TypeScript>
 </SdkTabs>
@@ -161,12 +264,51 @@ CMD ["python", "-m", "worker"]
 </SdkTabs.Python>
 <SdkTabs.Go>
 
-{/* TODO(lenny): Go Dockerfile (multi-stage build to a static binary). */}
+Build a static binary in one stage and copy it into a minimal runtime image:
+
+```dockerfile
+FROM golang:1.25 AS build
+
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o /out/worker ./worker
+
+FROM gcr.io/distroless/static-debian12
+COPY --from=build /out/worker /worker
+CMD ["/worker"]
+```
+
+`CGO_ENABLED=0` produces a statically linked binary, which is what the `distroless/static` base image expects.
 
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
 
-{/* TODO(lenny): TypeScript Dockerfile. */}
+Compile the TypeScript in one stage, then install production dependencies in the runtime image:
+
+```dockerfile
+FROM node:22-slim AS build
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:22-slim
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY --from=build /app/lib ./lib
+
+CMD ["node", "lib/worker.js"]
+```
+
+Use a glibc-based image such as `node:22-slim` rather than an Alpine image. Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. See [Do not use Alpine](/develop/typescript/workers/run-worker-process#do-not-use-alpine).
+
+Set `NODE_OPTIONS=--max-old-space-size=<MB>` on the Worker Pool to about 80% of the instance's memory limit. Without it, Node.js sizes its heap from the host's total memory rather than the container limit. See [Run a Worker on Docker](/develop/typescript/workers/run-worker-process#run-a-worker-on-docker).
 
 </SdkTabs.TypeScript>
 </SdkTabs>
