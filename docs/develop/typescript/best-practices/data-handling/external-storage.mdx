@@ -154,60 +154,175 @@ If you need a storage backend other than what the built-in drivers allow, you ca
 Refer to [Choose a storage system](/external-storage#choose-storage) for guidance on selecting a backing store and
 [Lifecycle management](/external-storage#lifecycle) for retention requirements.
 
-The following example shows a custom driver that uses local disk as the backing store. This example is for local
-development and testing only. In production, use a durable storage system that is accessible to all Workers.
+The following driver keeps payloads on the filesystem. It comes from the
+[external-storage sample](https://github.com/temporalio/samples-typescript/tree/main/external-storage), which runs it
+end to end and tests it. A shared filesystem works for local development and for Workers that mount the same volume. For
+anything else, use a storage system that every Client and Worker can reach.
 
-<!--SNIPSTART typescript-custom-storage-driver-->
+<!--SNIPSTART typescript-custom-storage-driver -->
+[external-storage/src/filesystem-storage-driver.ts](https://github.com/temporalio/samples-typescript/blob/main/external-storage/src/filesystem-storage-driver.ts)
 ```ts
-import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import path from 'node:path';
-import {
-  StorageDriverClaim,
-  type Payload,
-  type StorageDriver,
-  type StorageDriverRetrieveContext,
-  type StorageDriverStoreContext,
-} from '@temporalio/common';
-import { temporal } from '@temporalio/proto';
+export class FileSystemStorageDriver implements StorageDriver {
+  readonly name: string;
 
-const PayloadProto = temporal.api.common.v1.Payload;
+  /**
+   * Stable identifier for this *implementation*, shared by every instance and reported
+   * to the server via Worker heartbeat for observability. Distinct from `name`, which
+   * identifies this particular configured instance. The SDK's own drivers use values
+   * like `aws.s3driver` and `gcp.gcsdriver`.
+   */
+  readonly type = 'sample.filesystemdriver';
 
-export class LocalDiskStorageDriver implements StorageDriver {
-  readonly name = 'my-local-disk';
-  readonly type = 'local-disk';
+  private readonly rootDir: string;
+  private readonly maxPayloadSize: number;
 
-  constructor(private readonly storeDir = '/tmp/temporal-payload-store') {}
-
-  async store(context: StorageDriverStoreContext, payloads: Payload[]): Promise<StorageDriverClaim[]> {
-    let dir = this.storeDir;
-    const target = context.target;
-    if (target?.id) {
-      // `target.kind` is either 'workflow' or 'activity'. Including it in the path keeps a
-      // Workflow Id from colliding with an Activity Id in the same Namespace.
-      dir = path.join(this.storeDir, target.namespace, target.kind, target.id);
-    }
-    await mkdir(dir, { recursive: true });
-
-    const claims: StorageDriverClaim[] = [];
-    for (const payload of payloads) {
-      const filePath = path.join(dir, `${randomUUID()}.bin`);
-      await writeFile(filePath, PayloadProto.encode(payload).finish());
-      claims.push(new StorageDriverClaim({ path: filePath }));
-    }
-    return claims;
+  constructor({ rootDir, driverName = 'sample.filesystemdriver', maxPayloadSize }: FileSystemStorageDriverOptions) {
+    this.rootDir = path.resolve(rootDir);
+    this.name = driverName;
+    this.maxPayloadSize = maxPayloadSize ?? DEFAULT_MAX_PAYLOAD_SIZE;
   }
 
-  async retrieve(_context: StorageDriverRetrieveContext, claims: StorageDriverClaim[]): Promise<Payload[]> {
-    const payloads: Payload[] = [];
-    for (const claim of claims) {
-      const filePath = claim.claimData.path;
-      if (!filePath) {
-        throw new Error("claim is missing required 'path' data");
-      }
-      payloads.push(PayloadProto.decode(await readFile(filePath)));
+  /**
+   * Called with every payload the SDK decided to offload, batched per driver. Must
+   * return one claim per payload, in the same order.
+   *
+   * Throwing here fails the enclosing Workflow or Activity Task *retryably*, so a
+   * transient I/O error is retried rather than killing the Execution. That makes it
+   * safe to let errors propagate instead of, say, silently falling back to inline
+   * payloads, which would defeat the point of the size threshold.
+   */
+  async store(context: StorageDriverStoreContext, payloads: Payload[]): Promise<StorageDriverClaim[]> {
+    const keyPrefix = buildKeyPrefix(context.target);
+    return runAllAbortingOnFirstError(context.abortSignal, (signal) =>
+      payloads.map((payload) => this.storePayload(payload, keyPrefix, signal)),
+    );
+  }
+
+  /** Inverse of {@link store}: one payload per claim, in the same order. */
+  async retrieve(context: StorageDriverRetrieveContext, claims: StorageDriverClaim[]): Promise<Payload[]> {
+    return runAllAbortingOnFirstError(context.abortSignal, (signal) =>
+      claims.map((claim) => this.retrievePayload(claim, signal)),
+    );
+  }
+
+  private async storePayload(
+    payload: Payload,
+    keyPrefix: string,
+    abortSignal: AbortSignal,
+  ): Promise<StorageDriverClaim> {
+    // Store the encoded Payload proto, not just `payload.data`. A Payload also carries
+    // metadata (the `encoding` key, protobuf message names, anything a custom
+    // PayloadConverter added), and metadata values are arbitrary bytes that would not
+    // survive a round trip through the string-valued claim map. Encoding the whole
+    // message keeps the payload byte-for-byte identical end to end.
+    const payloadBytes = PayloadProto.encode(payload).finish();
+    if (payloadBytes.length > this.maxPayloadSize) {
+      throw new Error(
+        `Payload of ${payloadBytes.length} bytes exceeds the configured maxPayloadSize of ${this.maxPayloadSize} bytes`,
+      );
     }
-    return payloads;
+
+    const hashValue = createHash(HASH_ALGORITHM).update(payloadBytes).digest('hex');
+    const key = `${keyPrefix}/${HASH_ALGORITHM}/${hashValue}`;
+
+    try {
+      await this.writeIfAbsent(key, payloadBytes, abortSignal);
+    } catch (err) {
+      // Wrapping adds the context that makes a retry loop diagnosable: a bare ENOENT
+      // says nothing about which key or which storage root. On ES2022 and above, prefer
+      // `new Error(message, { cause: err })` to keep the original stack attached; these
+      // samples target ES2021, so the message is folded in instead.
+      throw new Error(
+        `FileSystemStorageDriver failed to store [rootDir=${this.rootDir}, key=${key}]: ${describe(err)}`,
+      );
+    }
+
+    // The claim is the only thing that reaches Temporal Server, embedded in the
+    // reference payload that replaces the real one. Keep it small and keep it free of
+    // anything sensitive: it is visible in Workflow History and in the Web UI.
+    //
+    // `rootDir` is deliberately absent. It is deployment configuration, and a second
+    // Worker may well mount the same storage at a different path; putting it in the
+    // claim would pin every historical reference to one machine's filesystem layout.
+    return new StorageDriverClaim({ key, hashAlgorithm: HASH_ALGORITHM, hashValue });
+  }
+
+  /**
+   * Writes the blob unless it is already there. The write goes to a temporary file and
+   * is then renamed, because `rename` is atomic: a reader can only ever observe the
+   * complete blob, never a half-written one. Without that, a crash mid-write would
+   * leave a file whose name promises content it does not contain, and content
+   * addressing would hand it to a reader as valid.
+   */
+  private async writeIfAbsent(key: string, payloadBytes: Uint8Array, abortSignal: AbortSignal): Promise<void> {
+    const filePath = this.resolveKey(key);
+    if (await exists(filePath)) return;
+
+    await mkdir(path.dirname(filePath), { recursive: true });
+    const tempPath = `${filePath}.${randomUUID()}.tmp`;
+    try {
+      await writeFile(tempPath, payloadBytes, { signal: abortSignal });
+      await rename(tempPath, filePath);
+    } catch (err) {
+      await unlink(tempPath).catch(() => undefined);
+      // Two Workers can race to store identical bytes. On POSIX the loser's rename
+      // silently replaces an identical file; on Windows it fails. Either way the blob
+      // is present and correct, so treat that as success.
+      if (await exists(filePath)) return;
+      throw err;
+    }
+  }
+
+  private async retrievePayload(claim: StorageDriverClaim, abortSignal: AbortSignal): Promise<Payload> {
+    const { key, hashAlgorithm, hashValue: expectedHash } = claim.claimData;
+    // Claims come off the wire, so validate rather than assume. A missing field means a
+    // claim written by a different driver, or by an older version of this one.
+    if (!key) {
+      throw new Error("FileSystemStorageDriver claim is missing required field 'key'");
+    }
+    if (hashAlgorithm !== HASH_ALGORITHM || !expectedHash) {
+      throw new Error(
+        `FileSystemStorageDriver claim [key=${key}] must carry hashAlgorithm='${HASH_ALGORITHM}' and a hashValue, ` +
+          `got hashAlgorithm='${hashAlgorithm ?? ''}'`,
+      );
+    }
+
+    const filePath = this.resolveKey(key);
+    let payloadBytes: Uint8Array;
+    try {
+      payloadBytes = await readFile(filePath, { signal: abortSignal });
+    } catch (err) {
+      throw new Error(
+        `FileSystemStorageDriver failed to retrieve [rootDir=${this.rootDir}, key=${key}]: ${describe(err)}`,
+      );
+    }
+
+    // Verifying is cheap next to the read and catches truncation, corruption, and a
+    // claim pointing at the wrong blob. Failing loudly here is much better than
+    // handing malformed bytes to the PayloadConverter, where the error would surface
+    // as a confusing deserialization failure far from its cause.
+    const actualHash = createHash(HASH_ALGORITHM).update(payloadBytes).digest('hex');
+    if (actualHash !== expectedHash) {
+      throw new Error(
+        `FileSystemStorageDriver integrity check failed [key=${key}]: ` +
+          `expected ${HASH_ALGORITHM}:${expectedHash}, got ${HASH_ALGORITHM}:${actualHash}`,
+      );
+    }
+
+    return PayloadProto.decode(payloadBytes);
+  }
+
+  /**
+   * Maps a key to a path under `rootDir`, refusing anything that escapes it. Keys
+   * arrive from Workflow History, which we should not treat as trusted input: a claim
+   * containing `../../etc/passwd` must not turn into a read outside the blob store.
+   */
+  private resolveKey(key: string): string {
+    const filePath = path.resolve(this.rootDir, key);
+    if (filePath !== this.rootDir && !filePath.startsWith(this.rootDir + path.sep)) {
+      throw new Error(`FileSystemStorageDriver refused a key that resolves outside rootDir [key=${key}]`);
+    }
+    return filePath;
   }
 }
 ```
@@ -224,8 +339,9 @@ A custom driver implements the `StorageDriver` interface, which has two readonly
   retrieval. For example, two S3 drivers could be named `"s3-primary"` and `"s3-archive"`.
 - `type` is a string that identifies the driver implementation, and the Worker reports it in its heartbeat. Unlike
   `name`, `type` must be the same across all instances of the same driver type regardless of configuration. Two S3
-  drivers named `"s3-primary"` and `"s3-archive"` would both report `"aws.s3driver"` as their type, while the local disk
-  driver in the preceding code sample reports `"local-disk"`.
+  drivers named `"s3-primary"` and `"s3-archive"` would both report `"aws.s3driver"` as their type, while the built-in
+  GCS driver reports `"gcp.gcsdriver"`. The filesystem driver in the preceding code sample reports
+  `"sample.filesystemdriver"`.
 - `store()` receives an array of payloads and returns one `StorageDriverClaim` per payload. A claim wraps a set of
   string key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
@@ -252,18 +368,30 @@ Converter handles deserializing the application data after the driver returns th
 
 ### 4. Configure the Data Converter
 
-Pass your driver to an `ExternalStorage` instance on the Data Converter, and use the converter when creating your Client
-and Worker. You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
+Pass your driver to an `ExternalStorage` instance on the Data Converter, and use the same converter when creating your
+Client and Worker. Both sides need it: a Client without External Storage configured cannot read an offloaded result. You
+can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
-<!--SNIPSTART typescript-custom-driver-data-converter-->
+<!--SNIPSTART typescript-custom-driver-data-converter -->
+[external-storage/src/data-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/external-storage/src/data-converter.ts)
 ```ts
-import { ExternalStorage } from '@temporalio/common';
+export function createDataConverter(rootDir: string = STORAGE_ROOT): DataConverter {
+  return {
+    externalStorage: new ExternalStorage({
+      drivers: [new FileSystemStorageDriver({ rootDir })],
+      payloadSizeThreshold: PAYLOAD_SIZE_THRESHOLD,
 
-const dataConverter = {
-  externalStorage: new ExternalStorage({
-    drivers: [new LocalDiskStorageDriver()],
-  }),
-};
+      // With one driver registered, every offloaded payload goes to it. Register more
+      // than one and a `driverSelector` becomes required, letting you route per
+      // payload: a cheap archive tier for a known-bulky Workflow type, a driver per
+      // tenant, or a per-region bucket. Returning `null` from the selector keeps that
+      // payload inline, which is how you exempt specific payloads from offloading.
+      //
+      // driverSelector: (context, _payload) =>
+      //   context.target?.type === 'processDocument' ? coldDriver : hotDriver,
+    }),
+  };
+}
 ```
 <!--SNIPEND-->
 
