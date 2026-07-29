@@ -329,15 +329,26 @@ gcloud builds submit \
 Create an empty Worker Pool. Start it at zero instances: the WCI raises the instance count once the Worker Deployment
 Version is current and Tasks arrive.
 
+#### Choose a runner service account {/* #runner-service-account */}
+
+The Worker Pool runs as a *runtime* service account, the identity your Worker code uses to reach other Google Cloud
+services. It is not the invoker from [Step 3](#configure-iam), which Temporal impersonates to scale the pool but never
+runs it.
+
+[Create a dedicated service account](https://cloud.google.com/iam/docs/service-accounts-create) for the pool. If you omit
+`--service-account`, Cloud Run falls back to the
+[default Compute Engine service account](https://cloud.google.com/run/docs/securing/service-identity), which holds
+`roles/editor`. You need the email twice: here, and in [Step 3](#configure-iam) as `runner_service_account_email`.
+
 Store the API key (or TLS material) in Secret Manager rather than passing it as a plaintext environment variable, and
-grant the Worker Pool's runtime service account the `roles/secretmanager.secretAccessor` role on that secret.
+grant the runner service account the `roles/secretmanager.secretAccessor` role on that secret.
 
 ```bash
 gcloud run worker-pools deploy my-temporal-worker-pool \
   --image <REGION>-docker.pkg.dev/<YOUR_GCP_PROJECT>/<REPOSITORY>/my-temporal-worker:build-1 \
   --region <REGION> \
   --project <YOUR_GCP_PROJECT> \
-  --service-account <RUNTIME_SERVICE_ACCOUNT> \
+  --service-account <RUNNER_SERVICE_ACCOUNT> \
   --instances 0 \
   --set-env-vars TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_TASK_QUEUE=my-task-queue \
   --set-secrets TEMPORAL_API_KEY=<SECRET_NAME>:latest
@@ -346,7 +357,7 @@ gcloud run worker-pools deploy my-temporal-worker-pool \
 | Parameter           | Description                                                                                                             |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `--image`           | The Worker image you pushed in [Step ii](#build-and-push).                                                               |
-| `--service-account` | The runtime service account the Worker Pool instances run as. It needs read access to the secrets referenced below. This is distinct from the invoker service account in [Step 3](#configure-iam), which Temporal impersonates to scale the pool. |
+| `--service-account` | The [runner service account](#runner-service-account) the Worker Pool instances run as. It needs read access to the secrets referenced below. This is distinct from the invoker service account in [Step 3](#configure-iam), which Temporal impersonates to scale the pool. |
 | `--instances`       | Initial instance count. Set to `0`; the WCI manages the count after the version is current.                             |
 | `--set-env-vars`    | Non-secret Worker configuration. `TEMPORAL_TASK_QUEUE` overrides the value set in code.                                 |
 | `--set-secrets`     | Maps a Secret Manager secret to an environment variable. Use for `TEMPORAL_API_KEY` or TLS client cert/key material.    |
@@ -362,7 +373,7 @@ This section applies to Temporal Cloud. For self-hosted Temporal Service deploym
 
 Temporal Cloud scales the Worker Pool by [impersonating a service account](https://docs.cloud.google.com/docs/authentication/use-service-account-impersonation) you create, called the *invoker*. The invoker
 reads and scales the pool through the Cloud Run admin API. It does not run the pool. Your Worker instances run as the
-separate runtime service account you set in [Step 2](#create-worker-pool).
+separate runner service account you set in [Step 2](#create-worker-pool).
 
 When you create a Worker Deployment in the Temporal Cloud UI (**Workers** → **Create Worker Deployment**), it provides a
 Terraform template. Copy it. The template uses the
@@ -379,6 +390,8 @@ module "serverless-worker-cloud-run" {
   impersonator_service_account_emails = [
     "<provided by Temporal Cloud>",
   ]
+
+  runner_service_account_email = "temporal-worker-pool-runner@<YOUR_GCP_PROJECT>.iam.gserviceaccount.com"
 }
 ```
 
@@ -389,6 +402,7 @@ Set these variables:
 | `project_id` | The GCP project that hosts the Worker Pool and the invoker service account. |
 | `invoker_account_id` | A name for the invoker service account the module creates. The full email becomes `<invoker_account_id>@<project_id>.iam.gserviceaccount.com`. |
 | `impersonator_service_account_emails` | Temporal Cloud's service accounts, granted `roles/iam.serviceAccountTokenCreator` on the invoker so they can impersonate it. Filled in by the template. |
+| `runner_service_account_email` | The [runner service account](#runner-service-account) from [Step 2](#create-worker-pool). The module grants the invoker `roles/iam.serviceAccountUser` on it, which Cloud Run requires to attach that identity when it scales the pool. Leave it unset and the invoker gets that grant on the default Compute Engine service account instead. |
 
 Make sure you are logged in to the GCP project, then apply the configuration:
 

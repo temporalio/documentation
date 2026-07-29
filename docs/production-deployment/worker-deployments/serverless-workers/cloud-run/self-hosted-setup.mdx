@@ -102,7 +102,7 @@ key is a supported fallback. Not dogfooded. */}
 ## Create the invoker service account {/* #create-invoker */}
 
 The Temporal Service scales the Worker Pool as an *invoker* service account. This account only reads and scales the
-pool; it does not run the pool. The identity your Worker instances run as is the separate runtime service account you
+pool; it does not run the pool. The identity your Worker instances run as is the separate runner service account you
 set on the pool in the [deployment guide](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool).
 
 Two grants make this work:
