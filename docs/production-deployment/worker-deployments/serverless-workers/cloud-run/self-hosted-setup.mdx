@@ -102,11 +102,9 @@ automatically. No additional credential configuration is needed. You grant this 
 impersonate the invoker in the next step.
 
 **Outside GCP:** Use [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation) so
-the server can obtain GCP credentials without a long-lived key.
-
-{/* TODO(lenny): The server resolves credentials through ambient ADC, per the description of
-workercontroller.compute_providers.gcp.first_delegate_as_base in temporal-auto-scaled-workers wci/client/config.go.
-Still confirm whether a service-account key file is a recommended fallback. Not dogfooded. */}
+the server can obtain GCP credentials without a long-lived key. Point `GOOGLE_APPLICATION_CREDENTIALS` at the credential
+configuration file it produces. That variable also accepts a service account key file, but Google
+[recommends against long-lived keys](https://cloud.google.com/iam/docs/best-practices-service-accounts).
 
 ## Create the invoker service account {/* #create-invoker */}
 
