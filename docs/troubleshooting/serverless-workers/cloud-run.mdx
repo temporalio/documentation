@@ -165,7 +165,7 @@ Common errors include:
   `TEMPORAL_NAMESPACE` environment variables on the pool. For self-hosted deployments, verify
   [network reachability](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup#ensure-network-reachability)
   from Cloud Run to your Temporal frontend.
-- **Missing secrets**: The instance cannot read the API key or TLS material from Secret Manager. The
+- **Missing secrets**: The instance cannot read the Temporal Cloud API key or TLS material from Secret Manager. The
   [runner service account](/production-deployment/worker-deployments/serverless-workers/cloud-run#runner-service-account)
   the pool runs as needs `roles/secretmanager.secretAccessor` on the secret. This is the service account in
   `spec.template.spec.serviceAccountName`, not the invoker.

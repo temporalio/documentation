@@ -97,7 +97,7 @@ For general Worker setup and options that are not specific to Cloud Run, see [Ru
 ## Configure the Temporal connection {/* #configure-connection */}
 
 The `envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
-Set the non-secret values as environment variables on the Worker Pool, and mount the API key or TLS material from Secret Manager.
+Set the non-secret values as environment variables on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager.
 For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
 
 `MustLoadDefaultClientOptions` panics if the configuration is invalid. To handle a bad configuration yourself, use `envconfig.LoadDefaultClientOptions` and check the returned error.

@@ -49,6 +49,8 @@ through the Cloud Run admin API as work arrives and drains. For how the pool sca
   accounts, and Secret Manager secrets.
 - The [`gcloud` CLI](https://cloud.google.com/sdk/docs/install) installed and authenticated. You may use other tools to
   perform the GCP steps, such as the Google Cloud console or Terraform.
+- [Terraform](https://developer.hashicorp.com/terraform/install) installed. Temporal provides the IAM setup as a
+  Terraform module.
 - The [Go SDK](/develop/go), [Python SDK](/develop/python), or [TypeScript SDK](/develop/typescript), depending on which
   language you are using. Use the tabs to select your language and the rest of the page will update accordingly.
 
@@ -344,8 +346,16 @@ runs it.
 [default Compute Engine service account](https://cloud.google.com/run/docs/securing/service-identity), which holds
 `roles/editor`. You need the email twice: here, and in [Step 3](#configure-iam) as `runner_service_account_email`.
 
-Store the API key (or TLS material) in Secret Manager rather than passing it as a plaintext environment variable, and
-grant the runner service account the `roles/secretmanager.secretAccessor` role on that secret.
+Store the Temporal Cloud API key (or TLS material) in Secret Manager rather than passing it as a plaintext environment
+variable.
+
+The runner needs no baseline role to run the Worker. Cloud Run collects `stdout` and `stderr` into
+[Cloud Logging](https://cloud.google.com/run/docs/logging) through its own infrastructure, and the Cloud Run service
+agent, not the runner, pulls the container image. Grant the runner only what your code reaches:
+
+- `roles/secretmanager.secretAccessor` on each secret you mount, including the API key above.
+- `roles/logging.logWriter`, only if your Worker writes through the Cloud Logging API instead of `stdout` and `stderr`.
+- Access to any other Google Cloud service your Workflows and Activities call.
 
 ```bash
 gcloud run worker-pools deploy my-temporal-worker-pool-build-1 \
@@ -363,10 +373,10 @@ gcloud run worker-pools deploy my-temporal-worker-pool-build-1 \
 | `--image`           | The Worker image you pushed in [Step ii](#build-and-push).                                                               |
 | `--service-account` | The [runner service account](#runner-service-account) the Worker Pool instances run as. It needs read access to the secrets referenced below. This is distinct from the invoker service account in [Step 3](#configure-iam), which Temporal impersonates to scale the pool. |
 | `--instances`       | Initial instance count. Set to `0`; the WCI manages the count after the version is current.                             |
-| `--set-env-vars`    | Non-secret Worker configuration. `TEMPORAL_TASK_QUEUE` overrides the value set in code.                                 |
+| `--set-env-vars`    | Non-secret Worker configuration. See [Environment configuration](/develop/environment-configuration).                   |
 | `--set-secrets`     | Maps a Secret Manager secret to an environment variable. Use for `TEMPORAL_API_KEY` or TLS client cert/key material.    |
 
-The serverless Worker packages read environment variables and configuration files automatically at startup. For the
+The environment configuration package reads environment variables and configuration files at startup. For the
 full list of supported environment variables, config file format, and profiles, see
 [Environment configuration](/develop/environment-configuration).
 
