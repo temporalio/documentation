@@ -109,6 +109,16 @@ These CLI commands directly manipulate the `temporal.toml` file. This differs fr
 file and environment at runtime to establish a client connection. You can select a profile for the CLI to use with the
 `--profile` flag. For example, `temporal --profile prod ...`.
 
+Connection flags on other `temporal` commands (for example, `--address`, `--namespace`, `--api-key`) sit above both
+environment variables and the TOML file in precedence. The full order for the CLI is:
+
+1. Command-line flags
+2. Environment variables
+3. TOML configuration file (active profile)
+
+So `temporal workflow list --address localhost:7233` uses `localhost:7233` even if `TEMPORAL_ADDRESS` or the active
+profile's `address` sets something else.
+
 The following code blocks provide copy-paste-friendly examples for setting up CLI profiles for both local development
 and Temporal Cloud.
 
