@@ -1,0 +1,199 @@
+---
+id: cloud-run
+title: Troubleshoot Serverless Workers on GCP Cloud Run
+sidebar_label: GCP Cloud Run
+description:
+  Diagnose and fix issues with Temporal Serverless Workers on GCP Cloud Run, from Worker Pools that never scale up to
+  instances stopped mid-Activity.
+slug: /troubleshooting/serverless-workers/cloud-run
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - cloud run
+  - gcp
+  - troubleshooting
+  - worker
+  - worker pool
+tags:
+  - Workers
+  - Serverless
+  - Troubleshooting
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkers">
+  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  APIs are experimental and may be subject to backwards-incompatible changes.
+  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+</ReleaseNoteHeader>
+
+This page walks through the Serverless Worker scaling flow on GCP Cloud Run and helps you identify where a failure is
+occurring. For Lambda functions on AWS, see
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda).
+
+Cloud Run Workers run in a Worker Pool of long-lived instances. Temporal does not invoke your Worker per Task. Instead,
+Temporal changes how many instances the pool runs. When the flow works correctly, the following sequence happens:
+
+1. You deploy the Worker image to a Cloud Run Worker Pool with an instance count of zero.
+2. You create a [Worker Deployment Version](/worker-versioning#deployment-versions) pointing at that pool. This starts a
+   [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) Workflow.
+3. An instance starts, the Worker polls the Temporal Service, and the server binds the Worker's
+   [Task Queue](/task-queue) to the Worker Deployment Version.
+4. The WCI monitors that Task Queue. The [Matching Service](/temporal-service/temporal-server#matching-service) also
+   signals the WCI when a Task arrives with no Worker free to take it.
+5. As work arrives, the WCI raises the pool's instance count through the Cloud Run admin API. As work drains, it lowers
+   the count, potentially to zero.
+
+Start by determining whether the pool is running instances at all.
+
+## Is the Worker Pool running instances? {/* #is-pool-running */}
+
+Inspect the pool directly. The instance count the WCI has asked Cloud Run for is stored as an annotation on the pool:
+
+```bash
+gcloud run worker-pools describe <POOL_NAME> \
+  --region <REGION> \
+  --project <YOUR_GCP_PROJECT> \
+  --format=yaml
+```
+
+Three fields under `metadata.annotations` tell you most of what you need:
+
+| Field | What it tells you |
+| --- | --- |
+| `run.googleapis.com/manualInstanceCount` | The instance count currently requested. `0` means no Worker is running. |
+| `run.googleapis.com/scalingMode` | Should be `manual`. The WCI scales the pool by writing its manual instance count. |
+| `serving.knative.dev/lastModifier` | Who last changed the pool. If Temporal has ever scaled it, this is your invoker service account. |
+
+Use `lastModifier` to choose where to look next. If `lastModifier` is still the account you deployed
+with, Temporal has never successfully written to the pool, so work through
+[the Worker Pool is not scaling up](#pool-not-scaling-up). If it is the invoker service account, Temporal is reaching
+the pool, and the problem is more likely in the Worker itself. Skip to
+[instances are running but Tasks are not completing](#instances-not-completing).
+
+## The Worker Pool is not scaling up {/* #pool-not-scaling-up */}
+
+Work through the following checks in order.
+
+### Validate the connection to the Worker Pool {/* #validate-connection */}
+
+Start by verifying that Temporal can reach the pool. Go to **Workers > Deployments > select your deployment**, open the
+**Actions** menu on the version, and click **Validate Connection**.
+
+For Cloud Run, this impersonates the invoker service account and reads the Worker Pool. A successful validation confirms
+three things at once: the compute configuration names a pool that exists, Temporal can impersonate the invoker, and the
+invoker can read the pool. Unlike AWS Lambda, no Worker is started as part of validation.
+
+If validation fails, check each part of the compute configuration against the pool:
+
+- **Project, region, and pool name.** Temporal addresses the pool as
+  `projects/<PROJECT>/locations/<REGION>/workerPools/<POOL_NAME>`. A wrong region reports the pool as not found, the
+  same as a wrong name.
+- **Impersonation.** The identity Temporal runs as needs `roles/iam.serviceAccountTokenCreator` on the invoker service
+  account. On Temporal Cloud, the
+  [Terraform module](/production-deployment/worker-deployments/serverless-workers/cloud-run#configure-iam) grants this.
+  On a self-hosted Service, you grant it to the GCP identity the server runs as. See
+  [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup#configure-gcp-identity).
+- **Invoker permissions.** The invoker needs `run.workerPools.get` to read the pool and `run.workerPools.update` to
+  scale it. `roles/run.developer` includes both. Validation only exercises the read, so an invoker that can read but not
+  update validates successfully and then fails to scale.
+
+A passing validation does not prove Temporal can scale the pool. If validation succeeds but `lastModifier` never
+changes, check the update permission.
+
+### Check that the version is set as current {/* #check-version-current */}
+
+The Worker Deployment Version must be the current version before Tasks route to it. If you created the version through
+the CLI, you need to
+[set it as current](/production-deployment/worker-deployments/serverless-workers/cloud-run#set-current-version) as a
+separate step.
+
+Verify with `temporal worker deployment describe`.
+
+### Check that the Task Queue is bound {/* #check-task-queue-binding */}
+
+The WCI scales the pool in response to activity on the Task Queues bound to the Worker Deployment Version. If no Task
+Queue is bound, there is nothing for it to watch.
+
+Check which Task Queues are bound and whether there is a backlog:
+
+```bash
+temporal worker deployment describe-version \
+  --namespace <NAMESPACE> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --build-id <BUILD_ID> \
+  --report-task-queue-stats
+```
+
+The server creates the binding when a Worker running that Worker Deployment Version connects and polls. If no Task
+Queues are listed, no Worker has ever polled successfully under this version. Confirm that an instance can start and
+connect at all by running the image locally against the same Namespace, or by checking the pool's logs from a run where
+an instance was up.
+
+### Check whether the pool is at its maximum {/* #check-max-count */}
+
+If the pool is running instances but stops growing while a backlog builds, it may be at the scaling algorithm's upper
+bound. The `max_count` setting defaults to 30 instances. Raise it in the **Scaling and Lifecycle** settings on the
+Worker Deployment Version.
+
+If the count stalls below `max_count`, check your project's
+[Cloud Run quotas](https://cloud.google.com/run/quotas) for the region. Cloud Run caps instances and CPU per region, and
+those limits apply no matter what count the WCI requests.
+
+## Instances are running but Tasks are not completing {/* #instances-not-completing */}
+
+If the pool is running instances but Workflows are not progressing, the problem is in the Worker's execution.
+
+### Check Worker Pool logs {/* #check-pool-logs */}
+
+Read the pool's logs and look for errors during Worker startup:
+
+```bash
+gcloud run worker-pools logs read <POOL_NAME> \
+  --region <REGION> \
+  --project <YOUR_GCP_PROJECT>
+```
+
+The pool produces no logs while it is scaled to zero, so run this while an instance is up.
+
+Common errors include:
+
+- **Connection failures**: The Worker cannot reach the Temporal Service. Check the `TEMPORAL_ADDRESS` and
+  `TEMPORAL_NAMESPACE` environment variables on the pool. For self-hosted deployments, verify
+  [network reachability](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup#ensure-network-reachability)
+  from Cloud Run to your Temporal frontend.
+- **Missing secrets**: The instance cannot read the API key or TLS material from Secret Manager. The
+  [runner service account](/production-deployment/worker-deployments/serverless-workers/cloud-run#runner-service-account)
+  the pool runs as needs `roles/secretmanager.secretAccessor` on the secret. This is the service account in
+  `spec.template.spec.serviceAccountName`, not the invoker.
+- **Authentication errors**: The API key is invalid, expired, or has no access to the Namespace.
+
+### Check that the deployment name and build ID match {/* #check-deployment-match */}
+
+If instances start and poll but no Task is ever processed, the deployment name or build ID in the Worker code may not
+match the Worker Deployment Version.
+
+Both values must match exactly. Compare the values in your Worker code against the output of
+`temporal worker deployment describe`. On a mismatch, the Worker polls under a version the WCI does not manage, so its
+polls never satisfy the Tasks the WCI is scaling for.
+
+## Activities are interrupted mid-execution {/* #activities-interrupted */}
+
+If Activities fail partway through and retry from the beginning around the time the pool shrinks, scale-in is stopping
+instances that are still working.
+
+The WCI decides when to remove an instance from Task Queue activity, not from what any individual instance is doing. It
+does not track whether the instance Cloud Run stops is mid-Activity.
+
+Two changes address this together:
+
+- Set `no_sync_quiet_ms` longer than your longest-running Activity. This is the quiet period that must pass with no Task
+  arriving before scale-down can fire, and it defaults to 90 seconds. Raising it holds the pool steady while long
+  Activities finish.
+- Use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so an interrupted Activity
+  resumes from its last recorded progress instead of restarting.
+
+For how scale-in decisions are made, see
+[Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#scale-in).

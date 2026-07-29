@@ -1537,7 +1537,19 @@ module.exports = {
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
         'troubleshooting/schedule-missed-actions',
-        'troubleshooting/serverless-workers',
+        {
+          type: 'category',
+          label: 'Serverless Workers',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'troubleshooting/serverless-workers/index',
+          },
+          items: [
+            'troubleshooting/serverless-workers/aws-lambda',
+            'troubleshooting/serverless-workers/cloud-run',
+          ],
+        },
       ],
     },
     {

@@ -330,8 +330,8 @@ AWS Lambda functions default to a 3-second timeout, which is too short for the W
 register the Task Queue. If the first invocation times out before the Worker polls, the Task Queue binding is never
 created and the Lambda is never invoked again. Always set `--timeout` high enough for the Worker to start, process Tasks,
 and [shut down gracefully](/serverless-workers#worker-lifecycle). See
-[Troubleshoot Serverless Workers](/troubleshooting/serverless-workers#check-wci-detecting-tasks) if the Task Queue
-binding is not established.
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda#check-wci-detecting-tasks)
+if the Task Queue binding is not established.
 
 :::
 
@@ -629,4 +629,4 @@ You can verify the invocation by checking:
   managed policy.
 
 If the Workflow does not progress or the Lambda is not invoked, see
-[Troubleshoot Serverless Workers](/troubleshooting/serverless-workers).
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda).
