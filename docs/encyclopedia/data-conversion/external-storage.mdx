@@ -56,12 +56,13 @@ External Storage addresses several common scenarios:
 - **AI agent conversations.** Long conversation histories grow with each turn, and the cumulative size can degrade
   Workflow performance.
 - **Spiky data sizes.** Some Workflows handle data that is usually small but occasionally large. The Claim check pattern
-  handles these spikes transparently, offloading only the payloads that exceed the size threshold.
+  handles these spikes transparently, offloading only the payloads that reach the size threshold.
 - **Migration to Temporal Cloud.** Self-hosted deployments may have higher configured payload limits. External Storage
   lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
-  payload data in infrastructure they control. Set the offload size threshold to zero to externalize all payloads
-  regardless of size.
+  payload data in infrastructure they control. Lower the offload size threshold to externalize all payloads regardless
+  of size. In the Python and TypeScript SDKs, set the threshold to 0. In the Go SDK, set it to 1, because 0 selects the
+  256 KiB default.
 
 For SDK-specific usage guides, see:
 
@@ -81,16 +82,16 @@ During [Data Conversion](/dataconversion), External Storage sits at the end of t
   alt="The Flow of Data through a Data Converter"
 />
 
-When a Temporal Client sends a payload that exceeds the configured size threshold, the storage driver uploads the
-payload to your external store and replaces it with a lightweight reference. Payloads below the threshold stay inline in
-the Event History.
+When a Temporal Client sends a payload that reaches or exceeds the configured size threshold, the storage driver uploads
+the payload to your external store and replaces it with a lightweight reference. Payloads below the threshold stay
+inline in the Event History.
 
 When the Temporal Service dispatches Tasks to the Worker, the process reverses. The Worker downloads the referenced
 payloads from external storage in parallel, then passes them back through the Payload Codec and Payload Converter to
 reconstruct the original data.
 
 The SDK parallelizes uploads and downloads to minimize latency. When a single Workflow Task involves multiple payloads
-that exceed the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
+that reach the threshold, the SDK uploads or downloads all of them concurrently rather than one at a time. This allows
 external storage operations to scale well even when a Task carries many large payloads.
 
 When a payload is offloaded to external storage, the Temporal UI displays a reference token instead of the actual data.
@@ -152,7 +153,8 @@ For example, see the
 
 Configure External Storage on the Data Converter. The key settings are:
 
-- **Size threshold**. The driver offloads payloads larger than this value, which defaults to 256 KiB.
+- **Size threshold**. The driver offloads payloads whose serialized size reaches or exceeds this value. Defaults to
+  256 KiB.
 - **Drivers**. One or more storage driver implementations.
 - **Driver selector**. When using multiple drivers, you must provide a function that chooses which driver handles each
   payload.

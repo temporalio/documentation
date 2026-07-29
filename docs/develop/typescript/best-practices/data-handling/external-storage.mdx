@@ -138,7 +138,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
    ```
    <!--SNIPEND-->
 
-By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
+By default, payloads of 256 KiB or larger are offloaded to external storage. You can adjust this with the
 `payloadSizeThreshold` option, even setting it to `0` to externalize all payloads regardless of size. Refer to
 [Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
@@ -397,9 +397,10 @@ export function createDataConverter(rootDir: string = STORAGE_ROOT): DataConvert
 
 ## Configure payload size threshold
 
-You can configure the payload size threshold that triggers external storage. By default, payloads larger than 256 KiB
+You can configure the payload size threshold that triggers external storage. By default, payloads of 256 KiB or larger
 are offloaded to external storage. You can adjust this with the `payloadSizeThreshold` option, or set it to `0` to
-externalize all payloads regardless of size. Payloads at or below the threshold stay inline in Event History.
+externalize all payloads regardless of size. Payloads smaller than the threshold stay inline in Event History. The size
+compared against the threshold is that of the serialized Payload, which includes its metadata, not just your data.
 
 <!--SNIPSTART typescript-external-storage-threshold-->
 ```ts

@@ -81,7 +81,7 @@ w := worker.New(c, "my-task-queue", worker.Options{})
 ```
    <!--SNIPEND-->
 
-   By default, payloads larger than 256 KiB are offloaded to external storage. You can adjust this with the
+   By default, payloads of 256 KiB or larger are offloaded to external storage. You can adjust this with the
    `PayloadSizeThreshold` option, even setting it to 1 to externalize all payloads regardless of size. Refer to
    [Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
@@ -230,9 +230,11 @@ You can also package your driver as a [plugin](/develop/plugins-guide) for easie
 
 ## Configure payload size threshold
 
-You can configure the payload size threshold that triggers external storage. By default, payloads larger than 256 KiB
+You can configure the payload size threshold that triggers external storage. By default, payloads of 256 KiB or larger
 are offloaded to external storage. You can adjust this with the `PayloadSizeThreshold` option, or set it to 1 to
-externalize all payloads regardless of size. A value of 0 is interpreted as the default (256 KiB).
+externalize all payloads regardless of size. A value of 0 is interpreted as the default (256 KiB). Payloads smaller than
+the threshold stay inline in Event History. The size compared against the threshold is that of the serialized Payload,
+which includes its metadata, not just your data.
 
 <!--SNIPSTART go-external-storage-threshold-->
 [features/snippets/external_storage/threshold/threshold_config.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.go)
