@@ -50,7 +50,7 @@ While you can use traditional architectures to implement a similar solution, the
 By completing this pattern, you will:
 
 - Pause a business process on a non-retryable failure and resume after correction without restarting from the beginning.
-- Unwind side-effecting steps through a LIFO **saga** compensation stack when forward progress is not possible — for example, a compliance block or an explicit cancellation from the applicant.
+- Unwind side-effecting steps through a LIFO **[saga](/design-patterns/saga-pattern)** compensation stack when forward progress is not possible — for example, a compliance block or an explicit cancellation from the applicant.
 - Recover from compensation failures using the same pause-and-fix loop so a stuck rollback does not leave the process in a partially unwound state.
 - Route blocked processes to the right human or automated agent using queryable Search Attributes.
 - Inspect the current state of any individual process or filter across all processes through a single API.
