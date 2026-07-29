@@ -65,11 +65,12 @@ workercontroller.compute_providers.enabled:
 
 workercontroller.scaling_algorithms.enabled:
   - value:
-      - no-sync
+      - rate-based
 ```
 
-{/* TODO(lenny): Confirm the exact compute_providers value for Cloud Run (`gcp-cloud-run`) against the server's
-dynamic-config schema, and whether the scaling algorithm key differs for the rate-based Cloud Run algorithm. */}
+Cloud Run uses the `rate-based` algorithm, not the `no-sync` algorithm that AWS Lambda uses. A Cloud Run Worker Pool is a
+set of long-lived instances, so the WCI resizes it from arrival and backlog rates. `no-sync` only applies to providers
+that are invoked per Task, and pairing it with `gcp-cloud-run` is rejected.
 
 To enable WCI for specific Namespaces instead of globally, add a `constraints` section with the Namespace name under
 `workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
@@ -82,6 +83,13 @@ workercontroller.enabled:
 ```
 
 The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
+
+Two optional global keys control how the server reaches the invoker when impersonation needs more than one hop:
+
+| Key | Purpose |
+| --- | --- |
+| `workercontroller.compute_providers.gcp.intermediary_service_accounts` | Service accounts to impersonate in sequence before the invoker. Unset means the server impersonates the invoker directly. |
+| `workercontroller.compute_providers.gcp.first_delegate_as_base` | When `true`, the first entry in the chain is the identity the server's ambient credentials impersonate directly, and the rest are passed as token-creator delegates. Defaults to `false`, which passes the whole chain as delegates from the ambient credentials. |
 
 ## Give the Temporal Service a GCP identity {/* #configure-gcp-identity */}
 
@@ -96,8 +104,9 @@ impersonate the invoker in the next step.
 **Outside GCP:** Use [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation) so
 the server can obtain GCP credentials without a long-lived key.
 
-{/* TODO(lenny): Confirm how the self-hosted server is expected to source GCP credentials and whether a service-account
-key is a supported fallback. Not dogfooded. */}
+{/* TODO(lenny): The server resolves credentials through ambient ADC, per the description of
+workercontroller.compute_providers.gcp.first_delegate_as_base in temporal-auto-scaled-workers wci/client/config.go.
+Still confirm whether a service-account key file is a recommended fallback. Not dogfooded. */}
 
 ## Create the invoker service account {/* #create-invoker */}
 
