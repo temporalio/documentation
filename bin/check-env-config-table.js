@@ -3,11 +3,15 @@
  * Checks the environment variable table in the client environment configuration
  * reference against the implementations that actually read those variables.
  *
- * The environment config spec lives in temporalio/proposals
- * (all-sdk/external-client-configuration.md) and is implemented independently in
- * each SDK, plus the CLI. Nothing publishes a machine-readable list, so this
- * script extracts the variable names from each implementation's source and
- * compares them against the docs table.
+ * Each SDK implements environment variable loading independently, as does the
+ * CLI, and nothing publishes a machine-readable list. So this script extracts the
+ * variable names from each implementation's source and compares them against the
+ * docs table.
+ *
+ * The implementations are the authority here. temporalio/proposals has a design
+ * document (all-sdk/external-client-configuration.md) that describes an intended
+ * naming rule, but it is a proposal: it does not always match what shipped, and
+ * it should not be used to justify documented behavior.
  *
  * It reports drift; it does not rewrite the page. Descriptions and wording stay
  * hand-maintained.

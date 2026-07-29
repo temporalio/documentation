@@ -50,11 +50,13 @@ caveats, the description says so.
 
 The Temporal CLI reads the variables below in addition to the client settings above. No other client reads them.
 
-### Legacy `temporal env` variables
+### `temporal env` preset variables
 
-These variables point the CLI at the `temporal env` preset system, which stores named key-value presets in
-`temporal.yaml`. Profiles in the TOML configuration file supersede that system. Use `TEMPORAL_PROFILE` and
-`TEMPORAL_CONFIG_FILE` for new setups. The variables below still work.
+The CLI supports a second configuration mechanism alongside TOML configuration files. `temporal env` stores named
+key-value presets in `temporal.yaml`, and the variables below select which preset the CLI reads. No SDK reads them.
+
+Both mechanisms work. The `temporal config` command that manages TOML configuration files is currently experimental,
+while `temporal env` is not.
 
 | Variable | TOML key | CLI flag | Supported by | Description |
 | :------- | :------- | :------- | :----------- | :---------- |
