@@ -74,66 +74,23 @@ When there is no work, the WCI can scale the pool to zero; the next sync match f
 
 ## Worker Versioning {/* #worker-versioning */}
 
-Serverless Workers require [Worker Versioning](/worker-versioning), and the compute provider must run a stable,
-immutable build for each Worker Deployment Version. With GCP Cloud Run, this means aligning two systems:
+Serverless Workers require [Worker Versioning](/worker-versioning). Create one Worker Pool for each Worker Deployment
+Version, and carry the Build ID in the pool name.
 
-- **Temporal Worker Deployment Versions.** Identified by deployment name and Build ID. Each Workflow runs against a
-  specific Worker Deployment Version (Pinned) or moves between them on routing changes (Auto-Upgrade).
-- **Cloud Run Worker Pools.** Each pool runs one container image, deployed as a
-  [revision](https://cloud.google.com/run/docs/managing/revisions). Deploying again creates another revision.
+The compute configuration names a project, region, and Worker Pool. It does not name a
+[revision](https://cloud.google.com/run/docs/managing/revisions), so Temporal runs whichever revision the pool serves at
+the time. That ties a pool to one build, and a new build needs a new pool.
 
-AWS Lambda pins a build through the compute configuration itself, because a qualified ARN names one immutable function
-version. Cloud Run has no equivalent. The compute configuration names a project, region, and Worker Pool, and nothing
-else. Temporal scales that pool and runs whichever revision the pool currently serves.
-
-The pool, not the revision, is therefore the unit that maps to a Worker Deployment Version. Map each Worker Deployment
-Version to exactly one Worker Pool, and carry the Build ID in the pool name.
-
-```mermaid
-flowchart LR
-    subgraph Temporal["Temporal · Worker Deployment 'my-app'"]
-        direction TB
-        b1["Build ID: build-1"]
-        b2["Build ID: build-2"]
-        b3["Build ID: build-3<br/>(Current)"]
-    end
-    subgraph GCP["GCP Cloud Run · Worker Pools"]
-        direction TB
-        p1["my-temporal-worker-pool-build-1"]
-        p2["my-temporal-worker-pool-build-2"]
-        p3["my-temporal-worker-pool-build-3"]
-    end
-    b1 -- compute configuration --> p1
-    b2 -- compute configuration --> p2
-    b3 -- compute configuration --> p3
-```
-
-Each Worker Deployment Version runs its own [WCI](/serverless-workers#worker-controller-instance), and each WCI sets the
-instance count on the pool named in its compute configuration. Two Worker Deployment Versions that name the same pool
-would both be setting that pool's instance count.
+Keep an older version's pool in place while Pinned Workflows are still running on it. The pool can sit at zero
+instances, and its WCI scales it back up when a Task arrives for that version.
 
 :::caution
 
-Deploying a new image into an existing Worker Pool creates a new revision, and by default Cloud Run moves every instance
-to it. The Worker Deployment Version does not change, but the code running behind it does. This is the same hazard as an
-unqualified Lambda ARN: deploying replay-unsafe code causes non-determinism errors for in-flight Workflows, even for
-Workflows annotated as Pinned.
+Deploying a new image into a pool that a live Worker Deployment Version points at creates a new revision, and Cloud Run
+promotes it to every instance by default. The version does not change, but the code behind it does. Deploying
+replay-unsafe code this way causes non-determinism errors for in-flight Workflows, including Pinned ones.
 
 :::
-
-### How the versioning behavior changes rollout {/* #rollout-by-behavior */}
-
-The choice of Pinned or Auto-Upgrade controls how _Workflows_ move between Worker Deployment Versions in Temporal. It
-does not change how a Worker Deployment Version targets Cloud Run. The following table shows what happens to existing
-Workflows when you set a new Current Version.
-
-| Versioning Behavior | One pool per Worker Deployment Version | One pool reused across versions |
-| ------------------- | -------------------------------------- | ------------------------------- |
-| **Pinned**          | Existing Workflows keep running on their original pool and image until they complete. | Existing Workflows stay on their original Worker Deployment Version, but the pool's image already changed at deploy. The new code must be replay-compatible. |
-| **Auto-Upgrade**    | Existing Workflows move to the new Worker Deployment Version, and to its pool, at the next Workflow Task after you set the Current Version. | The deploy already changed the code for every version sharing the pool. Setting the Current Version changes routing, not which code runs. |
-
-While Pinned Workflows are still running on an older Worker Deployment Version, keep that version's pool in place. The
-pool can sit at zero instances, and its WCI scales it back up when a Task arrives for that version.
 
 For step-by-step instructions, see
 [Create the Worker Pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool).

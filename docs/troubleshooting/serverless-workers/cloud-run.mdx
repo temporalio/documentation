@@ -85,7 +85,7 @@ Start by verifying that Temporal can reach the pool. Go to **Workers > Deploymen
 
 For Cloud Run, this impersonates the invoker service account and reads the Worker Pool. A successful validation confirms
 three things at once: the compute configuration names a pool that exists, Temporal can impersonate the invoker, and the
-invoker can read the pool. Unlike AWS Lambda, no Worker is started as part of validation.
+invoker can read the pool. No Worker is started as part of validation.
 
 If validation fails, check each part of the compute configuration against the pool:
 

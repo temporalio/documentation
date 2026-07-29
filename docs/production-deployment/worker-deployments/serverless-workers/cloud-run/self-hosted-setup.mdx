@@ -68,9 +68,9 @@ workercontroller.scaling_algorithms.enabled:
       - rate-based
 ```
 
-Cloud Run uses the `rate-based` algorithm, not the `no-sync` algorithm that AWS Lambda uses. A Cloud Run Worker Pool is a
-set of long-lived instances, so the WCI resizes it from arrival and backlog rates. `no-sync` only applies to providers
-that are invoked per Task, and pairing it with `gcp-cloud-run` is rejected.
+Cloud Run uses the `rate-based` algorithm. A Cloud Run Worker Pool is a set of long-lived instances, so the WCI resizes
+it from arrival and backlog rates. The `no-sync` algorithm applies only to providers that are invoked once per Task, and
+pairing it with `gcp-cloud-run` is rejected.
 
 To enable WCI for specific Namespaces instead of globally, add a `constraints` section with the Namespace name under
 `workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
