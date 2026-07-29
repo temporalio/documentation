@@ -388,8 +388,20 @@ This section applies to Temporal Cloud. For self-hosted Temporal Service deploym
 [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup).
 
 Temporal Cloud scales the Worker Pool by [impersonating a service account](https://docs.cloud.google.com/docs/authentication/use-service-account-impersonation) you create, called the *invoker service account*. The invoker service account
-reads and scales the pool through the Cloud Run admin API. It does not run the pool. Your Worker instances run as the
-separate runner service account you set in [Step 2](#create-worker-pool).
+reads and scales the pool through the Cloud Run admin API. It does not run the pool.
+
+:::caution
+
+This guide uses two service accounts, and they are not interchangeable:
+
+- The **runner service account** is the identity the Worker Pool runs as. You set it in
+  [Step 2](#create-worker-pool) with `gcloud run worker-pools deploy --service-account`, and it can be an account you
+  already have. Omit the flag and Cloud Run uses the project's default Compute Engine service account.
+- The **invoker service account** is the identity Temporal impersonates to read and scale the pool. The Terraform module
+  below creates it, and its email is the `invoker_email` output you give Temporal in
+  [Step 4](#create-worker-deployment-version).
+
+:::
 
 When you create a Worker Deployment in the Temporal Cloud UI (**Workers** → **Create Worker Deployment**), it provides a
 Terraform template. Copy it. The template uses the
@@ -434,18 +446,6 @@ terraform apply
 
 Terraform prints an `invoker_email` output. Use it as the `--gcp-cloud-run-service-account` value when you create the
 Worker Deployment Version in [Step 4](#create-worker-deployment-version).
-
-:::caution
-
-This guide uses two service accounts, and they are not interchangeable:
-
-- The **runner service account** is the identity the Worker Pool runs as. You set it in
-  [Step 2](#create-worker-pool) with `gcloud run worker-pools deploy --service-account`, and it can be an account you
-  already have. Omit the flag and Cloud Run uses the project's default Compute Engine service account.
-- The **invoker service account** is the identity Temporal impersonates to read and scale the pool. This module creates
-  it, and its email is the `invoker_email` output you give Temporal in [Step 4](#create-worker-deployment-version).
-
-:::
 
 ## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
 
