@@ -1,0 +1,115 @@
+---
+id: projects
+title: Projects
+sidebar_label: Projects
+description: Organize Temporal Cloud resources including Namespaces and Nexus Endpoints around your organizational structure
+toc_max_heading_level: 4
+keywords:
+  - operations
+  - temporal cloud
+  - namespaces
+tags:
+  - Projects
+  - Namespaces
+  - Nexus
+  - Nexus Endpoints
+---
+
+Projects are an organizational container within a Temporal Cloud account that allows you to group related resources into a single operational unit. With Projects, you can organize Namespaces, Nexus endpoints, and Connectivity Rules around how your organization operates: by team, environment, service, business unit, or for usage attribution purposes. Projects allow you to define ownership boundaries for teams, business units, and services within a single Temporal account. This allows for more detailed usage information in billing, and offers greater control as your usage scales.
+
+Projects are for organization and authorization. They don't change how Workflows execute inside a Namespace.
+
+## Default Project and Project names
+
+Every Temporal Cloud Account includes a Default Project. Existing Accounts receive a Default Project when Projects are enabled, and new Accounts are created with one automatically. The Default Project is not a special type of Project. It behaves like any other Project for managing resources. The only difference between the Default Project and any Projects you create is that the Default Project is created for you.
+
+For existing Accounts, all existing resources are automatically placed in the Default Project. All permission resources remain unchanged. For new Accounts, the Default Project is created automatically. New resources are automatically placed in the Default Project unless you specify otherwise.
+
+If you don't need the organizational boundaries offered by Projects, continue to use the Default Project for all your resources. You can always create a new Project later if you need it.
+
+All Projects are identified by immutable IDs, and by display names, which can be edited.
+
+## Limitations
+
+The total number of Projects in an Account is limited by an adjustable quota, similar to Namespace quotas.
+
+By default, you can create up to 10 Projects per Account. You can increase this number up to 100 Projects by request.
+
+The total number of each Project-level resource is limited within each Project. Projects inherit the current Account-level limits. A Project cannot be set to have higher limits than the Account that contains it.
+
+| Resource | Default | Maximum | 
+| --- | --- | --- |
+| Namespaces | 10 | 5000 |
+| Nexus Endpoints | 10 | 100  |
+| Connectivity Rules | 5 | 25 |
+| Project-scoped Service Accounts | 10 | 1000 |
+
+Namespaces cannot be moved between Projects currently, meaning all existing Namespaces will exist in the Default Project. You can create a new Project and place a new Namespace in that Project.
+
+## Create a new Project
+
+Create a Project when a set of resources has a distinct owner or access model, separate from the Default Project. A good Project represents a stable ownership boundary, not just a folder.
+
+Start with one Project for a team or application with clear ownership. Add more only when needed.
+
+In the Temporal UI, click **Projects** at the top of the left navigation bar, under **Your Account**. You'll see a list of existing Projects associated with your Account. The first time you use Projects, you'll only see the Default Project in this list.
+
+Click the **Create Project** button to create a new Project. On the **Create Project** page that appears, give the Project a name (limited to 39 characters) and an optional description. Click **Create** and you'll be taken to the page for your new Project. You cannot currently migrate resources from existing Projects to a new Project. Instead, from this page click **Create Namespace** to add a new Namespace to this Project. To add a Nexus Endpoint instead, click **Nexus Endpoints** in the left navigation and then click the **Create Nexus Endpoint** button.
+
+
+## Add Resources to a Project
+
+To add a new Namespace to this Project, click **Namespaces** in the left navigation, and then click **Create Namespace** to add a new Namespace.
+
+To add a new Nexus Endpoint to this Project, click **Nexus Endpoints** in the left navigation, and then click **Create Nexus Endpoint** to add a new Nexus Endpoint.
+
+To add users, groups, and Service Accounts to the Project, click the **Project Identities** tab in the left navigation. The Project Identities page has three tabs, for Users, Service Accounts, and Groups. Click the **Manage Identities** button to add or remove users.
+
+The drop-down list on the left lists the available Project Roles. To add a user to a Role, select the Role from the drop-down, and then type the user's name or email in the search box. The user will be assigned to the Role and their details will appear in the list below. Click **Save** to save your changes, or **Cancel** to discard them.
+
+To modify an existing user's role, select the edit button in the list next to their current permission level. You can then update the user's permissions in this Project. Click the trash-can icon to remove Project permissions from that user.
+
+The Service Account and Groups tabs work the same way. 
+
+## Project roles
+
+The following six roles are available at the Project level for users, groups, and service accounts:
+
+- **Project Admin:** Complete access to the Project resource itself and all resources in it.
+- **Project Write:** Write access to all the Namespaces and other resources in a Project, but cannot add other users.
+- **Project Read:** Read-only access to all the resources in a Project, including viewing the actual contents of a Workflow.
+- **Project Contribute:** Can create new Namespaces, and list all Project resources, but without access to Workflow contents.
+- **Project List:** List-only access to metadata for all the resources in a Project, but without access to Workflow contents.
+- **Project Developer:** Can creating Namespaces and edit other resources in a Project, but without access to see all existing Namespaces in the Project.
+- **Project Member:** Access to some specific resource in the Project, without granting any other Project-level access.
+
+:::warning Project Developer
+
+The Project Developer role exists for backward compatibility with the Account Developer role. Assigning this role is not recommended. Assign Project Contribute or Project Write instead.
+
+:::
+
+Similar to Account-level roles, only a single effective Project role applies to a principal, determined by the highest-precedence role granted.
+
+A principal's Project-level roles inherit from their Account-level roles, but explicit Project grants can supersede inherited roles. For example, an Account Developer could be explicitly granted Project Admin to a particular Project, which would supersede their inherited Project Developer role.
+
+Project-level permissions are additive. Addition of Project level roles do not narrow user permissions gained via Account-level or Namespace-level permissions.
+
+## Modify an existing Project
+
+To modify an existing Project, click **Project Settings** in the left navigation. The Project Settings page appears, with the General tab selected by default. Here, you can change the name or description of your Project. You can also access your Project's unique ID. You can copy the ID, but you can't change it.
+
+## Delete a Project
+
+To delete a Project, click **Project Settings** in the left navigation and then click the **Delete Project** tab. Click the **Delete** button to permanently delete the Project.
+
+Use the **Deletion Prevention** slider to set the Deletion Protection flag for this Project. Once set, the Project can't be deleted unless the flag is deliberately disabled.
+
+A Project must be empty, meaning it contains zero Namespaces, to be deleted. 
+
+An Account must always contain at least one Project. If the Account contains two or more Projects, you can delete the Default Project. If the Default Project is deleted, Temporal does not automatically designate a new Default Project. If the Default Project is deleted, API calls that do not specify a Project (by providing a Project ID) will fail. 
+
+Projects support a delete protection flag, similar to Namespaces. When this flag is enabled, the Project cannot be deleted until the flag is disabled. This flag is enabled for the Default Project. The flag is disabled for any new Project created by a user. This flag is not inherited by the Namespaces within the Project. Namespace delete protection can be managed per-Namespace. If a Project is the only one remaining in an Account, that project cannot be deleted, regardless of the status of the Deletion Protection Flag.
+
+
+
