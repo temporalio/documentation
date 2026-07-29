@@ -103,13 +103,10 @@ its whole lifetime. You do not start or stop instances yourself. Cloud Run runs 
 run through its [scaling operations](#autoscaling).
 
 An instance's lifetime is bounded by scale-in. The WCI decides when to remove an instance from Task Queue activity, not
-from what any individual instance is doing. It waits `no_sync_quiet_ms` after the most recent sync match failure, and
+from what any individual instance is doing. It waits a set amount of time after the most recent sync match failure, and
 applies a cooldown between successive reductions, before lowering the target instance count. It does not track how long a
 given instance has been running or whether that instance is mid-Activity, so the instance Cloud Run stops may be one that
 is still executing work.
 
-To keep the WCI from reclaiming an instance while a long Activity is still running, set `no_sync_quiet_ms` longer than
-your longest-running Activity. This holds the pool steady until the Task Queue has been quiet for longer than an Activity
-takes to complete. As an additional safeguard, use
-[Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so that if an Activity is
+Use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so that if an Activity is
 interrupted, a retry resumes from the last recorded progress instead of restarting from the beginning.

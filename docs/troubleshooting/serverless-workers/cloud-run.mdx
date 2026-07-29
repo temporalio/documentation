@@ -188,13 +188,8 @@ instances that are still working.
 The WCI decides when to remove an instance from Task Queue activity, not from what any individual instance is doing. It
 does not track whether the instance Cloud Run stops is mid-Activity.
 
-Two changes address this together:
-
-- Set `no_sync_quiet_ms` longer than your longest-running Activity. This is the quiet period that must pass with no Task
-  arriving before scale-down can fire, and it defaults to 90 seconds. Raising it holds the pool steady while long
-  Activities finish.
-- Use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so an interrupted Activity
-  resumes from its last recorded progress instead of restarting.
+Use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so an interrupted Activity
+resumes from its last recorded progress instead of restarting.
 
 For how scale-in decisions are made, see
 [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#scale-in).

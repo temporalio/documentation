@@ -436,8 +436,7 @@ In the Temporal Cloud UI, go to **Workers** → **Create Worker Deployment** and
 - **Access** — the **Service Account** email Temporal Cloud impersonates: the `invoker_email` output from [Step 3](#configure-iam).
 
 **Scaling and Lifecycle** is optional. Leave the defaults unless you need to change them. If your Worker runs
-long-running Activities, set `no_sync_quiet_ms` longer than your longest Activity runtime and use Activity Heartbeats so
-an interrupted Activity resumes from its last recorded progress. See
+long-running Activities, use Activity Heartbeats so an interrupted Activity resumes from its last recorded progress. See
 [GCP Cloud Run lifecycle](/serverless-workers/cloud-run#lifecycle).
 
 </TabItem>
