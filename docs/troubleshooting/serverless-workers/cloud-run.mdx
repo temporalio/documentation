@@ -168,7 +168,7 @@ Common errors include:
 - **Missing secrets**: The instance cannot read the Temporal Cloud API key or TLS material from Secret Manager. The
   [runner service account](/production-deployment/worker-deployments/serverless-workers/cloud-run#runner-service-account)
   the pool runs as needs `roles/secretmanager.secretAccessor` on the secret. This is the service account in
-  `spec.template.spec.serviceAccountName`, not the invoker.
+  `spec.template.spec.serviceAccountName`, not the invoker service account.
 - **Authentication errors**: The API key is invalid, expired, or has no access to the Namespace.
 
 ### Check that the deployment name and build ID match {/* #check-deployment-match */}
