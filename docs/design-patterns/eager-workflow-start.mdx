@@ -223,7 +223,9 @@ The TypeScript SDK does not currently support Eager Workflow Start. Use [Local A
 - **Missing the feature flag on self-hosted servers.** If the server dynamic config flag is not set, eager dispatch requests are silently ignored and the execution falls back to normal dispatch. Verify the flag is set if you do not observe the expected latency improvement.
 - **Using TypeScript.** The TypeScript SDK does not support Eager Workflow Start. Switch to Python, Go, or Java for this optimization.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Local Activities](/design-patterns/local-activities) — eliminates per-Activity server round-trips; pairs naturally with Eager Workflow Start
 - [Early Return + Local Activities](/design-patterns/early-return-local-activities) — minimum first-response latency via Update-with-Start plus Local Activities

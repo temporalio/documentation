@@ -408,18 +408,20 @@ You cannot undo Continue-As-New once triggered.
 - **Caching Run IDs for external interaction.** Continue-As-New creates a new Run ID. If external callers cache the old Run ID for Signals or Queries, they will get a "workflow execution already completed" error. Always use Workflow ID without a Run ID (or an empty Run ID) so the request routes to the currently running execution.
 - **Catching the Continue-As-New exception.** In TypeScript and Python, Continue-As-New is implemented by throwing a special exception. Wrapping it in a try-catch or try-except can suppress the transition and cause unexpected behavior. Let the exception propagate unhandled. In Go, return the `ContinueAsNewError` from the Workflow function without wrapping it.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-lived Workflows that model business entities, relying on Continue-As-New to prevent unbounded history.
 - **[Child Workflows](/design-patterns/child-workflows)**: Decomposing work into sub-Workflows. Consider Parent Close Policy when combining with Continue-As-New.
 - **[Signal with Start](/design-patterns/signal-with-start)**: Idempotent Workflow start with an initial Signal — use Workflow ID without Run ID to interact with continued executions.
 
-## Guides
+### Guides
 
 - [Track customer loyalty points with durable Workflows](/guides/entity-pattern-loyalty-points): Uses Continue-As-New to keep a long-lived customer loyalty account within Event History limits, including an upgrade path at the Continue-As-New boundary for Worker Versioning.
 - [Player Sessions That Survive Anything](/guides/durable-gaming-sessions): Uses Continue-As-New so a multiplayer game session can run for weeks without unbounded history growth.
 
-## Sample code
+### Sample code
 
 **Java:**
 - [Cron Workflow](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java) — Periodic Workflow using Continue-As-New.
@@ -435,7 +437,7 @@ You cannot undo Continue-As-New once triggered.
 **Go:**
 - [Safe Message Handlers](https://github.com/temporalio/samples-go/tree/main/safe_message_handler) — Entity Workflow with Continue-As-New and `GetContinueAsNewSuggested()`.
 
-## References
+### References
 
 - [Continue-As-New](/workflow-execution/continue-as-new) — Concept reference for the Continue-As-New mechanism.
 - [Temporal Blog: How to Keep a Workflow Running Indefinitely Long](https://temporal.io/blog/very-long-running-workflows) — Detailed guidance on managing Workflows that run forever.
