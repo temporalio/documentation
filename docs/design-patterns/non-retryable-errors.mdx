@@ -480,6 +480,10 @@ try {
 - [Resumable Activity](/design-patterns/resumable-activity): Park the Workflow and accept a corrected input via Signal when retries are exhausted.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
+## Guides
+
+- [Recover business processes without restarting](/guides/recover-without-restart): Uses `ApplicationFailure.nonRetryable()` throughout a loan pipeline to distinguish permanent failures that need a human fix from transient ones the default Retry Policy already handles.
+
 ## References
 
 - [Temporal Retry Policies](/encyclopedia/retry-policies)

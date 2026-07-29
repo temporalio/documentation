@@ -76,7 +76,7 @@ One of the core design principles of Temporal is that an Activity Failure will n
 The default retry policy associated with Temporal Activities is to retry them until reaching a certain timeout threshold.
 Activities will not actually *return* a failure to your Workflow until this condition or another non-retryable condition is met.
 At this point, you can decide how to handle an error returned by your Activity the way you would in any other program.
-For example, you could implement a [Saga Pattern](https://github.com/temporalio/samples-dotnet/tree/main/src/Saga) that uses `try`/`catch` blocks to "unwind" some of the steps your Workflow has performed up to the point of Activity Failure.
+For example, you could implement a [Saga Pattern](/design-patterns/saga-pattern) — see this [.NET sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Saga) — that uses `try`/`catch` blocks to "unwind" some of the steps your Workflow has performed up to the point of Activity Failure.
 
 **You will only fail a Workflow by manually raising an `ApplicationFailureException` from the Workflow code.**
 You could do this in response to an Activity Failure, if the failure of that Activity means that your Workflow should not continue:

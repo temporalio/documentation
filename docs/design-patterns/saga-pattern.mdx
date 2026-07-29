@@ -344,10 +344,14 @@ Some operations may not have meaningful compensations.
 
 ## Related patterns
 
-- **Retry Policies**: Often combined with the Saga pattern to handle transient failures before compensating.
+- **[Error Handling & Retry Patterns](/design-patterns/error-handling-patterns)**: Often combined with the Saga pattern to handle transient failures before compensating.
 - **[Child Workflows](/design-patterns/child-workflows)**: You can use Child Workflows to organize complex Sagas with multiple sub-Sagas.
 - **[Long-Running Activity](/design-patterns/long-running-activity)**: Heartbeats work well with long-running compensation Activities.
 - **[Early Return](/design-patterns/early-return)**: You can combine Early Return with the Saga pattern to return initialization results before compensation runs.
+
+## Guides
+
+- [Recover business processes without restarting](/guides/recover-without-restart): Adds LIFO saga compensation to a multi-step loan pipeline, with pre-registered compensations and a recoverable rollback loop for compensations that fail.
 
 ## Sample code
 
@@ -355,3 +359,6 @@ Some operations may not have meaningful compensations.
 - [Java Sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloSaga.java) — Saga with the `Saga` API.
 - [TypeScript Sample](https://github.com/temporalio/samples-typescript/tree/main/saga) — Saga with array-based compensations.
 - [Python Sample](https://github.com/temporalio/samples-python) — Saga with list-based compensations.
+- [.NET Sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Saga) — Saga with `try`/`catch` compensations.
+- [Ruby Sample](https://github.com/temporalio/samples-ruby/tree/main/saga) — Saga with `rescue`-based compensations.
+- [Python SDK implementation guide](/develop/python/best-practices/error-handling#implement-saga-pattern) — Full walkthrough of the compensation-list technique, including retry and rollback code.

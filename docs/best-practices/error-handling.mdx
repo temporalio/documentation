@@ -123,7 +123,7 @@ consistent across retries but unique across Workflow Executions.
 ## Implement compensation with the Saga pattern {/* #saga-pattern */}
 
 When a multi-step process fails partway through, previous steps may need to be undone. The
-[Saga pattern](/evaluate/use-cases-design-patterns#saga) coordinates a sequence of operations where each step has a
+[Saga pattern](/design-patterns/saga-pattern) coordinates a sequence of operations where each step has a
 compensating action that reverses its effects. If any step fails, the compensating actions for previously completed
 steps execute in reverse order.
 
