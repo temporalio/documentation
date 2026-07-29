@@ -140,3 +140,42 @@ exceptions:
   - Transition
   - Type
   - Visibility
+  # SDK language names (parallel to existing TypeScript)
+  - Go
+  - Java
+  - Python
+  - Ruby
+  - PHP
+  - Rust
+  - .NET
+  # Identifier casing per this repo's style guide (Id, not ID)
+  - Id
+  # Temporal feature / primitive names
+  - Versioning
+  - Patching
+  - Endpoint
+  - Metrics
+  - Account
+  - Capacity
+  - Connectivity
+  - Continue-As-New
+  # Cloud provider / networking / industry acronyms
+  - AWS
+  - GCP
+  - DNS
+  - TLS
+  - mTLS
+  - SAML
+  - SSO
+  - API
+  - APIs
+  - UI
+  - HA
+  - RTO
+  - RPO
+  - SLA
+  - APS
+  - PrivateLink
+  - Terraform
+  - Prometheus
+  - Grafana
