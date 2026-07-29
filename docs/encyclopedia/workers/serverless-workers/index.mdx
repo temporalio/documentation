@@ -73,7 +73,7 @@ Temporal supports two compute providers:
 | Provider      | Description                                                                   |
 | ------------- | ----------------------------------------------------------------------------- |
 | AWS Lambda    | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
-| GCP Cloud Run | Temporal manages Cloud Run instance scaling through the Cloud Run admin API.  |
+| GCP Cloud Run | Temporal scales a Cloud Run [Worker Pool](https://cloud.google.com/run/docs/resource-model#worker-pools) through the Cloud Run admin API. A Worker Pool is its own Cloud Run resource type, distinct from a Service or a Job. |
 
 ## How Serverless invocation works {/* #how-invocation-works */}
 

@@ -329,6 +329,10 @@ gcloud builds submit \
 Create an empty Worker Pool. Start it at zero instances: the WCI raises the instance count once the Worker Deployment
 Version is current and Tasks arrive.
 
+Create one Worker Pool per Worker Deployment Version. A pool runs a single container image, and a Worker Deployment
+Version pins a single build, so each new build needs its own pool. Include the build ID in the pool name to keep that
+mapping visible.
+
 #### Choose a runner service account {/* #runner-service-account */}
 
 The Worker Pool runs as a *runtime* service account, the identity your Worker code uses to reach other Google Cloud
@@ -344,7 +348,7 @@ Store the API key (or TLS material) in Secret Manager rather than passing it as 
 grant the runner service account the `roles/secretmanager.secretAccessor` role on that secret.
 
 ```bash
-gcloud run worker-pools deploy my-temporal-worker-pool \
+gcloud run worker-pools deploy my-temporal-worker-pool-build-1 \
   --image <REGION>-docker.pkg.dev/<YOUR_GCP_PROJECT>/<REPOSITORY>/my-temporal-worker:build-1 \
   --region <REGION> \
   --project <YOUR_GCP_PROJECT> \
@@ -456,7 +460,7 @@ temporal worker deployment create-version \
   --build-id build-1 \
   --gcp-cloud-run-project <YOUR_GCP_PROJECT> \
   --gcp-cloud-run-region <REGION> \
-  --gcp-cloud-run-worker-pool my-temporal-worker-pool \
+  --gcp-cloud-run-worker-pool my-temporal-worker-pool-build-1 \
   --gcp-cloud-run-service-account <INVOKER_SERVICE_ACCOUNT>
 ```
 
@@ -505,7 +509,7 @@ You can verify the invocation by checking:
 
 - **Temporal UI:** The Workflow execution should show Task completions in the event history.
 - **Cloud Run logs:** Once the WCI starts an instance, the Worker Pool's logs
-  (`gcloud run worker-pools logs read my-temporal-worker-pool --region <REGION> --project <YOUR_GCP_PROJECT>`) show the
+  (`gcloud run worker-pools logs read my-temporal-worker-pool-build-1 --region <REGION> --project <YOUR_GCP_PROJECT>`) show the
   Worker startup and Task processing. The pool produces no logs until an instance is running.
 
 If the Workflow does not progress or no instance starts, see
