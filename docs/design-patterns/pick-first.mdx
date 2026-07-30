@@ -546,11 +546,13 @@ Only the first result is used; others are discarded.
 - **Ignoring errors from the winning Activity.** The first Activity to complete might return an error. Always check the result for errors rather than assuming success.
 - **Forgetting to cancel remaining Activities.** If you forget to cancel the shared context or scope after receiving the first result, the remaining Activities continue running indefinitely.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Parallel Execution](/design-patterns/parallel-execution)**: Execute in parallel and combine all results.
 
-## Sample code
+### Sample code
 
 - [Go Sample](https://github.com/temporalio/samples-go/tree/main/pickfirst) — Complete implementation with Worker and starter.
 - [TypeScript Sample](https://github.com/temporalio/samples-typescript/tree/main/activities-cancellation-heartbeating) — Activities with cancellation and heartbeating.

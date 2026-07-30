@@ -33,6 +33,8 @@ import { CaptionedImage } from '@site/src/components';
 
 [Nexus Operations](/glossary#nexus-operation) can be synchronous or asynchronous. Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-running Operation backed by a Workflow.
 An Operation's lifecycle spans scheduling, reliable delivery with retries, handler execution, and result or callback completion.
+Use a synchronous Nexus Operation only when the complete execution path is highly reliable, has predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
+Use an asynchronous Nexus Operation when latency or availability is uncertain, the work might exceed the handler deadline, or execution depends on a potentially unreliable service or database.
 
 ## SDK support {/* #sdk-support */}
 
@@ -95,7 +97,7 @@ Lifecycle for a synchronous Operation (for example, to Signal, Query, or Update 
 
 :::tip
 
-Stay within the [request deadline](/cloud/limits#nexus-operation-request-timeout) to avoid timeouts.
+Use a synchronous Operation only when its complete execution path is highly reliable, predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
 Timed-out handlers are retried until the Operation's Schedule-to-Close timeout is exceeded.
 
 :::

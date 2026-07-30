@@ -714,12 +714,14 @@ Periodic sequence is the most flexible but adds complexity through Child Workflo
 - **Ignoring errors.** Not distinguishing between retryable and permanent failures leads to wasted retries.
 - **Workflow timer loops.** Using Workflow timers instead of proper polling patterns bloats history.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Long-Running Activity](/design-patterns/long-running-activity)**: Reporting progress in long Activities.
 - **[Continue-As-New](/design-patterns/continue-as-new)**: Managing unbounded Workflow history.
 
-## Sample code
+### Sample code
 
 ### Java
 - [Frequent Polling](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/polling/frequent) — Fast polling with heartbeats.
