@@ -14,7 +14,7 @@ tags:
   - Concepts
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, SdkGuideLinks } from '@site/src/components';
 
 :::info NEW TO NEXUS?
 
@@ -59,6 +59,12 @@ The [Operation lifecycle](/nexus/operations#operation-lifecycle) supports two mo
 Use a Synchronous Operation only when its complete execution path is highly reliable, has predictably low latency, and finishes well within the 10-second handler deadline; otherwise, use an Asynchronous Operation.
 
 Services and Operations are built with the Temporal SDK and typically [collocated](/nexus/patterns#collocated-pattern) in the same Worker as the Temporal primitives they abstract, or in a dedicated router Worker using the [router-queue pattern](/nexus/patterns#router-queue-pattern).
+
+<SdkGuideLinks
+  path="nexus/quickstart"
+  filter={['go', 'java', 'python', 'typescript', 'dotnet']}
+  title="Nexus Quickstart"
+/>
 
 :::tip SDK GUIDES
 
