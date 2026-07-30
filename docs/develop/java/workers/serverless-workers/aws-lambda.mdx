@@ -21,7 +21,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader featureName="serverlessWorkers" />
+<ReleaseNoteHeader featureName="serverlessWorkersLambda" />
 
 The `temporal-aws-lambda` contrib module lets you run a Temporal Serverless Worker on AWS Lambda.
 Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
@@ -147,7 +147,7 @@ If you change `GracefulShutdownTimeout` without explicitly setting `ShutdownDead
 If you explicitly set `ShutdownDeadlineBuffer`, it must be greater than or equal to `GracefulShutdownTimeout`.
 
 If your Worker handles long-running Activities, increase `GracefulShutdownTimeout`, `ShutdownDeadlineBuffer`, and the Lambda invocation deadline (`--timeout`) together.
-For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers/aws-lambda#tuning-for-long-running-activities).
 
 ## Add observability with OpenTelemetry {/* #add-observability */}
 

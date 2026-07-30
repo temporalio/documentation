@@ -21,7 +21,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader featureName="serverlessWorkers" />
+<ReleaseNoteHeader featureName="serverlessWorkersLambda" />
 
 The `Temporalio.Extensions.Aws.Lambda` NuGet package lets you run a Temporal Serverless Worker on AWS Lambda.
 Deploy your Worker code as a Lambda function, and Temporal Cloud invokes it when Tasks arrive.
@@ -151,7 +151,7 @@ It controls the time reserved after the worker run budget for worker shutdown an
 The default is 7 seconds.
 
 If your Worker handles long-running Activities, increase `GracefulShutdownTimeout`, `ShutdownDeadlineBuffer`, and the Lambda invocation deadline (`--timeout`) together.
-For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers/aws-lambda#tuning-for-long-running-activities).
 
 ## Add observability with OpenTelemetry {/* #add-observability */}
 

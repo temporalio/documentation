@@ -1,145 +1,90 @@
-// ⚠️  LLM MARKDOWN PIPELINE: this component's content is mirrored for the
-// generated .md output by scripts/component-handlers/home-page-hero.mjs.
-// The handler keeps its own copy of the headline/intro/cards below — when you
-// change that copy here, update the handler too. See MARKDOWN_PIPELINE.md.
+// ⚠️  LLM MARKDOWN PIPELINE: the homepage COPY now lives in docs/index.mdx,
+// authored as MDX and composed from the presentational components below. These
+// components carry only layout/styling — no hardcoded copy. The Markdown mirror
+// is produced by the transformer's hero handlers (scripts/mdx-to-md.mjs +
+// scripts/component-handlers/hero.mjs), which read the props/children straight
+// out of docs/index.mdx. See MARKDOWN_PIPELINE.md.
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { SdkLogosAsBlocks } from './Sdk';
 import '../../css/homepage-hero.css';
 
-const Icon = ({ src, alt, className, width, height }) => {
-  const darkSrc = src;
-  const lightSrc = src.replace('-dark-mode-24x24.svg', '-24x24.svg');
+// Light/dark icon pair. `name` maps to /img/icons/<name>-24x24.svg (light) and
+// /img/icons/<name>-dark-mode-24x24.svg (dark); the CSS toggles which is shown.
+export const HeroIcon = ({ name, alt }) => (
+  <>
+    <img
+      src={useBaseUrl(`/img/icons/${name}-dark-mode-24x24.svg`)}
+      alt={alt}
+      className="icon-dark-mode"
+      width={24}
+      height={24}
+    />
+    <img
+      src={useBaseUrl(`/img/icons/${name}-24x24.svg`)}
+      alt={alt}
+      className="icon-light-mode"
+      width={24}
+      height={24}
+    />
+  </>
+);
 
-  return (
-    <>
-      <img
-        src={useBaseUrl(darkSrc)}
-        alt={alt}
-        className={`icon-dark-mode ${className || ''}`}
-        width={width}
-        height={height}
-      />
-      <img
-        src={useBaseUrl(lightSrc)}
-        alt={alt}
-        className={`icon-light-mode ${className || ''}`}
-        width={width}
-        height={height}
-      />
-    </>
-  );
-};
+export const HeroWrapper = ({ children }) => <div className="homepage-hero-wrapper">{children}</div>;
 
-const HomePageHero = () => {
-  const actionCards = [
-    {
-      href: '/quickstarts',
-      icon: <Icon src="/img/icons/bolt-dark-mode-24x24.svg" alt="Lightning icon" />,
-      title: 'Quickstart',
-      description: 'Setup your local and run a Hello World workflow.',
-    },
-    {
-      href: '/develop',
-      icon: <Icon src="/img/icons/code-dark-mode-24x24.svg" alt="Code icon" />,
-      title: 'Developer Guide',
-      description: 'Dive into everything you need to know about building Temporal workflows.',
-    },
-    {
-      href: '/production-deployment',
-      icon: <Icon src="/img/icons/rocket-dark-mode-24x24.svg" alt="Rocket icon" />,
-      title: 'Deploy your Workflows',
-      description:
-        'Deploy your Temporal Application to your environment. Self-Host the Temporal Service or use Temporal Cloud.',
-    },
-    {
-      href: 'https://temporal.io/cloud',
-      icon: <Icon src="/img/icons/cloud-dark-mode-24x24.svg" alt="Cloud icon" />,
-      title: 'Get started for free with $1000 in credits',
-      description:
-        '<span class="linkify">Sign up for Temporal Cloud</span> and let us host the Temporal Service for you.',
-    },
-  ];
+export const HeroHeader = ({ children }) => (
+  <div className="hero-main-title-container">
+    <header className="hero-main-title">{children}</header>
+    <div className="quickstart-links">
+      <SdkLogosAsBlocks />
+    </div>
+  </div>
+);
 
-  const communityCards = [
-    {
-      href: 'https://temporal.io/slack',
-      icon: <Icon src="/img/icons/slack-dark-mode-24x24.svg" alt="Slack" />,
-      title: 'Slack Community',
-      description:
-        'Join us on <a href="https://temporal.io/slack">temporal.io/slack</a> and say hi or ask us a question.',
-    },
-    {
-      href: 'https://community.temporal.io',
-      icon: <Icon src="/img/icons/forum-dark-mode-24x24.svg" alt="Message" />,
-      title: 'Developer Forum',
-      description: '<a href="https://community.temporal.io">Find out</a> if your question has already been asked.',
-    },
-    {
-      href: 'https://learn.temporal.io/courses/',
-      icon: <Icon src="/img/icons/learn-dark-mode-24x24.svg" alt="Education" />,
-      title: 'Learn it all',
-      description: '<a href="https://learn.temporal.io/courses/">Master Temporal</a> with our courses and tutorials.',
-    },
-  ];
+export const HeroSection = ({ children }) => <div className="hero-section">{children}</div>;
 
-  return (
-    <div className="homepage-hero-wrapper">
-      <div className="hero-main-title-container">
-        <header className="hero-main-title">Temporal Docs</header>
+export const HeroContent = ({ children }) => <div className="hero-content">{children}</div>;
 
-        <div className="quickstart-links">
-          <SdkLogosAsBlocks />
-        </div>
+// Rendered as a real <h1> by React (not authored as a Markdown `#`) so it does
+// NOT pass through the theme's MDX `h1` override, which would attach the on-page
+// LLM actions row. Keeps the .hero-content h1 styling; copy still lives in the MDX.
+export const HeroHeadline = ({ children }) => <h1>{children}</h1>;
+
+export const HeroActions = ({ children }) => <div className="hero-actions">{children}</div>;
+
+export const HeroCta = ({ href, children }) => (
+  <a href={href} className="hero-cta">
+    {children}
+    <svg fill="none" height="18" viewBox="0 0 21 18" width="21" xmlns="http://www.w3.org/2000/svg">
+      <path d="m20.1094 9.5625-7.1719 7.2187-.7969.7969-1.5937-1.5937.7969-.7969 5.25-5.29688h-15.4688-1.125v-2.25h1.125 15.4688l-5.25-5.25-.7969-.79687 1.5937-1.59375.7969.796875 7.1719 7.171875.7968.79687z" />
+    </svg>
+  </a>
+);
+
+export const ActionCard = ({ href, icon, iconAlt, title, children }) => (
+  <a href={href} className="action-card">
+    <div className="action-card-inner">
+      <div className="action-icon">
+        <HeroIcon name={icon} alt={iconAlt || `${title} icon`} />
       </div>
-
-      <div className="hero-section">
-        <div className="hero-content">
-          <h1>Build applications that never fail</h1>
-          <p>
-            Temporal is an open-source platform for building reliable applications. Temporal delivers crash-proof
-            execution by guaranteeing that applications resume exactly where they left off after crashes, network
-            failures, or infrastructure outages, whether that happens seconds, days, or even years later.
-          </p>
-          <p>
-            Temporal enables developers to focus on building features that drive the business while ensuring that
-            mission-critical processes such as order fulfillment, customer onboarding, and payment processing never fail
-            or disappear, regardless of what goes wrong.
-          </p>
-          <a href="/quickstarts" className="hero-cta">
-            Quickstart
-            <svg fill="none" height="18" viewBox="0 0 21 18" width="21" xmlns="http://www.w3.org/2000/svg">
-              <path d="m20.1094 9.5625-7.1719 7.2187-.7969.7969-1.5937-1.5937.7969-.7969 5.25-5.29688h-15.4688-1.125v-2.25h1.125 15.4688l-5.25-5.25-.7969-.79687 1.5937-1.59375.7969.796875 7.1719 7.171875.7968.79687z" />
-            </svg>
-          </a>
-        </div>
-
-        <div className="hero-actions">
-          {actionCards.map((card, index) => (
-            <a key={index} href={card.href} className="action-card">
-              <div className="action-card-inner">
-                <div className="action-icon">{card.icon}</div>
-                <div className="action-content">
-                  <h3>{card.title}</h3>
-                  <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <div className="community-cards">
-        {communityCards.map((card, index) => (
-          <div key={index} className="community-card">
-            <div className="community-icon">{card.icon}</div>
-            <h3>{card.title}</h3>
-            <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
-          </div>
-        ))}
+      <div className="action-content">
+        <h3>{title}</h3>
+        <p>{children}</p>
       </div>
     </div>
-  );
-};
+  </a>
+);
 
-export default HomePageHero;
+export const CommunityCards = ({ children }) => <div className="community-cards">{children}</div>;
+
+// `href` is consumed only by the Markdown pipeline (the rendered card is not a
+// link — its description carries the inline link, matching the original design).
+export const CommunityCard = ({ icon, iconAlt, title, children }) => (
+  <div className="community-card">
+    <div className="community-icon">
+      <HeroIcon name={icon} alt={iconAlt || title} />
+    </div>
+    <h3>{title}</h3>
+    <p>{children}</p>
+  </div>
+);

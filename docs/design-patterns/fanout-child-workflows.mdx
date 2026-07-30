@@ -317,7 +317,7 @@ public class RecordBatchWorkflowImpl implements RecordBatchWorkflow {
 - **Passing large lists of IDs.** Workflow inputs are stored in event history. Passing millions of record IDs as a list will blow the history size limit. Use offset + length instead.
 - **Ignoring child failures.** A failed child does not automatically fail the parent unless you await all results. Always await child handles and handle errors explicitly.
 
-## Related resources
+## Related patterns
 
 - [Child Workflows pattern](/design-patterns/child-workflows) — core concepts for parent/child Workflow coordination
 - [Batch Iterator](/design-patterns/batch-iterator) — unbounded record sets with Continue-as-New pagination

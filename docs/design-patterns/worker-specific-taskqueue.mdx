@@ -779,6 +779,11 @@ You need to handle cleanup if the Workflow fails mid-process.
 
 - **[Long-Running Activity](/design-patterns/long-running-activity)**: For tracking progress and handling cancellation when the colocated Activities run for minutes or hours.
 
+## Guides
+
+- [Ensure Activity execution on the same Worker](/guides/worker-execution-affinity): A Python walkthrough of the shared-queue-discovers-unique-queue technique, with heartbeat and Schedule-to-Start timeouts for detecting a crashed Worker.
+- [Route specialized workloads](/guides/route-specialized-workloads): Routes Activities to dedicated GPU, high-memory, and CPU Worker pools by resource requirement — a related Task Queue routing technique, but by hardware capability rather than by Worker affinity.
+
 ## Sample code
 
 - [Java Sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/fileprocessing) — Complete file processing implementation.

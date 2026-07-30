@@ -43,3 +43,11 @@
 ## Durable External Storage for large payloads
 
 ## Highly available Worker patterns {/* #ha-worker-patterns */}
+
+## Add Temporal Rust SDK dependencies
+
+## Workflow Id reuse policy
+
+## Configure mTLS and PrivateLink for AWS
+
+## Worker Versioning and Patching

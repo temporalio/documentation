@@ -214,7 +214,7 @@ export default function RetrySimulator() {
     <div className={styles.retrySimulator}>
       <div className={styles.retryRow}>
         <div className={styles.retryCol}>
-          <div className="retries">
+          <div className={styles.sampleActivity}>
             <h3>Sample Activity</h3>
 
             <div>
@@ -227,8 +227,11 @@ export default function RetrySimulator() {
             <CodeBlock language={state.language} className={styles.codeBlock}>
               {languageSamples.get(state.language)}
             </CodeBlock>
+          </div>
 
-            <h3>Activity Retries (in ms)</h3>
+          <section className={styles.panel}>
+            <h3 className={styles.panelTitle}>Activity Retries (in ms)</h3>
+            <p className={styles.panelHint}>How each attempt behaves (succeed or fail, and how long it runs).</p>
 
             <select className={styles.dropdown} onChange={(ev) => applyRetryScenario(ev.target.value)}>
               <option value="">Generate a Scenario</option>
@@ -245,95 +248,103 @@ export default function RetrySimulator() {
                 Slow request (100ms), 50% success rate
               </option>
             </select>
-          </div>
-          <div className={styles.scheduleTime}>
-            <div className={styles.inputContainer}>
-              <label className={styles.numberInputLabel}>Task Time in Queue</label>
+
+            <div className={styles.scheduleTime}>
+              <div className={styles.inputContainer}>
+                <label className={styles.numberInputLabel}>Task Time in Queue</label>
+                <input
+                  className={styles.numberInput}
+                  value={state.scheduleTime}
+                  onChange={(ev) => updateRetryPolicyParam("scheduleTime", ev)}
+                  type="number"
+                />
+              </div>
               <input
-                className={styles.numberInput}
+                type="range"
                 value={state.scheduleTime}
                 onChange={(ev) => updateRetryPolicyParam("scheduleTime", ev)}
-                type="number"
+                className={styles.slider}
+                min="0"
+                max="1000"
+                step="5"
               />
             </div>
-            <input
-              type="range"
-              value={state.scheduleTime}
-              onChange={(ev) => updateRetryPolicyParam("scheduleTime", ev)}
-              className={styles.slider}
-              min="0"
-              max="1000"
-              step="5"
-            />
-          </div>
-          <div className="retries-list">
-            {state.retries.map((retry, index) => {
-              return (
-                <RetryConfig
-                  retry={retry}
-                  numRetries={state.retries.length}
-                  index={index}
-                  updateRetry={updateRetry}
-                  deleteRetry={deleteRetry}
-                  key={index}
-                />
-              );
-            })}
-          </div>
-          <button className={styles.addButton} onClick={() => addRetry(true, 1)}>
-            + Add
-          </button>
+            <div className="retries-list">
+              {state.retries.map((retry, index) => {
+                return (
+                  <RetryConfig
+                    retry={retry}
+                    numRetries={state.retries.length}
+                    index={index}
+                    updateRetry={updateRetry}
+                    deleteRetry={deleteRetry}
+                    key={index}
+                  />
+                );
+              })}
+            </div>
+            <button className={styles.addButton} onClick={() => addRetry(true, 1)}>
+              + Add
+            </button>
+          </section>
         </div>
         <div className={styles.retryCol}>
-          <h3>Activity Timeouts (in ms)</h3>
-          <RetryPolicyParamInputs
-            param="startToCloseTimeout"
-            value={state.startToCloseTimeout}
-            max={100000}
-            step={100}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
-          <RetryPolicyParamInputs
-            param="scheduleToStartTimeout"
-            value={state.scheduleToStartTimeout}
-            max={100000}
-            step={100}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
-          <RetryPolicyParamInputs
-            param="scheduleToCloseTimeout"
-            value={state.scheduleToCloseTimeout}
-            max={100000}
-            step={100}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
-          <h3>Retry Policy (in ms)</h3>
-          <RetryPolicyParamInputs
-            param="backoffCoefficient"
-            value={state.backoffCoefficient}
-            min={1}
-            max={10}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
-          <RetryPolicyParamInputs
-            param="initialInterval"
-            value={state.initialInterval}
-            max={10000}
-            step={50}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
-          <RetryPolicyParamInputs
-            param="maximumAttempts"
-            value={state.maximumAttempts}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
-          <RetryPolicyParamInputs
-            param="maximumInterval"
-            value={state.maximumInterval}
-            max={100000}
-            step={100}
-            updateRetryPolicyParam={updateRetryPolicyParam}
-          />
+          <section className={styles.panel}>
+            <h3 className={styles.panelTitle}>Activity Timeouts (in ms)</h3>
+            <p className={styles.panelHint}>Hard limits that stop the Activity.</p>
+            <RetryPolicyParamInputs
+              param="startToCloseTimeout"
+              value={state.startToCloseTimeout}
+              max={100000}
+              step={100}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+            <RetryPolicyParamInputs
+              param="scheduleToStartTimeout"
+              value={state.scheduleToStartTimeout}
+              max={100000}
+              step={100}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+            <RetryPolicyParamInputs
+              param="scheduleToCloseTimeout"
+              value={state.scheduleToCloseTimeout}
+              max={100000}
+              step={100}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+          </section>
+
+          <section className={styles.panel}>
+            <h3 className={styles.panelTitle}>Retry Policy (in ms)</h3>
+            <p className={styles.panelHint}>How long to wait between attempts.</p>
+            <RetryPolicyParamInputs
+              param="backoffCoefficient"
+              value={state.backoffCoefficient}
+              min={1}
+              max={10}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+            <RetryPolicyParamInputs
+              param="initialInterval"
+              value={state.initialInterval}
+              max={10000}
+              step={50}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+            <RetryPolicyParamInputs
+              param="maximumAttempts"
+              value={state.maximumAttempts}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+            <RetryPolicyParamInputs
+              param="maximumInterval"
+              value={state.maximumInterval}
+              max={100000}
+              step={100}
+              updateRetryPolicyParam={updateRetryPolicyParam}
+            />
+          </section>
         </div>
       </div>
       <div className={styles.retryRow}>
