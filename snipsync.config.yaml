@@ -41,6 +41,8 @@ origins:
   - owner: temporalio
     repo: samples-server
     ref: 'main'
+  - owner: temporalio
+    repo: sdk-go
 
 targets:
   - docs

@@ -1,7 +1,7 @@
 ---
 id: aws-lambda
 title: Serverless Workers on AWS Lambda - Python SDK
-sidebar_label: Serverless Workers on AWS Lambda
+sidebar_label: AWS Lambda
 description: Write a Temporal Worker that runs on AWS Lambda using the Python SDK lambda_worker package.
 slug: /develop/python/workers/serverless-workers/aws-lambda
 toc_max_heading_level: 4
@@ -127,7 +127,7 @@ It controls how much time before the Lambda deadline the Worker begins its grace
 The default is `graceful_shutdown_timeout` + 2 seconds.
 
 If your Worker handles long-running Activities, increase `graceful_shutdown_timeout`, `shutdown_deadline_buffer`, and the Lambda invocation deadline (`--timeout`) together.
-For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities).
+For guidance on how these values relate, see [Tuning for long-running Activities](/serverless-workers/aws-lambda#tuning-for-long-running-activities).
 
 ## Add observability with OpenTelemetry {/* #add-observability */}
 

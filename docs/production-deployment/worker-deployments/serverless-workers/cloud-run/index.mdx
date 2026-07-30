@@ -1,0 +1,548 @@
+---
+id: index
+title: Deploy a Serverless Worker on GCP Cloud Run
+sidebar_label: GCP Cloud Run
+description: Deploy a Temporal Serverless Worker to a GCP Cloud Run Worker Pool.
+slug: /production-deployment/worker-deployments/serverless-workers/cloud-run
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - cloud run
+  - gcp
+  - worker
+  - deployment
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader, SdkTabs } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) to a GCP Cloud Run Worker Pool.
+
+A Cloud Run Worker Pool runs long-lived instances that poll the Task Queue continuously. Temporal's
+[Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) adjusts the pool's instance count
+through the Cloud Run admin API as work arrives and drains. For how the pool scales and how instances are shut down, see
+[Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run).
+
+## Prerequisites {/* #prerequisites */}
+
+- A Temporal Cloud account with a GCP-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
+  Namespace's cloud provider must match the serverless compute provider.
+- For self-hosted deployments, complete the
+  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup) before following
+  this guide.
+- Every Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), or the Worker must set a
+  default versioning behavior.
+- A GCP project with the Cloud Run and Artifact Registry APIs enabled, and permissions to create Worker Pools, service
+  accounts, and Secret Manager secrets.
+- The [`gcloud` CLI](https://cloud.google.com/sdk/docs/install) installed and authenticated. You may use other tools to
+  perform the GCP steps, such as the Google Cloud console or Terraform.
+- [Terraform](https://developer.hashicorp.com/terraform/install) installed. Temporal provides the IAM setup as a
+  Terraform module.
+- The [Go SDK](/develop/go), [Python SDK](/develop/python), or [TypeScript SDK](/develop/typescript), depending on which
+  language you are using. Use the tabs to select your language and the rest of the page will update accordingly.
+
+## 1. Write Worker code {/* #write-worker-code */}
+
+A Cloud Run Serverless Worker is a standard long-running Worker. It connects to Temporal, registers its Workflows and
+Activities, declares its [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning), and
+polls the Task Queue until the instance is shut down.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```python
+import asyncio
+import os
+
+from temporalio.client import Client
+from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
+from my_workflows import MyWorkflow
+from my_activities import my_activity
+
+
+async def main() -> None:
+    client = await Client.connect(
+        os.environ["TEMPORAL_ADDRESS"],
+        namespace=os.environ["TEMPORAL_NAMESPACE"],
+        api_key=os.environ.get("TEMPORAL_API_KEY"),
+        tls=True,
+    )
+    worker = Worker(
+        client,
+        task_queue=os.environ["TEMPORAL_TASK_QUEUE"],
+        workflows=[MyWorkflow],
+        activities=[my_activity],
+        deployment_config=WorkerDeploymentConfig(
+            version=WorkerDeploymentVersion(
+                deployment_name="my-app",
+                build_id="build-1",
+            ),
+            use_worker_versioning=True,
+            default_versioning_behavior=VersioningBehavior.PINNED,
+        ),
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or
+`AUTO_UPGRADE`. Set it per-Workflow in the `@workflow.defn` decorator, or set a Worker-level default with
+`default_versioning_behavior` as shown above.
+
+```python
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        ...
+```
+
+To export traces and Temporal Core metrics to Google Cloud, add the OpenTelemetry plugin to the Worker. See
+[Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"example.com/myapp"
+)
+
+func main() {
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
+		DeploymentOptions: worker.DeploymentOptions{
+			UseVersioning: true,
+			Version: worker.WorkerDeploymentVersion{
+				DeploymentName: "my-app",
+				BuildID:        "build-1",
+			},
+		},
+	})
+
+	w.RegisterWorkflowWithOptions(myapp.MyWorkflow, workflow.RegisterOptions{
+		VersioningBehavior: workflow.VersioningBehaviorPinned,
+	})
+	w.RegisterActivity(myapp.MyActivity)
+
+	if err := w.Run(worker.InterruptCh()); err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `VersioningBehaviorPinned` or
+`VersioningBehaviorAutoUpgrade`. Set it per Workflow at registration as shown above, or set a Worker-level default in
+`DeploymentOptions`:
+
+```go
+w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
+	DeploymentOptions: worker.DeploymentOptions{
+		UseVersioning:             true,
+		Version:                   version,
+		DefaultVersioningBehavior: workflow.VersioningBehaviorPinned,
+	},
+})
+```
+
+If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
+
+To export traces and Temporal Core metrics to Google Cloud, add the OpenTelemetry plugin to the Worker. See
+[Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
+
+</SdkTabs.Go>
+<SdkTabs.TypeScript>
+
+```ts
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const config = loadClientConnectConfig();
+  const connection = await NativeConnection.connect(config.connectionOptions);
+
+  const worker = await Worker.create({
+    connection,
+    namespace: config.namespace,
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    workerDeploymentOptions: {
+      version: { deploymentName: 'my-app', buildId: 'build-1' },
+      useWorkerVersioning: true,
+      defaultVersioningBehavior: 'PINNED',
+    },
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `defaultVersioningBehavior` as shown above covers every Workflow on the Worker. To set the behavior per Workflow
+instead, pass the Workflow function to `setWorkflowOptions()`:
+
+```ts
+import { setWorkflowOptions } from '@temporalio/workflow';
+
+setWorkflowOptions({ versioningBehavior: 'PINNED' }, myWorkflow);
+export async function myWorkflow(): Promise<string> {
+  // ...
+}
+```
+
+For the TypeScript Worker setup specific to Cloud Run, see
+[Serverless Workers on GCP Cloud Run - TypeScript SDK](/develop/typescript/workers/serverless-workers/cloud-run).
+
+</SdkTabs.TypeScript>
+</SdkTabs>
+
+## 2. Deploy to a Cloud Run Worker Pool {/* #deploy-worker-pool */}
+
+Containerize the Worker, push the image to Artifact Registry, and create the Worker Pool.
+
+### i. Containerize the Worker {/* #containerize */}
+
+Package the Worker and its dependencies into a container image that Cloud Run runs for each Worker Pool instance. The
+image's entrypoint must start your Worker process, so an instance begins polling the Task Queue as soon as it starts.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```dockerfile
+FROM python:3.12-slim
+
+RUN pip install --no-cache-dir "temporalio>=1.30.0,<2"
+
+WORKDIR /app
+COPY . /app
+
+CMD ["python", "-m", "worker"]
+```
+
+</SdkTabs.Python>
+<SdkTabs.Go>
+
+Build a static binary in one stage and copy it into a minimal runtime image:
+
+```dockerfile
+FROM golang:1.25 AS build
+
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o /out/worker ./worker
+
+FROM gcr.io/distroless/static-debian12
+COPY --from=build /out/worker /worker
+CMD ["/worker"]
+```
+
+`CGO_ENABLED=0` produces a statically linked binary, which is what the `distroless/static` base image expects.
+
+</SdkTabs.Go>
+<SdkTabs.TypeScript>
+
+Compile the TypeScript in one stage, then install production dependencies in the runtime image:
+
+```dockerfile
+FROM node:22-slim AS build
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:22-slim
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY --from=build /app/lib ./lib
+
+CMD ["node", "lib/worker.js"]
+```
+
+Use a glibc-based image such as `node:22-slim` rather than an Alpine image. Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. See [Do not use Alpine](/develop/typescript/workers/run-worker-process#do-not-use-alpine).
+
+Set `NODE_OPTIONS=--max-old-space-size=<MB>` on the Worker Pool to about 80% of the instance's memory limit. Without it, Node.js sizes its heap from the host's total memory rather than the container limit. See [Run a Worker on Docker](/develop/typescript/workers/run-worker-process#run-a-worker-on-docker).
+
+</SdkTabs.TypeScript>
+</SdkTabs>
+
+### ii. Build and push the image {/* #build-and-push */}
+
+Build the image and push it to Artifact Registry:
+
+```bash
+gcloud builds submit \
+  --tag <REGION>-docker.pkg.dev/<YOUR_GCP_PROJECT>/<REPOSITORY>/my-temporal-worker:build-1 \
+  --project <YOUR_GCP_PROJECT> \
+  --region <REGION>
+```
+
+### iii. Create the Worker Pool {/* #create-worker-pool */}
+
+Create an empty Worker Pool. Start it at zero instances: the WCI raises the instance count once the Worker Deployment
+Version is current and Tasks arrive.
+
+Create one Worker Pool per Worker Deployment Version. A pool runs a single container image, and a Worker Deployment
+Version pins a single build, so each new build needs its own pool. Include the build ID in the pool name to keep that
+mapping visible.
+
+#### Choose a runner service account {/* #runner-service-account */}
+
+The Worker Pool runs as a *runner service account*, the runtime identity your Worker code uses to reach other Google
+Cloud services. It is not the invoker service account from [Step 3](#configure-iam), which Temporal impersonates to
+scale the pool but never runs it.
+
+Use a dedicated service account for the pool, and
+[create one](https://cloud.google.com/iam/docs/service-accounts-create) if you do not already have a suitable account.
+If you omit `--service-account`, Cloud Run falls back to the
+[default Compute Engine service account](https://cloud.google.com/run/docs/securing/service-identity), which holds
+`roles/editor`. You need the email twice: here, and in [Step 3](#configure-iam) as `runner_service_account_email`.
+
+Store the Temporal Cloud API key (or TLS material) in Secret Manager rather than passing it as a plaintext environment
+variable.
+
+The runner service account needs no baseline role to run the Worker. Cloud Run collects `stdout` and `stderr` into
+[Cloud Logging](https://cloud.google.com/run/docs/logging) through its own infrastructure, and the Cloud Run service
+agent, not the runner service account, pulls the container image. Grant the runner service account only what your code
+reaches:
+
+- `roles/secretmanager.secretAccessor` on each secret you mount, including the API key above.
+- `roles/logging.logWriter`, only if your Worker writes through the Cloud Logging API instead of `stdout` and `stderr`.
+- Access to any other Google Cloud service your Workflows and Activities call.
+
+```bash
+gcloud run worker-pools deploy my-temporal-worker-pool-build-1 \
+  --image <REGION>-docker.pkg.dev/<YOUR_GCP_PROJECT>/<REPOSITORY>/my-temporal-worker:build-1 \
+  --region <REGION> \
+  --project <YOUR_GCP_PROJECT> \
+  --service-account <RUNNER_SERVICE_ACCOUNT> \
+  --instances 0 \
+  --set-env-vars TEMPORAL_ADDRESS=<your-temporal-address>:7233,TEMPORAL_NAMESPACE=<your-namespace>,TEMPORAL_TASK_QUEUE=my-task-queue \
+  --set-secrets TEMPORAL_API_KEY=<SECRET_NAME>:latest
+```
+
+| Parameter           | Description                                                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `--image`           | The Worker image you pushed in [Step ii](#build-and-push).                                                               |
+| `--service-account` | The [runner service account](#runner-service-account) the Worker Pool instances run as. It needs read access to the secrets referenced below. This is distinct from the invoker service account in [Step 3](#configure-iam), which Temporal impersonates to scale the pool. |
+| `--instances`       | Initial instance count. Set to `0`; the WCI manages the count after the version is current.                             |
+| `--set-env-vars`    | Non-secret Worker configuration. See [Environment configuration](/develop/environment-configuration).                   |
+| `--set-secrets`     | Maps a Secret Manager secret to an environment variable. Use for `TEMPORAL_API_KEY` or TLS client cert/key material.    |
+
+The environment configuration package reads environment variables and configuration files at startup. For the
+full list of supported environment variables, config file format, and profiles, see
+[Environment configuration](/develop/environment-configuration).
+
+## 3. Grant Temporal permission to manage the Worker Pool (Cloud only) {/* #configure-iam */}
+
+This section applies to Temporal Cloud. For self-hosted Temporal Service deployments, see
+[Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup).
+
+Temporal Cloud scales the Worker Pool by [impersonating a service account](https://docs.cloud.google.com/docs/authentication/use-service-account-impersonation) you create, called the *invoker service account*. The invoker service account
+reads and scales the pool through the Cloud Run admin API. It does not run the pool.
+
+:::caution
+
+This guide uses two service accounts, and they are not interchangeable:
+
+- The **runner service account** is the identity the Worker Pool runs as. You set it in
+  [Step 2](#create-worker-pool) with `gcloud run worker-pools deploy --service-account`, and it can be an account you
+  already have. Omit the flag and Cloud Run uses the project's default Compute Engine service account.
+- The **invoker service account** is the identity Temporal impersonates to read and scale the pool. The Terraform module
+  below creates it, and its email is the `invoker_email` output you give Temporal in
+  [Step 4](#create-worker-deployment-version).
+
+:::
+
+When you create a Worker Deployment in the Temporal Cloud UI (**Workers** → **Create Worker Deployment** →
+**Access**), it provides a Terraform template. Copy it. The template uses the
+[`serverless-workers/gcp/cloud-run`](https://github.com/temporalio/terraform-modules/tree/main/modules/serverless-workers/gcp/cloud-run)
+module, with `impersonator_service_account_emails` already filled in for your account:
+
+```hcl
+module "serverless-worker-cloud-run" {
+  source = "github.com/temporalio/terraform-modules//modules/serverless-workers/gcp/cloud-run"
+
+  project_id         = "<YOUR_GCP_PROJECT>"
+  invoker_account_id = "temporal-worker-pool-invoker"
+
+  impersonator_service_account_emails = [
+    "<provided by Temporal Cloud>",
+  ]
+
+  runner_service_account_email = "temporal-worker-pool-runner@<YOUR_GCP_PROJECT>.iam.gserviceaccount.com"
+}
+```
+
+The `impersonator_service_account_emails` values are specific to your Temporal Cloud account, which is why the snippet
+above shows a placeholder. Copy them from the template in the UI.
+
+Set these variables:
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `project_id` | Yes | The GCP project that hosts the Worker Pool and the invoker service account. |
+| `invoker_account_id` | Yes | A name for the invoker service account the module creates. The full email becomes `<invoker_account_id>@<project_id>.iam.gserviceaccount.com`. The template supplies a name, so change it only if you want a different one. |
+| `impersonator_service_account_emails` | Yes | Temporal Cloud's service accounts, granted `roles/iam.serviceAccountTokenCreator` on the invoker service account so they can impersonate it. Filled in by the template in the UI. |
+| `runner_service_account_email` | No | The [runner service account](#runner-service-account) from [Step 2](#create-worker-pool). The module grants the invoker service account `roles/iam.serviceAccountUser` on it, which Cloud Run requires to attach that identity when it scales the pool. Leave it unset and the invoker service account gets that grant on the default Compute Engine service account instead. |
+| `invoker_display_name` | No | Display name for the invoker service account. Defaults to `Temporal Serverless Worker Pool Invoker`. |
+| `deploy_roles` | No | Project-level Cloud Run roles granted to the invoker service account. Defaults to `roles/run.developer`. Any role you use instead must include `run.workerPools.get` and `run.workerPools.update`. |
+
+Make sure you are logged in to the GCP project, then apply the configuration:
+
+```bash
+terraform init
+terraform apply
+```
+
+Terraform prints an `invoker_email` output. Use it as the `--gcp-cloud-run-service-account` value when you create the
+Worker Deployment Version in [Step 4](#create-worker-deployment-version).
+
+## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
+
+Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) whose compute
+configuration points at your Worker Pool. The compute configuration tells Temporal where the pool lives and which
+service account to impersonate to manage it. The deployment name and build ID must match the values in your Worker code.
+
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal Cloud UI">
+
+In the Temporal Cloud UI, go to **Workers** → **Create Worker Deployment** and fill out the required fields:
+
+- **Name** — the Worker Deployment name. Must match `deployment_name` in your Worker code.
+- **Build ID** — the version identifier. Must match `build_id` in your Worker code.
+- **Compute Provider** — select **Google Cloud Run**.
+- **Resource** — the **Project ID**, **Region**, and **Worker Pool** from [Step 2](#create-worker-pool).
+- **Access** — the **Service Account** email Temporal Cloud impersonates: the `invoker_email` output from [Step 3](#configure-iam).
+
+**Scaling and Lifecycle** is optional. Leave the defaults unless you need to change them. If your Worker runs
+long-running Activities, use Activity Heartbeats so an interrupted Activity resumes from its last recorded progress. See
+[GCP Cloud Run lifecycle](/serverless-workers/cloud-run#lifecycle).
+
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
+
+First, create the Worker Deployment if it does not already exist:
+
+```bash
+temporal worker deployment create \
+  --namespace <YOUR_NAMESPACE> \
+  --name my-app
+```
+
+Then create the version with the Cloud Run compute configuration:
+
+```bash
+temporal worker deployment create-version \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --gcp-cloud-run-project <YOUR_GCP_PROJECT> \
+  --gcp-cloud-run-region <REGION> \
+  --gcp-cloud-run-worker-pool my-temporal-worker-pool-build-1 \
+  --gcp-cloud-run-service-account <INVOKER_SERVICE_ACCOUNT>
+```
+
+| Flag                             | Description                                                                                                     |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `--deployment-name`              | Worker Deployment name. Must match `deployment_name` in your Worker code.                                       |
+| `--build-id`                     | Worker Deployment Version build ID. Must match `build_id` in your Worker code.                                  |
+| `--gcp-cloud-run-project`        | GCP project ID that contains the Worker Pool.                                                                   |
+| `--gcp-cloud-run-region`         | Region of the Worker Pool.                                                                                      |
+| `--gcp-cloud-run-worker-pool`    | Name of the Worker Pool created in [Step 2](#create-worker-pool).                                               |
+| `--gcp-cloud-run-service-account`| The invoker service account Temporal impersonates to read and scale the pool. This is the `invoker_email` output (or the invoker service account you created manually) from [Step 3](#configure-iam). |
+
+</TabItem>
+</Tabs>
+
+To verify that Temporal can reach your Worker Pool, go to **Workers** > **Deployments** > select your deployment > open
+the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can impersonate the
+invoker service account and read the pool. It starts no instance, and it does not exercise the update permission that
+scaling needs, so a passing validation is not proof that Temporal can scale the pool.
+
+## 5. Set version as current {/* #set-current-version */}
+
+Set the version as current. Without this step, Tasks on the Task Queue will not route to the version, and the WCI will
+not start any instances.
+
+```bash
+temporal worker deployment set-current-version \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+This command asks you to confirm, because it changes which version new Tasks route to. Pass `--yes` to skip the prompt.
+
+## 6. Verify deployment {/* #verify-deployment */}
+
+Start a Workflow on the same Task Queue to confirm that the WCI starts a Worker instance and processes the Task.
+
+```bash
+temporal workflow start \
+  --namespace <YOUR_NAMESPACE> \
+  --task-queue my-task-queue \
+  --type MyWorkflow \
+  --input '"Hello, serverless!"'
+```
+
+When Tasks arrive with no active pollers, the WCI raises the Worker Pool's instance count. Cloud Run starts an instance,
+the Worker connects to Temporal, picks up the Task, and processes it.
+
+You can confirm this by checking:
+
+- **Temporal UI:** The Workflow execution should show Task completions in the event history.
+- **Cloud Run logs:** Once the WCI starts an instance, the Worker Pool's logs
+  (`gcloud run worker-pools logs read my-temporal-worker-pool-build-1 --region <REGION> --project <YOUR_GCP_PROJECT>`) show the
+  Worker startup and Task processing. The pool produces no logs until an instance is running.
+
+If the Workflow does not progress or no instance starts, see
+[Troubleshoot Serverless Workers on GCP Cloud Run](/troubleshooting/serverless-workers/cloud-run).
