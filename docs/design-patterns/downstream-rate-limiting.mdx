@@ -287,6 +287,10 @@ The concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkf
 - **[Fairness](/design-patterns/fairness)**: Give each tenant an equal throughput share when multiple tenants share capacity.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 
+## Guides
+
+- [Rate-limit downstream APIs with separate Task Queues](/guides/rate-limit-downstream-apis): A Python walkthrough covering multiple rate-limited APIs (SendGrid, Stripe, OpenAI), 429 handling with `Retry-After`, and backlog draining strategies.
+
 ## References
 
 - **Python** — [`max_task_queue_activities_per_second`](https://python.temporal.io/temporalio.worker.WorkerConfig.html#max_task_queue_activities_per_second) on [`Worker`](https://python.temporal.io/temporalio.worker.Worker.html)

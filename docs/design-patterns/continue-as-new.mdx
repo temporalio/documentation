@@ -414,6 +414,11 @@ You cannot undo Continue-As-New once triggered.
 - **[Child Workflows](/design-patterns/child-workflows)**: Decomposing work into sub-Workflows. Consider Parent Close Policy when combining with Continue-As-New.
 - **[Signal with Start](/design-patterns/signal-with-start)**: Idempotent Workflow start with an initial Signal — use Workflow ID without Run ID to interact with continued executions.
 
+## Guides
+
+- [Track customer loyalty points with durable Workflows](/guides/entity-pattern-loyalty-points): Uses Continue-As-New to keep a long-lived customer loyalty account within Event History limits, including an upgrade path at the Continue-As-New boundary for Worker Versioning.
+- [Player Sessions That Survive Anything](/guides/durable-gaming-sessions): Uses Continue-As-New so a multiplayer game session can run for weeks without unbounded history growth.
+
 ## Sample code
 
 **Java:**

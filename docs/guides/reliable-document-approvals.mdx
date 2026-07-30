@@ -50,7 +50,7 @@ When a Workflow calls `workflow.wait_condition()`, **the Worker returns the curr
 
 ### Event History management
 
-Temporal's Event History has a hard limit of 51,200 events or 50 MB ([Workflow Execution limits](/workflow-execution/limits)). The Server emits warnings at ~10,240 events or 10 MB; hitting either hard limit terminates the Workflow. For this approval pattern:
+Temporal's Event History has a hard limit of 51,200 events or 50 MB ([Workflow Execution limits](/workflow-execution/limits)). The Server emits warnings at ~10,240 events or 10 MB; hitting either hard limit terminates the Workflow. For this [approval pattern](/design-patterns/approval):
 
 | Workflow operation | Approximate events generated |
 |--------------------|------------------------------|
@@ -1344,6 +1344,7 @@ You've built a document approval system that holds up under real conditions — 
 
 ## Related resources
 
+- [Approval Pattern](/design-patterns/approval) — pattern catalog reference for this Workflow with Go, Java, Python, and TypeScript implementations, plus multi-level and escalating approval variants
 - [Temporal Python SDK documentation](/develop/python)
 - [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
 - [Continue-As-New](/develop/python/workflows/continue-as-new)

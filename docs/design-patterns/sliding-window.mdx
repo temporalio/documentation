@@ -495,10 +495,10 @@ public interface SlidingWindowWorkflow {
 ## Common pitfalls
 
 - **Losing signals across Continue-as-New.** If a child signals before the parent's new run has registered the signal handler, the signal can be buffered and delivered correctly — Temporal buffers signals for existing Workflow IDs. However, ensure the signal handler is registered before any await, not conditionally.
-- **Race between CAN and remaining signal draining.** After `continueAsNew`, the new run must handle signals from children started by the previous run. Pass `startIndex` (the next *unstarted* record) and `active` (the live in-flight count at the moment of CAN) to the new run so it knows how many carried-over children to expect signals from, without re-starting them. The new run folds `active` in with `+=`, so a completion that arrives before `run()` executes is still counted correctly.
+- **Race between Continue-as-New and remaining signal draining.** After `continueAsNew`, the new run must handle signals from children started by the previous run. Pass `startIndex` (the next *unstarted* record) and `active` (the live in-flight count at the moment of CAN) to the new run so it knows how many carried-over children to expect signals from, without re-starting them. The new run folds `active` in with `+=`, so a completion that arrives before `run()` executes is still counted correctly.
 - **Thundering herd on startup.** Starting hundreds of children simultaneously causes a burst of Activity polls. Ramp up the window gradually or use the [Batch Iterator](/design-patterns/batch-iterator) if rate limiting is more important than throughput.
 
-## Related resources
+## Related patterns
 
 - [Continue-as-New pattern](/design-patterns/continue-as-new) — history management fundamentals
 - [Batch Iterator](/design-patterns/batch-iterator) — sequential alternative when ordered, one-at-a-time processing is acceptable
