@@ -15,6 +15,15 @@ tags:
   - Serverless
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
+  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
+  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
+  when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
 Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
 

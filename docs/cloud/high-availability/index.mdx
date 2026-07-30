@@ -141,6 +141,21 @@ Failovers between cells are always managed automatically by Temporal. Unlike Mul
 
 ## Related considerations
 
+A few other Temporal features interact with High Availability in ways worth understanding before you enable it.
+
+### Serverless Workers
+
+You can use [Serverless Workers](/serverless-workers) with a Namespace that has Multi-region or Multi-cloud Replication,
+but without manual intervention, the workloads that failed over to the new region will keep invoking Workers in the old
+region. If the compute provider's region is experiencing degraded performance, this may impact your workloads even
+though your Temporal Cloud Namespace has failed over successfully.
+
+This is because each compute provider configuration (for example, a Lambda ARN) is scoped to a single region. The
+[Worker Controller Instance](/serverless-workers#worker-controller-instance) has no mechanism to detect a failover or
+redirect invocations to a Worker in the new active region. To keep processing Workflows after a failover, you must
+manually reconfigure the Worker Deployment Version's compute provider to point at a Worker in the new region. See
+[Constraints - Serverless Workers](/serverless-workers#constraints).
+
 ### External Storage
 
 If your Workflows use [External Storage](/external-storage) to offload large payloads, durability of the external store
