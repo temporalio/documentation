@@ -3,6 +3,12 @@
   "github": {
     "silent": true
   },
+  "rewrites": [
+    {
+      "source": "/img/og/:path*",
+      "destination": "/img/assets/open-graph-shiny.jpg"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)\\.md",
