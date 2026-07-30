@@ -20,11 +20,11 @@ tags:
 
 import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account
-  team. APIs are experimental and may be subject to backwards-incompatible changes. [Sign up for
-  updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public
-  Preview.
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
+  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
+  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
+  when Cloud Run reaches Public Preview.
 </ReleaseNoteHeader>
 
 This page covers the following:
@@ -215,7 +215,8 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 | Activity duration | Depends on the compute provider. On AWS Lambda, an Activity must finish within the invocation limit (15 minutes maximum), minus the shutdown deadline buffer. On GCP Cloud Run, instances are long-lived, so no per-invocation limit applies. See [Worker lifecycle](#worker-lifecycle).                                                                                                                       |
 | Workflow duration | No limit. Workflows of any duration work. A Workflow runs across as many Workers as needed.                                                                                                                           |
 | Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                                                                                                                |
-| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. See [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers). |
+| Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. See [Worker Versioning](/worker-versioning) for rollout strategies such as ramping, and [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers) for how Worker Deployment Versions map to compute provider primitives. |
+| High Availability | On failover of a Namespace with [Multi-region or Multi-cloud Replication](/cloud/high-availability), the WCI keeps invoking Workers in the original region unless you manually repoint the compute provider. Compute provider configuration, such as a Lambda ARN or a Cloud Run Worker Pool, is scoped to a single region. See [Serverless Workers and High Availability](/cloud/high-availability#serverless-workers). |
 
 ## Worker Versioning with Serverless Workers {/* #worker-versioning-with-serverless-workers */}
 
