@@ -56,7 +56,7 @@ The Count API returns approximate counts.
 
 Visibility powers more than the workflow search APIs. Any operation that lists, searches, or counts across executions reads the Visibility index, and some of them belong to other features:
 
-- Workflow search and count: `ListWorkflowExecutions`, `ScanWorkflowExecutions`, `CountWorkflowExecutions`
+- Workflow [search](/develop/typescript/platform/observability#search-attributes) and count: `ListWorkflowExecutions`, `ScanWorkflowExecutions`, `CountWorkflowExecutions`
 - `ListSchedules` and `CountSchedules`
 - `ListBatchOperations`
 - Worker task-queue reachability: `GetWorkerTaskReachability`, and `DescribeTaskQueue` when reachability is requested
