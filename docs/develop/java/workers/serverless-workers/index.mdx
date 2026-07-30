@@ -15,6 +15,10 @@ tags:
   - Serverless
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersLambda" />
+
 Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
 
