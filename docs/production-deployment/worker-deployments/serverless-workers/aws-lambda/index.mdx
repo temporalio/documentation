@@ -1,5 +1,5 @@
 ---
-id: aws-lambda
+id: index
 title: Deploy a Serverless Worker on AWS Lambda
 sidebar_label: AWS Lambda
 description: Deploy a Temporal Serverless Worker on AWS Lambda.
@@ -36,7 +36,7 @@ This guide walks through deploying a Temporal [Serverless Worker](/serverless-wo
 - A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
   Namespace's cloud provider must match the serverless compute provider.
 - For self-hosted deployments, complete the
-  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup) before following
+  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup) before following
   this guide.
 - Every Workflow must declare a [versioning behavior](/worker-versioning#versioning-behaviors), or the Worker must set a
   default versioning behavior.
@@ -319,7 +319,7 @@ The following parameters apply to all SDKs:
 | `--memory-size`                 | Memory in MB allocated to each invocation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `TEMPORAL_ADDRESS`              | Temporal frontend address (e.g., `<namespace>.<account>.tmprl.cloud:7233`).                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `TEMPORAL_NAMESPACE`            | Temporal Namespace.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `TEMPORAL_TASK_QUEUE`           | Task Queue name. Overrides the value set in code.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `TEMPORAL_TASK_QUEUE`           | Task Queue name. The Worker package reads it at startup, before the configure callback runs, so a Task Queue set in the callback takes precedence. Set one or the other, or the Worker fails to start.                                                                                                                                                                                                                                                                                                          |
 | `TEMPORAL_TLS_CLIENT_CERT_PATH` | Path to the TLS client certificate file for mTLS authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `TEMPORAL_TLS_CLIENT_KEY_PATH`  | Path to the TLS client key file for mTLS authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `TEMPORAL_API_KEY`              | API key for API key authentication.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
@@ -330,8 +330,8 @@ AWS Lambda functions default to a 3-second timeout, which is too short for the W
 register the Task Queue. If the first invocation times out before the Worker polls, the Task Queue binding is never
 created and the Lambda is never invoked again. Always set `--timeout` high enough for the Worker to start, process Tasks,
 and [shut down gracefully](/serverless-workers#worker-lifecycle). See
-[Troubleshoot Serverless Workers](/troubleshooting/serverless-workers#check-wci-detecting-tasks) if the Task Queue
-binding is not established.
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda#check-wci-detecting-tasks)
+if the Task Queue binding is not established.
 
 :::
 
@@ -378,7 +378,7 @@ The previous Worker Deployment Version still points at its original Lambda funct
 ## 3. Configure IAM for Temporal invocation (Cloud only) {/* #configure-iam */}
 
 This section applies to Temporal Cloud. For self-hosted Temporal Service deployments, see
-[Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#create-invocation-role)
+[Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#create-invocation-role)
 for IAM configuration with a different CloudFormation template.
 
 Temporal needs permission to invoke your Lambda function and check its status. The Temporal server assumes an IAM role in
@@ -629,4 +629,4 @@ You can verify the invocation by checking:
   managed policy.
 
 If the Workflow does not progress or the Lambda is not invoked, see
-[Troubleshoot Serverless Workers](/troubleshooting/serverless-workers).
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda).

@@ -201,7 +201,10 @@ const developGoCategory = {
               type: 'doc',
               id: 'develop/go/workers/serverless-workers/index',
             },
-            items: ['develop/go/workers/serverless-workers/aws-lambda'],
+            items: [
+              'develop/go/workers/serverless-workers/aws-lambda',
+              'develop/go/workers/serverless-workers/cloud-run',
+            ],
           },
         ],
       },
@@ -569,7 +572,10 @@ const developPythonCategory = {
               type: 'doc',
               id: 'develop/python/workers/serverless-workers/index',
             },
-            items: ['develop/python/workers/serverless-workers/aws-lambda'],
+            items: [
+              'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/cloud-run',
+            ],
           },
         ],
       },
@@ -934,7 +940,8 @@ const developTypeScriptCategory = {
               id: 'develop/typescript/workers/serverless-workers/index',
             },
             items: [
-              'develop/typescript/workers/serverless-workers/aws-lambda'
+              'develop/typescript/workers/serverless-workers/aws-lambda',
+              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -1422,8 +1429,30 @@ module.exports = {
                 id: 'production-deployment/worker-deployments/serverless-workers/index',
               },
               items: [
-                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
-                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
+                {
+                  type: 'category',
+                  label: 'AWS Lambda',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'GCP Cloud Run',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/cloud-run/index',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup',
+                  ],
+                },
               ],
             },
           ],
@@ -1647,7 +1676,19 @@ module.exports = {
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
         'troubleshooting/schedule-missed-actions',
-        'troubleshooting/serverless-workers',
+        {
+          type: 'category',
+          label: 'Serverless Workers',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'troubleshooting/serverless-workers/index',
+          },
+          items: [
+            'troubleshooting/serverless-workers/aws-lambda',
+            'troubleshooting/serverless-workers/cloud-run',
+          ],
+        },
       ],
     },
     {
@@ -1772,7 +1813,16 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
-            'encyclopedia/workers/serverless-workers',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
+              items: [
+                'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
+              ],
+            },
           ],
         },
         {

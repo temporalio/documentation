@@ -1,0 +1,264 @@
+---
+id: cloud-run
+title: Serverless Workers on GCP Cloud Run - Python SDK
+sidebar_label: GCP Cloud Run
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Python SDK.
+slug: /develop/python/workers/serverless-workers/cloud-run
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - cloud run
+  - gcp
+  - google cloud
+  - opentelemetry
+  - python sdk
+  - worker
+  - serverless worker
+tags:
+  - Workers
+  - Python SDK
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
+Register Workflows and Activities the same way you would with any other Python Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
+
+A Cloud Run Worker needs no Cloud Run-specific package.
+The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+The `temporalio.contrib.gcp` package adds an OpenTelemetry plugin with defaults suited to a Cloud Run worker pool, covered below.
+
+For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running Python Worker, then pass `deployment_config` to `Worker()` to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```python
+import asyncio
+import os
+
+from temporalio.client import Client
+from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
+from temporalio.envconfig import ClientConfig
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
+from my_activities import my_activity
+from my_workflows import MyWorkflow
+
+
+async def main() -> None:
+    client = await Client.connect(**ClientConfig.load_client_connect_config())
+
+    worker = Worker(
+        client,
+        task_queue=os.environ["TEMPORAL_TASK_QUEUE"],
+        workflows=[MyWorkflow],
+        activities=[my_activity],
+        deployment_config=WorkerDeploymentConfig(
+            version=WorkerDeploymentVersion(
+                deployment_name="my-app",
+                build_id="build-1",
+            ),
+            use_worker_versioning=True,
+            default_versioning_behavior=VersioningBehavior.PINNED,
+        ),
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+`deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `default_versioning_behavior` as shown above covers every Workflow on the Worker.
+To set the behavior per Workflow instead, pass `versioning_behavior` to the `@workflow.defn` decorator:
+
+```python
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        ...
+```
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/python/workers/run-worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+The `temporalio.envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
+Set the non-secret values as environment variables on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager.
+For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
+
+`ClientConfig.load_client_connect_config()` returns the keyword arguments for `Client.connect`, which is why the Worker above unpacks it with `**`.
+To inspect or change values before connecting, load the profile instead and convert it yourself:
+
+```python
+from temporalio.envconfig import ClientConfigProfile
+
+profile = ClientConfigProfile.load()
+connect_config = profile.to_client_connect_config()
+client = await Client.connect(**connect_config)
+```
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/python/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+
+```python
+from temporalio import activity
+
+
+@activity.defn
+async def my_activity(items: list[str]) -> str:
+    for i, item in enumerate(items):
+        activity.heartbeat(i)
+        # ... process item
+    return "done"
+```
+
+For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
+
+## Add observability with OpenTelemetry {/* #add-observability */}
+
+The `temporalio.contrib.gcp.OpenTelemetryPlugin` configures observability with defaults suited to a Cloud Run worker pool.
+By default, the plugin configures:
+
+- OTLP gRPC export to `localhost:4317`, the collector sidecar endpoint.
+- `service.name` from the Cloud Run-provided `CLOUD_RUN_WORKER_POOL` environment variable.
+- A replay-safe OpenTelemetry tracer provider.
+- Temporal Core metrics with a 60-second export interval.
+
+The underlying metrics and traces are the same ones the Python SDK emits in any environment.
+For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+
+Pass the plugin to `Client.connect`. Opt into `add_temporal_spans=True` to trace named operations such as `RunWorkflow:GreetingWorkflow`:
+
+<!--SNIPSTART python-cloud-run-otel-worker-->
+[gcp_open_telemetry/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp_open_telemetry/worker.py)
+```py
+# Endpoint, service name, Core metrics, and tracer provider all use the GCP
+# plugin defaults. The opt-in adds named Temporal operation spans.
+plugin = OpenTelemetryPlugin(add_temporal_spans=True)
+client = await Client.connect(
+    settings.address,
+    namespace=settings.namespace,
+    api_key=settings.api_key,
+    tls=True,
+    plugins=[plugin],
+)
+worker = Worker(
+    client,
+    task_queue=settings.task_queue,
+    workflows=[GreetingWorkflow],
+    activities=[compose_greeting],
+    graceful_shutdown_timeout=WORKER_GRACEFUL_SHUTDOWN_TIMEOUT,
+)
+```
+<!--SNIPEND-->
+
+Named Temporal operation spans are opt-in. The endpoint, service name, tracer provider, and Core metrics use the plugin defaults, but you must set `add_temporal_spans=True` to emit spans for Workflow and Activity operations.
+
+### Run the collector as a sidecar {/* #collector-sidecar */}
+
+The plugin exports to a collector you run as a second container in the Worker Pool.
+Use the [Google-Built OpenTelemetry Collector](https://cloud.google.com/stackdriver/docs/instrumentation/google-built-otel), which detects the Cloud Run resource, authenticates through the Worker Pool's service account, exports metrics to Google Managed Service for Prometheus, and exports traces through the Google Cloud Telemetry API.
+
+Provide the following collector configuration. It receives OTLP on `localhost:4317`, detects the GCP resource, and routes metrics and traces to their respective pipelines:
+
+<!--SNIPSTART python-cloud-run-otel-collector-config-->
+[gcp_open_telemetry/collector-config.yaml](https://github.com/temporalio/samples-python/blob/main/gcp_open_telemetry/collector-config.yaml)
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: localhost:4317
+
+processors:
+  batch/traces:
+    send_batch_max_size: 200
+    send_batch_size: 200
+    timeout: 5s
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 65
+    spike_limit_percentage: 20
+  resource_detection:
+    detectors: [gcp]
+    timeout: 10s
+  transform/collision:
+    metric_statements:
+      - context: datapoint
+        statements:
+          - set(attributes["exported_location"], attributes["location"])
+          - delete_key(attributes, "location")
+          - set(attributes["exported_cluster"], attributes["cluster"])
+          - delete_key(attributes, "cluster")
+          - set(attributes["exported_namespace"], attributes["namespace"])
+          - delete_key(attributes, "namespace")
+          - set(attributes["exported_job"], attributes["job"])
+          - delete_key(attributes, "job")
+          - set(attributes["exported_instance"], attributes["instance"])
+          - delete_key(attributes, "instance")
+          - set(attributes["exported_project_id"], attributes["project_id"])
+          - delete_key(attributes, "project_id")
+  transform/set_project_id:
+    error_mode: ignore
+    trace_statements:
+      - set(resource.attributes["gcp.project_id"], resource.attributes["gcp.project.id"]) where resource.attributes["gcp.project.id"] != nil
+      - set(resource.attributes["gcp.project_id"], resource.attributes["cloud.account.id"]) where resource.attributes["gcp.project_id"] == nil and resource.attributes["cloud.account.id"] != nil
+
+exporters:
+  googlemanagedprometheus:
+  otlp_grpc:
+    endpoint: telemetry.googleapis.com:443
+    compression: none
+    balancer_name: pick_first
+    auth:
+      authenticator: googleclientauth
+
+extensions:
+  googleclientauth:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [googleclientauth, health_check]
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, resource_detection, transform/collision]
+      exporters: [googlemanagedprometheus]
+    traces:
+      receivers: [otlp]
+      processors:
+        [memory_limiter, resource_detection, transform/set_project_id, batch/traces]
+      exporters: [otlp_grpc]
+```
+<!--SNIPEND-->
+
+The metrics pipeline forwards each SDK export directly, without a batch processor, so a runtime shutdown-time export cannot collide with a periodic export on the same Managed Prometheus time series.
+Traces use a dedicated five-second batch processor.
+
+To verify telemetry after deploying, confirm that Trace Explorer contains `RunWorkflow:GreetingWorkflow` with `service.name` equal to the Worker Pool name, and that Metrics Explorer contains `prometheus.googleapis.com/temporal_workflow_completed_total/counter`.
