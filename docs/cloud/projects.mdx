@@ -92,11 +92,9 @@ Project Developer is a compatibility role that is automatically inherited by use
 
 :::
 
-Similar to Account-level roles, only a single effective Project role applies to a principal, determined by the highest-precedence role granted.
+A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account. 
 
-A principal's Project-level roles inherit from their Account-level roles, but explicit Project grants can supersede inherited roles. For example, an Account Developer could be explicitly granted Project Admin to a particular Project, which would supersede their inherited Project Developer role.
-
-Project-level permissions are additive. Addition of Project level roles do not narrow user permissions gained via Account-level or Namespace-level permissions.
+Project-level permissions are additive. Granting a Project-level role does not reduce permissions inherited from Account-level or Namespace-level roles. A principal's effective permissions are the union of all applicable Account-, Project-, and Namespace-level role assignments.
 
 ## Modify an existing Project
 
