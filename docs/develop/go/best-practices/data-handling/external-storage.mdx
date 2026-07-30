@@ -42,43 +42,43 @@ The Go SDK includes an S3 storage driver. Follow these steps to set it up:
 1. Load your AWS configuration and create the S3 storage driver. The driver uses your standard [AWS credentials](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) from the environment (environment variables, IAM role, or AWS config file):
 
    <!--SNIPSTART go-s3-driver-create-->
-[features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
-```go
-cfg, err := config.LoadDefaultConfig(context.Background(),
-	config.WithRegion("us-east-2"),
-)
-if err != nil {
-	log.Fatalf("load AWS config: %v", err)
-}
+   [features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
+   ```go
+   cfg, err := config.LoadDefaultConfig(context.Background(),
+   	config.WithRegion("us-east-2"),
+   )
+   if err != nil {
+   	log.Fatalf("load AWS config: %v", err)
+   }
 
-driver, err := s3driver.NewDriver(s3driver.Options{
-	Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
-	Bucket: s3driver.StaticBucket("my-temporal-payloads"),
-})
-if err != nil {
-	log.Fatalf("create S3 driver: %v", err)
-}
-```
+   driver, err := s3driver.NewDriver(s3driver.Options{
+   	Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
+   	Bucket: s3driver.StaticBucket("my-temporal-payloads"),
+   })
+   if err != nil {
+   	log.Fatalf("create S3 driver: %v", err)
+   }
+   ```
    <!--SNIPEND-->
 
 2. Configure the driver on `ExternalStorage` and pass it in your Client options:
 
    <!--SNIPSTART go-s3-external-storage-setup-->
-[features/snippets/external_storage/s3_setup/s3_external_storage_setup.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.go)
-```go
-c, err := client.Dial(client.Options{
-	HostPort: "localhost:7233",
-	ExternalStorage: converter.ExternalStorage{
-		Drivers: []converter.StorageDriver{driver},
-	},
-})
-if err != nil {
-	log.Fatalf("connect to Temporal: %v", err)
-}
-defer c.Close()
+   [features/snippets/external_storage/s3_setup/s3_external_storage_setup.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.go)
+   ```go
+   c, err := client.Dial(client.Options{
+   	HostPort: "localhost:7233",
+   	ExternalStorage: converter.ExternalStorage{
+   		Drivers: []converter.StorageDriver{driver},
+   	},
+   })
+   if err != nil {
+   	log.Fatalf("connect to Temporal: %v", err)
+   }
+   defer c.Close()
 
-w := worker.New(c, "my-task-queue", worker.Options{})
-```
+   w := worker.New(c, "my-task-queue", worker.Options{})
+   ```
    <!--SNIPEND-->
 
    By default, payloads of 256 KiB or larger are offloaded to external storage. You can adjust this with the

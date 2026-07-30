@@ -43,39 +43,39 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 1. Create an S3 client using `aioboto3` and pass it to the `S3StorageDriver`. The driver uses your standard AWS
    credentials from the environment (environment variables, IAM role, or AWS config file):
 
-      <!--SNIPSTART python-s3-driver-create-->
-[features/snippets/external_storage/s3_setup/s3_driver_create.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.py)
-```py
-session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
-async with session.client("s3") as s3_client:
-    driver = S3StorageDriver(
-        client=new_aioboto3_client(s3_client),
-        bucket="my-temporal-payloads",
-    )
-```
+   <!--SNIPSTART python-s3-driver-create-->
+   [features/snippets/external_storage/s3_setup/s3_driver_create.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.py)
+   ```py
+   session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
+   async with session.client("s3") as s3_client:
+       driver = S3StorageDriver(
+           client=new_aioboto3_client(s3_client),
+           bucket="my-temporal-payloads",
+       )
+   ```
    <!--SNIPEND-->
 
 2. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
-      <!--SNIPSTART python-s3-external-storage-setup-->
-[features/snippets/external_storage/s3_setup/s3_external_storage_setup.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.py)
-```py
-data_converter = dataclasses.replace(
-    DataConverter.default,
-    external_storage=ExternalStorage(drivers=[driver]),
-)
+   <!--SNIPSTART python-s3-external-storage-setup-->
+   [features/snippets/external_storage/s3_setup/s3_external_storage_setup.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.py)
+   ```py
+   data_converter = dataclasses.replace(
+       DataConverter.default,
+       external_storage=ExternalStorage(drivers=[driver]),
+   )
 
-client_config = ClientConfig.load_client_connect_config()
+   client_config = ClientConfig.load_client_connect_config()
 
-client = await Client.connect(**client_config, data_converter=data_converter)
+   client = await Client.connect(**client_config, data_converter=data_converter)
 
-worker = Worker(
-    client,
-    task_queue="my-task-queue",
-    workflows=[],
-    activities=[],
-)
-```
+   worker = Worker(
+       client,
+       task_queue="my-task-queue",
+       workflows=[],
+       activities=[],
+   )
+   ```
    <!--SNIPEND-->
 
 By default, payloads of 256 KiB or larger are offloaded to external storage. You can adjust this with the
