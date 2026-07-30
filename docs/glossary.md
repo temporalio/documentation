@@ -896,6 +896,3 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 tctl is a command-line tool that you can use to interact with a Temporal Service. It is superseded by the
 [Temporal CLI utility](#cli).
-
-<!-- TEMP CI TEST: intentionally broken anchor to verify the Docs Build Check workflow. Will be reverted in a follow-up commit before this PR is closed. -->
-See [operations](#totally-made-up-anchor-that-does-not-exist-ci-test) for details.

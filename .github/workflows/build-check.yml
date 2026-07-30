@@ -115,14 +115,14 @@ jobs:
               core.info(`Created new build check comment (${newComment.id}).`);
             }
 
-      - name: Fail job if build failed
-        if: steps.build.outputs.exit_code != '0'
-        run: exit 1
-
       - name: Upload build log
-        if: steps.build.outputs.exit_code != '0'
+        if: always() && steps.build.outputs.exit_code != '0'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build-output-log
           path: build-output.log
           retention-days: 7
+
+      - name: Fail job if build failed
+        if: always() && steps.build.outputs.exit_code != '0'
+        run: exit 1
