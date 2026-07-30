@@ -109,6 +109,16 @@ The integration runs on a host (Linux, Windows, or Kubernetes) with the New Reli
 
 For New Relic-side details, see the [New Relic integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/).
 
+### SigNoz
+
+SigNoz is an OpenTelemetry-native observability platform, available as a cloud service or self-hosted. The integration runs an OpenTelemetry Collector that scrapes the OpenMetrics endpoint and forwards metrics to SigNoz over OTLP.
+
+1. Configure an OpenTelemetry Collector with a Prometheus receiver against `metrics.temporal.io` using Bearer token auth with your Temporal Cloud API key, and an OTLP exporter that sends to your SigNoz ingestion endpoint (using your SigNoz ingestion key and region). Copy the full template - including the Kubernetes Secret-based variant - from the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/).
+2. Deploy the collector (VM/binary or Kubernetes) and confirm `temporal_cloud_v1_*` metrics arrive in the SigNoz **Metrics Explorer**, typically within a few minutes.
+3. Import the pre-built dashboard JSON from the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/) to visualize Temporal Cloud metrics.
+
+For SigNoz-side details, see the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/).
+
 ### Prometheus \+ Grafana {/* #prometheus-grafana */}
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.
