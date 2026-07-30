@@ -135,7 +135,7 @@ function tailOf(rawLog, lines) {
 
 function buildComment(findings, rawLog) {
   const marker = '<!-- docs-build-check -->';
-  const header = '### ❌ Docs build failed\n\nThis PR fails the same production build that Vercel runs, so the deployment will fail too.';
+  const header = '### ❌ Docs build failed';
 
   if (isEmpty(findings)) {
     return `${marker}
