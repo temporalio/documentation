@@ -342,18 +342,20 @@ Some operations may not have meaningful compensations.
 - **Large payloads in compensation state.** Passing large objects through the compensation chain can exceed the 2 MB payload limit. Use references (IDs, URLs) instead of full data.
 - **Swallowing the ContinueAsNew exception in TypeScript.** In TypeScript, `continueAsNew` works by throwing a special exception. A `catch` block that does not re-throw it, or a `finally` block that returns a value, silently prevents Continue-As-New.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Error Handling & Retry Patterns](/design-patterns/error-handling-patterns)**: Often combined with the Saga pattern to handle transient failures before compensating.
 - **[Child Workflows](/design-patterns/child-workflows)**: You can use Child Workflows to organize complex Sagas with multiple sub-Sagas.
 - **[Long-Running Activity](/design-patterns/long-running-activity)**: Heartbeats work well with long-running compensation Activities.
 - **[Early Return](/design-patterns/early-return)**: You can combine Early Return with the Saga pattern to return initialization results before compensation runs.
 
-## Guides
+### Guides
 
 - [Recover business processes without restarting](/guides/recover-without-restart): Adds LIFO saga compensation to a multi-step loan pipeline, with pre-registered compensations and a recoverable rollback loop for compensations that fail.
 
-## Sample code
+### Sample code
 
 - [Go Sample](https://github.com/temporalio/samples-go/tree/main/saga) — Saga with `defer`-based compensations.
 - [Java Sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloSaga.java) — Saga with the `Saga` API.

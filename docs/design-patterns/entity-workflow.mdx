@@ -530,18 +530,20 @@ Trade-offs:
 - **Exceeding the 2 MB payload limit on Continue-As-New input.** State passed to Continue-As-New is subject to the same 2 MB blob size limit as Workflow inputs. Use external storage for large state.
 - **Using a hardcoded counter instead of `isContinueAsNewSuggested`.** The SDK provides `isContinueAsNewSuggested()` which accounts for actual history size. Hardcoded thresholds may be too aggressive or too lenient.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Continue-As-New](/design-patterns/continue-as-new)**: Essential for preventing unbounded history.
 - **[Request-Response via Updates](/design-patterns/request-response-via-updates)**: Synchronous operations with validation.
 - **[Signal with Start](/design-patterns/signal-with-start)**: Idempotent Workflow start with an initial Signal.
 
-## Guides
+### Guides
 
 - [Track customer loyalty points with durable Workflows](/guides/entity-pattern-loyalty-points): A complete Python implementation of this pattern, including tier calculation, Continue-As-New, and Worker Versioning for accounts that span years.
 - [Player Sessions That Survive Anything](/guides/durable-gaming-sessions): Extends the Entity Workflow into an Actor Workflow that executes game actions — joining rooms, resolving combat — rather than only holding state.
 
-## Sample code
+### Sample code
 
 **Python:**
 - [Safe Message Handlers](https://github.com/temporalio/samples-python/tree/main/message_passing/safe_message_handlers) — Entity Workflow with Updates, Signals, and Continue-As-New.
@@ -555,7 +557,7 @@ Trade-offs:
 **TypeScript:**
 - [Safe Message Handlers](https://github.com/temporalio/samples-typescript/tree/main/message-passing/safe-message-handlers) — Entity Workflow with Updates, Signals, and Continue-As-New.
 
-## References
+### References
 
 - [Temporal Blog: Very Long-Running Workflows](https://temporal.io/blog/very-long-running-workflows) — Guidance on managing Workflows that run for extended periods.
 - [Continue-As-New](/workflow-execution/continue-as-new) — Concept reference for the Continue-As-New mechanism.

@@ -367,7 +367,9 @@ if (ctx.info.attempt > ALERT_THRESHOLD) {
 - **Not resetting alerting context on success.** If the Activity eventually succeeds after 50 attempts, the high-attempt metric has already fired. Ensure your alerting system can resolve the alert when the metric rate drops to zero.
 - **Setting the threshold too low.** A threshold of 1 means the metric fires on the very first retry — which is normal behavior. Calibrate the threshold to your system's expected transient error rate.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Fast/Slow Retries](/design-patterns/fast-slow-retries): Combine by emitting this metric inside the slow-phase Activity to alert when patient waiting has gone on too long.
 - [Fixed Count of Retries](/design-patterns/fixed-count-retries): Cap attempts at a fixed number instead of alerting at a threshold.

@@ -296,14 +296,16 @@ Trade-offs:
 - **Assuming you must set an Update ID for retry safety.** The SDK auto-generates a unique `updateId` when you do not provide one, and retried client calls are deduplicated automatically, so a transient retry will not run the handler twice. Set a stable, business-meaningful `updateId` when you want a retried Update-with-Start to attach to an existing in-flight Update instead of starting duplicate work.
 - **Using Updates for fire-and-forget.** Updates require a Worker to be online and responsive. For fire-and-forget operations, use Signals instead.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **Signal**: Fire-and-forget state modifications.
 - **Query**: Read-only state inspection.
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-running Workflows representing business entities.
 - **[Early Return](/design-patterns/early-return)**: Returning intermediate results before Workflow completion.
 
-## Sample code
+### Sample code
 
 - [Safe Message Handlers (Python)](https://github.com/temporalio/samples-python/tree/main/message_passing/safe_message_handlers) — Concurrent Update handling with validation.
 - [Safe Message Passing (Java)](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/safemessagepassing) — Concurrent Update handling with validation.
