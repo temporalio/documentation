@@ -1,10 +1,11 @@
 ---
-id: serverless-workers
-title: Troubleshoot Serverless Workers
-sidebar_label: Serverless Workers
+id: aws-lambda
+title: Troubleshoot Serverless Workers on AWS Lambda
+sidebar_label: AWS Lambda
 description:
   Diagnose and fix issues with Temporal Serverless Workers on AWS Lambda by tracing the invocation flow from Task Queue
   to Worker execution.
+slug: /troubleshooting/serverless-workers/aws-lambda
 toc_max_heading_level: 4
 keywords:
   - serverless
@@ -19,8 +20,6 @@ tags:
   - AWS Lambda
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkers">
@@ -29,7 +28,9 @@ import { ReleaseNoteHeader } from '@site/src/components';
   [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 
-This page walks through the Serverless Worker invocation flow and helps you identify where a failure is occurring.
+This page walks through the Serverless Worker invocation flow on AWS Lambda and helps you identify where a failure is
+occurring. For Worker Pools on GCP Cloud Run, see
+[Troubleshoot Serverless Workers on GCP Cloud Run](/troubleshooting/serverless-workers/cloud-run).
 
 When a Serverless Worker invocation works correctly, the following sequence happens:
 
@@ -138,7 +139,7 @@ Common errors include:
 - **Connection failures**: The Worker cannot reach the Temporal Service. Check that the `TEMPORAL_ADDRESS` and
   `TEMPORAL_API_KEY` environment variables (or `temporal.toml` config file) are correctly set on the Lambda function.
   For self-hosted deployments, verify
-  [network reachability](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#ensure-network-reachability).
+  [network reachability](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#ensure-network-reachability).
 - **TLS errors**: The TLS certificate or key is missing, expired, or does not match the Namespace.
 - **Authentication errors**: The API key is invalid or does not have access to the Namespace.
 
@@ -151,7 +152,7 @@ The Worker begins graceful shutdown before the Lambda deadline. If Activities ta
 window, the Activities are abandoned mid-execution and retried on the next invocation.
 
 For long-running Activities, increase the Lambda timeout and the Worker's shutdown buffer together. See
-[Tuning for long-running Activities](/serverless-workers#tuning-for-long-running-activities) for guidance on how these
+[Tuning for long-running Activities](/serverless-workers/aws-lambda#tuning-for-long-running-activities) for guidance on how these
 values relate.
 
 ### Check that the deployment name and build ID match {/* #check-deployment-match */}

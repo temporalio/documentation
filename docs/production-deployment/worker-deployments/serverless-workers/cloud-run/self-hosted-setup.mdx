@@ -1,0 +1,146 @@
+---
+id: self-hosted-setup
+title: Self-hosted setup for Serverless Workers on GCP Cloud Run
+sidebar_label: Self-hosted setup
+description: Configure a self-hosted Temporal Service to use Serverless Workers with GCP Cloud Run.
+slug: /production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - self-hosted
+  - cloud run
+  - gcp
+  - worker
+  - deployment
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - Self-hosted
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+Serverless Workers require Temporal Service v1.31.0 or later.
+
+This page covers the prerequisites for running [Serverless Workers](/serverless-workers) on a self-hosted Temporal
+Service with GCP Cloud Run:
+
+1. Ensure Cloud Run instances can reach the Temporal Service.
+2. Enable the Worker Controller Instance (WCI) on the server through dynamic configuration.
+3. Give the Temporal Service a GCP identity.
+4. Create the invoker service account that the Temporal Service impersonates to scale the Worker Pool.
+
+Once setup is complete, follow the
+[GCP Cloud Run deployment guide](/production-deployment/worker-deployments/serverless-workers/cloud-run) to deploy your
+Worker.
+
+## Ensure Cloud Run instances can reach the Temporal Service {/* #ensure-network-reachability */}
+
+The [Temporal Service frontend](/temporal-service/temporal-server#frontend-service) must be reachable from your Cloud
+Run Worker Pool instances. How to achieve this depends on your network setup. If the Temporal Service runs on a private
+network, you may need [Direct VPC egress](https://cloud.google.com/run/docs/configuring/vpc-direct-vpc) or a
+[Serverless VPC Access connector](https://cloud.google.com/run/docs/configuring/vpc-connectors) so the pool can connect
+to the Temporal frontend.
+
+## Enable the Worker Controller Instance {/* #enable-worker-controller */}
+
+[WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and scales compute
+providers. It is disabled by default and must be enabled through
+[dynamic configuration](/references/dynamic-configuration).
+
+Add the following keys to your dynamic config file:
+
+```yaml
+workercontroller.enabled:
+  - value: true
+
+workercontroller.compute_providers.enabled:
+  - value:
+      - gcp-cloud-run
+
+workercontroller.scaling_algorithms.enabled:
+  - value:
+      - rate-based
+```
+
+Cloud Run uses the `rate-based` algorithm. A Cloud Run Worker Pool is a set of long-lived instances, so the WCI resizes
+it from arrival and backlog rates. The `no-sync` algorithm applies only to providers that are invoked once per Task, and
+pairing it with `gcp-cloud-run` is rejected.
+
+To enable WCI for specific Namespaces instead of globally, add a `constraints` section with the Namespace name under
+`workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
+
+```yaml
+workercontroller.enabled:
+  - value: true
+    constraints:
+      namespace: 'your-namespace'
+```
+
+The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
+
+Two optional global keys control how the server reaches the invoker when impersonation needs more than one hop:
+
+| Key | Purpose |
+| --- | --- |
+| `workercontroller.compute_providers.gcp.intermediary_service_accounts` | Service accounts to impersonate in sequence before the invoker. Unset means the server impersonates the invoker directly. |
+| `workercontroller.compute_providers.gcp.first_delegate_as_base` | When `true`, the first entry in the chain is the identity the server's ambient credentials impersonate directly, and the rest are passed as token-creator delegates. Defaults to `false`, which passes the whole chain as delegates from the ambient credentials. |
+
+## Give the Temporal Service a GCP identity {/* #configure-gcp-identity */}
+
+The Temporal Service reads and scales the Worker Pool by impersonating the invoker service account you create in the
+next step. To do that, the server must first run as a GCP identity that is allowed to impersonate the invoker.
+
+**On GCP infrastructure (GCE, GKE):** The server uses the attached service account through
+[Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials)
+automatically. No additional credential configuration is needed. You grant this attached service account permission to
+impersonate the invoker in the next step.
+
+**Outside GCP:** Use [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation) so
+the server can obtain GCP credentials without a long-lived key. Point `GOOGLE_APPLICATION_CREDENTIALS` at the credential
+configuration file it produces. That variable also accepts a service account key file, but Google
+[recommends against long-lived keys](https://cloud.google.com/iam/docs/best-practices-service-accounts).
+
+## Create the invoker service account {/* #create-invoker */}
+
+The Temporal Service scales the Worker Pool as an *invoker* service account. This account only reads and scales the
+pool; it does not run the pool. The identity your Worker instances run as is the separate runner service account you
+set on the pool in the [deployment guide](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool).
+
+Two grants make this work:
+
+- The GCP identity the Temporal Service runs as (from the previous step) receives `roles/iam.serviceAccountTokenCreator`
+  on the invoker, so the server can impersonate it.
+- The invoker receives a project-level Cloud Run role with at least `run.workerPools.get` and `run.workerPools.update`.
+  `roles/run.developer` includes both.
+
+Temporal publishes a Terraform module that creates the invoker service account and applies both grants:
+[`serverless-workers/gcp/cloud-run`](https://github.com/temporalio/terraform-modules/tree/main/modules/serverless-workers/gcp/cloud-run).
+For self-hosted deployments, pass the GCP identity the Temporal Service runs as in `impersonator_service_account_emails`:
+
+```hcl
+module "serverless-worker-cloud-run" {
+  source = "github.com/temporalio/terraform-modules//modules/serverless-workers/gcp/cloud-run"
+
+  project_id         = "<YOUR_GCP_PROJECT>"
+  invoker_account_id = "temporal-serverless-worker"
+
+  impersonator_service_account_emails = [
+    "<TEMPORAL_SERVICE_GCP_IDENTITY>",
+  ]
+}
+```
+
+After you apply the module, use its `invoker_email` output as the `--gcp-cloud-run-service-account` value when you create
+the Worker Deployment Version.
+
+## Next steps {/* #next-steps */}
+
+Follow the [GCP Cloud Run deployment guide](/production-deployment/worker-deployments/serverless-workers/cloud-run) to
+write your Worker code, deploy it to a Worker Pool, and create a Worker Deployment Version with the invoker service
+account from the previous step.

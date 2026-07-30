@@ -312,7 +312,9 @@ public class Impl implements TransactionWorkflow {
 - **Ignoring Phase 1 errors in Phase 2.** Always check Phase 1 error state before proceeding to Phase 2. If Phase 1 failed, Phase 2 should run a compensating Activity (cancel, rollback) rather than complete.
 - **Mixing Local and regular Activity stubs incorrectly.** In Java, `Workflow.newLocalActivityStub` and `Workflow.newActivityStub` return distinct objects. Make sure Phase 1 uses the local stub and Phase 2 uses the regular stub.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Early Return](/design-patterns/early-return) — the baseline Update-with-Start pattern without Local Activity optimization
 - [Local Activities](/design-patterns/local-activities) — using Local Activities for full-workflow latency reduction without early return

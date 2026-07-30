@@ -4,12 +4,7 @@ const matter = require('gray-matter');
 const { renderCard } = require('../og-image/render');
 const { DEFAULT_FOOTER_TEXT } = require('../og-image/constants');
 const { AI_COOKBOOK_OG_IMAGE_PATH } = require('../../src/constants/aiCookbookOgImage');
-
-// Mirrors the hero blurb in src/components/Cookbook/Home/CookbookHome.tsx —
-// duplicated (not imported) because that file is a .tsx React component and
-// this is a plain build-time script. Keep these in sync if the copy changes.
-const HERO_BLURB =
-  'Step-by-step solutions that show you how to build reliable, production-ready AI systems with Temporal. Learn practical paradigms for prompts, tools, retries, and Workflow design.';
+const { AI_COOKBOOK_BLURB } = require('../../src/constants/aiCookbookBlurb');
 
 const HOME_TITLE = 'AI Cookbook';
 // Deliberately the site default (not the 'AI COOKBOOK' footer the individual
@@ -126,7 +121,7 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
       const lines = [
         '# AI Cookbook',
         '',
-        `> ${HERO_BLURB}`,
+        `> ${AI_COOKBOOK_BLURB}`,
         '',
         ...sorted.map((item) => `- [${item.title}](${item.permalink}): ${item.description}`),
         '',
@@ -137,7 +132,11 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
 
       // Same reasoning as the .md file above: this page is invisible to
       // plugins/og-image's docsDir walk, so nothing else renders it a card.
-      const cardBuffer = await renderCard({ title: HOME_TITLE, description: HERO_BLURB, footerText: HOME_FOOTER_TEXT });
+      const cardBuffer = await renderCard({
+        title: HOME_TITLE,
+        description: AI_COOKBOOK_BLURB,
+        footerText: HOME_FOOTER_TEXT,
+      });
       const cardOutPath = path.join(outDir, AI_COOKBOOK_OG_IMAGE_PATH);
       fs.mkdirSync(path.dirname(cardOutPath), { recursive: true });
       fs.writeFileSync(cardOutPath, cardBuffer);

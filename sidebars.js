@@ -201,7 +201,10 @@ const developGoCategory = {
               type: 'doc',
               id: 'develop/go/workers/serverless-workers/index',
             },
-            items: ['develop/go/workers/serverless-workers/aws-lambda'],
+            items: [
+              'develop/go/workers/serverless-workers/aws-lambda',
+              'develop/go/workers/serverless-workers/cloud-run',
+            ],
           },
         ],
       },
@@ -569,7 +572,10 @@ const developPythonCategory = {
               type: 'doc',
               id: 'develop/python/workers/serverless-workers/index',
             },
-            items: ['develop/python/workers/serverless-workers/aws-lambda'],
+            items: [
+              'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/cloud-run',
+            ],
           },
         ],
       },
@@ -934,7 +940,8 @@ const developTypeScriptCategory = {
               id: 'develop/typescript/workers/serverless-workers/index',
             },
             items: [
-              'develop/typescript/workers/serverless-workers/aws-lambda'
+              'develop/typescript/workers/serverless-workers/aws-lambda',
+              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -1002,6 +1009,7 @@ const developTypeScriptCategory = {
             items: [
               'develop/typescript/best-practices/data-handling/data-conversion',
               'develop/typescript/best-practices/data-handling/data-encryption',
+              'develop/typescript/best-practices/data-handling/external-storage',
             ],
           },
         ],
@@ -1421,8 +1429,30 @@ module.exports = {
                 id: 'production-deployment/worker-deployments/serverless-workers/index',
               },
               items: [
-                'production-deployment/worker-deployments/serverless-workers/aws-lambda',
-                'production-deployment/worker-deployments/serverless-workers/self-hosted-setup',
+                {
+                  type: 'category',
+                  label: 'AWS Lambda',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'GCP Cloud Run',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/cloud-run/index',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup',
+                  ],
+                },
               ],
             },
           ],
@@ -1486,6 +1516,129 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Design Patterns',
+      collapsed: true,
+      link: { type: 'doc', id: 'design-patterns/index' },
+      items: [
+        {
+          type: 'category',
+          label: "Task Orchestration",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/task-orchestration-patterns' },
+          items: [
+            'design-patterns/child-workflows',
+            'design-patterns/parallel-execution',
+            'design-patterns/pick-first',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Workflow Messaging",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/workflow-messaging-patterns' },
+          items: [
+            'design-patterns/signal-with-start',
+            'design-patterns/request-response-via-updates',
+            'design-patterns/event-accumulator',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Entity & Lifecycle",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/entity-lifecycle-patterns' },
+          items: [
+            'design-patterns/entity-workflow',
+            'design-patterns/continue-as-new',
+            'design-patterns/updatable-timer',
+          ],
+        },
+        {
+          type: 'category',
+          label: "External Interaction",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/external-interaction-patterns' },
+          items: [
+            'design-patterns/polling',
+            'design-patterns/long-running-activity',
+            'design-patterns/delayed-start',
+            'design-patterns/delayed-callback',
+            'design-patterns/approval',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Distributed Transaction",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/distributed-transaction-patterns' },
+          items: [
+            'design-patterns/saga-pattern',
+            'design-patterns/early-return',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Error Handling & Retry",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/error-handling-patterns' },
+          items: [
+            'design-patterns/fixed-count-retries',
+            'design-patterns/fixed-wall-time-retries',
+            'design-patterns/non-retryable-errors',
+            'design-patterns/delayed-retry',
+            'design-patterns/fast-slow-retries',
+            'design-patterns/retry-metrics',
+            'design-patterns/resumable-activity',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Batch Processing",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/batch-processing-patterns' },
+          items: [
+            'design-patterns/fanout-child-workflows',
+            'design-patterns/batch-iterator',
+            'design-patterns/sliding-window',
+            'design-patterns/mapreduce-tree',
+          ],
+        },
+        {
+          type: 'category',
+          label: "QoS & Throughput",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/qos-throughput-patterns' },
+          items: [
+            'design-patterns/downstream-rate-limiting',
+            'design-patterns/priority-task-queues',
+            'design-patterns/fairness',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Performance & Latency",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/performance-latency-patterns' },
+          items: [
+            'design-patterns/local-activities',
+            'design-patterns/early-return-local-activities',
+            'design-patterns/eager-workflow-start',
+          ],
+        },
+        {
+          type: 'category',
+          label: "Worker Configuration",
+          collapsed: true,
+          link: { type: 'doc', id: 'design-patterns/worker-configuration-patterns' },
+          items: [
+            'design-patterns/worker-specific-taskqueue',
+            'design-patterns/activity-dependency-injection',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'References',
       collapsed: true,
       link: {
@@ -1523,7 +1676,19 @@ module.exports = {
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
         'troubleshooting/schedule-missed-actions',
-        'troubleshooting/serverless-workers',
+        {
+          type: 'category',
+          label: 'Serverless Workers',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'troubleshooting/serverless-workers/index',
+          },
+          items: [
+            'troubleshooting/serverless-workers/aws-lambda',
+            'troubleshooting/serverless-workers/cloud-run',
+          ],
+        },
       ],
     },
     {
@@ -1648,7 +1813,16 @@ module.exports = {
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
             'encyclopedia/workers/worker-versioning',
-            'encyclopedia/workers/serverless-workers',
+            {
+              type: 'category',
+              label: 'Serverless Workers',
+              collapsed: true,
+              link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
+              items: [
+                'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
+              ],
+            },
           ],
         },
         {
@@ -1825,124 +1999,6 @@ module.exports = {
     //   type: "autogenerated",
     //   dirName: "./dev-guide", // '.' means the current docs folder
     // },
-  ],
-  designPatterns: [
-    'design-patterns/index',
-    {
-      type: 'category',
-      label: "Task Orchestration Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/task-orchestration-patterns' },
-      items: [
-        'design-patterns/child-workflows',
-        'design-patterns/parallel-execution',
-        'design-patterns/pick-first',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Workflow Messaging Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/workflow-messaging-patterns' },
-      items: [
-        'design-patterns/signal-with-start',
-        'design-patterns/request-response-via-updates',
-        'design-patterns/event-accumulator',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Entity & Lifecycle Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/entity-lifecycle-patterns' },
-      items: [
-        'design-patterns/entity-workflow',
-        'design-patterns/continue-as-new',
-        'design-patterns/updatable-timer',
-      ],
-    },
-    {
-      type: 'category',
-      label: "External Interaction Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/external-interaction-patterns' },
-      items: [
-        'design-patterns/polling',
-        'design-patterns/long-running-activity',
-        'design-patterns/delayed-start',
-        'design-patterns/delayed-callback',
-        'design-patterns/approval',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Distributed Transaction Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/distributed-transaction-patterns' },
-      items: [
-        'design-patterns/saga-pattern',
-        'design-patterns/early-return',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Error Handling & Retry Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/error-handling-patterns' },
-      items: [
-        'design-patterns/fixed-count-retries',
-        'design-patterns/fixed-wall-time-retries',
-        'design-patterns/non-retryable-errors',
-        'design-patterns/delayed-retry',
-        'design-patterns/fast-slow-retries',
-        'design-patterns/retry-metrics',
-        'design-patterns/resumable-activity',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Batch Processing Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/batch-processing-patterns' },
-      items: [
-        'design-patterns/fanout-child-workflows',
-        'design-patterns/batch-iterator',
-        'design-patterns/sliding-window',
-        'design-patterns/mapreduce-tree',
-      ],
-    },
-    {
-      type: 'category',
-      label: "QoS & Throughput Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/qos-throughput-patterns' },
-      items: [
-        'design-patterns/downstream-rate-limiting',
-        'design-patterns/priority-task-queues',
-        'design-patterns/fairness',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Performance & Latency Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/performance-latency-patterns' },
-      items: [
-        'design-patterns/local-activities',
-        'design-patterns/early-return-local-activities',
-        'design-patterns/eager-workflow-start',
-      ],
-    },
-    {
-      type: 'category',
-      label: "Worker Configuration Patterns",
-      collapsed: true,
-      link: { type: 'doc', id: 'design-patterns/worker-configuration-patterns' },
-      items: [
-        'design-patterns/worker-specific-taskqueue',
-        'design-patterns/activity-dependency-injection',
-      ],
-    },
   ],
   tctl: [
     'tctl-v1/index',
