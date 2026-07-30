@@ -2,7 +2,7 @@
 id: cloud-run
 title: Serverless Workers on GCP Cloud Run - Python SDK
 sidebar_label: GCP Cloud Run
-description: Add OpenTelemetry to a Temporal Worker running on a GCP Cloud Run worker pool using the Python SDK.
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Python SDK.
 slug: /develop/python/workers/serverless-workers/cloud-run
 toc_max_heading_level: 4
 keywords:
@@ -30,12 +30,114 @@ import { ReleaseNoteHeader } from '@site/src/components';
 </ReleaseNoteHeader>
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
-Register Workflows and Activities the same way you would with any other Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
-Worker Versioning is required for Serverless Workers; set a [versioning behavior](/worker-versioning#versioning-behaviors) on each Workflow.
+Register Workflows and Activities the same way you would with any other Python Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
-The GCP-specific integration is the OpenTelemetry plugin, which exports traces and Temporal Core metrics to a collector running alongside your Worker.
+A Cloud Run Worker needs no Cloud Run-specific package.
+The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+The `temporalio.contrib.gcp` package adds an OpenTelemetry plugin with defaults suited to a Cloud Run worker pool, covered below.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running Python Worker, then pass `deployment_config` to `Worker()` to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```python
+import asyncio
+import os
+
+from temporalio.client import Client
+from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
+from temporalio.envconfig import ClientConfig
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
+from my_activities import my_activity
+from my_workflows import MyWorkflow
+
+
+async def main() -> None:
+    client = await Client.connect(**ClientConfig.load_client_connect_config())
+
+    worker = Worker(
+        client,
+        task_queue=os.environ["TEMPORAL_TASK_QUEUE"],
+        workflows=[MyWorkflow],
+        activities=[my_activity],
+        deployment_config=WorkerDeploymentConfig(
+            version=WorkerDeploymentVersion(
+                deployment_name="my-app",
+                build_id="build-1",
+            ),
+            use_worker_versioning=True,
+            default_versioning_behavior=VersioningBehavior.PINNED,
+        ),
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+`deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `default_versioning_behavior` as shown above covers every Workflow on the Worker.
+To set the behavior per Workflow instead, pass `versioning_behavior` to the `@workflow.defn` decorator:
+
+```python
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class MyWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        ...
+```
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/python/workers/run-worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+The `temporalio.envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
+Set the non-secret values as environment variables on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager.
+For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
+
+`ClientConfig.load_client_connect_config()` returns the keyword arguments for `Client.connect`, which is why the Worker above unpacks it with `**`.
+To inspect or change values before connecting, load the profile instead and convert it yourself:
+
+```python
+from temporalio.envconfig import ClientConfigProfile
+
+profile = ClientConfigProfile.load()
+connect_config = profile.to_client_connect_config()
+client = await Client.connect(**connect_config)
+```
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/python/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+
+```python
+from temporalio import activity
+
+
+@activity.defn
+async def my_activity(items: list[str]) -> str:
+    for i, item in enumerate(items):
+        activity.heartbeat(i)
+        # ... process item
+    return "done"
+```
+
+For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
 ## Add observability with OpenTelemetry {/* #add-observability */}
 
