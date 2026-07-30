@@ -474,17 +474,19 @@ try {
 - **Swallowing the `ActivityError` without logging.** Non-retryable errors fail fast and silently if you do not catch and log them. Always log the failure before re-raising or returning an error result.
 - **Confusing non-retryable errors with Workflow failures.** A non-retryable `ActivityError` fails the Activity and delivers the error to the Workflow. The Workflow itself does not fail unless it re-raises the error without catching it.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Fixed Count of Retries](/design-patterns/fixed-count-retries): Limit retries for transient errors that are worth retrying a bounded number of times.
 - [Resumable Activity](/design-patterns/resumable-activity): Park the Workflow and accept a corrected input via Signal when retries are exhausted.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
-## Guides
+### Guides
 
 - [Recover business processes without restarting](/guides/recover-without-restart): Uses `ApplicationFailure.nonRetryable()` throughout a loan pipeline to distinguish permanent failures that need a human fix from transient ones the default Retry Policy already handles.
 
-## References
+### References
 
 - [Temporal Retry Policies](/encyclopedia/retry-policies)
 - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)

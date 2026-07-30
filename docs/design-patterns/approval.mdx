@@ -857,17 +857,19 @@ If the approver's interface needs immediate confirmation that the approval was a
 - **No duplicate handling.** Receiving multiple approval Signals without deduplication can overwrite earlier decisions.
 - **No escalation path.** Without a fallback when the initial approval times out, requests stall or are silently rejected.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Signal-Based Event Handling](/design-patterns/signal-with-start): Receiving external events through Signals.
 - [Updatable Timer](/design-patterns/updatable-timer): Extending approval deadlines dynamically.
 - [Saga Pattern](/design-patterns/saga-pattern): Executing compensating actions on rejection.
 
-## Guides
+### Guides
 
 - [Reliable document approvals](/guides/reliable-document-approvals): A complete Python implementation with SLA timers, automatic escalation, resubmission loops, and audit logging.
 
-## Sample code
+### Sample code
 
 **Java**
 - [Hello Signal](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloSignal.java) — Basic Signal handling in a Workflow.
