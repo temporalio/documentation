@@ -503,6 +503,11 @@ temporal worker deployment create-version \
 </TabItem>
 </Tabs>
 
+To verify that Temporal can reach your Worker Pool, go to **Workers** > **Deployments** > select your deployment > open
+the **Actions** menu on the version and click **Validate Connection**. This checks that Temporal can impersonate the
+invoker service account and read the pool. It starts no instance, and it does not exercise the update permission that
+scaling needs, so a passing validation is not proof that Temporal can scale the pool.
+
 ## 5. Set version as current {/* #set-current-version */}
 
 Set the version as current. Without this step, Tasks on the Task Queue will not route to the version, and the WCI will
@@ -532,7 +537,7 @@ temporal workflow start \
 When Tasks arrive with no active pollers, the WCI raises the Worker Pool's instance count. Cloud Run starts an instance,
 the Worker connects to Temporal, picks up the Task, and processes it.
 
-You can verify the invocation by checking:
+You can confirm this by checking:
 
 - **Temporal UI:** The Workflow execution should show Task completions in the event history.
 - **Cloud Run logs:** Once the WCI starts an instance, the Worker Pool's logs
