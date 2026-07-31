@@ -25,6 +25,12 @@ Treat any others as deprecated, inconsistent, or experimental.
 
 :::
 
+:::note Tags vs. labels
+
+Temporal SDKs and the Temporal Service attach these metric dimensions as [tags](/glossary#tag). Once a metric is scraped by Prometheus or another OpenMetrics-compatible system, the same dimensions are called labels.
+
+:::
+
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 
 - [How to emit metrics using the Go SDK](/develop/go/platform/observability#metrics)
