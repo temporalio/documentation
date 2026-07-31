@@ -281,13 +281,19 @@ The concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkf
 - **Setting the cap far below actual demand.** A cap much lower than actual submission rate causes the queue to grow unboundedly. Monitor queue depth and raise the cap or add more Workers when throughput requirements grow.
 - **Expecting a perfectly even per-second rate.** The limit is enforced across the queue's partitions, default four. The server maintains the configured rate as an average over time but can dispatch a short burst above it, up to roughly the rate divided across partitions. If the downstream service rejects any momentary overshoot, set the cap below the hard limit to leave headroom, or reduce the partition count for the queue.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Priority Task Queues](/design-patterns/priority-task-queues)**: Route work to separate queues by urgency, with different concurrency budgets per tier.
 - **[Fairness](/design-patterns/fairness)**: Give each tenant an equal throughput share when multiple tenants share capacity.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 
-## References
+### Guides
+
+- [Rate-limit downstream APIs with separate Task Queues](/guides/rate-limit-downstream-apis): A Python walkthrough covering multiple rate-limited APIs (SendGrid, Stripe, OpenAI), 429 handling with `Retry-After`, and backlog draining strategies.
+
+### References
 
 - **Python** — [`max_task_queue_activities_per_second`](https://python.temporal.io/temporalio.worker.WorkerConfig.html#max_task_queue_activities_per_second) on [`Worker`](https://python.temporal.io/temporalio.worker.Worker.html)
 - **Go** — [`TaskQueueActivitiesPerSecond`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) in [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options)

@@ -41,10 +41,10 @@ After working through this guide, you'll have a session system where:
 
 ### What is an Actor Workflow?
 
-The Actor Workflow pattern extends the Workflow Entity pattern. An Workflow Entity is a long-running Workflow that represents a *thing*: it holds state, responds to messages, and exposes that state through Queries. An Actor Workflow is an Entity Workflow that *does things*. The distinction is behavioral:
+The Actor Workflow pattern extends the [Entity Workflow pattern](/design-patterns/entity-workflow). An Entity Workflow is a long-running Workflow that represents a *thing*: it holds state, responds to messages, and exposes that state through Queries. An Actor Workflow is an Entity Workflow that *does things*. The distinction is behavioral:
 
 - **An entity is a thing. An actor is a thing that does things.**
-- An Workflow Entity is analogous to a distributed data cache: it stores and retrieves state.
+- An Entity Workflow is analogous to a distributed data cache: it stores and retrieves state.
 - An Actor Workflow is analogous to a distributed object with operations: it stores state *and* executes side effects on behalf of the entity it represents.
 
 An Entity Workflow that takes action is an Actor Workflow. Concrete examples of actors include a Workflow that scales up a database when load increases, starts a car engine when a driver authenticates, submits an order when a customer confirms checkout, or manages a player session in a multiplayer game by joining rooms and executing combat moves.
@@ -1291,6 +1291,8 @@ The approach isn't limited to games. Any long-lived entity that has to take acti
 
 ## Related resources
 
+- [Entity Workflow Pattern](/design-patterns/entity-workflow) — pattern catalog reference for the underlying Entity Workflow pattern this Actor Workflow extends
+- [Continue-As-New Pattern](/design-patterns/continue-as-new) — pattern catalog reference covering common pitfalls and history-size triggers
 - [Temporal Python SDK documentation](/develop/python)
 - [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
 - [Continue-As-New](/develop/python/workflows/continue-as-new)
