@@ -663,7 +663,7 @@ test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkers" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
   assertContains(markdown, "> **Pre-release**");
 });
