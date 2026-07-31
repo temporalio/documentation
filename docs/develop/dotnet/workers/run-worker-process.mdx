@@ -39,8 +39,9 @@ To stop a Worker on demand, pass a token you control instead. See [Shut down a W
 
 ## Register Workflows and Activities {/* #register-types */}
 
-All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
-If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
 
 Add Workflows with `AddWorkflow<T>()` and Activities with `AddActivity()` or `AddAllActivities()`:
 
@@ -122,24 +123,3 @@ await worker.ExecuteAsync(tokenSource.Token);
 
 `ExecuteAsync()` throws `OperationCanceledException` once the Worker stops, so catch it where you want the process to exit cleanly.
 See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.
-
-## Run a Worker with dependency injection {/* #dependency-injection */}
-
-The [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) package registers a Worker as a hosted service, so the .NET host owns its lifecycle and Activities resolve their dependencies from the service provider.
-
-```csharp
-var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(ctx =>
-        ctx.
-            AddScoped<IMyDatabaseClient, MyDatabaseClient>().
-            AddHostedTemporalWorker(
-                clientTargetHost: "localhost:7233",
-                clientNamespace: "default",
-                taskQueue: "my-task-queue").
-            AddScopedActivities<MyActivities>().
-            AddWorkflow<MyWorkflow>())
-    .Build();
-await host.RunAsync();
-```
-
-Scoped Activities get a new instance per Activity Execution, so each one receives its own scoped dependencies.

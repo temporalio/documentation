@@ -77,8 +77,9 @@ gow run worker/main.go
 
 ## Register Workflows and Activities {/* #register-types */}
 
-All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
-If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
 
 Use `RegisterWorkflow()` and `RegisterActivity()` to register types.
 To register an Activity struct with multiple methods, pass the struct. The Worker gets access to all exported methods.

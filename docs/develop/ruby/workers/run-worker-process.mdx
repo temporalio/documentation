@@ -35,8 +35,9 @@ To run several Workers in one process, use `Temporalio::Worker.run_all`, which r
 
 ## Register Workflows and Activities {/* #register-types */}
 
-All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
-If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
 
 Pass Workflow classes in `workflows` and Activities in `activities`.
 For Activities you can pass either the class or an instance:

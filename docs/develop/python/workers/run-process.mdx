@@ -35,12 +35,13 @@ await worker.run()
 <!--SNIPEND-->
 
 `run()` does not return on its own. It polls until you call `shutdown()`, then returns once shutdown is complete.
-A Worker is also an async context manager: `async with worker:` starts it on entry and shuts it down on exit, which is how a Worker process usually stops. See [Shut down a Worker](#shut-down-a-worker).
+A Worker is also an async context manager: `async with worker:` starts it on entry and shuts it down on exit. See [Shut down a Worker](#shut-down-a-worker).
 
 ## Register Workflows and Activities {/* #register-types */}
 
-All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
-If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
 
 Pass a list of Workflows in `workflows`, a list of Activities in `activities`, or both.
 
