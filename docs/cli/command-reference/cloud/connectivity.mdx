@@ -112,7 +112,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--azure-pe-resource-id` | No | **string** The ARM resource ID of the Azure Private Endpoint (only for Azure private connectivity). Example: /subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Network/privateEndpoints/{name}. |
+| `--azure-pe-resource-id` | No | **string** The ARM resource ID of the Azure Private Endpoint (only for Azure private connectivity). Example: `/subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Network/privateEndpoints/{name}`. |
 | `--connection-id` | No | **string** The connection ID for private connectivity (AWS VPC endpoint ID or GCP PSC connection ID). |
 | `--gcp-project-id` | No | **string** The GCP project ID (only for GCP private connectivity). |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
