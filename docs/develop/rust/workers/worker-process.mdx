@@ -1,8 +1,8 @@
 ---
 id: worker-process
-title: Worker processes - Rust SDK
-description: Shows how to run Worker processes with the Rust SDK
-sidebar_label: Worker processes
+title: Run a Worker - Rust SDK
+description: Create and run a Temporal Worker using the Rust SDK.
+sidebar_label: Run a Worker
 toc_max_heading_level: 3
 tags:
   - Rust SDK
@@ -10,60 +10,140 @@ tags:
   - Worker
 ---
 
-## Run a Worker Process {/* #run-a-dev-worker */}
+The Rust SDK is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview), and its API can change between releases.
+The code on this page is written against `temporalio-sdk` 0.5.0.
 
-The [Worker Process](/workers#worker-process) is where Workflow and Activity code executes. A Worker polls a specific [Task Queue](/task-queue), processes Tasks from that queue, and reports results back to the Temporal Service.
+## Create and run a Worker {/* #run-a-dev-worker */}
 
-- Each [Worker Entity](/workers#worker-entity) in a Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must associate with exactly one [Task Queue](/task-queue).
-- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
-
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens on a specific Task Queue.
-
-A Worker Entity may host a Workflow Worker, an Activity Worker, or both. In many applications, a single Worker Process is enough, though you can scale out by running multiple Workers polling the same Task Queue.
-
-In Rust, create a `Worker`, configure it with your Task Queue, register your Workflows and Activities, and then run it.
+A Worker needs a `CoreRuntime` and a connected `Client`.
+Build `WorkerOptions` with the Task Queue to poll, register the Workflows and Activities the Worker can execute, then call `run()`.
 
 ```rust
+use std::str::FromStr;
+
 use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions};
+use temporalio_common::telemetry::TelemetryOptions;
 use temporalio_sdk::{Worker, WorkerOptions};
 use temporalio_sdk_core::{CoreRuntime, RuntimeOptions, Url};
 
-use crate::workflow_messaging::GreetingsWorkflow;
-use crate::activities::MyActivities;
-
 #[tokio::main]
-pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    // Connect to local Temporal server
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let runtime = CoreRuntime::new_assume_tokio(
+        RuntimeOptions::builder()
+            .telemetry_options(TelemetryOptions::builder().build())
+            .build()?,
+    )?;
+
     let connection_options =
         ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
-
-    let runtime = CoreRuntime::new_assume_tokio(RuntimeOptions::builder().build()?)?;
-
-    // Client setup
     let connection = Connection::connect(connection_options).await?;
     let client = Client::new(connection, ClientOptions::new("default").build())?;
 
     let worker_options = WorkerOptions::new("my-task-queue")
-        .register_activities(MyActivities)
-        .register_workflow::<GreetingsWorkflow>()
+        .register_workflow::<GreetingWorkflow>()?
+        .register_activities(GreetingActivities)
         .build();
 
-    Worker::new(&runtime, client, worker_options)?.run().await?;
+    let mut worker = Worker::new(&runtime, client, worker_options)?;
+    worker.run().await?;
 
     Ok(())
 }
 ```
 
-### Register types {/* #register-types */}
+`run()` polls until the Worker shuts down.
+`ClientOptions::new()` takes the Namespace, and `Connection::connect()` takes the server address.
 
-All Workers polling the same Task Queue name must be registered to handle the exact same Workflow Types and Activity Types. If a Worker receives a Task for a type it does not know how to execute, that Task fails, but the Workflow Execution itself does not necessarily fail.
+The `#[workflow]` and `#[activities]` macros expand to code that refers to the `temporalio-workflow` and `futures` crates, so both must be direct dependencies of your crate even though your own code never names them:
 
-When you create a Worker in Rust, register the Workflow and Activity types it's allowed to execute in the `WorkerOptions`:
+```toml
+[dependencies]
+temporalio-sdk = "0.5.0"
+temporalio-client = "0.5.0"
+temporalio-sdk-core = "0.5.0"
+temporalio-common = "0.5.0"
+temporalio-macros = "0.5.0"
+temporalio-workflow = "0.5.0"
+futures = "0.3"
+tokio = { version = "1", features = ["full"] }
+url = "2"
+```
+
+## Register types {/* #register-types */}
+
+All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
+If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+
+Register each Workflow with `register_workflow::<T>()` and each Activity implementer with `register_activities()`.
+`register_workflow` returns a `Result`, so it needs `?` or other error handling:
 
 ```rust
 let worker_options = WorkerOptions::new("my-task-queue")
-    .register_activities(MyActivities)
-    .register_workflow::<GreetingsWorkflow>()
+    .register_workflow::<GreetingWorkflow>()?
+    .register_workflow::<OrderWorkflow>()?
+    .register_activities(GreetingActivities)
     .build();
 ```
+
+`register_activities()` takes an instance, so Activities can share state such as a database client through the fields of that value.
+
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
+
+To run a Worker against Temporal Cloud, configure the Client connection with your Namespace address and authentication credentials.
+See [Connect to Temporal Cloud](/develop/rust/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
+
+## Configure Worker options {/* #worker-options */}
+
+`WorkerOptions` controls the Task Queue, cache size, poller behavior, and slot allocation, including `max_cached_workflows`, `workflow_task_poller_behavior`, and `tuner`.
+Set `client_identity_override` to give the Worker an identity that is more useful than the default of `{pid}@{hostname}`.
+The defaults work for most cases.
+
+To tune these values against real load, see [Worker performance](/develop/worker-performance) and the [Worker tuning reference](/develop/worker-tuning-reference).
+
+## Run a versioned Worker {/* #versioned-worker */}
+
+Set a Worker Deployment Version and enable versioning in `deployment_options`, then set the default versioning behavior for the Workflows on the Worker.
+
+```rust
+use temporalio_common::{
+    protos::temporal::api::enums::v1::VersioningBehavior,
+    worker::{WorkerDeploymentOptions, WorkerDeploymentVersion},
+};
+
+let worker_options = WorkerOptions::new("my-task-queue")
+    .deployment_options(WorkerDeploymentOptions {
+        version: WorkerDeploymentVersion {
+            deployment_name: "my-app".to_owned(),
+            build_id: "1.0".to_owned(),
+        },
+        use_worker_versioning: true,
+        default_versioning_behavior: Some(VersioningBehavior::Pinned),
+    })
+    .register_workflow::<GreetingWorkflow>()?
+    .register_activities(GreetingActivities)
+    .build();
+```
+
+The Rust SDK sets the versioning behavior on the Worker, not per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
+Setting it to `Some(VersioningBehavior::Unspecified)` is an error at startup.
+
+See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
+
+## Shut down a Worker {/* #shut-down-a-worker */}
+
+`run()` borrows the Worker mutably, so take a shutdown handle before starting it.
+Calling the handle initiates shutdown, which stops polling for new Tasks and lets in-flight Tasks finish.
+
+```rust
+let mut worker = Worker::new(&runtime, client, worker_options)?;
+let shutdown = worker.shutdown_handle();
+
+tokio::spawn(async move {
+    tokio::signal::ctrl_c().await.expect("failed to listen for ctrl-c");
+    shutdown();
+});
+
+worker.run().await?;
+```
+
+See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

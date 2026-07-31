@@ -1,8 +1,8 @@
 ---
 id: run-worker-process
-title: Worker processes - .NET SDK
-description: Shows how to run Worker processes with the .NET SDK
-sidebar_label: Worker processes
+title: Run a Worker - .NET SDK
+description: Create and run a Temporal Worker using the .NET SDK.
+sidebar_label: Run a Worker
 slug: /develop/dotnet/workers/run-worker-process
 toc_max_heading_level: 3
 tags:
@@ -11,38 +11,95 @@ tags:
   - Worker
 ---
 
-## Run Worker Process
+This page covers long-lived Workers that you host and run as persistent processes.
+For Workers that run on serverless compute like AWS Lambda, see [Serverless Workers](/develop/dotnet/workers/serverless-workers).
 
-**How to create and run a Worker Process using the Temporal .NET SDK**
+## Create and run a Worker {/* #run-worker-process */}
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+Create a `TemporalWorker` with a Temporal Client and a `TemporalWorkerOptions` that names the Task Queue to poll.
+Add the Workflows and Activities the Worker can execute, then call `ExecuteAsync()` to start polling.
 
-- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
-- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+<!--SNIPSTART dotnet-create-worker-->
+[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
+```cs
+var options = new TemporalWorkerOptions("my-task-queue");
+options.AddWorkflow<GreetingWorkflow>();
+options.AddAllActivities(typeof(GreetingActivities), null);
 
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+using var worker = new TemporalWorker(client, options);
+await worker.ExecuteAsync(CancellationToken.None);
+```
+<!--SNIPEND-->
 
-Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/develop/worker-performance).
+`ExecuteAsync()` runs until the cancellation token is cancelled, so pass a token you control rather than `CancellationToken.None` in a real process.
+See [Shut down a Worker](#shut-down-a-worker) for the pattern most Worker processes use.
 
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+`TemporalWorker` implements `IDisposable`, so declare it with `using` to release its resources when the process exits.
 
-To develop a Worker, create a new `Temporalio.Worker.TemporalWorker` providing the Client and worker options which include Task Queue, Workflows, and Activities and more.
-The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
-When a Worker is created, it accepts a list of Workflows, a list of Activities, or both.
+## Register Workflows and Activities {/* #register-types */}
+
+All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
+If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+
+Add Workflows with `AddWorkflow<T>()` and Activities with `AddActivity()` or `AddAllActivities()`:
 
 ```csharp
-// Create a client to localhost on default namespace
-var client = await TemporalClient.ConnectAsync(new("localhost:7233")
-{
-    LoggerFactory = LoggerFactory.Create(builder =>
-        builder.
-            AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
-            SetMinimumLevel(LogLevel.Information)),
-});
+var options = new TemporalWorkerOptions("my-task-queue");
+options.AddWorkflow<GreetingWorkflow>();
+options.AddWorkflow<OrderWorkflow>();
+options.AddAllActivities(new MyActivities(databaseClient));
+```
 
-// Cancellation token cancelled on ctrl+c
+`AddAllActivities()` registers every method marked with `[Activity]`. Pass an instance to register instance methods, which lets Activities share state such as a database client. For a class of static Activity methods, pass the type and `null` instead.
+
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
+
+To run a Worker against Temporal Cloud, configure the Client connection with your Namespace address and authentication credentials.
+See [Connect to Temporal Cloud](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
+
+## Configure Worker options {/* #worker-options */}
+
+`TemporalWorkerOptions` controls concurrency limits, pollers, timeouts, and caching, including `MaxConcurrentActivities`, `MaxConcurrentWorkflowTasks`, and `MaxCachedWorkflows`.
+The defaults work for most cases.
+
+To tune these values against real load, see [Worker performance](/develop/worker-performance) and the [Worker tuning reference](/develop/worker-tuning-reference).
+
+## Run a versioned Worker {/* #versioned-worker */}
+
+Set a Worker Deployment Version and enable versioning in `DeploymentOptions`, then set a versioning behavior on each Workflow.
+
+<!--SNIPSTART dotnet-versioned-worker-->
+[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
+```cs
+var options = new TemporalWorkerOptions("my-task-queue")
+{
+    DeploymentOptions = new WorkerDeploymentOptions(
+        new WorkerDeploymentVersion("my-app", "1.0"),
+        useWorkerVersioning: true),
+};
+options.AddWorkflow<VersionedGreetingWorkflow>();
+options.AddAllActivities(typeof(GreetingActivities), null);
+
+using var worker = new TemporalWorker(client, options);
+```
+<!--SNIPEND-->
+
+Set the behavior per Workflow with `[Workflow(VersioningBehavior = VersioningBehavior.Pinned)]`, or set a default for the whole Worker with `DefaultVersioningBehavior` on `WorkerDeploymentOptions`.
+`VersioningBehavior` comes from the `Temporalio.Common` namespace.
+
+A versioning behavior applies only to a Worker that has versioning enabled.
+If a Workflow declares one and its Worker does not enable versioning, the server rejects the Workflow Task and the Task retries instead of failing outright.
+
+See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
+
+## Shut down a Worker {/* #shut-down-a-worker */}
+
+Cancel the token passed to `ExecuteAsync()` to shut the Worker down.
+It stops polling for new Tasks and waits for in-flight Tasks to finish, up to `GracefulShutdownTimeout`.
+
+<!--SNIPSTART dotnet-worker-graceful-shutdown-->
+[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
+```cs
 using var tokenSource = new CancellationTokenSource();
 Console.CancelKeyPress += (_, eventArgs) =>
 {
@@ -50,52 +107,37 @@ Console.CancelKeyPress += (_, eventArgs) =>
     eventArgs.Cancel = true;
 };
 
-// Create an activity instance with some state
-var activities = new MyActivities();
+var options = new TemporalWorkerOptions("my-task-queue")
+{
+    GracefulShutdownTimeout = TimeSpan.FromSeconds(30),
+};
+options.AddWorkflow<GreetingWorkflow>();
 
-// Run worker until cancelled
-Console.WriteLine("Running worker");
-using var worker = new TemporalWorker(
-    client,
-    new TemporalWorkerOptions(taskQueue: "my-task-queue").
-        AddAllActivities(activities).
-        AddWorkflow<MyWorkflow>());
-try
-{
-    await worker.ExecuteAsync(tokenSource.Token);
-}
-catch (OperationCanceledException)
-{
-    Console.WriteLine("Worker cancelled");
-}
+using var worker = new TemporalWorker(client, options);
+await worker.ExecuteAsync(tokenSource.Token);
 ```
+<!--SNIPEND-->
 
-All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+`ExecuteAsync()` throws `OperationCanceledException` once the Worker stops, so catch it where you want the process to exit cleanly.
+See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.
 
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
-However, the failure of the Task does not cause the associated Workflow Execution to fail.
+## Run a Worker with dependency injection {/* #dependency-injection */}
 
-### Worker Processes with host builder and dependency injection
-
-The [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) extension exists for .NET developers to support HostBuilder and Dependency Injection approaches.
-
-To create the same worker as before using this approach:
+The [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) package registers a Worker as a hosted service, so the .NET host owns its lifecycle and Activities resolve their dependencies from the service provider.
 
 ```csharp
 var host = Host.CreateDefaultBuilder(args)
-    .ConfigureLogging(ctx => ctx.AddSimpleConsole().SetMinimumLevel(LogLevel.Information))
     .ConfigureServices(ctx =>
         ctx.
-            // Add the database client at the scoped level
             AddScoped<IMyDatabaseClient, MyDatabaseClient>().
-            // Add the worker
             AddHostedTemporalWorker(
                 clientTargetHost: "localhost:7233",
                 clientNamespace: "default",
                 taskQueue: "my-task-queue").
-            // Add the activities class at the scoped level
             AddScopedActivities<MyActivities>().
             AddWorkflow<MyWorkflow>())
     .Build();
 await host.RunAsync();
 ```
+
+Scoped Activities get a new instance per Activity Execution, so each one receives its own scoped dependencies.
