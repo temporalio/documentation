@@ -40,6 +40,11 @@
   ],
   "redirects": [
     {
+      "source": "/production-deployment/worker-deployments/serverless-workers/self-hosted-setup",
+      "destination": "/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup",
+      "permanent": true
+    },
+    {
       "source": "/guides/saga-pattern",
       "destination": "/guides/recover-without-restart",
       "permanent": true

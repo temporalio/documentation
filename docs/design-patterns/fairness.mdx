@@ -293,7 +293,9 @@ Fairness requires explicit enablement on Temporal Cloud and self-hosted deployme
 - **Expecting consistent fairness immediately after a server restart.** Fairness ordering is preserved across restarts for the most active keys. Less active keys may briefly dispatch new tasks ahead of their existing backlog until ordering normalizes.
 - **Expecting the running task mix to immediately reflect fair dispatch.** Fairness governs which task is dispatched next; it does not account for tasks already running on Workers. The mix of in-flight tasks at any moment may not match the configured weight ratios.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Priority Task Queues](/design-patterns/priority-task-queues)**: Order tasks by urgency level within the same Task Queue using `PriorityKey`.
 - **[Downstream Rate Limiting](/design-patterns/downstream-rate-limiting)**: Cap absolute throughput to a downstream service with a queue RPS setting.

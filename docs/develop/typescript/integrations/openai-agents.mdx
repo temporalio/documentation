@@ -513,6 +513,8 @@ that produced the serialized state.
 
 `run` supports streaming with `{ stream: true }`. The streaming model Activity publishes each model event to a [Workflow Stream](/workflow-streams) topic as the model produces it, so an external client can observe a run live while it stays durable. Streaming is experimental.
 
+Set the topic name in `modelParams.streamingTopic` on the Client's `OpenAIAgentsPlugin`, not the Worker's; `run` fails with a `StreamingTopicNotConfigured` error if no topic is configured.
+
 Streaming requires the `@temporalio/workflow-streams` package:
 
 
@@ -531,7 +533,7 @@ export async function streamingChat(prompt: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-Streaming from within the Workflow like this is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
+Streaming from within the Workflow is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
 
 ## Tracing
 

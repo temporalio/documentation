@@ -1,0 +1,62 @@
+name: Warm Build Cache
+
+# Runs the production build after every merge to main so the dependency and
+# build caches stay warm. "Docs Build Check" restores these on pull_request
+# runs via GitHub's cache fallback (current ref -> PR base branch -> default
+# branch), so a brand-new PR's first check doesn't do a fully cold install
+# and build.
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  warm-cache:
+    name: Warm dependency + build caches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "24"
+
+      - name: Cache installed dependencies
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            node_modules
+            !node_modules/.cache
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      # Rolling caches: keyed by run id so every run "changes" and re-saves,
+      # which is what keeps them incrementally warm as content changes.
+      - name: Cache OG image render cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: node_modules/.cache/og-images
+          key: og-images-${{ github.run_id }}
+          restore-keys: |
+            og-images-
+
+      - name: Cache Docusaurus build cache (rspack)
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: node_modules/.cache/rspack
+          key: rspack-${{ github.run_id }}
+          restore-keys: |
+            rspack-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build site
+        run: yarn build

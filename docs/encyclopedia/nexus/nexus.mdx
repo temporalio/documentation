@@ -56,6 +56,8 @@ The [Operation lifecycle](/nexus/operations#operation-lifecycle) supports two mo
 - **Asynchronous** - Starts a Workflow (same or different Task Queue, with optional [Eager Start](/develop/worker-performance#eager-workflow-start)). Can run up to [60 days](/cloud/limits#nexus-operation-duration-limits).
 - **Synchronous** - Completes within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout). Use for Signals, Queries, Updates, or other reliable low-latency calls using the [Temporal SDK Client](/nexus/operations#executing-arbitrary-code-from-a-sync-handler).
 
+Use a Synchronous Operation only when its complete execution path is highly reliable, has predictably low latency, and finishes well within the 10-second handler deadline; otherwise, use an Asynchronous Operation.
+
 Services and Operations are built with the Temporal SDK and typically [collocated](/nexus/patterns#collocated-pattern) in the same Worker as the Temporal primitives they abstract, or in a dedicated router Worker using the [router-queue pattern](/nexus/patterns#router-queue-pattern).
 
 :::tip SDK GUIDES
