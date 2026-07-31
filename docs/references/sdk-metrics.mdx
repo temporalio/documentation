@@ -64,7 +64,7 @@ The Core SDK is a shared common core library used by several Temporal SDKs, incl
 
 :::
 
-Each metric may have some combination of the following keys attached to them:
+Each metric may have some combination of the following [tags](/glossary#tag) attached to them:
 
 - `task_queue`: Task Queue that the Worker Entity is polling
 - `namespace`: Namespace the Worker is bound to
@@ -82,7 +82,7 @@ Each metric may have some combination of the following keys attached to them:
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
 
-Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
+Some tags may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                                  | Emitted by     | Metric type | Availability   |
 | -------------------------------------------------------------------------------------------- | -------------- | ----------- | -------------- |
@@ -173,7 +173,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 The Schedule-To-Start time of an Activity Task.
 A [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 Use this metric to check that Activity Tasks are being processed from the queue in a timely manner.
-Some SDKs include the `activity_type` label, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
+Some SDKs include the `activity_type` tag, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -435,7 +435,7 @@ A Worker Entity has been registered, created, or started.
 ### `worker_task_slots_available`
 
 The total number of Workflow, Activity, Local Activity, or Nexus Task execution slots that are currently available.
-Use the `worker_type` key to differentiate execution slots.
+Use the `worker_type` tag to differentiate execution slots.
 The Worker type specifies an ability to perform certain tasks.
 For example, Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks, and so forth.
 
@@ -446,7 +446,7 @@ For example, Workflow Workers execute Workflow Tasks, Activity Workers execute A
 ### `worker_task_slots_used`
 
 The total number of Workflow, Activity, Local Activity, or Nexus Tasks execution slots in current use.
-Use the `worker_type` key to differentiate execution slots.
+Use the `worker_type` tag to differentiate execution slots.
 The Worker type specifies an ability to perform certain tasks.
 For example, Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks, and so forth.
 
