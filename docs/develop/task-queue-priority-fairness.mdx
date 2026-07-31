@@ -15,7 +15,6 @@ tags:
 ---
 
 import { EnlargeImage, SdkTabs, AnnotatedCode } from '@site/src/components';
-import * as Fairness from '@site/src/components/elements/AnnotatedCode/annotations/fairnessWorkflow';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
 distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
@@ -272,7 +271,28 @@ You can set fairness keys and weights for a Workflow within the SDK like so. Sel
 
 <SdkTabs>
 <SdkTabs.Go>
-<AnnotatedCode annotations={Fairness.go}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Priority key',
+      description:
+        'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
+      lines: [5],
+    },
+    {
+      label: 'Fairness key',
+      description:
+        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+      lines: [6],
+    },
+    {
+      label: 'Fairness weight',
+      description:
+        'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
+      lines: [7],
+    },
+  ]}
+>
 ```go
 workflowOptions := client.StartWorkflowOptions{
   ID:        "my-workflow-id",
@@ -288,7 +308,28 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, MyWorkflow)
 </AnnotatedCode>
 </SdkTabs.Go>
 <SdkTabs.Java>
-<AnnotatedCode annotations={Fairness.java}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Priority key',
+      description:
+        'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
+      lines: [4],
+    },
+    {
+      label: 'Fairness key',
+      description:
+        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+      lines: [5],
+    },
+    {
+      label: 'Fairness weight',
+      description:
+        'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
+      lines: [6],
+    },
+  ]}
+>
 ```java
 WorkflowOptions options = WorkflowOptions.newBuilder()
   .setTaskQueue("my-task-queue")
@@ -305,7 +346,28 @@ workflow.run();
 </AnnotatedCode>
 </SdkTabs.Java>
 <SdkTabs.Python>
-<AnnotatedCode annotations={Fairness.python}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Priority key',
+      description:
+        'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
+      lines: [7],
+    },
+    {
+      label: 'Fairness key',
+      description:
+        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+      lines: [8],
+    },
+    {
+      label: 'Fairness weight',
+      description:
+        'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
+      lines: [9],
+    },
+  ]}
+>
 ```python
 await client.start_workflow(
   MyWorkflow.run,
@@ -322,7 +384,28 @@ await client.start_workflow(
 </AnnotatedCode>
 </SdkTabs.Python>
 <SdkTabs.Ruby>
-<AnnotatedCode annotations={Fairness.ruby}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Priority key',
+      description:
+        'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
+      lines: [6],
+    },
+    {
+      label: 'Fairness key',
+      description:
+        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+      lines: [7],
+    },
+    {
+      label: 'Fairness weight',
+      description:
+        'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
+      lines: [8],
+    },
+  ]}
+>
 ```ruby
 client.start_workflow(
   MyWorkflow, "input-arg",
@@ -338,7 +421,28 @@ client.start_workflow(
 </AnnotatedCode>
 </SdkTabs.Ruby>
 <SdkTabs.TypeScript>
-<AnnotatedCode annotations={Fairness.typescript}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Priority key',
+      description:
+        'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
+      lines: [4],
+    },
+    {
+      label: 'Fairness key',
+      description:
+        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+      lines: [5],
+    },
+    {
+      label: 'Fairness weight',
+      description:
+        'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
+      lines: [6],
+    },
+  ]}
+>
 ```ts
 const handle = await startWorkflow(workflows.priorityWorkflow, {
   args: [false, 1],
@@ -352,7 +456,28 @@ const handle = await startWorkflow(workflows.priorityWorkflow, {
 </AnnotatedCode>
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
-<AnnotatedCode annotations={Fairness.dotnet}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Priority key',
+      description:
+        'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
+      lines: [8],
+    },
+    {
+      label: 'Fairness key',
+      description:
+        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+      lines: [9],
+    },
+    {
+      label: 'Fairness weight',
+      description:
+        'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
+      lines: [10],
+    },
+  ]}
+>
 ```csharp
 var handle = await Client.StartWorkflowAsync(
   (MyWorkflow wf) => wf.RunAsync("hello"),

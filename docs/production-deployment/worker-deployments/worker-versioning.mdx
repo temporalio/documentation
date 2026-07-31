@@ -19,7 +19,6 @@ tags:
 
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import { SdkTabs, AnnotatedCode } from '@site/src/components';
-import * as WV from '@site/src/components/elements/AnnotatedCode/annotations/workerVersioning';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
@@ -152,7 +151,28 @@ Follow the example for your SDK below. Select a concept to highlight the matchin
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
-<AnnotatedCode annotations={WV.go}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [4],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [5, 6, 7, 8],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [9],
+    },
+  ]}
+>
 ```go
 buildID := mustGetEnv("MY_BUILD_ID")
 w := worker.New(c, myTaskQueue, worker.Options{
@@ -169,7 +189,28 @@ w := worker.New(c, myTaskQueue, worker.Options{
 </AnnotatedCode>
 </SdkTabs.Go>
 <SdkTabs.Java>
-<AnnotatedCode annotations={WV.java}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [10],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [9],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [11],
+    },
+  ]}
+>
 ```java
 import io.temporal.worker.WorkerOptions;
 import io.temporal.common.VersioningBehavior;
@@ -188,7 +229,28 @@ WorkerOptions.newBuilder()
 </AnnotatedCode>
 </SdkTabs.Java>
 <SdkTabs.Python>
-<AnnotatedCode annotations={WV.python}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [13],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [10, 11, 12],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [14],
+    },
+  ]}
+>
 ```python
 from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
 from temporalio.worker import Worker, WorkerDeploymentConfig
@@ -210,7 +272,28 @@ Worker(
 </AnnotatedCode>
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
-<AnnotatedCode annotations={WV.typescript}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [5],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [6],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. This TypeScript example does not set a default; set Versioning Behavior on each Workflow, or add a default when your SDK supports it on Worker options.',
+      lines: [],
+    },
+  ]}
+>
 ```ts
 const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
@@ -225,7 +308,28 @@ const myWorker = await Worker.create({
 </AnnotatedCode>
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
-<AnnotatedCode annotations={WV.dotnet}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [5],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [5],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [7],
+    },
+  ]}
+>
 ```csharp
 var myWorker = new TemporalWorker(
     Client,
@@ -240,7 +344,28 @@ var myWorker = new TemporalWorker(
 </AnnotatedCode>
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
-<AnnotatedCode annotations={WV.ruby}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [10],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [6, 7, 8, 9],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [11],
+    },
+  ]}
+>
 ```ruby
 worker = Temporalio::Worker.new(
   client: client,

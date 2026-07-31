@@ -11,7 +11,6 @@ tags:
 
 import { CaptionedImage, ReleaseNoteHeader, SdkTabs, AnnotatedCode } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import * as Poller from '@site/src/components/elements/AnnotatedCode/annotations/pollerAutoscaling';
 
 This page documents metrics and configurations that drive the efficiency of your Worker fleet.
 It provides coverage of performance metric families, Worker configuration options, Task Queue information, backlog counts, Task rates, and how to evaluate Worker availability.
@@ -253,7 +252,25 @@ Select a concept to highlight the matching poller option:
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
 [Go SDK docs](https://pkg.go.dev/go.temporal.io/sdk/worker#PollerBehaviorAutoscalingOptions)
-<AnnotatedCode annotations={Poller.go}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [2],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [3],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [4],
+    },
+  ]}
+>
 ```go
 w := worker.New(c, "my-task-queue", worker.Options{
   WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
@@ -265,7 +282,25 @@ w := worker.New(c, "my-task-queue", worker.Options{
 </SdkTabs.Go>
 <SdkTabs.Java>
 [Java SDK docs](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/PollerBehaviorAutoscaling.html)
-<AnnotatedCode annotations={Poller.java}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [7],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [8],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [9],
+    },
+  ]}
+>
 ```java
 public class WorkerExample {
     public static void main(String[] args) {
@@ -286,7 +321,25 @@ public class WorkerExample {
 </SdkTabs.Java>
 <SdkTabs.Python>
 [Python SDK docs](https://python.temporal.io/temporalio.worker.PollerBehaviorAutoscaling.html)
-<AnnotatedCode annotations={Poller.python}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [7],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [8],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [9],
+    },
+  ]}
+>
 ```python
 worker = Worker(
     client,
@@ -303,7 +356,25 @@ worker = Worker(
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
 [TypeScript SDK docs](https://typescript.temporal.io/api/interfaces/proto.temporal.api.sdk.v1.WorkerConfig.IAutoscalingPollerBehavior)
-<AnnotatedCode annotations={Poller.typescript}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [7],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [8],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [9],
+    },
+  ]}
+>
 ```ts
 const worker = await Worker.create({
   connection,
@@ -320,7 +391,25 @@ const worker = await Worker.create({
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
 [DotNet SDK docs](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.PollerBehavior.Autoscaling.html)
-<AnnotatedCode annotations={Poller.dotnet}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [5],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [6],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [7],
+    },
+  ]}
+>
 ```csharp
 using var worker = new TemporalWorker(
     client,
@@ -338,7 +427,25 @@ using var worker = new TemporalWorker(
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 [Ruby SDK docs](https://ruby.temporal.io/Temporalio/Worker/PollerBehavior/Autoscaling.html)
-<AnnotatedCode annotations={Poller.ruby}>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [7],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [8],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [9],
+    },
+  ]}
+>
 ```ruby
 worker = Temporalio::Worker.new(
   client,
