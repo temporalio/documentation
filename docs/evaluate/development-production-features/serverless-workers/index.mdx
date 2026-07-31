@@ -23,10 +23,11 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-  APIs are experimental and may be subject to backwards-incompatible changes.
-  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
+  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
+  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
+  when Cloud Run reaches Public Preview.
 </ReleaseNoteHeader>
 
 Serverless Workers let you run Temporal Workers on serverless compute platforms like AWS Lambda and GCP Cloud Run. There

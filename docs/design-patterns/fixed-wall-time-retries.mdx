@@ -310,13 +310,15 @@ const { authorizeTransaction } = wf.proxyActivities<typeof activities>({
 - **Ignoring the breach in the Workflow.** Letting the `ActivityError` propagate without handling it means SLA breaches go unlogged and uncompensated.
 - **Not accounting for backoff delays in the budget.** The total time includes both attempt durations and the backoff delays between them. A 1-hour budget with a 30-minute initial interval and coefficient 2.0 leaves room for only one or two attempts.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Fixed Count of Retries](/design-patterns/fixed-count-retries): Bound by attempt count rather than elapsed time.
 - [Delayed Retry](/design-patterns/delayed-retry): Fixed-interval retry when the downstream unavailability window is known.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
-## References
+### References
 
 - [Activity Timeouts](https://temporal.io/blog/activity-timeouts)
 - [Temporal Retry Policies](/encyclopedia/retry-policies)
