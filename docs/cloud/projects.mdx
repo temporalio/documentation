@@ -15,11 +15,15 @@ tags:
   - Nexus Endpoints
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader
+  featureName="projects"
+/>
+
 Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize Namespaces, Nexus endpoints, and Connectivity Rules around how your organization operates: by team, environment, service, or business unit.
 
 Projects make it easier to delegate ownership, manage access at scale, and organize resources without creating additional Cloud Accounts. As your organization grows, Projects help align your Temporal Cloud resources with your organizational structure while reducing operational overhead.
-
-Projects are for organization and authorization. They don't change how Workflows execute inside a Namespace.
 
 Projects are for organization and authorization. They don't change how Workflows execute inside a Namespace.
 
@@ -33,22 +37,9 @@ If you don't need the organizational boundaries offered by Projects, continue to
 
 All Projects are identified by immutable IDs, and by display names, which can be edited.
 
-## Limitations
-
-The total number of Projects in an Account is limited by an adjustable quota, similar to Namespace quotas.
-
-By default, you can create up to 10 Projects per Account. You can increase this number up to 100 Projects by request.
-
-Each Project has configurable resource limits. New Projects start with the default limits shown below. These limits can be adjusted, but cannot exceed the corresponding Account-level limits.
-
-| Resource | Default | Maximum | 
-| --- | --- | --- |
-| Namespaces | 10 | 5000 |
-| Nexus Endpoints | 10 | 100  |
-| Connectivity Rules | 5 | 25 |
-| Project-scoped Service Accounts | 10 | 1000 |
-
 Namespaces cannot be moved between Projects currently, meaning all existing Namespaces will exist in the Default Project. You can create a new Project and place a new Namespace in that Project.
+
+For limitations on the number of Projects per Account and number of resources per Project, see [Project-level limitations](/cloud/limits#project-level).
 
 ## Create a new Project
 
@@ -58,10 +49,10 @@ Start with one Project for a team or application with clear ownership. Add more 
 
 In the Temporal UI, click **Projects** at the top of the left navigation bar, under **Your Account**. You'll see a list of existing Projects associated with your Account. The first time you use Projects, you'll only see the Default Project in this list.
 
-Click the **Create Project** button to create a new Project. On the **Create Project** page that appears, give the Project a name (limited to 39 characters) and an optional description. Click **Create** and you'll be taken to the page for your new Project. You cannot currently migrate resources from existing Projects to a new Project. Instead, from this page click **Create Namespace** to add a new Namespace to this Project. To add a Nexus Endpoint instead, click **Nexus Endpoints** in the left navigation and then click the **Create Nexus Endpoint** button.
+Click the **Create Project** button to create a new Project. On the **Create Project** page that appears, give the Project a name (limited to 64 characters) and an optional description (limited to 255 characters). Click **Create** and you'll be taken to the page for your new Project. You cannot currently migrate resources from existing Projects to a new Project. Instead, from this page click **Create Namespace** to add a new Namespace to this Project. To add a Nexus Endpoint instead, click **Nexus Endpoints** in the left navigation and then click the **Create Nexus Endpoint** button.
 
 
-## Add Resources to a Project
+## Add Resources to a Project {/* #add-resources-to-a-project */}
 
 To add a new Namespace to this Project, click **Namespaces** in the left navigation, and then click **Create Namespace** to add a new Namespace.
 
@@ -73,18 +64,34 @@ The drop-down list on the left lists the available Project Roles. To add a user 
 
 To modify an existing user's role, select the edit button in the list next to their current permission level. You can then update the user's permissions in this Project. Click the trash-can icon to remove Project permissions from that user.
 
-The Service Account and Groups tabs work the same way. 
+The Groups tab works the same way as the Users tab. 
+
+To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts**  tab to create Project-scoped service account.
+
+Project-scoped Service Accounts are not created automatically with Project creation. Create them only when needed. Unlike an Account-scoped Service Account, a Project-scoped Service Account cannot access resources outside its Project.
+
+Use a Project-scoped Service Account when automation only needs access to one team's resources. If automation needs to work across multiple Projects, use an Account-scoped Service Account instead. 
+
+A Project can contain multiple Project-scoped Service Accounts. Each Project-scoped Service Account belongs to exactly one Project. 
+
+A Project-scoped Service Account cannot be moved to another Project after it is created.
+
+Project-scoped Service Accounts count toward the Project's Service Account limit.
+
+A Project cannot be deleted while it contains Project-scoped Service Accounts.
+
+API keys created for the Service Account inherit only that Service Account's permissions. Deleting a Project-scoped Service Account also deletes its API keys.
 
 ## Project roles
 
-The following six roles are available at the Project level for users, groups, and service accounts:
+The following roles are available at the Project level for users, groups, and service accounts:
 
 - **Project Admin:** Complete access to the Project resource itself and all resources in it.
 - **Project Write:** Write access to all the Namespaces and other resources in a Project, but cannot add other users.
 - **Project Read:** Read-only access to all the resources in a Project, including viewing the actual contents of a Workflow.
 - **Project Contribute:** Can create new Namespaces, and list all Project resources, but without access to Workflow contents.
 - **Project List:** List-only access to metadata for all the resources in a Project, but without access to Workflow contents.
-**Project Member:** Minimal Project-level access; used when a user already has explicit Namespace-level access and only needs to be represented at the Project level
+- **Project Member:** Minimal Project-level access; used when a user already has explicit Namespace-level access and only needs to be represented at the Project level
 
 :::warning Project Developer
 
