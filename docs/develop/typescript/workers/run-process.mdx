@@ -16,9 +16,6 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 
 ## Create and run a Worker {/* #run-a-dev-worker */}
 
-A [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions execute.
-Each Worker polls exactly one [Task Queue](/task-queue), and every Worker polling a given Task Queue must register the same Workflow Types and Activity Types.
-
 Create a Worker with `Worker.create()`, passing a connection, the Task Queue to poll, and the Workflows and Activities it can execute.
 Call `run()` to start polling.
 
@@ -179,11 +176,14 @@ const worker = await Worker.create({
 ```
 <!--SNIPEND-->
 
+`defaultVersioningBehavior` covers every Workflow on the Worker.
+To set the behavior for a single Workflow instead, pass `versioningBehavior` through [`setWorkflowOptions()`](https://typescript.temporal.io/api/namespaces/workflow#setworkflowoptions) where you define that Workflow.
+
 See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
 
 ## Shut down a Worker {/* #shut-down-a-worker */}
 
-Workers shut down if they receive any of the Signals enumerated in
+Workers shut down when the process receives any of the operating system signals listed in
 [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`,
 `'SIGTERM'`, `'SIGQUIT'`, and `'SIGUSR2'`.
 
@@ -206,7 +206,7 @@ await worker.run();
 ```
 <!--SNIPEND-->
 
-As soon as a Worker receives a shutdown Signal or request, the Worker stops polling for new Tasks and allows in-flight
+As soon as a Worker receives one of those signals or a shutdown request, the Worker stops polling for new Tasks and allows in-flight
 Tasks to complete until `shutdownGraceTime` is reached. Any Activities still running at that time stop running and are
 rescheduled by the Temporal Service when an Activity timeout occurs.
 
@@ -232,7 +232,7 @@ seven states:
   polling Task Queues.
 - `FAILED`: The Worker encountered an unrecoverable error; `Worker.run()` should reject with the error.
 - The last four states are related to the Worker shutdown process:
-  - `STOPPING`: The Worker received a shutdown Signal or `Worker.shutdown()` was called. The Worker will forcefully shut
+  - `STOPPING`: The Worker received a shutdown signal or `Worker.shutdown()` was called. The Worker forcefully shuts
     down after `shutdownGraceTime` expires.
   - `DRAINING`: All Workflow Tasks have been drained; waiting for Activities and cached Workflows eviction.
   - `DRAINED`: All Activities and Workflows have completed; ready to shut down.

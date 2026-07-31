@@ -17,7 +17,7 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 ## Create and run a Worker {/* #run-a-dev-worker */}
 
 Create a `Worker` with a Temporal Client, the Task Queue to poll, and the Workflows and Activities it can execute.
-Call `run()` to start polling. The Worker runs until the process is interrupted.
+Call `run()` to start polling.
 
 <!--SNIPSTART python-create-worker-->
 [features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
@@ -34,8 +34,8 @@ await worker.run()
 ```
 <!--SNIPEND-->
 
-A Worker is also an async context manager, so `async with worker:` runs it for the duration of a block.
-See [Shut down a Worker](#shut-down-a-worker) for the pattern most Worker processes use.
+`run()` does not return on its own. It polls until you call `shutdown()`, then returns once shutdown is complete.
+A Worker is also an async context manager: `async with worker:` starts it on entry and shuts it down on exit, which is how a Worker process usually stops. See [Shut down a Worker](#shut-down-a-worker).
 
 ## Register Workflows and Activities {/* #register-types */}
 
@@ -99,8 +99,25 @@ See [Worker Versioning](/worker-versioning) for the available versioning behavio
 
 ## Shut down a Worker {/* #shut-down-a-worker */}
 
-Use the Worker as an async context manager and wait on an event that your signal handler sets.
-When the block exits, the Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to `graceful_shutdown_timeout`.
+Shut a Worker down by leaving the `async with` block, which calls `shutdown()` for you.
+To keep the Worker running until the process is interrupted, create an `asyncio.Event` and wait on it inside the block.
+
+Set that event from the entry point that catches `KeyboardInterrupt`:
+
+```python
+interrupt_event = asyncio.Event()
+
+if __name__ == "__main__":
+    loop = asyncio.new_event_loop()
+    try:
+        loop.run_until_complete(main())
+    except KeyboardInterrupt:
+        interrupt_event.set()
+        loop.run_until_complete(loop.shutdown_asyncgens())
+```
+
+Waiting on `interrupt_event` inside the block holds the Worker open.
+Once the event is set, the block exits, and the Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to `graceful_shutdown_timeout`.
 
 <!--SNIPSTART python-worker-graceful-shutdown-->
 [features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)

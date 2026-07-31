@@ -127,11 +127,16 @@ w.RegisterWorkflowWithOptions(HelloWorkflow, workflow.RegisterOptions{
 ```
 <!--SNIPEND-->
 
+Set the behavior per Workflow with `RegisterWorkflowWithOptions()`, or set a default for every Workflow on the Worker with `DefaultVersioningBehavior` in `worker.DeploymentOptions`.
+
+A versioning behavior applies only to a Worker that has versioning enabled, and setting `DefaultVersioningBehavior` without `UseVersioning` is an error.
+With versioning enabled and no default set, a Workflow that does not set its own behavior fails at registration time.
+
 See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
 
 ## Shut down a Worker {/* #shut-down-a-worker */}
 
 A Worker started with `Run(worker.InterruptCh())` shuts down when the process receives `SIGINT` or `SIGTERM`.
-It stops polling for new Tasks and waits for in-flight Tasks to finish, up to the `WorkerStopTimeout` set in `worker.Options`.
+The Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to the `WorkerStopTimeout` set in `worker.Options`.
 
 See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.
