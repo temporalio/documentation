@@ -15,8 +15,24 @@ The code on this page is written against `temporalio-sdk` 0.5.0.
 
 ## Create and run a Worker {/* #run-a-dev-worker */}
 
+Start with these dependencies.
+The `#[workflow]` and `#[activities]` macros expand to code that refers to the `temporalio-workflow` and `futures` crates, so both must be direct dependencies of your crate even though your own code never names them:
+
+```toml
+[dependencies]
+temporalio-sdk = "0.5.0"
+temporalio-client = "0.5.0"
+temporalio-sdk-core = "0.5.0"
+temporalio-common = "0.5.0"
+temporalio-macros = "0.5.0"
+temporalio-workflow = "0.5.0"
+futures = "0.3"
+tokio = { version = "1", features = ["full"] }
+url = "2"
+```
+
 A Worker needs a `CoreRuntime` and a connected `Client`.
-Build `WorkerOptions` with the Task Queue to poll, register the Workflows and Activities the Worker can execute, then call `run()`.
+Build `WorkerOptions` with the Task Queue to poll, register the Workflows and Activities the Worker can execute, then call `run()`:
 
 ```rust
 use std::str::FromStr;
@@ -54,22 +70,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 `run()` polls until the Worker shuts down.
 `ClientOptions::new()` takes the Namespace, and `Connection::connect()` takes the server address.
 
-The `#[workflow]` and `#[activities]` macros expand to code that refers to the `temporalio-workflow` and `futures` crates, so both must be direct dependencies of your crate even though your own code never names them:
-
-```toml
-[dependencies]
-temporalio-sdk = "0.5.0"
-temporalio-client = "0.5.0"
-temporalio-sdk-core = "0.5.0"
-temporalio-common = "0.5.0"
-temporalio-macros = "0.5.0"
-temporalio-workflow = "0.5.0"
-futures = "0.3"
-tokio = { version = "1", features = ["full"] }
-url = "2"
-```
-
-## Register types {/* #register-types */}
+## Register Workflows and Activities {/* #register-types */}
 
 All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
 If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
@@ -131,8 +132,8 @@ See [Worker Versioning](/worker-versioning) for the available versioning behavio
 
 ## Shut down a Worker {/* #shut-down-a-worker */}
 
-`run()` borrows the Worker mutably, so take a shutdown handle before starting it.
-Calling the handle initiates shutdown, which stops polling for new Tasks and lets in-flight Tasks finish.
+`run()` borrows the Worker mutably, so call `shutdown_handle()` before starting the Worker.
+Calling the handle it returns initiates shutdown, which stops polling for new Tasks and lets in-flight Tasks finish.
 
 ```rust
 let mut worker = Worker::new(&runtime, client, worker_options)?;

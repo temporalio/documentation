@@ -31,8 +31,7 @@ worker.run
 <!--SNIPEND-->
 
 `run` blocks until the Worker shuts down.
-To run several Workers in one process, use `Temporalio::Worker.run_all`.
-It runs them until its cancellation is canceled or its optional block completes, then shuts all of them down.
+To run several Workers in one process, use `Temporalio::Worker.run_all`, which returns once every Worker it was given has stopped.
 
 ## Register Workflows and Activities {/* #register-types */}
 
@@ -108,5 +107,7 @@ worker.run(shutdown_signals: %w[SIGINT SIGTERM])
 ```
 <!--SNIPEND-->
 
-You can also pass a block to `run`, which shuts the Worker down when the block completes.
+You can also pass a block to `run`, which shuts the Worker down when the block completes, or stop the Worker with a `Temporalio::Cancellation`.
+`Temporalio::Worker.run_all` takes the same `shutdown_signals`, `cancellation`, and block, and applies them to every Worker it was given.
+
 See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

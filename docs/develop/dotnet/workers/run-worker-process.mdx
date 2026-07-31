@@ -31,8 +31,9 @@ await worker.ExecuteAsync(CancellationToken.None);
 ```
 <!--SNIPEND-->
 
-`ExecuteAsync()` runs until the cancellation token is cancelled, so pass a token you control rather than `CancellationToken.None` in a real process.
-See [Shut down a Worker](#shut-down-a-worker) for the pattern most Worker processes use.
+`ExecuteAsync()` takes a `CancellationToken` and polls until that token is cancelled.
+The snippet passes `CancellationToken.None`, which never cancels, so the Worker runs until the process exits.
+To stop a Worker on demand, pass a token you control instead. See [Shut down a Worker](#shut-down-a-worker).
 
 `TemporalWorker` implements `IDisposable`, so declare it with `using` to release its resources when the process exits.
 
@@ -94,8 +95,9 @@ See [Worker Versioning](/worker-versioning) for the available versioning behavio
 
 ## Shut down a Worker {/* #shut-down-a-worker */}
 
-Cancel the token passed to `ExecuteAsync()` to shut the Worker down.
-It stops polling for new Tasks and waits for in-flight Tasks to finish, up to `GracefulShutdownTimeout`.
+To stop a Worker on demand, start it with a token you can cancel yourself instead of `CancellationToken.None`.
+Create a `CancellationTokenSource`, pass its `Token` to `ExecuteAsync()`, then cancel the source when the Worker should stop, such as from a `Console.CancelKeyPress` handler.
+The Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to `GracefulShutdownTimeout`.
 
 <!--SNIPSTART dotnet-worker-graceful-shutdown-->
 [features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
