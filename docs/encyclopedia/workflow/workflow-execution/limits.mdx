@@ -22,7 +22,7 @@ There is no limit to the number of concurrent Workflow Executions, albeit you mu
 
 :::caution
 
-As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/common/dynamicconfig/constants.go#L441) or [50 MB](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/common/dynamicconfig/constants.go#L425) and will warn you after 10,240 Events or 10 MB.
 
 :::
 
@@ -46,7 +46,9 @@ There is a limit to the total number of Workflow Callbacks that may be attached 
 Attaching [multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) may exceed these limits.
 
 These limits can be set with the following dynamic configuration keys:
-- [MaxCallbacksPerWorkflow](https://github.com/temporalio/temporal/blob/3b626075691c483871630d4a4df266e783f86328/common/dynamicconfig/constants.go#L998)
+- [MaxCallbacksPerWorkflow](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/common/dynamicconfig/constants.go#L1082)
+{/* TODO: MaxCHASMCallbacksPerWorkflow has been removed from temporalio/temporal (it was marked temporary,
+pending full CHASM rollout). Decide whether to drop this bullet or replace it with the current equivalent. */}
 - [MaxCHASMCallbacksPerWorkflow](https://github.com/temporalio/temporal/blob/3b626075691c483871630d4a4df266e783f86328/common/dynamicconfig/constants.go#L1005)
 
 ## Workflow Execution Nexus Operation Limits {/* #workflow-execution-nexus-operation-limits */}
@@ -57,6 +59,6 @@ Too many entries in a single Workflow Execution's mutable state causes unstable 
 To protect the system, Temporal enforces a maximum number of incomplete Nexus Operation requests per Workflow Execution (by default, 30 Nexus Operations).
 Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another Nexus operation (by producing a ScheduleNexusOperation), it will be unable to do so (the Workflow Task Execution will fail and get retried).
 
-These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L38):
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/components/nexusoperations/config.go#L36):
 
 - MaxConcurrentOperations
