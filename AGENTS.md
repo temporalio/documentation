@@ -158,10 +158,17 @@ Reference page checks:
 ```bash
 yarn check:metrics       # SDK metrics reference against itself; runs in CI on PRs
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
+yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
 record it in `bin/metrics-baseline.json` rather than suppressing the check.
+
+`yarn check:orphans` reports pages that will build and get a real URL but aren't reachable from `sidebars.js`. A page
+that should stay linkable without navigation belongs in frontmatter as `unlisted: true`, not `draft: true` (draft pages
+don't build in production at all, which 404s any inbound links). A page that's a known, accepted exception for now
+belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See `UTILITIES.md` for
+details.
 
 Vale linting (style):
 

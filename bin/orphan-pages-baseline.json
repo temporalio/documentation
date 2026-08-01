@@ -1,0 +1,61 @@
+{
+  "comment": "Pages that render but are not reachable from any sidebar entry in sidebars.js, and that we have decided to leave that way for now. bin/check-orphan-pages.js reports anything not listed here. An empty note means the entry has not been reviewed yet; either wire the page into sidebars.js, mark it `unlisted: true` if it should stay out of navigation on purpose, or fill in the note explaining why it stays excepted. Regenerate with: node bin/check-orphan-pages.js --update-baseline",
+  "exceptions": [
+    {
+      "path": "docs/cli/command-reference/cloud/project.mdx",
+      "note": "Pending triage. Added by the CLI-docs codegen bot in #5002 (the 'temporal cloud project' command group) but sidebars.js was not updated in the same commit. Likely just needs a sidebars.js entry."
+    },
+    {
+      "path": "docs/cloud/get-started/user-invite.mdx",
+      "note": "Pending triage. Imported inline into docs/cloud/manage-access/users.mdx as embedded content; not underscore-prefixed so it also builds as its own standalone page nobody links to as a page. A slug was previously removed from this file (#4772, 'removed slugs that were blocking redirects')."
+    },
+    {
+      "path": "docs/cloud/references/regions/awsregions.md",
+      "note": "Pending triage. No frontmatter at all; imported as a content partial into evaluate/temporal-cloud/regions.mdx and cloud/connectivity/{aws,gcp}-connectivity.mdx. Not underscore-prefixed, so it isn't excluded from the docs build the way true partials are."
+    },
+    {
+      "path": "docs/cloud/references/regions/gcpregions.md",
+      "note": "Pending triage. Same situation as awsregions.md above."
+    },
+    {
+      "path": "docs/cloud/references/regions/private-service.md",
+      "note": "Pending triage. Same situation as awsregions.md above."
+    },
+    {
+      "path": "docs/develop/go/worker-versioning-legacy.mdx",
+      "note": "Pending triage. Reachable only via an inline prose link from develop/go/workflows/versioning.mdx ('you can still refer to the Worker Versioning Legacy docs'), not from any sidebar."
+    },
+    {
+      "path": "docs/develop/java/worker-versioning-legacy.mdx",
+      "note": "Pending triage. Same situation as the Go SDK's version — prose-linked from develop/java/workflows/versioning.mdx only."
+    },
+    {
+      "path": "docs/develop/python/workflows/worker-versioning-legacy.mdx",
+      "note": "Pending triage. Same situation as the Go SDK's version — prose-linked from develop/python/workflows/versioning.mdx only."
+    },
+    {
+      "path": "docs/develop/run-a-development-server.mdx",
+      "note": "Pending triage. Reachable only via an inline prose link from develop/go/nexus/feature-guide.mdx, not from any sidebar."
+    },
+    {
+      "path": "docs/develop/typescript/install-typescript-sdk.mdx",
+      "note": "Pending triage. No inbound links found anywhere in docs/ or vercel.json redirects. Added in the SDK-content reorg (#4377); looks like a genuine leftover worth deleting rather than keeping excepted."
+    },
+    {
+      "path": "docs/develop/typescript/worker-versioning-legacy.mdx",
+      "note": "Pending triage. Same situation as the Go SDK's version — prose-linked from develop/typescript/workflows/versioning.mdx only."
+    },
+    {
+      "path": "docs/encyclopedia/worker-versioning-legacy.mdx",
+      "note": "Pending triage. Unlike the per-SDK worker-versioning-legacy pages above, no inbound links were found anywhere for this one either — looks like a genuine leftover."
+    },
+    {
+      "path": "docs/evaluate/development-production-features/cloud-vs-self-hosted.mdx",
+      "note": "Pending triage. Reachable only via inline prose links from evaluate/development-production-features/low-latency.mdx and production-deployment/self-hosted-guide/checklist.mdx, not from any sidebar."
+    },
+    {
+      "path": "docs/getting-started.mdx",
+      "note": "Pending triage. Predates the current sidebar structure (added 2023, PR #2738) and is still prose-linked from several SDKs' serverless-workers pages plus develop/python/index.mdx, but was never re-added to sidebars.js."
+    }
+  ]
+}
