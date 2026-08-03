@@ -47,6 +47,8 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Suppose you have an initial Workflow that runs `activityA`:
 
+<!--SNIPSTART typescript-patching-1-->
+[patching-api/src/workflows-v1.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v1.ts)
 ```ts
 // v1
 export async function myWorkflow(): Promise<void> {
@@ -55,9 +57,12 @@ export async function myWorkflow(): Promise<void> {
   await activityThatMustRunAfterA();
 }
 ```
+<!--SNIPEND-->
 
 Now, you want to update your code to run `activityB` instead. This represents your desired end state.
 
+<!--SNIPSTART typescript-patching-final-->
+[patching-api/src/workflows-vFinal.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-vFinal.ts)
 ```ts
 // vFinal
 export async function myWorkflow(): Promise<void> {
@@ -65,6 +70,7 @@ export async function myWorkflow(): Promise<void> {
   await sleep('1 days');
 }
 ```
+<!--SNIPEND-->
 
 The problem is that you cannot deploy this `vFinal` revision directly until you're certain there are no more running Workflows created using the `v1` code, otherwise you are likely to cause a nondeterminism error.
 Instead, you'll need to use the [`patched`](https://typescript.temporal.io/api/namespaces/workflow#patched) function to check which version of the code should be executed.
@@ -82,6 +88,8 @@ Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case `your-change-id`).
 This ensures you can safely deploy code from `v2` as a "feature flag" alongside the original version (`v1`).
 
+<!--SNIPSTART typescript-patching-2-->
+[patching-api/src/workflows-v2.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v2.ts)
 ```ts
 // v2
 import { patched } from '@temporalio/workflow';
@@ -96,6 +104,7 @@ export async function myWorkflow(): Promise<void> {
   }
 }
 ```
+<!--SNIPEND-->
 
 ### Deprecating patches {/* #deprecated-patches */}
 
@@ -105,6 +114,8 @@ Once your Workflows are no longer running the pre-patch code paths, you can depl
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Event History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
+<!--SNIPSTART typescript-patching-3-->
+[patching-api/src/workflows-v3.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v3.ts)
 ```ts
 // v3
 import { deprecatePatch } from '@temporalio/workflow';
@@ -115,6 +126,7 @@ export async function myWorkflow(): Promise<void> {
   await sleep('1 days');
 }
 ```
+<!--SNIPEND-->
 
 ### Removing a patch {/* #deploy-new-code */}
 

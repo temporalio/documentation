@@ -297,13 +297,15 @@ If the business process has a maximum wait time, add a `ScheduleToCloseTimeout` 
 - **Setting `MaximumAttempts` in Phase 2.** If you set a finite `MaximumAttempts` in the slow phase, it will eventually exhaust and propagate a failure to the Workflow. Only add a limit if the business process has a defined maximum wait time; in that case, pair it with a `ScheduleToCloseTimeout` to make the budget explicit.
 - **Using exponential backoff in Phase 2.** The default `BackoffCoefficient` is 2.0, which doubles the interval with each attempt. Set `BackoffCoefficient=1.0` in the slow phase to keep the interval fixed and predictable.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Retry Alerting via Metrics](/design-patterns/retry-metrics): Emit a metric in the slow-phase Activity to surface sustained failures to on-call teams.
 - [Delayed Retry](/design-patterns/delayed-retry): Override the retry interval per error type using `nextRetryDelay` on `ApplicationFailure`.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
-## References
+### References
 
 - [Understanding Workflow Retries and Failures](https://community.temporal.io/t/understanding-workflow-retries-and-failures/122)
 - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)

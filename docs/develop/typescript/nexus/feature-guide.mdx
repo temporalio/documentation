@@ -22,6 +22,12 @@ import { CaptionedImage, ReleaseNoteHeader } from "@site/src/components";
 
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
+:::tip
+
+New to Nexus? Start with the [Nexus TypeScript Quickstart](/develop/typescript/nexus/quickstart).
+
+:::
+
 This page shows how to do the following:
 
 - [Run a development Temporal Service with Nexus enabled](#run-the-temporal-nexus-development-server)
@@ -144,6 +150,8 @@ Nexus Service handlers are typically defined in the same Worker as the underlyin
 A Service handler must provide Operation handlers for each Operation declared by the Service. {/* Added */}
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
 They can invoke underlying Temporal primitives such as a Query, Signal, or Update using the Temporal SDK Client, or run other reliable code.
+Use a synchronous Nexus Operation only when its complete execution path is highly reliable, has predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
+Use an asynchronous Nexus Operation when latency or availability is uncertain, the work might exceed the handler deadline, or execution depends on a potentially unreliable service or database.
 Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
 
 The `@temporalio/nexus` package provides utilities to help create Nexus Operations that interact with a Temporal namespace: {/* Extended */}

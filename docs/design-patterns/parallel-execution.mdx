@@ -519,12 +519,14 @@ You may overwhelm external services without throttling, and storing many Futures
 - **Blowing the 4 MB gRPC message limit.** Scheduling hundreds of Activities in a single Workflow Task can exceed the 4 MB gRPC message size limit if their combined inputs are large. Batch scheduling across multiple Workflow Tasks.
 - **Not using Continue-As-New for large fan-outs.** Each Activity adds events to history. Hundreds of parallel Activities can quickly approach the 50K event limit. Use Continue-As-New or child Workflows to partition work.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Child Workflows](/design-patterns/child-workflows)**: For complex parallel operations with their own state.
 - **[Saga Pattern](/design-patterns/saga-pattern)**: Parallel operations with compensation.
 
-## Sample code
+### Sample code
 
 **Java:**
 - [HelloParallelActivity](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloParallelActivity.java) — Basic parallel Activity execution.

@@ -189,7 +189,7 @@ These patterns work across two cloud regions, which could be in the same cloud p
 | Pattern | Where Workers run | Best for and benefits | Major tradeoffs |
 | --- | --- | --- | --- |
 | **[Active/Passive](#active-cold)** | One region at a time | Easy initial deployment; acts like a single region with no special setup | Failing over Workers is your responsibility; highest recovery time of the three |
-| **[Active/Hot-Passive](#active-hot)** | Both regions; secondary on warm standby | Low RTO with strict single-region behavior; fast Worker failover that is guaranteed to act like a single region | More configuration and the cost of a full standby fleet |
+| **[Active/Hot-Passive](#active-hot)** | Both regions; secondary on warm standby | Low RTO with all task processing in the active region; fast Worker failover with no cold start | More configuration and the cost of a full standby fleet |
 | **[Active/Active](#active-active)** | All regions, all processing Workflows | Low RTO with Workers active in every region; fast failover that uses fleet capacity instead of a standby fleet | Cross-region requests add Workflow latency; external systems need a cross-region consistency story |
 
 ## Active/Passive {/* #active-cold */}
@@ -299,7 +299,7 @@ Keep these in mind when setting up Active/Passive:
 - **Failing over the Workers is the operator's responsibility.** The Namespace fails over automatically, but bringing up the Workers in the secondary region is up to you. Plan for these sub-considerations:
    - **How do you detect an outage and decide to fail over?** Define the failover conditions and the signals (alerts, health checks) that trigger them. Because Workflows make no progress until you detect the outage and respond, detection is on the critical path of your recovery time. To monitor for an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
    - **How do you scale up the Workers?** Bring up the secondary-region fleet, ideally with tested automation, and scale down the primary region's fleet so Workers run in only one region at a time.
-   - **Do you need to enforce single-region processing?** This pattern relies on the operator to keep Workers in one region. To have Temporal enforce single-region processing instead, use the [Active/Hot-Passive](#active-hot) pattern.
+   - **Do you need to enforce single-region task processing?** This pattern relies on the operator to keep Workers in one region. To have Temporal enforce that Workflow and Activity Tasks are processed only in the active region, use the [Active/Hot-Passive](#active-hot) pattern.
 
 ```mermaid
 flowchart LR
@@ -444,7 +444,7 @@ Here's how each component behaves during normal operation and after a failover:
 | --- | --- | --- |
 | **Workers** | Run in both regions. The primary region's Workers are active and process all Workflows; the secondary region's Workers stay connected and warm on standby, doing no work. Forwarding is disabled for Worker polls, so the standby fleet adds no cross-region overhead. | The secondary region's standby Workers — already connected and warm — begin processing immediately. No cold start and no DNS wait. |
 | **Namespace** | Active replica in the primary region; passive replica in the secondary region, continuously receiving replicated Workflow state. | The Namespace and Workers fail over together, automatically: Temporal Cloud promotes the secondary replica to active. |
-| **Workflow starters and Clients** | Run in both regions alongside the Workers. | No changes needed — already running in both regions. |
+| **Workflow starters and Clients** | Run in both regions alongside the Workers. Disabling forwarding does not apply to them: their requests, such as Start Workflow, Signal, and Query, are still forwarded from the secondary region to the active region and succeed. | No changes needed — already running in both regions. |
 | **Codec Servers and proxies** | Run in both regions continuously, not just after a failover. | No changes needed — already running in the secondary region. |
 | **Databases and queues** | Workers in each region typically read and write only their local, active copy. | Promote the secondary region's copy to active, if needed, so the now-active Workers can read and write it. |
 
@@ -459,7 +459,7 @@ Active/Hot-Passive trades steady-state cost for a faster, more predictable failo
 - **Lowest recovery time, tied with Active/Active.**
    - The secondary-region Workers are already connected and warm, so failover involves no cold start. Because the standby fleet is already sized for full load, it also needs no scale-up.
 - **Low latency during normal operation.**
-   - Tasks are processed only in the active region, with no cross-region forwarding.
+   - Workflow and Activity Tasks are processed only in the active region, with no cross-region forwarding of Worker polls. Client requests that originate in the secondary region are still forwarded, and pay the cross-region hop.
 
 ### Tradeoffs {/* #active-hot-tradeoffs */}
 
@@ -473,6 +473,7 @@ Keep this in mind when setting up Active/Hot-Passive:
 
 - **Use Regional or VPC Endpoints and disable forwarding.**
    - Connect each Worker fleet through its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) and [disable forwarding](/cloud/high-availability/enable#change-forwarding-behavior) for Worker polls. Using the Namespace Endpoint by mistake routes the standby Workers to the active region and defeats the pattern.
+   - **Disabling forwarding applies to Worker polls only.** Client requests, such as Start Workflow, Signal, Query, Cancel, and Terminate, are always forwarded to the active region. A Workflow starter in the secondary region keeps working, and the Workflows it starts are processed by the active region's Workers. For the full list of APIs that keep forwarding, see [Client requests are forwarded regardless of this setting](/cloud/high-availability/enable#client-requests-still-forwarded).
 
 ```mermaid
 flowchart LR

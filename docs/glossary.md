@@ -613,6 +613,13 @@ Queue to listen on.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Tag](/references/sdk-metrics)
+
+A Tag is a key-value pair that a Temporal SDK or the Temporal Service attaches to an emitted metric, such as `namespace` or `task_queue`.
+Once a metric is scraped by Prometheus or another OpenMetrics-compatible system, the same key-value pair is called a label.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Task](/tasks#task)
 
 A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
