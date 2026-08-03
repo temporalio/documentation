@@ -239,6 +239,16 @@ For the TypeScript Worker setup specific to Cloud Run, see
 </SdkTabs.TypeScript>
 </SdkTabs>
 
+:::tip
+
+Workers on Cloud Run use the same code as a traditional long-lived Worker, so the SDK defaults the
+[Worker Identity](/workers#worker-identity) to the process ID and hostname. On Cloud Run that resolves to
+`1@localhost`, which makes a Worker harder to identify in the Temporal UI. Set your own Worker Identity, built from the
+[Cloud Run environment variables](https://cloud.google.com/run/docs/container-contract#worker-pools-env-vars), to help
+identify your Serverless Workers.
+
+:::
+
 ## 2. Deploy to a Cloud Run Worker Pool {/* #deploy-worker-pool */}
 
 Containerize the Worker, push the image to Artifact Registry, and create the Worker Pool.
