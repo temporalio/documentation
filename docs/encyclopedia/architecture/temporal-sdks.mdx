@@ -20,31 +20,21 @@ tags:
   - Durable Execution
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, SdkGuideLinks } from '@site/src/components';
 
-Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
+A Temporal SDK (software development kit) is the open-source library you add to your application to use Temporal.
 
-They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/temporal-service), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
-
-SDKs are more than just a development tool, however.
-The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
-The SDK's internal implementation, working in collaboration with the Temporal Service, steps through that code, guaranteeing execution progression during application runtime.
+It provides everything needed to build Workflows, Activities, and other Temporal features in a specific programming language including APIs to configure a Temporal Client, develop your Temporal Application, and run [Workers](/workers#worker) you can scale out as your load grows.
 
 ## Temporal Applications {/* #temporal-application */}
 
-A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/activity-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
 Developers create Temporal Applications using an [official Temporal SDK](#official-sdks).
+
+A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflow-definition), [Activity Definitions](/activity-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
 
 Consider that the Workflow Definition code can be executed repeatedly.
 The Temporal Platform can concurrently support millions to billions of Workflow Executions, each of which representing an invoked Workflow Definition.
-
-Additionally, a Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
-
-- Resumable: The ability of a process to resume execution after suspending on an _awaitable_.
-- Recoverable: The ability of a process to resume execution after suspending due to a _failure_.
-- Reactive: The ability of a process to respond to external events.
-
-Hence, a Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
+A Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
 
 ## Official SDKs {/* #official-sdks */}
 
@@ -52,16 +42,18 @@ Hence, a Temporal Application can run for seconds or years in the presence of ar
 
 Each Temporal SDK targets a specific programming language.
 
-- [.NET SDK feature guides](/develop/dotnet)
-- [Go SDK feature guides](/develop/go)
-- [Java SDK feature guides](/develop/java)
-- [PHP SDK feature guides](/develop/php)
-- [Python SDK feature guides](/develop/python/)
-- [Ruby SDK feature guides](/develop/ruby/)
-- [Rust SDK feature guides](/develop/rust)
-- [TypeScript SDK feature guides](/develop/typescript/)
-
-Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
+<SdkGuideLinks
+  links={[
+    { name: 'goLangBlock', href: '/develop/go', label: 'Go SDK developer guide' },
+    { name: 'javaBlock', href: '/develop/java', label: 'Java SDK developer guide' },
+    { name: 'pythonBlock', href: '/develop/python', label: 'Python SDK developer guide' },
+    { name: 'typeScriptBlock', href: '/develop/typescript', label: 'TypeScript SDK developer guide' },
+    { name: 'dotnetBlock', href: '/develop/dotnet', label: '.NET SDK developer guide' },
+    { name: 'rubyBlock', href: '/develop/ruby', label: 'Ruby SDK developer guide' },
+    { name: 'phpBlock', href: '/develop/php', label: 'PHP SDK developer guide' },
+    { name: 'rustBlock', href: '/develop/rust', label: 'Rust SDK developer guide' },
+  ]}
+/>
 
 ### Third-party SDKs
 
@@ -75,6 +67,8 @@ The following third-party SDKs exist but are not officially supported by Tempora
 ## Why use a Temporal SDK? {/* #why-use-an-sdk */}
 
 Temporal SDKs empower developers to concentrate on creating dependable and scalable business logic, alleviating the need to build home-grown supervisor systems to ensure reliability and fault-tolerance. This is possible because the Temporal SDK provides a unified library that abstracts the intricacies of how Temporal handles distributed systems.
+
+SDKs are more than a development toolkit. The APIs encourage a code pattern that mirrors real-world processes, and the SDK's internal implementation, working with the [Temporal Service](/temporal-service), steps through that code at runtime to guarantee execution progression.
 
 ### Development pattern
 
@@ -106,31 +100,6 @@ func LoanApplicationWorkflow {
 For instance, Temporal SDKs have built-in support for handling failures, timeouts, and retries.
 In the event of an Activity failure, the SDK automatically initiates retries according to configurable policies established by the developer within the SDK. This streamlined process simplifies the integration of fault-tolerance mechanisms into applications.
 
-:::caution Do not copy and use code
-
-The following is pseudocode. For tested samples see your language SDK's developer's guide.
-
-:::
-
-```
-func LoanApplicationWorkflow {
-
-    options = {
-        MaxAttempts: 3,
-        StartToCloseTimeout: 30min,
-        HeartbeatTimeout: 10min,
-    }
-
-    sdk.ExecuteActivity(CreditCheck, options)
-
-    sdk.ExecuteActivity(AutomatedApproval)
-
-    sdk.ExecuteActivity(NotifyApplicant)
-
-    // ...
-}
-```
-
 ### Replays
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
@@ -141,8 +110,6 @@ Another quality of the SDKs lies in their ability to replay Workflow Executions,
 
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
-
-{/* - [Developing for Durable Execution using the Go SDK](/develop/go/durable-execution) */}
 
 ## Temporal SDKs major components {/* #major-components */}
 
@@ -173,195 +140,41 @@ The most common operations that a Temporal Client enables you to perform are the
 - Signal a Workflow Execution.
 - Start a Workflow Execution.
 
-The following code is an example using the Go SDK.
-It showcases how to initialize a Temporal Client, create a connection to a local Temporal Service, and start a Workflow Execution:
+Developers use the Client as the main entry point for interacting with the application through Temporal, for example, to start or Signal Workflows, Query a Workflow's state, or get a Workflow result.
 
-:::caution Do not copy and use code
-
-The following code is for example purposes only.
-For tested code samples and best practices, use your preferred language SDK's developer's guide.
-
-- [Go SDK Temporal Client feature guide](/develop/go/client/temporal-client)
-- [Java SDK Temporal Client feature guide](/develop/java/client/temporal-client)
-- [PHP SDK Temporal Client feature guide](/develop/php/client/temporal-client)
-- [Python SDK Temporal Client feature guide](/develop/python/client)
-- [TypeScript SDK Temporal Client feature guide](/develop/typescript/client)
-
-:::
-
-```go
-package main
-
-import (
-	"context"
-
-	"go.temporal.io/sdk/client"
-)
-
-func main() {
-	// Temporal Client setup code
-	c, err := client.NewClient(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create client", err)
-	}
-	defer c.Close()
-	// Prepare Workflow option and parameters
-	workflowOptions := client.StartWorkflowOptions{
-		ID:        "loan-application-1",
-		TaskQueue: "loan-application-task-queue",
-	}
-	applicantDetails := ApplicantDetails{
-		// ...
-	}
-	// Start the Workflow
-	workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "loan-application-workflow", applicantDetails)
-	if err != nil {
-		// ...
-	}
-	// ...
-}
-```
-
-Developers can then use the Client as the main entry point for interacting with the application through Temporal.
-Using that Client, developers may for example start or Signal Workflows, Query a Workflow's state, etc.
-We can see in the example above how the developer has used `ExecuteWorkflow` API to start a Workflow.
+<SdkGuideLinks path="client/temporal-client" title="Temporal Client" />
 
 ### APIs to Develop Workflows
 
 Workflows are defined as code: either a function or an object method, depending on the language.
 
-For example, the following is a valid Temporal Workflow in Go:
-
-:::caution Do not copy and use code
-
-The following code is for example purposes only.
-For tested code samples and best practices, use your preferred language SDK's developer's guide.
-
-:::
-
-```go
-func LoanApplication(ctx context.Context) (error) {
-    // ...
-	return nil
-}
-```
-
 The Workflow code uses Temporal SDK APIs to orchestrate the steps of the application.
 
-:::caution Do not copy and use code
 
-The following code is for example purposes only.
-For tested code samples and best practices, use your preferred language SDK's developer's guide.
-
-:::
-
-```go
-func LoanApplication(ctx workflow.Context, input *LoanApplicationWorkflowInput) (*LoanApplicationWorkflowResult, error) {
-	// ...
-	var result activities.CreditCheckResult
-	f := workflow.ExecuteActivity(ctx, a.CreditCheck, CreditCheckInput(*input))
-	err := f.Get(ctx, &result)
-	// ...
-	// Return the results
-	return &loanApplicationResults, nil
-}
-```
 
 A Workflow executes Activities (other functions that interact with external systems), handles and sends messages (Queries, Signals, Updates), and interacts with other Workflows.
 
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
 When a Workflow calls the API to execute an Activity, the Worker sends a [Command](/references/commands) back to the Temporal Service. The Temporal Service creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Temporal Service work together to incrementally execute Workflow code in a reliable way.
-We discuss this more in detail in [The SDK and Temporal Service relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
+We discuss this more in the expandable [section below](#sdk-and-service-relationship).
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
-
-For example, the bank loan application Workflow might actually look like this:
-
-:::caution Do not copy and use code
-
-The following code is for example purposes only.
-For tested code samples and best practices, use your preferred language SDK's developer's guide.
-
-:::
-
-```go
-// LoanApplicationWorkflow is the workflow definition.
-func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmount int) (string, error) {
-	// Step 1: Notify the applicant that the application process has started
-	err := workflow.ExecuteActivity(ctx, NotifyApplicantActivity, applicantName, "Application process started").Get(ctx, nil)
-	if err != nil {
-		return "", err
-	}
-
-	// Step 2: Perform a credit check
-	var creditCheckResult string
-	err = workflow.ExecuteActivity(ctx, LoanCreditCheckActivity, loanAmount).Get(ctx, &creditCheckResult)
-	if err != nil {
-		return "", err
-	}
-
-	// Step 3: Perform an automatic approval check
-	var approvalCheckResult string
-	err = workflow.ExecuteActivity(ctx, AutomaticApprovalCheckActivity, creditCheckResult).Get(ctx, &approvalCheckResult)
-	if err != nil {
-		return "", err
-	}
-
-	// Step 4: Notify the applicant of the decision
-	var notificationResult string
-	err = workflow.ExecuteActivity(ctx, NotifyApplicantActivity, applicantName, approvalCheckResult).Get(ctx, &notificationResult)
-	if err != nil {
-		return "", err
-	}
-
-	return notificationResult, nil
-}
-```
 
 The level of abstraction that APIs offer enables the developer to focus on business logic without having to worry about the intricacies of distributed computing such as retries, or having to explicitly maintain a state machine and the intermediate state for each step of the process.
 
 Additionally, the state of the Workflow is automatically persisted so if a failure does occur, it resumes right where it left off.
+
+<SdkGuideLinks path="workflows/basics" title="Workflows" />
 
 ### APIs to create and manage Worker Processes
 
 Workers are responsible for executing Workflow and Activity code (application code). The SDK provides APIs for configuring and starting Workers, enabling developers to control how the code is executed.
 Workers are horizontally scalable, often run with systems like Kubernetes, and configured according to the application's needs.
 
-Here is an example of how you could initialize a Worker using the Go SDK.
-
-:::caution Do not copy and use code
-
-The following code is for example purposes only.
-For tested code samples and best practices, use your preferred language SDK's developer's guide.
-
-:::
-
-```go
-func main() {
-    // Create the client object just once per process
-    c, err := client.NewClient(client.Options{})
-    if err != nil {
-        log.Fatalln("Unable to create Temporal client", err)
-    }
-    defer c.Close()
-
-    // Create the Worker instance
-    w := worker.New(c, "loan-application-task-queue", worker.Options{})
-
-    // Register the workflow and activity with the worker
-    w.RegisterWorkflow(LoanApplicationWorkflow)
-    w.RegisterActivity(LoanCreditCheck)
-
-    // Start listening to the Task Queue
-    err = w.Run(worker.InterruptCh())
-    if err != nil {
-        log.Fatalln("Unable to start Worker", err)
-    }
-}
-```
-
 The Worker polls on the specified Task Queue, processing those Tasks, and reporting the results back to the Temporal Service. They execute both the Workflows and Activities, and the SDK ensures that they perform these tasks efficiently and reliably.
+
+<SdkGuideLinks path="workers" title="Workers" />
 
 ### APIs to customize Activity Execution behavior
 
@@ -371,92 +184,29 @@ By default, if an Activity attempts to communicate with another system and encou
 
 However, Temporal enables developers to control a variety of timeouts, a Retry Policy, Heartbeat monitoring, and asynchronous completion.
 
-The following code is an example of a custom set of Activity Execution options that affect the timeout and retry behavior of the execution, should the Activity encounter a failure.
+<SdkGuideLinks path="activities/basics" title="Activities" />
 
-:::caution Do not copy and use code
+## How SDKs work with the Temporal Service {/* #sdk-and-service-relationship */}
 
-The following code is for example purposes only.
-For tested code samples and best practices, use your preferred language SDK's developer's guide.
+The section below explains how your Client, Workers, and the Temporal Service work together when you run Workflow and Activity code.
 
-:::
-
-```go
-// LoanApplicationWorkflow is the Workflow Definition.
-func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmount int) (string, error) {
-    // ...
-    var creditCheckResult string
-    // set a Retry Policy
-    ao := workflow.ActivityOptions{
-		ScheduleToCloseTimeout: time.Hour,
-		HeartbeatTimeout:       time.Minute,
-		RetryPolicy:            &temporal.RetryPolicy{
-			InitialInterval:    time.Second,
-			BackoffCoefficient: 2,
-			MaximumInterval:    time.Minute,
-			MaximumAttempts:    5,
-		},
-	}
-    ctx = workflow.WithActivityOptions(ctx, ao)
-    err = workflow.ExecuteActivity(ctx, LoanCreditCheckActivity, loanAmount).Get(ctx, &creditCheckResult)
-    if err != nil {
-        return "", err
-    }
-	// ...
-    return notificationResult, nil
-}
-
-// LoanCreditCheckActivity is an Activity function that performs a credit check.
-func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error) {
-	// ... your logic here ...
-	return "Credit check passed", nil
-}
-```
-
-## The SDK and Temporal Service relationship {/* #sdk-and-cluster-relationship */}
-
-**How do the Temporal SDKs work with the Temporal Service?**
+<details className="sdk-walkthrough-details">
+<summary>
+How do the Temporal SDKs work with the Temporal Service?
+</summary>
 
 The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Temporal Service arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
 A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
 In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into the Workflow Execution's Event History.
 
-Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
+Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Temporal Service. In response, the Temporal Service queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
 The Temporal Service persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
 This is where the deterministic constraints of the Workflow code comes into play, requiring the use of Activities to create side effects and interact with the outside world.
 
-Let's look at an example Workflow with a single Activity.
-
-```go
-func LoanApplication(ctx workflow.Context, input *LoanApplicationWorkflowInput) (*LoanApplicationWorkflowResult, error) {
-
-	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
-		StartToCloseTimeout: time.Minute,
-	})
-
-	var result activities.NotifyApplicantActivityResult
-	f := workflow.ExecuteActivity(ctx, a.NotifyApplicantActivity, NotifyApplicantActivityInput(*input))
-
-	err := f.Get(ctx, &result)
-
-	// Return the results
-	return &l.LoanApplicationState, nil
-}
-
-type Activities struct {}
-
-func (a *Activities) NotifyApplicantActivity(ctx context.Context, input *NotifyApplicantActivityInput) (*NotifyApplicantActivityResult, error) {
-	var result NotifyApplicantActivityResult
-
-	// Call the thirdparty API and handle the result
-
-	return &result, err
-}
-```
-
-The Activity above is performing a single call to an external API. Since the call can fail due to transient issues, we define it outside of the Workflow and provide it with retry options.
+Activities perform work outside the Workflow, for example, calling an external API. Since the call can fail due to transient issues, you define it as an Activity and configure retry options in your SDK.
 
 When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that are related to the code it is capable of executing.
 
@@ -519,3 +269,5 @@ The result of the Workflow can now be retrieved using a Temporal Client.
     title="The Temporal Client can now access the result of the Workflow" />
 
 And that’s how a Temporal Worker and Temporal Service work together.
+
+</details>

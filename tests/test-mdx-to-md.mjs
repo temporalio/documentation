@@ -565,6 +565,31 @@ test("CaptionedImage uses caption/title when no alt", () => {
   assertContains(markdown, "![Persistence](/diagrams/x.svg)");
 });
 
+test("YouTube iframe embeds are stripped; Watch links kept", () => {
+  const input = `:::tip
+
+Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE) for a short overview.
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/zLjhNrOKphE"
+    title="What Is a Workflow in Temporal?"
+    frameBorder="0"
+    allowFullScreen
+  ></iframe>
+</div>
+
+:::
+`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "iframe");
+  assertNotContains(markdown, "youtube.com/embed");
+  assertNotContains(markdown, "<div");
+});
+
 test("PhotoCarousel emits one image per entry with captions", () => {
   const input = `<PhotoCarousel\n  images={[\n    'https://x/a.jpeg',\n    'https://x/b.jpeg',\n  ]}\n  captions={[\n    'First',\n    'Second',\n  ]}\n/>`;
   const { markdown } = transformMdx(input);
@@ -663,7 +688,7 @@ test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkers" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
   assertContains(markdown, "> **Pre-release**");
 });
@@ -902,18 +927,57 @@ test("transformMdx renders PatternCards items as a list", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Unit tests: HomePageHero handler
+// Unit tests: homepage hero (docs/index.mdx composed from HomePageHero.js)
 // ---------------------------------------------------------------------------
-console.log("\n📦 component-handlers/home-page-hero");
+console.log("\n📦 component-handlers/hero");
 
-test("transformMdx resolves <HomePageHero /> to hero content", () => {
-  const input = `import HomePageHero from '@site/src/components/elements/HomePageHero';\n\n<HomePageHero />`;
+test("transformMdx resolves the homepage hero to clean Markdown", () => {
+  const input = [
+    `import { HeroWrapper, HeroHeader, HeroSection, HeroContent, HeroActions, HeroCta, ActionCard, CommunityCards, CommunityCard } from '@site/src/components/elements/HomePageHero';`,
+    ``,
+    `<HeroWrapper>`,
+    ``,
+    `<HeroHeader>Temporal Docs</HeroHeader>`,
+    ``,
+    `<HeroSection>`,
+    ``,
+    `<HeroContent>`,
+    ``,
+    `<HeroHeadline>Build applications that never fail</HeroHeadline>`,
+    ``,
+    `Temporal delivers crash-proof execution.`,
+    ``,
+    `<HeroCta href="/quickstarts">Quickstart</HeroCta>`,
+    ``,
+    `</HeroContent>`,
+    ``,
+    `<HeroActions>`,
+    `  <ActionCard href="/quickstarts" icon="bolt" title="Quickstart">Setup your local and run a Hello World workflow.</ActionCard>`,
+    `</HeroActions>`,
+    ``,
+    `</HeroSection>`,
+    ``,
+    `<CommunityCards>`,
+    `  <CommunityCard href="https://temporal.io/slack" icon="slack" title="Slack Community">Join us on <a href="https://temporal.io/slack">temporal.io/slack</a> and say hi.</CommunityCard>`,
+    `</CommunityCards>`,
+    ``,
+    `</HeroWrapper>`,
+  ].join("\n");
   const { markdown } = transformMdx(input);
-  assertNotContains(markdown, "<HomePageHero");
-  assertContains(markdown, "## Build applications that never fail");
+  // Layout wrappers stripped, no raw JSX leaks through
+  assertNotContains(markdown, "<HeroWrapper");
+  assertNotContains(markdown, "<ActionCard");
+  assertNotContains(markdown, "<CommunityCard");
+  assertNotContains(markdown, "<HeroCta");
+  // Copy authored in the MDX is preserved
+  assertContains(markdown, "# Build applications that never fail");
   assertContains(markdown, "crash-proof execution");
-  assertContains(markdown, "- [Quickstart](/quickstarts)");
-  assertContains(markdown, "- [Slack Community](https://temporal.io/slack)");
+  // Single-line HeroHeader / HeroCta text is dropped (redundant), so no stray
+  // "Temporal Docs" paragraph and no bare "Quickstart" line.
+  assertNotContains(markdown, "<header");
+  // Cards resolve to Markdown link-list items; inline <a> becomes a Markdown link
+  assertContains(markdown, "- [Quickstart](/quickstarts): Setup your local and run a Hello World workflow.");
+  assertContains(markdown, "- [Slack Community](https://temporal.io/slack): Join us on [temporal.io/slack](https://temporal.io/slack) and say hi.");
 });
 
 // ---------------------------------------------------------------------------
@@ -1018,7 +1082,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "home-page-hero", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {

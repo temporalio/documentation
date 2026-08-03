@@ -75,7 +75,7 @@ Enter a valid Marker name and redeploy the Task.
 
 This error either indicates the possibility of unset attributes for [RequestCancelActivity](/references/commands#requestcancelactivitytask), or an invalid History Builder state.
 
-Update the [Temporal SDK](/encyclopedia/temporal-sdks) to the most recent release.
+Update the [Temporal SDK](/encyclopedia/architecture/temporal-sdks) to the most recent release.
 Reset any unset attributes before retrying the [Workflow Task](/tasks#workflow-task).
 
 If you continue to see this error, review your code for [nondeterministic causes](/workflow-definition#non-deterministic-change).
@@ -156,7 +156,7 @@ This error indicates that a [Workflow Execution](/workflow-execution) tried to c
 `BadUpdate` can happen when a [Worker](/workers#worker) generates a [Workflow Task Completed](/references/events#workflowtaskcompleted) message with missing fields or an invalid Update response format.
 
 This error might indicate usage of an unsupported SDK.
-Make sure you're using a [supported SDK](/encyclopedia/temporal-sdks).
+Make sure you're using a [supported SDK](/encyclopedia/architecture/temporal-sdks).
 
 ## Cause Reset Workflow {/* #cause-reset-workflow */}
 

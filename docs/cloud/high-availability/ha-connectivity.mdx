@@ -88,6 +88,7 @@ A request can reach the passive replica in three ways:
   If #1 completes before #2, a Worker that was connected to the former active before the failover will stay connected to it even after it becomes the replica. The Worker will change to point at the new active when the DNS changes propagate and the Client re-resolves DNS (typically 30 seconds, though up to 5 minutes, bounded by Temporal Cloud's maximum connection lifetime).
 
 By default, Temporal Cloud transparently forwards any request that reaches the passive replica to the active region, and the response back.
+You can turn forwarding off for Worker polls, but Client requests such as Start Workflow, Signal, and Query are always forwarded.
 
 To learn what forwarding does, see [Request forwarding](/cloud/high-availability/#request-forwarding).
 
