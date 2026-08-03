@@ -599,12 +599,14 @@ You must calculate absolute timestamps rather than relative durations.
 - **Accumulating uncancelled timers in Java.** In the Java SDK, `Workflow.await(Duration, condition)` does not automatically cancel its internal timer when the condition is met. Repeated calls in a loop accumulate timers. Wrap in a `CancellationScope` if this is a concern.
 - **Not cancelling timers in Go.** In the Go SDK, always cancel the previous timer (via `workflow.WithCancel`) before creating a new one. Uncancelled timers wake up the Workflow unnecessarily, creating extra Worker load.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Signal with Start](/design-patterns/signal-with-start)**: Receiving external events to modify behavior.
 - **[Approval Pattern](/design-patterns/approval)**: Approval Workflows with adjustable deadlines.
 
-## Sample code
+### Sample code
 
 - [Java](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/updatabletimer) -- Complete implementation with starter and updater.
 - [TypeScript](https://github.com/temporalio/samples-typescript/tree/main/timer-examples) -- Updatable timer with `condition` and `UpdatableTimer` class.

@@ -396,13 +396,15 @@ If producers stop sending signals but never send a flush, the workflow holds ope
 - **Signal rate too high to allow Continue-As-New to complete.** Continue-As-New requires a brief window (~100 ms) with no unhandled signals. If producers send signals continuously without pause, the workflow can never enter that window, history grows without bound, and Temporal will eventually terminate the workflow. Partition by a finer-grained key, throttle producers, or batch multiple events into a single signal payload to keep the per-instance signal rate low enough for CAN to succeed.
 - **Not draining the signal queue before calling Continue-As-New.** Any signal that arrives between the CAN decision and the actual CAN execution can be lost if the signal buffer is not empty when CAN fires. All SDK implementations in this pattern guard against this by re-checking the unprocessed queue before continuing; do not remove that guard or call CAN unconditionally on the history-size trigger.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Signal with Start](/design-patterns/signal-with-start)** — the atomic start-and-signal primitive this pattern uses to create or locate the accumulator workflow.
 - **[Continue-As-New](/design-patterns/continue-as-new)** — used to reset workflow history when the accumulation period is long.
 - **[Updatable Timer](/design-patterns/updatable-timer)** — an alternative approach for a resettable timer that does not require signals.
 - **[Entity Workflow](/design-patterns/entity-workflow)** — a broader pattern for long-lived, keyed workflow instances.
 
-## Sample code
+### Sample code
 
 - [Java Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloAccumulator.java) — the canonical accumulator example from the Temporal Java samples repository.

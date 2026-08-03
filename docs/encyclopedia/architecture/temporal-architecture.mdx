@@ -1,0 +1,110 @@
+---
+id: temporal-architecture
+title: Temporal architecture
+sidebar_label: Temporal architecture
+description: A comprehensive guide to Temporal's architecture, covering how the platform orchestrates durable Workflow Executions through its Frontend, backend services, and Worker coordination.
+toc_max_heading_level: 4
+keywords:
+  - architecture
+  - durable execution
+  - how temporal works
+  - temporal service
+tags:
+  - Durable Execution
+  - Temporal
+  - Architecture
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+Before reading this, it would be helpful to read [Understanding Temporal](/evaluate/understanding-temporal) as it assumes knowledge of the following introductory concepts: Workflow, Activity, Worker, Task Queues, and Event History.
+
+Temporal is a tool that abstracts away a lot of difficulty for anyone managing applications that need to be resilient to failures. This guide provides you with a high level overview of how Temporal works under the hood.
+
+## Application structure recap
+
+Before diving into the architecture, let's recap what you're responsible for as a developer: the Temporal Application code which includes writing the Activity Definition, Workflow Definition, and the code to configure and start the Workers that coordinate with a Temporal Service to execute your Workflow and Activity code. 
+
+As part of the Temporal Platform, the Temporal Service runs the Temporal Server with its database and optional components, and is responsible for orchestrating execution. A Temporal application gains its durability, scalability, and reliability from the support provided by the Temporal Service.
+
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/your-environment-and-temporal-service.png"
+    srcDark="/img/encyclopedia/architecture/your-environment-and-temporal-service-dark.png"
+    alt="Diagram of your application environment with Workflow code, Workers, and the Temporal SDK connecting to the Temporal Service"
+    width="90%"
+  />
+</div>
+
+In the wider platform, there are three kinds of clients that talk to the Temporal Server:
+
+- Temporal's [command-line interface (CLI)](/cli)
+- Temporal's [web-based user interface (Web UI)](/web-ui)
+- A [Temporal Client](#client-application) embedded into the applications you run
+
+## Client application
+
+Temporal Clients offer a set of APIs to communicate with a Temporal Service. They are one aspect of your Temporal application and provided by a Temporal SDK. You instantiate and use it in your own application code to start and manage Workflow Executions.
+
+Consider the example of an order processing system. 
+
+A Temporal Client lets you:
+
+- **Start a Workflow Execution** when a customer places an order.
+- **Signal a Workflow Execution** to update the order if the customer changes their shipping address.
+- **Query a Workflow Execution** to retrieve the current status of the order.
+- **List Workflow Executions** to view all orders being processed.
+- **Get the result of a Workflow Execution** to retrieve the final outcome of the order processing. 
+
+Clients are responsible for starting Workflows by sending requests to initiate new Workflow Executions. They can query Workflows to retrieve current state or synchronous data from running Workflows and signal Workflows to send asynchronous messages that influence their behavior. Clients also manage Workflows by canceling or terminating Workflow Executions.
+
+## The Temporal Server 
+
+The Temporal Server is the heart of the platform. It's responsible for orchestrating Workflow Execution, maintaining state, and ensuring reliability.
+
+The Temporal Server consists of a Frontend and multiple backend services, plus a database as a required external component. A Temporal Server may also include some optional components, such as Elasticsearch for advanced search visibility or Grafana for creating operational dashboards for observability.
+
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <CaptionedImage
+    src="/img/encyclopedia/architecture/temporal-server-internals.png"
+    srcDark="/img/encyclopedia/architecture/temporal-server-internals-dark.png"
+    alt="Diagram of the Temporal Server with Frontend, History, Matching, and Worker services connected to a database and Elasticsearch"
+    width="80%"
+  />
+</div>
+
+### Frontend Service
+
+From your application's perspective, the Frontend Service is the Temporal endpoint your Temporal Client talks to. Your client sends requests (start Workflow, Signal, Query, etc.) to the Frontend, and the Frontend forwards them to the appropriate backend services.
+
+It handles rate limiting, authorization, validation, and routing requests internally to the right subsystem. Clients never communicate directly with backend services or Workers so all requests goes through this unified entry point.
+
+### Temporal Service backend
+
+The backend consists of several specialized services including the History, Matching, and Worker services, and a Persistence Layer.
+
+#### History Service
+
+The History Service is the part of Temporal that keeps track of everything that happens in each Workflow. It writes an ordered [Event History](/encyclopedia/event-history/) to the database so Temporal always knows what has happened. This includes when a Workflow started, Activities ran, Signals were received, timers fired, and when it completed or failed. 
+
+The Event History (every event/step of each Workflow) is the key to making your application reliable and crash-proof. When an error or failure happens in your app, Temporal will recreate the state by parsing the Event History and replaying each step.
+
+That's why [determinism](/workflow-definition#deterministic-constraints) and [idempotency](/activity-definition#idempotency) are important when you're creating your Workflows.
+
+The History Service is a central part of how Temporal provides Durable Execution. It persists all Workflow Execution state, including the Event History, any mutable state, and internal task queues like timers, transfers, replication, and visibility/indexing.
+
+#### Matching Service
+
+The Matching Service manages most of the coordination with the other services, especially the Task Queues or Task Queue partitions. This is where Tasks are dispatched to their respective queues before being picked up by the corresponding Workers. To determine how many more Tasks should be sent to a Worker from the Task Queue, Worker polling also takes place here. This is how Tasks are dispatched to different queues before being sent to a Worker.
+
+When a Workflow Task or Activity needs to be done, the Matching Service finds an appropriate Worker polling the queue and hands off the Task.
+
+#### Worker Service
+
+The Worker Service is where all of the background functionality that keeps the Temporal Service running smoothly is handled. It takes care of all the internal/system Workflows that Temporal needs like maintenance jobs, cleanup, replication, archival, and visibility indexing. You won't need to directly interact with this layer because it's different from your application Workers. The Worker Service handles Temporal's own operational tasks, like archiving old Event Histories or running scheduled maintenance.
+
+#### Persistence layer
+
+You can configure the database that you want to store Workflow state, Event History, and Task Queues. You can choose between Cassandra, MySQL, PostgreSQL, and SQLite. This is also where you store metadata about your Workflows and other data that needs to be recorded in order to ensure Durable Execution. This persistence enables recovery and replay - if anything fails, Temporal can reconstruct the exact state of a Workflow from its Event History.
+
+Application [Workers](/workers#worker) run your Workflow and Activity code on your own infrastructure. For how they coordinate with the Server, see [How Temporal works](/encyclopedia/architecture/how-temporal-works).

@@ -1,0 +1,164 @@
+name: Docs Build Check
+
+# Runs the same production build Vercel runs. Vercel's own check only shows
+# "This branch had an error being deployed" with no detail in the PR, so this
+# job re-runs `yarn build` here, parses well-known Docusaurus failure modes
+# (broken links/anchors, unresolved Markdown links, MDX syntax errors) out of
+# the log, and posts the specific page/target that needs fixing as a PR
+# comment.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "src/**"
+      - "static/**"
+      - "sidebars.js"
+      - "docusaurus.config.js"
+      - "vercel.json"
+      - "package.json"
+      - "yarn.lock"
+      - "bin/parse-build-failure.js"
+      - ".github/workflows/build-check.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-check:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: "yarn"
+
+      # A PR's own ref never has a prior run to restore from, so this exact
+      # key only ever comes from warm-build-cache.yml's runs on main via
+      # GitHub's branch fallback (current ref -> PR base branch -> default
+      # branch). That's what makes a new PR's *first* check fast instead of
+      # a fully cold install.
+      - name: Cache installed dependencies
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            node_modules
+            !node_modules/.cache
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      # Restore-only: og-images and rspack are large (~1.7GB combined) and
+      # each save is keyed by run id so it always "changes", so restoring
+      # them here but only ever *saving* from warm-build-cache.yml (which
+      # runs once per merge, not once per PR check) avoids re-uploading
+      # multi-GB caches on every PR push.
+      - name: Restore OG image render cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: node_modules/.cache/og-images
+          key: og-images-${{ github.run_id }}
+          restore-keys: |
+            og-images-
+
+      - name: Restore Docusaurus build cache (rspack)
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: node_modules/.cache/rspack
+          key: rspack-${{ github.run_id }}
+          restore-keys: |
+            rspack-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build site
+        id: build
+        shell: bash
+        run: |
+          set +e
+          yarn build 2>&1 | tee build-output.log
+          exit_code=${PIPESTATUS[0]}
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+
+      - name: Parse build failure
+        if: steps.build.outputs.exit_code != '0'
+        run: node bin/parse-build-failure.js build-output.log > build-failure-comment.md
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- docs-build-check -->';
+            const exitCode = '${{ steps.build.outputs.exit_code }}';
+            const buildRan = exitCode !== '';
+            const failed = buildRan && exitCode !== '0';
+
+            // buildRan is false when an earlier step (e.g. yarn install) failed
+            // before the build could even start; parse-build-failure.js has
+            // nothing to work with in that case.
+            let body;
+            if (!buildRan) {
+              body = `${marker}\n### ❌ Docs build check failed before the build ran\n\nSee the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.`;
+            } else if (failed) {
+              body = fs.readFileSync('build-failure-comment.md', 'utf8');
+            } else {
+              body = `${marker}\n### ✅ Docs build passed`;
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+
+            const existing = comments.find(
+              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
+            );
+
+            // Don't post a noisy "build passed" comment when there was never a failure comment to clear.
+            const cleanPass = buildRan && !failed;
+            if (cleanPass && !existing) {
+              core.info('Build passed and no previous failure comment exists; skipping comment.');
+              return;
+            }
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated existing build check comment (${existing.id}).`);
+            } else {
+              const { data: newComment } = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.info(`Created new build check comment (${newComment.id}).`);
+            }
+
+      - name: Upload build log
+        if: always() && steps.build.outputs.exit_code != '0'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: build-output-log
+          path: build-output.log
+          retention-days: 7
+
+      - name: Fail job if build failed
+        if: always() && steps.build.outputs.exit_code != '0'
+        run: exit 1

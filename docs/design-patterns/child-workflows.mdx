@@ -770,13 +770,15 @@ Starting a Child Workflow has more overhead than starting an Activity.
 - **Omitting Workflow IDs.** Without explicit Workflow IDs, you lose the ability to deduplicate or look up Child Workflows by a meaningful identifier. Generate deterministic IDs based on business keys.
 - **Not handling child failures.** Child Workflow failures propagate to the parent as a Child Workflow Failure (`ChildWorkflowFailure` in TypeScript and Java, `ChildWorkflowError` in Python, `ChildWorkflowExecutionError` in Go), with the underlying cause in its `cause` field. If you do not catch and handle them, the parent Workflow fails as well.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Parallel Execution](/design-patterns/parallel-execution)**: Running multiple children concurrently.
 - **[Continue-As-New](/design-patterns/continue-as-new)**: Child Workflows can use Continue-As-New independently.
 - **[Saga Pattern](/design-patterns/saga-pattern)**: Children as compensatable transactions.
 
-## Sample code
+### Sample code
 
 **Java:**
 - [HelloChild](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloChild.java) — Basic synchronous Child Workflow.

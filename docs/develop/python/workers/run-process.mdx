@@ -1,8 +1,8 @@
 ---
 id: run-worker-process
-title: Worker processes - Python SDK
-description: Shows how to run Worker processes with the Python SDK
-sidebar_label: Worker processes
+title: Run a Worker - Python SDK
+description: Create and run a Temporal Worker using the Python SDK.
+sidebar_label: Run a Worker
 slug: /develop/python/workers/run-worker-process
 toc_max_heading_level: 3
 tags:
@@ -11,81 +11,110 @@ tags:
   - Worker
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
+This page covers long-lived Workers that you host and run as persistent processes.
+For Workers that run on serverless compute like AWS Lambda, see [Serverless Workers](/develop/python/workers/serverless-workers).
 
-## Run a Worker Process {/* #run-a-dev-worker */}
+## Create and run a Worker {/* #run-a-dev-worker */}
 
-**How to run a Worker Process using the Temporal Python SDK.**
+Create a `Worker` with a Temporal Client, the Task Queue to poll, and the Workflows and Activities it can execute.
+Call `run()` to start polling. The Worker runs until the process is interrupted.
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+<!--SNIPSTART python-create-worker-->
+[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
+```py
+client = await Client.connect("localhost:7233")
 
-- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity
-  Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
-- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[HelloWorkflow],
+    activities=[some_activity],
+)
+await worker.run()
+```
+<!--SNIPEND-->
 
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task
-Queue.
+A Worker is also an async context manager, so `async with worker:` runs it for the duration of a block.
+See [Shut down a Worker](#shut-down-a-worker) for the pattern most Worker processes use.
 
-Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be
-perfectly sufficient. For more information, see the [Worker tuning guide](/develop/worker-performance).
+## Register Workflows and Activities {/* #register-types */}
 
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and
-Activity Executions, respectively.
+All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
+If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
 
-To develop a Worker, use the `Worker()` constructor and add your Client, Task Queue, Workflows, and Activities as
-arguments. The following code example creates a Worker that polls for tasks from the Task Queue and executes the
-Workflow. When a Worker is created, it accepts a list of Workflows in the workflows parameter, a list of Activities in
-the activities parameter, or both.
+Pass a list of Workflows in `workflows`, a list of Activities in `activities`, or both.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py" />
+Activities defined with `async def` run on the Worker's event loop. Activities defined with a plain `def` are synchronous and require an executor, so pass one in `activity_executor`:
 
 ```python
-from temporalio.client import Client
-from temporalio.worker import Worker
-# ...
-# ...
-async def main():
-    client = await Client.connect("localhost:7233")
-    worker = Worker(
-        client,
-        task_queue="your-task-queue",
-        workflows=[YourWorkflow],
-        activities=[your_activity],
-    )
-    await worker.run()
-
-if __name__ == "__main__":
-    asyncio.run(main())
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[MyWorkflow],
+    activities=[my_sync_activity],
+    activity_executor=ThreadPoolExecutor(5),
+)
 ```
 
-### Register types {/* #register-types */}
+The same executor can be shared across multiple Workers.
 
-**How to register types using the Temporal Python SDK.**
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
-All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and
-Activity Types.
+To run a Worker against Temporal Cloud, configure the Client connection with your Namespace address and authentication credentials.
+See [Connect to Temporal Cloud](/develop/python/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
 
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task. However, the
-failure of the Task does not cause the associated Workflow Execution to fail.
+## Configure Worker options {/* #worker-options */}
 
-When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the
-`activities` parameter, or both.
+The `Worker` constructor takes keyword arguments that control concurrency limits, pollers, timeouts, and caching, including `max_concurrent_activities`, `max_concurrent_workflow_tasks`, and `max_cached_workflows`.
+The defaults work for most cases.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py" />
+To tune these values against real load, see [Worker performance](/develop/worker-performance) and the [Worker tuning reference](/develop/worker-tuning-reference).
 
-```python
-# ...
-async def main():
-    client = await Client.connect("localhost:7233")
-    worker = Worker(
-        client,
-        task_queue="your-task-queue",
-        workflows=[YourWorkflow],
-        activities=[your_activity],
-    )
-    await worker.run()
+## Run a versioned Worker {/* #versioned-worker */}
 
-if __name__ == "__main__":
-    asyncio.run(main())
+Set a Worker Deployment Version and enable versioning in `deployment_config`, then set a default versioning behavior for the Workflows on the Worker.
+
+<!--SNIPSTART python-versioned-worker-->
+[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
+```py
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[HelloWorkflow],
+    activities=[some_activity],
+    deployment_config=WorkerDeploymentConfig(
+        version=WorkerDeploymentVersion(
+            deployment_name="my-app",
+            build_id="1.0",
+        ),
+        use_worker_versioning=True,
+        default_versioning_behavior=VersioningBehavior.PINNED,
+    ),
+)
 ```
+<!--SNIPEND-->
+
+To set the behavior per Workflow instead of on the Worker, pass `versioning_behavior` to `@workflow.defn`.
+See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
+
+## Shut down a Worker {/* #shut-down-a-worker */}
+
+Use the Worker as an async context manager and wait on an event that your signal handler sets.
+When the block exits, the Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to `graceful_shutdown_timeout`.
+
+<!--SNIPSTART python-worker-graceful-shutdown-->
+[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
+```py
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[HelloWorkflow],
+    activities=[some_activity],
+    graceful_shutdown_timeout=timedelta(seconds=30),
+)
+async with worker:
+    await interrupt_event.wait()
+```
+<!--SNIPEND-->
+
+See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

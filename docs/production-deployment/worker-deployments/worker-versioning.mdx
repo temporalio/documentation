@@ -17,7 +17,6 @@ tags:
   - Durable Execution
 ---
 
-import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import { SdkTabs, AnnotatedCode } from '@site/src/components';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
@@ -625,6 +624,8 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
+
+For a complete runbook covering batch recovery, drainage handling, and how to choose between Versioning Override and Reset-with-Move based on each Workflow's state, see [Recover pinned Workflows after a bad rollout](/production-deployment/worker-deployments/recover-pinned-workflows).
 
 ## Migrating a Workflow from Pinned to Auto-Upgrade
 
