@@ -126,9 +126,9 @@ The way you write a Standalone Activity is identical to how you write an Activit
 by a Workflow. In fact, an Activity can be executed both as a Standalone Activity and as a Workflow
 Activity.
 
+<!--SNIPSTART typescript-standalone-activity-definition-->
 [standalone-activity/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/activities.ts)
-
-```typescript
+```ts
 import { ApplicationFailure } from '@temporalio/activity';
 
 export async function greet(name: string): Promise<string> {
@@ -138,6 +138,7 @@ export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
+<!--SNIPEND-->
 
 ## Run a Worker with the Activity registered {/* #run-worker */}
 
@@ -147,9 +148,9 @@ whether the Activity will be invoked from a Workflow or as a Standalone Activity
 Worker](/develop/typescript/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup and
 configuration options.
 
+<!--SNIPSTART typescript-standalone-activity-worker-->
 [standalone-activity/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/worker.ts)
-
-```typescript
+```ts
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -175,6 +176,7 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+<!--SNIPEND-->
 
 Open a new terminal, navigate to the `samples-typescript/standalone-activity` directory, and run the Worker:
 
@@ -282,13 +284,16 @@ Use
 [`start`](https://typescript.temporal.io/api/interfaces/client.TypedActivityClient#start) method of
 the client or the typed interface to start your Standalone Activity and get a handle:
 
-```typescript
+<!--SNIPSTART typescript-standalone-activity-start-->
+[standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
+```ts
 const handle = await activitiesClient.start('greet', {
   ...activityOptions,
   id: activityId,
   args: ['Temporal'],
 });
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI:
 
@@ -309,9 +314,12 @@ how the Activity was started, this method is not available in the typed interfac
 takes an optional type argument to constrain the Activity result type, but correctness of this argument
 is not verified.
 
-```typescript
+<!--SNIPSTART typescript-standalone-activity-get-handle-->
+[standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
+```ts
 const newHandle = client.activity.getHandle<string>(activityId);
 ```
+<!--SNIPEND-->
 
 You can now use the handle to wait for the result, describe, cancel, or terminate the Activity.
 
@@ -322,9 +330,12 @@ is the same as calling [`start`](https://typescript.temporal.io/api/interfaces/c
 to durably enqueue the Standalone Activity, and then calling `await handle.result()` to
 wait for the Activity to be executed and fetch the result:
 
-```typescript
+<!--SNIPSTART typescript-standalone-activity-result-->
+[standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
+```ts
 console.log(await handle.result()); // Hello, Temporal!
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to wait for a result by Activity Id:
 
@@ -381,10 +392,13 @@ the total count of executions (running, completed, failed, etc.) - not the numbe
 works the same way as counting Workflow Executions. The same query will work for both listing and
 counting.
 
-```typescript
+<!--SNIPSTART typescript-standalone-activity-count-->
+[standalone-activity/src/list.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/list.ts)
+```ts
 const { count } = await client.activity.count(query);
 console.log(`Total activities: ${count}`);
 ```
+<!--SNIPEND-->
 
 The sample file 
 [standalone-activity/src/list.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/list.ts)
