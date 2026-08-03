@@ -1,0 +1,123 @@
+name: Check Orphan Pages
+
+# Warns when a docs page will be built and routed by Docusaurus but isn't
+# reachable from any sidebar entry in sidebars.js. This is advisory, not a
+# merge gate: sidebars.js is hand-authored in this repo, so a new page often
+# lands in a PR before its sidebar entry does (or in a deliberate follow-up),
+# and there are legitimate long-lived exceptions tracked in
+# bin/orphan-pages-baseline.json. The job never fails; it only leaves a PR
+# comment and file annotations so the gap doesn't go unnoticed.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "sidebars.js"
+      - "bin/check-orphan-pages.js"
+      - "bin/orphan-pages-baseline.json"
+      - ".github/workflows/check-orphan-pages.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: check-orphan-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-orphan-pages:
+    name: Check for orphaned docs pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "24"
+
+      - name: Run the orphan check
+        id: check
+        run: |
+          set +e
+          node bin/check-orphan-pages.js > report.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          node bin/check-orphan-pages.js --json > report.json 2>/dev/null
+          set -e
+
+          cat report.txt
+
+          {
+            echo "### Orphan pages check (informational — does not block merge)"
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Annotate findings
+        if: steps.check.outputs.status == '2'
+        run: |
+          node -e "
+            const r = JSON.parse(require('fs').readFileSync('report.json', 'utf8'));
+            for (const o of r.remaining) {
+              console.log('::warning file=' + o.path + '::Not reachable from any sidebar entry (doc id: ' + o.docId + '). Add it to sidebars.js, mark it \`unlisted: true\` if that is intentional, or record it in bin/orphan-pages-baseline.json with a note.');
+            }
+            for (const p of r.stale) {
+              console.log('::warning file=bin/orphan-pages-baseline.json::Baseline entry \'' + p + '\' is no longer orphaned — remove it.');
+            }
+          "
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- check-orphan-pages -->';
+            const status = '${{ steps.check.outputs.status }}';
+            const hasFindings = status === '2';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+
+            const existing = comments.find(
+              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
+            );
+
+            // Don't post a fresh "all clear" comment when there was never a
+            // findings comment to clear — that's just noise on every PR.
+            if (!hasFindings && !existing) {
+              core.info('No orphaned pages found and no previous comment exists; skipping comment.');
+              return;
+            }
+
+            const report = fs.readFileSync('report.txt', 'utf8');
+            const body = hasFindings
+              ? `${marker}\n### ⚠️ Orphan pages check\n\nThis is informational and does not block merging.\n\n\`\`\`\n${report}\n\`\`\`\n\nSee [UTILITIES.md](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/UTILITIES.md#check-orphan-pages) for what to do next.`
+              : `${marker}\n### ✅ Orphan pages check\n\nNo orphaned pages found.`;
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated existing orphan pages comment (${existing.id}).`);
+            } else {
+              const { data: newComment } = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.info(`Created new orphan pages comment (${newComment.id}).`);
+            }
