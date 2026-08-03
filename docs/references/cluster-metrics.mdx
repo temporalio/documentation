@@ -41,7 +41,7 @@ Temporal emits metrics for each gRPC service request.
 These metrics are emitted with `type`, `operation`, and `namespace` tags, which provide visibility into Service usage and show the request rates across Services, Namespaces, and Operations.
 
 - Use the `operation` tag in your query to get request rates, error rates, or latencies per operation.
-- Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go#L108) to get details for the specific service.
+- Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/common/metrics/metric_defs.go#L40) to get details for the specific service.
 
 All common tags that you can add in your query are defined in the [metric_defs.go](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go) file.
 
@@ -272,7 +272,7 @@ These metrics pertain to Nexus Operations.
 
 ### Nexus Machinery in the History Service
 
-See [architecture document](https://github.com/temporalio/temporal/blob/5d55d6c707bd68d8f3274c57ae702331adf05e6e/docs/architecture/nexus.md#scheduler)
+See [architecture document](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md#scheduler)
 for more info.
 
 #### In-Memory Buffer
