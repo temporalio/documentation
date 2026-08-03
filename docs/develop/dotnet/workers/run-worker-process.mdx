@@ -16,7 +16,7 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 
 ## Create and run a Worker {/* #run-worker-process */}
 
-Create a `TemporalWorker` with a Temporal Client and a `TemporalWorkerOptions` that names the Task Queue to poll.
+Create a `TemporalWorker` with a [Temporal Client](/develop/dotnet/client/temporal-client) and a `TemporalWorkerOptions` that names the Task Queue to poll.
 Add the Workflows and Activities the Worker can execute, then call `ExecuteAsync()` to start polling.
 
 <!--SNIPSTART dotnet-create-worker-->

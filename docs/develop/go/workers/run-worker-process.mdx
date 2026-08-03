@@ -18,7 +18,7 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 
 Create a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) and passing:
 
-1. A Temporal Client.
+1. A [Temporal Client](/develop/go/client/temporal-client).
 2. The name of the Task Queue to poll.
 3. A [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) struct (can be empty for defaults).
 

@@ -17,7 +17,7 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 
 ## Create and run a Worker {/* #run-a-dev-worker */}
 
-Create a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) from a Workflow Client, then call `newWorker()` with the Task Queue to poll.
+Create a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) from a [Temporal Client](/develop/java/client/temporal-client), then call `newWorker()` with the Task Queue to poll.
 Register the Workflow and Activity types the Worker can execute, then call `start()` on the factory.
 
 <!--SNIPSTART java-create-worker-->
