@@ -149,7 +149,7 @@ reflected in the replica due to <ToolTipTerm term="replication lag" />, particul
 non-graceful failover, replication lag may cause a temporary setback in Workflow progress.
 
 Namespaces that are not replicated can be configured to provide _at-most-once_ semantics for Activity execution when a
-retry policy's [maximum attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0. High
+retry policy's [maximum attempts](/encyclopedia/retry-policies#maximum-attempts) is set to 0. High
 Availability Namespaces provide _at-least-once_ semantics for execution of Activities. Completed Activities _may_ be
 re-dispatched in a newly active Namespace, leading to repeated executions.
 

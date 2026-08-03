@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Start (play triangle) -->
+  <polygon points="24,22 24,58 54,40" fill="none" stroke="#888" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Signal (lightning bolt) delivered atomically with the start -->
+  <polygon points="70,18 58,44 68,44 62,62 82,34 72,34 80,18" fill="#cc2222"/>
+</svg>

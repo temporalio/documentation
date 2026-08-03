@@ -14,6 +14,10 @@ keywords:
   - observability tools integration
   - openmetrics api
   - datadog temporal integration
+  - signoz temporal integration
+  - new relic temporal integration
+  - clickstack temporal integration
+  - opentelemetry collector metrics
 tags:
   - Metrics
   - OpenMetrics
@@ -42,7 +46,9 @@ Datadog provides a serverless integration with the OpenMetrics endpoint. It scra
 
 For Datadog-side details, see the [Datadog integration page](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/).
 
-For Datadog users, treat this integration as the Cloud-side half of your observability setup:
+Datadog also offers a separate [Cost Management integration](https://docs.datadoghq.com/integrations/temporal-cloud-costs/) that sends Temporal Cloud billing data to Datadog Cloud Cost Management for spend attribution by namespace and service type.
+
+For Datadog users, treat the OpenMetrics integration as the Cloud-side half of your observability setup:
 
 - Use OpenMetrics in Datadog to monitor Temporal Cloud behavior such as Task Queue backlog, poll success, and rate limiting.
 - Collect [SDK metrics](/cloud/metrics/sdk-metrics-setup) from your Workers separately to monitor saturation, Schedule-To-Start latency, slot availability, and sticky cache behavior.
@@ -106,6 +112,16 @@ The integration runs on a host (Linux, Windows, or Kubernetes) with the New Reli
 4. In **one.newrelic.com**, go to **Integrations & Agents → Dashboards**, search for **Temporal Cloud**, and install the pre-built dashboard. Data appears within a few minutes.
 
 For New Relic-side details, see the [New Relic integration page](https://docs.newrelic.com/docs/infrastructure/host-integrations/host-integrations-list/temporal-cloud-integration/).
+
+### SigNoz
+
+SigNoz is an OpenTelemetry-native observability platform, available as a cloud service or self-hosted. The integration runs an OpenTelemetry Collector that scrapes the OpenMetrics endpoint and forwards metrics to SigNoz over OTLP.
+
+1. Configure an OpenTelemetry Collector with a Prometheus receiver against `metrics.temporal.io` using Bearer token auth with your Temporal Cloud API key, and an OTLP exporter that sends to your SigNoz ingestion endpoint (using your SigNoz ingestion key and region). Copy the full template - including the Kubernetes Secret-based variant - from the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/).
+2. Deploy the collector (VM/binary or Kubernetes) and confirm `temporal_cloud_v1_*` metrics arrive in the SigNoz **Metrics Explorer**, typically within a few minutes.
+3. Import the pre-built dashboard JSON from the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/) to visualize Temporal Cloud metrics.
+
+For SigNoz-side details, see the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/).
 
 ### Prometheus \+ Grafana {/* #prometheus-grafana */}
 

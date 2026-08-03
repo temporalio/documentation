@@ -96,7 +96,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 - [Many Activities per Workflow](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow)
 - Frequent [Signals, Queries, or Updates](/encyclopedia/workflow-message-passing#choosing-messages)
 - Long-running Activities with [Heartbeats](/cloud/worker-health#manage-worker-heartbeating)
-- High [Activity retry rates](/develop/activity-retry-simulator)
+- High [Activity retry rates](/demos/activity-retry-simulator)
 - Extensive Query usage
 
 **High Storage costs generally indicate**:
@@ -114,7 +114,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 
 ## Measuring
 
-Establish [baseline metrics](https://docs.temporal.io/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
+Establish [baseline metrics](/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
 Specifically:
 
 - Actions consumption (per Workflow, per day/month, by Namespace)
@@ -124,7 +124,7 @@ Specifically:
 
 ## Actions optimization
 
-[Actions](https://docs.temporal.io/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
+[Actions](/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
 Each represents a unit of consumption.
 
 ### Activity granularity
@@ -158,7 +158,7 @@ For expensive external operations like this, consider:
 - Using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types (for example, respecting rate-limit headers)
 - Implementing an [Activity pause pattern](/cli/command-reference/activity#pause) to wait for manual intervention rather than automatic retries
 
-Use the [Activity Retry Simulator](/develop/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
+Use the [Activity Retry Simulator](/demos/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
 
 Refer to this blog post on [Mastering Workflow retry logic for resilient applications](https://temporal.io/blog/failure-handling-in-practice) for additional guidance.
 

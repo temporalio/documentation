@@ -10,12 +10,14 @@ tags:
   - nexus
 ---
 
-import { ReleaseNoteHeader } from "@site/src/components";
+import { ReleaseNoteHeader } from '@site/src/components';
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli via cmd/gen-docs */}
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
 <ReleaseNoteHeader featureName="cloudCli" />
+
+Commands for managing Nexus Operations in Temporal Cloud.
 
 This page provides a reference for the `temporal cloud nexus` commands. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
@@ -129,6 +131,7 @@ Use the following options to change the behavior of this command. You can also u
 ### endpoint delete
 
 Delete a Nexus Endpoint on the Cloud Account.
+Specify either `--name` or `--id` (exactly one is required).
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
@@ -137,8 +140,9 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--id` | No | **string** The ID of the Nexus Endpoint to delete. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--name` | Yes | **string** The name of the Nexus Endpoint to delete. |
+| `--name` | No | **string** The name of the Nexus Endpoint to delete. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
@@ -174,6 +178,7 @@ Use the following options to change the behavior of this command. You can also u
 
 Update an existing Nexus Endpoint on the Cloud Account.
 An endpoint name is used in workflow code to invoke Nexus operations.
+Specify either `--name` or `--id` to identify the endpoint (exactly one is required).
 
 The endpoint is patched leaving any existing fields for which flags are not provided
 as they were.
@@ -193,8 +198,9 @@ Use the following options to change the behavior of this command. You can also u
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--description` | No | **string** An optional endpoint description in markdown format. |
 | `--description-file` | No | **string** Path to a file containing an endpoint description in markdown format. Mutually exclusive with --description. |
+| `--id` | No | **string** The ID of the Nexus Endpoint to update. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
-| `--name` | Yes | **string** The name of the Nexus Endpoint to update. |
+| `--name` | No | **string** The name of the Nexus Endpoint to update. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |

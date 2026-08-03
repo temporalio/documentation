@@ -19,17 +19,11 @@ tags:
 description: Stream events from a Workflow to subscribers using the Temporal TypeScript SDK Workflow Streams contrib module.
 ---
 
-Use [Workflow Streams](/workflow-streams) when you want outside observers to follow the progress of a Workflow and its Activities: updating a UI as an AI agent works, surfacing status from a payment or order pipeline, or reporting intermediate results from a data job.
+import { ReleaseNoteHeader } from '@site/src/components';
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+<ReleaseNoteHeader featureName="workflowStreams" />
 
-The `@temporalio/workflow-streams` module is currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
-[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
-
-The API may change before general availability.
-
-:::
+[Workflow Streams](/workflow-streams) adds a durable event channel to a Workflow, letting outside observers follow its progress in real time. This page walks through enabling a stream, publishing events from Workflows and Activities, subscribing to a stream, and keeping a stream running across long-lived Workflows.
 
 ## Enable streaming on a Workflow
 
@@ -50,7 +44,7 @@ export async function orderWorkflow(input: OrderInput): Promise<void> {
 
 Construct exactly one `WorkflowStream` at the top of the Workflow function. Constructing `WorkflowStream` creates the in-memory event log and registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. If you have more than one `WorkflowStream` on the same Workflow silently replaces the handlers. The TypeScript Workflow runtime doesn't expose an inspection API for existing handlers, so the library can't raise an exception on a duplicate the way the Python SDK does.
 
-If your Workflow uses Continue-As-New, see [Continue-As-New](#continue-as-new) below for how to carry stream state across runs so subscribers don't have gaps.
+If your Workflow is long-running, see [Stream from long-running Workflows](#continue-as-new) for how to carry stream state across rollovers so subscribers don't see gaps.
 
 ## Publish from a Workflow
 
@@ -102,7 +96,7 @@ WorkflowStreamClient.create(client, workflowId)
 
 Then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and let `await using` flush on scope exit.
 
-When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state — see [Delivery semantics](/workflow-streams#delivery-semantics).
+When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
 
 ```typescript
 import { Client } from '@temporalio/client';
@@ -269,7 +263,7 @@ There are two ways to provide that overlap.
     // ... do work and publish events ...
 
     await condition(() => subscriberDone, '30 seconds');
-    // Returns true if the ack arrived, false on timeout — either way, fall through.
+    // Returns true if the ack arrived, false on timeout. Either way, fall through.
     return result;
   }
   ```
@@ -278,11 +272,9 @@ The full pattern is wired into the [Stream LLM output](#stream-llm-output) examp
 
 You can [inspect the terminal status](/workflow-streams#inspecting-terminal-status). `subscribe()` exits cleanly when the Workflow reaches `COMPLETED`, `FAILED`, `CANCELLED`, `TERMINATED`, or `TIMED_OUT`, but doesn't distinguish among them. If your application needs to know which (to display success or failure to the user, log the outcome, or decide whether to retry), call `await temporalClient.workflow.getHandle(workflowId).describe()` after the loop returns to inspect the Workflow's status.
 
-## Continue-As-New
+## Stream from long-running Workflows {/* #continue-as-new */}
 
-[Continue-As-New](/workflow-streams#continue-as-new) following requires the client retained from `WorkflowStreamClient.create()` or `fromWithinActivity()`. Clients constructed directly from a single `WorkflowHandle` can't re-target the new run.
-
-To roll a long-running streaming Workflow over without subscribers seeing a gap, carry both your application state and the stream state across the boundary. Add an optional `streamState?: WorkflowStreamState` field to your Workflow input, pass it to the constructor, and call `stream.continueAsNew(buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, then calls `continueAsNew` with the args produced by `buildArgs(postDrainState)`:
+Workflows that run for hours or accumulate thousands of events need to periodically roll over via [Continue-As-New](/workflow-streams#stream-from-long-running-workflows) to keep history bounded. Subscribers automatically follow these rollovers, but the client retained from `WorkflowStreamClient.create()` or `fromWithinActivity()` is required (clients constructed directly from a single `WorkflowHandle` can't re-target the new run). To keep a stream running across rollovers without subscribers seeing a gap, carry both your application state and the stream state across the boundary. Add an optional `streamState?: WorkflowStreamState` field to your Workflow input, pass it to the constructor, and call `stream.continueAsNew(buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, then calls `continueAsNew` with the args produced by `buildArgs(postDrainState)`:
 
 ```typescript
 import { workflowInfo } from '@temporalio/workflow';
@@ -335,7 +327,7 @@ The carried `WorkflowStreamState` includes the entire in-memory log of the previ
 
 ## Deduplication window
 
-See [Delivery Semantics](/workflow-streams#delivery-semantics) for more details on subscriber and publisher behavior. See [Tuning](/workflow-streams#tuning) for more details on how to change your settings to meet the requirements for your Workflow Streams.
+See [How events are delivered](/workflow-streams#how-events-are-delivered) for more details on subscriber and publisher behavior. See [Tuning](/workflow-streams#tuning) for more details on how to change your settings to meet the requirements for your Workflow Streams.
 
 There are two limits on the [deduplication window](/workflow-streams#deduplication-window) worth highlighting:
 
@@ -365,10 +357,12 @@ There are a few details to note if you're writing custom message handlers or tes
 
 The headline use case fits the publish/subscribe shapes documented above. An Activity calls the model and publishes deltas as they arrive. The Workflow kicks off the Activity and waits for the consumer to acknowledge end-of-stream. The consumer subscribes, accumulates the deltas, and clears its accumulated state on `RETRY` before continuing. The shape works for a terminal client, a desktop UI, or a Server-Sent Events (SSE) endpoint forwarding to a browser. Anything that holds the displayed state calls `render()` to display it.
 
-If your Activity can retry, the consumer side has to account for it. A retried attempt is a fresh publisher, so its output appears in the stream alongside the output from the previous attempt. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern. See [Delivery semantics](/workflow-streams#delivery-semantics) for the precise guarantees.
+If your Activity can retry, the consumer side has to account for it. A retried attempt is a fresh publisher, so its output appears in the stream alongside the output from the previous attempt. In the LLM streaming pattern below, that means the failed attempt's partial deltas and the retried attempt's full output both reach a subscribed UI unless the UI resets on a `RETRY` event. The example wires up that pattern. See [How events are delivered](/workflow-streams#how-events-are-delivered) for the precise guarantees.
+
+<Tabs>
+<TabItem value="activity" label="activities.ts">
 
 ```typescript
-// activities.ts
 import { Context } from '@temporalio/activity';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
 import OpenAI from 'openai';
@@ -420,8 +414,10 @@ export async function streamCompletion(prompt: string): Promise<string> {
 }
 ```
 
+</TabItem>
+<TabItem value="workflow" label="workflows.ts">
+
 ```typescript
-// workflows.ts
 import { condition, defineSignal, executeActivity, setHandler } from '@temporalio/workflow';
 import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
 import type * as activities from './activities';
@@ -451,8 +447,10 @@ export async function chatWorkflow(input: ChatInput): Promise<string> {
 }
 ```
 
+</TabItem>
+<TabItem value="consumer" label="consumer.ts">
+
 ```typescript
-// consumer.ts: accumulates the model's output and resets on retry
 import { Client } from '@temporalio/client';
 import { defaultPayloadConverter } from '@temporalio/common';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
@@ -488,10 +486,13 @@ export async function streamChat(chatId: string): Promise<string> {
 }
 ```
 
+</TabItem>
+</Tabs>
+
 A few choices in this shape are deliberate:
 
-- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream — see [Publish from a client](#publish-from-a-client) for why.
-- The Activity publishes a `RETRY` event when `Context.current().info.attempt > 1`. This lets the UI respond appropriately to the failure, typically by clearing accumulated deltas before the next attempt's deltas arrive (see [Delivery semantics](/workflow-streams#delivery-semantics)).
+- The Activity is the publisher because it owns the non-deterministic LLM call. The Workflow processes only the Activity's return value, never reading its own stream. See [Publish from a client](#publish-from-a-client) for why.
+- The Activity publishes a `RETRY` event when `Context.current().info.attempt > 1`. This lets the UI respond appropriately to the failure, typically by clearing accumulated deltas before the next attempt's deltas arrive (see [How events are delivered](/workflow-streams#how-events-are-delivered)).
 - Termination uses an *ack handshake*: the consumer signals the Workflow once it has received the `close` event, so the Workflow can return as soon as the subscriber confirms. The `condition` timeout is the fallback when no subscriber is attached (see [Closing the stream](#closing-the-stream) for the simpler fixed-sleep alternative).
 - `{ forceFlush: true }` is used only on the first delta and on the `RETRY` sentinel, where latency matters. Subsequent deltas batch at the 200 ms `batchInterval`; per-delta `forceFlush: true` would generate one Signal per token (see [Tuning](/workflow-streams#tuning) for the trade-off).
 

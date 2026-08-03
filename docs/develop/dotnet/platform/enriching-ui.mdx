@@ -145,7 +145,7 @@ The input format for `Summary` is a string, and limited to 200 bytes.
 ## Viewing Summary and Details in the UI
 
 Once you've added summaries and details to your Workflows, Activities, and timers, you can view this enriched information in the Temporal Web UI. 
-Navigate to your Workflow's details page to see the metadata displayed in two key locations:
+Navigate to your Workflow's details page to see the metadata displayed in three key locations:
 
 ### Workflow Overview Section
 
@@ -155,6 +155,17 @@ At the top of the Workflow details page, you'll find the Workflow-level metadata
 - **Current Details** - Displays the dynamic details that can be updated during Workflow execution
 
 All Workflow details support standard Markdown formatting (excluding images, HTML, and scripts), allowing you to create rich, structured information displays.
+
+### Timeline
+ 
+The **Timeline** tab on the Workflow details page renders each Activity and Timer as a horizontal bar. When you set a `Summary` on an Activity or Timer, the summary text is shown directly on the bar label, making it possible to distinguish individual instances of the same Activity Type at a glance.
+  
+Labels longer than 120 characters are truncated with an ellipsis.
+  
+Setting a distinct `Summary` per Activity is especially useful for **fan-out Workflows** that schedule many instances of the same Activity Type, where the Activity Type alone is not enough to tell each bar apart on the Timeline. 
+     
+Activity `Summary` support on the Timeline shipped in Temporal UI **v2.34.6** and is available on Temporal Cloud and on self-hosted UI builds at that version or later.
+
 
 ### Event History
 

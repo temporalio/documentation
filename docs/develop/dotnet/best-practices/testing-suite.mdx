@@ -103,6 +103,7 @@ While this is just a demonstration, a local server is often used as a fixture ac
 
 Sometimes there is a need to test Workflows that run a long time or to test that timeouts occur.
 A time-skipping `Temporalio.Testing.WorkflowEnvironment` can be started via `StartTimeSkippingAsync` which is a reimplementation of the Temporal server with special time skipping capabilities.
+
 Like `StartLocalAsync`, this also lazily downloads the process to run when first called.
 Note, unlike `StartLocalAsync`, this class is not thread safe nor safe for use with independent tests.
 It can be technically be reused, but only for one test at a time because time skipping is locked/unlocked at the environment level.
@@ -158,7 +159,7 @@ public async Task WaitADayWorkflow_SimpleRun_Succeeds()
 ```
 
 This test will run almost instantly.
-This is because by calling `ExecuteWorkflowAsync` on our client, we are actually calling `StartWorkflowAsync` + `GetResultAsync`, and `GetResultAsync` automatically skips time as much as it can (basically until the end of the workflow or until an activity is run).
+This is because by calling `ExecuteWorkflowAsync` on our client, we are actually calling `StartWorkflowAsync` + `GetResultAsync`, and `GetResultAsync` automatically skips time as much as it can (basically until the end of the Workflow or until an Activity is run).
 
 To disable automatic time-skipping while waiting for a workflow result, run code as a lambda passed to `env.WithAutoTimeSkippingDisabled` or `env.WithAutoTimeSkippingDisabledAsync`.
 

@@ -15,9 +15,6 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader
-  type="publicPreview"
-/>
 
 The Temporal Cloud Billing API provides Namespace-level cost attribution through on-demand billing reports. 
 Reports are delivered in CSV format and can be accessed via API or downloaded directly for use in FinOps tooling and cost management platforms.  
@@ -42,10 +39,12 @@ Billing report generation is **asynchronous**. You initiate report creation, the
 
 ## Report data limitations
 
-For public preview, reports can be generated with hourly, daily and monthly granularities, each of which have their own data ranges.
+Reports can be generated with hourly, daily and monthly granularities, each of which have their own data ranges.
 - Hourly: Current billing month and previous billing month
 - Daily: Current billing month and previous two billing months
 - Monthly: Current billing month and previous eleven billing months
+
+Data from the current billing month is subject to change and only finalized once the billing month is closed.
 
 ## Allowed date ranges
 
@@ -67,6 +66,7 @@ Within a single account:
 ### Report Generation Latency
 
 Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
+
 
 ## Best practices
 

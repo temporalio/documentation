@@ -42,10 +42,9 @@ A Workflow implementation implements a Workflow interface.
 
 ```java
 // Define the Workflow implementation which implements our getGreeting Workflow method.
-  public static class GreetingWorkflowImpl implements GreetingWorkflow {
-      ...
-    }
-  }
+public static class GreetingWorkflowImpl implements GreetingWorkflow {
+  ...
+}
 ```
 
 To call Activities in your Workflow, call the Activity implementation.
@@ -208,6 +207,42 @@ In the following example, the Workflow Type is set to `your-workflow`.
 ```
 
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
+
+## Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/workflows/basics#workflow-parameters) as your `@WorkflowMethod`.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/java/client/temporal-client#start-workflow-execution). The Workflow input arguments are also passed to your `@WorkflowMethod` method. That always happens, whether or not you use the `@WorkflowInit` annotation.
+
+Here's an example. Notice that the constructor and `getGreeting` must have the same parameters:
+
+```java
+public class GreetingExample {
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        @WorkflowMethod
+        String getGreeting(String input);
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        private final String nameWithTitle;
+        private boolean titleHasBeenChecked;
+        ...
+        // Note the annotation is on a public constructor
+        @WorkflowInit
+        public GreetingWorkflowImpl(String input) {
+          this.nameWithTitle = "Knight " + input;
+          this.titleHasBeenChecked = false;
+        }
+
+        @Override
+        public String getGreeting(String input) {
+          Workflow.await(() -> titleHasBeenChecked)
+          return "Hello " + nameWithTitle;
+        }
+    }
+}
+```
 
 ## Workflow logic requirements {/* #workflow-logic-requirements */}
 

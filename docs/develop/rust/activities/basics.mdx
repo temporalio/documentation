@@ -136,7 +136,7 @@ impl MyActivities {
     ) -> Result<ProcessedData, ActivityError> {
         // If an error should be retried
         if !validate_input(&input) {
-            return Err(ApplicationFailure::builder(anyhow::anyhow!("Invalid input format"))
+            return Err(ApplicationFailure::builder("Invalid input format")
                 .next_retry_delay(Duration::from_secs(5))
                 .build()
                 .into());
@@ -144,9 +144,7 @@ impl MyActivities {
 
         // If an error should not be retried
         if input.len() > 1000000 {
-            return Err(ApplicationFailure::non_retryable(
-                anyhow::anyhow!("Input too large")
-            ).into());
+            return Err(ApplicationFailure::non_retryable("Input too large").into());
         }
 
         let result = ProcessedData {

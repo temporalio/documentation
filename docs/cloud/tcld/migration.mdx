@@ -1,0 +1,136 @@
+---
+id: migration
+title: tcld migration command reference
+sidebar_label: migration
+description: (private preview) Manage migrations between self-hosted Temporal and Temporal cloud
+slug: /cloud/tcld/migration
+toc_max_heading_level: 4
+keywords:
+  - cli reference
+  - tcld
+tags:
+  - Temporal Cloud
+  - tcld
+---
+
+{/* This is an auto-generated file. Do not edit directly. */}
+
+The `tcld migration` command (private preview) Manage migrations between self-hosted Temporal and Temporal cloud.
+
+Alias: `m`
+
+- [tcld migration get](#get)
+- [tcld migration list](#list)
+- [tcld migration start](#start)
+- [tcld migration handover](#handover)
+- [tcld migration confirm](#confirm)
+- [tcld migration abort](#abort)
+
+### get
+
+The `tcld migration get` command get a migration.
+
+Alias: `g`
+
+#### --id
+
+Migration id
+
+Alias: `i`
+
+### list
+
+The `tcld migration list` command list migrations.
+
+Alias: `l`
+
+### start
+
+The `tcld migration start` command start a new migration.
+
+Alias: `s`
+
+#### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
+
+Alias: `r`
+
+#### --endpoint-id
+
+Migration endpoint id
+
+Alias: `e`
+
+#### --source-namespace
+
+Source namespace name
+
+Alias: `s`
+
+#### --target-namespace
+
+Target namespace name
+
+Alias: `t`
+
+### handover
+
+The `tcld migration handover` command handover the namespace from on-prem to cloud, or from cloud back to on-prem.
+
+Alias: `s`
+
+#### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
+
+Alias: `r`
+
+#### --id
+
+Migration id
+
+Alias: `i`
+
+#### --to-replica-id
+
+The id of the replica to make active
+
+Alias: `rp`
+
+### confirm
+
+The `tcld migration confirm` command confirm the migration.
+
+Alias: `c`
+
+#### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
+
+Alias: `r`
+
+#### --id
+
+Migration id
+
+Alias: `i`
+
+### abort
+
+The `tcld migration abort` command abort the migration.
+
+Alias: `a`
+
+#### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
+
+Alias: `r`
+
+#### --id
+
+Migration id
+
+Alias: `i`
+

@@ -14,7 +14,7 @@ Temporal Cloud access controls are organized across two scopes:
 - Account-level role permissions
 - Namespace-level permissions
 
-Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](https://docs.temporal.io/ops)
+Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](/ops)
 endpoints and to additional non-Cloud Ops capabilities, such as Temporal Cloud UI and internal automation behaviors.
 
 ## Account-level access {/* #account-level-access */}
@@ -38,17 +38,18 @@ configured per user.
 | [AddUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/members)          |           |           |               |      ✔       |       ✔       |
 | [CreateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks)   |           |           |               |      ✔       |       ✔       |
 | [CreateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [CreateBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/billing/POST/cloud/billing-reports)         |           |           |       ✔       |              |       ✔       |
 | [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)      |           |           |               |      ✔       |       ✔       |
 | [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)             |           |     ✔     |               |      ✔       |       ✔       |
 | [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)         |           |     ✔     |               |      ✔       |       ✔       |
-| [CreateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [CreateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/manage-access/service-accounts)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
 | [CreateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users)                  |           |           |               |      ✔       |       ✔       |
 | [CreateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups)             |           |           |               |      ✔       |       ✔       |
 | [DeleteAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/DELETE/cloud/audit-log-sinks/%7Bname%7D)   |           |           |               |      ✔       |       ✔       |
 | [DeleteApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/DELETE/cloud/api-keys/%7BkeyId%7D)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
 | [DeleteConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/DELETE/cloud/connectivity-rules/%7BconnectivityRuleId%7D)      |           |           |               |      ✔       |       ✔       |
 | [DeleteNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/DELETE/cloud/nexus/endpoints/%7BendpointId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
-| [DeleteServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/DELETE/cloud/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [DeleteServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/DELETE/cloud/manage-access/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
 | [DeleteUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/DELETE/cloud/users/%7BuserId%7D)                  |           |           |               |      ✔       |       ✔       |
 | [DeleteUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/DELETE/cloud/user-groups/%7BgroupId%7D)             |           |           |               |      ✔       |       ✔       |
 | [GetAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/account)                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
@@ -58,6 +59,7 @@ configured per user.
 | [GetApiKeys](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/GET/cloud/api-keys)                  |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
 | [GetAsyncOperation](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/operations/GET/cloud/operations/%7BasyncOperationId%7D)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | [GetAuditLogs](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-logs)                |           |           |               |      ✔       |       ✔       |
+| [GetBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/billing/GET/cloud/billing-reports/%7BbillingReportId%7D)            |           |           |       ✔       |              |       ✔       |
 | [GetConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
 | [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules)        |           |     ✔     |               |      ✔       |       ✔       |
 | [GetCurrentIdentity](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/current-identity)          |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
@@ -66,8 +68,8 @@ configured per user.
 | [GetNexusEndpoints](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | [GetRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions/%7Bregion%7D)                   |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | [GetRegions](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions)                  |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
-| [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts/%7BserviceAccountId%7D)           |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
-| [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts)          |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts/%7BserviceAccountId%7D)           |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts)          |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
 | [GetUsage](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/usage)                    |           |           |       ✔       |      ✔       |       ✔       |
 | [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | [GetUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D)                |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
@@ -80,7 +82,7 @@ configured per user.
 | [UpdateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys/%7BkeyId%7D)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
 | [UpdateNamespaceTags](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/update-tags)         |           |           |               |      ✔       |       ✔       |
 | [UpdateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints/%7BendpointId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
-| [UpdateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
+| [UpdateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/manage-access/service-accounts/%7BserviceAccountId%7D)        |    ✔†     |    ✔†     |      ✔†       |      ✔†      |      ✔†       |
 | [UpdateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/%7BuserId%7D)                  |           |           |               |      ✔       |       ✔       |
 | [UpdateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D)             |           |           |               |      ✔       |       ✔       |
 | [ValidateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sink-validate) |           |           |               |      ✔       |       ✔       |
@@ -267,6 +269,17 @@ permissions. These permissions are configured per Namespace per user.
 | Manage user and identity Namespace access                     |      |       |        ✔        |
 | Initiate Namespace failover                                   |      |       |        ✔        |
 | Convert single-region Namespace to multi-region               |      |       |        ✔        | */}
+
+## Custom Role permissions reference
+
+The following tables list the permission action strings available when defining [Custom Roles](/cloud/manage-access/custom-roles).
+Use these strings in the `actions` field of a Custom Role permission grant.
+
+Not all Cloud Ops API operations can be assigned to a Custom Role. For details on which operations are excluded and why, see [Available permissions](/cloud/manage-access/custom-roles#available-permissions).
+
+import CustomRolePermissionsTable from './_custom_role_permissions_table.mdx';
+
+<CustomRolePermissionsTable />
 
 ## Additional authorization behaviors
 

@@ -26,6 +26,24 @@ import { ToolTipTerm } from '@site/src/components';
 Temporal Cloud offers several ways for you to track the health and performance of your
 [High Availability](/cloud/high-availability) namespaces.
 
+## Detect a failover or an outage {/* #detect-failover-or-outage */}
+
+With some [Worker deployment patterns](/cloud/high-availability/architecture-patterns) — most notably [Active/Passive](/cloud/high-availability/architecture-patterns#active-cold) — detecting an outage is your responsibility, and your Workflows make no progress until you detect it and bring up Workers in the new active region. Fast, reliable detection therefore directly determines your recovery time, so it is worth monitoring for both of the following.
+
+### Detect a failover {/* #detect-a-failover */}
+
+The clearest way to detect that a failover has happened is to watch whether your Namespace's active region changed. When Temporal Cloud promotes the replica in the secondary region to active, the active region reported for the Namespace changes — a reliable, unambiguous signal that a failover occurred. To track failovers as they happen, look for the `FailoverNamespace` operation described in [Failover audit log](#failover-audit-log).
+
+### Detect an outage {/* #detect-an-outage */}
+
+A failover is not the only signal worth watching. You may want to detect a regional outage directly, before or independently of a Namespace failover, so you can begin your own response. Watch for:
+
+- **A spike in replication lag** between the primary and the replica. See [Monitoring replication](#monitoring-replication).
+- **A drop in Workflow throughput**, such as a sudden decline in the rate of Workflows started, completed, or Tasks processed.
+- **A spike in errors across your overall stack**, not just Temporal — for example, application errors, failed Activities, or connection failures.
+- **A drop in throughput across your overall stack**, such as fewer requests reaching your services or fewer Activities executing.
+- **Errors or failovers in other cloud systems you depend on**, such as databases, queues, or other regional services, which often signal a broader regional outage.
+
 ## Replication status
 
 You can monitor your replica status with the Temporal Cloud UI. If the replica is unhealthy, Temporal Cloud disables the

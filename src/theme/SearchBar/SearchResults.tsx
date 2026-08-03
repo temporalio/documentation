@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { useHits, useSearchBox, useStats } from 'react-instantsearch';
+import { useSearchBox, useStats } from 'react-instantsearch';
 import { GroupedHits } from './GroupedHits';
 import AskAIButton from './AskAIButton';
+import { trackNoResults } from './trackSearchEvent';
 
 interface SearchResultsProps {
   onClose: () => void;
@@ -10,14 +11,23 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ onClose, selectedIndex, onResultsChange }: SearchResultsProps) {
-  const { items } = useHits();
+  // Read counts from useStats rather than useHits: useHits registers its own
+  // insights-aware widget, and with `insights: true` on the tree that means
+  // an extra automatic "Hits Viewed" event on top of GroupedHits' own. This
+  // component only needs the count, not the hits themselves.
   const { query } = useSearchBox();
   const { nbHits } = useStats();
 
   // Notify parent when results change
   useEffect(() => {
-    onResultsChange(items.length);
-  }, [items.length, onResultsChange]);
+    onResultsChange(nbHits);
+  }, [nbHits, onResultsChange]);
+
+  useEffect(() => {
+    if (query && nbHits === 0) {
+      trackNoResults(query);
+    }
+  }, [query, nbHits]);
 
   const handleSeeAllResults = () => {
     onClose();
@@ -27,12 +37,12 @@ export function SearchResults({ onClose, selectedIndex, onResultsChange }: Searc
   return (
     <div className="custom-search-results" role="listbox" aria-label="Search results">
       {query && <GroupedHits selectedIndex={selectedIndex} onNavigate={onClose} />}
-      {items.length === 0 && query && (
+      {nbHits === 0 && query && (
         <div className="custom-search-no-results">
           No results found for "{query}"
         </div>
       )}
-      {query && items.length > 0 && (
+      {query && nbHits > 0 && (
         <div id="ai-footer">
           <AskAIButton query={query} closeDocSearch={onClose} />
           <button

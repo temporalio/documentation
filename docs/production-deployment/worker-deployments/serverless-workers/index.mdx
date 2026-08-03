@@ -3,8 +3,8 @@ id: index
 title: Serverless Workers
 sidebar_label: Serverless Workers
 description:
-  Deploy Temporal Workers on serverless compute providers. Temporal invokes your Worker when Tasks arrive, with no
-  long-lived processes to manage.
+  Deploy Temporal Workers on serverless compute providers. Temporal starts and stops your Workers in response to work on
+  a Task Queue.
 slug: /production-deployment/worker-deployments/serverless-workers
 toc_max_heading_level: 4
 keywords:
@@ -12,6 +12,8 @@ keywords:
   - worker
   - deployment
   - lambda
+  - cloud run
+  - gcp
 tags:
   - Workers
   - Deploy
@@ -20,21 +22,27 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
-  APIs are experimental and may be subject to backwards-incompatible changes.
-  [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
+  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
+  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
+  when Cloud Run reaches Public Preview.
 </ReleaseNoteHeader>
 
-Serverless Workers let you run Temporal Workers on serverless compute like AWS Lambda. Deploy your Worker code to a
-serverless provider, configure a compute provider for the Worker Deployment Version, and Temporal invokes the Worker
-when Tasks arrive. There are no long-lived processes to provision or scale.
+Serverless Workers let you run Temporal Workers on serverless compute. Deploy your Worker code to a serverless provider,
+configure a compute provider for the Worker Deployment Version, and Temporal starts and stops Workers in response to
+work on the Task Queue. There is no always-on Worker fleet to provision or scale.
 
-Temporal monitors Task Queues that have a compute provider configured. When a Task arrives and no Worker is polling,
-Temporal invokes the configured compute target. The Worker starts, processes available Tasks, and shuts down when the
-invocation window ends.
+Temporal monitors Task Queues that have a compute provider configured. When a Task arrives and no Worker is free to take
+it, the [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) starts compute. How it starts
+compute is where the providers differ. On AWS Lambda the WCI invokes a function per unit of work, and the Worker exits
+when the invocation window ends. On GCP Cloud Run it resizes a Worker Pool of long-lived instances that poll
+continuously.
 
 ## Supported providers
 
 - [**AWS Lambda**](/production-deployment/worker-deployments/serverless-workers/aws-lambda) - Deploy a Serverless Worker
   as a Lambda function. Temporal assumes an IAM role in your AWS account to invoke the function when Tasks arrive.
+- [**GCP Cloud Run**](/production-deployment/worker-deployments/serverless-workers/cloud-run) - Deploy a Serverless
+  Worker to a Cloud Run Worker Pool. Temporal impersonates a service account in your GCP project to scale the pool as
+  Tasks arrive and drain.

@@ -36,8 +36,7 @@ function getFileContentAtRef(filePath, ref) {
   }
 }
 
-function resolveOldUrl(filePath, ref) {
-  const content = getFileContentAtRef(filePath, ref);
+function resolveUrlFromContent(filePath, content) {
   if (content) {
     const fm = extractFrontMatter(content);
 
@@ -55,6 +54,29 @@ function resolveOldUrl(filePath, ref) {
     }
   }
   return filePathToUrlPath(filePath);
+}
+
+function resolveOldUrl(filePath, ref) {
+  return resolveUrlFromContent(filePath, getFileContentAtRef(filePath, ref));
+}
+
+// Build the set of URLs still served by docs pages at a given ref. A deleted
+// file whose URL is covered here does not need a redirect, because some other
+// current page still serves that URL (e.g. a page.mdx whose content was split
+// into page/index.mdx plus siblings — git reports the old file as a plain
+// delete rather than a rename, but the URL stays live).
+function getLiveUrls(ref) {
+  const output = execSync(`git ls-tree -r --name-only ${ref} -- docs/`, {
+    encoding: 'utf8',
+    maxBuffer: 1024 * 1024 * 64,
+  });
+
+  const urls = new Set();
+  for (const filePath of output.split('\n').filter((l) => l.trim())) {
+    if (!/\.(mdx|md)$/.test(filePath)) continue;
+    urls.add(resolveOldUrl(filePath, ref));
+  }
+  return urls;
 }
 
 function getMovedOrDeletedDocFiles(baseSha) {
@@ -133,10 +155,17 @@ function main() {
   }
 
   const redirects = loadRedirects();
+  const liveUrls = getLiveUrls('HEAD');
   const missing = [];
 
   for (const file of movedFiles) {
     const oldUrl = resolveOldUrl(file.oldPath, mergeBase);
+
+    // If any current page still serves this URL, no redirect is needed. This
+    // covers both a rename that preserves the URL (page.mdx -> page/index.mdx)
+    // and a content split where git reports the old file as a plain delete.
+    if (liveUrls.has(oldUrl)) continue;
+
     const match = findMatchingRedirect(oldUrl, redirects);
 
     if (!match) {
@@ -173,7 +202,9 @@ function main() {
 module.exports = {
   filePathToUrlPath,
   extractFrontMatter,
+  resolveUrlFromContent,
   resolveOldUrl,
+  getLiveUrls,
   vercelPatternToRegex,
   findMatchingRedirect,
   loadRedirects,

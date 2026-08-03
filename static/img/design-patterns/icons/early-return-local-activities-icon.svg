@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Entry point -->
+  <circle cx="14" cy="40" r="8" fill="none" stroke="#888" stroke-width="2"/>
+
+  <!-- Fast path: a local activity (gear) returns early (red) -->
+  <path d="M 22 36 L 44 24" fill="none" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="42,20 50,24 43,28" fill="#cc2222"/>
+  <circle cx="60" cy="22" r="6" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <circle cx="60" cy="22" r="1.5" fill="#cc2222"/>
+  <g stroke="#cc2222" stroke-width="2.5" stroke-linecap="round">
+    <line x1="65" y1="22" x2="69" y2="22"/>
+    <line x1="63.5" y1="25.5" x2="66.4" y2="28.4"/>
+    <line x1="60" y1="27" x2="60" y2="31"/>
+    <line x1="56.5" y1="25.5" x2="53.6" y2="28.4"/>
+    <line x1="55" y1="22" x2="51" y2="22"/>
+    <line x1="56.5" y1="18.5" x2="53.6" y2="15.6"/>
+    <line x1="60" y1="17" x2="60" y2="13"/>
+    <line x1="63.5" y1="18.5" x2="66.4" y2="15.6"/>
+  </g>
+
+  <!-- Slow path continues in the background -->
+  <path d="M 22 44 L 46 58" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="43,53 52,59 44,62" fill="#888"/>
+  <rect x="54" y="50" width="30" height="18" rx="3" fill="none" stroke="#888" stroke-width="1.5"/>
+  <text x="69" y="63" font-family="sans-serif" font-size="9" fill="#888" text-anchor="middle">slow</text>
+</svg>
