@@ -77,7 +77,7 @@ Visibility is intended for operational discovery and search: finding, filtering,
 
 For a few common tasks, another approach works better:
 
-- To check whether a specific workflow exists, start it and handle the already-started result, or look it up by ID with [`DescribeWorkflowExecution`](/references/operation-list#operations).
+- To check whether a specific workflow exists, start it and handle the already-started result, or look it up by ID with [`DescribeWorkflowExecution`](/references/operation-list).
 - To react to a workflow's progress or completion, follow its [Event History](/workflow-execution/event) or model the dependent work as [child workflows](/child-workflows) instead of polling Visibility.
 - To coordinate between workflows, use signals, updates, or child workflows rather than reading Visibility from inside your workflow or activity code.
 
