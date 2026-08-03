@@ -279,6 +279,12 @@ module.exports = async function createConfigAsync() {
               '**/ai-cookbook/**',
             ], // partials (underscore-prefixed) + context content we don't render
             editUrl: 'https://github.com/temporalio/documentation/blob/main/',
+            // docs/tags.yml exists only to override permalinks for a few tags
+            // whose auto-generated slugs are wrong. Docusaurus treats any tags
+            // file as a closed vocabulary, so without this it warns on every
+            // page using a tag the file doesn't declare (~630 pages). Flip this
+            // to 'warn' once the vocabulary is complete (TAXONOMY.md, phase 3).
+            onInlineTags: 'ignore',
             /**
              * Whether to display the author who last updated the doc.
              */
