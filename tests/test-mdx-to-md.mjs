@@ -565,6 +565,31 @@ test("CaptionedImage uses caption/title when no alt", () => {
   assertContains(markdown, "![Persistence](/diagrams/x.svg)");
 });
 
+test("YouTube iframe embeds are stripped; Watch links kept", () => {
+  const input = `:::tip
+
+Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE) for a short overview.
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/zLjhNrOKphE"
+    title="What Is a Workflow in Temporal?"
+    frameBorder="0"
+    allowFullScreen
+  ></iframe>
+</div>
+
+:::
+`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "iframe");
+  assertNotContains(markdown, "youtube.com/embed");
+  assertNotContains(markdown, "<div");
+});
+
 test("PhotoCarousel emits one image per entry with captions", () => {
   const input = `<PhotoCarousel\n  images={[\n    'https://x/a.jpeg',\n    'https://x/b.jpeg',\n  ]}\n  captions={[\n    'First',\n    'Second',\n  ]}\n/>`;
   const { markdown } = transformMdx(input);
@@ -663,7 +688,7 @@ test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkers" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
   assertContains(markdown, "> **Pre-release**");
 });

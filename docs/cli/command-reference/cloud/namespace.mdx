@@ -431,7 +431,107 @@ Use the following options to change the behavior of this command. You can also u
 
 Commands for managing workflow history export sinks for Temporal Cloud namespaces.
 
-Export sinks define destinations (S3 or GCS) to which workflow history is exported.
+Export sinks define destinations (S3, GCS, or Azure Blob) to which workflow history is exported.
+
+### export azure-blob
+
+Commands for managing Azure Blob workflow history export sinks for Temporal Cloud namespaces.
+
+#### export azure-blob create
+
+Create a new Azure Blob workflow history export sink for a Temporal Cloud namespace.
+The sink is created in the enabled state.
+
+Example:
+
+```
+temporal cloud namespace export azure-blob create --namespace my-namespace.my-account --sink-name my-sink \
+  --tenant-id 11111111-1111-1111-1111-111111111111 \
+  --subscription-id 22222222-2222-2222-2222-222222222222 \
+  --resource-group my-resource-group --storage-account my-storage-account \
+  --container-name my-container --region eastus
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--container-name` | Yes | **string** The name of the destination Azure Blob container where Temporal will send data. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--region` | Yes | **string** The region where the Azure storage account is located. |
+| `--resource-group` | Yes | **string** The Azure resource group that contains the storage account. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--sink-name` | Yes | **string** The name of the export sink. |
+| `--storage-account` | Yes | **string** The name of the destination Azure storage account where Temporal will send data. |
+| `--subscription-id` | Yes | **string** The Azure subscription ID that contains the storage account. |
+| `--tenant-id` | Yes | **string** The Azure tenant ID where the storage account exists and where Temporal's app registration is consented/granted access. |
+
+#### export azure-blob update
+
+Update the configuration of an existing Azure Blob workflow history export sink.
+Only the flags you provide are changed; omitted flags keep their current
+values. The enabled/disabled state and region are also preserved.
+
+Example (rotate storage account only):
+
+```
+temporal cloud namespace export azure-blob update --namespace my-namespace.my-account --sink-name my-sink \
+  --storage-account my-new-storage-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--container-name` | No | **string** The name of the destination Azure Blob container where Temporal will send data. If omitted, the current value is kept. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-group` | No | **string** The Azure resource group that contains the storage account. If omitted, the current value is kept. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--sink-name` | Yes | **string** The name of the export sink. |
+| `--storage-account` | No | **string** The name of the destination Azure storage account where Temporal will send data. If omitted, the current value is kept. |
+| `--subscription-id` | No | **string** The Azure subscription ID that contains the storage account. If omitted, the current value is kept. |
+| `--tenant-id` | No | **string** The Azure tenant ID where the storage account exists and where Temporal's app registration is consented/granted access. If omitted, the current value is kept. |
+
+#### export azure-blob validate
+
+Validate an Azure Blob workflow history export sink configuration without creating or updating it.
+A successful response means the configuration is valid.
+
+Example:
+
+```
+temporal cloud namespace export azure-blob validate --namespace my-namespace.my-account --sink-name my-sink \
+  --tenant-id 11111111-1111-1111-1111-111111111111 \
+  --subscription-id 22222222-2222-2222-2222-222222222222 \
+  --resource-group my-resource-group --storage-account my-storage-account \
+  --container-name my-container --region eastus
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--container-name` | Yes | **string** The name of the destination Azure Blob container where Temporal will send data. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--region` | Yes | **string** The region where the Azure storage account is located. |
+| `--resource-group` | Yes | **string** The Azure resource group that contains the storage account. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--sink-name` | Yes | **string** The name of the export sink. |
+| `--storage-account` | Yes | **string** The name of the destination Azure storage account where Temporal will send data. |
+| `--subscription-id` | Yes | **string** The Azure subscription ID that contains the storage account. |
+| `--tenant-id` | Yes | **string** The Azure tenant ID where the storage account exists and where Temporal's app registration is consented/granted access. |
 
 ### export delete
 
