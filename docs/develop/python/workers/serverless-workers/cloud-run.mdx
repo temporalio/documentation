@@ -10,7 +10,6 @@ keywords:
   - cloud run
   - gcp
   - google cloud
-  - opentelemetry
   - python sdk
   - worker
   - serverless worker
@@ -34,7 +33,6 @@ Register Workflows and Activities the same way you would with any other Python W
 
 A Cloud Run Worker needs no Cloud Run-specific package.
 The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
-The `temporalio.contrib.gcp` package adds an OpenTelemetry plugin with defaults suited to a Cloud Run worker pool, covered below.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
 
@@ -139,126 +137,7 @@ async def my_activity(items: list[str]) -> str:
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability with OpenTelemetry {/* #add-observability */}
+## Add observability {/* #add-observability */}
 
-The `temporalio.contrib.gcp.OpenTelemetryPlugin` configures observability with defaults suited to a Cloud Run worker pool.
-By default, the plugin configures:
-
-- OTLP gRPC export to `localhost:4317`, the collector sidecar endpoint.
-- `service.name` from the Cloud Run-provided `CLOUD_RUN_WORKER_POOL` environment variable.
-- A replay-safe OpenTelemetry tracer provider.
-- Temporal Core metrics with a 60-second export interval.
-
-The underlying metrics and traces are the same ones the Python SDK emits in any environment.
-For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
-
-Pass the plugin to `Client.connect`. Opt into `add_temporal_spans=True` to trace named operations such as `RunWorkflow:GreetingWorkflow`:
-
-<!--SNIPSTART python-cloud-run-otel-worker-->
-[gcp_open_telemetry/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp_open_telemetry/worker.py)
-```py
-# Endpoint, service name, Core metrics, and tracer provider all use the GCP
-# plugin defaults. The opt-in adds named Temporal operation spans.
-plugin = OpenTelemetryPlugin(add_temporal_spans=True)
-client = await Client.connect(
-    settings.address,
-    namespace=settings.namespace,
-    api_key=settings.api_key,
-    tls=True,
-    plugins=[plugin],
-)
-worker = Worker(
-    client,
-    task_queue=settings.task_queue,
-    workflows=[GreetingWorkflow],
-    activities=[compose_greeting],
-    graceful_shutdown_timeout=WORKER_GRACEFUL_SHUTDOWN_TIMEOUT,
-)
-```
-<!--SNIPEND-->
-
-Named Temporal operation spans are opt-in. The endpoint, service name, tracer provider, and Core metrics use the plugin defaults, but you must set `add_temporal_spans=True` to emit spans for Workflow and Activity operations.
-
-### Run the collector as a sidecar {/* #collector-sidecar */}
-
-The plugin exports to a collector you run as a second container in the Worker Pool.
-Use the [Google-Built OpenTelemetry Collector](https://cloud.google.com/stackdriver/docs/instrumentation/google-built-otel), which detects the Cloud Run resource, authenticates through the Worker Pool's service account, exports metrics to Google Managed Service for Prometheus, and exports traces through the Google Cloud Telemetry API.
-
-Provide the following collector configuration. It receives OTLP on `localhost:4317`, detects the GCP resource, and routes metrics and traces to their respective pipelines:
-
-<!--SNIPSTART python-cloud-run-otel-collector-config-->
-[gcp_open_telemetry/collector-config.yaml](https://github.com/temporalio/samples-python/blob/main/gcp_open_telemetry/collector-config.yaml)
-```yaml
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: localhost:4317
-
-processors:
-  batch/traces:
-    send_batch_max_size: 200
-    send_batch_size: 200
-    timeout: 5s
-  memory_limiter:
-    check_interval: 1s
-    limit_percentage: 65
-    spike_limit_percentage: 20
-  resource_detection:
-    detectors: [gcp]
-    timeout: 10s
-  transform/collision:
-    metric_statements:
-      - context: datapoint
-        statements:
-          - set(attributes["exported_location"], attributes["location"])
-          - delete_key(attributes, "location")
-          - set(attributes["exported_cluster"], attributes["cluster"])
-          - delete_key(attributes, "cluster")
-          - set(attributes["exported_namespace"], attributes["namespace"])
-          - delete_key(attributes, "namespace")
-          - set(attributes["exported_job"], attributes["job"])
-          - delete_key(attributes, "job")
-          - set(attributes["exported_instance"], attributes["instance"])
-          - delete_key(attributes, "instance")
-          - set(attributes["exported_project_id"], attributes["project_id"])
-          - delete_key(attributes, "project_id")
-  transform/set_project_id:
-    error_mode: ignore
-    trace_statements:
-      - set(resource.attributes["gcp.project_id"], resource.attributes["gcp.project.id"]) where resource.attributes["gcp.project.id"] != nil
-      - set(resource.attributes["gcp.project_id"], resource.attributes["cloud.account.id"]) where resource.attributes["gcp.project_id"] == nil and resource.attributes["cloud.account.id"] != nil
-
-exporters:
-  googlemanagedprometheus:
-  otlp_grpc:
-    endpoint: telemetry.googleapis.com:443
-    compression: none
-    balancer_name: pick_first
-    auth:
-      authenticator: googleclientauth
-
-extensions:
-  googleclientauth:
-  health_check:
-    endpoint: 0.0.0.0:13133
-
-service:
-  extensions: [googleclientauth, health_check]
-  pipelines:
-    metrics:
-      receivers: [otlp]
-      processors: [memory_limiter, resource_detection, transform/collision]
-      exporters: [googlemanagedprometheus]
-    traces:
-      receivers: [otlp]
-      processors:
-        [memory_limiter, resource_detection, transform/set_project_id, batch/traces]
-      exporters: [otlp_grpc]
-```
-<!--SNIPEND-->
-
-The metrics pipeline forwards each SDK export directly, without a batch processor, so a runtime shutdown-time export cannot collide with a periodic export on the same Managed Prometheus time series.
-Traces use a dedicated five-second batch processor.
-
-To verify telemetry after deploying, confirm that Trace Explorer contains `RunWorkflow:GreetingWorkflow` with `service.name` equal to the Worker Pool name, and that Metrics Explorer contains `prometheus.googleapis.com/temporal_workflow_completed_total/counter`.
+A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
+For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
