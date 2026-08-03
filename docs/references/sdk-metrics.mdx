@@ -23,6 +23,8 @@ Some SDKs emit metrics beyond what this reference lists.
 Only the metrics on this page have guaranteed, defined behavior.
 Treat any others as deprecated, inconsistent, or experimental.
 
+Temporal SDKs and the Temporal Service attach these metric dimensions as [tags](/glossary#tag). Once a metric is scraped by Prometheus or another OpenMetrics-compatible system, the same dimensions are called labels.
+
 :::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
@@ -38,19 +40,11 @@ The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Pr
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 Section headings on this page omit the prefix.
 Some metrics are specific to certain SDKs.
+The Availability column in the table below refers to where a metric is defined:
 
-TypeScript, Python, .NET, and Ruby SDK metrics are defined in the Core SDK.
-
-PHP and Go metrics are defined in the Go SDK.
-
-Java metrics are defined in the Java SDK.
-Metrics are defined in the following locations.
-
-- [Core SDK Worker metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk-core/src/telemetry/metrics.rs)
-- [Core SDK Client metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/client/src/metrics.rs)
-- [Java SDK Worker metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/worker/MetricsType.java)
-- [Java SDK Client metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java)
-- [Go SDK Worker and Client metrics](https://github.com/temporalio/sdk-go/blob/main/internal/common/metrics/constants.go)
+- **Core**: TypeScript, Python, .NET, and Ruby SDK metrics are defined in the Core SDK, in [Worker metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk-core/src/telemetry/metrics.rs) and [Client metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/client/src/metrics.rs).
+- **Go**: Go and PHP SDK metrics are defined in the Go SDK, in [Worker and Client metrics](https://github.com/temporalio/sdk-go/blob/main/internal/common/metrics/constants.go).
+- **Java**: Java SDK metrics are defined in the Java SDK, in [Worker metrics](https://github.com/temporalio/sdk-java/blob/main/temporal-sdk/src/main/java/io/temporal/worker/MetricsType.java) and [Client metrics](https://github.com/temporalio/sdk-java/blob/main/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java).
 
 :::note Metric units across SDKs
 
@@ -64,7 +58,7 @@ The Core SDK is a shared common core library used by several Temporal SDKs, incl
 
 :::
 
-Each metric may have some combination of the following keys attached to them:
+Each metric may have some combination of the following [tags](/glossary#tag) attached to them:
 
 - `task_queue`: Task Queue that the Worker Entity is polling
 - `namespace`: Namespace the Worker is bound to
@@ -82,7 +76,7 @@ Each metric may have some combination of the following keys attached to them:
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
 
-Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
+Some tags may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                                  | Emitted by     | Metric type | Availability   |
 | -------------------------------------------------------------------------------------------- | -------------- | ----------- | -------------- |
@@ -173,7 +167,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 The Schedule-To-Start time of an Activity Task.
 A [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 Use this metric to check that Activity Tasks are being processed from the queue in a timely manner.
-Some SDKs include the `activity_type` label, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
+Some SDKs include the `activity_type` tag, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -435,7 +429,7 @@ A Worker Entity has been registered, created, or started.
 ### `worker_task_slots_available`
 
 The total number of Workflow, Activity, Local Activity, or Nexus Task execution slots that are currently available.
-Use the `worker_type` key to differentiate execution slots.
+Use the `worker_type` tag to differentiate execution slots.
 The Worker type specifies an ability to perform certain tasks.
 For example, Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks, and so forth.
 
@@ -446,7 +440,7 @@ For example, Workflow Workers execute Workflow Tasks, Activity Workers execute A
 ### `worker_task_slots_used`
 
 The total number of Workflow, Activity, Local Activity, or Nexus Tasks execution slots in current use.
-Use the `worker_type` key to differentiate execution slots.
+Use the `worker_type` tag to differentiate execution slots.
 The Worker type specifies an ability to perform certain tasks.
 For example, Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks, and so forth.
 
