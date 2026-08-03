@@ -23,6 +23,7 @@
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
  *   - <ViewSourceCodeNotice href> → plain markdown link line
+ *   - YouTube/HTML embeds         → stripped (keep a markdown Watch link in prose for LLMs)
  *   - imported .md components      → transcluded inline (e.g. <AWSRegions />)
  *   - import / export stmts        → stripped
  *   - {/* MDX comments *​/}         → stripped
@@ -446,6 +447,36 @@ const State = {
   SETUP_STEPS: "SETUP_STEPS",
   SETUP_STEP: "SETUP_STEP",
 };
+
+/**
+ * If `lines[i]` starts an HTML/JSX video embed (`<iframe>` or styled `<div>`
+ * wrapping one), return the inclusive end index of the block. Otherwise null.
+ * Authors should keep a markdown Watch link in surrounding prose for LLMs.
+ */
+export function findHtmlEmbedEnd(lines, i) {
+  const trimmed = (lines[i] || "").trim();
+  if (/^<iframe\b/i.test(trimmed)) {
+    let j = i;
+    while (j < lines.length) {
+      if (/<\/iframe>/i.test(lines[j]) || /\/>\s*$/.test(lines[j].trim())) {
+        return j;
+      }
+      j++;
+    }
+    return i;
+  }
+  if (/^<div\b/i.test(trimmed) && /style=\{/.test(trimmed)) {
+    let depth = 0;
+    for (let j = i; j < lines.length; j++) {
+      if (/<div\b/i.test(lines[j])) depth++;
+      if (/<\/div>/i.test(lines[j])) {
+        depth--;
+        if (depth === 0) return j;
+      }
+    }
+  }
+  return null;
+}
 
 /**
  * Main transform function.
@@ -876,6 +907,12 @@ export function transformMdx(mdxContent, options = {}) {
         admonitionLines = [];
         admonitionType = null;
       } else {
+        // Drop YouTube/HTML embeds inside tips; keep the markdown Watch link.
+        const embedEnd = findHtmlEmbedEnd(lines, i);
+        if (embedEnd !== null) {
+          i = embedEnd;
+          continue;
+        }
         admonitionLines.push(line);
       }
       continue;
@@ -1096,6 +1133,15 @@ export function transformMdx(mdxContent, options = {}) {
     if (state === State.NORMAL && transparentName) {
       // Self-closing or paired — either way we just drop the wrapper line.
       continue;
+    }
+
+    // --- HTML/JSX video embeds (YouTube iframes) — strip; keep prose links ---
+    if (state === State.NORMAL) {
+      const embedEnd = findHtmlEmbedEnd(lines, i);
+      if (embedEnd !== null) {
+        i = embedEnd;
+        continue;
+      }
     }
 
     // --- Image components (self-closing, may span lines) ---
