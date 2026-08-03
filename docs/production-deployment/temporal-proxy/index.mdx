@@ -5,25 +5,25 @@ sidebar_label: Temporal Proxy
 description:
   Route requests between Temporal SDK clients and Workers and one or more upstream Temporal Services with the Temporal
   Proxy, a gRPC proxy that handles namespace translation, TLS, authentication, and payload encryption.
-slug: /production-deployment/temporal-proxy
 toc_max_heading_level: 4
 keywords:
   - guide-context
   - how-to
   - production-readiness
+  - security
 tags:
   - Temporal Service
   - Self-hosting
+  - Security
 ---
 
-:::caution Pre-release
+import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal Proxy is under active development and evolving quickly. It is not ready for production use. Behavior and
-configuration can change between releases. See the
-[temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and the definitive
-configuration schema.
-
-:::
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
 
 The Temporal Proxy is a gRPC proxy that sits between your Temporal SDK Clients, Workers, and the Temporal Web UI on one
 side and one or more upstream Temporal Services on the other. It handles Namespace translation, TLS termination, and
