@@ -109,6 +109,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `SdkTabs` / `SdkTabs.<Lang>` | `sdk-tabs` | Same, with language labels (`DotNet` → **.NET**) |
 | `CodeSnippet` | `code-snippet` | Fenced code block using the `language` prop |
 | `CaptionedImage`, `EnlargeImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
+| YouTube/`<iframe>` embeds (often in a styled `<div>`) | strip | Removed; keep a markdown Watch link in surrounding tip/prose for LLMs |
 | `PhotoCarousel` | `photo-carousel` | One `![caption](url)` per entry in the `images`/`captions` arrays |
 | `CallToAction` | `call-to-action` | `- [h3 title](href): p description` |
 | `ReleaseNoteHeader` | `release-note-header` | `> **Public Preview** — Go, Java…` availability note + body blockquote. The self-closing form (`<ReleaseNoteHeader … />`) emits just the note and leaves the page body intact. |
@@ -123,7 +124,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
 | `ZoomPanPinch` | `transparent` | Wrapper stripped; inner content passed through |
 | `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
-| `DL`, `DT`, `DD`, `DefinitionList` | `strip-tag` | Tags stripped, text content kept |
+| `DL`, `DT`, `DD`, `DefinitionList`, `AnnotatedCode` | `strip-tag` | Tags stripped, text content kept |
 | `details` / `summary` | `details` / `summary` | `<summary>` becomes a heading; body expanded inline |
 
 **Transclusion.** Components imported from a Markdown file
