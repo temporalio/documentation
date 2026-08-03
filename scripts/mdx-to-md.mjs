@@ -23,6 +23,7 @@
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
  *   - <ViewSourceCodeNotice href> → plain markdown link line
+ *   - YouTube/HTML embeds         → stripped (keep a markdown Watch link in prose for LLMs)
  *   - imported .md components      → transcluded inline (e.g. <AWSRegions />)
  *   - import / export stmts        → stripped
  *   - {/* MDX comments *​/}         → stripped
@@ -34,7 +35,7 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
-import { homePageHeroToMarkdown } from "./component-handlers/home-page-hero.mjs";
+import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
@@ -69,8 +70,23 @@ export const COMPONENT_REGISTRY = {
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
-  HomePageHero: "home-page-hero",
   ViewSourceCodeNotice: "view-source-code-notice",
+
+  // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
+  // from presentational components in src/components/elements/HomePageHero.js.
+  // Layout wrappers strip to their inner Markdown; the single-line HeroHeader /
+  // HeroCta lines strip whole (their text is redundant with the title / first
+  // action card); the cards resolve to Markdown link-list items.
+  HeroWrapper: "strip-tag",
+  HeroHeader: "strip-tag",
+  HeroSection: "strip-tag",
+  HeroContent: "strip-tag",
+  HeroHeadline: "hero-headline",
+  HeroActions: "strip-tag",
+  HeroCta: "strip-tag",
+  CommunityCards: "strip-tag",
+  ActionCard: "hero-card",
+  CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
   DT: "strip-tag",
@@ -431,6 +447,36 @@ const State = {
   SETUP_STEPS: "SETUP_STEPS",
   SETUP_STEP: "SETUP_STEP",
 };
+
+/**
+ * If `lines[i]` starts an HTML/JSX video embed (`<iframe>` or styled `<div>`
+ * wrapping one), return the inclusive end index of the block. Otherwise null.
+ * Authors should keep a markdown Watch link in surrounding prose for LLMs.
+ */
+export function findHtmlEmbedEnd(lines, i) {
+  const trimmed = (lines[i] || "").trim();
+  if (/^<iframe\b/i.test(trimmed)) {
+    let j = i;
+    while (j < lines.length) {
+      if (/<\/iframe>/i.test(lines[j]) || /\/>\s*$/.test(lines[j].trim())) {
+        return j;
+      }
+      j++;
+    }
+    return i;
+  }
+  if (/^<div\b/i.test(trimmed) && /style=\{/.test(trimmed)) {
+    let depth = 0;
+    for (let j = i; j < lines.length; j++) {
+      if (/<div\b/i.test(lines[j])) depth++;
+      if (/<\/div>/i.test(lines[j])) {
+        depth--;
+        if (depth === 0) return j;
+      }
+    }
+  }
+  return null;
+}
 
 /**
  * Main transform function.
@@ -861,6 +907,12 @@ export function transformMdx(mdxContent, options = {}) {
         admonitionLines = [];
         admonitionType = null;
       } else {
+        // Drop YouTube/HTML embeds inside tips; keep the markdown Watch link.
+        const embedEnd = findHtmlEmbedEnd(lines, i);
+        if (embedEnd !== null) {
+          i = embedEnd;
+          continue;
+        }
         admonitionLines.push(line);
       }
       continue;
@@ -1083,6 +1135,15 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- HTML/JSX video embeds (YouTube iframes) — strip; keep prose links ---
+    if (state === State.NORMAL) {
+      const embedEnd = findHtmlEmbedEnd(lines, i);
+      if (embedEnd !== null) {
+        i = embedEnd;
+        continue;
+      }
+    }
+
     // --- Image components (self-closing, may span lines) ---
     //     <CaptionedImage|EnlargeImage|Components.CaptionedImage
     //     src="..." alt|caption|title="..." />  →  ![text](src)
@@ -1167,12 +1228,37 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- HomePageHero (self-closing) → hardcoded hero content ---
-    // See scripts/component-handlers/home-page-hero.mjs (kept in sync with
-    // src/components/elements/HomePageHero.js).
-    if (state === State.NORMAL && /^\s*<HomePageHero\b/.test(line)) {
-      outputLines.push(homePageHeroToMarkdown());
-      outputLines.push("");
+    // --- HeroHeadline → Markdown H1 ---
+    if (state === State.NORMAL && /^\s*<HeroHeadline\b/.test(line)) {
+      let el = line;
+      while (!/<\/HeroHeadline>/.test(el) && i + 1 < lines.length) {
+        i++;
+        el += "\n" + lines[i];
+      }
+      const md = heroHeadlineToMarkdown(el);
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
+      continue;
+    }
+
+    // --- ActionCard / CommunityCard → Markdown link-list item ---
+    // The homepage hero cards (docs/index.mdx). Accumulate the whole element
+    // (usually a single line) and resolve title/href/description to a list item.
+    if (state === State.NORMAL && /^\s*<(ActionCard|CommunityCard)\b/.test(line)) {
+      const name = line.match(/^\s*<(ActionCard|CommunityCard)\b/)[1];
+      const closeRe = new RegExp(`</${name}>`);
+      let el = line;
+      while (!closeRe.test(el) && i + 1 < lines.length) {
+        i++;
+        el += "\n" + lines[i];
+      }
+      const md = heroCardToMarkdown(el);
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
       continue;
     }
 

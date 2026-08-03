@@ -775,11 +775,18 @@ You need to handle cleanup if the Workflow fails mid-process.
 - **Leaking temporary files on failure.** If the Workflow fails after downloading but before uploading, temporary files remain on disk. Use cleanup logic (defer, try-finally, or cancellation scopes) to remove local resources.
 - **Using host-specific queues when shared storage suffices.** If all Workers can access the same storage (S3, NFS), Worker-specific routing adds unnecessary complexity and reduces availability.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Long-Running Activity](/design-patterns/long-running-activity)**: For tracking progress and handling cancellation when the colocated Activities run for minutes or hours.
 
-## Sample code
+### Guides
+
+- [Ensure Activity execution on the same Worker](/guides/worker-execution-affinity): A Python walkthrough of the shared-queue-discovers-unique-queue technique, with heartbeat and Schedule-to-Start timeouts for detecting a crashed Worker.
+- [Route specialized workloads](/guides/route-specialized-workloads): Routes Activities to dedicated GPU, high-memory, and CPU Worker pools by resource requirement — a related Task Queue routing technique, but by hardware capability rather than by Worker affinity.
+
+### Sample code
 
 - [Java Sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/fileprocessing) — Complete file processing implementation.
 - [TypeScript Sample](https://github.com/temporalio/samples-typescript/tree/main/worker-specific-task-queues) — Worker-specific Task Queues with file processing.

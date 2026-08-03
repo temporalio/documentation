@@ -1,5 +1,5 @@
 ---
-id: saga-pattern
+id: recover-without-restart
 title: Recover business processes without restarting
 description: Build a multi-step business procss that pauses when it hits a permanent failure, then resumes from where it stopped without restarting.
 sidebar_label: Recovery without restart
@@ -18,7 +18,7 @@ tags:
 This pattern shows how to build a multi-step business process that pauses when it hits a permanent failure — a malformed identifier, an exceeded policy limit, a failed compliance check — allows a human or automated agent to correct the underlying issue, and resumes from where it stopped without restarting from the beginning.
 Queryable metadata routes each blocked process to the right resolution resource, and operators get full visibility into the state of every individual execution and across the entire pipeline.
 
-![A blocked Workflow showing the failure details and a form to send a corrective Signal](assets/saga-pattern/keep-business-moving-list-view.png)
+![A blocked Workflow showing the failure details and a form to send a corrective Signal](assets/recover-without-restart/keep-business-moving-list-view.png)
 
 ## Problem statement
 
@@ -43,14 +43,14 @@ The process picks up where it left off: completed steps do not re-execute, and t
 
 While you can use traditional architectures to implement a similar solution, they often involve significantly more complexity and demand higher implementation and operational costs. A Temporal-based solution is typically much leaner and more robust.
 
-![Architectural comparison between a traditional implementation and the Temporal-based solution](assets/saga-pattern/keep-business-moving-architectural-comparison.png)
+![Architectural comparison between a traditional implementation and the Temporal-based solution](assets/recover-without-restart/keep-business-moving-architectural-comparison.png)
 
 ## What you will achieve
 
 By completing this pattern, you will:
 
 - Pause a business process on a non-retryable failure and resume after correction without restarting from the beginning.
-- Unwind side-effecting steps through a LIFO **saga** compensation stack when forward progress is not possible — for example, a compliance block or an explicit cancellation from the applicant.
+- Unwind side-effecting steps through a LIFO **[saga](/design-patterns/saga-pattern)** compensation stack when forward progress is not possible — for example, a compliance block or an explicit cancellation from the applicant.
 - Recover from compensation failures using the same pause-and-fix loop so a stuck rollback does not leave the process in a partially unwound state.
 - Route blocked processes to the right human or automated agent using queryable Search Attributes.
 - Inspect the current state of any individual process or filter across all processes through a single API.
@@ -64,15 +64,15 @@ The Workflow resumes where it left off when the condition becomes true, regardle
 This means thousands of loan applications can sit in a `PENDING_FIX` state simultaneously without consuming Worker capacity.
 
 The primary architectural challenge is distinguishing between transient failures that automated retries can resolve and permanent failures that require human intervention.
-Temporal addresses this with [`ApplicationFailure.nonRetryable()`](https://docs.temporal.io/references/failures#application-failure), which instructs the SDK to skip the Retry Policy and propagate the error to the Workflow code without delay.
-The Workflow then has full control over how to handle the failure: it can log the error, update Search Attributes for visibility, and suspend until a [Signal](https://docs.temporal.io/develop/typescript/message-passing#signals) arrives.
+Temporal addresses this with [`ApplicationFailure.nonRetryable()`](/references/failures#application-failure), which instructs the SDK to skip the Retry Policy and propagate the error to the Workflow code without delay.
+The Workflow then has full control over how to handle the failure: it can log the error, update Search Attributes for visibility, and suspend until a [Signal](/develop/typescript/workflows/message-passing#signals) arrives.
 
-Custom [Search Attributes](https://docs.temporal.io/visibility#search-attribute) provide the mechanism for routing blocked Workflows to the correct resolution resource.
+Custom [Search Attributes](/search-attribute) provide the mechanism for routing blocked Workflows to the correct resolution resource.
 By upserting attributes like `LoanStatus` and `FailedActivity` at each State Transition, you create a queryable index across all active Workflows.
 An operations dashboard can filter for `LoanStatus = 'PENDING_FIX' AND FailedActivity = 'runCreditCheck'` to show which applications need a credit-related data correction.
 This same query interface supports automated agents that poll for specific failure categories and apply corrections programmatically.
 
-Temporal [Queries](https://docs.temporal.io/develop/typescript/message-passing#queries) provide synchronous read access to the current state of any running Workflow.
+Temporal [Queries](/develop/typescript/workflows/message-passing#queries) provide synchronous read access to the current state of any running Workflow.
 Unlike Search Attributes, which expose denormalized metadata for cross-Workflow queries, Queries return the full internal state of a single execution.
 Together, Search Attributes and Queries give you both the aggregate view across your entire pipeline and the detailed view into any individual Workflow.
 
@@ -220,7 +220,7 @@ export interface RetryUpdate {
 ### Define the Activities
 
 Create functions that validate loan application data at each pipeline stage.
-Temporal Activities automatically recover from transient failures — network timeouts, temporary service unavailability, rate limits — through their built-in [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies) and [timeout management](https://docs.temporal.io/develop/typescript/failure-detection#activity-timeouts).
+Temporal Activities automatically recover from transient failures — network timeouts, temporary service unavailability, rate limits — through their built-in [Retry Policy](/encyclopedia/retry-policies) and [timeout management](/develop/typescript/activities/timeouts#activity-timeouts).
 When an Activity encounters a permanent failure that retries cannot fix — invalid input data, a policy violation, or a missing record — it throws `ApplicationFailure.nonRetryable()` to bypass the Retry Policy and propagate the error directly to the Workflow.
 
 ```typescript
@@ -523,7 +523,7 @@ Temporal delivers Signals with at-least-once semantics: a client retry, a flaky 
 Without protection, the second delivery would overwrite the field again — usually a no-op, but harmful when the operator has since sent a different value, and always noisy in `fixHistory`.
 The handler defends against this by checking the caller-supplied `id` against the audit trail and dropping anything it has already applied.
 The client (the dashboard, CLI script, or upstream agent) is responsible for generating a stable `id` per logical correction — typically a UUID minted when the operator clicks **Patch and Retry**, reused across any retries of that same submission.
-[Workflow Updates](https://docs.temporal.io/encyclopedia/workflow-message-passing#updates) would give you this deduplication for free via the SDK's built-in `updateId` handling, along with a synchronous result to the caller; this pattern sticks with Signals because the dashboard is fire-and-forget and the audit trail already provides the dedup index.
+[Workflow Updates](/develop/typescript/workflows/message-passing#updates) would give you this deduplication for free via the SDK's built-in `updateId` handling, along with a synchronous result to the caller; this pattern sticks with Signals because the dashboard is fire-and-forget and the audit trail already provides the dedup index.
 
 The Query handler returns the complete `LoanState` at any point during execution.
 This includes the current status, the list of completed Activities, the full fix history, and the current application data.
@@ -536,7 +536,7 @@ This enables an operations dashboard to display aggregate statistics and filter 
 
 Not every failure can be resolved by correcting input data.
 An OFAC match, a withdrawn offer, or a regulatory hold demands that the pipeline roll back rather than pause for a fix.
-This is where the [saga pattern](https://temporal-design-patterns.fly.dev/saga-pattern.html) comes in: each forward Activity that produces an external side effect — a credit bureau inquiry, an appraiser booking, a title company fee, a reserved lending slot, a funded loan — registers a compensating Activity **before** it executes.
+This is where the [saga pattern](/design-patterns/saga-pattern) comes in: each forward Activity that produces an external side effect — a credit bureau inquiry, an appraiser booking, a title company fee, a reserved lending slot, a funded loan — registers a compensating Activity **before** it executes.
 If the forward pipeline aborts, the Workflow unwinds the registered compensations in reverse order.
 
 The pattern has three key discipline points that the implementation must honor:
@@ -949,19 +949,19 @@ You can do this through the demo UI, the web service API, or the Temporal CLI.
 
 The dashboard shows all Workflows and their pipeline status. Click a blocked Workflow to inspect the failure details and send a correction.
 
-![Dashboard showing 3 blocked Workflows and 1 completed](assets/saga-pattern/keep-business-moving-list-view.png)
+![Dashboard showing 3 blocked Workflows and 1 completed](assets/recover-without-restart/keep-business-moving-list-view.png)
 
 Click a `PENDING_FIX` Workflow to open its detail panel. The UI shows the failure message and suggests a fix. Select the field to patch, enter the corrected value, and click **Patch and Retry** to send the Signal.
 
-![Sending a corrective Signal to fix an unknown employer](assets/saga-pattern/keep-business-moving-fix-employer.png)
+![Sending a corrective Signal to fix an unknown employer](assets/recover-without-restart/keep-business-moving-fix-employer.png)
 
 After the Signal is delivered, the Workflow wakes up, retries the failed Activity with the corrected data, and advances through the remaining pipeline steps. The detail panel shows the updated state including the fix history.
 
-![Workflow completed after fixing the employer name](assets/saga-pattern/keep-business-moving-success.png)
+![Workflow completed after fixing the employer name](assets/recover-without-restart/keep-business-moving-success.png)
 
 You can also verify the full Event History — including the Signal and subsequent Activity completions — in the Temporal Web UI.
 
-![Event History in the Temporal Web UI showing the Signal and Activity completions](assets/saga-pattern/keep-business-moving-event-history.png)
+![Event History in the Temporal Web UI showing the Signal and Activity completions](assets/recover-without-restart/keep-business-moving-event-history.png)
 
 #### Using the Temporal CLI
 
@@ -1055,9 +1055,12 @@ By following this guide, you have implemented a recoverable and compensatable pi
 
 ## Related resources
 - [Source code](https://github.com/temporal-sa/validated-pattern-keep-business-moving)
-- [Temporal TypeScript SDK Documentation](https://docs.temporal.io/develop/typescript) — Complete reference for building Workflows, Activities, and Workers with the TypeScript SDK.
-- [Temporal Signals](https://docs.temporal.io/develop/typescript/message-passing#signals) — Guide to defining and sending Signals to running Workflow Executions.
-- [Temporal Queries](https://docs.temporal.io/develop/typescript/message-passing#queries) — Guide to defining and handling synchronous read-only Queries on Workflows.
-- [Temporal Search Attributes](https://docs.temporal.io/visibility#search-attribute) — Reference for creating and using custom Search Attributes for Workflow visibility.
-- [Temporal Visibility](https://docs.temporal.io/visibility) — Overview of the Visibility subsystem and List Filter Query syntax.
-- [ApplicationFailure Reference](https://docs.temporal.io/references/failures#application-failure) — API reference for `ApplicationFailure` including retryable and non-retryable error handling.
+- [Saga Pattern](/design-patterns/saga-pattern) — pattern catalog reference for the LIFO compensation technique used to roll back the loan pipeline
+- [Resumable Activity](/design-patterns/resumable-activity) — pattern catalog reference for the pause-on-failure, resume-via-Signal technique behind `recoverableStep`
+- [Non-Retryable Errors](/design-patterns/non-retryable-errors) — pattern catalog reference for marking permanent failures so Temporal fails fast instead of retrying
+- [Temporal TypeScript SDK Documentation](/develop/typescript) — Complete reference for building Workflows, Activities, and Workers with the TypeScript SDK.
+- [Temporal Signals](/develop/typescript/workflows/message-passing#signals) — Guide to defining and sending Signals to running Workflow Executions.
+- [Temporal Queries](/develop/typescript/workflows/message-passing#queries) — Guide to defining and handling synchronous read-only Queries on Workflows.
+- [Temporal Search Attributes](/search-attribute) — Reference for creating and using custom Search Attributes for Workflow visibility.
+- [Temporal Visibility](/visibility) — Overview of the Visibility subsystem and List Filter Query syntax.
+- [ApplicationFailure Reference](/references/failures#application-failure) — API reference for `ApplicationFailure` including retryable and non-retryable error handling.

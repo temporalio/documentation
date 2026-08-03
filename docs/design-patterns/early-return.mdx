@@ -423,13 +423,15 @@ The pattern is limited to operations that you can split into fast and slow phase
 - **Blocking too long in the Update handler.** The Update handler should return quickly. Perform long-running work in the main Workflow method and use `Workflow.await` in the Update handler to wait for a result.
 - **Swallowing the ContinueAsNew exception.** In TypeScript, `continueAsNew` throws a special exception. Catching it in a try-catch without re-throwing (or returning in a `finally` block) silently prevents Continue-As-New.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Saga Pattern](/design-patterns/saga-pattern)**: You can combine this with the Saga pattern to add compensation for failed completions.
 - **[Signal with Start](/design-patterns/signal-with-start)**: For fire-and-forget operations that do not need an immediate response.
 - **[Request-Response via Updates](/design-patterns/request-response-via-updates)**: For synchronous state modifications on already-running Workflows.
 
-## Sample code
+### Sample code
 
 - [Python Sample](https://github.com/temporalio/samples-python/tree/main/early_return) — Early return with Update-with-Start.
 - [Go Sample](https://github.com/temporalio/samples-go/tree/main/early-return) — Early return with Update-with-Start.

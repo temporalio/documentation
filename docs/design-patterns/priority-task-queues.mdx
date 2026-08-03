@@ -235,13 +235,15 @@ Lower-priority tasks are blocked until all higher-priority tasks have started. I
 - **Changing priority after scheduling.** `PriorityKey` is evaluated when a task enters the queue and cannot be changed while it waits. To re-prioritize an already-queued task, cancel it and reschedule with the new priority.
 - **Assuming hard isolation between priority levels.** Priority controls dispatch order, not Worker capacity allocation. A priority-5 task may still consume a Worker slot that is then unavailable for a priority-1 task arriving a moment later.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Fairness](/design-patterns/fairness)**: Distribute capacity proportionally across tenants within a priority level using fairness keys.
 - **[Downstream Rate Limiting](/design-patterns/downstream-rate-limiting)**: Cap absolute throughput to a downstream service regardless of task priority.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 
-## Sample code
+### Sample code
 
 The official Temporal documentation provides SDK code examples for setting priority keys on Workflows, Activities, and Child Workflows across all supported languages:
 

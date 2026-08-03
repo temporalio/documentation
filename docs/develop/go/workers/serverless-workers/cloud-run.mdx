@@ -1,0 +1,208 @@
+---
+id: cloud-run
+title: Serverless Workers on GCP Cloud Run - Go SDK
+sidebar_label: GCP Cloud Run
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Go SDK.
+slug: /develop/go/workers/serverless-workers/cloud-run
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - cloud run
+  - gcp
+  - google cloud
+  - go sdk
+  - worker
+  - serverless worker
+tags:
+  - Workers
+  - Go SDK
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
+Register Workflows and Activities the same way you would with any other Go Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
+
+A Cloud Run Worker needs no Cloud Run-specific package.
+The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+
+For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running Go Worker, then set `DeploymentOptions` in [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"example.com/myapp"
+)
+
+func main() {
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
+		DeploymentOptions: worker.DeploymentOptions{
+			UseVersioning: true,
+			Version: worker.WorkerDeploymentVersion{
+				DeploymentName: "my-app",
+				BuildID:        "build-1",
+			},
+		},
+	})
+
+	w.RegisterWorkflowWithOptions(myapp.MyWorkflow, workflow.RegisterOptions{
+		VersioningBehavior: workflow.VersioningBehaviorPinned,
+	})
+	w.RegisterActivity(myapp.MyActivity)
+
+	if err := w.Run(worker.InterruptCh()); err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+`DeploymentName` and `BuildID` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behaviors), either `VersioningBehaviorPinned` or `VersioningBehaviorAutoUpgrade`.
+Set it per Workflow at registration as shown above, or set `DefaultVersioningBehavior` in `DeploymentOptions` to cover every Workflow on the Worker.
+If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/go/workers/run-worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+The `envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
+Set the non-secret values as environment variables on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager.
+For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
+
+`MustLoadDefaultClientOptions` panics if the configuration is invalid. To handle a bad configuration yourself, use `envconfig.LoadDefaultClientOptions` and check the returned error.
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/go/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+
+```go
+func MyActivity(ctx context.Context, input MyInput) (string, error) {
+	for i := range input.Items {
+		activity.RecordHeartbeat(ctx, i)
+		// ... process input.Items[i]
+	}
+	return "done", nil
+}
+```
+
+For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
+
+## Add observability with OpenTelemetry {/* #add-observability */}
+
+The `go.temporal.io/sdk/contrib/gcp` package provides an OpenTelemetry plugin with defaults suited to a Cloud Run worker pool.
+By default, the plugin configures:
+
+- OTLP export to `http://localhost:4317`, the collector sidecar endpoint.
+- A replay-safe OpenTelemetry tracer provider.
+- Temporal Core metrics with a 60-second export interval.
+
+The underlying metrics and traces are the same ones the Go SDK emits in any environment.
+For general observability concepts and the full list of available metrics, see [Observability - Go SDK](/develop/go/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+
+Create the plugin and pass it in `client.Options.Plugins`. Client plugins that also implement `worker.Plugin` are applied automatically to Workers created from that Client:
+
+<!--SNIPSTART go-cloud-run-otel-plugin-->
+[contrib/gcp/e2e/main.go](https://github.com/temporalio/sdk-go/blob/main/contrib/gcp/e2e/main.go)
+```go
+otelPlugin, err := gcp.NewOpenTelemetryPlugin(ctx, gcp.OpenTelemetryPluginOptions{})
+if err != nil {
+	return fmt.Errorf("creating GCP OpenTelemetry plugin: %w", err)
+}
+log.Printf(
+	"plugin_ready service_name=%q endpoint=%q",
+	otelPlugin.ServiceName(),
+	otelPlugin.Endpoint(),
+)
+
+temporalClient, err := client.DialContext(ctx, client.Options{
+	HostPort:    cfg.address,
+	Namespace:   cfg.namespace,
+	Credentials: client.NewAPIKeyStaticCredentials(cfg.apiKey),
+	Plugins:     []client.Plugin{otelPlugin},
+})
+```
+<!--SNIPEND-->
+
+Do not install another OpenTelemetry metrics handler or tracing interceptor on the same Client. The plugin configures both through `go.temporal.io/sdk/contrib/opentelemetry`.
+
+The OTLP endpoint resolves in this order:
+
+1. `OpenTelemetryPluginOptions.Endpoint`.
+2. The `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
+3. `http://localhost:4317`.
+
+### Flush telemetry on shutdown {/* #flush-on-shutdown */}
+
+Stop the Worker and close the Client before shutting the plugin down, so telemetry buffered during the run is exported before the process exits.
+Cloud Run stops an instance on scale-in, so reserve time for the flush inside the termination window:
+
+<!--SNIPSTART go-cloud-run-otel-shutdown-->
+[contrib/gcp/e2e/main.go](https://github.com/temporalio/sdk-go/blob/main/contrib/gcp/e2e/main.go)
+```go
+temporalWorker.Stop()
+log.Print("worker_stopped")
+temporalClient.Close()
+log.Print("temporal_client_closed")
+
+flushCtx, cancelFlush := context.WithTimeout(context.Background(), 3*time.Second)
+flushErr := otelPlugin.ForceFlush(flushCtx)
+cancelFlush()
+if flushErr != nil {
+	log.Printf("plugin_force_flush_failed error=%q", flushErr)
+} else {
+	log.Print("plugin_force_flush_complete")
+}
+
+shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 3*time.Second)
+shutdownErr := otelPlugin.Shutdown(shutdownCtx)
+cancelShutdown()
+if shutdownErr != nil {
+	log.Printf("plugin_shutdown_failed error=%q", shutdownErr)
+} else {
+	log.Print("plugin_shutdown_complete")
+}
+```
+<!--SNIPEND-->
+
+`Shutdown` flushes and closes the metric and trace providers the plugin created. Use `ForceFlush` instead when the plugin-owned providers must stay usable afterward.
+
+### Run the collector as a sidecar {/* #collector-sidecar */}
+
+The plugin exports to a collector rather than directly to Google Cloud. Run the collector as a second container in the Worker Pool.
+Without a collector at the configured endpoint, telemetry is not delivered.
+
+Use the [Google-Built OpenTelemetry Collector](https://cloud.google.com/stackdriver/docs/instrumentation/google-built-otel), which detects the Cloud Run resource, authenticates through the Worker Pool's service account, and exports metrics to Google Managed Service for Prometheus and traces through the Google Cloud Telemetry API.
+For a collector configuration that routes both pipelines, see [the collector config on the Python SDK page](/develop/python/workers/serverless-workers/cloud-run#collector-sidecar). The configuration is the same regardless of which SDK the Worker uses.

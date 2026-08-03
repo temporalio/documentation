@@ -3,7 +3,7 @@ const path = require('path');
 const matter = require('gray-matter');
 const { renderCard } = require('./render');
 const { walkDir, resolveUrlPath } = require('../shared/docsRouting');
-const { extractTitle, hasManualOverride, overrideImageFor, hashFor, IMAGE_EXTENSION } = require('./shared');
+const { extractTitle, hasManualOverride, overrideImageFor, hashFor, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./shared');
 
 const CACHE_DIR = path.join(__dirname, '../../node_modules/.cache/og-images');
 
@@ -13,20 +13,35 @@ function htmlPathForUrlPath(outDir, urlPath) {
     : path.join(outDir, urlPath, 'index.html');
 }
 
-async function getCardBuffer(title, description) {
-  const hash = hashFor(title, description);
+async function getCardBuffer(title, description, footerText) {
+  const hash = hashFor(title, description, footerText);
   const cachePath = path.join(CACHE_DIR, `${hash}.${IMAGE_EXTENSION}`);
   if (fs.existsSync(cachePath)) {
     return { hash, buffer: fs.readFileSync(cachePath), cached: true };
   }
-  const buffer = await renderCard({ title, description });
+  const buffer = await renderCard({ title, description, footerText });
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.writeFileSync(cachePath, buffer);
   return { hash, buffer, cached: false };
 }
 
+// Accepts either a single {docsDir, routeBasePath} (back-compat) or a
+// `targets` array, so one plugin instance can walk multiple docs plugin
+// instances that live at different routeBasePaths (e.g. the main docs/ tree
+// at '/' plus ai-cookbook/ at '/ai-cookbook').
+function normalizeTargets(options) {
+  if (Array.isArray(options.targets) && options.targets.length) {
+    return options.targets;
+  }
+  return [{ docsDir: options.docsDir || 'docs', routeBasePath: options.routeBasePath }];
+}
+
 function ogImagePlugin(context, options = {}) {
-  const docsDir = path.resolve(context.siteDir, options.docsDir || 'docs');
+  const targets = normalizeTargets(options).map(({ docsDir, routeBasePath, footerText }) => ({
+    docsDir: path.resolve(context.siteDir, docsDir),
+    routeBasePath,
+    footerText: footerText || DEFAULT_FOOTER_TEXT,
+  }));
 
   return {
     name: 'og-image',
@@ -39,7 +54,6 @@ function ogImagePlugin(context, options = {}) {
     // this postBuild hook is responsible for is making sure the *image
     // bytes* that path points to actually exist in the build output.
     async postBuild({ outDir }) {
-      const files = walkDir(docsDir);
       let generated = 0;
       let cached = 0;
       let skipped = 0;
@@ -47,43 +61,47 @@ function ogImagePlugin(context, options = {}) {
       let renderMs = 0;
       let outputBytes = 0;
 
-      for (const filePath of files) {
-        const raw = fs.readFileSync(filePath, 'utf8');
-        const { data: frontmatter, content } = matter(raw);
-        const urlPath = resolveUrlPath(docsDir, filePath, frontmatter);
-        const htmlPath = htmlPathForUrlPath(outDir, urlPath);
+      for (const { docsDir, routeBasePath, footerText } of targets) {
+        const files = walkDir(docsDir);
 
-        if (!fs.existsSync(htmlPath)) {
-          // Not a routed page (e.g. an underscore-prefixed partial or an
-          // excluded directory) — nothing to render a card for.
-          skipped++;
-          continue;
-        }
+        for (const filePath of files) {
+          const raw = fs.readFileSync(filePath, 'utf8');
+          const { data: frontmatter, content } = matter(raw);
+          const urlPath = resolveUrlPath(docsDir, filePath, frontmatter, routeBasePath);
+          const htmlPath = htmlPathForUrlPath(outDir, urlPath);
 
-        if (hasManualOverride(frontmatter, content)) {
-          // The page's own front matter/<Head> already won; nothing to
-          // render.
-          overridden++;
-          continue;
-        }
+          if (!fs.existsSync(htmlPath)) {
+            // Not a routed page (e.g. an underscore-prefixed partial or an
+            // excluded directory) — nothing to render a card for.
+            skipped++;
+            continue;
+          }
 
-        const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
-        const title = extractTitle(content, frontmatter, id);
-        const description = frontmatter.description;
-        const renderStart = Date.now();
-        const { hash, buffer, cached: wasCached } = await getCardBuffer(title, description);
-        if (wasCached) {
-          cached++;
-        } else {
-          generated++;
-          renderMs += Date.now() - renderStart;
-        }
-        outputBytes += buffer.length;
+          if (hasManualOverride(frontmatter, content)) {
+            // The page's own front matter/<Head> already won; nothing to
+            // render.
+            overridden++;
+            continue;
+          }
 
-        const cardOutPath = path.join(outDir, 'img', 'og', `${hash}.${IMAGE_EXTENSION}`);
-        if (!fs.existsSync(cardOutPath)) {
-          fs.mkdirSync(path.dirname(cardOutPath), { recursive: true });
-          fs.copyFileSync(path.join(CACHE_DIR, `${hash}.${IMAGE_EXTENSION}`), cardOutPath);
+          const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
+          const title = extractTitle(content, frontmatter, id);
+          const description = frontmatter.description;
+          const renderStart = Date.now();
+          const { hash, buffer, cached: wasCached } = await getCardBuffer(title, description, footerText);
+          if (wasCached) {
+            cached++;
+          } else {
+            generated++;
+            renderMs += Date.now() - renderStart;
+          }
+          outputBytes += buffer.length;
+
+          const cardOutPath = path.join(outDir, 'img', 'og', `${hash}.${IMAGE_EXTENSION}`);
+          if (!fs.existsSync(cardOutPath)) {
+            fs.mkdirSync(path.dirname(cardOutPath), { recursive: true });
+            fs.copyFileSync(path.join(CACHE_DIR, `${hash}.${IMAGE_EXTENSION}`), cardOutPath);
+          }
         }
       }
 
