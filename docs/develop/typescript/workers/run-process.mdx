@@ -20,39 +20,23 @@ Create a Worker with `Worker.create()`, passing a connection, the Task Queue to 
 Call `run()` to start polling.
 
 <!--SNIPSTART typescript-hello-worker-->
-[hello-world/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts)
+[sleep-for-days/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/sleep-for-days/src/worker.ts)
 ```ts
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  // Step 1: Establish a connection with Temporal server.
-  //
-  // Worker code uses `@temporalio/worker.NativeConnection`.
-  // (But in your application code it's `@temporalio/client.Connection`.)
   const connection = await NativeConnection.connect({
     address: 'localhost:7233',
-    // TLS and gRPC metadata configuration goes here.
   });
   try {
-    // Step 2: Register Workflows and Activities with the Worker.
     const worker = await Worker.create({
       connection,
       namespace: 'default',
-      taskQueue: 'hello-world',
-      // Workflows are registered using a path as they run in a separate JS context.
+      taskQueue: 'sleep-for-days',
       workflowsPath: require.resolve('./workflows'),
       activities,
     });
-
-    // Step 3: Start accepting tasks on the `hello-world` queue
-    //
-    // The worker runs until it encounters an unexpected error or the process receives a shutdown signal registered on
-    // the SDK Runtime object.
-    //
-    // By default, worker logs are written via the Runtime logger to STDERR at INFO level.
-    //
-    // See https://typescript.temporal.io/api/classes/worker.Runtime#install to customize these defaults.
     await worker.run();
   } finally {
     // Close the connection once the worker has stopped
@@ -189,7 +173,7 @@ Workers shut down when the process receives any of the operating system signals 
 `'SIGTERM'`, `'SIGQUIT'`, and `'SIGUSR2'`.
 
 In development, shut down Workers with `Ctrl+C` (`SIGINT`) or
-[nodemon](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10)
+[nodemon](https://github.com/temporalio/samples-typescript/blob/277ce0e858cd74a582c83991aaf4430a53653aab/hello-world/package.json#L12)
 (`SIGUSR2`). In production, give Workers time to finish in-progress Activities by setting
 [shutdownGraceTime](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdowngracetime):
 
