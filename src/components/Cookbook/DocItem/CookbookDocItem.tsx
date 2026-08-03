@@ -13,6 +13,8 @@ import clsx from 'clsx';
 import { usePluginData } from '@docusaurus/useGlobalData';
 import DocItemStructuredData from '@site/src/theme/DocItem/StructuredData';
 import DocItemTaxonomyMeta from '@site/src/theme/DocItem/TaxonomyMeta';
+import LLMActions from '@site/src/components/LLMActions/LLMActions';
+import MarkdownAlternateLink from '@site/src/components/LLMActions/MarkdownAlternateLink';
 
 import styles from './CookbookDocItem.module.css';
 
@@ -240,6 +242,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
             <>
               {renderActions()}
               <DefaultH1 {...props} />
+              <LLMActions />
               {renderLastUpdated()}
             </>
           );
@@ -254,6 +257,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
       <DocItemMetadata />
       <DocItemStructuredData />
       <DocItemTaxonomyMeta />
+      <MarkdownAlternateLink />
 
       <Head>
         <title>{title}</title>
@@ -266,6 +270,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
               <header className={styles.syntheticHeader}>
                 {renderActions()}
                 <h1>{syntheticTitle}</h1>
+                <LLMActions />
                 {renderLastUpdated()}
               </header>
             )}

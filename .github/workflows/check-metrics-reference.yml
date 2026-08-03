@@ -1,0 +1,31 @@
+name: Check Metrics Reference
+
+on:
+  pull_request:
+    paths:
+      - "docs/references/sdk-metrics.mdx"
+      - "bin/check-metrics-reference.js"
+      - "bin/check-metrics-reference.test.js"
+      - ".github/workflows/check-metrics-reference.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check-metrics-reference:
+    name: Validate metrics reference consistency
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+
+      - name: Test the checker
+        run: node --test bin/check-metrics-reference.test.js
+
+      - name: Check the metrics reference
+        run: node bin/check-metrics-reference.js

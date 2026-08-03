@@ -300,14 +300,16 @@ Both ALLOW_DUPLICATE and ALLOW_DUPLICATE_FAILED_ONLY work well with Signal with 
 - **Expecting a return value from Signals.** Signals are fire-and-forget. If you need a synchronous response, use Updates or Update-with-Start instead.
 - **Race between SignalWithStart and Continue-As-New.** Temporal prevents this race — if a Signal arrives while the Workflow is completing via Continue-As-New, the Workflow rewinds to process the Signal first.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-running Workflows representing business entities.
 - **[Continue-As-New](/design-patterns/continue-as-new)**: Managing unbounded Workflow history.
 - **[Request-Response via Updates](/design-patterns/request-response-via-updates)**: When you need synchronous responses instead of fire-and-forget.
 - **[Early Return](/design-patterns/early-return)**: Update-with-Start for request-response with lazy initialization.
 
-## Sample code
+### Sample code
 
 **Python**
 - [Hello Signal](https://github.com/temporalio/samples-python/tree/main/hello/hello_signal.py) — Basic Signal handling in a Workflow.

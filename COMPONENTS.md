@@ -25,6 +25,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
+- [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
 
 ## Finding Components
@@ -153,7 +154,7 @@ For example, the Python SDK integrations page pre-filters to Python:
 <IntegrationsGrid defaultSdks={["Python"]} />
 ```
 
-Valid SDK values are `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
 
 ### Filter behavior
 
@@ -481,6 +482,78 @@ Valid `name` values for the block icons: `goLangBlock`, `javaBlock`, `dotnetBloc
 ### Where the component is used
 
 - `/temporal-client` — links to the Temporal Client feature guide for each SDK
+
+## Using AnnotatedCode
+
+Role: Let readers click concept pills to highlight matching lines in a code sample and show a short description.
+
+Put a normal Markdown fence as children so the sample stays in the MDX. Put `annotations` inline on the page next to that fence.
+
+How to import:
+
+```
+import { AnnotatedCode } from '@site/src/components';
+```
+
+### Usage
+
+Example from the Worker performance page (poller autoscaling):
+
+```
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [2],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [3],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [4],
+    },
+  ]}
+>
+```go
+w := worker.New(c, "my-task-queue", worker.Options{
+  WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  ActivityTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+})
+```
+</AnnotatedCode>
+```
+
+`lines` are 1-based line numbers within the fence. Use an empty array when a concept has no lines to highlight in that sample.
+
+Optional `color` on an annotation: `indigo`, `magenta`, `blue`, or `amber`. If omitted, tones rotate in that order.
+
+Optional `hint` prop overrides the default “Highlight a concept” text above the pills.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `annotations` | `object[]` | No | Each item needs `label`, `description`, and `lines`. Optional `color`. |
+| `hint` | `string` | No | Text above the pills. Defaults to `Highlight a concept`. |
+| `children` | Markdown fence | Yes | The code sample to display and highlight. |
+
+### LLM markdown
+
+Registered as `strip-tag` in the MDX → Markdown pipeline: wrapper tags are removed and the fence content is kept. Keep annotation copy in the MDX `annotations` prop so authors edit it on the page.
+
+### Where the component is used
+
+- Worker Versioning — Worker options concepts
+- Worker performance — poller autoscaling options
+- Environment configuration — TOML Cloud profile fields
+- Task Queue Priority and Fairness — priority / fairness options
+- Child Workflows design pattern — async start concepts
 
 ## Using ReleaseNoteHeader
 

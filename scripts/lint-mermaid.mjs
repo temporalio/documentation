@@ -1,9 +1,11 @@
+// Set up a browser-like DOM before loading mermaid. mermaid.parse() uses DOM
+// APIs for some diagram syntaxes (for example a sequence diagram `box`) and
+// otherwise fails headless with "window is not defined".
+import 'global-jsdom/register';
+
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import DOMPurify from 'dompurify';
-import mermaidModule from 'mermaid';
-
-const mermaid = mermaidModule.default ?? mermaidModule;
+import mermaid from 'mermaid';
 const DOCS_ROOT = path.resolve('docs');
 const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 
@@ -109,20 +111,6 @@ async function lintFile(filePath) {
 }
 
 async function main() {
-  // Mermaid's parser may call DOMPurify hooks for some diagram syntaxes.
-  // In Node (without a browser window), dompurify can resolve to a minimal
-  // implementation that lacks hook APIs; provide no-op hooks so syntax-only
-  // parsing still works in CI.
-  if (typeof DOMPurify.addHook !== 'function') {
-    DOMPurify.addHook = () => {};
-  }
-  if (typeof DOMPurify.removeHook !== 'function') {
-    DOMPurify.removeHook = () => {};
-  }
-  if (typeof DOMPurify.sanitize !== 'function') {
-    DOMPurify.sanitize = (value) => value;
-  }
-
   mermaid.initialize({ startOnLoad: false });
 
   const markdownFiles = await walk(DOCS_ROOT);
