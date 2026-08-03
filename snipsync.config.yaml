@@ -22,12 +22,8 @@ origins:
     repo: samples-ruby
   - owner: temporalio
     repo: samples-dotnet
-  # Pinned until temporalio/samples-java#784 merges the lambda-worker sample to
-  # main. A ref here pins every snippet from this repo, not just one page's, so
-  # remove it as soon as that PR lands.
   - owner: temporalio
     repo: samples-java
-    ref: ea/aws-lambda
   - files:
       pattern: './sample-apps/**/*.go'
       owner: 'temporalio'
