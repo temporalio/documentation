@@ -253,7 +253,11 @@ This number is included into the total `long_request` counter for long poll RPC 
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `operation`
+- Tags: `namespace`, `operation`, `status_code`
+
+The `status_code` tag carries the gRPC status code returned by the Temporal Service.
+Its casing differs by SDK: the Go SDK reports `PascalCase` values such as `NotFound`, while the Java and Core SDKs report `UPPER_SNAKE_CASE` values such as `NOT_FOUND`.
+The tag can be suppressed through Client options, so confirm it is present in your own metrics endpoint before writing queries against it.
 
 ### `long_request_latency`
 
@@ -352,7 +356,11 @@ This number is included into the total `request` counter for RPC requests.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `operation`
+- Tags: `namespace`, `operation`, `status_code`
+
+The `status_code` tag carries the gRPC status code returned by the Temporal Service.
+Its casing differs by SDK: the Go SDK reports `PascalCase` values such as `NotFound`, while the Java and Core SDKs report `UPPER_SNAKE_CASE` values such as `NOT_FOUND`.
+The tag can be suppressed through Client options, so confirm it is present in your own metrics endpoint before writing queries against it.
 
 ### `request_latency`
 
@@ -506,6 +514,7 @@ A Workflow Task Execution failed.
 Valid values for the `failure_reason` tag:
 
 - `NonDeterminismError`: The Workflow Task failed due to a non-determinism error.
+- `GrpcMessageTooLarge`: The Workflow Task response exceeded the gRPC message size limit and could not be delivered. The Temporal Service terminates the Workflow Execution in response. See [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error).
 - `WorkflowError`: The Workflow Task failed for any other reason.
 
 ### `workflow_task_execution_latency`
