@@ -1998,6 +1998,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/priority-fairness-walkthrough',
       ],
     },    {
       type: 'category',
