@@ -778,6 +778,19 @@ h3 {
   text-decoration: none;
 }
 
+/* Long identifiers wrap onto several lines in the table of contents. Tighten the
+   leading within an entry and widen the gap between entries so a wrapped line
+   doesn't read as a separate entry, and hang the continuation lines. */
+.table-of-contents__link {
+  line-height: 1.25;
+  padding-left: 0.7rem;
+  text-indent: -0.7rem;
+}
+
+.table-of-contents li {
+  margin: 0.55rem var(--ifm-toc-padding-horizontal);
+}
+
 .announcementBar_node_modules-\@docusaurus-theme-classic-lib-next-theme-AnnouncementBar-styles-module {
   --docusaurus-announcement-bar-height: 4rem;
   font-size: 24px;

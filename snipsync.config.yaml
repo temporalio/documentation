@@ -24,10 +24,6 @@ origins:
     repo: samples-dotnet
   - owner: temporalio
     repo: samples-java
-  - owner: temporalio
-    repo: features
-  - owner: temporalio
-    repo: reference-app-orders-go
   - files:
       pattern: './sample-apps/**/*.go'
       owner: 'temporalio'
@@ -41,6 +37,8 @@ origins:
   - owner: temporalio
     repo: samples-server
     ref: 'main'
+  - owner: temporalio
+    repo: sdk-go
 
 targets:
   - docs

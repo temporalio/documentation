@@ -54,7 +54,7 @@ In the loyalty points use case, each customer has their own Entity Workflow. The
 
 ### How Entity Workflows differ from actors
 
-The Entity Workflow pattern shares characteristics with the Actor Model: both receive messages, maintain state, and can create new instances. However, there is an important distinction. An entity **represents state** and responds to interactions. It is closer to a data cache than a process orchestrator. It holds and serves state, evaluates business rules against that state, and delegates side effects to Activities. An actor, by contrast, **takes actions**. It may write to databases, call external APIs, or send emails as part of its core behavior.
+The [Entity Workflow pattern](/design-patterns/entity-workflow) shares characteristics with the Actor Model: both receive messages, maintain state, and can create new instances. However, there is an important distinction. An entity **represents state** and responds to interactions. It is closer to a data cache than a process orchestrator. It holds and serves state, evaluates business rules against that state, and delegates side effects to Activities. An actor, by contrast, **takes actions**. It may write to databases, call external APIs, or send emails as part of its core behavior.
 
 In this pattern, the loyalty Entity Workflow does not directly write to a database or send an email. When it needs a side effect, such as sending a tier upgrade notification, it delegates that work to an Activity. The Workflow itself remains a pure state container with business rules.
 
@@ -1119,6 +1119,8 @@ You've built a loyalty account system where each customer is an independent, sel
 
 ## Related resources
 
+- [Entity Workflow Pattern](/design-patterns/entity-workflow) — pattern catalog reference for this Workflow with Go, Java, Python, and TypeScript implementations
+- [Continue-As-New Pattern](/design-patterns/continue-as-new) — pattern catalog reference covering common pitfalls and history-size triggers
 - [Temporal Python SDK documentation](/develop/python)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
 - [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
@@ -1126,5 +1128,4 @@ You've built a loyalty account system where each customer is an independent, sel
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
 - [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
 - [Temporal Python SDK samples](https://github.com/temporalio/samples-python)
-
-<!-- - [Companion article: Actor Workflow Pattern](ActorWorkflow_PlayerSessions.md) — covers the related Actor Workflow pattern for autonomous agents that take action -->
+- Companion article: [Player Sessions That Survive Anything](/guides/durable-gaming-sessions) — covers the related Actor Workflow pattern for entities that take action

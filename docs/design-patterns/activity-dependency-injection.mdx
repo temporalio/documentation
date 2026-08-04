@@ -766,12 +766,14 @@ The trade-off is that all Activity executions on a given Worker share the same d
 - **Registering class methods as static in Python.** If you register `BotService.send_message` (the unbound method) instead of `bot_service.send_message` (a method on an instance), the `self` parameter is not bound, causing a missing argument error at runtime.
 - **Forgetting to bind methods in TypeScript.** When using a class instead of a factory function, class methods must be defined as arrow functions or explicitly bound in the constructor. Otherwise, `this` is `undefined` when Temporal invokes the Activity.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-lived Workflows that manage stateful entities, often using Activities with injected dependencies.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Routing Activities to specific Workers, which can have different injected dependencies.
 
-## Sample code
+### Sample code
 
 ### Go
 - [Greetings](https://github.com/temporalio/samples-go/tree/main/greetings) — Activities as struct methods with injected dependencies.
