@@ -33,7 +33,7 @@ Subscribe to Temporal’s security updates on the [Temporal Trust Portal](https:
 
 Strong identity management in Temporal Cloud is crucial for ensuring secure access for your Temporal account. It’s critical that only authorized users and services can access your Temporal Cloud account and that each has the minimum necessary permissions needed for their role. 
 
-### Best Practices:
+### Best practices:
 
 #### 1. Enable [SAML Single Sign-on](/cloud/manage-access/saml) (SSO) for User Access
 
@@ -57,7 +57,7 @@ Clients interact with the Temporal Service to initiate and manage Workflows, whi
 
 A crucial aspect of strengthening your usage involves securing these interactions. Temporal Cloud offers two authentication methods for your applications: mutual TLS certificates and API keys.
 
-### Best Practices:
+### Best practices:
 
 #### 1. Using Mutual TLS (mTLS) provides comprehensive security
 
@@ -82,7 +82,7 @@ Temporal Cloud API keys are an alternative to mTLS for authentication of SDKs, C
 
 Although Temporal Cloud is a SaaS offering, you retain control over its networking configurations, allowing for tailored security measures. By minimizing public internet exposure and segmenting Temporal workflows into suitable network zones, you can significantly bolster security and reduce potential vulnerabilities. This approach ensures that your workflows are isolated and protected within your defined network boundaries, even while leveraging the benefits of a cloud-based service. 
 
-### Best Practices:
+### Best practices:
 
 #### 1. Use Private Connectivity
 
@@ -98,7 +98,7 @@ Ensure that your production Namespace uses stricter network controls (e.g. only 
 
 Temporal's data encryption capabilities ensure the security and confidentiality of your Workflows and provide protection without compromising performance. Protecting the data that you send to and store in Temporal Cloud is a joint responsibility. Temporal Cloud already encrypts all data at rest on the server side, but you can add additional layers of encryption and control. 
 
-### Best Practices:
+### Best practices:
 
 #### 1. Enable Client-Side Encryption for Workflow Data
 
@@ -127,7 +127,7 @@ Temporal Cloud’s platform is engineered for fault-tolerance out of the box, bu
 | **Multi-Region Replication** | **If a disruption of your workflow will cause loss of revenue, poor end-user experience, or issues with regulatory compliance.** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
 | **Multi-Cloud Replication** | **If you need the highest level of disaster tolerance, protecting against outages of an entire cloud provider (e.g., AWS or GCP)** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
 
-### Best Practices:
+### Best practices:
 
 #### 1. Identify Availability-sensitive Namespaces
 

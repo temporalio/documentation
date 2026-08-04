@@ -61,7 +61,7 @@ Workflow.continueAsNew(
   new ClusterManagerInput(Optional.of(state), input.isTestContinueAsNew()));
 ````
 
-### Considerations for Workflows with Message Handlers {/* #with-message-handlers */}
+### Considerations for Workflows with message handlers {/* #with-message-handlers */}
 
 If you use Updates or Signals, don't call Continue-as-New from the handlers.
 Instead, wait for your handlers to finish in your main Workflow before you run `continueAsNew`.

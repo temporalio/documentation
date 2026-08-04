@@ -51,3 +51,9 @@
 ## Configure mTLS and PrivateLink for AWS
 
 ## Worker Versioning and Patching
+
+## Store and retrieve large payloads with Amazon S3
+
+## Create a Saved View
+
+## Run Hello World: Test your installation

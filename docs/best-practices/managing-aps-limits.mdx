@@ -64,7 +64,7 @@ Additionally, there are often business reasons to start multiple Workflows at th
 
 These can all contribute to the multiplier effect. 
 
-### The Effect of Rate Limiting
+### The Effect of Rate limiting
 
 In Temporal Cloud, the effect of rate limiting is increased latency, not lost work. 
 Workers [might take longer](/cloud/service-availability#throughput) to complete Workflows. 
@@ -89,7 +89,7 @@ Common bursty patterns include:
 
 These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour/day/event/etc. 
 
-#### How to Mitigate
+#### How to mitigate
 
 You can’t change the patterns of how customers interact with your systems, but there are some adjustments you can make to your Workflows to make traffic patterns more consistent, especially for use cases where immediate response isn’t necessary. 
 
@@ -113,7 +113,7 @@ This pattern appears frequently in:
 
 This challenge additionally compounds when you have multiple levels of nesting--parent Workflows that create children, which create their own children. 
 
-#### How to Mitigate
+#### How to mitigate
 
 - Evaluate whether Child Workflows are necessary--other options include Activities or Workflows in another Namespace (via Nexus)
 - When you do use Child Workflows, limit fan-out size--design a Child Workflow to process its work in batches rather than one Child per work item. [This sample application](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/batch/slidingwindow) shows more detail.
@@ -127,7 +127,7 @@ These Workflows can involve Queries from UIs to display current state and pendin
 
 At small scale, this is manageable. But when you're running thousands of them at the same time--like a content moderation queue with pending reviews, or a loan approval system processing applications, or a support ticket system managing thousands of open cases--the cumulative APS load from all of those long-running Workflows adds up.
 
-#### How to Mitigate
+#### How to mitigate
 
 - Avoid polling patterns where UIs constantly query Workflow state. Instead, push state changes to a database that UIs can read. 
 
@@ -140,7 +140,7 @@ Each of these Timers/monitoring actions affect APS.
 When you have thousands of in-flight Workflows all actively monitoring their own SLAs, the background load becomes significant.
 You're consuming substantial APS capacity even when Workflows aren't doing their primary work.
 
-#### How to Mitigate
+#### How to mitigate
 
 - Use longer monitoring intervals where possible. For example, check SLAs every 30 minutes rather than every 1 minute.
 - Where possible, consolidate Timers. Rather than 10 Timers that check 10 tasks, have 1 Timer and then check those 10 tasks.
@@ -161,7 +161,7 @@ Approach B will clearly result in less APS.
 This is a simple example, but this pattern shows up everywhere: processing individual transactions versus batches, sending individual notifications versus bulk operations, or making separate API calls versus batch endpoints. 
 Each separate Activity adds Action overhead.
 
-#### How to Mitigate
+#### How to mitigate
 
 - Consider if you can combine multiple external calls within a single Activity.
 - If processing a large amount of data, process it in chunks.
@@ -173,7 +173,7 @@ When the second Temporal use case is implemented, it runs in the same Namespace,
 
 An APS limit is set per Namespace, so multiple use cases with multiple traffic patterns in the same Namespace can exhaust this limit quickly.
 
-#### How to Mitigate
+#### How to mitigate
 
 Plan for a set of Namespaces (one per environment) per use case. This gives each use case its own APS envelope and
 reduces the blast radius when one workload spikes or misbehaves.
