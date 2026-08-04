@@ -1995,13 +1995,10 @@ module.exports = {
       label: 'Interactive Demos',
       collapsed: true,
       items: [
-<<<<<<< HEAD
-        'develop/standalone-activities-interactive-demo',
-        'develop/priority-fairness-walkthrough',
-=======
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/priority-fairness-walkthrough',
       ],
     },    {
       type: 'category',
@@ -2021,7 +2018,6 @@ module.exports = {
         'guides/rate-limit-downstream-apis',
         'guides/durable-gaming-sessions',
         'guides/lock-shared-resources',
->>>>>>> origin/main
       ],
     },
     'integrations',

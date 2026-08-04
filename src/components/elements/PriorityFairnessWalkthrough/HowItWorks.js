@@ -1,22 +1,23 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import styles from './walkthrough.module.css';
 
 const STEPS = [
   {
     title: 'Priority tier is selected first',
-    body: 'Tasks at a higher priority (lower number) are always dispatched before tasks at a lower priority. Every task at priority 1 is dispatched before any task at priority 2, and so on.',
+    body: <>Tasks at a higher priority (lower number) are always dispatched before tasks at a lower priority. Every task at priority 1 is dispatched before any task at priority 2, and so on.</>,
   },
   {
     title: 'Fairness distributes capacity within the tier',
-    body: 'Within a priority tier, tasks are dispatched proportionally by fairness weight using a weighted round-robin mechanism. This prevents any single fairness key from hogging Worker capacity, even if it has a deep backlog.',
+    body: <>Within a priority tier, tasks are dispatched proportionally by <code>fairnessWeight</code> using a weighted round-robin mechanism. This prevents any single <code>fairnessKey</code> from hogging Worker capacity, even if it has a deep backlog.</>,
   },
   {
-    title: 'No fairness key means FIFO within the tier',
-    body: 'If no fairness key is set, tasks at the same priority level are dispatched in arrival order.',
+    title: <>No <code>fairnessKey</code> means FIFO within the tier</>,
+    body: <>If no <code>fairnessKey</code> is set, tasks at the same priority level are dispatched in arrival order.</>,
   },
   {
     title: 'Priority and Fairness are per Task Queue',
-    body: 'These rules apply within a Task Queue partition. Workers on separate Task Queues are unaffected by each other.',
+    body: <>The rules apply independently per <Link to="/encyclopedia/workers/task-queues">Task Queue</Link>. Workers on the same Task Queue share the same dispatch ordering. Workers on separate Task Queues are unaffected by each other.</>,
   },
 ];
 

@@ -431,6 +431,11 @@
   color: #fff;
 }
 
+:global([data-theme='dark']) .btnPrimary {
+  background: #4f56e8;
+  color: #fff;
+}
+
 .btnPrimary:hover:not(:disabled) {
   opacity: 0.88;
 }
