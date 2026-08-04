@@ -1,0 +1,92 @@
+---
+id: sdk-worker-alerting
+title: How to alert on Temporal SDK Worker metrics
+sidebar_label: SDK Worker alerting
+description: A recommended alert set for Temporal SDK Workers, with thresholds and links to triage guidance
+toc_max_heading_level: 4
+keywords:
+  - sdk metrics
+  - worker metrics
+  - alerting
+  - monitoring temporal metrics
+  - observability
+tags:
+  - Metrics
+  - Observability
+  - Workers
+---
+
+Temporal SDKs emit metrics from your Worker processes that expose failure modes the Temporal Service cannot see on your behalf: Workflow code that fails on replay, Workers that stop polling, Task slots that never free up, and Local Activities that outlive their heartbeat window.
+
+This page recommends a set of alerts covering those failure modes, with a starting threshold for each. It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
+
+For metric definitions and label sets, see the [Temporal SDK metrics reference](/references/sdk-metrics). For Worker configuration guidance, see [Worker deployment and performance](/best-practices/worker).
+
+## Choose your thresholds {/* #choose-your-thresholds */}
+
+Every threshold on this page is a starting point, not a service level objective.
+
+A high-throughput Task Queue, a latency-sensitive Namespace, and a bursty batch workload each want different values. Two things to tune per alert:
+
+- **The threshold** determines what counts as unhealthy. Set it against observed p99 during a known-good period, not against the value listed here.
+- **The `for` duration** determines how long the condition must hold before the alert fires. Shorter durations detect problems faster and fire more often on transient spikes. Longer durations suppress noise and delay detection.
+
+Alerts on binary conditions — any occurrence of a gRPC status code, a gauge reaching zero — need no threshold tuning. Only the `for` duration matters, and only to filter out deploys and rolling restarts.
+
+## Recommended alert set {/* #recommended-alert-set */}
+
+### Request failures {/* #request-failures */}
+
+These fire on gRPC responses from the Temporal Service to your Worker or Client. Triage guidance: [SDK request failures](/troubleshooting/sdk-request-failures).
+
+| Failure mode | Metric | Threshold | Severity |
+| --- | --- | --- | --- |
+| [NOT_FOUND on respond operations](/troubleshooting/sdk-request-failures#not_found-on-respond-operations) | `temporal_request_failure` | Any occurrence | Critical |
+| [NOT_FOUND on Activity heartbeat](/troubleshooting/sdk-request-failures#not_found-on-activity-heartbeat) | `temporal_request_failure` | Any occurrence | Warning |
+| [RESOURCE_EXHAUSTED on user-facing operations](/troubleshooting/sdk-request-failures#resource_exhausted-on-user-facing-operations) | `temporal_request_failure` | Any occurrence | Critical |
+| [RESOURCE_EXHAUSTED on respond operations](/troubleshooting/sdk-request-failures#resource_exhausted-on-respond-operations) | `temporal_request_failure` | Any occurrence | Critical |
+| [UNIMPLEMENTED or INTERNAL from the Temporal Service](/troubleshooting/sdk-request-failures#unimplemented-or-internal-from-the-temporal-service) | `temporal_request_failure` | Any occurrence | Critical |
+| [Request latency high on user-facing operations](/troubleshooting/sdk-request-failures#request-latency-high-on-user-facing-operations) | `temporal_request_latency` | p99 above 2s | Critical |
+
+### Worker capacity {/* #worker-capacity */}
+
+These fire when Workers stop keeping up with the Task Queue. Triage guidance: [SDK Worker capacity](/troubleshooting/sdk-worker-capacity).
+
+| Failure mode | Metric | Threshold | Severity |
+| --- | --- | --- | --- |
+| [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted) | `temporal_worker_task_slots_available` | Reaches 0 | Critical |
+| [All pollers disconnected](/troubleshooting/sdk-worker-capacity#all-pollers-disconnected) | `temporal_num_pollers` | Reaches 0 | Critical |
+| [Task completions dropped to zero](/troubleshooting/sdk-worker-capacity#task-completions-dropped-to-zero) | `temporal_request` | Rate reaches 0 per Task Queue | Critical |
+| [Workflow Task schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#workflow-task-schedule-to-start-latency-elevated) | `temporal_workflow_task_schedule_to_start_latency` | p99 above 5s, and again above 30m | Critical |
+| [Activity schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated) | `temporal_activity_schedule_to_start_latency` | p99 above 30m | Critical |
+| [Sticky cache disabled](/troubleshooting/sdk-worker-capacity#sticky-cache-disabled) | `temporal_sticky_cache_size` | Reaches 0 | Warning |
+
+### Execution failures {/* #execution-failures */}
+
+These fire on Workflow and Activity code failing on the Worker. Triage guidance: [SDK execution failures](/troubleshooting/sdk-execution-failures).
+
+| Failure mode | Metric | Threshold | Severity |
+| --- | --- | --- | --- |
+| [Non-determinism error](/troubleshooting/sdk-execution-failures#non-determinism-error) | `temporal_workflow_task_execution_failed` | Any occurrence | Critical |
+| [gRPC message too large](/troubleshooting/sdk-execution-failures#grpc-message-too-large) | `temporal_workflow_task_execution_failed` | Any occurrence | Critical |
+| [Workflow Task execution failures elevated](/troubleshooting/sdk-execution-failures#workflow-task-execution-failures-elevated) | `temporal_workflow_task_execution_failed` | Rate above 10/s | Warning |
+| [Workflow Task execution latency high](/troubleshooting/sdk-execution-failures#workflow-task-execution-latency-high) | `temporal_workflow_task_execution_latency` | p99 above 10s | Critical |
+| [Activity execution failures elevated](/troubleshooting/sdk-execution-failures#activity-execution-failures-elevated) | `temporal_activity_execution_failed` | Rate above 10/s | Warning |
+| [Local Activity latency exceeds the heartbeat timeout](/troubleshooting/sdk-execution-failures#local-activity-latency-exceeds-the-heartbeat-timeout) | `temporal_local_activity_execution_latency`, `temporal_local_activity_total_execution_latency` | p99 above 30m | Critical |
+
+## Set up the alerts {/* #set-up-the-alerts */}
+
+Before you can alert on these metrics, your Workers must be emitting them and your monitoring system must be scraping them:
+
+- **Temporal Cloud** — [Set up SDK metrics](/cloud/metrics/sdk-metrics-setup), then [configure Prometheus and Grafana](/cloud/metrics/prometheus-grafana).
+- **Self-hosted** — [Monitor Temporal Platform metrics](/self-hosted-guide/monitoring).
+
+Metric names vary by SDK and metrics reporter. Counters carry a `_total` suffix and histograms a `_seconds_bucket` suffix when scraped through Prometheus. The `status_code` label is `PascalCase` in the Go SDK (`NotFound`) and `UPPER_SNAKE_CASE` in the Java and Core SDKs (`NOT_FOUND`). Confirm the exact names in your own metrics endpoint before writing queries.
+
+## Route alerts by severity {/* #route-alerts-by-severity */}
+
+Alerts marked Critical indicate that Workflow Executions are not progressing, or are progressing with data loss or duplicate side effects. Route these to a paging channel.
+
+Alerts marked Warning indicate degradation that has not yet stopped progress: elevated failure churn, a misconfigured cache, an Activity heartbeat that is timing out and retrying. Route these to a review channel and address them before they escalate.
+
+Several of these alerts have causal relationships — Task slots exhausted drives pollers to zero, which drives schedule-to-start latency up, which drives Task completions to zero. When multiple fire together, the triage pages identify which is the root cause and which are symptoms.

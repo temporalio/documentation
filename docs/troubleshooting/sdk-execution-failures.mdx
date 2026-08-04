@@ -1,0 +1,163 @@
+---
+id: sdk-execution-failures
+title: How to troubleshoot SDK execution failures
+sidebar_label: SDK execution failures
+description: Diagnose non-determinism errors, oversized payloads, failing Workflow and Activity code, and Local Activity latency
+toc_max_heading_level: 4
+keywords:
+  - non determinism error
+  - workflow task failed
+  - activity execution failed
+  - local activity
+  - grpc message too large
+tags:
+  - Metrics
+  - Observability
+  - Troubleshooting
+---
+
+This guide covers failures that occur while your Workflow and Activity code is executing on a Worker: replay mismatches, oversized responses, unhandled exceptions, and Local Activities that run past the Workflow Task heartbeat timeout. It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
+
+For recommended alert thresholds, see [SDK Worker alerting](/best-practices/sdk-worker-alerting). For metric definitions, see the [Temporal SDK metrics reference](/references/sdk-metrics).
+
+`temporal_workflow_task_execution_failed` carries a `failure_reason` label. The reason determines what the Temporal Service does next, and the difference matters: some reasons cause indefinite retries, one causes immediate termination.
+
+## Non-determinism error {/* #non-determinism-error */}
+
+**Metric:** `temporal_workflow_task_execution_failed` with `failure_reason=NonDeterminismError`
+
+Replay produced a different command sequence than the one recorded in Event History. The Worker detected that the Workflow code it is running does not match the commands the Workflow Execution has already produced.
+
+### Why it matters {/* #why-nde-matters */}
+
+Affected Executions are not progressing. The Temporal Service retries the Workflow Task continuously, adding pressure to your Workflow Workers, and by default the Executions stay in Running status — prolonging their end-to-end time indefinitely. A non-determinism error does not resolve on its own.
+
+### Triage {/* #triage-nde */}
+
+1. **Identify the affected Workflow Executions.** This metric does not carry a Workflow Id. Worker logs record the error with the Workflow Id and Run Id. In the Temporal UI you can also find affected Executions by querying the `TemporalReportedProblems` Search Attribute, which the Temporal Service sets on Executions experiencing repeated Workflow Task failures.
+1. **Read the error.** The `WorkflowTaskFailed` event in an affected Execution's Event History contains the message identifying exactly where replay diverged and which command was expected versus produced. This is the most direct signal for root cause.
+1. **Determine whether this is a code change or a deploy artifact.** Common causes:
+   - A code change added, removed, or reordered commands — Activity scheduling, Timers, Signals, Child Workflows — without a versioning guard. In-flight Executions that built History under the old code fail on the new code.
+   - A rolling restart with old and new Worker versions briefly running together. Some Executions fail transiently and recover once the rollout completes.
+   - Changed Activity or Timer parameters in existing Workflow code without versioning.
+1. **Roll back if it is not resolving.** If the errors started after a deploy and are not clearing on their own, roll the Worker back to the previous version. Affected Executions resume on their next Workflow Task retry once compatible code is running. Then introduce a proper versioning guard before redeploying — see [Workflow versioning](/workflow-definition#workflow-versioning) and [Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
+1. **Watch Worker pressure.** Continuous retries put sustained load on Workflow Workers. Cross-check [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted) for `worker_type=WorkflowWorker` and [Workflow Task execution latency high](#workflow-task-execution-latency-high) — a high volume of retries can saturate capacity and affect healthy Executions on the same Task Queue.
+
+## gRPC message too large {/* #grpc-message-too-large */}
+
+**Metric:** `temporal_workflow_task_execution_failed` with `failure_reason=GrpcMessageTooLarge`
+
+The Workflow Task response payload exceeded the gRPC message size limit. The Worker attempted `RespondWorkflowTaskCompleted` and the response was rejected — by the gRPC library on the SDK side, by a proxy or load balancer in the path, or by the gRPC library on the Temporal Service side on receive.
+
+Because the Temporal Service never saw the original request, the SDK sends a follow-up `RespondWorkflowTaskFailed` with cause `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`. The Service then terminates the Workflow Execution.
+
+### Why it matters {/* #why-message-too-large-matters */}
+
+Affected Executions are terminated immediately and permanently, with `TERMINATED` status and no retry. Any in-progress work in those Executions is lost, and they must be restarted manually.
+
+This is the one `failure_reason` on this page that ends Executions rather than retrying them.
+
+### Triage {/* #triage-message-too-large */}
+
+1. **Identify the affected Executions.** This metric does not carry a Workflow Id. Check Worker logs for Workflow Ids and Run Ids, then confirm the cause from the `WorkflowTaskFailed` and `WorkflowExecutionTerminated` events in Event History.
+1. **Find what is oversized.** The fix depends entirely on which part of the response is too large:
+   - **Oversized Activity inputs or outputs.** Move large payloads out of band — store them in blob storage and pass a reference through Event History instead. See [External Storage](/external-storage) for the pattern.
+   - **Accumulated Signals or Updates.** A large number buffered into a single Workflow Task. Rate-limit senders or batch Signals.
+   - **Too many commands in one response.** A Workflow scheduling a very large fan-out of Activities or Child Workflows in a single step. Break the fan-out into smaller batches across multiple Workflow Tasks.
+1. **Fix and deploy before restarting anything.** Terminated Executions do not retry. Restarting them before the cause is fixed means hitting the same limit and being terminated again. Once the corrected Worker is deployed and verified, restart the affected Executions from the Temporal UI or CLI.
+
+:::note Self-hosted Temporal Service
+
+Check the Workflow terminate rate on your server dashboard — a spike alongside this metric confirms Executions are being terminated at volume.
+
+:::
+
+## Workflow Task execution failures elevated {/* #workflow-task-execution-failures-elevated */}
+
+**Metric:** `temporal_workflow_task_execution_failed` with `failure_reason=WorkflowError`
+
+Sustained Workflow Task failures from unhandled exceptions and panics in Workflow code that the SDK catches and reports. This covers thread pool exhaustion, unhandled exceptions thrown inside the Workflow function, and Data Converter errors.
+
+### Why it matters {/* #why-workflow-error-matters */}
+
+The Temporal Service retries the Workflow Task. If the error is deterministic and reproduces on every replay, the Execution is stuck retrying indefinitely, consuming Worker capacity and staying in a permanently unhealthy state.
+
+Unlike a non-determinism error, there is no ceiling on how bad this gets: at high rates the retry pressure saturates Workflow Worker slots and affects healthy Executions on the same Task Queue. Unlike `GrpcMessageTooLarge`, the Service does not terminate the Execution, so the impact compounds until you resolve it.
+
+### Triage {/* #triage-workflow-error */}
+
+1. **Identify the affected Executions.** This metric does not carry a Workflow Id. Worker logs carry the Workflow Id, Run Id, and full stack trace. The `WorkflowTaskFailed` event in Event History carries the error message and type.
+1. **Determine which failure mode this is.** `WorkflowError` covers several:
+   - **Thread pool exhaustion (Java SDK).** A `RejectedExecutionException` from a saturated Workflow thread pool, caused by `setMaxWorkflowThreadCount` on `WorkerFactoryOptions` being too low for the number of concurrent Executions. New Workflow Tasks are rejected before they can execute. Raise the thread count, and check whether the Worker pool needs to scale out as well.
+   - **Unhandled exception in Workflow code.** A bug or unexpected condition throws. If it reproduces on every replay, the Execution is stuck. The `WorkflowTaskFailed` event identifies the error.
+   - **Data Converter error.** A failure serializing or deserializing Workflow inputs, outputs, or Memo fields. Check your [Data Converter](/dataconversion) and Payload Codec configuration.
+1. **Check Worker thread and slot pressure.** Cross-check [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted) for `worker_type=WorkflowWorker`. Slot exhaustion and thread pool exhaustion often occur together under load, and a CPU-starved Worker completes Workflow Tasks more slowly, accelerating both.
+1. **Fix and redeploy.** Affected Executions resume on their next Workflow Task retry once compatible code is running.
+
+## Workflow Task execution latency high {/* #workflow-task-execution-latency-high */}
+
+**Metric:** [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency)
+
+Workflow Tasks are taking too long to execute on the Worker. The default Workflow Task timeout is 10 seconds, so at or above that value the Temporal Service is actively timing out Workflow Tasks.
+
+### Why it matters {/* #why-wft-latency-matters */}
+
+The Temporal Service writes `WorkflowTaskTimedOut` events to Event History and reschedules timed-out Tasks on the normal Task Queue. Each timeout forces a [Sticky Execution](/sticky-execution) cache eviction on the Worker holding the Execution, so the next Workflow Task for it requires a full cold replay.
+
+If you run [Local Activities](/local-activity), a Workflow Task timeout causes them to re-execute from scratch on the retried Task, because their results are not checkpointed between Workflow Task heartbeats. Non-idempotent Local Activities produce duplicate side effects with real business impact.
+
+At scale this compounds: more timeouts cause more cold replays, cold replays drive latency higher, and higher latency causes more timeouts.
+
+### Triage {/* #triage-wft-latency */}
+
+1. **Check replay latency.** Check [`temporal_workflow_task_replay_latency`](/references/sdk-metrics#workflow_task_replay_latency). If it is high, the time is going into re-executing Event History rather than running new commands — usually caused by large histories, slow Data Converter execution during replay, or a high cache eviction rate forcing cold replays.
+1. **Check the Sticky Execution cache.** A high forced-eviction rate causes a cold replay on every Workflow Task. See [Sticky cache disabled](/troubleshooting/sdk-worker-capacity#sticky-cache-disabled) for the case where the cache is off entirely.
+1. **Check Worker CPU.** If replay latency is normal but execution latency is high, the time is going into new command execution. High CPU slows all code on the Worker.
+1. **Check for blocking Workflow code.** Workflow code must not perform blocking I/O, heavy computation, or synchronous non-Temporal calls. Any blocking call holds the Task slot and inflates this metric. In the Python SDK, verify that no `async def` Workflow code is blocking the event loop.
+1. **Check for throttling on respond operations.** See [RESOURCE_EXHAUSTED on respond operations](/troubleshooting/sdk-request-failures#resource_exhausted-on-respond-operations) — the SDK holds the slot until the respond call succeeds, inflating this metric even when the Workflow code finished quickly.
+
+## Activity execution failures elevated {/* #activity-execution-failures-elevated */}
+
+**Metric:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed)
+
+Activities are explicitly failing — returning failures rather than timing out — at a sustained rate.
+
+`ApplicationFailure` instances marked with category `BENIGN` are excluded and do not increment this counter, so this metric tracks unexpected failures only to the extent your application uses benign failures correctly.
+
+### Why it matters {/* #why-activity-failures-matter */}
+
+A high failure rate drives a burst of retry Tasks. If Workers cannot keep up with the retry volume, the Activity Task backlog grows — see [Activity schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated). At scale, sustained retry bursts put significant pressure on Task matching and the underlying database.
+
+### Triage {/* #triage-activity-failures */}
+
+1. **Identify which Activity is failing.** The metric carries an `activity_type` label. Worker logs for that type carry the error messages, stack traces, and associated Workflow Ids.
+1. **Determine whether this is transient or a bug.** A downstream service outage, network partition, or database timeout recovers on its own — watch whether the rate falls. A persistent code bug does not.
+1. **Check downstream service health.** A degraded dependency is a common cause of sustained failure bursts. If the dependency is throttling, confirm your [Retry Policy](/encyclopedia/retry-policies) has appropriate backoff — without it, retry bursts amplify the pressure you are already applying.
+1. **Check schedule-to-start latency.** A growing retry backlog shows up as elevated [Activity schedule-to-start latency](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated) even after the failure rate drops.
+1. **Mark expected failures as benign.** If your design intentionally fails Activities — polling patterns, Saga compensations, flow control through exceptions — mark those `ApplicationFailure` instances with category `BENIGN`. All SDKs support this and suppress this metric for them, which lets this alert track unexpected failures without per-`activity_type` threshold tuning.
+
+## Local Activity latency exceeds the heartbeat timeout {/* #local-activity-latency-exceeds-the-heartbeat-timeout */}
+
+**Metrics:** [`temporal_local_activity_execution_latency`](/references/sdk-metrics#local_activity_execution_latency) for a single attempt, and `temporal_local_activity_total_execution_latency` for the full retry chain
+
+A [Local Activity](/local-activity) is running past the Workflow Task heartbeat timeout, which defaults to 30 minutes. The SDK sends Workflow Task heartbeats to keep the Task alive while the Local Activity runs, but once the timeout is exceeded the Temporal Service times out the heartbeating Workflow Task.
+
+Watch both metrics. The single-attempt metric catches one long-running attempt. The total metric catches a retry chain that accumulates past the timeout even when every individual attempt is short — usually a high failure rate paired with an aggressive Retry Policy.
+
+### Why it matters {/* #why-la-latency-matters */}
+
+When the Temporal Service times out the heartbeating Workflow Task, it reschedules the Task on the normal Task Queue and the Local Activity re-executes from scratch. Local Activities cannot heartbeat, and their progress is not checkpointed between Workflow Task heartbeats. A non-idempotent Local Activity produces duplicate side effects with real business impact.
+
+Any pending Signals, Updates, or other events are delayed until the retried Workflow Task completes, so end-to-end Execution latency rises significantly.
+
+The Local Activity also occupies an executor slot for its entire duration. Several in this state at once can occupy every available slot, blocking new Local Activities from starting. See [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#triage-slots-localactivityworker) for `worker_type=LocalActivityWorker`.
+
+Local Activities are designed for short, fast operations. A single attempt running for 30 minutes is a design problem, not a tuning problem.
+
+### Triage {/* #triage-la-latency */}
+
+1. **Identify the affected Local Activity.** The metric carries an `activity_type` label. Worker logs for that type show what it is doing, how long individual attempts run, and the associated Workflow Ids.
+1. **Find what it is blocked on.** A Local Activity running this long is almost always blocked on a downstream call — a slow service, a slow query, or a network call with a very long timeout. Fix the dependency, or shorten the timeout on the call so the Local Activity fails fast instead of hanging.
+1. **Check the failure rate driving retries.** If the total-latency metric is elevated but single attempts are short, a high failure rate with aggressive retries is accumulating the chain. Fix the underlying failure first.
+1. **Check whether timeouts have already happened.** By the time this fires, the Temporal Service may have already timed out heartbeating Workflow Tasks. Check Worker logs for timeout errors and Event History for `WorkflowTaskTimedOut` events. If they are present, Local Activities have already re-executed — verify idempotency and address any duplicate side effects.
+1. **Fix the design.** If the work genuinely takes this long, convert it to a regular Activity with heartbeating, which is the correct primitive for long-running work. If it must stay a Local Activity, set a `scheduleToCloseTimeout` below the Workflow Task heartbeat timeout so it fails with a timeout error the Workflow can handle, rather than having the entire Workflow Task re-executed.

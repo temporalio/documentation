@@ -1,0 +1,189 @@
+---
+id: sdk-worker-capacity
+title: How to troubleshoot SDK Worker capacity problems
+sidebar_label: SDK Worker capacity
+description: Diagnose exhausted Task slots, disconnected pollers, Task backlog, and Sticky Execution cache problems
+toc_max_heading_level: 4
+keywords:
+  - worker capacity
+  - task slots
+  - pollers
+  - schedule to start latency
+  - sticky cache
+  - task backlog
+tags:
+  - Metrics
+  - Observability
+  - Troubleshooting
+  - Workers
+---
+
+This guide covers the failure modes where Workers stop keeping up with their Task Queues: slots that never free up, pollers that stop polling, Tasks that sit in the queue, and a Sticky Execution cache that is not doing its job. It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
+
+For recommended alert thresholds, see [SDK Worker alerting](/best-practices/sdk-worker-alerting). For Worker sizing and configuration guidance, see [Worker deployment and performance](/best-practices/worker) and [Worker performance](/develop/worker-performance).
+
+These failure modes are causally linked. Slots fill up, which stops polling, which lets Tasks accumulate, which stops completions. When several fire at once, work backward to the earliest link in the chain rather than treating each as independent.
+
+## Worker Task slots exhausted {/* #worker-task-slots-exhausted */}
+
+**Metric:** [`temporal_worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available) reaching 0
+
+Every Task execution slot for this `worker_type` and Task Queue is occupied, so no new Tasks can be picked up. The SDK blocks before issuing its next poll until a slot is released.
+
+### Why it matters {/* #why-slots-matter */}
+
+Slots stay occupied because existing Tasks are not completing. Until they free up, schedule-to-start latency rises and, in both the Go and Java SDKs, `temporal_num_pollers` drops to zero as a secondary effect because those SDKs block on slot acquisition before incrementing the poller gauge.
+
+Impact and remediation differ by `worker_type`, so check that label on the firing alert.
+
+### Triage: WorkflowWorker {/* #triage-slots-workflowworker */}
+
+1. **Check Workflow Task execution latency.** Sustained high [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency) confirms something is holding slots. See [Workflow Task execution latency high](/troubleshooting/sdk-execution-failures#workflow-task-execution-latency-high).
+1. **Check Worker CPU.** High CPU slows Workflow Task execution directly and keeps slots occupied longer.
+1. **Check for blocking calls in Workflow code.** A slot is held until the Workflow Task completes. Blocking I/O, heavy computation, or synchronous non-Temporal API calls inside a Workflow hold the slot far longer than expected. In the Python SDK, verify that no `async def` Workflow code is blocking the event loop.
+1. **Check for throttling on respond operations.** See [RESOURCE_EXHAUSTED on respond operations](/troubleshooting/sdk-request-failures#resource_exhausted-on-respond-operations) — slots are not released until the respond call succeeds.
+
+To recover immediately, scale out Workflow Worker pods or raise the maximum concurrent Workflow Task execution size in your Worker options.
+
+### Triage: ActivityWorker {/* #triage-slots-activityworker */}
+
+1. **Check Activity execution latency.** Sustained high [`temporal_activity_execution_latency`](/references/sdk-metrics#activity_execution_latency) for the affected `activity_type` confirms Activities are holding slots longer than expected.
+1. **Check Worker CPU.** High CPU slows Activity execution directly.
+1. **Check what the Activities are waiting on.** If slots are exhausted because Activities are blocked on a downstream service, raising the slot count increases pressure on that service and makes the problem worse. Investigate the dependency before scaling concurrency.
+1. **Check for throttling on respond operations.** See [RESOURCE_EXHAUSTED on respond operations](/troubleshooting/sdk-request-failures#resource_exhausted-on-respond-operations).
+
+To recover immediately, scale out Activity Worker pods or raise the maximum concurrent Activity execution size — but only after confirming a downstream dependency is not the constraint.
+
+### Triage: LocalActivityWorker {/* #triage-slots-localactivityworker */}
+
+[Local Activities](/local-activity) run inside the Workflow Task execution loop, so blocked slots hold up the entire Workflow Task. The SDK responds by sending repeated Workflow Task heartbeats to keep the Task alive. If heartbeating continues past the Workflow Task heartbeat timeout — 30 minutes by default — the Temporal Service times out the Task and reschedules it, and the Local Activities re-execute from scratch.
+
+1. **Check what the Local Activities are waiting on.** The cause is almost always Local Activity code that is blocking and not returning. Check Worker logs for the affected `activity_type`. If it calls a downstream service, check whether that service is slow or throttling.
+1. **Check Worker CPU.**
+1. **Check the Local Activity latency alerts.** See [Local Activity latency exceeds the heartbeat timeout](/troubleshooting/sdk-execution-failures#local-activity-latency-exceeds-the-heartbeat-timeout) — if that is firing alongside this, the heartbeat timeout is imminent or already exceeded and re-execution has begun.
+
+## All pollers disconnected {/* #all-pollers-disconnected */}
+
+**Metric:** [`temporal_num_pollers`](/references/sdk-metrics#num_pollers) reaching 0
+
+No active pollers remain for this `worker_type` and Task Queue. Workers have stopped polling entirely and Tasks are accumulating with nothing to process them.
+
+### Why it matters {/* #why-pollers-matter */}
+
+Workflow and Activity Tasks accumulate on the Temporal Service. At scale this grows into a large backlog that puts pressure on Task matching and persistence. Depending on your Workflow and Activity timeouts, Executions begin timing out while waiting for Tasks to be processed.
+
+### Triage {/* #triage-pollers */}
+
+1. **Check whether Worker processes are running.** Check pod status, restart counts, and logs. Workers may have crashed, been evicted, or been OOM killed — this is the most common cause.
+1. **Check whether slots are exhausted.** See [Worker Task slots exhausted](#worker-task-slots-exhausted) for the same `worker_type` and Task Queue. Because the Go and Java SDKs block on slot acquisition before incrementing the poller gauge, exhausted slots drive this gauge to zero as a symptom. If both are firing, fix the slots first.
+1. **Check for authentication failures.** Expired or revoked credentials are a common cause of pollers disconnecting. Check Worker logs for authentication errors and verify certificate or API key expiry.
+1. **Check for INTERNAL errors.** See [UNIMPLEMENTED or INTERNAL from the Temporal Service](/troubleshooting/sdk-request-failures#unimplemented-or-internal-from-the-temporal-service) — sustained INTERNAL errors cause Workers to back off and stop polling.
+
+:::note Self-hosted Temporal Service
+
+Cross-check the server-side concurrent poller count for this Task Queue. If it has also dropped, Workers have fully disconnected from the Service's perspective. For authentication failures, check unauthorized request counts and authorization system failures — a non-zero authorization system failure count means the auth plugin itself is failing, which is more urgent than an expired credential.
+
+:::
+
+## Task completions dropped to zero {/* #task-completions-dropped-to-zero */}
+
+**Metric:** [`temporal_request`](/references/sdk-metrics#request) rate reaching 0 on `RespondWorkflowTaskCompleted` or `RespondActivityTaskCompleted`, per Task Queue
+
+Workers have stopped completing Tasks. The SDK only increments this counter after a successful response, so a zero rate means either no Tasks are being finished or no responses are landing.
+
+### Why it matters {/* #why-completions-matter */}
+
+No Workflow Task completions means no Workflow Execution on this Task Queue is making progress. Signals, Updates, Timers, and Activity results accumulate in Event History with nothing processing them.
+
+No Activity Task completions means every Workflow waiting on an Activity result is stalled. Activities begin timing out against their `scheduleToClose` timeouts, and the Temporal Service retries them within the Retry Policy — but with no Workers completing them, the retries accumulate too.
+
+### Triage {/* #triage-completions */}
+
+1. **Check whether polling also stopped.** Check [`temporal_num_pollers`](/references/sdk-metrics#num_pollers) for the same `worker_type`. If pollers are also at zero, Workers are down entirely — go to [All pollers disconnected](#all-pollers-disconnected).
+1. **Check whether Workers are failing Tasks instead of completing them.** If polling is active but completions are zero, check `temporal_workflow_task_execution_failed`. Workers may be failing every Task. See [Non-determinism error](/troubleshooting/sdk-execution-failures#non-determinism-error) and [gRPC message too large](/troubleshooting/sdk-execution-failures#grpc-message-too-large).
+1. **Check Task slots.** See [Worker Task slots exhausted](#worker-task-slots-exhausted). If every slot is occupied, no new Tasks are picked up or completed.
+1. **Check for throttling on respond operations.** See [RESOURCE_EXHAUSTED on respond operations](/troubleshooting/sdk-request-failures#resource_exhausted-on-respond-operations) — sustained throttling suppresses this counter directly.
+1. **Check schedule-to-start latency.** See [Workflow Task schedule-to-start latency elevated](#workflow-task-schedule-to-start-latency-elevated). If Tasks are not being dispatched, completions drop to zero even with healthy Workers.
+1. **For Activity completions, check Workflow Task health first.** Activity completions drop to zero when no new Activities are being scheduled, which happens when Workflow Tasks are not completing. Rule out the Workflow Task side before investigating Activity Workers.
+
+:::note Self-hosted Temporal Service
+
+Check overall cluster health: service errors by Namespace, persistence availability, and resource-exhausted counts by cause.
+
+:::
+
+## Workflow Task schedule-to-start latency elevated {/* #workflow-task-schedule-to-start-latency-elevated */}
+
+**Metric:** [`temporal_workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency)
+
+Workflow Tasks are sitting in the queue before a Worker picks them up. Alert at two levels: a threshold that catches meaningful delay, and a much higher one that catches a stalled Task Queue.
+
+### Why it matters {/* #why-wft-s2s-matters */}
+
+Schedule-to-start latency adds directly to Workflow end-to-end latency. Every second a Task waits is a second added to how long your Workflows take.
+
+Past roughly the Workflow Task heartbeat timeout, Executions are effectively stalled rather than slow: anything waiting on a Workflow Task is making no progress at all. At scale a large Task backlog accumulates, putting significant pressure on Task matching and the underlying database. A backlog large enough can affect an entire self-hosted cluster, not just the affected Namespace and Task Queue.
+
+### Triage {/* #triage-wft-s2s */}
+
+1. **Check Worker health.** Confirm Worker processes are running and not restarting. If they are down, bring them back before anything else.
+1. **Check poller counts.** Check [`temporal_num_pollers`](/references/sdk-metrics#num_pollers) for `worker_type=WorkflowWorker`. Fewer pollers means fewer Workers competing for Tasks, which raises this metric directly. See [All pollers disconnected](#all-pollers-disconnected).
+1. **Check Task slots.** See [Worker Task slots exhausted](#worker-task-slots-exhausted) — with every slot occupied, the SDK blocks before its next poll and the effective poll rate falls.
+1. **Check for throttling on poll operations.** If the Temporal Service is throttling `PollWorkflowTaskQueue`, Workers back off and poll less frequently.
+1. **Scale out if the backlog is real.** If Workers are healthy and slots are free but latency stays high, the Worker pool is undersized for current throughput. Scale horizontally. Expect a delay before latency recovers — the accumulated backlog has to drain first.
+
+:::note Self-hosted Temporal Service
+
+Check the approximate Task backlog in the Matching Service section of your server dashboard — a growing backlog confirms Tasks are accumulating faster than Workers pick them up. Check the server-side concurrent poller count for this Task Queue to confirm whether your Worker pool has shrunk. If poll operations are being throttled at scale, raising `frontend.namespaceCount` or `frontend.globalNamespaceCount` may be needed alongside scaling Workers.
+
+:::
+
+## Activity schedule-to-start latency elevated {/* #activity-schedule-to-start-latency-elevated */}
+
+**Metric:** [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency)
+
+Activity Tasks are sitting in the queue before a Worker picks them up.
+
+### Why it matters {/* #why-activity-s2s-matters */}
+
+Any Workflow Execution waiting on an Activity result is stalled for the duration of this latency. At scale, an Activity Task backlog accumulates and puts pressure on Task matching and the underlying database.
+
+### Triage {/* #triage-activity-s2s */}
+
+1. **Check Worker health.** Confirm Activity Worker processes are running and not restarting.
+1. **Check poller counts** for `worker_type=ActivityWorker`. See [All pollers disconnected](#all-pollers-disconnected).
+1. **Check Task slots** for `worker_type=ActivityWorker`. See [Worker Task slots exhausted](#worker-task-slots-exhausted).
+1. **Check for throttling on poll operations.** If `PollActivityTaskQueue` is being throttled, Workers pick up Tasks less frequently.
+1. **Check the Activity failure rate.** See [Activity execution failures elevated](/troubleshooting/sdk-execution-failures#activity-execution-failures-elevated) — high failure churn generates retry Tasks that grow the backlog and keep this latency elevated even after Worker capacity is restored.
+
+:::note Self-hosted Temporal Service
+
+Check the approximate Task backlog and the server-side concurrent poller count for this Task Queue, as in the Workflow Task section above.
+
+:::
+
+## Sticky cache disabled {/* #sticky-cache-disabled */}
+
+**Metric:** [`temporal_sticky_cache_size`](/references/sdk-metrics#sticky_cache_size) reaching 0
+
+The Worker's [Sticky Execution](/sticky-execution) cache is holding nothing. No Workflow Executions are cached in memory between Workflow Tasks, so every Workflow Task requires a full cold replay from the beginning of Event History.
+
+### Why it matters {/* #why-sticky-cache-matters */}
+
+Every Workflow Task for every Execution on this Worker fetches all History pages from the Temporal Service and re-executes every command from scratch. Every Workflow Task becomes the equivalent of a cache miss.
+
+At any meaningful scale this causes sustained pressure on the Temporal Service and elevated Workflow Task execution latency for every Execution on the Worker. See [Workflow Task execution latency high](/troubleshooting/sdk-execution-failures#workflow-task-execution-latency-high).
+
+### Triage {/* #triage-sticky-cache */}
+
+1. **Check your Worker cache configuration.** This is almost always a misconfiguration:
+   - **Go SDK** — `worker.SetStickyWorkflowCacheSize(int)` sets the size, defaulting to 10,000. Passing `0` disables the cache entirely. Restore a non-zero value. This must be called before any Worker starts; the cache is shared across all Workers in the process.
+   - **Java SDK** — `WorkerFactoryOptions.Builder.setWorkflowCacheSize(int)` sets the size, defaulting to 600. Passing `0` resets to the default rather than disabling the cache, and a negative value is rejected, so the Java SDK cannot reach a zero-size cache this way. If this fires on a Java Worker, check `setMaxWorkflowThreadCount(int)` instead — a thread pool set too low starves Workflow execution and prevents the cache from being used effectively.
+1. **Verify the fix.** After redeploying, `temporal_sticky_cache_size` should climb from zero, and [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency) should fall as cold replays are replaced by cache hits.
+1. **Check the replay cost while the cache is down.** Check [`temporal_workflow_task_replay_latency`](/references/sdk-metrics#workflow_task_replay_latency) and the `GetWorkflowExecutionHistory` long-poll rate to gauge how much load the repeated History reads are generating.
+
+:::note Self-hosted Temporal Service
+
+Check persistence latency filtered to `GetWorkflowExecution` — sustained high latency there confirms the Temporal Service is under pressure from repeated History reads.
+
+:::
