@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Tenant A queue (3 blocks, top) -->
+  <rect x="4" y="13" width="10" height="10" rx="2" fill="#888"/>
+  <rect x="16" y="13" width="10" height="10" rx="2" fill="#888"/>
+  <rect x="28" y="13" width="10" height="10" rx="2" fill="#888"/>
+
+  <!-- Tenant B queue (3 blocks, bottom) -->
+  <rect x="4" y="57" width="10" height="10" rx="2" fill="#888"/>
+  <rect x="16" y="57" width="10" height="10" rx="2" fill="#888"/>
+  <rect x="28" y="57" width="10" height="10" rx="2" fill="#888"/>
+
+  <!-- Converging lines to fair scheduler -->
+  <line x1="40" y1="18" x2="50" y2="34" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="40" y1="62" x2="50" y2="46" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Fair scheduler box with = sign -->
+  <rect x="50" y="30" width="20" height="20" rx="3" fill="none" stroke="#cc2222" stroke-width="2"/>
+  <line x1="55" y1="37" x2="65" y2="37" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+  <line x1="55" y1="43" x2="65" y2="43" stroke="#cc2222" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Equal output arrows -->
+  <line x1="72" y1="36" x2="86" y2="26" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="84,23 91,25 86,30" fill="#888"/>
+
+  <line x1="72" y1="44" x2="86" y2="54" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <polygon points="84,50 91,55 86,58" fill="#888"/>
+</svg>

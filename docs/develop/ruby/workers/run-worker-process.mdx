@@ -1,8 +1,8 @@
 ---
 id: run-worker-process
-title: Worker processes - Ruby SDK
-description: Shows how to run Worker processes with the Ruby SDK
-sidebar_label: Worker processes
+title: Run a Worker - Ruby SDK
+description: Create and run a Temporal Worker using the Ruby SDK.
+sidebar_label: Run a Worker
 slug: /develop/ruby/workers/run-worker-process
 toc_max_heading_level: 3
 tags:
@@ -11,47 +11,104 @@ tags:
   - Worker
 ---
 
-## Run Worker Process {/* #run-worker-process */}
+## Create and run a Worker {/* #run-worker-process */}
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are actually executed.
-In a Temporal application deployment, you ship and scale as many Workers as you need to handle the load of your Workflows and Activities.
+Create a `Temporalio::Worker` with a [Temporal Client](/develop/ruby/client/temporal-client), the Task Queue to poll, and the Workflows and Activities it can execute.
+Call `run` to start polling.
 
-- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
-- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+<!--SNIPSTART ruby-create-worker-->
+[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
+```rb
+worker = Temporalio::Worker.new(
+  client: client,
+  task_queue: 'my-task-queue',
+  workflows: [GreetingWorkflow],
+  activities: [SayHello]
+)
 
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+worker.run
+```
+<!--SNIPEND-->
 
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+`run` blocks until the Worker shuts down.
+To run several Workers in one process, use `Temporalio::Worker.run_all`, which returns once every Worker it was given has stopped.
 
-Workers are implemented in each Temporal SDK, and can be deployed with just a bit of boilerplate.
-To create a Worker, use `Temporalio::Worker.new()`, providing the Worker options which include Task Queue, Workflows, and Activities and more.
+## Register Workflows and Activities {/* #register-types */}
 
-The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
-When a Worker is created, it accepts a list of Workflows, a list of Activities, or both.
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
+
+Pass Workflow classes in `workflows` and Activities in `activities`.
+For Activities you can pass either the class or an instance:
 
 ```ruby
-# Create a client to localhost on default namespace
-client = Temporalio::Client.connect('localhost:7233', 'default')
-
-# Create a worker with the client, activities, and workflows
 worker = Temporalio::Worker.new(
   client:,
   task_queue: 'my-task-queue',
-  workflows: [MyWorkflow],
-  # This provides the activity instance which means it is reused for each attempt, but
-  # just the class can be provided to instantiate for each attempt
-  activities: [MyActivity.new]
+  workflows: [GreetingWorkflow, OrderWorkflow],
+  activities: [SayHello, ChargeCard.new(payment_client)]
 )
-
-# Run the worker until SIGINT. There are other ways to wait for shutdown, or a block can
-# be provided that will shutdown when the block completes
-worker.run(shutdown_signals: ['SIGINT'])
 ```
 
-To run multiple workers, `Temporalio::Worker.run_all` may be used instead.
+Passing a class makes the Worker instantiate it for each Activity Execution.
+Passing an instance reuses that object for every execution, which is how Activities share state such as a database client. A shared instance must be thread-safe.
 
-All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
-However, the failure of the Task does not cause the associated Workflow Execution to fail.
+To run a Worker against Temporal Cloud, configure the Client connection with your Namespace address and authentication credentials.
+See [Connect to Temporal Cloud](/develop/ruby/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
+
+## Configure Worker options {/* #worker-options */}
+
+`Temporalio::Worker.new` takes keyword arguments that control concurrency limits, pollers, timeouts, and caching, including `max_concurrent_activities`, `max_concurrent_workflow_tasks`, and `max_cached_workflows`.
+The defaults work for most cases.
+
+To tune these values against real load, see [Worker performance](/develop/worker-performance) and the [Worker tuning reference](/develop/worker-tuning-reference).
+
+## Run a versioned Worker {/* #versioned-worker */}
+
+Set a Worker Deployment Version and enable versioning in `deployment_options`, then set a versioning behavior on each Workflow.
+
+<!--SNIPSTART ruby-versioned-worker-->
+[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
+```rb
+worker = Temporalio::Worker.new(
+  client: client,
+  task_queue: 'my-task-queue',
+  workflows: [VersionedGreetingWorkflow],
+  activities: [SayHello],
+  deployment_options: Temporalio::Worker::DeploymentOptions.new(
+    version: Temporalio::WorkerDeploymentVersion.new(
+      deployment_name: 'my-app',
+      build_id: '1.0'
+    ),
+    use_worker_versioning: true
+  )
+)
+```
+<!--SNIPEND-->
+
+Declare the behavior in the Workflow class with `workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED` or `AUTO_UPGRADE`, or set a default for the whole Worker with `default_versioning_behavior` on `DeploymentOptions`.
+
+A versioning behavior applies only to a Worker that has versioning enabled.
+If a Workflow declares one and its Worker does not enable versioning, the server rejects the Workflow Task and the Task retries instead of failing outright.
+
+See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
+
+## Shut down a Worker {/* #shut-down-a-worker */}
+
+Pass the signals that should stop the Worker to `run`.
+The Worker stops polling for new Tasks and waits for in-flight Tasks to finish.
+
+<!--SNIPSTART ruby-worker-graceful-shutdown-->
+[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
+```rb
+worker.run(shutdown_signals: %w[SIGINT SIGTERM])
+```
+<!--SNIPEND-->
+
+You can also pass a block to `run`, which shuts the Worker down when the block completes, or stop the Worker with a `Temporalio::Cancellation`.
+`Temporalio::Worker.run_all` takes the same `shutdown_signals`, `cancellation`, and block, and applies them to every Worker it was given.
+
+See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

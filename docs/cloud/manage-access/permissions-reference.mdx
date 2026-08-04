@@ -14,7 +14,7 @@ Temporal Cloud access controls are organized across two scopes:
 - Account-level role permissions
 - Namespace-level permissions
 
-Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](https://docs.temporal.io/ops)
+Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](/ops)
 endpoints and to additional non-Cloud Ops capabilities, such as Temporal Cloud UI and internal automation behaviors.
 
 ## Account-level access {/* #account-level-access */}
@@ -38,6 +38,7 @@ configured per user.
 | [AddUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/members)          |           |           |               |      ✔       |       ✔       |
 | [CreateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks)   |           |           |               |      ✔       |       ✔       |
 | [CreateApiKey](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/POST/cloud/api-keys)                |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
+| [CreateBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/billing/POST/cloud/billing-reports)         |           |           |       ✔       |              |       ✔       |
 | [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)      |           |           |               |      ✔       |       ✔       |
 | [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)             |           |     ✔     |               |      ✔       |       ✔       |
 | [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)         |           |     ✔     |               |      ✔       |       ✔       |
@@ -58,6 +59,7 @@ configured per user.
 | [GetApiKeys](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/api-keys/GET/cloud/api-keys)                  |    ✔\*    |    ✔\*    |      ✔\*      |     ✔\*      |      ✔\*      |
 | [GetAsyncOperation](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/operations/GET/cloud/operations/%7BasyncOperationId%7D)           |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | [GetAuditLogs](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-logs)                |           |           |               |      ✔       |       ✔       |
+| [GetBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/billing/GET/cloud/billing-reports/%7BbillingReportId%7D)            |           |           |       ✔       |              |       ✔       |
 | [GetConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D)         |           |     ✔     |               |      ✔       |       ✔       |
 | [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules)        |           |     ✔     |               |      ✔       |       ✔       |
 | [GetCurrentIdentity](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/current-identity)          |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |

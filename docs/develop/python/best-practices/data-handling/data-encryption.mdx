@@ -31,7 +31,7 @@ import cramjam
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import PayloadCodec
 
-class EncryptionCodec(PayloadCodec):
+class CompressionCodec(PayloadCodec):
     async def encode(self, payloads: Iterable[Payload]) -> List[Payload]:
         return [
             Payload(
@@ -58,12 +58,12 @@ class EncryptionCodec(PayloadCodec):
 Add a `data_converter` parameter to your `Client.connect()` options that overrides the default converter with your Payload Codec:
 
 ```python
-from codec import EncryptionCodec
+from codec import CompressionCodec
 
 client = await Client.connect(
     "localhost:7233",
     data_converter=dataclasses.replace(
-        temporalio.converter.default(), payload_codec=EncryptionCodec()
+        temporalio.converter.default(), payload_codec=CompressionCodec()
     ),
 )
 ```

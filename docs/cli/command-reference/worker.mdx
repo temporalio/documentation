@@ -14,7 +14,7 @@ tags:
 ---
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
 This page provides a reference for the `temporal` CLI `worker` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
@@ -97,8 +97,28 @@ temporal worker deployment create-version \
     --aws-lambda-assume-role-external-id LambdaAssumeRoleExternalID
 ```
 
+Or pass compute provider information for a GCP Cloud Run worker pool
+that spawns a Worker in the Worker Deployment:
+
+```
+temporal worker deployment create-version \
+    --namespace YourNamespaceName \
+    --deployment-name YourDeploymentName \
+    --build-id YourBuildID \
+    --gcp-cloud-run-project YourGCPProject \
+    --gcp-cloud-run-region us-central1 \
+    --gcp-cloud-run-worker-pool YourWorkerPool \
+    --gcp-cloud-run-service-account customer-sa@proj.iam.gserviceaccount.com \
+    --gcp-cloud-run-min-instances 1 \
+    --gcp-cloud-run-max-instances 3 \
+    --gcp-cloud-run-initial-instances 1 \
+    --gcp-cloud-run-utilization-target 0.75
+```
+
 If a Worker Deployment Version with the supplied BuildID already exists,
 this command will return an error.
+
+Returns an error if all compute configuration fields are empty.
 
 Note: This is an experimental feature and may change in the future.
 
@@ -111,6 +131,14 @@ Use the following options to change the behavior of this command. You can also u
 | `--aws-lambda-function-arn` | No | **string** Qualified (contains version suffix) or unqualified AWS Lambda function ARN to invoke when there are no active pollers for task queue targets in the Worker Deployment. |
 | `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
 | `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--gcp-cloud-run-initial-instances` | No | **int** Number of Cloud Run worker pool instances the scaler starts with. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together, and this value must be between the min and max (inclusive). Defaults to 0 when unset. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-max-instances` | No | **int** Maximum number of Cloud Run worker pool instances the scaler may scale up to. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together. Defaults to 30 when unset. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-min-instances` | No | **int** Minimum number of Cloud Run worker pool instances the scaler will maintain. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together. Defaults to 0 when unset. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-project` | No | **string** GCP project ID hosting the Cloud Run worker pool. Required when --gcp-cloud-run-worker-pool is specified. |
+| `--gcp-cloud-run-region` | No | **string** Region of the Cloud Run worker pool. Required when --gcp-cloud-run-worker-pool is specified. |
+| `--gcp-cloud-run-service-account` | No | **string** Customer GCP service account the Temporal server impersonates to manage the Cloud Run worker pool. Required when --gcp-cloud-run-worker-pool is specified. |
+| `--gcp-cloud-run-utilization-target` | No | **float** Target average worker utilization the scaler aims for, as a fraction in the range (0, 1]. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together. Lower values keep more spare capacity per worker. Defaults to 0.8 when unset. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-worker-pool` | No | **string** GCP Cloud Run worker pool name to scale when there are no active pollers for task queue targets in the Worker Deployment. |
 
 ### delete
 
@@ -441,6 +469,94 @@ Use the following options to change the behavior of this command. You can also u
 | `--percentage` | No | **float** Percentage of tasks redirected to the Ramping Version. Valid range [0,100]. |
 | `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm set Ramping Version. |
+
+### update-version-compute-config
+
+Update compute configuration associated with a Worker Deployment
+Version.
+
+For example, to update the AWS Lambda function ARN associated with an
+existing Worker Deployment Version:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --aws-lambda-function-arn UpdatedLambdaFunctionARN
+```
+
+To update the AWS IAM role ARN that is assumed by the serverless worker
+manager associated with an existing Worker Deployment Version:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --aws-lambda-assume-role-arn UpdatedRoleARN
+```
+
+To update the GCP Cloud Run worker pool associated with an existing
+Worker Deployment Version:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --gcp-cloud-run-project YourGCPProject \
+    --gcp-cloud-run-region us-central1 \
+    --gcp-cloud-run-worker-pool UpdatedWorkerPool \
+    --gcp-cloud-run-service-account customer-sa@proj.iam.gserviceaccount.com \
+    --gcp-cloud-run-min-instances 1 \
+    --gcp-cloud-run-max-instances 3 \
+    --gcp-cloud-run-initial-instances 1 \
+    --gcp-cloud-run-utilization-target 0.75
+```
+
+To update only the scaling settings on an existing GCP Cloud Run Worker
+Deployment Version, supply the four scaler flags without the provider
+fields (all four must be set together):
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --gcp-cloud-run-min-instances 1 \
+    --gcp-cloud-run-max-instances 3 \
+    --gcp-cloud-run-initial-instances 1 \
+    --gcp-cloud-run-utilization-target 0.75
+```
+
+Provider fields are only required when changing the compute provider.
+Switching the provider resets the scaling settings for the new provider.
+
+If --remove is specified, the compute configuration for the Worker
+Deployment Version will be removed:
+
+```
+ temporal worker deployment update-version-compute-config \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
+    --remove
+```
+
+If a Worker Deployment Version with the supplied BuildID does not exist,
+this command will return an error.
+
+Note: This is an experimental feature and may change in the future.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--aws-lambda-assume-role-arn` | No | **string** AWS IAM role ARN that the Temporal server will assume when invoking the Lambda function that spawns a new Worker in this Worker Deployment Version. Required when --aws-lambda-function-arn is specified. |
+| `--aws-lambda-assume-role-external-id` | No | **string** Temporal server will enforce that the AWS IAM trust policy associated with the AWS IAM role specified in --aws-lambda-assume-role-arn has an aws:ExternalId condition that matches the supplied value. Required when --aws-lambda-function-arn is specified. |
+| `--aws-lambda-function-arn` | No | **string** Qualified (contains version suffix) or unqualified AWS Lambda function ARN to invoke when there are no active pollers for task queue targets in the Worker Deployment. |
+| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--gcp-cloud-run-initial-instances` | No | **int** Number of Cloud Run worker pool instances the scaler starts with. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together, and this value must be between the min and max (inclusive). If omitted, the version's existing scaling settings are left unchanged. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-max-instances` | No | **int** Maximum number of Cloud Run worker pool instances the scaler may scale up to. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together. If omitted, the version's existing scaling settings are left unchanged. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-min-instances` | No | **int** Minimum number of Cloud Run worker pool instances the scaler will maintain. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together. If omitted, the version's existing scaling settings are left unchanged. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-project` | No | **string** GCP project ID hosting the Cloud Run worker pool. Required when --gcp-cloud-run-worker-pool is specified. |
+| `--gcp-cloud-run-region` | No | **string** Region of the Cloud Run worker pool. Required when --gcp-cloud-run-worker-pool is specified. |
+| `--gcp-cloud-run-service-account` | No | **string** Customer GCP service account the Temporal server impersonates to manage the Cloud Run worker pool. Required when --gcp-cloud-run-worker-pool is specified. |
+| `--gcp-cloud-run-utilization-target` | No | **float** Target average worker utilization the scaler aims for, as a fraction in the range (0, 1]. Optional, but --gcp-cloud-run-min-instances, --gcp-cloud-run-max-instances, --gcp-cloud-run-initial-instances, and --gcp-cloud-run-utilization-target must all be set together. Lower values keep more spare capacity per worker. If omitted, the version's existing scaling settings are left unchanged. Only valid with --gcp-cloud-run-worker-pool. |
+| `--gcp-cloud-run-worker-pool` | No | **string** GCP Cloud Run worker pool name to scale when there are no active pollers for task queue targets in the Worker Deployment. |
+| `--remove` | No | **bool** Removes any compute configuration associated with this Worker Deployment Version. |
 
 ### update-version-metadata
 

@@ -238,7 +238,7 @@ const agent = new Agent({
 
 ### Nexus operation tools
 
-Use `nexusOperationAsTool` to expose a [Nexus](https://docs.temporal.io/nexus) Operation as an agent tool. The Workflow
+Use `nexusOperationAsTool` to expose a [Nexus](/nexus) Operation as an agent tool. The Workflow
 starts the Operation through a Nexus client and feeds the stringified result back to the agent.
 
 ```typescript
@@ -513,25 +513,44 @@ that produced the serialized state.
 
 `run` supports streaming with `{ stream: true }`. The streaming model Activity publishes each model event to a [Workflow Stream](/workflow-streams) topic as the model produces it, so an external client can observe a run live while it stays durable. Streaming is experimental.
 
+Set the topic name in `modelParams.streamingTopic` on the Client's `OpenAIAgentsPlugin`, not the Worker's; `run` fails with a `StreamingTopicNotConfigured` error if no topic is configured.
+
 Streaming requires the `@temporalio/workflow-streams` package:
 
 
 <!--SNIPSTART typescript-openai-agents-streaming-workflow -->
 [openai-agents/src/streaming/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/streaming/workflows.ts)
 ```ts
+import { Agent } from '@openai/agents-core';
+import { TemporalOpenAIRunner } from '@temporalio/openai-agents/workflow';
+import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
+import { condition, defineSignal, setHandler } from '@temporalio/workflow';
+
+export const streamingTopic = 'model-stream';
+
+export const consumerDoneSignal = defineSignal('consumer-done');
+
 export async function streamingChat(prompt: string): Promise<string> {
   new WorkflowStream();
+
+  let consumerDone = false;
+  setHandler(consumerDoneSignal, () => {
+    consumerDone = true;
+  });
+
   const agent = new Agent({ name: 'StreamingAgent', instructions: 'You are a helpful assistant.' });
   const result = await new TemporalOpenAIRunner().run(agent, prompt, { stream: true });
   // The external client is the event consumer; the Workflow only drives the run to completion.
   for await (const _event of result);
   await result.completed;
+  // Completing discards the stream log, racing a subscriber's final poll; the timeout covers no subscriber.
+  await condition(() => consumerDone, '10 seconds');
   return result.finalOutput ?? '';
 }
 ```
 <!--SNIPEND-->
 
-Streaming from within the Workflow like this is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
+Streaming from within the Workflow is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
 
 ## Tracing
 

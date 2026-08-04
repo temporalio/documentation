@@ -24,10 +24,6 @@ origins:
     repo: samples-dotnet
   - owner: temporalio
     repo: samples-java
-  - owner: temporalio
-    repo: features
-  - owner: temporalio
-    repo: reference-app-orders-go
   - files:
       pattern: './sample-apps/**/*.go'
       owner: 'temporalio'
@@ -41,6 +37,8 @@ origins:
   - owner: temporalio
     repo: samples-server
     ref: 'main'
+  - owner: temporalio
+    repo: sdk-go
 
 targets:
   - docs
@@ -48,3 +46,8 @@ targets:
 features:
   enable_source_link: true
   enable_code_block: true
+  # Without this, snipsync scans every file under `targets` (docs/), including
+  # binary assets. It reads/writes files line-by-line as UTF-8 text, which
+  # corrupts any PNG/SVG in its path (invalid UTF-8 bytes become U+FFFD).
+  # See: https://github.com/temporalio/documentation/pull/4908
+  allowed_target_extensions: [.md, .mdx]

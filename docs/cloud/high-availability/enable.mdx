@@ -6,11 +6,11 @@ slug: /cloud/high-availability/enable
 description: Add a replica to a Namespace to enable High Availability, then manage forwarding behavior and automatic failover settings.
 ---
 
-import { ToolTipTerm } from '@site/src/components';
-
 You can enable [High Availability](/cloud/high-availability) features for a new or existing Namespace by adding a
 replica. When you add a replica, Temporal Cloud begins asynchronously replicating ongoing and existing Workflow
 Executions.
+
+Adding a replica fails the Namespace over automatically; to plan how your Workers fail over with it, see [Worker deployment patterns for high availability and disaster recovery](/cloud/high-availability/architecture-patterns).
 
  The replica region must be on the same continent as the primary region. Because of that, not all replication options are available in all Temporal Cloud regions. See the [Service regions](/cloud/regions) page for the supported replica regions for each active region.
 
@@ -129,13 +129,15 @@ You will receive an email alert once your Namespace is ready for use.
 
 ## Change the forwarding behavior {/* #change-forwarding-behavior */}
 
-Requests that reach the passive replica can be [forwarded](/cloud/high-availability/#request-forwarding) to the active region, and responses sent back to the Worker or Client. The `disablePassivePollerForwarding` Namespace setting controls this behavior for Worker poll traffic.
+Requests that reach the passive replica can be [forwarded](/cloud/high-availability/#request-forwarding) to the active region, and responses sent back to the Worker or Client. The `disablePassivePollerForwarding` Namespace setting controls this behavior for Worker poll traffic only.
 
 With `disablePassivePollerForwarding` enabled, Worker polls that reach a passive replica are not forwarded, and these Workers do not execute Workflows or Activities. Workers connected to such a passive replica receive a `NamespaceNotActive` error on poll requests. These Workers stay connected and will start executing Workflows and Activities if the replica becomes active.
 
-Client APIs (Start, Signal, Cancel, Terminate, Query, and the equivalent Activity APIs) are forwarded to the active region regardless of this setting, with responses sent back to the Client.
-
 Same-region replicas are not affected by this setting.
+
+To deploy Worker fleets in both regions that stay on standby in the passive region until failover, see [Active/Hot-Passive](/cloud/high-availability/architecture-patterns#active-hot).
+
+Set `disablePassivePollerForwarding` through the [Cloud Ops API](/ops), the [cloud-api SDK](https://github.com/temporalio/cloud-sdk-go), or the [`temporal cloud` CLI extension](/cli/cloud), using one of the recipes in this section.
 
 :::info
 
@@ -143,7 +145,21 @@ To see which endpoints route to which replica, see [How requests reach the repli
 
 :::
 
-`disablePassivePollerForwarding` can be set through the [Cloud Ops API](/ops), the [cloud-api SDK](https://github.com/temporalio/cloud-sdk-go), or the [`temporal cloud` CLI extension](/cli/cloud). Use one of the recipes below.
+### Client requests are forwarded regardless of this setting {/* #client-requests-still-forwarded */}
+
+`disablePassivePollerForwarding` stops Worker polls. It does not stop Client requests. The following APIs are forwarded from the passive replica to the active region whether or not the setting is enabled, with responses returned to the Client:
+
+| API group | Forwarded operations |
+| --- | --- |
+| Workflow | Start Workflow, Signal-with-Start, Signal, Cancel, Terminate, Delete, Query |
+| [Standalone Activity](/standalone-activity) | Start, Cancel, Terminate, Delete, Pause, Unpause, Reset, Update Activity Options |
+| [Standalone Nexus Operation](/standalone-nexus-operation) | Start, Cancel, Terminate, Delete |
+
+For the current list, see [`selectedAPIsForwardingRedirectionPolicyWhitelistedAPIs`](https://github.com/temporalio/temporal/blob/main/common/rpc/interceptor/dc_redirection_policy.go#L59-L71) in the Temporal Server source.
+
+A Client that reaches the passive replica, for example through the passive region's Regional Endpoint, keeps working while the setting is enabled: it can start Workflows, send Signals, and run Queries successfully. Workers in the active region process the resulting Workflow and Activity Tasks, because the passive region's Workers receive none.
+
+Plan for this if you disable forwarding to keep a region's traffic out of the active region. The setting stops that region's Workers from processing tasks. It does not stop Workflow starters, Signal senders, or other Clients in that region from reaching the Namespace.
 
 ### Set the forwarding behavior with the `temporal cloud` CLI {/* #set-forwarding-cli */}
 
@@ -152,10 +168,10 @@ Use the [`temporal cloud namespace ha update`](/cli/command-reference/cloud/name
 ```bash
 temporal cloud namespace ha update \
     --namespace <namespace>.<account> \
-    --disable-passive-poller-forwarding true
+    --passive-poller-forwarding disabled
 ```
 
-Set the flag to `false` to re-enable forwarding.
+Set the flag to `enabled` to re-enable forwarding.
 
 ### Set the forwarding behavior with the Cloud Ops API {/* #set-forwarding-curl */}
 

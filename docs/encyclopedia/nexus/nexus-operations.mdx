@@ -33,6 +33,8 @@ import { CaptionedImage } from '@site/src/components';
 
 [Nexus Operations](/glossary#nexus-operation) can be synchronous or asynchronous. Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-running Operation backed by a Workflow.
 An Operation's lifecycle spans scheduling, reliable delivery with retries, handler execution, and result or callback completion.
+Use a synchronous Nexus Operation only when the complete execution path is highly reliable, has predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
+Use an asynchronous Nexus Operation when latency or availability is uncertain, the work might exceed the handler deadline, or execution depends on a potentially unreliable service or database.
 
 ## SDK support {/* #sdk-support */}
 
@@ -47,6 +49,7 @@ An Operation's lifecycle spans scheduling, reliable delivery with retries, handl
 :::
 
 **Caller side:** A caller Workflow executes a Nexus Operation through a [Nexus Endpoint](/nexus/endpoints) using the Temporal SDK.
+A [Standalone Nexus Operation](/standalone-nexus-operation) is a top-level Nexus Operation Execution started directly by a Client, without using a caller Workflow.
 
 **Handler side:** [Nexus Services](/nexus/services) and their Operations are registered with a Worker that polls the Endpoint's target Task Queue. Operations are defined using SDK builder functions:
 
@@ -94,7 +97,7 @@ Lifecycle for a synchronous Operation (for example, to Signal, Query, or Update 
 
 :::tip
 
-Stay within the [request deadline](/cloud/limits#nexus-operation-request-timeout) to avoid timeouts.
+Use a synchronous Operation only when its complete execution path is highly reliable, predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
 Timed-out handlers are retried until the Operation's Schedule-to-Close timeout is exceeded.
 
 :::
@@ -167,7 +170,7 @@ At a high level, when a caller Workflow executes a Nexus Operation:
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation.
 If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's [Schedule-to-Start timeout](#schedule-to-start-timeout) or [Schedule-to-close timeout](#schedule-to-close-timeout) is exceeded.
 
-For example, if a Nexus handler returns a [retryable error](/references/failures#nexus-errors), or an [upstream timeout](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) is encountered by the caller, the Nexus request will be retried up to the [default Retry Policy's](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
+For example, if a Nexus handler returns a [retryable error](/references/failures#nexus-errors), or an [upstream timeout](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) is encountered by the caller, the Nexus request will be retried up to the [default Retry Policy's](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/components/nexusoperations/config.go#L204) max attempts and expiration interval.
 
 :::note
 This differs from Activity and Workflow error handling.
@@ -188,9 +191,9 @@ The Schedule-to-Close timeout limits the total duration from when the Operation 
 This is the overall timeout for the entire Operation.
 The Nexus Machinery [automatically retries](#automatic-retries) failed requests internally until this timeout is exceeded, at which point the Operation fails with a [NexusOperationTimedOut](/references/events#nexusoperationtimedout) event.
 
-This timeout covers the full [Nexus Operation lifecycle](https://docs.temporal.io/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
+This timeout covers the full [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
 
-In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](https://docs.temporal.io/cloud/limits#nexus-operation-duration-limits).
+In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](/cloud/limits#nexus-operation-duration-limits).
 
 ### Schedule-to-Start timeout {/* #schedule-to-start-timeout */}
 

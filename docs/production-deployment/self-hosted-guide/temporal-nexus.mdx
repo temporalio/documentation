@@ -9,6 +9,7 @@ keywords:
 tags:
   - Self hosting
   - enable-nexus
+  - multi-cluster-replication
 ---
 
 :::info NEW TO NEXUS?
@@ -20,11 +21,6 @@ This page explains how to self-host Nexus. To learn about Nexus, see the [how Ne
 ## Enable Nexus
 
 Nexus can be configured by setting static configuration and dynamic configuration entries.
-
-
-:::note
-Nexus is supported in single-cluster setups only. See [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md) for operational details.
-:::
 
 :::note
 Replace `$PUBLIC_URL` with a URL value that's accessible to external callers or internally within the cluster.
@@ -91,3 +87,68 @@ See [how Nexus works](/nexus) for an architectural overview, then follow an SDK 
   [.NET](/develop/dotnet/nexus)
 
 :::
+
+## Multi-Cluster Replication (multi-region failover)
+
+:::warning EXPERIMENTAL
+
+Nexus across [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
+is experimental.
+
+:::
+
+Nexus works across
+[Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication). An
+asynchronous Nexus Operation started in one Cluster completes even if its Namespace
+fails over, or its Cluster is lost, before the Operation finishes.
+
+:::note Endpoint target types
+
+This applies to [Worker-target Endpoints](/nexus/endpoints), where the Endpoint
+routes to a target Namespace and Task Queue that a Worker polls. Endpoints can also
+target an external URL (`--target-url`), which is experimental and not covered here.
+
+:::
+
+### Configuration
+
+1. **Set up Multi-Cluster Replication.** See
+   [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) for
+   connecting Clusters and creating replicated Namespaces.
+
+2. **Advertise a frontend HTTP address on every Cluster.** Set
+   `frontend.rpc.httpPort` and `clusterInformation.<cluster>.httpAddress` (shown in
+   [Enable Nexus](#enable-nexus) for one Cluster) on **each** Cluster, each with its
+   own address, so the other Clusters can reach it to deliver callbacks.
+
+3. **Register Endpoints on every Cluster.** The
+   [Nexus Endpoint registry](/nexus/registry) isn't replicated across Clusters.
+   Create the same Endpoints (same target Namespace and Task Queue) on **each** Cluster.
+
+4. **Cross-Cluster forwarding.** Nexus request and callback forwarding to the
+   active Cluster is on by default; no additional configuration is required.
+
+### What to expect on failover
+
+For a Nexus Operation started before a Cluster failover completes on the new active
+Cluster, the completion callback is delivered to the caller Namespace's current
+active Cluster, re-resolved on each attempt:
+
+```mermaid
+sequenceDiagram
+    box Cluster A
+    participant caA as Caller Namespace
+    participant haA as Handler Namespace
+    end
+    box Cluster B
+    participant caB as Caller Namespace
+    participant haB as Handler Namespace
+    end
+    Note over caA,haA: Cluster A active
+    caA->>haA: start Nexus Operation
+    haA-->>caA: Operation started, token returned
+    Note over caA,haB: 💥 Fail over both namespaces from Cluster A to B
+    Note over caB,haB: Cluster B active
+    haB->>caB: deliver completion callback
+    Note over caB: Nexus Operation completes
+```

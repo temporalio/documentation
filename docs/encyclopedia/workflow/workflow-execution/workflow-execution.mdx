@@ -10,7 +10,6 @@ keywords:
 tags:
   - Concepts
   - Workflows
-
 ---
 
 import { CaptionedImage } from '@site/src/components';
@@ -25,6 +24,7 @@ This page provides an overview of Workflow Execution:
 - [Workflow Execution Chain](#workflow-execution-chain)
 - [Memo](#memo)
 - [State Transition](#state-transition)
+- [Workflow cache](#workflow-cache)
 
 ## What is a Workflow Execution? {/* #workflow-execution */}
 
@@ -137,8 +137,9 @@ A Workflow Execution can be either _Open_ or _Closed_.
 
 An _Open_ status means that the Workflow Execution is able to make progress.
 
-- Running: The only Open status for a Workflow Execution.
-  When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
+- Running: The Workflow Execution is actively progressing or is waiting on something.
+- Paused: The Workflow Execution has been [Paused](/encyclopedia/workflow/workflow-pause). It remains Open, but the Temporal Service doesn't
+  dispatch new Workflow Tasks until the Workflow Execution is Unpaused.
 
 #### Closed
 
@@ -206,3 +207,11 @@ For more information on Workflow Execution, please refer to the following subpag
 - [Continue-as-New](/workflow-execution/continue-as-new)
 - [Timers and Start Delay](/workflow-execution/timers-delays)
   :::
+
+## Workflow cache
+
+A Workflow Cache is an in-memory LRU (least recently used) cache maintained by Workers that stores the state of Workflow Executions they have processed.
+
+When a Worker picks up a Workflow Task, it caches the Workflow's state in memory. This allows the Worker to continue processing subsequent Tasks for that Workflow without having to fetch the full Event History from the server and replay it from scratch. 
+
+This caching mechanism is closely tied to [Sticky Execution](/sticky-execution). The Temporal Service directs future Workflow Tasks to the same Worker that cached the Workflow, via a dedicated "Sticky Queue". If the cached Workflow is evicted, to make room for another for example, the Worker must replay the Event History to restore its state before continuing.

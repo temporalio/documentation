@@ -1,0 +1,70 @@
+---
+id: data-conversion
+title: Payload conversion - .NET SDK
+sidebar_label: Payload conversion
+toc_max_heading_level: 3
+tags:
+  - Data Converters
+  - .NET SDK
+  - Temporal SDKs
+description: Customize how Temporal serializes application objects using Payload Converters in the .NET SDK.
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+## Payload conversion
+
+Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
+
+### Conversion sequence {/* #conversion-sequence */}
+
+The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
+You can set multiple encoding Payload Converters to run your conversions.
+When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+Payload Converters can be customized independently of a Payload Codec.
+Temporal's Converter architecture looks like this:
+
+<CaptionedImage
+  src="/img/info/converter-architecture.png"
+  title="Temporal converter architecture"
+/>
+
+## Custom Payload Converter {/* #custom-payload-converter */}
+
+Data converters are used to convert raw Temporal payloads to/from actual .NET types.
+A custom data converter can be set via the `DataConverter` option when creating a client. Data converters are a combination of payload converters, payload codecs, and failure converters.
+Payload converters convert .NET values to/from serialized bytes. Payload codecs convert bytes to bytes (e.g. for compression or encryption). Failure converters convert exceptions to/from serialized failures.
+
+Data converters are in the `Temporalio.Converters` namespace.
+The default data converter uses a default payload converter, which supports the following types:
+
+- `null`
+- `byte[]`
+- `Google.Protobuf.IMessage` instances
+- Anything that `System.Text.Json` supports
+- `IRawValue` as unconverted raw payloads
+
+Custom converters can be created for all uses. For example, to create client with a data converter that converts all C#
+property names to camel case, you would:
+
+```csharp
+using System.Text.Json;
+using Temporalio.Client;
+using Temporalio.Converters;
+
+public class CamelCasePayloadConverter : DefaultPayloadConverter
+{
+    public CamelCasePayloadConverter()
+      : base(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+    {
+    }
+}
+
+var client = await TemporalClient.ConnectAsync(new()
+{
+    TargetHost = "localhost:7233",
+    Namespace = "my-namespace",
+    DataConverter = DataConverter.Default with { PayloadConverter = new CamelCasePayloadConverter() },
+});
+```

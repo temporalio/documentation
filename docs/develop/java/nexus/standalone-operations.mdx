@@ -50,6 +50,62 @@ This documentation uses source code from the
 
 :::
 
+## Prerequisites {/* #prerequisites */}
+
+Standalone Nexus Operations are at Pre-release and require a special Temporal CLI build.
+
+### 1. Install and verify the Pre-release Temporal CLI {/* #install-cli */}
+
+The `temporal nexus operation` commands require a Pre-release build of the Temporal CLI. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for the platform downloads,
+then verify:
+
+```bash
+./temporal --version
+# temporal version 1.7.4-standalone-nexus-operations
+```
+
+Run it as `./temporal` from the directory where you extracted it. The standard `brew install temporal`
+build does not include Standalone Nexus Operation support during Pre-release.
+
+### 2. Start a local dev server {/* #enable-dev-server */}
+
+The Pre-release dev server enables Standalone Nexus Operations by default — no dynamic config is
+required. Start it with the caller and handler Namespaces pre-created:
+
+```bash
+./temporal server start-dev \
+  --namespace my-caller-namespace \
+  --namespace my-handler-namespace
+```
+
+The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
+Namespace), mirroring how Nexus crosses Namespace boundaries.
+
+To run the examples on this page against the [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexusstandalone),
+create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
+
+```bash
+./temporal operator nexus endpoint create \
+  --name my-nexus-endpoint \
+  --target-namespace my-handler-namespace \
+  --target-task-queue nexus-handler-queue
+```
+
+Start the sample handler Worker in the handler Namespace:
+
+```bash
+TEMPORAL_NAMESPACE=my-handler-namespace \
+  ./gradlew -q :core:execute -PmainClass=io.temporal.samples.nexusstandalone.handler.HandlerWorker
+```
+
+Run the starter in the caller Namespace (from a separate terminal):
+
+```bash
+TEMPORAL_NAMESPACE=my-caller-namespace \
+  ./gradlew -q :core:execute -PmainClass=io.temporal.samples.nexusstandalone.StandaloneClientStarter
+```
+
 ## Execute a Standalone Nexus Operation {/* #execute-operation */}
 
 To execute a Standalone Nexus Operation, first create a
@@ -95,6 +151,18 @@ See the full
 for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
 counts Operations.
 
+Or use the Temporal CLI to execute a Standalone Nexus Operation:
+
+```bash
+./temporal nexus operation execute \
+  --namespace my-caller-namespace \
+  --endpoint my-nexus-endpoint \
+  --service GreetingNexusService \
+  --operation greet \
+  --operation-id my-greet-op \
+  --input '{"name":"World"}'
+```
+
 ## Start a Standalone Nexus Operation and Wait for the Result {/* #get-operation-result */}
 
 `start()` returns a
@@ -115,6 +183,12 @@ GreetingOutput greeting = handle.getResult();
 If the Operation completed successfully, the result is returned. If the Operation failed, the failure is thrown as a
 `NexusOperationException`. Use `getResultAsync()` for a non-blocking `CompletableFuture`, or
 `getResult(long timeout, TimeUnit unit)` to bound the wait.
+
+Or use the Temporal CLI to wait for a result by Operation ID:
+
+```bash
+./temporal nexus operation result --namespace my-caller-namespace --operation-id my-greet-op
+```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
 
@@ -138,6 +212,12 @@ nexusClient
 The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
 
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+```
+
 ## Count Standalone Nexus Operations {/* #count-operations */}
 
 Use [`NexusClient.countNexusOperationExecutions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/NexusClient.html)
@@ -153,6 +233,12 @@ System.out.println("Total Nexus operations: " + count.getCount());
 
 Passing a `GROUP BY` query (for example, `"GROUP BY ExecutionStatus"`) returns a count per group, available through
 `NexusOperationExecutionCount.getGroups()`.
+
+Or use the Temporal CLI:
+
+```bash
+./temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
 

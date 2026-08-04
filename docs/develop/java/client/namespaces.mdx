@@ -23,7 +23,7 @@ Use Namespaces to isolate your Workflow Executions according to your needs.
 For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
 You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) to create and manage a Namespace from the UI, or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
 On self-hosted Temporal Service, you can register and manage your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
 Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
@@ -36,14 +36,14 @@ You must register a Namespace with the Temporal Service before setting it in the
 
 Registering a Namespace creates a Namespace on the Temporal Service or Temporal Cloud.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](/cloud/tcld/namespace/) to create Namespaces.
 
 On self-hosted Temporal Service, you can register your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
 Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
 
-Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces) and set the [Retention Period](/temporal-service/temporal-server#retention-period) for the Workflow Execution Event History for the Namespace.
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces) and set the [Retention Period](/temporal-service/temporal-server#retention-period) for the Workflow Execution Event History for the Namespace.
 
 ```java
 //...
@@ -76,7 +76,7 @@ To update your Namespace use the [UpdateNamespace API](#manage-namespaces) with 
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
 On self-hosted Temporal Service, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
 Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
@@ -85,7 +85,7 @@ Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your
 
 You must register a Namespace with the Temporal Service before setting it in the Temporal Client.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
 On self-hosted Temporal Service, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
 Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
@@ -94,7 +94,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
 
   - With the Temporal CLI: [`temporal operator namespace update`](/cli/command-reference/operator#update)
     Example
-  - Use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to update configuration on a Namespace.
+  - Use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) to update configuration on a Namespace.
     Example
 
   ```java
@@ -116,7 +116,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
 - Get details for a registered Namespace on your Temporal Service:
 
   - With the Temporal CLI: [`temporal operator namespace describe`](/cli/command-reference/operator#describe)
-  - Use the [`DescribeNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for a registered Namespace.
+  - Use the [`DescribeNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for a registered Namespace.
     Example
 
   ```java
@@ -133,7 +133,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
 - Get details for all registered Namespaces on your Temporal Service:
 
   - With the Temporal CLI: [`temporal operator namespace list`](/cli/command-reference/operator#list)
-  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Service.
+  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Service.
     Example
 
   ```java
@@ -144,7 +144,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
   //...
   ```
 
-- Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
+- Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
   Example:
 
   ```java
@@ -157,7 +157,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
   //...
   ```
 
-- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
+- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
 
   Example:
 

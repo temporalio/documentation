@@ -162,6 +162,59 @@ If you are considering using a custom slug, answer these questions first:
 - Did you already check the redirects in `vercel.json`?
 - Is it in the page in a folder under the topic that makes the most sense?
 
+# Social share images (og:image)
+
+Every doc page automatically gets a social-share preview card generated at build time — the image that
+shows up when a link to the page is shared in Slack, X, LinkedIn, etc. It's built from the page's `title`
+and `description`. There's nothing to do for a normal page.
+
+The image itself is rendered by a `postBuild` step (`plugins/og-image/`), but *which* image a page points
+at is decided earlier, during MDX compilation (`plugins/og-image/remarkPlugin.js`), which writes it into
+the page's front matter as a real `image` field — the same field you'd set manually (below). This matters
+because it's what makes the image survive past the initial page load: Docusaurus renders `<head>` through
+`react-helmet-async`, which re-renders it again on the client the moment a page hydrates. A tag injected
+after the fact by patching the built HTML would get silently wiped out and replaced with the site-wide
+default as soon as a real browser (or anything else that executes JavaScript) hydrated the page — only
+tools that read the raw HTML without running JS (like `curl`, or most social-share scrapers) would ever
+see it. Going through real front matter means Docusaurus's own metadata rendering produces the same tag
+both times, so there's nothing for hydration to revert.
+
+If you want a page to use a different image instead of the generated one, you have two options:
+
+- Add an `image` field to the page's front matter, pointing at a static asset (same as the site-wide
+  default in `docusaurus.config.js`):
+
+  ```
+  ---
+  title: My page
+  image: /img/assets/my-custom-image.png
+  ---
+  ```
+
+- For pages that can't use front matter, override it directly with a `<Head>` component:
+
+  ```mdx
+  import Head from '@docusaurus/Head';
+
+  <Head>
+    <meta property="og:image" content="https://docs.temporal.io/img/assets/my-custom-image.png" />
+    <meta name="twitter:image" content="https://docs.temporal.io/img/assets/my-custom-image.png" />
+  </Head>
+  ```
+
+  The URL must be absolute (`https://docs.temporal.io/...`), not a relative path.
+
+Either way, the generator leaves the page alone.
+
+This only happens during `yarn build` (see below) — running `yarn start` won't show generated or
+overridden images, since it skips the production build step entirely. The generator itself lives in
+`plugins/og-image/`.
+
+Note that `yarn build` always runs in production mode (`NODE_ENV=production`), whether that's on your
+machine, a Vercel preview deployment for a PR, or the real production deploy — so `yarn build && yarn
+serve` locally is enough to preview real generated cards on new content before pushing anything; you don't
+need to wait for an actual deploy.
+
 # Local development command reference
 
 The following commands are available to aid in local development:
@@ -177,7 +230,15 @@ Note that the `/build` directory is ignored by Git.
 
 ## `yarn start`
 
-This command spins up a local web server and serves the contents of the `/build` directory to [localhost:3000](http://localhost:3000/).
+This command spins up a local dev server with hot reload at [localhost:3000](http://localhost:3000/). It
+builds from source directly and does not run the production build step, so anything that only happens
+during `yarn build` (like generated og:images) won't show up here.
+
+## `yarn serve`
+
+This command serves the contents of the `/build` directory (the output of `yarn build`) at
+[localhost:3000](http://localhost:3000/), so you can check the actual production output, including
+generated og:images.
 
 ## `yarn snipsync`
 

@@ -17,8 +17,7 @@ tags:
   - Durable Execution
 ---
 
-import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import SdkTabs from '@site/src/components';
+import { SdkTabs, AnnotatedCode } from '@site/src/components';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
@@ -147,25 +146,70 @@ three new parameters, with different names depending on the language:
 - (Optional) The [Default Versioning Behavior](#definition). If unset, you'll be required to specify the behavior on
   each Workflow. Or you can default to Pinned or Auto-Upgrade.
 
-Follow the example for your SDK below:
+Follow the example for your SDK below. Select a concept to highlight the matching lines:
 
-<SdkTabs>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [4],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [5, 6, 7, 8],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [9],
+    },
+  ]}
+>
 ```go
-buildID:= mustGetEnv("MY_BUILD_ID")
+buildID := mustGetEnv("MY_BUILD_ID")
 w := worker.New(c, myTaskQueue, worker.Options{
   DeploymentOptions: worker.DeploymentOptions{
     UseVersioning: true,
     Version: worker.WorkerDeploymentVersion{
       DeploymentName: "llm_srv",
-      BuildID:        buildID,
+      BuildID: buildID,
     },
     DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
   },
 })
 ```
+</AnnotatedCode>
 </SdkTabs.Go>
 <SdkTabs.Java>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [10],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [9],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [11],
+    },
+  ]}
+>
 ```java
 import io.temporal.worker.WorkerOptions;
 import io.temporal.common.VersioningBehavior;
@@ -180,10 +224,32 @@ WorkerOptions.newBuilder()
       .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
       .build())
   .build();
-
 ```
+</AnnotatedCode>
 </SdkTabs.Java>
 <SdkTabs.Python>
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [13],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [10, 11, 12],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [14],
+    },
+  ]}
+>
 ```python
 from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
 from temporalio.worker import Worker, WorkerDeploymentConfig
@@ -202,10 +268,31 @@ Worker(
     ),
 )
 ```
-
+</AnnotatedCode>
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [5],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [6],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. This TypeScript example does not set a default; set Versioning Behavior on each Workflow, or add a default when your SDK supports it on Worker options.',
+      lines: [],
+    },
+  ]}
+>
 ```ts
 const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
@@ -217,22 +304,67 @@ const myWorker = await Worker.create({
   connection: nativeConnection,
 });
 ```
-
+</AnnotatedCode>
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [5],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [5],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [7],
+    },
+  ]}
+>
 ```csharp
 var myWorker = new TemporalWorker(
     Client,
     new TemporalWorkerOptions(taskQueue)
-    {DeploymentOptions = new(new("llm_srv", "1.0"), true)
-      { DefaultVersioningBehavior = VersioningBehavior.Unspecified },
+    {
+      DeploymentOptions = new(new("llm_srv", "1.0"), true)
+      {
+        DefaultVersioningBehavior = VersioningBehavior.Unspecified,
+      },
     }.AddWorkflow<MyWorkflow>());
 ```
-
+</AnnotatedCode>
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'UseVersioning',
+      description:
+        'Enables Worker Versioning for this Worker so Tasks are matched to Deployment Versions.',
+      lines: [10],
+    },
+    {
+      label: 'Version',
+      description:
+        'Identifies the revision this Worker may execute: a deployment name plus a Build ID.',
+      lines: [6, 7, 8, 9],
+    },
+    {
+      label: 'Default Versioning Behavior',
+      description:
+        'Optional. If unset, you must set the Versioning Behavior on each Workflow. Otherwise default to Pinned or Auto-Upgrade.',
+      lines: [11],
+    },
+  ]}
+>
 ```ruby
 worker = Temporalio::Worker.new(
   client: client,
@@ -248,7 +380,7 @@ worker = Temporalio::Worker.new(
   )
 )
 ```
-
+</AnnotatedCode>
 </SdkTabs.Ruby>
 </SdkTabs>
 
@@ -492,6 +624,8 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
+
+For a complete runbook covering batch recovery, drainage handling, and how to choose between Versioning Override and Reset-with-Move based on each Workflow's state, see [Recover pinned Workflows after a bad rollout](/production-deployment/worker-deployments/recover-pinned-workflows).
 
 ## Migrating a Workflow from Pinned to Auto-Upgrade
 
@@ -846,7 +980,7 @@ workflowOptions := client.StartWorkflowOptions{
 	VersioningOverride: &client.PinnedVersioningOverride{
         Version: worker.WorkerDeploymentVersion{
             DeploymentName: "DeployName",
-            BuildID:        "1.0",
+            BuildID: "1.0",
         },
     },
 }
@@ -926,7 +1060,7 @@ Worker Deployments are never garbage collected, but _Worker Deployment Versions_
 Versions, Deployment Versions) are.
 
 Versions are deleted to keep the total number of versions in one Worker Deployment less than or equal to
-[`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1317-L1321),
+[`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/common/dynamicconfig/constants.go#L1501-L1505),
 which is currently set to 100 in Temporal Cloud, but that's a conservative number and it could be increased if needed.
 
 For example, when you deploy your 101st Worker Version in a Worker Deployment, the server looks at the oldest drained

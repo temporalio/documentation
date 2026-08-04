@@ -229,7 +229,7 @@ loss during failover.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failure](/temporal#failure)
+#### [Failure](/references/failures)
 
 Temporal Failures are representations of various types of errors that occur in the system.
 
@@ -613,6 +613,13 @@ Queue to listen on.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Tag](/references/sdk-metrics)
+
+A Tag is a key-value pair that a Temporal SDK or the Temporal Service attaches to an emitted metric, such as `namespace` or `task_queue`.
+Once a metric is scraped by Prometheus or another OpenMetrics-compatible system, the same key-value pair is called a label.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Task](/tasks#task)
 
 A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
@@ -655,7 +662,7 @@ The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 <!-- _Tags: [term](/tags/term), [cli](/tags/cli)_ -->
 
-#### [Temporal Client](/temporal-client)
+#### [Temporal Client](/encyclopedia/temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 
@@ -721,7 +728,7 @@ The Temporal Platform consists of a Temporal Service and Worker Processes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal SDK](/encyclopedia/temporal-sdks)
+#### [Temporal SDK](/encyclopedia/architecture/temporal-sdks)
 
 A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate
 with a Temporal Service, develop Workflow Definitions, and develop Worker Programs.
@@ -804,6 +811,10 @@ are executed with the same Worker without requiring you to manually specify Task
 
 In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a
 Workflow Execution.
+
+#### [Workflow cache](/workflow-execution#workflow-cache)
+
+An in-memory cache on a Worker that holds the state of Workflow Executions it has processed so later Workflow Tasks can avoid a full Event History replay. Used with [Sticky Execution](/sticky-execution). See also [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
