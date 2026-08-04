@@ -38,23 +38,10 @@ const DOCS_PAGE = path.join(
 const ALL_CLIENTS = ["Go", "Java", "Python", "TypeScript", ".NET", "Ruby", "CLI"];
 
 // The page carries no copy of the support matrix for this script to drift from.
-// Which clients read a variable is read back off the page itself, from the
-// structure the reader sees:
+// Which clients read a variable is read back off the page itself: every variable
+// gets its own heading and states its support in a "Read by:" line. A heading
+// without one stops the check rather than passing quietly.
 //
-//   * a variable in a table under one of these sections takes the section's
-//     support, which that section states in its opening sentence;
-//   * a variable with its own heading states support in a "Read by:" line.
-//
-// A variable that falls under neither rule, or a section heading not listed
-// here, stops the check rather than passing quietly.
-const SECTION_SUPPORT = {
-  "Client settings": ALL_CLIENTS,
-  // "The Temporal CLI reads the variables below [...] No other client reads them."
-  "Temporal CLI settings": ["CLI"],
-  // Every variable here carries its own "Read by:" line.
-  "Client settings not read by every client": null,
-};
-
 // Tokens accepted in a "Read by:" line, mapped to the labels sources use.
 const CLIENT_TOKENS = new Map([
   ...ALL_CLIENTS.map((c) => [c.toLowerCase(), c]),
@@ -149,15 +136,14 @@ async function fetchSource({ repo, ref, files }) {
 }
 
 /**
- * Reads the documented variables off the page: table rows under a known section,
- * and variables that have their own heading with a "Read by:" line. Returns a
- * Map of variable name to the Set of clients the page says read it.
+ * Reads the documented variables off the page. Each variable has its own heading
+ * followed by a "Read by:" line. Returns a Map of variable name to the Set of
+ * clients the page says read it.
  */
 function parseDocsPage(mdx) {
   const lines = mdx.split("\n");
   const documented = new Map();
   const problems = [];
-  let section = null;
   // The heading of the variable currently being read, awaiting its "Read by:".
   let pending = null;
 
@@ -168,61 +154,36 @@ function parseDocsPage(mdx) {
     pending = null;
   };
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    const h2 = line.match(/^##\s+(.+?)\s*$/);
-    if (h2) {
+  for (const line of lines) {
+    const heading = line.match(/^#{2,}\s+(.*?)\s*$/);
+    if (heading) {
       closePending();
-      section = h2[1].replace(/`/g, "");
-      if (!(section in SECTION_SUPPORT)) {
-        problems.push(
-          `section "${section}" is not listed in SECTION_SUPPORT, so the support ` +
-            `it implies is unknown`
-        );
+      const name = heading[1].match(/^`(TEMPORAL_[A-Z0-9_*]+)`$/);
+      if (name) pending = name[1];
+      continue;
+    }
+
+    const readBy = pending && line.match(/^-\s+Read by:\s*(.+?)\s*$/);
+    if (readBy) {
+      const clients = parseReadBy(readBy[1]);
+      if (!clients) {
+        problems.push(`${pending} has an unrecognized "Read by:" value: ${readBy[1]}`);
+      } else {
+        documented.set(pending, clients);
       }
+      // The block is satisfied either way; the next heading starts a new one.
+      pending = null;
       continue;
     }
 
-    // A variable documented under its own heading, at any depth below h2.
-    const varHeading = line.match(/^#{3,}\s+`(TEMPORAL_[A-Z0-9_*]+)`\s*$/);
-    if (varHeading) {
-      closePending();
-      pending = varHeading[1];
-      continue;
-    }
-
-    // Any other heading ends the current variable's block.
-    if (/^#{3,}\s/.test(line)) {
-      closePending();
-      continue;
-    }
-
-    if (pending) {
-      const readBy = line.match(/^-\s+Read by:\s*(.+?)\s*$/);
-      if (readBy) {
-        const clients = parseReadBy(readBy[1]);
-        if (!clients) {
-          problems.push(`${pending} has an unrecognized "Read by:" value: ${readBy[1]}`);
-        } else {
-          documented.set(pending, clients);
-        }
-      }
-      continue;
-    }
-
-    // Table rows inherit their section's support.
+    // Every variable belongs under its own heading. A variable reintroduced as a
+    // table row would carry no "Read by:" line, so reject the row outright
+    // rather than leave its support unchecked.
     if (line.trim().startsWith("|")) {
       const name = (line.split("|")[1] || "").replace(/`/g, "").trim();
-      if (!name.startsWith("TEMPORAL_")) continue;
-      const support = SECTION_SUPPORT[section];
-      if (!support) {
-        problems.push(
-          `${name} is a table row under "${section}", which requires a per-variable "Read by:" line`
-        );
-        continue;
+      if (name.startsWith("TEMPORAL_")) {
+        problems.push(`${name} is a table row; it needs its own heading and a "Read by:" line`);
       }
-      documented.set(name, new Set(support));
     }
   }
   closePending();
