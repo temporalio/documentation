@@ -441,13 +441,15 @@ Regular Signals sent during the delay are not delivered until the first Workflow
 - **Relying on sub-second delays.** Temporal does not guarantee sub-second timer accuracy, and the delay is rounded up due to scheduling latency. Treat the configured duration as a minimum, not an exact value.
 - **Forgetting that the Workflow ID is reserved.** A delayed Workflow reserves its Workflow ID immediately. Starting another Workflow with the same ID will fail depending on the ID reuse policy.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **Temporal Schedules**: For recurring Workflow execution.
 - **[Updatable Timer](/design-patterns/updatable-timer)**: For dynamically adjustable delays within Workflows.
 - **[Signal with Start](/design-patterns/signal-with-start)**: Interacting with Workflows before execution.
 
-## Sample code
+### Sample code
 
 - [Java Sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloDelayedStart.java) — Delayed start with `setStartDelay()`.
 - [TypeScript Sample](https://github.com/temporalio/samples-typescript/tree/main/start-delay) — Delayed start with `startDelay` option.

@@ -14,7 +14,7 @@
       "Build business processes that pause on errors and recover without restarting.",
     "tags": ["Saga Pattern"],
     "sdk": "TypeScript",
-    "href": "/guides/saga-pattern"
+    "href": "/guides/recover-without-restart"
   },
 
   {

@@ -16,21 +16,32 @@
 // pages, etc.) still falls back to the site-wide default, which remains the
 // Phase 1 regression floor for everything outside the plugin's reach.
 //
-// Generated-image expectations use ogImagePlugin.resolveSiteUrl(), which
-// substitutes VERCEL_URL on non-production Vercel deployments — see the
-// comment on that function in plugins/og-image/index.js for why. The
-// site-wide default check intentionally does NOT use it: that image is a
-// pre-existing static asset already live on the production domain in every
-// environment, and Docusaurus's own theme (not this plugin) renders that
-// meta tag against the hardcoded config.url regardless of environment.
+// Generated-image expectations resolve against config.url directly. The
+// image path now comes from real front matter (injected by
+// plugins/og-image/remarkPlugin.js during MDX compilation) and is rendered
+// by Docusaurus's own metadata pipeline, which always resolves relative
+// image paths against config.url — there's no VERCEL_URL-based override for
+// preview deployments anymore (a known, accepted limitation of moving off
+// the old postBuild HTML-patch approach; see plugins/og-image/remarkPlugin.js
+// for why that approach had to change).
 
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const ogImagePlugin = require('../plugins/og-image');
+const { AI_COOKBOOK_OG_IMAGE_PATH } = require('../src/constants/aiCookbookOgImage');
 
 const BUILD_DIR = path.join(process.cwd(), 'build');
 const DOCS_DIR = path.join(process.cwd(), 'docs');
+const AI_COOKBOOK_DIR = path.join(process.cwd(), 'ai-cookbook');
+
+// Every docs plugin instance the og-image plugin actually targets (see the
+// `targets` option in docusaurus.config.js) — kept in sync with that list so
+// this validator checks the same pages the plugin generates cards for.
+const DOC_TARGETS = [
+  { dir: DOCS_DIR, routeBasePath: '/' },
+  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+];
 
 function walkHtmlFiles(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -72,58 +83,93 @@ async function main() {
   let overridePagesChecked = 0;
   let skippedPartials = 0;
 
-  for (const filePath of ogImagePlugin.walkDir(DOCS_DIR)) {
-    const raw = fs.readFileSync(filePath, 'utf8');
-    const { data: frontmatter, content } = matter(raw);
-    const urlPath = ogImagePlugin.resolveUrlPath(DOCS_DIR, filePath, frontmatter);
-    const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
+  for (const { dir, routeBasePath, footerText } of DOC_TARGETS) {
+    for (const filePath of ogImagePlugin.walkDir(dir)) {
+      const raw = fs.readFileSync(filePath, 'utf8');
+      const { data: frontmatter, content } = matter(raw);
+      const urlPath = ogImagePlugin.resolveUrlPath(dir, filePath, frontmatter, routeBasePath);
+      const htmlPath = ogImagePlugin.htmlPathForUrlPath(BUILD_DIR, urlPath);
 
-    if (!fs.existsSync(htmlPath)) {
-      skippedPartials++;
-      continue;
-    }
-    docHtmlPaths.add(htmlPath);
-    docPagesChecked++;
+      if (!fs.existsSync(htmlPath)) {
+        skippedPartials++;
+        continue;
+      }
+      docHtmlPaths.add(htmlPath);
+      docPagesChecked++;
 
-    const html = fs.readFileSync(htmlPath, 'utf8');
-    const ogImage = extractMetaContent(html, 'property', 'og:image');
-    const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
+      const html = fs.readFileSync(htmlPath, 'utf8');
+      const ogImage = extractMetaContent(html, 'property', 'og:image');
+      const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
 
-    if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
-      overridePagesChecked++;
-      const expectedOverride = ogImagePlugin.overrideImageFor(frontmatter, content, siteUrl);
+      if (ogImagePlugin.hasManualOverride(frontmatter, content)) {
+        overridePagesChecked++;
+        const expectedOverride = ogImagePlugin.overrideImageFor(frontmatter, content, siteUrl);
 
-      if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
-        overrideMismatches.push({
+        if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
+          overrideMismatches.push({
+            file: path.relative(BUILD_DIR, htmlPath),
+            expected: expectedOverride,
+            ogImage,
+            twitterImage,
+          });
+        }
+        continue;
+      }
+
+      const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
+      const title = ogImagePlugin.extractTitle(content, frontmatter, id);
+      const description = frontmatter.description;
+      const hash = ogImagePlugin.hashFor(title, description, footerText);
+      const expectedImage = new URL(
+        path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
+        config.url,
+      ).toString();
+      const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
+
+      if (ogImage !== expectedImage || twitterImage !== expectedImage) {
+        docMismatches.push({
           file: path.relative(BUILD_DIR, htmlPath),
-          expected: expectedOverride,
+          expected: expectedImage,
           ogImage,
           twitterImage,
         });
       }
-      continue;
+      if (!fs.existsSync(expectedImagePath)) {
+        missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
+      }
     }
+  }
 
-    const id = frontmatter.id || path.basename(filePath).replace(/\.(md|mdx)$/i, '');
-    const title = ogImagePlugin.extractTitle(content, frontmatter, id);
-    const description = frontmatter.description;
-    const hash = ogImagePlugin.hashFor(title, description);
-    const expectedImage = new URL(
-      path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
-      ogImagePlugin.resolveSiteUrl(config),
+  // /ai-cookbook (src/pages/ai-cookbook.tsx) is a plain page, not an MDX doc,
+  // so it never went through the DOC_TARGETS loop above — but it does declare
+  // its own og:image (see plugins/cookbook-index's postBuild), so it's
+  // checked here as a manual override rather than folded into "other pages
+  // must match the site default" below.
+  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai-cookbook', 'index.html');
+  if (fs.existsSync(cookbookHomeHtmlPath)) {
+    docHtmlPaths.add(cookbookHomeHtmlPath);
+    docPagesChecked++;
+    overridePagesChecked++;
+
+    const html = fs.readFileSync(cookbookHomeHtmlPath, 'utf8');
+    const ogImage = extractMetaContent(html, 'property', 'og:image');
+    const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
+    const expectedOverride = new URL(
+      path.posix.join(config.baseUrl, AI_COOKBOOK_OG_IMAGE_PATH.replace(/^\/+/, '')),
+      config.url,
     ).toString();
-    const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
+    const expectedImagePath = path.join(BUILD_DIR, AI_COOKBOOK_OG_IMAGE_PATH);
 
-    if (ogImage !== expectedImage || twitterImage !== expectedImage) {
-      docMismatches.push({
-        file: path.relative(BUILD_DIR, htmlPath),
-        expected: expectedImage,
+    if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
+      overrideMismatches.push({
+        file: path.relative(BUILD_DIR, cookbookHomeHtmlPath),
+        expected: expectedOverride,
         ogImage,
         twitterImage,
       });
     }
     if (!fs.existsSync(expectedImagePath)) {
-      missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
+      missingImages.push({ file: path.relative(BUILD_DIR, cookbookHomeHtmlPath), expectedImagePath });
     }
   }
 

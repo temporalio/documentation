@@ -597,12 +597,14 @@ Heartbeat details have size limits, so you should avoid large objects.
 - **Not resuming from heartbeat progress on retry.** When an Activity retries, retrieve the last heartbeat details -- `context.getHeartbeatDetails()` (Java), `activityInfo().heartbeatDetails` (TypeScript), `activity.info().heartbeat_details` (Python), or `activity.GetHeartbeatDetails()` (Go) -- and resume from the last checkpoint instead of restarting from scratch.
 - **Catching the wrong exception for cancellation.** Cancellation is SDK-specific. Inside the Activity, the `heartbeat()` call throws an `ActivityCompletionException` (Java), cancellation surfaces as a `CancelledFailure` (TypeScript) or an `asyncio.CancelledError` (Python), and the context reports `ctx.Err()` returning `context.Canceled` (Go). The `CanceledFailure` type is what the Workflow observes as the cause of the resulting `ActivityFailure`, not what the Activity body catches.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Saga Pattern](/design-patterns/saga-pattern)**: Compensating transactions with long-running steps.
 - **[Polling](/design-patterns/polling)**: Heartbeating Activity for frequent polling.
 
-## Sample code
+### Sample code
 
 ### Java
 - [Heartbeating Activity Batch](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/batch/heartbeatingactivity) -- Complete batch processing implementation.
