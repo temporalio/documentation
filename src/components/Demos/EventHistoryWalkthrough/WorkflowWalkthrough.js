@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { usePrismTheme } from '@docusaurus/theme-common';
 import { Highlight } from 'prism-react-renderer';
+import Prism from './prism-languages';
 import styles from './workflow-walkthrough.module.css';
 
 const KIND_LABEL = {
@@ -39,7 +40,7 @@ function collectEntries(steps, columnKey, currentStep) {
   return entries;
 }
 
-function CodePanel({ code, lines }) {
+function CodePanel({ code, lines, language }) {
   const prismTheme = usePrismTheme();
   const active = useMemo(() => new Set(lines ?? []), [lines]);
   const hasActive = active.size > 0;
@@ -52,7 +53,7 @@ function CodePanel({ code, lines }) {
         color: prismTheme.plain.color,
       }}
     >
-      <Highlight theme={prismTheme} code={code} language="go">
+      <Highlight prism={Prism} theme={prismTheme} code={code} language={language}>
         {({ tokens, getLineProps, getTokenProps }) => (
           <pre className={styles.code}>
             {tokens.map((line, i) => {
@@ -226,12 +227,13 @@ function Controls({ steps, currentStep, onStep, onPrev, onNext }) {
  * them (Commands, Events, or both).
  *
  * @param {object} props
- * @param {string} props.code - Go source; step `lines` are 1-based into it.
+ * @param {string} props.code - Source sample; step `lines` are 1-based into it.
+ * @param {string} props.language - Prism language for the sample, such as `go` or `csharp`.
  * @param {object[]} props.steps - See the steps-*.js files for the shape.
  * @param {{ key: string, title: string }[]} props.columns - Ledger columns.
  * @param {string} props.ariaLabel - Label for the demo region.
  */
-export default function WorkflowWalkthrough({ code, steps, columns = [], ariaLabel }) {
+export default function WorkflowWalkthrough({ code, language, steps, columns = [], ariaLabel }) {
   const [currentStep, setCurrentStep] = useState(1);
   const step = steps[currentStep - 1];
 
@@ -243,7 +245,7 @@ export default function WorkflowWalkthrough({ code, steps, columns = [], ariaLab
   return (
     <div className={styles.demo} role="group" aria-label={ariaLabel} tabIndex={0} onKeyDown={onKeyDown}>
       <div className={styles.content}>
-        <CodePanel code={code} lines={step.lines} />
+        <CodePanel code={code} language={language} lines={step.lines} />
         <StepPanel step={step} total={steps.length} columns={columns} steps={steps} />
       </div>
 

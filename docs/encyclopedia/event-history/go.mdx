@@ -47,7 +47,7 @@ Temporal Service know what to do.
 Step through the Workflow Definition below. Each step highlights the statements the Worker is running and shows the
 Commands it has issued so far.
 
-<CodeToCommandsDemo />
+<CodeToCommandsDemo sdk="go" />
 
 Four statements in this Workflow Definition produce a Command:
 
@@ -73,7 +73,7 @@ These Events are what are used to recreate a Workflow Execution's state in the c
 Step through the same Workflow Definition to see each Command the Worker issues and the Events the Temporal Service
 records in response.
 
-<CommandsToEventsDemo />
+<CommandsToEventsDemo sdk="go" />
 
 Blue Events are the direct result of a Command. Pink Events are an indirect result, such as the Events the Temporal
 Service records when a Worker starts or finishes a Task:
@@ -93,7 +93,7 @@ This code walkthrough will begin by walking through a Workflow Execution, descri
 Events. There will then be a Worker crash halfway through, explaining how Temporal uses Replay to recover the state of
 the Workflow Execution, ultimately resulting in a completed execution that's identical to one that had not crashed.
 
-<HistoryReplayDemo />
+<HistoryReplayDemo sdk="go" />
 
 The walkthrough covers four phases:
 
@@ -127,7 +127,7 @@ To better understand why Workflows need to be deterministic, it's helpful to loo
 it. In this case, this code will walk through a Workflow Definition that breaks the determinism constraint with a random
 number generator.
 
-<NonDeterminismDemo />
+<NonDeterminismDemo sdk="go" />
 
 During the first execution, the random number is 84, so the Workflow starts a Timer and the Event History records
 `TimerStarted` and `TimerFired`. During Replay, the random number is 14, so the Workflow skips the Timer and produces a
