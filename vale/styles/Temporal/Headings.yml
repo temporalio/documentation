@@ -177,6 +177,11 @@ exceptions:
   - SLA
   - APS
   - PrivateLink
+  - KMS
+  # Cloud provider product names (exact phrase, not the individual words)
+  - Azure Key Vault
+  - Azure Workload Identity
+  - GCP Workload Identity
   - Terraform
   - Prometheus
   - Grafana

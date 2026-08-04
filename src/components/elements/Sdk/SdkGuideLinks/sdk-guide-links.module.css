@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 12px;
   margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .link {
