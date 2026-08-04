@@ -3,12 +3,13 @@ import WorkflowWalkthrough from './WorkflowWalkthrough';
 import { GO } from './languages/go';
 import { DOTNET } from './languages/dotnet';
 import { JAVA } from './languages/java';
+import { PYTHON } from './languages/python';
 import { CODE_TO_COMMANDS_COLUMNS, makeCodeToCommandsSteps } from './steps-code-to-commands';
 import { COMMANDS_TO_EVENTS_COLUMNS, makeCommandsToEventsSteps } from './steps-commands-to-events';
 import { HISTORY_REPLAY_COLUMNS, makeHistoryReplaySteps } from './steps-history-replay';
 import { NON_DETERMINISM_COLUMNS, makeNonDeterminismSteps } from './steps-non-determinism';
 
-const SDKS = { go: GO, dotnet: DOTNET, java: JAVA };
+const SDKS = { go: GO, dotnet: DOTNET, java: JAVA, python: PYTHON };
 
 /** Same walkthrough narrative for every SDK; `sdk` picks the code sample. */
 function resolveSdk(sdk) {
