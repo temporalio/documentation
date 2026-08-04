@@ -442,7 +442,7 @@ This lets different Workflows make different decisions about the same Activity.
 
 **How to implement the Saga pattern using the Temporal Python SDK**
 
-The Saga pattern coordinates a sequence of operations where each operation has a compensating action to undo its effects.
+The [Saga pattern](/design-patterns/saga-pattern) coordinates a sequence of operations where each operation has a compensating action to undo its effects.
 If any operation fails, execute compensating actions in reverse order to roll back previous operations.
 
 Use this for multi-step processes like:

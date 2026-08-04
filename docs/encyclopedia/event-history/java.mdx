@@ -257,7 +257,7 @@ the Workflow Execution, ultimately resulting in a completed execution that's ide
 ## Example of a Non-Deterministic Workflow {/* #Example-of-Non-Deterministic-Workflow */}
 
 Now that Replay has been covered, this section will explain why Workflows need to be
-[deterministic](https://docs.temporal.io/workflow-definition#deterministic-constraints) in order for Replay to work.
+[deterministic](/workflow-definition#deterministic-constraints) in order for Replay to work.
 
 A Workflow is deterministic if every execution of its Workflow Definition produces the same Commands in the same
 sequence given the same input.
@@ -306,11 +306,11 @@ number generator.
 />
 
 Note that non-deterministic failures do not fail the Workflow Execution by default. A non-deterministic failure is
-considered a [Workflow Task Failure](https://docs.temporal.io/references/failures#workflow-task-failures) which is
+considered a [Workflow Task Failure](/references/failures#workflow-task-failures) which is
 considered a transient failure, meaning it retries over and over. Users can also fix the source of non-determinism,
 perhaps by removing the Activity, and then restart the Workers. This means that this type of failure can recover by
 itself. You can also use a strategy called versioning to address this non-determinism error. See
-[versioning](https://docs.temporal.io/develop/java/versioning) to learn more.
+[versioning](/develop/java/workflows/versioning) to learn more.
 
 For more information on how Temporal handles Durable Execution or to see these slides in a video format with more
 explanation, check out our free, self-paced courses: [Temporal 102](https://learn.temporal.io/courses/temporal_102/) and

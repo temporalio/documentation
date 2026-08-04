@@ -20,12 +20,12 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
 - [Using IntegrationsGrid](#using-integrationsgrid)
 - [Using CaptionedImage](#using-captionedimage)
-- [Using DiscoverableDisclosure](#using-discoverabledisclosure)
 - [Using DocsTable](#using-docstable)
 - [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
-- [Using ZoomingImage](#using-zoomingimage)
+- [Using SdkGuideLinks](#using-sdkguidelinks)
+- [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
 
 ## Finding Components
@@ -117,9 +117,9 @@ import * as Components from '@site/src/components';
 Components imported this way use the "Components." prefix before their name:
 
 ```
-<Components.DiscoverableDisclosure>
+<Components.RelatedRead>
 ...Content that is folded away...
-</Components.DiscoverableDisclosure>
+</Components.RelatedRead>
 ```
 
 ## Using IntegrationsGrid
@@ -154,7 +154,7 @@ For example, the Python SDK integrations page pre-filters to Python:
 <IntegrationsGrid defaultSdks={["Python"]} />
 ```
 
-Valid SDK values are `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
 
 ### Filter behavior
 
@@ -251,23 +251,6 @@ When images are complex and may not render in a readable fashion on normal monit
 One click will zoom out, another will zoom back.
 Most rendering will allow readers to pull the image around to view all parts of the image. 
 On non-mobile systems, cursors will change to interactive elements when hovered above zoomable items to indicate interaction.
-
-## Using DiscoverableDisclosure
-
-Role: Provide a more discoverable `<Details>` section.
-
-Unlike Details, it does not require a separate `<Summary>`.
-
-Usage:
-
-```
-<DiscoverableDisclosure label = "your_summary_text">
-...your content...
-</DiscoverableDisclosure>
-```
-
-An additional `prompt` prop enables you to specify the leading text.
-Normally it defaults to `prompt = "Dive deeper — "`.
 
 ## Using DocsTable
 
@@ -441,24 +424,136 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
 ```
 
-## Using ZoomingImage
+## Using SdkGuideLinks
 
-Role: Provide image "asides" embedded into instructions where a standard image would normally interfere.
+Role: Render a vertical list of SDK guide links, each with a colored block icon and label, linking readers to the relevant SDK-specific page.
 
-A ZoomingImage is presented at a very small size, with the understanding that it is too small to view.
-An optional component, the image uses a magnifying glass and text prompt for discovery.
-See the instructions for [Prometheus Grafana](http://docs.temporal.io/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration) for an example.
-
-Reserve ZoomingImages for situations where the image itself is an obstacle to communicating steps or other content.
-It provides opt-in supplementary information.
-
-Usage:
+How to import:
 
 ```
-<ZoomingImage src="/path/to/image" alt="Alt text" />
+import { SdkGuideLinks } from '@site/src/components';
 ```
 
-Images are normally stored in the '/static' folder in `img` or `diagrams`.
+### Standard usage
+
+Pass a `path` prop and the component generates links for all eight SDKs automatically.
+The path is appended to `/develop/<sdk>/`, so you only need the portion after the SDK segment.
+
+```
+<SdkGuideLinks path="client/temporal-client" />
+```
+
+This produces links to `/develop/go/client/temporal-client`, `/develop/java/client/temporal-client`, and so on for all supported SDKs.
+
+### Filtering to specific SDKs
+
+Use the `filter` prop to show only a subset of SDKs.
+Pass an array of SDK identifiers.
+
+```
+<SdkGuideLinks path="client/temporal-client" filter={['go', 'java', 'python']} />
+```
+
+Valid SDK identifiers: `go`, `java`, `dotnet`, `php`, `python`, `ruby`, `rust`, `typescript`.
+
+### Custom links
+
+When SDK guide pages do not follow the standard `/develop/<sdk>/<path>` pattern, pass explicit links with the `links` prop.
+The `path` and `filter` props are ignored when `links` is provided.
+
+```
+<SdkGuideLinks links={[
+  { name: 'goLangBlock',     href: '/develop/go/custom/path',         label: 'Go' },
+  { name: 'pythonBlock',     href: '/develop/python/custom/path',     label: 'Python' },
+  { name: 'typeScriptBlock', href: '/develop/typescript/custom/path', label: 'TypeScript' },
+]} />
+```
+
+Valid `name` values for the block icons: `goLangBlock`, `javaBlock`, `dotnetBlock`, `phpBlock`, `pythonBlock`, `rubyBlock`, `rustBlock`, `typeScriptBlock`.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | `string` | Yes, unless `links` is provided | Path segment appended to `/develop/<sdk>/` for each SDK link. |
+| `filter` | `string[]` | No | Limits generated links to the specified SDK identifiers. Only applies when using `path`. |
+| `links` | `object[]` | Yes, unless `path` is provided | Explicit list of links. Each item requires `name`, `href`, and `label`. Overrides `path` and `filter`. |
+
+### Where the component is used
+
+- `/temporal-client` — links to the Temporal Client feature guide for each SDK
+
+## Using AnnotatedCode
+
+Role: Let readers click concept pills to highlight matching lines in a code sample and show a short description.
+
+Put a normal Markdown fence as children so the sample stays in the MDX. Put `annotations` inline on the page next to that fence.
+
+How to import:
+
+```
+import { AnnotatedCode } from '@site/src/components';
+```
+
+### Usage
+
+Example from the Worker performance page (poller autoscaling):
+
+```
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Workflow Task poller',
+      description: 'Autoscales the number of pollers for Workflow Tasks based on load.',
+      lines: [2],
+    },
+    {
+      label: 'Activity Task poller',
+      description: 'Autoscales the number of pollers for Activity Tasks based on load.',
+      lines: [3],
+    },
+    {
+      label: 'Nexus Task poller',
+      description: 'Autoscales the number of pollers for Nexus Tasks based on load.',
+      lines: [4],
+    },
+  ]}
+>
+```go
+w := worker.New(c, "my-task-queue", worker.Options{
+  WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  ActivityTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+})
+```
+</AnnotatedCode>
+```
+
+`lines` are 1-based line numbers within the fence. Use an empty array when a concept has no lines to highlight in that sample.
+
+Optional `color` on an annotation: `indigo`, `magenta`, `blue`, or `amber`. If omitted, tones rotate in that order.
+
+Optional `hint` prop overrides the default “Highlight a concept” text above the pills.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `annotations` | `object[]` | No | Each item needs `label`, `description`, and `lines`. Optional `color`. |
+| `hint` | `string` | No | Text above the pills. Defaults to `Highlight a concept`. |
+| `children` | Markdown fence | Yes | The code sample to display and highlight. |
+
+### LLM markdown
+
+Registered as `strip-tag` in the MDX → Markdown pipeline: wrapper tags are removed and the fence content is kept. Keep annotation copy in the MDX `annotations` prop so authors edit it on the page.
+
+### Where the component is used
+
+- Worker Versioning — Worker options concepts
+- Worker performance — poller autoscaling options
+- Environment configuration — TOML Cloud profile fields
+- Task Queue Priority and Fairness — priority / fairness options
+- Child Workflows design pattern — async start concepts
 
 ## Using ReleaseNoteHeader
 

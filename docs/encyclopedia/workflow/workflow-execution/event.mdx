@@ -131,10 +131,9 @@ If there is any chance that the code provided to the Side Effect could fail, use
   Email addresses can be displayed, which may be considered Personally Identifiable information (PII data), and should be handled according to your organization’s privacy, access control, logging, and retention policies.
 </ReleaseNoteHeader>
 
-Principal Attribution for Workflow Executions is a server-derived set of non-spoofable `Principal` fields for Event history events.
+Principal Attribution lets you see who triggered each event in a Workflow's Event history. For example, you can determine which user or service started a Workflow, sent a Signal, or requested cancellation.
 
-The `Principal` fields represent the authenticated principal responsible for a [dataplane](/cloud/overview#data-plane-and-control-plane) execution action. 
-This allows for identification of the entity that took a given action. 
+These identity fields are set by the Temporal Service itself based on the authenticated caller, so they can't be forged by client code. To populate them, you need a custom Authorizer that sets the `Principal` field on the authorization result.
 
 This is especially valuable for:
 
@@ -157,7 +156,7 @@ Possible values are as follows:
 
 Anyone who has permission to read Event history in the Namespace (ReadOnly access and above) can see the Principal (and the metadata such as email address).
 
-To enable Principal Attribution for a Namespace, contact [Temporal Cloud support](https://docs.temporal.io/cloud/support#support-ticket).
+To enable Principal Attribution for a Namespace, contact [Temporal Cloud support](/cloud/support#support-ticket).
 
 ### Self-hosted Temporal
 

@@ -4,7 +4,9 @@ const fs = require('fs');
 const {
   filePathToUrlPath,
   extractFrontMatter,
+  resolveUrlFromContent,
   resolveOldUrl,
+  getLiveUrls,
   vercelPatternToRegex,
   findMatchingRedirect,
   loadRedirects,
@@ -75,6 +77,52 @@ describe('resolveOldUrl against real repo pages', () => {
   it('index page', () => {
     const url = resolveOldUrl('docs/cloud/index.mdx', 'HEAD');
     assert.strictEqual(url, '/cloud');
+  });
+
+  it('page-to-folder rename resolves to same URL', () => {
+    // e.g. serverless-workers.mdx -> serverless-workers/index.mdx
+    // Both should resolve to the same URL, so no redirect is needed.
+    const oldUrl = filePathToUrlPath('docs/encyclopedia/workers/serverless-workers.mdx');
+    const newUrl = filePathToUrlPath('docs/encyclopedia/workers/serverless-workers/index.mdx');
+    assert.strictEqual(oldUrl, newUrl);
+    assert.strictEqual(oldUrl, '/encyclopedia/workers/serverless-workers');
+  });
+});
+
+describe('resolveUrlFromContent', () => {
+  it('resolves from raw content without touching git', () => {
+    const content = '---\nid: my-page\n---\nBody';
+    assert.strictEqual(
+      resolveUrlFromContent('docs/cloud/foo.mdx', content),
+      '/cloud/my-page',
+    );
+  });
+
+  it('falls back to the file path when content is null', () => {
+    assert.strictEqual(
+      resolveUrlFromContent('docs/cloud/foo.mdx', null),
+      '/cloud/foo',
+    );
+  });
+});
+
+describe('getLiveUrls', () => {
+  const liveUrls = getLiveUrls('HEAD');
+
+  it('includes URLs served by real pages at HEAD', () => {
+    assert.ok(liveUrls.has('/cloud/terraform-provider'));
+    assert.ok(liveUrls.has('/cloud'));
+  });
+
+  it('resolves frontmatter id/slug overrides into live URLs', () => {
+    // docs/develop/go/set-up.mdx has id: set-up-your-local-go
+    assert.ok(liveUrls.has('/develop/go/set-up-your-local-go'));
+    // The bare file path is NOT the served URL.
+    assert.ok(!liveUrls.has('/develop/go/set-up'));
+  });
+
+  it('does not contain paths for pages that do not exist', () => {
+    assert.ok(!liveUrls.has('/this/page/never/existed'));
   });
 });
 

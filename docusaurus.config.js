@@ -1,5 +1,8 @@
 //@ts-check
-const FontPreloadPlugin = require('webpack-font-preload-plugin');
+const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
+const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
+const mermaidTheme = require('./src/constants/mermaidTheme');
+const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -11,36 +14,57 @@ module.exports = async function createConfigAsync() {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenAnchors: 'throw',
-    favicon: 'img/favicon.ico',
+    favicon: 'favicon.ico',
+    // Aeonik Light/Regular are used above the fold on every page (headings,
+    // sidebar nav). Preloading them here covers non-Vercel previews; the
+    // production Link header in vercel.json is what lets the browser fetch
+    // them before it even has the HTML to parse this tag from. Filenames
+    // come from src/constants/preloadFonts.js — see that file and
+    // bin/check-font-preload-hash.js for why they're hardcoded.
+    headTags: [
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_LIGHT_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: `/assets/fonts/${AEONIK_REGULAR_FILENAME}`,
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+      },
+    ],
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
-    headTags: [
-    ],
+    // JSON-LD structured data (Organization/SoftwareApplication/WebPage) is
+    // rendered per-page instead of injected globally here — see
+    // src/theme/DocItem/StructuredData and src/constants/organizationSchema.
+    // A single global block would put the full Organization property set on
+    // every page, which is exactly the drift risk the JSON-LD audit flagged.
     clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: false,
         respectPrefersColorScheme: true,
-        // switchConfig: {
-        //   darkIcon: "🌙",
-        //   darkIconStyle: {
-        //     content: `url(/img/assets/moon.svg)`,
-        //     transform: "scale(2)",
-        //     margin: "0 0.2rem",
-        //   },
-        //   lightIcon: "\u{1F602}",
-        //   lightIconStyle: {
-        //     content: `url(/img/assets/sun.svg)`,
-        //     transform: "scale(2)",
-        //   },
-        // },
       },
-      metadata: [{ name: 'robots', content: 'follow, index' }],
-      image: '/img/assets/open-graph-shiny.png',
+      metadata: [
+        { name: 'robots', content: 'follow, index' },
+        { property: 'og:type', content: 'website' },
+      ],
+      image: '/img/assets/open-graph-shiny.jpg',
       prism: {
-        //theme: require("prism-react-renderer/themes/nightOwlLight"),
-        // darkTheme: require("prism-react-renderer/themes/dracula"),
+        theme: prismLightTheme,
+        darkTheme: prismDarkTheme,
         additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
@@ -94,6 +118,13 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'ai-cookbook',
             position: 'left',
           },
+          // hide this for now, making this a soft-launch
+          // {
+          //   label: 'Design Patterns',
+          //   to: '/design-patterns',
+          //   activeBasePath: 'design-patterns',
+          //   position: 'left',
+          // },
           {
             label: 'Code Exchange',
             href: 'https://temporal.io/code-exchange',
@@ -203,11 +234,11 @@ module.exports = async function createConfigAsync() {
         ],
       },
       algolia: {
-        apiKey: '4a2fa646f476d7756a7cdc599b625bec',
-        indexName: 'temporal',
+        apiKey: ALGOLIA_SEARCH_API_KEY,
+        indexName: ALGOLIA_INDEX_NAME,
         externalUrlRegex: 'temporal\\.io',
         // contextualSearch: true, // Optional; if you have different version of docs etc (v1 and v2), doesn't display dup results
-        appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
+        appId: ALGOLIA_APP_ID, // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
@@ -223,6 +254,15 @@ module.exports = async function createConfigAsync() {
           ],
         },
       },
+      mermaid: {
+        theme: mermaidTheme.theme,
+        options: {
+          themeVariables: { fontFamily: mermaidTheme.fontFamily },
+          flowchart: mermaidTheme.flowchart,
+          sequence: mermaidTheme.sequence,
+          state: mermaidTheme.state,
+        },
+      },
     },
     presets: [
       [
@@ -232,8 +272,13 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: ['**/clusters/**', '**/ai-cookbook/**'], // do not render context content
-            editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
+            exclude: [
+              '**/_*.{js,jsx,ts,tsx,md,mdx}',
+              '**/_*/**',
+              '**/clusters/**',
+              '**/ai-cookbook/**',
+            ], // partials (underscore-prefixed) + context content we don't render
+            editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
              */
@@ -254,8 +299,7 @@ module.exports = async function createConfigAsync() {
             admonitions: {
               keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
             },
-            remarkPlugins: [(await import('remark-math')).default],
-            rehypePlugins: [(await import('rehype-katex')).default],
+            remarkPlugins: [require('./plugins/og-image/remarkPlugin')],
           },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
@@ -276,6 +320,7 @@ module.exports = async function createConfigAsync() {
             changefreq: 'daily',
             priority: 0.5,
             filename: 'sitemap.xml',
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
           },
         },
       ],
@@ -314,25 +359,7 @@ module.exports = async function createConfigAsync() {
         defer: true,
       },
     ],
-    stylesheets: [
-      {
-        href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-        type: 'text/css',
-        integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-        crossorigin: 'anonymous',
-      },
-    ],
     plugins: [
-      function preloadFontPlugin() {
-        return {
-          name: 'preload-font-plugin',
-          configureWebpack() {
-            return {
-              plugins: [new FontPreloadPlugin()],
-            };
-          },
-        };
-      },
       [
         './plugins/cloud-region-counts',
         {
@@ -363,8 +390,14 @@ module.exports = async function createConfigAsync() {
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
-          docItemComponent: '@site/src/components/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override
+          docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
+          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
+          // Same remark plugin the main docs preset uses (see the `docs` preset
+          // option above) — injects the generated og:image path as real front
+          // matter during MDX compilation so it survives client hydration.
+          // footerText must match the og-image plugin's ai-cookbook target
+          // below, or the hash this injects won't match what postBuild renders.
+          remarkPlugins: [[require('./plugins/og-image/remarkPlugin'), { footerText: 'AI COOKBOOK' }]],
         },
       ],
       [
@@ -377,14 +410,65 @@ module.exports = async function createConfigAsync() {
       [
         require.resolve('./plugins/markdown-pages'),
         {
-          docsDir: 'docs',
+          targets: [
+            { docsDir: 'docs', routeBasePath: '/' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook' },
+          ],
+          llmsTxt: {
+            siteUrl: 'https://docs.temporal.io',
+            title: 'Temporal Platform Documentation',
+            description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            rootContent:
+              'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
+              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
+            excludePaths: ['tctl-v1'],
+            sections: [
+              {
+                title: 'Core Primitives',
+                description: 'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
+                inline: true,
+                autoDiscoverSubsections: 'encyclopedia',
+              },
+              {
+                title: 'Concepts',
+                description: 'What Temporal is and how it works.',
+                inline: true,
+                pages: [
+                  'temporal', 'glossary',
+                ],
+              },
+              { autoDiscover: 'develop', title: 'SDK Development Guides', description: 'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.' },
+              { path: 'develop', title: 'Cross-SDK Development Guides', description: 'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).' },
+              { path: 'cloud', title: 'Temporal Cloud', description: 'Deploy and manage Temporal Cloud' },
+              { path: 'evaluate', title: 'Evaluating Temporal', description: 'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.' },
+              { path: 'production-deployment', title: 'Production Deployment', description: 'Deploy Temporal to production' },
+              { path: 'self-hosted-guide', title: 'Self-Hosted Service Guide', description: 'Deploy, configure, and operate a self-hosted Temporal Service.' },
+              { path: 'cli', title: 'CLI Reference', description: 'Temporal CLI command reference' },
+              { path: 'references', title: 'References', description: 'Configuration and API references' },
+              { path: 'troubleshooting', title: 'Troubleshooting', description: 'Common issues and solutions' },
+              { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
+              { path: 'design-patterns', title: 'Design Patterns', description: 'Reusable Workflow and Activity patterns for common orchestration problems.' },
+              { path: 'guides', title: 'Guides', description: 'End-to-end walkthroughs that solve a specific problem with Temporal.' },
+              { path: 'ai-cookbook', title: 'AI Cookbook', description: 'Runnable examples for building AI and agent applications with Temporal.' },
+              { path: 'demos', title: 'Interactive Demos', description: 'Browser-based interactive demos. These pages are visual tools rather than prose documentation.' },
+            ],
+          },
+        },
+      ],
+      [
+        require.resolve('./plugins/og-image'),
+        {
+          targets: [
+            { docsDir: 'docs', routeBasePath: '/' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+          ],
         },
       ],
       [
         'docusaurus-plugin-llms',
         {
           // Generate both llms.txt (index) and llms-full.txt (complete content)
-          generateLLMsTxt: true,
+          generateLLMsTxt: false,
           generateLLMsFullTxt: true,
           generateMarkdownFiles: false,
 

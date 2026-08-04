@@ -21,6 +21,32 @@ Do not capitalize generic versions of Temporal terms. Use generic versions spari
 
 - Incorrect: "Next, register the activity within the workflow."
 
+#### Temporal Service, not Cluster
+
+In body prose, refer to the Temporal backend as **Temporal Service**, not **Cluster** or **Temporal Cluster**.
+
+- Correct: "Connect your Temporal Client to the Temporal Service."
+- Incorrect: "Connect your Temporal Client to the Temporal Cluster."
+
+This applies to running instances you operate or connect to ("your Temporal Service", "the Temporal Service", "across the Temporal Service").
+
+Exceptions:
+
+- **Multi-Cluster Replication** and other compound terms that include "Cluster" as part of an official name.
+- Code, configuration keys, file paths, CLI commands, and API identifiers (for example, `tctl cluster`, `cluster.pem`).
+- Quoting third-party or historical text where the source uses "Cluster".
+
+#### Word choice
+
+Prefer common, concrete verbs and nouns.
+
+| Prefer | Instead of |
+|--------|------------|
+| use | utilize, leverage |
+| help | facilitate |
+| to | in order to |
+| many | numerous, various (when you can be specific, be specific) |
+
 #### Abbreviation of "identifier"
 
 Do not abbreviate the word "identifier" as "ID", "Id", or "id" unless it's part of a Temporal core term. For core terms, the correct abbreviation is "Id", such as in "Workflow Id" or "Activity Id".

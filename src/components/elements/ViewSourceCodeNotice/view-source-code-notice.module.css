@@ -1,0 +1,15 @@
+.container {
+  background-color: #cd9eff;
+  border: 1px solid #fff;
+  color: #000000;
+  margin-bottom: 3px;
+  border-radius: 6px;
+  padding: 7px;
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: #000000 !important;
+  margin-right: 5px;
+}

@@ -46,7 +46,7 @@ API keys can be created using the [Temporal Cloud UI](https://cloud.temporal.io)
 
 :::info
 
-See the [docs](https://docs.temporal.io/cloud/api-keys#serviceaccount-api-keys) for more details on generating API keys.
+See the [docs](/cloud/api-keys#serviceaccount-api-keys) for more details on generating API keys.
 
 :::
 
@@ -78,6 +78,7 @@ The list of metrics and their labels are available via the [List Descriptors](/c
 ### Labels
 
 A label is a key-value attribute associated with a metric data point. Labels can be used to filter or aggregate metrics.
+Temporal SDKs and the Temporal Service call this same concept a [tag](/glossary#tag); it's called a label once scraped in OpenMetrics format.
 
 Common labels include:
 

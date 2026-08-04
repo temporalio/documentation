@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Forward steps 1 -> 2 -> 3 -->
+  <line x1="29" y1="34" x2="43" y2="34" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <line x1="57" y1="34" x2="71" y2="34" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+
+  <circle cx="20" cy="34" r="9" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="50" cy="34" r="9" fill="none" stroke="#888" stroke-width="2"/>
+  <circle cx="80" cy="34" r="9" fill="none" stroke="#888" stroke-width="2"/>
+
+  <text x="20" y="38" font-family="sans-serif" font-size="10" fill="#888" text-anchor="middle">1</text>
+  <text x="50" y="38" font-family="sans-serif" font-size="10" fill="#888" text-anchor="middle">2</text>
+  <text x="80" y="38" font-family="sans-serif" font-size="10" fill="#888" text-anchor="middle">3</text>
+
+  <!-- Compensation rollback path 3 -> 1 -->
+  <path d="M 80 44 L 80 58 L 20 58" fill="none" stroke="#cc2222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="24,54 16,58 24,62" fill="#cc2222"/>
+</svg>

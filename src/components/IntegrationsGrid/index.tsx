@@ -1,3 +1,8 @@
+// ⚠️  LLM MARKDOWN PIPELINE: the generated .md output renders this grid via
+// scripts/component-handlers/integrations.mjs, which reads the same
+// integrations-data.json and mirrors the `defaultSdks` filtering below. If you
+// change the data source or filter logic here, update that handler too.
+// See MARKDOWN_PIPELINE.md.
 import { useState, useMemo } from "react";
 import Link from "@docusaurus/Link";
 import clsx from "clsx";
@@ -5,12 +10,13 @@ import integrations, { type SDK, type Integration } from "./integrations-data";
 import SdkSvg from "../elements/SdkSvgs/SdkSvg";
 import styles from "./IntegrationsGrid.module.css";
 
-const ALL_SDKS: SDK[] = ["Java", "Python", "Ruby", "TypeScript"];
+const ALL_SDKS: SDK[] = ["Go", "Java", "Python", "Ruby", "TypeScript"];
 const LANGUAGE_AGNOSTIC = "Language-agnostic";
 type SdkFilter = SDK | typeof LANGUAGE_AGNOSTIC;
 const ALL_SDK_FILTERS: SdkFilter[] = [...ALL_SDKS, LANGUAGE_AGNOSTIC];
 
 const SDK_BLOCK_NAMES: Record<SDK, string> = {
+  Go: "goLangBlock",
   Java: "javaBlock",
   Python: "pythonBlock",
   Ruby: "rubyBlock",
@@ -77,6 +83,8 @@ function IntegrationCard({ item }: { item: Integration }) {
       to={item.href}
       className={styles.card}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      data-analytics-id={`integrations-card-${item.name}`}
+      data-analytics-action="click"
     >
       <div className={styles.cardHeader}>
         <h3 className={styles.cardName}>
@@ -141,7 +149,7 @@ export default function IntegrationsGrid({
   }, [query, filters]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-analytics-component="integrations-grid">
       <div className={styles.searchWrapper}>
         <span className={styles.searchIcon}>
           <SearchIcon />
@@ -153,6 +161,8 @@ export default function IntegrationsGrid({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           aria-label="Search integrations"
+          data-analytics-id="integrations-search"
+          data-analytics-action="input"
         />
       </div>
 
@@ -172,6 +182,8 @@ export default function IntegrationsGrid({
                   setFilters((f) => ({ ...f, [key]: toggleIn(f[key], value) }))
                 }
                 aria-pressed={filters[key].includes(value)}
+                data-analytics-id={`integrations-filter-${key}-${value}`}
+                data-analytics-action="click"
               >
                 {value}
               </button>

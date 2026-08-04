@@ -1,22 +1,22 @@
 .container {
-  position: relative;
   display: inline-flex;
   margin-bottom: 2rem;
 }
 
-.splitButton {
-  display: inline-flex;
-  align-items: stretch;
-  height: 30px;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.copyButton {
+.button {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  height: 30px;
   padding: 0 0.7rem;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-right: none;
   background: transparent;
   color: var(--ifm-color-emphasis-700);
   font-family: inherit;
@@ -30,106 +30,71 @@
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
-.copyButton:hover {
+.button:hover {
   background: var(--ifm-color-emphasis-100);
   border-color: var(--ifm-color-emphasis-400);
   color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
 }
 
-.copyButton:focus-visible {
+.button:focus-visible {
   outline: 2px solid var(--ifm-color-primary);
   outline-offset: 2px;
 }
 
-.copyButton:disabled {
+.button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.chevronButton {
+.openIn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.openInLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.iconLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 0.5rem;
+  width: 30px;
+  height: 30px;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-left: 1px solid var(--ifm-color-emphasis-200);
   background: transparent;
   color: var(--ifm-color-emphasis-700);
-  font-family: inherit;
   box-sizing: border-box;
   cursor: pointer;
+  text-decoration: none;
   border-radius: 0;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
-.chevronButton:hover {
+.iconLink:hover {
   background: var(--ifm-color-emphasis-100);
   border-color: var(--ifm-color-emphasis-400);
-  border-left-color: var(--ifm-color-emphasis-300);
   color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
 }
 
-.chevronButton:focus-visible {
+.iconLink[data-analytics-id='open-in-chatgpt']:hover {
+  color: #10a37f;
+  border-color: #10a37f;
+}
+
+.iconLink[data-analytics-id='open-in-claude']:hover {
+  color: #d97757;
+  border-color: #d97757;
+}
+
+.iconLink:focus-visible {
   outline: 2px solid var(--ifm-color-primary);
   outline-offset: 2px;
-}
-
-.dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 100;
-  /* Pull up 1px so the menu's top border merges with the split button's
-     bottom border into a single continuous line instead of doubling up. */
-  margin-top: -1px;
-  background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-300);
-  min-width: 190px;
-}
-
-.dropdownItem {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.45rem 0.75rem;
-  border: none;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  background: transparent;
-  color: var(--ifm-color-emphasis-700);
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 500;
-  line-height: 1.5;
-  box-sizing: border-box;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: left;
-  transition: background-color 150ms ease, color 150ms ease;
-}
-
-.dropdownItem:last-child {
-  border-bottom: none;
-}
-
-.dropdownItem:hover {
-  background: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-emphasis-800);
-  text-decoration: none;
-}
-
-.dropdownItem:focus-visible {
-  outline: 2px solid var(--ifm-color-primary);
-  outline-offset: -2px;
-}
-
-.dropdownItem:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.dropdownItem span {
-  flex: 1;
 }
 
 .icon {
@@ -138,70 +103,46 @@
   flex-shrink: 0;
 }
 
-.chevronIcon {
-  width: 0.75em;
-  height: 0.75em;
-  flex-shrink: 0;
-}
-
-.externalIcon {
-  width: 0.7em;
-  height: 0.7em;
-  flex-shrink: 0;
-  opacity: 0.6;
-  margin-left: auto;
-}
-
 /* Dark mode adjustments */
-:global([data-theme='dark']) .copyButton,
-:global([data-theme='dark']) .chevronButton {
+:global([data-theme='dark']) .button,
+:global([data-theme='dark']) .iconLink {
   border-color: var(--ifm-color-emphasis-400);
   color: var(--ifm-color-emphasis-600);
 }
 
-:global([data-theme='dark']) .chevronButton {
-  border-left-color: var(--ifm-color-emphasis-300);
-}
-
-:global([data-theme='dark']) .copyButton:hover,
-:global([data-theme='dark']) .chevronButton:hover {
+:global([data-theme='dark']) .button:hover,
+:global([data-theme='dark']) .iconLink:hover {
   background: var(--ifm-color-emphasis-200);
   border-color: var(--ifm-color-emphasis-500);
   color: var(--ifm-color-emphasis-800);
 }
 
-:global([data-theme='dark']) .dropdown {
-  border-color: var(--ifm-color-emphasis-400);
+:global([data-theme='dark']) .iconLink[data-analytics-id='open-in-chatgpt']:hover {
+  color: #10a37f;
+  border-color: #10a37f;
 }
 
-:global([data-theme='dark']) .dropdownItem {
-  border-bottom-color: var(--ifm-color-emphasis-300);
-  color: var(--ifm-color-emphasis-600);
-}
-
-:global([data-theme='dark']) .dropdownItem:hover {
-  background: var(--ifm-color-emphasis-200);
-  color: var(--ifm-color-emphasis-800);
+:global([data-theme='dark']) .iconLink[data-analytics-id='open-in-claude']:hover {
+  color: #d97757;
+  border-color: #d97757;
 }
 
 @media (max-width: 600px) {
   .container {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    width: 100%;
   }
 
-  .splitButton {
+  .row {
+    width: 100%;
+  }
+
+  .button {
     height: 38px;
   }
 
-  .copyButton {
-    flex: 1;
-    justify-content: center;
-    padding: 0 1rem;
-  }
-
-  .dropdown {
-    min-width: 100%;
+  .iconLink {
+    width: 38px;
+    height: 38px;
   }
 }

@@ -88,16 +88,8 @@ Spans are created and serialized through the server to give one trace for a Work
 
 Logging enables you to capture and persist important execution details from your Workflow and Activity code.
 
-Logging levels typically include:
+Logging uses the Ruby standard logging APIs. You can find the log levels supported in [their official documentation](https://ruby-doc.org/stdlib-2.4.0/libdoc/logger/rdoc/Logger.html). The Temporal SDK core normally uses `WARN` as its default logging level.
 
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-Logging uses the Ruby standard logging APIs.
 The `logger` can be set when connecting a client.
 The following example shows logging on the console and sets the level to `INFO`.
 

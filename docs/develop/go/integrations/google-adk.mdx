@@ -1,0 +1,616 @@
+---
+id: google-adk
+title: Google ADK integration
+sidebar_label: Google ADK
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+  - google
+  - adk
+  - durable execution
+  - ai workflows
+tags:
+  - Google ADK
+  - Go SDK
+  - Temporal SDKs
+description: Run Google ADK agents with durable execution using the Temporal Go SDK and the googleadk contrib integration.
+---
+
+Temporal's integration with [Google ADK](https://google.github.io/adk-docs/) (`adk-go`) gives your agents
+[Durable Execution](/temporal#durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
+LLM call becomes a durable Temporal Activity, and any tool that does I/O runs as an Activity too — so every step is
+retried, timed out, recorded in Workflow history, and replayable after crashes or restarts.
+
+You keep building agents the native ADK way — `llmagent.New(...)` with a `model.LLM`, `tool.Tool`s / `tool.Toolset`s and
+`SubAgents`, wrapped in `runner.New(...)` and driven by `r.Run(...)`. You change two things:
+
+1. Use `googleadk.NewModel("<model-name>")` as your agent's `Model`. It is a `model.LLM` whose calls dispatch to the
+   `InvokeModel` Activity; the real model is reconstructed **worker-side**, never in the Workflow.
+2. Pass `googleadk.NewContext(workflowCtx)` to `r.Run`, which installs Temporal-deterministic time, UUID, and
+   task-fan-out providers so the agent loop replays deterministically.
+
+Tools run **in-workflow by default** (the idiomatic Temporal model: the Workflow is deterministic, and anything touching
+the network, clock, or disk goes through an Activity). Opt a tool into an Activity with `googleadk.ActivityAsTool`, or
+use `googleadk.NewMCPToolset` for MCP.
+
+:::info
+
+The `googleadk` contrib module is new. It depends on determinism seams (`platform.WithTimeProvider`,
+`WithUUIDProvider`, `WithTaskRunner`) that merged into `google.golang.org/adk/v2` after its latest tagged release, so
+`go.mod` pins `adk/v2` to a `main`-branch pseudo-version until a release ships that includes them.
+
+:::
+
+Code snippets in this guide are taken from the
+[Google ADK plugin samples](https://github.com/temporalio/samples-go/tree/main/googleadk). Refer to the samples for the
+complete, runnable code.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with Google ADK. If you aren't, refer to the
+  [Google ADK documentation](https://google.github.io/adk-docs/) for more details.
+- If you are new to Temporal, read [Understanding Temporal](/evaluate/understanding-temporal) or take the
+  [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Set up your local development environment by following the
+  [Set up your local development environment](/develop/go/set-up-your-local-go) guide. Leave the Temporal development
+  server running if you want to test your code locally.
+- Provide model credentials **worker-side** — for Gemini, set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in the worker's
+  environment. Credentials are captured in the worker's `ModelFactory` and never cross the Activity boundary into the
+  Workflow.
+
+## Install the plugin
+
+Install the `googleadk` contrib module:
+
+```bash
+go get go.temporal.io/sdk/contrib/googleadk@latest
+```
+
+```go
+import "go.temporal.io/sdk/contrib/googleadk"
+```
+
+## Run an agent with Durable Execution
+
+An agent has two halves: the **worker** registers the real model behind the `InvokeModel` Activity, and the **workflow**
+builds a vanilla ADK agent and drives it.
+
+### Configure the Worker
+
+Configure the Worker with the integration's plugin, which registers the model and MCP Activities at Worker start (and
+closes any cached MCP toolsets at Worker stop). The real Gemini model lives in the plugin's config, behind the Activity
+boundary; the API key is read worker-side. Disable the model SDK's own retries so Temporal's `RetryPolicy` is the
+single source of truth.
+
+<!--SNIPSTART googleadk-hello-worker-->
+[googleadk/worker/main.go](https://github.com/temporalio/samples-go/blob/main/googleadk/worker/main.go)
+```go
+// The plugin registers the integration's Activities on the worker (and closes
+// any cached MCP toolsets at worker stop). The real Gemini model lives in the
+// factory, behind the Activity boundary; the API key is read worker-side from
+// the env and never crosses into the workflow. Disable the model SDK's own
+// retries so Temporal's RetryPolicy is the single source of truth.
+adkPlugin, err := googleadk.NewPlugin(googleadk.Config{
+	Models: map[string]googleadk.ModelFactory{
+		adk.ModelName: func(ctx context.Context, name string) (model.LLM, error) {
+			// nil config reads GEMINI_API_KEY / GOOGLE_API_KEY from the env.
+			return gemini.NewModel(ctx, name, nil)
+		},
+	},
+})
+if err != nil {
+	log.Fatalln("Unable to build googleadk plugin", err)
+}
+
+w := worker.New(c, adk.TaskQueue, worker.Options{
+	Plugins: []worker.Plugin{adkPlugin},
+})
+
+w.RegisterWorkflow(adk.AgentWorkflow)
+// Register GetWeather under the tool name the ActivityAsTool dispatches, so the
+// agent's get_weather call resolves to this activity.
+w.RegisterActivityWithOptions(adk.GetWeather, activity.RegisterOptions{Name: adk.WeatherToolName})
+
+if err := w.Run(worker.InterruptCh()); err != nil {
+	log.Fatalln("Unable to start worker", err)
+}
+```
+<!--SNIPEND-->
+
+`Config.Models` is optional for providers ADK's registry already knows (for example `gemini-*`): when a model name is
+absent, `InvokeModel` falls back to `model.NewLLM`. Supply a factory to inject credentials, disable the model SDK's own
+retries, or override the default.
+
+### Define the Workflow
+
+Build the agent the ordinary ADK way, using `googleadk.NewModel` for the model and passing `googleadk.NewContext(ctx)`
+to `r.Run`. The `get_weather` tool is an ordinary Temporal Activity exposed to the agent with `googleadk.ActivityAsTool`.
+
+<!--SNIPSTART googleadk-hello-workflow-->
+[googleadk/workflow.go](https://github.com/temporalio/samples-go/blob/main/googleadk/workflow.go)
+```go
+func AgentWorkflow(ctx workflow.Context, question string) (string, error) {
+	weatherTool, err := googleadk.ActivityAsTool(GetWeather, googleadk.ActivityToolOptions{
+		Name:        WeatherToolName,
+		Description: "Get the current weather for a city.",
+	})
+	if err != nil {
+		return "", err
+	}
+
+	// Build the agent the ordinary ADK way. NewModel is a model.LLM that carries
+	// only the model name in-workflow; the real Gemini client lives worker-side.
+	root, err := llmagent.New(llmagent.Config{
+		Name:        "assistant",
+		Description: "a helpful weather assistant",
+		Model:       googleadk.NewModel(ModelName),
+		Instruction: "Answer the user's question. Use the get_weather tool when asked about the weather.",
+		Tools:       []tool.Tool{weatherTool},
+	})
+	if err != nil {
+		return "", err
+	}
+
+	r, err := runner.New(runner.Config{
+		AppName:           "weather",
+		Agent:             root,
+		SessionService:    session.InMemoryService(),
+		AutoCreateSession: true,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	// NewContext bridges the workflow.Context into the context ADK reads its
+	// determinism/executor seams from. Pass it straight to Run.
+	adkCtx := googleadk.NewContext(ctx)
+	msg := genai.NewContentFromText(question, genai.RoleUser)
+
+	var answer string
+	for ev, err := range r.Run(adkCtx, "user-1", "session-1", msg, agent.RunConfig{}) {
+		if err != nil {
+			return "", err
+		}
+		if ev != nil && ev.Content != nil {
+			for _, p := range ev.Content.Parts {
+				if p != nil && p.Text != "" {
+					answer = p.Text
+				}
+			}
+		}
+	}
+	return answer, nil
+}
+
+```
+<!--SNIPEND-->
+
+The tool itself is an ordinary Temporal Activity — register it on the worker as usual, and expose it to the agent with
+`ActivityAsTool` (its parameter schema is inferred from the argument type):
+
+<!--SNIPSTART googleadk-hello-tool-->
+[googleadk/workflow.go](https://github.com/temporalio/samples-go/blob/main/googleadk/workflow.go)
+```go
+func GetWeather(ctx context.Context, in GetWeatherInput) (GetWeatherOutput, error) {
+	return GetWeatherOutput{City: in.City, Conditions: "sunny, 72°F"}, nil
+}
+
+```
+<!--SNIPEND-->
+
+### Start the Workflow
+
+Start the Workflow like any other and read its result:
+
+<!--SNIPSTART googleadk-hello-starter-->
+[googleadk/starter/main.go](https://github.com/temporalio/samples-go/blob/main/googleadk/starter/main.go)
+```go
+question := "What's the weather in San Francisco?"
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, adk.AgentWorkflow, question)
+if err != nil {
+	log.Fatalln("Unable to execute workflow", err)
+}
+
+log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
+
+// Synchronously wait for the workflow completion.
+var answer string
+if err := we.Get(context.Background(), &answer); err != nil {
+	log.Fatalln("Unable to get workflow result", err)
+}
+log.Println("Agent answer:", answer)
+```
+<!--SNIPEND-->
+
+## Tools
+
+- **Function tools run in-workflow by default.** Ordinary `functiontool.New(...)` tools run on Temporal's deterministic
+  dispatcher inside the Workflow — no Activity overhead — and their session-state mutations propagate normally. Their
+  code must be deterministic and replay-safe: no direct network, clock, randomness, or goroutines.
+- **Opt a tool into an Activity when it does I/O.** `googleadk.ActivityAsTool(myActivity, ...)` exposes an existing
+  `func(context.Context, TArgs) (TResults, error)` Temporal Activity to the agent as a tool (shown in the Hello World
+  Workflow above); its call dispatches the Activity, so it is retried, timed out, and visible in the UI.
+- **MCP, statelessly.** `googleadk.NewMCPToolset(...)` is a workflow-side proxy that lists remote tools via the
+  `ListMcpTools` Activity and executes calls via `CallMcpTool`. The live, stateful `mcptoolset.New(...)` runs worker-side
+  (registered in `Config.MCPToolsets`), never in the Workflow.
+
+## Multi-agent systems
+
+Build a coordinator agent with specialist `SubAgents`; ADK wires the parent/child relationship and exposes the built-in
+`transfer_to_agent` tool automatically. The entire tree — including the transfer hop — runs in the Workflow; only the
+model calls and any Activity-backed tools leave it.
+
+<!--SNIPSTART googleadk-multiagent-workflow-->
+[googleadk/multiagent/workflow.go](https://github.com/temporalio/samples-go/blob/main/googleadk/multiagent/workflow.go)
+```go
+func MultiAgentWorkflow(ctx workflow.Context, question string) (string, error) {
+	weatherTool, err := googleadk.ActivityAsTool(GetWeather, googleadk.ActivityToolOptions{
+		Name:        WeatherToolName,
+		Description: "Get the current weather for a city.",
+	})
+	if err != nil {
+		return "", err
+	}
+
+	// The weather specialist owns the get_weather tool.
+	weather, err := llmagent.New(llmagent.Config{
+		Name:        "weather",
+		Description: "answers questions about the current weather in a city",
+		Model:       googleadk.NewModel(WeatherModelName),
+		Instruction: "You are a weather specialist. Use the get_weather tool to answer weather questions.",
+		Tools:       []tool.Tool{weatherTool},
+	})
+	if err != nil {
+		return "", err
+	}
+
+	// The jokes specialist just tells jokes.
+	jokes, err := llmagent.New(llmagent.Config{
+		Name:        "jokes",
+		Description: "tells a light-hearted joke",
+		Model:       googleadk.NewModel(JokesModelName),
+		Instruction: "You are a comedian. Respond with a short, friendly joke.",
+	})
+	if err != nil {
+		return "", err
+	}
+
+	// The coordinator delegates to whichever specialist fits the question. ADK
+	// wires the parent/child relationship from SubAgents and exposes the built-in
+	// transfer_to_agent tool automatically.
+	coordinator, err := llmagent.New(llmagent.Config{
+		Name:        "coordinator",
+		Description: "routes the user's request to the right specialist",
+		Model:       googleadk.NewModel(CoordinatorModelName),
+		Instruction: "You are a router. Delegate weather questions to the weather agent " +
+			"and requests for a joke to the jokes agent. Do not answer directly.",
+		SubAgents: []agent.Agent{weather, jokes},
+	})
+	if err != nil {
+		return "", err
+	}
+
+	r, err := runner.New(runner.Config{
+		AppName:           "multiagent",
+		Agent:             coordinator,
+		SessionService:    session.InMemoryService(),
+		AutoCreateSession: true,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	adkCtx := googleadk.NewContext(ctx)
+	msg := genai.NewContentFromText(question, genai.RoleUser)
+
+	var answer string
+	for ev, err := range r.Run(adkCtx, "user-1", "session-1", msg, agent.RunConfig{}) {
+		if err != nil {
+			return "", err
+		}
+		if ev == nil || ev.Content == nil {
+			continue
+		}
+		// Keep the last non-empty text produced by any agent in the tree; after a
+		// transfer_to_agent hop this is the specialist's answer.
+		for _, p := range ev.Content.Parts {
+			if p != nil && p.Text != "" {
+				answer = p.Text
+			}
+		}
+	}
+	return answer, nil
+}
+
+```
+<!--SNIPEND-->
+
+## Human-in-the-loop tool confirmation
+
+A sensitive tool calls ADK's `ctx.RequestConfirmation(hint, payload)`, which ends the turn with an
+`adk_request_confirmation` function call. The Workflow detects pending confirmations with
+`googleadk.PendingConfirmations`, durably waits for the human's decision (delivered as a Temporal signal), and resumes
+the agent with `googleadk.ConfirmationResponse`. Because the wait is durable, the Workflow can sit idle for days and
+survive worker restarts — when the approval signal arrives, the agent resumes exactly where it paused.
+
+<!--SNIPSTART googleadk-hitl-workflow-->
+[googleadk/humanintheloop/workflow.go](https://github.com/temporalio/samples-go/blob/main/googleadk/humanintheloop/workflow.go)
+```go
+func ApprovalWorkflow(ctx workflow.Context, request string) (Result, error) {
+	delTool, err := functiontool.New[DeleteArgs, map[string]any](
+		functiontool.Config{
+			Name:        DeleteToolName,
+			Description: "Delete a named resource. Requires human confirmation before it runs.",
+		},
+		deleteResource,
+	)
+	if err != nil {
+		return Result{}, err
+	}
+
+	root, err := llmagent.New(llmagent.Config{
+		Name:        "assistant",
+		Description: "an assistant that can delete resources with human approval",
+		Model:       googleadk.NewModel(ModelName),
+		Instruction: "Use the delete_resource tool when the user asks to delete something.",
+		Tools:       []tool.Tool{delTool},
+	})
+	if err != nil {
+		return Result{}, err
+	}
+
+	r, err := runner.New(runner.Config{
+		AppName:           "hitl",
+		Agent:             root,
+		SessionService:    session.InMemoryService(),
+		AutoCreateSession: true,
+	})
+	if err != nil {
+		return Result{}, err
+	}
+
+	adkCtx := googleadk.NewContext(ctx)
+	msg := genai.NewContentFromText(request, genai.RoleUser)
+
+	var res Result
+	// Drive the run in passes: each Run call is one pass over the same session. A
+	// pass either completes (no pending confirmation) or pauses awaiting a human.
+	for {
+		var events []*session.Event
+		for ev, err := range r.Run(adkCtx, "user-1", "session-1", msg, agent.RunConfig{}) {
+			if err != nil {
+				return Result{}, err
+			}
+			if ev == nil {
+				continue
+			}
+			events = append(events, ev)
+			if ev.Content != nil {
+				for _, p := range ev.Content.Parts {
+					if p != nil && p.Text != "" {
+						res.Answer = p.Text
+					}
+				}
+			}
+		}
+
+		pending := googleadk.PendingConfirmations(events)
+		if len(pending) == 0 {
+			// The agent finished without (further) confirmations needed.
+			return res, nil
+		}
+
+		// The agent paused. Durably wait for the human's decision to arrive as a
+		// Temporal signal. This is the whole point: the workflow can sit here for
+		// as long as it takes — across worker restarts — without losing state.
+		//
+		// This handles one pending confirmation per pass — the recommended
+		// pattern (see the googleadk.ConfirmationResponse docs): resuming
+		// several decisions at once can re-dispatch the approved tool calls in
+		// an order that is not replay-stable. Any other pending confirmations
+		// simply surface again on the next pass.
+		var decision googleadk.ConfirmationDecision
+		workflow.GetSignalChannel(ctx, googleadk.ConfirmationSignalName).Receive(ctx, &decision)
+		res.Approved = decision.Confirmed
+
+		// Match the decision to the pending confirmation and resume the run with
+		// it as the next message. ADK re-dispatches (or blocks) the original tool
+		// call based on Confirmed.
+		if decision.FunctionCallID == "" {
+			decision.FunctionCallID = pending[0].FunctionCallID
+		}
+		msg = googleadk.ConfirmationResponse(decision)
+	}
+}
+
+```
+<!--SNIPEND-->
+
+## Continue-as-new for long conversations
+
+A conversation's history lives in the ADK session. To keep a Workflow's history bounded, snapshot the session with
+`googleadk.ExportSession` and [continue-as-new](/develop/go/workflows/continue-as-new); rebuild it on the next run with
+`googleadk.ImportSession`. `SessionSnapshot` is JSON-serializable (session-scoped state plus the full event history), so
+every value in session state and every tool result must be JSON-encodable.
+
+<!--SNIPSTART googleadk-chat-workflow-->
+[googleadk/chat/workflow.go](https://github.com/temporalio/samples-go/blob/main/googleadk/chat/workflow.go)
+```go
+func ChatWorkflow(ctx workflow.Context, in ChatInput) error {
+	// A fresh in-memory session service, kept in a local so we can Export it later.
+	svc := session.InMemoryService()
+
+	adkCtx := googleadk.NewContext(ctx)
+
+	// Resume a prior conversation if this run was continued-as-new.
+	if in.Snapshot != nil {
+		if _, err := googleadk.ImportSession(adkCtx, svc, in.Snapshot); err != nil {
+			return err
+		}
+	}
+
+	root, err := llmagent.New(llmagent.Config{
+		Name:        "assistant",
+		Description: "a friendly conversational assistant",
+		Model:       googleadk.NewModel(ModelName),
+		Instruction: "You are a helpful assistant. Answer the user, using the conversation history for context.",
+	})
+	if err != nil {
+		return err
+	}
+
+	r, err := runner.New(runner.Config{
+		AppName:           AppName,
+		Agent:             root,
+		SessionService:    svc,
+		AutoCreateSession: true,
+	})
+	if err != nil {
+		return err
+	}
+
+	turns := 0
+	// One agent turn runs at a time: serialize concurrent Updates so they can't
+	// interleave on the shared ADK session.
+	busy := false
+
+	err = workflow.SetUpdateHandlerWithOptions(
+		ctx,
+		SendMessageUpdateName,
+		func(ctx workflow.Context, text string) (string, error) {
+			if err := workflow.Await(ctx, func() bool { return !busy }); err != nil {
+				return "", err
+			}
+			busy = true
+			defer func() { busy = false }()
+
+			// Build the ADK context from this Update handler's own workflow.Context so
+			// the model Activity is scheduled on the handler's coroutine.
+			turnCtx := googleadk.NewContext(ctx)
+			var answer string
+			msg := genai.NewContentFromText(text, genai.RoleUser)
+			for ev, err := range r.Run(turnCtx, UserID, SessionID, msg, agent.RunConfig{}) {
+				if err != nil {
+					return "", err
+				}
+				if ev == nil || ev.Content == nil {
+					continue
+				}
+				for _, p := range ev.Content.Parts {
+					if p != nil && p.Text != "" {
+						answer = p.Text
+					}
+				}
+			}
+			turns++
+			return answer, nil
+		},
+		workflow.UpdateHandlerOptions{
+			Validator: func(ctx workflow.Context, text string) error {
+				if text == "" {
+					return fmt.Errorf("message must not be empty")
+				}
+				return nil
+			},
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	// Serve messages until Temporal suggests continue-as-new (history getting large)
+	// or the demo turn cap is reached.
+	if err := workflow.Await(ctx, func() bool {
+		return workflow.GetInfo(ctx).GetContinueAsNewSuggested() || (in.MaxTurns > 0 && turns >= in.MaxTurns)
+	}); err != nil {
+		return err
+	}
+
+	// Let any in-flight Update finish so its turn is captured in the snapshot.
+	if err := workflow.Await(ctx, func() bool { return workflow.AllHandlersFinished(ctx) }); err != nil {
+		return err
+	}
+
+	snap, err := googleadk.ExportSession(adkCtx, svc, AppName, UserID, SessionID)
+	if err != nil {
+		return err
+	}
+	return workflow.NewContinueAsNewError(ctx, ChatWorkflow, ChatInput{
+		Snapshot: snap,
+		MaxTurns: in.MaxTurns,
+	})
+}
+
+```
+<!--SNIPEND-->
+
+## Streaming
+
+`googleadk.NewModel(name, googleadk.WithStreaming(topic, 0))` drives the model in streaming mode: the `InvokeModel`
+Activity calls the model with `stream=true`, heartbeats, and publishes each chunk to a per-run
+[`workflowstreams`](https://pkg.go.dev/go.temporal.io/sdk/contrib/workflowstreams) topic for external (UI) consumers,
+then returns the aggregated final response into the Workflow so replay stays deterministic.
+
+Call `googleadk.StreamServer(ctx)` once near the top of the Workflow that drives `r.Run`, and set
+`agent.RunConfig{StreamingMode: agent.StreamingModeSSE}`:
+
+```go
+func StreamingAgentWorkflow(ctx workflow.Context, q string) (string, error) {
+	if err := googleadk.StreamServer(ctx); err != nil { // required when streaming
+		return "", err
+	}
+	topic := "run-" + workflow.GetInfo(ctx).WorkflowExecution.ID
+	root, _ := llmagent.New(llmagent.Config{
+		Model: googleadk.NewModel("gemini-2.0-flash", googleadk.WithStreaming(topic, 0)),
+		// ...
+	})
+	// ... build the runner, set agent.RunConfig{StreamingMode: agent.StreamingModeSSE}, and drive r.Run
+}
+```
+
+External consumers read chunks with `workflowstreams.NewClient(c, workflowID, ...).Subscribe(...)`. The bidirectional
+`RunLive` path (hard-coded goroutines/channels) is **not** supported.
+
+## Error handling
+
+Model, tool, and MCP failures surface as Temporal `ApplicationError`s tagged `googleadk.ModelError`, `.ToolError`, and
+`.McpError`. Classify them with `googleadk.IsNonRetryable(err)` rather than string-matching. For model calls, the
+upstream HTTP status drives retryability (`408`/`409`/`429`/`5xx` are retryable; other `4xx` are not).
+
+:::tip
+
+Disable your model client's own retries in the `ModelFactory`. `InvokeModel` already runs under Temporal's
+`RetryPolicy`; leaving the model SDK's retries on retries a transient failure twice over. Let Temporal own retries.
+
+:::
+
+## Composing with other plugins
+
+The integration's plugin only registers its Activities and closes cached MCP toolsets — it uses the default JSON data
+converter and ships no client/worker interceptor — so it composes with interceptor- or converter-based plugins (for example
+[`sdk-go/contrib/opentelemetry`](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry)) without conflict. ADK
+emits its own OpenTelemetry spans; register your tracing interceptor on the worker as usual.
+
+## Testing without a live LLM
+
+The plugin ships test helpers so you can unit-test agent Workflows with no network: `FakeModel` (with `TextResponse` /
+`FunctionCallResponse` builders) and `FakeMCPServer`. Register them through the same `googleadk.Config` your production
+worker uses — via `googleadk.NewActivities` and `Register` rather than the plugin, since the test environments construct
+no real Worker and therefore run no plugins.
+
+## Supported and not-yet-supported
+
+- **Supported:** single- and multi-agent (`SubAgents`) trees, in-workflow function tools, `ActivityAsTool`, stateless
+  MCP, Gemini built-in tools (executed server-side inside `InvokeModel`), human-in-the-loop tool confirmation,
+  continue-as-new session-state carry, the in-memory session service, and SSE streaming.
+- **Not yet:** `RunLive` (bidirectional streaming), sub-agent-as-child-workflow, live memory/artifact tools that require
+  in-workflow network I/O, and database/Vertex session services. These raise or are documented rather than silently
+  degrading.
+
+## Samples
+
+The [Google ADK plugin samples](https://github.com/temporalio/samples-go/tree/main/googleadk) demonstrate a basic agent
+with a tool, a [multi-agent](https://github.com/temporalio/samples-go/tree/main/googleadk/multiagent) system, durable
+[human-in-the-loop](https://github.com/temporalio/samples-go/tree/main/googleadk/humanintheloop) tool approval, and a
+[continue-as-new chat](https://github.com/temporalio/samples-go/tree/main/googleadk/chat).
