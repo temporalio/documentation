@@ -3,6 +3,7 @@ id: client-environment-configuration
 title: Environment configuration
 sidebar_label: Environment configuration
 description: Reference for the environment variables that configure Temporal Clients, including the Temporal CLI.
+toc_max_heading_level: 2
 tags:
   - Temporal Client
   - Configuration
@@ -10,9 +11,8 @@ tags:
   - TOML
 ---
 
-This page lists every environment variable that configures a Temporal Client, along with its TOML configuration key,
-the equivalent Temporal CLI flag, and which clients read it. The Temporal CLI is a Temporal Client, so its variables
-are included here.
+This page lists every environment variable that configures a Temporal Client, along with its TOML configuration key and
+the equivalent Temporal CLI flag. The Temporal CLI is a Temporal Client, so its variables are included here.
 
 For how to use these variables and configuration files together, refer to
 [Environment configuration](/develop/environment-configuration).
@@ -20,31 +20,58 @@ For how to use these variables and configuration files together, refer to
 Environment variables always take precedence over values in a TOML configuration file. An explicitly passed CLI flag
 takes precedence over the matching environment variable.
 
-The Supported by column records which clients read a variable. Where a client reads a variable but applies it with
-caveats, the description says so.
-
 ## Client settings
 
-| Variable | TOML key | CLI flag | Supported by | Description |
-| :------- | :------- | :------- | :----------- | :---------- |
-| `TEMPORAL_CONFIG_FILE` | NA | `--config-file` | All | Path to the TOML configuration file. Defaults to `temporal.toml` in a platform-specific directory. |
-| `TEMPORAL_PROFILE` | NA | `--profile` | All | Name of the configuration profile to load. Defaults to `default`. |
-| `TEMPORAL_ADDRESS` | `profile.<name>.address` | `--address` | All | Host and port of the Temporal Frontend Service, such as `localhost:7233`. |
-| `TEMPORAL_NAMESPACE` | `profile.<name>.namespace` | `--namespace` | All | Temporal Namespace to connect to. |
-| `TEMPORAL_API_KEY` | `profile.<name>.api_key` | `--api-key` | All | API key for authentication. When set, TLS is enabled by default. |
-| `TEMPORAL_TLS` | `profile.<name>.tls.disabled` | `--tls` | All | Set to `true` to enable TLS, `false` to disable it. The TOML key is inverted: `disabled = true` turns TLS off. |
-| `TEMPORAL_TLS_CLIENT_CERT_PATH` | `profile.<name>.tls.client_cert_path` | `--tls-cert-path` | All | Filesystem path to the client's public TLS certificate. Cannot be combined with `TEMPORAL_TLS_CLIENT_CERT_DATA`. |
-| `TEMPORAL_TLS_CLIENT_CERT_DATA` | `profile.<name>.tls.client_cert_data` | `--tls-cert-data` | All | Raw PEM data for the client's public TLS certificate. Cannot be combined with `TEMPORAL_TLS_CLIENT_CERT_PATH`. |
-| `TEMPORAL_TLS_CLIENT_KEY_PATH` | `profile.<name>.tls.client_key_path` | `--tls-key-path` | All | Filesystem path to the client's private TLS key. Cannot be combined with `TEMPORAL_TLS_CLIENT_KEY_DATA`. |
-| `TEMPORAL_TLS_CLIENT_KEY_DATA` | `profile.<name>.tls.client_key_data` | `--tls-key-data` | All | Raw PEM data for the client's private TLS key. Cannot be combined with `TEMPORAL_TLS_CLIENT_KEY_PATH`. |
-| `TEMPORAL_TLS_SERVER_CA_CERT_PATH` | `profile.<name>.tls.server_ca_cert_path` | `--tls-ca-path` | All | Filesystem path to the Certificate Authority certificate used to verify the server. Cannot be combined with `TEMPORAL_TLS_SERVER_CA_CERT_DATA`. |
-| `TEMPORAL_TLS_SERVER_CA_CERT_DATA` | `profile.<name>.tls.server_ca_cert_data` | `--tls-ca-data` | All | Raw PEM data for the Certificate Authority certificate used to verify the server. Cannot be combined with `TEMPORAL_TLS_SERVER_CA_CERT_PATH`. |
-| `TEMPORAL_TLS_SERVER_NAME` | `profile.<name>.tls.server_name` | `--tls-server-name` | All | Overrides the server name used for Server Name Indication (SNI) in the TLS handshake. |
-| `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | `profile.<name>.tls.disable_host_verification` | `--tls-disable-host-verification` | All | Disables server hostname verification. Use with caution. Not every SDK applies this setting. |
-| `TEMPORAL_GRPC_META_*` | `profile.<name>.grpc_meta` | `--grpc-meta` | All | Sets gRPC headers. The part after `_META_` becomes the header key, so `TEMPORAL_GRPC_META_SOME_KEY` sets `some-key`. |
-| `TEMPORAL_CODEC_ENDPOINT` | `profile.<name>.codec.endpoint` | `--codec-endpoint` | All except Java | Endpoint for a remote Codec Server. SDKs that support this setting do not apply it by default. Intended mostly for CLI use. |
-| `TEMPORAL_CODEC_AUTH` | `profile.<name>.codec.auth` | `--codec-auth` | All except Java | Authorization header value for the remote Codec Server. |
-| `TEMPORAL_CLIENT_AUTHORITY` | `profile.<name>.authority` | NA | Go | Overrides the `:authority` gRPC header. Currently a Go SDK extension with no equivalent in other clients. |
+Every SDK and the Temporal CLI read the variables below.
+
+| Variable | Description |
+| :------- | :---------- |
+| `TEMPORAL_CONFIG_FILE` | Path to the TOML configuration file. Defaults to `temporal.toml` in a platform-specific directory. No TOML key; CLI flag `--config-file`. |
+| `TEMPORAL_PROFILE` | Name of the configuration profile to load. Defaults to `default`. No TOML key; CLI flag `--profile`. |
+| `TEMPORAL_ADDRESS` | Host and port of the Temporal Frontend Service, such as `localhost:7233`. TOML key `profile.<name>.address`; CLI flag `--address`. |
+| `TEMPORAL_NAMESPACE` | Temporal Namespace to connect to. TOML key `profile.<name>.namespace`; CLI flag `--namespace`. |
+| `TEMPORAL_API_KEY` | API key for authentication. When set, TLS is enabled by default. TOML key `profile.<name>.api_key`; CLI flag `--api-key`. |
+| `TEMPORAL_TLS` | Set to `true` to enable TLS, `false` to disable it. TOML key `profile.<name>.tls.disabled`, which inverts the value: `disabled = true` turns TLS off. CLI flag `--tls`. |
+| `TEMPORAL_TLS_CLIENT_CERT_PATH` | Filesystem path to the client's public TLS certificate. Cannot be combined with `TEMPORAL_TLS_CLIENT_CERT_DATA`. TOML key `profile.<name>.tls.client_cert_path`; CLI flag `--tls-cert-path`. |
+| `TEMPORAL_TLS_CLIENT_CERT_DATA` | Raw PEM data for the client's public TLS certificate. Cannot be combined with `TEMPORAL_TLS_CLIENT_CERT_PATH`. TOML key `profile.<name>.tls.client_cert_data`; CLI flag `--tls-cert-data`. |
+| `TEMPORAL_TLS_CLIENT_KEY_PATH` | Filesystem path to the client's private TLS key. Cannot be combined with `TEMPORAL_TLS_CLIENT_KEY_DATA`. TOML key `profile.<name>.tls.client_key_path`; CLI flag `--tls-key-path`. |
+| `TEMPORAL_TLS_CLIENT_KEY_DATA` | Raw PEM data for the client's private TLS key. Cannot be combined with `TEMPORAL_TLS_CLIENT_KEY_PATH`. TOML key `profile.<name>.tls.client_key_data`; CLI flag `--tls-key-data`. |
+| `TEMPORAL_TLS_SERVER_CA_CERT_PATH` | Filesystem path to the Certificate Authority certificate used to verify the server. Cannot be combined with `TEMPORAL_TLS_SERVER_CA_CERT_DATA`. TOML key `profile.<name>.tls.server_ca_cert_path`; CLI flag `--tls-ca-path`. |
+| `TEMPORAL_TLS_SERVER_CA_CERT_DATA` | Raw PEM data for the Certificate Authority certificate used to verify the server. Cannot be combined with `TEMPORAL_TLS_SERVER_CA_CERT_PATH`. TOML key `profile.<name>.tls.server_ca_cert_data`; CLI flag `--tls-ca-data`. |
+| `TEMPORAL_TLS_SERVER_NAME` | Overrides the server name used for Server Name Indication (SNI) in the TLS handshake. TOML key `profile.<name>.tls.server_name`; CLI flag `--tls-server-name`. |
+| `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | Disables server hostname verification. Use with caution. Not every SDK applies this setting. TOML key `profile.<name>.tls.disable_host_verification`; CLI flag `--tls-disable-host-verification`. |
+| `TEMPORAL_GRPC_META_*` | Sets gRPC headers. The part after `_META_` becomes the header key, so `TEMPORAL_GRPC_META_SOME_KEY` sets `some-key`. TOML key `profile.<name>.grpc_meta`; CLI flag `--grpc-meta`. |
+
+## Client settings not read by every client
+
+The variables below belong to the same client configuration, but support for them varies. Each one lists the clients
+that read it.
+
+### `TEMPORAL_CODEC_ENDPOINT`
+
+Endpoint for a remote Codec Server. SDKs that read this variable do not apply the codec by default, so it is intended
+mostly for CLI use.
+
+- TOML key: `profile.<name>.codec.endpoint`
+- CLI flag: `--codec-endpoint`
+- Read by: every client except Java
+
+### `TEMPORAL_CODEC_AUTH`
+
+Authorization header value sent to the remote Codec Server.
+
+- TOML key: `profile.<name>.codec.auth`
+- CLI flag: `--codec-auth`
+- Read by: every client except Java
+
+### `TEMPORAL_CLIENT_AUTHORITY`
+
+Overrides the `:authority` gRPC header. This is a Go SDK extension with no equivalent in other clients and no CLI flag
+of its own.
+
+- TOML key: `profile.<name>.authority`
+- CLI flag: none
+- Read by: Go
 
 ## Temporal CLI settings
 
@@ -53,27 +80,27 @@ The Temporal CLI reads the variables below in addition to the client settings ab
 ### `temporal env` preset variables
 
 The CLI supports a second configuration mechanism alongside TOML configuration files. `temporal env` stores named
-key-value presets in `temporal.yaml`, and the variables below select which preset the CLI reads. No SDK reads them.
+key-value presets in `temporal.yaml`, and the variables below select which preset the CLI reads.
 
 Both mechanisms work. The `temporal config` command that manages TOML configuration files is currently experimental,
 while `temporal env` is not.
 
-| Variable | TOML key | CLI flag | Supported by | Description |
-| :------- | :------- | :------- | :----------- | :---------- |
-| `TEMPORAL_ENV` | NA | `--env` | Temporal CLI | Name of the active `temporal env` preset. Defaults to `default`. |
-| `TEMPORAL_ENV_FILE` | NA | `--env-file` | Temporal CLI | Path to the preset file. Defaults to `temporal.yaml` in the CLI configuration directory. |
+| Variable | Description |
+| :------- | :---------- |
+| `TEMPORAL_ENV` | Name of the active `temporal env` preset. Defaults to `default`. CLI flag `--env`. |
+| `TEMPORAL_ENV_FILE` | Path to the preset file. Defaults to `temporal.yaml` in the CLI configuration directory. CLI flag `--env-file`. |
 
 ### Legacy TLS variables
 
 The CLI reads an older set of TLS variable names for compatibility. When any of them is set, it overrides the
-corresponding value from the configuration file and from the preferred variable. These names have no CLI flag of their
-own, and no SDK reads them.
+corresponding value from the configuration file and from the preferred variable. These names have no CLI flag and no
+TOML key of their own.
 
-| Variable | TOML key | CLI flag | Supported by | Description |
-| :------- | :------- | :------- | :----------- | :---------- |
-| `TEMPORAL_TLS_CERT` | NA | NA | Temporal CLI | Superseded by `TEMPORAL_TLS_CLIENT_CERT_PATH`. |
-| `TEMPORAL_TLS_CERT_DATA` | NA | NA | Temporal CLI | Superseded by `TEMPORAL_TLS_CLIENT_CERT_DATA`. |
-| `TEMPORAL_TLS_KEY` | NA | NA | Temporal CLI | Superseded by `TEMPORAL_TLS_CLIENT_KEY_PATH`. |
-| `TEMPORAL_TLS_KEY_DATA` | NA | NA | Temporal CLI | Superseded by `TEMPORAL_TLS_CLIENT_KEY_DATA`. |
-| `TEMPORAL_TLS_CA` | NA | NA | Temporal CLI | Superseded by `TEMPORAL_TLS_SERVER_CA_CERT_PATH`. |
-| `TEMPORAL_TLS_CA_DATA` | NA | NA | Temporal CLI | Superseded by `TEMPORAL_TLS_SERVER_CA_CERT_DATA`. |
+| Variable | Description |
+| :------- | :---------- |
+| `TEMPORAL_TLS_CERT` | Superseded by `TEMPORAL_TLS_CLIENT_CERT_PATH`. |
+| `TEMPORAL_TLS_CERT_DATA` | Superseded by `TEMPORAL_TLS_CLIENT_CERT_DATA`. |
+| `TEMPORAL_TLS_KEY` | Superseded by `TEMPORAL_TLS_CLIENT_KEY_PATH`. |
+| `TEMPORAL_TLS_KEY_DATA` | Superseded by `TEMPORAL_TLS_CLIENT_KEY_DATA`. |
+| `TEMPORAL_TLS_CA` | Superseded by `TEMPORAL_TLS_SERVER_CA_CERT_PATH`. |
+| `TEMPORAL_TLS_CA_DATA` | Superseded by `TEMPORAL_TLS_SERVER_CA_CERT_DATA`. |

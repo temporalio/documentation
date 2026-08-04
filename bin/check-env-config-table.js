@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Checks the environment variable table in the client environment configuration
- * reference against the implementations that actually read those variables.
+ * Checks the client environment configuration reference against the
+ * implementations that actually read those variables.
  *
  * Each SDK implements environment variable loading independently, as does the
  * CLI, and nothing publishes a machine-readable list. So this script extracts the
  * variable names from each implementation's source and compares them against the
- * docs table.
+ * page, both the set of variables and which clients the page says read each one.
  *
  * The implementations are the authority here. temporalio/proposals has a design
  * document (all-sdk/external-client-configuration.md) that describes an intended
@@ -34,14 +34,37 @@ const DOCS_PAGE = path.join(
   "client-environment-configuration.mdx"
 );
 
-// Every client the Supported by column can name. "All" expands to this set.
+// Every client that reads environment variables.
 const ALL_CLIENTS = ["Go", "Java", "Python", "TypeScript", ".NET", "Ruby", "CLI"];
 
-// The table says "Temporal CLI" for readability; sources label it "CLI".
-const CLIENT_ALIASES = { "Temporal CLI": "CLI" };
+// The page carries no copy of the support matrix for this script to drift from.
+// Which clients read a variable is read back off the page itself, from the
+// structure the reader sees:
+//
+//   * a variable in a table under one of these sections takes the section's
+//     support, which that section states in its opening sentence;
+//   * a variable with its own heading states support in a "Read by:" line.
+//
+// A variable that falls under neither rule, or a section heading not listed
+// here, stops the check rather than passing quietly.
+const SECTION_SUPPORT = {
+  "Client settings": ALL_CLIENTS,
+  // "The Temporal CLI reads the variables below [...] No other client reads them."
+  "Temporal CLI settings": ["CLI"],
+  // Every variable here carries its own "Read by:" line.
+  "Client settings not read by every client": null,
+};
 
-// Implementations that read environment variables directly. `label` is the token
-// expected in the docs "Supported by" column.
+// Tokens accepted in a "Read by:" line, mapped to the labels sources use.
+const CLIENT_TOKENS = new Map([
+  ...ALL_CLIENTS.map((c) => [c.toLowerCase(), c]),
+  ["temporal cli", "CLI"],
+  ["cli", "CLI"],
+  ["dotnet", ".NET"],
+]);
+
+// Implementations that read environment variables directly. `label` is the client
+// name the page uses.
 //
 // Python, .NET, and Ruby do not implement env var loading themselves. They call
 // into Rust core through their bridges, so they inherit core's set:
@@ -126,65 +149,118 @@ async function fetchSource({ repo, ref, files }) {
 }
 
 /**
- * Reads the variable rows out of the docs table. Expects a Markdown table whose
- * first column is a backticked variable name and which has a "Supported by"
- * column. Returns a Map of variable name to the set of support tokens.
+ * Reads the documented variables off the page: table rows under a known section,
+ * and variables that have their own heading with a "Read by:" line. Returns a
+ * Map of variable name to the Set of clients the page says read it.
  */
-function parseDocsTable(mdx) {
+function parseDocsPage(mdx) {
   const lines = mdx.split("\n");
-  const rows = new Map();
-  let tablesFound = 0;
+  const documented = new Map();
+  const problems = [];
+  let section = null;
+  // The heading of the variable currently being read, awaiting its "Read by:".
+  let pending = null;
 
-  // The page has several tables (client settings, plus CLI-only groups). Every
-  // table with these columns contributes rows.
+  const closePending = () => {
+    if (pending && !documented.has(pending)) {
+      problems.push(`${pending} has its own heading but no "Read by:" line`);
+    }
+    pending = null;
+  };
+
   for (let i = 0; i < lines.length; i++) {
-    if (!(lines[i].includes("| Variable") && /supported by/i.test(lines[i]))) continue;
-    tablesFound++;
+    const line = lines[i];
 
-    const columns = lines[i].split("|").map((c) => c.trim().toLowerCase());
-    const varCol = columns.findIndex((c) => c === "variable");
-    const supportCol = columns.findIndex((c) => c === "supported by");
+    const h2 = line.match(/^##\s+(.+?)\s*$/);
+    if (h2) {
+      closePending();
+      section = h2[1].replace(/`/g, "");
+      if (!(section in SECTION_SUPPORT)) {
+        problems.push(
+          `section "${section}" is not listed in SECTION_SUPPORT, so the support ` +
+            `it implies is unknown`
+        );
+      }
+      continue;
+    }
 
-    for (let j = i + 2; j < lines.length; j++) {
-      if (!lines[j].trim().startsWith("|")) break;
-      const cells = lines[j].split("|").map((c) => c.trim());
-      const name = (cells[varCol] || "").replace(/`/g, "").trim();
+    // A variable documented under its own heading, at any depth below h2.
+    const varHeading = line.match(/^#{3,}\s+`(TEMPORAL_[A-Z0-9_*]+)`\s*$/);
+    if (varHeading) {
+      closePending();
+      pending = varHeading[1];
+      continue;
+    }
+
+    // Any other heading ends the current variable's block.
+    if (/^#{3,}\s/.test(line)) {
+      closePending();
+      continue;
+    }
+
+    if (pending) {
+      const readBy = line.match(/^-\s+Read by:\s*(.+?)\s*$/);
+      if (readBy) {
+        const clients = parseReadBy(readBy[1]);
+        if (!clients) {
+          problems.push(`${pending} has an unrecognized "Read by:" value: ${readBy[1]}`);
+        } else {
+          documented.set(pending, clients);
+        }
+      }
+      continue;
+    }
+
+    // Table rows inherit their section's support.
+    if (line.trim().startsWith("|")) {
+      const name = (line.split("|")[1] || "").replace(/`/g, "").trim();
       if (!name.startsWith("TEMPORAL_")) continue;
-      rows.set(name, parseSupportCell(cells[supportCol] || ""));
-      i = j;
+      const support = SECTION_SUPPORT[section];
+      if (!support) {
+        problems.push(
+          `${name} is a table row under "${section}", which requires a per-variable "Read by:" line`
+        );
+        continue;
+      }
+      documented.set(name, new Set(support));
     }
   }
+  closePending();
 
-  if (tablesFound === 0) {
-    return { rows: null, reason: 'no table with "Variable" and "Supported by" columns' };
+  if (documented.size === 0) {
+    problems.push("found no documented variables at all; the page layout changed");
   }
-  return { rows };
+  return { documented, problems };
 }
 
 /**
- * Reads a "Supported by" cell into a set of client names. Accepts an explicit
- * list ("Go, Java"), "All", or "All except Go, Java".
+ * Reads a "Read by:" value into a set of clients. Accepts "every client",
+ * "every client except A, B", "none", or an explicit list.
  */
-function parseSupportCell(cell) {
-  const text = cell.replace(/`/g, "").trim();
-  if (!text) return new Set();
-
-  const canonical = (s) => {
-    const trimmed = s.trim();
-    return CLIENT_ALIASES[trimmed] || trimmed;
+function parseReadBy(value) {
+  const text = value.replace(/`/g, "").trim();
+  const toClients = (list) => {
+    const clients = list
+      .split(/,|\band\b/)
+      .map((s) => s.trim().toLowerCase().replace(/^the\s+/, "").replace(/\s+sdk$/, ""))
+      .filter(Boolean)
+      .map((s) => CLIENT_TOKENS.get(s));
+    return clients.some((c) => !c) ? null : clients;
   };
 
-  const except = text.match(/^All\s+except\s+(.+)$/i);
+  const except = text.match(/^every client except\s+(.+)$/i);
   if (except) {
-    const excluded = new Set(except[1].split(",").map(canonical));
-    return new Set(ALL_CLIENTS.filter((c) => !excluded.has(c)));
+    const excluded = toClients(except[1]);
+    if (!excluded) return null;
+    return new Set(ALL_CLIENTS.filter((c) => !excluded.includes(c)));
   }
-  if (/^All$/i.test(text)) return new Set(ALL_CLIENTS);
+  if (/^every client$/i.test(text)) return new Set(ALL_CLIENTS);
 
-  return new Set(text.split(",").map(canonical).filter(Boolean));
+  const listed = toClients(text.replace(/\s+only$/i, ""));
+  return listed ? new Set(listed) : null;
 }
 
-/** Expands source labels into the SDK tokens the docs table uses. */
+/** Expands source labels into the client names the page uses. */
 function expandSupport(labels) {
   const expanded = new Set();
   for (const label of labels) {
@@ -237,26 +313,25 @@ async function main() {
   }
 
   const mdx = fs.readFileSync(DOCS_PAGE, "utf-8");
-  const { rows, reason } = parseDocsTable(mdx);
-  if (!rows) {
-    console.error(`[env-config-check] could not parse the docs table: ${reason}`);
+  const { documented: docsSupport, problems } = parseDocsPage(mdx);
+  if (problems.length) {
+    console.error("[env-config-check] could not read support off the page:");
+    for (const problem of problems) console.error(`  ${problem}`);
     process.exit(2);
   }
 
   const sourceVars = new Set(supportBySource.keys());
-  const docsVars = new Set(rows.keys());
+  const docsVars = new Set(docsSupport.keys());
 
   const missingFromDocs = setDiff(sourceVars, docsVars);
   const missingFromSources = setDiff(docsVars, sourceVars);
 
   const supportMismatches = [];
-  for (const [name, documented] of rows) {
+  for (const [name, documented] of docsSupport) {
     if (!supportBySource.has(name)) continue;
-    const expected = expandSupport(supportBySource.get(name));
-    // An empty or prose-only cell is treated as unverified rather than wrong.
-    if (documented.size === 0) continue;
-    const unexpected = setDiff(documented, expected);
-    const unlisted = setDiff(expected, documented);
+    const actual = expandSupport(supportBySource.get(name));
+    const unexpected = setDiff(documented, actual);
+    const unlisted = setDiff(actual, documented);
     if (unexpected.length || unlisted.length) {
       supportMismatches.push({ variable: name, unlisted, unexpected });
     }
@@ -286,11 +361,11 @@ async function main() {
 
 function report({ missingFromDocs, missingFromSources, supportMismatches, checked }, supportBySource) {
   console.log(
-    `[env-config-check] ${checked.variablesInSources} variables across ${checked.sources.length} sources, ${checked.variablesInDocs} in the docs table\n`
+    `[env-config-check] ${checked.variablesInSources} variables across ${checked.sources.length} sources, ${checked.variablesInDocs} documented on the page\n`
   );
 
   if (missingFromDocs.length) {
-    console.log("Read by an implementation but absent from the docs table:");
+    console.log("Read by an implementation but absent from the page:");
     for (const name of missingFromDocs) {
       const where = [...expandSupport(supportBySource.get(name))].sort().join(", ");
       console.log(`  ${name}  (${where})`);
@@ -299,24 +374,24 @@ function report({ missingFromDocs, missingFromSources, supportMismatches, checke
   }
 
   if (missingFromSources.length) {
-    console.log("In the docs table but read by no implementation:");
+    console.log("On the page but read by no implementation:");
     for (const name of missingFromSources) console.log(`  ${name}`);
     console.log("");
   }
 
   if (supportMismatches.length) {
-    console.log('"Supported by" disagrees with the sources:');
+    console.log("The page and the sources disagree about which clients read a variable:");
     for (const { variable, unlisted, unexpected } of supportMismatches) {
       const parts = [];
-      if (unlisted.length) parts.push(`missing ${unlisted.join(", ")}`);
-      if (unexpected.length) parts.push(`claims ${unexpected.join(", ")} but no source reads it`);
+      if (unlisted.length) parts.push(`${unlisted.join(", ")} now reads it`);
+      if (unexpected.length) parts.push(`${unexpected.join(", ")} no longer reads it`);
       console.log(`  ${variable}: ${parts.join("; ")}`);
     }
     console.log("");
   }
 
   if (!missingFromDocs.length && !missingFromSources.length && !supportMismatches.length) {
-    console.log("[env-config-check] OK: docs table matches every implementation.");
+    console.log("[env-config-check] OK: the page matches every implementation.");
   }
 }
 
