@@ -95,7 +95,7 @@ For general Worker setup and options that are not specific to Cloud Run, see [Ru
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
-The `envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
+The `envconfig` package loads [Temporal Client](/develop/go/client/temporal-client) configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
 Set the non-secret values as environment variables on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager.
 For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
 
@@ -120,89 +120,7 @@ func MyActivity(ctx context.Context, input MyInput) (string, error) {
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability with OpenTelemetry {/* #add-observability */}
+## Add observability {/* #add-observability */}
 
-The `go.temporal.io/sdk/contrib/gcp` package provides an OpenTelemetry plugin with defaults suited to a Cloud Run worker pool.
-By default, the plugin configures:
-
-- OTLP export to `http://localhost:4317`, the collector sidecar endpoint.
-- A replay-safe OpenTelemetry tracer provider.
-- Temporal Core metrics with a 60-second export interval.
-
-The underlying metrics and traces are the same ones the Go SDK emits in any environment.
-For general observability concepts and the full list of available metrics, see [Observability - Go SDK](/develop/go/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
-
-Create the plugin and pass it in `client.Options.Plugins`. Client plugins that also implement `worker.Plugin` are applied automatically to Workers created from that Client:
-
-<!--SNIPSTART go-cloud-run-otel-plugin-->
-[contrib/gcp/e2e/main.go](https://github.com/temporalio/sdk-go/blob/main/contrib/gcp/e2e/main.go)
-```go
-otelPlugin, err := gcp.NewOpenTelemetryPlugin(ctx, gcp.OpenTelemetryPluginOptions{})
-if err != nil {
-	return fmt.Errorf("creating GCP OpenTelemetry plugin: %w", err)
-}
-log.Printf(
-	"plugin_ready service_name=%q endpoint=%q",
-	otelPlugin.ServiceName(),
-	otelPlugin.Endpoint(),
-)
-
-temporalClient, err := client.DialContext(ctx, client.Options{
-	HostPort:    cfg.address,
-	Namespace:   cfg.namespace,
-	Credentials: client.NewAPIKeyStaticCredentials(cfg.apiKey),
-	Plugins:     []client.Plugin{otelPlugin},
-})
-```
-<!--SNIPEND-->
-
-Do not install another OpenTelemetry metrics handler or tracing interceptor on the same Client. The plugin configures both through `go.temporal.io/sdk/contrib/opentelemetry`.
-
-The OTLP endpoint resolves in this order:
-
-1. `OpenTelemetryPluginOptions.Endpoint`.
-2. The `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
-3. `http://localhost:4317`.
-
-### Flush telemetry on shutdown {/* #flush-on-shutdown */}
-
-Stop the Worker and close the Client before shutting the plugin down, so telemetry buffered during the run is exported before the process exits.
-Cloud Run stops an instance on scale-in, so reserve time for the flush inside the termination window:
-
-<!--SNIPSTART go-cloud-run-otel-shutdown-->
-[contrib/gcp/e2e/main.go](https://github.com/temporalio/sdk-go/blob/main/contrib/gcp/e2e/main.go)
-```go
-temporalWorker.Stop()
-log.Print("worker_stopped")
-temporalClient.Close()
-log.Print("temporal_client_closed")
-
-flushCtx, cancelFlush := context.WithTimeout(context.Background(), 3*time.Second)
-flushErr := otelPlugin.ForceFlush(flushCtx)
-cancelFlush()
-if flushErr != nil {
-	log.Printf("plugin_force_flush_failed error=%q", flushErr)
-} else {
-	log.Print("plugin_force_flush_complete")
-}
-
-shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 3*time.Second)
-shutdownErr := otelPlugin.Shutdown(shutdownCtx)
-cancelShutdown()
-if shutdownErr != nil {
-	log.Printf("plugin_shutdown_failed error=%q", shutdownErr)
-} else {
-	log.Print("plugin_shutdown_complete")
-}
-```
-<!--SNIPEND-->
-
-`Shutdown` flushes and closes the metric and trace providers the plugin created. Use `ForceFlush` instead when the plugin-owned providers must stay usable afterward.
-
-### Run the collector as a sidecar {/* #collector-sidecar */}
-
-The plugin exports to a collector rather than directly to Google Cloud. Run the collector as a second container in the Worker Pool.
-Without a collector at the configured endpoint, telemetry is not delivered.
-
-Use the [Google-Built OpenTelemetry Collector](https://cloud.google.com/stackdriver/docs/instrumentation/google-built-otel), which detects the Cloud Run resource, authenticates through the Worker Pool's service account, and exports metrics to Google Managed Service for Prometheus and traces through the Google Cloud Telemetry API.
-For a collector configuration that routes both pipelines, see [the collector config on the Python SDK page](/develop/python/workers/serverless-workers/cloud-run#collector-sidecar). The configuration is the same regardless of which SDK the Worker uses.
+A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
+For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Go SDK](/develop/go/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).

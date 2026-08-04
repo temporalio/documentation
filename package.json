@@ -18,6 +18,7 @@
     "check:og-budget": "node ./bin/check-og-build-budget.js",
     "check:metrics": "node ./bin/check-metrics-reference.js",
     "check:metrics:sdks": "node ./bin/check-metrics-against-sdks.js",
+    "check:orphans": "node ./bin/check-orphan-pages.js",
     "test": "node --test",
     "lint": "vale --output=JSON docs/**/**/*.mdx > vale-output.json; vale --output=JSON docs/**/**/*.md > vale-md-output.json",
     "lint:go": "vale docs/develop/go/*.mdx",
