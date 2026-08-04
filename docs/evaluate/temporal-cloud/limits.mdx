@@ -113,7 +113,15 @@ This approach uniformly distributes the scheduled Workflow Execution launches th
 - Default limit: 30 Visibility API calls per second
 - Not configurable
 
-All read calls are subject to the Visibility API rate limit.
+The Visibility API rate limit applies to every read API that lists, searches, or counts across executions. These are:
+
+- **Workflow search and count:** `ListWorkflowExecutions`, `ListOpenWorkflowExecutions`, `ListClosedWorkflowExecutions`, `ScanWorkflowExecutions`, `CountWorkflowExecutions`
+- **Schedules:** `ListSchedules`, `CountSchedules`
+- **Batch operations:** `ListBatchOperations`
+- **Task Queue and worker reachability:** `GetWorkerTaskReachability`, and `DescribeTaskQueue` (subject to this limit since Server v1.24)
+- **Worker deployments:** `ListDeployments`, `GetDeploymentReachability`, `ListWorkerDeployments`
+
+Any API that returns a set of executions or a count falls under this limit. Single-entity lookups by ID, such as `DescribeWorkflowExecution` and `DescribeSchedule`, do not. Those read the primary store and count against the general namespace rate limit.
 
 ### Nexus Rate Limit {/* #nexus-rate-limits */}
 
