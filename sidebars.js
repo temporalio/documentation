@@ -1163,8 +1163,23 @@ module.exports = {
       items: [
         ...SDKS.map(({ id }) => developSdkCategoriesById[id]),
         'develop/environment-configuration',
-        'develop/worker-performance',
-        'develop/worker-tuning-reference',
+        {
+          type: 'category',
+          label: 'Worker performance',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/worker-performance/index',
+          },
+          items: [
+            'develop/worker-performance/metrics',
+            'develop/worker-performance/configuration',
+            'develop/worker-performance/runtime-tuning',
+            'develop/worker-performance/workflow-cache',
+            'develop/worker-performance/task-queues',
+            'develop/worker-tuning-reference',
+          ],
+        },
         'develop/safe-deployments',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
