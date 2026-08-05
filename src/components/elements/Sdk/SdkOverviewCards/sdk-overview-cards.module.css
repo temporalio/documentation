@@ -1,0 +1,98 @@
+.root {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--ifm-color-emphasis-100, #f3f4f6);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px rgba(68, 76, 231, 0.25), 0 10px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 120ms ease, box-shadow 180ms ease, border-color 120ms ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--ifm-color-primary);
+  border-image: linear-gradient(135deg, #444ce7 0%, #6366f1 100%);
+  border-image-slice: 1;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  flex: none;
+  width: 32px;
+  height: 32px;
+}
+
+.iconWrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  flex: 1;
+}
+
+.versionChip {
+  flex: none;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cardLinks {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+.linkDivider {
+  color: var(--ifm-color-emphasis-400);
+}
+
+.link {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Dark theme tuning */
+:global([data-theme='dark']) .card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme='dark']) .card:hover {
+  border-image: linear-gradient(135deg, #444ce7 0%, #b664ff 100%);
+  border-image-slice: 1;
+}
+
+:global([data-theme='dark']) .versionChip {
+  background: var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-800);
+}
