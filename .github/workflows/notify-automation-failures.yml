@@ -17,6 +17,7 @@ on:
       - CLI Docs Update
       - Delete Visual Tests Reports
       - Warm Build Cache
+      - Environment config drift
     types:
       - completed
 
@@ -25,8 +26,9 @@ permissions:
 
 jobs:
   notify:
-    # `Check Metrics Against SDKs` also runs on pull_request; exclude those runs so
-    # this only reports the scheduled invocation.
+    # `Check Metrics Against SDKs` and `Environment config drift` also run on
+    # pull_request; exclude those runs so this only reports invocations that have
+    # nowhere else to surface, such as the scheduled ones.
     if: >-
       github.event.workflow_run.event != 'pull_request' &&
       contains(fromJSON('["failure", "timed_out", "startup_failure"]'), github.event.workflow_run.conclusion)

@@ -122,15 +122,55 @@ function extractVariables(text) {
   return found;
 }
 
+const MAX_ATTEMPTS = 4;
+const FIRST_RETRY_MS = 1000;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** A failure that retrying cannot fix. */
+class PermanentError extends Error {}
+
+/**
+ * Fetches one source file, retrying transient failures with exponential backoff.
+ * This runs weekly and unattended, so a GitHub blip should not be reported as
+ * drift.
+ *
+ * A 404 is not retried. It means the file moved or was renamed, which is a real
+ * finding: the check has stopped covering that implementation until the path in
+ * SOURCES is updated.
+ */
+async function fetchFile(url) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return await res.text();
+      if (res.status === 404) {
+        throw new PermanentError(`${url} returned 404; the file moved or was renamed`);
+      }
+      lastError = new Error(`${url} returned ${res.status}`);
+    } catch (err) {
+      if (err instanceof PermanentError) throw err;
+      lastError = new Error(`${url}: ${err.message}`);
+    }
+
+    if (attempt < MAX_ATTEMPTS) {
+      const delay = FIRST_RETRY_MS * 2 ** (attempt - 1);
+      console.error(
+        `[env-config-check] ${lastError.message} (attempt ${attempt} of ${MAX_ATTEMPTS}); retrying in ${delay}ms`
+      );
+      await sleep(delay);
+    }
+  }
+
+  throw new Error(`${lastError.message}, still failing after ${MAX_ATTEMPTS} attempts`);
+}
+
 async function fetchSource({ repo, ref, files }) {
   const texts = [];
   for (const file of files) {
-    const url = `https://raw.githubusercontent.com/${repo}/${ref}/${file}`;
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error(`${url} returned ${res.status}`);
-    }
-    texts.push(await res.text());
+    texts.push(await fetchFile(`https://raw.githubusercontent.com/${repo}/${ref}/${file}`));
   }
   return texts.join("\n");
 }
