@@ -571,7 +571,7 @@ Then on the pages you want it to show, add this to the top of the content, right
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader
-  featureName="nexus"
+  featureName="workflowStreams"
 />
 ```
 
