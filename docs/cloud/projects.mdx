@@ -15,11 +15,15 @@ tags:
   - Nexus Endpoints
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader
-  featureName="projects"
-/>
+<ReleaseNoteHeader featureName="projects">
+Features in pre-release are experimental and may be subject to backwards-incompatible changes.
+
+Projects currently support the Temporal UI and Temporal Cloud Ops API.
+</ReleaseNoteHeader>
 
 Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize [Namespaces](/cloud/namespaces), [Nexus endpoints](/nexus/endpoints), and [Connectivity Rules](/cloud/connectivity#connectivity-rules) around how your organization operates: by team, environment, service, or business unit.
 
@@ -50,7 +54,8 @@ Create a Project when a set of resources has a distinct owner or access model, s
 
 Start with one Project for a team or application with clear ownership. Add more only when needed.
 
-In the Temporal UI, click **Projects** at the top of the left navigation bar, under **Your Account**. You'll see a list of existing Projects associated with your Account. The first time you use Projects, you'll only see the Default Project in this list.
+<Tabs groupID="create-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
 To create a Project using the Temporal Cloud UI:
 
@@ -58,6 +63,28 @@ To create a Project using the Temporal Cloud UI:
 2. Click the **Create Project** button to create a new Project.
 3. On the **Create Project** page that appears, give the Project a name (limited to 64 characters) and an optional description (limited to 255 characters).
 4. Click **Create**.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`CreateProject` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects)
+to create a Project. The structure of the `CreateProjectRequest` is defined by a JSON spec, as follows:
+
+```
+"spec": {
+  "description": "",
+  "displayName": "",
+  "lifecycle": {
+    "enableDeleteProtection": true
+  }
+}
+```
+
+In this call, `description` is a string description of the Project, `displayName` is the Project name to be displayed in the UI, and `enableDeleteProtection` is a Boolean that indicates whether the Project can be deleted.
+
+  </TabItem>
+</Tabs>
 
 After creating the Project, add new Namespaces and other supported resources within it. You cannot yet migrate resources from existing Projects to a new Project.
 
@@ -74,7 +101,11 @@ In Temporal Cloud UI:
 **Connectivity rules** cannot currently be created via the UI. Connectivity rules and the Namespace they attach to must reside in the same Project.
 
 ## Manage Project Access
-Users, groups, and Account-scoped Service Accounts can be granted Project-level roles. Each [Project role](#Project-roles) applies to the Project and, depending on the role, may grant inherited access to resources within it.
+
+Users, groups, and Account-scoped Service Accounts can be granted Project-level roles. Each [Project role](#project-roles) applies to the Project and, depending on the role, may grant inherited access to resources within it.
+
+<Tabs groupID="manage-project-access">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
 To manage Project access in the Temporal Cloud UI:
 
@@ -82,31 +113,73 @@ To manage Project access in the Temporal Cloud UI:
 2. Click the **Project Identities** tab in the left navigation. The Project Identities page has three tabs, for Users, Service Accounts, and Groups.
 3. Click the **Manage Identities** button to add (or remove) users, groups or service accounts, and assign desired Project Roles from the drop-down list. You can also modify or remove an existing principal's role in the same view.
 
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`SetUserProjectAccess` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId}/users/{userId}/access)
+to add Users to a Project. 
+Use the
+[`SetUserGroupProjectAccess` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId}/user-groups/{groupId}/access)
+to add User Groups to a Project. 
+Both calls take two required parameters:
+
+- `projectId` - The ID of the Project to set permissions for.
+- `userId` or `groupId` - The ID of the User or Group to set permissions for.
+
+Use the `role` attribute to set the role for the User or Group. See [Project roles](#project-roles) for more information.
+
+```
+"access": {
+  "role": ""
+},
+```
+
+  </TabItem>
+</Tabs>
+
 Similar to [Namespace-scoped Service Accounts](/cloud/manage-access/service-accounts#scoped), a Project-scoped Service Account is an identity bound (or scoped) to a single Project. Use it for workers, CI/CD pipelines, Terraform, or operational automation that should not access resources outside that Project. Project-scoped Service Accounts are not created automatically with Project creation. Create them only when needed. 
 
-To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts**  tab to create Project-scoped service account.
+<Tabs groupID="manage-project-service-account">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
-After creating the Service Account, you can optionally create one or more API keys for it. Each API key inherits only the permissions of its associated Service Account. If the Service Account is deleted, all of its API keys are deleted automatically.
+To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts** tab to create a Project-scoped service account.
 
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
 
-A Project can contain multiple Project-scoped Service Accounts. Each Project-scoped Service Account belongs to exactly one Project. 
+Use the
+[`SetServiceAccountProjectAccess` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId}/service-accounts/{serviceAccountId}/access)
+to add Service Accounts to a Project. 
 
-A Project-scoped Service Account cannot be moved to another Project after it is created.
+The call takes two required parameters:
 
-Project-scoped Service Accounts count toward the Project's Service Account limit.
+- `projectId` - The ID of the Project to set permissions for.
+- `serviceAccountId` - The ID of the Service Account to set permissions for.
 
-A Project cannot be deleted while it contains Project-scoped Service Accounts.
+Use the `role` attribute to set the role for the User or Group. See [Project roles](#project-roles) for more information.
+
+```
+"access": {
+  "role": ""
+},
+```
+
+  </TabItem>
+</Tabs>
+
+After creating the Service Account, you can optionally create one or more API keys for it. Each API key inherits only the permissions of its associated Service Account. If the Service Account is deleted, all of its API keys are deleted automatically.Project-scoped Service Accounts count toward the Project's Service Account limit.
 
 A Project-scope Service Account:
 
 - Can only bound (or scope to) exactly one Project. Each project can contain multiple Project-scoped Service Accounts. 
 - Cannot be moved to another Project after it is created.
 - Counts toward the Project's Service Account limit.
-- Must be deleted before the Project can be deleted
+- Must be deleted before the Project can be deleted.
 
 Unlike an [Account-scoped Service Account](/cloud/manage-access/service-accounts), a Project-scoped Service Account cannot access resources outside its Project. For automation that needs access across multiple Projects, use an Account-scoped Service Account and grant it the appropriate Project roles.
 
-## Project roles
+## Project roles {/* #project-roles */}
 
 The following roles are available at the Project level for users, groups, and service accounts:
 
@@ -129,17 +202,69 @@ Project-level permissions are additive. Granting a Project-level role does not r
 
 ## Modify an existing Project
 
+<Tabs groupID="modify-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
 To modify an existing Project, click **Project Settings** in the left navigation. The Project Settings page appears, with the General tab selected by default. Here, you can change the name or description of your Project. You can also access your Project's unique ID. You can copy the ID, but you can't change it.
 
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`UpdateProject` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId})
+to add Service Accounts to a Project. 
+
+The call takes one required parameter:
+
+- `projectId` - The ID of the Project to set permissions for.
+
+The structure of the `UpdateProjectRequest` is defined by a JSON spec, as follows:
+
+```
+"spec": {
+  "description": "",
+  "displayName": "",
+  "lifecycle": {
+    "enableDeleteProtection": true
+  }
+}
+```
+
+In this call, `description` is a string description of the Project, `displayName` is the Project name to be displayed in the UI, and `enableDeleteProtection` is a Boolean that indicates whether the Project can be deleted.
+
+  </TabItem>
+</Tabs>
+
+
 ## Delete a Project
+
+A Project must be empty, meaning it contains zero Namespaces, Nexus Endpoints, Connectivity Rules, or Project-scoped Service Accounts, to be deleted. 
+
+An Account must always contain at least one Project. If the Account contains two or more Projects, you can delete the Default Project. If the Default Project is deleted, Temporal does not automatically designate a new Default Project. If the Default Project is deleted, API calls that do not specify a Project (by providing a Project ID) will fail. 
+
+
+<Tabs groupID="modify-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
 To delete a Project, click **Project Settings** in the left navigation and then click the **Delete Project** tab. Click the **Delete** button to permanently delete the Project.
 
 Use the **Deletion Prevention** slider to set the Deletion Protection flag for this Project. Once set, the Project can't be deleted unless the flag is deliberately disabled.
 
-A Project must be empty, meaning it contains zero Namespaces, to be deleted. 
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
 
-An Account must always contain at least one Project. If the Account contains two or more Projects, you can delete the Default Project. If the Default Project is deleted, Temporal does not automatically designate a new Default Project. If the Default Project is deleted, API calls that do not specify a Project (by providing a Project ID) will fail. 
+Use the
+[`DeleteProject` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/DELETE/cloud/projects/{projectId})
+to delete a Project. 
+
+The call takes one required parameter: 
+
+- `projectId` - The ID of the Project to delete.
+
+This call will not succeed if the delete protection flag is enabled.
+
+  </TabItem>
+</Tabs>
 
 Projects support a delete protection flag, similar to Namespaces. When this flag is enabled, the Project cannot be deleted until the flag is disabled. This flag is enabled for the Default Project. The flag is disabled for any new Project created by a user. This flag is not inherited by the Namespaces within the Project. Namespace delete protection can be managed per-Namespace. If a Project is the only one remaining in an Account, that project cannot be deleted, regardless of the status of the Deletion Protection Flag.
 

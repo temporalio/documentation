@@ -370,9 +370,14 @@ accounts depends on the scope of the service account and the caller's role.
 | List all service accounts in the account         |     ✔     |     ✔     |       ✔       |      ✔       |       ✔       |
 | Manage unscoped (account-level) service accounts |           |           |               |      ✔       |       ✔       |
 | Manage Namespace-scoped service accounts         |     §     |     §     |       §       |      ✔       |       ✔       |
+| Manage Project-scoped service accounts           |     †     |     †     |       †       |      ✔       |       ✔       |
+
 
 § Requires Namespace Admin permission on the target Namespace. Any role can manage Namespace-scoped service accounts if
 they hold Namespace Admin on that Namespace.
+
+† Requires Project Admin permission on the target Project. Any role can manage Project-scoped service accounts if
+they hold Project Admin on that Project.
 
 **Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
 DeleteServiceAccount
