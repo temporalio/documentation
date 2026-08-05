@@ -74,10 +74,6 @@ takes no credentials — it resolves each call to an Activity that runs on the W
 {/* SNIPSTART python-google-genai-hello-world-workflow */}
 [google_genai/hello_world/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/hello_world/workflow.py)
 ```py
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-
-
 @workflow.defn
 class HelloWorldWorkflow:
     @workflow.run
@@ -190,21 +186,6 @@ This Workflow passes one of each on a single call.
 {/* SNIPSTART python-google-genai-tools-workflow */}
 [google_genai/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/tools/workflow.py)
 ```py
-from datetime import timedelta
-
-from google.genai import types
-from temporalio import activity, workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient, activity_as_tool
-from temporalio.workflow import ActivityConfig
-
-
-@activity.defn
-async def get_weather(city: str) -> str:
-    """Look up the current weather for a city."""
-    # Stub — replace with a real HTTP call in production.
-    return f"It's 72F and sunny in {city}."
-
-
 @workflow.defn
 class ToolsWorkflow:
     @workflow.run
@@ -221,13 +202,13 @@ class ToolsWorkflow:
                             start_to_close_timeout=timedelta(seconds=30),
                         ),
                     ),
-                    self.recommend_activity,
+                    self.recommend_thing_to_do,
                 ],
             ),
         )
         return response.text or ""
 
-    async def recommend_activity(self, weather: str) -> str:
+    async def recommend_thing_to_do(self, weather: str) -> str:
         """Recommend something to do given a weather description."""
         if "sunny" in weather.lower():
             return "Go for a hike."
@@ -246,12 +227,13 @@ Register the Activity on the Worker alongside the Workflow.
 {/* SNIPSTART python-google-genai-tools-worker {"selectedLines": ["21-26"]} */}
 [google_genai/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_genai/tools/run_worker.py)
 ```py
-worker = Worker(
-    client,
-    task_queue="google-genai-tools",
-    workflows=[ToolsWorkflow],
-    activities=[get_weather],
-)
+# ...
+    worker = Worker(
+        client,
+        task_queue="google-genai-tools",
+        workflows=[ToolsWorkflow],
+        activities=[get_weather],
+    )
 ```
 {/* SNIPEND */}
 
@@ -263,10 +245,6 @@ call runs as its own Activity, so a conversation that spans hours or days surviv
 {/* SNIPSTART python-google-genai-chat-workflow */}
 [google_genai/chat/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/chat/workflow.py)
 ```py
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-
-
 @workflow.defn
 class ChatWorkflow:
     @workflow.run
@@ -294,12 +272,6 @@ unchanged. Pass the model as `response_schema` and read the parsed result from `
 {/* SNIPSTART python-google-genai-structured-output-workflow */}
 [google_genai/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/structured_output/workflow.py)
 ```py
-from google.genai import types
-from pydantic import BaseModel
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-
-
 class Recipe(BaseModel):
     name: str
     ingredients: list[str]
@@ -320,7 +292,15 @@ class StructuredOutputWorkflow:
             ),
         )
         recipe = response.parsed
-        assert isinstance(recipe, Recipe)
+        if not isinstance(recipe, Recipe):
+            # ``parsed`` is None when the model returns malformed JSON. Fail the
+            # workflow with an ApplicationError rather than asserting: an
+            # assertion is a workflow task failure, which Temporal retries
+            # forever, so the run would hang instead of failing visibly.
+            raise ApplicationError(
+                f"Gemini did not return a valid Recipe: {response.text!r}",
+                non_retryable=True,
+            )
         return recipe
 
 
@@ -338,6 +318,7 @@ Register each server with a factory that yields a connected, initialized `mcp.Cl
 {/* SNIPSTART python-google-genai-mcp-worker {"selectedLines": ["20-32"]} */}
 [google_genai/mcp/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_genai/mcp/run_worker.py)
 ```py
+# ...
 @asynccontextmanager
 async def echo_session() -> AsyncIterator[ClientSession]:
     """Yield a connected, initialized session to the stdio echo MCP server."""
@@ -360,17 +341,6 @@ discovers and calls the server's tools from there.
 {/* SNIPSTART python-google-genai-mcp-workflow */}
 [google_genai/mcp/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/mcp/workflow.py)
 ```py
-from datetime import timedelta
-
-from google.genai import types
-from temporalio import workflow
-from temporalio.contrib.google_genai import (
-    TemporalAsyncClient,
-    TemporalMcpClientSession,
-)
-from temporalio.workflow import ActivityConfig
-
-
 @workflow.defn
 class McpWorkflow:
     @workflow.run
@@ -410,11 +380,6 @@ to that topic as it arrives. The Workflow's own iteration over the stream is unc
 {/* SNIPSTART python-google-genai-streaming-workflow */}
 [google_genai/streaming/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/streaming/workflow.py)
 ```py
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-from temporalio.contrib.workflow_streams import WorkflowStream
-
-
 @workflow.defn
 class StreamingWorkflow:
     @workflow.init
@@ -432,7 +397,15 @@ class StreamingWorkflow:
             contents=prompt,
         ):
             chunks.append(chunk.text or "")
-        await workflow.wait_condition(lambda: self._done)
+        # Bound the wait: if the subscriber dies without signaling, complete
+        # anyway instead of waiting forever.
+        try:
+            await workflow.wait_condition(lambda: self._done, timeout=FINISH_TIMEOUT)
+        except asyncio.TimeoutError:
+            workflow.logger.warning(
+                "No finish signal after %s; completing without a subscriber.",
+                FINISH_TIMEOUT,
+            )
         return "".join(chunks)
 
     @workflow.signal
@@ -449,20 +422,21 @@ A consumer subscribes to the topic with `WorkflowStreamClient`. The published ch
 {/* SNIPSTART python-google-genai-streaming-run-workflow {"selectedLines": ["29-42"]} */}
 [google_genai/streaming/run_workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/streaming/run_workflow.py)
 ```py
-# Subscribe to the "gemini" topic and print chunks as the model produces them.
-stream = WorkflowStreamClient.create(client, workflow_id)
-async for item in stream.subscribe(
-    ["gemini"],
-    from_offset=0,
-    result_type=types.GenerateContentResponse,
-    poll_cooldown=timedelta(milliseconds=50),
-):
-    chunk: types.GenerateContentResponse = item.data
-    if chunk.text:
-        print(chunk.text, end="", flush=True)
-    if chunk.candidates and chunk.candidates[0].finish_reason:
-        print()
-        break
+# ...
+        if chunk.candidates and chunk.candidates[0].finish_reason:
+            print()
+            return
+
+
+async def main() -> None:
+    # The stream publishes Pydantic GenerateContentResponse chunks, so the
+    # consumer needs the Pydantic data converter to decode them.
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        data_converter=pydantic_data_converter,
+    )
+    workflow_id = "google-genai-streaming"
+
 ```
 {/* SNIPEND */}
 
@@ -479,13 +453,6 @@ pass the returned handle in `contents`.
 {/* SNIPSTART python-google-genai-files-workflow */}
 [google_genai/files/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/files/workflow.py)
 ```py
-from typing import cast
-
-from google.genai import types
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-
-
 @workflow.defn
 class FilesWorkflow:
     @workflow.run
@@ -517,12 +484,6 @@ runs as its own Activity.
 {/* SNIPSTART python-google-genai-interactions-workflow */}
 [google_genai/interactions/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/interactions/workflow.py)
 ```py
-from typing import Any
-
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-
-
 @workflow.defn
 class InteractionsWorkflow:
     @workflow.run
@@ -562,10 +523,6 @@ deterministic.
 {/* SNIPSTART python-google-genai-vertex-ai-workflow */}
 [google_genai/vertex_ai/workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/vertex_ai/workflow.py)
 ```py
-from temporalio import workflow
-from temporalio.contrib.google_genai import TemporalAsyncClient
-
-
 @workflow.defn
 class VertexAIWorkflow:
     @workflow.run
@@ -591,12 +548,13 @@ The Worker's `genai.Client` uses Application Default Credentials instead of an A
 {/* SNIPSTART python-google-genai-vertex-ai-worker {"selectedLines": ["13-18"]} */}
 [google_genai/vertex_ai/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_genai/vertex_ai/run_worker.py)
 ```py
-genai_client = genai.Client(
-    vertexai=True,
-    project=os.environ["GOOGLE_CLOUD_PROJECT"],
-    location=os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1"),
-)
-plugin = GoogleGenAIPlugin(genai_client)
+# ...
+    genai_client = genai.Client(
+        vertexai=True,
+        project=os.environ["GOOGLE_CLOUD_PROJECT"],
+        location=os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1"),
+    )
+    plugin = GoogleGenAIPlugin(genai_client)
 ```
 {/* SNIPEND */}
 
