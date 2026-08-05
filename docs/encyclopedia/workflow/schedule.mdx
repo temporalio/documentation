@@ -297,3 +297,5 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 
 Internally, a Schedule is implemented as a Workflow.
 If you're using Elasticsearch, these Workflow Executions are hidden from normal views.
+
+`ListSchedules` and `CountSchedules` are served by the Visibility subsystem. They share the [Visibility API rate limit](/cloud/limits#visibility-api-rate-limit) and are eventually consistent, so a newly created or deleted schedule may not appear in the list right away. For more detail, see [Operations that use Visibility](/visibility#operations-that-use-visibility).

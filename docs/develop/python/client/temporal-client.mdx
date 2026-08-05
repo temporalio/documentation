@@ -469,6 +469,33 @@ async def main():
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
+Unlike an API key, `TLSConfig` is static: the certificate bytes you pass to `Client.connect` are fixed for the lifetime
+of that `Client`. To rotate an mTLS client certificate without restarting your Worker, connect a new `Client` with the
+new certificate, then assign it to the running `Worker`'s `client` property:
+
+```python
+with open("client-cert-new.pem", "rb") as f:
+    client_cert = f.read()
+with open("client-private-key-new.pem", "rb") as f:
+    client_private_key = f.read()
+
+new_client = await Client.connect(
+    "your-custom-namespace.tmprl.cloud:7233",
+    namespace="<your-custom-namespace>.<account-id>",
+    tls=TLSConfig(
+        client_cert=client_cert,
+        client_private_key=client_private_key,
+    ),
+)
+
+# worker is the Worker instance already running against the old client
+worker.client = new_client
+```
+
+The Worker starts using `new_client` for subsequent calls to the Temporal Service (Workflow Task completion, Activity
+Heartbeats, and so on); calls already in flight on the old client finish normally. The new client must use the same
+`Runtime` as the Worker's current client.
+
 </TabItem>
 
 </Tabs>
