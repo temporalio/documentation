@@ -1,8 +1,8 @@
 ---
-id: sdk-request-failures
-title: Troubleshoot SDK request failures
-sidebar_label: SDK request failures
-description: Diagnose gRPC failures and elevated latency on requests from Temporal SDK Workers and Clients
+id: request-failures
+title: Troubleshoot request failures
+sidebar_label: Request failures
+description: Diagnose gRPC failures and slow requests from Temporal Workers and Clients
 toc_max_heading_level: 3
 keywords:
   - sdk metrics
@@ -19,7 +19,7 @@ tags:
 This guide covers gRPC failures and slow requests between your Temporal SDK Workers or Clients and the Temporal Service.
 It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
 
-For alert thresholds and `for` durations, see [SDK Worker alerting](/best-practices/sdk-worker-alerting).
+For alert thresholds and `for` durations, see [Worker alerting](/best-practices/worker-alerting).
 For metric definitions, see the [Temporal SDK metrics reference](/references/sdk-metrics).
 
 [`temporal_request_failure`](/references/sdk-metrics#request_failure) increments when the Temporal Service returns a non-OK gRPC status code on a standard operation.
@@ -149,13 +149,13 @@ This is a leading indicator of [NOT_FOUND on respond operations](#not_found-on-r
 If throttling goes on long enough the task times out, the Service writes a `WorkflowTaskTimedOut` or `ActivityTaskTimedOut` event, and the task gets rescheduled, with all the cache eviction, cold replay, and Local Activity re-execution that section describes.
 
 Meanwhile every in-flight task is still holding its slot, so you have less concurrency for new work.
-Left alone, this turns into [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted).
+Left alone, this turns into [Worker Task slots exhausted](/troubleshooting/worker-capacity#worker-task-slots-exhausted).
 
 **Triage.**
 
 1. **Find out which limit you hit,** as in the section above. On the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by `cause`.
 1. **Check whether timeouts have already started.** If [NOT_FOUND on respond operations](#not_found-on-respond-operations) is also firing, throttling has already cascaded into task timeouts and Executions are losing work.
-1. **Check Task slot availability.** See [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted). Slots aren't released until the respond call succeeds, so throttling here drains the pool.
+1. **Check Task slot availability.** See [Worker Task slots exhausted](/troubleshooting/worker-capacity#worker-task-slots-exhausted). Slots aren't released until the respond call succeeds, so throttling here drains the pool.
 
 :::note Self-hosted Temporal Service
 
@@ -181,7 +181,7 @@ The Temporal Service throttles poll operations before it throttles respond or us
 
 1. **Identify the throttle cause.** As with the other throttling sections, a Namespace rate limit, a concurrency limit, and system-wide overload need different responses. On the Go SDK, [`temporal_long_request_resource_exhausted`](/references/sdk-metrics#long_request_resource_exhausted) carries the `cause` tag for poll operations.
 1. **Check whether you are over-polling.** A large number of Workers each configured with many concurrent pollers can exceed the Namespace poller limit without processing any more work. Check your configured poller counts against [Worker performance](/develop/worker-performance) guidance before assuming the limit is too low.
-1. **Check downstream effects.** See [Workflow Task schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#workflow-task-schedule-to-start-latency-elevated) and [Activity schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated) to gauge whether throttling is affecting Task dispatch yet.
+1. **Check downstream effects.** See [Workflow Task schedule-to-start latency elevated](/troubleshooting/worker-capacity#workflow-task-schedule-to-start-latency-elevated) and [Activity schedule-to-start latency elevated](/troubleshooting/worker-capacity#activity-schedule-to-start-latency-elevated) to gauge whether throttling is affecting Task dispatch yet.
 1. **Check your traffic against your Namespace limits.** On Temporal Cloud, compare against your Namespace's [service limits](/cloud/limits).
 
 :::note Self-hosted Temporal Service
@@ -212,7 +212,7 @@ Workers receiving INTERNAL on poll operations back off and poll less frequently,
 1. **Check SDK and Temporal Service version compatibility.** For UNIMPLEMENTED, confirm your SDK version is not calling an API that has been removed or changed in your Service version.
 1. **Check whether recent deploys correlate.** Both codes commonly appear immediately after a Service upgrade or a Worker deploy. If the timing lines up, consider rolling back while you investigate.
 1. **Check whether the errors are Namespace-scoped or cluster-wide.** Errors isolated to one Namespace point at Namespace configuration. Cluster-wide errors point at infrastructure.
-1. **Check downstream effects.** Sustained errors on poll operations cause Workers to back off. Cross-check [All pollers disconnected](/troubleshooting/sdk-worker-capacity#all-pollers-disconnected) and [Task completions dropped to zero](/troubleshooting/sdk-worker-capacity#task-completions-dropped-to-zero).
+1. **Check downstream effects.** Sustained errors on poll operations cause Workers to back off. Cross-check [All pollers disconnected](/troubleshooting/worker-capacity#all-pollers-disconnected) and [Task completions dropped to zero](/troubleshooting/worker-capacity#task-completions-dropped-to-zero).
 
 :::note Self-hosted Temporal Service
 
