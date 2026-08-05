@@ -117,7 +117,9 @@ that starts a Workflow to the Workflow itself, and the Worker side runs the agen
 ```py
 plugin = GoogleAdkPlugin()
 
-client = await Client.connect("localhost:7233", plugins=[plugin])
+client = await Client.connect(
+    os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"), plugins=[plugin]
+)
 
 worker = Worker(
     client,
@@ -146,7 +148,10 @@ code is linked to the run.
 {/* SNIPSTART google-adk-agents-basic-starter */}
 [google_adk_agents/basic/run_hello_world_workflow.py](https://github.com/temporalio/samples-python/blob/main/google_adk_agents/basic/run_hello_world_workflow.py)
 ```py
-client = await Client.connect("localhost:7233", plugins=[GoogleAdkPlugin()])
+client = await Client.connect(
+    os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+    plugins=[GoogleAdkPlugin()],
+)
 
 result = await client.execute_workflow(
     HelloWorldAgentWorkflow.run,
@@ -192,7 +197,9 @@ class WeatherAgentWorkflow:
 ```py
 plugin = GoogleAdkPlugin()
 
-client = await Client.connect("localhost:7233", plugins=[plugin])
+client = await Client.connect(
+    os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"), plugins=[plugin]
+)
 
 worker = Worker(
     client,
