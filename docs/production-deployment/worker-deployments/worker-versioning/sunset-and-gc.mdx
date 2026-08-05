@@ -1,0 +1,179 @@
+---
+id: sunset-and-gc
+title: Sunset and garbage collection
+sidebar_label: Sunset and GC
+description: Drain and sunset old Worker Deployment Versions, then garbage-collect unused versions.
+toc_max_heading_level: 4
+keywords:
+  - workers
+  - versioning
+  - deploys
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+import { SdkTabs } from '@site/src/components';
+
+## Sunsetting an old Deployment Version {/* #sunsetting-an-old-deployment-version */}
+
+A Worker Deployment Version moves through the following states:
+
+1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never
+   becomes Active, it will never be Draining or Drained.
+2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing Auto-Upgrade
+   Workflows.
+3. **Draining**: The version stopped being Current or Ramping, and it has open pinned Workflows running on it. It is
+   possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated
+   periodically.
+4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed.
+
+You can see these statuses when you describe a Worker Deployment in the `WorkerDeploymentVersionStatus` of each
+`VersionSummary`, or by describing the version directly. When a version is Draining or Drained, that is displayed in a
+value called `DrainageStatus`. Periodically, the Temporal Service will refresh this status by counting any open pinned
+Workflows using that version.
+
+On each refresh, `DrainageInfo.last_checked_time` is updated. Eventually, `DrainageInfo` will report that the version is
+fully drained. At this point, no Workflows are still running on that version and no more will be automatically routed to
+it, so you can consider shutting down the running Workers.
+
+You can monitor this by checking `WorkerDeploymentInfo.VersionSummaries` or with
+`temporal worker deployment describe-version`:
+
+```bash
+temporal worker deployment describe-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID"
+```
+
+```
+Worker Deployment Version:
+  Version                  llm_srv.1.0
+  CreateTime               5 hours ago
+  RoutingChangedTime       32 seconds ago
+  RampPercentage           0
+  DrainageStatus           draining
+  DrainageLastChangedTime  31 seconds ago
+  DrainageLastCheckedTime  31 seconds ago
+
+Task Queues:
+     Name        Type
+  hello-world  activity
+  hello-world  workflow
+```
+
+If you have implemented [Queries](/sending-messages#sending-queries) on closed pinned Workflows, you may need to keep
+some Workers running to handle them.
+
+### Adding a pre-deployment test
+
+Before deploying a new Workflow revision, you can test it with synthetic traffic.
+
+To do this, use pinning in your tests, following the examples below
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+workflowOptions := client.StartWorkflowOptions{
+	ID:        "MyWorkflowId",
+	TaskQueue: "MyTaskQueue",
+	VersioningOverride: &client.PinnedVersioningOverride{
+        Version: worker.WorkerDeploymentVersion{
+            DeploymentName: "DeployName",
+            BuildID: "1.0",
+        },
+    },
+}
+// c is an initialized Client
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+MyWorkflow handle = client.newWorkflowStub(
+    MyWorkflow.class,
+    WorkflowOptions.newBuilder()
+        .setWorkflowId("MyWorkflowId")
+        .setTaskQueue("MyTaskQueue")
+        .setVersioningOverride(new VersioningOverride.PinnedVersioningOverride(
+            new WorkerDeploymentVersion("DeployName", "1.0")))
+        .build()
+);
+WorkflowExecution we = WorkflowClient.start(handle::execute, "Hello");
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+handle = client.start_workflow(
+    MyWorkflow.run,
+    "Hello",
+    id="MyWorkflowId",
+    task_queue="MyTaskQueue",
+    versioning_override=PinnedVersioningOverride(
+        WorkerDeploymentVersion("DeployName", "1.0")
+    ),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+```ts
+const handle = await client.workflow.start('helloWorld', {
+  taskQueue: 'MyTaskQueue',
+  workflowId: 'MyWorkflowId',
+  versioningOverride: {
+    pinnedTo: { buildId: '1.0', deploymentName: 'deploy-name' },
+  },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var workerV1 = new WorkerDeploymentVersion("deploy-name", "1.0");
+var handle = await Client.StartWorkflowAsync(
+    (HelloWorld wf) => wf.RunAsync(),
+      	new(id: "MyWorkflowId", taskQueue: "MyTaskQueue")
+      	{
+           VersioningOverride = new VersioningOverride.Pinned(workerV1),
+        }
+);
+```
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+```ruby
+worker_v1 = Temporalio::WorkerDeploymentVersion.new(
+  deployment_name: 'deploy-name',
+  build_id: '1.0'
+)
+handle = env.client.start_workflow(
+  HelloWorld,
+  id: 'MyWorkflowId',
+  task_queue: 'MyTaskQueue',
+  versioning_override: Temporalio::VersioningOverride.pinned(worker_v1)
+)
+```
+</SdkTabs.Ruby>
+</SdkTabs>
+
+## Garbage collection
+
+Worker Deployments are never garbage collected, but _Worker Deployment Versions_ (often referred to as Versions, Worker
+Versions, Deployment Versions) are.
+
+Versions are deleted to keep the total number of versions in one Worker Deployment less than or equal to
+[`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/common/dynamicconfig/constants.go#L1501-L1505),
+which is currently set to 100 in Temporal Cloud, but that's a conservative number and it could be increased if needed.
+
+For example, when you deploy your 101st Worker Version in a Worker Deployment, the server looks at the oldest drained
+version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version
+still has pollers, the server will try the next oldest version. If none of the 100 versions are eligible for deletion
+(ie. none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version
+would fail.
+
+At that point, to successfully deploy your 101st version, you would need to increase `matching.maxVersionsInDeployment`
+or stop polling from one of the old drained versions to make it eligible for clean up.
+
+If you want to re-deploy a previously deleted version, start polling with a Worker that has the same build ID and
+Deployment Name as the deleted version and the server will recreate it.
+
+This covers the complete lifecycle of working with Worker Versioning. We are continuing to improve this feature, and we
+welcome any feedback or feature requests using the sidebar link!
