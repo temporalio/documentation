@@ -158,9 +158,11 @@ Queue. Set `--timeout` high enough for the Worker to start, process Tasks, and
 Create the Worker Deployment Version exactly as in the AWS Lambda guide's
 [Create Worker Deployment Version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version)
 and [Set version as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version)
-steps, but use the LocalStack function ARN. Omit the assume-role ARN and External ID: with
-`require_role_and_external_id=false`, the server accepts an ARN-only configuration. Passing placeholder values instead
-fails, because the server cannot verify the `aws:ExternalId` trust condition against LocalStack's permissive IAM.
+steps, but use the LocalStack function ARN and pass `--aws-lambda-skip-role-and-external-id`. The CLI otherwise
+requires an assume-role ARN and External ID whenever you set a function ARN; this flag skips that client-side check and
+defers to the server, which accepts an ARN-only configuration because you started it with
+`require_role_and_external_id=false`. Don't pass the assume-role flags together with it — the CLI rejects that
+combination.
 
 ```bash
 export TEMPORAL_ADDRESS=localhost:7233
@@ -171,7 +173,8 @@ temporal worker deployment create --name my-app
 temporal worker deployment create-version \
   --deployment-name my-app \
   --build-id build-1 \
-  --aws-lambda-function-arn arn:aws:lambda:us-east-1:000000000000:function:my-temporal-worker
+  --aws-lambda-function-arn arn:aws:lambda:us-east-1:000000000000:function:my-temporal-worker \
+  --aws-lambda-skip-role-and-external-id
 
 temporal worker deployment set-current-version \
   --deployment-name my-app \
@@ -218,4 +221,4 @@ You can also watch the Workflow reach Completed in the Web UI at `http://localho
 | `create-function` rejects the runtime as unsupported. | Set `--runtime` to a value your LocalStack version supports, or upgrade to a newer LocalStack version.                                                                                    |
 | LocalStack does not start or asks for a token.      | Do not use the `:latest` tag on the Community image. Pin a released Community tag instead.                                                                                                 |
 | The first invocation times out before the Worker polls. | Increase `--timeout` on the Lambda so the Worker has time to start, register its Task Queue, and shut down gracefully.                                                                 |
-| `create-version` fails with `... does not require the configured external ID`. | You passed `--aws-lambda-assume-role-*` against LocalStack. Omit both; with `require_role_and_external_id=false`, the server accepts an ARN-only configuration.                            |
+| `create-version` fails with `missing required AWS Lambda provider detail: role`. | Add `--aws-lambda-skip-role-and-external-id`. The CLI requires an assume-role ARN and External ID whenever you set a function ARN unless this flag is present, and rejects passing both. |
