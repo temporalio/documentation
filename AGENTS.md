@@ -7,11 +7,11 @@ repository.
 
 | Topic                        | File                                                         |
 | ---------------------------- | ------------------------------------------------------------ |
-| Where content belongs        | [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) |
-| React components in MDX      | [COMPONENTS.md](./COMPONENTS.md)                             |
-| Mermaid diagrams             | [MERMAID.md](./readme/MERMAID.md)                            |
-| LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)               |
-| Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md)             |
+| Where content belongs        | [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md) |
+| React components in MDX      | [COMPONENTS.md](./readme/COMPONENTS.md)                             |
+| Mermaid diagrams             | [MERMAID.md](./readme/MERMAID.md)                                   |
+| LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./readme/MARKDOWN_PIPELINE.md)               |
+| Component → Markdown mapping | [COMPONENT_REGISTRY.md](./readme/COMPONENT_REGISTRY.md)             |
 
 ## Repository overview
 
@@ -22,11 +22,11 @@ repository.
 
 ## Where to put content
 
-Use [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to choose the section.
+Use [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md) to choose the section.
 
 ## Style Guide
 
-Follow [STYLE.md](./STYLE.md) and Vale rules in `vale/styles/`. The most common mistakes:
+Follow [STYLE.md](./readme/STYLE.md) and Vale rules in `vale/styles/`. The most common mistakes:
 
 ### Temporal terms are proper nouns
 
@@ -63,7 +63,7 @@ In code blocks, follow each language's conventions.
 
 ### Writing style
 
-Follow [STYLE.md](./STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
+Follow [STYLE.md](./readme/STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
 for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). A few
 additions specific to model output:
 
@@ -120,8 +120,8 @@ tags:
 - Pages are `.mdx` with YAML frontmatter (see [Frontmatter](#frontmatter) above).
 - Import shared components from `@site/src/components` unless a page uses a one-off import path already established
   nearby.
-- Before adding a component, check [COMPONENTS.md](./COMPONENTS.md) and
-  [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md).
+- Before adding a component, check [COMPONENTS.md](./readme/COMPONENTS.md) and
+  [COMPONENT_REGISTRY.md](./readme/COMPONENT_REGISTRY.md).
 - Reuse existing components (`Tabs`, `SdkTabs`, `CaptionedImage`, `ViewSourceCodeNotice`, etc.) instead of inventing
   inline HTML patterns.
 - Interactive demos live in `src/components/elements/`. Export new public components from `src/components/index.js` when
@@ -167,8 +167,8 @@ record it in `bin/metrics-baseline.json` rather than suppressing the check.
 `yarn check:orphans` reports pages that will build and get a real URL but aren't reachable from `sidebars.js`. A page
 that should stay linkable without navigation belongs in frontmatter as `unlisted: true`, not `draft: true` (draft pages
 don't build in production at all, which 404s any inbound links). A page that's a known, accepted exception for now
-belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See `UTILITIES.md` for
-details.
+belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
+[UTILITIES.md](./readme/UTILITIES.md) for details.
 
 Vale linting (style):
 

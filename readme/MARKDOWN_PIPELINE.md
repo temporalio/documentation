@@ -71,10 +71,10 @@ docusaurus-plugin-llms ───────────────────
 | `scripts/component-handlers/integrations.mjs` | Handler for `<IntegrationsGrid>` — reads `src/components/IntegrationsGrid/integrations-data.json`, filters by the `defaultSdks` prop, and emits a Markdown list. |
 | `scripts/component-handlers/hero.mjs` | Handler for the homepage hero cards (`<ActionCard>` / `<CommunityCard>`) — parses `title`/`href` props and children into a Markdown link-list item. Copy lives in `docs/index.mdx`; layout wrappers strip generically. |
 | `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
-| `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `COMPONENT_REGISTRY.md` at the repo root. |
+| `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `readme/COMPONENT_REGISTRY.md`. |
 | `src/components/LLMActions/LLMActions.tsx` | On-page actions (Copy, View as Markdown, Open in ChatGPT/Claude). Points at the generated `/<path>.md` (not the raw MDX). |
 | `tests/` | Zero-framework test suites. Fixtures in `fixtures/docs/`, golden snapshots in `tests/snapshots/`. |
-| `COMPONENT_REGISTRY.md` | Generated coverage report (repo root — intentionally *not* under `docs/`, so it is never published). |
+| `COMPONENT_REGISTRY.md` | Generated coverage report under `readme/` (intentionally *not* under `docs/`, so it is never published). |
 
 ## How the transformer works
 
@@ -101,7 +101,7 @@ files) is handled by recursively calling `transformMdx` on the inner content.
 ## Component coverage
 
 Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md.mjs`). Run
-`node scripts/audit-components.mjs` to regenerate `COMPONENT_REGISTRY.md` with current counts.
+`node scripts/audit-components.mjs` to regenerate `readme/COMPONENT_REGISTRY.md` with current counts.
 
 | Component(s) | Strategy | Output |
 |---|---|---|

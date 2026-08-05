@@ -17,7 +17,7 @@ export default function LLMActions() {
   const pageUrl = `${siteConfig.url}${permalink}`;
 
   // Clean Markdown is generated for every page at <permalink>.md by the
-  // markdown-pages plugin (see MARKDOWN_PIPELINE.md). These actions point at
+  // markdown-pages plugin (see readme/MARKDOWN_PIPELINE.md). These actions point at
   // that build output rather than the raw MDX source.
   // NOTE: the .md files only exist after `yarn build`; under `yarn start` (dev
   // server) these requests will 404. Verify locally with `yarn build && yarn serve`.

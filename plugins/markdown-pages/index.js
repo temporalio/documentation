@@ -259,7 +259,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     async postBuild({ outDir }) {
       // The transformer is ESM (zero-dep, also unit-tested standalone); this
       // plugin is CommonJS, so load it via dynamic import. See
-      // scripts/mdx-to-md.mjs and MARKDOWN_PIPELINE.md.
+      // scripts/mdx-to-md.mjs and readme/MARKDOWN_PIPELINE.md.
       const { pathToFileURL } = require('url');
       const { transformMdx } = await import(
         pathToFileURL(path.join(__dirname, '../../scripts/mdx-to-md.mjs')).href
