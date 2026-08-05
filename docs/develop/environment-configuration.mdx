@@ -10,8 +10,7 @@ tags:
   - TOML
 ---
 
-import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
-import { SdkTabs } from '@site/src/components';
+import { SdkTabs, AnnotatedCode } from '@site/src/components';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -93,6 +92,48 @@ MIIPrivateKeyDataHere...
 -----END PRIVATE KEY-----"""
 ```
 
+Select a concept to highlight the matching connection settings in a Cloud profile:
+
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Address',
+      description:
+        'Temporal Service host and port. For Temporal Cloud, use your Namespace endpoint (for example your-namespace.account.tmprl.cloud:7233).',
+      lines: [2],
+    },
+    {
+      label: 'Namespace',
+      description:
+        'Namespace this Client connects to. On Temporal Cloud, include the account suffix when your tooling expects it.',
+      lines: [3],
+    },
+    {
+      label: 'API key',
+      description:
+        'Authenticates the Client to Temporal Cloud. Prefer environment variables for secrets in real deployments; TOML is fine for local profiles.',
+      lines: [4],
+    },
+    {
+      label: 'TLS',
+      description:
+        'Optional mTLS settings. TLS is often auto-enabled when an API key or TLS block is present; set certificate paths for mutual TLS.',
+      lines: [6, 7, 8],
+    },
+  ]}
+>
+```toml
+[profile.prod]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+
+[profile.prod.tls]
+client_cert_path = "/etc/temporal/certs/client.pem"
+client_key_path = "/etc/temporal/certs/client.key"
+```
+</AnnotatedCode>
+
 The [`temporal cloud login`](/cli/cloud#interactive-login) command also writes to this file. When you run `temporal cloud login --profile prod`, the OAuth token is stored in the specified profile automatically. Subsequent commands that use that profile read the token from the TOML file to authenticate with Temporal Cloud.
 
 ## CLI integration
@@ -109,6 +150,16 @@ file. This provides a convenient way to manage your connection profiles without 
 These CLI commands directly manipulate the `temporal.toml` file. This differs from the SDKs, which only _read_ from the
 file and environment at runtime to establish a client connection. You can select a profile for the CLI to use with the
 `--profile` flag. For example, `temporal --profile prod ...`.
+
+Connection flags on other `temporal` commands (for example, `--address`, `--namespace`, `--api-key`) sit above both
+environment variables and the TOML file in precedence. The full order for the CLI is:
+
+1. Command-line flags
+2. Environment variables
+3. TOML configuration file (active profile)
+
+So `temporal workflow list --address localhost:7233` uses `localhost:7233` even if `TEMPORAL_ADDRESS` or the active
+profile's `address` sets something else.
 
 The following code blocks provide copy-paste-friendly examples for setting up CLI profiles for both local development
 and Temporal Cloud.

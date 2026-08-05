@@ -744,7 +744,9 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 - **Losing the task token** in Pattern 3. If the service storing task tokens is unavailable when the callback arrives, the activity can never complete. Store the token durably (database, not in-process cache).
 - **Forgetting to signal async completion** in Pattern 3 (`raise_complete_async()` in Python, `ErrResultPending` in Go, `doNotCompleteOnReturn()` in Java). Without this, Temporal marks the activity as completed immediately when the function returns, before the external callback arrives.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Signal with Start](/design-patterns/signal-with-start) — deeper coverage of the Signal-with-Start API for entity Workflows
 - [Approval](/design-patterns/approval) — blocking wait for an external human decision using Signals

@@ -15,6 +15,15 @@ tags:
   - Serverless
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
+  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
+  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
+  when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
 Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
 
@@ -24,3 +33,4 @@ For the end-to-end deployment guide, see [Deploy a Serverless Worker](/productio
 ## Supported providers
 
 - [**AWS Lambda**](/develop/python/workers/serverless-workers/aws-lambda) - Use the `lambda_worker` contrib package to run a Worker as a Lambda function. Covers setup, configuration, Lambda-tuned defaults, and observability.
+- [**GCP Cloud Run**](/develop/python/workers/serverless-workers/cloud-run) - Run a standard Worker on a Cloud Run worker pool. Covers the versioned Worker setup, connection configuration, and handling scale-in.

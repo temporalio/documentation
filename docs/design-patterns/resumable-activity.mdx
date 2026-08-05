@@ -553,10 +553,16 @@ stateDiagram-v2
 - **Accepting corrections in the wrong state.** If a Signal arrives while the Activity is running (not parked), the correction should be queued and applied after the current attempt completes. The Signal handler always runs — the condition check (`wait_condition`) determines when the Workflow acts on it.
 - **Conflating the correction loop with a general retry loop.** This pattern is for correcting *input data*. For retrying the same call against a temporarily unavailable system, use [Fast/Slow Retries](/design-patterns/fast-slow-retries) instead.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Approval](/design-patterns/approval): Human-in-the-loop gate for forward progress rather than failure recovery.
 - [Non-Retryable Errors](/design-patterns/non-retryable-errors): Fail immediately without parking when the error is structural and no correction is expected.
 - [Fast/Slow Retries](/design-patterns/fast-slow-retries): Infinite patient retries when the downstream system is temporarily unavailable.
 - [Signal with Start](/design-patterns/signal-with-start): Start the Workflow and send the correction Signal atomically.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
+
+### Guides
+
+- [Recover business processes without restarting](/guides/recover-without-restart): A `recoverableStep` implementation of this pattern in a six-step loan pipeline, with Search Attribute-based routing so operators can find and fix blocked cases.

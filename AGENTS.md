@@ -1,16 +1,17 @@
 # AGENTS.md
 
-Guidance for AI coding agents working in the [Temporal documentation](https://github.com/temporalio/documentation) repository.
+Guidance for AI coding agents working in the [Temporal documentation](https://github.com/temporalio/documentation)
+repository.
 
 ## Read these first
 
-| Topic | File |
-|-------|------|
-| Where content belongs | [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) |
-| React components in MDX | [COMPONENTS.md](./COMPONENTS.md) |
-| Mermaid diagrams | [MERMAID.md](./readme/MERMAID.md) |
-| LLM Markdown pipeline | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md) |
-| Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md) |
+| Topic                        | File                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| Where content belongs        | [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) |
+| React components in MDX      | [COMPONENTS.md](./COMPONENTS.md)                             |
+| Mermaid diagrams             | [MERMAID.md](./readme/MERMAID.md)                            |
+| LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)               |
+| Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md)             |
 
 ## Repository overview
 
@@ -21,7 +22,7 @@ Guidance for AI coding agents working in the [Temporal documentation](https://gi
 
 ## Where to put content
 
-Use [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to choose the section. 
+Use [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to choose the section.
 
 ## Style Guide
 
@@ -62,30 +63,34 @@ In code blocks, follow each language's conventions.
 
 ### Writing style
 
-Follow [STYLE.md](./STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style) for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). A few additions specific to model output:
+Follow [STYLE.md](./STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
+for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). A few
+additions specific to model output:
 
-- Cut filler that adds no information: "it's worth noting that," "in order to," "simply," "easily," "just." 
-- Avoid vague intensifiers doing the work a specific fact should do: "powerful," "robust," "seamless," "cutting-edge," "leverage" (use "use"), "unlock," "elevate," "streamline." Replace with what the thing actually does.
-- Don't pad a page to look thorough. Prefer brevity over overly-verbose paragraphs. 
-- Do not add emojis to documentation prose and use em-dashes sparingly. 
+- Cut filler that adds no information: "it's worth noting that," "in order to," "simply," "easily," "just."
+- Avoid vague intensifiers doing the work a specific fact should do: "powerful," "robust," "seamless," "cutting-edge,"
+  "leverage" (use "use"), "unlock," "elevate," "streamline." Replace with what the thing actually does.
+- Don't pad a page to look thorough. Prefer brevity over overly-verbose paragraphs.
+- Do not add emojis to documentation prose and use em-dashes sparingly.
 
 ### Word choice
 
 Prefer common, concrete verbs and nouns.
 
-| Prefer | Instead of |
-|--------|------------|
-| use | utilize, leverage |
-| help | facilitate |
-| to | in order to |
-| many | numerous, various (when you can be specific, be specific) |
+| Prefer | Instead of                                                |
+| ------ | --------------------------------------------------------- |
+| use    | utilize, leverage                                         |
+| help   | facilitate                                                |
+| to     | in order to                                               |
+| many   | numerous, various (when you can be specific, be specific) |
 
 ### Tense and time
 
-Document current behavior. Don't make future promises. Tie claims to a version, release note, or release stage when that matters.
+Document current behavior. Don't make future promises. Tie claims to a version, release note, or release stage when that
+matters.
 
-| Prefer | Instead of |
-|--------|------------|
+| Prefer                                                                | Instead of                                 |
+| --------------------------------------------------------------------- | ------------------------------------------ |
 | Temporal Server v1.31.0 and later supports Cassandra 5.0.4 and later. | A future release will support Cassandra 5. |
 
 ## Frontmatter
@@ -113,11 +118,14 @@ tags:
 ## MDX and components
 
 - Pages are `.mdx` with YAML frontmatter (see [Frontmatter](#frontmatter) above).
-- Import shared components from `@site/src/components` unless a page uses a one-off import path already established nearby.
-- Before adding a component, check [COMPONENTS.md](./COMPONENTS.md) and [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md).
-- Reuse existing components (`Tabs`, `SdkTabs`, `CaptionedImage`, `ViewSourceCodeNotice`, etc.) instead of inventing inline HTML patterns.
-- Interactive demos live in `src/components/elements/`. Export new public components from `src/components/index.js` when needed.
-
+- Import shared components from `@site/src/components` unless a page uses a one-off import path already established
+  nearby.
+- Before adding a component, check [COMPONENTS.md](./COMPONENTS.md) and
+  [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md).
+- Reuse existing components (`Tabs`, `SdkTabs`, `CaptionedImage`, `ViewSourceCodeNotice`, etc.) instead of inventing
+  inline HTML patterns.
+- Interactive demos live in `src/components/elements/`. Export new public components from `src/components/index.js` when
+  needed.
 
 ## URLs and navigation
 
@@ -130,7 +138,8 @@ Adding or moving pages usually requires:
 ## Code samples and Snipsync
 
 - Prefer code extracted from CI-enabled sample repos via [Snipsync](https://github.com/temporalio/snipsync).
-- Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper, then run `yarn snipsync`.
+- Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper,
+  then run `yarn snipsync`.
 
 ## Commands
 
@@ -144,9 +153,40 @@ yarn check-links  # Broken link check (run after build)
 yarn snipsync     # Refresh Snipsync code snippets
 ```
 
+Reference page checks:
+
+```bash
+yarn check:metrics       # SDK metrics reference against itself; runs in CI on PRs
+yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
+yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
+```
+
+`yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
+record it in `bin/metrics-baseline.json` rather than suppressing the check.
+
+`yarn check:orphans` reports pages that will build and get a real URL but aren't reachable from `sidebars.js`. A page
+that should stay linkable without navigation belongs in frontmatter as `unlisted: true`, not `draft: true` (draft pages
+don't build in production at all, which 404s any inbound links). A page that's a known, accepted exception for now
+belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See `UTILITIES.md` for
+details.
+
 Vale linting (style):
 
 ```bash
-yarn lint:py      # Example: lint Python SDK docs
-yarn vale         # Full Vale run via assembly script
+yarn lint:py                          # Example: lint Python SDK docs
+vale --config .vale-ci.ini docs/      # CI-scoped rules only (what PR checks run)
+vale docs/                            # Full Vale style set
 ```
+
+Before finishing any docs change, run the CI-scoped command (`vale --config .vale-ci.ini docs/`) against the files you
+touched and resolve every result it reports, unless it's a genuine false positive (e.g. a heading that's a literal
+command/metric name, or a bare URL that must stay absolute for autolinking). `.vale-ci.ini` enables only the small set
+of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) that gate PRs in
+`.github/workflows/vale-ci.yml` — treat that as the bar to hit.
+
+Do not use the full Vale style set (plain `vale docs/`, no `--config`) to judge whether a change is done. It runs many
+noisier suggestion-level rules that are not enforced in CI and are not a requirement for this repo.
+
+`.vale-ci.ini` enables only the small set of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) used
+as a CI gate in `.github/workflows/vale-ci.yml`. `.vale.ini` (the default config) runs the full style set, which
+includes noisier suggestion-level rules not enforced in CI.

@@ -5,7 +5,7 @@ sidebar_label: Local development
 description:
   Run a Temporal Serverless Worker on AWS Lambda entirely on your machine using LocalStack and the Temporal development server,
   with no AWS account.
-slug: /production-deployment/worker-deployments/serverless-workers/local-development
+slug: /production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development
 toc_max_heading_level: 4
 keywords:
   - serverless
@@ -24,9 +24,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader featureName="serverlessWorkers">
-  APIs are experimental and may be subject to backwards-incompatible changes.
-</ReleaseNoteHeader>
+<ReleaseNoteHeader featureName="serverlessWorkersLambda" />
 
 Run the full [Serverless Worker](/serverless-workers) loop on your machine with no AWS account and no Temporal Cloud.
 [LocalStack](https://www.localstack.cloud/) emulates AWS Lambda locally, and the
@@ -89,7 +87,7 @@ can deploy depends on your LocalStack version: older releases such as `3.8.1` su
 ## 2. Start the Temporal development server {/* #start-dev-server */}
 
 The development server is a self-hosted Temporal Service, so enable the [Worker Controller](/serverless-workers#how-invocation-works)
-the same way you would for [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#enable-worker-controller).
+the same way you would for [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#enable-worker-controller).
 The Worker Controller runs inside the server and calls the compute provider, so point it at LocalStack with
 `AWS_ENDPOINT_URL` and placeholder credentials. The development server has no dynamic configuration file, so pass the Worker
 Controller settings as `--dynamic-config-value` flags:
@@ -115,7 +113,7 @@ The Web UI is at `http://localhost:8233`.
 
 This command sets the minimum needed for local use. If Tasks are not picked up, add the `compute_providers.enabled` and
 `scaling_algorithms.enabled` settings from
-[Enable the Worker Controller](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup#enable-worker-controller)
+[Enable the Worker Controller](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#enable-worker-controller)
 as additional `--dynamic-config-value` flags with JSON list values, for example
 `--dynamic-config-value 'workercontroller.scaling_algorithms.enabled=["no-sync"]'`.
 
@@ -208,9 +206,9 @@ You can also watch the Workflow reach Completed in the Web UI at `http://localho
 - To validate real IAM role assumption and the `aws:ExternalId` trust condition, deploy to a real AWS account with the
   [AWS Lambda deployment guide](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
 - To configure a self-hosted Temporal Service to invoke Lambda functions in AWS, see
-  [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/self-hosted-setup).
+  [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup).
 - If a Workflow does not progress or the Lambda is not invoked, see
-  [Troubleshoot Serverless Workers](/troubleshooting/serverless-workers).
+  [Troubleshoot Serverless Workers](/troubleshooting/serverless-workers/aws-lambda).
 
 ## Troubleshooting {/* #troubleshooting */}
 

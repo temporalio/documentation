@@ -2,17 +2,13 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import SdkSvg from '../../SdkSvgs/SdkSvg';
 import styles from './sdk-guide-links.module.css';
+import { SDKS } from '../../../../constants/sdks';
 
-const DEFAULT_SDKS = [
-  { name: 'goLangBlock',     sdk: 'go',          label: 'Go' },
-  { name: 'javaBlock',       sdk: 'java',        label: 'Java' },
-  { name: 'phpBlock',        sdk: 'php',         label: 'PHP' },
-  { name: 'pythonBlock',     sdk: 'python',      label: 'Python' },
-  { name: 'rubyBlock',       sdk: 'ruby',        label: 'Ruby' },
-  { name: 'rustBlock',       sdk: 'rust',        label: 'Rust' },
-  { name: 'typeScriptBlock', sdk: 'typescript',  label: 'TypeScript' },
-  { name: 'dotnetBlock',     sdk: 'dotnet',      label: '.NET' },
-];
+const DEFAULT_SDKS = SDKS.map(({ id, label, blockName }) => ({
+  name: blockName,
+  sdk: id,
+  label,
+}));
 
 /**
  * Renders a vertical list of SDK guide links with block icons.
