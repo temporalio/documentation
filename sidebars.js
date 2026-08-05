@@ -1704,6 +1704,9 @@ module.exports = {
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
         'troubleshooting/schedule-missed-actions',
+        'troubleshooting/request-failures',
+        'troubleshooting/worker-capacity',
+        'troubleshooting/execution-failures',
         {
           type: 'category',
           label: 'Serverless Workers',
@@ -1729,6 +1732,7 @@ module.exports = {
       },
       items: [
         'best-practices/worker',
+        'best-practices/worker-alerting',
         'best-practices/pre-production-testing',
         'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
