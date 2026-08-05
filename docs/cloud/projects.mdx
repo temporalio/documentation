@@ -82,11 +82,12 @@ To manage Project access in the Temporal Cloud UI:
 2. Click the **Project Identities** tab in the left navigation. The Project Identities page has three tabs, for Users, Service Accounts, and Groups.
 3. Click the **Manage Identities** button to add (or remove) users, groups or service accounts, and assign desired Project Roles from the drop-down list. You can also modify or remove an existing principal's role in the same view.
 
+Similar to [Namespace-scoped Service Accounts](/cloud/manage-access/service-accounts#scoped), a Project-scoped Service Account is an identity bound (or scoped) to a single Project. Use it for workers, CI/CD pipelines, Terraform, or operational automation that should not access resources outside that Project. Project-scoped Service Accounts are not created automatically with Project creation. Create them only when needed. 
+
 To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts**  tab to create Project-scoped service account.
 
-Project-scoped Service Accounts are not created automatically with Project creation. Create them only when needed. Unlike an Account-scoped Service Account, a Project-scoped Service Account cannot access resources outside its Project.
+After creating the Service Account, you can optionally create one or more API keys for it. Each API key inherits only the permissions of its associated Service Account. If the Service Account is deleted, all of its API keys are deleted automatically.
 
-Use a Project-scoped Service Account when automation only needs access to one team's resources. If automation needs to work across multiple Projects, use an Account-scoped Service Account instead. 
 
 A Project can contain multiple Project-scoped Service Accounts. Each Project-scoped Service Account belongs to exactly one Project. 
 
