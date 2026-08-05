@@ -27,6 +27,7 @@ import {
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
+import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -895,6 +896,39 @@ test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", 
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: SdkOverviewCards handler
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/sdk-overview-cards");
+
+test("sdkOverviewCardsToMarkdown lists every SDK with guide + API reference links", () => {
+  const md = sdkOverviewCardsToMarkdown({ projectRoot: PROJECT_ROOT });
+  assertContains(md, "- **Go**");
+  assertContains(md, "[Developer guide](/develop/go)");
+  assertContains(md, "[API reference](http://t.mp/go-api)");
+  assertContains(md, "- **.NET**");
+  assertContains(md, "[Developer guide](/develop/dotnet)");
+});
+
+test("sdkOverviewCardsToMarkdown includes a version when sdk-versions.json resolves", () => {
+  const md = sdkOverviewCardsToMarkdown({ projectRoot: PROJECT_ROOT });
+  assert(/\*\*Go\*\* \(v[\d.]+\)/.test(md), "expected a version suffix after the Go label");
+});
+
+test("sdkOverviewCardsToMarkdown without projectRoot omits version chips but keeps links", () => {
+  const md = sdkOverviewCardsToMarkdown();
+  assertContains(md, "- **Go**: [Developer guide](/develop/go)");
+  assertNotContains(md, "(v");
+});
+
+test("transformMdx resolves <SdkOverviewCards /> to a real list (with projectRoot)", () => {
+  const input = `<SdkOverviewCards />`;
+  const { markdown } = transformMdx(input, { projectRoot: PROJECT_ROOT });
+  assertNotContains(markdown, "<SdkOverviewCards");
+  assertContains(markdown, "[Developer guide](/develop/python)");
+  assertContains(markdown, "[API reference](https://python.temporal.io)");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: cards handler (QuickstartCards / PatternCards)
 // ---------------------------------------------------------------------------
 console.log("\n📦 component-handlers/cards");
@@ -1082,7 +1116,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
