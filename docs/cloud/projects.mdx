@@ -97,7 +97,14 @@ Project-scoped Service Accounts count toward the Project's Service Account limit
 
 A Project cannot be deleted while it contains Project-scoped Service Accounts.
 
-API keys created for the Service Account inherit only that Service Account's permissions. Deleting a Project-scoped Service Account also deletes its API keys.
+A Project-scope Service Account:
+
+- Can only bound (or scope to) exactly one Project. Each project can contain multiple Project-scoped Service Accounts. 
+- Cannot be moved to another Project after it is created.
+- Counts toward the Project's Service Account limit.
+- Must be deleted before the Project can be deleted
+
+Unlike an [Account-scoped Service Account](/cloud/manage-access/service-accounts), a Project-scoped Service Account cannot access resources outside its Project. For automation that needs access across multiple Projects, use an Account-scoped Service Account and grant it the appropriate Project roles.
 
 ## Project roles
 
