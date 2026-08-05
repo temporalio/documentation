@@ -175,6 +175,33 @@ Proceed only when your request has been approved by Temporal.
 
 :::
 
+### Plan migration endpoints
+
+A migration endpoint is a cloud-side resource that pairs one self-hosted server with one migration server in Temporal
+Cloud. Temporal creates these endpoints and provides the `endpoint-id` values used with the `tcld migration` commands in
+later phases.
+
+The components relate as follows:
+
+- Each self-hosted server connects through its own S2S Proxy deployment and its own migration endpoint. This pairing is
+  always one-to-one.
+- A single migration server can hold multiple migration endpoints, one for each self-hosted server. Several self-hosted
+  S2S Proxy deployments can therefore connect to the same migration server, which allows you to migrate Namespaces from
+  multiple self-hosted servers in parallel.
+
+To connect multiple self-hosted servers to one migration server at the same time, each self-hosted server must have a
+unique cluster name and a unique Initial Failover Version. Temporal uses `active` as the default cluster name, so
+servers that still use the default will collide. See [Modify cluster configuration](#modify-cluster-configuration) for
+setting these values.
+
+If your self-hosted servers cannot use unique cluster names, you have two options:
+
+1. Migrate one server at a time through a single migration server.
+2. Ask Temporal to provision multiple migration servers, one for each self-hosted server, if you need to migrate from
+   all of them at the same time.
+
+Tell Temporal how many self-hosted servers you plan to migrate from and whether those migrations run in parallel, so
+that the correct number of endpoints and migration servers can be provisioned.
 
 ### S2S Proxy configuration
 
@@ -445,12 +472,9 @@ The following are known limitations.
 - OSS server versions 1.22 or newer are required. Refer to the
   [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
 - History shard counts must be a power of two (eg. 512, 1024, etc...).
-- If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal
-  uses 'active' as cluster name), they cannot be connected to a single migration server simultaneously due to cluster
-  name collision. There are 2 available options:
-  1. Migrate one server at a time using a single migration server.
-  2. Create multiple migration servers (one for each self-hosted server) if you need to migrate all servers
-     simultaneously.
+- Self-hosted servers that connect to the same migration server at the same time must each have a unique cluster name
+  and Initial Failover Version. Servers that share a cluster name, such as the default `active`, collide. See
+  [Plan migration endpoints](#plan-migration-endpoints) for the available options.
 - If you are using multi-cluster replication in your self-hosted setup and have previously failed over Namespaces, then
   this may impact your eligibility for automated migration. Specifically, whenever Global Namespace has been previously
   enabled the following restrictions apply:
@@ -494,6 +518,13 @@ The answer depends on your specific situation. However, automated migration is m
 * When there is a need to migrate Schedules.
 
 In contrast, automated migration may not be the best solution if your self-hosted clusters do not meet the [minimum requirements](#limitations).
+
+### Can I connect multiple self-hosted S2S Proxy deployments to a single migration server?
+
+Yes. Temporal creates one migration endpoint per self-hosted server, and a single migration server can hold multiple
+endpoints. This lets you migrate Namespaces from several self-hosted servers, such as separate development and
+production servers, in parallel. Each self-hosted server must have a unique cluster name and Initial Failover Version.
+See [Plan migration endpoints](#plan-migration-endpoints).
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 No. All Workflows will be migrated.
