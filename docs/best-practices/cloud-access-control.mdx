@@ -38,9 +38,9 @@ The high-level end-to-end rotation process is:
 5. **Remove old credentials**: Remove old certificates and API keys from your secrets provider after confirming successful migration 
 
 This approach ensures near-zero-downtime rotation and prevents authentication failures that could impact running workflows. For specific guidance to rotate mTLS certificates and API keys, see:
-- https://docs.temporal.io/cloud/certificates#manage-certificates 
-- https://docs.temporal.io/cloud/api-keys#rotate-an-api-key 
-- https://github.com/temporal-sa/temporal-Worker-cert-rotation 
+- [How to add, update, and remove certificates in a Temporal Cloud Namespace](/cloud/certificates#manage-certificates)
+- [Rotate an API key](/cloud/api-keys#rotate-an-api-key)
+- Per-SDK code for rotating a Worker's mTLS client certificate without a restart is documented on each SDK's Temporal Client page, in the "Connect to Temporal Cloud" section (for example, [Go](/develop/go/client/temporal-client#connect-to-temporal-cloud)) — Go, Java, Python, .NET, Ruby, and TypeScript are all supported; PHP and Rust are not yet. The [temporal-worker-cert-rotation](https://github.com/temporal-sa/temporal-worker-cert-rotation) reference implementation walks through automating this with cert-manager on Kubernetes.
 
 For mutual TLS (mTLS) implementations, using Let's Encrypt is not recommended, as it is designed primarily for public-facing services and lacks support for internal certificate requirements. 
 
