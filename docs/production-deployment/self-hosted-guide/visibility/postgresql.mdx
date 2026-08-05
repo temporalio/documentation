@@ -1,0 +1,138 @@
+---
+id: postgresql
+title: Set up PostgreSQL Visibility store
+sidebar_label: PostgreSQL
+slug: /self-hosted-guide/visibility/postgresql
+description: How to set up a PostgreSQL Visibility store for a self-hosted Temporal Service.
+toc_max_heading_level: 4
+keywords:
+  - visibility
+  - self-hosting
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Visibility
+---
+
+## How to set up PostgreSQL Visibility store {/* #postgresql */}
+
+:::tip Support, stability, and dependency info
+
+- PostgreSQL v9.6 and later.
+- Advanced Visibility is available on PostgreSQL v12 and later with Temporal Server v1.20 and later.
+- PostgreSQL v9.6 through v11 support applied to older standard Visibility deployments before Temporal Server v1.24. We
+  recommend upgrading to PostgreSQL 12 or later.
+
+:::
+
+You can set PostgreSQL as your [Visibility store](/temporal-service/visibility). Verify
+[supported versions](/self-hosted-guide/visibility) before you proceed.
+
+If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any
+[custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
+Namespace in that Temporal Service.
+
+### Persistence configuration
+
+Set your PostgreSQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
+define the Visibility store configuration under `datastores`.
+
+The following example shows how to set a Visibility store `postgres-visibility` and define the datastore configuration
+in your Temporal Service configuration YAML.
+
+```yaml
+#...
+persistence:
+  #...
+  visibilityStore: postgres-visibility
+  #...
+  datastores:
+    default:
+    #...
+    postgres-visibility:
+      sql:
+        pluginName: 'postgres12' # For PostgreSQL v12 and later. For earlier versions, use "postgres" plugin.
+        databaseName: 'temporal_visibility'
+        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:5432
+        connectProtocol: ' ' # protocol example: tcp
+        user: 'username_for_auth'
+        password: 'password_for_auth'
+        maxConns: 2
+        maxIdleConns: 2
+        maxConnLifetime: '1h'
+#...
+```
+
+To enable advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with
+Temporal Server v1.20 or later. See [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server) for details on
+how to upgrade your Temporal Server and database schemas.
+
+### Database schema and setup
+
+Visibility data is stored in a database table called `executions_visibility` and must be created using the schema for
+[PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/main/schema/postgresql/v12/visibility)
+
+The following example shows how to set up your PostgreSQL as both persistence and Visibility store using
+`temporal-sql-tool`. Refer to the
+[samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts) for more examples
+with different databases.
+
+{/* SNIPSTART compose-postgres-setup */}
+[compose/scripts/setup-postgres.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-postgres.sh)
+```sh
+set -eu
+
+# Validate required environment variables
+: "${POSTGRES_SEEDS:?ERROR: POSTGRES_SEEDS environment variable is required}"
+: "${POSTGRES_USER:?ERROR: POSTGRES_USER environment variable is required}"
+
+echo 'Starting PostgreSQL schema setup...'
+echo 'Waiting for PostgreSQL port to be available...'
+nc -z -w 10 ${POSTGRES_SEEDS} ${DB_PORT:-5432}
+echo 'PostgreSQL port is available'
+
+# Create and setup temporal database
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
+
+# Create and setup visibility database
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility create
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal_visibility update-schema -d /etc/temporal/schema/postgresql/v12/visibility/versioned
+
+echo 'PostgreSQL schema setup complete'
+```
+{/* SNIPEND */}
+
+Note that the script uses
+[temporal-sql-tool](https://github.com/temporalio/temporal/blob/main/tools/sql/main.go)
+to run the setup.
+
+### Maintaining Visibility index health {/* #postgresql-index-maintenance */}
+
+On high-volume deployments, the total size of the indexes on `executions_visibility` can grow much larger than the table itself and keep growing even with a Retention Period set. This is expected PostgreSQL b-tree behavior rather than a data leak:
+
+- Each pre-allocated custom and system Search Attribute has its own nullable column and its own index. PostgreSQL b-tree indexes store entries for `NULL` values, so a Search Attribute that a deployment never sets still has one index entry for every Workflow Execution row.
+- Closing or updating a Workflow Execution upserts its Visibility row, and because these indexes order on `close_time`, the updates leave dead index entries over time.
+- `VACUUM` reclaims table (heap) space but does not compact b-tree index bloat. `REINDEX` rebuilds an index and reclaims that space; removing rows through the Retention Period does not.
+
+To reclaim index space online, run `REINDEX` with `CONCURRENTLY`, which does not block reads or writes. It needs roughly the size of the index in extra disk space and I/O, so prefer a lower-traffic window:
+
+```sql
+REINDEX TABLE CONCURRENTLY executions_visibility;
+```
+
+You can also target a single index with `REINDEX INDEX CONCURRENTLY <index_name>;`.
+
+Because `executions_visibility` is update-heavy, more aggressive autovacuum settings for the table help keep dead tuples, and the resulting index bloat, under control:
+
+```sql
+ALTER TABLE executions_visibility SET (
+  autovacuum_vacuum_scale_factor = 0.05,
+  autovacuum_analyze_scale_factor = 0.05
+);
+```
+
+Track sizes with `pg_relation_size('executions_visibility')` and `pg_indexes_size('executions_visibility')`, and use the [`pgstattuple`](https://www.postgresql.org/docs/current/pgstattuple.html) extension for precise bloat estimates. For sustained high-volume Visibility workloads, consider [Elasticsearch or OpenSearch](/self-hosted-guide/visibility/elasticsearch#elasticsearch), which Temporal recommends for production at scale.
+
