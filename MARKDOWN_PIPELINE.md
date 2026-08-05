@@ -69,6 +69,7 @@ docusaurus-plugin-llms ───────────────────
 | `scripts/mdx-to-md.mjs` | **The transformer.** Exports `transformMdx()` + parsing helpers and `COMPONENT_REGISTRY`. Zero-dependency ES module. |
 | `scripts/component-handlers/data-tables.mjs` | Handler for `<JsonTable>` — resolves a `static/json/*.json` file into a Markdown table. |
 | `scripts/component-handlers/integrations.mjs` | Handler for `<IntegrationsGrid>` — reads `src/components/IntegrationsGrid/integrations-data.json`, filters by the `defaultSdks` prop, and emits a Markdown list. |
+| `scripts/component-handlers/sdk-overview-cards.mjs` | Handler for `<SdkOverviewCards>` — reads `src/data/sdk-versions.json` for version numbers and emits a Markdown list, one bullet per SDK. |
 | `scripts/component-handlers/hero.mjs` | Handler for the homepage hero cards (`<ActionCard>` / `<CommunityCard>`) — parses `title`/`href` props and children into a Markdown link-list item. Copy lives in `docs/index.mdx`; layout wrappers strip generically. |
 | `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
 | `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `COMPONENT_REGISTRY.md` at the repo root. |
@@ -119,6 +120,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop |
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
+| `SdkOverviewCards` | `sdk-overview-cards` | Markdown list — one bullet per SDK with its version (from `src/data/sdk-versions.json`), developer guide link, and API reference link |
 | `ActionCard` / `CommunityCard` | `hero-card` | Homepage hero cards → `- [title](href): description` link-list item (copy authored in `docs/index.mdx`) |
 | `HeroWrapper`, `HeroHeader`, `HeroSection`, `HeroContent`, `HeroActions`, `HeroCta`, `CommunityCards` | `strip-tag` | Homepage hero layout wrappers — stripped to their inner Markdown (headline + intro prose) |
 | `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
@@ -165,6 +167,11 @@ cross-reference comments above are an interim guard, not the fix.
   `src/components/IntegrationsGrid/index.tsx`. The intended fix is to extract that filtering into
   a shared, framework-agnostic module that both import (the pattern already used by
   `src/constants/featureReleaseTypes.js`).
+- **`SdkOverviewCards` — duplicated SDK metadata.** Version numbers are shared
+  (`src/data/sdk-versions.json`), but the id/label/API-reference-href list in
+  `scripts/component-handlers/sdk-overview-cards.mjs` duplicates `SDKS` in
+  `src/constants/sdks.js`, because that file's icon imports aren't plain-Node-importable from an
+  `.mjs` script. Update both if a label or API reference link changes.
 
 Not affected: `JsonTable` (shared JSON data; only the render *format* differs) and
 `QuickstartCards`/`PatternCards` (content lives in the MDX `items` prop — a single source).
