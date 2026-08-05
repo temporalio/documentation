@@ -416,6 +416,27 @@ client = Temporalio::Client.connect(
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
+`TLSOptions` is static: the certificate you pass to `Client.connect` is fixed for the lifetime of that client. To rotate
+an mTLS client certificate without restarting your Worker, connect a new client with the new certificate, then assign
+it to the running `Worker`'s `client`:
+
+```ruby
+new_client = Temporalio::Client.connect(
+  '<endpoint>', # Endpoint
+  '<namespace_id>.<account_id>', # Namespace
+  tls: Temporalio::Client::Connection::TLSOptions.new(
+    client_cert: File.read('my-client-cert-new.pem'),
+    client_private_key: File.read('my-client-key-new.pem')
+  )
+)
+
+# my_worker is the Worker instance already running against the old client
+my_worker.client = new_client
+```
+
+The Worker starts using `new_client` for subsequent calls to the Temporal Service; calls already in flight on the old
+client finish normally.
+
 </TabItem>
 
 </Tabs>
