@@ -681,6 +681,7 @@ const developPythonCategory = {
         items: [
           'develop/python/integrations/braintrust',
           'develop/python/integrations/google-adk',
+          'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
           'develop/python/integrations/strands-agents',
@@ -1998,6 +1999,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/priority-fairness-walkthrough',
       ],
     },    {
       type: 'category',
