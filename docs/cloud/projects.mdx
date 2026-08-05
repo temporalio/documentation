@@ -91,7 +91,10 @@ After creating the Project, add new Namespaces and other supported resources wit
 
 ## Add Resources to a Project {/* #add-resources-to-a-project */}
 
-After creating a Project, you can create Project-scoped resources such as Namespaces, Nexus Endpoints, Connectivity Rules within it.
+After creating a Project, you can create Project-scoped resources such as Namespaces, Nexus Endpoints, or Connectivity Rules within it.
+
+<Tabs groupID="create-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
 In Temporal Cloud UI:
 1. Open the Project. 
@@ -99,6 +102,99 @@ In Temporal Cloud UI:
 3. Click **Create Namespace** (or **Nexus Endpoints**) to add to the project. 
 
 **Connectivity rules** cannot currently be created via the UI. Connectivity rules and the Namespace they attach to must reside in the same Project.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`CreateNamespace` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)
+to create a new Namespace within a Project. For example:
+
+```
+curl -sS -X POST "$BASE/cloud/namespaces" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "name": "payments-prod",
+      "regions": ["aws-us-west-2"],
+      "retentionDays": 7,
+      "apiKeyAuth": { "enabled": true }
+    }
+  }'
+```
+
+This call is the same as the standard process for [creating a Namespace](/cloud/namespaces#create-a-namespace), with the addition of the `projectId` for the Project in which you're creating the Namespace.
+
+Use the
+[`CreateCreateNexusEndpoint` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)
+to create a new Nexus Endpoint within a Project. For example:
+
+```
+curl -sS -X POST "$BASE/cloud/nexus/endpoints" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "name": "order-fulfillment",
+      "targetSpec": {
+        "workerTargetSpec": {
+          "namespaceId": "payments-prod.a1b2c3",
+          "taskQueue": "nexus-handler"
+        }
+      },
+      "policySpecs": [
+        {
+          "allowedCloudNamespacePolicySpec": {
+            "namespaceId": "checkout-prod.a1b2c3"
+          }
+        }
+      ]
+    }
+  }'
+```
+
+This call is the same as the standard process for [creating a Nexus Endpoint](/nexus/registry#view-and-manage-nexus-endpoints), with the addition of the `projectId` for the Project in which you're creating the Nexus Endpoint.
+
+Use the
+[`CreateConnectivityRule` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)
+to create a new Connectivity Rule within a Project. For example, for a private Connectivity Rule on AWS:
+
+```
+curl -sS -X POST "$BASE/cloud/connectivity-rules" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "privateRule": {
+        "connectionId": "vpce-0123456789abcdef0",
+        "region": "aws-us-west-2"
+      }
+    }
+  }'
+```
+
+Or for a public Connectivity Rule:
+
+```
+curl -sS -X POST "$BASE/cloud/connectivity-rules" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "publicRule": { "enableStableIps": true }
+    }
+  }'
+```
+
+This call is the same as the standard process for [creating a Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule), with the addition of the `projectId` for the Project in which you're creating the Connectivity Rule.
+
+Then attach the Connectivity Rule to a Namespace within the same project via [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/{namespace}) Creating the Connectivity Rule alone does not bind it to a Namespace.
+
+  </TabItem>
+</Tabs>
+
+
 
 ## Manage Project Access
 
