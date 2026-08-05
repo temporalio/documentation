@@ -64,9 +64,9 @@ Each metric may have some combination of the following [tags](/glossary#tag) att
 - `namespace`: Namespace the Worker is bound to
 - `poller_type`: One of the following:
   - `workflow_task`
+  - `workflow_sticky_task`
   - `activity_task`
   - `nexus_task`
-  - `sticky_workflow_task`
 - `worker_type`: One of the following:
   - `ActivityWorker`
   - `WorkflowWorker`
@@ -75,6 +75,8 @@ Each metric may have some combination of the following [tags](/glossary#tag) att
 - `activity_type`: The name of the Activity Function the metric is associated with
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
+- `status_code`: gRPC status code returned by the Temporal Service, in `UPPER_SNAKE_CASE` (for example, `NOT_FOUND`); available on Temporal Client gRPC request failure metrics
+- `cause`: reason the Temporal Service rejected a request as resource exhausted (for example, `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`); available on the resource-exhausted metrics
 
 Some tags may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
@@ -96,6 +98,7 @@ Some tags may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_long_request](#long_request)                                                       | Service Client | Counter     | Core, Go, Java |
 | [temporal_long_request_failure](#long_request_failure)                                       | Service Client | Counter     | Core, Go, Java |
 | [temporal_long_request_latency](#long_request_latency)                                       | Service Client | Histogram   | Core, Go, Java |
+| [temporal_long_request_resource_exhausted](#long_request_resource_exhausted)                 | Service Client | Counter     | Go             |
 | [temporal_nexus_poll_no_task](#nexus_poll_no_task)                                           | Worker         | Counter     | Core, Go, Java |
 | [temporal_nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)       | Worker         | Histogram   | Core, Go, Java |
 | [temporal_nexus_task_execution_failed](#nexus_task_execution_failed)                         | Worker         | Counter     | Core, Go, Java |
@@ -106,6 +109,7 @@ Some tags may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_request](#request)                                                                 | Service Client | Counter     | Core, Go, Java |
 | [temporal_request_failure](#request_failure)                                                 | Service Client | Counter     | Core, Go, Java |
 | [temporal_request_latency](#request_latency)                                                 | Service Client | Histogram   | Core, Go, Java |
+| [temporal_request_resource_exhausted](#request_resource_exhausted)                           | Service Client | Counter     | Go             |
 | [temporal_resource_slots_cpu_usage](#resource_slots_cpu_usage)                               | Worker         | Gauge       | Core, Java     |
 | [temporal_resource_slots_mem_usage](#resource_slots_mem_usage)                               | Worker         | Gauge       | Core, Java     |
 | [temporal_sticky_cache_hit](#sticky_cache_hit)                                               | Worker         | Counter     | Core, Go, Java |
@@ -256,7 +260,7 @@ This number is included into the total `long_request` counter for long poll RPC 
 - Tags: `namespace`, `operation`, `status_code`
 
 The `status_code` tag carries the gRPC status code returned by the Temporal Service.
-Its casing differs by SDK: the Go SDK reports `PascalCase` values such as `NotFound`, while the Java and Core SDKs report `UPPER_SNAKE_CASE` values such as `NOT_FOUND`.
+Values are `UPPER_SNAKE_CASE`, matching the gRPC status code names: `NOT_FOUND`, `RESOURCE_EXHAUSTED`, `UNIMPLEMENTED`, `INTERNAL`, and so on.
 The tag can be suppressed through Client options, so confirm it is present in your own metrics endpoint before writing queries against it.
 
 ### `long_request_latency`
@@ -266,6 +270,18 @@ Latency of a Temporal Client gRPC long poll request.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `operation`
+
+### `long_request_resource_exhausted`
+
+Temporal Client made an RPC long poll request that the Temporal Service rejected as resource exhausted.
+These failures are also counted in `long_request_failure` with `status_code=RESOURCE_EXHAUSTED`; this metric adds the reason for the rejection.
+
+- Type: Counter
+- Available in: Go
+- Tags: `namespace`, `operation`, `cause`
+
+The `cause` tag carries the reason the Temporal Service rejected the request, such as `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_CONCURRENT_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED`, or `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN`.
+The cause determines the remedy, so prefer this metric over `long_request_failure` when investigating throttling.
 
 ### `nexus_poll_no_task`
 
@@ -359,7 +375,7 @@ This number is included into the total `request` counter for RPC requests.
 - Tags: `namespace`, `operation`, `status_code`
 
 The `status_code` tag carries the gRPC status code returned by the Temporal Service.
-Its casing differs by SDK: the Go SDK reports `PascalCase` values such as `NotFound`, while the Java and Core SDKs report `UPPER_SNAKE_CASE` values such as `NOT_FOUND`.
+Values are `UPPER_SNAKE_CASE`, matching the gRPC status code names: `NOT_FOUND`, `RESOURCE_EXHAUSTED`, `UNIMPLEMENTED`, `INTERNAL`, and so on.
 The tag can be suppressed through Client options, so confirm it is present in your own metrics endpoint before writing queries against it.
 
 ### `request_latency`
@@ -369,6 +385,18 @@ Latency of a Temporal Client gRPC request.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `operation`
+
+### `request_resource_exhausted`
+
+Temporal Client made an RPC request that the Temporal Service rejected as resource exhausted.
+These failures are also counted in `request_failure` with `status_code=RESOURCE_EXHAUSTED`; this metric adds the reason for the rejection.
+
+- Type: Counter
+- Available in: Go
+- Tags: `namespace`, `operation`, `cause`
+
+The `cause` tag carries the reason the Temporal Service rejected the request, such as `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_CONCURRENT_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED`, or `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN`.
+The cause determines the remedy, so prefer this metric over `request_failure` when investigating throttling.
 
 ### `resource_slots_cpu_usage`
 

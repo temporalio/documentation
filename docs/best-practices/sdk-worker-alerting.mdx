@@ -94,7 +94,7 @@ Triage guidance: [SDK Worker capacity](/troubleshooting/sdk-worker-capacity).
 | [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted) | `worker_task_slots_available` | `worker_type` in `WorkflowWorker`, `ActivityWorker`, `LocalActivityWorker` | Reaches 0 | 2m | Critical |
 | [All pollers disconnected](/troubleshooting/sdk-worker-capacity#all-pollers-disconnected) | `num_pollers` | `poller_type` in `workflow_task`, `workflow_sticky_task`, `activity_task` | Reaches 0 | 5m | Critical |
 | [Task completions dropped to zero](/troubleshooting/sdk-worker-capacity#task-completions-dropped-to-zero) | `request` | `operation` in `RespondWorkflowTaskCompleted`, `RespondActivityTaskCompleted` | Rate reaches 0 while the Task Queue has demand | 5m | Critical |
-| [Workflow Task schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#workflow-task-schedule-to-start-latency-elevated) | `workflow_task_schedule_to_start_latency` | `task_queue` | p99 above 5s | 5m | Warning |
+| [Workflow Task schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#workflow-task-schedule-to-start-latency-elevated) | `workflow_task_schedule_to_start_latency` | `task_queue` | p99 above 5s | 5m | Critical |
 | [Workflow Task schedule-to-start latency severe](/troubleshooting/sdk-worker-capacity#workflow-task-schedule-to-start-latency-elevated) | `workflow_task_schedule_to_start_latency` | `task_queue` | p99 above 30m | 5m | Critical |
 | [Activity schedule-to-start latency severe](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated) | `activity_schedule_to_start_latency` | `task_queue` | p99 above 30m | 5m | Critical |
 | [Sticky cache holding zero entries under load](/troubleshooting/sdk-worker-capacity#sticky-cache-holding-zero-entries-under-load) | `sticky_cache_size` | Paired with a non-zero Workflow Task rate on the same Worker | Reaches 0 | 15m | Warning |
@@ -114,11 +114,12 @@ Triage guidance: [SDK execution failures](/troubleshooting/sdk-execution-failure
 
 | Failure mode | Metric | Condition | Threshold | `for` | Default severity |
 | --- | --- | --- | --- | --- | --- |
-| [Non-determinism error](/troubleshooting/sdk-execution-failures#non-determinism-error) | `workflow_task_execution_failed` | `failure_reason=NonDeterminismError` | Any occurrence | 5m | Critical |
+| [Non-determinism error](/troubleshooting/sdk-execution-failures#non-determinism-error) | `workflow_task_execution_failed` | `failure_reason=NonDeterminismError` | Any occurrence | 1m | Critical |
 | [gRPC message too large](/troubleshooting/sdk-execution-failures#grpc-message-too-large) | `workflow_task_execution_failed` | `failure_reason=GrpcMessageTooLarge` | Any occurrence | 1m | Critical |
 | [Workflow Task execution failures elevated](/troubleshooting/sdk-execution-failures#workflow-task-execution-failures-elevated) | `workflow_task_execution_failed` | `failure_reason=WorkflowError` | Rate above 10/s | 2m | Warning |
 | [Workflow Task execution latency high](/troubleshooting/sdk-execution-failures#workflow-task-execution-latency-high) | `workflow_task_execution_latency` | `task_queue`, `workflow_type` | p99 above 10s | 5m | Critical |
 | [Activity execution failures elevated](/troubleshooting/sdk-execution-failures#activity-execution-failures-elevated) | `activity_execution_failed` | `activity_type` | Rate above 10/s | 2m | Warning |
+| [Unregistered Activity invocation](/troubleshooting/sdk-execution-failures#unregistered-activity-invocation) — Go SDK only | `unregistered_activity_invocation` | `activity_type`, `task_queue`, `workflow_type` | Any occurrence | 1m | Critical |
 | [Local Activity latency exceeds the heartbeat timeout](/troubleshooting/sdk-execution-failures#local-activity-latency-exceeds-the-heartbeat-timeout) | `local_activity_execution_latency` | `activity_type` | p99 above 30m | 5m | Critical |
 
 ## Set up the alerts {/* #set-up-the-alerts */}
@@ -138,8 +139,8 @@ The names you query depend on your SDK and metrics reporter:
 - **Histograms** take a `_seconds_bucket` suffix on the underlying bucket series: `temporal_workflow_task_schedule_to_start_latency_seconds_bucket`.
 - **Gauges take no suffix.** `temporal_num_pollers`, `temporal_worker_task_slots_available`, and `temporal_sticky_cache_size` are gauges. Querying them with `_total` returns no data.
 
-Tag values also vary.
-The `status_code` tag is `PascalCase` in the Go SDK (`NotFound`) and `UPPER_SNAKE_CASE` in the Java and Core SDKs (`NOT_FOUND`).
+Tag coverage also varies.
+`status_code` values are `UPPER_SNAKE_CASE` in every SDK, matching the gRPC status code names (`NOT_FOUND`, `RESOURCE_EXHAUSTED`), and the tag can be suppressed through Client options.
 Some tags are not emitted by every SDK — `sticky_cache_size`, for example, carries `namespace` only in the TypeScript and Java SDKs and `task_queue` only in TypeScript.
 
 Confirm the exact names and tags in your own metrics endpoint before writing queries.

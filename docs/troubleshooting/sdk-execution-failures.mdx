@@ -44,7 +44,7 @@ A non-determinism error does not resolve on its own.
 1. **Read the error.** The `WorkflowTaskFailed` event in an affected Execution's Event History contains the message identifying exactly where replay diverged and which command was expected versus produced. This is the most direct signal for root cause.
 1. **Determine whether this is a code change or a deploy artifact.** Common causes:
    - A code change added, removed, or reordered commands — Activity scheduling, Timers, Signals, Child Workflows — without a versioning guard. In-flight Executions that built History under the old code fail on the new code.
-   - A rolling restart with old and new Worker versions briefly running together. Some Executions fail transiently and recover once the rollout completes, which is why this alert needs a `for` duration longer than your deploy takes.
+   - A rolling restart with old and new Worker versions briefly running together. Some Executions fail transiently and recover once the rollout completes. If your deploys routinely trigger this alert, lengthen its `for` duration past how long a rollout takes.
    - Changed Activity or Timer parameters in existing Workflow code without versioning.
 1. **Roll back if it is not resolving.** If the errors started after a deploy and are not clearing on their own, roll the Worker back to the previous version. Affected Executions resume on their next Workflow Task retry once compatible code is running. Then introduce a proper versioning guard before redeploying — see [Versioning Workflows](/workflow-definition#workflow-versioning) and [Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
 1. **Watch Worker pressure.** Continuous retries put sustained load on Workflow Workers. Cross-check [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted) for `worker_type=WorkflowWorker` and [Workflow Task execution latency high](#workflow-task-execution-latency-high) — a high volume of retries can saturate capacity and affect healthy Executions on the same Task Queue.
@@ -152,7 +152,29 @@ At scale, sustained retry bursts put significant pressure on Task matching and t
 1. **Determine whether this is transient or a bug.** A downstream service outage, network partition, or database timeout recovers on its own — watch whether the rate falls. A persistent code bug does not.
 1. **Check downstream service health.** A degraded dependency is a common cause of sustained failure bursts. If the dependency is throttling, confirm your [Retry Policy](/encyclopedia/retry-policies) has appropriate backoff — without it, retry bursts amplify the pressure you are already applying.
 1. **Check schedule-to-start latency.** A growing retry backlog shows up as elevated [Activity schedule-to-start latency](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated) even after the failure rate drops.
-1. **Mark expected failures as benign.** If your design intentionally fails Activities — polling patterns, Saga compensations, flow control through exceptions — mark those `ApplicationFailure` instances with category `BENIGN`. All SDKs support this and suppress this metric for them, which lets this alert track unexpected failures without per-`activity_type` threshold tuning.
+1. **Mark expected failures as benign.** If your design intentionally fails Activities — polling patterns, Saga compensations, flow control through exceptions — mark those `ApplicationFailure` instances with category `BENIGN`, which suppresses this metric for them and lets the alert track unexpected failures without per-`activity_type` threshold tuning. Confirm your SDK version supports the category before relying on it.
+
+Note that internal failures — a context propagation error or a context timeout, rather than an Activity returning a failure — increment this counter regardless of category.
+
+## Unregistered Activity invocation {/* #unregistered-activity-invocation */}
+
+**Metric:** [`temporal_unregistered_activity_invocation`](/references/sdk-metrics#unregistered_activity_invocation), tagged `activity_type`, `task_queue`, and `workflow_type`
+
+A Workflow scheduled an Activity that the Worker polling that Task Queue has no registered implementation for.
+
+This metric is emitted by the Go SDK only.
+
+**Why it matters.**
+The Activity cannot execute. It will keep being retried against a Worker that cannot run it until the Activity's `scheduleToClose` timeout expires, or indefinitely if no such timeout is set — so the Workflow Execution waiting on it makes no progress.
+
+This is almost always a deployment error rather than a runtime condition: Workflow code that schedules an Activity the deployed Worker does not register. It does not resolve on its own.
+
+**Triage.**
+
+1. **Identify the Activity and the Task Queue.** The `activity_type` and `task_queue` tags name both. The `workflow_type` tag identifies which Workflow is scheduling it.
+1. **Check whether the Activity is registered on the right Worker.** Confirm the Worker polling that Task Queue registers that Activity type. A common cause is registering the Activity on a Worker polling a different Task Queue.
+1. **Check for a partial rollout.** If Workflow code that schedules a new Activity deployed ahead of the Worker that implements it, some Workers will be running without the registration. Complete the rollout.
+1. **Check for a renamed Activity.** Changing an Activity's registered name while Executions are in flight leaves those Executions scheduling the old name. Register both names until the in-flight Executions drain, or use a versioning guard.
 
 ## Local Activity latency exceeds the heartbeat timeout {/* #local-activity-latency-exceeds-the-heartbeat-timeout */}
 

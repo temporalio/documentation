@@ -31,7 +31,7 @@ Which status code appears on which operation determines how urgent the failure i
 
 Two naming details will affect your queries.
 `UpdateWithStartWorkflowExecution` appears in SDK metrics under the gRPC operation name `ExecuteMultiOperation`.
-And the `status_code` tag can be suppressed through Client options — confirm it is present in your metrics endpoint before filtering on it.
+And `status_code` values are `UPPER_SNAKE_CASE` in every SDK, matching the gRPC status code names — the tag can also be suppressed through Client options, so confirm it is present in your metrics endpoint before filtering on it.
 
 :::
 
@@ -123,8 +123,9 @@ Seeing RESOURCE_EXHAUSTED here means throttling is already severe and widespread
 
 **Triage.**
 
-1. **Identify the throttle cause.** The cause determines the fix: a Namespace rate limit, a concurrency limit, system-wide overload, or an open circuit breaker are different problems with different remedies.
-1. **Check your traffic against your Namespace limits.** On Temporal Cloud, compare current throughput against your Namespace's [service limits](/cloud/limits) and open a support request if you need them raised.
+1. **Identify the throttle cause.** The cause determines the fix: a Namespace rate limit, a concurrency limit, system-wide overload, and an open circuit breaker are different problems with different remedies. On the Go SDK, [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) carries a `cause` tag with the reason — group by it to see which limit you are hitting. On other SDKs, use the guidance below to narrow it down.
+1. **Check your traffic against your Namespace limits.** If the cause is a rate limit — `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT` or `RESOURCE_EXHAUSTED_CAUSE_APS_LIMIT` — compare current throughput against your Namespace's [service limits](/cloud/limits) on Temporal Cloud, and open a support request if you need them raised.
+1. **Treat overload and circuit-breaker causes as capacity problems.** `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED` and `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN` mean the Temporal Service is shedding load to protect itself. A higher limit will not help; the Service needs capacity, or your workload needs to slow down.
 1. **Add backoff in your application.** If throttling is expected during traffic peaks, ensure calling code retries with backoff rather than tight-looping, which amplifies the pressure.
 
 :::note Self-hosted Temporal Service
@@ -151,7 +152,7 @@ Sustained throttling here escalates into [Worker Task slots exhausted](/troubles
 
 **Triage.**
 
-1. **Identify the throttle cause,** as in the section above.
+1. **Identify the throttle cause,** as in the section above — on the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by `cause`.
 1. **Check whether timeouts have already started.** If [NOT_FOUND on respond operations](#not_found-on-respond-operations) is also firing, throttling has already cascaded into task timeouts and Executions are losing work.
 1. **Check Task slot availability.** See [Worker Task slots exhausted](/troubleshooting/sdk-worker-capacity#worker-task-slots-exhausted) — slots are not released until the respond call succeeds, so throttling here drains the slot pool.
 
@@ -177,7 +178,7 @@ The Temporal Service throttles poll operations before it throttles respond or us
 
 **Triage.**
 
-1. **Identify the throttle cause.** As with the other throttling sections, a Namespace rate limit, a concurrency limit, and system-wide overload need different responses.
+1. **Identify the throttle cause.** As with the other throttling sections, a Namespace rate limit, a concurrency limit, and system-wide overload need different responses. On the Go SDK, [`temporal_long_request_resource_exhausted`](/references/sdk-metrics#long_request_resource_exhausted) carries the `cause` tag for poll operations.
 1. **Check whether you are over-polling.** A large number of Workers each configured with many concurrent pollers can exceed the Namespace poller limit without processing any more work. Check your configured poller counts against [Worker performance](/develop/worker-performance) guidance before assuming the limit is too low.
 1. **Check downstream effects.** See [Workflow Task schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#workflow-task-schedule-to-start-latency-elevated) and [Activity schedule-to-start latency elevated](/troubleshooting/sdk-worker-capacity#activity-schedule-to-start-latency-elevated) to gauge whether throttling is affecting Task dispatch yet.
 1. **Check your traffic against your Namespace limits.** On Temporal Cloud, compare against your Namespace's [service limits](/cloud/limits).

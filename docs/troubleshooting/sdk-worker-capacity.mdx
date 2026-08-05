@@ -157,6 +157,11 @@ Check overall cluster health: service errors by Namespace, persistence availabil
 Workflow Tasks are sitting in the queue before a Worker picks them up.
 Alert at two levels: a lower threshold that catches meaningful delay, and a much higher one that catches a stalled Task Queue.
 
+Two other pages give thresholds for this metric, for different purposes.
+[Performance bottlenecks](/troubleshooting/performance-bottlenecks#temporal_workflow_task_schedule_to_start_latency-spike) treats P95 above one second as worth investigating — use that when you are tuning Worker capacity, not paging on it.
+[Worker health](/cloud/worker-health#schedule-to-start-latency) supplies ready-made Prometheus queries for both this metric and the Activity equivalent.
+The thresholds on this page are set higher because they are meant to page someone.
+
 **Why it matters.**
 Schedule-to-start latency adds directly to Workflow end-to-end latency.
 Every second a Task waits is a second added to how long your Workflows take.
@@ -185,6 +190,8 @@ Check the server-side concurrent poller count for this Task Queue to confirm whe
 **Metric:** [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency), tagged `namespace` and `task_queue`
 
 Activity Tasks are sitting in the queue before a Worker picks them up.
+
+As with the Workflow Task equivalent above, [Performance bottlenecks](/troubleshooting/performance-bottlenecks#temporal_activity_schedule_to_start_latency-spike) gives a lower investigation threshold for this metric, and [Worker health](/cloud/worker-health#schedule-to-start-latency) supplies the Prometheus query.
 
 **Why it matters.**
 Any Workflow Execution waiting on an Activity result is stalled for the duration of this latency.
