@@ -598,6 +598,29 @@ const worker = await Worker.create({
 });
 ```
 
+`@temporalio/worker` v1.15.0 and later support replacing a running Worker's connection, which lets you rotate an mTLS
+client certificate without restarting the Worker. gRPC's TLS credentials don't support dynamic certs, so instead of
+updating the existing `NativeConnection` you create a new one with the new certificate and assign it to `worker.connection`:
+
+```ts
+import { readFileSync } from 'fs';
+
+const newConnection = await NativeConnection.connect({
+    address: <endpoint>,
+    tls: {
+        clientCertPair: {
+            crt: readFileSync('client-cert-new.pem'),
+            key: readFileSync('client-key-new.pem'),
+        },
+    },
+});
+
+worker.connection = newConnection;
+```
+
+The Worker starts using `newConnection` for subsequent calls to the Temporal Service; calls already in flight on the old
+connection finish normally.
+
 </TabItem>
 
 </Tabs>

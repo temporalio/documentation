@@ -600,6 +600,39 @@ the new Client:
 ```
 <!--SNIPEND-->
 
+To rotate an mTLS client certificate without restarting your Worker, build the `SslContext` with gRPC's
+[`AdvancedTlsX509KeyManager`](https://grpc.github.io/grpc-java/javadoc/io/grpc/util/AdvancedTlsX509KeyManager.html)
+instead of `SimpleSslContextBuilder`. `updateIdentityCredentialsFromFile` schedules a periodic reread of the certificate
+and key files, so the same `SslContext` keeps serving fresh credentials for the life of the process:
+
+```java
+String tlsCertPath = "/path/to/tls.crt";
+String tlsKeyPath = "/path/to/tls.key"; // PKCS8 format
+
+// Reread the certificate and key files every 5 minutes.
+AdvancedTlsX509KeyManager keyManager = new AdvancedTlsX509KeyManager();
+keyManager.updateIdentityCredentialsFromFile(
+    new File(tlsKeyPath), new File(tlsCertPath),
+    5, TimeUnit.MINUTES,
+    Executors.newSingleThreadScheduledExecutor());
+
+SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+GrpcSslContexts.configure(sslContextBuilder);
+SslContext sslContext = sslContextBuilder.keyManager(keyManager).build();
+
+WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
+    .newBuilder()
+    .setSslContext(sslContext)
+    .setTarget(gRPCEndpoint)
+    .build();
+WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+```
+
+Rotate the certificate by overwriting the files at `tlsCertPath` and `tlsKeyPath`; `keyManager` picks up the new files on
+its next scheduled check, and the Worker keeps running against the same `client`/`serviceStub`. See this
+[reference implementation](https://github.com/temporal-sa/temporal-worker-cert-rotation) (written for the Go SDK, but the
+"What if I am not using the Go SDK?" section covers this Java approach) for a full walkthrough.
+
 </TabItem>
 </Tabs>
 

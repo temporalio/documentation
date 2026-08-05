@@ -129,6 +129,13 @@ $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
     ->withAuthKey('your-api-key');
 ```
 
+Rotating an mTLS client certificate without restarting the Worker isn't currently supported by the PHP SDK or RoadRunner
+— the certificate configured on `ServiceClient::createSSL()` or in RoadRunner's `tls:` block is fixed for the life of
+the process. To rotate a certificate, stage the new certificate alongside the old one on your Temporal Cloud Namespace,
+then restart your Worker (RoadRunner process) with the new certificate before removing the old one. See
+[Update certificates using Temporal Cloud UI/tcld](/cloud/certificates#manage-certificates) for the zero-downtime
+staging sequence.
+
 ## How to start a Workflow Execution {/* #start-workflow-execution */}
 
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.

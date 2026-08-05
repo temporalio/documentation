@@ -421,6 +421,38 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
+To rotate an mTLS client certificate without restarting your Worker, set `GetClientCertificate` on the `tls.Config`
+instead of setting `Certificates` directly. Go's standard library `crypto/tls` package calls this function on every new
+connection, so it always picks up the current certificate:
+
+```go
+clientCertPath := "/path/to/client.crt"
+clientKeyPath := "/path/to/client.key"
+
+clientOptions := client.Options{
+    HostPort:  <endpoint>,
+    Namespace: <namespace_id>.<account_id>,
+    ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{
+            GetClientCertificate: func(*tls.CertificateRequestInfo) (*tls.Certificate, error) {
+                cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+                if err != nil {
+                    return nil, err
+                }
+                return &cert, nil
+            },
+        },
+    },
+}
+c, err := client.Dial(clientOptions)
+```
+
+Rotate the certificate by overwriting the files at `clientCertPath` and `clientKeyPath`; the next time the connection
+re-establishes (for example, after Temporal Cloud's periodic connection recycling), `GetClientCertificate` reads the new
+files. This works because `ConnectionOptions.TLS` is a real `*tls.Config`, so any option `crypto/tls` supports is
+available. See this [reference implementation](https://github.com/temporal-sa/temporal-worker-cert-rotation) for a full
+walkthrough, including automating certificate issuance with cert-manager on Kubernetes.
+
 You can use a combination of environment variables, configuration files, and code to set connection options. For
 example, you can load a base configuration from environment variables or a configuration file, and then override
 specific options in code.
