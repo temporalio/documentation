@@ -73,13 +73,14 @@ In Temporal Cloud UI:
 
 **Connectivity rules** cannot currently be created via the UI. Connectivity rules and the Namespace they attach to must reside in the same Project.
 
-To add users, groups, and Service Accounts to the Project, click the **Project Identities** tab in the left navigation. The Project Identities page has three tabs, for Users, Service Accounts, and Groups. Click the **Manage Identities** button to add or remove users.
+## Manage Project Access
+Users, groups, and Account-scoped Service Accounts can be granted Project-level roles. Each [Project role](#Project-roles) applies to the Project and, depending on the role, may grant inherited access to resources within it.
 
-The drop-down list on the left lists the available Project Roles. To add a user to a Role, select the Role from the drop-down, and then type the user's name or email in the search box. The user will be assigned to the Role and their details will appear in the list below. Click **Save** to save your changes, or **Cancel** to discard them.
+To manage Project access in the Temporal Cloud UI:
 
-To modify an existing user's role, select the edit button in the list next to their current permission level. You can then update the user's permissions in this Project. Click the trash-can icon to remove Project permissions from that user.
-
-The Groups tab works the same way as the Users tab. 
+1. Open the Project.
+2. Click the **Project Identities** tab in the left navigation. The Project Identities page has three tabs, for Users, Service Accounts, and Groups.
+3. Click the **Manage Identities** button to add (or remove) users, groups or service accounts, and assign desired Project Roles from the drop-down list. You can also modify or remove an existing principal's role in the same view.
 
 To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts**  tab to create Project-scoped service account.
 
