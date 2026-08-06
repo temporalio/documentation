@@ -95,6 +95,29 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     return expanded;
   }
 
+  // Agents that fetch a .md page directly have no way to discover the rest of
+  // the docs from it. A blockquote directive under the H1 gives them the index
+  // and the .md convention. Mirrors the visually hidden AgentDirective rendered
+  // into the HTML. See MARKDOWN_PIPELINE.md.
+  //
+  // Applied only when writing the per-page .md files. llms-full.txt keeps the
+  // undecorated markdown and carries the same pointer once in its own header,
+  // rather than repeating it 720 times.
+  function withAgentDirective(markdown, siteUrl) {
+    const directive =
+      `> For the complete documentation index, see [llms.txt](${siteUrl}/llms.txt).\n` +
+      '> Any documentation page is available as raw Markdown by appending `.md` to its URL.';
+
+    // Keep the H1 as the first line so title extraction keeps working; the
+    // directive slots in just below it. Pages without an H1 get it up top.
+    const match = markdown.match(/^(#[^\n]*\n)/);
+    if (!match) {
+      return `${directive}\n\n${markdown}`;
+    }
+    const rest = markdown.slice(match[0].length).replace(/^\n+/, '');
+    return `${match[0]}\n${directive}\n\n${rest}`;
+  }
+
   // Every page's clean Markdown concatenated into one file, for pipelines that
   // ingest the whole corpus and chunk it themselves. Each entry carries its
   // source URL so a retrieved chunk can be cited back to a page, which is the
@@ -340,7 +363,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
               sourceFile: path.relative(context.siteDir, filePath),
               projectRoot: context.siteDir,
             });
-            fs.writeFileSync(outputPath, markdown + '\n');
+            fs.writeFileSync(outputPath, withAgentDirective(markdown, siteUrl) + '\n');
             totalWarnings += warnings.length;
             generated++;
 
