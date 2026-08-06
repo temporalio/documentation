@@ -63,6 +63,7 @@
 
 .lineActive {
   border-left-color: #f59e0b;
+  width: fit-content;
   background: color-mix(in srgb, #f59e0b 20%, transparent);
 }
 
