@@ -27,9 +27,9 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 ### Configuring poller options {/* #configuring-poller-options */}
 
-#### Recommended Approach
+#### Recommended approach
 
-The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
+The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
 
 :::tip
 
@@ -37,7 +37,7 @@ The Temporal SDKs support Poller Autoscaling, which automatically selects an app
 
 :::
 
-#### Manual Configuration
+#### Manual configuration
 
 There are options available to manually configure minimum, maximum, and initial poller counts, but it is not recommended to set these values manually for production use cases. To set these values manually, the following options are available: 
 
@@ -46,7 +46,7 @@ There are options available to manually configure minimum, maximum, and initial 
 
 These options define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues, respectively. 
 
-#### SDK Examples
+#### SDK examples
 
 Select a concept to highlight the matching poller option:
 

@@ -10,6 +10,8 @@ tags:
   - Task Queues
 ---
 
+This page covers Available Task Queue information, Evaluate Task Queue performance, and Task Queue processing tuning.
+
 ## Available Task Queue information {/* #task-queue-metrics */}
 
 :::info
@@ -179,7 +181,7 @@ Review these steps if you notice high `schedule_to_start` metrics.
 
 The steps are arranged in the recommended order of execution.
 
-### Hosts and Resources provisioning
+### Hosts and resources provisioning
 
 If currently provisioned Worker hosts are fully utilized (near full CPU usage, high load average, etc), additional Workers hosts have to be provisioned to increase the capacity of the Workers pool.
 
@@ -223,7 +225,7 @@ Consider manual adjustment if:
 
 Then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
 
-### Rate Limiting
+### Rate limiting
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 

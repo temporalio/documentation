@@ -1169,7 +1169,7 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'develop/worker-performance/index',
+            id: 'develop/worker-performance',
           },
           items: [
             'develop/worker-performance/metrics',
