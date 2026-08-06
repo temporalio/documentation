@@ -2163,6 +2163,7 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/nexus-services',
+            'encyclopedia/nexus/nexus-client-code-generator',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
