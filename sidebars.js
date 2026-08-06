@@ -968,7 +968,6 @@ const developTypeScriptCategory = {
             },
             items: [
               'develop/typescript/workers/serverless-workers/aws-lambda',
-              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],
