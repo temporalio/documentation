@@ -889,7 +889,8 @@
     },
     {
       "source": "/operation/how-to-tune-workers",
-      "destination": "/dev-guide/worker-performance"
+      "destination": "/develop/worker-performance",
+      "permanent": true
     },
     {
       "source": "/cadence-to-temporal",
