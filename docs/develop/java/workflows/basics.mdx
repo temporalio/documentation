@@ -295,13 +295,8 @@ to get a `Random` instance seeded per Workflow Execution, and
 instead of `UUID.randomUUID()`:
 
 ```java
-// Good - deterministic across replays
 int value = Workflow.newRandom().nextInt(100);
 UUID uniqueId = Workflow.randomUUID();
-
-// Bad - different result on every replay
-int value = new Random().nextInt(100);
-UUID uniqueId = UUID.randomUUID();
 ```
 
 ### Current time

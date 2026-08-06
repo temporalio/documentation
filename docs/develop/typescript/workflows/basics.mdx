@@ -165,7 +165,6 @@ For UUIDs, use [`uuid4()`](https://typescript.temporal.io/api/namespaces/workflo
 ```ts
 import { uuid4 } from '@temporalio/workflow';
 
-// Safe - both are deterministic in the Workflow sandbox
 const value = Math.random();
 const id = uuid4();
 ```

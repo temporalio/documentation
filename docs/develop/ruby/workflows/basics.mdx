@@ -126,13 +126,8 @@ standard library's [`Random::Formatter#uuid`](https://rubyapi.org/4.0/o/random/f
 instead of `SecureRandom.uuid`:
 
 ```ruby
-# Good - deterministic across replays
 value = Temporalio::Workflow.random.rand(1..100)
 unique_id = Temporalio::Workflow.random.uuid
-
-# Bad - different result on every replay
-value = rand(1..100)
-unique_id = SecureRandom.uuid
 ```
 
 Don't use `SecureRandom`, `Kernel#rand`, `Kernel#srand`, or `Random.new` in Workflow code. They're on the default

@@ -117,13 +117,8 @@ to get a deterministic random instance seeded per Workflow Execution, and
 instead of `Guid.NewGuid()`:
 
 ```csharp
-// Good - deterministic across replays
 var value = Workflow.Random.Next(1, 100);
 var uniqueId = Workflow.NewGuid();
-
-// Bad - different result on every replay
-var value = new Random().Next(1, 100);
-var uniqueId = Guid.NewGuid();
 ```
 
 ### Current time

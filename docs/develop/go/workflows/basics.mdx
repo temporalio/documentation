@@ -247,15 +247,11 @@ The Go SDK does not provide a seeded random source or a UUID helper. Generate th
 recorded value on replay:
 
 ```go
-// Good - the generated UUID is recorded and reused on replay
 var id string
 encodedID := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
 	return uuid.New().String()
 })
 encodedID.Get(&id)
-
-// Bad - a different value on every replay
-id := uuid.New().String()
 ```
 
 An Activity works for this too, and is the better choice when the value comes from an external system. A Side Effect is
