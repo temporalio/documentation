@@ -331,8 +331,9 @@ export function dedent(lines) {
 export function applyInlineTransforms(line) {
   let out = line;
 
-  // Strip single-line MDX comments: {/* ... */}
-  out = out.replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
+  // Strip single-line MDX comments: {/* ... */}, tolerating a space before the
+  // closing brace ({/* #anchor */ }), which authors write inconsistently.
+  out = out.replace(/\{\/\*[\s\S]*?\*\/\s*\}/g, "");
 
   // Inline <ToolTipTerm term="x" /> → x  (self-closing or paired)
   out = out.replace(/<ToolTipTerm\b[^>]*\/>/g, (m) => extractProp(m, "term") || "");
@@ -530,6 +531,8 @@ export function transformMdx(mdxContent, options = {}) {
 
   // --- Admonition state ---
   let admonitionType = null;
+  let admonitionTitle = "";
+  let admonitionFence = 3;
   let admonitionLines = [];
 
   // --- Details state ---
@@ -655,6 +658,23 @@ export function transformMdx(mdxContent, options = {}) {
         codeBlockFence = null;
       }
       continue;
+    }
+
+    // ------------------------------------------------------------------
+    // Multi-line MDX comments  {/* ... \n ... */}
+    // ------------------------------------------------------------------
+    // applyInlineTransforms strips comments that open and close on one line;
+    // it works per line, so it can't see a block that spans several. Runs after
+    // code-fence detection so a `{/*` inside a code sample is left alone.
+    if (trimmed.includes('{/*') && !/\*\/\s*\}/.test(trimmed)) {
+      let j = i + 1;
+      while (j < lines.length && !/\*\/\s*\}/.test(lines[j])) j++;
+      if (j < lines.length) {
+        i = j;
+        continue;
+      }
+      // Unterminated: fall through and let the line be handled normally rather
+      // than swallowing the rest of the page.
     }
 
     // ==================================================================
@@ -879,19 +899,28 @@ export function transformMdx(mdxContent, options = {}) {
     // Admonitions  :::note / :::tip / :::caution / :::danger / :::info / :::warning
     // ------------------------------------------------------------------
     if (state === State.NORMAL) {
-      const admonitionOpen = trimmed.match(/^:::(note|tip|caution|danger|info|warning)(\s.*)?$/i);
+      // Docusaurus allows any fence of three or more colons, an optional
+      // `[Custom title]` immediately after the type, and closing on a fence at
+      // least as long as the opener. Authors use `::::` when the body itself
+      // contains a `:::` block.
+      const admonitionOpen = trimmed.match(
+        /^(:{3,})(note|tip|caution|danger|info|warning|important)(\[([^\]]*)\])?(\s.*)?$/i
+      );
       if (admonitionOpen) {
         state = State.ADMONITION;
-        admonitionType = admonitionOpen[1].toLowerCase();
+        admonitionFence = admonitionOpen[1].length;
+        admonitionType = admonitionOpen[2].toLowerCase();
+        admonitionTitle = (admonitionOpen[4] || '').trim();
         admonitionLines = [];
-        if (admonitionOpen[2] && admonitionOpen[2].trim()) {
-          admonitionLines.push(admonitionOpen[2].trim());
+        if (admonitionOpen[5] && admonitionOpen[5].trim()) {
+          admonitionLines.push(admonitionOpen[5].trim());
         }
         continue;
       }
     }
     if (state === State.ADMONITION) {
-      if (trimmed === ":::") {
+      const closes = /^:{3,}$/.test(trimmed) && trimmed.length >= admonitionFence;
+      if (closes) {
         const typeLabels = {
           note: "📝 Note",
           tip: "💡 Tip",
@@ -899,9 +928,13 @@ export function transformMdx(mdxContent, options = {}) {
           danger: "🚨 Danger",
           info: "ℹ️ Info",
           warning: "⚠️ Warning",
+          important: "❗ Important",
         };
         const label = typeLabels[admonitionType] || admonitionType.toUpperCase();
-        outputLines.push(`> **${label}:**`);
+        // A custom `[title]` replaces the generic type word but keeps the icon,
+        // since the title is what the rendered page shows.
+        const icon = label.split(' ')[0];
+        outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
         for (const al of admonitionLines) {
           outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
         }
@@ -909,6 +942,7 @@ export function transformMdx(mdxContent, options = {}) {
         state = State.NORMAL;
         admonitionLines = [];
         admonitionType = null;
+        admonitionTitle = "";
       } else {
         // Drop YouTube/HTML embeds inside tips; keep the markdown Watch link.
         const embedEnd = findHtmlEmbedEnd(lines, i);
