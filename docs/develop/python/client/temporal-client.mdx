@@ -28,8 +28,6 @@ tags:
   - Certificates
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
 A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the Temporal Service.
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
@@ -223,10 +221,12 @@ variables or a configuration file, and then override specific options in code.
 
 Use the `connect()` method on the `Client` class to create and connect to a Temporal Client to the Temporal Service.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
-
 ```python
-# ...
+import asyncio
+from temporalio.client import Client
+from your_workflows import YourWorkflow
+
+
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -445,11 +445,10 @@ client = await Client.connect(
 
 To connect using mTLS instead of an API key, provide the mTLS certificate and private key as follows:
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 ```python
 from temporalio.client import Client, TLSConfig
 # ...
-# ...
+
 async def main():
     with open("client-cert.pem", "rb") as f:
         client_cert = f.read()
@@ -503,8 +502,6 @@ Heartbeats, and so on); calls already in flight on the old client finish normall
 
 ## Start a Workflow Execution {/* #start-workflow-execution */}
 
-**How to start a Workflow Execution using the Python SDK**
-
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
 you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
 language-specific contextual data, and Workflow Function parameters.
@@ -525,8 +522,6 @@ To start a Workflow Execution in Python, use either the
 [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods
 in the Client.
-
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -549,8 +544,6 @@ if __name__ == "__main__":
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-**How to set a Workflow's Task Queue using the Python SDK**
-
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
@@ -559,8 +552,6 @@ Queue name.
 To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either
 [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
-
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -583,8 +574,6 @@ if __name__ == "__main__":
 
 ### Set a Workflow Id {/* #workflow-id */}
 
-**How to set a Workflow Id using the Python SDK**
-
 You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
 When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an
@@ -595,8 +584,6 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
 The `id` argument should be a unique identifier for the Workflow Execution.
-
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py" />
 
 ```python
 # ...
@@ -618,8 +605,6 @@ if __name__ == "__main__":
 ```
 
 ### Get the results of a Workflow Execution {/* #get-workflow-results */}
-
-**How to get the results of a Workflow Execution using the Python SDK**
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -645,10 +630,11 @@ safety.
 Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current
 status of the Workflow. If the Workflow does not exist, this call fails.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py" />
+```python {8-11}
+import asyncio
+from temporalio.client import Client
 
-```python
-# ...
+
 async def main():
     client = await Client.connect("localhost:7233")
 
