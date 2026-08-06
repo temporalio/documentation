@@ -20,6 +20,10 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
     routeBasePath,
   }));
   const llmsTxt = options.llmsTxt || null;
+  const siteUrl = ((llmsTxt && llmsTxt.siteUrl) || context.siteConfig.url || '').replace(
+    /\/+$/,
+    ''
+  );
 
   function findSection(page, sections) {
     const urlPath = page.urlPath;
@@ -89,6 +93,50 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
       }
     }
     return expanded;
+  }
+
+  // Every page's clean Markdown concatenated into one file, for pipelines that
+  // ingest the whole corpus and chunk it themselves. Each entry carries its
+  // source URL so a retrieved chunk can be cited back to a page, which is the
+  // main thing a bulk-ingestion consumer needs and the reason this is generated
+  // from the same transformer as the per-page .md files rather than a second one.
+  function generateLlmsFullTxt(outDir, pages) {
+    // The index's own description calls itself an index, which is wrong here,
+    // so llms-full.txt takes its own line.
+    const { title, fullDescription, excludePaths = [] } = llmsTxt;
+
+    const included = pages
+      .filter(
+        p => !excludePaths.some(x => p.urlPath === x || p.urlPath.startsWith(x + '/'))
+      )
+      // Stable ordering so consumers can diff builds and re-ingest only what moved.
+      .sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+
+    const out = [
+      `# ${title}`,
+      '',
+      `> ${fullDescription}`,
+      '',
+      'This file contains the full text of every documentation page, in one document.',
+      'Pages are separated by a horizontal rule and each carries a `Source:` URL.',
+      'For a structured index instead, see ' + `${siteUrl}/llms.txt.`,
+      '',
+    ];
+
+    for (const page of included) {
+      // transformMdx already emits an H1 from the page title; drop it so the
+      // heading and its Source line stay adjacent and every entry looks the same.
+      const body = page.body.replace(/^#\s+.*\n+/, '').trim();
+      out.push('---', '', `# ${page.title}`, '', `Source: ${siteUrl}/${page.urlPath}`, '', body, '');
+    }
+
+    const outputPath = path.join(outDir, 'llms-full.txt');
+    const contents = out.join('\n');
+    fs.writeFileSync(outputPath, contents);
+    console.log(
+      `[markdown-pages] Generated llms-full.txt (${included.length} pages, ` +
+        `${(contents.length / 1048576).toFixed(1)} MB, ${pages.length - included.length} excluded)`
+    );
   }
 
   function generateLlmsTxtFiles(outDir, pages) {
@@ -303,6 +351,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
                 sidebarLabel: frontmatter.sidebar_label || '',
                 description: frontmatter.description || '',
                 relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),
+                body: markdown,
               });
             }
           }
@@ -316,6 +365,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
 
       if (llmsTxt) {
         generateLlmsTxtFiles(outDir, pages);
+        generateLlmsFullTxt(outDir, pages);
       }
     },
   };

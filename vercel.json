@@ -40,6 +40,16 @@
   ],
   "redirects": [
     {
+      "source": "/llms-quickstart.txt",
+      "destination": "/llms.txt",
+      "permanent": true
+    },
+    {
+      "source": "/llms-api-reference.txt",
+      "destination": "/llms.txt",
+      "permanent": true
+    },
+    {
       "source": "/production-deployment/worker-deployments/serverless-workers/self-hosted-setup",
       "destination": "/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup",
       "permanent": true
