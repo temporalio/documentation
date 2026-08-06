@@ -341,11 +341,6 @@ IP addresses are provided in IPv4 or IPv6 format with CIDR notation. At launch, 
 
 :::
 
-:::note Don't depend on DNS resolution behavior
-
-Take a dependency on Temporal's published endpoints (the hostnames themselves), not on what they resolve to. The underlying IP addresses, CNAME chains, and resolution behavior can change at any time without notice. The **only** exception is the Namespace Endpoint for a Namespace with [High Availability features](/cloud/high-availability), which deterministically CNAMEs to its active region's regional record — see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for details.
-
-:::
 ### How to connect using Stable IPs
 
 To connect to a Namespace with Stable IPs enabled:
@@ -432,9 +427,11 @@ Take note of the following:
 
 ### Changes to Stable IP ranges
 
-Temporal does not intend to make changes to published Stable IP ranges. In the rare exception that a Stable IP range needs to be added to or removed from the list, Temporal will communicate via targeted communication to affected Temporal Cloud users and the [Temporal Cloud changelog](https://temporal.io/change-log), and will give ample time for users to update their firewalls with the changed IPs.
+Once a region's Stable IP ranges are published, Temporal avoids adding new ranges to that region's list, and Temporal has no plans to ever remove a published range.
 
-Temporal will never route traffic to IP addresses that are not listed in the API response.
+If an unforeseen event requires Temporal to add or remove a published range, Temporal gives every Stable IPs user six months of advance notice, through both targeted communication and the [Temporal Cloud changelog](https://temporal.io/change-log).
+
+Temporal never routes traffic to IP addresses that are not on the published list.
 
 ### Pricing
 
