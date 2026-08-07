@@ -130,9 +130,20 @@ target an external URL (`--target-url`), which is experimental and not covered h
 
 ### What to expect on failover
 
-For a Nexus Operation started before a Cluster failover completes on the new active
-Cluster, the completion callback is delivered to the caller Namespace's current
-active Cluster, re-resolved on each attempt:
+An asynchronous Nexus Operation completes even when the Handler Namespace fails
+over before its completion callback is delivered. Two properties make this work:
+
+- The pending completion callback is **durable state on the Handler Workflow**, so
+  it fails over together with the Handler Namespace and is re-driven from the new
+  active Cluster.
+- Each Namespace resolves its active Cluster **independently**. The callback is
+  routed to the **Caller Namespace's** current active Cluster (re-resolved on each
+  attempt), which is unaffected by the Handler Namespace's failover.
+
+The sequence below shows the Handler Namespace failing over from Cluster A to
+Cluster B while the Caller Namespace stays active on Cluster A. The Handler
+Workflow finishes on Cluster B, and its completion callback is still delivered back
+to the Caller on Cluster A:
 
 ```mermaid
 sequenceDiagram
@@ -141,14 +152,14 @@ sequenceDiagram
     participant haA as Handler Namespace
     end
     box Cluster B
-    participant caB as Caller Namespace
     participant haB as Handler Namespace
     end
-    Note over caA,haA: Cluster A active
+    Note over caA,haA: Caller and Handler Namespaces active on Cluster A
     caA->>haA: start Nexus Operation
     haA-->>caA: Operation started, token returned
-    Note over caA,haB: 💥 Fail over both namespaces from Cluster A to B
-    Note over caB,haB: Cluster B active
-    haB->>caB: deliver completion callback
-    Note over caB: Nexus Operation completes
+    Note over haA: Handler Workflow running, completion callback pending
+    Note over haA,haB: 💥 Handler Namespace fails over to Cluster B (Caller stays on Cluster A)
+    Note over haB: Handler Workflow resumes on B, pending callback re-driven from B
+    haB->>caA: deliver completion callback to Caller's active Cluster (A)
+    Note over caA: Operation completes on the Caller
 ```
