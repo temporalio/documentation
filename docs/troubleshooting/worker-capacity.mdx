@@ -21,7 +21,10 @@ tags:
 This guide covers what to do when your Workers stop keeping up with their Task Queues: slots that never free up, pollers that quit polling, Tasks sitting in the queue, and a [Sticky Execution](/sticky-execution) cache that isn't earning its keep.
 It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
 
-For alert thresholds and `for` durations, see [Worker alerting](/best-practices/worker-alerting).
+Every section on this page is one of the recommended alerts in [Worker alerting](/best-practices/worker-alerting).
+Each one opens with the alert definition, explains what the condition costs you, then walks through triage.
+If you got here from a firing alert, the section you landed on is the runbook for it.
+
 For Worker sizing and tuning, see [Worker performance](/develop/worker-performance) and [Worker deployment and performance](/best-practices/worker).
 
 These failure modes are chained together.
@@ -30,7 +33,8 @@ When several fire at once, don't treat them as separate problems. Work backward 
 
 ## Worker Task slots exhausted {/* #worker-task-slots-exhausted */}
 
-**Metric:** [`temporal_worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available) reaching 0, tagged `worker_type`
+**Recommended alert:** [`temporal_worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available), tagged `worker_type`
+Fires when the gauge reaches 0, held for 2m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#worker-capacity).
 
 Every Task execution slot for this `worker_type` and Task Queue is occupied, so no new Tasks can be picked up.
 The SDK blocks before issuing its next poll until a slot is released.
@@ -80,7 +84,8 @@ If that goes on past the Workflow Task heartbeat timeout, 30 minutes by default,
 
 ## All pollers disconnected {/* #all-pollers-disconnected */}
 
-**Metric:** [`temporal_num_pollers`](/references/sdk-metrics#num_pollers) reaching 0, tagged `poller_type` and `task_queue`
+**Recommended alert:** [`temporal_num_pollers`](/references/sdk-metrics#num_pollers), tagged `poller_type` and `task_queue`
+Fires when the gauge reaches 0, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#worker-capacity).
 
 No active pollers remain for this poller type and Task Queue.
 Workers have stopped polling entirely and Tasks are accumulating with nothing to process them.
@@ -117,7 +122,8 @@ A non-zero authorization system failure count means the auth plugin itself is br
 
 ## Task completions dropped to zero {/* #task-completions-dropped-to-zero */}
 
-**Metric:** [`temporal_request`](/references/sdk-metrics#request) rate reaching 0 on `RespondWorkflowTaskCompleted` or `RespondActivityTaskCompleted`
+**Recommended alert:** [`temporal_request`](/references/sdk-metrics#request) on `RespondWorkflowTaskCompleted` or `RespondActivityTaskCompleted`
+Fires when the rate reaches 0 while the Task Queue still has demand, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#worker-capacity).
 
 The SDK only bumps this counter after a response succeeds, so a zero rate means nothing is landing.
 
@@ -153,7 +159,8 @@ Check overall cluster health: service errors by Namespace, persistence availabil
 
 ## Workflow Task schedule-to-start latency elevated {/* #workflow-task-schedule-to-start-latency-elevated */}
 
-**Metric:** [`temporal_workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency), tagged `namespace` and `task_queue`
+**Recommended alert:** [`temporal_workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency), tagged `namespace` and `task_queue`
+Two alerts at different thresholds. One fires when p99 goes above 5s, the other above 30m. Both held for 5m and routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#worker-capacity).
 
 Workflow Tasks are sitting in the queue before a Worker picks them up.
 Alert at two levels: a lower threshold that catches meaningful delay, and a much higher one that catches a stalled Task Queue.
@@ -189,7 +196,8 @@ Then check the server-side concurrent poller count for this Task Queue to see wh
 
 ## Activity schedule-to-start latency elevated {/* #activity-schedule-to-start-latency-elevated */}
 
-**Metric:** [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency), tagged `namespace` and `task_queue`
+**Recommended alert:** [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency), tagged `namespace` and `task_queue`
+Fires when p99 goes above 30m, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#worker-capacity).
 
 Activity Tasks are sitting in the queue before a Worker picks them up.
 
@@ -216,7 +224,8 @@ Check the approximate Task backlog and the server-side concurrent poller count f
 
 ## Sticky cache holding zero entries under load {/* #sticky-cache-holding-zero-entries-under-load */}
 
-**Metric:** [`temporal_sticky_cache_size`](/references/sdk-metrics#sticky_cache_size) reaching 0 while the Worker is processing Workflow Tasks
+**Recommended alert:** [`temporal_sticky_cache_size`](/references/sdk-metrics#sticky_cache_size)
+Fires when the gauge reaches 0 while the Worker is processing Workflow Tasks, held for 15m. Routed Warning by default. [Tune the threshold](/best-practices/worker-alerting#worker-capacity).
 
 This gauge tells you how many Workflow Executions the Worker is holding in its [Sticky Execution](/sticky-execution) cache right now.
 It is not the configured cache size.
