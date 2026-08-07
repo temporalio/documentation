@@ -8,14 +8,14 @@ This repository contains a large chunk of the Temporal information corpus.
 
 | Resource                                   | Audience                |
 |--------------------------------------------|--------------------------|
-| [Information architecture](./INFORMATION-ARCHITECTURE.md) | For contributors and maintainers |
-| [Contact information](./CONTACT.md)        | For our open source community |
-| [Contributing guidance](./CONTRIBUTING.md) | For our open source community |
+| [Information architecture](./readme/INFORMATION-ARCHITECTURE.md) | For contributors and maintainers |
+| [Contact information](./readme/CONTACT.md)        | For our open source community |
+| [Contributing guidance](./readme/CONTRIBUTING.md) | For our open source community |
 | [License](./LICENSE.md) | For our open source community |
-| [React Component catalog and guidance](./COMPONENTS.md) | For our open source community |
-| [Readability tooling guidance](./READABILITY.md) | For repo maintainers |
-| [Style guidance](./STYLE.md)               | For our open source community |
-| [Utility tooling guidance](./UTILITIES.md) | For repo maintainers |
+| [React Component catalog and guidance](./readme/COMPONENTS.md) | For our open source community |
+| [Readability tooling guidance](./readme/READABILITY.md) | For repo maintainers |
+| [Style guidance](./readme/STYLE.md)               | For our open source community |
+| [Utility tooling guidance](./readme/UTILITIES.md) | For repo maintainers |
 
 ### Current component versioning philosophy
 

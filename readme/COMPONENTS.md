@@ -500,7 +500,7 @@ Role: To provide a consistent component for adding, updating, and removing relea
 
 Usage:
 
-In `/src/constants`, update the [`featureReleaseTypes.js`](./src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
+In `/src/constants`, update the [`featureReleaseTypes.js`](../src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
 
 Example: `serverlessWorkers: "prerelease"`
 

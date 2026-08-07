@@ -2,7 +2,7 @@
 // scripts/component-handlers/integrations.mjs, which reads the same
 // integrations-data.json and mirrors the `defaultSdks` filtering below. If you
 // change the data source or filter logic here, update that handler too.
-// See MARKDOWN_PIPELINE.md.
+// See readme/MARKDOWN_PIPELINE.md.
 import { useState, useMemo } from "react";
 import Link from "@docusaurus/Link";
 import clsx from "clsx";

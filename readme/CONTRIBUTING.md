@@ -79,7 +79,7 @@ Maintainers and contributors to this project are expected to conduct themselves 
 
 This repository and its contents are open-source; individual and commercial use are permitted.
 
-[MIT License](./LICENSE.md)
+[MIT License](../LICENSE.md)
 
 
 # File a Github Issue
