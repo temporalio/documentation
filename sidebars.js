@@ -1962,6 +1962,7 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/nexus-services',
+            'encyclopedia/nexus/nexus-client-code-generator',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
