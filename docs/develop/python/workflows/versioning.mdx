@@ -28,8 +28,6 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
 import { CaptionedImage } from '@site/src/components';
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
@@ -60,16 +58,13 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py" />
-
-```python
+```python {5,11-14}
 from datetime import timedelta
-
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
     from activities import pre_patch_activity
-# ...
+
 @workflow.defn
 class MyWorkflow:
     @workflow.run
@@ -78,20 +73,21 @@ class MyWorkflow:
             pre_patch_activity,
             schedule_to_close_timeout=timedelta(minutes=5),
         )
+
+    @workflow.query
+    def result(self) -> str:
+        return self._result
 ```
 
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py" />
-
-```python
+```python {5,11-14}
 from datetime import timedelta
-
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
     from activities import post_patch_activity
-# ...
+
 @workflow.defn
 class MyWorkflow:
     @workflow.run
@@ -100,6 +96,10 @@ class MyWorkflow:
             post_patch_activity,
             schedule_to_close_timeout=timedelta(minutes=5),
         )
+
+    @workflow.query
+    def result(self) -> str:
+        return self._result
 ```
 
 The problem is that you cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a nondeterminism error.
@@ -118,10 +118,14 @@ Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`).
 This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py" />
+```python {12-21}
+from datetime import timedelta
+from temporalio import workflow
 
-```python
-# ...
+with workflow.unsafe.imports_passed_through():
+    from activities import post_patch_activity, pre_patch_activity
+    
+
 @workflow.defn
 class MyWorkflow:
     @workflow.run
@@ -136,6 +140,10 @@ class MyWorkflow:
                 pre_patch_activity,
                 schedule_to_close_timeout=timedelta(minutes=5),
             )
+
+    @workflow.query
+    def result(self) -> str:
+        return self._result
 ```
 
 ### Deprecating patches {/* #deprecated-patches */}
@@ -146,10 +154,14 @@ Once your Workflows are no longer running the pre-patch code paths, you can depl
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Event History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py" />
+```python {12}
+from datetime import timedelta
+from temporalio import workflow
 
-```python
-# ...
+with workflow.unsafe.imports_passed_through():
+    from activities import post_patch_activity
+    
+
 @workflow.defn
 class MyWorkflow:
     @workflow.run
@@ -159,13 +171,15 @@ class MyWorkflow:
             post_patch_activity,
             schedule_to_close_timeout=timedelta(minutes=5),
         )
+
+    @workflow.query
+    def result(self) -> str:
+        return self._result
 ```
 
 ### Removing a patch {/* #deploy-new-code */}
 
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
-
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py" />
 
 ```python
 # ...

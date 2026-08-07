@@ -59,7 +59,7 @@ Visibility has uses beyond the workflow search APIs. Any operation that lists, s
 - Workflow [search](/develop/typescript/platform/observability#search-attributes) and count: `ListWorkflowExecutions`, `ScanWorkflowExecutions`, `CountWorkflowExecutions`
 - [Schedule list](/troubleshooting/schedule-missed-actions#investigate-which-schedule-missed-an-action) and count: `ListSchedules` and `CountSchedules`
 - Batch operations: `ListBatchOperations`
-- [Worker task-queue reachability](/develop/worker-performance#cli-task-queue-info): `GetWorkerTaskReachability`, and `DescribeTaskQueue` when reachability is requested
+- [Worker task-queue reachability](/develop/worker-performance/task-queues#cli-task-queue-info): `GetWorkerTaskReachability`, and `DescribeTaskQueue` when reachability is requested
 
 These operations share the Visibility rate limit and the eventual-consistency behavior described below. Other read APIs, such as worker deployment listing, are also subject to the [Visibility API rate limit](/cloud/limits#visibility-api-rate-limit), where you'll find the full list.
 
