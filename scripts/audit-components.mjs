@@ -11,7 +11,7 @@
  *
  * Output:
  *   - Console table: component name → count, strategy, coverage
- *   - Writes docs/llms-txt/COMPONENT_REGISTRY.md (a human-readable registry)
+ *   - Writes readme/COMPONENT_REGISTRY.md (a human-readable registry)
  */
 
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from "fs";
@@ -126,9 +126,9 @@ if (uncovered > 0) {
   console.log(`   ❌ ${uncovered} unknown components — add them to COMPONENT_REGISTRY in scripts/mdx-to-md.mjs`);
 }
 
-// Write COMPONENT_REGISTRY.md to the repo root (NOT under docs/, which would
+// Write readme/COMPONENT_REGISTRY.md (NOT under docs/, which would
 // publish this dev artifact as a live Docusaurus page).
-const registryPath = join(PROJECT_ROOT, "COMPONENT_REGISTRY.md");
+const registryPath = join(PROJECT_ROOT, "readme", "COMPONENT_REGISTRY.md");
 const lines = [
   "# Component Registry",
   "",

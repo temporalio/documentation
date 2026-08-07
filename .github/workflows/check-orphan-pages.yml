@@ -101,7 +101,7 @@ jobs:
 
             const report = fs.readFileSync('report.txt', 'utf8');
             const body = hasFindings
-              ? `${marker}\n### ⚠️ Orphan pages check\n\nThis is informational and does not block merging.\n\n\`\`\`\n${report}\n\`\`\`\n\nSee [UTILITIES.md](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/UTILITIES.md#check-orphan-pages) for what to do next.`
+              ? `${marker}\n### ⚠️ Orphan pages check\n\nThis is informational and does not block merging.\n\n\`\`\`\n${report}\n\`\`\`\n\nSee [UTILITIES.md](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/readme/UTILITIES.md#check-orphan-pages) for what to do next.`
               : `${marker}\n### ✅ Orphan pages check\n\nNo orphaned pages found.`;
 
             if (existing) {

@@ -152,8 +152,8 @@ These cross-cutting pages live outside any SDK folder:
 - `plugins-guide.mdx` — How to build plugins; architecture guidance.
 - `integrations.mdx` — Hub page linking to SDK-specific integration guides.
 - `safe-deployments.mdx` — Workflow code deployment strategies, replay testing.
-- `worker-performance.mdx` — Performance tuning, slot suppliers, metrics.
-- `worker-tuning-reference.mdx` — Reference tables for worker config.
+- `worker-performance/` — Performance tuning hub (concepts) plus subpages for metrics, configuration, runtime tuning, Workflow cache, and Task Queue performance.
+- `worker-tuning-reference.mdx` — Reference tables for worker config (sidebar: under Worker performance).
 - `task-queue-priority-fairness.mdx` — Task queue priority and fairness features.
 - `activity-retry-simulator.mdx` — Interactive tool for visualizing retry behavior.
 - `run-a-development-server.mdx` — Installing and running the Temporal CLI dev server.
@@ -169,7 +169,7 @@ These cross-cutting pages live outside any SDK folder:
 - **SDK coverage gaps.** Nexus is missing from PHP and Ruby. Interceptors docs exist only for Python and TypeScript.
   Serverless worker guides exist only for Go, Python, and TypeScript. These gaps may reflect SDK support status, but
   that is not documented anywhere in the section.
-- **Cross-cutting content placement.** Pages like `safe-deployments.mdx`, `worker-performance.mdx`, and
+- **Cross-cutting content placement.** Pages like `safe-deployments.mdx`, `worker-performance/`, and
   `worker-tuning-reference.mdx` straddle Develop and Deploy to production. `safe-deployments` in particular is about
   deployment strategy (versioning vs. patching), which reads more like production deployment guidance.
 - **Setup page naming is inconsistent.** Most SDKs use `set-up-your-local-<language>`, TypeScript uses
