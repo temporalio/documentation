@@ -1440,7 +1440,25 @@ module.exports = {
             'production-deployment/self-hosted-guide/namespaces',
             'production-deployment/self-hosted-guide/security',
             'production-deployment/self-hosted-guide/monitoring',
-            'production-deployment/self-hosted-guide/visibility',
+            {
+              type: 'category',
+              label: 'Visibility',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/self-hosted-guide/visibility/index',
+              },
+              items: [
+                'production-deployment/self-hosted-guide/visibility/mysql',
+                'production-deployment/self-hosted-guide/visibility/postgresql',
+                'production-deployment/self-hosted-guide/visibility/sqlite',
+                'production-deployment/self-hosted-guide/visibility/legacy-standard',
+                'production-deployment/self-hosted-guide/visibility/elasticsearch',
+                'production-deployment/self-hosted-guide/visibility/dual-visibility',
+                'production-deployment/self-hosted-guide/visibility/migrate',
+                'production-deployment/self-hosted-guide/visibility/custom-search-attributes',
+              ],
+            },
             'production-deployment/self-hosted-guide/upgrade-server',
             'production-deployment/self-hosted-guide/archival',
             'production-deployment/self-hosted-guide/multi-cluster-replication',
@@ -1457,11 +1475,25 @@ module.exports = {
             id: 'production-deployment/worker-deployments/index',
           },
           items: [
-            'production-deployment/worker-deployments/worker-versioning',
-            'production-deployment/worker-deployments/recover-pinned-workflows',
+            {
+              type: 'category',
+              label: 'Worker Versioning',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/worker-versioning/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/worker-versioning/configure-worker',
+                'production-deployment/worker-deployments/worker-versioning/roll-out-and-pin',
+                'production-deployment/worker-deployments/worker-versioning/upgrade-on-continue-as-new',
+                'production-deployment/worker-deployments/worker-versioning/sunset-and-gc',
+                'production-deployment/worker-deployments/recover-pinned-workflows',
+                'production-deployment/worker-deployments/unversioned-to-versioned-migration',
+              ],
+            },
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
-            'production-deployment/worker-deployments/unversioned-to-versioned-migration',
             {
               type: 'category',
               label: 'Serverless Workers',
@@ -1500,7 +1532,20 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
-        'production-deployment/temporal-proxy/index',
+        {
+          type: 'category',
+          label: 'Temporal Proxy',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'production-deployment/temporal-proxy/index',
+          },
+          items: [
+            'production-deployment/temporal-proxy/configure',
+            'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/deploy-kubernetes',
+          ],
+        },
       ],
     },
     {
