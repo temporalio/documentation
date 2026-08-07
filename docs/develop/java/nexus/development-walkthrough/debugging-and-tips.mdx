@@ -38,7 +38,7 @@ The handler used its own Temporal Client instead of the one `TemporalOperationHa
 
 Fetching a Client yourself works, and the Operation behaves correctly, but you lose the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions. Use the injected Client for anything that starts or messages an Execution.
 
-The one current exception is Query, where [linking is still in progress](/nexus/sdk-v2#per-sdk-support) and no SDK produces a link yet.
+The one current exception is Query, where [linking is still in progress](/nexus/sdk-v2) and no SDK produces a link yet.
 
 ## A Query returns stale data, hangs, or throws
 
@@ -62,7 +62,7 @@ Use the Operation result for outcomes. Use a Query for in-flight progress.
 
 ### Expecting to re-attach to a running Operation
 
-There is no Operation that attaches to an already-running Execution and waits for its result. Get Workflow Result as an async backing is [not yet available](/nexus/sdk-v2#per-sdk-support).
+There is no Operation that attaches to an already-running Execution and waits for its result. Get Workflow Result as an async backing is [not yet available](/nexus/sdk-v2).
 
 Whoever starts the Operation is who receives the result. If other systems need it, distribute it from the caller or notify them from the handler.
 
