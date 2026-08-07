@@ -14,6 +14,14 @@ tags:
   - Security
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
 The proxy reads a single YAML file. Three sections are the core of it: the gateway listener (`hostPort`), `routing`, and
 the `upstreams` it forwards to. The optional `tls`, `auth`, `encryption`, and `extensionServers` sections add inbound
 TLS, inbound authentication, and payload encryption. Values support `${VAR}` and `$VAR` environment variable expansion,

@@ -14,6 +14,14 @@ tags:
   - Security
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
 The [Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) provisions everything the
 proxy needs: a Deployment, a Service, the ConfigMap that holds your configuration, a ServiceAccount, and an optional
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
