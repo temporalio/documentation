@@ -12,24 +12,41 @@ Generation happens **at build time, written directly into the build output direc
 in `static/` — the files are produced fresh on every build and deployed as-is. Vercel already
 serves `/(.*)\.md` with a `noindex` header (see `vercel.json`).
 
-Two registered Docusaurus plugins (in `docusaurus.config.js`) own the build integration:
+One registered Docusaurus plugin (in `docusaurus.config.js`) owns the build integration:
 
-1. **`plugins/markdown-pages`** — a `postBuild({ outDir })` hook that walks `docs/`, resolves
-   each page's URL path, runs the MDX through the transformer, and writes
-   `outDir/<url-path>.md`. Pages with an `llm_exclude` frontmatter field are skipped (it
-   writes the exclusion message instead).
-2. **`docusaurus-plugin-llms`** — generates `llms.txt` (page index, llmstxt.org format) and
-   `llms-full.txt` (all content concatenated). Configured with `generateMarkdownFiles: false`,
-   since `markdown-pages` produces the per-page `.md` files.
+**`plugins/markdown-pages`** — a `postBuild({ outDir })` hook that walks `docs/`, resolves each
+page's URL path, runs the MDX through the transformer, and writes `outDir/<url-path>.md`. Pages
+with an `llm_exclude` frontmatter field are skipped (it writes the exclusion message instead).
+Each generated `.md` opens with an agent directive blockquote under the H1 (see
+[Agent discovery](#agent-discovery)). The same pass produces three things from one transform of
+each page:
+
+| Output | What it is |
+| --- | --- |
+| `outDir/<url-path>.md` | Per-page clean Markdown |
+| `outDir/llms.txt` and `outDir/<section>/llms.txt` | Structured index, llmstxt.org format |
+| `outDir/llms-full.txt` | Every page's text concatenated, each with a `Source:` URL |
+
+`llms-full.txt` is for pipelines that ingest the whole corpus and chunk it themselves, so each
+entry carries its source URL and the file is ordered deterministically. Note that
+`llms-full.txt` is **not** part of the [llms.txt specification](https://llmstxt.org/) — it's a
+widely followed convention, so there's no format to conform to beyond what consumers expect.
+
+This all used to be split with `docusaurus-plugin-llms`, which ran a second, less complete MDX
+transform over the same source. That produced `llms-full.txt` with no source URLs, thousands of
+leaked `:::` and JSX artifacts, and deprecated `tctl-v1` content that `excludePaths` couldn't
+reach, since that option belongs to this plugin. Generating everything from one transform keeps
+a single exclusion list and a single definition of "clean."
 
 The **transformer** (`scripts/mdx-to-md.mjs`) is the engine `markdown-pages` calls. It is a
 standalone, **zero-dependency** ES module, separately unit-tested, so its behavior can be
 verified in isolation from a full site build.
 
 ```
-docs/**/*.mdx ──(postBuild)──▶ markdown-pages plugin ──▶ transformMdx() ──▶ outDir/<path>.md
-                                                          (scripts/mdx-to-md.mjs)
-docusaurus-plugin-llms ─────────────────────────────────▶ outDir/llms.txt, llms-full.txt
+docs/**/*.mdx ──(postBuild)──▶ markdown-pages plugin ──▶ transformMdx() ──┬─▶ outDir/<path>.md
+                                                          (mdx-to-md.mjs) ├─▶ outDir/llms.txt
+                                                                          │   outDir/<section>/llms.txt
+                                                                          └─▶ outDir/llms-full.txt
 ```
 
 > **Note: `.md` files only exist after a production build.** Generation runs in the `postBuild`
@@ -192,6 +209,31 @@ admonitions, prose) used to keep snapshots stable as the live docs change.
 During a real build the `markdown-pages` plugin logs a count of transform warnings
 (`[markdown-pages] Generated N clean markdown files, … M transform warnings`), which surfaces
 any unknown components in the live docs.
+
+## Agent discovery
+
+An agent should be able to find `/llms.txt` and the `.md` convention from any page, no matter
+which channel it reads. Different tools read different channels, so the same two facts are
+published in four places:
+
+| Channel | Where it lives | Read by |
+| --- | --- | --- |
+| HTTP `Link` header | `vercel.json` (sitewide) | Clients that inspect response headers |
+| `<link rel="alternate" type="text/markdown">` | `MarkdownAlternateLink.tsx`, per page | Crawlers that parse `<head>` |
+| Visually hidden body text | `AgentDirective.tsx`, per page | Scrapers that read rendered body text |
+| Blockquote under the H1 | `markdown-pages` plugin, per `.md` file | Agents that fetch the `.md` directly |
+
+The last two exist because header and `<head>` metadata is invisible to anything that only
+looks at page content, which is what most agent pipelines do. Automated audits of agent
+readiness check body content specifically.
+
+`AgentDirective` is hidden with the clip-rect pattern rather than `display: none`, which some
+scrapers strip along with the text. It carries `aria-hidden="true"` to stay out of screen
+reader output and `data-nosnippet` to stay out of search result snippets.
+
+**Algolia:** the DocSearch crawler config is managed in the Algolia Crawler dashboard, not in
+this repo. If directive text ever shows up in search results, add `.agentDirective` to the
+crawler's `excludeSelectors` (or narrow the `recordExtractor` content selectors) and recrawl.
 
 ## Page actions (the buttons)
 

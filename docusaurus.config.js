@@ -418,8 +418,12 @@ module.exports = async function createConfigAsync() {
             siteUrl: 'https://docs.temporal.io',
             title: 'Temporal Platform Documentation',
             description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            fullDescription: 'This file is the complete text of Temporal\'s documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
             rootContent:
               'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
+              'Every page concatenated into one file is available at `https://docs.temporal.io/llms-full.txt`. ' +
+              'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
+              'use the full text for bulk ingestion.\n\n' +
               'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
             excludePaths: ['tctl-v1'],
             sections: [
@@ -461,67 +465,6 @@ module.exports = async function createConfigAsync() {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
             { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
-          ],
-        },
-      ],
-      [
-        'docusaurus-plugin-llms',
-        {
-          // Generate both llms.txt (index) and llms-full.txt (complete content)
-          generateLLMsTxt: false,
-          generateLLMsFullTxt: true,
-          generateMarkdownFiles: false,
-
-          // Exclude imported markdown partials that should not be published as standalone LLM docs.
-          ignoreFiles: ['docs/cloud/references/regions/private-service.md', 'docs/cloud/references/regions/gcpregions.md'],
-
-          // Tell agents how to fetch individual pages as raw markdown
-          rootContent:
-            'This file contains links to documentation sections following the llmstxt.org standard.\n\n' +
-            '## Fetching individual pages\n\n' +
-            'To fetch any page as raw Markdown, append `.md` to its URL path. ' +
-            'For example, `https://docs.temporal.io/encyclopedia.md` returns the raw Markdown source for the Encyclopedia page.\n\n' +
-            'Some pages (interactive demos, landing pages) are not available as Markdown. ' +
-            'Requesting `.md` for those pages returns a short explanation instead.',
-
-          // Clean up content for better LLM consumption
-          excludeImports: true,
-          removeDuplicateHeadings: true,
-
-          // Organize content in a logical order for LLMs
-          includeOrder: [
-            'quickstarts/**',
-            'evaluate/**',
-            'develop/**',
-            'production-deployment/**',
-            'cli/**',
-            'references/**',
-            'troubleshooting/**',
-            'encyclopedia/**',
-            'security*',
-            'web-ui*',
-            'glossary*',
-          ],
-
-          // Path transformation to clean URLs
-          pathTransformation: {
-            ignorePaths: ['docs'],
-          },
-
-          // Custom LLM files for specific use cases
-          customLLMFiles: [
-            {
-              filename: 'llms-quickstart.txt',
-              includePatterns: ['docs/evaluate/**/*.mdx', 'docs/develop/**/*.mdx'],
-              fullContent: true,
-              title: 'Temporal Quickstart Guide',
-            },
-            {
-              filename: 'llms-api-reference.txt',
-              includePatterns: ['docs/references/**/*.mdx', 'docs/cli/**/*.mdx'],
-              fullContent: true,
-              title: 'Temporal API and CLI Reference',
-            },
           ],
         },
       ],
