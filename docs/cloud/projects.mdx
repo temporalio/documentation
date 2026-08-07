@@ -17,12 +17,10 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { ReleaseNoteHeader } from '@site/src/components';
+import { ReleaseNoteHeader, CaptionedImage } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="projects">
 Features in pre-release are experimental and may be subject to backwards-incompatible changes.
-
-Projects currently support the Temporal UI and Temporal Cloud Ops API.
 </ReleaseNoteHeader>
 
 Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize [Namespaces](/cloud/namespaces), [Nexus endpoints](/nexus/endpoints), and [Connectivity Rules](/cloud/connectivity#connectivity-rules) around how your organization operates: by team, environment, service, or business unit.
@@ -31,14 +29,22 @@ Projects make it easier to delegate ownership, manage access at scale, and organ
 
 Projects are for organization and authorization. They don't change how Workflows execute inside a Namespace.
 
+<CaptionedImage
+    src="/img/cloud/projects/resource-hierarchy.png"
+    title="Temporal Cloud resource hierarchy"
+    alt="Diagram of the Temporal Cloud resource hierarchy. An Account is the global container for all resources. Each Account contains one or more Projects, which organize and delegate access across teams, apps, or environments; the diagram shows a default Project created by Temporal alongside custom Projects named Agents and Evals, plus a control to create additional Projects. Each Project contains Namespaces, which are isolated, secure runtime environments for Workflow and other executions; the default Project contains NS-prod and NS-staging, Agents contains customer-support and sales-assistant, and Evals contains benchmarks and regression."
+    width="100%"
+    zoom="true"
+/>
+
 ## Enable Projects on your Account
 
-While Projects is in pre-release, it is not enabled by default. [Contact Support](/cloud/support#support-ticket) to request enabling Projects for your account.
+While Projects are in pre-release, they are not enabled by default. [Contact Support](/cloud/support#support-ticket) to request enabling Projects for your account.
 
 Once Projects are enabled, existing Accounts receive a Default Project, and new Accounts are created with one automatically. For existing Accounts, all existing resources are automatically placed in the Default Project. Existing role assignments and effective permissions remain unchanged. For new Accounts, the Default Project is created automatically. New resources are automatically placed in the Default Project unless you specify otherwise.
 
 
-## Default Project and Project names
+## Default Project and Project ID
 
 Every Temporal Cloud Account includes a Default Project. The Default Project is not a special type of Project. It behaves like any other Project for managing resources. The main difference between the Default Project and any Projects you create is that the Default Project is automatically created for you as a starting point and provides backward-compatible behavior for existing resources and operations that do not specify a Project. Otherwise, it supports the same resource-management capabilities as other Projects.
 
