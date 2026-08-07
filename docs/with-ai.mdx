@@ -8,8 +8,8 @@ description: Give your AI coding agent Temporal expertise and real-time access t
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Give your AI coding agent Temporal expertise with Skills and real-time documentation access with the Temporal Knowledge Base MCP
-Server.
+Give your AI coding agent Temporal expertise with Skills, real-time documentation access with the Temporal Knowledge Base
+MCP Server, or direct access to the docs as Markdown.
 
 ## Skills
 
@@ -112,7 +112,7 @@ git clone https://github.com/temporalio/skill-temporal-cloud.git ~/.claude/skill
 
 Restart your coding agent after installing.
 
-## Temporal Knowledge Base  MCP Server
+## Temporal Knowledge Base MCP Server
 
 Connect Temporal expertise directly to your AI assistant for accurate, up-to-date answers about Temporal. The
 Temporal knowledge base MCP server gives AI tools real-time access to best practices compiled from our documentation, educational materials, community forum responses, and slack channels, so responses draw from current expertise
@@ -163,3 +163,17 @@ Not all MCP clients support this protocol.
 If your client supports MCP OAuth, it will open a browser window to verify with Google or GitHub on first connection.
 If your client does not support MCP OAuth, you may need to use a stdio proxy that handles the OAuth flow and passes credentials to the remote server.
 Check your client's documentation for details on connecting to OAuth-protected MCP servers.
+
+## Markdown pages and llms.txt
+
+Every documentation page is also available as Markdown, so AI tools that fetch a URL can read the docs without an MCP
+connection or sign-in.
+
+- Append `.md` to any page's URL to fetch its Markdown version — for example, `https://docs.temporal.io/workflows.md`.
+- Each page has **Copy for LLM**, **View Markdown**, **Open in ChatGPT**, and **Open in Claude** buttons above its
+  content. **Copy for LLM** copies the page's Markdown, with its source URL, to your clipboard. **Open in ChatGPT** and
+  **Open in Claude** start a new chat with a prompt telling the model to read the page.
+- [`llms.txt`](https://llmstxt.org) is a standard for indexing a site for LLMs. Temporal's index is at
+  `https://docs.temporal.io/llms.txt`, and the full documentation concatenated into one file is at
+  `https://docs.temporal.io/llms-full.txt`. The full file is large enough to exceed most model context windows, so
+  prefer the index and individual pages' `.md` versions unless you need to bulk-ingest everything at once.
