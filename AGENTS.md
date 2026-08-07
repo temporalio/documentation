@@ -12,6 +12,7 @@ repository.
 | Mermaid diagrams             | [MERMAID.md](./readme/MERMAID.md)                            |
 | LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)               |
 | Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md)             |
+| CI jobs and scheduled jobs   | [AUTOMATIONS.md](./AUTOMATIONS.md)                           |
 
 ## Repository overview
 
