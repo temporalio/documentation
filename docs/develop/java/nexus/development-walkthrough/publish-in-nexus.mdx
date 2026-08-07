@@ -1,0 +1,69 @@
+---
+id: publish-in-nexus
+title: Step 5 - Publish in Nexus
+sidebar_label: 5. Publish in Nexus
+description: Create a Nexus Endpoint for the approval Service, allow caller Namespaces to reach it, and set up credentials for Temporal Cloud.
+toc_max_heading_level: 4
+keywords:
+  - nexus endpoint
+  - nexus registry
+  - allowed caller namespaces
+  - api key
+  - temporal cloud nexus
+tags:
+  - Nexus
+  - Java SDK
+---
+
+The Service is implemented and a Worker is polling, but no caller can reach it. A [Nexus Endpoint](/nexus/endpoints) is what makes it reachable, and the [Nexus Registry](/nexus/registry) is where Endpoints live.
+
+An Endpoint routes incoming Operation requests to a target Namespace and Task Queue. Callers address the Endpoint by name and never learn the Namespace or Task Queue behind it, which is what lets you move the handler later without changing caller code.
+
+## Create the Endpoint
+
+An Endpoint needs three things: a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match what your Worker registered in [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker), or requests arrive and nothing picks them up.
+
+On a development server, create it with the CLI:
+
+`{sample code will be here}`
+
+In Temporal Cloud, create it in the UI under Nexus, or with `tcld`. See [Create a Nexus Endpoint](/nexus/registry#create-a-nexus-endpoint).
+
+Endpoint names are unique within the Registry. In Temporal Cloud the Registry is global across your whole Account and spans every Namespace; in a self-hosted deployment it is scoped to the Cluster.
+
+## Allow caller Namespaces
+
+This is the step people miss, because the failure looks like a routing problem rather than a permissions one.
+
+An Endpoint **rejects callers that are not on its allowed list**. Creating the Endpoint is not enough — you have to name the Namespaces permitted to call it. The caller Namespace in this walkthrough is separate from the handler Namespace, so it has to be added explicitly.
+
+In Temporal Cloud, set the allowed caller Namespaces when you create or edit the Endpoint in the UI, or with `tcld`. Add the caller Namespace, including its Account suffix.
+
+If a call fails as unauthorized and the Endpoint clearly exists, check this list first.
+
+## Set up credentials
+
+On a development server there is nothing to configure. Both Namespaces are local and unauthenticated.
+
+For Temporal Cloud, the caller and handler connect as separate clients, each to its own Namespace. Generate an API key with access to both Namespaces, or use mTLS certificates. The SDK's [environment configuration](/develop/environment-configuration) support lets you keep one profile per Namespace and select between them with an environment variable, which is cleaner than passing connection options in code.
+
+`{sample code will be here}`
+
+## Verify it is reachable
+
+Before writing a caller, confirm the wiring independently. Check that the Endpoint exists in the Registry and targets the right Namespace and Task Queue, and that your handler Worker shows as polling that Task Queue.
+
+A Worker that is not polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
+
+## Next
+
+[Call the Service](/develop/java/nexus/development-walkthrough/call-the-service) from the caller Namespace.
+
+:::tip RESOURCES
+
+- [Nexus Endpoints](/nexus/endpoints) and [Nexus Registry](/nexus/registry) for the concepts and management surfaces.
+- [Nexus security](/nexus/security) for the Endpoint authorization model.
+- [Temporal Cloud Nexus](/cloud/nexus) for Cloud-specific setup and limits.
+- [Environment configuration](/develop/environment-configuration) for managing two Namespace profiles.
+
+:::

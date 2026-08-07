@@ -392,6 +392,28 @@ const developJavaCategory = {
           'develop/java/nexus/quickstart',
           'develop/java/nexus/feature-guide',
           'develop/java/nexus/standalone-operations',
+          {
+            type: 'category',
+            label: 'Development Walkthrough',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/java/nexus/development-walkthrough/index',
+            },
+            items: [
+              'develop/java/nexus/development-walkthrough/define-the-data-contract',
+              'develop/java/nexus/development-walkthrough/generate-code',
+              'develop/java/nexus/development-walkthrough/choose-backing-implementation',
+              'develop/java/nexus/development-walkthrough/implement-the-service',
+              'develop/java/nexus/development-walkthrough/publish-in-nexus',
+              'develop/java/nexus/development-walkthrough/call-the-service',
+              'develop/java/nexus/development-walkthrough/add-messaging',
+              'develop/java/nexus/development-walkthrough/send-messages',
+              'develop/java/nexus/development-walkthrough/add-a-standalone-activity',
+              'develop/java/nexus/development-walkthrough/call-the-standalone-activity',
+              'develop/java/nexus/development-walkthrough/debugging-and-tips',
+            ],
+          },
         ],
       },
       {
@@ -1948,7 +1970,9 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/nexus-services',
+            'encyclopedia/nexus/nexus-sdk-v2',
             'encyclopedia/nexus/nexus-client-code-generator',
+            'encyclopedia/nexus/nexus-standalone-activity',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
