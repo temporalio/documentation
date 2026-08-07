@@ -84,14 +84,3 @@ These run on every Vercel build rather than in GitHub Actions.
 
 `.husky/pre-commit` is a shim that sources an untracked `.husky/pre-commit.local` if you create one. Nothing runs by
 default.
-
-## Not automated
-
-These exist as scripts but nothing runs them. Treat a green pull request as saying nothing about them.
-
-| Command                                                                      | Covers                                                                                                             |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `yarn test`                                                                  | Only 2 of 7 test files run in CI. The rest, including the Markdown pipeline snapshots in `tests/`, run nowhere.    |
-| `yarn check-links`                                                           | Broken links and anchors across the built site                                                                     |
-| `yarn validate:og-images`, `yarn check:og-budget`                            | Open Graph image validity and build budget                                                                         |
-| `bin/generate-og-gallery.js`, `bin/plainify`, `scripts/audit-components.mjs` | Run by hand. Described in [READABILITY.md](./READABILITY.md) and [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md). |
