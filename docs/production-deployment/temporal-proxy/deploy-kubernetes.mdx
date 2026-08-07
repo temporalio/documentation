@@ -1,0 +1,198 @@
+---
+id: deploy-kubernetes
+title: Deploy Temporal Proxy to Kubernetes
+sidebar_label: Deploy to Kubernetes
+description: Deploy the Temporal Proxy with the Helm chart, including configuration, secrets, TLS, and KMS access.
+toc_max_heading_level: 4
+keywords:
+  - temporal-proxy
+  - kubernetes
+  - helm
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+The [Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) provisions everything the
+proxy needs: a Deployment, a Service, the ConfigMap that holds your configuration, a ServiceAccount, and an optional
+HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
+example an ExternalSecret that supplies upstream credentials.
+
+## Supply the configuration
+
+`config` mirrors the proxy's own configuration schema. Whatever you put under it is what lands in the ConfigMap the
+chart mounts at `/etc/temporal-proxy/config.yaml`. The chart does not run `config` through Helm's `tpl` function, so the
+proxy's own per-request templates, such as `{{ .RemoteNamespace }}` in an upstream `hostPort`, pass through untouched
+and are evaluated by the proxy at request time.
+
+```yaml
+config:
+  routing:
+    default: default
+  upstreams:
+    - name: default
+      hostPort: localhost:7233
+```
+
+If you leave `config.hostPort` unset, the chart defaults the gateway's listen address to `:<service.port>`.
+
+Values the configuration references with `${VAR}` come from `env` and `envFrom` on the Deployment, which is how you
+supply things like a Temporal Cloud account identifier:
+
+```yaml
+env:
+  - name: TEMPORAL_ACCOUNT
+    value: a1b2c
+
+envFrom:
+  - secretRef:
+      name: proxy-env
+```
+
+## Supply credentials from a Secret
+
+Two configuration fields accept either a plain string or a `secretKeyRef`, so the ConfigMap never has to hold a
+credential in plaintext:
+
+- `upstreams[].credentials.static.apiKey`
+- `auth.staticToken.token`
+
+Given a `secretKeyRef`, the chart adds an environment variable to the proxy container sourced from that Secret and
+rewrites the configuration value to `${VAR}`, which the proxy expands at startup. The generated names are
+`TP_UPSTREAM_<NAME>_API_KEY`, where `<NAME>` is the upstream's name upper-cased with non-alphanumeric characters
+replaced by `_`, and `TP_AUTH_STATIC_TOKEN`.
+
+```yaml
+config:
+  upstreams:
+    - name: cloud
+      hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+      tls: {}
+      credentials:
+        static:
+          apiKey:
+            secretKeyRef:
+              name: temporal-cloud
+              key: api-key
+```
+
+That renders `apiKey: ${TP_UPSTREAM_CLOUD_API_KEY}` into the ConfigMap and adds a matching environment variable backed
+by the `temporal-cloud` Secret's `api-key` entry.
+
+## Supply TLS material {/* #supply-tls-material */}
+
+The gateway's `config.tls` block and each `upstreams[].tls` block accept a `secretName`. The chart mounts that Secret at
+`/etc/temporal-proxy/certs/gateway` or `/etc/temporal-proxy/certs/upstream-<name>` and fills in the file paths for you:
+
+| Configuration key | Value                                                         |
+| ----------------- | ------------------------------------------------------------- |
+| `cert`            | `<mount>/tls.crt`, or `<mount>/<certKey>` if `certKey` is set |
+| `key`             | `<mount>/tls.key`, or `<mount>/<keyKey>` if `keyKey` is set   |
+| `ca`              | `<mount>/<caKey>`, only when `caKey` is set                   |
+
+`ca` is opt-in because it changes behavior rather than just adding material. On the gateway, a `ca` enforces mutual TLS,
+so only set `caKey` on `config.tls` when you intend to require client certificates. See [Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls)
+for what each combination means.
+
+```yaml
+config:
+  tls:
+    secretName: temporal-proxy-server-tls
+  upstreams:
+    - name: cloud
+      hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+      tls:
+        secretName: temporal-cloud-client-tls
+        caKey: ca.crt
+```
+
+The default keys match the `tls.crt` and `tls.key` pair [cert-manager](https://cert-manager.io/) issues, but
+cert-manager is not required: any Secret works, and `certKey`, `keyKey`, and `caKey` point at whatever keys yours uses.
+Keep upstream `name` values DNS-safe, meaning lowercase alphanumeric characters and `-`, since the chart builds a volume
+name from them. To manage certificate files yourself instead, skip `secretName` and mount them with the chart's generic
+`volumes` and `volumeMounts` values.
+
+## Grant access to your KMS key
+
+The one thing the chart cannot do for you is grant the proxy access to your cloud KMS key. When you enable
+[payload encryption](/production-deployment/temporal-proxy/encrypt-payloads), the proxy needs a cloud identity that holds the encrypt and decrypt permissions
+on the key. Bind the chart's Kubernetes ServiceAccount to that identity with workload identity, so the proxy
+authenticates to your KMS with no static credentials. If you do not use encryption, you can skip this: API keys and TLS
+material come from the configuration and mounted Secrets, so the proxy needs no cloud identity.
+
+Grant the cloud identity the encrypt and decrypt permissions first, as described under
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads), then bind it to the ServiceAccount as shown below. The bindings reference the
+ServiceAccount by name, so set `serviceAccount.name` in your values to keep it stable and matching what you bind on the
+cloud side.
+
+### AWS IRSA and Pod Identity
+
+Create an IAM role whose trust policy lets your cluster's OIDC provider assume it from the proxy's ServiceAccount, and
+attach the KMS policy from [AWS KMS](/production-deployment/temporal-proxy/encrypt-payloads#aws-kms). Then annotate the ServiceAccount with the role ARN:
+
+```yaml
+serviceAccount:
+  name: temporal-proxy
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/temporal-proxy
+```
+
+On EKS you can use [Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html) instead: create
+an association between the role and the ServiceAccount with `aws eks create-pod-identity-association`, and no annotation
+is required.
+
+### Azure Workload Identity
+
+Create a federated identity credential that links a user-assigned managed identity (holding the key permissions) to the
+proxy's ServiceAccount subject:
+
+```bash
+az identity federated-credential create \
+  --name temporal-proxy \
+  --identity-name <managed-identity-name> \
+  --resource-group <resource-group> \
+  --issuer <aks-oidc-issuer-url> \
+  --subject system:serviceaccount:<namespace>:temporal-proxy
+```
+
+Then annotate the ServiceAccount with the identity's client ID and label the Pods so the webhook injects credentials:
+
+```yaml
+serviceAccount:
+  name: temporal-proxy
+  annotations:
+    azure.workload.identity/client-id: <client-id>
+
+podLabels:
+  azure.workload.identity/use: 'true'
+```
+
+### GCP Workload Identity
+
+Bind the Google service account (GSA) that holds the key permissions to the proxy's Kubernetes service account (KSA):
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding \
+  proxy@my-project.iam.gserviceaccount.com \
+  --role roles/iam.workloadIdentityUser \
+  --member "serviceAccount:my-project.svc.id.goog[NAMESPACE/KSA_NAME]"
+```
+
+Then annotate the ServiceAccount through Helm so GKE maps it to the GSA:
+
+```yaml
+serviceAccount:
+  name: temporal-proxy
+  annotations:
+    iam.gke.io/gcp-service-account: proxy@my-project.iam.gserviceaccount.com
+```
+
