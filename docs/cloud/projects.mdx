@@ -44,7 +44,7 @@ Every Temporal Cloud Account includes a Default Project. The Default Project is 
 
 If you don't need the organizational boundaries offered by Projects, continue to use the Default Project for all your resources. You can always create a new Project later if you need it.
 
-All Projects are identified by immutable IDs, and by display names, which can be edited.
+Every Project has a unique, immutable `Project ID` and an editable `display name`. The Project ID is used by the Cloud Ops API, CLI, and Terraform to identify the Project when creating and managing Project-scoped resources.
 
 Namespaces cannot be moved between Projects currently, meaning all existing Namespaces will exist in the Default Project. You can create a new Project and place a new Namespace in that Project.
 
