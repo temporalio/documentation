@@ -15,6 +15,12 @@ tags:
   - Serverless
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview.
+</ReleaseNoteHeader>
+
 Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
 
@@ -24,4 +30,3 @@ For the end-to-end deployment guide, see [Deploy a Serverless Worker](/productio
 ## Supported providers
 
 - [**AWS Lambda**](/develop/typescript/workers/serverless-workers/aws-lambda) - Use the `@temporalio/lambda-worker` package to run a Worker as a Lambda function. Covers setup, configuration, Lambda-tuned defaults, and observability.
-- [**GCP Cloud Run**](/develop/typescript/workers/serverless-workers/cloud-run) - Run a standard Worker on a Cloud Run worker pool. Covers the versioned Worker setup, connection configuration, and handling scale-in.

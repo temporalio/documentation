@@ -1,0 +1,49 @@
+name: Notify Automation Failures
+
+# Posts to Slack when a non-PR workflow fails. PR CI failures are surfaced on the
+# pull request itself and are deliberately excluded here.
+#
+# The `workflows` list below uses each workflow's `name:` value, not its filename.
+# Renaming a workflow silently stops matching it, so update this list alongside
+# any rename.
+
+on:
+  workflow_run:
+    workflows:
+      - Snipsync
+      - Screenshot Capture
+      - Update Custom Role Permissions
+      - Update SDK Versions
+      - Check Metrics Against SDKs
+      - CLI Docs Update
+      - Delete Visual Tests Reports
+      - Warm Build Cache
+      - Environment config drift
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    # `Check Metrics Against SDKs` and `Environment config drift` also run on
+    # pull_request; exclude those runs so this only reports invocations that have
+    # nowhere else to surface, such as the scheduled ones.
+    if: >-
+      github.event.workflow_run.event != 'pull_request' &&
+      contains(fromJSON('["failure", "timed_out", "startup_failure"]'), github.event.workflow_run.conclusion)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post failure to Slack
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        with:
+          webhook: ${{ secrets.SLACK_AUTOMATION_ALERTS_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "${{ github.event.workflow_run.name }} ${{ github.event.workflow_run.conclusion }} on ${{ github.repository }}"
+            blocks:
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "*${{ github.event.workflow_run.name }}* ${{ github.event.workflow_run.conclusion }}\n<${{ github.event.workflow_run.html_url }}|Run #${{ github.event.workflow_run.run_number }}> · triggered by `${{ github.event.workflow_run.event }}` · branch `${{ github.event.workflow_run.head_branch }}`"

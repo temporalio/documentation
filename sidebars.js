@@ -60,6 +60,18 @@ const developDotnetCategory = {
         items: [
           'develop/dotnet/workers/run-worker-process',
           'develop/dotnet/workers/interceptors',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/dotnet/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/dotnet/workers/serverless-workers/aws-lambda',
+            ],
+          },
         ]
       },
       {
@@ -342,7 +354,21 @@ const developJavaCategory = {
           type: 'doc',
           id: 'develop/java/workers/index',
         },
-        items: ['develop/java/workers/run-worker-process'],
+        items: [
+          'develop/java/workers/run-worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/java/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/java/workers/serverless-workers/aws-lambda',
+            ],
+          },
+        ],
       },
       {
         type: 'category',
@@ -655,6 +681,7 @@ const developPythonCategory = {
         items: [
           'develop/python/integrations/braintrust',
           'develop/python/integrations/google-adk',
+          'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
           'develop/python/integrations/strands-agents',
@@ -941,7 +968,6 @@ const developTypeScriptCategory = {
             },
             items: [
               'develop/typescript/workers/serverless-workers/aws-lambda',
-              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -1136,8 +1162,23 @@ module.exports = {
       items: [
         ...SDKS.map(({ id }) => developSdkCategoriesById[id]),
         'develop/environment-configuration',
-        'develop/worker-performance',
-        'develop/worker-tuning-reference',
+        {
+          type: 'category',
+          label: 'Worker performance',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/worker-performance/index',
+          },
+          items: [
+            'develop/worker-performance/metrics',
+            'develop/worker-performance/configuration',
+            'develop/worker-performance/runtime-tuning',
+            'develop/worker-performance/workflow-cache',
+            'develop/worker-performance/task-queues',
+            'develop/worker-tuning-reference',
+          ],
+        },
         'develop/safe-deployments',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
@@ -1458,6 +1499,7 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
+        'production-deployment/temporal-proxy/index',
       ],
     },
     {
@@ -1676,6 +1718,9 @@ module.exports = {
         'troubleshooting/last-connection-error',
         'troubleshooting/performance-bottlenecks',
         'troubleshooting/schedule-missed-actions',
+        'troubleshooting/request-failures',
+        'troubleshooting/worker-capacity',
+        'troubleshooting/execution-failures',
         {
           type: 'category',
           label: 'Serverless Workers',
@@ -1701,6 +1746,7 @@ module.exports = {
       },
       items: [
         'best-practices/worker',
+        'best-practices/worker-alerting',
         'best-practices/pre-production-testing',
         'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
@@ -1971,6 +2017,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/priority-fairness-walkthrough',
       ],
     },    {
       type: 'category',
