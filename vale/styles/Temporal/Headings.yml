@@ -60,6 +60,8 @@ exceptions:
   - Operations
   - Payload
   - Priority
+  - Project
+  - Projects
   - Query
   - Queries
   - Queue
