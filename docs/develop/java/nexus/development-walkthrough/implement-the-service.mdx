@@ -1,0 +1,78 @@
+---
+id: implement-the-service
+title: Step 4 - Implement the Service
+sidebar_label: 4. Implement the Service
+description: Implement the approval Nexus Service in Java using TemporalOperationHandler, backed by a Workflow, and run a Worker that hosts it.
+toc_max_heading_level: 4
+keywords:
+  - temporal operation handler
+  - nexus service implementation
+  - nexus worker
+  - approval workflow
+tags:
+  - Nexus
+  - Java SDK
+---
+
+Implement the generated Service interface, back `requestApproval` with the approval Workflow, and run a Worker that hosts both.
+
+## Write the approval Workflow
+
+The Workflow is an ordinary Temporal Workflow. Nothing in it is Nexus-specific, and it could be started directly by a Client instead.
+
+For the approval, it needs to:
+
+1. Run an Activity that evaluates whether the request can be auto-decided. In this walkthrough it is a placeholder that does nothing — real logic would apply policy, check limits, or call a risk service.
+2. Run an Activity that tells a human the request is waiting. Also a placeholder.
+3. Block until a decision arrives.
+4. Return `APPROVED` or `DENIED`.
+
+The blocking step is the reason this is a Workflow. It may wait weeks, across Worker restarts and deployments, and the wait costs nothing while it is idle.
+
+`{sample code will be here}`
+
+## Implement the Operation with TemporalOperationHandler
+
+Use `TemporalOperationHandler` for every Temporal-backed Operation, including simple ones. It is the entry point in [Nexus SDK V2](/nexus/sdk-v2), and starting with it means an Operation can later gain a Signal or change its backing without changing shape.
+
+`TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation then completes when the Workflow returns, delivering the Workflow's return value to the caller.
+
+The Client is not an ordinary Temporal Client. It propagates bidirectional links and request Ids automatically, so the caller's Execution and the approval Workflow are connected in the UI. Fetching your own Client inside a handler works but gives up that linking.
+
+`{sample code will be here}`
+
+Set the Workflow Id from the approval id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-entity-a-stable-id).
+
+:::note
+
+You may see older examples using `WorkflowRunOperation.fromWorkflowMethod` or a synchronous `OperationHandler`. Both still work and are not being removed, but they are de-emphasized in favor of `TemporalOperationHandler`. See [Updated handler methods](/nexus/sdk-v2#updated-handler-methods).
+
+:::
+
+## Run the Worker
+
+One Worker hosts the Nexus Service implementation, the Workflow implementation, and the Activity implementations. Its Task Queue has to match the Task Queue the Nexus Endpoint targets, which you create in the next step.
+
+`{sample code will be here}`
+
+A Worker registering a Nexus Service does not need to be the same Worker that runs the backing Workflow. Splitting them is a normal choice for larger deployments — see [Nexus patterns](/nexus/patterns).
+
+## Handle failures
+
+Two failure categories behave differently, and callers can tell them apart.
+
+A **contract violation** — a payload the generated validator rejects — should surface as `BAD_REQUEST`. It is the caller's fault and retrying will not help. The generated validators aggregate every violation into one error, so the caller learns everything that was wrong in a single response.
+
+An **application failure** — the approval cannot proceed for a business reason — is a failed Operation. Whether it retries depends on the error type you raise. See [Nexus error handling](/nexus/error-handling).
+
+## Next
+
+The Service runs but nothing can reach it yet. [Publish it in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus).
+
+:::tip RESOURCES
+
+- [Nexus SDK V2](/nexus/sdk-v2) for `TemporalOperationHandler` and the Nexus-aware Client.
+- [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the full handler and Worker API.
+- [Nexus error handling](/nexus/error-handling) for mapping failures to Nexus errors.
+
+:::
