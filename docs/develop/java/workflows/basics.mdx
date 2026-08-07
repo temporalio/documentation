@@ -314,9 +314,9 @@ instead of `Thread.sleep()`.
 
 ### Detecting replay (advanced)
 
-Use [`Workflow.isReplaying()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html)
+Use [`WorkflowUnsafe.isReplaying()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/unsafe/WorkflowUnsafe.html)
 to guard code that should only run on the first execution, such as emitting metrics or sending external notifications
-from an Interceptor.
+from an Interceptor. `Workflow.isReplaying()` is deprecated in favor of this method.
 
 :::caution
 
@@ -325,7 +325,9 @@ Never use this to affect Workflow business logic. Branching on replay status bre
 :::
 
 ```java
-if (!Workflow.isReplaying()) {
+import io.temporal.workflow.unsafe.WorkflowUnsafe;
+
+if (!WorkflowUnsafe.isReplaying()) {
   emitMetric("workflow_started", 1);
 }
 ```
