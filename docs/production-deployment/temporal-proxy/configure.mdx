@@ -14,8 +14,6 @@ tags:
   - Security
 ---
 
-## Configure the proxy {/* #configure-the-proxy */}
-
 The proxy reads a single YAML file. Three sections are the core of it: the gateway listener (`hostPort`), `routing`, and
 the `upstreams` it forwards to. The optional `tls`, `auth`, `encryption`, and `extensionServers` sections add inbound
 TLS, inbound authentication, and payload encryption. Values support `${VAR}` and `$VAR` environment variable expansion,
@@ -60,7 +58,7 @@ upstreams:
 The [chart `values.yaml`](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) and the
 [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) hold the complete, current set of options.
 
-### Route requests
+## Route requests
 
 The `routing` section selects an upstream for each request:
 
@@ -107,7 +105,7 @@ A `*` in any other position, such as `a*b`, is invalid.
 `metadata` matches gRPC request metadata (headers). Keys are case-insensitive and do not support wildcards; values use
 the same glob syntax as `namespace`. A key matches when any of the request's values for it match.
 
-### Translate Namespaces
+## Translate Namespaces
 
 Applications connected to the proxy use short, local Namespace names. Each upstream rewrites those names to the ones its
 Temporal Service expects, under `namespaces.rules`. The rewrite applies to requests and is reversed on responses, so
@@ -142,7 +140,7 @@ Namespaces. Available variables:
 
 Upstreams with a static `hostPort` connect eagerly at startup; templated ones connect lazily on first use.
 
-### Authenticate inbound requests
+## Authenticate inbound requests
 
 Inbound authentication runs on the gateway and is off by default: omit the top-level `auth` block to accept all
 requests. When present, `auth` must select exactly one authenticator, `staticToken` or `jwks`. The gateway validates the
@@ -174,7 +172,7 @@ auth:
 `token` (for `staticToken`) and `url` (for `jwks`) are required; the remaining fields are optional. Only `staticToken`
 or `jwks` may be set, not both.
 
-### Present credentials to upstreams
+## Present credentials to upstreams
 
 Each upstream can present its own credential to the Temporal Service, set under `credentials`. `static` is the only
 variant today; it injects a fixed API key as a bearer header on every outbound request, which is how you connect to
@@ -195,7 +193,7 @@ upstreams:
 Credentials require TLS to the upstream. If you set `credentials` without a `tls` block, the configuration fails to
 load.
 
-### Configure TLS {/* #configure-tls */}
+## Configure TLS {/* #configure-tls */}
 
 TLS is terminated in two independent places, both using the same keys: `ca`, `cert`, `key`, and `serverName`. `ca`,
 `cert`, and `key` are paths to PEM files on disk, not inline PEM content. On Kubernetes, let the chart mount them from a

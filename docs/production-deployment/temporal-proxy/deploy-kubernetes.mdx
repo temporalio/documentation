@@ -14,14 +14,12 @@ tags:
   - Security
 ---
 
-## Deploy to Kubernetes {/* #deploy-to-kubernetes */}
-
 The [Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) provisions everything the
 proxy needs: a Deployment, a Service, the ConfigMap that holds your configuration, a ServiceAccount, and an optional
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
 example an ExternalSecret that supplies upstream credentials.
 
-### Supply the configuration
+## Supply the configuration
 
 `config` mirrors the proxy's own configuration schema. Whatever you put under it is what lands in the ConfigMap the
 chart mounts at `/etc/temporal-proxy/config.yaml`. The chart does not run `config` through Helm's `tpl` function, so the
@@ -52,7 +50,7 @@ envFrom:
       name: proxy-env
 ```
 
-### Supply credentials from a Secret
+## Supply credentials from a Secret
 
 Two configuration fields accept either a plain string or a `secretKeyRef`, so the ConfigMap never has to hold a
 credential in plaintext:
@@ -82,7 +80,7 @@ config:
 That renders `apiKey: ${TP_UPSTREAM_CLOUD_API_KEY}` into the ConfigMap and adds a matching environment variable backed
 by the `temporal-cloud` Secret's `api-key` entry.
 
-### Supply TLS material {/* #supply-tls-material */}
+## Supply TLS material {/* #supply-tls-material */}
 
 The gateway's `config.tls` block and each `upstreams[].tls` block accept a `secretName`. The chart mounts that Secret at
 `/etc/temporal-proxy/certs/gateway` or `/etc/temporal-proxy/certs/upstream-<name>` and fills in the file paths for you:
@@ -115,7 +113,7 @@ Keep upstream `name` values DNS-safe, meaning lowercase alphanumeric characters 
 name from them. To manage certificate files yourself instead, skip `secretName` and mount them with the chart's generic
 `volumes` and `volumeMounts` values.
 
-### Grant access to your KMS key
+## Grant access to your KMS key
 
 The one thing the chart cannot do for you is grant the proxy access to your cloud KMS key. When you enable
 [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads), the proxy needs a cloud identity that holds the encrypt and decrypt permissions
@@ -128,7 +126,7 @@ Grant the cloud identity the encrypt and decrypt permissions first, as described
 ServiceAccount by name, so set `serviceAccount.name` in your values to keep it stable and matching what you bind on the
 cloud side.
 
-#### AWS IRSA and Pod Identity
+### AWS IRSA and Pod Identity
 
 Create an IAM role whose trust policy lets your cluster's OIDC provider assume it from the proxy's ServiceAccount, and
 attach the KMS policy from [AWS KMS](/production-deployment/temporal-proxy/encrypt-payloads#aws-kms). Then annotate the ServiceAccount with the role ARN:
@@ -144,7 +142,7 @@ On EKS you can use [Pod Identity](https://docs.aws.amazon.com/eks/latest/usergui
 an association between the role and the ServiceAccount with `aws eks create-pod-identity-association`, and no annotation
 is required.
 
-#### Azure Workload Identity
+### Azure Workload Identity
 
 Create a federated identity credential that links a user-assigned managed identity (holding the key permissions) to the
 proxy's ServiceAccount subject:
@@ -170,7 +168,7 @@ podLabels:
   azure.workload.identity/use: 'true'
 ```
 
-#### GCP Workload Identity
+### GCP Workload Identity
 
 Bind the Google service account (GSA) that holds the key permissions to the proxy's Kubernetes service account (KSA):
 

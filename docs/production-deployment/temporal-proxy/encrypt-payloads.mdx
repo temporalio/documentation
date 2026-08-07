@@ -14,8 +14,6 @@ tags:
   - Security
 ---
 
-## Encrypt payloads {/* #encrypt-payloads */}
-
 The proxy can encrypt Workflow and Activity payloads on the hop to an upstream and decrypt them on responses, set under
 the top-level `encryption` block. It is off by default. Workers and Clients keep exchanging cleartext with the gateway;
 the proxy seals payloads before they leave and opens them on the way back, so the upstream Temporal Service only ever
@@ -145,7 +143,7 @@ identity (IRSA or Pod Identity on AWS, Workload Identity on Azure and GCP); off 
 from the host. Grant that identity only the permission to encrypt and decrypt with the specific key, as shown for each
 provider below.
 
-### AWS KMS {/* #aws-kms */}
+## AWS KMS {/* #aws-kms */}
 
 Wrap DEKs with an AWS KMS symmetric key, referenced by ARN. The `awskms://` scheme uses a triple slash (`awskms:///`) so
 the ARN can sit in the URL path; add `?region=` when the key's region differs from the proxy's ambient region. See the
@@ -179,7 +177,7 @@ encryption:
     renewBefore: 15m
 ```
 
-### Azure Key Vault
+## Azure Key Vault
 
 Wrap DEKs with a Key Vault key. The default algorithm is RSA-OAEP-256, so the key must be an RSA key; append
 `?algorithm=` to the URI to override it. The key version is optional and defaults to the latest version. See the
@@ -204,7 +202,7 @@ encryption:
     renewBefore: 15m
 ```
 
-### Google Cloud KMS
+## Google Cloud KMS
 
 Wrap DEKs with a Cloud KMS key, referenced by its full resource name. See the
 [Cloud KMS documentation](https://cloud.google.com/kms/docs).
@@ -228,7 +226,7 @@ encryption:
     renewBefore: 15m
 ```
 
-### Plug in your own key management backend {/* #plug-in-your-own-key-management-backend */}
+## Plug in your own key management backend {/* #plug-in-your-own-key-management-backend */}
 
 To wrap DEKs with a backend the proxy has no built-in support for, such as an on-prem HSM or an internal key service,
 run that backend as a gRPC server and point the proxy at it. The proxy calls it to wrap and unwrap DEKs only; payload
