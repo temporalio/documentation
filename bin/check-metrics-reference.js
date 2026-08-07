@@ -27,12 +27,14 @@ const SDKS = ['Core', 'Go', 'Java'];
 // against this, so a hyphen/underscore slip in either place is a failure.
 const TAGS = [
   'activity_type',
+  'cause',
   'failure_reason',
   'namespace',
   'nexus_operation',
   'nexus_service',
   'operation',
   'poller_type',
+  'status_code',
   'task_queue',
   'worker_type',
   'workflow_type',

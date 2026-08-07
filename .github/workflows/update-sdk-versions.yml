@@ -1,0 +1,65 @@
+name: 'Update SDK Versions'
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: 'Check SDK registries and open PR if a version changed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
+          private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
+
+      - name: Checkout docs repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true
+          token: ${{ steps.generate_token.outputs.token }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '20'
+
+      - name: Fetch latest SDK versions
+        run: node bin/update-sdk-versions.js --write
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet src/data/sdk-versions.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          git config user.name "temporal-cicd[bot]"
+          git config user.email "temporal-cicd[bot]@users.noreply.github.com"
+
+          branch_name="update-sdk-versions-$(date +%Y%m%d)"
+          git checkout -b "$branch_name"
+          git add src/data/sdk-versions.json
+          git commit -m "Update SDK version chips"
+          git push origin "$branch_name"
+
+          gh pr create \
+            --title "Update SDK version chips" \
+            --body "Automated update of the latest SDK versions shown on /develop (src/data/sdk-versions.json), sourced from each SDK's package registry." \
+            --head "$branch_name" \
+            --base "main"

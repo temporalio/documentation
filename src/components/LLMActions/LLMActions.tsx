@@ -64,9 +64,9 @@ export default function LLMActions() {
           data-analytics-action="click"
         >
           {copied ? (
-            <FaCheck className={styles.icon} />
+            <FaCheck className={styles.icon} aria-hidden="true" />
           ) : (
-            <FaRegCopy className={styles.icon} />
+            <FaRegCopy className={styles.icon} aria-hidden="true" />
           )}
           {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy for LLM'}
         </button>
@@ -80,7 +80,7 @@ export default function LLMActions() {
           data-analytics-id="view-as-markdown"
           data-analytics-action="click"
         >
-          <FaMarkdown className={styles.icon} />
+          <FaMarkdown className={styles.icon} aria-hidden="true" />
           <span>View Markdown</span>
         </a>
 
@@ -95,7 +95,7 @@ export default function LLMActions() {
             data-analytics-id="open-in-chatgpt"
             data-analytics-action="click"
           >
-            <SiOpenai className={styles.icon} />
+            <SiOpenai className={styles.icon} aria-hidden="true" />
           </a>
           <a
             className={styles.iconLink}
@@ -107,7 +107,7 @@ export default function LLMActions() {
             data-analytics-id="open-in-claude"
             data-analytics-action="click"
           >
-            <SiClaude className={styles.icon} />
+            <SiClaude className={styles.icon} aria-hidden="true" />
           </a>
         </div>
       </div>
