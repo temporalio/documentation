@@ -1500,7 +1500,20 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
-        'production-deployment/temporal-proxy/index',
+        {
+          type: 'category',
+          label: 'Temporal Proxy',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'production-deployment/temporal-proxy/index',
+          },
+          items: [
+            'production-deployment/temporal-proxy/configure',
+            'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/deploy-kubernetes',
+          ],
+        },
       ],
     },
     {
