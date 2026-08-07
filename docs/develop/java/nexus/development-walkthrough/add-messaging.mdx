@@ -1,0 +1,84 @@
+---
+id: add-messaging
+title: Step 7 - Add messaging
+sidebar_label: 7. Add messaging
+description: Expose Signal, Query, and Update on the approval Workflow as Nexus Operations using the Nexus-aware Client.
+toc_max_heading_level: 4
+keywords:
+  - nexus signal
+  - nexus query
+  - nexus update
+  - workflow message passing
+  - temporal operation handler
+tags:
+  - Nexus
+  - Java SDK
+---
+
+The approval blocks waiting for a decision. Now give callers a way to interact with it while it waits.
+
+Three Operations get added, one per [message](/sending-messages) type. Which message type to use is determined by what the caller needs back, not by preference.
+
+| Operation | Message type | Why this type |
+| --- | --- | --- |
+| `remindApprover` | Signal | Fire-and-forget. The caller does not need a response, only for the nudge to happen. |
+| `getApprovalStatus` | Query | Reads state without changing it. Never blocks, never writes. |
+| `submitDecision` | Update | Changes state *and* returns a result the caller needs — confirmation the decision was recorded. |
+
+## Add the handlers to the Workflow
+
+On the Workflow, add a Signal handler that increments the reminder count, a Query handler that returns the current progress, and an Update handler that records the decision and unblocks the wait.
+
+The Update is what ends the approval. It records `APPROVED` or `DENIED`, which satisfies the condition the Workflow is blocked on, and the Workflow then returns that decision as its result.
+
+`{sample code will be here}`
+
+Two constraints apply to the Query handler. It must not block, and it must not mutate Workflow state — a Query is served by replaying history, so anything it changes is invisible and anything it waits on stalls the Query. Return only what is already in memory.
+
+## Expose them as Nexus Operations
+
+All three use `TemporalOperationHandler`, but they divide along the line described in [Nexus SDK V2](/nexus/sdk-v2#the-nexus-aware-client): Signal and Query are **sync side effects**, and Update is an **async backing**.
+
+### Signal and Query
+
+Reach these through `client.getWorkflowClient()` on the Nexus-aware Client, then return `TemporalOperationResult.sync(...)`. The Operation completes immediately, during the handler call.
+
+You can perform as many sync side effects as you want in one handler. Using the injected Client rather than your own is what gets the message linked back to the caller.
+
+`{sample code will be here}`
+
+### Update
+
+Use `client.startWorkflowUpdate(...)`, which is an async backing: the Operation completes when the Update completes, and its result is delivered through the Nexus completion callback. If the Update happens to come back already complete — a retried request, or one that failed validation — the result returns synchronously instead.
+
+Because it is an async backing, there is at most one per Operation invocation. A handler can still combine it with sync side effects.
+
+`{sample code will be here}`
+
+:::caution Query linking is not complete
+
+Query works through `client.getWorkflowClient()`, but [bidirectional linking](/nexus/execution-debugging#bi-directional-linking) for Query is still in progress and is not yet available in any SDK. A Query sent from a handler is not connected to the caller in the UI the way a Signal is.
+
+The Operation behaves correctly; only the observability link is missing. See the [per-SDK support table](/nexus/sdk-v2#per-sdk-support) for current status.
+
+:::
+
+## Keep the responsibilities separate
+
+It is worth restating why there are three Operations rather than one flexible one, because collapsing them is a common mistake.
+
+`getApprovalStatus` reports **in-flight progress only** — whether a decision is still pending, and how many reminders have gone out. It does not return the final decision. The decision is the result of `requestApproval`, which the caller is already awaiting from [step 6](/develop/java/nexus/development-walkthrough/call-the-service).
+
+Using a Query to fetch the outcome would mean polling for something that is already being pushed, and it would break once the [Retention Period](/temporal-service/temporal-server#retention-period) expires and the history the Query replays is gone.
+
+## Next
+
+[Send messages](/develop/java/nexus/development-walkthrough/send-messages) from the caller.
+
+:::tip RESOURCES
+
+- [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals, Queries, and Updates.
+- [Handling messages](/handling-messages) for handler constraints, including Query restrictions.
+- [Nexus SDK V2](/nexus/sdk-v2) for the sync side effect and async backing distinction.
+
+:::

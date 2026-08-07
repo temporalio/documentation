@@ -1,0 +1,63 @@
+---
+id: call-the-standalone-activity
+title: Step 10 - Call the Standalone Activity
+sidebar_label: 10. Call the Standalone Activity
+description: Call the Activity-backed notification Operation from a caller Workflow and complete the approval flow end to end.
+toc_max_heading_level: 4
+keywords:
+  - call nexus operation
+  - activity backed operation
+  - nexus caller workflow
+tags:
+  - Nexus
+  - Java SDK
+---
+
+Call `notifyRequester` once the decision is final. From the caller's side there is nothing new to learn, which is the point of this step.
+
+## The caller cannot tell the difference
+
+`notifyRequester` is called exactly like `requestApproval`: through the same generated Service stub, with the same Endpoint, the same type checking, and the same error handling.
+
+Nothing in the caller reveals that this Operation is backed by an Activity and the other by a Workflow. That is the contract doing its job. The handler team could later replace the notification Activity with a Workflow that retries across providers and escalates on failure, and no caller would change.
+
+`{sample code will be here}`
+
+## Complete the flow
+
+With all ten steps in place, the caller Workflow runs the whole approval:
+
+1. Call `requestApproval` and await it. The Operation starts the approval Workflow in the handler Namespace.
+2. While it is pending, other systems call `remindApprover` to nudge and `getApprovalStatus` to report progress.
+3. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
+4. The approval Workflow returns the decision, which resolves the `requestApproval` Operation the original caller has been awaiting.
+5. The caller calls `notifyRequester` with the decision, backed by the notification Activity.
+
+`{sample code will be here}`
+
+Every step crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or which primitive backed any Operation.
+
+## Trace it end to end
+
+Open the caller Workflow in the UI and follow the links. Because the handlers used the Nexus-aware Client, each Operation is connected to the Execution it started or messaged in the handler Namespace, and you can move between the two Namespaces in one view.
+
+The exception is Query: [linking for Query is still in progress](/nexus/sdk-v2#per-sdk-support), so `getApprovalStatus` will not show a link yet.
+
+## Where to go next
+
+The Service is complete but minimal. Natural extensions:
+
+- **Timeouts and escalation.** Give the approval a deadline and escalate or auto-deny when it passes.
+- **Split the Workers.** Run the Nexus Service, the approval Workflow, and the notification Activity on separate Worker fleets. See [Nexus patterns](/nexus/patterns).
+- **Callers in other languages.** Generate a caller from the same contract in Go, Python, or TypeScript. See [Nexus Client Code Generator](/nexus/client-code-generator).
+- **Standalone invocation.** Call an Operation from a Client with no caller Workflow. See [Standalone Nexus Operation](/standalone-nexus-operation).
+
+Before running this against anything real, read [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips).
+
+:::tip RESOURCES
+
+- [Nexus execution debugging](/nexus/execution-debugging) for tracing across Namespaces.
+- [Nexus patterns](/nexus/patterns) for Worker and Service topology.
+- [Nexus Standalone Activity](/nexus/standalone-activity) for Activity-backed Operations.
+
+:::

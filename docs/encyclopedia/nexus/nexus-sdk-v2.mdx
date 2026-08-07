@@ -1,0 +1,502 @@
+---
+id: nexus-sdk-v2
+title: Nexus SDK V2
+sidebar_label: Nexus SDK V2
+description: Nexus SDK V2 replaces the per-primitive Nexus Operation helpers with a single Temporal Operation Handler that supports every Temporal primitive and propagates bidirectional links automatically.
+toc_max_heading_level: 4
+slug: /nexus/sdk-v2
+keywords:
+  - nexus sdk v2
+  - temporal operation handler
+  - nexus sdk ergonomics
+  - nexus signal
+  - nexus update
+  - nexus query
+  - bidirectional linking
+tags:
+  - Nexus
+  - Concepts
+---
+
+import { SdkTabs } from '@site/src/components';
+
+:::caution
+
+Nexus SDK V2 is pre-release.
+`TemporalOperationHandler` is marked experimental in the SDKs and may change in backwards-incompatible ways.
+"SDK V2" is a working title used while the feature is in pre-release.
+
+:::
+
+Nexus SDK V2 changes how you implement a [Nexus Service](/nexus/services) contract.
+Instead of one helper type per Temporal primitive, there is a single handler type — `TemporalOperationHandler` — that can back an Operation with any Temporal primitive and that carries [bidirectional links](/nexus/execution-debugging#bi-directional-linking) across the Namespace boundary for you.
+
+Nothing on the wire changes, and no existing Operation stops working.
+The Service contract, [Nexus Endpoint](/nexus/endpoints) setup, and Worker registration are the same as before.
+What changes is the handler you write.
+
+## Why it changed
+
+Before SDK V2, only one pattern had first-class support: start a Workflow and return its result.
+Everything else meant reaching for a lower-level API.
+
+- **Only one primitive was ergonomic.** `WorkflowRunOperation` covered "start a Workflow and wait." Signal, Update, and Query had no equivalent, so teams wrote synchronous handlers that reached for a Temporal Client by hand.
+- **Nexus calls were hard to find.** The synchronous handler API lives in the separate `nexus-rpc` SDK rather than the Temporal SDK, so developers looking through Temporal's own API surface did not find it.
+- **Hand-wired handlers lost observability.** A synchronous handler that grabbed a Client itself did not produce bidirectional links, so the caller-side and handler-side Executions were not connected in the UI. Bidirectional linking is quite useful but wasn't always present.
+
+SDK V2 addresses all three by making one handler type the entry point for every Temporal-backed Operation, and by injecting a Nexus-aware Client that does the linking.
+
+## The Nexus-aware Client
+
+`TemporalOperationHandler.create(...)` gives your start handler three things: a context, a Client, and the Operation input.
+
+The Client propagates bidirectional links and request IDs automatically, so every Execution it starts or messages is connected back to the caller in the UI and in [Event History](/encyclopedia/event-history).
+Reaching for your own Client inside a handler still works, but it gives up that linking.
+
+The Client exposes two kinds of call, and the distinction matters.
+
+**Async backings — at most one per Operation invocation.** These determine what the Operation *is*, and their result is delivered to the caller through the Nexus completion callback when the underlying Execution finishes.
+
+- `client.startWorkflow(...)` — the Operation completes when the Workflow returns
+- `client.startWorkflowUpdate(...)` — the Operation completes when the Update completes
+- `client.startActivity(...)` — the Operation completes when the Activity returns; see [Nexus Standalone Activity](/nexus/standalone-activity)
+
+**Sync messaging — as many as you need.** Reach these through `client.getWorkflowClient()`.
+They take effect during the handler call, still get link propagation, and do not require an async backing.
+
+- Signal, Signal-with-Start, Query, Cancel, and Terminate
+
+A single handler can combine both: perform a sync Signal to unblock something, then return an async backing whose result the caller waits on.
+A handler that only performs sync side effects returns `TemporalOperationResult.sync(...)` and the Operation completes immediately.
+
+## Updated handler methods
+
+The following examples use a Nexus Service with a `startGreeting` Operation backed by a Workflow and a `greet` Operation that completes inline. Click the language tabs to see example code in each language - Go, Java, .Net, Python, and Typescript.
+
+:::note
+This is still a rough draft for feedback. Not all languages are filled in yet.
+
+:::
+
+### Back an Operation with a Workflow
+
+Before, each SDK had a dedicated Workflow-run helper. It reached the Temporal Client through the Operation context rather than being handed one, and it returned a Workflow handle or method reference rather than an Operation result:
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+```go
+op := temporalnexus.NewWorkflowRunOperation(
+	"startGreeting",
+	GreetingWorkflow,
+	func(ctx context.Context, input GreetingInput, opts nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+		return client.StartWorkflowOptions{
+			ID: "greeting-" + input.Name,
+		}, nil
+	})
+```
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@OperationImpl
+public OperationHandler<GreetingInput, GreetingOutput> startGreeting() {
+  return WorkflowRunOperation.fromWorkflowMethod(
+      (ctx, details, input) ->
+          Nexus.getOperationContext()
+                  .getWorkflowClient()
+                  .newWorkflowStub(
+                      GreetingWorkflow.class,
+                      WorkflowOptions.newBuilder()
+                          .setWorkflowId("greeting-" + input.getName())
+                          .build())
+              ::greet);
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+```python
+@nexus.workflow_run_operation
+async def start_greeting(
+    self, ctx: nexus.WorkflowRunOperationContext, input: GreetingInput
+) -> nexus.WorkflowHandle[GreetingOutput]:
+    return await ctx.start_workflow(
+        GreetingWorkflow.run, input, id=f"greeting-{input.name}"
+    )
+```
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+```typescript
+const startGreeting = new temporalnexus.WorkflowRunOperationHandler(
+  async (ctx, input: GreetingInput) =>
+    await temporalnexus.startWorkflow(ctx, greetingWorkflow, {
+      args: [input],
+      workflowId: `greeting-${input.name}`,
+    }),
+);
+```
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+```csharp
+WorkflowRunOperationHandler.FromHandleFactory<GreetingInput, GreetingOutput>(
+    async (context, input) =>
+        await context.StartWorkflowAsync(
+            (GreetingWorkflow wf) => wf.RunAsync(input),
+            new() { Id = $"greeting-{input.Name}" }));
+```
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+Now the Client is handed to your start handler, and you call its start method directly. The return value is a `TemporalOperationResult`, which is what lets the same handler shape also return a synchronous result or an Activity-backed one:
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+```go
+op := temporalnexus.MustNewTemporalOperation(
+	temporalnexus.TemporalOperationOptions[GreetingInput, GreetingOutput]{
+		Name: "startGreeting",
+		Start: func(
+			ctx context.Context,
+			nc temporalnexus.NexusClient,
+			input GreetingInput,
+			_ temporalnexus.StartTemporalOperationOptions,
+		) (temporalnexus.TemporalOperationResult[GreetingOutput], error) {
+			return temporalnexus.StartWorkflow(ctx, nc,
+				client.StartWorkflowOptions{ID: "greeting-" + input.Name},
+				GreetingWorkflow, input)
+		},
+	})
+```
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@OperationImpl
+public OperationHandler<GreetingInput, GreetingOutput> startGreeting() {
+  return TemporalOperationHandler.create(
+      (context, client, input) ->
+          client.startWorkflow(
+              GreetingWorkflow.class,
+              GreetingWorkflow::greet,
+              input,
+              WorkflowOptions.newBuilder()
+                  .setWorkflowId("greeting-" + input.getName())
+                  .build()));
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+```python
+@nexus.temporal_operation
+async def start_greeting(
+    self,
+    _ctx: nexus.TemporalStartOperationContext,
+    client: nexus.TemporalNexusClient,
+    input: GreetingInput,
+) -> nexus.TemporalOperationResult[GreetingOutput]:
+    return await client.start_workflow(
+        GreetingWorkflow.run, input, id=f"greeting-{input.name}"
+    )
+```
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+```typescript
+const startGreeting = new temporalnexus.TemporalOperationHandler<GreetingInput, GreetingOutput>({
+  async start(ctx, client, input) {
+    return await client.startWorkflow(greetingWorkflow, {
+      args: [input],
+      workflowId: `greeting-${input.name}`,
+    });
+  },
+});
+```
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+```csharp
+TemporalOperationHandler.FromHandleFactory<GreetingInput, GreetingOutput>(
+    async (context, client, input) =>
+        await client.StartWorkflowAsync(
+            (GreetingWorkflow wf) => wf.RunAsync(input),
+            new() { Id = $"greeting-{input.Name}" }));
+```
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+Go exposes the start calls as package-level functions taking the Client, rather than as methods on it, because Go does not allow generic methods on a non-generic struct.
+
+### Send a Signal from an Operation
+
+Before, a Signal-sending Operation was a synchronous handler that fetched its own Client.
+This is the pattern that produced no bidirectional links:
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+```go
+// nexus.NewSyncOperation comes from the separate nexus-rpc SDK, not from temporalnexus.
+op := nexus.NewSyncOperation("cancelOrder",
+	func(ctx context.Context, input CancelOrderInput, o nexus.StartOperationOptions) (nexus.NoValue, error) {
+		c := temporalnexus.GetClient(ctx)
+		return nil, c.SignalWorkflow(ctx, "order-"+input.OrderID, "", "requestCancellation", input)
+	})
+```
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@OperationImpl
+public OperationHandler<CancelOrderInput, Void> cancelOrder() {
+  return OperationHandler.sync(
+      (ctx, details, input) -> {
+        Nexus.getOperationContext()
+            .getWorkflowClient()
+            .newUntypedWorkflowStub("order-" + input.getOrderId())
+            .signal("requestCancellation", input);
+        return null;
+      });
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.DotNet>
+
+  ```csharp
+  ```
+
+  </SdkTabs.DotNet>
+  <SdkTabs.Python>
+
+```python
+@nexusrpc.handler.sync_operation
+async def cancel_order(
+    self, ctx: nexusrpc.handler.StartOperationContext, input: CancelOrderInput
+) -> None:
+    await nexus.client().get_workflow_handle(
+        f"order-{input.order_id}"
+    ).signal("requestCancellation", input)
+```
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+ ```typescript
+```
+
+</SdkTabs.TypeScript>
+</SdkTabs>
+
+Now the same Operation uses the injected Client, so the Signal is linked. It returns a synchronous result rather than a bare value, because the handler type is the same one used for async backings:
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+```go
+op := temporalnexus.MustNewTemporalOperation(
+	temporalnexus.TemporalOperationOptions[CancelOrderInput, nexus.NoValue]{
+		Name: "cancelOrder",
+		Start: func(
+			ctx context.Context,
+			nc temporalnexus.NexusClient,
+			input CancelOrderInput,
+			_ temporalnexus.StartTemporalOperationOptions,
+		) (temporalnexus.TemporalOperationResult[nexus.NoValue], error) {
+			err := nc.GetWorkflowClient().SignalWorkflow(
+				ctx, "order-"+input.OrderID, "", "requestCancellation", input)
+			if err != nil {
+				return temporalnexus.TemporalOperationResult[nexus.NoValue]{}, err
+			}
+			return temporalnexus.NewSyncResult[nexus.NoValue](nil), nil
+		},
+	})
+```
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@OperationImpl
+public OperationHandler<CancelOrderInput, Void> cancelOrder() {
+  return TemporalOperationHandler.create(
+      (context, client, input) -> {
+        client.getWorkflowClient()
+            .newUntypedWorkflowStub("order-" + input.getOrderId())
+            .signal("requestCancellation", input);
+        return TemporalOperationResult.sync(null);
+      });
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+```python
+@nexus.temporal_operation
+async def cancel_order(
+    self,
+    _ctx: nexus.TemporalStartOperationContext,
+    client: nexus.TemporalNexusClient,
+    input: CancelOrderInput,
+) -> nexus.TemporalOperationResult[None]:
+    await client.client.get_workflow_handle(
+        f"order-{input.order_id}"
+    ).signal("requestCancellation", input)
+    return nexus.TemporalOperationResult.sync(None)
+```
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+```typescript
+const cancelOrder = new temporalnexus.TemporalOperationHandler<CancelOrderInput, void>({
+  async start(ctx, client, input) {
+    await client.getWorkflowHandle(`order-${input.orderId}`).signal(requestCancellation, input);
+    return temporalnexus.TemporalOperationResult.sync(undefined);
+  },
+});
+```
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+```csharp
+TemporalOperationHandler.FromHandleFactory<CancelOrderInput, NoValue>(
+    async (context, client, input) =>
+    {
+        await client.TemporalClient
+            .GetWorkflowHandle($"order-{input.OrderId}")
+            .SignalAsync("requestCancellation", new object?[] { input });
+        return TemporalOperationResult<NoValue>.SyncResult(default);
+    });
+```
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+The same Client also offers Signal-with-Start, Cancel, and Terminate as sync messaging, and a handler may perform several before returning.
+
+### Back an Operation with an Activity
+
+There was no previous equivalent.
+Exposing an Activity through Nexus meant wrapping it in a Workflow that did nothing but call it, so there is no "before" to compare against.
+
+Activity options require an Activity Id and a Task Queue here, because there is no parent Workflow to supply them. See [Nexus Standalone Activity](/nexus/standalone-activity).
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+```go
+op := temporalnexus.MustNewTemporalOperation(
+	temporalnexus.TemporalOperationOptions[GreetingInput, GreetingOutput]{
+		Name: "greet",
+		Start: func(
+			ctx context.Context,
+			nc temporalnexus.NexusClient,
+			input GreetingInput,
+			_ temporalnexus.StartTemporalOperationOptions,
+		) (temporalnexus.TemporalOperationResult[GreetingOutput], error) {
+			return temporalnexus.StartActivity(ctx, nc, client.StartActivityOptions{
+				ID:                  "greet-" + input.Name,
+				TaskQueue:           TaskQueueName,
+				StartToCloseTimeout: 10 * time.Second,
+			}, GreetingActivities.Greet, input)
+		},
+	})
+```
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@OperationImpl
+public OperationHandler<GreetingInput, GreetingOutput> greet() {
+  return TemporalOperationHandler.create(
+      (context, client, input) ->
+          client.startActivity(
+              GreetingActivities.class,
+              GreetingActivities::greet,
+              input,
+              StartActivityOptions.newBuilder()
+                  .setId("greet-" + context.getRequestId())
+                  .setTaskQueue(HandlerWorker.TASK_QUEUE_NAME)
+                  .setStartToCloseTimeout(Duration.ofSeconds(10))
+                  .build()));
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.DotNet>
+
+```csharp
+TemporalOperationHandler.FromHandleFactory<GreetingInput, GreetingOutput>(
+    async (context, client, input) =>
+        await client.StartActivityAsync<GreetingOutput>(
+            () => GreetingActivities.GreetAsync(input),
+            new()
+            {
+                Id = $"greet-{input.Name}",
+                TaskQueue = TaskQueueName,
+                ScheduleToCloseTimeout = TimeSpan.FromMinutes(1),
+            }));
+```
+
+  </SdkTabs.DotNet>
+  <SdkTabs.Python>
+
+```python
+
+```
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+```typescript
+
+```
+
+  </SdkTabs.TypeScript>
+
+</SdkTabs>
+
+## What this replaces
+
+`WorkflowRunOperation` and the synchronous `OperationHandler` are **de-emphasized, not removed**.
+Existing handlers keep working and there is no forced migration.
+
+Prefer `TemporalOperationHandler` for new work, including simple cases.
+Using one type everywhere means a handler that starts out synchronous can grow an async backing, or pick up a Signal, without changing shape.
+
+Beyond the handler, [parent-close policy](/nexus/operations) parity with Child Workflows — deciding what happens to the handler Workflow when the caller completes, fails, or is cancelled — is still outstanding in every SDK.
+Today, only cancellation propagates.
+
+:::tip RESOURCES
+
+- [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations) for the underlying concepts.
+- [Nexus Client Code Generator](/nexus/client-code-generator) to generate Service contracts and typed models from one schema.
+- [Nexus Standalone Activity](/nexus/standalone-activity) for Activity-backed Operations.
+- [Bidirectional linking](/nexus/execution-debugging#bi-directional-linking) for what the Nexus-aware Client gives you.
+- [Development Walkthrough](/develop/java/nexus/development-walkthrough) builds a Nexus Service end to end using SDK V2.
+- Nexus feature guides:
+  [Go](/develop/go/nexus/feature-guide) |
+  [Java](/develop/java/nexus/feature-guide) |
+  [Python](/develop/python/nexus/feature-guide) |
+  [TypeScript](/develop/typescript/nexus/feature-guide)
+
+:::
