@@ -39,33 +39,6 @@ Supported Visibility stores include:
 - PostgreSQL v12 and later with Temporal Server v1.20 and later
 - SQLite v3.31.0 and later with Temporal Server v1.20 and later
 
-## Current and legacy Visibility support {/* #supported-databases */}
-
-[Advanced Visibility](/visibility#advanced-visibility) is the current generation of Temporal Visibility. It supports the
-modern query model, including [custom Search Attributes](/search-attribute#custom-search-attribute).
-
-This page also includes guidance for the legacy (deprecated in Temporal Server v1.21 and removed in v1.24)
-[standard Visibility](/self-hosted-guide/visibility/legacy-standard#legacy-standard-visibility) model for older deployments and migration work. In this context,
-"advanced" and "standard (legacy)" refer to the current and legacy generations of Temporal Visibility, respectively.
-
-The following compatibility matrix summarizes which generation of Visibility each store supports and the Temporal Server
-versions required:
-
-| Store                                                                                                               | Advanced Visibility (current)                                                                                                                                    | Standard Visibility (legacy)                                          |
-| :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
-| [Elasticsearch](/self-hosted-guide/visibility/elasticsearch#elasticsearch) <br/><br/>Recommended for any setup that spawns more than a few Workflow Executions | v7 on Temporal Server v1.7+, v8 on Temporal Server v1.18+                                                                                                        | Not supported                                                         |
-| [OpenSearch](/self-hosted-guide/visibility/elasticsearch#elasticsearch)                                                                                        | 2+ on Temporal Server v1.30.1+                                                                                                                                   | Not supported                                                         |
-| [MySQL](/self-hosted-guide/visibility/mysql#mysql)                                                                                                     | v8.0.17+ on Temporal Server v1.20+                                                                                                                               | v5.7+ on older deployments before Temporal Server v1.24               |
-| [PostgreSQL](/self-hosted-guide/visibility/postgresql#postgresql)                                                                                           | v12+ on Temporal Server v1.20+                                                                                                                                   | v9.6+ on older deployments before Temporal Server v1.24               |
-| [SQLite](/self-hosted-guide/visibility/sqlite#sqlite)                                                                                                   | v3.31.0+ on Temporal Server v1.20+                                                                                                                               | Not supported                                                         |
-| [Cassandra](/self-hosted-guide/visibility/legacy-standard#cassandra)                                                                                             | Not supported.<br/><br/>To migrate from Cassandra to a supported advanced Visibility store, see [Migrating Visibility database](/self-hosted-guide/visibility/migrate#migrating-visibility-database). | Deprecated in Temporal Server v1.21, removed in Temporal Server v1.24 |
-
-You can use any combination of the supported databases for your Persistence and Visibility stores. For updates, check
-[Server release notes](https://github.com/temporalio/temporal/releases).
-
-Temporal Server v1.21 introduced support for a secondary Visibility store in your Temporal Service to enable
-[Dual Visibility](/dual-visibility). This is useful for migrating your Visibility store database.
-
 ## In this guide
 
 - [MySQL Visibility store](/self-hosted-guide/visibility/mysql)
@@ -77,3 +50,29 @@ Temporal Server v1.21 introduced support for a secondary Visibility store in you
 - [Migrate Visibility database](/self-hosted-guide/visibility/migrate)
 - [Custom Search Attributes](/self-hosted-guide/visibility/custom-search-attributes)
 
+## Current and legacy Visibility support {/* #supported-databases */}
+
+[Advanced Visibility](/visibility#advanced-visibility) is the current generation of Temporal Visibility. It supports the
+modern query model, including [custom Search Attributes](/search-attribute#custom-search-attribute).
+
+This page also includes guidance for the legacy (deprecated in Temporal Server v1.21 and removed in v1.24)
+[standard Visibility](/self-hosted-guide/visibility/legacy-standard) model for older deployments and migration work. In this context,
+"advanced" and "standard (legacy)" refer to the current and legacy generations of Temporal Visibility, respectively.
+
+The following compatibility matrix summarizes which generation of Visibility each store supports and the Temporal Server
+versions required:
+
+| Store                                                                                                               | Advanced Visibility (current)                                                                                                                                    | Standard Visibility (legacy)                                          |
+| :------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| [Elasticsearch](/self-hosted-guide/visibility/elasticsearch) <br/><br/>Recommended for any setup that spawns more than a few Workflow Executions | v7 on Temporal Server v1.7+, v8 on Temporal Server v1.18+                                                                                                        | Not supported                                                         |
+| [OpenSearch](/self-hosted-guide/visibility/elasticsearch)                                                                                        | 2+ on Temporal Server v1.30.1+                                                                                                                                   | Not supported                                                         |
+| [MySQL](/self-hosted-guide/visibility/mysql)                                                                                                     | v8.0.17+ on Temporal Server v1.20+                                                                                                                               | v5.7+ on older deployments before Temporal Server v1.24               |
+| [PostgreSQL](/self-hosted-guide/visibility/postgresql)                                                                                           | v12+ on Temporal Server v1.20+                                                                                                                                   | v9.6+ on older deployments before Temporal Server v1.24               |
+| [SQLite](/self-hosted-guide/visibility/sqlite)                                                                                                   | v3.31.0+ on Temporal Server v1.20+                                                                                                                               | Not supported                                                         |
+| [Cassandra](/self-hosted-guide/visibility/legacy-standard#cassandra)                                                                                             | Not supported.<br/><br/>To migrate from Cassandra to a supported advanced Visibility store, see [Migrating Visibility database](/self-hosted-guide/visibility/migrate). | Deprecated in Temporal Server v1.21, removed in Temporal Server v1.24 |
+
+You can use any combination of the supported databases for your Persistence and Visibility stores. For updates, check
+[Server release notes](https://github.com/temporalio/temporal/releases).
+
+Temporal Server v1.21 introduced support for a secondary Visibility store in your Temporal Service to enable
+[Dual Visibility](/dual-visibility). This is useful for migrating your Visibility store database.

@@ -14,12 +14,10 @@ tags:
   - Visibility
 ---
 
-## Legacy standard Visibility configuration {/* #legacy-standard-visibility */}
-
 The following section applies to older self-hosted deployments that still use standard Visibility. For new deployments,
-use one of the advanced Visibility backends described earlier on this page.
+use one of the advanced Visibility backends described in this guide.
 
-### How to set up Cassandra Visibility store {/* #cassandra */}
+## How to set up Cassandra Visibility store {/* #cassandra */}
 
 :::tip Support, stability, and dependency info
 
@@ -36,9 +34,9 @@ store. We recommend Elasticsearch or OpenSearch for any Temporal Service setup t
 Executions because these backends support the Visibility request load and help optimize performance.
 
 To migrate from Cassandra to a supported SQL database, see
-[Migrating Visibility database](/self-hosted-guide/visibility/migrate#migrating-visibility-database).
+[Migrating Visibility database](/self-hosted-guide/visibility/migrate).
 
-### Persistence configuration
+## Persistence configuration
 
 Set your Cassandra Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -62,7 +60,7 @@ persistence:
 #...
 ```
 
-### Database schema and setup
+## Database schema and setup
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
 schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/main/schema/cassandra/visibility.

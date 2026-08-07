@@ -14,9 +14,7 @@ tags:
   - Visibility
 ---
 
-## How to migrate Visibility database {/* #migrating-visibility-database */}
-
-To migrate your Visibility database, [set up a secondary Visibility store](/self-hosted-guide/visibility/dual-visibility#dual-visibility) to enable
+To migrate your Visibility database, [set up a secondary Visibility store](/self-hosted-guide/visibility/dual-visibility) to enable
 [Dual Visibility](/dual-visibility), and update the dynamic configuration in your Temporal Service to update the read
 and write operations for the Visibility store.
 
@@ -29,14 +27,14 @@ The following steps describe how to migrate your Visibility database.
 After you make any changes to your [Temporal Service configuration](/temporal-service/configuration), ensure that you
 restart your services.
 
-#### Set up secondary Visibility store
+## Set up secondary Visibility store
 
 1. In your Temporal Service configuration,
    [add a secondary Visibility store](/references/configuration#secondaryvisibilitystore) to your Visibility setup under
    the Persistence configuration.
 
    Example: To migrate from Cassandra to Elasticsearch, add Elasticsearch as your secondary database and set it up. For
-   details, see [secondary Visibility database schema and setup](/self-hosted-guide/visibility/dual-visibility#dual-visibility).
+   details, see [secondary Visibility database schema and setup](/self-hosted-guide/visibility/dual-visibility).
 
    ```yaml
    persistence:
@@ -78,7 +76,7 @@ does not migrate any existing data in the primary store to the secondary store.
 For details on write options to the secondary store, see
 [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings).
 
-#### Run in dual mode
+## Run in dual mode
 
 When you enable a secondary store, only new Visibility data is written to both primary and secondary stores. The primary
 store still holds the Workflow Execution data from before the secondary store was set up.
@@ -99,7 +97,7 @@ Example:
 You can run your Visibility setup in dual mode for an indefinite period, or until you are ready to deprecate the primary
 store and move completely to the secondary store without losing data.
 
-#### Deprecate primary Visibility store
+## Deprecate primary Visibility store
 
 When you are ready to deprecate your primary store, follow these steps.
 

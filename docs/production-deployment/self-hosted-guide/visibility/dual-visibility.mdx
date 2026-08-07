@@ -14,15 +14,13 @@ tags:
   - Visibility
 ---
 
-## How to set up Dual Visibility {/* #dual-visibility */}
-
 To enable [Dual Visibility](/dual-visibility), set up a secondary Visibility store with your primary Visibility store,
 and configure your Temporal Service to enable read and/or write operations on the secondary Visibility store.
 
 With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Service to
 write to primary only, secondary only, or to both primary and secondary stores.
 
-#### Set up secondary Visibility store
+## Set up secondary Visibility store
 
 Set the secondary store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and
 then define the secondary Visibility store configuration under `datastores`.
@@ -72,14 +70,14 @@ persistence:
         closeIdleConnectionsInterval: 15s
 ```
 
-#### Database schema and setup
+## Database schema and setup
 
 The database schema and setup for a secondary store depends on the database you plan to use.
 
-- [MySQL](/self-hosted-guide/visibility/mysql#mysql)
-- [PostgreSQL](/self-hosted-guide/visibility/postgresql#postgresql)
-- [SQLite](/self-hosted-guide/visibility/sqlite#sqlite)
-- [Elasticsearch](/self-hosted-guide/visibility/elasticsearch#elasticsearch)
+- [MySQL](/self-hosted-guide/visibility/mysql)
+- [PostgreSQL](/self-hosted-guide/visibility/postgresql)
+- [SQLite](/self-hosted-guide/visibility/sqlite)
+- [Elasticsearch](/self-hosted-guide/visibility/elasticsearch)
 
 For the Cassandra and MySQL configuration in the previous example, an example setup script would be as follows.
 
@@ -184,7 +182,7 @@ setup_es_index() {
 }
 ```
 
-#### Update Temporal Service configuration
+## Update Temporal Service configuration
 
 With the primary and secondary stores set, update the `system.secondaryVisibilityWritingMode` and
 `system.enableReadFromSecondaryVisibility` configuration keys in your self-hosted Temporal Service's dynamic
@@ -205,5 +203,5 @@ system.enableReadFromSecondaryVisibility:
 For details on the configuration options, see:
 
 - [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings)
-- [Migrating Visibility databases](/self-hosted-guide/visibility/migrate#migrating-visibility-database)
+- [Migrating Visibility databases](/self-hosted-guide/visibility/migrate)
 

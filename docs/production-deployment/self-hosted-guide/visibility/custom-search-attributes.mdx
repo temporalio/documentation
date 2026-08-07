@@ -14,8 +14,6 @@ tags:
   - Visibility
 ---
 
-## Managing custom Search Attributes {/* #custom-search-attributes */}
-
 To manage custom Search Attributes on Temporal Cloud, use the [`tcld`](/cloud/tcld/namespace#search-attributes) CLI tool.
 With Temporal Cloud, you can create and rename custom Search Attributes. If you need to delete a custom Search Attribute, contact Support at [support.temporal.io](https://support.temporal.io).
 To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/command-reference/operator#search-attribute).
@@ -34,7 +32,7 @@ Using sensitive data in either names or values risks exposure to anyone with Nam
 
 :::
 
-### How to create custom Search Attributes {/* #create-custom-search-attributes */}
+## How to create custom Search Attributes {/* #create-custom-search-attributes */}
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and
 [List Filters](/list-filter).
@@ -112,7 +110,7 @@ add_custom_search_attributes() {
 When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow
 code.
 
-### How to remove custom Search Attributes {/* #remove-custom-search-attributes */}
+## How to remove custom Search Attributes {/* #remove-custom-search-attributes */}
 
 To remove a Search Attribute key from your self-hosted Temporal Service Visibility store, use the command
 `temporal operator search-attribute remove`. Removing Search Attributes is not supported on Temporal Cloud.

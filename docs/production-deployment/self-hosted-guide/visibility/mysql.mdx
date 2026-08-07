@@ -14,8 +14,6 @@ tags:
   - Visibility
 ---
 
-## How to set up MySQL Visibility store {/* #mysql */}
-
 :::tip Support, stability, and dependency info
 
 - MySQL v5.7 and later.
@@ -31,7 +29,7 @@ If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1
 [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
 Namespace in that Temporal Service.
 
-### Persistence configuration
+## Persistence configuration
 
 Set your MySQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -72,7 +70,7 @@ Temporal Server and database schemas.
 For example configuration templates, see
 [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/main/config/development-mysql8.yaml).
 
-### Database schema and setup
+## Database schema and setup
 
 Visibility data is stored in a database table called `executions_visibility` and must be created using the schema for
 [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/main/schema/mysql/v8/visibility).

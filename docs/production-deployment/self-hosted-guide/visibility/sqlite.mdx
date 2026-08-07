@@ -14,8 +14,6 @@ tags:
   - Visibility
 ---
 
-## How to set up SQLite Visibility store {/* #sqlite */}
-
 :::tip Support, stability, and dependency info
 
 - SQLite v3.31.0 and later.
@@ -36,7 +34,7 @@ If using SQLite v3.31.0 and later as your Visibility store with Temporal Server 
 [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
 Namespace in that Temporal Service.
 
-### Persistence configuration
+## Persistence configuration
 
 Set your SQLite Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -76,7 +74,7 @@ persistence:
 
 SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
-### Database schema and setup
+## Database schema and setup
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
 schemas defined (by supported versions) in

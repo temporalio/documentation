@@ -14,8 +14,6 @@ tags:
   - Visibility
 ---
 
-## How to integrate Elasticsearch or OpenSearch into a Temporal Service {/* #elasticsearch */}
-
 You can integrate Elasticsearch or OpenSearch with your Temporal Service as your Visibility store. We recommend using
 one of these backends for large-scale operations on the Temporal Service.
 
@@ -32,7 +30,7 @@ Use the following version guidance:
 The examples in this section use Elasticsearch. For OpenSearch, use the same datastore configuration shape and
 operational flow unless a release note for your target Temporal Server version says otherwise.
 
-### Persistence configuration
+## Persistence configuration
 
 Set your Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the
 search backend configuration under `datastores`.
@@ -56,7 +54,7 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-### Index schema and index
+## Index schema and index
 
 To set up Elasticsearch as your Visibility store, use the `temporal-elasticsearch-tool` available in the
 `temporalio/admin-tools` image.
@@ -127,7 +125,7 @@ echo 'MySQL and Elasticsearch setup complete'
 ```
 {/* SNIPEND */}
 
-### Elasticsearch privileges
+## Elasticsearch privileges
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 
