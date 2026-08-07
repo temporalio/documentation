@@ -1,0 +1,254 @@
+---
+id: nexus-standalone-activity
+title: Nexus Standalone Activity
+sidebar_label: Nexus Standalone Activity
+description: Back a Nexus Operation with a Standalone Activity instead of a Workflow, so exposing an Activity through Nexus needs no wrapper Workflow.
+toc_max_heading_level: 4
+slug: /nexus/standalone-activity
+keywords:
+  - nexus standalone activity
+  - activity backed nexus operation
+  - standalone activity
+  - start activity
+  - temporal operation handler
+tags:
+  - Nexus
+  - Concepts
+---
+
+import { SdkTabs } from '@site/src/components';
+
+:::caution
+
+Activity-backed Nexus Operations are pre-release and build on [Nexus SDK V2](/nexus/sdk-v2).
+`TemporalOperationHandler` is marked experimental in the SDKs and may change in backwards-incompatible ways.
+
+:::
+
+A Nexus Operation can be backed by a [Standalone Activity](/standalone-activity) instead of a Workflow.
+Starting the Operation starts an Activity Execution that has no parent Workflow, and the Operation completes when that Activity returns.
+
+This is the right shape when the work behind an Operation is a single step with no orchestration: call an external API, run a computation, send a notification.
+Before Activity-backed Operations, exposing an Activity through Nexus meant writing a Workflow whose only job was to call that one Activity — a wrapper with its own Event History, its own Task Queue considerations, and no value of its own.
+
+These compose. A Standalone Nexus Operation can be backed by a Standalone Activity, which means neither side has a Workflow.
+They are also independent: choosing an Activity-backed Operation says nothing about how callers invoke it.
+
+## How it works
+
+Use `TemporalOperationHandler` and call `startActivity` on the injected Nexus-aware Client.
+The handler returns an async result carrying an activity-execution Operation token, and the server delivers the Activity's result to the caller through the Nexus completion callback when the Activity finishes.
+
+Click the language tabs to see example code in each language - Go, Java, .Net, Python, and Typescript.
+
+:::note
+This is still a rough draft for feedback. Not all languages are filled in yet.
+
+:::
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+Code coming in next draft
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@ServiceImpl(service = GreetingNexusService.class)
+public class GreetingNexusServiceImpl {
+
+  @OperationImpl
+  public OperationHandler<GreetingInput, GreetingOutput> greet() {
+    return TemporalOperationHandler.create(
+        (context, client, input) ->
+            client.startActivity(
+                GreetingActivities.class,
+                GreetingActivities::greet,
+                input,
+                StartActivityOptions.newBuilder()
+                    .setId("greet-" + context.getRequestId())
+                    .setTaskQueue(HandlerWorker.TASK_QUEUE_NAME)
+                    .setStartToCloseTimeout(Duration.ofSeconds(10))
+                    .build()));
+  }
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+Code coming in next draft
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+Code coming in next draft
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+Code coming in next draft
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+The Activities themselves are ordinary Activities.
+Nothing about them is Nexus-specific, and the same implementations can be called from a Workflow.
+What makes them standalone is how they are started.
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+Code coming in next draft
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+  @ActivityMethod
+  GreetingOutput greet(GreetingInput input);
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+Code coming in next draft
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+Code coming in next draft
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+Code coming in next draft
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+### Required options
+
+`StartActivityOptions` requires two values that a Workflow-called Activity does not need.
+
+- **An Activity ID**, unique within the Namespace. There is no parent Workflow to scope it.
+- **A Task Queue.** It does not have to be the Task Queue the Nexus Endpoint targets, so the Activity can run on its own Worker fleet.
+
+Deriving the ID from the Nexus request ID makes the start idempotent.
+The server retries a Nexus start request using the same request ID, so each retry targets the same Activity ID rather than starting a second Activity.
+
+Setting `setIdConflictPolicy(ACTIVITY_ID_CONFLICT_POLICY_USE_EXISTING)` attaches to an already-running Activity with that ID instead of failing.
+Combined with an ID derived from the Operation *input* rather than the request ID, this lets several Nexus Operations share one Activity Execution and all receive its result.
+
+### Register the Worker
+
+Register the Activity implementations and the Nexus Service implementation on a Worker polling the Endpoint's target Task Queue.
+There is no Workflow implementation to register.
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+Code coming in next draft
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+Worker worker = factory.newWorker(TASK_QUEUE_NAME);
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+worker.registerNexusServiceImplementation(new GreetingNexusServiceImpl());
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+Code coming in next draft
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+Code coming in next draft
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+Code coming in next draft
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+## Cancellation requires heartbeating
+
+This is the biggest behavioral difference from a Workflow-backed Operation, and the easiest thing to get wrong.
+
+A Workflow is interrupted by a cancellation request: a blocking call throws and, if the failure propagates, the Workflow and its Operation both end as cancelled.
+An Activity is not interrupted.
+The server records the cancellation request, and the Worker only learns about it on the next heartbeat.
+
+So an Activity that never heartbeats runs until it completes or hits its start-to-close timeout, no matter how many cancellation requests the caller sends.
+For a long-running Activity-backed Operation to be cancellable at all:
+
+- Heartbeat from the Activity, and let the resulting completion exception propagate.
+- Set a heartbeat timeout so the server notices a Worker that has stopped heartbeating.
+- Set maximum attempts to 1, or a cancelled attempt is retried and the Operation stays running instead of ending as cancelled.
+
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Go>
+
+Code coming in next draft
+
+  </SdkTabs.Go>
+  <SdkTabs.Java>
+
+```java
+StartActivityOptions.newBuilder()
+    .setId("greeting-" + context.getRequestId())
+    .setTaskQueue(HandlerWorker.TASK_QUEUE_NAME)
+    .setStartToCloseTimeout(Duration.ofMinutes(10))
+    .setHeartbeatTimeout(Duration.ofSeconds(5))
+    .setRetryOptions(RetryOptions.newBuilder().setMaximumAttempts(1).build())
+    .build();
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.Python>
+
+Code coming in next draft
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+Code coming in next draft
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.DotNet>
+
+Code coming in next draft
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+For a short Activity that finishes well inside its timeout, none of this applies.
+
+## Choose between an Activity and a Workflow
+
+Back an Operation with an **Activity** when the work is a single step: one external call, one computation, one notification.
+You get no Event History for orchestration you are not doing, and no wrapper Workflow to maintain.
+
+Back an Operation with a **Workflow** when the work has more than one step, needs to wait for something, needs to receive [messages](/sending-messages), or needs durable intermediate state.
+For example, an approval that blocks for a human decision is a Workflow, not an Activity.
+
+Sample code: `{code not yet live}`
+
+:::tip RESOURCES
+
+- [Nexus SDK V2](/nexus/sdk-v2) for `TemporalOperationHandler` and the Nexus-aware Client.
+- [Standalone Activity](/standalone-activity) for the underlying concept, and [Java: Standalone Activities](/develop/java/activities/standalone-activities) for the SDK API.
+- [Standalone Nexus Operation](/standalone-nexus-operation) for starting Operations without a caller Workflow.
+- [Development Walkthrough](/develop/java/nexus/development-walkthrough) uses an Activity-backed Operation in context.
+
+:::

@@ -1,0 +1,70 @@
+---
+id: define-the-data-contract
+title: Step 1 - Define the data contract
+sidebar_label: 1. Define the data contract
+description: Plan an approval Nexus Service and write its data contract before any implementation, so every language shares one definition.
+toc_max_heading_level: 4
+keywords:
+  - nexus data contract
+  - nexus service contract
+  - json schema
+  - api contract first
+tags:
+  - Nexus
+  - Java SDK
+---
+
+Start with the contract, not the code.
+
+The contract is the only thing a caller and a handler share. Everything else — which language each side is written in, whether an Operation is backed by a Workflow or an Activity, which Task Queue the Worker polls — is private to one side and can change without the other side knowing.
+
+## Why the contract comes first
+
+Writing the contract first is what makes the Service polyglot.
+
+**Every sample in this walkthrough, in every language, is generated from this one contract.** A Go caller can call the Java handler built here. The Java caller built here can call a Python handler. Neither side hand-writes the request and response types, so neither side can drift from the other.
+
+The alternative — code-first, where you expose an existing Workflow and derive the contract from its signature — ties the contract to one implementation's shape. It also gives you no way to review the API before building it. Temporal does not currently have a good path from code back to a generated contract, so the contract-first order is the one to follow.
+
+## Plan the Operations
+
+Work backwards from what callers need, not from what your Workflow happens to do.
+
+For the approval problem, callers need to start an approval and learn the outcome, nudge a pending approval, check on progress, submit a decision, and be notified when it is final. That produces five Operations:
+
+| Operation | Input | Output | Added in |
+| --- | --- | --- | --- |
+| `requestApproval` | Item id, requester, amount | `APPROVED` or `DENIED` | Step 4 |
+| `remindApprover` | Approval id | Nothing | Step 7 |
+| `getApprovalStatus` | Approval id | Pending or decided, reminders sent | Step 7 |
+| `submitDecision` | Approval id, decision | Confirmation of the recorded decision | Step 7 |
+| `notifyRequester` | Requester, decision | Nothing | Step 9 |
+
+Two decisions in that table are worth explaining, because they are easy to get wrong.
+
+**`requestApproval` returns the final decision.** It does not return an approval id for the caller to poll. The Operation is backed by a Workflow, so the Operation completes when that Workflow returns, and the Workflow's return value *is* the Operation's result. The caller awaits the Operation and receives `APPROVED` or `DENIED`.
+
+**`getApprovalStatus` reports in-flight progress only.** It is tempting to use it to fetch the final decision too, but that is the wrong tool. The decision already arrives as the result of `requestApproval`. A Query is served by replaying history in a Worker, which means the Workflow code must still be deployed and replay-compatible, and it stops working once the [Retention Period](/temporal-service/temporal-server#retention-period) expires. Use the Operation result for the outcome, and the Query for what is happening while the approval is still open.
+
+## Shape the types
+
+Two constraints apply when writing the contract.
+
+An Operation's input and output are each optional, but when present each must be an **object type**. A bare string works today and then cannot grow a field tomorrow without breaking the wire format. `remindApprover` returns nothing at all, which is fine.
+
+Keep the types **forward-compatible**. Callers and handlers deploy independently and will run different versions of the contract at the same time. Adding an optional field is safe; making an existing field required, or removing one, is not.
+
+Types are modeled with JSON Schema 2020-12. See [Definition files](/nexus/client-code-generator#definition-files) for the two file flavors and the supported subset.
+
+`{sample code will be here}`
+
+## Next
+
+With the contract written, [generate code from it](/develop/java/nexus/development-walkthrough/generate-code) for the handler and the caller.
+
+:::tip RESOURCES
+
+- [Nexus Client Code Generator](/nexus/client-code-generator) for the contract format and the supported JSON Schema subset.
+- [Nexus Services](/nexus/services) for what a Service contract is and how it is shared.
+
+:::

@@ -1,0 +1,53 @@
+---
+id: generate-code
+title: Step 2 - Generate code from the contract
+sidebar_label: 2. Generate code
+description: Use the Nexus Client Code Generator to turn the approval contract into typed models, validators, and Service definitions for the handler and the caller.
+toc_max_heading_level: 4
+keywords:
+  - nexus code generation
+  - nexgen
+  - generated models
+  - nexus service definition
+tags:
+  - Nexus
+  - Java SDK
+---
+
+Generate the library code before writing any implementation. Both sides of the Service use it: the handler implements against the generated Service definition, and the caller invokes against the same one.
+
+## What generation produces
+
+For each type in the contract, the [Nexus Client Code Generator](/nexus/client-code-generator) emits a typed model, a runtime validator, and — for a contract that declares Services — a Nexus Service definition.
+
+In Java the Service definition is an interface annotated with `@Service`, carrying one `@Operation` method per Operation. That interface is used on both sides and in two different ways:
+
+- The **handler** provides an implementation for it, which the Worker registers.
+- The **caller** uses the interface directly as a Workflow stub, so calls are type-checked against the contract.
+
+The generated validators run when a payload is parsed and again when it is serialized, so a request that violates the contract is rejected at the boundary rather than reaching your Workflow. Violations aggregate into one error naming every field that failed, which a handler maps to `BAD_REQUEST`.
+
+## Generate for Java
+
+Java generation requires a package name whose last segment matches the output directory name. See [Generate code](/nexus/client-code-generator#generate-code) for the full command shape and the per-language flags.
+
+`{sample code will be here}`
+
+Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. If a generated name is wrong for Java, fix it in the contract with a per-language naming override rather than editing the output. See the [Nexus Client Code Generator](/nexus/client-code-generator).
+
+## Generate for other languages
+
+The same contract produces a caller in any supported language. Generating a Go, Python, or TypeScript client from this contract is one command each, and the result talks to the Java handler built in this walkthrough without any coordination beyond the contract.
+
+This is the step where the contract-first ordering pays off. Nothing about the handler needs to know which languages its callers use.
+
+## Next
+
+With the types in hand, [choose what backs each Operation](/develop/java/nexus/development-walkthrough/choose-backing-implementation).
+
+:::tip RESOURCES
+
+- [Nexus Client Code Generator](/nexus/client-code-generator) for installation, per-language commands, and the supported JSON Schema subset.
+- [Use the generated code](/nexus/client-code-generator#use-the-generated-code) for how validation is wired in each language.
+
+:::

@@ -1,0 +1,72 @@
+---
+id: add-a-standalone-activity
+title: Step 9 - Add a Standalone Activity
+sidebar_label: 9. Add a Standalone Activity
+description: Back the notification Nexus Operation with a Standalone Activity instead of a Workflow, with no wrapper Workflow required.
+toc_max_heading_level: 4
+keywords:
+  - nexus standalone activity
+  - activity backed operation
+  - start activity
+  - notification activity
+tags:
+  - Nexus
+  - Java SDK
+---
+
+The last Operation is `notifyRequester`, which tells the requester their approval was `APPROVED` or `DENIED`.
+
+This one is not a Workflow. It is a single outbound notification with no state, nothing to wait for, and nothing to orchestrate — the [Standalone Activity](/nexus/standalone-activity) shape chosen in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation).
+
+## Write the Activity
+
+The Activity is an ordinary Activity. In this walkthrough it is a placeholder that does nothing — no email is sent. Real logic would call an email provider, push to a notification service, or write to an outbox.
+
+Nothing about it is Nexus-specific. The same Activity could be called from a Workflow.
+
+`{sample code will be here}`
+
+## Back the Operation with it
+
+Use `TemporalOperationHandler` as with every other Operation, but call `startActivity` on the Nexus-aware Client instead of `startWorkflow`. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
+
+Before Activity-backed Operations, this Operation would have needed a Workflow whose only job was to call this one Activity — a wrapper with its own Event History and Workflow Id, providing nothing.
+
+`{sample code will be here}`
+
+### Options an Activity-backed Operation requires
+
+`StartActivityOptions` needs two things that a Workflow-called Activity does not, because there is no parent Workflow to supply them:
+
+- **An Activity Id**, unique within the Namespace.
+- **A Task Queue.** It does not have to be the Endpoint's target Task Queue, so notifications can run on their own Worker fleet.
+
+Derive the Activity Id from the Nexus request Id to make the start idempotent. The server retries a Nexus start request with the same request Id, so each retry targets the same Activity Id instead of sending a second notification.
+
+That last point matters here more than usual. A duplicate Workflow start is usually harmless; a duplicate notification is a second email to a real person.
+
+## Register the Activity on the Worker
+
+Add the Activity implementation to the same Worker that hosts the Nexus Service. An Activity-backed Operation needs no Workflow implementation registered for it.
+
+`{sample code will be here}`
+
+## Cancellation needs heartbeating
+
+For this notification the point is moot — it finishes immediately. But it is worth knowing before you write a longer Activity-backed Operation, because the behavior differs from a Workflow-backed one.
+
+A Workflow is interrupted by a cancellation request. An Activity is not: the server records the request, and the Worker only finds out on its next heartbeat. An Activity that never heartbeats runs until it completes or hits its start-to-close timeout, however many cancellation requests arrive.
+
+Making a long-running Activity-backed Operation cancellable takes three settings together — heartbeating from the Activity, a heartbeat timeout, and maximum attempts of 1 so a cancelled attempt is not retried. See [Cancellation requires heartbeating](/nexus/standalone-activity#cancellation-requires-heartbeating).
+
+## Next
+
+[Call the Standalone Activity](/develop/java/nexus/development-walkthrough/call-the-standalone-activity).
+
+:::tip RESOURCES
+
+- [Nexus Standalone Activity](/nexus/standalone-activity) for the full concept and options.
+- [Standalone Activity](/standalone-activity) for Activity Executions outside a Workflow.
+- [Java: Standalone Activities](/develop/java/activities/standalone-activities) for the SDK API.
+
+:::

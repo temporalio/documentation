@@ -1,0 +1,89 @@
+---
+id: index
+title: Nexus Development Walkthrough - Java SDK
+sidebar_label: Development Walkthrough
+description: Build a Nexus Service end to end in Java, starting from a data contract and adding one Nexus capability at a time to solve an approval problem.
+toc_max_heading_level: 4
+keywords:
+  - nexus walkthrough
+  - nexus java
+  - approval workflow
+  - data contract
+  - nexus service
+  - temporal operation handler
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+:::caution
+
+This walkthrough covers [Nexus SDK V2](/nexus/sdk-v2), which is pre-release.
+APIs are experimental and may change in backwards-incompatible ways.
+
+:::
+
+This walkthrough builds one Nexus Service from nothing to a complete API, adding a single Nexus capability at each step.
+
+## Nexus Introduction
+
+A [Nexus Service](/nexus/services) is a contract that one team publishes and other teams call, across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
+Three things follow from that.
+
+**Durable microservices.** A Nexus Service turns Workflows and Activities into an API. Callers see Operations with typed inputs and outputs; they do not see your Workflow Ids, Task Queues, or retry policies. You keep the freedom to change what runs behind an Operation — swap an Activity for a Workflow, split one Workflow into several — as long as the contract holds. The reliability guarantees come along for free: an Operation backed by a Workflow is as durable as that Workflow.
+
+**A durable orchestration layer for AI agents and tools.** Agent systems call tools that are slow, flaky, and occasionally expensive. Exposing each tool as a Nexus Operation gives every call durable execution, automatic retries, and a record in [Event History](/encyclopedia/event-history) — and lets the agent and the tools live in different Namespaces, owned by different teams, written in different languages. See [Build AI applications with Temporal](/with-ai) for the wider picture.
+
+**A shared facade for extensibility.** A Nexus Service can front something that is not a Temporal Workflow at all — an existing internal API, a legacy job queue, a third-party endpoint. Write the wrapper once, run it as one Worker fleet, and every team calls the same Operations instead of each writing its own integration. Because callers only depend on the contract, the team behind it can modify or update the service without breaking anyone.
+
+## The sample problem
+
+A purchase request needs approval before it can proceed.
+
+Approval is slow and human-driven: someone has to look at the request and decide. The system needs to survive that wait, which may be minutes or weeks. While a request is pending, other systems need to nudge the approver and check on progress. Eventually a decision arrives, and the requesting system needs the outcome.
+
+Concretely, the Service needs to:
+
+- Start an approval and, eventually, return `APPROVED` or `DENIED`
+- Accept a nudge that asks the approver again, and count how many have been sent
+- Report progress while the approval is still pending
+- Accept a decision from the caller and confirm it was recorded
+- Send a notification when the decision is final
+
+Each of those maps onto a different Nexus capability, which is what makes it a useful walkthrough. By the end, the Service exercises a Workflow-backed Operation, a Signal, a Query, an Update, and an Activity-backed Operation.
+
+## One contract, every language
+
+The walkthrough begins with the data contract, before any implementation, and that ordering is the point.
+
+**The equivalent sample for each language is written against the same contract.** Because the contract is the only thing the two sides share, any caller can call any handler: the Go sample walkthrough caller can drive this Java handler for example, and the Java caller here can drive the handler from each other language's Nexus Development Walkthrough. Handler and caller do not need to agree on a language, only on the contract.
+
+
+:::note
+
+The idea is that we write a sample repo for each language that implements this project. Then we should be able to run the client from any sample project against the handler from any sample project.
+
+:::
+The [Nexus Client Code Generator](/nexus/client-code-generator) makes this easy. It takes the contract and emits typed models, runtime validators, and Service definitions for Go, Java, Python, and TypeScript, so neither side hand-writes the types and neither side can drift from the contract.
+
+## Steps
+
+1. [Define the data contract](/develop/java/nexus/development-walkthrough/define-the-data-contract)
+2. [Generate code from the contract](/develop/java/nexus/development-walkthrough/generate-code)
+3. [Choose the backing implementation](/develop/java/nexus/development-walkthrough/choose-backing-implementation)
+4. [Implement the Service](/develop/java/nexus/development-walkthrough/implement-the-service)
+5. [Publish in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus)
+6. [Call the Service](/develop/java/nexus/development-walkthrough/call-the-service)
+7. [Add messaging](/develop/java/nexus/development-walkthrough/add-messaging)
+8. [Send messages](/develop/java/nexus/development-walkthrough/send-messages)
+9. [Add a Standalone Activity](/develop/java/nexus/development-walkthrough/add-a-standalone-activity)
+10. [Call the Standalone Activity](/develop/java/nexus/development-walkthrough/call-the-standalone-activity)
+
+Then: [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips).
+
+## Before you start
+
+You need two Namespaces, one for the handler and one for the caller, so the walkthrough crosses a real Namespace boundary. A [local development server](/develop/run-a-development-server) with two Namespaces is enough for steps 1 through 4; step 5 covers both the development server and Temporal Cloud.
+
+If you have not used Nexus before, read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations) first, or work through the shorter [Nexus quickstart](/develop/java/nexus/quickstart).
