@@ -413,6 +413,7 @@ const developJavaCategory = {
           id: 'develop/java/best-practices/index',
         },
         items: [
+          'develop/java/best-practices/error-handling',
           'develop/java/best-practices/testing-suite',
           'develop/java/best-practices/debugging',
           {
