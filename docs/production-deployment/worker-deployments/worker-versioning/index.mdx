@@ -5,7 +5,6 @@ sidebar_label: Worker Versioning
 description:
   Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
   patching to support multiple code paths.
-slug: /production-deployment/worker-deployments/worker-versioning
 toc_max_heading_level: 4
 keywords:
   - scaling
@@ -36,6 +35,15 @@ on the Worker Deployment Version where it started. You need not worry about maki
 pinned Workflows.
 
 To use Workflow Pinning, we recommend using [rainbow deployments](#deployment-systems).
+
+## In this guide
+
+- [Configure a Worker for Versioning](/production-deployment/worker-deployments/worker-versioning/configure-worker)
+- [Roll out and pin Workflows](/production-deployment/worker-deployments/worker-versioning/roll-out-and-pin)
+- [Upgrade on Continue-as-New](/production-deployment/worker-deployments/worker-versioning/upgrade-on-continue-as-new)
+- [Sunset and garbage collection](/production-deployment/worker-deployments/worker-versioning/sunset-and-gc)
+- [Recover pinned Workflows](/production-deployment/worker-deployments/recover-pinned-workflows)
+- [Unversioned to versioned migration](/production-deployment/worker-deployments/unversioned-to-versioned-migration)
 
 :::tip
 
@@ -199,14 +207,4 @@ If you run [Serverless Workers](/serverless-workers), each Worker Deployment Ver
 specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
 pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
 [Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
-
-
-## In this guide
-
-- [Configure a Worker for Versioning](/production-deployment/worker-deployments/worker-versioning/configure-worker)
-- [Roll out and pin Workflows](/production-deployment/worker-deployments/worker-versioning/roll-out-and-pin)
-- [Upgrade on Continue-as-New](/production-deployment/worker-deployments/worker-versioning/upgrade-on-continue-as-new)
-- [Sunset and garbage collection](/production-deployment/worker-deployments/worker-versioning/sunset-and-gc)
-- [Recover pinned Workflows](/production-deployment/worker-deployments/recover-pinned-workflows)
-- [Unversioned to versioned migration](/production-deployment/worker-deployments/unversioned-to-versioned-migration)
 
