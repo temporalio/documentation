@@ -196,6 +196,11 @@ default cluster name, so servers that still use the default will collide. See
 If your self-hosted servers cannot use unique cluster names, migrate one server at a time, or contact Temporal to
 discuss the available options.
 
+Namespaces migrating from the same self-hosted server share that server's proxy and endpoint. You can migrate more than
+one Namespace from a server at the same time, provided each source Namespace and its cloud-side target are listed in
+the `namespaceTranslation` mappings of that server's proxy configuration. See
+[S2S Proxy configuration](#s2s-proxy-configuration).
+
 Tell Temporal how many self-hosted servers you plan to migrate from, and whether you intend to migrate from them in
 parallel, so that the required cloud-side resources are in place.
 
@@ -237,6 +242,9 @@ namespaceTranslation:
   - etc...
 ```
 5. Test access using the command below. It should display the information of the migration server.
+
+   The address is your own proxy's external address, not a cloud-side address. It's the same value you set as
+   `replicationEndpoint` under `clusterConnections` in your proxy configuration file.
 
 ```
 temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
@@ -519,6 +527,12 @@ In contrast, automated migration may not be the best solution if your self-hoste
 
 Yes. Each self-hosted server needs its own S2S Proxy deployment and its own migration endpoint, and each must have a
 unique cluster name and Initial Failover Version. See [Plan migration endpoints](#plan-migration-endpoints).
+
+### Can I migrate multiple Namespaces from the same self-hosted server at the same time?
+
+Yes. Those Namespaces share the server's proxy and endpoint, so no additional cloud-side resources are needed. Include
+each source Namespace and its cloud-side target in the `namespaceTranslation` mappings of that server's proxy
+configuration. See [S2S Proxy configuration](#s2s-proxy-configuration).
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 No. All Workflows will be migrated.
