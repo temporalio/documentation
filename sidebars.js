@@ -1354,6 +1354,7 @@ module.exports = {
             'cloud/migrate/estimate-actions',
           ],
         },
+        'cloud/projects',
         'cloud/capacity-modes',
         'cloud/worker-health',
         'cloud/service-health',
