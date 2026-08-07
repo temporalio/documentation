@@ -9,9 +9,10 @@ keywords:
   - temporal cloud
 ---
 
-Temporal Cloud access controls are organized across two scopes:
+Temporal Cloud access controls are organized across three scopes:
 
 - Account-level role permissions
+- Project-level permissions
 - Namespace-level permissions
 
 Within each scope, permissions apply to publicly documented [Temporal Cloud Ops API](/ops)
@@ -42,6 +43,7 @@ configured per user.
 | [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)      |           |           |               |      ✅       |       ✅       |
 | [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)             |           |     ✅     |               |      ✅       |       ✅       |
 | [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)         |           |     ✅     |               |      ✅       |       ✅       |
+| [CreateProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects)               |           |     ✅     |               |      ✅       |       ✅       |
 | [CreateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/manage-access/service-accounts)        |    ✅†     |    ✅†     |      ✅†       |      ✅†      |      ✅†       |
 | [CreateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users)                  |           |           |               |      ✅       |       ✅       |
 | [CreateUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups)             |           |           |               |      ✅       |       ✅       |
@@ -66,6 +68,7 @@ configured per user.
 | [GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces)               |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints/%7BendpointId%7D)            |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetNexusEndpoints](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints)           |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
+| [GetProjects](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects)                 |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions/%7Bregion%7D)                   |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetRegions](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions)                  |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts/%7BserviceAccountId%7D)           |    ✅†     |    ✅†     |      ✅†       |      ✅†      |      ✅†       |
@@ -270,6 +273,65 @@ permissions. These permissions are configured per Namespace per user.
 | Initiate Namespace failover                                   |      |       |        ✅        |
 | Convert single-region Namespace to multi-region               |      |       |        ✅        | */}
 
+## Project-level permissions
+
+[Project-level permissions](/cloud/manage-access/permissions-reference#project-level-permissions) are granted to users, groups, and service accounts by assigning them a Project-level role.
+Temporal Cloud supports the following Project-level roles:
+
+- Project Admin
+- Project Write
+- Project Read
+- Project Contribute
+- Project List
+- Project Member
+
+Users with the Global Admin and Account Owner roles automatically have Project Admin on all Projects in the account.
+
+Project Admin, Project Write, and Project Read also grant Namespace Admin, Write, and Read respectively on every
+Namespace in the Project. Project Contribute, Project List, and Project Member grant no Namespace-level access. This is
+why Project Read and Project List grant the same Cloud Ops API permissions, as do Project Write and Project Contribute:
+they differ in the Namespace-level and [Workflow-level permissions](#workflow-level-permissions) they carry, not in the
+Cloud Ops API endpoints they can call.
+
+### Cloud Ops API permissions
+
+This table provides API-level details for permissions granted through Project-level roles. These permissions are
+configured per Project per user.
+
+| Permission                          | Member | List | Read | Contribute | Write | Project Admin |
+| ----------------------------------- | :----: | :--: | :--: | :--------: | :---: | :-----------: |
+| [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules) |        |      |      |     ✅      |   ✅   |       ✅       |
+| [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces) |        |      |      |     ✅      |   ✅   |       ✅       |
+| [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints) |        |      |      |     ✅      |   ✅   |       ✅       |
+| [CreateServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/service-accounts) |        |      |      |            |       |      ✅†       |
+| [DeleteConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/DELETE/cloud/connectivity-rules/%7BconnectivityRuleId%7D) |        |      |      |     ✅      |   ✅   |       ✅       |
+| [DeleteNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/DELETE/cloud/nexus/endpoints/%7BendpointId%7D) |        |      |      |     ✅      |   ✅   |       ✅       |
+| [DeleteProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/DELETE/cloud/projects/%7BprojectId%7D) |        |      |      |            |       |       ✅       |
+| [GetConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D) |        |  ✅   |  ✅   |     ✅      |   ✅   |       ✅       |
+| [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules) |        |  ✅   |  ✅   |     ✅      |   ✅   |       ✅       |
+| [GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces) |   ✅    |  ✅   |  ✅   |     ✅      |   ✅   |       ✅       |
+| [GetNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints/%7BendpointId%7D) |        |  ✅   |  ✅   |     ✅      |   ✅   |       ✅       |
+| [GetNexusEndpoints](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints) |        |  ✅   |  ✅   |     ✅      |   ✅   |       ✅       |
+| [GetProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D) |   ✅    |  ✅   |  ✅   |     ✅      |   ✅   |       ✅       |
+| [GetProjectScopedServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/service-accounts) |        |      |      |            |       |       ✅       |
+| [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts/%7BserviceAccountId%7D) |        |  ✅†  |  ✅†  |     ✅†     |  ✅†   |      ✅†       |
+| [GetServiceAccountProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/service-account-assignments) |        |      |      |            |       |       ✅       |
+| [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts) |        |  ✅†  |  ✅†  |     ✅†     |  ✅†   |      ✅†       |
+| [GetUserGroupProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/user-group-assignments) |        |      |      |            |       |       ✅       |
+| [GetUserProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/user-assignments) |        |      |      |            |       |       ✅       |
+| [SetServiceAccountProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/service-accounts/%7BserviceAccountId%7D/access) |        |      |      |            |       |       ✅       |
+| [SetUserGroupProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/user-groups/%7BgroupId%7D/access) |        |      |      |            |       |       ✅       |
+| [SetUserProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/users/%7BuserId%7D/access) |        |      |      |            |       |       ✅       |
+| [UpdateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints/%7BendpointId%7D) |        |      |      |     ✅      |   ✅   |       ✅       |
+| [UpdateProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D) |        |      |      |            |       |       ✅       |
+
+- † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+
+Project Developer is a compatibility role that users with the Account Developer role inherit automatically. It cannot be
+assigned directly. It grants everything Project Contribute grants except CreateConnectivityRule and
+DeleteConnectivityRule, and carries no Namespace-level access. For details, see
+[Project roles](/cloud/projects#project-roles).
+
 ## Custom Role permissions reference
 
 The following tables list the permission action strings available when defining [Custom Roles](/cloud/manage-access/custom-roles).
@@ -308,9 +370,13 @@ accounts depends on the scope of the service account and the caller's role.
 | List all service accounts in the account         |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | Manage unscoped (account-level) service accounts |           |           |               |      ✅       |       ✅       |
 | Manage Namespace-scoped service accounts         |     §     |     §     |       §       |      ✅       |       ✅       |
+| Manage Project-scoped service accounts           |     †     |     †     |       †       |      ✅       |       ✅       |
 
 § Requires Namespace Admin permission on the target Namespace. Any role can manage Namespace-scoped service accounts if
 they hold Namespace Admin on that Namespace.
+
+† Requires Project Admin permission on the target Project. Any role can manage Project-scoped service accounts if
+they hold Project Admin on that Project.
 
 **Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
 DeleteServiceAccount
