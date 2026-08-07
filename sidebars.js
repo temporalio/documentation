@@ -1440,7 +1440,25 @@ module.exports = {
             'production-deployment/self-hosted-guide/namespaces',
             'production-deployment/self-hosted-guide/security',
             'production-deployment/self-hosted-guide/monitoring',
-            'production-deployment/self-hosted-guide/visibility',
+            {
+              type: 'category',
+              label: 'Visibility',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/self-hosted-guide/visibility/index',
+              },
+              items: [
+                'production-deployment/self-hosted-guide/visibility/mysql',
+                'production-deployment/self-hosted-guide/visibility/postgresql',
+                'production-deployment/self-hosted-guide/visibility/sqlite',
+                'production-deployment/self-hosted-guide/visibility/legacy-standard',
+                'production-deployment/self-hosted-guide/visibility/elasticsearch',
+                'production-deployment/self-hosted-guide/visibility/dual-visibility',
+                'production-deployment/self-hosted-guide/visibility/migrate',
+                'production-deployment/self-hosted-guide/visibility/custom-search-attributes',
+              ],
+            },
             'production-deployment/self-hosted-guide/upgrade-server',
             'production-deployment/self-hosted-guide/archival',
             'production-deployment/self-hosted-guide/multi-cluster-replication',
@@ -1514,7 +1532,20 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
-        'production-deployment/temporal-proxy/index',
+        {
+          type: 'category',
+          label: 'Temporal Proxy',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'production-deployment/temporal-proxy/index',
+          },
+          items: [
+            'production-deployment/temporal-proxy/configure',
+            'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/deploy-kubernetes',
+          ],
+        },
       ],
     },
     {
