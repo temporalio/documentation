@@ -229,10 +229,26 @@ A Workflow can send a Signal to another Workflow, known as an _External Signal_.
 You'll need a Workflow handle for the external Workflow.
 Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for):
 
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_external_wf_dacx.py"><tt>See full sample</tt></a></div>
+```python {20-25}
+from typing import Optional
 
-```python
-# ...
+from temporalio import workflow
+
+@workflow.defn
+class WorkflowA:
+    def __init__(self) -> None:
+        self._signal: Optional[str] = None
+
+    @workflow.run
+    async def run(self) -> str:
+        await workflow.wait_condition(lambda: self._signal is not None)
+        return self._signal
+
+    @workflow.signal
+    def your_signal(self, value: str) -> None:
+        self._signal = value
+
+
 @workflow.defn
 class WorkflowB:
     @workflow.run
@@ -251,11 +267,12 @@ When an External Signal is sent:
 Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
 To use Signal-With-Start, call the [`start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal:
 
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_with_start_dacx.py"><tt>See full sample</tt></a></div>
+```python {6-14}
+import asyncio
 
-```python
 from temporalio.client import Client
-# ...
+from wf_signal import GreetingWorkflow
+
 async def main():
     client = await Client.connect("localhost:7233")
     await client.start_workflow(
@@ -265,6 +282,13 @@ async def main():
         start_signal="submit_greeting",
         start_signal_args=["User Signal with Start"],
     )
+    handle = client.get_workflow_handle_for(
+        GreetingWorkflow, "your-signal-with-start-workflow"
+    )
+    await handle.signal(GreetingWorkflow.exit)
+    result = await handle.result()
+    print(result)
+# ...
 ```
 
 ### Send an Update {/* #send-update-from-client */}
@@ -772,10 +796,25 @@ The Workflow Definition's primary Workflow method must accept a single argument 
 Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
 For example:
 
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_workflow_dacx.py"><tt>See full sample</tt></a></div>
+```python {19-30}
+from dataclasses import dataclass
+from datetime import timedelta
+from typing import Sequence
 
-```python
-# ...
+from temporalio import activity, workflow
+from temporalio.common import RawValue
+
+@dataclass
+class YourDataClass:
+    greeting: str
+    name: str
+
+
+@activity.defn()
+async def default_greeting(input: YourDataClass) -> str:
+    return f"{input.greeting}, {input.name}!\nActivity Type: {activity.info().activity_type}"
+
+
 @workflow.defn(dynamic=True)
 class DynamicWorkflow:
     @workflow.run
@@ -803,17 +842,33 @@ The Activity Definition must then accept a single argument of type `Sequence[tem
 Use a [payload_converter](https://python.temporal.io/temporalio.activity.html#payload_converter) function to convert `RawValue` objects to your required types.
 For example:
 
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_activity_dacx.py"><tt>See full sample</tt></a></div>
+```python {14-19,27-35}
+from dataclasses import dataclass
+from datetime import timedelta
+from typing import Sequence
 
-```python
-# ...
+from temporalio import activity, workflow
+from temporalio.common import RawValue
+
+@dataclass
+class YourDataClass:
+    greeting: str
+    name: str
+
+
 @activity.defn(dynamic=True)
 async def dynamic_greeting(args: Sequence[RawValue]) -> str:
     arg1 = activity.payload_converter().from_payload(args[0].payload, YourDataClass)
     return (
         f"{arg1.greeting}, {arg1.name}!\nActivity Type: {activity.info().activity_type}"
     )
-# ...
+
+
+@activity.defn()
+async def default_greeting(input: YourDataClass) -> str:
+    return f"{input.greeting}, {input.name}!\nActivity Type: {activity.info().activity_type}"
+
+
 @workflow.defn
 class GreetingWorkflow:
     @workflow.run
