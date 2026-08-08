@@ -88,6 +88,8 @@ created within it, such as the following:
 
 When you want to interrupt a Workflow Execution using an error, throw the [`DestroyWorkflowThreadError`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/DestroyWorkflowThreadError.html). Make sure there isn't any code on that thread to catch this error or it could cause issues with the Temporal service.
 
+More generally, Workflow code should only ever catch `Exception`, never `Throwable` or `Error` — see [Catch Exception, never Throwable or Error](/develop/java/best-practices/error-handling#catch-exception-not-throwable).
+
 ### Cancel an Activity from a Workflow {/* #cancel-activity */}
 
 Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat

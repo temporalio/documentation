@@ -11,8 +11,6 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
 ## Develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a
@@ -202,13 +200,8 @@ Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#ra
 For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
 
 ```python
-# Good - deterministic across replays
 value = workflow.random().randint(1, 100)
 unique_id = workflow.uuid4()
-
-# Bad - different result on every replay
-import random
-value = random.randint(1, 100)
 ```
 
 #### Current time

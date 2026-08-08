@@ -21,7 +21,6 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using IntegrationsGrid](#using-integrationsgrid)
 - [Using CaptionedImage](#using-captionedimage)
 - [Using DocsTable](#using-docstable)
-- [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
@@ -312,66 +311,6 @@ Archetypes:
 - feature-guide
 - feature-summary
 
-## Using PhotoCarousel
-
-Role: Provide annotated walk-through using an image carousel presentation with text.
-
-How to import:
-
-```
-import { PhotoCarousel } from '@site/src/components';
-```
-
-or 
-
-```
-import PhotoCarousel from "@site/src/components/elements/PhotoCarousel";
-```
-
-Usage:
-
-```
-<PhotoCarousel
-images={[
-"/link/to/image-1",
-"/link/to/image-2",
-...
-]}
-captions={[
-"caption-1",
-"caption-2",
-...
-]}
-/>
-```
-
-- If links are stored on-site, place images in static in an appropriately themed folder.
-- If links are stored off-site, use a fully specified URL
-- Please ensure the caption count and order matches that of the images
-- You may pass an optional `isDarkMode` Boolean prop
-
-### Skipping captioning
-
-To skip slide captioning, pass the string `"NA"` instead of a normal description.
-
-```
-<PhotoCarousel
-images={[
-"/link/to/image-1",
-"/link/to/image-2",
-...
-]}
-captions={[
-"NA",
-"caption-2",
-...
-]}
-/>
-```
-
-Photo 1 will not have a caption but photo 2 will have a caption.
-This ensures photo 2 won't be matched with caption 1. 
-
 ## Using ToolTipTerm
 
 Role: Provide definitions or background information at the point of use.
@@ -561,7 +500,7 @@ Role: To provide a consistent component for adding, updating, and removing relea
 
 Usage:
 
-In `/src/constants`, update the [`featureReleaseTypes.js`](./src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
+In `/src/constants`, update the [`featureReleaseTypes.js`](../src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
 
 Example: `serverlessWorkers: "prerelease"`
 
