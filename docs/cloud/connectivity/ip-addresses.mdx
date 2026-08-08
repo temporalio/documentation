@@ -118,10 +118,9 @@ When enabling Stable IPs on an existing Namespace, Temporal updates DNS records 
 
 If you cannot use `tcld` or Terraform, you can access the Cloud Ops API directly. The following procedure creates a public Connectivity Rule with Stable IPs enabled and attaches it to a Namespace.
 
-All requests require two headers:
+All requests require an authorization header:
 
 - `Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY`
-- `temporal-cloud-api-version: v0.16.0` (or any version ≥ `v0.15.0`)
 
 Base URL: `https://saas-api.tmprl.cloud`
 
@@ -131,26 +130,15 @@ Set up environment variables:
 export TEMPORAL_CLOUD_OPS_API_KEY='<paste-api-key>'
 export NS='<namespace>.<account>'   # The Cloud-side Namespace identifier, e.g. "myns.a1b2c3"
 H_AUTH="Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY"
-H_VER="temporal-cloud-api-version: v0.16.0"
 ```
 
-**Step 1. Read the current Namespace spec and resource version.**
+**Step 1. Create a public Connectivity Rule with Stable IPs enabled.**
 
-`UpdateNamespace` replaces the entire spec and requires the latest `resource_version`. Fetch them first:
-
-```bash
-curl -sS "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
-  -H "$H_AUTH" -H "$H_VER" | tee /tmp/ns.json | \
-  jq '{resource_version: .namespace.resourceVersion, connectivity_rule_ids: .namespace.spec.connectivityRuleIds}'
-
-RV=$(jq -r '.namespace.resourceVersion' /tmp/ns.json)
-```
-
-**Step 2. Create a public Connectivity Rule with Stable IPs enabled.**
+Creating the rule returns both the new rule's ID and an async operation that tracks activation:
 
 ```bash
 curl -sS -X POST "https://saas-api.tmprl.cloud/cloud/connectivity-rules" \
-  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -H "$H_AUTH" -H "Content-Type: application/json" \
   -d '{
         "spec": {
           "publicRule": { "enableStableIps": true }
@@ -163,18 +151,38 @@ OP_ID=$(jq -r '.asyncOperation.id // .asyncOperation.operationId' /tmp/cr.json)
 
 Field names follow proto3 JSON camelCase: `enable_stable_ips` becomes `enableStableIps`.
 
-**Step 3. Wait for the create operation to reach a terminal state.**
+Wait for the create operation to reach a terminal state before continuing:
 
 ```bash
 curl -sS "https://saas-api.tmprl.cloud/cloud/operations/$OP_ID" \
-  -H "$H_AUTH" -H "$H_VER" | jq '.asyncOperation.state'
+  -H "$H_AUTH" | jq '.asyncOperation.state'
 ```
 
 Re-run until `state` is `FULFILLED` (the rule is now `ACTIVE`). Any `*_FAILED` state means you should stop and inspect the operation.
 
-**Step 4. Attach the rule to the Namespace.**
+Alternatively, list every Connectivity Rule on the account and read the new rule's state directly:
 
-`UpdateNamespace` posts the whole `NamespaceSpec` back. Update the spec from Step 1 by appending `$CR_ID` to `connectivityRuleIds`:
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/connectivity-rules" \
+  -H "$H_AUTH" | \
+  jq '.connectivityRules[] | {id, state, spec}'
+```
+
+The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether the account already has a public rule, which matters because only one is allowed.
+
+**Step 2. Attach the rule to the Namespace.**
+
+`UpdateNamespace` replaces the entire spec and requires the latest `resource_version`, so read the current Namespace first:
+
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "$H_AUTH" | tee /tmp/ns.json | \
+  jq '{resource_version: .namespace.resourceVersion, connectivity_rule_ids: .namespace.spec.connectivityRuleIds}'
+
+RV=$(jq -r '.namespace.resourceVersion' /tmp/ns.json)
+```
+
+Then post the whole `NamespaceSpec` back, appending `$CR_ID` to `connectivityRuleIds`:
 
 ```bash
 jq --arg id "$CR_ID" --arg rv "$RV" --arg ns "$NS" '
@@ -186,18 +194,27 @@ jq --arg id "$CR_ID" --arg rv "$RV" --arg ns "$NS" '
   }' /tmp/ns.json > /tmp/update.json
 
 curl -sS -X POST "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
-  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -H "$H_AUTH" -H "Content-Type: application/json" \
   -d @/tmp/update.json | tee /tmp/update-resp.json
 ```
 
-Poll the returned `asyncOperation` the same way as Step 3.
+Poll the returned `asyncOperation` the same way as in Step 1.
+
+Alternatively, describe the Namespace and confirm the rule is attached:
+
+```bash
+curl -sS "https://saas-api.tmprl.cloud/cloud/namespaces/$NS" \
+  -H "$H_AUTH" | \
+  jq '{state: .namespace.state, connectivity_rule_ids: .namespace.spec.connectivityRuleIds}'
+```
+
+The update is complete when `state` is `RESOURCE_STATE_ACTIVE` and `connectivityRuleIds` contains your `$CR_ID`.
 
 Take note of the following:
 
 - The `namespace` in the URL is the Cloud-side Namespace identifier (for example, `myns.a1b2c3`), not the SDK gRPC hostname (`myns.a1b2c3.tmprl.cloud`). Strip the trailing `.tmprl.cloud`.
-- Do not omit fields from `spec` in Step 4. Proto3 update is full-replace — any field left out will be cleared. Building the body from the GET response avoids surprises.
+- Do not omit fields from `spec` in Step 2. Proto3 update is full-replace — any field left out will be cleared. Building the body from the GET response avoids surprises.
 - A Namespace can have at most one public Connectivity Rule attached, and only one public rule exists per account. If `connectivityRuleIds` already references a public rule without Stable IPs, replace that entry instead of appending — you cannot create a second public rule.
-- Stable IPs requires `temporal-cloud-api-version` of `v0.15.0` or later.
 
 #### How to enable Stable IPs with gRPC
 
@@ -207,7 +224,6 @@ If you prefer to call the Cloud Ops API directly over gRPC (for example, with `g
 - Fully qualified service: `temporal.api.cloud.cloudservice.v1.CloudService`
 - Required metadata on every call:
   - `authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY`
-  - `temporal-cloud-api-version: v0.16.0` (or any version ≥ `v0.15.0`)
 
 The examples below use `grpcurl`. They assume you have a local checkout of [`temporalio/api-cloud`](https://github.com/temporalio/api-cloud) at `./api-cloud` and a `proto/` directory containing the standard `google/api/annotations.proto` and associated files.
 
@@ -216,22 +232,13 @@ Set up environment variables:
 ```bash
 export TEMPORAL_CLOUD_OPS_API_KEY='<paste-api-key>'
 export NS='<namespace>.<account>'   # The Cloud-side Namespace identifier, e.g. "myns.a1b2c3"
-GRPC_HEADERS=(-H "authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY" -H "temporal-cloud-api-version: v0.16.0")
+GRPC_HEADERS=(-H "authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY")
 PROTO_FLAGS=(-import-path ./api-cloud -import-path ./proto -proto temporal/api/cloud/cloudservice/v1/service.proto)
 ```
 
-**Step 1. Read the current Namespace spec and resource version.**
+**Step 1. Create a public Connectivity Rule with Stable IPs enabled.**
 
-```bash
-grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
-  -d "{\"namespace\": \"$NS\"}" \
-  saas-api.tmprl.cloud:443 \
-  temporal.api.cloud.cloudservice.v1.CloudService/GetNamespace | tee /tmp/ns.json
-
-RV=$(jq -r '.namespace.resourceVersion' /tmp/ns.json)
-```
-
-**Step 2. Create a public Connectivity Rule with Stable IPs enabled.**
+Creating the rule returns both the new rule's ID and an async operation that tracks activation:
 
 ```bash
 grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
@@ -249,7 +256,7 @@ OP_ID=$(jq -r '.asyncOperation.id' /tmp/cr.json)
 
 Field names in gRPC JSON requests can use either snake_case (proto field names) or camelCase — `grpcurl` accepts both. Responses come back in camelCase.
 
-**Step 3. Wait for the create operation to reach a terminal state.**
+Wait for the create operation to reach a terminal state before continuing:
 
 ```bash
 grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
@@ -260,9 +267,32 @@ grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
 
 Re-run until `state` is `FULFILLED` (the rule is now `ACTIVE`). Any `*_FAILED` state means you should stop and inspect the operation.
 
-**Step 4. Attach the rule to the Namespace.**
+Alternatively, list every Connectivity Rule on the account and read the new rule's state directly:
 
-`UpdateNamespace` posts the whole `NamespaceSpec` back. Update the spec from Step 1 by appending `$CR_ID` to `connectivity_rule_ids`:
+```bash
+grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
+  -d '{}' \
+  saas-api.tmprl.cloud:443 \
+  temporal.api.cloud.cloudservice.v1.CloudService/GetConnectivityRules | \
+  jq '.connectivityRules[] | {id, state, spec}'
+```
+
+The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether the account already has a public rule, which matters because only one is allowed.
+
+**Step 2. Attach the rule to the Namespace.**
+
+`UpdateNamespace` replaces the entire spec and requires the latest `resource_version`, so read the current Namespace first:
+
+```bash
+grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
+  -d "{\"namespace\": \"$NS\"}" \
+  saas-api.tmprl.cloud:443 \
+  temporal.api.cloud.cloudservice.v1.CloudService/GetNamespace | tee /tmp/ns.json
+
+RV=$(jq -r '.namespace.resourceVersion' /tmp/ns.json)
+```
+
+Then post the whole `NamespaceSpec` back, appending `$CR_ID` to `connectivity_rule_ids`:
 
 ```bash
 jq --arg id "$CR_ID" --arg rv "$RV" --arg ns "$NS" '
@@ -279,14 +309,25 @@ grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
   temporal.api.cloud.cloudservice.v1.CloudService/UpdateNamespace < /tmp/update.json | tee /tmp/update-resp.json
 ```
 
-Poll the returned `asyncOperation` the same way as Step 3.
+Poll the returned `asyncOperation` the same way as in Step 1.
+
+Alternatively, describe the Namespace and confirm the rule is attached:
+
+```bash
+grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
+  -d "{\"namespace\": \"$NS\"}" \
+  saas-api.tmprl.cloud:443 \
+  temporal.api.cloud.cloudservice.v1.CloudService/GetNamespace | \
+  jq '{state: .namespace.state, connectivity_rule_ids: .namespace.spec.connectivityRuleIds}'
+```
+
+The update is complete when `state` is `RESOURCE_STATE_ACTIVE` and `connectivityRuleIds` contains your `$CR_ID`.
 
 Take note of the following:
 
 - The `namespace` field is the Cloud-side Namespace identifier (for example, `myns.a1b2c3`), not the SDK gRPC hostname (`myns.a1b2c3.tmprl.cloud`). Strip the trailing `.tmprl.cloud`.
-- Do not omit fields from `spec` in Step 4. Proto3 update is full-replace — any field left out will be cleared. Building the body from the `GetNamespace` response avoids surprises.
+- Do not omit fields from `spec` in Step 2. Proto3 update is full-replace — any field left out will be cleared. Building the body from the `GetNamespace` response avoids surprises.
 - A Namespace can have at most one public Connectivity Rule attached, and only one public rule exists per account. If `connectivity_rule_ids` already references a public rule without Stable IPs, replace that entry instead of appending — you cannot create a second public rule.
-- Stable IPs requires `temporal-cloud-api-version` of `v0.15.0` or later.
 - Authentication uses Cloud API keys; mTLS client certificates are not accepted on `saas-api.tmprl.cloud`. The metadata key is `authorization` (lowercase), per the gRPC convention.
 
 ### How to view Stable IP ranges
