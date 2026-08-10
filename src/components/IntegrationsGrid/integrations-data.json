@@ -281,7 +281,7 @@
   },
   {
     "name": "You.com",
-    "description": "Run You.com search, research, and webpage-contents calls as durable Temporal Activities with retry and error mapping.",
+    "description": "Run You.com web search, research, and webpage-contents calls as durable Temporal Activities with retry and error mapping.",
     "tags": [
       "Data source"
     ],
