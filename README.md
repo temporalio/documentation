@@ -16,6 +16,7 @@ This repository contains a large chunk of the Temporal information corpus.
 | [Readability tooling guidance](./readme/READABILITY.md) | For repo maintainers |
 | [Style guidance](./readme/STYLE.md)               | For our open source community |
 | [Utility tooling guidance](./readme/UTILITIES.md) | For repo maintainers |
+| [Automations inventory](./readme/AUTOMATIONS.md) | For repo maintainers |
 
 ### Current component versioning philosophy
 
