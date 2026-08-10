@@ -187,7 +187,15 @@ const developGoCategory = {
         items: [
           'develop/go/activities/basics',
           'develop/go/activities/execution',
-          'develop/go/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/go/activities/standalone-activities-quickstart',
+              'develop/go/activities/standalone-activities',
+            ],
+          },
           'develop/go/activities/timeouts',
           'develop/go/activities/asynchronous-activity',
           'develop/go/activities/dynamic-activity',
