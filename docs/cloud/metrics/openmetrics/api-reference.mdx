@@ -116,6 +116,12 @@ Rate limit scopes are subject to change.
 | ----- | ----- |
 | Account | 180 requests per hour |
 
+:::caution
+Practical enforcement of this limit may allow bursts that exceed the limit at various times.
+Do not rely on this headroom: design production clients against the documented limit.
+
+:::
+
 ### Response Completeness
 
 The `X-Completeness` header indicates whether the response contains all available data:
@@ -386,3 +392,9 @@ count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 | ----- | ----- | ----- |
 | 30k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
 | 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set scrape interval to 30s |
+
+:::caution
+Practical enforcement of this limit may allow bursts that exceed the limit at various times.
+Do not rely on this headroom: design production clients against the documented limit.
+
+:::

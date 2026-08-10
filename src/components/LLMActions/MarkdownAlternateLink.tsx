@@ -10,7 +10,7 @@ import { getMarkdownPath } from './markdownPath';
  *
  * Rendered server-side into the static HTML by the swizzled DocItem/Content.
  * Skipped on pages with no Markdown counterpart (llm_exclude), matching the
- * markdown-pages plugin and LLMActions. See MARKDOWN_PIPELINE.md.
+ * markdown-pages plugin and LLMActions. See readme/MARKDOWN_PIPELINE.md.
  */
 export default function MarkdownAlternateLink(): JSX.Element | null {
   const { metadata, frontMatter } = useDoc();
