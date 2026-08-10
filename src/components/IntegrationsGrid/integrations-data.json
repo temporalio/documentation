@@ -278,5 +278,14 @@
       "Temporal Cloud"
     ],
     "href": "https://docs.vantage.sh/connecting_temporal/"
+  },
+  {
+    "name": "You.com",
+    "description": "Run You.com search, research, and webpage-contents calls as durable Temporal Activities with retry and error mapping.",
+    "tags": [
+      "Data source"
+    ],
+    "sdk": "Python",
+    "href": "https://github.com/youdotcom-oss/youdotcom-temporal/blob/main/README.md"
   }
 ]
