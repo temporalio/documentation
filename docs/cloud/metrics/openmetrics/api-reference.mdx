@@ -116,7 +116,7 @@ Rate limit scopes are subject to change.
 | ----- | ----- |
 | Account | 180 requests per hour |
 
-:::note
+:::caution
 Practical enforcement of this limit may allow bursts of up to 2x this limit (up to 360 requests per hour) at various times.
 Do not rely on this headroom: design production clients against the documented limit of 180 requests per hour.
 
