@@ -12621,10 +12621,10 @@ safe-regex-test@^1.1.0:
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-satori@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/satori/-/satori-0.26.0.tgz#bd99df054f86ffb4939ac8d60aa92a3a5b0d9c80"
-  integrity sha512-tkMFrfIs3l2mQ2JEcyW0ADTy3zGggFRFzi6Ef8YozQSFsFKEqaSO1Y8F9wJg4//PJGQauMalHGTUEkPrFwhVPA==
+satori@^0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/satori/-/satori-0.29.0.tgz#dd74990b7cc13d68058b6eb5f0a84298cf8047fe"
+  integrity sha512-fPAfrwNaIQ7EsJLhY382STEqpczN6ZEH9NsKXDQgRcxUXNNPB73iAjSshzFwTaaScT68pxV0pmG6TBzDQ4sEGw==
   dependencies:
     "@shuding/opentype.js" "1.4.0-beta.0"
     css-background-parser "^0.1.0"
