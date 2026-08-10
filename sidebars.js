@@ -42,11 +42,19 @@ const developDotnetCategory = {
         items: [
           'develop/dotnet/activities/basics',
           'develop/dotnet/activities/execution',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/dotnet/activities/standalone-activities-quickstart',
+              'develop/dotnet/activities/standalone-activities',
+            ],
+          },
           'develop/dotnet/activities/timeouts',
           'develop/dotnet/activities/asynchronous-activity',
           'develop/dotnet/activities/dynamic-activity',
           'develop/dotnet/activities/benign-exceptions',
-          'develop/dotnet/activities/standalone-activities',
         ],
       },
       {
