@@ -3,6 +3,12 @@
   "github": {
     "silent": true
   },
+  "rewrites": [
+    {
+      "source": "/img/og/:path*",
+      "destination": "/img/assets/open-graph-shiny.jpg"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)\\.md",
@@ -33,6 +39,23 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/llms-quickstart.txt",
+      "destination": "/llms.txt",
+      "permanent": true
+    },
+    {
+      "source": "/llms-api-reference.txt",
+      "destination": "/llms.txt",
+      "source": "/develop/typescript/workers/serverless-workers/cloud-run",
+      "destination": "/develop/typescript/workers/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/worker-deployments/serverless-workers/self-hosted-setup",
+      "destination": "/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup",
+      "permanent": true
+    },
     {
       "source": "/guides/saga-pattern",
       "destination": "/guides/recover-without-restart",
@@ -878,7 +901,8 @@
     },
     {
       "source": "/operation/how-to-tune-workers",
-      "destination": "/dev-guide/worker-performance"
+      "destination": "/develop/worker-performance",
+      "permanent": true
     },
     {
       "source": "/cadence-to-temporal",

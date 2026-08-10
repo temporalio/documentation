@@ -254,13 +254,15 @@ export async function apiWorkflow(endpoint: string): Promise<string> {
 - **Assuming `nextRetryDelay` persists across all retries.** It only applies to the immediate next retry. If the following attempt also fails without setting `nextRetryDelay`, the RetryPolicy interval resumes.
 - **Setting `nextRetryDelay` longer than `ScheduleToCloseTimeout`.** If the override delay exceeds the remaining `ScheduleToCloseTimeout` budget, the retry will never execute — Temporal will expire the Activity before the delay elapses.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Fixed Count of Retries](/design-patterns/fixed-count-retries): Cap total attempts to prevent unbounded retry cost.
 - [Fixed Wall-Time Retries](/design-patterns/fixed-wall-time-retries): Enforce a total elapsed time budget across all attempts.
 - [Fast/Slow Retries](/design-patterns/fast-slow-retries): Shift from a fast retry cadence to a slow one after initial attempts are exhausted.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
-## References
+### References
 
 - [Per-error next Retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay)

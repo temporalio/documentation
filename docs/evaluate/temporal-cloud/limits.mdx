@@ -22,6 +22,7 @@ tags:
 ---
 
 import { CaptionedImage } from '@site/src/components';
+import { ReleaseNoteHeader } from '@site/src/components';
 
 Temporal Cloud enforces a variety of limits to keep the service reliable, including rate limits (how often something may occur in a unit of time), resource limits (how many of a given resource may exist at any one time), and configuration limits (minimum or maximum values for a setting)
 
@@ -39,16 +40,48 @@ The following limits apply at the Temporal Cloud Account level (per account).
 ### Users
 
 - Scope: Account
-- Default limit: 300 users
+- Default limit: 300 Users
 - How to increase: [Contact support](/cloud/support#support-ticket) 
+
+### Projects
+
+- Scope: Account
+- Default limit: 5 Projects
+- How to increase: [Contact support](/cloud/support#support-ticket)
 
 ### Namespaces
 
 - Scope: Account
-- Default limit: 10 namespaces
+- Default limit: 10 Namespaces
 - How to increase:
-  - Automatically increased as you start creating namespaces
+  - Automatically increased as you start creating Namespaces
   - [Contact support](/cloud/support#support-ticket) for large-scale needs
+
+## Project level {/* #project-level */}
+
+<ReleaseNoteHeader
+  featureName="projects"
+/>
+
+The following limits apply at the Project level for any new Project created. The Default Project uses the Account-level resource limits rather than the per-Project defaults shown above. For example, the Default Project inherits the Account's Namespace quota and Account-level limits for Service Accounts, Nexus Endpoints, and Connectivity Rules.
+
+### Namespaces and Project-scoped Service accounts
+
+- Scope: Project
+- Default: 10
+- How to increase: [Contact support](/cloud/support#support-ticket)
+
+### Nexus Endpoints
+
+- Scope: Project
+- Default: 5
+- How to increase: [Contact support](/cloud/support#support-ticket)
+
+### Connectivity rules
+
+- Scope: Project. Each non-default Project supports up to one Public Connectivity Rule.
+- Default: 6
+- How to increase: [Contact support](/cloud/support#support-ticket)
 
 ## Namespace level
 
@@ -113,7 +146,15 @@ This approach uniformly distributes the scheduled Workflow Execution launches th
 - Default limit: 30 Visibility API calls per second
 - Not configurable
 
-All read calls are subject to the Visibility API rate limit.
+The Visibility API rate limit applies to every read API that lists, searches, or counts across executions. These are:
+
+- **Workflow search and count:** `ListWorkflowExecutions`, `ListOpenWorkflowExecutions`, `ListClosedWorkflowExecutions`, `ScanWorkflowExecutions`, `CountWorkflowExecutions`
+- **Schedules:** `ListSchedules`, `CountSchedules`
+- **Batch operations:** `ListBatchOperations`
+- **Task Queue and worker reachability:** `GetWorkerTaskReachability`, and `DescribeTaskQueue` (subject to this limit since Server v1.24)
+- **Worker deployments:** `ListDeployments`, `GetDeploymentReachability`, `ListWorkerDeployments`
+
+Any API that returns a set of executions or a count falls under this limit. Single-entity lookups by ID, such as `DescribeWorkflowExecution` and `DescribeSchedule`, do not. Those read the primary store and count against the general namespace rate limit.
 
 ### Nexus Rate Limit {/* #nexus-rate-limits */}
 
@@ -216,7 +257,8 @@ You can request further increases beyond the initial 100 Endpoint limit by [open
 
 ### Nexus caller Namespace limits {/* #nexus-endpoint-access-policy-limits */}
 
-A single Nexus Endpoint can have a maximum of 1,000 caller Namespaces in its [Access Policy](/nexus/security#runtime-access-controls), the allowlist of Namespaces permitted to use the Endpoint.
+By default, a single Nexus Endpoint can have a maximum of 1,000 caller Namespaces in its [Access Policy](/nexus/security#runtime-access-controls), the allowlist of Namespaces permitted to use the Endpoint.
+You can request further increases beyond the initial 1,000 caller Namespace limit by [opening a support ticket](/cloud/support#support-ticket).
 
 ## Programming model level
 

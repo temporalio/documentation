@@ -1,0 +1,50 @@
+---
+id: index
+title: Troubleshoot Serverless Workers
+sidebar_label: Serverless Workers
+description:
+  Diagnose issues with Temporal Serverless Workers by tracing the flow from Task Queue to Worker execution on your
+  compute provider.
+slug: /troubleshooting/serverless-workers
+toc_max_heading_level: 4
+keywords:
+  - serverless
+  - troubleshooting
+  - worker
+  - invocation
+tags:
+  - Workers
+  - Serverless
+  - Troubleshooting
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
+  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
+  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
+  when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+When a Serverless Worker is not running your Tasks, the failure is almost always in one of three places: the
+[Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) is not starting compute, the compute
+provider is rejecting the request, or the Worker starts but cannot do its job.
+
+Every provider follows the same overall shape:
+
+1. You deploy the Worker to the compute provider.
+2. You create a [Worker Deployment Version](/worker-versioning#deployment-versions) with a compute configuration. This
+   starts a WCI Workflow.
+3. A Worker polls the Temporal Service, which binds its [Task Queue](/task-queue) to the Worker Deployment Version.
+4. The WCI monitors that Task Queue. The [Matching Service](/temporal-service/temporal-server#matching-service) also
+   signals the WCI when a Task arrives with no Worker free to take it.
+5. Work arrives, the WCI starts compute, and the Worker processes Tasks.
+
+How the WCI starts compute is where providers differ, and so is most of the diagnosis. On AWS Lambda the WCI invokes a
+function per unit of work. On GCP Cloud Run it resizes a long-lived Worker Pool. Pick your provider:
+
+- [**AWS Lambda**](/troubleshooting/serverless-workers/aws-lambda) - Diagnose functions that are never invoked,
+  invocation loops, and timeouts that cut Workers short.
+- [**GCP Cloud Run**](/troubleshooting/serverless-workers/cloud-run) - Diagnose Worker Pools that never scale up,
+  impersonation and IAM failures, and instances stopped mid-Activity.

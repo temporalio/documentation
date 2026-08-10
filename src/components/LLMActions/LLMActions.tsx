@@ -17,7 +17,7 @@ export default function LLMActions() {
   const pageUrl = `${siteConfig.url}${permalink}`;
 
   // Clean Markdown is generated for every page at <permalink>.md by the
-  // markdown-pages plugin (see MARKDOWN_PIPELINE.md). These actions point at
+  // markdown-pages plugin (see readme/MARKDOWN_PIPELINE.md). These actions point at
   // that build output rather than the raw MDX source.
   // NOTE: the .md files only exist after `yarn build`; under `yarn start` (dev
   // server) these requests will 404. Verify locally with `yarn build && yarn serve`.
@@ -64,9 +64,9 @@ export default function LLMActions() {
           data-analytics-action="click"
         >
           {copied ? (
-            <FaCheck className={styles.icon} />
+            <FaCheck className={styles.icon} aria-hidden="true" />
           ) : (
-            <FaRegCopy className={styles.icon} />
+            <FaRegCopy className={styles.icon} aria-hidden="true" />
           )}
           {loading ? 'Loading...' : copied ? 'Copied!' : 'Copy for LLM'}
         </button>
@@ -80,7 +80,7 @@ export default function LLMActions() {
           data-analytics-id="view-as-markdown"
           data-analytics-action="click"
         >
-          <FaMarkdown className={styles.icon} />
+          <FaMarkdown className={styles.icon} aria-hidden="true" />
           <span>View Markdown</span>
         </a>
 
@@ -95,7 +95,7 @@ export default function LLMActions() {
             data-analytics-id="open-in-chatgpt"
             data-analytics-action="click"
           >
-            <SiOpenai className={styles.icon} />
+            <SiOpenai className={styles.icon} aria-hidden="true" />
           </a>
           <a
             className={styles.iconLink}
@@ -107,7 +107,7 @@ export default function LLMActions() {
             data-analytics-id="open-in-claude"
             data-analytics-action="click"
           >
-            <SiClaude className={styles.icon} />
+            <SiClaude className={styles.icon} aria-hidden="true" />
           </a>
         </div>
       </div>

@@ -1,138 +1,117 @@
 ---
 id: run-worker-process
-title: Worker processes - Java SDK
-sidebar_label: Worker processes
-description: This section explains how to implement a Worker with the Java SDK
-toc_max_heading_level: 4
+title: Run a Worker - Java SDK
+sidebar_label: Run a Worker
+description: Create and run a Temporal Worker using the Java SDK.
+toc_max_heading_level: 3
 keywords:
   - Java SDK
 tags:
   - Java SDK
   - Temporal SDKs
+  - Worker
 ---
 
-## How to run Worker Processes {/* #run-a-dev-worker */}
+This page covers long-lived Workers that you host and run as persistent processes.
+For Workers that run on serverless compute like AWS Lambda, see [Serverless Workers](/develop/java/workers/serverless-workers).
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+## Create and run a Worker {/* #run-a-dev-worker */}
 
-- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
-- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+Create a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) from a [Temporal Client](/develop/java/client/temporal-client), then call `newWorker()` with the Task Queue to poll.
+Register the Workflow and Activity types the Worker can execute, then call `start()` on the factory.
 
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+<!--SNIPSTART java-create-worker-->
+[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
+```java
+WorkerFactory factory = WorkerFactory.newInstance(client);
 
-Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/develop/worker-performance).
+Worker worker = factory.newWorker("my-task-queue");
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+factory.start();
+```
+<!--SNIPEND-->
 
-Use the `newWorker` method on an instance of a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) to create a new Worker in Java.
+`start()` starts every Worker the factory created, so one factory can run several Workers in a single process.
+The call returns immediately and the Workers poll on background threads, so the process has to stay alive.
 
-A single Worker Entity can contain many Worker Objects.
-Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
+## Register Workflows and Activities {/* #register-types */}
+
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
+
+Register Workflows by class with `registerWorkflowImplementationTypes()`.
+The Worker creates a new instance for each Workflow Execution, so a Workflow Type can be registered only once per Worker.
+Registering two implementations of the same type throws at registration time.
+
+Register Activities by instance with `registerActivitiesImplementations()`.
+One instance serves every Workflow Execution that calls it, so the implementation must be thread-safe.
+Pass dependencies such as database clients through the constructor.
 
 ```java
-// ...
-import io.temporal.client.WorkflowClient;
-import io.temporal.serviceclient.WorkflowServiceStubs;
-import io.temporal.worker.Worker;
-import io.temporal.worker.WorkerFactory;
-
-public class YourWorker {
-
-  public static void main(String[] args) {
-
-    WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-    WorkflowClient client = WorkflowClient.newInstance(service);
-    WorkerFactory factory = WorkerFactory.newInstance(client);
-    Worker yourWorker = factory.newWorker("your_task_queue");
-
-    // Register Workflow
-    // and/or register Activities
-
-    factory.start();
-  }
-}
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class, OrderWorkflowImpl.class);
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl(databaseClient));
 ```
 
-After creating the Worker entity, register all Workflow Types and all Activity Types that the Worker can execute.
-A Worker can be registered with just Workflows, just Activities, or both.
+A Worker can register one implementation of [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) and one of `DynamicActivity` alongside any number of type-specific implementations.
+The dynamic implementation handles Workflow and Activity Types that no registered type matches.
 
-**Operation guides:**
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
-- [How to tune Workers](/develop/worker-performance)
+To run a Worker against Temporal Cloud, configure the Client connection with your Namespace address and authentication credentials.
+See [Connect to Temporal Cloud](/develop/java/client/temporal-client#connect-to-temporal-cloud) for setup instructions.
 
-## How to register types {/* #register-types */}
+## Configure Worker options {/* #worker-options */}
 
-All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+Pass [`WorkerOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.html) to `newWorker()` to set concurrency limits, poller counts, and rate limits for a single Worker.
+Pass [`WorkerFactoryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.html) to `newInstance()` for settings shared by every Worker in the process, such as the Workflow cache size.
+The defaults work for most cases.
 
-If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
-However, the failure of the Task does not cause the associated Workflow Execution to fail.
+To tune these values against real load, see [Worker performance](/develop/worker-performance) and the [Worker tuning reference](/develop/worker-tuning-reference).
 
-Use `worker.registerWorkflowImplementationTypes` to register Workflow Type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+## Run a versioned Worker {/* #versioned-worker */}
 
-For Workflows, the Workflow Type is registered with a Worker.
-A Workflow Type can be registered only once per Worker entity.
-If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
+Set a Worker Deployment Version and enable versioning in `WorkerOptions`, then set a versioning behavior on each Workflow.
 
-For Activities, Activity implementation instances are registered with a Worker because they are stateless and thread-safe.
-You can pass any number of dependencies in the Activity implementation constructor, such as the database connections, services, etc.
-
-The following example shows how to register a Workflow and an Activity with a Worker.
-
+<!--SNIPSTART java-versioned-worker-->
+[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
 ```java
-Worker worker = workerFactory.newWorker("your_task_queue");
-...
-// Register Workflow
-worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-// Register Activity
+WorkerOptions options =
+    WorkerOptions.newBuilder()
+        .setDeploymentOptions(
+            WorkerDeploymentOptions.newBuilder()
+                .setVersion(new WorkerDeploymentVersion("my-app", "1.0"))
+                .setUseVersioning(true)
+                .build())
+        .build();
+
+Worker worker = factory.newWorker("my-task-queue", options);
+worker.registerWorkflowImplementationTypes(VersionedGreetingWorkflowImpl.class);
 worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
+<!--SNIPEND-->
 
-When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
-Activity code must be thread-safe because the same instance of the Activity code is run for every Workflow Execution that calls it.
+Annotate the Workflow method with `@WorkflowVersioningBehavior(VersioningBehavior.PINNED)` or `AUTO_UPGRADE`, or set a default for the whole Worker with `setDefaultVersioningBehavior()`.
+The annotation belongs on the implementation, not the interface.
 
-For `DynamicWorkflow`, only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
-The following example shows how to register the `DynamicWorkflow` and `DynamicActivity` implementation with a Worker.
+A versioning behavior applies only to a Worker that has versioning enabled.
+If a Workflow declares one and its Worker does not enable versioning, the server rejects the Workflow Task and the Task retries instead of failing outright.
 
+See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
+
+## Shut down a Worker {/* #shut-down-a-worker */}
+
+Call `shutdown()` on the factory to stop polling for new Tasks, then `awaitTermination()` to give in-flight Tasks time to finish.
+
+<!--SNIPSTART java-worker-graceful-shutdown-->
+[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
 ```java
-  public static void main(String[] arg) {
-
-    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-    WorkflowClient client = WorkflowClient.newInstance(service);
-    WorkerFactory factory = WorkerFactory.newInstance(client);
-    Worker worker = factory.newWorker(TASK_QUEUE);
-
-    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations
-    ** must be known to the Worker at runtime to dispatch Workflow Tasks.
-    */
-    worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
-
-    // Start all the Workers that are in this process.
-    factory.start();
-
-    /* Create the Workflow stub. Note that the Workflow Type is not explicitly registered with the Worker. */
-    WorkflowOptions workflowOptions =
-        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
-    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
-    /**
-     * Register Dynamic Activity implementation with the Worker. Since Activities are stateless
-     * and thread-safe, we need to register a shared instance.
-    */
-    worker.registerActivitiesImplementations(new DynamicGreetingActivityImpl());
-
-    /* Start Workflow Execution and immmediately send Signal. Pass in the Workflow args and Signal args. */
-    workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
-
-    // Wait for the Workflow to finish getting the results.
-    String result = workflow.getResult(String.class);
-
-    System.out.println(result);
-
-    System.exit(0);
-  }
-}
+factory.shutdown();
+factory.awaitTermination(30, TimeUnit.SECONDS);
 ```
+<!--SNIPEND-->
 
-You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
-You can register only one Activity instance that implements `DynamicActivity` with a Worker.
+Both calls apply to every Worker the factory created.
+See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

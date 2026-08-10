@@ -27,6 +27,7 @@ import {
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
+import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -315,6 +316,55 @@ test("converts :::tip to blockquote with tip label", () => {
   assertContains(markdown, "> **💡 Tip:**");
 });
 
+test("uses a custom [title] in place of the type word, keeping the icon", () => {
+  const { markdown } = transformMdx(":::info[TLDR]\nShort version.\n:::");
+  assertContains(markdown, "> **ℹ️ TLDR:**");
+  assertContains(markdown, "> Short version.");
+  assertNotContains(markdown, ":::");
+});
+
+test("converts :::important", () => {
+  const { markdown } = transformMdx(":::important\nRead this.\n:::");
+  assertContains(markdown, "> **❗ Important:**");
+  assertNotContains(markdown, ":::");
+});
+
+test("handles a four-colon fence", () => {
+  const { markdown } = transformMdx("::::note\nNested-capable body.\n::::");
+  assertContains(markdown, "> **📝 Note:**");
+  assertContains(markdown, "> Nested-capable body.");
+  assertNotContains(markdown, "::::");
+});
+
+test("a shorter inner fence does not close a longer outer one", () => {
+  const { markdown } = transformMdx("::::note\nOuter\n\n:::tip\nInner\n:::\n\nStill outer\n::::");
+  assertContains(markdown, "> **📝 Note:**");
+  assertContains(markdown, "> Still outer");
+  assertNotContains(markdown, "::::");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — MDX comments
+// ---------------------------------------------------------------------------
+
+test("strips an MDX comment spanning multiple lines", () => {
+  const { markdown } = transformMdx("{/* NOTE: auto-generated.\nDo not edit. */}\n\nReal content.");
+  assertContains(markdown, "Real content.");
+  assertNotContains(markdown, "{/*");
+  assertNotContains(markdown, "auto-generated");
+});
+
+test("strips an MDX comment with a space before the closing brace", () => {
+  const { markdown } = transformMdx("Before {/* #patching */ } after");
+  assertNotContains(markdown, "{/*");
+  assertContains(markdown, "Before");
+});
+
+test("leaves a {/* inside a code fence alone", () => {
+  const { markdown } = transformMdx("```jsx\n{/* keep me */}\n```");
+  assertContains(markdown, "{/* keep me */}");
+});
+
 test("admonition does not bleed into surrounding content", () => {
   const input = `Before\n\n:::note\nNote content\n:::\n\nAfter`;
   const { markdown } = transformMdx(input);
@@ -565,12 +615,29 @@ test("CaptionedImage uses caption/title when no alt", () => {
   assertContains(markdown, "![Persistence](/diagrams/x.svg)");
 });
 
-test("PhotoCarousel emits one image per entry with captions", () => {
-  const input = `<PhotoCarousel\n  images={[\n    'https://x/a.jpeg',\n    'https://x/b.jpeg',\n  ]}\n  captions={[\n    'First',\n    'Second',\n  ]}\n/>`;
+test("YouTube iframe embeds are stripped; Watch links kept", () => {
+  const input = `:::tip
+
+Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE) for a short overview.
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/zLjhNrOKphE"
+    title="What Is a Workflow in Temporal?"
+    frameBorder="0"
+    allowFullScreen
+  ></iframe>
+</div>
+
+:::
+`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "![First](https://x/a.jpeg)");
-  assertContains(markdown, "![Second](https://x/b.jpeg)");
-  assertNotContains(markdown, "PhotoCarousel");
+  assertContains(markdown, "[What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "iframe");
+  assertNotContains(markdown, "youtube.com/embed");
+  assertNotContains(markdown, "<div");
 });
 
 // ---------------------------------------------------------------------------
@@ -663,7 +730,7 @@ test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkers" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
   assertContains(markdown, "> **Pre-release**");
 });
@@ -870,6 +937,39 @@ test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", 
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: SdkOverviewCards handler
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/sdk-overview-cards");
+
+test("sdkOverviewCardsToMarkdown lists every SDK with guide + API reference links", () => {
+  const md = sdkOverviewCardsToMarkdown({ projectRoot: PROJECT_ROOT });
+  assertContains(md, "- **Go**");
+  assertContains(md, "[Developer guide](/develop/go)");
+  assertContains(md, "[API reference](http://t.mp/go-api)");
+  assertContains(md, "- **.NET**");
+  assertContains(md, "[Developer guide](/develop/dotnet)");
+});
+
+test("sdkOverviewCardsToMarkdown includes a version when sdk-versions.json resolves", () => {
+  const md = sdkOverviewCardsToMarkdown({ projectRoot: PROJECT_ROOT });
+  assert(/\*\*Go\*\* \(v[\d.]+\)/.test(md), "expected a version suffix after the Go label");
+});
+
+test("sdkOverviewCardsToMarkdown without projectRoot omits version chips but keeps links", () => {
+  const md = sdkOverviewCardsToMarkdown();
+  assertContains(md, "- **Go**: [Developer guide](/develop/go)");
+  assertNotContains(md, "(v");
+});
+
+test("transformMdx resolves <SdkOverviewCards /> to a real list (with projectRoot)", () => {
+  const input = `<SdkOverviewCards />`;
+  const { markdown } = transformMdx(input, { projectRoot: PROJECT_ROOT });
+  assertNotContains(markdown, "<SdkOverviewCards");
+  assertContains(markdown, "[Developer guide](/develop/python)");
+  assertContains(markdown, "[API reference](https://python.temporal.io)");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: cards handler (QuickstartCards / PatternCards)
 // ---------------------------------------------------------------------------
 console.log("\n📦 component-handlers/cards");
@@ -1057,7 +1157,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {

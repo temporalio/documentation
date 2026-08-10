@@ -392,6 +392,12 @@ module.exports = async function createConfigAsync() {
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
           docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
+          // Same remark plugin the main docs preset uses (see the `docs` preset
+          // option above) — injects the generated og:image path as real front
+          // matter during MDX compilation so it survives client hydration.
+          // footerText must match the og-image plugin's ai-cookbook target
+          // below, or the hash this injects won't match what postBuild renders.
+          remarkPlugins: [[require('./plugins/og-image/remarkPlugin'), { footerText: 'AI COOKBOOK' }]],
         },
       ],
       [
@@ -404,73 +410,61 @@ module.exports = async function createConfigAsync() {
       [
         require.resolve('./plugins/markdown-pages'),
         {
-          docsDir: 'docs',
+          targets: [
+            { docsDir: 'docs', routeBasePath: '/' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook' },
+          ],
+          llmsTxt: {
+            siteUrl: 'https://docs.temporal.io',
+            title: 'Temporal Platform Documentation',
+            description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            fullDescription: 'This file is the complete text of Temporal\'s documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            rootContent:
+              'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
+              'Every page concatenated into one file is available at `https://docs.temporal.io/llms-full.txt`. ' +
+              'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
+              'use the full text for bulk ingestion.\n\n' +
+              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
+            excludePaths: ['tctl-v1'],
+            sections: [
+              {
+                title: 'Core Primitives',
+                description: 'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
+                inline: true,
+                autoDiscoverSubsections: 'encyclopedia',
+              },
+              {
+                title: 'Concepts',
+                description: 'What Temporal is and how it works.',
+                inline: true,
+                pages: [
+                  'temporal', 'glossary',
+                ],
+              },
+              { autoDiscover: 'develop', title: 'SDK Development Guides', description: 'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.' },
+              { path: 'develop', title: 'Cross-SDK Development Guides', description: 'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).' },
+              { path: 'cloud', title: 'Temporal Cloud', description: 'Deploy and manage Temporal Cloud' },
+              { path: 'evaluate', title: 'Evaluating Temporal', description: 'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.' },
+              { path: 'production-deployment', title: 'Production Deployment', description: 'Deploy Temporal to production' },
+              { path: 'self-hosted-guide', title: 'Self-Hosted Service Guide', description: 'Deploy, configure, and operate a self-hosted Temporal Service.' },
+              { path: 'cli', title: 'CLI Reference', description: 'Temporal CLI command reference' },
+              { path: 'references', title: 'References', description: 'Configuration and API references' },
+              { path: 'troubleshooting', title: 'Troubleshooting', description: 'Common issues and solutions' },
+              { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
+              { path: 'design-patterns', title: 'Design Patterns', description: 'Reusable Workflow and Activity patterns for common orchestration problems.' },
+              { path: 'guides', title: 'Guides', description: 'End-to-end walkthroughs that solve a specific problem with Temporal.' },
+              { path: 'ai-cookbook', title: 'AI Cookbook', description: 'Runnable examples for building AI and agent applications with Temporal.' },
+              { path: 'demos', title: 'Interactive Demos', description: 'Browser-based interactive demos. These pages are visual tools rather than prose documentation.' },
+            ],
+          },
         },
       ],
       [
         require.resolve('./plugins/og-image'),
         {
-          docsDir: 'docs',
-        },
-      ],
-      [
-        'docusaurus-plugin-llms',
-        {
-          // Generate both llms.txt (index) and llms-full.txt (complete content)
-          generateLLMsTxt: true,
-          generateLLMsFullTxt: true,
-          generateMarkdownFiles: false,
-
-          // Exclude imported markdown partials that should not be published as standalone LLM docs.
-          ignoreFiles: ['docs/cloud/references/regions/private-service.md', 'docs/cloud/references/regions/gcpregions.md'],
-
-          // Tell agents how to fetch individual pages as raw markdown
-          rootContent:
-            'This file contains links to documentation sections following the llmstxt.org standard.\n\n' +
-            '## Fetching individual pages\n\n' +
-            'To fetch any page as raw Markdown, append `.md` to its URL path. ' +
-            'For example, `https://docs.temporal.io/encyclopedia.md` returns the raw Markdown source for the Encyclopedia page.\n\n' +
-            'Some pages (interactive demos, landing pages) are not available as Markdown. ' +
-            'Requesting `.md` for those pages returns a short explanation instead.',
-
-          // Clean up content for better LLM consumption
-          excludeImports: true,
-          removeDuplicateHeadings: true,
-
-          // Organize content in a logical order for LLMs
-          includeOrder: [
-            'quickstarts/**',
-            'evaluate/**',
-            'develop/**',
-            'production-deployment/**',
-            'cli/**',
-            'references/**',
-            'troubleshooting/**',
-            'encyclopedia/**',
-            'security*',
-            'web-ui*',
-            'glossary*',
-          ],
-
-          // Path transformation to clean URLs
-          pathTransformation: {
-            ignorePaths: ['docs'],
-          },
-
-          // Custom LLM files for specific use cases
-          customLLMFiles: [
-            {
-              filename: 'llms-quickstart.txt',
-              includePatterns: ['docs/evaluate/**/*.mdx', 'docs/develop/**/*.mdx'],
-              fullContent: true,
-              title: 'Temporal Quickstart Guide',
-            },
-            {
-              filename: 'llms-api-reference.txt',
-              includePatterns: ['docs/references/**/*.mdx', 'docs/cli/**/*.mdx'],
-              fullContent: true,
-              title: 'Temporal API and CLI Reference',
-            },
+          targets: [
+            { docsDir: 'docs', routeBasePath: '/' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
           ],
         },
       ],
