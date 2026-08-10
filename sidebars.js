@@ -574,7 +574,15 @@ const developPythonCategory = {
         items: [
           'develop/python/activities/basics',
           'develop/python/activities/execution',
-          'develop/python/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/python/activities/standalone-activities-quickstart',
+              'develop/python/activities/standalone-activities',
+            ],
+          },
           'develop/python/activities/timeouts',
           'develop/python/activities/asynchronous-activity',
           'develop/python/activities/benign-exceptions',
