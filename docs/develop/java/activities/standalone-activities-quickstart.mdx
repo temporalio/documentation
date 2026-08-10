@@ -1,0 +1,264 @@
+---
+id: standalone-activities-quickstart
+title: Standalone Activities Java Quickstart
+sidebar_label: Quickstart
+description: Execute a Standalone Activity with the Temporal Java SDK without writing a Workflow.
+keywords:
+  - standalone activity
+  - activity execution
+  - execute activity
+  - java sdk
+  - quickstart
+  - getting started
+tags:
+  - Activities
+  - Temporal Client
+  - Java SDK
+  - setup
+  - getting started
+hide_table_of_contents: true
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
+
+# Quickstart
+
+[Standalone Activities](/standalone-activity) are Activities that run independently, without being orchestrated by a
+Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
+Activity directly from a Temporal Client using `ActivityClient`.
+
+The way you write the Activity and register it with a Worker is identical to [Workflow
+Activities](/develop/java/activities/basics). The only difference is that you execute a Standalone
+Activity directly from your Temporal Client.
+
+:::note
+
+This documentation uses source code from the
+[standaloneactivities](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities)
+sample.
+
+:::
+
+<SetupSteps>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+{`brew install temporal`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal --version`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal server start-dev`}
+</CodeSnippet>
+</>
+}>
+
+## Get Started with Standalone Activities {/* #get-started */}
+
+Prerequisites:
+
+- **Java** 8+
+
+- **Temporal Java SDK** (v1.35.0 or higher). See the [Java Quickstart](/develop/java/set-up-your-local-java) for
+  install instructions.
+
+- **Temporal CLI** v1.7.0 or higher. Install with Homebrew, or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms. Verify the installation with `temporal --version`.
+
+Start the Temporal development server with `temporal server start-dev`.
+
+This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
+It uses an in-memory database, so do not use it for real use cases.
+
+The Temporal Server will now be available for client connections on `localhost:7233`, and the
+Temporal Web UI will now be accessible at [http://localhost:8233](http://localhost:8233).
+
+</SetupStep>
+
+<SetupStep>
+
+## Clone the sample
+
+Clone the [samples-java](https://github.com/temporalio/samples-java) repository to follow along:
+
+```bash
+git clone https://github.com/temporalio/samples-java.git
+cd samples-java
+```
+
+The sample consists of separate programs in the `standaloneactivities` package:
+
+```
+core/src/main/java/io/temporal/samples/standaloneactivities/
+├── GreetingActivities.java       # Activity interface
+├── GreetingActivitiesImpl.java   # Activity implementation
+├── StandaloneActivityWorker.java # Worker that processes activity tasks
+├── ExecuteActivity.java          # Starts an activity and waits for the result
+├── StartActivity.java            # Starts an activity without blocking
+├── ListActivities.java           # Lists activity executions
+└── CountActivities.java          # Counts activity executions
+```
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="java" title="GreetingActivities.java">
+{`@ActivityInterface
+public interface GreetingActivities {
+
+  @ActivityMethod
+  String composeGreeting(String greeting, String name);
+}`}
+</CodeSnippet>
+<CodeSnippet language="java" title="GreetingActivitiesImpl.java">
+{`public class GreetingActivitiesImpl implements GreetingActivities {
+
+  private static final Logger log = LoggerFactory.getLogger(GreetingActivitiesImpl.class);
+
+  @Override
+  public String composeGreeting(String greeting, String name) {
+    log.info("Composing greeting...");
+    return greeting + ", " + name + "!";
+  }
+}`}
+</CodeSnippet>
+</>
+}>
+
+## Define your Activity {/* #define-activity */}
+
+An Activity in the Temporal Java SDK is an interface annotated with `@ActivityInterface`, with
+methods annotated with `@ActivityMethod`. The way you define a Standalone Activity is identical to
+how you define an Activity orchestrated by a Workflow. In fact, the same Activity can be executed
+both as a Standalone Activity and as a Workflow Activity.
+
+[GreetingActivities.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/GreetingActivities.java)
+
+[GreetingActivitiesImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/GreetingActivitiesImpl.java)
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="java" title="StandaloneActivityWorker.java">
+{`ClientConfigProfile profile = ClientConfigProfile.load();
+WorkflowServiceStubs service =
+    WorkflowServiceStubs.newServiceStubs(profile.toWorkflowServiceStubsOptions());
+
+WorkflowClient client = WorkflowClient.newInstance(service, profile.toWorkflowClientOptions());
+WorkerFactory factory = WorkerFactory.newInstance(client);
+Worker worker = factory.newWorker(TASK_QUEUE);
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+factory.start();
+System.out.println("Worker running on task queue: " + TASK_QUEUE);`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.StandaloneActivityWorker`}
+</CodeSnippet>
+</>
+}>
+
+## Run a Worker with the Activity registered {/* #run-worker */}
+
+Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
+you create a `WorkerFactory`, register the Activity implementation, and call `factory.start()`. The
+Worker doesn't need to know whether the Activity will be invoked from a Workflow or as a Standalone
+Activity. See [How to run a Worker](/develop/java/workers/run-worker-process) for more details on
+Worker setup and configuration options.
+
+[StandaloneActivityWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/StandaloneActivityWorker.java)
+
+Open a new terminal, navigate to the `samples-java` directory, and run the Worker.
+Leave this terminal running — the Worker needs to stay up to process activities.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="java" title="ExecuteActivity.java">
+{`ActivityClient client =
+    ActivityClient.newInstance(
+        service,
+        ActivityClientOptions.newBuilder().setNamespace(profile.getNamespace()).build());
+
+StartActivityOptions options =
+    StartActivityOptions.newBuilder()
+        .setId(ACTIVITY_ID)
+        .setTaskQueue(TASK_QUEUE)
+        .setStartToCloseTimeout(Duration.ofSeconds(10))
+        .build();
+
+String result =
+    client.execute(
+        GreetingActivities.class,
+        GreetingActivities::composeGreeting,
+        options,
+        "Hello",
+        "World");
+System.out.println("Activity result: " + result);`}
+</CodeSnippet>
+<CodeSnippet language="java">
+{`// Using a string type name
+String result = client.execute("ComposeGreeting", String.class, options, "Hello", "World");`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`./temporal activity execute \\
+  --type ComposeGreeting \\
+  --activity-id standalone-activity-id \\
+  --task-queue standalone-activity-task-queue \\
+  --start-to-close-timeout 10s \\
+  --input '"Hello"' \\
+  --input '"World"'`}
+</CodeSnippet>
+</>
+}>
+
+## Execute a Standalone Activity {/* #execute-activity */}
+
+Use
+[`ActivityClient.execute()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityClient.html)
+to execute a Standalone Activity and block until it completes. Call this from your application code,
+not from inside a Workflow Definition. This durably enqueues your Standalone Activity in the Temporal
+Server, waits for it to be executed on your Worker, and then returns the typed result.
+
+[ExecuteActivity.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/ExecuteActivity.java)
+
+The typed `execute()` API takes the Activity interface class and an unbound method reference. The SDK
+uses the method reference to infer the Activity type name and result type at runtime. You can also
+call Activities by string type name.
+
+`StartActivityOptions` requires `id`, `taskQueue`, and at least one of `startToCloseTimeout` or
+`scheduleToCloseTimeout`.
+
+To run it:
+
+1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
+2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
+3. Open a new terminal, navigate to the `samples-java` directory, and run the Gradle command.
+
+Or use the Temporal CLI.
+
+</SetupStep>
+
+</SetupSteps>
+
+## Run with Temporal Cloud
+
+All code samples on this page use
+[`ClientConfigProfile.load()`](https://www.javadoc.io/doc/io.temporal/temporal-envconfig/latest/io/temporal/envconfig/ClientConfigProfile.html)
+to configure the Temporal Client connection. It responds to [environment
+variables](/references/client-environment-configuration) and [TOML configuration
+files](/references/client-environment-configuration), so the same code works against a local dev
+server and Temporal Cloud without changes. See [Run Standalone Activities with Temporal
+Cloud](/develop/java/activities/standalone-activities#run-standalone-activities-temporal-cloud) in the Feature Guide
+for mTLS and API key setup.
+
+## Next steps
+
+- **[Standalone Activities Feature Guide](/develop/java/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
+- **[Activity basics](/develop/java/activities/basics)**: How to write and register Activities with the Java SDK.

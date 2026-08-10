@@ -356,7 +356,15 @@ const developJavaCategory = {
         items: [
           'develop/java/activities/basics',
           'develop/java/activities/execution',
-          'develop/java/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/java/activities/standalone-activities-quickstart',
+              'develop/java/activities/standalone-activities',
+            ],
+          },
           'develop/java/activities/timeouts',
           'develop/java/activities/asynchronous-activity',
           'develop/java/activities/benign-exceptions',
