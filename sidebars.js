@@ -765,7 +765,15 @@ const developRubyCategory = {
         items: [
           'develop/ruby/activities/basics',
           'develop/ruby/activities/execution',
-          'develop/ruby/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/ruby/activities/standalone-activities-quickstart',
+              'develop/ruby/activities/standalone-activities',
+            ],
+          },
           'develop/ruby/activities/timeouts',
           'develop/ruby/activities/asynchronous-activity',
           'develop/ruby/activities/dynamic-activity',
