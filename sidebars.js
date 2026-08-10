@@ -982,7 +982,15 @@ const developTypeScriptCategory = {
         items: [
           'develop/typescript/activities/basics',
           'develop/typescript/activities/execution',
-          'develop/typescript/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/typescript/activities/standalone-activities-quickstart',
+              'develop/typescript/activities/standalone-activities',
+            ],
+          },
           'develop/typescript/activities/timeouts',
           'develop/typescript/activities/asynchronous-activity',
           'develop/typescript/activities/benign-exceptions',
