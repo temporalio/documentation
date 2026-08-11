@@ -130,3 +130,14 @@ Each step is a separate, durable Operation with its own retries and failure hand
 - [Nexus error handling](/nexus/error-handling) - Error types and how they surface in caller Workflows.
 - [Nexus metrics](/nexus/metrics) - SDK, Cloud, and OSS cluster metrics.
 
+## Pre-release: the new Nexus developer experience
+
+A new way of building Nexus Services is in pre-release. It combines a contract-first workflow, where one schema generates typed models and Service definitions for every language, with a single handler type that can back an Operation with a Workflow, an Update, or an Activity.
+
+The APIs are experimental, so expect them to change.
+
+- [Nexus SDK V2](/nexus/sdk-v2) - Implement Operations with `TemporalOperationHandler`, and get bidirectional linking across the Namespace boundary.
+- [Nexus Client Code Generator](/nexus/client-code-generator) - Generate typed models, validators, and Service definitions for Go, Java, Python, and TypeScript from one schema.
+- [Nexus Standalone Activity](/nexus/standalone-activity) - Back an Operation with a single durable step instead of a Workflow.
+- [Development Walkthrough (Java)](/develop/java/nexus/development-walkthrough) - Build a Nexus Service end to end, adding one capability at a time. This walkthrough is not in the navigation yet, so this link is its entry point.
+
