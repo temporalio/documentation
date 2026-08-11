@@ -26,7 +26,7 @@ What differs between them is what you get back and how long it takes.
 
 `remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted is not the same as handled — the Signal is durably recorded and the Workflow will process it, but the Operation does not wait for that. If the caller needs confirmation that the nudge took effect, it needs an Update, not a Signal.
 
-`getApprovalStatus` returns the current progress immediately. Call it when something needs to report on a pending approval; do not call it in a loop waiting for the decision.
+`getApprovalStatus` returns the current progress immediately. Call it when something needs to report on a pending approval; do not call it in a loop waiting for the decision. Note that this Operation is [not implementable in the pre-release](/develop/java/nexus/development-walkthrough/add-messaging#expose-them-as-nexus-operations), because Query is not yet available as sync messaging.
 
 `submitDecision` returns confirmation that the decision was recorded. This is the point of using an Update: the caller learns the outcome of its own message. Once it succeeds, the approval Workflow unblocks and completes, which resolves the `requestApproval` Operation that the original caller is still awaiting.
 
