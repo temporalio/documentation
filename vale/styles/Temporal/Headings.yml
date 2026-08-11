@@ -60,6 +60,8 @@ exceptions:
   - Operations
   - Payload
   - Priority
+  - Project
+  - Projects
   - Query
   - Queries
   - Queue
@@ -185,3 +187,8 @@ exceptions:
   - Terraform
   - Prometheus
   - Grafana
+  # AI vendor and model-platform proper nouns
+  - AI
+  - Google
+  - Gemini
+  - Vertex

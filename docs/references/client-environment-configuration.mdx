@@ -1,0 +1,251 @@
+---
+id: client-environment-configuration
+title: Environment configuration
+sidebar_label: Environment configuration
+description: Reference for the environment variables that configure Temporal Clients, including the Temporal CLI.
+toc_max_heading_level: 3
+tags:
+  - Temporal Client
+  - Configuration
+  - Environment Variables
+  - TOML
+---
+
+This page lists every environment variable that configures a client, including SDK
+[Temporal Clients](/encyclopedia/temporal-client) and the Temporal CLI, along with its TOML configuration key and the
+equivalent CLI flag.
+
+For how to use these variables and configuration files together, refer to
+[Environment configuration](/develop/environment-configuration).
+
+When the same setting comes from more than one place, the highest precedence wins:
+
+1. A CLI flag passed explicitly on the command line.
+2. An environment variable.
+3. A value in a TOML configuration file.
+
+Every variable below lists the clients that read it. `Read by: every client` means every SDK and the Temporal CLI.
+
+## Configuration file variables
+
+### `TEMPORAL_CONFIG_FILE`
+
+Path to the TOML configuration file. Defaults to `temporal.toml` in a platform-specific directory.
+
+- TOML key: none
+- CLI flag: `--config-file`
+- Read by: every client
+
+### `TEMPORAL_PROFILE`
+
+Name of the configuration profile to load. Defaults to `default`.
+
+- TOML key: none
+- CLI flag: `--profile`
+- Read by: every client
+
+## Connection variables
+
+### `TEMPORAL_ADDRESS`
+
+Host and port of the Temporal Frontend Service, such as `localhost:7233`.
+
+- TOML key: `profile.<name>.address`
+- CLI flag: `--address`
+- Read by: every client
+
+### `TEMPORAL_NAMESPACE`
+
+Temporal Namespace to connect to.
+
+- TOML key: `profile.<name>.namespace`
+- CLI flag: `--namespace`
+- Read by: every client
+
+### `TEMPORAL_API_KEY`
+
+API key for authentication. When set, TLS is enabled by default.
+
+- TOML key: `profile.<name>.api_key`
+- CLI flag: `--api-key`
+- Read by: every client
+
+### `TEMPORAL_CLIENT_AUTHORITY`
+
+Overrides the `:authority` gRPC header. This is a Go SDK extension with no equivalent in other clients and no CLI flag
+of its own.
+
+- TOML key: `profile.<name>.authority`
+- CLI flag: none
+- Read by: Go
+
+## TLS variables
+
+### `TEMPORAL_TLS`
+
+Set to `true` to enable TLS, `false` to disable it. The TOML key inverts the value: `disabled = true` turns TLS off.
+
+- TOML key: `profile.<name>.tls.disabled`
+- CLI flag: `--tls`
+- Read by: every client
+
+### `TEMPORAL_TLS_CLIENT_CERT_PATH`
+
+Filesystem path to the client's public TLS certificate. Cannot be combined with `TEMPORAL_TLS_CLIENT_CERT_DATA`.
+
+- TOML key: `profile.<name>.tls.client_cert_path`
+- CLI flag: `--tls-cert-path`
+- Read by: every client
+
+### `TEMPORAL_TLS_CLIENT_CERT_DATA`
+
+Raw PEM data for the client's public TLS certificate. Cannot be combined with `TEMPORAL_TLS_CLIENT_CERT_PATH`.
+
+- TOML key: `profile.<name>.tls.client_cert_data`
+- CLI flag: `--tls-cert-data`
+- Read by: every client
+
+### `TEMPORAL_TLS_CLIENT_KEY_PATH`
+
+Filesystem path to the client's private TLS key. Cannot be combined with `TEMPORAL_TLS_CLIENT_KEY_DATA`.
+
+- TOML key: `profile.<name>.tls.client_key_path`
+- CLI flag: `--tls-key-path`
+- Read by: every client
+
+### `TEMPORAL_TLS_CLIENT_KEY_DATA`
+
+Raw PEM data for the client's private TLS key. Cannot be combined with `TEMPORAL_TLS_CLIENT_KEY_PATH`.
+
+- TOML key: `profile.<name>.tls.client_key_data`
+- CLI flag: `--tls-key-data`
+- Read by: every client
+
+### `TEMPORAL_TLS_SERVER_CA_CERT_PATH`
+
+Filesystem path to the Certificate Authority certificate used to verify the server. Cannot be combined with
+`TEMPORAL_TLS_SERVER_CA_CERT_DATA`.
+
+- TOML key: `profile.<name>.tls.server_ca_cert_path`
+- CLI flag: `--tls-ca-path`
+- Read by: every client
+
+### `TEMPORAL_TLS_SERVER_CA_CERT_DATA`
+
+Raw PEM data for the Certificate Authority certificate used to verify the server. Cannot be combined with
+`TEMPORAL_TLS_SERVER_CA_CERT_PATH`.
+
+- TOML key: `profile.<name>.tls.server_ca_cert_data`
+- CLI flag: `--tls-ca-data`
+- Read by: every client
+
+### `TEMPORAL_TLS_SERVER_NAME`
+
+Overrides the server name used for Server Name Indication (SNI) in the TLS handshake.
+
+- TOML key: `profile.<name>.tls.server_name`
+- CLI flag: `--tls-server-name`
+- Read by: every client
+
+### `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION`
+
+Disables server hostname verification. Use with caution. Not every SDK applies this setting.
+
+- TOML key: `profile.<name>.tls.disable_host_verification`
+- CLI flag: `--tls-disable-host-verification`
+- Read by: every client
+
+## gRPC metadata variables
+
+### `TEMPORAL_GRPC_META_*`
+
+Sets gRPC headers. The part after `_META_` becomes the header key, so `TEMPORAL_GRPC_META_SOME_KEY` sets `some-key`.
+
+- TOML key: `profile.<name>.grpc_meta`
+- CLI flag: `--grpc-meta`
+- Read by: every client
+
+## Codec Server variables
+
+### `TEMPORAL_CODEC_ENDPOINT`
+
+Endpoint for a remote Codec Server. SDKs that read this variable do not apply the codec by default, so it is intended
+mostly for CLI use.
+
+- TOML key: `profile.<name>.codec.endpoint`
+- CLI flag: `--codec-endpoint`
+- Read by: every client except Java
+
+### `TEMPORAL_CODEC_AUTH`
+
+Authorization header value sent to the remote Codec Server.
+
+- TOML key: `profile.<name>.codec.auth`
+- CLI flag: `--codec-auth`
+- Read by: every client except Java
+
+## `temporal env` preset variables
+
+The Temporal CLI supports a second configuration mechanism alongside TOML configuration files. `temporal env` stores
+named key-value presets in `temporal.yaml`, and the variables below select which preset the CLI reads.
+
+Both mechanisms work. The `temporal config` command that manages TOML configuration files is currently experimental,
+while `temporal env` is not.
+
+### `TEMPORAL_ENV`
+
+Name of the active `temporal env` preset. Defaults to `default`.
+
+- TOML key: none
+- CLI flag: `--env`
+- Read by: Temporal CLI
+
+### `TEMPORAL_ENV_FILE`
+
+Path to the preset file. Defaults to `temporal.yaml` in the CLI configuration directory.
+
+- TOML key: none
+- CLI flag: `--env-file`
+- Read by: Temporal CLI
+
+## Legacy TLS variables
+
+The Temporal CLI reads an older set of TLS variable names for compatibility. When any of them is set, it overrides the
+corresponding value from the configuration file and from the preferred variable. These names have no CLI flag and no
+TOML key of their own.
+
+### `TEMPORAL_TLS_CERT`
+
+Superseded by `TEMPORAL_TLS_CLIENT_CERT_PATH`.
+
+- Read by: Temporal CLI
+
+### `TEMPORAL_TLS_CERT_DATA`
+
+Superseded by `TEMPORAL_TLS_CLIENT_CERT_DATA`.
+
+- Read by: Temporal CLI
+
+### `TEMPORAL_TLS_KEY`
+
+Superseded by `TEMPORAL_TLS_CLIENT_KEY_PATH`.
+
+- Read by: Temporal CLI
+
+### `TEMPORAL_TLS_KEY_DATA`
+
+Superseded by `TEMPORAL_TLS_CLIENT_KEY_DATA`.
+
+- Read by: Temporal CLI
+
+### `TEMPORAL_TLS_CA`
+
+Superseded by `TEMPORAL_TLS_SERVER_CA_CERT_PATH`.
+
+- Read by: Temporal CLI
+
+### `TEMPORAL_TLS_CA_DATA`
+
+Superseded by `TEMPORAL_TLS_SERVER_CA_CERT_DATA`.
+
+- Read by: Temporal CLI

@@ -27,16 +27,6 @@
       "note": "Deprecated in both SDKs. Superseded by local_activity_execution_failed."
     },
     {
-      "name": "long_request_resource_exhausted",
-      "sdks": "Go",
-      "note": ""
-    },
-    {
-      "name": "request_resource_exhausted",
-      "sdks": "Go",
-      "note": ""
-    },
-    {
       "name": "resource_slots_cpu_pid_output",
       "sdks": "Core, Java",
       "note": ""
