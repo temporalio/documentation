@@ -22,22 +22,17 @@ tags:
 This walkthrough covers [Nexus SDK V2](/nexus/sdk-v2), which is pre-release.
 APIs are experimental and may change in backwards-incompatible ways.
 
+Please do NOT review the documents under this page past the high level structure. Once we agree on the structure and form I will be working on the docs to match. For now those subpage contents should be considered placeholder text.
+
 :::
 
 This walkthrough builds one Nexus Service from nothing to a complete API, adding a single Nexus capability at each step.
 
-## Nexus Introduction
+## Nexus
 
-A [Nexus Service](/nexus/services) is a contract that one team publishes and other teams call, across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
-Three things follow from that.
+A [Nexus Service](/evaluate/nexus) is a contract that one team publishes and other teams call, across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
 
-**Durable microservices.** A Nexus Service turns Workflows and Activities into an API. Callers see Operations with typed inputs and outputs; they do not see your Workflow Ids, Task Queues, or retry policies. You keep the freedom to change what runs behind an Operation — swap an Activity for a Workflow, split one Workflow into several — as long as the contract holds. The reliability guarantees come along for free: an Operation backed by a Workflow is as durable as that Workflow.
-
-**A durable orchestration layer for AI agents and tools.** Agent systems call tools that are slow, flaky, and occasionally expensive. Exposing each tool as a Nexus Operation gives every call durable execution, automatic retries, and a record in [Event History](/encyclopedia/event-history) — and lets the agent and the tools live in different Namespaces, owned by different teams, written in different languages. See [Build AI applications with Temporal](/with-ai) for the wider picture.
-
-**A shared facade for extensibility.** A Nexus Service can front something that is not a Temporal Workflow at all — an existing internal API, a legacy job queue, a third-party endpoint. Write the wrapper once, run it as one Worker fleet, and every team calls the same Operations instead of each writing its own integration. Because callers only depend on the contract, the team behind it can modify or update the service without breaking anyone.
-
-## The sample problem
+## A sample problem
 
 A purchase request needs approval before it can proceed.
 
@@ -51,7 +46,7 @@ Concretely, the Service needs to:
 - Accept a decision from the caller and confirm it was recorded
 - Send a notification when the decision is final
 
-Each of those maps onto a different Nexus capability, which is what makes it a useful walkthrough. By the end, the Service exercises a Workflow-backed Operation, a Signal, a Query, an Update, and an Activity-backed Operation.
+Each of those maps onto a different Nexus capability, which is what makes it a useful walkthrough. By the end, this sample service will exercise a Workflow-backed Operation, a Signal, a Query, an Update, and an Activity-backed Operation.
 
 ## One contract, every language
 
