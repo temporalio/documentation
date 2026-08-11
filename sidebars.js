@@ -681,6 +681,7 @@ const developPythonCategory = {
         },
         items: [
           'develop/python/integrations/braintrust',
+          'develop/python/integrations/deepagents',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',

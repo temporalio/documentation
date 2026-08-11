@@ -23,6 +23,10 @@ import { ReleaseNoteHeader } from '@site/src/components';
 Temporal's integration with [LangGraph](https://www.langchain.com/langgraph) gives your LangGraph AI agent workflows
 durable execution, automatic retries, and timeouts via the Temporal platform.
 
+For LangChain Deep Agents built with `create_deep_agent(...)` rather than as raw LangGraph graphs, see the
+[Deep Agents integration](/develop/python/integrations/deepagents), which hooks model and tool calls instead of graph
+nodes.
+
 The plugin supports both the LangGraph **Graph API** (`StateGraph` with nodes and edges) and the **Functional API**
 (`@entrypoint` / `@task` decorators). Each graph node and task must specify whether it runs as a Temporal Activity or
 directly inside the Workflow — Activity nodes get configurable timeouts and retry policies, while Workflow nodes run
