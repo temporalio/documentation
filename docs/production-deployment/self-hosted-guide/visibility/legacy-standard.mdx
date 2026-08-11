@@ -1,0 +1,103 @@
+---
+id: legacy-standard
+title: Legacy standard Visibility configuration
+sidebar_label: Legacy standard
+slug: /self-hosted-guide/visibility/legacy-standard
+description: Configure legacy standard Visibility for older Temporal Server versions.
+toc_max_heading_level: 4
+keywords:
+  - visibility
+  - self-hosting
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Visibility
+---
+
+The following section applies to older self-hosted deployments that still use standard Visibility. For new deployments,
+use one of the advanced Visibility backends described in this guide.
+
+## How to set up Cassandra Visibility store {/* #cassandra */}
+
+:::tip Support, stability, and dependency info
+
+- Cassandra supported only standard Visibility. Standard Visibility was deprecated in Temporal Server v1.21 and removed
+  in v1.24. For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
+- We recommend migrating from Cassandra to any of the other supported databases for Visibility.
+
+:::
+
+Advanced Visibility is not supported with Cassandra.
+
+To enable current Visibility features, use MySQL, PostgreSQL, SQLite, Elasticsearch, or OpenSearch as your Visibility
+store. We recommend Elasticsearch or OpenSearch for any Temporal Service setup that handles more than a few Workflow
+Executions because these backends support the Visibility request load and help optimize performance.
+
+To migrate from Cassandra to a supported SQL database, see
+[Migrating Visibility database](/self-hosted-guide/visibility/migrate).
+
+## Persistence configuration
+
+Set your Cassandra Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
+define the Visibility store configuration under `datastores`.
+
+The following example shows how to set a Visibility store `cass-visibility` and define the datastore configuration in
+your Temporal Service configuration YAML.
+
+```yaml
+#...
+persistence:
+  #...
+  visibilityStore: cass-visibility
+  #...
+  datastores:
+    default:
+    #...
+    cass-visibility:
+      cassandra:
+        hosts: '127.0.0.1'
+        keyspace: 'temporal_visibility'
+#...
+```
+
+## Database schema and setup
+
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
+schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/main/schema/cassandra/visibility.
+
+The following example shows how to set up your Cassandra Visibility store using `temporal-cassandra-tool`. For more
+examples with different databases, refer to the
+[samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
+
+```bash
+#...
+# set your Cassandra environment variables
+: "${KEYSPACE:=temporal}"
+: "${VISIBILITY_KEYSPACE:=temporal_visibility}"
+
+: "${CASSANDRA_SEEDS:=}"
+: "${CASSANDRA_PORT:=9042}"
+: "${CASSANDRA_USER:=}"
+: "${CASSANDRA_PASSWORD:=}"
+: "${CASSANDRA_TLS_ENABLED:=}"
+: "${CASSANDRA_CERT:=}"
+: "${CASSANDRA_CERT_KEY:=}"
+: "${CASSANDRA_CA:=}"
+: "${CASSANDRA_REPLICATION_FACTOR:=1}"
+#...
+# set connection details
+#...
+# set up Cassandra schema
+setup_cassandra_schema() {
+  #...
+  # use valid schema for the version of the database you want to set up for Visibility
+    VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/cassandra/visibility/versioned
+    if [[ ${SKIP_DB_CREATE} != true ]]; then
+        temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" create -k "${VISIBILITY_KEYSPACE}" --rf "${CASSANDRA_REPLICATION_FACTOR}"
+    fi
+    temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${VISIBILITY_KEYSPACE}" setup-schema -v 0.0
+    temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${VISIBILITY_KEYSPACE}" update-schema -d "${VISIBILITY_SCHEMA_DIR}"
+  #...
+}
+```
+

@@ -118,7 +118,7 @@ class MyWorkflow:
         ...
 ```
 
-To export traces and Temporal Core metrics to Google Cloud, add the OpenTelemetry plugin to the Worker. See
+For the Python Worker setup specific to Cloud Run, see
 [Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Python>
@@ -183,7 +183,7 @@ w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
 
 If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
 
-To export traces and Temporal Core metrics to Google Cloud, add the OpenTelemetry plugin to the Worker. See
+For the Go Worker setup specific to Cloud Run, see
 [Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
@@ -232,9 +232,6 @@ export async function myWorkflow(): Promise<string> {
   // ...
 }
 ```
-
-For the TypeScript Worker setup specific to Cloud Run, see
-[Serverless Workers on GCP Cloud Run - TypeScript SDK](/develop/typescript/workers/serverless-workers/cloud-run).
 
 </SdkTabs.TypeScript>
 </SdkTabs>

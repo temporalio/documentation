@@ -23,6 +23,8 @@ Some SDKs emit metrics beyond what this reference lists.
 Only the metrics on this page have guaranteed, defined behavior.
 Treat any others as deprecated, inconsistent, or experimental.
 
+Temporal SDKs and the Temporal Service attach these metric dimensions as [tags](/glossary#tag). Once a metric is scraped by Prometheus or another OpenMetrics-compatible system, the same dimensions are called labels.
+
 :::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
@@ -38,19 +40,11 @@ The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Pr
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 Section headings on this page omit the prefix.
 Some metrics are specific to certain SDKs.
+The Availability column in the table below refers to where a metric is defined:
 
-TypeScript, Python, .NET, and Ruby SDK metrics are defined in the Core SDK.
-
-PHP and Go metrics are defined in the Go SDK.
-
-Java metrics are defined in the Java SDK.
-Metrics are defined in the following locations.
-
-- [Core SDK Worker metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk-core/src/telemetry/metrics.rs)
-- [Core SDK Client metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/client/src/metrics.rs)
-- [Java SDK Worker metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/worker/MetricsType.java)
-- [Java SDK Client metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java)
-- [Go SDK Worker and Client metrics](https://github.com/temporalio/sdk-go/blob/c32b04729cc7691f80c16f80eed7f323ee5ce24f/internal/common/metrics/constants.go)
+- **Core**: TypeScript, Python, .NET, and Ruby SDK metrics are defined in the Core SDK, in [Worker metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk-core/src/telemetry/metrics.rs) and [Client metrics](https://github.com/temporalio/sdk-rust/blob/main/crates/client/src/metrics.rs).
+- **Go**: Go and PHP SDK metrics are defined in the Go SDK, in [Worker and Client metrics](https://github.com/temporalio/sdk-go/blob/main/internal/common/metrics/constants.go).
+- **Java**: Java SDK metrics are defined in the Java SDK, in [Worker metrics](https://github.com/temporalio/sdk-java/blob/main/temporal-sdk/src/main/java/io/temporal/worker/MetricsType.java) and [Client metrics](https://github.com/temporalio/sdk-java/blob/main/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java).
 
 :::note Metric units across SDKs
 
@@ -64,15 +58,15 @@ The Core SDK is a shared common core library used by several Temporal SDKs, incl
 
 :::
 
-Each metric may have some combination of the following keys attached to them:
+Each metric may have some combination of the following [tags](/glossary#tag) attached to them:
 
 - `task_queue`: Task Queue that the Worker Entity is polling
 - `namespace`: Namespace the Worker is bound to
 - `poller_type`: One of the following:
   - `workflow_task`
+  - `workflow_sticky_task`
   - `activity_task`
   - `nexus_task`
-  - `sticky_workflow_task`
 - `worker_type`: One of the following:
   - `ActivityWorker`
   - `WorkflowWorker`
@@ -81,8 +75,10 @@ Each metric may have some combination of the following keys attached to them:
 - `activity_type`: The name of the Activity Function the metric is associated with
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
+- `status_code`: gRPC status code returned by the Temporal Service, in `UPPER_SNAKE_CASE` (for example, `NOT_FOUND`); available on Temporal Client gRPC request failure metrics
+- `cause`: reason the Temporal Service rejected a request as resource exhausted (for example, `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`); available on the resource-exhausted metrics
 
-Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
+Some tags may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                                  | Emitted by     | Metric type | Availability   |
 | -------------------------------------------------------------------------------------------- | -------------- | ----------- | -------------- |
@@ -102,6 +98,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_long_request](#long_request)                                                       | Service Client | Counter     | Core, Go, Java |
 | [temporal_long_request_failure](#long_request_failure)                                       | Service Client | Counter     | Core, Go, Java |
 | [temporal_long_request_latency](#long_request_latency)                                       | Service Client | Histogram   | Core, Go, Java |
+| [temporal_long_request_resource_exhausted](#long_request_resource_exhausted)                 | Service Client | Counter     | Go             |
 | [temporal_nexus_poll_no_task](#nexus_poll_no_task)                                           | Worker         | Counter     | Core, Go, Java |
 | [temporal_nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)       | Worker         | Histogram   | Core, Go, Java |
 | [temporal_nexus_task_execution_failed](#nexus_task_execution_failed)                         | Worker         | Counter     | Core, Go, Java |
@@ -112,6 +109,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_request](#request)                                                                 | Service Client | Counter     | Core, Go, Java |
 | [temporal_request_failure](#request_failure)                                                 | Service Client | Counter     | Core, Go, Java |
 | [temporal_request_latency](#request_latency)                                                 | Service Client | Histogram   | Core, Go, Java |
+| [temporal_request_resource_exhausted](#request_resource_exhausted)                           | Service Client | Counter     | Go             |
 | [temporal_resource_slots_cpu_usage](#resource_slots_cpu_usage)                               | Worker         | Gauge       | Core, Java     |
 | [temporal_resource_slots_mem_usage](#resource_slots_mem_usage)                               | Worker         | Gauge       | Core, Java     |
 | [temporal_sticky_cache_hit](#sticky_cache_hit)                                               | Worker         | Counter     | Core, Go, Java |
@@ -173,7 +171,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 The Schedule-To-Start time of an Activity Task.
 A [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 Use this metric to check that Activity Tasks are being processed from the queue in a timely manner.
-Some SDKs include the `activity_type` label, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
+Some SDKs include the `activity_type` tag, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -259,7 +257,11 @@ This number is included into the total `long_request` counter for long poll RPC 
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `operation`
+- Tags: `namespace`, `operation`, `status_code`
+
+The `status_code` tag carries the gRPC status code returned by the Temporal Service.
+Values are `UPPER_SNAKE_CASE`, matching the gRPC status code names: `NOT_FOUND`, `RESOURCE_EXHAUSTED`, `UNIMPLEMENTED`, `INTERNAL`, and so on.
+The tag can be suppressed through Client options, so confirm it is present in your own metrics endpoint before writing queries against it.
 
 ### `long_request_latency`
 
@@ -268,6 +270,18 @@ Latency of a Temporal Client gRPC long poll request.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `operation`
+
+### `long_request_resource_exhausted`
+
+Temporal Client made an RPC long poll request that the Temporal Service rejected as resource exhausted.
+These failures are also counted in `long_request_failure` with `status_code=RESOURCE_EXHAUSTED`; this metric adds the reason for the rejection.
+
+- Type: Counter
+- Available in: Go
+- Tags: `namespace`, `operation`, `cause`
+
+The `cause` tag carries the reason the Temporal Service rejected the request, such as `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_CONCURRENT_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED`, or `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN`.
+The cause determines the remedy, so prefer this metric over `long_request_failure` when investigating throttling.
 
 ### `nexus_poll_no_task`
 
@@ -358,7 +372,11 @@ This number is included into the total `request` counter for RPC requests.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `operation`
+- Tags: `namespace`, `operation`, `status_code`
+
+The `status_code` tag carries the gRPC status code returned by the Temporal Service.
+Values are `UPPER_SNAKE_CASE`, matching the gRPC status code names: `NOT_FOUND`, `RESOURCE_EXHAUSTED`, `UNIMPLEMENTED`, `INTERNAL`, and so on.
+The tag can be suppressed through Client options, so confirm it is present in your own metrics endpoint before writing queries against it.
 
 ### `request_latency`
 
@@ -367,6 +385,18 @@ Latency of a Temporal Client gRPC request.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `operation`
+
+### `request_resource_exhausted`
+
+Temporal Client made an RPC request that the Temporal Service rejected as resource exhausted.
+These failures are also counted in `request_failure` with `status_code=RESOURCE_EXHAUSTED`; this metric adds the reason for the rejection.
+
+- Type: Counter
+- Available in: Go
+- Tags: `namespace`, `operation`, `cause`
+
+The `cause` tag carries the reason the Temporal Service rejected the request, such as `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_CONCURRENT_LIMIT`, `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED`, or `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN`.
+The cause determines the remedy, so prefer this metric over `request_failure` when investigating throttling.
 
 ### `resource_slots_cpu_usage`
 
@@ -435,7 +465,7 @@ A Worker Entity has been registered, created, or started.
 ### `worker_task_slots_available`
 
 The total number of Workflow, Activity, Local Activity, or Nexus Task execution slots that are currently available.
-Use the `worker_type` key to differentiate execution slots.
+Use the `worker_type` tag to differentiate execution slots.
 The Worker type specifies an ability to perform certain tasks.
 For example, Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks, and so forth.
 
@@ -446,7 +476,7 @@ For example, Workflow Workers execute Workflow Tasks, Activity Workers execute A
 ### `worker_task_slots_used`
 
 The total number of Workflow, Activity, Local Activity, or Nexus Tasks execution slots in current use.
-Use the `worker_type` key to differentiate execution slots.
+Use the `worker_type` tag to differentiate execution slots.
 The Worker type specifies an ability to perform certain tasks.
 For example, Workflow Workers execute Workflow Tasks, Activity Workers execute Activity Tasks, and so forth.
 
@@ -512,6 +542,7 @@ A Workflow Task Execution failed.
 Valid values for the `failure_reason` tag:
 
 - `NonDeterminismError`: The Workflow Task failed due to a non-determinism error.
+- `GrpcMessageTooLarge`: The Workflow Task response exceeded the gRPC message size limit and could not be delivered. The Temporal Service terminates the Workflow Execution in response. See [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error).
 - `WorkflowError`: The Workflow Task failed for any other reason.
 
 ### `workflow_task_execution_latency`

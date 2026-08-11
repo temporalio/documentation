@@ -335,6 +335,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 </Tabs>
 
+Rotating an mTLS client certificate without restarting the Worker isn't currently supported by the Rust SDK — the
+certificate in `TlsOptions` is read once and baked into the connection at `Connection::connect`.To rotate a certificate, stage the new certificate alongside the old one on your Temporal Cloud Namespace, then restart your Worker with the new certificate before removing the old one; see
+[Update certificates using Temporal Cloud UI/tcld](/cloud/certificates#manage-certificates) for the zero-downtime
+staging sequence.
+
 ## Start a Workflow Execution {/* #start-workflow-execution */}
 
 To start a Workflow Execution, supply:

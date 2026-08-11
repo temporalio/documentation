@@ -60,6 +60,8 @@ exceptions:
   - Operations
   - Payload
   - Priority
+  - Project
+  - Projects
   - Query
   - Queries
   - Queue
@@ -177,6 +179,16 @@ exceptions:
   - SLA
   - APS
   - PrivateLink
+  - KMS
+  # Cloud provider product names (exact phrase, not the individual words)
+  - Azure Key Vault
+  - Azure Workload Identity
+  - GCP Workload Identity
   - Terraform
   - Prometheus
   - Grafana
+  # AI vendor and model-platform proper nouns
+  - AI
+  - Google
+  - Gemini
+  - Vertex

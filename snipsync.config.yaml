@@ -22,14 +22,8 @@ origins:
     repo: samples-ruby
   - owner: temporalio
     repo: samples-dotnet
-    ref: ea/aws-lambda
   - owner: temporalio
     repo: samples-java
-    ref: ea/aws-lambda
-  - owner: temporalio
-    repo: features
-  - owner: temporalio
-    repo: reference-app-orders-go
   - files:
       pattern: './sample-apps/**/*.go'
       owner: 'temporalio'

@@ -78,6 +78,7 @@ The list of metrics and their labels are available via the [List Descriptors](/c
 ### Labels
 
 A label is a key-value attribute associated with a metric data point. Labels can be used to filter or aggregate metrics.
+Temporal SDKs and the Temporal Service call this same concept a [tag](/glossary#tag); it's called a label once scraped in OpenMetrics format.
 
 Common labels include:
 
@@ -114,6 +115,12 @@ Rate limit scopes are subject to change.
 | Scope | Limit |
 | ----- | ----- |
 | Account | 180 requests per hour |
+
+:::caution
+Practical enforcement of this limit may allow bursts that exceed the limit at various times.
+Do not rely on this headroom: design production clients against the documented limit.
+
+:::
 
 ### Response Completeness
 
@@ -385,3 +392,9 @@ count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 | ----- | ----- | ----- |
 | 30k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
 | 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set scrape interval to 30s |
+
+:::caution
+Practical enforcement of this limit may allow bursts that exceed the limit at various times.
+Do not rely on this headroom: design production clients against the documented limit.
+
+:::

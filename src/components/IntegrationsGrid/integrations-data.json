@@ -72,6 +72,15 @@
     "href": "/develop/go/integrations/google-adk"
   },
   {
+    "name": "Google GenAI",
+    "description": "Call Google Gemini models durably from Temporal Workflows with the Google Gen AI SDK.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/google-genai"
+  },
+  {
     "name": "Grafana Cloud",
     "description": "Export Temporal Cloud metrics to Grafana Cloud with a serverless integration and pre-built dashboard.",
     "tags": [
@@ -88,6 +97,15 @@
     ],
     "sdk": "Python",
     "href": "/develop/python/integrations/langgraph"
+  },
+  {
+    "name": "Langfuse",
+    "description": "Trace and debug LLM calls in Temporal Workflows with Langfuse.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://langfuse.com/integrations/frameworks/temporal"
   },
   {
     "name": "LangSmith",

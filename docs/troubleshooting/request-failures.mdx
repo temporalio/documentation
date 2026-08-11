@@ -1,0 +1,260 @@
+---
+id: request-failures
+title: Troubleshoot request failures
+sidebar_label: Request failures
+description: Diagnose gRPC failures and slow requests from Temporal Workers and Clients
+toc_max_heading_level: 3
+keywords:
+  - sdk metrics
+  - request failure
+  - resource exhausted
+  - grpc errors
+  - monitoring temporal metrics
+tags:
+  - Metrics
+  - Observability
+  - Troubleshooting
+---
+
+This guide covers gRPC failures and slow requests between your Temporal SDK Workers or Clients and the Temporal Service.
+It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
+
+Every section on this page is one of the recommended alerts in [Worker alerting](/best-practices/worker-alerting).
+Each one opens with the alert definition, explains what the condition costs you, then walks through triage.
+If you got here from a firing alert, the section you landed on is the runbook for it.
+
+For metric definitions, see the [Temporal SDK metrics reference](/references/sdk-metrics).
+
+[`temporal_request_failure`](/references/sdk-metrics#request_failure) increments when the Temporal Service returns a non-OK gRPC status code on a standard operation.
+[`temporal_long_request_failure`](/references/sdk-metrics#long_request_failure) covers poll operations and long-poll `GetWorkflowExecutionHistory`.
+Both carry `namespace`, `operation`, and `status_code` tags.
+How urgent a failure is depends on which status code turned up on which operation.
+
+:::note
+
+Two naming details will trip up your queries.
+`UpdateWithStartWorkflowExecution` shows up in SDK metrics under the gRPC operation name `ExecuteMultiOperation`.
+And `status_code` values are `UPPER_SNAKE_CASE` in every SDK, matching the gRPC status code names. Client options can also turn the tag off, so check that it is present in your metrics endpoint before you filter on it.
+
+:::
+
+## NOT_FOUND on respond operations {/* #not_found-on-respond-operations */}
+
+**Recommended alert:** `temporal_request_failure` with `status_code=NOT_FOUND` on `RespondWorkflowTaskCompleted`, `RespondWorkflowTaskFailed`, `RespondActivityTaskCompleted`, or `RespondActivityTaskFailed`
+Fires on any occurrence, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+A Worker finished a Workflow Task or Activity Task and reported the result, and the Temporal Service replied that the task no longer exists.
+There are three causes:
+
+- The task timed out. The Worker ran past the Workflow Task timeout, or past the Activity `startToClose` or `scheduleToClose` timeout, and the Service discarded the in-flight task.
+- The Workflow Execution is no longer running. It completed, was terminated, or hit its Workflow Run Timeout before the task finished.
+- The Worker restarted mid-execution. The in-flight Task Token was lost, the Service rescheduled the task, and the original Worker still attempted to respond after coming back up.
+
+The last two happen during normal operation, so a few of these are nothing to worry about.
+A sustained rate is.
+
+**Why it matters.**
+The Temporal Service threw away the result your Worker just produced.
+For Activities, the Service has already rescheduled the Activity for retry if the Retry Policy allows it.
+For Workflow Tasks, the Service writes a `WorkflowTaskTimedOut` event to Event History and reschedules the task on the normal Task Queue, which forces a [Sticky Execution](/sticky-execution) cache eviction and a cold replay on the retry.
+
+A sustained rate means your Workers are finishing too late, over and over.
+Every discarded result is Worker capacity you paid for and got nothing back from, and every rescheduled task adds to how long your Workflows take end to end.
+
+If you run [Local Activities](/local-activity), a Workflow Task timeout makes them run again from the start on the retried task.
+Their results are not written to Event History between Workflow Task heartbeats, so there is nothing to resume from.
+If they aren't idempotent, you get duplicate side effects, and that is a business problem rather than a monitoring one.
+
+**Triage.**
+
+1. **Rule out the expected causes first.** Check the status of a few affected Executions in the Temporal UI or with `temporal workflow describe`. If they completed, were terminated, or hit their Run Timeout, the NOT_FOUND is expected. Check Worker restart counts in your infrastructure observability stack for the same reason. If either explains the volume, stop here.
+1. **Check task execution latency.** For Workflow Tasks, check [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency). For Activities, check [`temporal_activity_execution_latency`](/references/sdk-metrics#activity_execution_latency) for the affected `activity_type`. If p99 is at or above the corresponding timeout, that is the direct cause.
+1. **Check replay latency.** If Workflow Task execution latency is high, look at [`temporal_workflow_task_replay_latency`](/references/sdk-metrics#workflow_task_replay_latency) next. When replay latency is high, the Worker is burning its time re-running Event History instead of getting to the new commands. Look for large histories and a slow [Data Converter](/dataconversion).
+1. **Check Worker resources.** High CPU on the Worker slows task execution directly. Look at the `identity` field in the `WorkflowTaskStarted` or `ActivityTaskStarted` event to identify which Worker ran the task, then check that pod for CPU saturation and cold-start delays.
+1. **Check for throttling on respond operations.** See [RESOURCE_EXHAUSTED on respond operations](#resource_exhausted-on-respond-operations). Sustained throttling can delay a respond call long enough for the Service to time out the task before the response lands.
+
+:::note Self-hosted Temporal Service
+
+If SDK-side metrics look normal and the Execution was not terminated or timed out, check server-side latency: Frontend Service latency filtered to the affected respond operation, and persistence latency filtered to `UpdateWorkflowExecution`.
+
+:::
+
+## NOT_FOUND on Activity heartbeat {/* #not_found-on-activity-heartbeat */}
+
+**Recommended alert:** `temporal_request_failure` with `status_code=NOT_FOUND` on `RecordActivityTaskHeartbeat`
+Fires on any occurrence, held for 5m. Routed Warning by default, though see the caveat below. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+A Worker heartbeated a running Activity and the Temporal Service replied that the task no longer exists.
+The Service has already cancelled the in-flight Activity Task: either the `heartbeatTimeout` fired before the next heartbeat call arrived, the `startToClose` timeout expired while the Activity was still executing, or the Workflow Execution is no longer running.
+
+Normal Workflow-side cancellation is not a cause.
+Cancellation returns `CancelRequested=true` in the heartbeat response body rather than a gRPC error, so NOT_FOUND on this operation is a reliable signal of a timeout or forced closure.
+
+**Why it matters.**
+If `heartbeatTimeout` is the cause, the Service has already timed out this Activity attempt and scheduled a retry if the Retry Policy allows it.
+The Activity runs again from the start on the next attempt, so a non-idempotent Activity will duplicate its side effects. That is worth treating more seriously than the default Warning severity suggests.
+
+A sustained rate means the Worker keeps missing its heartbeat window.
+The Activity will time out on every attempt until you fix the cause, holding Task slots and generating retry tasks the whole time.
+
+**Triage.**
+
+1. **Compare the heartbeat interval against `heartbeatTimeout`.** The Worker must call heartbeat more frequently than the timeout. If the Activity slows down between heartbeat calls because of CPU pressure, blocking I/O, or downstream throttling, the effective interval grows past the timeout even though the code is calling heartbeat.
+1. **Check Worker CPU.** A CPU-starved Worker slows down between heartbeat calls even when the Activity is making progress. If utilization is consistently high, reduce per-Worker concurrency or scale out horizontally.
+1. **Check the `startToClose` timeout.** If the Activity has run longer than `startToClose`, the Service times it out while the Activity is still executing, and the next heartbeat returns NOT_FOUND. Compare [`temporal_activity_execution_latency`](/references/sdk-metrics#activity_execution_latency) for the affected `activity_type` against the configured timeout.
+1. **Check for throttling on heartbeat calls.** Query `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` and `operation=RecordActivityTaskHeartbeat`. If the Temporal Service is throttling these calls, the effective heartbeat interval grows past `heartbeatTimeout` even when the Worker calls on time. See [RESOURCE_EXHAUSTED on poll operations](#resource_exhausted-on-poll-operations) for how to work through a throttling cause.
+1. **Check heartbeat payload size.** The last heartbeat details payload is held in memory for the life of the Activity attempt. Large payloads on high-throughput Activity Workers contribute to memory pressure on the Temporal Service. Store only the minimum progress state needed to resume on retry.
+
+## RESOURCE_EXHAUSTED on user-facing operations {/* #resource_exhausted-on-user-facing-operations */}
+
+**Recommended alert:** `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `StartWorkflowExecution`, `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `UpdateWorkflowExecution`, or `ExecuteMultiOperation`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+The Temporal Service is throttling the operations your application code uses to start Workflows and deliver Signals and Updates.
+The SDK retries these automatically for up to 60 seconds.
+Beyond that, the call fails and the error propagates to your caller.
+
+**Why it matters.**
+These operations are on your application's critical path.
+Within the retry window, callers experience elevated latency.
+Past it, calls fail outright and your application must handle the error.
+
+If it does not, starts and Signals are silently dropped.
+A dropped start means the Workflow never runs.
+A dropped Signal or Update means a running Workflow never receives input it is waiting on, and may stall indefinitely.
+Log these failures in your application code so you can backfill starts and Signals afterward.
+
+The Temporal Service throttles these operations last.
+Seeing RESOURCE_EXHAUSTED here means throttling is already severe and widespread.
+
+**Triage.**
+
+1. **Find out which limit you hit.** A Namespace rate limit, a concurrency limit, system-wide overload, and an open circuit breaker are four different problems with four different fixes. On the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by its `cause` tag and it will tell you directly. On other SDKs, work through the steps below.
+1. **Check your traffic against your Namespace limits.** For a rate limit cause (`RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT` or `RESOURCE_EXHAUSTED_CAUSE_APS_LIMIT`), compare current throughput against your Namespace's [service limits](/cloud/limits) on Temporal Cloud, and open a support request if you need them raised.
+1. **Treat overload and circuit-breaker causes as capacity problems.** `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED` and `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN` mean the Temporal Service is shedding load to protect itself. A higher limit will not help; the Service needs capacity, or your workload needs to slow down.
+1. **Add backoff in your application.** If throttling is expected during traffic peaks, ensure calling code retries with backoff rather than tight-looping, which amplifies the pressure.
+
+:::note Self-hosted Temporal Service
+
+Check the resource-exhausted cause on your server dashboard, then check persistence latency filtered to `CreateWorkflowExecution` and `UpdateWorkflowExecution`.
+Slow persistence is the usual root cause of throttling that cascades like this.
+If the cause is a rate limit, `frontend.namespaceRPS` may be too low for your traffic, but confirm persistence is healthy before you raise it.
+If the cause is system overload or an open circuit breaker, the Temporal Service is shedding load to protect itself. It needs capacity, not a higher limit.
+
+:::
+
+## RESOURCE_EXHAUSTED on respond operations {/* #resource_exhausted-on-respond-operations */}
+
+**Recommended alert:** `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `RespondWorkflowTaskCompleted`, `RespondWorkflowTaskFailed`, `RespondActivityTaskCompleted`, or `RespondActivityTaskFailed`
+Fires on any occurrence, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+The Temporal Service is throttling Workers reporting task results.
+The SDK retries automatically, but a delayed respond call has a compounding cost: the Worker holds the Task slot until the call succeeds, and the Service-side task stays in-flight until the response lands.
+
+**Why it matters.**
+This is a leading indicator of [NOT_FOUND on respond operations](#not_found-on-respond-operations).
+If throttling goes on long enough the task times out, the Service writes a `WorkflowTaskTimedOut` or `ActivityTaskTimedOut` event, and the task gets rescheduled, with all the cache eviction, cold replay, and Local Activity re-execution that section describes.
+
+Meanwhile every in-flight task is still holding its slot, so you have less concurrency for new work.
+Left alone, this turns into [Worker Task slots exhausted](/troubleshooting/worker-capacity#worker-task-slots-exhausted).
+
+**Triage.**
+
+1. **Find out which limit you hit,** as in the section above. On the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by `cause`.
+1. **Check whether timeouts have already started.** If [NOT_FOUND on respond operations](#not_found-on-respond-operations) is also firing, throttling has already cascaded into task timeouts and Executions are losing work.
+1. **Check Task slot availability.** See [Worker Task slots exhausted](/troubleshooting/worker-capacity#worker-task-slots-exhausted). Slots aren't released until the respond call succeeds, so throttling here drains the pool.
+
+:::note Self-hosted Temporal Service
+
+Check persistence latency filtered to `UpdateWorkflowExecution`. Slow persistence on that operation is the usual root cause of throttling on respond operations.
+
+:::
+
+## RESOURCE_EXHAUSTED on poll operations {/* #resource_exhausted-on-poll-operations */}
+
+**Recommended alert:** `temporal_long_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `PollWorkflowTaskQueue` or `PollActivityTaskQueue`
+Fires on any occurrence, held for 5m. Routed Warning by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+The Temporal Service is throttling Worker poll calls.
+Poll operations are long-poll requests, so they increment `temporal_long_request_failure` rather than `temporal_request_failure`.
+
+**Why it matters.**
+Throttled Workers back off and poll less frequently, which lowers the effective poll rate for the Task Queue even when every Worker is healthy.
+That shows up as rising schedule-to-start latency and, if it persists, as a growing Task backlog.
+
+This is often a symptom rather than a cause.
+The Temporal Service throttles poll operations before it throttles respond or user-facing operations, so throttling here can be the first visible sign of pressure that has nothing to do with your Workers.
+
+**Triage.**
+
+1. **Identify the throttle cause.** As with the other throttling sections, a Namespace rate limit, a concurrency limit, and system-wide overload need different responses. On the Go SDK, [`temporal_long_request_resource_exhausted`](/references/sdk-metrics#long_request_resource_exhausted) carries the `cause` tag for poll operations.
+1. **Check whether you are over-polling.** A large number of Workers each configured with many concurrent pollers can exceed the Namespace poller limit without processing any more work. Check your configured poller counts against [Worker performance](/develop/worker-performance) guidance before assuming the limit is too low.
+1. **Check downstream effects.** See [Workflow Task schedule-to-start latency elevated](/troubleshooting/worker-capacity#workflow-task-schedule-to-start-latency-elevated) and [Activity schedule-to-start latency elevated](/troubleshooting/worker-capacity#activity-schedule-to-start-latency-elevated) to gauge whether throttling is affecting Task dispatch yet.
+1. **Check your traffic against your Namespace limits.** On Temporal Cloud, compare against your Namespace's [service limits](/cloud/limits).
+
+:::note Self-hosted Temporal Service
+
+If poll operations are being throttled at scale, you may need to raise the Namespace concurrent poller limit through `frontend.namespaceCount` or `frontend.globalNamespaceCount`.
+Scale Worker capacity first if schedule-to-start latency is the real problem.
+
+:::
+
+## UNIMPLEMENTED or INTERNAL from the Temporal Service {/* #unimplemented-or-internal-from-the-temporal-service */}
+
+**Recommended alert:** `temporal_request_failure` with `status_code=UNIMPLEMENTED` or `status_code=INTERNAL`, on any operation
+Two alerts, one per status code. Each fires on any occurrence, held for 2m, routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+These two status codes point at the Temporal Service rather than at your application, and they behave differently in the SDK.
+Alert on them separately.
+
+**UNIMPLEMENTED** means the Service does not recognize an operation the Worker called.
+By the time a Worker reaches steady-state polling it has already called `GetSystemInfo` and `DescribeNamespace` successfully, so this is rarely a plain version mismatch on a freshly deployed Worker.
+Most SDK versions treat UNIMPLEMENTED as non-retryable: the Worker surfaces it as a fatal error and may shut down.
+
+**INTERNAL** means the Service encountered an error it could not attribute to the request.
+Short bursts during Service restarts and rolling deploys are normal, so set the `for` duration long enough that your own deploys don't page you.
+The SDK retries INTERNAL, but sustained errors exhaust the retry budget and surface to callers.
+Workers receiving INTERNAL on poll operations back off and poll less frequently, which raises schedule-to-start latency.
+
+**Triage.**
+
+1. **Check SDK and Temporal Service version compatibility.** For UNIMPLEMENTED, confirm your SDK version is not calling an API that has been removed or changed in your Service version.
+1. **Check whether recent deploys correlate.** Both codes commonly appear immediately after a Service upgrade or a Worker deploy. If the timing lines up, consider rolling back while you investigate.
+1. **Check whether the errors are Namespace-scoped or cluster-wide.** Errors isolated to one Namespace point at Namespace configuration. Cluster-wide errors point at infrastructure.
+1. **Check downstream effects.** Sustained errors on poll operations cause Workers to back off. Cross-check [All pollers disconnected](/troubleshooting/worker-capacity#all-pollers-disconnected) and [Task completions dropped to zero](/troubleshooting/worker-capacity#task-completions-dropped-to-zero).
+
+:::note Self-hosted Temporal Service
+
+Check service panics first. Any panic is critical, and it is almost always the root cause of sustained INTERNAL errors.
+Then check persistence errors and availability; the Temporal Service wraps database errors as INTERNAL.
+For UNIMPLEMENTED, check that every Frontend, History, and Matching pod is running the binary you intended. A wrong or corrupted binary on a few pods returns UNIMPLEMENTED on perfectly valid operations, usually alongside panics.
+
+:::
+
+## Request latency high on user-facing operations {/* #request-latency-high-on-user-facing-operations */}
+
+**Recommended alert:** [`temporal_request_latency`](/references/sdk-metrics#request_latency) on `StartWorkflowExecution`, `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, or `ExecuteMultiOperation`
+Fires when p99 goes above 2s, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
+
+p99 latency on the operations your application calls synchronously has risen above your threshold.
+
+**Why it matters.**
+These calls block your application code while they wait on the Temporal Service, so the latency is felt directly by your users and by anything downstream of the call completing.
+
+The SDK retries transient errors but does not hide the latency cost: every retry adds to the total time this metric observes.
+If throttling is the cause and retries exhaust the 60-second budget, the call fails outright.
+
+**Triage.**
+
+1. **Check for throttling on the same operations.** See [RESOURCE_EXHAUSTED on user-facing operations](#resource_exhausted-on-user-facing-operations). If both are firing, throttling is the cause of the latency and retries are what you are measuring.
+1. **Check payload sizes.** This metric includes serialization and network time. Large Workflow inputs or Signal payloads, or an expensive [Payload Codec](/payload-codec), raise it without any Service-side slowdown.
+1. **Check network path and region.** Clients in a different region from the Temporal Service pay that round trip on every call.
+
+:::note Self-hosted Temporal Service
+
+Check Frontend Service latency filtered to the affected operations.
+Server-side latency is the sharper signal here, because the SDK metric also includes serialization and network time.
+Then check persistence latency filtered to `CreateWorkflowExecution` and `UpdateWorkflowExecution`, which is what usually drives up Frontend latency on starts and Signals.
+If persistence is healthy and nothing is being throttled, check Frontend pod CPU.
+
+:::
