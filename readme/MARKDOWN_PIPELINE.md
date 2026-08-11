@@ -1,0 +1,253 @@
+# LLM Markdown Pipeline
+
+Serves a clean Markdown version of every docs page at `/<path>.md` (next to the rendered
+`/<path>` HTML) for LLM ingestion and search indexing. An LLM — or the on-page "View as
+Markdown" / "Copy for LLM" buttons — can fetch `/workflows.md` and get readable Markdown
+instead of the raw MDX source (imports, JSX components, frontmatter).
+
+## Architecture
+
+Generation happens **at build time, written directly into the build output directory**
+(`outDir`), alongside the generated HTML. There are no committed `.md` artifacts and nothing
+in `static/` — the files are produced fresh on every build and deployed as-is. Vercel already
+serves `/(.*)\.md` with a `noindex` header (see `vercel.json`).
+
+One registered Docusaurus plugin (in `docusaurus.config.js`) owns the build integration:
+
+**`plugins/markdown-pages`** — a `postBuild({ outDir })` hook that walks `docs/`, resolves each
+page's URL path, runs the MDX through the transformer, and writes `outDir/<url-path>.md`. Pages
+with an `llm_exclude` frontmatter field are skipped (it writes the exclusion message instead).
+Each generated `.md` opens with an agent directive blockquote under the H1 (see
+[Agent discovery](#agent-discovery)). The same pass produces three things from one transform of
+each page:
+
+| Output | What it is |
+| --- | --- |
+| `outDir/<url-path>.md` | Per-page clean Markdown |
+| `outDir/llms.txt` and `outDir/<section>/llms.txt` | Structured index, llmstxt.org format |
+| `outDir/llms-full.txt` | Every page's text concatenated, each with a `Source:` URL |
+
+`llms-full.txt` is for pipelines that ingest the whole corpus and chunk it themselves, so each
+entry carries its source URL and the file is ordered deterministically. Note that
+`llms-full.txt` is **not** part of the [llms.txt specification](https://llmstxt.org/) — it's a
+widely followed convention, so there's no format to conform to beyond what consumers expect.
+
+This all used to be split with `docusaurus-plugin-llms`, which ran a second, less complete MDX
+transform over the same source. That produced `llms-full.txt` with no source URLs, thousands of
+leaked `:::` and JSX artifacts, and deprecated `tctl-v1` content that `excludePaths` couldn't
+reach, since that option belongs to this plugin. Generating everything from one transform keeps
+a single exclusion list and a single definition of "clean."
+
+The **transformer** (`scripts/mdx-to-md.mjs`) is the engine `markdown-pages` calls. It is a
+standalone, **zero-dependency** ES module, separately unit-tested, so its behavior can be
+verified in isolation from a full site build.
+
+```
+docs/**/*.mdx ──(postBuild)──▶ markdown-pages plugin ──▶ transformMdx() ──┬─▶ outDir/<path>.md
+                                                          (mdx-to-md.mjs) ├─▶ outDir/llms.txt
+                                                                          │   outDir/<section>/llms.txt
+                                                                          └─▶ outDir/llms-full.txt
+```
+
+> **Note: `.md` files only exist after a production build.** Generation runs in the `postBuild`
+> hook, which fires on `yarn build` but **not** on `yarn start`. The dev server skips it on
+> purpose — `yarn start` optimizes for fast hot-reload authoring, and the `.md` files are derived
+> build output, not authoring input. So `http://localhost:3000/<path>.md` will 404 under
+> `yarn start`; to preview the `.md` output locally, run `yarn build && yarn serve`. (To inspect
+> a single page's conversion without a full build, run `transformMdx` on it directly — that's what
+> the unit tests do.)
+
+## Design principles
+
+- **Output, not source.** Generated `.md` lives in the build output (`outDir`), never in the
+  repo. `build/` is already gitignored; nothing else needs ignoring.
+- **Build-integrated.** The work runs inside the normal `docusaurus build` via the plugin's
+  `postBuild` hook — no separate prebuild step, no manual generation in CI.
+- **Zero-dependency transformer.** `scripts/mdx-to-md.mjs` uses only Node built-ins. The
+  CommonJS plugin loads this ES module via dynamic `import()`.
+- **Line-oriented state machine, not an AST.** The transformer understands JSX block
+  boundaries by scanning lines — pragmatic given this repo's structured component patterns.
+  If deeply nested JSX ever outgrows it, the upgrade path is `unified` + `remark-mdx`.
+- **Component logic lives centrally in the transformer**, via a registry mapping each
+  component name to a string strategy *or* a handler function. We deliberately did **not** put
+  a `.toMarkdown()` method on the React components: the line parser has no evaluated prop tree,
+  and the components are React-runtime coupled (hooks, `fetch`, Docusaurus context).
+  Data-driven components resolve their source directly — e.g. `<JsonTable>` reads
+  `static/json/*.json` rather than going through the component.
+- **Runs after snipsync.** Code blocks are populated by the scheduled `snipsync` GitHub Action,
+  which commits results to `main`. By build time the committed `.mdx` already has code, so the
+  transformer sees populated snippets without running snipsync itself.
+
+## Files
+
+| Path | Purpose |
+|------|---------|
+| `plugins/markdown-pages/index.js` | **Production integration.** `postBuild` hook: walks `docs/`, resolves URL paths, calls the transformer, writes `outDir/<path>.md`. Honors `llm_exclude`. |
+| `scripts/mdx-to-md.mjs` | **The transformer.** Exports `transformMdx()` + parsing helpers and `COMPONENT_REGISTRY`. Zero-dependency ES module. |
+| `scripts/component-handlers/data-tables.mjs` | Handler for `<JsonTable>` — resolves a `static/json/*.json` file into a Markdown table. |
+| `scripts/component-handlers/integrations.mjs` | Handler for `<IntegrationsGrid>` — reads `src/components/IntegrationsGrid/integrations-data.json`, filters by the `defaultSdks` prop, and emits a Markdown list. |
+| `scripts/component-handlers/sdk-overview-cards.mjs` | Handler for `<SdkOverviewCards>` — reads `src/data/sdk-versions.json` for version numbers and emits a Markdown list, one bullet per SDK. |
+| `scripts/component-handlers/hero.mjs` | Handler for the homepage hero cards (`<ActionCard>` / `<CommunityCard>`) — parses `title`/`href` props and children into a Markdown link-list item. Copy lives in `docs/index.mdx`; layout wrappers strip generically. |
+| `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
+| `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `readme/COMPONENT_REGISTRY.md`. |
+| `src/components/LLMActions/LLMActions.tsx` | On-page actions (Copy, View as Markdown, Open in ChatGPT/Claude). Points at the generated `/<path>.md` (not the raw MDX). |
+| `tests/` | Zero-framework test suites. Fixtures in `fixtures/docs/`, golden snapshots in `tests/snapshots/`. |
+| `COMPONENT_REGISTRY.md` | Generated coverage report under `readme/` (intentionally *not* under `docs/`, so it is never published). |
+
+## How the transformer works
+
+`transformMdx(mdxContent, { sourceFile, projectRoot })` returns `{ markdown, warnings }`. It
+parses frontmatter (emitting `title` as an H1 and `description` as a blockquote), then runs a
+line-oriented state machine that:
+
+1. Suspends all JSX parsing inside fenced code blocks (``` / ~~~).
+2. Strips `import` / `export` statements and `{/* MDX comments */}`.
+3. Converts admonitions (`:::note`, `:::tip`, `:::caution`, `:::danger`, `:::info`,
+   `:::warning`) into labeled blockquotes.
+4. Dispatches recognized components to their strategy (see below).
+5. Strips `{#anchor}` suffixes from headings.
+6. For unknown PascalCase JSX, strips the tag and records a warning, preserving inner text. Its
+   detection regexes are anchored to whole lines, so inline generics in prose (`Foo<Bar>`) and
+   placeholders (`<ID>`) are left untouched.
+
+Nested content (tab bodies, `<details>`, release-note bodies, setup-step prose, transcluded
+files) is handled by recursively calling `transformMdx` on the inner content.
+
+`projectRoot` (passed by the plugin as `context.siteDir`) lets data-driven strategies read
+`static/json/*.json` and resolve `@site/...` transclusion targets.
+
+## Component coverage
+
+Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md.mjs`). Run
+`node scripts/audit-components.mjs` to regenerate `readme/COMPONENT_REGISTRY.md` with current counts.
+
+| Component(s) | Strategy | Output |
+|---|---|---|
+| `Tabs` / `TabItem` | `tabs` / `tabitem` | All tabs flattened, each under a **bold label** header |
+| `SdkTabs` / `SdkTabs.<Lang>` | `sdk-tabs` | Same, with language labels (`DotNet` → **.NET**) |
+| `CodeSnippet` | `code-snippet` | Fenced code block using the `language` prop |
+| `CaptionedImage`, `EnlargeImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
+| YouTube/`<iframe>` embeds (often in a styled `<div>`) | strip | Removed; keep a markdown Watch link in surrounding tip/prose for LLMs |
+| `CallToAction` | `call-to-action` | `- [h3 title](href): p description` |
+| `ReleaseNoteHeader` | `release-note-header` | `> **Public Preview** — Go, Java…` availability note + body blockquote. The self-closing form (`<ReleaseNoteHeader … />`) emits just the note and leaves the page body intact. |
+| `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
+| `RelatedReadList` | `related-read` | Link list from the `readList` prop |
+| `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
+| `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop |
+| `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
+| `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
+| `SdkOverviewCards` | `sdk-overview-cards` | Markdown list — one bullet per SDK with its version (from `src/data/sdk-versions.json`), developer guide link, and API reference link |
+| `ActionCard` / `CommunityCard` | `hero-card` | Homepage hero cards → `- [title](href): description` link-list item (copy authored in `docs/index.mdx`) |
+| `HeroWrapper`, `HeroHeader`, `HeroSection`, `HeroContent`, `HeroActions`, `HeroCta`, `CommunityCards` | `strip-tag` | Homepage hero layout wrappers — stripped to their inner Markdown (headline + intro prose) |
+| `QuickstartCards`, `PatternCards` | `cards` | Markdown link list parsed from the inline `items={[{href,title,description}]}` prop |
+| `ZoomPanPinch` | `transparent` | Wrapper stripped; inner content passed through |
+| `DocCardList`, `CardList`, `LandingCard`, `ThemedImage`, `SdkSvg`, `CloudRegionCount`, `RetrySimulator`, `ServerlessWorkerDemo`, `OperationsTable`, `InvitationContent` | `strip-block` | Removed entirely (visual/dynamic, no extractable text) |
+| `DL`, `DT`, `DD`, `DefinitionList`, `AnnotatedCode` | `strip-tag` | Tags stripped, text content kept |
+| `details` / `summary` | `details` / `summary` | `<summary>` becomes a heading; body expanded inline |
+
+**Transclusion.** Components imported from a Markdown file
+(`import AWSRegions from '@site/docs/.../awsregions.md'`) are inlined: when `<AWSRegions />` is
+encountered, the referenced file is read and transformed in place. These show as `transclude`
+in the audit.
+
+**Audit false positives.** `scripts/audit-components.mjs` may list non-components (type
+generics in code examples like `SayHelloWorkflow`, CLI placeholders like `<ID>`). The
+transformer itself is safe from these — its detection is anchored to whole lines.
+
+### Adding a new component
+
+1. Add `ComponentName: "strategy"` to `COMPONENT_REGISTRY` in `scripts/mdx-to-md.mjs`.
+2. If an existing strategy fits, you're done. Otherwise add a state branch in `transformMdx`,
+   or — for data-driven components — a handler function under `scripts/component-handlers/`.
+3. Add a unit test in `tests/test-mdx-to-md.mjs` (and a `validStrategies` entry if the strategy
+   name is new).
+4. Run `node scripts/audit-components.mjs` to refresh coverage.
+
+**Keep handlers and components in sync.** When a handler reproduces content or logic that also
+lives in the React component (data-driven components like `JsonTable` or `IntegrationsGrid`), add
+a cross-reference comment in *both* files — a `⚠️ LLM MARKDOWN PIPELINE` comment in the component
+pointing at the handler, and a `Component:` line in the handler pointing back — so a future change
+to one prompts updating the other. Components transformed generically (e.g. `Tabs`,
+`CallToAction`, and the homepage hero cards) have no separate source of truth and don't need this
+— the copy lives in the MDX and the handler reads it straight from the page.
+
+### Known limitation: content/logic duplicated between components and handlers (follow-up)
+
+A few handlers currently re-express something that also lives in the React component, which
+means two places to keep in sync. This is a known issue to be addressed in a follow-up; the
+cross-reference comments above are an interim guard, not the fix.
+
+- **`IntegrationsGrid` — duplicated logic.** The data is already shared
+  (`integrations-data.json`), but the default-view filter/sort in
+  `scripts/component-handlers/integrations.mjs` (`selectIntegrations`) mirrors the filtering in
+  `src/components/IntegrationsGrid/index.tsx`. The intended fix is to extract that filtering into
+  a shared, framework-agnostic module that both import (the pattern already used by
+  `src/constants/featureReleaseTypes.js`).
+- **`SdkOverviewCards` — duplicated SDK metadata.** Version numbers are shared
+  (`src/data/sdk-versions.json`), but the id/label/API-reference-href list in
+  `scripts/component-handlers/sdk-overview-cards.mjs` duplicates `SDKS` in
+  `src/constants/sdks.js`, because that file's icon imports aren't plain-Node-importable from an
+  `.mjs` script. Update both if a label or API reference link changes.
+
+Not affected: `JsonTable` (shared JSON data; only the render *format* differs) and
+`QuickstartCards`/`PatternCards` (content lives in the MDX `items` prop — a single source).
+
+## Testing
+
+```bash
+node tests/run-all.mjs        # all suites
+```
+
+- `tests/test-mdx-to-md.mjs` — unit tests for the transformer + helpers, plus snapshot tests
+  against `fixtures/docs/*`. To accept intentionally-changed output, delete the relevant
+  `tests/snapshots/*.snap.md` and re-run (regenerates on first run).
+
+Fixtures in `fixtures/docs/` are copies of representative real pages (multi-language tabs,
+admonitions, prose) used to keep snapshots stable as the live docs change.
+
+During a real build the `markdown-pages` plugin logs a count of transform warnings
+(`[markdown-pages] Generated N clean markdown files, … M transform warnings`), which surfaces
+any unknown components in the live docs.
+
+## Agent discovery
+
+An agent should be able to find `/llms.txt` and the `.md` convention from any page, no matter
+which channel it reads. Different tools read different channels, so the same two facts are
+published in four places:
+
+| Channel | Where it lives | Read by |
+| --- | --- | --- |
+| HTTP `Link` header | `vercel.json` (sitewide) | Clients that inspect response headers |
+| `<link rel="alternate" type="text/markdown">` | `MarkdownAlternateLink.tsx`, per page | Crawlers that parse `<head>` |
+| Visually hidden body text | `AgentDirective.tsx`, per page | Scrapers that read rendered body text |
+| Blockquote under the H1 | `markdown-pages` plugin, per `.md` file | Agents that fetch the `.md` directly |
+
+The last two exist because header and `<head>` metadata is invisible to anything that only
+looks at page content, which is what most agent pipelines do. Automated audits of agent
+readiness check body content specifically.
+
+`AgentDirective` is hidden with the clip-rect pattern rather than `display: none`, which some
+scrapers strip along with the text. It carries `aria-hidden="true"` to stay out of screen
+reader output and `data-nosnippet` to stay out of search result snippets.
+
+**Algolia:** the DocSearch crawler config is managed in the Algolia Crawler dashboard, not in
+this repo. If directive text ever shows up in search results, add `.agentDirective` to the
+crawler's `excludeSelectors` (or narrow the `recordExtractor` content selectors) and recrawl.
+
+## Page actions (the buttons)
+
+`src/components/LLMActions/LLMActions.tsx` renders the on-page action group — a **Copy**
+split-button with a dropdown for **View as Markdown**, **Open in ChatGPT**, and **Open in
+Claude**. All of these point at the generated clean Markdown at `<permalink>.md`:
+
+- **Copy** fetches `<permalink>.md` and copies it (prefixed with a `Source:` line) to the clipboard.
+- **View as Markdown** opens `<permalink>.md` in a new tab.
+- **Open in ChatGPT / Claude** sends a prompt referencing the absolute `.md` URL.
+
+It hides itself on pages with `llm_exclude` frontmatter, matching the pipeline.
+
+> **Note: these buttons don't work under `yarn start`.** They depend on the generated `.md`
+> files, which only exist after `yarn build` (the `postBuild` hook doesn't run in the dev
+> server — see the note under [Architecture](#architecture)). Under `yarn start`, **Copy** and
+> **View as Markdown** will hit a 404, and the ChatGPT/Claude prompts will reference a `.md` URL
+> that isn't being served. To exercise the buttons locally, use `yarn build && yarn serve`.
