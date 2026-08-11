@@ -19,7 +19,10 @@ tags:
 This guide covers gRPC failures and slow requests between your Temporal SDK Workers or Clients and the Temporal Service.
 It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
 
-For alert thresholds and `for` durations, see [Worker alerting](/best-practices/worker-alerting).
+Every section on this page is one of the recommended alerts in [Worker alerting](/best-practices/worker-alerting).
+Each one opens with the alert definition, explains what the condition costs you, then walks through triage.
+If you got here from a firing alert, the section you landed on is the runbook for it.
+
 For metric definitions, see the [Temporal SDK metrics reference](/references/sdk-metrics).
 
 [`temporal_request_failure`](/references/sdk-metrics#request_failure) increments when the Temporal Service returns a non-OK gRPC status code on a standard operation.
@@ -37,7 +40,8 @@ And `status_code` values are `UPPER_SNAKE_CASE` in every SDK, matching the gRPC 
 
 ## NOT_FOUND on respond operations {/* #not_found-on-respond-operations */}
 
-**Metric:** `temporal_request_failure` with `status_code=NOT_FOUND` on `RespondWorkflowTaskCompleted`, `RespondWorkflowTaskFailed`, `RespondActivityTaskCompleted`, or `RespondActivityTaskFailed`
+**Recommended alert:** `temporal_request_failure` with `status_code=NOT_FOUND` on `RespondWorkflowTaskCompleted`, `RespondWorkflowTaskFailed`, `RespondActivityTaskCompleted`, or `RespondActivityTaskFailed`
+Fires on any occurrence, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 A Worker finished a Workflow Task or Activity Task and reported the result, and the Temporal Service replied that the task no longer exists.
 There are three causes:
@@ -77,7 +81,8 @@ If SDK-side metrics look normal and the Execution was not terminated or timed ou
 
 ## NOT_FOUND on Activity heartbeat {/* #not_found-on-activity-heartbeat */}
 
-**Metric:** `temporal_request_failure` with `status_code=NOT_FOUND` on `RecordActivityTaskHeartbeat`
+**Recommended alert:** `temporal_request_failure` with `status_code=NOT_FOUND` on `RecordActivityTaskHeartbeat`
+Fires on any occurrence, held for 5m. Routed Warning by default, though see the caveat below. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 A Worker heartbeated a running Activity and the Temporal Service replied that the task no longer exists.
 The Service has already cancelled the in-flight Activity Task: either the `heartbeatTimeout` fired before the next heartbeat call arrived, the `startToClose` timeout expired while the Activity was still executing, or the Workflow Execution is no longer running.
@@ -102,7 +107,8 @@ The Activity will time out on every attempt until you fix the cause, holding Tas
 
 ## RESOURCE_EXHAUSTED on user-facing operations {/* #resource_exhausted-on-user-facing-operations */}
 
-**Metric:** `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `StartWorkflowExecution`, `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `UpdateWorkflowExecution`, or `ExecuteMultiOperation`
+**Recommended alert:** `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `StartWorkflowExecution`, `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `UpdateWorkflowExecution`, or `ExecuteMultiOperation`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 The Temporal Service is throttling the operations your application code uses to start Workflows and deliver Signals and Updates.
 The SDK retries these automatically for up to 60 seconds.
@@ -139,7 +145,8 @@ If the cause is system overload or an open circuit breaker, the Temporal Service
 
 ## RESOURCE_EXHAUSTED on respond operations {/* #resource_exhausted-on-respond-operations */}
 
-**Metric:** `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `RespondWorkflowTaskCompleted`, `RespondWorkflowTaskFailed`, `RespondActivityTaskCompleted`, or `RespondActivityTaskFailed`
+**Recommended alert:** `temporal_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `RespondWorkflowTaskCompleted`, `RespondWorkflowTaskFailed`, `RespondActivityTaskCompleted`, or `RespondActivityTaskFailed`
+Fires on any occurrence, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 The Temporal Service is throttling Workers reporting task results.
 The SDK retries automatically, but a delayed respond call has a compounding cost: the Worker holds the Task slot until the call succeeds, and the Service-side task stays in-flight until the response lands.
@@ -165,7 +172,8 @@ Check persistence latency filtered to `UpdateWorkflowExecution`. Slow persistenc
 
 ## RESOURCE_EXHAUSTED on poll operations {/* #resource_exhausted-on-poll-operations */}
 
-**Metric:** `temporal_long_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `PollWorkflowTaskQueue` or `PollActivityTaskQueue`
+**Recommended alert:** `temporal_long_request_failure` with `status_code=RESOURCE_EXHAUSTED` on `PollWorkflowTaskQueue` or `PollActivityTaskQueue`
+Fires on any occurrence, held for 5m. Routed Warning by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 The Temporal Service is throttling Worker poll calls.
 Poll operations are long-poll requests, so they increment `temporal_long_request_failure` rather than `temporal_request_failure`.
@@ -193,7 +201,8 @@ Scale Worker capacity first if schedule-to-start latency is the real problem.
 
 ## UNIMPLEMENTED or INTERNAL from the Temporal Service {/* #unimplemented-or-internal-from-the-temporal-service */}
 
-**Metric:** `temporal_request_failure` with `status_code=UNIMPLEMENTED` or `status_code=INTERNAL`, on any operation
+**Recommended alert:** `temporal_request_failure` with `status_code=UNIMPLEMENTED` or `status_code=INTERNAL`, on any operation
+Two alerts, one per status code. Each fires on any occurrence, held for 2m, routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 These two status codes point at the Temporal Service rather than at your application, and they behave differently in the SDK.
 Alert on them separately.
@@ -224,7 +233,8 @@ For UNIMPLEMENTED, check that every Frontend, History, and Matching pod is runni
 
 ## Request latency high on user-facing operations {/* #request-latency-high-on-user-facing-operations */}
 
-**Metric:** [`temporal_request_latency`](/references/sdk-metrics#request_latency) on `StartWorkflowExecution`, `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, or `ExecuteMultiOperation`
+**Recommended alert:** [`temporal_request_latency`](/references/sdk-metrics#request_latency) on `StartWorkflowExecution`, `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, or `ExecuteMultiOperation`
+Fires when p99 goes above 2s, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#request-failures).
 
 p99 latency on the operations your application calls synchronously has risen above your threshold.
 
