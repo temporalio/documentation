@@ -99,6 +99,15 @@
     "href": "/develop/python/integrations/langgraph"
   },
   {
+    "name": "Langfuse",
+    "description": "Trace and debug LLM calls in Temporal Workflows with Langfuse.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://langfuse.com/integrations/frameworks/temporal"
+  },
+  {
     "name": "LangSmith",
     "description": "Trace and debug LLM calls in Temporal Workflows with LangSmith.",
     "tags": [
