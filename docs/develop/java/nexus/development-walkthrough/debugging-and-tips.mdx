@@ -38,7 +38,7 @@ The handler used its own Temporal Client instead of the one `TemporalOperationHa
 
 Fetching a Client yourself works, and the Operation behaves correctly, but you lose the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions. Use the injected Client for anything that starts or messages an Execution.
 
-The one current exception is Query, where [linking is still in progress](/nexus/sdk-v2) and no SDK produces a link yet.
+Note that Query, Cancel, and Terminate are [not available as sync messaging](/nexus/sdk-v2) in the pre-release. You can still send them with a Client of your own, but nothing links those messages back to the caller.
 
 ## A Query returns stale data, hangs, or throws
 
