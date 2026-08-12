@@ -12,6 +12,8 @@ import { QuickstartCards, CallToAction } from '@site/src/components';
 
 Choose your language to get started locally. If you're using Temporal Cloud, check out [Get started with Temporal Cloud](/cloud/get-started).
 
+## Quickstarts by SDK
+
 <QuickstartCards
   items={[
     { href: "/develop/go/set-up-your-local-go", title: "Go", description: "Install the Go SDK and run a Hello World Workflow in Go." },
@@ -25,8 +27,23 @@ Choose your language to get started locally. If you're using Temporal Cloud, che
   ]}
 />
 
+## Quickstarts by feature
+
+### Nexus
+
+Connect Temporal Applications within and across Namespaces with a Nexus Service.
+
+<QuickstartCards
+  items={[
+    { href: "/develop/go/nexus/quickstart", title: "Go", description: "Build a Nexus Service with the Go SDK." },
+    { href: "/develop/java/nexus/quickstart", title: "Java", description: "Build a Nexus Service with the Java SDK." },
+    { href: "/develop/dotnet/nexus/quickstart", title: ".NET", description: "Build a Nexus Service with the .NET SDK." },
+    { href: "/develop/python/nexus/quickstart", title: "Python", description: "Build a Nexus Service with the Python SDK." },
+    { href: "/develop/typescript/nexus/quickstart", title: "TypeScript", description: "Build a Nexus Service with the TypeScript SDK." },
+  ]}
+/>
+
 <CallToAction href="/with-ai" analyticsId="quickstarts-pair-with-ai-cta">
   <h3>Pair with an AI coding agent</h3>
   <p>Give Claude Code, Cursor, or Codex Temporal expertise with Skills and real-time documentation access.</p>
 </CallToAction>
-
