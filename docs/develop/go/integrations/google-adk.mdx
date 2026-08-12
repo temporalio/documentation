@@ -118,7 +118,7 @@ if err := w.Run(worker.InterruptCh()); err != nil {
 ```
 <!--SNIPEND-->
 
-`Config.Models` is optional for providers ADK's registry already knows (for example `gemini-*`): when a model name is
+`Config.Models` is optional for providers ADK's registry already knows (for example, `gemini-*`): when a model name is
 absent, `InvokeModel` falls back to `model.NewLLM`. Supply a factory to inject credentials, disable the model SDK's own
 retries, or override the default.
 

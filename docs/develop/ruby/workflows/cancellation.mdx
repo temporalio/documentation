@@ -55,7 +55,7 @@ Cancellation to perform cleanup.
 
 Cancellation Requests on Workflows cancel the `Temporalio::Workflow.cancellation` which is a `Temporalio::Cancellation`
 that effectively serves as a cancellation token. This is the cancellation that is implicitly used for all calls within
-the workflow as well (e.g. Timers, Activities, etc) and therefore cancellation is propagated to them to be handled and
+the workflow as well (for example, Timers, Activities, etc) and therefore cancellation is propagated to them to be handled and
 bubble out.
 
 ```ruby
