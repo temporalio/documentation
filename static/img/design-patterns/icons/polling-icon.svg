@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Repeated poll loop -->
+  <path d="M 34 26 A 18 18 0 1 0 40 22" fill="none" stroke="#cc2222" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="28,20 40,20 33,30" fill="#cc2222"/>
+  <text x="30" y="44" font-family="sans-serif" font-size="12" fill="#888" text-anchor="middle">?</text>
+
+  <!-- Resource being checked until ready -->
+  <rect x="60" y="26" width="28" height="28" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <line x1="66" y1="37" x2="82" y2="37" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="66" y1="43" x2="82" y2="43" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

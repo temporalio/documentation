@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Starter -->
+  <rect x="6" y="32" width="20" height="16" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+
+  <!-- Eager dispatch: starts executing immediately, skipping the queue hop -->
+  <polygon points="46,16 34,42 44,42 38,60 58,32 48,32 56,16" fill="#cc2222"/>
+
+  <!-- Workflow begins executing at once -->
+  <rect x="66" y="24" width="28" height="32" rx="3" fill="none" stroke="#888" stroke-width="2"/>
+  <polygon points="74,32 74,48 88,40" fill="#888"/>
+</svg>

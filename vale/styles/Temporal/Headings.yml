@@ -19,7 +19,9 @@ exceptions:
   - Linux
   - macOS
   - Marketplace
+  - MCP
   - MongoDB
+  - OpenTelemetry
   - REPL
   - Studio
   - TypeScript
@@ -32,6 +34,7 @@ exceptions:
   - Activity
   - Activities
   - Archival
+  - Cloud
   - Codec
   - Converter
   - Cron
@@ -41,6 +44,7 @@ exceptions:
   - Execution
   - Executions
   - Failure
+  - Fairness
   - Filter
   - Filters
   - Heartbeat
@@ -52,7 +56,12 @@ exceptions:
   - Namespace
   - Namespaces
   - Nexus
+  - Operation
+  - Operations
   - Payload
+  - Priority
+  - Project
+  - Projects
   - Query
   - Queries
   - Queue
@@ -64,11 +73,13 @@ exceptions:
   - Search
   - Signal
   - Signals
+  - Standalone
   - Task
   - Temporal
   - Timer
   - Timers
   - Update
+  - Versioning
   - Worker
   - Workers
   - Workflow
@@ -132,3 +143,52 @@ exceptions:
   - Transition
   - Type
   - Visibility
+  # SDK language names (parallel to existing TypeScript)
+  - Go
+  - Java
+  - Python
+  - Ruby
+  - PHP
+  - Rust
+  - .NET
+  # Identifier casing per this repo's style guide (Id, not ID)
+  - Id
+  # Temporal feature / primitive names
+  - Versioning
+  - Patching
+  - Endpoint
+  - Metrics
+  - Account
+  - Capacity
+  - Connectivity
+  - Continue-As-New
+  # Cloud provider / networking / industry acronyms
+  - AWS
+  - GCP
+  - DNS
+  - TLS
+  - mTLS
+  - SAML
+  - SSO
+  - API
+  - APIs
+  - UI
+  - HA
+  - RTO
+  - RPO
+  - SLA
+  - APS
+  - PrivateLink
+  - KMS
+  # Cloud provider product names (exact phrase, not the individual words)
+  - Azure Key Vault
+  - Azure Workload Identity
+  - GCP Workload Identity
+  - Terraform
+  - Prometheus
+  - Grafana
+  # AI vendor and model-platform proper nouns
+  - AI
+  - Google
+  - Gemini
+  - Vertex

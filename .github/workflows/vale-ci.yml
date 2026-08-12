@@ -14,7 +14,7 @@ jobs:
     name: Lint prose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: vale-cli/vale-action@2.1.2
         with:
@@ -22,4 +22,7 @@ jobs:
           level: info
           filter_mode: diff_context
           fail_on_error: false
+          # Scope linting to docs only; do not put the path in vale_flags —
+          # the action runs `vale ${vale_flags} sync`, so a path there breaks sync.
+          files: docs
           vale_flags: "--config=.vale-ci.ini"

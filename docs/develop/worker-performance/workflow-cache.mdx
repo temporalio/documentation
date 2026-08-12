@@ -1,0 +1,25 @@
+---
+id: workflow-cache
+title: Workflow cache tuning
+sidebar_label: Workflow cache tuning
+description: Tune Workflow cache size and thread limits to balance Worker memory use against replay latency.
+toc_max_heading_level: 3
+tags:
+  - Workers
+  - Performance
+---
+
+When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` _or_ the number of threads reported by the `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions will start to be evicted from the cache.
+An evicted Workflow Execution will need to be replayed when it gets any action that may advance it.
+
+If the Workflow Cache limits described above are hit, and Worker hosts have enough free RAM and are not close to reasonable thread limits, then you may choose to increase `workflowCacheSize` and `maxWorkflowThreadCount` limits to decrease the overall latency and cost of the Replays in the system.
+If the opposite occurs, consider decreasing the limits.
+
+:::note
+
+In CoreSDK based SDKs, like TypeScript, this metric works differently and should be monitored and adjusted on a per Worker and Task Queue basis.
+
+The `maxWorkflowThreadCount` and `workflow_active_thread_count` parameters are for the Java SDK only.
+
+:::
+

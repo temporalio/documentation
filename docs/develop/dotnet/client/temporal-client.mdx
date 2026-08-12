@@ -17,7 +17,7 @@ tags:
   - Certificates
 ---
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the Temporal Service.
+A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the Temporal Service.
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
 
@@ -267,9 +267,7 @@ local development instance:
   This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
   See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
-You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
-
-![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab.
 
 For more information about managing and generating client certificates for Temporal Cloud, see
 [How to manage certificates in Temporal Cloud](/cloud/certificates).
@@ -459,6 +457,42 @@ To update an API key, update the value of `ApiKey` on the existing client connec
 ```csharp
 myClient.Connection.ApiKey = myKeyUpdated;
 ```
+
+To connect using mTLS instead of an API key, provide the client certificate and private key on `Tls`:
+
+```csharp
+var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
+{
+    Namespace = "<namespace_id>.<account_id>",
+    Tls = new()
+    {
+        ClientCert = File.ReadAllBytes("client-cert.pem"),
+        ClientPrivateKey = File.ReadAllBytes("client-private-key.pem"),
+    },
+});
+```
+
+Unlike `ApiKey`, `TlsOptions` is not mutable on an existing connection — the certificate bytes are fixed once the
+connection is established. To rotate an mTLS client certificate without restarting your Worker, connect a new client
+with the new certificate and assign it to the running `TemporalWorker`'s `Client` property:
+
+```csharp
+var newClient = await TemporalClient.ConnectAsync(new(<endpoint>)
+{
+    Namespace = "<namespace_id>.<account_id>",
+    Tls = new()
+    {
+        ClientCert = File.ReadAllBytes("client-cert-new.pem"),
+        ClientPrivateKey = File.ReadAllBytes("client-private-key-new.pem"),
+    },
+});
+
+// worker is the TemporalWorker instance already running against the old client
+worker.Client = newClient;
+```
+
+Setting `Client` replaces the connection the Worker uses for subsequent calls to the Temporal Service (Workflow Task
+completion, Activity Heartbeats, and so on); calls already in flight on the old client are not interrupted.
 
 </TabItem>
 

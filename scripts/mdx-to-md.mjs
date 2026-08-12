@@ -23,6 +23,7 @@
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
  *   - <ViewSourceCodeNotice href> → plain markdown link line
+ *   - YouTube/HTML embeds         → stripped (keep a markdown Watch link in prose for LLMs)
  *   - imported .md components      → transcluded inline (e.g. <AWSRegions />)
  *   - import / export stmts        → stripped
  *   - {/* MDX comments *​/}         → stripped
@@ -34,8 +35,9 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
-import { homePageHeroToMarkdown } from "./component-handlers/home-page-hero.mjs";
+import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
+import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
@@ -53,15 +55,12 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
-  DiscoverableDisclosure: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
-  ZoomingImage: "captioned-image",
-  PhotoCarousel: "photo-carousel",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
@@ -71,8 +70,24 @@ export const COMPONENT_REGISTRY = {
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
-  HomePageHero: "home-page-hero",
+  SdkOverviewCards: "sdk-overview-cards",
   ViewSourceCodeNotice: "view-source-code-notice",
+
+  // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
+  // from presentational components in src/components/elements/HomePageHero.js.
+  // Layout wrappers strip to their inner Markdown; the single-line HeroHeader /
+  // HeroCta lines strip whole (their text is redundant with the title / first
+  // action card); the cards resolve to Markdown link-list items.
+  HeroWrapper: "strip-tag",
+  HeroHeader: "strip-tag",
+  HeroSection: "strip-tag",
+  HeroContent: "strip-tag",
+  HeroHeadline: "hero-headline",
+  HeroActions: "strip-tag",
+  HeroCta: "strip-tag",
+  CommunityCards: "strip-tag",
+  ActionCard: "hero-card",
+  CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
   DT: "strip-tag",
@@ -85,13 +100,17 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
-  SdkLogos: "strip-block",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
+  CodeToCommandsDemo: "strip-block",
+  CommandsToEventsDemo: "strip-block",
+  HistoryReplayDemo: "strip-block",
+  NonDeterminismDemo: "strip-block",
   OperationsTable: "strip-block",
   InvitationContent: "strip-block",
+  AnnotatedCode: "strip-tag",
 
   // Details/summary (HTML, handled natively)
   details: "details",
@@ -315,8 +334,9 @@ export function dedent(lines) {
 export function applyInlineTransforms(line) {
   let out = line;
 
-  // Strip single-line MDX comments: {/* ... */}
-  out = out.replace(/\{\/\*[\s\S]*?\*\/\}/g, "");
+  // Strip single-line MDX comments: {/* ... */}, tolerating a space before the
+  // closing brace ({/* #anchor */ }), which authors write inconsistently.
+  out = out.replace(/\{\/\*[\s\S]*?\*\/\s*\}/g, "");
 
   // Inline <ToolTipTerm term="x" /> → x  (self-closing or paired)
   out = out.replace(/<ToolTipTerm\b[^>]*\/>/g, (m) => extractProp(m, "term") || "");
@@ -436,6 +456,36 @@ const State = {
 };
 
 /**
+ * If `lines[i]` starts an HTML/JSX video embed (`<iframe>` or styled `<div>`
+ * wrapping one), return the inclusive end index of the block. Otherwise null.
+ * Authors should keep a markdown Watch link in surrounding prose for LLMs.
+ */
+export function findHtmlEmbedEnd(lines, i) {
+  const trimmed = (lines[i] || "").trim();
+  if (/^<iframe\b/i.test(trimmed)) {
+    let j = i;
+    while (j < lines.length) {
+      if (/<\/iframe>/i.test(lines[j]) || /\/>\s*$/.test(lines[j].trim())) {
+        return j;
+      }
+      j++;
+    }
+    return i;
+  }
+  if (/^<div\b/i.test(trimmed) && /style=\{/.test(trimmed)) {
+    let depth = 0;
+    for (let j = i; j < lines.length; j++) {
+      if (/<div\b/i.test(lines[j])) depth++;
+      if (/<\/div>/i.test(lines[j])) {
+        depth--;
+        if (depth === 0) return j;
+      }
+    }
+  }
+  return null;
+}
+
+/**
  * Main transform function.
  * @param {string} mdxContent - raw MDX file content
  * @param {object} options
@@ -484,6 +534,8 @@ export function transformMdx(mdxContent, options = {}) {
 
   // --- Admonition state ---
   let admonitionType = null;
+  let admonitionTitle = "";
+  let admonitionFence = 3;
   let admonitionLines = [];
 
   // --- Details state ---
@@ -609,6 +661,23 @@ export function transformMdx(mdxContent, options = {}) {
         codeBlockFence = null;
       }
       continue;
+    }
+
+    // ------------------------------------------------------------------
+    // Multi-line MDX comments  {/* ... \n ... */}
+    // ------------------------------------------------------------------
+    // applyInlineTransforms strips comments that open and close on one line;
+    // it works per line, so it can't see a block that spans several. Runs after
+    // code-fence detection so a `{/*` inside a code sample is left alone.
+    if (trimmed.includes('{/*') && !/\*\/\s*\}/.test(trimmed)) {
+      let j = i + 1;
+      while (j < lines.length && !/\*\/\s*\}/.test(lines[j])) j++;
+      if (j < lines.length) {
+        i = j;
+        continue;
+      }
+      // Unterminated: fall through and let the line be handled normally rather
+      // than swallowing the rest of the page.
     }
 
     // ==================================================================
@@ -833,19 +902,28 @@ export function transformMdx(mdxContent, options = {}) {
     // Admonitions  :::note / :::tip / :::caution / :::danger / :::info / :::warning
     // ------------------------------------------------------------------
     if (state === State.NORMAL) {
-      const admonitionOpen = trimmed.match(/^:::(note|tip|caution|danger|info|warning)(\s.*)?$/i);
+      // Docusaurus allows any fence of three or more colons, an optional
+      // `[Custom title]` immediately after the type, and closing on a fence at
+      // least as long as the opener. Authors use `::::` when the body itself
+      // contains a `:::` block.
+      const admonitionOpen = trimmed.match(
+        /^(:{3,})(note|tip|caution|danger|info|warning|important)(\[([^\]]*)\])?(\s.*)?$/i
+      );
       if (admonitionOpen) {
         state = State.ADMONITION;
-        admonitionType = admonitionOpen[1].toLowerCase();
+        admonitionFence = admonitionOpen[1].length;
+        admonitionType = admonitionOpen[2].toLowerCase();
+        admonitionTitle = (admonitionOpen[4] || '').trim();
         admonitionLines = [];
-        if (admonitionOpen[2] && admonitionOpen[2].trim()) {
-          admonitionLines.push(admonitionOpen[2].trim());
+        if (admonitionOpen[5] && admonitionOpen[5].trim()) {
+          admonitionLines.push(admonitionOpen[5].trim());
         }
         continue;
       }
     }
     if (state === State.ADMONITION) {
-      if (trimmed === ":::") {
+      const closes = /^:{3,}$/.test(trimmed) && trimmed.length >= admonitionFence;
+      if (closes) {
         const typeLabels = {
           note: "📝 Note",
           tip: "💡 Tip",
@@ -853,9 +931,13 @@ export function transformMdx(mdxContent, options = {}) {
           danger: "🚨 Danger",
           info: "ℹ️ Info",
           warning: "⚠️ Warning",
+          important: "❗ Important",
         };
         const label = typeLabels[admonitionType] || admonitionType.toUpperCase();
-        outputLines.push(`> **${label}:**`);
+        // A custom `[title]` replaces the generic type word but keeps the icon,
+        // since the title is what the rendered page shows.
+        const icon = label.split(' ')[0];
+        outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
         for (const al of admonitionLines) {
           outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
         }
@@ -863,7 +945,14 @@ export function transformMdx(mdxContent, options = {}) {
         state = State.NORMAL;
         admonitionLines = [];
         admonitionType = null;
+        admonitionTitle = "";
       } else {
+        // Drop YouTube/HTML embeds inside tips; keep the markdown Watch link.
+        const embedEnd = findHtmlEmbedEnd(lines, i);
+        if (embedEnd !== null) {
+          i = embedEnd;
+          continue;
+        }
         admonitionLines.push(line);
       }
       continue;
@@ -1086,12 +1175,21 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- HTML/JSX video embeds (YouTube iframes) — strip; keep prose links ---
+    if (state === State.NORMAL) {
+      const embedEnd = findHtmlEmbedEnd(lines, i);
+      if (embedEnd !== null) {
+        i = embedEnd;
+        continue;
+      }
+    }
+
     // --- Image components (self-closing, may span lines) ---
-    //     <CaptionedImage|EnlargeImage|ZoomingImage|Components.CaptionedImage
+    //     <CaptionedImage|EnlargeImage|Components.CaptionedImage
     //     src="..." alt|caption|title="..." />  →  ![text](src)
     if (
       state === State.NORMAL &&
-      /^\s*<(CaptionedImage|EnlargeImage|ZoomingImage|Components\.CaptionedImage)\b/.test(line)
+      /^\s*<(CaptionedImage|EnlargeImage|Components\.CaptionedImage)\b/.test(line)
     ) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
@@ -1108,22 +1206,6 @@ export function transformMdx(mdxContent, options = {}) {
         outputLines.push(`![${alt}](${src})`);
         outputLines.push("");
       }
-      continue;
-    }
-
-    // --- PhotoCarousel (images + captions arrays) → list of images ---
-    if (state === State.NORMAL && /^\s*<PhotoCarousel\b/.test(line)) {
-      let tag = line;
-      while (!/\/>/.test(tag) && i + 1 < lines.length) {
-        i++;
-        tag += "\n" + lines[i];
-      }
-      const images = parseStringArrayProp(tag, "images");
-      const captions = parseStringArrayProp(tag, "captions");
-      for (let k = 0; k < images.length; k++) {
-        outputLines.push(`![${captions[k] || ""}](${images[k]})`);
-      }
-      if (images.length) outputLines.push("");
       continue;
     }
 
@@ -1155,6 +1237,19 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- SdkOverviewCards (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<SdkOverviewCards\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = sdkOverviewCardsToMarkdown({ projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
     // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
     if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
       let tag = line;
@@ -1170,12 +1265,37 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- HomePageHero (self-closing) → hardcoded hero content ---
-    // See scripts/component-handlers/home-page-hero.mjs (kept in sync with
-    // src/components/elements/HomePageHero.js).
-    if (state === State.NORMAL && /^\s*<HomePageHero\b/.test(line)) {
-      outputLines.push(homePageHeroToMarkdown());
-      outputLines.push("");
+    // --- HeroHeadline → Markdown H1 ---
+    if (state === State.NORMAL && /^\s*<HeroHeadline\b/.test(line)) {
+      let el = line;
+      while (!/<\/HeroHeadline>/.test(el) && i + 1 < lines.length) {
+        i++;
+        el += "\n" + lines[i];
+      }
+      const md = heroHeadlineToMarkdown(el);
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
+      continue;
+    }
+
+    // --- ActionCard / CommunityCard → Markdown link-list item ---
+    // The homepage hero cards (docs/index.mdx). Accumulate the whole element
+    // (usually a single line) and resolve title/href/description to a list item.
+    if (state === State.NORMAL && /^\s*<(ActionCard|CommunityCard)\b/.test(line)) {
+      const name = line.match(/^\s*<(ActionCard|CommunityCard)\b/)[1];
+      const closeRe = new RegExp(`</${name}>`);
+      let el = line;
+      while (!closeRe.test(el) && i + 1 < lines.length) {
+        i++;
+        el += "\n" + lines[i];
+      }
+      const md = heroCardToMarkdown(el);
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
       continue;
     }
 

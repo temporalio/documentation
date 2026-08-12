@@ -32,7 +32,7 @@ tags:
   - Certificates
 ---
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the
+A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the
 [Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as starting
 Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results
 of a Workflow Execution, and providing Activity Task Tokens.
@@ -207,33 +207,39 @@ If you don't want to use environment variables or a configuration file, you can 
 code. This is convenient for local development and testing. You can also load a base configuration from environment
 variables or a configuration file, and then override specific options in code.
 
-{/* SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} */}
-[sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
 ```go
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"log"
-	"net/http"
+  "context"
+  "encoding/json"
+  "log"
+  "net/http"
 
-	"documentation-samples-go/yourapp"
+  "documentation-samples-go/yourapp"
 
-	"go.temporal.io/sdk/client"
+  "go.temporal.io/sdk/client"
 )
 
 func main() {
-	// Create a Temporal Client to communicate with the Temporal Cluster.
-	// A Temporal Client is a heavyweight object that should be created just once per process.
-	temporalClient, err := client.Dial(client.Options{
-		HostPort: client.DefaultHostPort,
-	})
-	if err != nil {
-		log.Fatalln("Unable to create Temporal Client", err)
-	}
-	defer temporalClient.Close()
-// ...
+  // Create a Temporal Client to communicate with the Temporal Cluster.
+  // A Temporal Client should be created once per process.
+  temporalClient, err := client.Dial(client.Options{
+    HostPort: client.DefaultHostPort,
+  })
+  if err != nil {
+    log.Fatalln("Unable to create Temporal Client", err)
+  }
+  defer temporalClient.Close()
+
+  // Start an HTTP server and listen on /start
+  http.HandleFunc("/start", func(w http.ResponseWriter, r *http.Request) {
+    startWorkflowHandler(w, r, temporalClient)
+  })
+  err = http.ListenAndServe(":8091", nil)
+  if err != nil {
+    log.Fatalln("Unable to run http server", err)
+  }
 }
 ```
 {/* SNIPEND */}
@@ -256,9 +262,7 @@ local development instance:
   This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
   See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
-You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
-
-![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab.
 
 For more information about managing and generating client certificates for Temporal Cloud, see
 [How to manage certificates in Temporal Cloud](/cloud/certificates).
@@ -421,6 +425,38 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
+To rotate an mTLS client certificate without restarting your Worker, set `GetClientCertificate` on the `tls.Config`
+instead of setting `Certificates` directly. Go's standard library `crypto/tls` package calls this function on every new
+connection, so it always picks up the current certificate:
+
+```go
+clientCertPath := "/path/to/client.crt"
+clientKeyPath := "/path/to/client.key"
+
+clientOptions := client.Options{
+    HostPort:  <endpoint>,
+    Namespace: <namespace_id>.<account_id>,
+    ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{
+            GetClientCertificate: func(*tls.CertificateRequestInfo) (*tls.Certificate, error) {
+                cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+                if err != nil {
+                    return nil, err
+                }
+                return &cert, nil
+            },
+        },
+    },
+}
+c, err := client.Dial(clientOptions)
+```
+
+Rotate the certificate by overwriting the files at `clientCertPath` and `clientKeyPath`; the next time the connection
+re-establishes (for example, after Temporal Cloud's periodic connection recycling), `GetClientCertificate` reads the new
+files. This works because `ConnectionOptions.TLS` is a real `*tls.Config`, so any option `crypto/tls` supports is
+available. See this [reference implementation](https://github.com/temporal-sa/temporal-worker-cert-rotation) for a full
+walkthrough, including automating certificate issuance with cert-manager on Kubernetes.
+
 You can use a combination of environment variables, configuration files, and code to set connection options. For
 example, you can load a base configuration from environment variables or a configuration file, and then override
 specific options in code.
@@ -435,28 +471,28 @@ available connection options you can override.
 package main
 
 import (
-	"fmt"
-	"log"
+  "fmt"
+  "log"
 
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
+  "go.temporal.io/sdk/client"
+  "go.temporal.io/sdk/contrib/envconfig"
 )
 
 func main() {
-	// Load the base configuration (e.g., from the default profile).
-	opts := envconfig.MustLoadDefaultClientOptions()
+  // Load the base configuration (e.g., from the default profile).
+  opts := envconfig.MustLoadDefaultClientOptions()
 
-	// Apply overrides programmatically.
-	opts.HostPort = "localhost:7233"
-	opts.Namespace = "test-namespace"
+  // Apply overrides programmatically.
+  opts.HostPort = "localhost:7233"
+  opts.Namespace = "test-namespace"
 
-	c, err := client.Dial(opts)
-	if err != nil {
-		log.Fatalf("Failed to connect with overridden options: %v", err)
-	}
-	defer c.Close()
+  c, err := client.Dial(opts)
+  if err != nil {
+    log.Fatalf("Failed to connect with overridden options: %v", err)
+  }
+  defer c.Close()
 
-	fmt.Printf("✅ Connected with overridden config to: %s in namespace: %s\n", opts.HostPort, opts.Namespace)
+  fmt.Printf("✅ Connected with overridden config to: %s in namespace: %s\n", opts.HostPort, opts.Namespace)
 }
 ```
 
@@ -548,8 +584,6 @@ apiKeyProvider.APIKey = myKeyUpdated
 
 ## Start Workflow Execution {/* #start-workflow-execution */}
 
-**How to start a Workflow Execution using the Go SDK**
-
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
 you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
 language-specific contextual data, and Workflow Function parameters.
@@ -622,8 +656,6 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 ### Set Workflow Task Queue {/* #set-task-queue */}
 
-**How to set a Workflow's Task Queue using the Go SDK**
-
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
@@ -650,12 +682,10 @@ if err != nil {
 
 You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your
 application load. For more information, refer to
-[Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and
+[Task Queues Processing Tuning](/develop/worker-performance/task-queues#task-queues-processing-tuning) and
 [Worker Versioning](/worker-versioning).
 
 ### Set custom Workflow Id {/* #workflow-id */}
-
-**How to set a custom Workflow Id using the Go SDK**
 
 Although it is not required, we recommend providing your own
 [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
@@ -905,8 +935,6 @@ if err != nil {
 
 #### SearchAttributes
 
-**How to set Workflow Execution Search Attributes in Go**
-
 - Type: `map[string]interface{}`
 - Default: Empty.
 
@@ -935,8 +963,6 @@ if err != nil {
 ```
 
 ### Get Workflow results {/* #get-workflow-results */}
-
-**How to get the results of a Workflow Execution using the Go SDK**
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 

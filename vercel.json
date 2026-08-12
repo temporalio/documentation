@@ -3,6 +3,12 @@
   "github": {
     "silent": true
   },
+  "rewrites": [
+    {
+      "source": "/img/og/:path*",
+      "destination": "/img/assets/open-graph-shiny.jpg"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)\\.md",
@@ -18,12 +24,58 @@
       "headers": [
         {
           "key": "Link",
-          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\""
+          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\", </assets/fonts/Aeonik-Light-c944de5d59061b5eca77f8b08852df3b.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Aeonik-Regular-5daa2b042642b01633b5ba8273b0d396.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
   ],
   "redirects": [
+    {
+      "source": "/llms-quickstart.txt",
+      "destination": "/llms.txt",
+      "permanent": true
+    },
+    {
+      "source": "/llms-api-reference.txt",
+      "destination": "/llms.txt",
+      "source": "/develop/typescript/workers/serverless-workers/cloud-run",
+      "destination": "/develop/typescript/workers/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/worker-deployments/serverless-workers/self-hosted-setup",
+      "destination": "/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup",
+      "permanent": true
+    },
+    {
+      "source": "/guides/saga-pattern",
+      "destination": "/guides/recover-without-restart",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/disaster-recovery",
+      "destination": "/cloud/high-availability",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/multi-region-failover",
+      "destination": "/cloud/high-availability/architecture-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/high-availability/deployment-patterns",
+      "destination": "/cloud/high-availability/architecture-patterns",
+      "permanent": true
+    },
     {
       "source": "/encyclopedia/detecting-application-failures",
       "destination": "/encyclopedia/failures-and-error-handling",
@@ -91,7 +143,22 @@
     },
     {
       "source": "/evaluate/serverless-workers-demo",
-      "destination": "/evaluate/serverless-workers/demo",
+      "destination": "/demos/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/serverless-workers/demo",
+      "destination": "/demos/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/develop/activity-retry-simulator",
+      "destination": "/demos/activity-retry-simulator",
+      "permanent": true
+    },
+    {
+      "source": "/develop/standalone-activities-interactive-demo",
+      "destination": "/demos/standalone-activities",
       "permanent": true
     },
     {
@@ -834,7 +901,8 @@
     },
     {
       "source": "/operation/how-to-tune-workers",
-      "destination": "/dev-guide/worker-performance"
+      "destination": "/develop/worker-performance",
+      "permanent": true
     },
     {
       "source": "/cadence-to-temporal",
@@ -2124,6 +2192,21 @@
       "permanent": true
     },
     {
+      "source": "/encyclopedia/temporal-sdks",
+      "destination": "/encyclopedia/architecture/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/architecture/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/temporal-client",
+      "destination": "/encyclopedia/temporal-client",
+      "permanent": true
+    },
+    {
       "source": "/cloud/users",
       "destination": "/cloud/manage-access/users",
       "permanent": true
@@ -2151,6 +2234,26 @@
     {
       "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
       "destination": "/develop/ruby/workflows/versioning#patching",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dotnet/best-practices/converters-and-encryption",
+      "destination": "/develop/dotnet/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/java/best-practices/converters-and-encryption",
+      "destination": "/develop/java/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/ruby/best-practices/converters-and-encryption",
+      "destination": "/develop/ruby/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/converters-and-encryption",
+      "destination": "/develop/typescript/best-practices/data-handling",
       "permanent": true
     }
   ]

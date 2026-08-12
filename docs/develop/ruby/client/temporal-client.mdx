@@ -16,7 +16,7 @@ tags:
   - Certificates
 ---
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the Temporal Service.
+A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the Temporal Service.
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
 
@@ -227,9 +227,7 @@ local development instance:
   This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
   See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
-You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
-
-![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab.
 
 For more information about managing and generating client certificates for Temporal Cloud, see
 [How to manage certificates in Temporal Cloud](/cloud/certificates).
@@ -415,6 +413,27 @@ client = Temporalio::Client.connect(
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+`TLSOptions` is static: the certificate you pass to `Client.connect` is fixed for the lifetime of that client. To rotate
+an mTLS client certificate without restarting your Worker, connect a new client with the new certificate, then assign
+it to the running `Worker`'s `client`:
+
+```ruby
+new_client = Temporalio::Client.connect(
+  '<endpoint>', # Endpoint
+  '<namespace_id>.<account_id>', # Namespace
+  tls: Temporalio::Client::Connection::TLSOptions.new(
+    client_cert: File.read('my-client-cert-new.pem'),
+    client_private_key: File.read('my-client-key-new.pem')
+  )
+)
+
+# my_worker is the Worker instance already running against the old client
+my_worker.client = new_client
+```
+
+The Worker starts using `new_client` for subsequent calls to the Temporal Service; calls already in flight on the old
+client finish normally.
 
 </TabItem>
 

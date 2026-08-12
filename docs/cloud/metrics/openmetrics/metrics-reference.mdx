@@ -533,7 +533,7 @@ It can overcount because invalid or expired Tasks, like from cancelled, terminat
 
 It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes. The Task Queue is unloaded from memory.
 Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
-See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
 :::
 
 | Label | Description |
@@ -607,7 +607,7 @@ The total number of actions performed per second. Actions with `is_background=fa
 
 | Label | Description |
 | ----- | ----- |
-| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 :::note
@@ -766,6 +766,18 @@ The on-demand envelope limit for service requests per second. For Namespaces in 
 :::note
 
 Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_provisioned\_capacity\_tru\_count
+
+The number of Temporal Resource Units (TRUs) provisioned for a Namespace. This is `0` for Namespaces that are not in [provisioned capacity mode](/cloud/capacity-modes).
+
+:::note
+
+Does not include the `region` label. Provisioned capacity is scoped to the Namespace level.
 
 :::
 

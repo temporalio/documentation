@@ -11,11 +11,7 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components/elements/ViewSourceCodeNotice';
-
 ## Develop a basic Activity {/* #develop-activities */}
-
-**How to develop a basic Activity using the Temporal Python SDK.**
 
 One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function
 or method execution that's intended to execute a single, well-defined action (either short or long-running), such as
@@ -52,20 +48,17 @@ perform these actions. If you must use a blocking library, consider using a sync
 
 :::
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
-
 ```python
 from temporalio import activity
-# ...
-# ...
+from your_dataobject import YourParams
+
+
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
 ### Develop Activity Parameters {/* #activity-parameters */}
-
-**How to develop Activity Parameters using the Temporal Python SDK.**
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -89,22 +82,17 @@ Activity parameters are the function parameters of the function decorated with `
 type Temporal can convert, including dataclasses when properly type-annotated. Technically this can be multiple
 parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
-
-```python
+```python {2,6}
 from temporalio import activity
-from your_dataobject_dacx import YourParams
+from your_dataobject import YourParams
 
-# ...
-# ...
+
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
 ### Define Activity return values {/* #activity-return-values */}
-
-**How to define Activity return values using the Temporal Python SDK.**
 
 All data returned from an Activity must be serializable.
 
@@ -117,18 +105,17 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes an object as input and returns a string.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
+```python {6,7}
+from temporalio import activity
+from your_dataobject import YourParams
 
-```python
-# ...
+
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
 ### Customize your Activity Type {/* #activity-type */}
-
-**How to customize your Activity Type**
 
 Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom
 name for your Activity Type.
@@ -137,10 +124,11 @@ You can customize the Activity name with a custom name in the decorator argument
 `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the
 function name.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py" />
+```python {5}
+from temporalio import activity
+from your_dataobject import YourParams
 
-```python
-# ...
+
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"

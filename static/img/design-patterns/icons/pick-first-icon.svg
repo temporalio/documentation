@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Racing candidates -->
+  <circle cx="14" cy="20" r="7" fill="none" stroke="#888" stroke-width="1.5"/>
+  <circle cx="14" cy="40" r="7" fill="none" stroke="#888" stroke-width="1.5"/>
+  <circle cx="14" cy="60" r="7" fill="none" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Winner arrives first (red) -->
+  <line x1="21" y1="22" x2="72" y2="38" stroke="#cc2222" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="21" y1="40" x2="72" y2="40" stroke="#888" stroke-width="1" stroke-linecap="round"/>
+  <line x1="21" y1="58" x2="72" y2="42" stroke="#888" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- First result taken -->
+  <circle cx="80" cy="40" r="9" fill="none" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="80" y="44" font-family="sans-serif" font-size="10" fill="#cc2222" text-anchor="middle">1</text>
+</svg>

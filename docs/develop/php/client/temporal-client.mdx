@@ -26,7 +26,7 @@ This page shows how to do the following:
 
 ## How to connect a Temporal Client to a Temporal Service {/* #connect-to-a-dev-cluster */}
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
+A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Scheduling Workflow Executions.
@@ -128,6 +128,13 @@ To set up the [API key](/cloud/api-keys) in the Client, use the [`ServiceClient:
 $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
     ->withAuthKey('your-api-key');
 ```
+
+Rotating an mTLS client certificate without restarting the Worker isn't currently supported by the PHP SDK or RoadRunner
+— the certificate configured on `ServiceClient::createSSL()` or in RoadRunner's `tls:` block is fixed for the life of
+the process. To rotate a certificate, stage the new certificate alongside the old one on your Temporal Cloud Namespace,
+then restart your Worker (RoadRunner process) with the new certificate before removing the old one. See
+[Update certificates using Temporal Cloud UI/tcld](/cloud/certificates#manage-certificates) for the zero-downtime
+staging sequence.
 
 ## How to start a Workflow Execution {/* #start-workflow-execution */}
 

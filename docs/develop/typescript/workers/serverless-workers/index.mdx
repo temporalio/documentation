@@ -15,6 +15,12 @@ tags:
   - Serverless
 ---
 
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda support is in Public Preview.
+</ReleaseNoteHeader>
+
 Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
 
