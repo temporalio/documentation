@@ -195,11 +195,13 @@ Activity:
 - `tool_as_activity(tool, ...)` wraps a LangChain tool whose body does I/O so its execution runs as a
   `deepagents.invoke_tool` Activity.
 
-An unwrapped, non-builtin tool runs in-Workflow and the plugin warns at construction, so that choice is never silent.
+An unwrapped, non-builtin tool runs in-Workflow, and the plugin emits a best-effort warning at agent construction
+(the warning fires through the plugin's `create_deep_agent` seam, so code paths that bypass that seam construct
+without it).
 Deep Agents' pure built-ins (`write_todos`, the state-backed file tools) stay in-Workflow by design.
 
-This sample wraps an existing activity and an I/O tool, and constructs the model explicitly as `TemporalModel(...)` to
-show the non-auto path:
+This sample wraps an existing activity and an I/O tool, and builds the agent with `create_temporal_deep_agent`,
+which wraps the model name in a durable `TemporalModel` and scopes `activity_options` to this agent's model calls:
 
 <!--SNIPSTART python-deepagents-react-agent-activity-->
 [deepagents_plugin/react_agent/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/react_agent/workflow.py)
@@ -434,13 +436,15 @@ class HumanInTheLoopAgent:
 ## Continue-as-new
 
 Long conversations bloat Workflow history until it hits Temporal's limits. `run_deep_agent(agent, input,
-continue_as_new_after=N, state_snapshot=...)` snapshots state and continues into a fresh run once history passes `N`
-events and the agent still has pending todos.
+state_snapshot=...)` snapshots state and continues into a fresh run when a turn ends with pending todos and the
+server recommends continuing (`workflow.info().is_continue_as_new_suggested()`, the default and recommended mode).
+Pass `continue_as_new_after=N` to trigger on a fixed history-event count instead.
 
 - **Carries forward:** the accumulated messages and the model/tool result cache, so an LLM or tool call completed before
   the continue-as-new is *not* re-run afterward.
-- **Does not carry forward:** anything held only in an in-memory checkpointer's own structures beyond the
-  messages/todos snapshot.
+- **Does not carry forward:** anything else — the snapshot is exactly the messages plus the result cache. Pending
+  todos only gate *whether* to continue; the todo list itself (and any in-memory checkpointer state) starts fresh in
+  the continued run and is re-derived by the agent from the carried conversation.
 
 Your `@workflow.run` method must accept the carried state — its signature is `run(self, input, state_snapshot=None)`.
 On a continue-as-new, `run_deep_agent` re-invokes the method with `args=[input, snapshot]`, so `input` must be passed
@@ -528,8 +532,8 @@ class StreamingWorkflow:
 
 This plugin carries no tracing context of its own. For observability, compose it with an observability plugin such as
 [`temporalio.contrib.langsmith`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith) or
-`temporalio.contrib.opentelemetry`. Register the observability plugin **before** `DeepAgentsPlugin` so it can capture
-the LLM calls that `DeepAgentsPlugin` runs as Activities. The Workflow itself is an ordinary Deep Agent — the tracing
+`temporalio.contrib.opentelemetry`. Registration order of the two plugins does not matter; the observability plugin
+captures the LLM calls that `DeepAgentsPlugin` runs as Activities. The Workflow itself is an ordinary Deep Agent — the tracing
 comes entirely from composing the plugins on the Client.
 
 <!--SNIPSTART python-deepagents-langsmith-tracing-workflow-->
