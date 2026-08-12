@@ -22,24 +22,56 @@ import { ReleaseNoteHeader } from '@site/src/components';
 The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted
 deployments. When your Workflows or Activities handle data larger than the limit, you can offload payloads to external
 storage, such as Amazon S3, and pass a small reference token through the Event History instead. This page shows you how
-to set up External Storage with Amazon S3 and how to implement a custom storage driver.
+to set up External Storage with Amazon S3 or Google Cloud Storage, and how to implement a custom storage driver.
 
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
-## Store and retrieve large payloads with Amazon S3
+## Store and retrieve large payloads with Amazon S3 or Google Cloud Storage {/* #store-and-retrieve-large-payloads */}
 
-The Go SDK includes an S3 storage driver. Follow these steps to set it up:
+The Go SDK includes storage drivers for Amazon S3 and Google Cloud Storage. Select your storage backend in the tabs
+that follow. Only the driver setup differs between the two. Everything after that is the same.
 
 ### Prerequisites
 
-- An Amazon S3 bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
+- A bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle)
   to ensure that your payloads remain available for the entire lifetime of the Workflow. For multi-region durability, see
   [Durable External Storage](/external-storage#durable-external-storage).
-- Install the S3 driver module and its dependencies: `go get go.temporal.io/sdk/contrib/aws/s3driver go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2 github.com/aws/aws-sdk-go-v2/config github.com/aws/aws-sdk-go-v2/service/s3`
+- Credentials with permission to write objects on components that store payloads, and to read objects on components
+  that retrieve them. Because the drivers check whether an object already exists before uploading, storing also requires
+  read permission. Components that only retrieve payloads do not need write permission.
+- Install the driver module, the client adapter for your cloud provider's SDK, and that SDK:
+
+  <Tabs groupId="external-storage-backend" queryString>
+    <TabItem value="s3" label="Amazon S3" default>
+
+  ```sh
+  go get go.temporal.io/sdk/contrib/aws/s3driver \
+    go.temporal.io/sdk/contrib/aws/s3driver/awssdkv2 \
+    github.com/aws/aws-sdk-go-v2/config \
+    github.com/aws/aws-sdk-go-v2/service/s3
+  ```
+
+    </TabItem>
+    <TabItem value="gcs" label="Google Cloud Storage">
+
+  ```sh
+  go get go.temporal.io/sdk/contrib/gcp/gcsdriver \
+    go.temporal.io/sdk/contrib/gcp/gcsdriver/gcssdk \
+    cloud.google.com/go/storage
+  ```
+
+    </TabItem>
+  </Tabs>
 
 ### Procedure
 
-1. Load your AWS configuration and create the S3 storage driver. The driver uses your standard [AWS credentials](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) from the environment (environment variables, IAM role, or AWS config file):
+1. Create a storage client, wrap it in the matching driver client, and pass the result to the driver. Each cloud SDK
+   picks up your standard credentials from the environment:
+
+   <Tabs groupId="external-storage-backend" queryString>
+     <TabItem value="s3" label="Amazon S3" default>
+
+   The AWS SDK reads [environment variables, an IAM role, or your AWS config file](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html).
 
    <!--SNIPSTART go-s3-driver-create-->
    [features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
@@ -61,7 +93,33 @@ The Go SDK includes an S3 storage driver. Follow these steps to set it up:
    ```
    <!--SNIPEND-->
 
-2. Configure the driver on `ExternalStorage` and pass it in your Client options:
+     </TabItem>
+     <TabItem value="gcs" label="Google Cloud Storage">
+
+   The Google Cloud SDK reads [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
+
+   ```go
+   gcsClient, err := storage.NewClient(context.Background())
+   if err != nil {
+   	log.Fatalf("create GCS client: %v", err)
+   }
+
+   driver, err := gcsdriver.NewDriver(gcsdriver.Options{
+   	Client: gcssdk.NewClient(gcsClient),
+   	Bucket: gcsdriver.StaticBucket("my-temporal-payloads"),
+   })
+   if err != nil {
+   	log.Fatalf("create GCS driver: %v", err)
+   }
+   ```
+
+     </TabItem>
+   </Tabs>
+
+   To route payloads to different buckets at runtime, pass a `BucketFunc` as `Bucket` instead of using `StaticBucket`.
+   The function receives the store context and the payload, and returns a bucket name.
+
+2. Configure the driver on `ExternalStorage` and pass it in your Client options. This step is the same for every driver:
 
    <!--SNIPSTART go-s3-external-storage-setup-->
    [features/snippets/external_storage/s3_setup/s3_external_storage_setup.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.go)
@@ -86,7 +144,9 @@ The Go SDK includes an S3 storage driver. Follow these steps to set it up:
    [Configure payload size threshold](#configure-payload-size-threshold) for more information.
 
    All Workflows and Activities running on the Worker use the storage driver automatically without changes to your
-   business logic. The driver uploads and downloads payloads concurrently and validates payload integrity on retrieve.
+   business logic. Both drivers upload and download payloads concurrently, address objects by a SHA-256 hash of their
+   contents so identical payloads within the same Namespace and Workflow are stored once, and verify that hash on
+   retrieve. Each rejects any single payload larger than `MaxPayloadSize`, which defaults to 50 MiB.
 
    The S3 driver includes diagnostic metadata, such as the AWS region, in error messages to help troubleshoot storage failures.
 
@@ -264,6 +324,10 @@ Multiple drivers are useful in scenarios such as:
   example, use S3 for Workers running on AWS and GCS for Workers running on Google Cloud. The selector chooses the
   appropriate driver based on the runtime environment.
 
+Every registered driver needs a distinct name. The S3 and GCS drivers default to `"aws.s3driver"` and `"gcp.gcsdriver"`,
+so you can register one of each without extra configuration. Registering two drivers of the same type requires setting
+the `DriverName` option on at least one of them.
+
 The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
@@ -290,7 +354,7 @@ func MultipleDriversSetup(preferredDriver, legacyDriver converter.StorageDriver)
 ```
 <!--SNIPEND-->
 
-## Multi-region durability
+## Multi-region durability with Amazon S3
 
 To make your S3-backed External Storage tolerant of regional failures, configure the AWS side with
 [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) and an
