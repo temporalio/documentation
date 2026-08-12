@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { usePrismTheme } from '@docusaurus/theme-common';
 import { Highlight } from 'prism-react-renderer';
+import { FaExpand } from 'react-icons/fa';
 import Prism from './prism-languages';
 import styles from './workflow-walkthrough.module.css';
 
@@ -44,9 +46,46 @@ function CodePanel({ code, lines, language }) {
   const prismTheme = usePrismTheme();
   const active = useMemo(() => new Set(lines ?? []), [lines]);
   const hasActive = active.size > 0;
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    const container = wrapRef.current;
+    if (!container) return;
+    const activeEls = container.querySelectorAll('[data-active="true"]');
+    if (activeEls.length === 0) return;
+
+    // A step's active lines are usually a fresh statement, not a continuation
+    // of whatever a previous long line scrolled to — start back at the left.
+    container.scrollLeft = 0;
+
+    const first = activeEls[0];
+    const last = activeEls[activeEls.length - 1];
+    const viewTop = container.scrollTop;
+    const viewHeight = container.clientHeight;
+    // `offsetTop` is relative to the nearest *positioned* ancestor, which
+    // isn't necessarily this container (.demo needs `position: relative` for
+    // the zoom button, which makes it the offsetParent instead) — measure
+    // against the container's own box instead so this can't silently drift.
+    const containerTop = container.getBoundingClientRect().top;
+    const rangeTop = first.getBoundingClientRect().top - containerTop + viewTop;
+    const rangeBottom = last.getBoundingClientRect().bottom - containerTop + viewTop;
+    const padding = 12;
+
+    let nextScrollTop = viewTop;
+    if (rangeBottom - rangeTop > viewHeight || rangeTop < viewTop) {
+      // Doesn't fit in one screen, or starts above the fold: lead with the
+      // first active line rather than whichever end happens to be reachable.
+      nextScrollTop = rangeTop - padding;
+    } else if (rangeBottom > viewTop + viewHeight) {
+      // Starts in view but runs past the bottom: pull its end into view.
+      nextScrollTop = rangeBottom - viewHeight + padding;
+    }
+    container.scrollTop = Math.max(0, nextScrollTop);
+  }, [lines]);
 
   return (
     <div
+      ref={wrapRef}
       className={styles.codeWrap}
       style={{
         backgroundColor: prismTheme.plain.backgroundColor,
@@ -63,6 +102,7 @@ function CodePanel({ code, lines, language }) {
                 <div
                   {...lineProps}
                   key={i}
+                  data-active={isActive ? 'true' : 'false'}
                   className={[
                     styles.line,
                     lineProps.className,
@@ -222,6 +262,47 @@ function Controls({ steps, currentStep, onStep, onPrev, onNext }) {
 }
 
 /**
+ * Full-viewport version of the demo, portaled to `document.body` so it can be
+ * much wider than the doc content column allows. Unlike the site's other
+ * zoom modals (`ZoomableImage`, `MermaidZoomWrapper`), the content here is a
+ * live, still-interactive copy of the walkthrough, not a static image or SVG
+ * snapshot — so clicks inside it must not close the overlay the way clicking
+ * an enlarged image does.
+ */
+function ZoomOverlay({ onClose, initialFocusRef, children }) {
+  // Runs once, when the overlay itself mounts (i.e. exactly when zoom opens)
+  // — not on every render of the parent, which stays mounted the whole time.
+  useEffect(() => {
+    initialFocusRef?.current?.focus();
+  }, [initialFocusRef]);
+
+  useEffect(() => {
+    const handleKey = (event) => {
+      if (event.key === 'Escape') onClose();
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <div className={styles.zoomOverlay} onClick={onClose}>
+      <div className={styles.zoomCard} onClick={(event) => event.stopPropagation()}>
+        <button type="button" className={styles.zoomClose} aria-label="Close expanded view" onClick={onClose}>
+          &times;
+        </button>
+        {children}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+/**
  * Step-by-step walkthrough of a Workflow Definition: highlights the lines the
  * Worker is running and accumulates whatever the walkthrough tracks alongside
  * them (Commands, Events, or both).
@@ -235,6 +316,9 @@ function Controls({ steps, currentStep, onStep, onPrev, onNext }) {
  */
 export default function WorkflowWalkthrough({ code, language, steps, columns = [], ariaLabel }) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const zoomButtonRef = useRef(null);
+  const zoomedDemoRef = useRef(null);
   const step = steps[currentStep - 1];
 
   const onKeyDown = (event) => {
@@ -242,8 +326,28 @@ export default function WorkflowWalkthrough({ code, language, steps, columns = [
     if (event.key === 'ArrowRight') setCurrentStep((s) => Math.min(steps.length, s + 1));
   };
 
-  return (
-    <div className={styles.demo} role="group" aria-label={ariaLabel} tabIndex={0} onKeyDown={onKeyDown}>
+  // Return focus to the trigger button on close, matching standard dialog
+  // behavior. (The reverse — focusing into the overlay on open — happens in
+  // ZoomOverlay itself, keyed off its own mount.) This has to be an effect
+  // rather than a plain call in the close handler: `setIsZoomed(false)`
+  // hasn't committed yet at that point, so the trigger button's ancestor is
+  // still `inert` and the focus() call would silently no-op. Skipping the
+  // first render keeps it from also firing (and stealing focus) on mount.
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (!isZoomed) {
+      zoomButtonRef.current?.focus();
+    }
+  }, [isZoomed]);
+
+  const closeZoom = () => setIsZoomed(false);
+
+  const body = (
+    <>
       <div className={styles.content}>
         <CodePanel code={code} language={language} lines={step.lines} />
         <StepPanel step={step} total={steps.length} columns={columns} steps={steps} />
@@ -256,6 +360,49 @@ export default function WorkflowWalkthrough({ code, language, steps, columns = [
         onPrev={() => setCurrentStep(Math.max(1, currentStep - 1))}
         onNext={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
       />
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* `inert` while zoomed: without it this copy stays in the tab order,
+          hidden behind the overlay backdrop, so keyboard/screen-reader users
+          could still reach a widget they can't see. */}
+      <div
+        className={styles.demo}
+        inert={isZoomed}
+        role="group"
+        aria-label={ariaLabel}
+        tabIndex={0}
+        onKeyDown={onKeyDown}
+      >
+        <button
+          type="button"
+          ref={zoomButtonRef}
+          className={styles.zoomButton}
+          aria-label="Expand walkthrough"
+          title="Expand walkthrough"
+          onClick={() => setIsZoomed(true)}
+        >
+          <FaExpand aria-hidden="true" size="0.8rem" />
+        </button>
+        {body}
+      </div>
+
+      {isZoomed && (
+        <ZoomOverlay onClose={closeZoom} initialFocusRef={zoomedDemoRef}>
+          <div
+            ref={zoomedDemoRef}
+            className={styles.demo}
+            role="group"
+            aria-label={ariaLabel}
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+          >
+            {body}
+          </div>
+        </ZoomOverlay>
+      )}
+    </>
   );
 }
