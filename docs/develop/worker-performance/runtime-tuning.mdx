@@ -1,0 +1,305 @@
+---
+id: runtime-tuning
+title: Worker runtime performance tuning
+sidebar_label: Runtime tuning
+description: Choose and implement fixed-size, resource-based, and custom slot suppliers, with SDK examples for Worker tuners.
+toc_max_heading_level: 3
+tags:
+  - Workers
+  - Performance
+---
+
+Worker tuning manages the assignment of slot suppliers.
+A **Worker Tuner** instance exists per-Worker, providing slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
+A tuner assigns different suppliers to each slot type.
+For example, it might provide a fixed assignment slot supplier for Workflows and use a resource-based supplier for Activities.
+
+### Choosing slot supplier types {/* #choosing-slot-supplier-types */}
+
+Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
+**For most workloads, Temporal recommends fixed-size slot suppliers.**
+A fixed-size tuner with appropriately chosen values delivers better performance and more predictable behavior than a resource-based tuner.
+
+Each SDK provides [default slot counts](/develop/worker-tuning-reference#compute-defaults-by-sdk), but Temporal recommends [actively tuning these values](/best-practices/worker#actively-tune-worker-options-instead-of-relying-on-defaults) for your workload.
+
+#### When to use resource-based slot suppliers
+
+Resource-based slot suppliers are suited to specific use cases.
+
+- **Fluctuating workloads with low per-Task consumption**:
+  The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
+  For example: HTTP calls or other blocking I/Os that spend most of their time waiting on external events.
+- **Protection from out-of-memory & over-subscription in the face of unpredictable per-task consumption:**
+  Do your Tasks often consume an unpredictable number of resources?
+  Do you want to avoid crashes without setting an overly-conservative fixed limit?
+  In these cases, the resource-based supplier is a good match.
+  Keep in mind that auto-tuning can never do a _perfect_ job and may sometimes exceed your requested system limits for CPU and memory.
+
+Scenarios with tasks that have variable, or very high, per-task resource needs should rely on fixed-size suppliers and manual tuning rather than resource-based suppliers.
+
+#### When to use custom slot suppliers
+
+For the highest level of control over slot allocation, consider custom slot suppliers.
+Custom suppliers let you tailor the logic of how slots are allocated based on your system requirements, providing flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers do not fully address.
+
+### Implement Custom Slot Suppliers {/* #custom-slot-implementation */}
+
+Implement your own Slot Supplier to control how Workers are allocated Tasks and manage the processing of Workflows, Activities, and Nexus Operations.
+Custom Slot Suppliers let you fine-tune task processing based on your application's needs.
+
+Each SDK's reference documentation explains the specifics of the interface, but the core concepts are consistent across SDKs:
+
+| Language                                               | Slot Supplier Reference                                                                                                  |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| <img src="/img/sdks/png/golang.png" height="24" />     | [`SlotSupplier`](https://pkg.go.dev/go.temporal.io/sdk/worker#SlotSupplier)                                              |
+| <img src="/img/sdks/png/java.png" height="24" />       | [`SlotSupplier`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/SlotSupplier.html) |
+| <img src="/img/sdks/png/python.png" height="24" />     | [`CustomSlotSupplier`](https://python.temporal.io/temporalio.worker.CustomSlotSupplier.html)                             |
+| <img src="/img/sdks/png/typescript.png" height="24" /> | [`CustomSlotSupplier`](https://typescript.temporal.io/api/interfaces/worker.CustomSlotSupplier)                          |
+| <img src="/img/sdks/png/dotnet.png" height="24" />     | [`CustomSlotSupplier`](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.CustomSlotSupplier.html)                  |
+
+Slot Suppliers issue `SlotPermit`s.
+These represent the right to use a slot of a specific type, namely Workflow, Activity, Local Activity, or Nexus.
+You control whether a Worker can perform certain tasks by issuing or withholding permits.
+
+Custom Slot Suppliers must implement these functions:
+
+- `reserveSlot` - Called before polling for new tasks. Your implementation can block and must return a Slot Permit once it decides to accept new work.
+- `tryReserveSlot` - Called for slot reservations in cases like eager activity processing. This must not block.
+- `markSlotUsed` - Called when a slot is about to be used for a task (not while it’s held during polling). It provides information about the task.
+- `releaseSlot` - Called when a slot is no longer needed, whether or not it was used.
+
+Custom policies require more effort, but provide finer control over Task processing.
+By implementing your own Slot Supplier, you can tailor how Workflows, Activities, and Nexus Operations are handled, optimizing performance for your specific needs.
+
+### Slot supplier throttles
+
+Auto-tuned suppliers may diverge from requested thresholds.
+The resources a given Task will use can't be known ahead of time.
+There is a fundamental tradeoff between how quickly a slot supplier is willing to accept Tasks and how well it can respect the defined thresholds.
+
+Slot throttling is a mechanism to control the rate at which new slots for concurrent tasks are made available for processing.
+This concept is part of the resource-based auto-tuning feature for Workers.
+By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing.
+
+This throttle is called `rampThrottle` in the SDK options for resource-based slot suppliers.
+It defines the minimum time the Worker will wait between handing out new slots after passing the minimum slots number.
+
+**A higher `rampThrottle` trades off performance for safety.**
+
+For example:
+
+If a just-started worker were to have no throttle, and there was a backlog of Tasks, it might immediately accept 100 Tasks at once.
+If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.
+The throttle enforces a wait before handing out new slots (after a minimum number of slots have been occupied) so you can measure newly consumed resources.
+
+## Performance tuning examples {/* #examples */}
+
+The following examples show how to create and provision composite Worker tuners and set other
+performance related options.
+Each tuner provides slot suppliers for various Task types.
+These examples focus on Activities and Local Activities, since Workflow Tasks normally do not need resource-based tuning.
+
+### Go SDK
+
+**Resource-based tuner:**
+
+<!--SNIPSTART go-resource-based-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
+```go
+func resourceBasedTuner() (worker.Options, error) {
+	tuner, err := worker.NewResourceBasedTuner(worker.ResourceBasedTunerOptions{
+		TargetMem:    0.8,
+		TargetCpu:    0.9,
+		InfoSupplier: sysinfo.SysInfoProvider(),
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: tuner,
+	}, nil
+}
+
+```
+<!--SNIPEND-->
+
+**Composite tuner:**
+
+A composite tuner lets you mix different slot supplier strategies for each Task type.
+For example, you can use fixed-size slot suppliers for Workflow and Nexus Tasks while using resource-based slot suppliers for Activity and Local Activity Tasks.
+
+<!--SNIPSTART go-composite-tuner-->
+[features/snippets/worker_tuner/worker_tuner.go](https://github.com/temporalio/features/blob/main/features/snippets/worker_tuner/worker_tuner.go)
+```go
+func compositeTuner() (worker.Options, error) {
+	options := worker.DefaultResourceControllerOptions()
+	options.MemTargetPercent = 0.8
+	options.CpuTargetPercent = 0.9
+	options.InfoSupplier = sysinfo.SysInfoProvider()
+	controller := worker.NewResourceController(options)
+	wfSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	actSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	laSS, err := worker.NewResourceBasedSlotSupplier(controller, worker.DefaultActivityResourceBasedSlotSupplierOptions())
+	if err != nil {
+		return worker.Options{}, err
+	}
+	nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
+	if err != nil {
+		return worker.Options{}, err
+	}
+
+	compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
+		WorkflowSlotSupplier:      wfSS,
+		ActivitySlotSupplier:      actSS,
+		LocalActivitySlotSupplier: laSS,
+		NexusSlotSupplier:         nexusSS,
+	})
+	if err != nil {
+		return worker.Options{}, err
+	}
+	return worker.Options{
+		Tuner: compositeTuner,
+	}, nil
+}
+
+```
+<!--SNIPEND-->
+
+### Java SDK
+
+```java
+// Just resource based
+WorkerOptions.newBuilder()
+    .setWorkerTuner(
+        ResourceBasedTuner.newBuilder()
+            .setControllerOptions(
+                ResourceBasedControllerOptions.newBuilder(0.8, 0.9).build())
+            .build())
+    .build())
+// Combining different types
+SlotSupplier<WorkflowSlotInfo> workflowTaskSlotSupplier = new FixedSizeSlotSupplier<>(10);
+SlotSupplier<ActivitySlotInfo> activityTaskSlotSupplier =
+    ResourceBasedSlotSupplier.createForActivity(
+        resourceController, ResourceBasedTuner.DEFAULT_ACTIVITY_SLOT_OPTIONS);
+SlotSupplier<LocalActivitySlotInfo> localActivitySlotSupplier =
+    ResourceBasedSlotSupplier.createForLocalActivity(
+        resourceController, ResourceBasedTuner.DEFAULT_ACTIVITY_SLOT_OPTIONS);
+SlotSupplier<NexusSlotInfo> nexusSlotSupplier = new FixedSizeSlotSupplier<>(10);
+
+WorkerOptions.newBuilder()
+    .setWorkerTuner(
+        new CompositeTuner(
+            workflowTaskSlotSupplier,
+            activityTaskSlotSupplier,
+            localActivitySlotSupplier,
+            nexusSlotSupplier))
+    .build();
+```
+
+### TypeScript SDK
+
+```tsx
+// Just resource based
+const resourceBasedTunerOptions: ResourceBasedTunerOptions = {
+  targetMemoryUsage: 0.8,
+  targetCpuUsage: 0.9,
+};
+const workerOptions = {
+  tuner: {
+    tunerOptions: resourceBasedTunerOptions,
+  },
+};
+// Combining different types
+const resourceBasedTunerOptions: ResourceBasedTunerOptions = {
+  targetMemoryUsage: 0.8,
+  targetCpuUsage: 0.9,
+};
+const workerOptions = {
+  tuner: {
+    activityTaskSlotSupplier: {
+      type: 'resource-based',
+      tunerOptions: resourceBasedTunerOptions,
+    },
+    workflowTaskSlotSupplier: {
+      type: 'fixed-size',
+      numSlots: 10,
+    },
+    localActivityTaskSlotSupplier: {
+      type: 'resource-based',
+      tunerOptions: resourceBasedTunerOptions,
+    },
+  },
+};
+```
+
+### Python SDK
+
+```python
+# Just a resource based tuner, with poller autoscaling
+tuner = WorkerTuner.create_resource_based(
+    target_memory_usage=0.5,
+    target_cpu_usage=0.5,
+)
+worker = Worker(
+    client,
+    task_queue="foo",
+    tuner=tuner,
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling()
+)
+# Combining different types, with poller autoscaling
+resource_based_options = ResourceBasedTunerConfig(0.8, 0.9)
+tuner = WorkerTuner.create_composite(
+    workflow_supplier=FixedSizeSlotSupplier(10),
+    activity_supplier=ResourceBasedSlotSupplier(
+        ResourceBasedSlotConfig(),
+        resource_based_options,
+    ),
+    local_activity_supplier=ResourceBasedSlotSupplier(
+        ResourceBasedSlotConfig(),
+        resource_based_options,
+    ),
+)
+worker = Worker(
+    client,
+    task_queue="foo",
+    tuner=tuner,
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling()
+)
+```
+
+### .NET C# SDK
+
+```csharp
+// Just resource based
+var worker = new TemporalWorker(
+    Client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        Tuner = WorkerTuner.CreateResourceBased(0.8, 0.9),
+    });
+// Combining different types
+var resourceTunerOptions = new ResourceBasedTunerOptions(0.8, 0.9);
+var worker = new TemporalWorker(
+    Client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        Tuner = new WorkerTuner(
+             new FixedSizeSlotSupplier(10),
+             new ResourceBasedSlotSupplier(
+                 new ResourceBasedSlotSupplierOptions(),
+                 resourceTunerOptions),
+             new ResourceBasedSlotSupplier(
+                 new ResourceBasedSlotSupplierOptions(),
+                 resourceTunerOptions)),
+    });
+```
+

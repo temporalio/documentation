@@ -1,0 +1,173 @@
+.root {
+  --ac-accent: var(--ifm-color-primary);
+  margin: 0 0 1rem;
+}
+
+.hint {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-600);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.5rem;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.pill {
+  --ac-pill: var(--ifm-color-emphasis-400);
+  padding: 0.35rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--ac-pill) 55%, var(--ifm-color-emphasis-200));
+  background: color-mix(in srgb, var(--ac-pill) 14%, var(--ifm-background-surface-color));
+  color: var(--ifm-font-color-base);
+  font-size: 0.8rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition:
+    border-color 0.12s ease,
+    background 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.pill:hover {
+  border-color: var(--ac-pill);
+  background: color-mix(in srgb, var(--ac-pill) 20%, transparent);
+  color: var(--ac-pill);
+}
+
+.pillActive {
+  border-color: var(--ac-pill);
+  background: color-mix(in srgb, var(--ac-pill) 16%, transparent);
+  color: var(--ac-pill);
+  font-weight: 600;
+}
+
+.description {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--ac-pill) 40%, transparent);
+  background: color-mix(in srgb, var(--ac-pill) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--ac-pill);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ifm-font-color-base);
+}
+
+.codeWrap {
+  /* Background/color come from usePrismTheme (same as .theme-code-block) */
+  box-shadow: var(--ifm-global-shadow-lw);
+  border-radius: var(--ifm-code-border-radius);
+  overflow: auto;
+  max-height: 32rem;
+}
+
+.code {
+  margin: 0;
+  padding: 0.875rem 0;
+  font-size: 0.8rem;
+  font-family: var(--ifm-font-family-monospace);
+  line-height: 1.65;
+  color: inherit;
+  background: transparent;
+}
+
+.line {
+  padding: 1px 1rem;
+  border-left: 3px solid transparent;
+  white-space: pre;
+  transition: opacity 0.12s ease, background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.lineActive {
+  border-left-color: var(--ac-accent);
+  background: color-mix(in srgb, var(--ac-accent) 22%, transparent);
+}
+
+.lineDimmed {
+  opacity: 0.32;
+}
+
+/*
+ * Light chrome: clear mid-tone Temporal colors (readable borders/labels).
+ * --ac-accent stays brand-bright for highlights on the dark code block.
+ */
+.toneIndigo {
+  --ac-pill: #5558e6;
+  --ac-accent: #444ce7;
+}
+
+.toneMagenta {
+  --ac-pill: #9b4de0;
+  --ac-accent: #b664ff;
+}
+
+.toneBlue {
+  --ac-pill: #2f7bc4;
+  --ac-accent: #3b82f6;
+}
+
+.toneAmber {
+  --ac-pill: #c9840c;
+  --ac-accent: #f59e0b;
+}
+
+:global(html[data-theme='dark']) .toneIndigo {
+  --ac-pill: #444ce7;
+  --ac-accent: #444ce7;
+}
+
+:global(html[data-theme='dark']) .toneMagenta {
+  --ac-pill: #b664ff;
+  --ac-accent: #b664ff;
+}
+
+:global(html[data-theme='dark']) .toneBlue {
+  --ac-pill: #3b82f6;
+  --ac-accent: #3b82f6;
+}
+
+:global(html[data-theme='dark']) .toneAmber {
+  --ac-pill: #f59e0b;
+  --ac-accent: #f59e0b;
+}
+
+:global(html[data-theme='dark']) .pill {
+  border-color: color-mix(in srgb, var(--ac-pill) 45%, transparent);
+  background: color-mix(in srgb, var(--ac-pill) 12%, transparent);
+  color: var(--ifm-font-color-base);
+}
+
+:global(html[data-theme='dark']) .pill:hover {
+  border-color: var(--ac-pill);
+  background: color-mix(in srgb, var(--ac-pill) 20%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ac-pill) 35%, transparent);
+}
+
+:global(html[data-theme='dark']) .pillActive {
+  border-color: var(--ac-pill);
+  background: color-mix(in srgb, var(--ac-pill) 22%, transparent);
+  color: var(--ac-pill);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--ac-pill) 55%, transparent),
+    0 0 18px color-mix(in srgb, var(--ac-pill) 55%, transparent);
+}
+
+:global(html[data-theme='dark']) .description {
+  border-color: color-mix(in srgb, var(--ac-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--ac-accent) 14%, transparent);
+  box-shadow:
+    inset 3px 0 0 var(--ac-accent),
+    0 0 20px color-mix(in srgb, var(--ac-accent) 18%, transparent);
+}
+
+:global(html[data-theme='dark']) .lineActive {
+  border-left-color: var(--ac-accent);
+  background: color-mix(in srgb, var(--ac-accent) 22%, transparent);
+  box-shadow: inset 0 0 24px color-mix(in srgb, var(--ac-accent) 35%, transparent);
+}

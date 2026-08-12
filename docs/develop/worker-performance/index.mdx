@@ -1,0 +1,188 @@
+---
+title: Worker performance
+description: Optimize Temporal SDK performance by fine-tuning maxConcurrentWorkflowTaskExecutionSize, Worker Cache options, and Poll Success Rate. Ensure balanced Worker resources and monitor metrics for best results.
+sidebar_label: Worker performance
+toc_max_heading_level: 3
+tags:
+  - Workers
+  - Performance
+---
+
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
+
+This guide covers metrics and configurations that drive the efficiency of your Worker fleet.
+It includes performance metric families, Worker configuration options, Task Queue information, backlog counts, Task rates, and how to evaluate Worker availability.
+Use the pages in this guide for practical methods for querying Task Queue information, and strategies for tuning Workers and Task Queue processing so you manage your resources effectively.
+
+## Worker performance concepts {/* #worker-performance-concepts */}
+
+A Worker's performance characteristics are affected by, but not limited to, the following elements.
+
+### Task slots {/* #slots */}
+
+A **Worker Task Slot**, represents the capacity of a Temporal Worker to execute a single concurrent Task.
+Slots are crucial for managing the workload and performance of Workers in a Temporal application.
+They're used for both Workflow and Activity Tasks.
+When a Worker starts processing a Task, it occupies one slot.
+The number of available slots directly affects how many tasks a Worker can handle simultaneously.
+
+### Slot suppliers {/* #slot-suppliers */}
+
+A **Slot Supplier** defines a strategy to provide slots for a Worker, increasing or decreasing the Worker's slot count.
+The supplier determines when it's acceptable to begin a new Task.
+Each supplier manages one slot type.
+There are slot types for Activity, Workflow, Nexus, or Local Activity Tasks.
+An available slot determines whether or not a Worker is willing to poll for, and execute, a new Task of that type.
+
+Slot supplier strategies include manual assignment of fixed slot counts and resource-balanced "auto-tuner" assignment.
+Resource-based suppliers adjust slot counts based on CPU and memory resources.
+Available slot suppliers include:
+
+- **Fixed Size Slot Suppliers**:
+  Hands out slots up to a preset limit.
+  This is useful if you have a concrete idea of how many resources your tasks are going to consume, and can easily determine an upper bound on how many should run at once.
+  When you need the absolute best performance, review your hardware and environment characteristics.
+  This information lets you calculate an appropriate fixed-size limit.
+  Evaluate the maximum number of slots you can support without oversubscribing or hitting out-of-memory conditions ("OOMing").
+  Using that value with a fixed-size supplier provides optimal results with the least overhead.
+
+- **Resource-Based Slot Suppliers**:
+  Hands out slots based on real-time CPU and memory usage.
+  You set target utilization for both CPU and memory and the Slot Supplier tries to reach those values without exceeding them under load.
+  A resource-based supplier will account for memory limits imposed in containerized environments.
+  It dynamically adjusts the number of available slots for different task types with respect to current system resources.
+
+:::info
+
+When running in a containerized environment, all SDKs use cgroups for both CPU and memory. CPU is accounted for at the container level.
+
+:::
+
+- **Custom Slot Suppliers**:
+  Hands out slots based on the custom logic that you define.
+  Use this approach when you need complete control over when Workers accept and execute Tasks.
+  For implementation details, see [Implement Custom Slot Suppliers](/develop/worker-performance/runtime-tuning#custom-slot-implementation).
+
+:::caution
+
+- You cannot guarantee that the targets for resource-based suppliers won't ever be exceeded.
+  Resources consumed during a task can't be known ahead of time.
+
+- Read about [choosing an appropriate slot supplier type](/develop/worker-performance/runtime-tuning#choosing-slot-supplier-types) before picking one.
+
+- Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
+  Using both styles will cause an error at Worker initialization time.
+
+:::
+
+### Worker tuning {/* #worker-tuning */}
+
+Worker tuning is the process of defining customized slot suppliers for the different task slots of a Worker to fine-tune its performance.
+You use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
+
+For more on how to configure and use Worker tuners, refer to [Worker runtime performance tuning](/develop/worker-performance/runtime-tuning).
+
+:::caution
+
+Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
+  Using both styles will cause an error at Worker initialization time.
+
+:::
+
+### Task Pollers 
+
+A Worker's **Task Pollers** play a crucial role in the Temporal architecture by efficiently ingesting work to Workers to support scalable, resilient Workflow Execution. 
+Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process. When a Task Poller receives a Task, it delivers the Task to the appropriate Executor Slot for processing.
+
+Temporal SDKs implement support for *Poller Autoscaling*, which dynamically adjusts the number of pollers in use to maximize throughput for a given number of workers and the size of the task backlog. 
+Temporal recommends using Poller Autoscaling for the majority of use cases, as manually setting the number of pollers too high or too low for your workload will result in decreased performance. 
+To configure Poller Autoscaling, see [Configuring Poller Options](/develop/worker-performance/configuration#configuring-poller-options) and samples for each Temporal SDK.
+
+### Eager task execution
+
+:::caution
+Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
+:::
+
+As a latency optimization, Activity and Workflow Tasks may be started eagerly in a local Worker under the right circumstances.
+
+#### Eager Activity Start
+
+Eager Activity Start may happen automatically if the Worker processing a Workflow Task has also registered the Activity Definition being called.
+If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
+
+#### Eager Workflow Start
+
+<ReleaseNoteHeader type="publicPreview" languages={["Go", "Java", "Python", ".NET"]}>
+  Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+. No additional configuration or access request is needed. However, you must set `Request-Eager-Start` to true when starting each Workflow for Eager Workflow Start to be used.
+</ReleaseNoteHeader>
+
+Eager Workflow Start reduces the latency required to initiate a Workflow execution.
+It is recommended for short-lived Workflows that use Local Activities to interact with external services, especially when these interactions are initiated in the first Workflow Task and the Workflow is deployed near the Temporal Server to minimize network delay.
+
+This feature is particularly beneficial for Workflows with a “happy path” that must begin external interactions within tens of milliseconds, while still relying on Temporal’s server-driven retries and compensation mechanisms to ensure reliability in failure scenarios.
+
+**Quick Start**
+
+Eager Workflow Start requires the Starter and the Worker to share a Client located in the same process and setting the `request_eager_start` (or similar name) to true in the Start Workflow call.
+When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server.
+This is typically most useful in combination with a Local Activity executing in the first Workflow Task, since other Workflow API calls that require waiting on something will force a round-trip.
+
+:::tip RESOURCES
+
+- [Go SDK - Code sample](https://github.com/temporalio/samples-go/tree/main/eager-workflow-start)
+- [Java SDK - Code sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloEagerWorkflowStart.java)
+- Python SDK - use `request_eager_start` when calling `start_workflow` or `execute_workflow`
+- .NET SDK - use `RequestEagerStart` in your `WorkflowOptions` when starting a workflow
+- [Blog: Improving Latency with Eager Workflow Start](https://temporal.io/blog/improving-latency-with-eager-workflow-start)
+
+:::
+
+**How it works**
+
+The traditional way to start a Workflow decouples the starter program from the worker by sharing a Task Queue name between them, similar to a publish/subscribe pattern.
+This has many advantages: for example, we can reliably schedule a Workflow Execution without a running Worker, or separate the Worker and Workflow implementation from the Starter application and host them independently.
+
+But decoupling also makes it harder to optimize for latency.
+Instead, when the **Starter and Worker are collocated in the same process** and aware of each other, they can interact while bypassing the server, saving a few time-intensive operations.
+
+<CaptionedImage
+    src="/img/develop/worker-performance/eager-workflow-start-flow.png"
+    title="Eager Workflow Start"
+/>
+
+The above figure shows Eager Workflow Start in action:
+
+1. The process begins with the Starter setting `request_eager_start` (or similar name) to true in the Start Workflow Options.
+1. The SDK will try to locate a local Worker that is willing to execute the first Workflow Task, and reserve an execution slot for it.
+1. If successful, the SDK will provide a hint to the server that eager mode is preferred for the new Workflow.
+1. The server not only registers the start of the Workflow in history, it also assigns the first Workflow Task to the Starter, all in the same DB update.
+1. The first task is included in the server response, no matching step required.
+1. The SDK extracts the task from the response, and dispatches it to the local worker.
+
+To recover from errors, Eager Workflow Start falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker fails or times out while processing the task, the server retries this task non-eagerly after WorkflowTaskTimeout.
+
+## Visualize Workers in the UI {/* #visualize-workers */}
+
+The Temporal SDK includes a heartbeat for Worker processes that is sent to the Server, carrying information such as available task slots, CPU usage, and Worker configuration.
+The Server exposes this data through APIs that surface Worker details in the Temporal UI. See a list of all running Workers by selecting Workers in the left navigation menu.
+View the list of Workers assigned to the Workflow Task Queue and inspect Worker details to troubleshoot Workflows with delayed processing by selecting the Workers tab in the Workflow details page.
+
+This feature requires Temporal Server 1.30 or higher with API version 1.62 or higher, and is also available in Temporal Cloud.
+Worker Heartbeating is required; see [Manage Worker Heartbeating](/cloud/worker-health#manage-worker-heartbeating) for the minimum SDK versions.
+
+
+## In this guide
+
+- [Performance metrics for tuning](/develop/worker-performance/metrics)
+- [Worker performance options](/develop/worker-performance/configuration)
+- [Worker runtime performance tuning](/develop/worker-performance/runtime-tuning)
+- [Workflow cache tuning](/develop/worker-performance/workflow-cache)
+- [Task Queue performance](/develop/worker-performance/task-queues)
+- [Worker tuning quick reference](/develop/worker-tuning-reference)
+
+## Related reading
+
+- [Worker tuning quick reference](/develop/worker-tuning-reference) - SDK defaults and metrics by resource type
+- [Workers in production operation guide](https://temporal.io/blog/workers-in-production)
+- [Full set of SDK Metrics reference](/references/sdk-metrics)

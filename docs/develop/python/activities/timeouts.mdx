@@ -25,7 +25,7 @@ The following timeouts are available in the Activity Options.
 
 - **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activity-execution).
 - **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
-- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task. This timeout is non-retryable by design.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -33,19 +33,23 @@ Activity options are set as keyword arguments after the Activity arguments.
 
 Available timeouts are:
 
-- schedule_to_close_timeout
-- schedule_to_start_timeout
-- start_to_close_timeout
+- `schedule_to_close_timeout`
+- `schedule_to_start_timeout`
+- `start_to_close_timeout`
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {13-20}
+from datetime import timedelta
 
-```python
-# ...
+from temporalio import workflow
+from temporalio.common import RetryPolicy
+
+with workflow.unsafe.imports_passed_through():
+    from activities import your_activity, YourParams
+
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, greeting: str) -> list[str]:
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
             YourParams(greeting, "Activity Timeout option"),
@@ -54,11 +58,10 @@ Available timeouts are:
             # schedule_to_start_timeout=timedelta(seconds=10),
             # schedule_to_close_timeout=timedelta(seconds=10),
         )
+        return activity_timeout_result
 ```
 
 ### Set an Activity Retry Policy {/* #activity-retries */}
-
-**How to set an Activity Retry Policy using the Temporal Python SDK**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -66,16 +69,18 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 
 To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {12-24}
+from datetime import timedelta
 
-```python
+from temporalio import workflow
 from temporalio.common import RetryPolicy
-# ...
+
+with workflow.unsafe.imports_passed_through():
+    from activities import your_activity, YourParams
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, greeting: str) -> list[str]:
         activity_result = await workflow.execute_activity(
             your_activity,
             YourParams(greeting, "Retry Policy options"),
@@ -89,6 +94,7 @@ from temporalio.common import RetryPolicy
                 # non_retryable_error_types=["ValueError"],
             ),
         )
+        return activity_result
 ```
 
 ### Override the retry interval with `next_retry_delay` {/* #next-retry-delay */}
@@ -119,8 +125,6 @@ async def my_activity(input: MyActivityInput):
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
 
-**How to Heartbeat an Activity using the Temporal Python SDK**
-
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
 If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
@@ -145,8 +149,6 @@ In addition to obtaining cancellation information, Heartbeats also support detai
 If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
 
 #### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
-
-**How to set a Heartbeat Timeout using the Temporal Python SDK**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

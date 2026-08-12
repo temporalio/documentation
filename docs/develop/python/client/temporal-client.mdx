@@ -28,7 +28,7 @@ tags:
   - Certificates
 ---
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the Temporal Service.
+A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the Temporal Service.
 Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and
 Queries to Workflow Executions, getting Workflow results, and more.
 
@@ -53,7 +53,7 @@ options directly in code, load them from **environment variables**, or a **TOML 
 configuration file for secure, repeatable configuration.
 
 When you’re running a Temporal Service locally (such as with the
-[Temporal CLI dev server](https://docs.temporal.io/cli/command-reference/server#start-dev)), the required options are minimal. If you
+[Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
 <Tabs groupId="connect-options" defaultValue="config-file" >
@@ -221,15 +221,12 @@ variables or a configuration file, and then override specific options in code.
 
 Use the `connect()` method on the `Client` class to create and connect to a Temporal Client to the Temporal Service.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
 ```python
-# ...
+import asyncio
+from temporalio.client import Client
+from your_workflows import YourWorkflow
+
+
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -265,9 +262,7 @@ local development instance:
   This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
   See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
-You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
-
-![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab.
 
 For more information about managing and generating client certificates for Temporal Cloud, see
 [How to manage certificates in Temporal Cloud](/cloud/certificates).
@@ -448,16 +443,10 @@ client = await Client.connect(
 
 To connect using mTLS instead of an API key, provide the mTLS certificate and private key as follows:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
 ```python
 from temporalio.client import Client, TLSConfig
 # ...
-# ...
+
 async def main():
     with open("client-cert.pem", "rb") as f:
         client_cert = f.read()
@@ -478,13 +467,38 @@ async def main():
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
+Unlike an API key, `TLSConfig` is static: the certificate bytes you pass to `Client.connect` are fixed for the lifetime
+of that `Client`. To rotate an mTLS client certificate without restarting your Worker, connect a new `Client` with the
+new certificate, then assign it to the running `Worker`'s `client` property:
+
+```python
+with open("client-cert-new.pem", "rb") as f:
+    client_cert = f.read()
+with open("client-private-key-new.pem", "rb") as f:
+    client_private_key = f.read()
+
+new_client = await Client.connect(
+    "your-custom-namespace.tmprl.cloud:7233",
+    namespace="<your-custom-namespace>.<account-id>",
+    tls=TLSConfig(
+        client_cert=client_cert,
+        client_private_key=client_private_key,
+    ),
+)
+
+# worker is the Worker instance already running against the old client
+worker.client = new_client
+```
+
+The Worker starts using `new_client` for subsequent calls to the Temporal Service (Workflow Task completion, Activity
+Heartbeats, and so on); calls already in flight on the old client finish normally. The new client must use the same
+`Runtime` as the Worker's current client.
+
 </TabItem>
 
 </Tabs>
 
 ## Start a Workflow Execution {/* #start-workflow-execution */}
-
-**How to start a Workflow Execution using the Python SDK**
 
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
 you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
@@ -507,13 +521,6 @@ To start a Workflow Execution in Python, use either the
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods
 in the Client.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
 ```python
 # ...
 async def main():
@@ -535,8 +542,6 @@ if __name__ == "__main__":
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-**How to set a Workflow's Task Queue using the Python SDK**
-
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
@@ -545,13 +550,6 @@ Queue name.
 To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either
 [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
 
 ```python
 # ...
@@ -574,8 +572,6 @@ if __name__ == "__main__":
 
 ### Set a Workflow Id {/* #workflow-id */}
 
-**How to set a Workflow Id using the Python SDK**
-
 You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
 When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an
@@ -586,13 +582,6 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
 The `id` argument should be a unique identifier for the Workflow Execution.
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
 
 ```python
 # ...
@@ -614,8 +603,6 @@ if __name__ == "__main__":
 ```
 
 ### Get the results of a Workflow Execution {/* #get-workflow-results */}
-
-**How to get the results of a Workflow Execution using the Python SDK**
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -641,15 +628,11 @@ safety.
 Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current
 status of the Workflow. If the Workflow does not exist, this call fails.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {8-11}
+import asyncio
+from temporalio.client import Client
 
-```python
-# ...
+
 async def main():
     client = await Client.connect("localhost:7233")
 

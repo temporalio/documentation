@@ -16,6 +16,7 @@ import {
   extractProp,
   parseTabValues,
   parseReadList,
+  parseSdkGuideLinks,
   dedent,
   scanMarkdownImports,
   COMPONENT_REGISTRY,
@@ -26,6 +27,7 @@ import {
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
+import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -195,6 +197,35 @@ test("parses readList prop", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: parseSdkGuideLinks
+// ---------------------------------------------------------------------------
+console.log("\n📦 parseSdkGuideLinks");
+
+test("generates links from path + filter + title props", () => {
+  const tag = `<SdkGuideLinks path="activities/standalone-activities" filter={['go', 'python', 'ruby']} title="Standalone Activities" />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 3);
+  assertEqual(items[0].text, "Standalone Activities - Go");
+  assertEqual(items[0].href, "/develop/go/activities/standalone-activities");
+  assertEqual(items[2].text, "Standalone Activities - Ruby");
+  assertEqual(items[2].href, "/develop/ruby/activities/standalone-activities");
+});
+
+test("generates links for all SDKs when filter is omitted", () => {
+  const tag = `<SdkGuideLinks path="client/temporal-client" title="Temporal Client" />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 8);
+});
+
+test("uses the explicit links prop when provided", () => {
+  const tag = `<SdkGuideLinks links={[{ name: 'goLangBlock', href: '/develop/go/foo', label: 'Go' }]} />`;
+  const items = parseSdkGuideLinks(tag);
+  assertEqual(items.length, 1);
+  assertEqual(items[0].text, "Go");
+  assertEqual(items[0].href, "/develop/go/foo");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: transformMdx — imports
 // ---------------------------------------------------------------------------
 console.log("\n📦 transformMdx — imports & exports");
@@ -283,6 +314,55 @@ test("converts :::danger to blockquote with danger label", () => {
 test("converts :::tip to blockquote with tip label", () => {
   const { markdown } = transformMdx(":::tip\nUseful tip.\n:::");
   assertContains(markdown, "> **💡 Tip:**");
+});
+
+test("uses a custom [title] in place of the type word, keeping the icon", () => {
+  const { markdown } = transformMdx(":::info[TLDR]\nShort version.\n:::");
+  assertContains(markdown, "> **ℹ️ TLDR:**");
+  assertContains(markdown, "> Short version.");
+  assertNotContains(markdown, ":::");
+});
+
+test("converts :::important", () => {
+  const { markdown } = transformMdx(":::important\nRead this.\n:::");
+  assertContains(markdown, "> **❗ Important:**");
+  assertNotContains(markdown, ":::");
+});
+
+test("handles a four-colon fence", () => {
+  const { markdown } = transformMdx("::::note\nNested-capable body.\n::::");
+  assertContains(markdown, "> **📝 Note:**");
+  assertContains(markdown, "> Nested-capable body.");
+  assertNotContains(markdown, "::::");
+});
+
+test("a shorter inner fence does not close a longer outer one", () => {
+  const { markdown } = transformMdx("::::note\nOuter\n\n:::tip\nInner\n:::\n\nStill outer\n::::");
+  assertContains(markdown, "> **📝 Note:**");
+  assertContains(markdown, "> Still outer");
+  assertNotContains(markdown, "::::");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — MDX comments
+// ---------------------------------------------------------------------------
+
+test("strips an MDX comment spanning multiple lines", () => {
+  const { markdown } = transformMdx("{/* NOTE: auto-generated.\nDo not edit. */}\n\nReal content.");
+  assertContains(markdown, "Real content.");
+  assertNotContains(markdown, "{/*");
+  assertNotContains(markdown, "auto-generated");
+});
+
+test("strips an MDX comment with a space before the closing brace", () => {
+  const { markdown } = transformMdx("Before {/* #patching */ } after");
+  assertNotContains(markdown, "{/*");
+  assertContains(markdown, "Before");
+});
+
+test("leaves a {/* inside a code fence alone", () => {
+  const { markdown } = transformMdx("```jsx\n{/* keep me */}\n```");
+  assertContains(markdown, "{/* keep me */}");
 });
 
 test("admonition does not bleed into surrounding content", () => {
@@ -384,6 +464,19 @@ test("converts RelatedReadList to markdown link list", () => {
   assertContains(markdown, "- [Workflow Definition](/workflow-definition)");
   assertContains(markdown, "- [Activities](/activities)");
   assertNotContains(markdown, "RelatedReadList");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — SdkGuideLinks
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — SdkGuideLinks");
+
+test("converts SdkGuideLinks to a markdown link list", () => {
+  const input = `<SdkGuideLinks path="activities/standalone-activities" filter={['go', 'ruby']} title="Standalone Activities" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "- [Standalone Activities - Go](/develop/go/activities/standalone-activities)");
+  assertContains(markdown, "- [Standalone Activities - Ruby](/develop/ruby/activities/standalone-activities)");
+  assertNotContains(markdown, "SdkGuideLinks");
 });
 
 // ---------------------------------------------------------------------------
@@ -522,12 +615,29 @@ test("CaptionedImage uses caption/title when no alt", () => {
   assertContains(markdown, "![Persistence](/diagrams/x.svg)");
 });
 
-test("PhotoCarousel emits one image per entry with captions", () => {
-  const input = `<PhotoCarousel\n  images={[\n    'https://x/a.jpeg',\n    'https://x/b.jpeg',\n  ]}\n  captions={[\n    'First',\n    'Second',\n  ]}\n/>`;
+test("YouTube iframe embeds are stripped; Watch links kept", () => {
+  const input = `:::tip
+
+Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE) for a short overview.
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/zLjhNrOKphE"
+    title="What Is a Workflow in Temporal?"
+    frameBorder="0"
+    allowFullScreen
+  ></iframe>
+</div>
+
+:::
+`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "![First](https://x/a.jpeg)");
-  assertContains(markdown, "![Second](https://x/b.jpeg)");
-  assertNotContains(markdown, "PhotoCarousel");
+  assertContains(markdown, "[What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "iframe");
+  assertNotContains(markdown, "youtube.com/embed");
+  assertNotContains(markdown, "<div");
 });
 
 // ---------------------------------------------------------------------------
@@ -620,7 +730,7 @@ test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkers" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
   assertContains(markdown, "> **Pre-release**");
 });
@@ -635,6 +745,21 @@ test("CallToAction becomes a markdown link with title and description", () => {
   const { markdown } = transformMdx(input);
   assertContains(markdown, "- [Run your first app](https://example.com/learn): A quick guide");
   assertNotContains(markdown, "CallToAction");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — ViewSourceCodeNotice
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — ViewSourceCodeNotice");
+
+test("ViewSourceCodeNotice becomes a plain markdown link line", () => {
+  const input = `<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(
+    markdown,
+    "[View the source code](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code."
+  );
+  assertNotContains(markdown, "ViewSourceCodeNotice");
 });
 
 // ---------------------------------------------------------------------------
@@ -681,6 +806,49 @@ test("SetupStep emits prose children and code from the code={} prop", () => {
   assertContains(markdown, "go version");
   assertNotContains(markdown, "SetupStep");
   assertNotContains(markdown, "code={");
+});
+
+test("SetupStep preserves non-code prose, links, and lists in the code={} prop", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep code={",
+    "  <>",
+    "    <p>Download the CLI for your platform:</p>",
+    "    <ul>",
+    '      <li><a href="https://example.com/win">Windows</a></li>',
+    "    </ul>",
+    "    <p>Then add <code>cli.exe</code> to your PATH.</p>",
+    "  </>",
+    "}>",
+    "## Install CLI",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "Download the CLI for your platform:");
+  assertContains(markdown, "- [Windows](https://example.com/win)");
+  assertContains(markdown, "Then add `cli.exe` to your PATH.");
+  assertNotContains(markdown, "<p>");
+  assertNotContains(markdown, "<li>");
+});
+
+test("SetupStep unwraps {`...`} template literals in CodeSnippet bodies", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep code={",
+    "  <>",
+    '    <CodeSnippet language="bash">{`dotnet build`}</CodeSnippet>',
+    "  </>",
+    "}>",
+    "## Build",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "```bash");
+  assertContains(markdown, "dotnet build");
+  assertNotContains(markdown, "{`");
+  assertNotContains(markdown, "`}");
 });
 
 // ---------------------------------------------------------------------------
@@ -769,6 +937,39 @@ test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", 
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: SdkOverviewCards handler
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/sdk-overview-cards");
+
+test("sdkOverviewCardsToMarkdown lists every SDK with guide + API reference links", () => {
+  const md = sdkOverviewCardsToMarkdown({ projectRoot: PROJECT_ROOT });
+  assertContains(md, "- **Go**");
+  assertContains(md, "[Developer guide](/develop/go)");
+  assertContains(md, "[API reference](http://t.mp/go-api)");
+  assertContains(md, "- **.NET**");
+  assertContains(md, "[Developer guide](/develop/dotnet)");
+});
+
+test("sdkOverviewCardsToMarkdown includes a version when sdk-versions.json resolves", () => {
+  const md = sdkOverviewCardsToMarkdown({ projectRoot: PROJECT_ROOT });
+  assert(/\*\*Go\*\* \(v[\d.]+\)/.test(md), "expected a version suffix after the Go label");
+});
+
+test("sdkOverviewCardsToMarkdown without projectRoot omits version chips but keeps links", () => {
+  const md = sdkOverviewCardsToMarkdown();
+  assertContains(md, "- **Go**: [Developer guide](/develop/go)");
+  assertNotContains(md, "(v");
+});
+
+test("transformMdx resolves <SdkOverviewCards /> to a real list (with projectRoot)", () => {
+  const input = `<SdkOverviewCards />`;
+  const { markdown } = transformMdx(input, { projectRoot: PROJECT_ROOT });
+  assertNotContains(markdown, "<SdkOverviewCards");
+  assertContains(markdown, "[Developer guide](/develop/python)");
+  assertContains(markdown, "[API reference](https://python.temporal.io)");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: cards handler (QuickstartCards / PatternCards)
 // ---------------------------------------------------------------------------
 console.log("\n📦 component-handlers/cards");
@@ -801,18 +1002,57 @@ test("transformMdx renders PatternCards items as a list", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Unit tests: HomePageHero handler
+// Unit tests: homepage hero (docs/index.mdx composed from HomePageHero.js)
 // ---------------------------------------------------------------------------
-console.log("\n📦 component-handlers/home-page-hero");
+console.log("\n📦 component-handlers/hero");
 
-test("transformMdx resolves <HomePageHero /> to hero content", () => {
-  const input = `import HomePageHero from '@site/src/components/elements/HomePageHero';\n\n<HomePageHero />`;
+test("transformMdx resolves the homepage hero to clean Markdown", () => {
+  const input = [
+    `import { HeroWrapper, HeroHeader, HeroSection, HeroContent, HeroActions, HeroCta, ActionCard, CommunityCards, CommunityCard } from '@site/src/components/elements/HomePageHero';`,
+    ``,
+    `<HeroWrapper>`,
+    ``,
+    `<HeroHeader>Temporal Docs</HeroHeader>`,
+    ``,
+    `<HeroSection>`,
+    ``,
+    `<HeroContent>`,
+    ``,
+    `<HeroHeadline>Build applications that never fail</HeroHeadline>`,
+    ``,
+    `Temporal delivers crash-proof execution.`,
+    ``,
+    `<HeroCta href="/quickstarts">Quickstart</HeroCta>`,
+    ``,
+    `</HeroContent>`,
+    ``,
+    `<HeroActions>`,
+    `  <ActionCard href="/quickstarts" icon="bolt" title="Quickstart">Setup your local and run a Hello World workflow.</ActionCard>`,
+    `</HeroActions>`,
+    ``,
+    `</HeroSection>`,
+    ``,
+    `<CommunityCards>`,
+    `  <CommunityCard href="https://temporal.io/slack" icon="slack" title="Slack Community">Join us on <a href="https://temporal.io/slack">temporal.io/slack</a> and say hi.</CommunityCard>`,
+    `</CommunityCards>`,
+    ``,
+    `</HeroWrapper>`,
+  ].join("\n");
   const { markdown } = transformMdx(input);
-  assertNotContains(markdown, "<HomePageHero");
-  assertContains(markdown, "## Build applications that never fail");
+  // Layout wrappers stripped, no raw JSX leaks through
+  assertNotContains(markdown, "<HeroWrapper");
+  assertNotContains(markdown, "<ActionCard");
+  assertNotContains(markdown, "<CommunityCard");
+  assertNotContains(markdown, "<HeroCta");
+  // Copy authored in the MDX is preserved
+  assertContains(markdown, "# Build applications that never fail");
   assertContains(markdown, "crash-proof execution");
-  assertContains(markdown, "- [Quickstart](/quickstarts)");
-  assertContains(markdown, "- [Slack Community](https://temporal.io/slack)");
+  // Single-line HeroHeader / HeroCta text is dropped (redundant), so no stray
+  // "Temporal Docs" paragraph and no bare "Quickstart" line.
+  assertNotContains(markdown, "<header");
+  // Cards resolve to Markdown link-list items; inline <a> becomes a Markdown link
+  assertContains(markdown, "- [Quickstart](/quickstarts): Setup your local and run a Hello World workflow.");
+  assertContains(markdown, "- [Slack Community](https://temporal.io/slack): Join us on [temporal.io/slack](https://temporal.io/slack) and say hi.");
 });
 
 // ---------------------------------------------------------------------------
@@ -917,7 +1157,8 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "home-page-hero", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(

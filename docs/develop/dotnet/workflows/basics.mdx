@@ -42,6 +42,36 @@ Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
 
+### Use Workflow constructors
+
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. The `[WorkflowInit]` attribute gives message handlers access to Workflow input. When you use the `[WorkflowInit]` attribute on your constructor, you give the constructor the same Workflow parameters as your `[WorkflowRun]` method.
+
+The SDK will then ensure that your constructor receives the Workflow input arguments that the Client sent. The Workflow input arguments are also passed to your `[WorkflowRun]` method. That always happens, whether or not you use the `[WorkflowInit]` attribute.
+
+Here's an example. The constructor and `RunAsync` must have the same parameters with the same types:
+
+```csharp
+[Workflow]
+public class WorkflowInitWorkflow
+{
+    public record Input(string Name);
+
+    private readonly string nameWithTitle;
+    private bool titleHasBeenChecked;
+
+    [WorkflowInit]
+    public WorkflowInitWorkflow(Input input) =>
+        nameWithTitle = $"Knight {input.Name}";
+
+    [WorkflowRun]
+    public async Task<string> RunAsync(Input ignored)
+    {
+        await Workflow.WaitConditionAsync(() => titleHasBeenChecked);
+        return $"Hello, {nameWithTitle}";
+    }
+}
+```
+
 ## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow.
@@ -55,6 +85,77 @@ This means there are several things Workflows shouldn't do such as:
   - This includes .NET timers (e.g. `Task.Delay` or `Thread.Sleep`)
 - Make any random calls
 - Make any not-guaranteed-deterministic calls (e.g. iterating over a dictionary)
+
+The SDK provides replay-safe alternatives for common needs.
+
+### Logging
+
+Use [`Workflow.Logger`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Logger)
+instead of `Console.WriteLine` or a logger you resolve yourself.
+The SDK logger appends Workflow details to every log and skips logging during replay:
+
+```csharp
+[Workflow]
+public class MyWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(string name)
+    {
+        Workflow.Logger.LogInformation("Starting workflow for {Name}", name);
+        // ...
+    }
+}
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/dotnet/platform/observability#logging).
+
+### Random numbers and GUIDs
+
+Use [`Workflow.Random`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Random)
+to get a deterministic random instance seeded per Workflow Execution, and
+[`Workflow.NewGuid()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_NewGuid)
+instead of `Guid.NewGuid()`:
+
+```csharp
+var value = Workflow.Random.Next(1, 100);
+var uniqueId = Workflow.NewGuid();
+```
+
+### Current time
+
+Use [`Workflow.UtcNow`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_UtcNow)
+instead of `DateTime.Now` or `DateTime.UtcNow`. It returns the time of the last Workflow Task, which is consistent
+across replays:
+
+```csharp
+var currentTime = Workflow.UtcNow;
+```
+
+To wait, use `Workflow.DelayAsync` instead of `Task.Delay` or `Thread.Sleep`.
+
+### Detecting replay (advanced)
+
+Use [`Workflow.Unsafe.IsReplaying`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.Unsafe.html#Temporalio_Workflows_Workflow_Unsafe_IsReplaying)
+to guard code that should only run on the first execution, such as emitting metrics or sending external notifications
+from an [Interceptor](/develop/dotnet/workers/interceptors).
+
+:::caution
+
+Never use this to affect Workflow business logic. Branching on replay status breaks determinism.
+
+:::
+
+```csharp
+if (!Workflow.Unsafe.IsReplaying)
+{
+    EmitMetric("workflow_started", 1);
+}
+```
+
+If your goal is to always take action when something new is happening, check that
+[`Workflow.Unsafe.IsReplayingHistoryEvents`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.Unsafe.html#Temporalio_Workflows_Workflow_Unsafe_IsReplayingHistoryEvents)
+is false instead. That is false during read-only operations like Queries and Update validators. This is what the SDK's
+built-in logger and tracing interceptors use internally.
 
 ### .NET Task Determinism
 

@@ -34,35 +34,25 @@ Otherwise, no additional limitations exist on Activity implementations.
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
-    // Set the options for the Activity Execution.
-    // Either StartToClose Timeout OR ScheduleToClose is required.
-    // Not specifying a Task Queue will default to the parent Workflow Task Queue.
-    activityOptions := workflow.ActivityOptions{
-        StartToCloseTimeout: 10 * time.Second,
-    }
-    ctx = workflow.WithActivityOptions(ctx, activityOptions)
-    activityParam := YourActivityParam{
-        ActivityParamX: param.WorkflowParamX,
-        ActivityParamY: param.WorkflowParamY,
-    }
-    // Use a nil struct pointer to call Activities that are part of a struct.
-    var a *YourActivityObject
-    // Execute the Activity and wait for the result.
-    var activityResult YourActivityResultObject
-    err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
-    if err != nil {
-        return nil, err
-    }
-// ...
+  activityOptions := workflow.ActivityOptions{
+    StartToCloseTimeout: 10 * time.Second,
+  }
+  ctx = workflow.WithActivityOptions(ctx, activityOptions)
+  activityParam := YourActivityParam{
+    ActivityParamX: param.WorkflowParamX,
+    ActivityParamY: param.WorkflowParamY,
+  }
+
+  var a *YourActivityObject
+
+  var activityResult YourActivityResultObject
+
+  err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
+  if err != nil {
+    return nil, err
+  }
 }
 ```
 

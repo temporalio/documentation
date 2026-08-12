@@ -4,7 +4,7 @@ title: Schedules - Python SDK
 sidebar_label: Schedules
 description: Schedule, Create, Backfill, Delete, Describe, List, Pause, Trigger, and Update a Scheduled Workflow, along with Temporal Cron Jobs and Start Delay options.
 slug: /develop/python/workflows/schedules
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - temporal python schedule workflow
   - create scheduled workflow
@@ -40,15 +40,14 @@ This page shows how to do the following:
 
 ## Schedule a Workflow {/* #schedule-a-workflow */}
 
-**How to Schedule a Workflow Execution**
-
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes.
 
 Use any of the following actions to help Schedule a Workflow Execution and take control over your automation process.
 
-### Create a Scheduled Workflow {/* #create */}
+Schedule behavior is governed by the Schedule's [Overlap Policy](/schedule#overlap-policy).
+If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and counts as the running execution for overlap decisions.
 
-**How to create a Scheduled Workflow**
+### Create a Scheduled Workflow {/* #create */}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
@@ -59,15 +58,21 @@ Set the `action` parameter to `ScheduleActionStartWorkflow` to start a Workflow 
 Optionally, you can set the `spec` parameter to `ScheduleSpec` to specify the schedule or set the `intervals` parameter to `ScheduleIntervalSpec` to specify the interval.
 Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/start_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {18-32}
+import asyncio
+from datetime import timedelta
 
-```python
-# ...
+from temporalio.client import (
+    Client,
+    Schedule,
+    ScheduleActionStartWorkflow,
+    ScheduleIntervalSpec,
+    ScheduleSpec,
+    ScheduleState,
+)
+from your_workflows import YourSchedulesWorkflow
+
+
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -86,6 +91,10 @@ async def main():
             state=ScheduleState(note="Here's a note on my Schedule."),
         ),
     )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 :::tip Schedule Auto-Deletion
@@ -97,27 +106,16 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 ### Backfill a Scheduled Workflow {/* #backfill */}
 
-**How to backfill a Scheduled Workflow**
-
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
 
 To Backfill a Scheduled Workflow Execution in Python, use the [backfill()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#backfill) asynchronous
 method on the Schedule Handle.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/backfill_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
+```python {13-19}
 import asyncio
 from datetime import datetime, timedelta
 
 from temporalio.client import Client, ScheduleBackfill, ScheduleOverlapPolicy
-
-
 
 async def main():
     client = await Client.connect("localhost:7233")
@@ -134,24 +132,26 @@ async def main():
             ),
         ),
     )
+
+    print(f"Result: {handle}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### Delete a Scheduled Workflow {/* #delete */}
-
-**How to delete a Scheduled Workflow**
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
 To delete a Scheduled Workflow Execution in Python, use the [delete()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/delete_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {12}
+import asyncio
 
-```python
+from temporalio.client import Client
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -159,26 +159,25 @@ async def main():
     )
 
     await handle.delete()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### Describe a Scheduled Workflow {/* #describe */}
-
-**How to describe a Scheduled Workflow**
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
 
 To describe a Scheduled Workflow Execution in Python, use the [describe()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 You can get a complete list of the attributes of the Scheduled Workflow Execution from the [ScheduleDescription](https://python.temporal.io/temporalio.client.ScheduleDescription.html) class.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/describe_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {12-14}
+import asyncio
 
-```python
-# ...
+from temporalio.client import Client
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -188,50 +187,49 @@ async def main():
     desc = await handle.describe()
 
     print(f"Returns the note: {desc.schedule.state.note}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### List a Scheduled Workflow {/* #list */}
-
-**How to list a Scheduled Workflow**
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
 To list all schedules, use the [list_schedules()](https://python.temporal.io/temporalio.client.Client.html#list_schedules) asynchronous method on the Client.
 If a schedule is added or deleted, it may not be available in the list immediately.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/list_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {9}
+import asyncio
 
-```python
-# ...
+from temporalio.client import Client
+
+
 async def main() -> None:
     client = await Client.connect("localhost:7233")
+
     async for schedule in await client.list_schedules():
         print(f"List Schedule Info: {schedule.info}.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### Pause a Scheduled Workflow {/* #pause */}
-
-**How to pause a Scheduled Workflow**
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
 
 To pause a Scheduled Workflow Execution in Python, use the [pause()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#pause) asynchronous method on the Schedule Handle.
 You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/pause_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {12}
+import asyncio
 
-```python
-# ...
+from temporalio.client import Client
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -239,25 +237,24 @@ async def main():
     )
 
     await handle.pause(note="Pausing the schedule for now")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### Trigger a Scheduled Workflow {/* #trigger */}
-
-**How to trigger a Scheduled Workflow**
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
 To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#trigger) asynchronous method on the Schedule Handle.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/trigger_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {12}
+import asyncio
 
-```python
-# ...
+from temporalio.client import Client
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -265,11 +262,13 @@ async def main():
     )
 
     await handle.trigger()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ### Update a Scheduled Workflow {/* #update */}
-
-**How to update a Scheduled Workflow**
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
 
@@ -277,30 +276,42 @@ Create a function that takes `ScheduleUpdateInput` and returns `ScheduleUpdate`.
 To update a Schedule, use a callback to build the update from the description.
 The following example updates the Schedule to use a new argument.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/update_schedule_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {17-24}
+import asyncio
 
-```python
-# ...
+from temporalio.client import (
+    Client,
+    ScheduleActionStartWorkflow,
+    ScheduleUpdate,
+    ScheduleUpdateInput,
+)
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+    handle = client.get_schedule_handle(
+        "workflow-schedule-id",
+    )
+
     async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
         schedule_action = input.description.schedule.action
 
         if isinstance(schedule_action, ScheduleActionStartWorkflow):
             schedule_action.args = ["my new schedule arg"]
         return ScheduleUpdate(schedule=input.description.schedule)
+
+    await handle.update(update_schedule_simple)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ## Temporal Cron Jobs {/* #temporal-cron-jobs */}
 
-**How to use Temporal Cron Jobs**
-
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
+We recommend using [Schedules](/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
@@ -311,15 +322,17 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 
 You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_cron_job/your_cron_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+```python {11-17}
+import asyncio
 
-```python
-# ...
+from temporalio.client import Client
+
+from your_workflow import CronWorkflow
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
     result = await client.execute_workflow(
         CronWorkflow.run,
         id="your-workflow-id",
@@ -327,6 +340,10 @@ You can set each Workflow to repeat on a schedule with the `cron_schedule` optio
         cron_schedule="* * * * *",
     )
     print(f"Results: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 Temporal Workflow Schedule Cron strings follow this format:
@@ -342,8 +359,6 @@ Temporal Workflow Schedule Cron strings follow this format:
 ```
 
 ## Start Delay {/* #start-delay */}
-
-**How to use Start Delay**
 
 Use the `start_delay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
 

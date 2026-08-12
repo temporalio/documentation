@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Chart axes -->
+  <line x1="12" y1="10" x2="12" y2="66" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+  <line x1="12" y1="66" x2="80" y2="66" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Retry-rate bars, spiking on the last -->
+  <rect x="20" y="54" width="8" height="12" fill="#888"/>
+  <rect x="32" y="48" width="8" height="18" fill="#888"/>
+  <rect x="44" y="52" width="8" height="14" fill="#888"/>
+  <rect x="56" y="22" width="8" height="44" fill="#cc2222"/>
+
+  <!-- Alert bell -->
+  <path d="M 78 16 a 7 7 0 0 1 14 0 v6 l3 4 h-20 l3 -4 z" fill="none" stroke="#cc2222" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M 82 30 a 3 3 0 0 0 6 0" fill="none" stroke="#cc2222" stroke-width="2"/>
+</svg>

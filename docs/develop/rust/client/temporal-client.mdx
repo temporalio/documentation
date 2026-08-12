@@ -27,7 +27,7 @@ tags:
   - Certificates
 ---
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) lets your application communicate with the Temporal Service. Use it to start Workflow Executions, send Signals, run Queries, fetch Workflow results, and more.
+A [Temporal Client](/encyclopedia/temporal-client) lets your application communicate with the Temporal Service. Use it to start Workflow Executions, send Signals, run Queries, fetch Workflow results, and more.
 
 This page shows how to do the following using the Rust SDK and Temporal Client:
 
@@ -334,6 +334,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 </TabItem>
 
 </Tabs>
+
+Rotating an mTLS client certificate without restarting the Worker isn't currently supported by the Rust SDK — the
+certificate in `TlsOptions` is read once and baked into the connection at `Connection::connect`.To rotate a certificate, stage the new certificate alongside the old one on your Temporal Cloud Namespace, then restart your Worker with the new certificate before removing the old one; see
+[Update certificates using Temporal Cloud UI/tcld](/cloud/certificates#manage-certificates) for the zero-downtime
+staging sequence.
 
 ## Start a Workflow Execution {/* #start-workflow-execution */}
 

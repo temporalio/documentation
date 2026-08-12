@@ -40,6 +40,14 @@ All metrics are stored as 1 minute aggregates. Rate metrics are therefore per-se
 
 :::
 
+:::note Percentile metrics on low-traffic namespaces
+
+Percentile metrics (`*_p50` / `_p95` / `_p99`) are calculated from the requests observed in each 1-minute aggregation window. On a namespace with few requests per minute, that sample is small, so a single slow request dominates every percentile and p50, p95, and p99 converge toward the slowest observed request. Tail percentiles generally need roughly 20 or more samples per window before they are statistically meaningful; below that, values vary widely.
+
+For example, a low-volume namespace that starts one Workflow every few minutes can report a several-hundred-millisecond `StartWorkflowExecution` `temporal_cloud_v1_service_latency_p95` that reflects a single request, not systemic latency. When alerting on percentile latency for low-traffic namespaces, gate the alert on a minimum request count (for example, [`temporal_cloud_v1_service_request_count`](#temporal_cloud_v1_service_request_count)) so that windows with too few samples don't trigger it. These percentiles are pre-calculated per 1-minute window and cannot be re-aggregated into an accurate longer-window percentile, so widening your evaluation window does not by itself make a sparse sample meaningful.
+
+:::
+
 ### Common Labels
 
 All metrics include these base labels:
@@ -525,7 +533,7 @@ It can overcount because invalid or expired Tasks, like from cancelled, terminat
 
 It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes. The Task Queue is unloaded from memory.
 Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
-See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
 :::
 
 | Label | Description |
@@ -599,7 +607,7 @@ The total number of actions performed per second. Actions with `is_background=fa
 
 | Label | Description |
 | ----- | ----- |
-| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 :::note
@@ -616,12 +624,6 @@ The number of billable actions per second, broken down by action type and Workfl
 | ----- | ----- |
 | `action_type` | The [action](/cloud/actions) type |
 | `temporal_workflow_type` | The workflow type |
-
-:::note Public Preview
-
-This metric is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 :::caution High Cardinality
 
@@ -764,6 +766,18 @@ The on-demand envelope limit for service requests per second. For Namespaces in 
 :::note
 
 Does not include the `region` label. Limits are scoped to the Namespace level.
+
+:::
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_provisioned\_capacity\_tru\_count
+
+The number of Temporal Resource Units (TRUs) provisioned for a Namespace. This is `0` for Namespaces that are not in [provisioned capacity mode](/cloud/capacity-modes).
+
+:::note
+
+Does not include the `region` label. Provisioned capacity is scoped to the Namespace level.
 
 :::
 

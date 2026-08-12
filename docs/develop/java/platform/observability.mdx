@@ -46,7 +46,7 @@ For a complete list of metrics capable of being emitted, see the [SDK metrics re
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Java SDK, refer to the [samples-java](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics) repo.
 
-To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
+To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/69a5d3fa44da4043697b7e57d7ef6691c24287cd/temporal-sdk/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L18) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
 [Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
 
 The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
@@ -116,7 +116,7 @@ WorkerFactoryOptions factoryOptions =
 WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 ```
 
-For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
+For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/main/contrib/temporal-opentracing/README.md).
 
 ### Context Propagation Over Nexus Operation Calls
 
@@ -136,17 +136,7 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The logger supports the following logging levels:
-
-| Level   | Use                                                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------- |
-| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
-| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
-| `INFO`  | General information about the application's operation.                                                    |
-| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
-
-The Temporal SDK core normally uses `WARN` as its default logging level.
+You can find the log levels supported by `slf4j` in [their official documentation](https://www.slf4j.org/apidocs/org/slf4j/ext/XLogger.Level.html). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
 

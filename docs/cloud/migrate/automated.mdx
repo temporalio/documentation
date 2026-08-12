@@ -63,16 +63,15 @@ support ticket.
 
 
 ### Capture cluster configurations
+Depending on your server version, use one of the following methods to capture the configuration of each cluster.
 
-Use one of the following methods to capture the configuration of each cluster.
-
-For server versions above 1.28.1, run the following command against each of your clusters:
+For server versions **above 1.28.1**, run the following command against each of your clusters:
 
 ```
 temporal operator cluster describe --address <frontend:7233> --output json
 ```
 
-For server versions 1.28.1 and prior, use one of the following alternate methods:
+For server versions **1.28.1 and prior**, use one of the following alternate methods:
 
 ```
 tctl --address <frontend:7233> admin cluster describe
@@ -120,6 +119,13 @@ When planning an automated migration, share the following estimates with your Te
 
 These estimates help Temporal plan capacity, Namespace limits, and migration timing.
 
+### Capture schedules
+Capture a list of schedules on the system. This helps to ensure backwards compatibility.
+
+```
+temporal schedule list
+```
+
 ### Prepare mTLS certificates
 
 mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Provide a single certificate using the process outlined
@@ -152,6 +158,7 @@ In your ticket, please provide:
 * mTLS certificate - base64 encoded pem file works well for easy submission in the ticket
 * cluster configurations -  json output for each cluster
 * custom search attributes - CLI output for each cluster/Namespace
+* list of schedules used
 * Namespace metrics
 * cluster/Namespace mappings - use CSV format (see below)
 
@@ -197,7 +204,23 @@ Use the following procedure to deploy the proxy:
    See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
    as a reference. Note that the number of replicas must match on both sides of the connection. If your replica count differs
    from 3, update Temporal with the actual number of replicas so that the same count can be configured on the cloud side.
-4. Test access using the command below. It should display the information of the migration server.
+4. Verify that you have included your self-hosted namespaces and their translations in your proxy configuration. Example:
+```yaml
+aclPolicy:
+  allowedNamespaces:
+   - temporal-system
+   - namespace1
+   - namespace2
+   - etc...
+namespaceTranslation:
+  mappings:
+  - local: "namespace1"
+    remote: "cloud-namespace1.wxyz"
+  - local: "namespace2"
+    remote: "cloud-namespace2.wxyz"
+  - etc...
+```
+5. Test access using the command below. It should display the information of the migration server.
 
 ```
 temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
@@ -235,8 +258,11 @@ If you have previously enabled [Global Namespace](/global-namespace), the Failov
 Temporal. This is **critical**, since the value may only be set once and cannot change.
 
 If you've never enabled Global Namespace, then you may enable it and set the Initial Failover Version to a unique value
-(between 1 and 100). Enable by updating the _clusterMetadata_ and the _dcRedirectionPolicy_. When complete, restart all
-Temporal services (frontend, history, matching, worker), starting with the frontend.
+in the range of 2-99. Enable by updating the _clusterMetadata_ and the _dcRedirectionPolicy_. 
+
+For server versions 1.22 - 1.23, note this [extra required setting](#special-dynamic-configuration-for-version-122x-123x).
+
+When complete, restart all Temporal services (frontend, history, matching, worker), starting with the frontend.
 
 ```yaml
 dcRedirectionPolicy:
@@ -253,6 +279,10 @@ clusterInformation:
     initialFailoverVersion: CHANGEME # set in the range 2-99. use a unique number per cluster
     rpcName: _NO_CHANGE_
     rpcAddress: _NO_CHANGE_
+
+# for versions 1.22 - 1.23 only
+#history.enableReplicationStream:
+#  - value: true
 ```
 
 After all services have restarted, verify the configuration using:

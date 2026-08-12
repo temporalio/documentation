@@ -118,7 +118,7 @@ The failover process is the same whether it is triggered automatically by Tempor
    3. This hybrid strategy balances consistency and availability. During the switch, Workflow operations are briefly
       paused, and Temporal Cloud returns a retryable "Service unavailable" error to SDKs.
 
-4. **The Namespace Endpoint re-routes to the active region.** This DNS change can take a few minutes to fully propagate
+4. **The Namespace Endpoint redirects via DNS to the active region.** This change can take a few minutes to fully propagate
    to all Clients and Workers. If your application has an extremely demanding Recovery Time, you can eliminate this
    stage by connecting through a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) instead
    of the Namespace Endpoint.
@@ -174,7 +174,7 @@ In a graceful failover, Temporal Cloud drains the replication backlog to zero an
 regions, so the replica holds every acknowledged operation and the Namespace achieves a recovery point of zero.
 
 Namespaces that are not replicated can be configured to provide _at-most-once_ semantics for Activity execution when a
-retry policy's [maximum attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0. High
+retry policy's [maximum attempts](/encyclopedia/retry-policies#maximum-attempts) is set to 0. High
 Availability Namespaces provide _at-least-once_ semantics for execution of Activities. Completed Activities _may_ be
 re-dispatched in a newly active Namespace, leading to repeated executions.
 

@@ -1,0 +1,119 @@
+name: Check Metrics Against SDKs
+
+# Compares docs/references/sdk-metrics.mdx with the metric definitions on the
+# default branches of the SDK repositories. This is advisory: it opens a
+# tracking issue rather than failing, because the SDK default branches run
+# ahead of released versions and extracting metric names from three languages
+# is approximate. The merge gate is Check Metrics Reference, which checks the
+# page against itself.
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/references/sdk-metrics.mdx'
+      - 'bin/check-metrics-against-sdks.js'
+      - 'bin/check-metrics-against-sdks.test.js'
+      - 'bin/metrics-baseline.json'
+      - '.github/workflows/check-metrics-against-sdks.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-metrics-against-sdks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    name: Compare the reference with the SDK sources
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      - name: Test the comparison
+        run: node --test bin/check-metrics-against-sdks.test.js
+
+      - name: Compare against the SDK sources
+        id: compare
+        run: |
+          set +e
+          node bin/check-metrics-against-sdks.js > report.txt 2>&1
+          status=$?
+          set -e
+
+          cat report.txt
+
+          # 0 is clean and 2 is drift. Anything else means the comparison could
+          # not run, usually because a definition file was renamed upstream.
+          if [ "$status" -ne 0 ] && [ "$status" -ne 2 ]; then
+            echo "::error::The comparison could not run. A definition file was probably renamed upstream; update SDKS in bin/check-metrics-against-sdks.js."
+            exit "$status"
+          fi
+
+          if [ "$status" -eq 2 ]; then
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          {
+            echo "### SDK metrics comparison"
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open or update the tracking issue
+        if: github.event_name != 'pull_request' && steps.compare.outputs.drift == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: 'SDK metrics reference has drifted from the SDK sources'
+        run: |
+          {
+            echo "\`docs/references/sdk-metrics.mdx\` no longer matches the metric"
+            echo "definitions on the SDK default branches."
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+            echo
+            echo "To resolve, either update the page, or record the metric as"
+            echo "intentionally undocumented in \`bin/metrics-baseline.json\`."
+            echo "Reproduce locally with \`yarn check:metrics:sdks\`."
+            echo
+            echo "_Updated by [${GITHUB_WORKFLOW}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})._"
+          } > issue-body.md
+
+          number=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number // empty')
+
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file issue-body.md
+            echo "Updated issue #$number."
+          else
+            gh issue create --title "$TITLE" --body-file issue-body.md
+          fi
+
+      - name: Close the tracking issue
+        if: github.event_name != 'pull_request' && steps.compare.outputs.drift == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: 'SDK metrics reference has drifted from the SDK sources'
+        run: |
+          number=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number // empty')
+
+          if [ -n "$number" ]; then
+            gh issue close "$number" --comment "The page and the SDK sources agree again."
+          fi
