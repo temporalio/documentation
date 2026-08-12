@@ -1,0 +1,39 @@
+---
+id: interceptors
+title: Interceptors - Java SDK
+sidebar_label: Interceptors
+description:
+  Implement Interceptors in the Temporal Java SDK to manage inbound and outbound SDK calls, enhance tracing, and add
+  authorization to your Workflows and Activities.
+toc_max_heading_level: 3
+keywords:
+  - interceptors
+tags:
+  - Interceptors
+  - Java SDK
+  - Temporal SDKs
+---
+
+Interceptors wrap inbound and outbound Temporal calls so you can apply shared behavior such as tracing, logging, or
+authorization. See [Interceptors](/encyclopedia/interceptors) for the inbound vs outbound model.
+
+Register them on the Client (`WorkflowClientOptions.setInterceptors`) or the Worker Factory
+(`WorkerFactoryOptions.setWorkerInterceptors`). Extend `WorkflowClientInterceptorBase` / `WorkerInterceptorBase` and
+override only the methods you need. Full API:
+[`io.temporal.common.interceptors`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/interceptors/package-summary.html).
+
+Several interceptor APIs are marked `@Experimental`.
+
+:::warning Workflow interceptors and replay
+
+Workflow interceptor methods also run during [replay](/develop/java/best-practices/testing-suite#replay). Use replay-safe
+APIs for logging, randomness, and time.
+
+:::
+
+## Related
+
+- [Observability - Tracing](/develop/java/platform/observability#tracing)
+- [Error handling - Worker Interceptor](/develop/java/best-practices/error-handling#centralize-with-interceptor)
+- [Spring Boot - Interceptors](/develop/java/integrations/spring-boot#interceptors)
+- [Plugins - Interceptors](/develop/plugins-guide#interceptors)

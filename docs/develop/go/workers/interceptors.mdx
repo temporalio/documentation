@@ -1,0 +1,36 @@
+---
+id: interceptors
+title: Interceptors - Go SDK
+sidebar_label: Interceptors
+description:
+  Implement Interceptors in the Temporal Go SDK to manage inbound and outbound SDK calls, enhance tracing, and add
+  authorization to your Workflows and Activities.
+toc_max_heading_level: 3
+keywords:
+  - interceptors
+tags:
+  - Interceptors
+  - Go SDK
+  - Temporal SDKs
+---
+
+Interceptors wrap inbound and outbound Temporal calls so you can apply shared behavior such as tracing, logging, or
+authorization. See [Interceptors](/encyclopedia/interceptors) for the inbound vs outbound model.
+
+Register them on the Client (`client.Options.Interceptors`), the Worker (`worker.Options.Interceptors`), or both. Embed
+`ClientInterceptorBase` / `WorkerInterceptorBase` and override only the methods you need. Full API:
+[`go.temporal.io/sdk/interceptor`](https://pkg.go.dev/go.temporal.io/sdk/interceptor).
+
+:::warning Workflow interceptors and replay
+
+Workflow interceptor methods also run during [replay](/develop/go/best-practices/testing-suite#replay). Use replay-safe
+APIs for logging, randomness, and time.
+
+:::
+
+## Related
+
+- [Observability - Tracing](/develop/go/platform/observability#tracing)
+- [Context Propagation](/develop/go/best-practices/context-propagation)
+- [Logging Interceptor sample](https://github.com/temporalio/samples-go/tree/main/logger-interceptor)
+- [Plugins - Interceptors](/develop/plugins-guide#interceptors)

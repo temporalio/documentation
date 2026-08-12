@@ -205,6 +205,7 @@ const developGoCategory = {
         items: [
           'develop/go/workers/run-worker-process',
           'develop/go/workers/sessions',
+          'develop/go/workers/interceptors',
           {
             type: 'category',
             label: 'Serverless Workers',
@@ -356,6 +357,7 @@ const developJavaCategory = {
         },
         items: [
           'develop/java/workers/run-worker-process',
+          'develop/java/workers/interceptors',
           {
             type: 'category',
             label: 'Serverless Workers',
