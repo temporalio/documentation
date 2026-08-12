@@ -1,0 +1,65 @@
+---
+id: index
+title: Monitor Temporal Cloud
+sidebar_label: Monitor
+slug: /cloud/monitor
+description: Monitor Temporal Cloud service health, Worker health, and High Availability Namespaces, and receive operational notifications.
+toc_max_heading_level: 3
+keywords:
+  - temporal cloud monitoring
+  - cloud metrics
+  - worker health
+  - service health
+  - high availability monitoring
+  - notifications
+tags:
+  - Temporal Cloud
+  - Metrics
+  - Observability
+---
+
+Monitor Temporal Cloud and the Workers connected to it to detect service issues, Task Queue backlogs, Worker capacity
+problems, and High Availability events.
+
+Temporal provides Cloud metrics, SDK metrics, health-monitoring guidance, and notifications. Use the following guides
+based on what you need to detect.
+
+## Choose what to monitor
+
+| Goal | Guide | What it helps you detect |
+| --- | --- | --- |
+| Collect metrics from Temporal Cloud and your Workers | [Set up metrics](/cloud/metrics) | Service, Task Queue, Worker, and Client behavior |
+| Monitor Temporal Cloud service health | [Monitor service health](/cloud/service-health) | Service latency and errors, Workflow and Activity failure trends, throttling, and capacity limits |
+| Monitor Workers connected to Temporal Cloud | [Monitor Worker health](/cloud/worker-health) | Task backlogs, insufficient or excess Worker capacity, configuration problems, and Worker availability |
+| Monitor a High Availability Namespace | [Monitor High Availability](/cloud/high-availability/monitoring) | Failovers, regional outages, replication status, and replication lag |
+| Receive operational updates | [Receive notifications](/cloud/notifications) | Temporal Cloud incidents, expiring credentials, billing events, and completed or failed failovers |
+
+## Understand metric sources
+
+Temporal provides two complementary metric sources:
+
+- **Cloud metrics** show what the Temporal Service observes, including request latency, service errors, Task Queue
+  behavior, throttling, and Namespace-level activity.
+- **SDK metrics** show what your Workers and Clients observe, including Schedule-To-Start latency, available Worker
+  slots, cache behavior, and request failures.
+
+Use both sources to distinguish a Temporal Cloud service issue from a Worker or application issue.
+
+To begin collecting metrics:
+
+1. [Set up Cloud metrics with OpenMetrics](/cloud/metrics/openmetrics).
+2. [Connect Temporal Cloud to your observability tool](/cloud/metrics/openmetrics/metrics-integrations).
+3. [Set up SDK metrics](/cloud/metrics/sdk-metrics-setup).
+4. Use the [service health](/cloud/service-health) and [Worker health](/cloud/worker-health) guides to create monitors and
+   alerts.
+
+## Monitor specialized features
+
+Some Temporal Cloud features have additional monitoring guidance:
+
+- To monitor Nexus metrics and debug Nexus Operations, see [Temporal Nexus observability](/cloud/nexus/observability).
+- To detect failovers and monitor replication, see
+  [Monitor High Availability](/cloud/high-availability/monitoring).
+
+For records of Control Plane changes, see [Audit Logs](/cloud/audit-logs). Audit Logs answer who changed a Temporal
+Cloud resource, what they changed, and when. They are separate from runtime health monitoring.
