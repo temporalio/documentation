@@ -1266,6 +1266,7 @@ module.exports = {
           items: [
             'cloud/high-availability/enable',
             'cloud/high-availability/architecture-patterns',
+            'cloud/high-availability/monitoring',
             {
               type: 'category',
               label: 'Failovers',
@@ -1367,7 +1368,6 @@ module.exports = {
             },
             'cloud/worker-health',
             'cloud/service-health',
-            'cloud/high-availability/monitoring',
             'cloud/notifications',
           ],
         },
