@@ -84,10 +84,11 @@ loop replays deterministically in the Workflow.
 <!--SNIPSTART python-deepagents-hello-world-workflow-->
 [deepagents_plugin/hello_world/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/hello_world/workflow.py)
 ```py
+# No `workflow.unsafe.imports_passed_through()` guard is needed: the plugin
+# configures the workflow sandbox to pass the deepagents / LangChain import
+# tree through, so workflow files import them like any other module.
+from deepagents import create_deep_agent
 from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from deepagents import create_deep_agent
 
 
 @workflow.defn
@@ -102,7 +103,6 @@ class HelloWorldAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
 ```
 <!--SNIPEND-->
 
@@ -204,7 +204,6 @@ async def get_weather(city: str) -> str:
     """Return the current weather for a city."""
     # A real implementation would call a weather API here; this is a stand-in.
     return f"It is sunny and 22C in {city}."
-
 ```
 <!--SNIPEND-->
 
@@ -231,19 +230,21 @@ class ReactAgent:
             web_search,
             start_to_close_timeout=timedelta(seconds=30),
         )
-        agent = create_deep_agent(
-            model=TemporalModel(model="anthropic:claude-sonnet-4-5"),
+        agent = create_temporal_deep_agent(
+            model="anthropic:claude-sonnet-4-5",
             tools=[weather_tool, search_tool],
             system_prompt=(
                 "You are a research assistant. Use the get_weather and "
                 "web_search tools when they help answer the question."
             ),
+            # Scopes the model-call activity options to this agent — the
+            # recommended way to set model timeouts/retries per agent.
+            activity_options={"start_to_close_timeout": timedelta(minutes=2)},
         )
         result = await agent.ainvoke(
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
 ```
 <!--SNIPEND-->
 
@@ -262,12 +263,10 @@ the backend is wrapped.
 ```py
 from datetime import timedelta
 
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from deepagents import create_deep_agent
-    from deepagents.backends import FilesystemBackend
-    from temporalio.contrib.deepagents import TemporalBackend
+from temporalio.contrib.deepagents import TemporalBackend
 
 
 @workflow.defn
@@ -295,7 +294,6 @@ class FilesystemAgent:
             {"messages": [{"role": "user", "content": instruction}]}
         )
         return result["messages"][-1].content
-
 ```
 <!--SNIPEND-->
 
@@ -309,10 +307,8 @@ the plugin once and the whole agent tree is covered, with no per-sub-agent wirin
 <!--SNIPSTART python-deepagents-subagents-workflow-->
 [deepagents_plugin/subagents/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/subagents/workflow.py)
 ```py
+from deepagents import create_deep_agent
 from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from deepagents import create_deep_agent
 
 
 @workflow.defn
@@ -338,7 +334,6 @@ class SubagentsWorkflow:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
 ```
 <!--SNIPEND-->
 
@@ -360,14 +355,12 @@ memory, rehydrated by deterministic replay, and the stable Workflow ID is used a
 ```py
 from datetime import timedelta
 
+from deepagents import create_deep_agent
+from langchain_core.runnables import RunnableConfig
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.types import Command
 from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from deepagents import create_deep_agent
-    from langchain_core.runnables import RunnableConfig
-    from langgraph.checkpoint.memory import InMemorySaver
-    from langgraph.types import Command
-    from temporalio.contrib.deepagents import tool_as_activity
+from temporalio.contrib.deepagents import tool_as_activity
 
 
 @workflow.defn
@@ -430,7 +423,6 @@ class HumanInTheLoopAgent:
         # `Command(resume=...)` are allowed.
         if decision not in ("approve", "reject"):
             raise ValueError('decision must be "approve" or "reject"')
-
 ```
 <!--SNIPEND-->
 
@@ -454,11 +446,9 @@ straight through, not re-wrapped, or the carried conversation is corrupted.
 ```py
 from typing import Any
 
+from deepagents import create_deep_agent
 from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from deepagents import create_deep_agent
-    from temporalio.contrib.deepagents import run_deep_agent
+from temporalio.contrib.deepagents import run_deep_agent
 
 
 @workflow.defn
@@ -481,13 +471,12 @@ class LongResearchAgent:
             # carried input as its first arg, so re-wrapping it here would nest a
             # dict where a message is expected and corrupt the conversation.
             input,
-            # Continue-as-new once history passes this many events and the agent
-            # still has pending todos. Tune to your model's turn size.
-            continue_as_new_after=10_000,
+            # No threshold: continue-as-new fires when the agent still has
+            # pending todos and the server suggests continuing — the recommended
+            # mode. Pass continue_as_new_after=N to use a fixed event count.
             state_snapshot=state_snapshot,
         )
         return result["messages"][-1].content
-
 ```
 <!--SNIPEND-->
 
@@ -505,12 +494,10 @@ so external subscribers can attach by Workflow ID.
 <!--SNIPSTART python-deepagents-streaming-workflow-->
 [deepagents_plugin/streaming/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/streaming/workflow.py)
 ```py
+from langchain_core.messages import HumanMessage
 from temporalio import workflow
+from temporalio.contrib.deepagents import TemporalModel
 from temporalio.contrib.workflow_streams import WorkflowStream
-
-with workflow.unsafe.imports_passed_through():
-    from langchain_core.messages import HumanMessage
-    from temporalio.contrib.deepagents import TemporalModel
 
 STREAMING_TOPIC = "model-chunks"
 
@@ -529,7 +516,6 @@ class StreamingWorkflow:
         async for chunk in model.astream([HumanMessage(content=prompt)]):
             parts.append(str(chunk.content))
         return "".join(parts)
-
 ```
 <!--SNIPEND-->
 
@@ -544,10 +530,8 @@ comes entirely from composing the plugins on the Client.
 <!--SNIPSTART python-deepagents-langsmith-tracing-workflow-->
 [deepagents_plugin/langsmith_tracing/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/langsmith_tracing/workflow.py)
 ```py
+from deepagents import create_deep_agent
 from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from deepagents import create_deep_agent
 
 
 @workflow.defn
@@ -562,7 +546,6 @@ class TracedAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
 ```
 <!--SNIPEND-->
 
