@@ -32,18 +32,13 @@ bounded Workflow history for long-running agents.
 
 <ReleaseNoteHeader type="prerelease" />
 
-:::info
-
-The `temporalio.contrib.deepagents` plugin is experimental and its API may change in future versions.
-
-:::
-
 Code snippets in this guide are taken from the
 [Deep Agents plugin samples](https://github.com/temporalio/samples-python/tree/main/deepagents_plugin). Refer to the
 samples for the complete code.
 
 ## Prerequisites
 
+- Python 3.11 or newer.
 - This guide assumes you are already familiar with Deep Agents. If you aren't, refer to the
   [Deep Agents documentation](https://github.com/langchain-ai/deepagents) for more details.
 - If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
@@ -70,13 +65,6 @@ pip install "temporalio[deepagents] @ git+https://github.com/temporalio/sdk-pyth
 This builds the SDK from source, including its Rust core, so expect a few minutes on first install. Once the next
 release is available, a plain `uv add "temporalio[deepagents]"` (or `pip install "temporalio[deepagents]"`) is all
 you need.
-
-:::note
-
-The integration is experimental and its API may change. It requires Python 3.11 or newer, the same floor that
-`deepagents` sets.
-
-:::
 
 ## Hello World
 
