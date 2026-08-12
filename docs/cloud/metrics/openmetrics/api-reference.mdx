@@ -127,7 +127,7 @@ Do not rely on this headroom: design production clients against the documented l
 The `X-Completeness` header indicates whether the response contains all available data:
 
 * `complete`: The response contains all metrics requested  
-* `limited`: Response truncated due to size limits (30k metric data points max). Use namespace or metric filtering to reduce the response size.
+* `limited`: Response truncated due to size limits (50k metric data points max). Use namespace or metric filtering to reduce the response size.
 * `unknown`: Completeness cannot be determined (possibly due to regional issues or timeouts). Clients are encouraged to retry.
 
 ### Retry Logic
@@ -390,7 +390,7 @@ count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 
 | Limit | Impact | Mitigation |
 | ----- | ----- | ----- |
-| 30k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
+| 50k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
 | 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set scrape interval to 30s |
 
 :::caution
