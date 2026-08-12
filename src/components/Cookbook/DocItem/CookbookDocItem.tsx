@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from '@docusaurus/Head';
 import { DocProvider, useDoc } from '@docusaurus/plugin-content-docs/client';
 import DocItemMetadata from '@theme/DocItem/Metadata';
 import type { Props as DocItemProps } from '@theme/DocItem';
@@ -57,7 +56,6 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
   const { metadata, frontMatter, toc, contentTitle } = useDoc();
   const {
     title,
-    description,
     id,
     unversionedId,
     tags: metaTags = [],
@@ -258,10 +256,6 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
       <DocItemStructuredData />
       <MarkdownAlternateLink />
 
-      <Head>
-        <title>{title}</title>
-        {description && <meta name="description" content={description} />}
-      </Head>
       <main className={styles.main}>
         <div className={styles.wrapper} data-has-toc={hasTOC ? 'true' : undefined}>
           <article className={styles.article} data-tags={dataTags} data-doc-id={id}>

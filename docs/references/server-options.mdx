@@ -19,11 +19,11 @@ We recommend this approach for a limited number of situations.
 ```go
 s, err := temporal.NewServer()
 if err != nil {
-	log.Fatal(err)
+    log.Fatal(err)
 }
 err = s.Start()
 if err != nil{
-	log.Fatal(err)
+    log.Fatal(err)
 }
 ```
 
@@ -40,7 +40,7 @@ structure, refer to the [official configuration documentation](https://pkg.go.de
 
 ```go
 s, err := temporal.NewServer(
-	temporal.WithConfig(cfg),
+    temporal.WithConfig(cfg),
 )
 ```
 
@@ -50,7 +50,7 @@ Load a custom configuration from a file.
 
 ```go
 s, err := temporal.NewServer(
-	temporal.WithConfigLoader(configDir, env, zone),
+    temporal.WithConfigLoader(configDir, env, zone),
 )
 ```
 
@@ -61,7 +61,7 @@ The default can be used from the `go.temporal.io/server/temporal` package.
 
 ```go
 s, err := temporal.NewServer(
-	temporal.ForServices(temporal.Services),
+    temporal.ForServices(temporal.Services),
 )
 ```
 
@@ -76,7 +76,7 @@ This option provides a channel that interrupts the server on the signal from tha
 
 ```go
 s, err := temporal.NewServer(
-	temporal.InterruptOn(temporal.InterruptCh()),
+    temporal.InterruptOn(temporal.InterruptCh()),
 )
 ```
 
@@ -86,7 +86,7 @@ Sets a low level [authorization mechanism](/self-hosted-guide/security#authorize
 
 ```go
 s, err := temporal.NewServer(
-	temporal.WithAuthorizer(myAuthorizer),
+    temporal.WithAuthorizer(myAuthorizer),
 )
 ```
 
@@ -97,7 +97,7 @@ Overrides the default TLS configuration provider.
 
 ```go
 s, err := temporal.NewServer(
-	temporal.WithTLSConfigFactory(yourTLSConfigProvider),
+    temporal.WithTLSConfigFactory(yourTLSConfigProvider),
 )
 ```
 
@@ -108,12 +108,23 @@ Configures a [mechanism to map roles](/self-hosted-guide/security#claim-mapper) 
 ```go
 s, err := temporal.NewServer(
   temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
-  		logger := getYourLogger() // Replace with how you retrieve or initialize your logger
-		return authorization.NewDefaultJWTClaimMapper(
-			authorization.NewDefaultTokenKeyProvider(cfg, logger),
-			cfg
-		)
-	}),
+      logger := getYourLogger() // Replace with how you retrieve or initialize your logger
+    return authorization.NewDefaultJWTClaimMapper(
+      authorization.NewDefaultTokenKeyProvider(cfg, logger),
+      cfg
+    )
+  }),
+)
+```
+
+### WithTokenProvider
+
+Configures a [`TokenProvider`](/self-hosted-guide/security#token-provider) that supplies bearer tokens for outbound cross-cluster RPCs.
+`TokenProvider` is defined in the `go.temporal.io/server/common/rpc/auth` package.
+
+```go
+s, err := temporal.NewServer(
+    temporal.WithTokenProvider(myTokenProvider),
 )
 ```
 
@@ -123,7 +134,7 @@ Sets a custom tally metric reporter.
 
 ```go
 s, err := temporal.NewServer(
-	temporal.WithCustomMetricsReporter(myReporter),
+    temporal.WithCustomMetricsReporter(myReporter),
 )
 ```
 
