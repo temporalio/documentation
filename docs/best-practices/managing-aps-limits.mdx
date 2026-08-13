@@ -239,7 +239,7 @@ See the documentation on [detecting resource exhaustion](/cloud/service-health#r
 If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
 
 - **Use [OpenMetrics](/cloud/metrics/openmetrics)**: For real-time visibility into APS consumption, integrate Temporal Cloud metrics with your observability stack
-- **Track APS usage vs. limits**: Monitor `temporal_cloud_v0_resource_exhausted_errors` to detect throttling events
+- **Track APS usage vs. limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
 - **Set alerts at 70-80% utilization**: This gives you time to provision TRUs before hitting limits
 - **Analyze historical patterns**: Understanding your traffic patterns helps you decide between reactive TRU provisioning and proactive automation
 

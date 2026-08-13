@@ -25,7 +25,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 The proxy reads a single YAML file. Three sections are the core of it: the gateway listener (`hostPort`), `routing`, and
 the `upstreams` it forwards to. The optional `tls`, `auth`, `encryption`, and `extensionServers` sections add inbound
 TLS, inbound authentication, and payload encryption. Values support `${VAR}` and `$VAR` environment variable expansion,
-and an upstream's `hostPort` can be a template that resolves per request (for example `{{ .RemoteNamespace }}`).
+and an upstream's `hostPort` can be a template that resolves per request (for example, `{{ .RemoteNamespace }}`).
 
 The example below is the proxy's
 [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud), which connects a Worker

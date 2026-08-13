@@ -54,6 +54,15 @@
     "href": "https://docs.datadoghq.com/integrations/temporal-cloud-costs/"
   },
   {
+    "name": "Deep Agents",
+    "description": "Make LangChain Deep Agents durable with Temporal Workflows and Activities.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/deepagents"
+  },
+  {
     "name": "Google ADK",
     "description": "Orchestrate Google ADK agents with durable Temporal Workflows.",
     "tags": [
