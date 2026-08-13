@@ -161,7 +161,7 @@ follow. Only the driver setup differs between the two. Everything after that is 
     business logic. Both drivers upload and download payloads concurrently, and verify a SHA-256 hash of the contents on
     retrieve. Each driver rejects any single payload larger than `MaxPayloadSize`, which defaults to 50 MiB.
 
-    The hash forms part of the object key, along with the Namespace, Workflow, and Run ID. When one Workflow Run passes
+    The hash forms part of the object key, along with the Namespace, Workflow Id, and Run Id. When one Workflow Run passes
     the same payload to several Activities, the key is identical each time, so the driver uploads the payload once and
     the later writes reuse that object. A different Run, Workflow, or Namespace produces a different key, so it stores
     its own copy even when the bytes are identical. Storage therefore scales with the number of Runs, not with how many
