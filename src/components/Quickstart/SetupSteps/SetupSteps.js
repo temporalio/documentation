@@ -17,9 +17,9 @@ export const SetupStep = ({ children, code }) => {
   );
 };
 
-export const CodeSnippet = ({ language, children }) => {
+export const CodeSnippet = ({ language, title, children }) => {
   return (
-    <CodeBlock language={language} showLineNumbers={false}>
+    <CodeBlock language={language} title={title} showLineNumbers={false}>
       {children}
     </CodeBlock>
   );
