@@ -35,9 +35,12 @@ follow. Only the driver setup differs between the two. Everything after that is 
 - A bucket that you have read and write access to. Refer to [lifecycle management](/external-storage#lifecycle) to
   ensure that your payloads remain available for the entire lifetime of the Workflow. For multi-region durability, see
   [Durable External Storage](/external-storage#durable-external-storage).
-- Credentials with permission to write objects on components that store payloads, and to read objects on components that
-  retrieve them. Because the drivers check whether an object already exists before uploading, storing also requires read
-  permission. Components that only retrieve payloads do not need write permission.
+- Bucket credentials on both your Temporal Client and your Workers, since each reaches the bucket directly. Refer to
+  [Amazon S3 access control](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-access-control.html) or
+  [Cloud Storage IAM permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) for how to grant
+  access.
+- Permission to write objects on processes that store payloads, and to read objects on processes that retrieve them.
+  Storing also requires read permission, because the drivers check whether an object already exists before uploading.
 - Install the driver module, the client adapter for your cloud provider's SDK, and that SDK:
 
       <Tabs groupId="external-storage-backend" queryString>
@@ -78,26 +81,23 @@ follow. Only the driver setup differs between the two. Everything after that is 
     [environment variables, an IAM role, or your AWS config file](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html).
 
          <!--SNIPSTART go-s3-driver-create-->
+         [features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
+         ```go
+         cfg, err := config.LoadDefaultConfig(context.Background(),
+         	config.WithRegion("us-east-2"),
+         )
+         if err != nil {
+         	log.Fatalf("load AWS config: %v", err)
+         }
 
-    [features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
-
-    ```go
-    cfg, err := config.LoadDefaultConfig(context.Background(),
-    	config.WithRegion("us-east-2"),
-    )
-    if err != nil {
-    	log.Fatalf("load AWS config: %v", err)
-    }
-
-    driver, err := s3driver.NewDriver(s3driver.Options{
-    	Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
-    	Bucket: s3driver.StaticBucket("my-temporal-payloads"),
-    })
-    if err != nil {
-    	log.Fatalf("create S3 driver: %v", err)
-    }
-    ```
-
+         driver, err := s3driver.NewDriver(s3driver.Options{
+         	Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
+         	Bucket: s3driver.StaticBucket("my-temporal-payloads"),
+         })
+         if err != nil {
+         	log.Fatalf("create S3 driver: %v", err)
+         }
+         ```
          <!--SNIPEND-->
 
            </TabItem>
@@ -106,6 +106,10 @@ follow. Only the driver setup differs between the two. Everything after that is 
 
     The Google Cloud SDK reads
     [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
+
+    <!--SNIPSTART go-gcs-driver-create-->
+
+    [features/snippets/external_storage/gcs_setup/gcs_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/gcs_setup/gcs_driver_create.go)
 
     ```go
     gcsClient, err := storage.NewClient(context.Background())
@@ -121,6 +125,8 @@ follow. Only the driver setup differs between the two. Everything after that is 
     	log.Fatalf("create GCS driver: %v", err)
     }
     ```
+
+    <!--SNIPEND-->
 
            </TabItem>
 
@@ -152,6 +158,9 @@ follow. Only the driver setup differs between the two. Everything after that is 
     ```
 
     <!--SNIPEND-->
+
+    A Worker inherits this configuration from the Client it is created with. When your Workers run in their own process,
+    repeat this setup there.
 
     By default, payloads of 256 KiB or larger are offloaded to external storage. You can adjust this with the
     `PayloadSizeThreshold` option, even setting it to 1 to externalize all payloads regardless of size. Refer to
