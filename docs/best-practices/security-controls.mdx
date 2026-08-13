@@ -37,7 +37,7 @@ Strong identity management in Temporal Cloud is crucial for ensuring secure acce
 
 #### 1. Enable [SAML Single Sign-on](/cloud/manage-access/saml) (SSO) for User Access
 
-Integrate Temporal Cloud with your organization's identity provider via SAML 2.0 for centralized authentication. SSO allows you to enforce your corporate login policies (MFA, password complexity, etc.). When you configure SAML with Temporal Cloud, you can disable social logins (i.e. Microsoft, Google) by opening a support ticket. 
+Integrate Temporal Cloud with your organization's identity provider via SAML 2.0 for centralized authentication. SSO allows you to enforce your corporate login policies (such as MFA and password complexity). When you configure SAML with Temporal Cloud, you can disable social logins (that is, Microsoft, Google) by opening a support ticket. 
 
 #### 2. Use Least-Privilege Roles for Temporal Cloud Users
 
@@ -49,7 +49,7 @@ When applicable, use [SCIM](/cloud/manage-access/scim) or the Temporal Cloud use
 
 #### Use Service Accounts for Automation
 
-For non-human access (CI/CD pipelines, backend services), use [Temporal Cloud Service Accounts](/cloud/manage-access/service-accounts) instead of shared user logins. Service Accounts are machine identities that can be granted specific permissions without ties to an individual. Create separate Service Accounts with unique API keys for different applications or microservices, and apply least privilege to each (e.g. a service account that only has access to one Namespace).
+For non-human access (CI/CD pipelines, backend services), use [Temporal Cloud Service Accounts](/cloud/manage-access/service-accounts) instead of shared user logins. Service Accounts are machine identities that can be granted specific permissions without ties to an individual. Create separate Service Accounts with unique API keys for different applications or microservices, and apply least privilege to each (for example, a service account that only has access to one Namespace).
 
 ## Secure Application Authentication and API Access
 
@@ -67,7 +67,7 @@ We recommend you enable mTLS for strong identity assurance of clients; it ensure
 
 #### 2. Proactively manage and rotate certificates
 
-Track the expiration dates of your client and [Certificate Authority certificates](/cloud/certificates). Temporal Cloud trusts the uploaded CA; if it expires, all client authorizations will fail. Establish and automate a certificate rotation schedule (e.g. rotate client certificates quarterly and CA certificates annually, well before expiry). Temporal supports uploading a new CA certificate alongside the old one to allow seamless rollover. Always test new certificates in a staging environment if possible.
+Track the expiration dates of your client and [Certificate Authority certificates](/cloud/certificates). Temporal Cloud trusts the uploaded CA; if it expires, all client authorizations will fail. Establish and automate a certificate rotation schedule (for example, rotate client certificates quarterly and CA certificates annually, well before expiry). Temporal supports uploading a new CA certificate alongside the old one to allow seamless rollover. Always test new certificates in a staging environment if possible.
 
 #### 3. If you’re using API Keys, handle them with strict care
 
@@ -90,9 +90,9 @@ Temporal Cloud supports private connectivity options such as [AWS PrivateLink](/
 
 #### 2. Separate environments by Namespace
 
-Use [Temporal Namespaces](/best-practices/managing-namespace#naming-conventions) to isolate workflows for different environments or teams (e.g. development, staging, production). Each Namespace is logically segregated and cannot interact with others by default, providing a security boundary. 
+Use [Temporal Namespaces](/best-practices/managing-namespace#naming-conventions) to isolate workflows for different environments or teams (for example, development, staging, production). Each Namespace is logically segregated and cannot interact with others by default, providing a security boundary. 
 
-Ensure that your production Namespace uses stricter network controls (e.g. only accessible from the prod network) and that credentials for it are separate from non-prod Namespaces. This limits the impact of any compromise in a lower environment, and as workflow data is only visible to users with access to that Namespace, separating environments by Namespace also enforces data-visibility boundaries.
+Ensure that your production Namespace uses stricter network controls (for example, only accessible from the prod network) and that credentials for it are separate from non-prod Namespaces. This limits the impact of any compromise in a lower environment, and as workflow data is only visible to users with access to that Namespace, separating environments by Namespace also enforces data-visibility boundaries.
 
 ## Data Protection and Encryption
 
@@ -125,7 +125,7 @@ Temporal Cloud’s platform is engineered for fault-tolerance out of the box, bu
 | **Single-Region** | **If your application is built for one region and does not have stringent high-availability or disaster recovery requirements.** | 99.9% | ≤ 8 hours | ≤ 8 hours |
 | **Same-Region Replication** | **If you want higher availability but your application is designed for a single region or if cross region latency doesn’t meet SLAs for application** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
 | **Multi-Region Replication** | **If a disruption of your workflow will cause loss of revenue, poor end-user experience, or issues with regulatory compliance.** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
-| **Multi-Cloud Replication** | **If you need the highest level of disaster tolerance, protecting against outages of an entire cloud provider (e.g., AWS or GCP)** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
+| **Multi-Cloud Replication** | **If you need the highest level of disaster tolerance, protecting against outages of an entire cloud provider (for example, AWS or GCP)** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
 
 ### Best Practices:
 
