@@ -63,7 +63,7 @@ The Python SDK provides three rate limiting controls:
 
 2. **max_activities_per_second** (per-worker): Limits Activities per Worker. Can be combined with global limit for finer control.
 
-3. **max_concurrent_activities** (concurrency): Limits concurrent executions. Use when API has concurrent connection limits (e.g., database pool size).
+3. **max_concurrent_activities** (concurrency): Limits concurrent executions. Use when API has concurrent connection limits (for example, database pool size).
 
 4. **disable_eager_activity_execution** (Client configuration): Set to `True` when starting Workflows to prevent Activities from being eagerly assigned to the Workflow Worker, ensuring they go through the rate-limited Task Queue instead.
 
@@ -153,7 +153,7 @@ When activities are stuck at their maximum retry intervals:
 temporal activity reset --workflow-id <workflow-id> --activity-id <activity-id>
 ```
 
-This is useful when downstream APIs recover from outages and you want to immediately retry activities that are waiting at long backoff intervals (e.g., 10 minutes).
+This is useful when downstream APIs recover from outages and you want to immediately retry activities that are waiting at long backoff intervals (for example, 10 minutes).
 
 ## Target audience
 
@@ -757,7 +757,7 @@ if __name__ == "__main__":
 
 By implementing rate-limited separate Task Queues for external APIs, you have achieved:
 
-1. **Rate limit compliance:** Activities respect API rate limits (e.g., SendGrid 1.5/sec, OpenAI 0.9/sec), eliminating 429 errors and preventing account suspension
+1. **Rate limit compliance:** Activities respect API rate limits (for example, SendGrid 1.5/sec, OpenAI 0.9/sec), eliminating 429 errors and preventing account suspension
 
 2. **Improved reliability:** Workflows complete successfully without rate limit failures. Global rate limiting ensures that adding more Workers doesn't violate API limits.
 

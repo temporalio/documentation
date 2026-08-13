@@ -135,7 +135,7 @@ When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests.
 - Default limit: 10 schedule requests per second (RPS)
 - How to increase: [Contact support](/cloud/support#support-ticket)
 
-To avoid throttling, don't schedule all your Workflow Executions to start at the same time (daily, weekly, monthly, etc.).
+To avoid throttling, don't schedule all your Workflow Executions to start at the same time (such as daily, weekly, or monthly).
 Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
 Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
 This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
@@ -240,8 +240,8 @@ The UI can display up to 100 Custom Roles.
 A single principal (such as a user) can be assigned up to 10 Custom Roles.
 
 A Custom Role can contain up 20 permissions. Each permission is a pair of
-- A list of resource IDs of a single type (e.g., specific Namespace IDs)
-- A list of actions that apply to those resources (e.g., cloud.namespace.get, cloud.namespace.update)
+- A list of resource IDs of a single type (for example, specific Namespace IDs)
+- A list of actions that apply to those resources (for example, cloud.namespace.get, cloud.namespace.update)
 For example, 
 - 1 permission: Namespaces [ns-prod, ns-staging] with actions [cloud.namespace.get, cloud.namespace.update] 
 - 2 permissions: Namespace [ns-prod] with action [cloud.namespace.get]; Namespace [ns-staging] with action [cloud.namespace.update] defined separately.

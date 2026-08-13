@@ -95,7 +95,7 @@ Workflows can either:
 * `await` the result immediately (blocking progress), or
 * store the `Future` and await it later to allow concurrent execution.
 
-In Rust, calling `.await` on the Activity invocation returns the result. If you need more control (e.g., parallel execution), you can create multiple Activity futures and await them selectively.
+In Rust, calling `.await` on the Activity invocation returns the result. If you need more control (for example, parallel execution), you can create multiple Activity futures and await them selectively.
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 

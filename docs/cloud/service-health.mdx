@@ -175,7 +175,7 @@ that creates demo charts for these limits and count metrics respectively.
 
 The limit metrics, throttle metrics, and count metrics are already directly comparable as per second rates. Keep in mind that each `count` metric is represented as a per second rate averaged
 over each minute. For example, to get the total count of Actions, you must multiply this metric by 60.
-When setting alerts against limits, consider if your workload is spiky or sensitive to throttling (e.g. does latency matter?). If your workload is sensitive, consider alerting
+When setting alerts against limits, consider if your workload is spiky or sensitive to throttling (for example, does latency matter?). If your workload is sensitive, consider alerting
 for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_cloud_v1_action_limit`. If your workload is not sensitive, consider an alert at 90% of this threshold
 or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
 Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.
@@ -225,9 +225,9 @@ To understand a spiky workload, always read all three metrics in the row as a se
 
 | Metric | What it tells you |
 | ------ | ----------------- |
-| Count (e.g. `temporal_cloud_v1_total_action_count`) | Average demand over the minute |
-| Limit (e.g. `temporal_cloud_v1_action_limit`) | Your provisioned ceiling |
-| Throttle (e.g. `temporal_cloud_v1_total_action_throttled_count`) | Whether the limit was actually hit |
+| Count (for example, `temporal_cloud_v1_total_action_count`) | Average demand over the minute |
+| Limit (for example, `temporal_cloud_v1_action_limit`) | Your provisioned ceiling |
+| Throttle (for example, `temporal_cloud_v1_total_action_throttled_count`) | Whether the limit was actually hit |
 
 A non-zero throttle value means throttling occurred during that window, even when the count sits comfortably below the limit. Most often this reflects a sub-minute burst in your own workload. If you cannot find a matching burst in your SDK metrics, the cause may be a shared limit or another Cloud-side condition rather than your namespace. In that case, contact [Temporal Support](/cloud/support#support-ticket). For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
 

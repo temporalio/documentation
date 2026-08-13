@@ -155,7 +155,7 @@ This section details the recommended pattern for most multi-tenant applications.
 When a [Worker](/workers) starts up:
 
 1. **Load tenant configuration** - Retrieve the list of tenants this Worker should handle (from config file, API, or database)
-2. **Create [Task Queues](/task-queue)** - For each tenant, generate a unique Task Queue name (e.g., `customer-{tenant-id}`)
+2. **Create [Task Queues](/task-queue)** - For each tenant, generate a unique Task Queue name (for example, `customer-{tenant-id}`)
 3. **Register [Workflows](/workflows) and [Activities](/activities)** - Register your Workflow and Activity implementations once, passing the tenant-specific Task Queue name
 4. **Poll multiple Task Queues** - A single Worker process polls all assigned tenant Task Queues
 
