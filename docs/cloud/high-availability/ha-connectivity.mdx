@@ -274,7 +274,7 @@ Plan for these three things:
 1. **DNS overrides for both clouds.** Your private DNS for `region.tmprl.cloud` needs entries for both the AWS region (CNAME → AWS VPCE) and the GCP region (A → PSC IP). This typically means a Route 53 private hosted zone in your AWS Worker VPCs *and* a Cloud DNS private zone in your GCP Worker network — both for the same `region.tmprl.cloud` parent — each with the records relevant to the cloud the Workers run in.
 2. **Worker reachability across clouds.** Your AWS-resident Workers must be able to reach the GCP PSC endpoint when GCP is active, and vice versa. Options include:
    - Run Workers in both clouds (preferred — simplest, lowest latency, matches the failover model).
-   - Establish cross-cloud connectivity (e.g., AWS Transit Gateway + GCP Cloud Interconnect, or a third-party transit) so Workers in one cloud can resolve and reach the other cloud's private endpoint.
+   - Establish cross-cloud connectivity (for example, AWS Transit Gateway + GCP Cloud Interconnect, or a third-party transit) so Workers in one cloud can resolve and reach the other cloud's private endpoint.
 3. **Connectivity Rules in both regions.** GCP PSC requires a Connectivity Rule. AWS PrivateLink does not, but if you want to enforce private-only access, add one for the AWS side as well so the Namespace is private-only in both regions.
 
 :::caution Alpine/musl + GCP PSC: missing AAAA records can break Workers
@@ -284,7 +284,7 @@ GCP Private Service Connect endpoints return only A (IPv4) records — there is 
 If you run Workers on Alpine and use multi-cloud HA, either:
 
 - Switch the Worker base image to a glibc-based distribution (Debian, Ubuntu, distroless), or
-- Configure your application/runtime to disable AAAA lookups (e.g., set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
+- Configure your application/runtime to disable AAAA lookups (for example, set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
 
 :::
 

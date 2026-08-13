@@ -44,7 +44,7 @@ This comes from bootsnap via zeitwerk because it is lazily loading a class/modul
 It is not good to lazily load code during a Workflow run because it can be side effecting.
 Workflows and the classes they reference should be eagerly loaded.
 
-To resolve this, either always eagerly load (e.g. `config.eager_load = true`) or explicitly require what is used by a workflow at the top of the file.
+To resolve this, either always eagerly load (for example, `config.eager_load = true`) or explicitly require what is used by a workflow at the top of the file.
 
 Note, this only affects non-production environments.
 
