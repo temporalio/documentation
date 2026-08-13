@@ -308,7 +308,7 @@ public class Impl implements TransactionWorkflow {
 ## Common pitfalls
 
 - **Putting slow operations in Phase 1.** If any Phase 1 Local Activity takes too long, the Workflow Task times out and retries. The client also waits longer for its early response, defeating the purpose of the pattern.
-- **Non-idempotent Phase 1.** A retried Workflow Task re-executes all Local Activities in that task. Ensure Phase 1 operations (e.g., creating a record in an external system) are safe to re-run.
+- **Non-idempotent Phase 1.** A retried Workflow Task re-executes all Local Activities in that task. Ensure Phase 1 operations (for example, creating a record in an external system) are safe to re-run.
 - **Ignoring Phase 1 errors in Phase 2.** Always check Phase 1 error state before proceeding to Phase 2. If Phase 1 failed, Phase 2 should run a compensating Activity (cancel, rollback) rather than complete.
 - **Mixing Local and regular Activity stubs incorrectly.** In Java, `Workflow.newLocalActivityStub` and `Workflow.newActivityStub` return distinct objects. Make sure Phase 1 uses the local stub and Phase 2 uses the regular stub.
 

@@ -25,7 +25,7 @@ repository.
 
 Use [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md) to choose the section.
 
-## Style Guide
+## Style guide
 
 Follow [STYLE.md](./readme/STYLE.md) and Vale rules in `vale/styles/`. The most common mistakes:
 
@@ -104,8 +104,6 @@ id: page-id
 title: Page title
 sidebar_label: Short label
 description: One sentence for SEO and previews.
-keywords:
-  - keyword
 tags:
   - Concepts
 ---
@@ -113,8 +111,8 @@ tags:
 
 - Write `description` as a single clear sentence.
 - Do not change `id` or `slug` without a redirect plan.
-- Match `tags` and `keywords` to sibling pages in the same section.
-- Use existing concepts and keywords. Don't add new ones unless it's a new feature.
+- Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
+- Do not add a `keywords` field. It isn't used by the site.
 
 ## MDX and components
 
@@ -141,6 +139,12 @@ Adding or moving pages usually requires:
 - Prefer code extracted from CI-enabled sample repos via [Snipsync](https://github.com/temporalio/snipsync).
 - Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper,
   then run `yarn snipsync`.
+
+## Pull requests
+
+- If the change is blocked on something outside the docs team's control (for example, an upstream PR in another repo, an
+  unreleased SDK feature, or a decision pending from another team), open the PR as a **draft**, not a regular PR. Only
+  mark it ready for review once the blocker clears and the docs team can actually merge it.
 
 ## Commands
 
@@ -180,7 +184,7 @@ vale docs/                            # Full Vale style set
 ```
 
 Before finishing any docs change, run the CI-scoped command (`vale --config .vale-ci.ini docs/`) against the files you
-touched and resolve every result it reports, unless it's a genuine false positive (e.g. a heading that's a literal
+touched and resolve every result it reports, unless it's a genuine false positive (for example, a heading that's a literal
 command/metric name, or a bare URL that must stay absolute for autolinking). `.vale-ci.ini` enables only the small set
 of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) that gate PRs in
 `.github/workflows/vale-ci.yml` — treat that as the bar to hit.

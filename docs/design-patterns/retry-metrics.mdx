@@ -32,7 +32,7 @@ Common gaps:
 ## Solution
 
 Read the current attempt number from the Activity execution context and emit a counter metric when it exceeds a threshold.
-The metric is sent through the Temporal SDK's built-in metrics scope — the same pipeline used for SDK-internal metrics — so it flows to whatever metrics backend your Workers are already configured to use (Prometheus, StatsD, etc.) without additional setup.
+The metric is sent through the Temporal SDK's built-in metrics scope — the same pipeline used for SDK-internal metrics — so it flows to whatever metrics backend your Workers are already configured to use, such as Prometheus or StatsD, without additional setup.
 
 ```mermaid
 sequenceDiagram
@@ -357,7 +357,7 @@ if (ctx.info.attempt > ALERT_THRESHOLD) {
 - **Choose a threshold above normal transient noise.** If your downstream system occasionally has 1–2 retry attempts under normal conditions, set the threshold at 5 or 10 so the metric only fires for genuinely sustained failures.
 - **Emit on every attempt above the threshold, not only once.** Incrementing the counter on each high-attempt invocation allows alerting systems to detect both the onset and the duration of a problem by watching the counter rate.
 - **Use the SDK metrics scope, not a third-party library.** The SDK scope integrates with your Worker's existing metrics pipeline and adds default tags such as namespace and task queue automatically.
-- **Set up rate-based alerts, not count-based.** A count alert requires resetting or remembering the baseline. A rate alert (e.g., "more than 3 increments per minute") fires when the problem is active and clears when it resolves.
+- **Set up rate-based alerts, not count-based.** A count alert requires resetting or remembering the baseline. A rate alert (for example, "more than 3 increments per minute") fires when the problem is active and clears when it resolves.
 - **Combine with Fast/Slow Retries.** Emit the metric in the slow-phase Activity of a [Fast/Slow Retries](/design-patterns/fast-slow-retries) pattern to alert when the Workflow has been in the slow phase long enough to be a concern.
 
 ## Common pitfalls

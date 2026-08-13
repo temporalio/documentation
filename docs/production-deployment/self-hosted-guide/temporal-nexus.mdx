@@ -64,7 +64,7 @@ To enable Nexus in your deployment:
          # For production, restrict allowed hosts and set AllowInsecure to false
          # whenever HTTPS/TLS is supported. Allowing HTTP increases MITM and data exposure risk.
          - value:
-             - Pattern: "*" # Update to restrict allowed callers, e.g. "*.example.com"
+             - Pattern: "*" # Update to restrict allowed callers, for example "*.example.com"
                AllowInsecure: true # In production, set to false and ensure traffic is HTTPS/TLS encrypted
        ```
 

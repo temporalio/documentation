@@ -49,14 +49,14 @@ Use Worker-specific Task Queues to ensure all Activities in a Workflow execute o
 
 ### Task Queue fundamentals
 
-Task Queues in Temporal are dynamically created when first referenced. With this pattern a unique Task Queue is created per Worker instance (e.g., `file-processing-abc123`) that only that Worker polls.
+Task Queues in Temporal are dynamically created when first referenced. With this pattern a unique Task Queue is created per Worker instance (for example, `file-processing-abc123`) that only that Worker polls.
 
 **Recommended practice:** Generate unique queue names using UUIDs (or the hostname if running in a containerized environment) to avoid collisions across Worker instances.
 
 ### Worker-specific vs Worker sessions
 
 - **Go SDK** has a built-in [Worker Sessions API](/develop/go/workers/sessions) that handles Worker-specific routing automatically
-- **Other SDKs** (Python, TypeScript, etc.) must implement the pattern manually using unique Task Queue names
+- **Other SDKs** (such as Python and TypeScript) must implement the pattern manually using unique Task Queue names
 
 This pattern provides the same guarantees as Go's Sessions API for non-Go SDKs.
 
@@ -67,9 +67,9 @@ If a Worker crashes while processing Activities on its unique queue:
 - Retries and pending activities will wait in the unique queue until `schedule_to_start_timeout` expires
 - To recover, the Workflow catches the timeout error and can route to a different Worker (on a new unique task queue)
 
-**Recommended practice:** Set a short `heartbeat_timeout` (e.g., 30s) to detect crashes quickly, and a short `schedule_to_start_timeout` (e.g., 1m) to stop waiting on dead queues.
+**Recommended practice:** Set a short `heartbeat_timeout` (for example, 30s) to detect crashes quickly, and a short `schedule_to_start_timeout` (for example, 1m) to stop waiting on dead queues.
 
-**Recommended practice:** Set appropriate `schedule_to_start_timeout` values to detect Worker failures quickly (e.g., 5 minutes for file processing).
+**Recommended practice:** Set appropriate `schedule_to_start_timeout` values to detect Worker failures quickly (for example, 5 minutes for file processing).
 
 > Activity Executions in most Workflows are constrained by the Start-to-Close Timeout, which limits the maximum duration of a single attempt. Its value is set to slightly longer than the Activity should take to complete. The pattern described here also relies on the Schedule-to-Start Timeout, which limits the maximum amount of time that a Task may remain enqueued. Although otherwise seldom used, this Timeout is valuable here because it enables the system to detect a Worker crash. That is, when a Worker crashes, it will no longer dequeue Tasks and the Schedule-to-Start Timeout will be reached.
 
@@ -366,7 +366,7 @@ if __name__ == "__main__":
 ```
 
 **Deployment guidance:**
-- Deploy multiple instances of this Worker (e.g., 5-10 instances)
+- Deploy multiple instances of this Worker (for example, 5-10 instances)
 - Each instance generates its own unique queue UUID
 - Workers should have adequate disk space for file processing
 - Consider using local SSD storage for better I/O performance
@@ -377,9 +377,9 @@ When a Worker crashes, Activities scheduled to its unique queue will wait. Imple
 
 **Failure Detection Mechanisms:**
 
-1. **Heartbeat Timeout** (fastest): Activities periodically send heartbeats to signal they're alive. If a Worker crashes mid-execution, no Heartbeats are sent, and the Activity fails within seconds (e.g., 30s) rather than waiting for the full Task duration.
+1. **Heartbeat Timeout** (fastest): Activities periodically send heartbeats to signal they're alive. If a Worker crashes mid-execution, no Heartbeats are sent, and the Activity fails within seconds (for example, 30s) rather than waiting for the full Task duration.
 
-2. **Schedule-to-Start Timeout** (medium): If a Worker crashes before picking up a Task from its queue, this timeout detects it within minutes (e.g., 5 min) instead of waiting for the full Start-To-Close Timeout. This is critical for identifying dead Workers early.
+2. **Schedule-to-Start Timeout** (medium): If a Worker crashes before picking up a Task from its queue, this timeout detects it within minutes (for example, 5 min) instead of waiting for the full Start-To-Close Timeout. This is critical for identifying dead Workers early.
 
 3. **Workflow-Level Retries** (recovery): The `for` loop catches all exceptions and retries the entire Workflow sequence on a different Worker. This provides recovery after detecting a Worker failure—the Workflow doesn't retry on the failed Worker's queue, but instead requests a new unique queue from a healthy Worker.
 
@@ -472,7 +472,7 @@ By implementing Worker-specific Task Queues for file processing, you have achiev
 
 1. **Data locality:** Files downloaded in one Activity are immediately available to subsequent Activities on the same Worker, eliminating multi-GB network transfers
 
-2. **Performance improvement:** Reduced execution time by 80%+ for Workflows processing large files (e.g., 10GB video file no longer transferred between Workers)
+2. **Performance improvement:** Reduced execution time by 80%+ for Workflows processing large files (for example, 10GB video file no longer transferred between Workers)
 
 3. **Resource efficiency:** Load expensive resources (ML models, database connections) once per Workflow instead of per Activity, reducing memory usage and initialization overhead
 

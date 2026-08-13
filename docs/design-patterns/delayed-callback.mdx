@@ -23,7 +23,7 @@ Temporal lets you build durable, observable webhook-based integrations without a
 ## Problem
 
 Waiting for another system without Durable Execution is hard. You must implement your own:
-- durable timers (e.g. with a cron per timer)
+- durable timers (for example, with a cron per timer)
 - retry queues
 - state stores
 - reconciliation jobs
@@ -715,7 +715,7 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 **Trade-offs**
 
 - Your inbound webhook handler requires a Temporal client; you need the client library in the service receiving webhooks.
-- Task tokens for async completion must be persisted outside Temporal (e.g., in a database); if that store is unavailable the callback cannot complete.
+- Task tokens for async completion must be persisted outside Temporal (for example, in a database); if that store is unavailable the callback cannot complete.
 - Workflow IDs must be deterministic and stable across webhook deliveries (order ID, user ID, etc.) so that Signal-with-Start routes to the correct instance.
 
 ## Comparison with alternatives
