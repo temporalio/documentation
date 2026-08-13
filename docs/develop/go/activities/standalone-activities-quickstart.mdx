@@ -3,13 +3,6 @@ id: standalone-activities-quickstart
 title: Standalone Activities Go Quickstart
 sidebar_label: Quickstart
 description: Execute a Standalone Activity with the Temporal Go SDK without writing a Workflow.
-keywords:
-  - standalone activity
-  - activity execution
-  - execute activity
-  - go sdk
-  - quickstart
-  - getting started
 tags:
   - Activities
   - Temporal Client
@@ -53,7 +46,7 @@ This documentation uses source code from the
 </>
 }>
 
-## Get Started with Standalone Activities {/* #get-started */}
+## Get started with Standalone Activities {/* #get-started */}
 
 Prerequisites:
 
@@ -176,23 +169,10 @@ Leave this terminal running - the Worker needs to stay up to process activities.
 
 </SetupStep>
 
-<SetupStep>
-
-## Execute a Standalone Activity {/* #execute-activity */}
-
-Use [`client.ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to start a Standalone Activity
-Execution. This is called from application code (for example, a starter program), not from inside a Workflow Definition.
-
-`ExecuteActivity` returns an [`ActivityHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#ActivityHandle) that you
-can use to get the result, describe, cancel, or terminate the Activity.
-
-The following starter program demonstrates how to execute a Standalone Activity, get its result, list activities, and
-count activities:
-
-[standalone-activity/helloworld/starter/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/starter/main.go)
-
-```go
-package main
+<SetupStep code={
+<>
+<CodeSnippet language="go" title="starter/main.go">
+{`package main
 
 import (
 	"context"
@@ -254,8 +234,34 @@ func main() {
 	}
 
 	log.Println("Total activities:", resp1.Count)
-}
-```
+}`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`go run standalone-activity/helloworld/starter/main.go`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal activity execute \\
+  --type Activity \\
+  --activity-id standalone_activity_helloworld_ActivityID \\
+  --task-queue standalone-activity-helloworld \\
+  --schedule-to-close-timeout 10s \\
+  --input '"Temporal"'`}
+</CodeSnippet>
+</>
+}>
+
+## Execute a Standalone Activity {/* #execute-activity */}
+
+Use [`client.ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to start a Standalone Activity
+Execution. This is called from application code (for example, a starter program), not from inside a Workflow Definition.
+
+`ExecuteActivity` returns an [`ActivityHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#ActivityHandle) that you
+can use to get the result, describe, cancel, or terminate the Activity.
+
+The following starter program demonstrates how to execute a Standalone Activity, get its result, list activities, and
+count activities:
+
+Create [standalone-activity/helloworld/starter/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/starter/main.go).
 
 You can pass the Activity as either a function reference or a string Activity type name:
 
@@ -274,22 +280,9 @@ To run the starter:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-go` directory, and run:
+3. Open a new terminal, navigate to the `samples-go` directory, and run `go run standalone-activity/helloworld/starter/main.go`.
 
-```
-go run standalone-activity/helloworld/starter/main.go
-```
-
-Or use the Temporal CLI to execute a Standalone Activity:
-
-```bash
-temporal activity execute \
-  --type Activity \
-  --activity-id standalone_activity_helloworld_ActivityID \
-  --task-queue standalone-activity-helloworld \
-  --schedule-to-close-timeout 10s \
-  --input '"Temporal"'
-```
+Or use the Temporal CLI to execute a Standalone Activity.
 
 </SetupStep>
 

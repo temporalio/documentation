@@ -197,8 +197,9 @@ temporal activity count
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
-The code samples on this page use [`loadClientConnectConfig`](https://typescript.temporal.io/api/namespaces/envconfig#loadclientconnectconfig),
-so the same code works against Temporal Cloud - just configure the connection via environment variables or a TOML
+The Worker and Client code in the [Standalone Activities Quickstart](/develop/typescript/activities/standalone-activities-quickstart)
+use [`loadClientConnectConfig`](https://typescript.temporal.io/api/namespaces/envconfig#loadclientconnectconfig),
+so the same code works against Temporal Cloud - configure the connection via environment variables or a TOML
 profile. No code changes are needed.
 
 For a step-by-step guide on connecting to Temporal Cloud, including Namespace creation, certificate
@@ -226,4 +227,4 @@ export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter code as shown in the earlier sections.
+Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/typescript/activities/standalone-activities-quickstart).

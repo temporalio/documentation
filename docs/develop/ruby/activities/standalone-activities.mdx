@@ -196,8 +196,9 @@ temporal activity count
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
-The code samples on this page use [`Temporalio::EnvConfig::ClientConfig.load_client_connect_options`](https://ruby.temporal.io/Temporalio/EnvConfig/ClientConfig.html#load_client_connect_options-class_method),
-so the same code works against Temporal Cloud — just configure the connection via environment
+The Worker and Client code in the [Standalone Activities Quickstart](/develop/ruby/activities/standalone-activities-quickstart)
+use [`Temporalio::EnvConfig::ClientConfig.load_client_connect_options`](https://ruby.temporal.io/Temporalio/EnvConfig/ClientConfig.html#load_client_connect_options-class_method),
+so the same code works against Temporal Cloud — configure the connection via environment
 variables or a TOML profile. No code changes are needed.
 
 For a step-by-step guide on connecting to Temporal Cloud, including Namespace creation, certificate
@@ -225,4 +226,4 @@ export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter code as shown in the earlier sections.
+Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/ruby/activities/standalone-activities-quickstart).

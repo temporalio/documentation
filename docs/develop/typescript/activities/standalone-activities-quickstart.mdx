@@ -3,13 +3,6 @@ id: standalone-activities-quickstart
 title: Standalone Activities TypeScript Quickstart
 sidebar_label: Quickstart
 description: Execute a Standalone Activity with the Temporal TypeScript SDK without writing a Workflow.
-keywords:
-  - standalone activity
-  - activity execution
-  - execute activity
-  - typescript sdk
-  - quickstart
-  - getting started
 tags:
   - Activities
   - Temporal Client
@@ -53,7 +46,7 @@ This documentation uses source code from the [standalone-activity](https://githu
 </>
 }>
 
-## Get Started with Standalone Activities {/* #get-started */}
+## Get started with Standalone Activities {/* #get-started */}
 
 Prerequisites:
 
@@ -109,15 +102,13 @@ export async function greet(name: string): Promise<string> {
 </>
 }>
 
-## Write an Activity Function {/* #write-activity */}
+## Write an Activity function {/* #write-activity */}
 
 The way you write a Standalone Activity is identical to how you write an Activity to be orchestrated
 by a Workflow. In fact, an Activity can be executed both as a Standalone Activity and as a Workflow
 Activity.
 
-<!--SNIPSTART typescript-standalone-activity-definition-->
 [standalone-activity/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/activities.ts)
-<!--SNIPEND-->
 
 </SetupStep>
 
@@ -163,9 +154,7 @@ whether the Activity will be invoked from a Workflow or as a Standalone Activity
 Worker](/develop/typescript/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup and
 configuration options.
 
-<!--SNIPSTART typescript-standalone-activity-worker-->
 [standalone-activity/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/worker.ts)
-<!--SNIPEND-->
 
 Open a new terminal, navigate to the `samples-typescript/standalone-activity` directory, and run the Worker.
 Leave this terminal running - the Worker needs to stay up to process activities.
