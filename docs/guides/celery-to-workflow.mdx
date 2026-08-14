@@ -304,7 +304,7 @@ You will see output confirming the Workflow ran to completion:
 ```
 [secondary_label Output]
 Started workflow onboarding-3f9a...
-Result: sent to user@example.com
+Result: sent to user42@example.com
 ```
 
 Note how the Celery patterns translate. A fire-and-forget `.delay()` corresponds to `start_workflow`, which returns a handle immediately. Retrieving the return value with `AsyncResult.get()` corresponds to `handle.result()`. The `id` you provide is a business identifier you choose (an order number, a user ID); Temporal uses it to guarantee that the same Workflow is never started twice, which is a built-in form of deduplication.
