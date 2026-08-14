@@ -5,14 +5,6 @@ sidebar_label: Nexus Client Code Generator
 description: The Nexus Client Code Generator turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
 toc_max_heading_level: 4
 slug: /nexus/client-code-generator
-keywords:
-  - nexus client code generator
-  - nexus code generation
-  - nexus service definition
-  - service contract
-  - json schema
-  - schema validation
-  - generated models
 tags:
   - Nexus
   - Concepts
@@ -22,13 +14,13 @@ A [Nexus Service](/nexus/services) is a contract meant to be shared across team 
 Those teams often work in different languages, so the same request and response types get hand-written once per SDK.
 Hand-written copies drift: a field is required on one side and optional on the other, a bound is enforced by the caller but not the handler.
 
-The **Nexus Client Code Generator** removes those copies.
+The **[Nexus Client Code Generator](https://github.com/temporalio/nexgen)** removes those copies.
 You describe your types and [Nexus Operations](/nexus/operations) once in a definition file, and the generator emits the equivalent library code for Go, Java, Python, and TypeScript.
-The generator is a command-line tool named `nexgen`, distributed from the [temporalio/nex-gen](https://github.com/temporalio/nex-gen) repository.
+The generator is a command-line tool named `nexgen`, distributed from the [temporalio/nexgen](https://github.com/temporalio/nexgen) repository.
 
 :::caution
 
-`nexgen` is pre-release software, currently at version 0.2.1.
+`nexgen` is pre-release software.
 The supported schema subset, command-line options, and emitted code may change incompatibly before a stable release.
 It is not yet published to any package registry, so you build it from source as described in [Install the generator](#install-the-generator).
 
@@ -39,11 +31,10 @@ It is not yet published to any package registry, so you build it from source as 
 For every type in your definition file, the generator emits three things per language.
 
 - **A typed model.** An idiomatic struct, class, interface, or dataclass, with doc comments carried over from the schema.
-- **A shared runtime validator.** One validator per type, used when a value is parsed off the wire and again when it is serialized onto the wire, so a payload cannot enter or leave your service in a shape the contract forbids.
+- **A runtime validator.** One validator per type, applied when a value is parsed off the wire and again when it is serialized onto it. See [Validation guarantees](#validation-guarantees) for more.
 - **A [Nexus Service Contract](/glossary#nexus-service-contract) definition.** The generated Service and Operation declarations you register on a Worker and call from a caller Workflow.
 
-Constraint failures do not surface one at a time.
-They aggregate into a single native error listing every violation, each naming the offending field and the bound it broke.
+Constraint failures are aggregated into a single native error listing every violation, each naming the offending field and the bound it broke.
 A handler maps that error to a `BAD_REQUEST` [Nexus error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong with it in one response.
 
 The supported schema subset is deliberately strict.
@@ -65,7 +56,7 @@ Use this when you only need data models shared across languages, with no Service
 **Nexus document.** Add a root `nexusrpc: "1.0.0"` marker to enable a `services` section.
 The root becomes an envelope: Services and their Operations sit at the top level, and your types live under `$defs`.
 
-The examples on this page use `samples/schemas/chat.nexusrpc.yaml` from the repository, abbreviated here:
+The examples on this page use [`samples/schemas/chat.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/chat.nexusrpc.yaml) from the repository, abbreviated here:
 
 ```yaml
 nexusrpc: '1.0.0'
@@ -106,26 +97,74 @@ $defs:
     required: [messageId]
 ```
 
-`fqn` is the wire name of the Service, the name callers reference when executing an Operation.
+### How names are derived
+
+You write two kinds of name in the schema: one for the Service, and one for each Operation. In the sample above they are `ChatService` and `sendMessage`:
+
+```yaml
+services:
+  ChatService: # the Service name
+    operations:
+      sendMessage: # the Operation name
+```
+
+Those are the only names you write. From each one the generator produces two more: a wire name and a name in your code. You declare neither of them.
+
+Give each name the casing that matches what it becomes:
+
+- A **Service** name is PascalCase: `ChatService`. A Service becomes a type in the generated code, and types are PascalCase.
+- An **Operation** name is camelCase: `sendMessage`. An Operation becomes a method on that type, and the generator cases it like any other member.
+
+The first letter is the part the generator enforces: a Service has to start uppercase and an Operation lowercase. Both must begin with a letter and contain only letters and digits.
+
+```
+service name `chatService` must match `^[A-Z][a-zA-Z\d]+$` (start uppercase, then
+letters/digits); set the wire name via `fqn` if it must differ
+```
+
+:::note Overriding the wire name
+
+The `fqn` in that error — a fully qualified name — is optional, and you can skip it to start.
+
+It lets a Service or Operation carry a wire name of your choosing rather than the one the generator derives from the name you wrote. Because it never becomes a code identifier, it accepts characters a name cannot: that is how a Service gets a wire name of `example.chat.v1.ChatService`, or an Operation one of `poll-messages`. Wire names are covered just below.
+
+Use `fqn` when you need to match a contract that is already published, or when you want a versioned, namespaced wire name. Otherwise leave it out.
+
+:::
+
+**The wire name** is the string the caller and the handler exchange, and what appears in Event History and the Temporal UI. Neither side types it — both take it from the generated code.
+
+Unless you override it, the wire name is whatever is in the definition file converted to PascalCase, so in this case the service would be **`ChatService`** and **`SendMessage`**.
+
+In the sample above the Service does override it using `fqn`, so the Service wire name becomes **`example.chat.v1.ChatService`**.
+
+**The name in your code** is what you call. The generator recases the name you wrote to match the conventions of the language it is generating for. With no override in play, the two derived names line up like this:
+
+| You write | Wire name | Java | Go | Python | TypeScript |
+| --- | --- | --- | --- | --- | --- |
+| `ChatService` | `ChatService` | `ChatService` | `ChatService` | `ChatService` | `chatService` |
+| `sendMessage` | `SendMessage` | `sendMessage` | `SendMessage` | `send_message` | `sendMessage` |
+
+Operations become camelCase methods in Java and TypeScript, snake_case in Python, and PascalCase in Go.
 
 An Operation's `input` and `output` are each optional.
 The `ping` Operation above declares neither, which generates an Operation that takes and returns nothing.
 When present, each must be an object type, so that a field can be added later without breaking the wire format.
 
-The repository holds four example definitions under [`samples/schemas/`](https://github.com/temporalio/nex-gen/tree/main/samples/schemas):
-[`chat.nexusrpc.yaml`](https://github.com/temporalio/nex-gen/blob/main/samples/schemas/chat.nexusrpc.yaml),
-the feature-diverse [`showcase.nexusrpc.yaml`](https://github.com/temporalio/nex-gen/blob/main/samples/schemas/showcase.nexusrpc.yaml),
-the pure-schema [`temporal.yaml`](https://github.com/temporalio/nex-gen/blob/main/samples/schemas/temporal.yaml),
-and a multi-file closure under [`kb/`](https://github.com/temporalio/nex-gen/tree/main/samples/schemas/kb) showing how types split across files resolve through `$ref`.
-The `kb/` closure starts at [`kb.nexusrpc.yaml`](https://github.com/temporalio/nex-gen/blob/main/samples/schemas/kb/kb.nexusrpc.yaml) and pulls in types from its [`content/`](https://github.com/temporalio/nex-gen/tree/main/samples/schemas/kb/content) and [`tree/`](https://github.com/temporalio/nex-gen/tree/main/samples/schemas/kb/tree) subdirectories.
+The repository holds four example definitions under [`samples/schemas/`](https://github.com/temporalio/nexgen/tree/main/samples/schemas):
+[`chat.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/chat.nexusrpc.yaml),
+the feature-diverse [`showcase.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/showcase.nexusrpc.yaml),
+the pure-schema [`temporal.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/temporal.yaml),
+and a multi-file closure under [`kb/`](https://github.com/temporalio/nexgen/tree/main/samples/schemas/kb) showing how types split across files resolve through `$ref`.
+The `kb/` closure starts at [`kb.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/kb/kb.nexusrpc.yaml) and pulls in types from its [`content/`](https://github.com/temporalio/nexgen/tree/main/samples/schemas/kb/content) and [`tree/`](https://github.com/temporalio/nexgen/tree/main/samples/schemas/kb/tree) subdirectories.
 
 ## Install the generator
 
-Build the `nexgen` binary from source with a Rust toolchain:
+Build the `nexgen` binary from source with Cargo, the Rust build tool:
 
 ```bash
-git clone https://github.com/temporalio/nex-gen.git
-cd nex-gen
+git clone https://github.com/temporalio/nexgen.git
+cd nexgen
 cargo build --release
 ```
 
@@ -161,7 +200,7 @@ The package name is the directory name, so the example above generates `package 
 
 ### Java
 
-Java requires `--package-name`, and its last dot-separated segment must match the `--output` directory name:
+Java requires `--package-name`. Point `--output` at the **full package path** beneath your source root, not just a directory named after the last segment:
 
 ```bash
 nexgen java samples/schemas/chat.nexusrpc.yaml \
@@ -169,7 +208,7 @@ nexgen java samples/schemas/chat.nexusrpc.yaml \
   --package-name com.example.chat
 ```
 
-If the two disagree, generation stops and tells you how to reconcile them:
+The generator checks only that the package name's last dot-separated segment matches the output directory's name. If they disagree, generation stops and tells you how to reconcile them:
 
 ```
 `--package-name com.example.wrong` must end with the output directory name `chat`,
@@ -177,14 +216,44 @@ but its last segment is `wrong`; point `--output` at a directory named `wrong` o
 change the package's last segment to `chat`
 ```
 
+:::caution Passing that check is not enough to compile
+
+The check compares one segment; Java requires the file's location to match its whole package declaration. `--output ./src/chat --package-name com.example.chat` passes, because `chat` matches `chat`, and still produces files that declare `package com.example.chat` while sitting at `src/chat/`.
+
+Nothing fails at generation time, and nothing necessarily fails when you compile the generated files on their own. It breaks when something imports them:
+
+```
+Main.java:1: error: package com.example.chat does not exist
+import com.example.chat.ChatService;
+```
+
+Always give `--output` the entire package path beneath your source root — `./src/main/java/com/example/chat` for `com.example.chat`. If files land in the wrong place, delete them and generate again with a corrected `--output`, rather than editing the `package` line to match.
+
+:::
+
 ### Python
 
 ```bash
 nexgen python samples/schemas/chat.nexusrpc.yaml --output ./chat
 ```
 
-This writes an importable package: `models.py`, `services.py`, and an `__init__.py` that re-exports both.
-Generated models are [Pydantic](https://docs.pydantic.dev/) models, so your Worker and Client must use the Pydantic Data Converter described in [Use Pydantic models](/develop/python/data-handling/data-conversion#use-pydantic-models).
+This writes an importable package: `models.py`, `services.py`, and an `__init__.py` that re-exports both. Place it where the code that imports it can reach it — the output directory *is* the package.
+
+That also means the directory name becomes an importable module name, so pick one that does not collide with the standard library. `./chat` is safe, but a Service whose subject happens to share a name with a stdlib module is not: `./email`, `./queue`, and `./calendar` each shadow one for anything on that path. Qualify those — `./calendar_v1`.
+
+:::note Python output needs Pydantic
+
+Generated models are [Pydantic](https://docs.pydantic.dev/) models. Installing the Python SDK on its own does not bring Pydantic with it, so importing the generated package fails with `ModuleNotFoundError: No module named 'pydantic'` until you add it. The SDK ships an extra for this:
+
+```bash
+pip install 'temporalio[pydantic]'
+```
+
+Your Worker and Client then need the Pydantic Data Converter — see [Use Pydantic models](/develop/python/data-handling/data-conversion#use-pydantic-models) for the setup.
+
+That converter is not optional if your schema uses any temporal `format`. `datetime.date`, `datetime.time`, and `datetime.datetime` can only be converted by it, and the generator maps `date`, `time`, and `date-time` onto those types.
+
+:::
 
 ### TypeScript
 
@@ -202,13 +271,15 @@ nexgen ts samples/schemas/temporal.yaml --output ./chat --date-time-types tempor
   It has no runtime dependency and round-trips losslessly, but you parse and compare the strings yourself.
 - `date` maps `date-time` fields to a JavaScript `Date`.
   This is lossy: a `Date` is a UTC instant, so the original offset is folded away and precision is capped at milliseconds.
-- `temporal` maps to the TC39 Temporal API, preserving offset and sub-second precision, and requires the `Temporal` global or a polyfill.
+- `temporal` maps to the [TC39 Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) — a JavaScript standard for dates and times, unrelated to Temporal the platform. It preserves offset and sub-second precision, and requires the `Temporal` global.
 
 ## Use the generated code
 
-The generated Service definition is a normal Nexus Service definition.
-You register it on a Worker and call it from a caller Workflow exactly as described in your SDK's Nexus guide.
-What differs per language is how the validator gets invoked.
+**There is nothing new to learn here.** What you have is a Service definition and a set of types, and nothing about them depends on having been generated — write the same Service by hand and your Worker and caller code is identical. You register it on a Worker and call it from a caller Workflow exactly as described in your SDK's Nexus guide.
+
+The one addition is validation, and so a call can fail with a contract violation that hand-written types would not have caught. The per-language examples below exist for completeness and to show how to log those violations. Apart from that single `catch`, they are the code you would already be writing.
+
+Only the wiring of that validation differs between languages.
 
 | SDK        | How validation reaches the wire                             | Extra step |
 | ---------- | ----------------------------------------------------------- | ---------- |
@@ -219,6 +290,14 @@ What differs per language is how the validator gets invoked.
 
 In Go, Java, and Python the validator sits in the serialization hook the Temporal data converter already calls, so validation happens on its own once the models are in use.
 TypeScript requires an explicit call, covered in [Validate payloads in TypeScript](#validate-payloads-in-typescript).
+
+### Validation guarantees
+
+The two directions do not check the same things.
+
+**Parsing a value off the wire** enforces required fields and every value constraint, aggregating all violations into one error. This is the direction that protects a handler from a malformed request.
+
+**Serializing a value onto the wire** enforces value constraints — lengths, bounds, counts, patterns. It does not report a required field you left unset. The field is omitted from the payload and the peer rejects it, so the failure surfaces as a `BAD_REQUEST` from the other side rather than as a local error at the point you built the object.
 
 ### Go
 
@@ -239,7 +318,7 @@ if err := service.Register(sendMessage); err != nil {
 w.RegisterNexusService(service)
 ```
 
-Call it from a caller Workflow, passing the generated Operation reference so the SDK type-checks the request and response:
+Call it from a caller Workflow, passing the generated Operation reference so the SDK type-checks the request and response. A payload that violates the contract fails at the call, so that is where you catch it:
 
 ```go
 client := workflow.NewNexusClient("chat-endpoint", chat.ChatService.ServiceName)
@@ -251,7 +330,21 @@ err := client.ExecuteOperation(
     chat.SendMessageInput{RoomId: "r1", Message: chat.Message{Kind: "text", Body: "hi"}},
     workflow.NexusOperationOptions{},
 ).Get(ctx, &output)
+
+if err != nil {
+    var validationErr *chat.ValidationError
+    if errors.As(err, &validationErr) {
+        for _, v := range validationErr.Violations {
+            logger.Error("contract violation", "path", v.Path, "reason", v.Reason)
+        }
+    } else {
+        logger.Error("Nexus call failed", "error", err)
+    }
+    return err
+}
 ```
+
+`ValidationError` carries every violation as a `Violation` with a `Path` and a `Reason`. Reach it with `errors.As` rather than a type assertion, because the error arrives wrapped by the JSON encoder. It is generated into each package, so a consumer of two generated Services needs one `errors.As` per package.
 
 ### Java
 
@@ -270,7 +363,7 @@ public final class ChatServiceImpl {
 
 Register it on a Worker with `worker.registerNexusServiceImplementation(new ChatServiceImpl())`.
 
-On the caller side, the same interface works directly as a Workflow stub:
+On the caller side, the same interface works directly as a Workflow stub. A payload that violates the contract fails at the call, so that is where you catch it:
 
 ```java
 ChatService chat = Workflow.newNexusServiceStub(
@@ -282,8 +375,21 @@ ChatService chat = Workflow.newNexusServiceStub(
                         .build())
                 .build());
 
-SendMessageOutput output = chat.sendMessage(new SendMessageInput("r1", message));
+try {
+    SendMessageOutput output = chat.sendMessage(new SendMessageInput("r1", message));
+} catch (DataConverterException e) {
+    if (e.getCause() instanceof ValidationException ve) {
+        ve.getViolations().forEach(v -> log.error("{}: {}", v.getPath(), v.getReason()));
+    } else {
+        log.error("Payload conversion failed", e);
+    }
+    throw e;
+}
 ```
+
+`ValidationException` extends Jackson's `JsonMappingException`, so it is checked and always arrives wrapped. Converting the payload is what triggers it, so it reaches you as the cause of a `DataConverterException`, with the violation list intact.
+
+It is generated into each package, so a consumer of two generated Services has two unrelated exception types of the same name and needs a `catch` per package.
 
 ### Python
 
@@ -313,6 +419,8 @@ output = await client.execute_operation(
 
 Generated Python fields are snake_case with the wire name as an alias.
 Construct models with either name, and read them with the snake_case attribute: `SendMessageInput(roomId="r1", ...)` constructs, and `output.message_id` reads.
+
+There is nothing to catch at the call. Pydantic validates when the model is constructed, so an invalid `SendMessageInput` raises `pydantic.ValidationError` at the constructor and never reaches the Nexus client. Handle it where you build the model.
 
 ### TypeScript
 
@@ -366,18 +474,59 @@ ValidationError: 2 validation error(s): roomId: required; message.body: expected
 
 The error also exposes a `violations` array of `{ path, reason }` objects, so a handler can convert it into a `BAD_REQUEST` Nexus error with the full list intact.
 
+## Dates, times, and durations
+
+A `format` of `date-time`, `date`, `time`, or `duration` becomes a real date or duration type in the generated model, not a string you parse yourself. Java maps to `java.time`, Python to `datetime` and `timedelta`, Go to `time.Time` and `time.Duration`, and TypeScript is configurable — see [`--date-time-types`](#typescript).
+
+Every language encodes these identically, using [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) for dates and times and [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) for durations. A caller in one language and a handler in another exchange them with no conversion on either side, and without you writing any format-handling code.
+
+## Regenerate after a contract change
+
+Generated files carry a `DO NOT EDIT` header and are replaced wholesale on the next run. There is no merge step, so anything you add to them is lost.
+
+Two habits make this safe:
+
+- **Commit generated code and regenerate as its own commit.** The diff then shows exactly what the contract change did to each language.
+- **Fix names in the schema, not the output.** When a generated identifier is wrong for your language, use a per-language naming override in the contract so the fix survives regeneration.
+
+If you generate into the wrong directory, delete what landed there and run the generator again with corrected flags. Do not edit the `package` or module declaration to match where the files ended up as the next run will overwrite it.
+
 ## Schema defaults
 
-A `default` in your schema is applied when reading, and is never written back to the wire.
-The field stays optional in the generated model, and each language exposes the default differently.
+A property can declare a `default`, which makes it optional for a caller to supply:
 
-- **Go** and **Java** generate an accessor: `PriorityOrDefault()` and `getPriorityOrDefault()`.
-- **Python** applies the default through Pydantic, so reading the attribute returns it.
-- **TypeScript** exports a module-level constant, such as `DEFAULT_PRIORITY`, that you apply yourself with `value.priority ?? DEFAULT_PRIORITY`.
+```yaml
+sampleValue:
+  type: integer
+  default: 0
+```
+
+A caller that leaves `sampleValue` unset sends a payload without the field, and the receiver reads `0`. The default is never written into the payload, so an omitted field stays omitted rather than being filled in before it is sent.
+
+:::caution Changing a default is a breaking change
+
+The default lives in the generated code, not in the payload. Temporal replays a Workflow by re-reading the payloads already recorded in its [Event History](/encyclopedia/event-history) using whatever code the Worker is running now, so changing a default changes what those recorded payloads mean.
+
+If the value affects which commands the Workflow produces, replaying an in-flight Workflow fails with a [non-determinism error](/troubleshooting/execution-failures#non-determinism-error) — the [deterministic constraints](/workflow-definition#deterministic-constraints) that govern any change to Workflow code apply here too. If it does not affect commands, nothing fails and the behavior changes silently, which is harder to catch.
+
+Treat a default as part of the contract. To change the effective value, add a new field rather than editing an existing default.
+
+:::
+
+Because the field is optional, Go and Java give you two members side by side, so nothing depends on remembering that a default exists:
+
+- The field itself, which is empty when the caller omitted it — `getSampleValue()` returns `null` in Java, and `SampleValue` is a `nil *int64` in Go.
+- An accessor named after it that substitutes the default — `getSampleValueOrDefault()` and `SampleValueOrDefault()`.
+
+Use the first when you need to know whether the caller supplied a value, and the second when you just want a number.
+
+TypeScript has no accessor. `sampleValue` is `undefined` when unset, and the generator exports a `DEFAULT_SAMPLE_VALUE` constant you apply yourself: `sampleValue ?? DEFAULT_SAMPLE_VALUE`.
+
+Python has neither. Pydantic applies defaults when the model is constructed, so `sample_value` always holds a value and an omitted field reads the same as one explicitly set to `0`.
 
 ## Supported schema features
 
-The generator implements a curated subset of JSON Schema 2020-12 chosen so that every accepted construct lowers identically into all four languages.
+The generator implements a curated subset of [JSON Schema 2020-12](https://json-schema.org/draft/2020-12) chosen so that every accepted construct lowers identically into all four languages.
 
 Fully supported: `properties`, `required`, `default`, `minProperties` and `maxProperties`, `dependentRequired`, string and numeric bounds, `items`, `minItems` and `maxItems`, `minContains` and `maxContains`, `allOf`, the recognized nullable pattern `oneOf: [{type: T}, {type: "null"}]`, and the `title`, `description`, and `deprecated` annotations.
 
@@ -385,11 +534,11 @@ Partially supported: `type` (single-string form only), `additionalProperties`, `
 
 Deliberately rejected, because they have no coherent typed lowering across all four languages: `anyOf`, `not`, `if`/`then`/`else`, `dependentSchemas`, `prefixItems`, `unevaluatedProperties`, `unevaluatedItems`, `contentMediaType`, and `contentSchema`.
 
-For the current per-keyword support table, see the [nex-gen README](https://github.com/temporalio/nex-gen#supported-json-schema-features).
+For the current per-keyword support table, see the [nexgen README](https://github.com/temporalio/nexgen#supported-json-schema-features).
 
 :::tip RESOURCES
 
-- [temporalio/nex-gen](https://github.com/temporalio/nex-gen) for the generator, its README, and the example schemas.
+- [temporalio/nexgen](https://github.com/temporalio/nexgen) for the generator, its README, and the example schemas.
 - [Nexus Services](/nexus/services) for the Service contract concept.
 - Nexus feature guides for registering Services and calling Operations:
   [Go](/develop/go/nexus/feature-guide) |
