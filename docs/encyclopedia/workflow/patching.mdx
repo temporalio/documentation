@@ -71,7 +71,7 @@ This behavior occurs because:
 - If that patch ID exists later, you get a non-determinism error
 - If the patch doesn't exist later, you don't get a non-determinism error, and the call returns `false`
 
-If the execution hits a call to `patched()` with an ID that doesn't exist in the history, then not only will it return `false` in that occurence, but it will also return `false` if the execution surpasses the Replay threshold and is running new code.
+If the execution hits a call to `patched()` with an ID that doesn't exist in the history, then not only will it return `false` in that occurrence, but it will also return `false` if the execution surpasses the Replay threshold and is running new code.
 
 #### Implications of the Behaviors
 
