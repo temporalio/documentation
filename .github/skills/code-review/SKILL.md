@@ -20,7 +20,7 @@ enforce in CI unless it hurts clarity or correctness.
 | Where content belongs | [readme/INFORMATION-ARCHITECTURE.md](../../../readme/INFORMATION-ARCHITECTURE.md) |
 | Style | [readme/STYLE.md](../../../readme/STYLE.md) |
 | React components in MDX | [readme/COMPONENTS.md](../../../readme/COMPONENTS.md) |
-| Component → Markdown mapping | [COMPONENT_REGISTRY.md](../../../COMPONENT_REGISTRY.md) |
+| Component → Markdown mapping | [readme/COMPONENT_REGISTRY.md](../../../readme/COMPONENT_REGISTRY.md) |
 | Mermaid | [readme/MERMAID.md](../../../readme/MERMAID.md) |
 | LLM Markdown pipeline | [MARKDOWN_PIPELINE.md](../../../MARKDOWN_PIPELINE.md) |
 | CI / automations | [readme/AUTOMATIONS.md](../../../readme/AUTOMATIONS.md) |
