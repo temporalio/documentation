@@ -1,7 +1,7 @@
 ---
 id: standalone-activities
-title: Standalone Activities - Python SDK
-sidebar_label: Standalone Activities
+title: Standalone Activities Feature Guide
+sidebar_label: Feature Guide
 toc_max_heading_level: 4
 keywords:
   - standalone activity
@@ -33,11 +33,14 @@ The way you write the Activity and register it with a Worker is identical to [Wo
 Activities](/develop/python/activities/basics). The only difference is that you execute a
 Standalone Activity directly from your Temporal Client.
 
+:::tip
+
+New to Standalone Activities? Start with the [Standalone Activities Quickstart](/develop/python/activities/standalone-activities-quickstart).
+
+:::
+
 This page covers the following:
 
-- [Get Started with Standalone Activities](#get-started)
-- [Run a Worker with the Activity registered](#run-worker)
-- [Execute a Standalone Activity](#execute-activity)
 - [Start a Standalone Activity without waiting for the result](#start-activity)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
 - [Wait for the result of a Standalone Activity](#get-activity-result)
@@ -50,224 +53,6 @@ This page covers the following:
 This documentation uses source code from the [hello_standalone_activity](https://github.com/temporalio/samples-python/tree/main/hello_standalone_activity) sample.
 
 :::
-
-## Get Started with Standalone Activities {/* #get-started */}
-
-Prerequisites:
-
-- **Python 3.9+**
-
-- **[uv](https://docs.astral.sh/uv/)** - Python package manager. Install with:
-
-  ```bash
-  brew install uv
-  ```
-
-  Or see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for other platforms.
-
-- **Temporal Python SDK** (v1.23.0 or higher)
-
-  ```bash
-  uv add temporalio
-  ```
-
-- **Temporal CLI** v1.7.0 or higher
-
-  Install with Homebrew:
-
-  ```bash
-  brew install temporal
-  ```
-
-  Or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms.
-
-  Verify the installation:
-
-  ```bash
-  temporal --version
-  ```
-
-Start the Temporal development server:
-
-```bash
-temporal server start-dev
-```
-
-This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
-It uses an in-memory database, so do not use it for real use cases.
-
-:::info Temporal Cloud
-
-All code samples on this page use
-[`ClientConfig.load_client_connect_config()`](https://python.temporal.io/temporalio.envconfig.ClientConfig.html)
-to configure the Temporal Client connection. It responds to [environment
-variables](/references/client-environment-configuration) and [TOML configuration
-files](/references/client-environment-configuration), so the same code works against a local dev
-server and Temporal Cloud without changes. See [Run Standalone Activities with Temporal
-Cloud](#run-standalone-activities-temporal-cloud) below.
-
-:::
-
-The Temporal Server will now be available for client connections on `localhost:7233`, and the
-Temporal Web UI will now be accessible at [http://localhost:8233](http://localhost:8233). Standalone
-Activities are available from the nav bar item located towards the top left of the page:
-
-<img src="/img/standalone-activities-ui-nav.png" alt="Standalone Activities Web UI nav bar item" height="336" />
-
-Clone the [samples-python](https://github.com/temporalio/samples-python) repository to follow along:
-
-```
-git clone https://github.com/temporalio/samples-python.git
-cd samples-python
-```
-
-The sample project is structured as follows:
-
-```
-hello_standalone_activity/
-├── my_activity.py
-├── worker.py
-├── execute_activity.py
-├── start_activity.py
-├── list_activities.py
-└── count_activities.py
-```
-
-## Write an Activity Function {/* #write-activity */}
-
-An Activity in the Temporal Python SDK is just a normal function with the `@activity.defn`
-decorator. It can optionally be an `async def`. The way you write a Standalone Activity is identical
-to how you write an Activity to be orchestrated by a Workflow. In fact, an Activity can be executed
-both as a Standalone Activity and as a Workflow Activity.
-
-[hello_standalone_activity/my_activity.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/my_activity.py)
-
-```python
-# my_activity.py
-from dataclasses import dataclass
-
-from temporalio import activity
-
-
-@dataclass
-class ComposeGreetingInput:
-    greeting: str
-    name: str
-
-
-@activity.defn
-def compose_greeting(input: ComposeGreetingInput) -> str:
-    activity.logger.info("Running activity with parameter %s" % input)
-    return f"{input.greeting}, {input.name}!"
-```
-
-## Run a Worker with the Activity registered {/* #run-worker */}
-
-Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
-you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
-whether the Activity will be invoked from a Workflow or as a Standalone Activity. See [How to run a
-Worker](/develop/python/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup and
-configuration options.
-
-[hello_standalone_activity/worker.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/worker.py)
-
-```python
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
-
-from temporalio.client import Client
-from temporalio.envconfig import ClientConfig
-from temporalio.worker import Worker
-
-from hello_standalone_activity.my_activity import compose_greeting
-
-
-async def main():
-    connect_config = ClientConfig.load_client_connect_config()
-    connect_config.setdefault("target_host", "localhost:7233")
-    client = await Client.connect(**connect_config)
-    worker = Worker(
-        client,
-        task_queue="my-standalone-activity-task-queue",
-        activities=[compose_greeting],
-        activity_executor=ThreadPoolExecutor(5),
-    )
-    print("worker running...", end="", flush=True)
-    await worker.run()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-Open a new terminal, navigate to the `samples-python` directory, and run the Worker:
-
-```bash
-uv run hello_standalone_activity/worker.py
-```
-
-Leave this terminal running - the Worker needs to stay up to process activities.
-
-## Execute a Standalone Activity {/* #execute-activity */}
-
-Use
-[`client.execute_activity()`](https://python.temporal.io/temporalio.client.Client.html#execute_activity)
-to execute a Standalone Activity. Call this from your application code, not from inside a Workflow
-Definition. This durably enqueues your Standalone Activity in the Temporal Server, waits for it to
-be executed on your Worker, and then fetches the result.
-
-[hello_standalone_activity/execute_activity.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/execute_activity.py)
-
-```python
-import asyncio
-from datetime import timedelta
-
-from temporalio.client import Client
-from temporalio.envconfig import ClientConfig
-
-from hello_standalone_activity.my_activity import ComposeGreetingInput, compose_greeting
-
-
-async def my_application():
-    connect_config = ClientConfig.load_client_connect_config()
-    connect_config.setdefault("target_host", "localhost:7233")
-    client = await Client.connect(**connect_config)
-
-    activity_result = await client.execute_activity(
-        compose_greeting,
-        args=[ComposeGreetingInput("Hello", "World")],
-        id="my-standalone-activity-id",
-        task_queue="my-standalone-activity-task-queue",
-        start_to_close_timeout=timedelta(seconds=10),
-    )
-    print(f"Activity result: {activity_result}")
-
-
-if __name__ == "__main__":
-    asyncio.run(my_application())
-```
-
-To run it:
-
-1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
-2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-python` directory, and run:
-
-```bash
-uv run hello_standalone_activity/execute_activity.py
-```
-
-Or use the Temporal CLI:
-
-```bash
-temporal activity execute \
-  --type compose_greeting \
-  --activity-id my-standalone-activity-id \
-  --task-queue my-standalone-activity-task-queue \
-  --start-to-close-timeout 10s \
-  --input '{"greeting": "Hello", "name": "World"}'
-```
-
 
 ## Start a Standalone Activity without waiting for the result {/* #start-activity */}
 
@@ -466,4 +251,4 @@ export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter code as shown in the earlier sections.
+Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/python/activities/standalone-activities-quickstart).
