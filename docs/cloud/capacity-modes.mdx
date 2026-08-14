@@ -116,7 +116,7 @@ Each Namespace has a rate limit, which is measured in Actions per second (APS).
 Your APS limit automatically adjusts based on a formula that compares your average usage over the last 7 days and your usage at the 90th percentile, or P90. 
 Your throughput limit will never fall below the [default limit](/cloud/limits#actions-per-second) for your Namespace. 
 Under On-Demand capacity you are only charged for the Actions you use.
-To see your current limit, view it in the Temporal Cloud UI under the Namespace overview, retrieve it with the [Temporal CLI](/cli/command-reference/cloud/namespace#capacity) (`temporal cloud namespace capacity get`), or track the `temporal_cloud_v1_action_limit` metric described in [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
+To see your current limit, view it in the Temporal Cloud UI under the Namespace overview, retrieve it with the [CLI (`tcld`)](/cloud/tcld/namespace/#capacity) by running `tcld namespace capacity get`, or track the `temporal_cloud_v1_action_limit` metric described in [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 
 For example, if your average APS over the last 7 days was 200 and your P90 was 500, your limit would be the greater of:
 * The [default limit](/cloud/limits#actions-per-second)
