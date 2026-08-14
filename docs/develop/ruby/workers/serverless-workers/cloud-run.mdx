@@ -34,10 +34,9 @@ Build the Worker as you would any long-running Ruby Worker, then pass `deploymen
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-```ruby
-require 'temporalio/client'
-require 'temporalio/worker'
-
+<!--SNIPSTART ruby-cloud-run-worker-->
+[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.rb)
+```rb
 client = Temporalio::Client.connect(
   ENV.fetch('TEMPORAL_ADDRESS'),
   ENV.fetch('TEMPORAL_NAMESPACE'),
@@ -48,8 +47,8 @@ client = Temporalio::Client.connect(
 worker = Temporalio::Worker.new(
   client:,
   task_queue: ENV.fetch('TEMPORAL_TASK_QUEUE'),
-  workflows: [MyWorkflow],
-  activities: [Greet],
+  workflows: [GreetingWorkflow],
+  activities: [SayHello],
   deployment_options: Temporalio::Worker::DeploymentOptions.new(
     version: Temporalio::WorkerDeploymentVersion.new(
       deployment_name: 'my-app',
@@ -62,6 +61,7 @@ worker = Temporalio::Worker.new(
 
 worker.run
 ```
+<!--SNIPEND-->
 
 `deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -70,7 +70,7 @@ Setting `default_versioning_behavior` as shown above covers every Workflow on th
 To set the behavior per Workflow instead, call `workflow_versioning_behavior` in the Workflow class:
 
 ```ruby
-class MyWorkflow < Temporalio::Workflow::Definition
+class GreetingWorkflow < Temporalio::Workflow::Definition
   workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
 
   def execute(name)

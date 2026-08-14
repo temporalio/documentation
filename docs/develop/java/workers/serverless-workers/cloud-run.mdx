@@ -34,60 +34,46 @@ Build the Worker as you would any long-running Java Worker, then set `WorkerDepl
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
+<!--SNIPSTART java-cloud-run-worker-->
+[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.java)
 ```java
-package example;
+String apiKey = System.getenv("TEMPORAL_API_KEY");
 
-import io.temporal.client.WorkflowClient;
-import io.temporal.client.WorkflowClientOptions;
-import io.temporal.common.VersioningBehavior;
-import io.temporal.common.WorkerDeploymentVersion;
-import io.temporal.serviceclient.WorkflowServiceStubs;
-import io.temporal.serviceclient.WorkflowServiceStubsOptions;
-import io.temporal.worker.Worker;
-import io.temporal.worker.WorkerDeploymentOptions;
-import io.temporal.worker.WorkerFactory;
-import io.temporal.worker.WorkerOptions;
+WorkflowServiceStubs service =
+    WorkflowServiceStubs.newServiceStubs(
+        WorkflowServiceStubsOptions.newBuilder()
+            .setTarget(System.getenv("TEMPORAL_ADDRESS"))
+            .setEnableHttps(true)
+            .addApiKey(() -> apiKey)
+            .build());
 
-public class WorkerMain {
-  public static void main(String[] args) {
-    String apiKey = System.getenv("TEMPORAL_API_KEY");
+WorkflowClient client =
+    WorkflowClient.newInstance(
+        service,
+        WorkflowClientOptions.newBuilder()
+            .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
+            .build());
 
-    WorkflowServiceStubs service =
-        WorkflowServiceStubs.newServiceStubs(
-            WorkflowServiceStubsOptions.newBuilder()
-                .setTarget(System.getenv("TEMPORAL_ADDRESS"))
-                .setEnableHttps(true)
-                .addApiKey(() -> apiKey)
-                .build());
+WorkerFactory factory = WorkerFactory.newInstance(client);
 
-    WorkflowClient client =
-        WorkflowClient.newInstance(
-            service,
-            WorkflowClientOptions.newBuilder()
-                .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
-                .build());
+Worker worker =
+    factory.newWorker(
+        System.getenv("TEMPORAL_TASK_QUEUE"),
+        WorkerOptions.newBuilder()
+            .setDeploymentOptions(
+                WorkerDeploymentOptions.newBuilder()
+                    .setUseVersioning(true)
+                    .setVersion(new WorkerDeploymentVersion("my-app", "build-1"))
+                    .setDefaultVersioningBehavior(VersioningBehavior.PINNED)
+                    .build())
+            .build());
 
-    WorkerFactory factory = WorkerFactory.newInstance(client);
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 
-    Worker worker =
-        factory.newWorker(
-            System.getenv("TEMPORAL_TASK_QUEUE"),
-            WorkerOptions.newBuilder()
-                .setDeploymentOptions(
-                    WorkerDeploymentOptions.newBuilder()
-                        .setUseVersioning(true)
-                        .setVersion(new WorkerDeploymentVersion("my-app", "build-1"))
-                        .setDefaultVersioningBehavior(VersioningBehavior.PINNED)
-                        .build())
-                .build());
-
-    worker.registerWorkflowImplementationTypes(MyWorkflowImpl.class);
-    worker.registerActivitiesImplementations(new MyActivitiesImpl());
-
-    factory.start();
-  }
-}
+factory.start();
 ```
+<!--SNIPEND-->
 
 The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -99,7 +85,7 @@ To set the behavior per Workflow instead, annotate the Workflow method with `@Wo
 import io.temporal.common.VersioningBehavior;
 import io.temporal.workflow.WorkflowVersioningBehavior;
 
-public class MyWorkflowImpl implements MyWorkflow {
+public class GreetingWorkflowImpl implements GreetingWorkflow {
   @Override
   @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
   public String run(String name) {
@@ -139,7 +125,7 @@ An instance running a long Activity can be stopped mid-execution.
 Use [Activity Heartbeats](/develop/java/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
 
 ```java
-public class MyActivitiesImpl implements MyActivities {
+public class GreetingActivitiesImpl implements GreetingActivities {
   @Override
   public String process(List<String> items) {
     for (int i = 0; i < items.size(); i++) {

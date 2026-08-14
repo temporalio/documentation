@@ -42,36 +42,30 @@ Build the Worker as you would any long-running TypeScript Worker, then pass `wor
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
+<!--SNIPSTART typescript-cloud-run-worker-->
+[features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.ts)
 ```ts
-import { loadClientConnectConfig } from '@temporalio/envconfig';
-import { NativeConnection, Worker } from '@temporalio/worker';
-import * as activities from './activities';
-
-async function run() {
-  const config = loadClientConnectConfig();
-  const connection = await NativeConnection.connect(config.connectionOptions);
-
-  const worker = await Worker.create({
-    connection,
-    namespace: config.namespace,
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    workerDeploymentOptions: {
-      version: { deploymentName: 'my-app', buildId: 'build-1' },
-      useWorkerVersioning: true,
-      defaultVersioningBehavior: 'PINNED',
-    },
-  });
-
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
+const connection = await NativeConnection.connect({
+  address: process.env.TEMPORAL_ADDRESS,
+  apiKey: process.env.TEMPORAL_API_KEY,
+  tls: true,
 });
+
+const worker = await Worker.create({
+  connection,
+  namespace: process.env.TEMPORAL_NAMESPACE!,
+  taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
+  workflowsPath: require.resolve('./workflows'),
+  workerDeploymentOptions: {
+    version: { deploymentName: 'my-app', buildId: 'build-1' },
+    useWorkerVersioning: true,
+    defaultVersioningBehavior: 'PINNED',
+  },
+});
+
+await worker.run();
 ```
+<!--SNIPEND-->
 
 `deploymentName` and `buildId` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 

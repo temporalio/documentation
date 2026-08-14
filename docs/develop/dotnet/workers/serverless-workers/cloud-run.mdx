@@ -34,30 +34,32 @@ Build the Worker as you would any long-running .NET Worker, then set `Deployment
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-```csharp
-using Temporalio.Client;
-using Temporalio.Worker;
+<!--SNIPSTART dotnet-cloud-run-worker-->
+[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.cs)
+```cs
+var client = await TemporalClient.ConnectAsync(
+    new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
+    {
+        Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
+        ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
+        Tls = new(),
+    });
 
-var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
-{
-    Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
-    ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
-    Tls = new(),
-});
-
-var options = new TemporalWorkerOptions(Environment.GetEnvironmentVariable("TEMPORAL_TASK_QUEUE")!)
+var options = new TemporalWorkerOptions(
+    Environment.GetEnvironmentVariable("TEMPORAL_TASK_QUEUE")!)
 {
     DeploymentOptions = new(new("my-app", "build-1"), useWorkerVersioning: true)
     {
-        DefaultVersioningBehavior = Temporalio.Common.VersioningBehavior.Pinned,
+        DefaultVersioningBehavior = VersioningBehavior.Pinned,
     },
 };
-options.AddWorkflow<MyWorkflow>();
-options.AddActivity(MyActivities.Greet);
+options.AddWorkflow<GreetingWorkflow>();
+options.AddAllActivities(typeof(GreetingActivities), null);
 
 using var worker = new TemporalWorker(client, options);
 await worker.ExecuteAsync(CancellationToken.None);
 ```
+<!--SNIPEND-->
 
 The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -70,7 +72,7 @@ using Temporalio.Common;
 using Temporalio.Workflows;
 
 [Workflow(VersioningBehavior = VersioningBehavior.Pinned)]
-public class MyWorkflow
+public class GreetingWorkflow
 {
     [WorkflowRun]
     public async Task<string> RunAsync(string name) => // ...
