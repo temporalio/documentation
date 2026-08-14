@@ -20,15 +20,16 @@ The generator is a command-line tool named `nexgen`, distributed from the [tempo
 
 :::caution
 
-`nexgen` is pre-release software.
-The supported schema subset, command-line options, and emitted code may change incompatibly before a stable release.
+`nexgen` is pre-release software and may not retain backwards compatibility with previous versions of the tool.
 It is not yet published to any package registry, so you build it from source as described in [Install the generator](#install-the-generator).
 
 :::
 
 ## What the generator produces
 
-For every type in your definition file, the generator emits three things per language.
+The generator produces a client library in Go, Java, Python, or TypeScript for the inputs and outputs of your Nexus Operations. The generated types check values against the contract as they are sent and received, so a violation surfaces as an error rather than as bad data.
+
+That client library contains three things:
 
 - **A typed model.** An idiomatic struct, class, interface, or dataclass, with doc comments carried over from the schema.
 - **A runtime validator.** One validator per type, applied when a value is parsed off the wire and again when it is serialized onto it. See [Validation guarantees](#validation-guarantees) for more.
@@ -38,7 +39,7 @@ Constraint failures are aggregated into a single native error listing every viol
 A handler maps that error to a `BAD_REQUEST` [Nexus error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong with it in one response.
 
 The supported schema subset is deliberately strict.
-Anything ambiguous, or anything that cannot be expressed identically in all four languages, is rejected when you run the generator, with a diagnostic explaining how to express it instead.
+Anything ambiguous, or anything that cannot be expressed identically in all generated languages, is rejected when you run the generator with a diagnostic explaining how to express it correctly.
 The generator prefers to fail loudly at generation time over emitting code that behaves differently in one language than another.
 
 ## Supported languages
@@ -96,6 +97,8 @@ $defs:
       messageId: { type: string }
     required: [messageId]
 ```
+
+See [Definition files](https://github.com/temporalio/nexgen#definition-files) in the generator's README for details on that file.
 
 ### How names are derived
 
@@ -267,7 +270,7 @@ TypeScript accepts `--date-time-types` to choose how temporal `format` fields ar
 nexgen ts samples/schemas/temporal.yaml --output ./chat --date-time-types temporal
 ```
 
-- `string` (the default) keeps every temporal field as the RFC 3339 string that appears on the wire.
+- `string` (the default) keeps every date and time field as the [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) string that appears on the wire.
   It has no runtime dependency and round-trips losslessly, but you parse and compare the strings yourself.
 - `date` maps `date-time` fields to a JavaScript `Date`.
   This is lossy: a `Date` is a UTC instant, so the original offset is folded away and precision is capped at milliseconds.
@@ -526,13 +529,13 @@ Python has neither. Pydantic applies defaults when the model is constructed, so 
 
 ## Supported schema features
 
-The generator implements a curated subset of [JSON Schema 2020-12](https://json-schema.org/draft/2020-12) chosen so that every accepted construct lowers identically into all four languages.
+The generator implements a curated subset of [JSON Schema 2020-12](https://json-schema.org/draft/2020-12) chosen so that every accepted construct lowers identically into all generated languages.
 
 Fully supported: `properties`, `required`, `default`, `minProperties` and `maxProperties`, `dependentRequired`, string and numeric bounds, `items`, `minItems` and `maxItems`, `minContains` and `maxContains`, `allOf`, the recognized nullable pattern `oneOf: [{type: T}, {type: "null"}]`, and the `title`, `description`, and `deprecated` annotations.
 
 Partially supported: `type` (single-string form only), `additionalProperties`, `propertyNames`, `const` and `enum` (scalars only), `format`, `pattern` (a portable RE2-safe subset), `multipleOf`, `contentEncoding`, `uniqueItems`, `contains`, `oneOf` (branches must be separable by a decidable selector), and `$ref` with `$defs` (local files only).
 
-Deliberately rejected, because they have no coherent typed lowering across all four languages: `anyOf`, `not`, `if`/`then`/`else`, `dependentSchemas`, `prefixItems`, `unevaluatedProperties`, `unevaluatedItems`, `contentMediaType`, and `contentSchema`.
+Deliberately rejected, because they have no coherent typed lowering across all generated languages: `anyOf`, `not`, `if`/`then`/`else`, `dependentSchemas`, `prefixItems`, `unevaluatedProperties`, `unevaluatedItems`, `contentMediaType`, and `contentSchema`.
 
 For the current per-keyword support table, see the [nexgen README](https://github.com/temporalio/nexgen#supported-json-schema-features).
 
