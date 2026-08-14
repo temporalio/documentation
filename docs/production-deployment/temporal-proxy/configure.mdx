@@ -18,14 +18,15 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
   Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
-  and the definitive configuration schema.
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
 </ReleaseNoteHeader>
 
 The proxy reads a single YAML file. Three sections are the core of it: the gateway listener (`hostPort`), `routing`, and
-the `upstreams` it forwards to. The optional `tls`, `auth`, `encryption`, and `extensionServers` sections add inbound
-TLS, inbound authentication, and payload encryption. Values support `${VAR}` and `$VAR` environment variable expansion,
-and an upstream's `hostPort` can be a template that resolves per request (for example, `{{ .RemoteNamespace }}`).
+the `upstreams` it forwards to. The optional `allowedServices`, `tls`, `auth`, `encryption`, and `extensionServers`
+sections narrow which gRPC services the proxy forwards and add inbound TLS, inbound authentication and authorization,
+and payload encryption. Values support `${VAR}` and `$VAR` environment variable expansion, and an upstream's `hostPort`
+can be a template that resolves per request (for example, `{{ .RemoteNamespace }}`).
 
 The example below is the proxy's
 [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud), which connects a Worker
@@ -65,6 +66,45 @@ upstreams:
 
 The [chart `values.yaml`](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) and the
 [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) hold the complete, current set of options.
+
+## Restrict forwarded services
+
+The top-level `allowedServices` list names the gRPC services the proxy forwards, by proto full name. Omit it and the
+proxy forwards `WorkflowService` and `OperatorService`, which is what an SDK Client, a Worker, the CLI, and the Web UI
+need.
+
+```yaml
+allowedServices:
+  - temporal.api.workflowservice.v1.WorkflowService
+  - temporal.api.operatorservice.v1.OperatorService
+  - grpc.reflection.v1.ServerReflection
+```
+
+| Service                                           | Backs                                                                           | In the default set |
+| ------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------ |
+| `temporal.api.workflowservice.v1.WorkflowService` | Every SDK Client, Worker, and the Web UI                                        | Yes                |
+| `temporal.api.operatorservice.v1.OperatorService` | `temporal operator` commands, and the Web UI's Search Attribute and Nexus views | Yes                |
+| `grpc.reflection.v1.ServerReflection`             | Service discovery for tools such as `grpcurl`                                   | No                 |
+
+Those three are the whole set to select from. A name the proxy cannot forward fails the configuration at startup rather
+than at the first request.
+
+A service you leave out is never forwarded. The gateway answers a call to one with `Unimplemented` and
+`unknown service "<name>"`, decided before any upstream work, so the proxy behaves as a server that does not implement
+it rather than passing the call through.
+
+Service discovery is opt-in, so name the reflection service only when you want tools such as `grpcurl` to probe the
+gateway. Allowing `grpc.reflection.v1.ServerReflection` also allows the superseded
+`grpc.reflection.v1alpha.ServerReflection`, because clients probe `v1` and fall back to it. The relation runs one way:
+allowing only the superseded spelling does not allow the current one.
+
+### Health checks {/* #health-checks */}
+
+The gateway serves the standard gRPC health service and publishes an entry for every allowed service under its proto
+full name, alongside the usual empty service name. Each entry reports the same status, since the proxy's health is
+process-wide. A Client health check that names a service, such as the Go SDK's `CheckHealth`, therefore gets a status,
+and so does a per-service liveness probe. A service your configuration does not allow returns `NOT_FOUND` instead of
+claiming a status.
 
 ## Route requests
 
@@ -148,11 +188,12 @@ Namespaces. Available variables:
 
 Upstreams with a static `hostPort` connect eagerly at startup; templated ones connect lazily on first use.
 
-## Authenticate inbound requests
+## Authenticate and authorize inbound requests
 
 Inbound authentication runs on the gateway and is off by default: omit the top-level `auth` block to accept all
-requests. When present, `auth` must select exactly one authenticator, `staticToken` or `jwks`. The gateway validates the
-credential on each request and strips it before forwarding upstream.
+requests. When present, `auth` must select exactly one authenticator: `staticToken`, `jwks`, or `external`. The gateway
+decides before the request is routed, so nothing reaches an upstream until the caller is admitted, and it strips the
+credential before forwarding upstream.
 
 Compare an inbound bearer token against a fixed value with `staticToken`:
 
@@ -177,8 +218,70 @@ auth:
     scheme: Bearer
 ```
 
-`token` (for `staticToken`) and `url` (for `jwks`) are required; the remaining fields are optional. Only `staticToken`
-or `jwks` may be set, not both.
+`token` (for `staticToken`) and `url` (for `jwks`) are required; the remaining fields are optional.
+
+### Delegate the decision to an extension server
+
+For an identity system neither built-in authenticator covers, or for a decision that turns on more than who the caller
+is, point `auth.external` at an extension server you run. Declare the server under the top-level `extensionServers`
+block, the same way you would a
+[key management backend](/production-deployment/temporal-proxy/encrypt-payloads#plug-in-your-own-key-management-backend),
+and the proxy asks it about every stream it accepts, forwarding only the ones it is told to admit.
+
+```yaml
+extensionServers:
+  - name: authz
+    hostPort: 127.0.0.1:9444
+
+auth:
+  external:
+    name: authz # Required. Names an entry in extensionServers.
+    credentialHeaders:
+      - authorization
+```
+
+`name` must match a configured extension server. `credentialHeaders` names the metadata headers that carry the caller's
+credentials: the proxy lifts those into the request it sends the extension server and removes them from the stream it
+forwards upstream, so a credential the server consumes never reaches the Temporal Service.
+
+Declaring no headers does not hide the caller's credentials from the extension server, since the proxy forwards the
+caller's other metadata on the call either way. What you lose is the field naming them, so the server has to know which
+metadata to read and cannot tell a header the proxy vouches for from any other. Nothing is stripped before forwarding
+upstream either, so the caller's credential continues to the upstream alongside any credential configured for it.
+
+The server implements `api.auth.v1.AuthService`, one RPC defined in
+[`api/auth/v1`](https://github.com/temporalio/temporal-proxy/tree/main/api/auth/v1). Each request carries what the call
+is addressing and who is making it:
+
+| Field              | Carries                                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `target.full_name` | The gRPC full method being invoked, leading slash included. Always set.                                           |
+| `target.namespace` | The Temporal Namespace the request names.                                                                         |
+| `credentials`      | One entry per declared header the caller sent, each with the canonical header name and every value sent under it. |
+
+Both `target` fields come from the stream rather than from anything the caller claims, so a caller cannot forge either
+by sending a header. `target.namespace` is empty when the method names no Namespace, when the caller sent no message to
+read one from, or when the service is not one the proxy forwards. Empty means unknown rather than a Namespace called
+nothing, so match a Namespace-scoped rule against `full_name` as well. `credentials` is empty when you declared no
+headers or the caller sent none of them, which is an unauthenticated caller rather than a trusted one.
+
+Answer with a `decision`:
+
+- `DECISION_ALLOW` admits the caller and is the only value that does. A response left unfilled is
+  `DECISION_UNSPECIFIED`, which denies, so there is no way to admit a caller by omission.
+- `DECISION_DENY` refuses the caller, who is told `PERMISSION_DENIED`.
+- `reason` is optional and written for whoever operates the server. The proxy records it and keeps it out of what a
+  refused caller is told, so it can name internal systems or subjects.
+
+Return a gRPC error only for reaching no verdict at all, such as a backend the server cannot itself reach. The proxy
+denies either way, but an error keeps its status code, so `UNAVAILABLE` or `DEADLINE_EXCEEDED` tells a Worker to retry
+where a denial tells it not to bother. A server that cannot reach its own backend should report that rather than admit
+the caller.
+
+The [authorization example](https://github.com/temporalio/temporal-proxy/tree/main/examples/authz) maps a JWT to claims
+and then decides each call against them, the two steps Temporal Server splits across its `ClaimMapper` and `Authorizer`.
+It includes a Worker that cannot reach a second Namespace and an auditor that can read Workflow History but not start a
+Workflow.
 
 ## Present credentials to upstreams
 
@@ -205,7 +308,8 @@ load.
 
 TLS is terminated in two independent places, both using the same keys: `ca`, `cert`, `key`, and `serverName`. `ca`,
 `cert`, and `key` are paths to PEM files on disk, not inline PEM content. On Kubernetes, let the chart mount them from a
-Secret and fill in the paths for you, as described in [Supply TLS material](/production-deployment/temporal-proxy/deploy-kubernetes#supply-tls-material).
+Secret and fill in the paths for you, as described in
+[Supply TLS material](/production-deployment/temporal-proxy/deploy-kubernetes#supply-tls-material).
 
 **Inbound, on the gateway.** The top-level `tls` block secures connections from your applications. Set `cert` and `key`
 for server TLS, and add `ca` to enforce mutual TLS, which requires each client to present a certificate signed by that
@@ -220,4 +324,5 @@ CA. Local development commonly omits `tls` and connects in plaintext.
 
 Set `serverName` when the host you dial does not match the common name or SAN on the server's certificate.
 
-For payload encryption (envelope encryption, cloud KMS, and custom key backends), see [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads).
+For payload encryption (envelope encryption, cloud KMS, and custom key backends), see
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads).
