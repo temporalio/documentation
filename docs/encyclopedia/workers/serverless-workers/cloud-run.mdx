@@ -36,10 +36,10 @@ On Cloud Run, a Serverless Worker runs in a Worker Pool: a set of long-lived ins
 Each instance runs standard Worker code and processes Tasks for its whole lifetime.
 The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) controls how many instances run; each instance manages its own polling and Task processing.
 
-Because an instance runs an ordinary long-lived Worker, Cloud Run needs no provider-specific handler or package, unlike AWS Lambda.
-Any Temporal SDK can run on a Cloud Run Worker Pool.
-The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which Serverless Workers require, so an SDK needs Worker Versioning support to run here.
-Packaging the Worker into a container image is where the per-language differences show up, and each SDK's Cloud Run page covers them.
+Serverless Workers on Cloud Run use standard long-lived Worker processes, with scaling managed by the WCI.
+Some SDKs add GCP-specific conveniences, such as helpers for configuring OpenTelemetry.
+These are optional.
+Where an SDK provides them, they're documented in the corresponding developer guide for that SDK.
 
 ## Autoscaling {/* #autoscaling */}
 
