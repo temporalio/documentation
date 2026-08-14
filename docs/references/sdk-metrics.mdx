@@ -139,7 +139,7 @@ An Activity Execution was canceled.
 
 - Type: Counter
 - Available in: Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `activity_execution_failed`
 
@@ -148,7 +148,7 @@ This does not include local Activity Failures in the Go and Java SDKs (see [loca
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `activity_execution_latency`
 
@@ -156,7 +156,7 @@ Time to complete an Activity Execution, from the time the Activity Task is gener
 
 - Type: Histogram
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `activity_poll_no_task`
 
@@ -171,7 +171,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 The Schedule-To-Start time of an Activity Task.
 A [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 Use this metric to check that Activity Tasks are being processed from the queue in a timely manner.
-Some SDKs include the `activity_type` tag, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
+Some SDKs include the `activity_type` and `workflow_type` tags, but the metric should not vary by type, because the type does not influence the rate at which tasks are pulled from the queue.
 
 - Type: Histogram
 - Available in: Core, Go, Java
@@ -184,7 +184,7 @@ This metric is not recorded for async Activity completion.
 
 - Type: Histogram
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `activity_task_error`
 
@@ -208,7 +208,7 @@ A Local Activity Execution was canceled.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `local_activity_execution_failed`
 
@@ -216,7 +216,7 @@ A Local Activity Execution failed.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `local_activity_execution_latency`
 
@@ -224,7 +224,7 @@ Time to complete a Local Activity Execution, from the time the first Activity Ta
 
 - Type: Histogram
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `local_activity_succeed_endtoend_latency`
 
@@ -232,7 +232,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 - Type: Histogram
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `local_activity_total`
 
@@ -240,7 +240,7 @@ Total number of [Local Activity Executions](/local-activity).
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
 ### `long_request`
 
