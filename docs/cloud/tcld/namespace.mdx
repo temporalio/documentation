@@ -15,7 +15,7 @@ tags:
 
 {/* This is an auto-generated file. Do not edit directly. */}
 
-The `tcld namespace` command namespace operations.
+`tcld namespace`: Namespace operations.
 
 Alias: `n`
 
@@ -41,7 +41,7 @@ Alias: `n`
 
 ### create
 
-The `tcld namespace create` command create a temporal namespace.
+`tcld namespace create`: Create a temporal namespace.
 
 Alias: `c`
 
@@ -153,7 +153,7 @@ Alias: `ids`
 
 ### add-region
 
-The `tcld namespace add-region` command add a new region to a namespace.
+`tcld namespace add-region`: Add a new region to a namespace.
 
 #### --request-id
 
@@ -179,7 +179,7 @@ The cloud provider of the region. Default: aws
 
 ### delete-region
 
-The `tcld namespace delete-region` command delete a region from a namespace.
+`tcld namespace delete-region`: Delete a region from a namespace.
 
 #### --request-id
 
@@ -205,7 +205,7 @@ The cloud provider of the region. Default: aws
 
 ### lifecycle
 
-The `tcld namespace lifecycle` command enable delete protection on a temporal namespace.
+`tcld namespace lifecycle`: Enable delete protection on a temporal namespace.
 
 Alias: `lc`
 
@@ -214,7 +214,7 @@ Alias: `lc`
 
 #### get
 
-The `tcld namespace lifecycle get` command get the lifecycle spec for the namespace.
+`tcld namespace lifecycle get`: Get the lifecycle spec for the namespace.
 
 ##### --request-id
 
@@ -236,7 +236,7 @@ Alias: `n`
 
 #### set
 
-The `tcld namespace lifecycle set` command set the lifecycle spec for the namespace.
+`tcld namespace lifecycle set`: Set the lifecycle spec for the namespace.
 
 ##### --request-id
 
@@ -264,7 +264,7 @@ Alias: `edp`
 
 ### delete
 
-The `tcld namespace delete` command delete a temporal namespace.
+`tcld namespace delete`: Delete a temporal namespace.
 
 Alias: `d`
 
@@ -288,7 +288,7 @@ Alias: `n`
 
 ### list
 
-The `tcld namespace list` command list all known namespaces.
+`tcld namespace list`: List all known namespaces.
 
 Alias: `l`
 
@@ -302,7 +302,7 @@ Number of namespaces to list per page
 
 ### get
 
-The `tcld namespace get` command get namespace information.
+`tcld namespace get`: Get namespace information.
 
 Alias: `g`
 
@@ -314,7 +314,7 @@ Alias: `n`
 
 ### accepted-client-ca
 
-The `tcld namespace accepted-client-ca` command manage client ca certificate used to verify client connections.
+`tcld namespace accepted-client-ca`: Manage client ca certificate used to verify client connections.
 
 Alias: `ca`
 
@@ -325,7 +325,7 @@ Alias: `ca`
 
 #### list
 
-The `tcld namespace accepted-client-ca list` command list the accepted client ca certificates currently configured for the namespace.
+`tcld namespace accepted-client-ca list`: List the accepted client ca certificates currently configured for the namespace.
 
 Alias: `l`
 
@@ -337,7 +337,7 @@ Alias: `n`
 
 #### add
 
-The `tcld namespace accepted-client-ca add` command add a new ca accepted client ca certificate.
+`tcld namespace accepted-client-ca add`: Add a new ca accepted client ca certificate.
 
 Alias: `a`
 
@@ -373,7 +373,7 @@ Alias: `f`
 
 #### remove
 
-The `tcld namespace accepted-client-ca remove` command remove existing certificates.
+`tcld namespace accepted-client-ca remove`: Remove existing certificates.
 
 Alias: `r`
 
@@ -419,7 +419,7 @@ If set, all existing certificates will be removed
 
 #### set
 
-The `tcld namespace accepted-client-ca set` command set the accepted client ca certificate.
+`tcld namespace accepted-client-ca set`: Set the accepted client ca certificate.
 
 Alias: `s`
 
@@ -455,7 +455,7 @@ Alias: `f`
 
 ### auth-method
 
-The `tcld namespace auth-method` command manage the authentication method for the namespace.
+`tcld namespace auth-method`: Manage the authentication method for the namespace.
 
 Alias: `am`
 
@@ -464,7 +464,7 @@ Alias: `am`
 
 #### set
 
-The `tcld namespace auth-method set` command set the authentication method for the namespace.
+`tcld namespace auth-method set`: Set the authentication method for the namespace.
 
 ##### --namespace
 
@@ -492,7 +492,7 @@ Alias: `am`
 
 #### get
 
-The `tcld namespace auth-method get` command retrieve the authentication method for namespace.
+`tcld namespace auth-method get`: Retrieve the authentication method for namespace.
 
 ##### --namespace
 
@@ -502,7 +502,7 @@ Alias: `n`
 
 ### certificate-filters
 
-The `tcld namespace certificate-filters` command manage optional certificate filters used by namespace to authorize client certificates based on distinguished name fields.
+`tcld namespace certificate-filters`: Manage optional certificate filters used by namespace to authorize client certificates based on distinguished name fields.
 
 Alias: `cf`
 
@@ -513,7 +513,7 @@ Alias: `cf`
 
 #### import
 
-The `tcld namespace certificate-filters import` command sets the certificate filters on the namespace. Existing filters will be replaced.
+`tcld namespace certificate-filters import`: Sets the certificate filters on the namespace. Existing filters will be replaced.
 
 Alias: `imp`
 
@@ -549,7 +549,7 @@ Alias: `input`, `i`
 
 #### export
 
-The `tcld namespace certificate-filters export` command exports existing certificate filters on the namespace.
+`tcld namespace certificate-filters export`: Exports existing certificate filters on the namespace.
 
 Alias: `exp`
 
@@ -579,7 +579,7 @@ Alias: `file`, `f`
 
 #### clear
 
-The `tcld namespace certificate-filters clear` command clears all certificate filters on the namespace. Note that this will allow *any* client certificate that chains up to a configured CA in the bundle to connect to the namespace.
+`tcld namespace certificate-filters clear`: Clears all certificate filters on the namespace. Note that this will allow *any* client certificate that chains up to a configured CA in the bundle to connect to the namespace.
 
 Alias: `c`
 
@@ -603,7 +603,7 @@ Alias: `v`
 
 #### add
 
-The `tcld namespace certificate-filters add` command adds additional certificate filters to the namespace.
+`tcld namespace certificate-filters add`: Adds additional certificate filters to the namespace.
 
 Alias: `a`
 
@@ -639,7 +639,7 @@ Alias: `input`, `i`
 
 ### update-codec-server
 
-The `tcld namespace update-codec-server` command update codec server config used to decode encoded payloads through remote endpoint.
+`tcld namespace update-codec-server`: Update codec server config used to decode encoded payloads through remote endpoint.
 
 Alias: `ucs`
 
@@ -669,7 +669,7 @@ Alias: `ic`
 
 ### retention
 
-The `tcld namespace retention` command manages configuration of the length of time (in days) a closed workflow will be preserved before deletion.
+`tcld namespace retention`: Manages configuration of the length of time (in days) a closed workflow will be preserved before deletion.
 
 Alias: `r`
 
@@ -678,7 +678,7 @@ Alias: `r`
 
 #### set
 
-The `tcld namespace retention set` command set the length of time (in days) a closed workflow will be preserved before deletion for a given namespace.
+`tcld namespace retention set`: Set the length of time (in days) a closed workflow will be preserved before deletion for a given namespace.
 
 Alias: `s`
 
@@ -708,7 +708,7 @@ Alias: `r`
 
 #### get
 
-The `tcld namespace retention get` command retrieve the length of time (in days) a closed workflow will be preserved before deletion for a given namespace.
+`tcld namespace retention get`: Retrieve the length of time (in days) a closed workflow will be preserved before deletion for a given namespace.
 
 Alias: `g`
 
@@ -720,7 +720,7 @@ Alias: `n`
 
 ### search-attributes
 
-The `tcld namespace search-attributes` command manage search attributes used by namespace.
+`tcld namespace search-attributes`: Manage search attributes used by namespace.
 
 Alias: `sa`
 
@@ -730,7 +730,7 @@ Alias: `sa`
 
 #### add
 
-The `tcld namespace search-attributes add` command add a new namespace custom search attribute.
+`tcld namespace search-attributes add`: Add a new namespace custom search attribute.
 
 Alias: `a`
 
@@ -760,7 +760,7 @@ Alias: `sa`
 
 #### remove
 
-The `tcld namespace search-attributes remove` command remove an existing namespace custom search attribute.
+`tcld namespace search-attributes remove`: Remove an existing namespace custom search attribute.
 
 Alias: `rm`
 
@@ -790,7 +790,7 @@ Alias: `sa`
 
 #### rename
 
-The `tcld namespace search-attributes rename` command update the name of an existing custom search attribute.
+`tcld namespace search-attributes rename`: Update the name of an existing custom search attribute.
 
 Alias: `rn`
 
@@ -826,7 +826,7 @@ Alias: `nn`
 
 ### failover
 
-The `tcld namespace failover` command failover a temporal namespace.
+`tcld namespace failover`: Failover a temporal namespace.
 
 Alias: `fo`
 
@@ -854,7 +854,7 @@ The cloud provider of the region. Default: aws
 
 ### update-high-availability
 
-The `tcld namespace update-high-availability` command update Temporal namespace high availability setting.
+`tcld namespace update-high-availability`: Update Temporal namespace high availability setting.
 
 Alias: `uha`
 
@@ -876,7 +876,7 @@ Disable Temporal-managed failover on a replicated namespace (use --disable-auto-
 
 ### tags
 
-The `tcld namespace tags` command manage namespace tags.
+`tcld namespace tags`: Manage namespace tags.
 
 Alias: `t`
 
@@ -885,7 +885,7 @@ Alias: `t`
 
 #### upsert
 
-The `tcld namespace tags upsert` command add new tags or update existing tag values.
+`tcld namespace tags upsert`: Add new tags or update existing tag values.
 
 Alias: `u`
 
@@ -909,7 +909,7 @@ Alias: `t`
 
 #### remove
 
-The `tcld namespace tags remove` command remove existing tags by key.
+`tcld namespace tags remove`: Remove existing tags by key.
 
 Alias: `rm`
 
@@ -933,7 +933,7 @@ Alias: `tk`
 
 ### capacity
 
-The `tcld namespace capacity` command manage namespace capacity.
+`tcld namespace capacity`: Manage namespace capacity.
 
 Alias: `cap`
 
@@ -942,7 +942,7 @@ Alias: `cap`
 
 #### get
 
-The `tcld namespace capacity get` command get namespace capacity information.
+`tcld namespace capacity get`: Get namespace capacity information.
 
 Alias: `g`
 
@@ -954,7 +954,7 @@ Alias: `n`
 
 #### update
 
-The `tcld namespace capacity update` command set the capacity of a given namespace.
+`tcld namespace capacity update`: Set the capacity of a given namespace.
 
 Alias: `u`
 
@@ -990,7 +990,7 @@ Alias: `v`
 
 ### export
 
-The `tcld namespace export` command manage export.
+`tcld namespace export`: Manage export.
 
 Alias: `es`
 
@@ -999,7 +999,7 @@ Alias: `es`
 
 #### s3
 
-The `tcld namespace export s3` command manage S3 export sink.
+`tcld namespace export s3`: Manage S3 export sink.
 
 - [tcld namespace export s3 create](#create)
 - [tcld namespace export s3 validate](#validate)
@@ -1010,7 +1010,7 @@ The `tcld namespace export s3` command manage S3 export sink.
 
 ##### create
 
-The `tcld namespace export s3 create` command create export sink.
+`tcld namespace export s3 create`: Create export sink.
 
 Alias: `c`
 
@@ -1044,7 +1044,7 @@ Alias: `re`
 
 ##### validate
 
-The `tcld namespace export s3 validate` command validate export sink.
+`tcld namespace export s3 validate`: Validate export sink.
 
 Alias: `v`
 
@@ -1078,7 +1078,7 @@ Alias: `re`
 
 ##### update
 
-The `tcld namespace export s3 update` command update export sink.
+`tcld namespace export s3 update`: Update export sink.
 
 Alias: `u`
 
@@ -1116,7 +1116,7 @@ Provide the ARN of the KMS key to use for encryption. Note: If the KMS ARN needs
 
 ##### get
 
-The `tcld namespace export s3 get` command get export sink.
+`tcld namespace export s3 get`: Get export sink.
 
 Alias: `g`
 
@@ -1132,7 +1132,7 @@ Provide a name for the sink
 
 ##### delete
 
-The `tcld namespace export s3 delete` command delete export sink.
+`tcld namespace export s3 delete`: Delete export sink.
 
 Alias: `d`
 
@@ -1160,7 +1160,7 @@ Alias: `r`
 
 ##### list
 
-The `tcld namespace export s3 list` command list export sinks.
+`tcld namespace export s3 list`: List export sinks.
 
 Alias: `l`
 
@@ -1180,7 +1180,7 @@ The page token for list operations
 
 #### gcs
 
-The `tcld namespace export gcs` command manage GCS export sink.
+`tcld namespace export gcs`: Manage GCS export sink.
 
 - [tcld namespace export gcs create](#create)
 - [tcld namespace export gcs update](#update)
@@ -1191,7 +1191,7 @@ The `tcld namespace export gcs` command manage GCS export sink.
 
 ##### create
 
-The `tcld namespace export gcs create` command create export sink.
+`tcld namespace export gcs create`: Create export sink.
 
 Alias: `c`
 
@@ -1215,7 +1215,7 @@ GCS bucket of the sink
 
 ##### update
 
-The `tcld namespace export gcs update` command update export sink.
+`tcld namespace export gcs update`: Update export sink.
 
 Alias: `u`
 
@@ -1249,7 +1249,7 @@ Alias: `v`
 
 ##### validate
 
-The `tcld namespace export gcs validate` command validate export sink.
+`tcld namespace export gcs validate`: Validate export sink.
 
 Alias: `v`
 
@@ -1273,7 +1273,7 @@ GCS bucket of the sink
 
 ##### get
 
-The `tcld namespace export gcs get` command get export sink.
+`tcld namespace export gcs get`: Get export sink.
 
 Alias: `g`
 
@@ -1289,7 +1289,7 @@ Provide a name for the sink
 
 ##### delete
 
-The `tcld namespace export gcs delete` command delete export sink.
+`tcld namespace export gcs delete`: Delete export sink.
 
 Alias: `d`
 
@@ -1317,7 +1317,7 @@ Alias: `r`
 
 ##### list
 
-The `tcld namespace export gcs list` command list export sinks.
+`tcld namespace export gcs list`: List export sinks.
 
 Alias: `l`
 
@@ -1337,7 +1337,7 @@ The page token for list operations
 
 ### set-connectivity-rules
 
-The `tcld namespace set-connectivity-rules` command set the connectivity rules for a namespace.
+`tcld namespace set-connectivity-rules`: set the connectivity rules for a namespace.
 
 Alias: `scrs`
 
