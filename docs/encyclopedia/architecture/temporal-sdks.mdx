@@ -226,7 +226,7 @@ Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and
 The Temporal Service then schedules a Workflow Task by adding it to the Task Queue.
 When the Worker has capacity, it picks up this Task, and begin executing code.
 
-Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded into the Event History.
+Each step of the Task (for example, Scheduled, Started, and Completed), gets recorded into the Event History.
 
 - Scheduled means that the Temporal Service has added a Task to the Task Queue.
 - Started means that the Worker has dequeued the Task.
