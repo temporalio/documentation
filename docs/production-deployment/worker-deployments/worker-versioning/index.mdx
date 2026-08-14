@@ -86,7 +86,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will automatically move to a new code version as you roll it out, specifically its
     Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single
-    Deployment Version and need to be kept replay-safe manually, i.e. with
+    Deployment Version and need to be kept replay-safe manually, that is with
     [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their
     Worker Deployment.

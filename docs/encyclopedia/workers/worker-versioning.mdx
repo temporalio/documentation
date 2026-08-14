@@ -51,7 +51,7 @@ A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Ve
 
 ### Auto-Upgrade Workflows {/* #auto-upgrade */}
 
-An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
+An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, that is with [patching](/workflow-definition#workflow-versioning).
 
 ### Activity behavior across versions
 
@@ -89,7 +89,7 @@ A Worker Deployment Version moves through the following states:
 
 ## Continue-as-new, Child Workflow, and Retry Semantics {/* #inheritance-semantics */}
 
-When Workflows start new runs (e.g. by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
+When Workflows start new runs (for example, by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
 
 ### Ways Workflows Start New Runs
 
@@ -140,7 +140,7 @@ This section provides more detail on specific inheritance scenarios.
 **Inheritance Conditions (all must be met):**
 
 - The retried run is effectively pinned at the time of retry
-- The retried run inherited a pinned version when it started (i.e., it is a child of a pinned parent, or a Continue-As-New of a pinned run)
+- The retried run inherited a pinned version when it started (that is, it is a child of a pinned parent, or a Continue-As-New of a pinned run)
 - The retried run is running on a Task Queue in the inherited version
 
 **When Conditions Not Met:**
