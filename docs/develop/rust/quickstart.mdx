@@ -66,11 +66,12 @@ futures = "0.3.32"
 futures-util = "0.3.32"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-temporalio-client = "0.5.0"
-temporalio-common = "0.5.0"
-temporalio-macros = "0.5.0"
-temporalio-sdk = "0.5.0"
-temporalio-sdk-core = "0.5.0"
+temporalio-client = "0.6.0"
+temporalio-common = "0.6.0"
+temporalio-macros = "0.6.0"
+temporalio-sdk = "0.6.0"
+temporalio-sdk-core = "0.6.0"
+temporalio-workflow = "0.6.0"
 tokio = { version = "1", features = ["full"] }
 `}
 </CodeSnippet>
@@ -89,6 +90,7 @@ Now update your project's `Cargo.toml` file to match the example and run `cargo 
 The core dependencies you'll need are:
 
 - `temporalio-sdk` - The Rust SDK for Temporal
+- `temporalio-workflow` - Referenced by the code the Workflow macros generate, so it must be a direct dependency even though your own code never names it
 - `tokio` - Async runtime required by the SDK
 - `serde` - For serialization/deserialization
 
@@ -228,7 +230,7 @@ impl GreetingWorkflow {
         let name = ctx.state(|s| s.name.clone());
 
         // Execute an activity
-        let greeting = ctx.start_activity(
+        let greeting = ctx.execute_activity(
             MyActivities::greet,
             name,
             ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
@@ -270,7 +272,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let worker_options = WorkerOptions::new("my-task-queue")
         .register_activities(MyActivities)
-        .register_workflow::<GreetingWorkflow>()
+        .register_workflow::<GreetingWorkflow>()?
         .build();
 
     Worker::new(&runtime, client, worker_options)?.run().await?;

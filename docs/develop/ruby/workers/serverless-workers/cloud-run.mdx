@@ -1,0 +1,133 @@
+---
+id: cloud-run
+title: Serverless Workers on GCP Cloud Run - Ruby SDK
+sidebar_label: GCP Cloud Run
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Ruby SDK.
+slug: /develop/ruby/workers/serverless-workers/cloud-run
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Ruby SDK
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
+Register Workflows and Activities the same way you would with any other Ruby Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
+
+A Cloud Run Worker needs no Cloud Run-specific gem.
+The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+
+For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running Ruby Worker, then pass `deployment_options` to `Temporalio::Worker.new` to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```ruby
+require 'temporalio/client'
+require 'temporalio/worker'
+
+client = Temporalio::Client.connect(
+  ENV.fetch('TEMPORAL_ADDRESS'),
+  ENV.fetch('TEMPORAL_NAMESPACE'),
+  api_key: ENV.fetch('TEMPORAL_API_KEY'),
+  tls: true
+)
+
+worker = Temporalio::Worker.new(
+  client:,
+  task_queue: ENV.fetch('TEMPORAL_TASK_QUEUE'),
+  workflows: [MyWorkflow],
+  activities: [Greet],
+  deployment_options: Temporalio::Worker::DeploymentOptions.new(
+    version: Temporalio::WorkerDeploymentVersion.new(
+      deployment_name: 'my-app',
+      build_id: 'build-1'
+    ),
+    use_worker_versioning: true,
+    default_versioning_behavior: Temporalio::VersioningBehavior::PINNED
+  )
+)
+
+worker.run
+```
+
+`deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `default_versioning_behavior` as shown above covers every Workflow on the Worker.
+To set the behavior per Workflow instead, call `workflow_versioning_behavior` in the Workflow class:
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
+
+  def execute(name)
+    # ...
+  end
+end
+```
+
+If versioning is on and neither is set, the Worker raises an error at startup rather than polling.
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/ruby/workers/run-worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+Read the Namespace, address, and Task Queue from environment variables you set on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager rather than passing it in plaintext.
+The Worker above reads `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_KEY`, and `TEMPORAL_TASK_QUEUE`, so the same image can run against any Namespace.
+
+For the shared configuration format that other Temporal tools read, see [Environment configuration](/develop/environment-configuration).
+
+## Package the Worker image {/* #package-image */}
+
+The Ruby SDK ships precompiled gems per platform, so install it in the image rather than building the native extension from source:
+
+```dockerfile
+FROM ruby:3.3-slim
+
+WORKDIR /app
+RUN gem install temporalio --no-document
+COPY worker.rb ./
+
+CMD ["ruby", "worker.rb"]
+```
+
+Installing through Bundler in a container can select the source gem instead of the precompiled one, which then fails to build without a Rust toolchain. If you use Bundler, add the target platform to the lockfile with `bundle lock --add-platform x86_64-linux`.
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/ruby/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+
+```ruby
+class Process < Temporalio::Activity::Definition
+  def execute(items)
+    items.each_with_index do |item, i|
+      Temporalio::Activity::Context.current.heartbeat(i)
+      # ... process item
+    end
+    'done'
+  end
+end
+```
+
+For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
+
+## Add observability {/* #add-observability */}
+
+A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
+For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Ruby SDK](/develop/ruby/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).

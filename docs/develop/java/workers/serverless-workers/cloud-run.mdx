@@ -1,0 +1,159 @@
+---
+id: cloud-run
+title: Serverless Workers on GCP Cloud Run - Java SDK
+sidebar_label: GCP Cloud Run
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Java SDK.
+slug: /develop/java/workers/serverless-workers/cloud-run
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Java SDK
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
+Register Workflows and Activities the same way you would with any other Java Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
+
+A Cloud Run Worker needs no Cloud Run-specific package.
+The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+
+For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running Java Worker, then set `WorkerDeploymentOptions` on [`WorkerOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.html) to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```java
+package example;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerDeploymentOptions;
+import io.temporal.worker.WorkerFactory;
+import io.temporal.worker.WorkerOptions;
+
+public class WorkerMain {
+  public static void main(String[] args) {
+    String apiKey = System.getenv("TEMPORAL_API_KEY");
+
+    WorkflowServiceStubs service =
+        WorkflowServiceStubs.newServiceStubs(
+            WorkflowServiceStubsOptions.newBuilder()
+                .setTarget(System.getenv("TEMPORAL_ADDRESS"))
+                .setEnableHttps(true)
+                .addApiKey(() -> apiKey)
+                .build());
+
+    WorkflowClient client =
+        WorkflowClient.newInstance(
+            service,
+            WorkflowClientOptions.newBuilder()
+                .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
+                .build());
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+
+    Worker worker =
+        factory.newWorker(
+            System.getenv("TEMPORAL_TASK_QUEUE"),
+            WorkerOptions.newBuilder()
+                .setDeploymentOptions(
+                    WorkerDeploymentOptions.newBuilder()
+                        .setUseVersioning(true)
+                        .setVersion(new WorkerDeploymentVersion("my-app", "build-1"))
+                        .setDefaultVersioningBehavior(VersioningBehavior.PINNED)
+                        .build())
+                .build());
+
+    worker.registerWorkflowImplementationTypes(MyWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new MyActivitiesImpl());
+
+    factory.start();
+  }
+}
+```
+
+The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
+Setting `setDefaultVersioningBehavior` as shown above covers every Workflow on the Worker.
+To set the behavior per Workflow instead, annotate the Workflow method with `@WorkflowVersioningBehavior`:
+
+```java
+import io.temporal.common.VersioningBehavior;
+import io.temporal.workflow.WorkflowVersioningBehavior;
+
+public class MyWorkflowImpl implements MyWorkflow {
+  @Override
+  @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+  public String run(String name) {
+    // ...
+  }
+}
+```
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/java/workers/run-worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+Read the Namespace, address, and Task Queue from environment variables you set on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager rather than passing it in plaintext.
+The Worker above reads `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_KEY`, and `TEMPORAL_TASK_QUEUE`, so the same image can run against any Namespace.
+
+`addApiKey` takes a supplier, which the SDK calls on each request. Rotate the key by returning a new value from the supplier instead of restarting the Worker.
+
+For TLS client certificates instead of an API key, see [Connect to Temporal Cloud](/develop/java/client/temporal-client).
+
+## Package the Worker image {/* #package-image */}
+
+Cloud Run runs one JVM per instance, so give the JVM a heap sized to the instance rather than to the host.
+Java reads the container's memory limit and defaults the maximum heap to a quarter of it, which leaves most of a small instance unused.
+Set `-XX:MaxRAMPercentage` to raise that share:
+
+```dockerfile
+CMD ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/worker.jar"]
+```
+
+A Cloud Run Worker Pool defaults to 512 MiB per instance. Raise `--memory` when you create the pool if your Worker needs more.
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/java/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+
+```java
+public class MyActivitiesImpl implements MyActivities {
+  @Override
+  public String process(List<String> items) {
+    for (int i = 0; i < items.size(); i++) {
+      Activity.getExecutionContext().heartbeat(i);
+      // ... process items.get(i)
+    }
+    return "done";
+  }
+}
+```
+
+For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
+
+## Add observability {/* #add-observability */}
+
+A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
+For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Java SDK](/develop/java/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
