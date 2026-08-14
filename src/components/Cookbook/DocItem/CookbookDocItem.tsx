@@ -2,9 +2,10 @@ import React from 'react';
 import { DocProvider, useDoc } from '@docusaurus/plugin-content-docs/client';
 import DocItemMetadata from '@theme/DocItem/Metadata';
 import type { Props as DocItemProps } from '@theme/DocItem';
-import { HtmlClassNameProvider } from '@docusaurus/theme-common';
+import { HtmlClassNameProvider, ThemeClassNames } from '@docusaurus/theme-common';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
+import HomeBreadcrumbItem from '@theme/DocBreadcrumbs/Items/Home';
 import Link from '@docusaurus/Link';
 import { MDXProvider } from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
@@ -23,14 +24,6 @@ type CookbookIndexItem = {
   id: string;
   source?: string;
 };
-
-function BackArrowIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 16 16" role="img" aria-hidden="true" {...props}>
-      <path d="M6.28 3.22a.75.75 0 0 1 0 1.06L4.06 6.5H13a.75.75 0 0 1 0 1.5H4.06l2.22 2.22a.75.75 0 0 1-1.06 1.06l-3.5-3.5a.75.75 0 0 1 0-1.06l3.5-3.5a.75.75 0 0 1 1.06 0Z" />
-    </svg>
-  );
-}
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -171,15 +164,6 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
   }, [id, indexData, unversionedId]);
   const frontMatterSource = cookbookFrontMatter?.source?.trim();
   const githubHref = pluginSource || frontMatterSource || '';
-  const isGithubEnabled = Boolean(githubHref);
-  const handleGithubClick = React.useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
-      if (!isGithubEnabled) {
-        event.preventDefault();
-      }
-    },
-    [isGithubEnabled]
-  );
   const lastUpdatedLabel = React.useMemo(() => {
     if (frontMatterLastUpdatedLabel) {
       return frontMatterLastUpdatedLabel;
@@ -201,29 +185,40 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
     }
     return <p className={styles.lastUpdated}>Last updated {lastUpdatedLabel}</p>;
   }, [lastUpdatedLabel]);
-  const renderActions = React.useCallback(
+  const renderBreadcrumbs = React.useCallback(
     () => (
-      <div className={styles.actionsRow}>
-        <Link className={styles.actionLink} to="/ai-cookbook">
-          <BackArrowIcon className={styles.actionIcon} />
-          Back to Cookbook
-        </Link>
-        <a
-          className={clsx(styles.actionLink, styles.actionGithub)}
-          href={githubHref || undefined}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-disabled={isGithubEnabled ? undefined : 'true'}
-          onClick={handleGithubClick}
-          tabIndex={isGithubEnabled ? undefined : -1}
-        >
+      <nav
+        className={clsx(ThemeClassNames.docs.docBreadcrumbs, styles.breadcrumbsContainer)}
+        aria-label="Breadcrumbs"
+      >
+        <ul className="breadcrumbs">
+          <HomeBreadcrumbItem />
+          <li className="breadcrumbs__item">
+            <Link className="breadcrumbs__link" to="/ai-cookbook">
+              <span>AI Cookbook</span>
+            </Link>
+          </li>
+          <li className="breadcrumbs__item breadcrumbs__item--active">
+            <span className="breadcrumbs__link">{title}</span>
+          </li>
+        </ul>
+      </nav>
+    ),
+    [title]
+  );
+  const renderGithubSection = React.useCallback(() => {
+    if (!githubHref) {
+      return null;
+    }
+    return (
+      <div className={styles.githubSection}>
+        <a className={styles.actionLink} href={githubHref} target="_blank" rel="noopener noreferrer">
           <GithubIcon className={styles.actionIcon} />
-          Open in GitHub
+          View this recipe&apos;s code on GitHub
         </a>
       </div>
-    ),
-    [githubHref, handleGithubClick, isGithubEnabled]
-  );
+    );
+  }, [githubHref]);
 
   const components = React.useMemo(() => {
     const DefaultH1 =
@@ -238,17 +233,18 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
           actionsInjected = true;
           return (
             <>
-              {renderActions()}
+              {renderBreadcrumbs()}
               <DefaultH1 {...props} />
               <LLMActions />
               {renderLastUpdated()}
+              {renderGithubSection()}
             </>
           );
         }
         return <DefaultH1 {...props} />;
       },
     } as typeof MDXComponents;
-  }, [renderActions, renderLastUpdated, syntheticTitle]);
+  }, [renderBreadcrumbs, renderGithubSection, renderLastUpdated, syntheticTitle]);
 
   return (
     <HtmlClassNameProvider className="cookbook--centered">
@@ -262,10 +258,11 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
             <AgentDirective />
             {syntheticTitle && (
               <header className={styles.syntheticHeader}>
-                {renderActions()}
+                {renderBreadcrumbs()}
                 <h1>{syntheticTitle}</h1>
                 <LLMActions />
                 {renderLastUpdated()}
+                {renderGithubSection()}
               </header>
             )}
             {hasTOC && (
