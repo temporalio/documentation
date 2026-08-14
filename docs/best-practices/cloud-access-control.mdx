@@ -58,8 +58,8 @@ One convention is to give certificates a common name that matches the namespace.
 
 Teams should standardize on either [mTLS certificates](/cloud/certificates) or
 [API keys](/cloud/api-keys) for the following operations:
-- Connect Temporal clients to Temporal Cloud (e.g. Worker processes)
-- Automation (e.g. Temporal Cloud [Operations API](/ops), [Terraform provider](/cloud/terraform-provider), [Temporal CLI](/cli/setup-cli))
+- Connect Temporal clients to Temporal Cloud (for example, Worker processes)
+- Automation (for example, Temporal Cloud [Operations API](/ops), [Terraform provider](/cloud/terraform-provider), [Temporal CLI](/cli/setup-cli))
 
 By default, teams should use API keys with [service accounts](/cloud/manage-access/service-accounts) for both operations. API keys
 are generally easier to set up and rotate than mTLS certificates, and service accounts let you assign account-level and
@@ -108,7 +108,7 @@ Use the following sequence when rotating credentials:
 4. Validate connectivity and normal Workflow execution using the new credential.
 5. Remove the old credential only after all clients and Workers have switched.
 
-### Use Certificate Filters to restrict access when using shared CAs (e.g., `dev` vs `prod`)
+### Use Certificate Filters to restrict access when using shared CAs (for example, `dev` vs `prod`)
 
 Certificate Filters are an additional way of validating using the client certificate presented during client authentication. Give certificates a common name that matches the namespace. This is not a requirement.   
 

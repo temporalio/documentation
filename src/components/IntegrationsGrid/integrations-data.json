@@ -54,6 +54,15 @@
     "href": "https://docs.datadoghq.com/integrations/temporal-cloud-costs/"
   },
   {
+    "name": "Deep Agents",
+    "description": "Make LangChain Deep Agents durable with Temporal Workflows and Activities.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/deepagents"
+  },
+  {
     "name": "Google ADK",
     "description": "Orchestrate Google ADK agents with durable Temporal Workflows.",
     "tags": [
@@ -97,6 +106,15 @@
     ],
     "sdk": "Python",
     "href": "/develop/python/integrations/langgraph"
+  },
+  {
+    "name": "Langfuse",
+    "description": "Trace and debug LLM calls in Temporal Workflows with Langfuse.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://langfuse.com/integrations/frameworks/temporal"
   },
   {
     "name": "LangSmith",

@@ -61,7 +61,6 @@ export const COMPONENT_REGISTRY = {
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
-  PhotoCarousel: "photo-carousel",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
@@ -105,6 +104,10 @@ export const COMPONENT_REGISTRY = {
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
+  CodeToCommandsDemo: "strip-block",
+  CommandsToEventsDemo: "strip-block",
+  HistoryReplayDemo: "strip-block",
+  NonDeterminismDemo: "strip-block",
   OperationsTable: "strip-block",
   InvitationContent: "strip-block",
   AnnotatedCode: "strip-tag",
@@ -1203,22 +1206,6 @@ export function transformMdx(mdxContent, options = {}) {
         outputLines.push(`![${alt}](${src})`);
         outputLines.push("");
       }
-      continue;
-    }
-
-    // --- PhotoCarousel (images + captions arrays) → list of images ---
-    if (state === State.NORMAL && /^\s*<PhotoCarousel\b/.test(line)) {
-      let tag = line;
-      while (!/\/>/.test(tag) && i + 1 < lines.length) {
-        i++;
-        tag += "\n" + lines[i];
-      }
-      const images = parseStringArrayProp(tag, "images");
-      const captions = parseStringArrayProp(tag, "captions");
-      for (let k = 0; k < images.length; k++) {
-        outputLines.push(`![${captions[k] || ""}](${images[k]})`);
-      }
-      if (images.length) outputLines.push("");
       continue;
     }
 

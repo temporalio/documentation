@@ -6,11 +6,13 @@ description: Start building with Temporal using language-specific quickstarts.
 hide_table_of_contents: true
 ---
 
-import { QuickstartCards } from '@site/src/components';
+import { QuickstartCards, CallToAction } from '@site/src/components';
 
 # Quickstarts
 
 Choose your language to get started locally. If you're using Temporal Cloud, check out [Get started with Temporal Cloud](/cloud/get-started).
+
+## Quickstarts by SDK
 
 <QuickstartCards
   items={[
@@ -25,3 +27,22 @@ Choose your language to get started locally. If you're using Temporal Cloud, che
   ]}
 />
 
+## Quickstarts by feature
+
+### Nexus
+Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces.
+
+<QuickstartCards
+  items={[
+    { href: "/develop/go/nexus/quickstart", title: "Go", description: "Build a Nexus Service with the Go SDK." },
+    { href: "/develop/java/nexus/quickstart", title: "Java", description: "Build a Nexus Service with the Java SDK." },
+    { href: "/develop/dotnet/nexus/quickstart", title: ".NET", description: "Build a Nexus Service with the .NET SDK." },
+    { href: "/develop/python/nexus/quickstart", title: "Python", description: "Build a Nexus Service with the Python SDK." },
+    { href: "/develop/typescript/nexus/quickstart", title: "TypeScript", description: "Build a Nexus Service with the TypeScript SDK." },
+  ]}
+/>
+
+<CallToAction href="/with-ai" analyticsId="quickstarts-pair-with-ai-cta">
+  <h3>Pair with an AI coding agent</h3>
+  <p>Give Claude Code, Cursor, or Codex Temporal expertise with Skills and real-time documentation access.</p>
+</CallToAction>

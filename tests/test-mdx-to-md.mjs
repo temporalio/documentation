@@ -640,14 +640,6 @@ Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOK
   assertNotContains(markdown, "<div");
 });
 
-test("PhotoCarousel emits one image per entry with captions", () => {
-  const input = `<PhotoCarousel\n  images={[\n    'https://x/a.jpeg',\n    'https://x/b.jpeg',\n  ]}\n  captions={[\n    'First',\n    'Second',\n  ]}\n/>`;
-  const { markdown } = transformMdx(input);
-  assertContains(markdown, "![First](https://x/a.jpeg)");
-  assertContains(markdown, "![Second](https://x/b.jpeg)");
-  assertNotContains(markdown, "PhotoCarousel");
-});
-
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — SdkTabs
 // ---------------------------------------------------------------------------

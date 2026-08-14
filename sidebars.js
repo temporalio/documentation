@@ -413,6 +413,7 @@ const developJavaCategory = {
           id: 'develop/java/best-practices/index',
         },
         items: [
+          'develop/java/best-practices/error-handling',
           'develop/java/best-practices/testing-suite',
           'develop/java/best-practices/debugging',
           {
@@ -680,6 +681,7 @@ const developPythonCategory = {
         },
         items: [
           'develop/python/integrations/braintrust',
+          'develop/python/integrations/deepagents',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
@@ -1228,47 +1230,6 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Metrics',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/metrics/index',
-          },
-          items: [
-            {
-              type: 'category',
-              label: 'OpenMetrics',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/openmetrics/index',
-              },
-              items: [
-                'cloud/metrics/openmetrics/metrics-integrations',
-                'cloud/metrics/openmetrics/migration-guide',
-                'cloud/metrics/openmetrics/api-reference',
-                'cloud/metrics/openmetrics/metrics-reference',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'PromQL',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/promql',
-              },
-              items: [
-                'cloud/metrics/general-setup',
-                'cloud/metrics/reference',
-                'cloud/metrics/prometheus-grafana'
-              ],
-            },
-            'cloud/metrics/sdk-metrics-setup',
-          ],
-        },
-        {
-          type: 'category',
           label: 'Billing and Usage',
           collapsed: true,
           link: {
@@ -1356,9 +1317,61 @@ module.exports = {
         },
         'cloud/projects',
         'cloud/capacity-modes',
-        'cloud/worker-health',
-        'cloud/service-health',
-        'cloud/notifications',
+        {
+          type: 'category',
+          label: 'Monitor',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/monitor/index',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'Set up metrics',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/metrics/index',
+              },
+              items: [
+                {
+                  type: 'category',
+                  label: 'Set up Cloud metrics',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'cloud/metrics/openmetrics/index',
+                  },
+                  items: [
+                    'cloud/metrics/openmetrics/metrics-integrations',
+                    'cloud/metrics/openmetrics/migration-guide',
+                    'cloud/metrics/openmetrics/api-reference',
+                    'cloud/metrics/openmetrics/metrics-reference',
+                  ],
+                },
+                'cloud/metrics/sdk-metrics-setup',
+                {
+                  type: 'category',
+                  label: 'Legacy PromQL endpoint (deprecated)',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'cloud/metrics/promql',
+                  },
+                  items: [
+                    'cloud/metrics/general-setup',
+                    'cloud/metrics/reference',
+                    'cloud/metrics/prometheus-grafana'
+                  ],
+                },
+              ],
+            },
+            'cloud/worker-health',
+            'cloud/service-health',
+            'cloud/notifications',
+          ],
+        },
         'cloud/operation-api',
         'cloud/terraform-provider',
         {
@@ -1440,7 +1453,25 @@ module.exports = {
             'production-deployment/self-hosted-guide/namespaces',
             'production-deployment/self-hosted-guide/security',
             'production-deployment/self-hosted-guide/monitoring',
-            'production-deployment/self-hosted-guide/visibility',
+            {
+              type: 'category',
+              label: 'Visibility',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/self-hosted-guide/visibility/index',
+              },
+              items: [
+                'production-deployment/self-hosted-guide/visibility/mysql',
+                'production-deployment/self-hosted-guide/visibility/postgresql',
+                'production-deployment/self-hosted-guide/visibility/sqlite',
+                'production-deployment/self-hosted-guide/visibility/legacy-standard',
+                'production-deployment/self-hosted-guide/visibility/elasticsearch',
+                'production-deployment/self-hosted-guide/visibility/dual-visibility',
+                'production-deployment/self-hosted-guide/visibility/migrate',
+                'production-deployment/self-hosted-guide/visibility/custom-search-attributes',
+              ],
+            },
             'production-deployment/self-hosted-guide/upgrade-server',
             'production-deployment/self-hosted-guide/archival',
             'production-deployment/self-hosted-guide/multi-cluster-replication',
@@ -1457,11 +1488,25 @@ module.exports = {
             id: 'production-deployment/worker-deployments/index',
           },
           items: [
-            'production-deployment/worker-deployments/worker-versioning',
-            'production-deployment/worker-deployments/recover-pinned-workflows',
+            {
+              type: 'category',
+              label: 'Worker Versioning',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/worker-versioning/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/worker-versioning/configure-worker',
+                'production-deployment/worker-deployments/worker-versioning/roll-out-and-pin',
+                'production-deployment/worker-deployments/worker-versioning/upgrade-on-continue-as-new',
+                'production-deployment/worker-deployments/worker-versioning/sunset-and-gc',
+                'production-deployment/worker-deployments/recover-pinned-workflows',
+                'production-deployment/worker-deployments/unversioned-to-versioned-migration',
+              ],
+            },
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
-            'production-deployment/worker-deployments/unversioned-to-versioned-migration',
             {
               type: 'category',
               label: 'Serverless Workers',
@@ -1500,7 +1545,20 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
-        'production-deployment/temporal-proxy/index',
+        {
+          type: 'category',
+          label: 'Temporal Proxy',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'production-deployment/temporal-proxy/index',
+          },
+          items: [
+            'production-deployment/temporal-proxy/configure',
+            'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/deploy-kubernetes',
+          ],
+        },
       ],
     },
     {
@@ -2061,4 +2119,3 @@ module.exports = {
     'tctl-v1/workflow',
   ],
 };
-

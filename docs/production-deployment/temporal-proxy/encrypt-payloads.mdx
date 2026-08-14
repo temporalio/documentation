@@ -1,0 +1,306 @@
+---
+id: encrypt-payloads
+title: Encrypt payloads with Temporal Proxy
+sidebar_label: Encrypt payloads
+description: Configure Temporal Proxy payload encryption with envelope encryption and cloud or custom KMS backends.
+toc_max_heading_level: 4
+keywords:
+  - temporal-proxy
+  - encryption
+  - security
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+The proxy can encrypt Workflow and Activity payloads on the hop to an upstream and decrypt them on responses, set under
+the top-level `encryption` block. It is off by default. Workers and Clients keep exchanging cleartext with the gateway;
+the proxy seals payloads before they leave and opens them on the way back, so the upstream Temporal Service only ever
+stores ciphertext. Encryption is transparent, requiring no change to Worker or Client code.
+
+It uses envelope encryption: a short-lived data encryption key (DEK) encrypts each payload with AES-256-GCM, and a KMS
+key you own wraps the DEK. The wrapped DEK and a reference to the key that wrapped it travel with the payload, so the
+proxy never holds key material; it calls your KMS to wrap and unwrap DEKs. Supported key schemes are `awskms`,
+`azurekeyvault`, and `gcpkms` for cloud KMS, `extension` for a
+[key management backend you run yourself](#plug-in-your-own-key-management-backend), and `testing` for local development
+only.
+
+```mermaid
+flowchart LR
+    App[Worker / SDK Client]
+
+    subgraph Proxy[Temporal Proxy]
+        direction TB
+        Seal["Encrypt on the way out:<br/>DEK seals the payload,<br/>KMS key wraps the DEK"]
+        Open["Decrypt on the way back:<br/>KMS key unwraps the DEK,<br/>DEK opens the payload"]
+    end
+
+    KMS[("Your KMS<br/>(AWS, Azure, or GCP)")]
+    Upstream[Upstream Temporal Service]
+
+    App -->|cleartext request| Seal
+    Seal -->|wrap DEK| KMS
+    Seal -->|ciphertext| Upstream
+    Upstream -->|ciphertext response| Open
+    KMS -->|unwrap DEK| Open
+    Open -->|cleartext response| App
+```
+
+**Configuration**
+
+```yaml
+encryption:
+  enabled: true # Encrypt new payloads. Optional; defaults to false.
+  cacheSize: 100 # Bounds the in-memory decrypted-DEK cache. Must be non-negative.
+  default: # Fallback key policy for any Namespace without an override.
+    uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/abcd-1234?region=us-east-1
+    duration: 1h # How long a DEK is used for new encryption before it rotates.
+    renewBefore: 15m # Lead time before expiry to pre-rotate. Must be less than duration.
+  overrides: # Per-Namespace policies, keyed by local (pre-translation) Namespace.
+    payments:
+      uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v1
+      duration: 30m
+      renewBefore: 5m
+```
+
+- `default` is a key policy required whenever `enabled: true`. It makes encryption fail-closed: any Namespace without
+  its own override, including Namespaces created after startup, uses the default rather than sending plaintext. Enabling
+  encryption without a `default` is a startup error.
+- `overrides` maps a local Namespace to its own key policy, which takes precedence over `default`. The keys are the
+  local (pre-translation) Namespace names. Reach for overrides to scope blast radius, spread load across KMS keys, or
+  keep a tenant's key in its own region or provider.
+- `cacheSize` bounds the in-memory cache of decrypted DEKs, which avoids a KMS call on every message. It must be
+  non-negative.
+
+`default` and each `overrides` entry are key policies with the same shape:
+
+| Field         | Meaning                                                                                                                                                                                                   |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `uri`         | Active key that wraps new DEKs. Required. Scheme must be `awskms`, `azurekeyvault`, `gcpkms`, `extension`, or `testing`. Each policy's `uri` must be unique across `default` and every `overrides` entry. |
+| `decryptURIs` | Additional KMS keys accepted only when unwrapping existing DEKs, for key migration. Optional.                                                                                                             |
+| `duration`    | How long a DEK is used for new encryption before it rotates. Must be greater than zero.                                                                                                                   |
+| `renewBefore` | Lead time before expiry at which the proxy pre-rotates the DEK. Must be at least zero and less than `duration`.                                                                                           |
+
+DEK rotation is automatic on the `duration` and `renewBefore` schedule; you do not manage it. Older payloads stay
+decryptable because their wrapped DEK and key reference travel with them.
+
+To change the active key without losing access to existing data, for example when switching providers, promote the new
+key to `uri` and move the old one to `decryptURIs` in the same update. New payloads use the new key; older payloads
+still resolve against the decrypt-only entry:
+
+```yaml
+encryption:
+  default:
+    uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v2
+    decryptURIs:
+      - gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v1
+```
+
+:::note Multi-region deployments need a multi-region key
+
+To stay available alongside a highly available upstream that fails over across regions, such as a Temporal Cloud High
+Availability Namespace whose endpoint moves between regions, you typically run the proxy in more than one region. After
+a failover, a payload sealed by the proxy in one region may be opened by the proxy in another, so every regional proxy
+must be able to unwrap the others' DEKs. Back the key with a multi-region KMS key so the same key material is reachable
+from every region. How you express that differs by provider:
+
+- **AWS:** use a multi-Region key (its ID starts with `mrk-`) and replicate it into each region. The replicas share key
+  material but each has its own regional ARN, so set each proxy's `uri` to its local ARN and list the other regions'
+  ARNs in `decryptURIs`:
+
+  ```yaml
+  encryption:
+    default:
+      # Config for the us-east-1 proxy.
+      uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/mrk-abcd1234?region=us-east-1
+      decryptURIs:
+        - awskms:///arn:aws:kms:us-west-2:123456789012:key/mrk-abcd1234?region=us-west-2
+  ```
+
+- **Azure:** Key Vault keys are regional. Use a separate vault per region (or geo-replication), and, because each vault
+  gives the key a distinct URI, set each proxy's `uri` to its local vault and list the other vaults' keys in
+  `decryptURIs`.
+- **GCP:** create the key in a multi-region location (for example, `locations/us`) or in `global`. The resource name is
+  the same everywhere, so every proxy uses the identical `uri` and no `decryptURIs` are needed:
+  `gcpkms://projects/my-project/locations/us/keyRings/codec/cryptoKeys/my-key`.
+
+For a single-region proxy deployment, a regional key is the right choice; reach for a multi-region key only when the
+proxy itself spans regions.
+
+:::
+
+Decryption always runs on any payload that references a known key, regardless of `enabled`. Setting `enabled: false`
+stops new encryption but keeps opening older payloads, which is a valid decrypt-only posture. The proxy reads encryption
+configuration at startup, so restart it after changing keys or policies.
+
+The `testing://` scheme holds its key material in the configuration itself and provides no real security. Use it only
+for local development, and point production at `awskms`, `azurekeyvault`, `gcpkms`, or an extension server.
+
+The proxy authenticates to each cloud provider through that provider's default credential chain, so no key material or
+static cloud credentials live in the proxy configuration. On Kubernetes, bind the proxy's service account to a cloud
+identity (IRSA or Pod Identity on AWS, Workload Identity on Azure and GCP); off Kubernetes, the SDKs resolve credentials
+from the host. Grant that identity only the permission to encrypt and decrypt with the specific key, as shown for each
+provider below.
+
+## AWS KMS {/* #aws-kms */}
+
+Wrap DEKs with an AWS KMS symmetric key, referenced by ARN. The `awskms://` scheme uses a triple slash (`awskms:///`) so
+the ARN can sit in the URL path; add `?region=` when the key's region differs from the proxy's ambient region. See the
+[AWS KMS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html).
+
+The proxy needs `kms:Encrypt` and `kms:Decrypt` on the key. Attach them as an inline policy to the IAM role the proxy
+runs as:
+
+```bash
+aws iam put-role-policy \
+  --role-name temporal-proxy \
+  --policy-name temporal-proxy-kms \
+  --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": ["kms:Encrypt", "kms:Decrypt"],
+        "Resource": "arn:aws:kms:us-east-1:123456789012:key/abcd-1234"
+      }
+    ]
+  }'
+```
+
+```yaml
+encryption:
+  enabled: true
+  default:
+    uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/abcd-1234?region=us-east-1
+    duration: 1h
+    renewBefore: 15m
+```
+
+## Azure Key Vault
+
+Wrap DEKs with a Key Vault key. The default algorithm is RSA-OAEP-256, so the key must be an RSA key; append
+`?algorithm=` to the URI to override it. The key version is optional and defaults to the latest version. See the
+[Azure Key Vault documentation](https://learn.microsoft.com/en-us/azure/key-vault/general/overview).
+
+The proxy needs the `encrypt` and `decrypt` key operations, granted by the built-in Key Vault Crypto User role (Azure
+RBAC) or an access policy that allows the Encrypt and Decrypt key permissions:
+
+```bash
+az role assignment create \
+  --assignee <proxy-identity> \
+  --role "Key Vault Crypto User" \
+  --scope <key-vault-resource-id>
+```
+
+```yaml
+encryption:
+  enabled: true
+  default:
+    uri: azurekeyvault://my-vault.vault.azure.net/keys/my-key
+    duration: 1h
+    renewBefore: 15m
+```
+
+## Google Cloud KMS
+
+Wrap DEKs with a Cloud KMS key, referenced by its full resource name. See the
+[Cloud KMS documentation](https://cloud.google.com/kms/docs).
+
+The proxy needs `cloudkms.cryptoKeyVersions.useToEncrypt` and `cloudkms.cryptoKeyVersions.useToDecrypt`, granted by the
+`roles/cloudkms.cryptoKeyEncrypterDecrypter` role on the key and bound to the proxy's service account:
+
+```bash
+gcloud kms keys add-iam-policy-binding my-key \
+  --location global --keyring codec \
+  --member serviceAccount:proxy@my-project.iam.gserviceaccount.com \
+  --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+```
+
+```yaml
+encryption:
+  enabled: true
+  default:
+    uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/my-key
+    duration: 1h
+    renewBefore: 15m
+```
+
+## Plug in your own key management backend {/* #plug-in-your-own-key-management-backend */}
+
+To wrap DEKs with a backend the proxy has no built-in support for, such as an on-prem HSM or an internal key service,
+run that backend as a gRPC server and point the proxy at it. The proxy calls it to wrap and unwrap DEKs only; payload
+plaintext never reaches it.
+
+Declare the server under the top-level `extensionServers` block, then address its keys with the `extension://` scheme:
+
+```yaml
+extensionServers:
+  - name: kms
+    hostPort: 127.0.0.1:9443 # Literal host:port. Templates are rejected.
+    tls:
+      ca: /etc/temporal-proxy/certs/kms/ca.pem
+      serverName: kms.internal # Set when the dialed host does not match the certificate.
+    credentials:
+      static:
+        apiKey: ${KMS_API_KEY} # Requires TLS, as with upstreams.
+
+encryption:
+  enabled: true
+  default:
+    uri: extension://kms/payloads # Host names an entry in extensionServers.
+    duration: 1h
+    renewBefore: 15m
+```
+
+- `name` identifies the server so key URIs can reference it. Names and `hostPort` values must be unique across the list,
+  and every `extension://` URI must name a configured server.
+- `hostPort` must be a literal address. Unlike an upstream, an extension server is dialed at a fixed address rather than
+  resolved per request, so a templated value is rejected at startup.
+- `tls` takes the same keys as an upstream's, and `credentials` works the same way, including the rule that credentials
+  require TLS.
+- The path segment in the key URI, `payloads` above, is a proxy-side key name. It never reaches the extension server,
+  which selects keys by Namespace, but it must be unique across `default` and every `overrides` entry.
+
+The server implements `api.kms.v1.EncryptionService`, two RPCs defined in
+[`api/kms/v1`](https://github.com/temporalio/temporal-proxy/tree/main/api/kms/v1):
+
+| RPC       | Receives                                          | Returns          |
+| --------- | ------------------------------------------------- | ---------------- |
+| `Encrypt` | the local Namespace and the DEK to wrap           | the wrapped DEK  |
+| `Decrypt` | a wrapped DEK, with no Namespace or other context | the original DEK |
+
+Two constraints follow from that shape. `Decrypt` gets ciphertext and nothing else, so whatever your server returns from
+`Encrypt` must carry enough information to identify the key that produced it. And the Namespace on `Encrypt` is always
+the local, pre-translation name, so a server keying on Namespace must use that name rather than the translated remote
+one.
+
+The proxy builds the connection when it builds its key policies, so a malformed address, credentials without TLS, or an
+unreadable `ca` file all fail at startup. Peer verification happens later, because gRPC connects lazily: a `ca` or
+`serverName` that does not match the server's certificate is not discovered until the first payload needs a key, and it
+surfaces as a hung request rather than a clear error.
+
+The [KMS extension server example](https://github.com/temporalio/temporal-proxy/tree/main/examples/kms) runs the whole
+path on localhost, with a reference provider you can read as a starting point.
+
+:::caution Deleting a key is irreversible
+
+Deleting a KMS key destroys everything encrypted under it, and neither Temporal nor your cloud provider can recover it.
+Keep every key reachable, as `uri` or in `decryptURIs`, until every payload it wrapped is gone from every system the
+proxy decrypts for, including Workflow history, visibility, and Archival storage. In practice, keep a key at least until
+the Workflow Retention Period has elapsed.
+
+To retire a key, revoke the proxy's permissions rather than deleting it. Removing access is reversible: you can re-grant
+it later if a payload still needs opening, whereas a deleted key is gone for good. Revoking only the encrypt permission
+while leaving decrypt in place also lets you stop new encryption without stranding existing payloads.
+
+:::
+

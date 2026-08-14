@@ -44,7 +44,7 @@ sequenceDiagram
 1. In a normal start, the server queues the Workflow execution and the Matching Service waits for an available Worker slot. The Worker polls, picks up the task, runs it, and reports back—adding an extra server round-trip.
 2. With Eager Workflow Start enabled, the server detects that the requesting client has a co-located Worker with an available slot. Instead of queuing the task, the server attaches the first Workflow Task to the `StartWorkflowExecution` response.
 3. The Worker processes the Workflow Task immediately upon receiving the response. No separate poll is required.
-4. If the server cannot fulfill the eager request (e.g., no local slot is available), it falls back silently to normal dispatch. Your code does not need to handle this case explicitly.
+4. If the server cannot fulfill the eager request (for example, no local slot is available), it falls back silently to normal dispatch. Your code does not need to handle this case explicitly.
 
 ## Problem
 
@@ -187,7 +187,7 @@ The TypeScript SDK does not currently support Eager Workflow Start. Use [Local A
 
 **Good fit:**
 
-- The workflow starter and Worker run in the same deployment unit (e.g., a single service that both handles API requests and runs Workers)
+- The workflow starter and Worker run in the same deployment unit (for example, a single service that both handles API requests and runs Workers)
 - You need the absolute minimum total-workflow latency and are already using Local Activities
 - The language is Go, Java, or Python
 
@@ -212,7 +212,7 @@ The TypeScript SDK does not currently support Eager Workflow Start. Use [Local A
 
 - **Combine with Local Activities.** Eager Workflow Start eliminates the Matching overhead on the first Workflow Task; Local Activities eliminate server round-trips within each Workflow Task. Together they provide the greatest total latency reduction.
 - **Use a non-blocking Worker start.** Start the Worker before executing the Workflow so it has an available slot. In Go, use `w.Start()` and defer `w.Stop()`. In Python, use `async with Worker(...)`. In Java, call `factory.start()` before creating the workflow stub.
-- **Do not rely on eager dispatch always firing.** The server falls back to normal dispatch if no local slot is available (e.g., the Worker is at capacity). Design the Workflow to work correctly in both cases.
+- **Do not rely on eager dispatch always firing.** The server falls back to normal dispatch if no local slot is available (for example, the Worker is at capacity). Design the Workflow to work correctly in both cases.
 - **Share the same client and connection.** The Worker and the workflow starter must use the same `WorkflowClient` instance (Java), `client.Client` (Go), or `Client` (Python). A Worker using a different connection cannot receive eager tasks from another client.
 - **Be mindful of resource sharing in co-located deployments.** When a Worker runs in the same process as a request handler, they share CPU, memory, and failure domains. A spike in activity execution can slow request handling, and vice versa. Monitor Worker CPU, Workflow Task execution latency, and task queue depth to ensure Worker load does not affect client-facing latency.
 

@@ -8,7 +8,7 @@ const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/consta
 
 module.exports = async function createConfigAsync() {
   return {
-    title: 'Temporal Platform Documentation',
+    title: 'Temporal Documentation',
     tagline: 'Build invincible applications',
     url: 'https://docs.temporal.io',
     baseUrl: '/',

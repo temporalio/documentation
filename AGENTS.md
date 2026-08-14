@@ -7,11 +7,12 @@ repository.
 
 | Topic                        | File                                                         |
 | ---------------------------- | ------------------------------------------------------------ |
-| Where content belongs        | [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) |
-| React components in MDX      | [COMPONENTS.md](./COMPONENTS.md)                             |
-| Mermaid diagrams             | [MERMAID.md](./readme/MERMAID.md)                            |
-| LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)               |
-| Component → Markdown mapping | [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md)             |
+| Where content belongs        | [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md) |
+| React components in MDX      | [COMPONENTS.md](./readme/COMPONENTS.md)                             |
+| Mermaid diagrams             | [MERMAID.md](./readme/MERMAID.md)                                   |
+| LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./readme/MARKDOWN_PIPELINE.md)               |
+| Component → Markdown mapping | [COMPONENT_REGISTRY.md](./readme/COMPONENT_REGISTRY.md)             |
+| CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
 
 ## Repository overview
 
@@ -22,11 +23,11 @@ repository.
 
 ## Where to put content
 
-Use [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) to choose the section.
+Use [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md) to choose the section.
 
-## Style Guide
+## Style guide
 
-Follow [STYLE.md](./STYLE.md) and Vale rules in `vale/styles/`. The most common mistakes:
+Follow [STYLE.md](./readme/STYLE.md) and Vale rules in `vale/styles/`. The most common mistakes:
 
 ### Temporal terms are proper nouns
 
@@ -63,7 +64,7 @@ In code blocks, follow each language's conventions.
 
 ### Writing style
 
-Follow [STYLE.md](./STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
+Follow [STYLE.md](./readme/STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
 for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). A few
 additions specific to model output:
 
@@ -103,8 +104,6 @@ id: page-id
 title: Page title
 sidebar_label: Short label
 description: One sentence for SEO and previews.
-keywords:
-  - keyword
 tags:
   - Concepts
 ---
@@ -112,16 +111,16 @@ tags:
 
 - Write `description` as a single clear sentence.
 - Do not change `id` or `slug` without a redirect plan.
-- Match `tags` and `keywords` to sibling pages in the same section.
-- Use existing concepts and keywords. Don't add new ones unless it's a new feature.
+- Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
+- Do not add a `keywords` field. It isn't used by the site.
 
 ## MDX and components
 
 - Pages are `.mdx` with YAML frontmatter (see [Frontmatter](#frontmatter) above).
 - Import shared components from `@site/src/components` unless a page uses a one-off import path already established
   nearby.
-- Before adding a component, check [COMPONENTS.md](./COMPONENTS.md) and
-  [COMPONENT_REGISTRY.md](./COMPONENT_REGISTRY.md).
+- Before adding a component, check [COMPONENTS.md](./readme/COMPONENTS.md) and
+  [COMPONENT_REGISTRY.md](./readme/COMPONENT_REGISTRY.md).
 - Reuse existing components (`Tabs`, `SdkTabs`, `CaptionedImage`, `ViewSourceCodeNotice`, etc.) instead of inventing
   inline HTML patterns.
 - Interactive demos live in `src/components/elements/`. Export new public components from `src/components/index.js` when
@@ -140,6 +139,12 @@ Adding or moving pages usually requires:
 - Prefer code extracted from CI-enabled sample repos via [Snipsync](https://github.com/temporalio/snipsync).
 - Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper,
   then run `yarn snipsync`.
+
+## Pull requests
+
+- If the change is blocked on something outside the docs team's control (for example, an upstream PR in another repo, an
+  unreleased SDK feature, or a decision pending from another team), open the PR as a **draft**, not a regular PR. Only
+  mark it ready for review once the blocker clears and the docs team can actually merge it.
 
 ## Commands
 
@@ -167,8 +172,8 @@ record it in `bin/metrics-baseline.json` rather than suppressing the check.
 `yarn check:orphans` reports pages that will build and get a real URL but aren't reachable from `sidebars.js`. A page
 that should stay linkable without navigation belongs in frontmatter as `unlisted: true`, not `draft: true` (draft pages
 don't build in production at all, which 404s any inbound links). A page that's a known, accepted exception for now
-belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See `UTILITIES.md` for
-details.
+belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
+[UTILITIES.md](./readme/UTILITIES.md) for details.
 
 Vale linting (style):
 
@@ -179,7 +184,7 @@ vale docs/                            # Full Vale style set
 ```
 
 Before finishing any docs change, run the CI-scoped command (`vale --config .vale-ci.ini docs/`) against the files you
-touched and resolve every result it reports, unless it's a genuine false positive (e.g. a heading that's a literal
+touched and resolve every result it reports, unless it's a genuine false positive (for example, a heading that's a literal
 command/metric name, or a bare URL that must stay absolute for autolinking). `.vale-ci.ini` enables only the small set
 of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) that gate PRs in
 `.github/workflows/vale-ci.yml` — treat that as the bar to hit.
