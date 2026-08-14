@@ -29,7 +29,7 @@ Before you start, it helps to know which Temporal building block replaces each C
 | Task (`@app.task`)                 | Activity (`@activity.defn`)         | A single unit of non-deterministic work (I/O, API calls) |
 | _(no direct equivalent)_           | Workflow (`@workflow.defn`)         | Durable orchestration that calls Activities              |
 | Worker (`celery worker`)           | Worker (`temporalio.worker.Worker`) | Process that executes your code                          |
-| Broker \+ result backend           | Temporal service                    | Stores queue state, results, and history                 |
+| Broker \+ result backend           | Temporal Service                    | Stores queue state, results, and history                 |
 | `task.delay(...)`                  | `client.start_workflow(...)`        | Kick off work                                            |
 | `AsyncResult.get()`                | `handle.result()`                   | Retrieve the return value                                |
 | `max_retries` / `self.retry()`     | `RetryPolicy`                       | Automatic retries                                        |
