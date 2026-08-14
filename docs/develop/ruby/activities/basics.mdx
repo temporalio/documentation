@@ -57,7 +57,7 @@ This section covers advanced concurrency and execution options that most users w
 
 :::
 
-By default, activities run in the "thread pool executor" (i.e. `Temporalio::Worker::ActivityExecutor::ThreadPool`).
+By default, activities run in the "thread pool executor" (that is, `Temporalio::Worker::ActivityExecutor::ThreadPool`).
 This default is shared across all workers and is a naive thread pool that continually makes threads as needed when none are
 idle/available to handle incoming work.
 If a thread sits idle long enough, it will be killed.

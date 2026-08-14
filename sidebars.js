@@ -713,6 +713,7 @@ const developPythonCategory = {
         },
         items: [
           'develop/python/integrations/braintrust',
+          'develop/python/integrations/deepagents',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
@@ -1277,47 +1278,6 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Metrics',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/metrics/index',
-          },
-          items: [
-            {
-              type: 'category',
-              label: 'OpenMetrics',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/openmetrics/index',
-              },
-              items: [
-                'cloud/metrics/openmetrics/metrics-integrations',
-                'cloud/metrics/openmetrics/migration-guide',
-                'cloud/metrics/openmetrics/api-reference',
-                'cloud/metrics/openmetrics/metrics-reference',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'PromQL',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/promql',
-              },
-              items: [
-                'cloud/metrics/general-setup',
-                'cloud/metrics/reference',
-                'cloud/metrics/prometheus-grafana'
-              ],
-            },
-            'cloud/metrics/sdk-metrics-setup',
-          ],
-        },
-        {
-          type: 'category',
           label: 'Billing and Usage',
           collapsed: true,
           link: {
@@ -1405,9 +1365,61 @@ module.exports = {
         },
         'cloud/projects',
         'cloud/capacity-modes',
-        'cloud/worker-health',
-        'cloud/service-health',
-        'cloud/notifications',
+        {
+          type: 'category',
+          label: 'Monitor',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/monitor/index',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'Set up metrics',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/metrics/index',
+              },
+              items: [
+                {
+                  type: 'category',
+                  label: 'Set up Cloud metrics',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'cloud/metrics/openmetrics/index',
+                  },
+                  items: [
+                    'cloud/metrics/openmetrics/metrics-integrations',
+                    'cloud/metrics/openmetrics/migration-guide',
+                    'cloud/metrics/openmetrics/api-reference',
+                    'cloud/metrics/openmetrics/metrics-reference',
+                  ],
+                },
+                'cloud/metrics/sdk-metrics-setup',
+                {
+                  type: 'category',
+                  label: 'Legacy PromQL endpoint (deprecated)',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'cloud/metrics/promql',
+                  },
+                  items: [
+                    'cloud/metrics/general-setup',
+                    'cloud/metrics/reference',
+                    'cloud/metrics/prometheus-grafana'
+                  ],
+                },
+              ],
+            },
+            'cloud/worker-health',
+            'cloud/service-health',
+            'cloud/notifications',
+          ],
+        },
         'cloud/operation-api',
         'cloud/terraform-provider',
         {
@@ -2155,4 +2167,3 @@ module.exports = {
     'tctl-v1/workflow',
   ],
 };
-

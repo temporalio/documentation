@@ -18,7 +18,7 @@ The Fairness pattern distributes Worker capacity proportionally across tenants o
 
 ## Problem
 
-When multiple tenants (e.g. customers) share a single Task Queue, a high-volume tenant can fill the queue and occupy all Worker slots. Other tenants receive no service until the dominant tenant's backlog drains. This starvation violates throughput guarantees and makes latency for lower-volume tenants unpredictable under burst conditions.
+When multiple tenants (for example, customers) share a single Task Queue, a high-volume tenant can fill the queue and occupy all Worker slots. Other tenants receive no service until the dominant tenant's backlog drains. This starvation violates throughput guarantees and makes latency for lower-volume tenants unpredictable under burst conditions.
 
 The classic workaround—assigning one Task Queue per tenant—scales poorly: each new tenant requires a new Worker deployment, idle capacity on low-traffic tenants cannot be used by busy ones, and queue management complexity grows with tenant count.
 

@@ -8,7 +8,7 @@ const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/consta
 
 module.exports = async function createConfigAsync() {
   return {
-    title: 'Temporal Platform Documentation',
+    title: 'Temporal Documentation',
     tagline: 'Build invincible applications',
     url: 'https://docs.temporal.io',
     baseUrl: '/',
@@ -152,34 +152,27 @@ module.exports = async function createConfigAsync() {
         copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.`,
         links: [
           {
+            title: 'Resources',
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/temporalio',
+                label: 'Glossary',
+                to: '/glossary',
               },
               {
-                label: 'Twitter',
-                href: 'https://x.com/temporalio',
+                label: 'Learn Temporal',
+                href: 'https://learn.temporal.io',
+              },
+              {
+                label: 'Code Exchange',
+                href: 'https://temporal.io/code-exchange',
+              },
+              {
+                label: 'Blog',
+                href: 'https://temporal.io/blog',
               },
               {
                 label: 'YouTube',
                 href: 'https://www.youtube.com/c/Temporalio',
-              },
-              {
-                label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
-              },
-            ],
-          },
-          {
-            items: [
-              {
-                label: 'Temporal Cloud',
-                href: 'https://temporal.io/cloud',
-              },
-              {
-                label: 'Meetups',
-                href: 'https://temporal.io/community#events',
               },
               {
                 label: 'Support forum',
@@ -192,42 +185,40 @@ module.exports = async function createConfigAsync() {
             ],
           },
           {
+            title: 'Company',
             items: [
               {
-                label: 'Learn Temporal',
-                href: 'https://learn.temporal.io',
+                label: 'Temporal Cloud',
+                href: 'https://temporal.io/cloud',
               },
               {
-                label: 'Blog',
-                href: 'https://temporal.io/blog',
+                label: 'GitHub',
+                href: 'https://github.com/temporalio',
               },
               {
-                label: 'Use cases',
-                href: 'https://temporal.io/in-use',
+                label: 'Trust Center',
+                href: 'https://trust.temporal.io/',
               },
               {
-                label: 'Newsletter signup',
-                href: 'https://pages.temporal.io/newsletter-subscribe',
+                label: 'Security',
+                href: 'https://temporal.io/security',
+              },
+              {
+                label: 'Changelog',
+                href: 'https://temporal.io/changelog',
               },
             ],
           },
           {
+            title: 'For agents',
             items: [
               {
-                label: 'Security',
-                to: '/security',
+                label: 'Develop with AI',
+                to: '/with-ai',
               },
               {
-                label: 'Privacy policy',
-                href: 'https://temporal.io/global-privacy-policy',
-              },
-              {
-                label: 'Terms of service',
-                href: 'https://temporal.io/terms-of-service',
-              },
-              {
-                label: "We're hiring",
-                href: 'https://temporal.io/careers',
+                label: 'llms.txt',
+                href: 'https://docs.temporal.io/llms.txt',
               },
             ],
           },
