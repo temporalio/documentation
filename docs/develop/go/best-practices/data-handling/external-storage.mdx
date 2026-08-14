@@ -108,9 +108,7 @@ follow. Only the driver setup differs between the two. Everything after that is 
     [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
 
     <!--SNIPSTART go-gcs-driver-create-->
-
     [features/snippets/external_storage/gcs_setup/gcs_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/gcs_setup/gcs_driver_create.go)
-
     ```go
     gcsClient, err := storage.NewClient(context.Background())
     if err != nil {
@@ -125,7 +123,6 @@ follow. Only the driver setup differs between the two. Everything after that is 
     	log.Fatalf("create GCS driver: %v", err)
     }
     ```
-
     <!--SNIPEND-->
 
            </TabItem>
@@ -139,9 +136,7 @@ follow. Only the driver setup differs between the two. Everything after that is 
     driver:
 
     <!--SNIPSTART go-s3-external-storage-setup-->
-
     [features/snippets/external_storage/s3_setup/s3_external_storage_setup.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.go)
-
     ```go
     c, err := client.Dial(client.Options{
     	HostPort: "localhost:7233",
@@ -156,7 +151,6 @@ follow. Only the driver setup differs between the two. Everything after that is 
 
     w := worker.New(c, "my-task-queue", worker.Options{})
     ```
-
     <!--SNIPEND-->
 
     A Worker inherits this configuration from the Client it is created with. When your Workers run in their own process,
@@ -189,9 +183,7 @@ The following example shows a custom driver that uses local disk as the backing 
 development and testing only. In production, use a durable storage system that is accessible to all Workers:
 
 <!--SNIPSTART go-custom-storage-driver-->
-
 [features/snippets/external_storage/custom_driver/custom_storage_driver.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.go)
-
 ```go
 type LocalDiskStorageDriver struct {
 	storeDir string
@@ -270,7 +262,6 @@ func (d *LocalDiskStorageDriver) Retrieve(
 	return payloads, nil
 }
 ```
-
 <!--SNIPEND-->
 
 The following sections walk through the key parts of the driver implementation.
@@ -332,9 +323,7 @@ the threshold stay inline in Event History. The size compared against the thresh
 which includes its metadata, not just your data.
 
 <!--SNIPSTART go-external-storage-threshold-->
-
 [features/snippets/external_storage/threshold/threshold_config.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.go)
-
 ```go
 c, err := client.Dial(client.Options{
 	ExternalStorage: converter.ExternalStorage{
@@ -343,7 +332,6 @@ c, err := client.Dial(client.Options{
 	},
 })
 ```
-
 <!--SNIPEND-->
 
 ## Use multiple storage drivers
@@ -370,9 +358,7 @@ The following example registers two drivers but always selects `preferredDriver`
 only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART go-external-storage-multiple-drivers-->
-
 [features/snippets/external_storage/multiple_drivers/multiple_drivers.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.go)
-
 ```go
 type PreferredSelector struct {
 	preferred converter.StorageDriver
@@ -392,7 +378,6 @@ func MultipleDriversSetup(preferredDriver, legacyDriver converter.StorageDriver)
 	}
 }
 ```
-
 <!--SNIPEND-->
 
 ## Multi-region durability with Amazon S3
