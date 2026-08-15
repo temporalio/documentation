@@ -33,7 +33,7 @@ That client library contains three things:
 
 - **A typed model.** An idiomatic struct, class, interface, or dataclass, with doc comments carried over from the schema.
 - **A runtime validator.** One validator per type, applied when a value is parsed off the wire and again when it is serialized onto it. See [Validation guarantees](#validation-guarantees) for more.
-- **A [Nexus Service Contract](/glossary#nexus-service-contract) definition.** The generated Service and Operation declarations you register on a Worker and call from a caller Workflow.
+- **A [Nexus Service Contract](/glossary#nexus-service-contract) definition**, for a file that declares Services. These are the Service and Operation declarations you register on a Worker and call from a caller Workflow. A pure JSON Schema file declares none, so it produces only the models and their validators.
 
 Constraint failures are aggregated into a single native error listing every violation, each naming the offending field and the bound it broke.
 A handler maps that error to a `BAD_REQUEST` [Nexus error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong with it in one response.
@@ -137,7 +137,7 @@ Use `fqn` when you need to match a contract that is already published, or when y
 
 **The wire name** is the string the caller and the handler exchange, and what appears in Event History and the Temporal UI. Neither side types it — both take it from the generated code.
 
-Unless you override it, the wire name is whatever is in the definition file converted to PascalCase, so in this case the service would be **`ChatService`** and **`SendMessage`**.
+Unless you override it, the wire name is the name from the definition file converted to PascalCase. In the sample that gives the Service a wire name of **`ChatService`** and the `sendMessage` Operation a wire name of **`SendMessage`**.
 
 In the sample above the Service does override it using `fqn`, so the Service wire name becomes **`example.chat.v1.ChatService`**.
 
@@ -275,6 +275,12 @@ nexgen ts samples/schemas/temporal.yaml --output ./chat --date-time-types tempor
 - `date` maps `date-time` fields to a JavaScript `Date`.
   This is lossy: a `Date` is a UTC instant, so the original offset is folded away and precision is capped at milliseconds.
 - `temporal` maps to the [TC39 Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) — a JavaScript standard for dates and times, unrelated to Temporal the platform. It preserves offset and sub-second precision, and requires the `Temporal` global.
+
+## Dates, times, and durations
+
+TypeScript's `--date-time-types` is the only place you choose how a date or time is represented. Elsewhere the generator decides: Java uses `java.time`, Python `datetime` and `timedelta`, and Go `time.Time` and `time.Duration`. Two cases hand you the wire string to work with instead of a date type — `format: time` in Java, and every date and time format under TypeScript's default `string` mode.
+
+Whichever type you get, every language writes the same bytes. Dates and times use [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339), which is a profile of [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). ISO 8601 permits many optional spellings of the same instant, and RFC 3339 narrows them to one so two systems cannot read a timestamp differently. RFC 3339 specifies timestamps rather than durations, so durations follow ISO 8601.
 
 ## Use the generated code
 
@@ -463,7 +469,20 @@ const handler = nexus.serviceHandler(chatService, {
 });
 ```
 
-The cast on the return value is expected: `toIntermediate` returns `unknown`, because its result is a plain wire value rather than the model type the Operation declares.
+The caller side is the mirror image. Map the request out before executing the Operation, and map the result back in when it returns:
+
+```typescript
+const client = workflow.createNexusServiceClient({
+  service: chatService,
+  endpoint: 'chat-endpoint',
+});
+
+const wire = new SendMessageInputMapper().toIntermediate(input) as SendMessageInput;
+const raw = await client.executeOperation(chatService.operations.sendMessage, wire);
+const output = new SendMessageOutputMapper().fromIntermediate(raw);
+```
+
+The cast is expected in both examples: `toIntermediate` returns `unknown`, because its result is a plain wire value rather than the model type the Operation declares.
 
 Skipping the mapper is the failure to watch for, because nothing reports it.
 The value handed to your handler is typed as the model, since `nexus.operation<SendMessageInput, SendMessageOutput>` declares it that way, but at runtime it is only whatever was deserialized.
@@ -477,12 +496,6 @@ ValidationError: 2 validation error(s): roomId: required; message.body: expected
 
 The error also exposes a `violations` array of `{ path, reason }` objects, so a handler can convert it into a `BAD_REQUEST` Nexus error with the full list intact.
 
-## Dates, times, and durations
-
-A `format` of `date-time`, `date`, `time`, or `duration` becomes a real date or duration type in the generated model, not a string you parse yourself. Java maps to `java.time`, Python to `datetime` and `timedelta`, Go to `time.Time` and `time.Duration`, and TypeScript is configurable — see [`--date-time-types`](#typescript).
-
-Every language encodes these identically, using [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) for dates and times and [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) for durations. A caller in one language and a handler in another exchange them with no conversion on either side, and without you writing any format-handling code.
-
 ## Regenerate after a contract change
 
 Generated files carry a `DO NOT EDIT` header and are replaced wholesale on the next run. There is no merge step, so anything you add to them is lost.
@@ -490,7 +503,7 @@ Generated files carry a `DO NOT EDIT` header and are replaced wholesale on the n
 Two habits make this safe:
 
 - **Commit generated code and regenerate as its own commit.** The diff then shows exactly what the contract change did to each language.
-- **Fix names in the schema, not the output.** When a generated identifier is wrong for your language, use a per-language naming override in the contract so the fix survives regeneration.
+- **Fix names in the schema, not the output.** When a generated identifier is wrong for your language, set a per-language override in the contract so the fix survives regeneration. See [Naming and overrides](https://github.com/temporalio/nexgen#naming--overrides) for the available keys.
 
 If you generate into the wrong directory, delete what landed there and run the generator again with corrected flags. Do not edit the `package` or module declaration to match where the files ended up as the next run will overwrite it.
 
@@ -512,7 +525,7 @@ The default lives in the generated code, not in the payload. Temporal replays a 
 
 If the value affects which commands the Workflow produces, replaying an in-flight Workflow fails with a [non-determinism error](/troubleshooting/execution-failures#non-determinism-error) — the [deterministic constraints](/workflow-definition#deterministic-constraints) that govern any change to Workflow code apply here too. If it does not affect commands, nothing fails and the behavior changes silently, which is harder to catch.
 
-Treat a default as part of the contract. To change the effective value, add a new field rather than editing an existing default.
+Treat a default as part of the contract. Adding a replacement field is not sufficient on its own: old payloads omit the new field too, so replay reads that field's default and can still diverge. Any change to how existing payloads are interpreted needs a [Workflow versioning](/workflow-definition#workflow-versioning) plan that keeps in-flight Executions on their original behavior.
 
 :::
 
