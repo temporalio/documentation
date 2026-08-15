@@ -264,17 +264,17 @@ That converter is not optional if your schema uses any temporal `format`. `datet
 nexgen ts samples/schemas/chat.nexusrpc.yaml --output ./chat
 ```
 
-TypeScript accepts `--date-time-types` to choose how temporal `format` fields are represented in memory:
+TypeScript accepts `--date-time-types` to choose how date and time fields are represented in memory. There are three choices:
+
+- `string`, the default, keeps every date and time field as the [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) string that appears on the wire. It adds no runtime dependency and round-trips losslessly, but you parse and compare the strings yourself.
+- `date` maps `date-time` fields to a JavaScript `Date`. This is lossy: a `Date` is a UTC instant, so the original offset is folded away and precision is capped at milliseconds.
+- `temporal` maps to the [TC39 Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal), a JavaScript standard for dates and times that is unrelated to Temporal the platform. It preserves the offset and sub-second precision, and requires the `Temporal` global.
+
+The chat schema has no date or time fields, so this command uses [`temporal.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/temporal.yaml), which has one field for each of `date`, `date-time`, `time`, and `duration`:
 
 ```bash
-nexgen ts samples/schemas/temporal.yaml --output ./chat --date-time-types temporal
+nexgen ts samples/schemas/temporal.yaml --output ./events --date-time-types temporal
 ```
-
-- `string` (the default) keeps every date and time field as the [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339) string that appears on the wire.
-  It has no runtime dependency and round-trips losslessly, but you parse and compare the strings yourself.
-- `date` maps `date-time` fields to a JavaScript `Date`.
-  This is lossy: a `Date` is a UTC instant, so the original offset is folded away and precision is capped at milliseconds.
-- `temporal` maps to the [TC39 Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) — a JavaScript standard for dates and times, unrelated to Temporal the platform. It preserves offset and sub-second precision, and requires the `Temporal` global.
 
 ## Dates, times, and durations
 
@@ -282,13 +282,9 @@ TypeScript's `--date-time-types` is the only place you choose how a date or time
 
 Whichever type you get, every language writes the same bytes. Dates and times use [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339), which is a profile of [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). ISO 8601 permits many optional spellings of the same instant, and RFC 3339 narrows them to one so two systems cannot read a timestamp differently. RFC 3339 specifies timestamps rather than durations, so durations follow ISO 8601.
 
-## Use the generated code
+## How validation works
 
-**There is nothing new to learn here.** What you have is a Service definition and a set of types, and nothing about them depends on having been generated — write the same Service by hand and your Worker and caller code is identical. You register it on a Worker and call it from a caller Workflow exactly as described in your SDK's Nexus guide.
-
-The one addition is validation, and so a call can fail with a contract violation that hand-written types would not have caught. The per-language examples below exist for completeness and to show how to log those violations. Apart from that single `catch`, they are the code you would already be writing.
-
-Only the wiring of that validation differs between languages.
+Validation is the one behavior the generated types add, so a call can fail with a contract violation that hand-written types would not have caught. Only the wiring of that validation differs between languages.
 
 | SDK        | How validation reaches the wire                             | Extra step |
 | ---------- | ----------------------------------------------------------- | ---------- |
@@ -307,6 +303,14 @@ The two directions do not check the same things.
 **Parsing a value off the wire** enforces required fields and every value constraint, aggregating all violations into one error. This is the direction that protects a handler from a malformed request.
 
 **Serializing a value onto the wire** enforces value constraints — lengths, bounds, counts, patterns. It does not report a required field you left unset. The field is omitted from the payload and the peer rejects it, so the failure surfaces as a `BAD_REQUEST` from the other side rather than as a local error at the point you built the object.
+
+For code that catches and logs a violation, see the per-language examples in [Use the generated code](#use-the-generated-code).
+
+## Use the generated code
+
+**Whether the code is generated or written by hand, you use it the same way.** It is a Service definition and a set of types: register it on a Worker, and call it from a caller Workflow exactly as described in your SDK's Nexus guide. The one difference is that generated types validate themselves, so a call can fail with a contract violation for you to catch.
+
+Each example below registers a handler, calls the Operation from a caller Workflow, and catches a validation failure.
 
 ### Go
 
