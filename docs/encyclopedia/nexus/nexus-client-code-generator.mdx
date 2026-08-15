@@ -35,7 +35,7 @@ That client library contains three things:
 - **A runtime validator.** One validator per type, applied when a value is parsed off the wire and again when it is serialized onto it. See [Validation guarantees](#validation-guarantees) for more.
 - **A [Nexus Service Contract](/glossary#nexus-service-contract) definition**, for a file that declares Services. These are the Service and Operation declarations you register on a Worker and call from a caller Workflow. A pure JSON Schema file declares none, so it produces only the models and their validators.
 
-Constraint failures are aggregated into a single native error listing every violation, each naming the offending field and the bound it broke.
+Additionally, constraint failures are aggregated into a single native error listing every violation, each naming the offending field and the bound it broke.
 A handler maps that error to a `BAD_REQUEST` [Nexus error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong with it in one response.
 
 The supported schema subset is deliberately strict.
