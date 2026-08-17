@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from '@docusaurus/Link';
 import GridCard from '../../elements/GridCard/GridCard';
 import SdkSvg from '../../elements/SdkSvgs/SdkSvg';
 import { SDK_BLOCK_NAMES } from '../../elements/SdkSvgs/sdkBlockNames';
@@ -12,27 +11,29 @@ type CookbookPreviewProps = {
 };
 
 export default function CookbookPreview({ limit = 4 }: CookbookPreviewProps) {
-  const items = useCookbookItems().slice(0, limit);
+  const allItems = useCookbookItems();
+  const items = allItems.slice(0, limit);
+  const remaining = allItems.length - items.length;
 
   return (
-    <div>
-      <div className={styles.grid}>
-        {items.map((item) => (
-          <GridCard
-            key={item.id}
-            title={item.title}
-            description={item.description}
-            href={item.href}
-            tags={item.tags}
-            icon={item.sdk ? <SdkSvg name={SDK_BLOCK_NAMES[item.sdk]} /> : undefined}
-          />
-        ))}
-      </div>
-      <p style={{ marginTop: 'var(--ifm-spacing-lg, 24px)' }}>
-        <Link className="button button--secondary" to="/ai/cookbook">
-          Browse all recipes →
-        </Link>
-      </p>
+    <div className={styles.grid}>
+      {items.map((item) => (
+        <GridCard
+          key={item.id}
+          title={item.title}
+          description={item.description}
+          href={item.href}
+          tags={item.tags}
+          icon={item.sdk ? <SdkSvg name={SDK_BLOCK_NAMES[item.sdk]} /> : undefined}
+        />
+      ))}
+      {remaining > 0 && (
+        <GridCard
+          title={`Browse the full AI Cookbook for +${remaining} more recipe${remaining === 1 ? '' : 's'}`}
+          description=""
+          href="/ai/cookbook"
+        />
+      )}
     </div>
   );
 }
