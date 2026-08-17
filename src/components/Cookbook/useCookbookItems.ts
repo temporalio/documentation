@@ -113,7 +113,6 @@ function getLastUpdatedTimestamp(item: CookbookIndexItem, docsById: Map<string, 
  */
 export function useCookbookItems(): ResolvedCookbookItem[] {
   const global = useGlobalData();
-  console.log('[useCookbookItems] plugins:', Object.keys(global?.plugins ?? {})); // should include 'cookbook-index'
 
   const dataAny = usePluginData('cookbook-index') as any;
   const allDocsData = useAllDocsData();
