@@ -2255,6 +2255,11 @@
       "source": "/develop/typescript/converters-and-encryption",
       "destination": "/develop/typescript/best-practices/data-handling",
       "permanent": true
+    },
+    {
+      "source": "/production-deployment/multi-tenant-patterns",
+      "destination": "/best-practices/multi-tenant-patterns",
+      "permanent": true
     }
   ]
 }
