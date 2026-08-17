@@ -2069,7 +2069,7 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/nexus-services',
-            'encyclopedia/nexus/nexus-sdk-v2',
+            'encyclopedia/nexus/temporal-operation-handler',
             'encyclopedia/nexus/nexus-client-code-generator',
             'encyclopedia/nexus/nexus-standalone-activity',
             'encyclopedia/nexus/nexus-operations',

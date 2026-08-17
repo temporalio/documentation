@@ -32,7 +32,7 @@ Two constraints apply to the Query handler. It must not block, and it must not m
 
 ## Expose them as Nexus Operations
 
-These use `TemporalOperationHandler`, and they divide along the line described in [Nexus SDK V2](/nexus/sdk-v2#the-nexus-aware-client): Signal is **sync messaging**, and Update is an **async backing**.
+These use `TemporalOperationHandler`, and they divide along the line described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client): Signal is **sync messaging**, and Update is an **async backing**.
 
 ### Signal
 
@@ -52,7 +52,7 @@ Because it is an async backing, there is at most one per Operation invocation. A
 
 :::caution Query is not in the pre-release
 
-`getApprovalStatus` belongs in the contract, but Query is not available as sync messaging on the Nexus-aware Client in the pre-release, so this Operation cannot be implemented yet. See [Nexus SDK V2](/nexus/sdk-v2).
+`getApprovalStatus` belongs in the contract, but Query is not available as sync messaging on the Nexus-aware Client in the pre-release, so this Operation cannot be implemented yet. See [Temporal Operation Handler](/nexus/temporal-operation-handler).
 
 Adding the Query handler to the Workflow is still worth doing — it costs nothing and the Operation can be wired up once Query lands. Until then, a caller that needs in-flight progress has to obtain it outside this Service.
 
@@ -74,6 +74,6 @@ Using a Query to fetch the outcome would mean polling for something that is alre
 
 - [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals, Queries, and Updates.
 - [Handling messages](/handling-messages) for handler constraints, including Query restrictions.
-- [Nexus SDK V2](/nexus/sdk-v2) for the sync side effect and async backing distinction.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the sync side effect and async backing distinction.
 
 :::
