@@ -8,6 +8,7 @@ import Link from "@docusaurus/Link";
 import clsx from "clsx";
 import integrations, { type SDK, type Integration } from "./integrations-data";
 import SdkSvg from "../elements/SdkSvgs/SdkSvg";
+import { useQueryStringFilters } from "../hooks/useQueryStringFilters";
 import styles from "./IntegrationsGrid.module.css";
 
 const ALL_SDKS: SDK[] = ["Go", "Java", "Python", "Ruby", "TypeScript"];
@@ -31,11 +32,7 @@ const FILTER_GROUPS = [
   { label: "SDK", key: "sdks" as const, options: ALL_SDK_FILTERS as string[] },
   { label: "Tag", key: "tags" as const, options: ALL_TAGS },
 ];
-
-type FilterState = {
-  sdks: SdkFilter[];
-  tags: string[];
-};
+const FILTER_KEYS = ["sdks", "tags"] as const;
 
 function isExternal(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
@@ -119,7 +116,7 @@ export default function IntegrationsGrid({
   defaultSdks = [],
 }: IntegrationsGridProps) {
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState<FilterState>({
+  const [filters, setFilters] = useQueryStringFilters(FILTER_KEYS, {
     sdks: defaultSdks,
     tags: [],
   });
