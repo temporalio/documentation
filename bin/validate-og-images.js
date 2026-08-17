@@ -40,7 +40,7 @@ const AI_COOKBOOK_DIR = path.join(process.cwd(), 'ai-cookbook');
 // this validator checks the same pages the plugin generates cards for.
 const DOC_TARGETS = [
   { dir: DOCS_DIR, routeBasePath: '/' },
-  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai/cookbook', footerText: 'AI COOKBOOK' },
 ];
 
 function walkHtmlFiles(dir) {
@@ -140,12 +140,12 @@ async function main() {
     }
   }
 
-  // /ai-cookbook (src/pages/ai-cookbook.tsx) is a plain page, not an MDX doc,
+  // /ai/cookbook (src/pages/ai/cookbook.tsx) is a plain page, not an MDX doc,
   // so it never went through the DOC_TARGETS loop above — but it does declare
   // its own og:image (see plugins/cookbook-index's postBuild), so it's
   // checked here as a manual override rather than folded into "other pages
   // must match the site default" below.
-  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai-cookbook', 'index.html');
+  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai', 'cookbook', 'index.html');
   if (fs.existsSync(cookbookHomeHtmlPath)) {
     docHtmlPaths.add(cookbookHomeHtmlPath);
     docPagesChecked++;

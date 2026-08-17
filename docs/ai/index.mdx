@@ -1,0 +1,94 @@
+---
+id: index
+title: Durable AI
+sidebar_label: Overview
+description: Build AI applications and agents on Temporal, with links to the AI Cookbook, SDK integrations, and relevant design patterns.
+slug: /ai
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Temporal gives AI applications and agents Durable Execution: a Workflow resumes automatically after a crash, a
+network timeout, or a multi-day wait for a human to approve a step. Use it to keep long-running agent loops, LLM tool
+calls, and multi-step AI pipelines running reliably, without hand-rolling retry logic, checkpointing, or state
+machines.
+
+Looking to use an AI coding assistant to write Temporal code instead? See [Develop with AI](/with-ai).
+
+## Start here
+
+<PatternCards items={[
+  {
+    href: "/ai/cookbook",
+    title: "AI Cookbook",
+    description: "Runnable, step-by-step recipes for building AI systems and agents with Temporal: tool calling, MCP, structured output, human-in-the-loop, and more.",
+  },
+  {
+    href: "/integrations",
+    title: "SDK integrations",
+    description: "Framework integrations for OpenAI Agents SDK, LangGraph, Google ADK, Vercel AI SDK, Strands Agents, Spring AI, and more. Filter by the \"Agent framework\" tag.",
+  },
+  {
+    href: "/design-patterns",
+    title: "Design patterns",
+    description: "Reusable Workflow and Activity patterns for the orchestration problems that come up constantly in agent and pipeline architectures.",
+  },
+]} />
+
+## Use cases
+
+Temporal shows up in four recurring shapes of AI system:
+
+**Agents.** Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where
+they left off after a failure. Start with the [AI Cookbook](/ai/cookbook) and the
+[Approval](/design-patterns/approval) and [Entity Workflow](/design-patterns/entity-workflow) patterns.
+
+**Processing pipelines.** Multi-step data and document pipelines, such as extraction, embedding, or batch inference,
+that need to fan out, retry failed steps in isolation, and resume without reprocessing completed work. See the
+[batch processing patterns](/design-patterns#batch-processing-patterns).
+
+**Internal agent platforms.** Teams building a shared runtime for many agents reuse Temporal's Worker and Task Queue
+primitives instead of building their own scheduler. See the
+[worker configuration patterns](/design-patterns#worker-configuration-patterns) for routing and isolating agent
+workloads.
+
+**Model training.** Long-running training and fine-tuning jobs coordinated across GPU resources, with checkpointing
+and recovery handled by Temporal's Event History instead of custom orchestration code.
+
+## Design patterns for AI agents
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/approval",
+    icon: "approval-icon.svg",
+    title: "Approval",
+    description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.",
+  },
+  {
+    href: "/design-patterns/saga-pattern",
+    icon: "saga-icon.svg",
+    title: "Saga Pattern",
+    description: "Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.",
+  },
+  {
+    href: "/design-patterns/long-running-activity",
+    icon: "long-running-activity-icon.svg",
+    title: "Long-Running Activity",
+    description: "Long-running Activities report progress via heartbeats and enable resumption after failures with cancellation support.",
+  },
+  {
+    href: "/design-patterns/entity-workflow",
+    icon: "entity-workflow-icon.svg",
+    title: "Entity Workflow",
+    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
+  },
+  {
+    href: "/design-patterns/local-activities",
+    icon: "local-activities-icon.svg",
+    title: "Local Activities",
+    description: "Run Activity functions in-process inside the Workflow Task, eliminating all server scheduling round-trips. Best for short, idempotent Activities on a latency-sensitive path.",
+  },
+]} />
+
+Browse the full [Design Patterns catalog](/design-patterns) for more, or jump straight into the
+[AI Cookbook](/ai/cookbook) for runnable code.
