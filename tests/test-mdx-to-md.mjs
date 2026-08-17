@@ -14,6 +14,7 @@ import {
   transformMdx,
   parseFrontmatter,
   extractProp,
+  extractNumberProp,
   parseTabValues,
   parseReadList,
   parseSdkGuideLinks,
@@ -26,6 +27,11 @@ import {
   selectIntegrations,
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
+import {
+  readCookbookRecipes,
+  cookbookRecipesToMarkdownList,
+  cookbookPreviewToMarkdown,
+} from "../scripts/component-handlers/cookbook-preview.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
 
@@ -914,6 +920,18 @@ test("selectIntegrations filters to the given SDK(s)", () => {
   assert(!out.some((i) => i.name === "Datadog"), "agnostic entry should be excluded");
 });
 
+test("selectIntegrations filters to the given tag(s)", () => {
+  const out = selectIntegrations(SAMPLE_INTEGRATIONS, [], ["Agent framework"]);
+  assert(out.length === 2, "expected 2 Agent framework integrations");
+  assert(out[0].name === "LangGraph" && out[1].name === "Spring AI", "expected LangGraph then Spring AI (alphabetical)");
+});
+
+test("selectIntegrations combines defaultSdks and defaultTags (AND across groups)", () => {
+  const out = selectIntegrations(SAMPLE_INTEGRATIONS, ["Java"], ["Agent framework"]);
+  assert(out.length === 1, "expected only the Java + Agent framework integration");
+  assert(out[0].name === "Spring AI", "expected Spring AI");
+});
+
 test("integrationsToMarkdownList renders link + description + meta", () => {
   const md = integrationsToMarkdownList([SAMPLE_INTEGRATIONS[0]]);
   assertContains(md, "- [Spring Boot](/a)");
@@ -929,11 +947,75 @@ test("transformMdx resolves <IntegrationsGrid> to a real list (with projectRoot)
   assertContains(markdown, "- [Spring AI](/develop/java/integrations/spring-ai)");
 });
 
+test("transformMdx resolves <IntegrationsGrid defaultTags> to a real, tag-filtered list", () => {
+  const input = `<IntegrationsGrid defaultTags={["Agent framework"]} />`;
+  const { markdown } = transformMdx(input, { projectRoot: PROJECT_ROOT });
+  assertNotContains(markdown, "<IntegrationsGrid");
+  assertContains(markdown, "- [Spring AI]");
+  assertNotContains(markdown, "- [Braintrust]");
+});
+
 test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", () => {
   const input = `<IntegrationsGrid />`;
   const { markdown } = transformMdx(input);
   assertNotContains(markdown, "<IntegrationsGrid");
   assertContains(markdown, "IntegrationsGrid (not resolved)");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: cookbook-preview handler
+// Uses fixtures/ai-cookbook/ (not the real, gitignored, build-time-synced
+// ai-cookbook/ directory) so these tests don't depend on that sync having run.
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/cookbook-preview");
+
+test("readCookbookRecipes sorts by priority (desc), then title, and excludes the index page", () => {
+  const items = readCookbookRecipes(FIXTURES_DIR);
+  assert(items.length === 3, `expected 3 recipes, got ${items.length}`);
+  assert(items[0].title === "High priority recipe", "expected the prioritized recipe first");
+  assert(items[1].title === "A recipe" && items[2].title === "B recipe", "expected no-priority recipes alphabetically after");
+  assert(!items.some((it) => it.title === "AI Cookbook"), "index page should be excluded");
+});
+
+test("readCookbookRecipes builds /ai/cookbook permalinks from the file slug", () => {
+  const items = readCookbookRecipes(FIXTURES_DIR);
+  const highPriority = items.find((it) => it.title === "High priority recipe");
+  assert(highPriority.permalink === "/ai/cookbook/high-priority", `got ${highPriority.permalink}`);
+});
+
+test("cookbookRecipesToMarkdownList renders link + description", () => {
+  const md = cookbookRecipesToMarkdownList([
+    { title: "Hello world", description: "Do a thing.", permalink: "/ai/cookbook/hello-world" },
+  ]);
+  assertContains(md, "- [Hello world](/ai/cookbook/hello-world) — Do a thing.");
+});
+
+test("cookbookPreviewToMarkdown respects limit and links to the full Cookbook", () => {
+  const md = cookbookPreviewToMarkdown(2, { projectRoot: FIXTURES_DIR });
+  assertContains(md, "- [High priority recipe]");
+  assertContains(md, "- [A recipe]");
+  assertNotContains(md, "- [B recipe]");
+  assertContains(md, "[Browse all recipes](/ai/cookbook)");
+});
+
+test("transformMdx resolves <CookbookPreview limit={2} /> to a real, sorted list", () => {
+  const input = `<CookbookPreview limit={2} />`;
+  const { markdown } = transformMdx(input, { projectRoot: FIXTURES_DIR, sourceFile: "test" });
+  assertNotContains(markdown, "<CookbookPreview");
+  assertContains(markdown, "- [High priority recipe]");
+  assertNotContains(markdown, "- [B recipe]");
+});
+
+test("transformMdx CookbookPreview without projectRoot degrades to a comment", () => {
+  const input = `<CookbookPreview limit={4} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "<CookbookPreview");
+  assertContains(markdown, "CookbookPreview (not resolved)");
+});
+
+test("extractNumberProp reads a bare numeric prop", () => {
+  assertEqual(extractNumberProp(`<CookbookPreview limit={4} />`, "limit"), 4);
+  assertEqual(extractNumberProp(`<CookbookPreview />`, "limit"), undefined);
 });
 
 // ---------------------------------------------------------------------------
@@ -1157,7 +1239,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "cookbook-preview", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {

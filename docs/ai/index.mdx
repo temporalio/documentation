@@ -7,6 +7,8 @@ slug: /ai
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
+import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
+import { CookbookPreview } from '@site/src/components';
 
 Temporal gives AI applications and agents Durable Execution: a Workflow resumes automatically after a crash, a
 network timeout, or a multi-day wait for a human to approve a step. Use it to keep long-running agent loops, LLM tool
@@ -15,25 +17,19 @@ machines.
 
 Looking to use an AI coding assistant to write Temporal code instead? See [Develop with AI](/with-ai).
 
-## Start here
+## AI Cookbook
 
-<PatternCards items={[
-  {
-    href: "/ai/cookbook",
-    title: "AI Cookbook",
-    description: "Runnable, step-by-step recipes for building AI systems and agents with Temporal: tool calling, MCP, structured output, human-in-the-loop, and more.",
-  },
-  {
-    href: "/integrations?tags=Agent+framework",
-    title: "SDK integrations",
-    description: "Framework integrations for OpenAI Agents SDK, LangGraph, Google ADK, Vercel AI SDK, Strands Agents, Spring AI, and more.",
-  },
-  {
-    href: "/design-patterns",
-    title: "Design patterns",
-    description: "Reusable Workflow and Activity patterns for the orchestration problems that come up constantly in agent and pipeline architectures.",
-  },
-]} />
+Runnable, step-by-step recipes for building AI systems and agents with Temporal: tool calling, MCP, structured
+output, human-in-the-loop, and more.
+
+<CookbookPreview limit={4} />
+
+## Agent framework integrations
+
+Temporal integrations for the SDKs and frameworks teams use to build agents. This view is pre-filtered to agent
+frameworks — browse [every integration](/integrations) for the full catalog.
+
+<IntegrationsGrid defaultTags={["Agent framework"]} hideTagFilter />
 
 ## Use cases
 
