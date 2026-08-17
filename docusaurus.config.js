@@ -415,7 +415,10 @@ module.exports = async function createConfigAsync() {
               'Every page concatenated into one file is available at `https://docs.temporal.io/llms-full.txt`. ' +
               'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
               'use the full text for bulk ingestion.\n\n' +
-              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
+              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n' +
+              '## Tools for agents\n\n' +
+              '- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal\'s programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n' +
+              '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, which keeps the server from being used for automated bulk querying. Anonymous requests are rejected. If your client cannot complete an OAuth flow, use the `.md` URLs above instead.',
             excludePaths: ['tctl-v1'],
             sections: [
               {
