@@ -38,7 +38,7 @@ This is also how you make a Signal safe to send to an approval that may not exis
 
 :::caution Update-with-Start is not yet available
 
-Update-with-Start — starting a Workflow and running an Update against it atomically — is not available in any SDK yet. See [Nexus SDK V2](/nexus/sdk-v2).
+Update-with-Start — starting a Workflow and running an Update against it atomically — is not available in any SDK yet. See [Temporal Operation Handler](/nexus/temporal-operation-handler).
 
 Until it lands, an Operation that needs both must start the Workflow and then submit the Update as a separate call, which is not atomic. Signal-with-Start is available and covers the case where the caller does not need a response.
 
@@ -48,7 +48,7 @@ Until it lands, an Operation that needs both must start the Workflow and then su
 
 A caller that did not start an approval cannot ask Nexus for its final decision.
 
-`requestApproval` delivers the decision to whoever awaited it. There is no Operation that attaches to an already-running approval and waits for its result, because Get Workflow Result as an async backing is [not yet available](/nexus/sdk-v2) in any SDK.
+`requestApproval` delivers the decision to whoever awaited it. There is no Operation that attaches to an already-running approval and waits for its result, because Get Workflow Result as an async backing is [not yet available](/nexus/temporal-operation-handler) in any SDK.
 
 If several systems need the outcome, either have the caller that started the approval distribute it, or have the handler notify them — which is what the notification in the next step does.
 
@@ -59,7 +59,7 @@ If several systems need the outcome, either have the caller that started the app
 :::tip RESOURCES
 
 - [Sending messages](/sending-messages) for Signal, Query, and Update semantics.
-- [Nexus SDK V2](/nexus/sdk-v2) for which capabilities are available per SDK.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for which capabilities are available per SDK.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
 
 :::
