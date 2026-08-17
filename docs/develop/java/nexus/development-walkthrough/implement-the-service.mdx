@@ -29,7 +29,7 @@ The blocking step is the reason this is a Workflow. It may wait weeks, across Wo
 
 ## Implement the Operation with TemporalOperationHandler
 
-Use `TemporalOperationHandler` for every Temporal-backed Operation, including simple ones. It is the entry point in [Nexus SDK V2](/nexus/sdk-v2), and starting with it means an Operation can later gain a Signal or change its backing without changing shape.
+Use `TemporalOperationHandler` for every Temporal-backed Operation, including simple ones. It is the entry point to the [Temporal Operation Handler](/nexus/temporal-operation-handler) programming model, and starting with it means an Operation can later gain a Signal or change its backing without changing shape.
 
 `TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation then completes when the Workflow returns, delivering the Workflow's return value to the caller.
 
@@ -41,7 +41,7 @@ Set the Workflow Id from the approval id, as decided in [step 3](/develop/java/n
 
 :::note
 
-You may see older examples using `WorkflowRunOperation.fromWorkflowMethod` or a synchronous `OperationHandler`. Both still work and are not being removed, but they are de-emphasized in favor of `TemporalOperationHandler`. See [Coming from the earlier handler APIs](/nexus/sdk-v2#coming-from-the-earlier-handler-apis).
+You may see older examples using `WorkflowRunOperation.fromWorkflowMethod` or a synchronous `OperationHandler`. Both still work and are not being removed, but they are de-emphasized in favor of `TemporalOperationHandler`. See [Coming from the earlier handler APIs](/nexus/temporal-operation-handler#coming-from-the-earlier-handler-apis).
 
 :::
 
@@ -67,7 +67,7 @@ The Service runs but nothing can reach it yet. [Publish it in Nexus](/develop/ja
 
 :::tip RESOURCES
 
-- [Nexus SDK V2](/nexus/sdk-v2) for `TemporalOperationHandler` and the Nexus-aware Client.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the handler type and the Nexus-aware Client.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the full handler and Worker API.
 - [Nexus error handling](/nexus/error-handling) for mapping failures to Nexus errors.
 

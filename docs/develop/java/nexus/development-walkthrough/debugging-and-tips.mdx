@@ -34,7 +34,7 @@ The handler used its own Temporal Client instead of the one `TemporalOperationHa
 
 Fetching a Client yourself works, and the Operation behaves correctly, but you lose the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions. Use the injected Client for anything that starts or messages an Execution.
 
-Note that Query, Cancel, and Terminate are [not available as sync messaging](/nexus/sdk-v2) in the pre-release. You can still send them with a Client of your own, but nothing links those messages back to the caller.
+Note that Query, Cancel, and Terminate are [not available as sync messaging](/nexus/temporal-operation-handler) in the pre-release. You can still send them with a Client of your own, but nothing links those messages back to the caller.
 
 ## A Query returns stale data, hangs, or throws
 
@@ -58,7 +58,7 @@ Use the Operation result for outcomes. Use a Query for in-flight progress.
 
 ### Expecting to re-attach to a running Operation
 
-There is no Operation that attaches to an already-running Execution and waits for its result. Get Workflow Result as an async backing is [not yet available](/nexus/sdk-v2).
+There is no Operation that attaches to an already-running Execution and waits for its result. Get Workflow Result as an async backing is [not yet available](/nexus/temporal-operation-handler).
 
 Whoever starts the Operation is who receives the result. If other systems need it, distribute it from the caller or notify them from the handler.
 
@@ -103,6 +103,6 @@ Callers and handlers deploy independently, so both sides run different contract 
 - [Nexus execution debugging](/nexus/execution-debugging) for tracing Operations across Namespaces.
 - [Nexus error handling](/nexus/error-handling) for the error model and retry behavior.
 - [Nexus security](/nexus/security) for Endpoint authorization.
-- [Nexus SDK V2](/nexus/sdk-v2) for current per-SDK capability status.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for current per-SDK capability status.
 
 :::
