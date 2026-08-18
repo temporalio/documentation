@@ -1,0 +1,449 @@
+---
+id: celery-to-standalone-activity
+title: Migrate a Celery task queue to a Temporal Standalone Activity
+description: Migrate Celery tasks to a Temporal Standalone Activity.
+sidebar_label: Migrate from Celery
+toc_max_heading_level: 3
+author: n/a
+tags:
+  - Migration
+  - Celery
+  - Standalone Activities
+  - Replay
+  - Python
+  - Workers
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+/>
+
+[Celery](https://docs.celeryq.dev/en/stable/) is a distributed task queue that runs background jobs by pushing messages through a broker (such as Redis or RabbitMQ) to a pool of worker processes. Most Celery tasks are self-contained: send one email, resize one image, call one API. For that kind of single-step job, you want Durable Execution and automatic retries without having to stand up an orchestration layer around each task.
+
+[Temporal](https://docs.temporal.io/) **Standalone Activities** fit that need. A Standalone Activity is an Activity you start directly from a Temporal Client, without wrapping it in a Workflow. You get Temporal's durability, retries, timeouts, and visibility for an individual unit of work, which maps almost one-to-one onto a Celery task. Because there is no Workflow to run a single Activity, Standalone Activities also use fewer resources than orchestrating one Activity through a Workflow.
+
+In this guide, you will migrate a Celery task to a Temporal Standalone Activity. You will convert the task into an Activity, run a Worker to process it, execute it both synchronously and fire-and-forget in place of your `.get()` and `.delay()` calls, migrate its retries to a Retry Policy, and inspect running Activities in place of Flower. By the end, you will have a working Temporal Application that reproduces the behavior of your Celery app with no Workflow code.
+
+## How Celery Concepts Map to Standalone Activities
+
+Before you start, it helps to know which Temporal building block replaces each Celery concept. You will implement each row of this table in the steps that follow.
+
+| Celery | Temporal Standalone Activity | Purpose |
+|---|---|---|
+| Task (`@app.task`) | Activity (`@activity.defn`) | A single unit of work (I/O, API calls) |
+| Worker (`celery worker`) | Worker (activities only, no Workflows) | Process that executes your code |
+| Broker + result backend | Temporal service | Durably stores queue state and results |
+| `task.delay(...)` | `client.start_activity(...)` | Kick off work without waiting |
+| `AsyncResult.get()` | `client.execute_activity(...)` or `handle.result()` | Retrieve the return value |
+| `max_retries` / `self.retry()` | `RetryPolicy` | Automatic retries |
+| Flower / `celery inspect` | `client.list_activities()` / `client.count_activities()` | Monitor jobs |
+
+## Prerequisites
+
+Before you begin, you will need the following:
+
+- Python 3.14 or higher installed on your machine.
+- The Temporal Python SDK, version 1.23.0 or higher (installed in Step 2).
+- The Temporal CLI, version 1.7.0 or higher (installed in Step 2).
+- An existing Celery task you want to migrate, or the sample task shown in Step 4 if you are following along from scratch.
+
+## Step 1 — Setting up your project directory
+
+In this step, you will create a small project layout. Because Standalone Activities need no Workflow code, the structure is flatter than a Workflow-based Temporal project: one module for the Activity, one Worker, and one script for each way of invoking the Activity.
+
+Create a new project directory and move into it:
+
+```bash
+mkdir temporal-standalone && cd temporal-standalone
+```
+
+Your project will grow into the following files as you work through the tutorial:
+
+```
+temporal-standalone/
+├── my_activity.py        # The Activity (your former Celery task)
+├── worker.py             # Runs the Worker
+├── execute_activity.py   # Runs the Activity and waits for the result
+├── start_activity.py     # Starts the Activity without waiting
+└── inspect_activities.py # Lists and counts Activities
+```
+
+With the directory in place, you can install the tools you need.
+
+## Step 2 — Installing the Temporal SDK and CLI
+
+In this step, you will install the Python SDK your code depends on and the Temporal CLI you will use to run a local server. Standalone Activities require specific minimum versions, so this step matters more than a normal install.
+
+Install the Temporal Python SDK (version 1.23.0 or higher) with `pip`:
+
+```bash
+pip install "temporalio>=1.23.0"
+```
+
+Next, install the Temporal CLI (version 1.7.0 or higher). On macOS or Linux with [Homebrew](https://brew.sh/), run:
+
+```bash
+brew install temporal
+```
+
+If you aren't using Homebrew, download the binary for your platform from the [Temporal CLI install guide](https://docs.temporal.io/cli/setup-cli) and add it to your `PATH`.
+
+Verify the CLI version, since Standalone Activities require 1.7.0 or higher:
+
+```bash
+temporal --version
+```
+
+Confirm the printed version is at least 1.7.0. With the tools installed, you can start a local Temporal service.
+
+## Step 3 — Starting the Temporal Development Server
+
+In Celery, work flows through a broker such as Redis. In Temporal, work flows through the Temporal service, which also stores each Activity's durable state. In this step, you will start a local development server that stands in for that service.
+
+Start the development server:
+
+```bash
+temporal server start-dev
+```
+
+You will see output confirming the server is running, including two addresses:
+
+```
+[secondary_label Output]
+Server:  localhost:7233
+UI:      http://localhost:8233
+```
+
+Your application code will connect to `localhost:7233`. The Web UI at `http://localhost:8233` lets you inspect Activities and their results; Standalone Activities appear under their own item in the UI's navigation. Leave this process running and open a new terminal for the remaining steps.
+
+## Step 4 — Converting a Celery task into an Activity
+
+In this step, you will take a Celery task and rewrite it as a Temporal Activity. The work inside — network calls, database writes, file I/O — stays the same. You write a Standalone Activity exactly the way you would write any Temporal Activity; nothing about the function marks it as "standalone." What makes it standalone is how you invoke it, which you will do in Step 6.
+
+Consider a typical Celery task that sends a welcome email. Its `tasks.py` might look like this:
+
+```python
+# Celery version — tasks.py
+from celery import Celery
+
+app = Celery("myapp", broker="redis://localhost:6379/0")
+
+@app.task(bind=True, max_retries=5, default_retry_delay=10)
+def send_welcome_email(self, user_id):
+    try:
+        user = get_user(user_id)
+        deliver_email(user.email, "Welcome!")
+        return f"sent to {user.email}"
+    except TransientError as exc:
+        raise self.retry(exc=exc)
+```
+
+Create `my_activity.py` and add the Temporal equivalent:
+
+```python
+# my_activity.py
+from dataclasses import dataclass
+from temporalio import activity
+
+
+@dataclass
+class User:
+    user_id: int
+    email: str
+
+
+@dataclass
+class WelcomeEmailInput:
+    user_id: int
+
+
+# --- Mock helpers ---------------------------------------------------------
+# Stand-ins for your real user lookup and email delivery. Replace these with
+# your database query and email provider when you adapt the tutorial.
+
+def get_user(user_id: int) -> User:
+    return User(user_id=user_id, email=f"user{user_id}@example.com")
+
+
+def deliver_email(address: str, subject: str) -> None:
+    print(f"Delivering '{subject}' to {address}")
+# --------------------------------------------------------------------------
+
+
+@activity.defn
+def send_welcome_email(input: WelcomeEmailInput) -> str:
+    user = get_user(input.user_id)
+    deliver_email(user.email, "Welcome!")
+    return f"sent to {user.email}"
+```
+
+Two changes are worth noting. First, the retry boilerplate is gone: you no longer catch `TransientError` or call `self.retry()`, because Temporal retries a failed Activity automatically. You will configure how it retries in Step 8. Second, the Activity takes a single `dataclass` argument instead of positional parameters. Passing one structured argument is the recommended Temporal pattern, because it lets you add fields later without breaking callers.
+
+The `User` dataclass and the two mock helpers let this file run end to end without a database or email provider. When you migrate your own task, swap `get_user` and `deliver_email` for your real implementations; the Activity itself does not change. Now you need a Worker to run it.
+
+## Step 5 — Running a Worker to process the Activity
+
+Just as `celery worker` pulls jobs from a broker, a Temporal Worker polls a Task Queue for work. A Worker for Standalone Activities is an ordinary Temporal Worker with your Activities registered and no Workflows. In this step, you will create and start that Worker.
+
+Create `worker.py`:
+
+```python
+# worker.py
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from my_activity import send_welcome_email
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    worker = Worker(
+        client,
+        task_queue="email-tasks",
+        activities=[send_welcome_email],
+        activity_executor=ThreadPoolExecutor(max_workers=5),
+    )
+    print("Worker running...")
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+The `task_queue` name is the routing key that ties your Worker and your invocation scripts together, similar to a Celery queue name. Because your Activity is a synchronous function, you pass a `ThreadPoolExecutor` as the `activity_executor`; `max_workers` controls how many Activities run concurrently, much like Celery's `--concurrency` flag.
+
+Start the Worker:
+
+```bash
+python worker.py
+```
+
+The Worker begins polling the `email-tasks` Task Queue and waits for work. Leave it running and open another terminal to invoke it.
+
+## Step 6 — Executing an Activity in place of a blocking `.get()`
+
+In Celery, running a task and waiting for its result looks like `send_welcome_email.delay(42).get()`. The Temporal equivalent is a single client call, `execute_activity`, which durably enqueues the Activity, waits for a Worker to run it, and returns the result. In this step, you will run your Activity and print its result.
+
+Create `execute_activity.py`:
+
+```python
+# execute_activity.py
+import asyncio
+from datetime import timedelta
+
+from temporalio.client import Client
+
+from my_activity import WelcomeEmailInput, send_welcome_email
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_activity(
+        send_welcome_email,
+        args=[WelcomeEmailInput(42)],
+        id="welcome-email-42",
+        task_queue="email-tasks",
+        start_to_close_timeout=timedelta(seconds=30),
+    )
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Run it:
+
+```bash
+python execute_activity.py
+```
+
+You will see the Activity's return value:
+
+```
+[secondary_label Output]
+Result: sent to user42@example.com
+```
+
+A few details map directly from Celery. You pass the Activity's arguments through `args=[...]`, so the single `WelcomeEmailInput` goes in a list. The `id` you provide is a business identifier you choose (an order number, a user ID). Temporal uses it to guarantee the same Activity is not started twice, which is a built-in form of deduplication. Every Activity requires a timeout — `start_to_close_timeout` caps how long one attempt may run, replacing Celery's `task_time_limit`.
+
+## Step 7 — Starting an Activity in place of `.delay()`
+
+Celery's `.delay()` is fire-and-forget: it enqueues the task and returns immediately. The Temporal equivalent is `start_activity`, which durably enqueues the Activity and hands back a handle you can use later to fetch the result. In this step, you will start an Activity without blocking on it.
+
+Create `start_activity.py`:
+
+```python
+# start_activity.py
+import asyncio
+from datetime import timedelta
+
+from temporalio.client import Client
+
+from my_activity import WelcomeEmailInput, send_welcome_email
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    handle = await client.start_activity(
+        send_welcome_email,
+        args=[WelcomeEmailInput(42)],
+        id="welcome-email-42",
+        task_queue="email-tasks",
+        start_to_close_timeout=timedelta(seconds=30),
+    )
+    print("Activity started")
+
+    # Later, when you actually need the value, await the handle:
+    result = await handle.result()
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Run it:
+
+```bash
+python start_activity.py
+```
+
+The pattern mirrors Celery precisely. `start_activity` corresponds to `.delay()` and returns a handle immediately, the way Celery returns an `AsyncResult`. Calling `handle.result()` corresponds to `AsyncResult.get()`. If you need to reconnect to an Activity from a different process — for example, a web request started it and a later request checks on it — recreate the handle from the Activity's ID and run ID (the run ID is available on the handle returned by `start_activity`):
+
+```python
+handle = client.get_activity_handle(
+    activity_id="welcome-email-42",
+    run_id="the-run-id",
+)
+```
+
+## Step 8 — Migrating task retries to a Retry Policy
+
+In Celery, retries are your responsibility: you set `max_retries` and call `self.retry()` inside the task. With Temporal, retries are automatic and declarative. By default, a Standalone Activity retries indefinitely with exponential backoff, so migrating usually means *adding a limit back in* to match Celery's `max_retries`. In this step, you will attach a retry policy to the invocation.
+
+Update `execute_activity.py` to pass a `retry_policy`:
+
+```python
+# execute_activity.py (updated)
+import asyncio
+from datetime import timedelta
+
+from temporalio.client import Client
+from temporalio.common import RetryPolicy
+
+from my_activity import WelcomeEmailInput, send_welcome_email
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_activity(
+        send_welcome_email,
+        args=[WelcomeEmailInput(42)],
+        id="welcome-email-42",
+        task_queue="email-tasks",
+        start_to_close_timeout=timedelta(seconds=30),
+        retry_policy=RetryPolicy(
+            maximum_attempts=5,
+            maximum_interval=timedelta(minutes=1),
+            non_retryable_error_types=["InvalidUserError"],
+        ),
+    )
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Here, `maximum_attempts=5` mirrors Celery's `max_retries`, and `maximum_interval` caps the backoff between attempts. The `non_retryable_error_types` list names errors that should fail immediately without retrying — the equivalent of *not* calling `self.retry()` for a permanent failure. To raise such an error from the Activity, use `ApplicationError` with `non_retryable=True` in `my_activity.py`:
+
+```python
+# my_activity.py (excerpt)
+from temporalio.exceptions import ApplicationError
+
+@activity.defn
+def send_welcome_email(input: WelcomeEmailInput) -> str:
+    user = get_user(input.user_id)
+    if user is None:
+        raise ApplicationError("No such user", type="InvalidUserError", non_retryable=True)
+    deliver_email(user.email, "Welcome!")
+    return f"sent to {user.email}"
+```
+
+Because the mock `deliver_email` in this tutorial never fails, the happy path completes on the first attempt. To watch a retry happen, make `deliver_email` raise an exception on its first call or two; Temporal will re-run the Activity automatically according to the policy above. The same `retry_policy` argument works on `start_activity` as well.
+
+## Step 9 — Inspecting Activities in place of Flower
+
+Celery users reach for Flower or `celery inspect` to see what is running. Temporal provides equivalent visibility directly through the client: you can list and count Standalone Activities that match a filter, the same way you would query Workflow Executions. In this step, you will write a small script to inspect your Activities.
+
+Create `inspect_activities.py`:
+
+```python
+# inspect_activities.py
+import asyncio
+
+from temporalio.client import Client
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    query = "TaskQueue = 'email-tasks'"
+
+    # List: like `celery inspect active`, but durable and queryable.
+    async for info in client.list_activities(query=query):
+        print(f"{info.activity_id} | {info.activity_type} | {info.status}")
+
+    # Count: total executions (running, completed, failed), not queued tasks.
+    resp = await client.count_activities(query=query)
+    print(f"Total activities: {resp.count}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Run it:
+
+```bash
+python inspect_activities.py
+```
+
+You will see one line per Activity execution, followed by a total count:
+
+```
+[secondary_label Output]
+welcome-email-42 | send_welcome_email | Completed
+Total activities: 1
+```
+
+The `query` uses the same [List Filter](https://docs.temporal.io/list-filter) syntax as Workflow visibility, so you can filter by attributes such as `ActivityType` and `Status` — for example, `"ActivityType = 'send_welcome_email' AND Status = 'Running'"`. These calls return only Standalone Activities; Activities running inside Workflows are excluded. The Temporal CLI offers the same views with `temporal activity list` and `temporal activity count`.
+
+## Step 10 — When to use a Workflow
+
+Standalone Activities replace the common case: a Celery task that does one independent thing. They deliberately have no orchestration, so there is one situation they do not cover — multi-step pipelines. 
+
+If your Celery app uses [Canvas](https://docs.celeryq.dev/en/stable/userguide/canvas.html) primitives — chaining tasks so one result feeds the next (`chain`), fanning work out in parallel (`group`), or running a callback after a group finishes (`chord`) — that coordination logic needs somewhere to live durably. A Standalone Activity cannot call another Activity or guarantee progress across several steps. For those pipelines, wrap your Activities in a Temporal **Workflow**, where sequencing is ordinary `await` statements and parallelism is `asyncio.gather`. See the [Temporal Python documentation](https://docs.temporal.io/develop/python) for building Workflows.
+
+A rule of thumb: migrate a task to a Standalone Activity when it stands on its own, and to a Workflow when it coordinates other tasks. Most Celery tasks are the former.
+
+## Conclusion
+
+In this tutorial, you migrated a Celery task to a Temporal Standalone Activity. You converted the task into an Activity, ran a Worker to execute it, invoked it both synchronously and fire-and-forget in place of your `.get()` and `.delay()` calls, replaced hand-written retries with a retry policy, and inspected your Activities in place of Flower — all without writing a single Workflow. Your jobs now survive Worker crashes, retry on well-defined policies, and remain queryable through the client and Web UI.
+
+Because Standalone Activities are in Public Preview, review the [Standalone Activities feature guide](https://docs.temporal.io/develop/python/activities/standalone-activities) for the latest API details before relying on them in production. Useful next topics include:
+
+- The [Standalone Activities Quickstart](https://docs.temporal.io/develop/python/activities/standalone-activities-quickstart) for the runnable reference sample.
+- [Activity timeouts](https://docs.temporal.io/develop/python/activities/timeouts) for tuning `start_to_close` and related limits.
+- The original [Celery documentation](https://docs.celeryq.dev/en/stable/) for confirming the exact behavior of the tasks you are migrating.

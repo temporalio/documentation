@@ -2144,6 +2144,7 @@ module.exports = {
         'guides/rate-limit-downstream-apis',
         'guides/durable-gaming-sessions',
         'guides/lock-shared-resources',
+        'guides/celery-to-standalone-activity',
       ],
     },
     'integrations',
