@@ -20,6 +20,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
 - [Using IntegrationsGrid](#using-integrationsgrid)
 - [Using CaptionedImage](#using-captionedimage)
+- [Using Video](#using-video)
 - [Using DocsTable](#using-docstable)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
@@ -250,6 +251,26 @@ When images are complex and may not render in a readable fashion on normal monit
 One click will zoom out, another will zoom back.
 Most rendering will allow readers to pull the image around to view all parts of the image. 
 On non-mobile systems, cursors will change to interactive elements when hovered above zoomable items to indicate interaction.
+
+## Using Video
+
+Video embeds a YouTube video behind a click-to-play facade. It enforces a consistent, centered, width-constrained appearance across the site, always points at the `youtube-nocookie.com` embed domain, and defers loading the real iframe (and YouTube's tracking scripts) until the reader clicks the thumbnail.
+
+Usage:
+
+```
+<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />
+```
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `videoId` | `string` | Yes | The YouTube video ID (the `v=` value from a `youtube.com/watch` URL). |
+| `title` | `string` | Yes | A descriptive title. Used as the iframe's accessible title, the play button's `aria-label`, and the "Watch" link generated for the LLM Markdown pipeline (see [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)). |
+| `maxWidth` | `string` | No | Escape hatch to override the default width for a documented one-off exception. Most pages should omit this and use the standard width. |
+
+Because `Video` generates the "Watch: {title}" link for the LLM Markdown feed automatically, you no longer need to hand-write a separate `Watch [Title](url)` sentence purely for that purpose. You can still add a short lead-in sentence for human readers (for example, "Watch a short overview:") above the component.
+
+**Not yet supported:** embedding a YouTube playlist (`videoseries?list=...`). The two pages that still embed a playlist ([`docs/develop/python/workflows/versioning.mdx`](../docs/develop/python/workflows/versioning.mdx) and [`docs/develop/dotnet/workflows/versioning.mdx`](../docs/develop/dotnet/workflows/versioning.mdx)) continue to use a raw `<iframe>` until playlist support is added.
 
 ## Using DocsTable
 
