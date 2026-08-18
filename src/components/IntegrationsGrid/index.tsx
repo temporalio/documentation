@@ -1,8 +1,9 @@
 // ⚠️  LLM MARKDOWN PIPELINE: the generated .md output renders this grid via
 // scripts/component-handlers/integrations.mjs, which reads the same
 // integrations-data.json and mirrors the `defaultSdks`/`defaultTags` filtering
-// below (hideSdkFilter/hideTagFilter only affect which pills render, not the
-// underlying filtered set, so the handler doesn't need to know about them).
+// below (hideSdkFilter/hideTagFilter/hideEmptyOptions only affect which pills
+// render, not the underlying filtered set, so the handler doesn't need to
+// know about them).
 // If you change the data source or filter logic here, update that handler too.
 // See readme/MARKDOWN_PIPELINE.md.
 import { useState, useMemo } from "react";
@@ -59,6 +60,26 @@ function toggleIn<T>(arr: T[], value: T): T[] {
   return arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
 }
 
+function matchesSearch(item: Integration, q: string): boolean {
+  if (!q) return true;
+  const searchable = `${item.name} ${item.description} ${item.tags.join(" ")}`.toLowerCase();
+  return searchable.includes(q);
+}
+
+function matchesSdks(item: Integration, sdkFilters: string[]): boolean {
+  if (sdkFilters.length === 0) return true;
+  const wantsAgnostic = sdkFilters.includes(LANGUAGE_AGNOSTIC);
+  const sdkOnly = sdkFilters.filter((s): s is SDK => s !== LANGUAGE_AGNOSTIC);
+  const matchesSdk = Boolean(item.sdk && sdkOnly.includes(item.sdk));
+  const matchesAgnostic = wantsAgnostic && !item.sdk;
+  return matchesSdk || matchesAgnostic;
+}
+
+function matchesTags(item: Integration, tagFilters: string[]): boolean {
+  if (tagFilters.length === 0) return true;
+  return tagFilters.some((t) => item.tags.includes(t));
+}
+
 type IntegrationsGridProps = {
   defaultSdks?: SDK[];
   defaultTags?: string[];
@@ -66,6 +87,8 @@ type IntegrationsGridProps = {
   hideSdkFilter?: boolean;
   /** Hide the Tag pill group and pin the filter to defaultTags. */
   hideTagFilter?: boolean;
+  /** Hide pills (in either visible group) that would match zero integrations given the current filters. */
+  hideEmptyOptions?: boolean;
 };
 
 export default function IntegrationsGrid({
@@ -73,6 +96,7 @@ export default function IntegrationsGrid({
   defaultTags = [],
   hideSdkFilter = false,
   hideTagFilter = false,
+  hideEmptyOptions = false,
 }: IntegrationsGridProps) {
   const visibleFilterGroups = FILTER_GROUPS.filter(
     ({ key }) => !(key === "sdks" && hideSdkFilter) && !(key === "tags" && hideTagFilter),
@@ -88,30 +112,27 @@ export default function IntegrationsGrid({
     sdks: defaultSdks,
     tags: defaultTags,
   });
+  const q = query.toLowerCase().trim();
 
   const filtered = useMemo(() => {
-    const q = query.toLowerCase().trim();
     return integrations
-      .filter((item) => {
-        if (q) {
-          const searchable =
-            `${item.name} ${item.description} ${item.tags.join(" ")}`.toLowerCase();
-          if (!searchable.includes(q)) return false;
-        }
-        if (filters.sdks.length > 0) {
-          const wantsAgnostic = filters.sdks.includes(LANGUAGE_AGNOSTIC);
-          const sdkFilters = filters.sdks.filter((s): s is SDK => s !== LANGUAGE_AGNOSTIC);
-          const matchesSdk = item.sdk && sdkFilters.includes(item.sdk);
-          const matchesAgnostic = wantsAgnostic && !item.sdk;
-          if (!matchesSdk && !matchesAgnostic) return false;
-        }
-        if (filters.tags.length > 0) {
-          if (!filters.tags.some((t) => item.tags.includes(t))) return false;
-        }
-        return true;
-      })
+      .filter((item) => matchesSearch(item, q) && matchesSdks(item, filters.sdks) && matchesTags(item, filters.tags))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [query, filters]);
+  }, [q, filters]);
+
+  // With hideEmptyOptions, a pill for a value that would match nothing (given
+  // search + the *other* group's current selection) doesn't render — except
+  // one already selected, which stays visible so it can still be cleared even
+  // if that combination happens to match zero integrations.
+  const isOptionVisible = (key: "sdks" | "tags", value: string): boolean => {
+    if (!hideEmptyOptions || filters[key].includes(value)) return true;
+    return integrations.some((item) => {
+      if (!matchesSearch(item, q)) return false;
+      return key === "sdks"
+        ? matchesSdks(item, [value]) && matchesTags(item, filters.tags)
+        : matchesTags(item, [value]) && matchesSdks(item, filters.sdks);
+    });
+  };
 
   return (
     <div className={styles.container} data-analytics-component="integrations-grid">
@@ -136,7 +157,7 @@ export default function IntegrationsGrid({
           {visibleFilterGroups.map(({ label, key, options }) => (
             <div key={key} className={styles.filterGroup}>
               <span className={styles.filterLabel}>{label}</span>
-              {options.map((value) => (
+              {options.filter((value) => isOptionVisible(key, value)).map((value) => (
                 <button
                   key={value}
                   type="button"
