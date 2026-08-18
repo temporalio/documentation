@@ -73,13 +73,16 @@ let wf_handle = client.start_workflow(
         "my-task-queue", 
         "greetings-workflow-10",
     )
-    .retry_policy(RetryPolicy {
-        initial_interval: Some(prost_dur!(from_secs(1))),
-        backoff_coefficient: 2.0,
-        maximum_interval: Some(prost_dur!(from_secs(100))),
-        maximum_attempts: 5,
-        non_retryable_error_types: vec!["NonRetryableError".to_string()],
-    }).build()
+    .retry_policy(
+        RetryPolicy::builder()
+            .initial_interval(Duration::from_secs(1))
+            .backoff_coefficient(2.0)
+            .maximum_interval(Duration::from_secs(100))
+            .maximum_attempts(5)
+            .non_retryable_error_types(["NonRetryableError"])
+            .build(),
+    )
+    .build()
 ).await?;
 ```
 
