@@ -62,15 +62,13 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-futures = "0.3.32"
-futures-util = "0.3.32"
+futures = "0.3"
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-temporalio-client = "0.5.0"
-temporalio-common = "0.5.0"
-temporalio-macros = "0.5.0"
-temporalio-sdk = "0.5.0"
-temporalio-sdk-core = "0.5.0"
+temporalio-client = "0.7.0"
+temporalio-common = "0.7.0"
+temporalio-macros = "0.7.0"
+temporalio-sdk = "0.7.0"
+temporalio-workflow = "0.7.0"
 tokio = { version = "1", features = ["full"] }
 `}
 </CodeSnippet>
@@ -170,7 +168,7 @@ Leave the local Temporal Service running as you work through tutorials and other
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Verify the Rust SDK installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
@@ -181,7 +179,7 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Define Your Activity
+### 1. Define your Activity
 
 Create a `/src/activities.rs` file with the Activity definition:
 
@@ -200,7 +198,7 @@ impl MyActivities {
 }
 ```
 
-### 2. Define Your Workflow
+### 2. Define your Workflow
 
 Create a `/src/workflows.rs` file with the Workflow definition:
 
@@ -228,11 +226,13 @@ impl GreetingWorkflow {
         let name = ctx.state(|s| s.name.clone());
 
         // Execute an activity
-        let greeting = ctx.start_activity(
-            MyActivities::greet,
-            name,
-            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
-        ).await?;
+        let greeting = ctx
+            .execute_activity(
+                MyActivities::greet,
+                name,
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+            )
+            .await?;
 
         println!("{}", greeting);
         Ok(greeting)
@@ -245,10 +245,11 @@ impl GreetingWorkflow {
 Update your `/src/main.rs` file with the following:
 
 ```rust
-use temporalio_client::{Client, ClientOptions, Connection};
-use temporalio_common::envconfig::LoadClientConfigProfileOptions;
-use temporalio_sdk::{Worker, WorkerOptions};
-use temporalio_sdk_core::{CoreRuntime, RuntimeOptions};
+use temporalio_client::{
+    Client, ClientOptions, Connection,
+    envconfig::LoadClientConfigProfileOptions,
+};
+use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
 mod workflows;
 mod activities;
@@ -258,7 +259,7 @@ use crate::activities::MyActivities;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let runtime = CoreRuntime::new_assume_tokio(RuntimeOptions::builder().build()?)?;
+    let runtime = Runtime::new_assume_tokio(Default::default())?;
 
     // Set up client connection options, loading from config if available
     let (connection_options, client_options) = ClientOptions::load_from_config(
@@ -270,10 +271,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let worker_options = WorkerOptions::new("my-task-queue")
         .register_activities(MyActivities)
-        .register_workflow::<GreetingWorkflow>()
+        .register_workflow::<GreetingWorkflow>()?
         .build();
 
-    Worker::new(&runtime, client, worker_options)?.run().await?;
+    let mut worker = Worker::new(&runtime, client, worker_options)?;
+    worker.run().await?;
 
     Ok(())
 }
@@ -296,7 +298,7 @@ temporal workflow start \
   --input '"Ziggy"'
 ```
 
-## Next Steps
+## Next steps
 
 Now that you have the basics working, explore the following resources to build more sophisticated applications:
 

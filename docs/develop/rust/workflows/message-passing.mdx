@@ -63,10 +63,9 @@ pub struct GetLanguagesInput {
     pub include_unsupported: bool,
 }
 
-#[workflow(name = "greetings-workflow-10")]
+#[workflow]
 pub struct GreetingsWorkflow {
     pub greetings: HashMap<Language, String>,
-    pub input: GetLanguagesInput,
 }
 
 
@@ -78,18 +77,22 @@ impl GreetingsWorkflow {
         greetings.insert(Language::Chinese, "你好，世界".to_string());
         greetings.insert(Language::English, "Hello, world".to_string());
         
-        Self { greetings, input: GetLanguagesInput { include_unsupported: false } }
+        Self { greetings }
     }
 
-    #[run]
+    #[run(name = "greetings-workflow-10")]
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.greetings.clone());
         Ok(format!("Hola: {:?}", name))
     }
 
     #[query]
-    pub fn get_languages(&self, _ctx: &WorkflowContextView) -> Vec<Language> {
-        if self.input.include_unsupported {
+    pub fn get_languages(
+        &self,
+        _ctx: &WorkflowContextView,
+        input: GetLanguagesInput,
+    ) -> Vec<Language> {
+        if input.include_unsupported {
             vec![Language::Chinese, Language::English, Language::French]
         } else {
             self.greetings.keys().copied().collect()
@@ -100,27 +103,23 @@ impl GreetingsWorkflow {
 
 ```rust
 // main.rs
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Connect to local Temporal server
-    ...
+let wf_handle = client
+    .start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
+    )
+    .await?;
 
-    // Client setup
-    let connection = Connection::connect(connection_options).await?;
-    let client = Client::new(connection, ClientOptions::new("default").build())?;
-
-    let wf_handle = client.start_workflow(GreetingsWorkflow::run, (), WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()).await?;
-    
-    // Set up Worker
-    ...
-
-    let supported_languages = wf_handle.query(GreetingsWorkflow::get_languages, GetLanguagesInput { include_unsupported: true }, WorkflowQueryOptions::default()).await?;
-
-    // other Workflow stuff
-    ...
-
-    Ok(())
-}
+let supported_languages = wf_handle
+    .query(
+        GreetingsWorkflow::get_languages,
+        GetLanguagesInput {
+            include_unsupported: true,
+        },
+        WorkflowQueryOptions::default(),
+    )
+    .await?;
 ```
 
 - Query handlers can't mutate Workflow state.
@@ -136,58 +135,25 @@ pub struct ApproveInput {
     pub name: String,
 }
 
-// Other structs
-...
-
-
-#[workflow_methods]
-impl GreetingsWorkflow {
-    #[init]
-    fn new(_ctx: &WorkflowContextView) -> Self {
-        let mut greetings = HashMap::new();
-        greetings.insert(Language::Chinese, "你好，世界".to_string());
-        greetings.insert(Language::English, "Hello, world".to_string());
-        
-        Self {greetings,input:GetLanguagesInput{include_unsupported:false}, approved_for_release: false, approver_name: None }
-    }
-    
-    // Other Workflow logic
-    ...
-    
-    #[signal]
-    pub fn approve(&mut self, _ctx: &mut SyncWorkflowContext<Self>, input: ApproveInput) {
-        self.approved_for_release = true;
-        self.approver_name = Some(input.name);
-    }
+#[signal]
+pub fn approve(&mut self, _ctx: &mut SyncWorkflowContext<Self>, input: ApproveInput) {
+    self.approved_for_release = true;
+    self.approver_name = Some(input.name);
 }
 ```
 
 
 ```rust
 // main.rs
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Connect to local Temporal server
-    ...
-
-    // Client setup
-    let connection = Connection::connect(connection_options).await?;
-    let client = Client::new(connection, ClientOptions::new("default").build())?;
-
-    let wf_handle = client.start_workflow(GreetingsWorkflow::run, (), WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()).await?;
-    
-    // Set up Worker
-    ...
-
-    let supported_languages = wf_handle.query(GreetingsWorkflow::get_languages, GetLanguagesInput { include_unsupported: true }, WorkflowQueryOptions::default()).await?;
-
-    wf_handle.signal(GreetingsWorkflow::approve, ApproveInput { name: "Ziggy".to_string() }, WorkflowSignalOptions::default()).await?;
-
-    // other Workflow stuff
-    ...
-
-    Ok(())
-}
+wf_handle
+    .signal(
+        GreetingsWorkflow::approve,
+        ApproveInput {
+            name: "Ziggy".to_string(),
+        },
+        WorkflowSignalOptions::default(),
+    )
+    .await?;
 ```
 
 * Signal handlers do not return values.
@@ -198,21 +164,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution. It can change the Workflow state, control its flow, and return a result. The sender must wait until the Worker accepts or rejects the Update. The sender may wait further to receive a returned value or an exception if something goes wrong:
 
 ```rust
-// workflows.rs
-...
-
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct SetLanguageInput {
     pub language: Language,
 }
 
-...
-
 #[workflow_methods]
 impl GreetingsWorkflow {
-    // Other Workflow logic
-    ...
-
     #[update]
     pub fn set_language(
         &mut self,
@@ -298,18 +256,23 @@ wf_handle.signal(
 #### From a Workflow
 
 ```rust
-let signal_res = ctx
-    .external_workflow("workflow-id-1", Some("run-id-1".into()))
-    .signal(GreetingsWorkflow::approve, ApproveInput { name: "Ziggy".to_string() })
-    .await;
+ctx.external_workflow("workflow-id-1", Some("run-id-1".into()))
+    .signal(
+        GreetingsWorkflow::approve,
+        ApproveInput { name: "Ziggy".to_string() },
+        SignalWorkflowOptions::default(),
+    )
+    .await?;
 ```
 
 ### Signal-With-Start {/* #signal-with-start */}
 
 ```rust
-let signal_input = Payloads {
-    payloads: vec![Payload::from("Ziggy".to_string())],
-};
+let signal_input = vec![ApproveInput {
+    name: "Ziggy".to_string(),
+}
+.as_json_payload()?]
+.into_payloads();
 
 let wf_handle = client.start_workflow(
     GreetingsWorkflow::run,
@@ -317,8 +280,10 @@ let wf_handle = client.start_workflow(
     WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10")
         .start_signal(
             WorkflowStartSignal::new("approve")
-            .input(signal_input).build(),
-        ).build(),
+                .maybe_input(signal_input)
+                .build(),
+        )
+        .build(),
 ).await?;
 ```
 
@@ -375,37 +340,29 @@ It's essential to understand the things that could go wrong in order to use `asy
 The following code executes an Activity that makes a network call to a remote service:
 
 ```rust
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum ActivityLanguage {
-    Arabic,
-    Chinese,
-    English,
-    French,
-    Hindi,
-    Spanish,
-}
-
-pub struct MyActivities;
+pub struct GreetingActivities;
 
 #[activities]
-impl MyActivities {
+impl GreetingActivities {
     #[activity]
     pub async fn call_greeting_service(_ctx: ActivityContext, to_language: Language) -> Result<String, ActivityError> {
         // Pretend that we are calling a remote service.
         sleep(Duration::from_millis(200)).await;
 
-        let mut greetings = HashMap::new();
+        let greetings = HashMap::from([
+            (Language::Arabic, "مرحبا بالعالم"),
+            (Language::Chinese, "你好，世界"),
+            (Language::English, "Hello, world"),
+            (Language::French, "Bonjour, monde"),
+            (Language::Hindi, "नमस्ते दुनिया"),
+            (Language::Spanish, "Hola mundo"),
+        ]);
 
-        greetings.insert(Language::Arabic, "مرحبا بالعالم".to_string());
-        greetings.insert(Language::Chinese, "你好，世界".to_string());
-        greetings.insert(Language::English, "Hello, world".to_string());
-        greetings.insert(Language::French, "Bonjour, monde".to_string());
-        greetings.insert(Language::Hindi, "नमस्ते दुनिया".to_string());
-        greetings.insert(Language::Spanish, "Hola mundo".to_string());
-
-        let result = greetings.get(&to_language).cloned();
-
-        Ok(format!("Hello, {:?}!", result))
+        Ok(greetings
+            .get(&to_language)
+            .copied()
+            .unwrap_or("Hello, world")
+            .to_string())
     }
 }
 ```
@@ -419,33 +376,21 @@ This lets your client track the progress of asynchronous work performed by the U
 async fn set_language_activity(
     ctx: &mut WorkflowContext<Self>,
     language: Language,
-) -> Language {
+) -> Result<Language, Box<dyn std::error::Error + Send + Sync>> {
     let needs_greeting = ctx.state(|s| !s.greetings.contains_key(&language));
 
     if needs_greeting {
-        ctx.wait_condition(|s| !s.approved_for_release).await;
-
+        ctx.wait_condition(|s| s.approved_for_release).await?;
+        let greeting = ctx
+            .execute_activity(
+                GreetingActivities::call_greeting_service,
+                language,
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
+            )
+            .await?;
         ctx.state_mut(|s| {
-            s.approved_for_release = true;
+            s.greetings.insert(language, greeting);
         });
-
-        let result = async {
-            let greeting = ctx.start_activity(
-                MyActivities::call_greeting_service, 
-                Language::French,
-                ActivityOptions::start_to_close_timeout(Duration::from_secs(10))
-            ).await;
-
-            ctx.state_mut(|s| {
-                s.greetings.insert(language, greeting.unwrap());
-            });
-        }.await;
-
-        ctx.state_mut(|s| {
-            s.approved_for_release = false;
-        });
-
-        result;
     }
 
     let previous_language = ctx.state(|s| s.language);
@@ -454,7 +399,7 @@ async fn set_language_activity(
         s.language = language;
     });
 
-    previous_language
+    Ok(previous_language)
 }
 ```
 
@@ -468,14 +413,14 @@ Here are three important use cases for `ctx.wait_condition`:
 - Wait in a handler until it's appropriate to continue.
 - Wait in the main Workflow until all active handlers have finished.
 
-It's common to use `ctx.condition` to wait for a particular Signal or Update to be sent by a client. In your Workflow, you will have something like:
+It's common to use `ctx.wait_condition` to wait for a particular Signal or Update to be sent by a client. In your Workflow, you will have something like:
 
 ```rust
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let name = ctx.state(|s| s.greetings.clone());
 
-    ctx.wait_condition(|s| !s.approved_for_release).await;
+    ctx.wait_condition(|s| !s.approved_for_release).await?;
 
     // Other Workflow logic
     ...
