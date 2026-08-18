@@ -33,12 +33,19 @@ jobs:
           node-version: '20'
 
       - name: Fetch latest SDK versions
-        run: node bin/update-sdk-versions.js --write
+        id: fetch
+        run: |
+          notes="$(node bin/update-sdk-versions.js --write)"
+          {
+            echo "review_notes<<EOF"
+            echo "$notes"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Check for changes
         id: diff
         run: |
-          if git diff --quiet src/data/sdk-versions.json; then
+          if git diff --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -48,18 +55,26 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          REVIEW_NOTES: ${{ steps.fetch.outputs.review_notes }}
         run: |
           git config user.name "temporal-cicd[bot]"
           git config user.email "temporal-cicd[bot]@users.noreply.github.com"
 
           branch_name="update-sdk-versions-$(date +%Y%m%d)"
           git checkout -b "$branch_name"
-          git add src/data/sdk-versions.json
-          git commit -m "Update SDK version chips"
+          git add -u
+          git commit -m "Update SDK version chips and code samples"
           git push origin "$branch_name"
+
+          body="Automated update of the latest SDK versions shown on /develop (src/data/sdk-versions.json) and in the hardcoded install snippets in VERSION_ANCHORS (bin/update-sdk-versions.js), sourced from each SDK's package registry."
+          if [ -n "$REVIEW_NOTES" ]; then
+            body="$body
+
+$REVIEW_NOTES"
+          fi
 
           gh pr create \
             --title "Update SDK version chips" \
-            --body "Automated update of the latest SDK versions shown on /develop (src/data/sdk-versions.json), sourced from each SDK's package registry." \
+            --body "$body" \
             --head "$branch_name" \
             --base "main"
