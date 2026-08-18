@@ -1,0 +1,890 @@
+---
+id: openai-agents
+title: OpenAI Agents SDK integration
+sidebar_label: OpenAI Agents SDK integration
+toc_max_heading_level: 3
+tags:
+  - OpenAI Agents SDK
+  - Python SDK
+  - Temporal SDKs
+description: Run OpenAI Agents SDK agents as durable Temporal Workflows in Python, with model calls executed as Activities.
+---
+
+Temporal's integration with the [OpenAI Agents SDK for Python](https://openai.github.io/openai-agents-python/) lets you
+run agents as Temporal Workflows. Agent orchestration—the agent loop, tool selection, and handoffs—runs inside the
+Workflow, while model calls run as [Activities](/glossary#activity).
+
+Like with other types of API calls, in a [Temporal Application](/glossary#temporal-application), you make LLM calls in
+your Activities. This integration handles that for you: model calls are executed as Activities, so they retry durably
+and are not repeated during Workflow replay. Your agents survive Worker restarts and can run for extended periods
+without losing state.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with the OpenAI Agents SDK. If you aren't, refer to the
+  [OpenAI Agents SDK documentation](https://openai.github.io/openai-agents-python/) for more details.
+- If you are new to Temporal, we recommend you read the [Understanding Temporal](/evaluate/understanding-temporal)
+  document or take the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course to understand the basics
+  of Temporal.
+- Ensure you have set up your local development environment by following the
+  [Set up your local with the Python SDK](/develop/python/set-up-your-local-python) guide. When you are done, leave the
+  Temporal Development Server running if you want to test your code locally.
+
+## Install
+
+```bash
+uv add "temporalio[openai-agents]"
+```
+
+The extra pulls in `openai-agents` and `mcp` alongside the Temporal SDK.
+
+Two import paths cover most applications. `temporalio.contrib.openai_agents` holds what you configure on the Worker and
+Client—`OpenAIAgentsPlugin`, `ModelActivityParameters`, and the MCP and sandbox providers.
+`temporalio.contrib.openai_agents.workflow` holds what you call from inside a Workflow, such as `activity_as_tool` and
+the MCP server handles.
+
+## Run your first durable agent
+
+A Temporal-backed agent needs three pieces: a Workflow that runs the agent, a Worker configured with the integration
+plugin, and a Client configured with the same plugin.
+
+### Write the Workflow
+
+Inside the Workflow, write ordinary OpenAI Agents SDK code. The plugin redirects `Runner.run` so that each model call
+becomes an Activity—there is no Temporal-specific runner to learn.
+
+<!--SNIPSTART python-openai-agents-hello-world-workflow-->
+[openai_agents/basic/workflows/hello_world_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/basic/workflows/hello_world_workflow.py)
+```py
+from agents import Agent, Runner
+from temporalio import workflow
+
+
+@workflow.defn
+class HelloWorldAgent:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            name="Assistant",
+            instructions="You only respond in haikus.",
+        )
+
+        result = await Runner.run(agent, input=prompt)
+        return result.final_output
+
+
+```
+<!--SNIPEND-->
+
+### Configure the Worker
+
+Register `OpenAIAgentsPlugin` on the Client. The plugin registers the model Activity, configures the Pydantic data
+converter, propagates tracing context, and registers any configured MCP server or sandbox providers.
+
+<!--SNIPSTART python-openai-agents-hello-world-worker-->
+[openai_agents/basic/run_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/basic/run_worker.py)
+```py
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[
+        OpenAIAgentsPlugin(
+            model_params=ModelActivityParameters(
+                start_to_close_timeout=timedelta(seconds=30)
+            )
+        ),
+    ],
+)
+```
+<!--SNIPEND-->
+
+Workers built from that Client pick up the plugin automatically, so all a Worker has to do is register the Workflow.
+
+`ModelActivityParameters` controls how the model Activity is scheduled. Alongside `start_to_close_timeout`, which
+defaults to 60 seconds, it takes `retry_policy`, `task_queue`, `priority`, `summary_override`, and `use_local_activity`.
+
+You must ensure the Worker process has access to your model-provider credentials. Most provider SDKs read credentials
+from environment variables.
+
+### Start the Workflow
+
+Attach the same plugin to the Client that starts the Workflow, so payloads are converted the same way on both sides.
+
+<!--SNIPSTART python-openai-agents-hello-world-client-->
+[openai_agents/basic/run_hello_world_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/basic/run_hello_world_workflow.py)
+```py
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[
+        OpenAIAgentsPlugin(),
+    ],
+)
+
+# Execute a workflow
+result = await client.execute_workflow(
+    HelloWorldAgent.run,
+    "Tell me about recursion in programming.",
+    id="my-workflow-id",
+    task_queue="openai-agents-basic-task-queue",
+)
+print(f"Result: {result}")
+```
+<!--SNIPEND-->
+
+## Tools
+
+Where a tool runs depends on how you define it.
+
+| Tool                                | Runs in          | Use for                                                    |
+| :---------------------------------- | :--------------- | :--------------------------------------------------------- |
+| `activity_as_tool()`                | Temporal Activity | External I/O and other non-deterministic work               |
+| `FunctionTool` / `@function_tool`   | Workflow          | Deterministic, Workflow-safe computation                    |
+| OpenAI-hosted tool                  | Model provider    | Provider-hosted features run as part of the model call      |
+
+Model calls are always routed through Activities. Tools are not: a `@function_tool` runs in the Workflow unless you back
+it with an Activity, so any tool that performs I/O needs `activity_as_tool()` or a Nexus Operation.
+
+### Activity-backed tools
+
+Use `activity_as_tool` for HTTP calls, database access, file system work, or other I/O. Write an ordinary Temporal
+Activity:
+
+<!--SNIPSTART python-openai-agents-weather-activity-->
+[openai_agents/basic/activities/get_weather_activity.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/basic/activities/get_weather_activity.py)
+```py
+from dataclasses import dataclass
+
+from temporalio import activity
+
+
+@dataclass
+class Weather:
+    city: str
+    temperature_range: str
+    conditions: str
+
+
+@activity.defn
+async def get_weather(city: str) -> Weather:
+    """
+    Get the weather for a given city.
+    """
+    return Weather(city=city, temperature_range="14-20C", conditions="Sunny with wind.")
+
+
+```
+<!--SNIPEND-->
+
+Then pass it through `activity_as_tool` when you build the agent:
+
+<!--SNIPSTART python-openai-agents-activity-tool-workflow-->
+[openai_agents/basic/workflows/tools_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/basic/workflows/tools_workflow.py)
+```py
+@workflow.defn
+class ToolsWorkflow:
+    @workflow.run
+    async def run(self, question: str) -> str:
+        agent = Agent(
+            name="Hello world",
+            instructions="You are a helpful agent.",
+            tools=[
+                temporal_agents.workflow.activity_as_tool(
+                    get_weather, start_to_close_timeout=timedelta(seconds=10)
+                )
+            ],
+        )
+
+        result = await Runner.run(agent, input=question)
+        return result.final_output
+
+
+```
+<!--SNIPEND-->
+
+`activity_as_tool` controls how the agent invokes the Activity; it does not register the Activity with the Worker. Pass
+the Activity function to the Worker's `activities` argument as well.
+
+Because the Activity may not run in the same process as the Workflow, an Activity-backed tool receives a copy of the
+agent context and cannot mutate it. A tool that runs in the Workflow can.
+
+### Inline and hosted tools
+
+For deterministic computation, use the standard `@function_tool` decorator and call it directly from the Workflow. Do
+not perform network, database, or file system I/O from these tools—use `activity_as_tool` instead.
+
+Hosted tools such as `WebSearchTool`, `FileSearchTool`, `CodeInterpreterTool`, and `ImageGenerationTool` are executed by
+the model provider during the model Activity, so they need no extra wiring:
+
+<!--SNIPSTART python-openai-agents-hosted-tool-workflow-->
+[openai_agents/tools/workflows/web_search_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/tools/workflows/web_search_workflow.py)
+```py
+@workflow.defn
+class WebSearchWorkflow:
+    @workflow.run
+    async def run(self, question: str, user_city: str = "New York") -> str:
+        agent = Agent(
+            name="Web searcher",
+            instructions="You are a helpful agent.",
+            tools=[
+                WebSearchTool(user_location={"type": "approximate", "city": user_city})
+            ],
+        )
+
+        result = await Runner.run(agent, question)
+        return result.final_output
+
+
+```
+<!--SNIPEND-->
+
+`LocalShellTool` and `ComputerTool` are not supported, because they assume a single long-lived local process.
+
+### Nexus operation tools
+
+Use `nexus_operation_as_tool` to expose a [Nexus](/nexus) Operation as an agent tool. The Workflow starts the Operation
+through a Nexus client and feeds the result back to the agent, which lets an agent call across a Namespace boundary:
+
+```python
+from temporalio.contrib.openai_agents.workflow import nexus_operation_as_tool
+
+weather_tool = nexus_operation_as_tool(
+    WeatherService.get_weather,
+    service=WeatherService,
+    endpoint="weather-endpoint",
+)
+```
+
+### Nested agent tools
+
+`Agent.as_tool()` from the OpenAI Agents SDK works unchanged. The nested agent's model calls become Activities like any
+others, so a multi-agent run stays durable throughout:
+
+<!--SNIPSTART python-openai-agents-agent-as-tool-workflow-->
+[openai_agents/agent_patterns/workflows/agents_as_tools_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/agent_patterns/workflows/agents_as_tools_workflow.py)
+```py
+def orchestrator_agent() -> Agent:
+    spanish_agent = Agent(
+        name="spanish_agent",
+        instructions="You translate the user's message to Spanish",
+        handoff_description="An english to spanish translator",
+    )
+
+    french_agent = Agent(
+        name="french_agent",
+        instructions="You translate the user's message to French",
+        handoff_description="An english to french translator",
+    )
+
+    italian_agent = Agent(
+        name="italian_agent",
+        instructions="You translate the user's message to Italian",
+        handoff_description="An english to italian translator",
+    )
+
+    orchestrator_agent = Agent(
+        name="orchestrator_agent",
+        instructions=(
+            "You are a translation agent. You use the tools given to you to translate."
+            "If asked for multiple translations, you call the relevant tools in order."
+            "You never translate on your own, you always use the provided tools."
+        ),
+        tools=[
+            spanish_agent.as_tool(
+                tool_name="translate_to_spanish",
+                tool_description="Translate the user's message to Spanish",
+            ),
+            french_agent.as_tool(
+                tool_name="translate_to_french",
+                tool_description="Translate the user's message to French",
+            ),
+            italian_agent.as_tool(
+                tool_name="translate_to_italian",
+                tool_description="Translate the user's message to Italian",
+            ),
+        ],
+    )
+    return orchestrator_agent
+
+
+```
+<!--SNIPEND-->
+
+## MCP servers
+
+Temporal's durability does not extend to [MCP](https://modelcontextprotocol.io/) servers, which run independently of the
+Workflow. The integration offers two wrappers so you can pick the one that matches how your server behaves.
+
+A **stateless** server treats each operation as independent—`get_weather(location)` carries everything it needs—so it
+can be reconnected to without changing behavior. A **stateful** server keeps session state between calls, as a server
+where `set_location(location)` precedes `get_weather()` does, and loses that state if the session drops. Prefer
+stateless when you have the choice: its durability guarantees are stronger.
+
+:::warning
+
+Both `stateless_mcp_server()` and `stateful_mcp_server()` accept a `factory_argument` that is passed to the registered
+factory. It is an Activity argument, so it is recorded in Workflow history and, without a payload codec, visible in the
+Web UI. Do not pass secrets, credentials, or API keys through it—resolve those Worker-side inside the server factory.
+
+:::
+
+### Stateless MCP servers
+
+Register a `StatelessMCPServerProvider` with a factory that creates the server, and give it a name:
+
+<!--SNIPSTART python-openai-agents-stateless-mcp-worker-->
+[openai_agents/mcp/run_file_system_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/run_file_system_worker.py)
+```py
+file_system_server = StatelessMCPServerProvider(
+    "FileSystemServer",
+    lambda: MCPServerStdio(
+        name="FileSystemServer",
+        params={
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-filesystem", samples_dir],
+        },
+    ),
+)
+
+# Create client connected to server at the given address
+config = ClientConfig.load_client_connect_config()
+config.setdefault("target_host", "localhost:7233")
+client = await Client.connect(
+    **config,
+    plugins=[
+        OpenAIAgentsPlugin(
+            model_params=ModelActivityParameters(
+                start_to_close_timeout=timedelta(seconds=60)
+            ),
+            mcp_server_providers=[file_system_server],
+        ),
+    ],
+)
+```
+<!--SNIPEND-->
+
+Reference the same name from Workflow code with `stateless_mcp_server`:
+
+<!--SNIPSTART python-openai-agents-stateless-mcp-workflow-->
+[openai_agents/mcp/workflows/file_system_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/workflows/file_system_workflow.py)
+```py
+server: MCPServer = openai_agents.workflow.stateless_mcp_server(
+    "FileSystemServer"
+)
+agent = Agent(
+    name="Assistant",
+    instructions="Use the tools to read the filesystem and answer questions based on those files.",
+    mcp_servers=[server],
+)
+```
+<!--SNIPEND-->
+
+### Stateful MCP servers
+
+Register a `StatefulMCPServerProvider` instead. The plugin runs a dedicated Worker that holds the connection open for
+the life of the Workflow run.
+
+<!--SNIPSTART python-openai-agents-stateful-mcp-worker-->
+[openai_agents/mcp/run_memory_research_scratchpad_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/run_memory_research_scratchpad_worker.py)
+```py
+memory_server_provider = StatefulMCPServerProvider(
+    "MemoryServer",
+    lambda _: MCPServerStdio(
+        name="MemoryServer",
+        params={
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-memory"],
+        },
+    ),
+)
+
+# Create client connected to server at the given address
+config = ClientConfig.load_client_connect_config()
+config.setdefault("target_host", "localhost:7233")
+client = await Client.connect(
+    **config,
+    plugins=[
+        OpenAIAgentsPlugin(
+            model_params=ModelActivityParameters(
+                start_to_close_timeout=timedelta(seconds=60)
+            ),
+            mcp_server_providers=[memory_server_provider],
+        ),
+    ],
+)
+```
+<!--SNIPEND-->
+
+In the Workflow, `stateful_mcp_server` is an async context manager, which ties the session's lifetime to the block:
+
+<!--SNIPSTART python-openai-agents-stateful-mcp-workflow-->
+[openai_agents/mcp/workflows/memory_research_scratchpad_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/workflows/memory_research_scratchpad_workflow.py)
+```py
+async with temporal_openai_agents.workflow.stateful_mcp_server(
+    "MemoryServer",
+) as server:
+    with trace(workflow_name="MCP Memory Scratchpad Example"):
+        agent = Agent(
+            name="Research Scratchpad Agent",
+            instructions=(
+                "Use the Memory MCP tools to persist, query, update, and delete notes."
+                " Keep IDs short and consistent. Synthesis must rely only on recalled notes and include simple"
+                " citations of the form '(Note: id)'. Keep the brief to 5 bullets."
+            ),
+            mcp_servers=[server],
+            model_settings=ModelSettings(tool_choice="required"),
+        )
+```
+<!--SNIPEND-->
+
+If the dedicated Worker fails—a network problem, or the server itself going away—the session state is gone and Temporal
+cannot recreate it. The integration raises an `ApplicationError` so your Workflow can decide what to do; recovering
+means retrying at the application level, not relying on Activity retries.
+
+### Hosted MCP tool
+
+For a network-accessible server, `HostedMCPTool` uses an MCP client hosted by OpenAI, so there is nothing to register
+on the Worker:
+
+<!--SNIPSTART python-openai-agents-hosted-mcp-workflow-->
+[openai_agents/hosted_mcp/workflows/simple_mcp_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/hosted_mcp/workflows/simple_mcp_workflow.py)
+```py
+@workflow.defn
+class SimpleMCPWorkflow:
+    @workflow.run
+    async def run(
+        self, question: str, server_url: str = "https://gitmcp.io/openai/codex"
+    ) -> str:
+        agent = Agent(
+            name="Assistant",
+            tools=[
+                HostedMCPTool(
+                    tool_config={
+                        "type": "mcp",
+                        "server_label": "gitmcp",
+                        "server_url": server_url,
+                        "require_approval": "never",
+                    }
+                )
+            ],
+        )
+
+        result = await Runner.run(agent, question)
+        return result.final_output
+
+
+```
+<!--SNIPEND-->
+
+## Secrets for hosted tools
+
+:::caution
+
+This feature is experimental and may change before general availability.
+
+:::
+
+A hosted tool's credentials would otherwise have to be written into Workflow code, where they would land in Workflow
+history. Use `temporal_worker_env_ref()` to name an environment variable instead of passing the credential itself:
+
+```python
+from agents import HostedMCPTool
+from temporalio.contrib.openai_agents import temporal_worker_env_ref
+
+tool = HostedMCPTool(
+    tool_config={
+        "type": "mcp",
+        "server_label": "my_server",
+        "server_url": "https://example.com/mcp",
+        "authorization": temporal_worker_env_ref("MY_MCP_TOKEN"),
+    }
+)
+```
+
+Every Worker that runs model Activities must both set `MY_MCP_TOKEN` and declare it resolvable:
+
+```python
+plugin = OpenAIAgentsPlugin(resolvable_worker_env_vars=["MY_MCP_TOKEN"])
+```
+
+Names are matched exactly, with no globbing. A `"*"` anywhere in the list allows every environment variable on the
+Worker. A reference can also sit inside a larger value: in `"Bearer " + temporal_worker_env_ref("MY_MCP_TOKEN")`, the
+reference is replaced in place and the rest of the string is sent unchanged.
+
+The Worker substitutes the value in these fields and no others:
+
+- `authorization`, and the value of each entry in `headers`, in a `HostedMCPTool`'s `tool_config`
+- `value` in each entry of `network_policy.domain_secrets` under a hosted `ShellTool`'s `environment`
+- `value` in each entry of `network_policy.domain_secrets` under the `container` in a `CodeInterpreterTool`'s
+  `tool_config`
+
+## Conversation history and human-in-the-loop
+
+Because the agent loop runs inside a Workflow, conversation history and pending approvals have to be replay safe.
+
+### Carry conversation history across turns
+
+Hold the history in Workflow state and rebuild each turn's input from the previous result. `result.to_input_list()`
+returns the conversation as input items, and `result.last_agent` records which agent a handoff left you on:
+
+```python
+self.input_items.append({"content": user_input, "role": "user"})
+result = await Runner.run(self.current_agent, self.input_items)
+self.input_items = result.to_input_list()
+self.current_agent = result.last_agent
+```
+
+Workflow state is replay safe, so history survives Worker restarts within a run. `SQLiteSession` is not supported: it
+keeps history in a local file, which no longer identifies one conversation once Workers are distributed.
+
+### Handle long-running conversations
+
+A chat-style Workflow accumulates history with every turn, and over a long session the event history can grow large
+enough to hit Temporal's per-Workflow limit. Use
+[Continue-as-New](/develop/python/workflows/continue-as-new) to start a fresh Execution carrying the history forward.
+
+In this example each user turn arrives as a Workflow
+[Update](/develop/python/workflows/message-passing#updates), so the caller gets the agent's reply back from the same
+call. The `run` method waits until Temporal suggests continuing, drains in-flight handlers, then continues as new with
+the accumulated state:
+
+<!--SNIPSTART python-openai-agents-continue-as-new-workflow-->
+[openai_agents/customer_service/workflows/customer_service_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/customer_service/workflows/customer_service_workflow.py)
+```py
+@workflow.run
+async def run(
+    self, customer_service_state: CustomerServiceWorkflowState | None = None
+):
+    await workflow.wait_condition(
+        lambda: workflow.info().is_continue_as_new_suggested()
+        and workflow.all_handlers_finished()
+    )
+    workflow.continue_as_new(
+        CustomerServiceWorkflowState(
+            printed_history=self.printed_history,
+            current_agent_name=self.current_agent.name,
+            context=self.context,
+            input_items=self.input_items,
+        )
+    )
+
+```
+<!--SNIPEND-->
+
+### Add human approval
+
+An agent action that should not proceed unattended can pause for a person. A `HostedMCPTool` configured with
+`require_approval` calls your `on_approval_request` callback, which runs in Workflow context—so it must be
+deterministic, and it can wait on a Signal or Update to get the answer from outside:
+
+<!--SNIPSTART python-openai-agents-hosted-mcp-approval-workflow-->
+[openai_agents/hosted_mcp/workflows/approval_mcp_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/hosted_mcp/workflows/approval_mcp_workflow.py)
+```py
+def approval_callback(request: MCPToolApprovalRequest) -> MCPToolApprovalFunctionResult:
+    """Simple approval callback that logs the request and approves by default.
+
+    In a real application, user input would be provided through a UI or API.
+    The approval callback executes within the Temporal workflow, so the application
+    can use signals or updates to receive user input.
+    """
+    workflow.logger.info(f"MCP tool approval requested for: {request.data.name}")
+
+    result: MCPToolApprovalFunctionResult = {"approve": True}
+    return result
+
+
+```
+<!--SNIPEND-->
+
+## Sandbox
+
+:::caution
+
+Sandbox support is pre-release and may change before general availability.
+
+:::
+
+`SandboxAgent` gives an agent a machine to work on: a shell to run commands in and a filesystem to read and write. The
+plugin dispatches every sandbox operation—creating the session, each command, each read and write, PTY interaction, and
+teardown—as its own Temporal Activity. Each one is individually retryable and visible in Workflow history, and the
+session state is serialized with the Workflow, so a Worker restart part-way through a run resumes against the same
+session.
+
+Register a `SandboxClientProvider` for each backend you want to reach, under a unique name:
+
+<!--SNIPSTART python-openai-agents-sandbox-worker-->
+[openai_agents/sandbox/run_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/sandbox/run_worker.py)
+```py
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[
+        OpenAIAgentsPlugin(
+            model_params=ModelActivityParameters(
+                start_to_close_timeout=timedelta(seconds=60)
+            ),
+            # The plugin registers one set of sandbox activities per
+            # provider, prefixed with the provider name. Register several
+            # providers to let one worker serve several backends.
+            sandbox_clients=[
+                SandboxClientProvider(SANDBOX_PROVIDER, UnixLocalSandboxClient()),
+            ],
+        ),
+    ],
+)
+```
+<!--SNIPEND-->
+
+In the Workflow, `temporal_sandbox_client()` resolves a name to that backend and goes in the `RunConfig`:
+
+<!--SNIPSTART python-openai-agents-sandbox-workflow-->
+[openai_agents/sandbox/workflows/local_sandbox_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/sandbox/workflows/local_sandbox_workflow.py)
+```py
+@workflow.defn
+class LocalSandboxWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        # A default SandboxAgent already carries the Filesystem, Shell, and
+        # Compaction capabilities, so there are no tools to declare here.
+        agent = SandboxAgent[None](
+            name="Sandbox Assistant",
+            instructions=(
+                "You have a sandbox with a shell and a filesystem. Use it to do "
+                "the work rather than answering from memory, then report what "
+                "the commands returned."
+            ),
+        )
+
+        result = await Runner.run(
+            starting_agent=agent,
+            input=prompt,
+            run_config=RunConfig(
+                sandbox=SandboxRunConfig(
+                    # Must match the name registered on the worker.
+                    client=temporal_sandbox_client(SANDBOX_PROVIDER),
+                    options=UnixLocalSandboxClientOptions(),
+                ),
+            ),
+        )
+        return result.final_output_as(str, raise_if_incorrect_type=True)
+
+
+```
+<!--SNIPEND-->
+
+The name becomes the prefix of that backend's Activity names, which is what lets several backends share one Worker. A
+single Workflow can target more than one by calling `temporal_sandbox_client()` once per name. Names must match the
+Worker's registration exactly.
+
+The sample above uses `UnixLocalSandboxClient`, which runs commands on the Worker host—convenient locally, but it means
+the agent gets a shell on that machine. In production, register a remote client such as `DaytonaSandboxClient` or
+`E2BSandboxClient` from `agents.extensions.sandbox` instead. Only the Worker changes; the Workflow still just names a
+provider.
+
+## Streaming
+
+:::caution
+
+Streaming is experimental and may change before general availability.
+
+:::
+
+`Runner.run_streamed` works inside a Workflow. The model call runs as a streaming Activity that consumes
+`Model.stream_response` and publishes each event to a [Workflow Stream](/workflow-streams) topic as the model produces
+it, so an external client can watch a run live while it stays durable.
+
+Set the topic on `ModelActivityParameters.streaming_topic` and host a `WorkflowStream` in the Workflow. The topic is
+required: without it, `run_streamed` raises before scheduling any Activity.
+
+<!--SNIPSTART python-openai-agents-streaming-workflow-->
+[openai_agents/streaming/workflows/stream_text_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/streaming/workflows/stream_text_workflow.py)
+```py
+@workflow.defn
+class StreamTextWorkflow:
+    @workflow.init
+    def __init__(self, input: StreamTextInput) -> None:
+        # WorkflowStream requires construction from a method named __init__
+        # (it checks its caller's frame and raises otherwise), and
+        # @workflow.init is what makes the run argument — and the
+        # stream_state it carries across continue-as-new — available here.
+        self.stream = WorkflowStream(prior_state=input.stream_state)
+        self.done = self.stream.topic(TOPIC_DONE, type=bool)
+
+    @workflow.run
+    async def run(self, input: StreamTextInput) -> str:
+        agent = Agent(
+            name="Joker",
+            instructions="You are a helpful assistant.",
+        )
+        result = Runner.run_streamed(agent, input=input.prompt)
+
+        # The workflow only sees these events once the activity returns, so
+        # the loop just counts them. External subscribers receive them as the
+        # activity publishes them.
+        deltas = 0
+        async for event in result.stream_events():
+            if event.type == "raw_response_event" and isinstance(
+                event.data, ResponseTextDeltaEvent
+            ):
+                deltas += 1
+        workflow.logger.info("collected %d delta events", deltas)
+
+        # In-band terminator so the subscriber can stop without racing the
+        # workflow's completion, then a brief pause to let its next poll
+        # deliver the tail of the stream — the log lives in workflow memory
+        # and is gone once this run completes.
+        self.done.publish(True)
+        await workflow.sleep(DRAIN_INTERVAL)
+        # final_output is typed Any and is None when a run ends without
+        # message output, so assert the str this signature promises rather
+        # than letting a None through.
+        return result.final_output_as(str, raise_if_incorrect_type=True)
+
+
+```
+<!--SNIPEND-->
+
+Subscribe from outside with `WorkflowStreamClient`:
+
+<!--SNIPSTART python-openai-agents-streaming-client-->
+[openai_agents/streaming/run_stream_text_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/streaming/run_stream_text_workflow.py)
+```py
+stream = WorkflowStreamClient.create(client, workflow_id)
+converter = client.data_converter.payload_converter
+
+# A single iterator over both topics — one subscriber, no cancellation race
+# between concurrent ones. result_type=RawValue delivers the underlying
+# Payload so heterogeneous topics can be decoded per item.topic. The loop
+# ends on the in-band terminator, or by the iterator exhausting if the
+# workflow reaches a terminal state without publishing one (e.g. on
+# failure); either way handle.result() below surfaces the outcome.
+last_sequence = -1
+response_in_flight = False
+async for item in stream.subscribe(
+    [TOPIC_EVENTS, TOPIC_DONE], result_type=RawValue
+):
+    if item.topic == TOPIC_DONE:
+        break
+    # Subscribers receive native OpenAI events, not the agents-SDK
+    # StreamEvent wrappers that stream_events() yields in the workflow.
+    event: Any = converter.from_payload(item.data.payload, EVENT_TYPE)
+
+    # Every event carries a sequence_number that starts at 0 per response,
+    # so a number that does not advance means a new response is streaming.
+    # That is a retry only if the previous one never completed: each turn
+    # of a multi-turn run is its own response and restarts the count too.
+    # The retry is an independently sampled answer rather than a
+    # continuation, so mark the seam instead of letting the failed
+    # attempt's partial text run into the new one. The workflow's return
+    # value is unaffected — stream_events() there sees only the attempt
+    # that succeeded.
+    sequence = event.sequence_number
+    if sequence <= last_sequence and response_in_flight:
+        print("\n\n[model activity retried — output restarts here]\n")
+    last_sequence = sequence
+    response_in_flight = not isinstance(event, ResponseCompletedEvent)
+
+    if isinstance(event, ResponseTextDeltaEvent):
+        print(event.delta, end="", flush=True)
+```
+<!--SNIPEND-->
+
+Two things to know:
+
+- Streaming is incompatible with `use_local_activity`, because Local Activities support neither heartbeats nor the
+  Workflow stream signal channel.
+- Activity retries are visible to stream subscribers but not to `stream_events()`. An attempt that fails mid-response
+  leaves its events on the stream and the retry publishes a second sequence, while `stream_events()` sees only the
+  successful attempt's collected events.
+
+## Tracing
+
+OpenAI Agents SDK tracing works across Client, Workflow, and Activity boundaries, with the plugin propagating trace
+context for you.
+
+### OpenAI hosted traces
+
+Hosted tracing needs no setup beyond the plugin. To start a trace on the Client—so the whole Workflow Execution is part
+of a larger trace—open `plugin.tracing_context()` first:
+
+```python
+plugin = OpenAIAgentsPlugin()
+client = await Client.connect("localhost:7233", plugins=[plugin])
+
+with plugin.tracing_context():
+    with trace("Customer support workflow"):
+        result = await client.execute_workflow(
+            CustomerSupportAgent.run,
+            "Help me with my order",
+            id="customer-support-123",
+            task_queue="my-task-queue",
+        )
+```
+
+`plugin.tracing_context()` is required when starting traces outside a Worker; without it the trace does not propagate
+into the Workflow.
+
+### OpenTelemetry
+
+If you already collect traces with OpenTelemetry, the integration can emit the agent's spans through your pipeline, so
+model calls, tools, and orchestration land in the same backend as the rest of your traces.
+
+Install the additional dependencies:
+
+```bash
+uv add openinference-instrumentation-openai-agents opentelemetry-sdk opentelemetry-exporter-otlp
+```
+
+Then set a global replay-safe tracer provider before connecting the Client, and turn on instrumentation in the plugin:
+
+```python
+from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+from temporalio.contrib.opentelemetry import create_tracer_provider
+
+tracer_provider = create_tracer_provider()
+tracer_provider.add_span_processor(
+    SimpleSpanProcessor(OTLPSpanExporter(endpoint="http://localhost:4317"))
+)
+trace.set_tracer_provider(tracer_provider)
+
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[OpenAIAgentsPlugin(use_otel_instrumentation=True)],
+)
+```
+
+The provider must come from `create_tracer_provider()`. It replays safely, exporting spans only when a Workflow actually
+completes rather than on every replay, and generates deterministic span identifiers so they correlate across replays.
+Passing any other provider raises a `ValueError`.
+
+To call the OpenTelemetry API directly from Workflow code, allow the module through the Workflow sandbox and open an
+agents-SDK span first, so your spans are parented rather than becoming roots:
+
+```python
+from agents import custom_span
+from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
+
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[MyWorkflow],
+    workflow_runner=SandboxedWorkflowRunner(
+        SandboxRestrictions.default.with_passthrough_modules("opentelemetry")
+    ),
+)
+
+# Inside the Workflow:
+with custom_span("Workflow coordination"):
+    tracer = opentelemetry.trace.get_tracer(__name__)
+    with tracer.start_as_current_span("Custom workflow span"):
+        ...
+```
+
+## Resources
+
+- [OpenAI Agents SDK samples](https://github.com/temporalio/samples-python/tree/main/openai_agents) — runnable examples
+  for the patterns in this guide.
+- [`temporalio.contrib.openai_agents` README](https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md)
+  — the full plugin reference, including the complete feature-support matrix.
+- [OpenAI Agents SDK for Python](https://openai.github.io/openai-agents-python/)
+- [Temporal Plugins guide](/develop/plugins-guide) — the Plugin system this integration is built on, which you can also
+  use to build your own integrations.
