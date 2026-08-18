@@ -192,3 +192,6 @@ exceptions:
   - Google
   - Gemini
   - Vertex
+  # Temporal product/site section proper nouns
+  - Cookbook
+  - Code Exchange
