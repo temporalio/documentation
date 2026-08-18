@@ -11,11 +11,26 @@ import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
 import { CookbookPreview, GridCardList } from '@site/src/components';
 
 Temporal gives AI applications and agents Durable Execution: a Workflow resumes automatically after a crash, a
-network timeout, or a multi-day wait for a human to approve a step. Use it to keep long-running agent loops, LLM tool
-calls, and multi-step AI pipelines running reliably, without hand-rolling retry logic, checkpointing, or state
-machines.
+network timeout, or a multi-day wait for a human to approve a step. Temporal shows up in four recurring shapes of AI
+system:
 
-Looking to use an AI coding assistant to write Temporal code instead? See [Develop with AI](/with-ai).
+**Agents.** Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where
+they left off after a failure. Start with the [AI Cookbook](/ai/cookbook) and the
+[Approval](/design-patterns/approval) and [Entity Workflow](/design-patterns/entity-workflow) patterns.
+
+**Processing pipelines.** Multi-step data and document pipelines, such as extraction, embedding, or batch inference,
+that need to fan out, retry failed steps in isolation, and resume without reprocessing completed work. See the
+[batch processing patterns](/design-patterns#batch-processing-patterns).
+
+**Internal agent platforms.** Teams building a shared runtime for many agents reuse Temporal's Worker and Task Queue
+primitives instead of building their own scheduler. See the
+[worker configuration patterns](/design-patterns#worker-configuration-patterns) for routing and isolating agent
+workloads.
+
+**Model training.** Long-running training and fine-tuning jobs coordinated across GPU resources, with checkpointing
+and recovery handled by Temporal's Event History instead of custom orchestration code.
+
+> Looking to use an AI coding assistant to write Temporal code instead? See [Develop with AI](/with-ai).
 
 ## AI Cookbook
 
@@ -67,26 +82,6 @@ A hand-picked look at samples built with Temporal and AI. Browse the full
     sdk: "Rust",
   },
 ]} />
-
-## Common AI use cases
-
-Temporal shows up in four recurring shapes of AI system:
-
-**Agents.** Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where
-they left off after a failure. Start with the [AI Cookbook](/ai/cookbook) and the
-[Approval](/design-patterns/approval) and [Entity Workflow](/design-patterns/entity-workflow) patterns.
-
-**Processing pipelines.** Multi-step data and document pipelines, such as extraction, embedding, or batch inference,
-that need to fan out, retry failed steps in isolation, and resume without reprocessing completed work. See the
-[batch processing patterns](/design-patterns#batch-processing-patterns).
-
-**Internal agent platforms.** Teams building a shared runtime for many agents reuse Temporal's Worker and Task Queue
-primitives instead of building their own scheduler. See the
-[worker configuration patterns](/design-patterns#worker-configuration-patterns) for routing and isolating agent
-workloads.
-
-**Model training.** Long-running training and fine-tuning jobs coordinated across GPU resources, with checkpointing
-and recovery handled by Temporal's Event History instead of custom orchestration code.
 
 ## Design patterns for AI agents
 
