@@ -38,8 +38,12 @@ This state is typically passed as a parameter or stored in the Workflow struct.
 Inside your Workflow, call `ctx.continue_as_new()` and propagate its result:
 
 ```rust
+use std::time::Duration;
+
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{ContinueAsNewOptions, WorkflowContext, WorkflowResult};
+use temporalio_sdk::{ActivityOptions, ContinueAsNewOptions, WorkflowContext, WorkflowResult};
+
+use crate::activities::MyActivities;
 
 #[workflow]
 #[derive(Default)]
@@ -48,18 +52,22 @@ pub struct GreetingWorkflow;
 #[workflow_methods]
 impl GreetingWorkflow {
     #[run(name = "greeting-workflow-1")]
-    pub async fn run(
-        ctx: &mut WorkflowContext<Self>,
-        (name, iteration): (String, u32),
-    ) -> WorkflowResult<String> {
-        if iteration < 10 {
-            ctx.continue_as_new(
-                (name, iteration + 1),
-                ContinueAsNewOptions::default(),
-            )?;
-        }
+    pub async fn run(ctx: &mut WorkflowContext<Self>, name: String) -> WorkflowResult<String> {
+        let greeting = ctx
+            .execute_activity(
+                MyActivities::greet,
+                name.clone(),
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+            )
+            .await?;
 
-        Ok(format!("Completed after {iteration} iterations"))
+        println!("{}", greeting);
+
+        if name == "Ziggy" {
+            Ok(greeting)
+        } else {
+            ctx.continue_as_new("New Name".to_string(), ContinueAsNewOptions::default())?;
+        }
     }
 }
 ```
@@ -76,14 +84,12 @@ Temporal tracks your Workflow's progress against these limits to let you know wh
 
 Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive. Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
 
-For example, if you have an internal value like `test_continue_as_new == True`, this sample creates a test-only variable called `self.max_history_length` and sets it to a small value. A helper method in the Workflow impl checks it each time it considers using Continue-as-New:
+For example, if you have an internal value like `test_continue_as_new == True`, this sample takes a variable called `max_history_length` and that can be set to a small value. A helper method in the Workflow impl checks it each time it considers using Continue-as-New:
 
 ```rust
 use serde::{Deserialize, Serialize};
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{
-    ContinueAsNewOptions, WorkflowContext, WorkflowContextView, WorkflowResult,
-};
+use temporalio_sdk::{WorkflowContext, WorkflowResult};
 
 #[derive(Serialize, Deserialize)]
 pub struct GreetingInput {
@@ -91,39 +97,36 @@ pub struct GreetingInput {
     pub max_history_length: u32,
 }
 
-#[workflow]
-pub struct GreetingWorkflow {
-    name: String,
-    max_history_length: u32,
-}
+...
 
 #[workflow_methods]
 impl GreetingWorkflow {
-    #[init]
-    fn new(_ctx: &WorkflowContextView, input: GreetingInput) -> Self {
-        Self {
-            name: input.name,
-            max_history_length: input.max_history_length,
-        }
-    }
-
     #[run]
     pub async fn run(
         ctx: &mut WorkflowContext<Self>,
-        _input: GreetingInput,
+        input: GreetingInput,
     ) -> WorkflowResult<String> {
-        let max_history_length = ctx.state(|s| s.max_history_length);
-        if ctx.continue_as_new_suggested()
-            || (max_history_length > 0 && ctx.history_length() > max_history_length)
-        {
-            let next_input = GreetingInput {
-                name: ctx.state(|s| s.name.clone()),
-                max_history_length,
-            };
-            ctx.continue_as_new(next_input, ContinueAsNewOptions::default())?;
+        // your Workflow code here
+
+        if Self::should_continue_as_new(ctx, input.max_history_length) {
+            // Continue as new
+        }
+    }
+
+    fn should_continue_as_new(
+        ctx: &WorkflowContext<Self>,
+        max_history_length: u32,
+    ) -> bool {
+        if ctx.continue_as_new_suggested() {
+            return true;
         }
 
-        Ok(ctx.state(|s| format!("Hello, {}", s.name)))
+        // For testing
+        if max_history_length > 0 && ctx.history_length() > max_history_length {
+            return true;
+        }
+
+        false
     }
 }
 ```

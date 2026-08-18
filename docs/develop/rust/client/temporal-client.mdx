@@ -101,7 +101,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             .build(),
     )?;
     let connection = Connection::connect(conn_opts).await?;
-    let _client = Client::new(connection, client_opts)?;
+    let client = Client::new(connection, client_opts)?;
+
+    ...
 
     Ok(())
 }
@@ -116,7 +118,6 @@ You can also configure the Temporal Client with environment variables using `env
 ```rust
 use temporalio_client::{
     Client, ClientOptions, Connection,
-    envconfig::LoadClientConfigProfileOptions,
 };
 use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
@@ -124,7 +125,7 @@ use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let runtime = Runtime::new_assume_tokio(Default::default())?;
     let (conn_opts, client_opts) =
-        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default())?;
+        ClientOptions::load_from_config(Default::default())?;
     let connection = Connection::connect(conn_opts).await?;
     let client = Client::new(connection, client_opts)?;
 
@@ -150,20 +151,18 @@ You can also specify connection options directly in code. This is convenient for
 ```rust
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let connection_options =
-        ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
-    let connection = Connection::connect(connection_options).await?;
-    let client = Client::new(connection, ClientOptions::new("default").build())?;
+    let (conn_opts, client_opts) =
+        ClientOptions::load_from_config(Default::default())?;
+    let connection = Connection::connect(conn_opts).await?;
+    let client = Client::new(connection, client_opts)?;
 
-    let _handle = client
+    let wf_handle = client
         .start_workflow(
-            GreetingWorkflow::run,
-            "Temporal".to_string(),
+            GreetingsWorkflow::run,
+            (),
             WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
         )
         .await?;
-
-    Ok(())
 }
 ```
 
@@ -312,7 +311,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 With the default features, an mTLS client certificate is read when `Connection::connect` creates the connection.
 The `dynamic-tls` feature provides `TlsOptions::client_cert_resolver` for rotating client certificates without
-restarting the Worker.
+restarting the Worker; see
+[Update certificates using Temporal Cloud UI/tcld](/cloud/certificates#manage-certificates) for the zero-downtime
+staging sequence.
 
 ## Start a Workflow Execution {/* #start-workflow-execution */}
 
@@ -328,13 +329,14 @@ Starting a Workflow Execution creates the first [WorkflowExecutionStarted](/refe
 In Rust, use `start_workflow()` to start a Workflow and return a handle.
 
 ```rust
-let handle = client
-    .start_workflow(
-        GreetingWorkflow::run,
-        "Temporal".to_string(),
-        WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
-    )
-    .await?;
+let handle = client.start_workflow(
+    GreetingsWorkflow::run,
+    (),
+    WorkflowStartOptions::new(
+        "my-task-queue",
+        "greetings-workflow-10",
+    ).build()
+).await?;
 ```
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
@@ -348,8 +350,8 @@ In Rust, set the Task Queue in `WorkflowStartOptions`:
 ```rust
 let handle = client
     .start_workflow(
-        GreetingWorkflow::run,
-        "Temporal".to_string(),
+        GreetingsWorkflow::run,
+        (),
         WorkflowStartOptions::new(
             "your-task-queue", 
             "your-workflow-id"
@@ -368,8 +370,8 @@ In Rust, set the Workflow Id in `WorkflowStartOptions`:
 ```rust
 let handle = client
     .start_workflow(
-        GreetingWorkflow::run,
-        "Temporal".to_string(),
+        GreetingsWorkflow::run,
+        (),
         WorkflowStartOptions::new(
             "your-task-queue", 
             "your-workflow-id"
@@ -387,8 +389,8 @@ To get the result of a newly started Workflow:
 ```rust
 let handle = client
     .start_workflow(
-        GreetingWorkflow::run,
-        "Temporal".to_string(),
+        GreetingsWorkflow::run,
+        (),
         WorkflowStartOptions::new(
             "your-task-queue", 
             "your-workflow-id"

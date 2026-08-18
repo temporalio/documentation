@@ -95,7 +95,7 @@ Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/0.7.0/temporalio_sdk
 You can start multiple Child Workflows and wait for all of them:
 
 ```rust
-pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<String>> {
+pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<String>>> {
     let name = ctx.state(|s| s.name.clone());
 
     let en_greeting_child = ctx
@@ -114,12 +114,14 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<String>>
         )
         .await?;
     
-    let (en_result, es_result) = temporalio_sdk::workflows::join!(
-        en_greeting_child.result(),
-        es_greeting_child.result(),
-    );
+    let en_result = en_greeting_child.result().await;
+    let es_result = es_greeting_child.result().await;
 
-    Ok(vec![en_result?, es_result?])
+    let combined = vec![en_result, es_result];
+
+    print!("Combined greetings: {:?}", combined);
+
+    ...
 }
 ```
 

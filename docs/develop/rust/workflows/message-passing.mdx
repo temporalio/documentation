@@ -135,10 +135,19 @@ pub struct ApproveInput {
     pub name: String,
 }
 
-#[signal]
-pub fn approve(&mut self, _ctx: &mut SyncWorkflowContext<Self>, input: ApproveInput) {
-    self.approved_for_release = true;
-    self.approver_name = Some(input.name);
+// Other structs
+...
+
+#[workflow_methods]
+impl GreetingsWorkflow {
+    // Other Workflow logic
+    ...
+
+    #[signal]
+    pub fn approve(&mut self, _ctx: &mut SyncWorkflowContext<Self>, input: ApproveInput) {
+        self.approved_for_release = true;
+        self.approver_name = Some(input.name);
+    }
 }
 ```
 
@@ -164,13 +173,21 @@ wf_handle
 An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution. It can change the Workflow state, control its flow, and return a result. The sender must wait until the Worker accepts or rejects the Update. The sender may wait further to receive a returned value or an exception if something goes wrong:
 
 ```rust
+// workflows.rs
+...
+
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct SetLanguageInput {
     pub language: Language,
 }
 
+...
+
 #[workflow_methods]
 impl GreetingsWorkflow {
+    // Other Workflow logic
+    ...
+
     #[update]
     pub fn set_language(
         &mut self,
@@ -340,29 +357,35 @@ It's essential to understand the things that could go wrong in order to use `asy
 The following code executes an Activity that makes a network call to a remote service:
 
 ```rust
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum Language {
+    Arabic,
+    Chinese,
+    English,
+    French,
+    Hindi,
+    Spanish,
+}
+
 pub struct GreetingActivities;
 
 #[activities]
 impl GreetingActivities {
     #[activity]
-    pub async fn call_greeting_service(_ctx: ActivityContext, to_language: Language) -> Result<String, ActivityError> {
+    pub async fn call_greeting_service(_ctx: ActivityContext, to_language: Language) -> Result<Option<String>, ActivityError> {
         // Pretend that we are calling a remote service.
         sleep(Duration::from_millis(200)).await;
 
         let greetings = HashMap::from([
-            (Language::Arabic, "مرحبا بالعالم"),
-            (Language::Chinese, "你好，世界"),
-            (Language::English, "Hello, world"),
-            (Language::French, "Bonjour, monde"),
-            (Language::Hindi, "नमस्ते दुनिया"),
-            (Language::Spanish, "Hola mundo"),
+            (Language::Arabic, "مرحبا بالعالم".to_string()),
+            (Language::Chinese, "你好，世界".to_string()),
+            (Language::English, "Hello, world".to_string()),
+            (Language::French, "Bonjour, monde".to_string()),
+            (Language::Hindi, "नमस्ते दुनिया".to_string()),
+            (Language::Spanish, "Hola mundo".to_string()),
         ]);
 
-        Ok(greetings
-            .get(&to_language)
-            .copied()
-            .unwrap_or("Hello, world")
-            .to_string())
+        Ok(greetings.get(&to_language).cloned())
     }
 }
 ```
@@ -380,17 +403,29 @@ async fn set_language_activity(
     let needs_greeting = ctx.state(|s| !s.greetings.contains_key(&language));
 
     if needs_greeting {
-        ctx.wait_condition(|s| s.approved_for_release).await?;
+        ctx.wait_condition(|s| !s.approved_for_release).await?;
+        ctx.state_mut(|s| {
+            s.approved_for_release = true;
+        });
+
         let greeting = ctx
             .execute_activity(
                 GreetingActivities::call_greeting_service,
-                language,
+                Language::French,
                 ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
             )
-            .await?;
+            .await;
+
         ctx.state_mut(|s| {
-            s.greetings.insert(language, greeting);
+            s.approved_for_release = false;
         });
+
+        let greeting = greeting?;
+        if let Some(greeting) = greeting {
+            ctx.state_mut(|s| {
+                s.greetings.insert(language, greeting);
+            });
+        }
     }
 
     let previous_language = ctx.state(|s| s.language);

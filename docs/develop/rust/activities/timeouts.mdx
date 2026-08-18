@@ -137,5 +137,5 @@ let language = ctx.execute_activity(
     ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
         .heartbeat_timeout(Duration::from_secs(5))
         .build(),
-).await?;
+);
 ```

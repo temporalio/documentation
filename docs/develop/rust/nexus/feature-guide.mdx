@@ -51,7 +51,7 @@ impl GreetingWorkflow {
                     .service("my-service")
                     .operation("my-operation")
                     .input(name.as_json_payload().map_err(ApplicationFailure::new)?)
-                    .schedule_to_close_timeout(Duration::from_secs(10))
+                    .start_to_close_timeout(Duration::from_secs(10))
                     .build(),
             )
             .await;
@@ -75,4 +75,5 @@ impl GreetingWorkflow {
 - `service` - The service name
 - `operation` - The operation name
 - `input` - The input payload (optional)
+- `start_to_close_timeout` - How long the operation can run
 - `schedule_to_close_timeout` - How long the caller waits for the operation to complete
